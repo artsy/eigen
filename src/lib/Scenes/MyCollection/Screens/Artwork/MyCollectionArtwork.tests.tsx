@@ -50,11 +50,88 @@ describe("My Collection Artwork", () => {
         mockEnvironment
       )
 
-      mockEnvironmentPayload(mockEnvironment)
       expect(() => getByTestId("my-collection-artwork")).toBeTruthy()
       expect(() => getByTestId("old-my-collection-artwork")).toThrowError(
         "Unable to find an element with testID: old-my-collection-artwork"
       )
+    })
+  })
+
+  describe.only("edit button", () => {
+    let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewMyCollectionArtwork: true })
+      mockEnvironment = createMockEnvironment()
+    })
+
+    describe("when submission is not in progress", () => {
+      it("shows the edit button", async () => {
+        const { findByText } = renderWithHookWrappersTL(
+          <MyCollectionArtworkQueryRenderer
+            artworkSlug="random-slug"
+            artistInternalID="internal-id"
+            medium="medium"
+          />,
+          mockEnvironment
+        )
+
+        mockEnvironmentPayload(mockEnvironment, {
+          Artwork: () => ({
+            consignmentSubmission: {
+              inProgress: false,
+            },
+          }),
+        })
+
+        expect(await findByText("Edit")).toBeTruthy()
+      })
+    })
+
+    describe("when there is no submission", () => {
+      it("shows the edit button", async () => {
+        const { findByText } = renderWithHookWrappersTL(
+          <MyCollectionArtworkQueryRenderer
+            artworkSlug="random-slug"
+            artistInternalID="internal-id"
+            medium="medium"
+          />,
+          mockEnvironment
+        )
+
+        mockEnvironmentPayload(mockEnvironment, {
+          Artwork: () => ({
+            consignmentSubmission: null,
+          }),
+        })
+
+        expect(await findByText("Edit")).toBeTruthy()
+      })
+    })
+
+    describe("when submission is in progress", () => {
+      it("hides the edit button", async () => {
+        const { findByText } = renderWithHookWrappersTL(
+          <MyCollectionArtworkQueryRenderer
+            artworkSlug="random-slug"
+            artistInternalID="internal-id"
+            medium="medium"
+          />,
+          mockEnvironment
+        )
+
+        mockEnvironmentPayload(mockEnvironment, {
+          Artwork: () => ({
+            consignmentSubmission: {
+              inProgress: true,
+            },
+          }),
+        })
+
+        await expect(findByText("Edit")).rejects.toThrow(
+          "Unable to find an element with text: Edit"
+        )
+      })
     })
   })
 })

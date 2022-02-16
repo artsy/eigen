@@ -58,8 +58,8 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artwork
       {
         <FancyModalHeader
           onLeftButtonPress={goBack}
-          displayRightButton={displayEditButton}
           rightButtonText="Edit"
+          displayRightButton={displayEditButton}
           onRightButtonPress={handleEdit}
         />
       }
