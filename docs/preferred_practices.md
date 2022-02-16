@@ -77,7 +77,7 @@ Everything in `src/` is React Native. Within this folder things can be a bit of 
 According to the React convention we capitalise **Components and Component Folders**, but keep everything else lowercase.
 Files that export a component end in `.tsx`, files that don't export a component end in `.ts` by default.
 
-For example `mutations`, `routes`, `state` would be **lowercase** folders, while `MyComponent.tsx` would be a **PascalCase** file.
+For example `mutations`, `routes`, `state` would be **camelCase** folders, while `MyComponent.tsx` would be a **PascalCase** file.
 
 ```
 ├── MyComponentFolder
