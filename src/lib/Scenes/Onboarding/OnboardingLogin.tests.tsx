@@ -29,15 +29,11 @@ jest.mock("formik", () => ({
 }))
 
 describe("OnboardingLogin", () => {
-  interface TestProps {
-    email?: string
-  }
-
-  const TestProvider = (props: TestProps) => {
+  const TestProvider = ({ email = "" }) => {
     return (
       <OnboardingLoginWithEmailForm
         navigation={navigationPropsMock as any}
-        route={{ params: { email: props.email ?? "" } } as any}
+        route={{ params: { email } } as any}
       />
     )
   }

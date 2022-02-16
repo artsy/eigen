@@ -22,6 +22,7 @@ import {
 import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
 import { OnboardingLoginWithOTP, OTPMode } from "./OnboardingLoginWithOTP"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
+import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
 // tslint:disable-next-line:interface-over-type-literal
@@ -29,9 +30,21 @@ export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
   OnboardingLogin: { withFadeAnimation: boolean } | undefined
   OnboardingLoginWithEmail: { withFadeAnimation: boolean; email: string } | undefined
-  OnboardingLoginWithOTP: { email: string; password: string; otpMode: OTPMode }
+  OnboardingLoginWithOTP: {
+    email: string
+    password: string
+    otpMode: OTPMode
+    onSignIn?: () => void
+  }
   OnboardingCreateAccount: { withFadeAnimation: boolean } | undefined
   OnboardingCreateAccountWithEmail: undefined
+  OnboardingSocialLink: {
+    email: string
+    name: string
+    providers: string[]
+    providerToBeLinked: string
+    tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
+  }
   ForgotPassword: undefined
   Terms: undefined
   Privacy: undefined
@@ -43,6 +56,7 @@ export const OnboardingWelcomeScreens = () => {
   return (
     <NavigationContainer independent>
       <StackNavigator.Navigator
+        initialRouteName="OnboardingWelcome"
         headerMode="screen"
         screenOptions={{
           ...TransitionPresets.SlideFromRightIOS,
@@ -82,6 +96,7 @@ export const OnboardingWelcomeScreens = () => {
           name="OnboardingCreateAccountWithEmail"
           component={OnboardingCreateAccountWithEmail}
         />
+        <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
         <StackNavigator.Screen
           name="ForgotPassword"
           component={ForgotPassword}

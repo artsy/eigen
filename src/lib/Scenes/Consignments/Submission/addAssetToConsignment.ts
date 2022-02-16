@@ -13,6 +13,7 @@ export const addAssetToConsignment = (input: AddAssetToConsignmentSubmissionInpu
         mutation addAssetToConsignmentMutation($input: AddAssetToConsignmentSubmissionInput!) {
           addAssetToConsignmentSubmission(input: $input) {
             asset {
+              id
               submissionID
             }
           }

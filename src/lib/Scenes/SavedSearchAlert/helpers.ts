@@ -110,20 +110,26 @@ export const clearDefaultAttributes = (attributes: SearchCriteriaAttributes) => 
 
 export const showWarningMessageForDuplicateAlert = ({
   onReplacePress,
+  onViewDuplicatePress,
 }: {
   onReplacePress: () => void
+  onViewDuplicatePress: () => void
 }) => {
   Alert.alert(
     "Duplicate Alert",
-    "You already have a Saved Alert with these filters. Do you want to replace it?",
+    "You already have a saved alert with these filters. Do you want to replace it?",
     [
-      {
-        text: "Cancel",
-      },
       {
         onPress: onReplacePress,
         style: "destructive",
         text: "Replace",
+      },
+      {
+        onPress: onViewDuplicatePress,
+        text: "View Duplicate",
+      },
+      {
+        text: "Cancel",
       },
     ]
   )

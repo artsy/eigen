@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cf02fb2cd2b8c3b43d646b03793e0fc0 */
+/* @relayHash 0016ad171ec4739380ffa1e9183582d1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -54,12 +54,12 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       width
       height
       date
-      ...MyCollectionArtworkListItem_artwork
+      ...MyCollectionArtworkGridItem_artwork
     }
   }
 }
 
-fragment MyCollectionArtworkListItem_artwork on Artwork {
+fragment MyCollectionArtworkGridItem_artwork on Artwork {
   internalID
   artist {
     internalID
@@ -79,12 +79,67 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   date
 }
 
+fragment MyCollectionArtworkListItem_artwork on Artwork {
+  internalID
+  title
+  slug
+  id
+  medium
+  image {
+    url(version: "small")
+    aspectRatio
+  }
+  artistNames
+  artist {
+    internalID
+    name
+    id
+  }
+  pricePaid {
+    minor
+  }
+  sizeBucket
+  width
+  height
+  date
+}
+
+fragment MyCollectionArtworkList_myCollectionConnection on MyCollectionConnection {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    node {
+      ...MyCollectionArtworkListItem_artwork
+      title
+      slug
+      id
+      artistNames
+      medium
+      artist {
+        internalID
+        name
+        id
+      }
+      pricePaid {
+        minor
+      }
+      sizeBucket
+      width
+      height
+      date
+    }
+  }
+}
+
 fragment MyCollection_me on Me {
   id
   myCollectionInfo {
     includesPurchasedArtworks
   }
-  myCollectionConnection(first: 100, sort: CREATED_AT_DESC) {
+  myCollectionConnection(first: 30, sort: CREATED_AT_DESC) {
     edges {
       node {
         id
@@ -109,6 +164,7 @@ fragment MyCollection_me on Me {
       }
       cursor
     }
+    ...MyCollectionArtworkList_myCollectionConnection
     ...InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX
     pageInfo {
       endCursor
@@ -130,7 +186,7 @@ v1 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 100
+    "value": 30
   },
   {
     "kind": "Literal",
@@ -324,6 +380,7 @@ return {
                         "name": "__typename",
                         "storageKey": null
                       },
+                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -339,6 +396,19 @@ return {
                         "name": "image",
                         "plural": false,
                         "selections": [
+                          {
+                            "alias": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "small"
+                              }
+                            ],
+                            "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": "url(version:\"small\")"
+                          },
                           {
                             "alias": null,
                             "args": null,
@@ -363,7 +433,6 @@ return {
                         "name": "date",
                         "storageKey": null
                       },
-                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -435,7 +504,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "myCollectionConnection(first:100,sort:\"CREATED_AT_DESC\")"
+            "storageKey": "myCollectionConnection(first:30,sort:\"CREATED_AT_DESC\")"
           },
           {
             "alias": null,
@@ -452,7 +521,7 @@ return {
     ]
   },
   "params": {
-    "id": "cf02fb2cd2b8c3b43d646b03793e0fc0",
+    "id": "0016ad171ec4739380ffa1e9183582d1",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

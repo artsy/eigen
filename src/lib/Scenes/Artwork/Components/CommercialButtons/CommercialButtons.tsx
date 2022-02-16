@@ -92,11 +92,33 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
       )
     } else if (isOfferable) {
       return (
-        <MakeOfferButtonFragmentContainer
-          artwork={artwork}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          editionSetID={this.props.editionSetID}
-        />
+        <>
+          <MakeOfferButtonFragmentContainer
+            artwork={artwork}
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            editionSetID={this.props.editionSetID}
+          />
+          {isInquireable && <Spacer my={0.5} />}
+          {isInquireable && !newFirstInquiry && (
+            <Button
+              onPress={() => this.handleInquiry()}
+              size="large"
+              variant="outline"
+              block
+              width={100}
+              haptic
+            >
+              {InquiryOptions.ContactGallery}
+            </Button>
+          )}
+          {isInquireable && newFirstInquiry && (
+            <InquiryButtonsFragmentContainer
+              artwork={artwork}
+              editionSetID={this.props.editionSetID}
+              variant="outline"
+            />
+          )}
+        </>
       )
     } else if (isInquireable && !newFirstInquiry) {
       return (

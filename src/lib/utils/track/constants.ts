@@ -8,4 +8,7 @@ export const AnalyticsConstants = {
     key: "screen reader status",
     value: { Enabled: "enabled", Disabled: "disabled" },
   },
+  NotificationTapped: {
+    key: "notification tapped",
+  },
 }
