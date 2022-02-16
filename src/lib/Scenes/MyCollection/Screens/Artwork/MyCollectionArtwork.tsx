@@ -88,7 +88,6 @@ const MyCollectionArtworkPlaceholder = () => (
     </Flex>
   </ProvidePlaceholderContext>
 )
-
 export interface MyCollectionArtworkScreenProps {
   artworkSlug: string
   artistInternalID: string

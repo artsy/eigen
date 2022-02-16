@@ -488,5 +488,8 @@ describe("App version Versions.AddArtworkSubmissionModel", () => {
         country: "",
       },
     })
+    expect(migratedState.artworkSubmission.submission.photos).toEqual({
+      photos: [],
+    })
   })
 })

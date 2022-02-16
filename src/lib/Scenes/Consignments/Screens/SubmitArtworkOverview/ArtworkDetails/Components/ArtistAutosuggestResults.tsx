@@ -264,7 +264,7 @@ const ArtistAutosuggestResultsPlaceholder: React.FC = () => {
     <Flex
       p={2}
       mb={1}
-      mt={1}
+      mt={0.5}
       style={{
         flex: 1,
         borderStyle: "solid",

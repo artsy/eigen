@@ -5,6 +5,7 @@ import {
   ImageCarousel,
   ImageCarouselFragmentContainer,
 } from "lib/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { retrieveLocalImages } from "lib/utils/LocalImageStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Join, NoImageIcon, Spacer, Text, useColor } from "palette"
@@ -12,6 +13,7 @@ import React, { useEffect, useState } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { imageIsProcessing, isImage } from "../../ArtworkForm/MyCollectionImageUtil"
+import { MyCollectionArtworkSubmissionStatus } from "../Components/MyCollectionArtworkSubmissionStatus"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: NewMyCollectionArtworkHeader_artwork$key
@@ -22,7 +24,8 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     myCollectionArtworkHeaderFragment,
     props.artwork
   )
-  const { artistNames, date, images, internalID, title, slug } = artwork
+  const { artistNames, date, images, internalID, title, slug, consignmentSubmission } = artwork
+  const allowSubmissionStatusInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
 
   const [imagesToDisplay, setImagesToDisplay] = useState<
     typeof images | CarouselImageDescriptor[] | null
@@ -87,6 +90,15 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           {formattedTitleAndYear}
         </Text>
       </Flex>
+
+      {!!consignmentSubmission?.displayText && !!allowSubmissionStatusInMyCollection && (
+        <Flex px={2}>
+          <MyCollectionArtworkSubmissionStatus displayText={consignmentSubmission?.displayText} />
+        </Flex>
+      )}
+
+      {/* Extra Bottom Space */}
+      <></>
     </Join>
   )
 }
@@ -103,6 +115,9 @@ const myCollectionArtworkHeaderFragment = graphql`
     internalID
     slug
     title
+    consignmentSubmission {
+      displayText
+    }
   }
 `
 

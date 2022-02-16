@@ -1,12 +1,12 @@
+import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils/"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
 import { updateConsignSubmission } from "../Mutations"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
-import { ContactInformationFormModel } from "./validation"
 
 jest.mock(
   "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/updateConsignSubmissionMutation",
@@ -15,28 +15,14 @@ jest.mock(
   })
 )
 
-jest.mock("lib/relay/createEnvironment", () => {
-  return {
-    defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-  }
-})
+const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 
 jest.unmock("react-relay")
 
-const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
-
 describe("ContactInformationForm", () => {
-  const TestRenderer = () => (
-    <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ContactInformationQueryRenderer handlePress={jest.fn()} />
-    </RelayEnvironmentProvider>
-  )
-
-  beforeEach(() => {
-    ;(updateConsignSubmissionMock as jest.Mock).mockClear()
-    mockEnvironment.mockClear()
-  })
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  const handlePressTest = jest.fn()
+  const TestRenderer = () => <ContactInformationQueryRenderer handlePress={handlePressTest} />
 
   it("renders without throwing an error", () => {
     renderWithWrappersTL(
@@ -51,48 +37,92 @@ describe("ContactInformationForm", () => {
     ).toBeTruthy()
   })
 
-  // test phoneNumber:
-  // isValid  returns phone number
-  // !isValid returns empty string
+  it("Happy path: User can submit information", async () => {
+    const { getAllByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    updateConsignSubmissionMock.mockResolvedValue("adsfasd")
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Me: () => ({
+          ...mockQueryData,
+        }),
+      })
+    )
 
-  // TODO: (related Jira ticket: https://artsyproduct.atlassian.net/browse/SWA-223 )
-  //
-  // it("renders with an error when something is missing/not properly filled out", async () => null)
-  // it("renders empty form when user isn't logged in or does not have an account", () => {
-  //   const { getByText } = renderWithWrappersTL(<TestRenderer />)
-  // })
+    await flushPromiseQueue()
 
-  // it("renders User Information when that exists (user already has an account)", () => {
-  //   const { getByText } = renderWithWrappersTL(<TestRenderer />)
-  // })
+    const inputs = {
+      nameInput: getByPlaceholderText("Your Full Name"),
+      emailInput: getByPlaceholderText("Your Email Address"),
+      phoneInput: getByPlaceholderText("(000) 000-0000"),
+    }
 
-  // it("updates existing submission when ID passed", async () => {
-  //   // check what is in submission // check all fields are there
-  //   // if everything is ok => updateSubmission()
-  //   // make sure "userName" exists in submission
-  //   // await updateSubmission(mockSubmissionForm, "12345")
-  //   // expect(updateConsignSubmissionMock).toHaveBeenCalled()
-  // })
+    expect(inputs.nameInput).toBeTruthy()
+    expect(inputs.nameInput).toHaveProp("value", "Angela")
 
-  // it("navigate to the next page correctly", () => {
-  //   renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
-  // })
+    expect(inputs.emailInput).toBeTruthy()
+    expect(inputs.emailInput).toHaveProp("value", "a@a.aaa")
+
+    expect(inputs.phoneInput).toBeTruthy()
+    expect(inputs.phoneInput).toHaveProp("value", "(202) 555-0174")
+
+    expect(getAllByText("Submit Artwork")).toBeTruthy()
+
+    fireEvent(getAllByText("Submit Artwork")[0], "press")
+
+    expect(updateConsignSubmissionMock).toHaveBeenCalled()
+    expect(updateConsignSubmissionMock).toHaveBeenCalledWith({ ...mockFormDataForSubmission })
+    await flushPromiseQueue()
+    expect(handlePressTest).toHaveBeenCalled()
+  })
+
+  it("Keeps Submit button deactivated when something is missing/not properly filled out. Gets enabled if everything is filled out.", async () => {
+    const { getAllByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    updateConsignSubmissionMock.mockResolvedValue("adsfasd")
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Me: () => ({
+          ...mockQueryDataInfoMissing,
+        }),
+      })
+    )
+    const inputs = {
+      nameInput: getByPlaceholderText("Your Full Name"),
+      emailInput: getByPlaceholderText("Your Email Address"),
+      phoneInput: getByPlaceholderText("(000) 000-0000"),
+    }
+
+    const submitButton = getAllByText("Submit Artwork")[0]
+
+    await flushPromiseQueue()
+
+    expect(submitButton).toBeDisabled()
+
+    fireEvent.changeText(inputs.nameInput, "Angelika")
+    fireEvent.changeText(inputs.emailInput, "aa@aa.aaa")
+    fireEvent.changeText(inputs.phoneInput, "2025550155")
+
+    await flushPromiseQueue()
+
+    expect(submitButton).not.toBeDisabled()
+  })
 })
 
-export const mockSubmissionForm: ContactInformationFormModel = {
-  userName: "Angela",
-  userEmail: "a@a.aaa",
-  userPhone: "202-555-0174",
+export const mockQueryData: any = {
+  name: "Angela",
+  email: "a@a.aaa",
+  phoneNumber: { isValid: true, originalNumber: "(202) 555-0174" },
 }
 
-// TODO:
-// Pre-populate phone number from a user's `phoneNumber` field
-// https://artsyproduct.atlassian.net/browse/SWA-224
-// phoneNumber: {
-//   countryCode: "",
-//   display: "",
-//   error: "",
-//   isValid: true,
-//   originalNumber: "",
-//   regionCode: "",
-// },
+export const mockQueryDataInfoMissing: any = {
+  name: "",
+  email: "",
+  phoneNumber: { isValid: false, originalNumber: "" },
+}
+
+export const mockFormDataForSubmission: any = {
+  id: "",
+  state: "SUBMITTED",
+  userEmail: "a@a.aaa",
+  userName: "Angela",
+  userPhone: "+1 (202) 555-0174",
+}

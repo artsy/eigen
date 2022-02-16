@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1041601a3d75b07ed2d4b730a9eef701 */
+/* @relayHash 689ceceba0573add1e7bd9a6a495ff23 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -60,12 +60,12 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       width
       height
       date
-      ...MyCollectionArtworkListItem_artwork
+      ...MyCollectionArtworkGridItem_artwork
     }
   }
 }
 
-fragment MyCollectionArtworkListItem_artwork on Artwork {
+fragment MyCollectionArtworkGridItem_artwork on Artwork {
   internalID
   artist {
     internalID
@@ -83,6 +83,61 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   slug
   title
   date
+}
+
+fragment MyCollectionArtworkListItem_artwork on Artwork {
+  internalID
+  title
+  slug
+  id
+  medium
+  image {
+    url(version: "small")
+    aspectRatio
+  }
+  artistNames
+  artist {
+    internalID
+    name
+    id
+  }
+  pricePaid {
+    minor
+  }
+  sizeBucket
+  width
+  height
+  date
+}
+
+fragment MyCollectionArtworkList_myCollectionConnection on MyCollectionConnection {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    node {
+      ...MyCollectionArtworkListItem_artwork
+      title
+      slug
+      id
+      artistNames
+      medium
+      artist {
+        internalID
+        name
+        id
+      }
+      pricePaid {
+        minor
+      }
+      sizeBucket
+      width
+      height
+      date
+    }
+  }
 }
 
 fragment MyCollection_me_1G22uz on Me {
@@ -118,6 +173,7 @@ fragment MyCollection_me_1G22uz on Me {
       }
       cursor
     }
+    ...MyCollectionArtworkList_myCollectionConnection
     ...InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX
     pageInfo {
       endCursor
@@ -379,6 +435,7 @@ return {
                         "name": "__typename",
                         "storageKey": null
                       },
+                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -394,6 +451,19 @@ return {
                         "name": "image",
                         "plural": false,
                         "selections": [
+                          {
+                            "alias": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "small"
+                              }
+                            ],
+                            "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": "url(version:\"small\")"
+                          },
                           {
                             "alias": null,
                             "args": null,
@@ -418,7 +488,6 @@ return {
                         "name": "date",
                         "storageKey": null
                       },
-                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -507,7 +576,7 @@ return {
     ]
   },
   "params": {
-    "id": "1041601a3d75b07ed2d4b730a9eef701",
+    "id": "689ceceba0573add1e7bd9a6a495ff23",
     "metadata": {},
     "name": "MyCollectionPaginationQuery",
     "operationKind": "query",

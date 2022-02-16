@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
 import { navigate } from "lib/navigation/navigate"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Platform } from "react-native"
@@ -20,55 +20,74 @@ describe("OnboardingSocialPick", () => {
   })
 
   describe("login", () => {
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
     it("navigates to log in with email when the user presses on continue with email", () => {
       const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
-      tree.root.findByProps({ testID: "useEmail" }).props.onPress()
+      tree.root.findByProps({ testID: "continueWithEmail" }).props.onPress()
       expect(navigateMock).toHaveBeenCalledWith("OnboardingLoginWithEmail")
     })
 
     it("logs in using facebook when the user presses on continue with facebook", async () => {
-      GlobalStore.actions.auth.authFacebook = jest.fn() as any
-
+      GlobalStore.actions.auth.authFacebook = jest.fn(() =>
+        Promise.resolve({ success: true })
+      ) as any
       const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
-      tree.root.findByProps({ testID: "useFacebook" }).props.onPress()
-      expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalledWith({ signInOrUp: "signIn" })
+      tree.root.findByProps({ testID: "continueWithFacebook" }).props.onPress()
+      expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalled()
+    })
+
+    it("logs in using google when the user presses on continue with google", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
+      GlobalStore.actions.auth.authGoogle = jest.fn(() => Promise.resolve({ success: true })) as any
+      const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
+      tree.root.findByProps({ testID: "continueWithGoogle" }).props.onPress()
+      expect(GlobalStore.actions.auth.authGoogle).toHaveBeenCalled()
     })
 
     it("logs in using apple when the user presses on continue with apple", () => {
-      GlobalStore.actions.auth.authApple = jest.fn() as any
-
+      GlobalStore.actions.auth.authApple = jest.fn(() => Promise.resolve({ success: true })) as any
       const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
-      tree.root.findByProps({ testID: "useApple" }).props.onPress()
+      tree.root.findByProps({ testID: "continueWithApple" }).props.onPress()
       expect(GlobalStore.actions.auth.authApple).toHaveBeenCalled()
     })
   })
 
   describe("sign up", () => {
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
     it("navigates to sign up with email when the user presses on continue with email", () => {
       const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
-      tree.root.findByProps({ testID: "useEmail" }).props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingLoginWithEmail")
+      tree.root.findByProps({ testID: "continueWithEmail" }).props.onPress()
+      expect(navigateMock).toHaveBeenCalledWith("OnboardingCreateAccountWithEmail")
     })
 
     it("signs up using facebook when the user presses on continue with facebook", async () => {
-      GlobalStore.actions.auth.authFacebook = jest.fn() as any
+      GlobalStore.actions.auth.authFacebook = jest.fn(() =>
+        Promise.resolve({ success: true })
+      ) as any
 
       const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
-      tree.root.findByProps({ testID: "useFacebook" }).props.onPress()
-      expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalledWith({
-        agreedToReceiveEmails: true,
-        signInOrUp: "signUp",
-      })
+      tree.root.findByProps({ testID: "continueWithFacebook" }).props.onPress()
+      expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalled()
+    })
+
+    it("signs up using google when the user presses on continue with google", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
+      GlobalStore.actions.auth.authGoogle = jest.fn(() => Promise.resolve({ success: true })) as any
+
+      const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
+      tree.root.findByProps({ testID: "continueWithGoogle" }).props.onPress()
+      expect(GlobalStore.actions.auth.authGoogle).toHaveBeenCalled()
     })
 
     it("signs up in using apple when the user presses on continue with apple", () => {
-      GlobalStore.actions.auth.authApple = jest.fn() as any
-
+      GlobalStore.actions.auth.authApple = jest.fn(() => Promise.resolve({ success: true })) as any
       const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
-      tree.root.findByProps({ testID: "useApple" }).props.onPress()
-      expect(GlobalStore.actions.auth.authApple).toHaveBeenCalledWith({
-        agreedToReceiveEmails: true,
-      })
+      tree.root.findByProps({ testID: "continueWithApple" }).props.onPress()
+      expect(GlobalStore.actions.auth.authApple).toHaveBeenCalled()
     })
   })
 })

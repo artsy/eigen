@@ -187,6 +187,17 @@ export function unsafe_getUserAccessToken() {
   return null
 }
 
+export function unsafe_getUserEmail() {
+  const state = globalStoreInstance().getState() ?? null
+  if (state) {
+    return state.auth.userEmail
+  }
+  if (__DEV__) {
+    throw new Error(`Unable to retrieve user email`)
+  }
+  return null
+}
+
 export function getCurrentEmissionState() {
   const state = globalStoreInstance().getState() ?? null
 

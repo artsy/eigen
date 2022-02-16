@@ -175,6 +175,16 @@ export const features = defineFeatures({
     description: "Enable capturing exceptions in Sentry on DEV",
     showInAdminMenu: true,
   },
+  ARShowLinkedAccounts: {
+    readyForRelease: false,
+    description: "Show linked social accounts",
+    showInAdminMenu: true,
+  },
+  ARAllowLinkSocialAccountsOnSignUp: {
+    readyForRelease: false,
+    description: "Allow linking of social accounts on sign up",
+    showInAdminMenu: true,
+  },
   AREnableImageSearch: {
     readyForRelease: false,
     description: "Enable search with image",
@@ -207,6 +217,11 @@ export const features = defineFeatures({
   AREnableShowOnlySubmittedMyCollectionArtworkFilter: {
     readyForRelease: false,
     description: "Enable Show Only Submitted MyCollection Artwork Filter",
+    showInAdminMenu: true,
+  },
+  AREnableAvalaraPhase2: {
+    readyForRelease: false,
+    description: "Enable Avalara Phase 2",
     showInAdminMenu: true,
   },
 })
