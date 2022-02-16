@@ -102,7 +102,7 @@ If we have a `buttons` folder which exports many button components, we keep it *
 │   ├── YellowButton.tsx
 ├── …
 ```
-However, if we have a Button folder which only exports Button.tsx we write that with a capital letter.
+However, if we have a `Button` folder which exports only one button component, we write that with in **PascalCase**.
 
 ```
 ├── Button
