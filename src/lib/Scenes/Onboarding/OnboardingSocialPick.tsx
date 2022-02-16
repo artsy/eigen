@@ -1,12 +1,15 @@
 import { useNavigation } from "@react-navigation/native"
 import { BackButton } from "lib/navigation/BackButton"
 import { navigate } from "lib/navigation/navigate"
+import { AuthPromiseRejectType } from "lib/store/AuthModel"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { capitalize } from "lodash"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
 import { Alert, Image, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 import { useFeatureFlag } from "../../store/GlobalStore"
+import { AppleToken, GoogleOrFacebookToken } from "./OnboardingSocialLink"
 
 interface OnboardingSocialPickProps {
   mode: "login" | "signup"
@@ -16,6 +19,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   const navigation = useNavigation()
 
   const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
+
+  const allowLinkingOnSignUp = useFeatureFlag("ARAllowLinkSocialAccountsOnSignUp")
 
   /**
    * When we land on OnboardingSocialPick coming from OnboardingCreateAccount or OnboardingLogin
@@ -33,58 +38,101 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     return clearTimeout(timeout)
   }, [])
 
-  const useFacebook = async () => {
-    try {
-      if (mode === "login") {
-        await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
-      } else {
-        await GlobalStore.actions.auth.authFacebook({
-          signInOrUp: "signUp",
-          agreedToReceiveEmails: true,
-        })
+  const handleErrorWithAlternativeProviders = (meta: AuthPromiseRejectType["meta"]) => {
+    const titleizedProvider = capitalize(meta?.provider ?? "")
+    const {
+      email,
+      name,
+      existingProviders: providers,
+      provider: providerToBeLinked,
+      oauthToken,
+      idToken,
+      appleUid,
+    } = meta!
+    const navParams = {
+      email,
+      name,
+      providers,
+      providerToBeLinked,
+    }
+    let tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
+    if (["google", "facebook"].includes(providerToBeLinked)) {
+      if (!oauthToken) {
+        console.warn(`Error: No oauthToken provided for ${titleizedProvider}`)
+        return
       }
-    } catch (error) {
-      if (typeof error === "string") {
-        Alert.alert("Try again", error)
+      tokenForProviderToBeLinked = oauthToken
+      navigation.navigate("OnboardingSocialLink", {
+        ...navParams,
+        tokenForProviderToBeLinked,
+      })
+    } else if (providerToBeLinked === "apple") {
+      if (!idToken || !appleUid) {
+        console.warn(`Error: idToken and appleUid must be provided for ${titleizedProvider}`)
+        return
       }
+      tokenForProviderToBeLinked = { idToken, appleUid }
+      navigation.navigate("OnboardingSocialLink", {
+        ...navParams,
+        tokenForProviderToBeLinked,
+      })
     }
   }
 
-  const useGoogle = async () => {
-    try {
-      if (mode === "login") {
-        await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" })
-      } else {
-        await GlobalStore.actions.auth.authGoogle({
-          signInOrUp: "signUp",
-          agreedToReceiveEmails: true,
+  const handleError = (error: AuthPromiseRejectType) => {
+    const canBeLinked =
+      error.error === "User Already Exists" && error.meta && error.meta.existingProviders
+    if (canBeLinked && allowLinkingOnSignUp) {
+      handleErrorWithAlternativeProviders(error.meta)
+      return
+    }
+    Alert.alert("Try again", error.message)
+  }
+
+  const continueWithFacebook = () => {
+    if (mode === "login") {
+      GlobalStore.actions.auth
+        .authFacebook({ signInOrUp: "signIn" })
+        .catch((error: AuthPromiseRejectType) => {
+          handleError(error)
         })
-      }
-    } catch (error) {
-      if (typeof error === "string") {
-        Alert.alert("Try again", error)
-      }
+    } else {
+      GlobalStore.actions.auth
+        .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+        .catch((error: AuthPromiseRejectType) => {
+          handleError(error)
+        })
     }
   }
 
-  const useApple = async () => {
-    try {
-      await GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
-    } catch (error) {
-      if (typeof error === "string") {
-        Alert.alert("Try again", error)
-      }
+  const continueWithGoogle = () => {
+    if (mode === "login") {
+      GlobalStore.actions.auth
+        .authGoogle({ signInOrUp: "signIn" })
+        .catch((error: AuthPromiseRejectType) => {
+          handleError(error)
+        })
+    } else {
+      GlobalStore.actions.auth
+        .authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+        .catch((error: AuthPromiseRejectType) => {
+          handleError(error)
+        })
     }
+  }
+
+  const continueWithApple = () => {
+    GlobalStore.actions.auth
+      .authApple({ agreedToReceiveEmails: true })
+      .catch((error: AuthPromiseRejectType) => {
+        handleError(error)
+      })
   }
 
   const isiOS = Platform.OS === "ios"
   return (
     <Flex justifyContent="center" flex={1} backgroundColor="white">
-      <BackButton
-        onPress={() => {
-          navigation.goBack()
-        }}
-      />
+      <BackButton onPress={() => navigation.goBack()} />
       <Flex px={1.5}>
         <Join separator={<Spacer height={60} />}>
           <Text variant="xxl">{mode === "login" ? "Log in" : "Sign Up"}</Text>
@@ -104,13 +152,13 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               variant="outline"
               iconPosition="left-start"
               icon={<EnvelopeIcon mr={1} />}
-              testID="useEmail"
+              testID="continueWithEmail"
             >
               Continue with Email
             </Button>
             {Platform.OS === "ios" && (
               <Button
-                onPress={useApple}
+                onPress={continueWithApple}
                 block
                 haptic="impactMedium"
                 mb={1}
@@ -123,14 +171,14 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                     style={{ marginRight: 10 }}
                   />
                 }
-                testID="useApple"
+                testID="continueWithApple"
               >
                 Continue with Apple
               </Button>
             )}
             {!!enableGoogleAuth && (
               <Button
-                onPress={useGoogle}
+                onPress={continueWithGoogle}
                 block
                 haptic="impactMedium"
                 mb={1}
@@ -143,14 +191,14 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                     style={{ marginRight: 10 }}
                   />
                 }
-                testID="useGoogle"
+                testID="continueWithGoogle"
               >
                 Continue with Google
               </Button>
             )}
 
             <Button
-              onPress={useFacebook}
+              onPress={continueWithFacebook}
               block
               haptic="impactMedium"
               mb={1}
@@ -163,7 +211,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                   style={{ marginRight: 10 }}
                 />
               }
-              testID="useFacebook"
+              testID="continueWithFacebook"
             >
               Continue with Facebook
             </Button>

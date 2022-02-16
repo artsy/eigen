@@ -5,11 +5,14 @@ import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/Filter
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { navigate, popToRoot } from "lib/navigation/navigate"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Button, Flex } from "palette"
 import React from "react"
-import { RelayPaginationProp } from "react-relay"
+import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionArtworkEdge } from "./MyCollection"
 import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
 
@@ -24,6 +27,9 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   keywordFilter,
   relay,
 }) => {
+  const { height: screenHeight } = useScreenDimensions()
+  const viewOption = GlobalStore.useAppState((state) => state.userPreferences.artworkViewOption)
+
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
 
@@ -50,15 +56,36 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
 
   return (
     <Flex pt={1}>
-      <InfiniteScrollMyCollectionArtworksGridContainer
-        myCollectionConnection={me.myCollectionConnection!}
-        hasMore={relay.hasMore}
-        loadMore={relay.loadMore}
-        // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
-          localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, keywordFilter)
-        }
-      />
+      {viewOption === "grid" ? (
+        // Setting a min height to avoid a screen jump when switching to the grid view.
+        <Flex minHeight={screenHeight}>
+          <InfiniteScrollMyCollectionArtworksGridContainer
+            myCollectionConnection={me.myCollectionConnection!}
+            hasMore={relay.hasMore}
+            loadMore={relay.loadMore}
+            // tslint:disable-next-line: no-shadowed-variable
+            localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
+              localSortAndFilterArtworks(
+                artworks,
+                appliedFiltersState,
+                filterOptions,
+                keywordFilter
+              )
+            }
+          />
+        </Flex>
+      ) : (
+        <MyCollectionArtworkList
+          myCollectionConnection={me.myCollectionConnection}
+          hasMore={relay.hasMore}
+          loadMore={relay.loadMore}
+          isLoading={relay.isLoading}
+          // tslint:disable-next-line: no-shadowed-variable
+          localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
+            localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, keywordFilter)
+          }
+        />
+      )}
     </Flex>
   )
 }
@@ -90,3 +117,31 @@ const MyCollectionZeroState: React.FC = () => {
     />
   )
 }
+
+/**
+ * * IMPORTANT *
+ *
+ * The following shared artwork fields are needed for sorting and filtering artworks locally
+ *
+ * When adding new filters this fragment needs to be updated.
+ */
+export const MyCollectionFilterPropsFragment = graphql`
+  fragment MyCollectionArtworks_filterProps on Artwork {
+    title
+    slug
+    id
+    artistNames
+    medium
+    artist {
+      internalID
+      name
+    }
+    pricePaid {
+      minor
+    }
+    sizeBucket
+    width
+    height
+    date
+  }
+`

@@ -7,14 +7,7 @@ export interface ToastModel {
     toasts: Array<Omit<ToastDetails, "positionIndex">>
   }
 
-  add: Action<
-    this,
-    {
-      message: string
-      placement: ToastPlacement
-      options?: ToastOptions
-    }
-  >
+  add: Action<this, { message: string; placement: ToastPlacement; options?: ToastOptions }>
   remove: Action<this, this["sessionState"]["nextId"]>
   removeOldest: Action<this>
 }

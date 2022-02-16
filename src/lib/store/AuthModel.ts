@@ -33,12 +33,13 @@ import {
 } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
+import { AuthError } from "./AuthError"
 import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
-const afterSocialAuthLogin = (
+const showError = (
   res: any,
   reject: (reason?: any) => void,
   provider: "facebook" | "apple" | "google"
@@ -47,17 +48,65 @@ const afterSocialAuthLogin = (
   if (res.error_description) {
     if (res.error_description.includes("no account linked to oauth token")) {
       reject(
-        `There is no email associated with your ${providerName} account. Please log in using your email and password instead.`
+        new AuthError(
+          `There is no email associated with your ${providerName} account. Please log in using your email and password instead.`
+        )
       )
     } else {
-      reject("Login attempt failed")
+      reject(new AuthError("Login attempt failed"))
     }
   }
 }
 
 type SignInStatus = "failure" | "success" | "otp_missing" | "on_demand_otp_missing" | "invalid_otp"
 
+interface EmailOAuthParams {
+  oauthProvider: "email"
+  email: string
+  password: string
+  otp?: string
+}
+interface FacebookOAuthParams {
+  oauthProvider: "facebook"
+  accessToken: string
+}
+interface GoogleOAuthParams {
+  oauthProvider: "google"
+  accessToken: string
+}
+interface AppleOAuthParams {
+  oauthProvider: "apple"
+  idToken: string
+  appleUid: string
+}
+
+interface SignUpParams {
+  email: string
+  name: string
+  agreedToReceiveEmails: boolean
+}
+
+type OAuthParams = EmailOAuthParams | FacebookOAuthParams | GoogleOAuthParams | AppleOAuthParams
+
 type OnboardingState = "none" | "incomplete" | "complete"
+
+interface AuthPromiseResolveType {
+  success: boolean
+}
+export interface AuthPromiseRejectType {
+  error?: string
+  message: string
+  meta?: {
+    email: string
+    provider: string
+    name?: string
+    existingProviders?: string[]
+    oauthToken?: string
+    idToken?: string
+    appleUid?: string
+  }
+}
+
 export interface AuthModel {
   // State
   userID: string | null
@@ -77,62 +126,41 @@ export interface AuthModel {
   userExists: Thunk<this, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<
     this,
-    { email: string; onboardingState?: OnboardingState } & (
-      | {
-          oauthProvider: "email"
-          password: string
-          otp?: string
-        }
-      | {
-          oauthProvider: "facebook" | "google"
-          accessToken: string
-        }
-      | {
-          oauthProvider: "apple"
-          idToken: string
-          appleUID: string
-        }
-    ),
+    { email: string; onboardingState?: OnboardingState; onSignIn?: () => void } & OAuthParams,
     {},
     GlobalStoreModel,
     Promise<SignInStatus>
   >
   signUp: Thunk<
     this,
-    { email: string; name: string; agreedToReceiveEmails: boolean } & (
-      | {
-          oauthProvider: "email"
-          password: string
-        }
-      | {
-          oauthProvider: "facebook" | "google"
-          accessToken: string
-        }
-      | {
-          oauthProvider: "apple"
-          idToken: string
-          appleUID: string
-        }
-    ),
+    SignUpParams & OAuthParams,
     {},
     GlobalStoreModel,
-    Promise<{ success: boolean; message?: string }>
+    Promise<AuthPromiseResolveType & AuthPromiseRejectType>
   >
   authFacebook: Thunk<
     this,
-    { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
+    | { signInOrUp: "signIn"; onSignIn?: () => void }
+    | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
     {},
     GlobalStoreModel,
-    Promise<true>
+    Promise<AuthPromiseResolveType>
   >
   authGoogle: Thunk<
     this,
-    { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
+    | { signInOrUp: "signIn"; onSignIn?: () => void }
+    | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
     {},
     GlobalStoreModel,
-    Promise<true>
+    Promise<AuthPromiseResolveType>
   >
-  authApple: Thunk<this, { agreedToReceiveEmails?: boolean }, {}, GlobalStoreModel, Promise<true>>
+  authApple: Thunk<
+    this,
+    { agreedToReceiveEmails?: boolean; onSignIn?: () => void },
+    {},
+    GlobalStoreModel,
+    Promise<AuthPromiseResolveType>
+  >
   forgotPassword: Thunk<this, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -247,7 +275,7 @@ export const getAuthModel = (): AuthModel => ({
     return false
   }),
   signIn: thunk(async (actions, args, store) => {
-    const { oauthProvider, email, onboardingState } = args
+    const { oauthProvider, email, onboardingState, onSignIn } = args
 
     const grantTypeMap = {
       facebook: "oauth_token",
@@ -269,7 +297,7 @@ export const getAuthModel = (): AuthModel => ({
         password: oauthProvider === "email" ? args.password : undefined,
         oauth_token:
           oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
-        apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
+        apple_uid: oauthProvider === "apple" ? args.appleUid : undefined,
         id_token: oauthProvider === "apple" ? args.idToken : undefined,
         grant_type: grantTypeMap[oauthProvider],
         client_id: clientKey,
@@ -325,6 +353,8 @@ export const getAuthModel = (): AuthModel => ({
         actions.requestPushNotifPermission()
       }
 
+      onSignIn?.()
+
       return "success"
     }
 
@@ -359,7 +389,7 @@ export const getAuthModel = (): AuthModel => ({
         password: oauthProvider === "email" ? args.password : undefined,
         oauth_token:
           oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
-        apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
+        apple_uid: oauthProvider === "apple" ? args.appleUid : undefined,
         id_token: oauthProvider === "apple" ? args.idToken : undefined,
 
         agreed_to_receive_emails: agreedToReceiveEmails,
@@ -386,7 +416,7 @@ export const getAuthModel = (): AuthModel => ({
             oauthProvider,
             email,
             idToken: args.idToken,
-            appleUID: args.appleUID,
+            appleUid: args.appleUid,
             onboardingState: "incomplete",
           })
           break
@@ -402,35 +432,59 @@ export const getAuthModel = (): AuthModel => ({
           assertNever(oauthProvider)
       }
 
-      return { success: true }
+      return { success: true, message: "" }
     }
 
     const resultJson = await result.json()
     let message = ""
+    const error = resultJson?.error
+    let existingProviders: string[] = []
     const providerName = capitalize(oauthProvider)
     if (resultJson?.error === "User Already Exists") {
-      message = `Your ${providerName} email account is linked to an Artsy user account please Log in using your email and password instead.`
+      message = `Your ${
+        providerName === "Email" ? "" : providerName
+      } email account is linked to an Artsy user account please Log in using your email and password instead.`
+      const authentications = (resultJson?.providers ?? []) as string[]
+      if (resultJson?.has_password && oauthProvider !== "email") {
+        existingProviders = ["email"]
+      }
+      existingProviders = [...existingProviders, ...authentications.map((p) => p.toLowerCase())]
     } else if (resultJson?.error === "Another Account Already Linked") {
       message =
         `Your ${providerName} account is already linked to another Artsy account. ` +
-        `Try logging out and back in with ${providerName}. Then consider ` +
-        `deleting that user account and re-linking ${providerName}. `
+        `Try logging in with ${providerName}.`
     } else if (resultJson.message && resultJson.message.match("Unauthorized source IP address")) {
       message = `You could not create an account because your IP address was blocked by ${providerName}`
     } else {
       message = "Failed to sign up"
     }
 
-    return { success: false, message }
+    const { accessToken } = args as SignUpParams & (FacebookOAuthParams | GoogleOAuthParams)
+    const { appleUid, idToken } = args as SignUpParams & AppleOAuthParams
+    return {
+      success: false,
+      error,
+      message,
+      meta: {
+        existingProviders: existingProviders.length ? existingProviders : undefined,
+        email,
+        oauthToken: accessToken,
+        appleUid,
+        idToken,
+        provider: oauthProvider,
+      },
+    }
   }),
   authFacebook: thunk(async (actions, options) => {
-    return await new Promise<true>(async (resolve, reject) => {
+    return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
         "public_profile",
         "email",
       ])
       if (declinedPermissions?.includes("email")) {
-        reject("Please allow the use of email to continue.")
+        reject(
+          new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
+        )
       }
       const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
       if (!accessToken) {
@@ -442,12 +496,14 @@ export const getAuthModel = (): AuthModel => ({
         facebookInfo: { email?: string; name: string }
       ) => {
         if (error) {
-          reject(`Error fetching facebook data: ${error.message}`)
+          reject(new AuthError(error.message, "Error fetching facebook data"))
           return
         }
         if (!facebookInfo.email) {
           reject(
-            "There is no email associated with your Facebook account. Please log in using your email and password instead."
+            new AuthError(
+              "There is no email associated with your Facebook account. Please log in using your email and password instead."
+            )
           )
           return
         }
@@ -461,7 +517,15 @@ export const getAuthModel = (): AuthModel => ({
             agreedToReceiveEmails: options.agreedToReceiveEmails,
           })
 
-          resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
+          resultGravitySignUp.success
+            ? resolve({ success: true })
+            : reject(
+                new AuthError(
+                  resultGravitySignUp.message,
+                  resultGravitySignUp.error,
+                  resultGravitySignUp.meta
+                )
+              )
         }
 
         if (options.signInOrUp === "signIn") {
@@ -493,12 +557,15 @@ export const getAuthModel = (): AuthModel => ({
               oauthProvider: "facebook",
               email,
               accessToken: accessToken.accessToken,
+              onSignIn: options.onSignIn,
             })
 
-            resultGravitySignIn ? resolve(true) : reject("Could not log in")
+            resultGravitySignIn
+              ? resolve({ success: true })
+              : reject(new AuthError("Could not log in"))
           } else {
             const res = await resultGravityAccessToken.json()
-            afterSocialAuthLogin(res, reject, "facebook")
+            showError(res, reject, "facebook")
           }
         }
       }
@@ -520,9 +587,9 @@ export const getAuthModel = (): AuthModel => ({
     })
   }),
   authGoogle: thunk(async (actions, options) => {
-    return await new Promise<true>(async (resolve, reject) => {
+    return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       if (!(await GoogleSignin.hasPlayServices())) {
-        reject("Play services are not available.")
+        reject(new AuthError("Play services are not available."))
       }
       const userInfo = await GoogleSignin.signIn()
       const accessToken = (await GoogleSignin.getTokens()).accessToken
@@ -536,9 +603,16 @@ export const getAuthModel = (): AuthModel => ({
               oauthProvider: "google",
               agreedToReceiveEmails: options.agreedToReceiveEmails,
             })
-          : { success: false }
-
-        resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
+          : { success: false, message: "missing name in google's userInfo" }
+        resultGravitySignUp.success
+          ? resolve({ success: true })
+          : reject(
+              new AuthError(
+                resultGravitySignUp.message,
+                resultGravitySignUp.error,
+                resultGravitySignUp.meta
+              )
+            )
       }
 
       if (options.signInOrUp === "signIn") {
@@ -570,18 +644,21 @@ export const getAuthModel = (): AuthModel => ({
             oauthProvider: "google",
             email,
             accessToken,
+            onSignIn: options.onSignIn,
           })
 
-          resultGravitySignIn ? resolve(true) : reject("Could not log in")
+          resultGravitySignIn
+            ? resolve({ success: true })
+            : reject(new AuthError("Could not log in"))
         } else {
           const res = await resultGravityAccessToken.json()
-          afterSocialAuthLogin(res, reject, "google")
+          showError(res, reject, "google")
         }
       }
     })
   }),
-  authApple: thunk(async (actions, { agreedToReceiveEmails }) => {
-    return await new Promise<true>(async (resolve, reject) => {
+  authApple: thunk(async (actions, { agreedToReceiveEmails, onSignIn }) => {
+    return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
       // we cannot have separated logic for sign in and sign up with apple, as with google or facebook,
       // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one
       let signInOrUp: "signIn" | "signUp" = "signUp"
@@ -593,9 +670,10 @@ export const getAuthModel = (): AuthModel => ({
 
       const idToken = userInfo.identityToken
       if (!idToken) {
-        return reject("Failed to authenticate using apple sign in")
+        reject(new AuthError("Failed to authenticate using apple sign in"))
+        return
       }
-      const appleUID = userInfo.user
+      const appleUid = userInfo.user
 
       if (signInOrUp === "signUp") {
         const firstName = userInfo.fullName?.givenName ? userInfo.fullName.givenName : ""
@@ -605,14 +683,35 @@ export const getAuthModel = (): AuthModel => ({
           ? await actions.signUp({
               email: userInfo.email,
               name: `${firstName} ${lastName}`.trim(),
-              appleUID,
+              appleUid,
               idToken,
               oauthProvider: "apple",
               agreedToReceiveEmails: !!agreedToReceiveEmails,
             })
-          : { success: false }
-
-        resultGravitySignUp.success ? resolve(true) : (signInOrUp = "signIn")
+          : {
+              success: false,
+              error: "Apple UserInfo Email Is Null",
+              message: "missing email in apple's userInfo",
+            }
+        if (resultGravitySignUp.success) {
+          resolve(resultGravitySignUp)
+        }
+        const shouldSignIn =
+          resultGravitySignUp.error === "Another Account Already Linked" ||
+          // because userinfo.email is returned only the first time
+          resultGravitySignUp.error === "Apple UserInfo Email Is Null"
+        if (shouldSignIn) {
+          signInOrUp = "signIn"
+        } else {
+          reject(
+            new AuthError(
+              resultGravitySignUp.message,
+              resultGravitySignUp.error,
+              resultGravitySignUp.meta
+            )
+          )
+          return
+        }
       }
 
       if (signInOrUp === "signIn") {
@@ -625,7 +724,7 @@ export const getAuthModel = (): AuthModel => ({
           },
           body: {
             oauth_provider: "apple",
-            apple_uid: appleUID,
+            apple_uid: appleUid,
             id_token: idToken,
             client_id: clientKey,
             client_secret: clientSecret,
@@ -643,14 +742,17 @@ export const getAuthModel = (): AuthModel => ({
           const resultGravitySignIn = await actions.signIn({
             oauthProvider: "apple",
             email,
-            appleUID,
+            appleUid,
             idToken,
+            onSignIn,
           })
 
-          resultGravitySignIn ? resolve(true) : reject("Could not log in")
+          resultGravitySignIn
+            ? resolve({ success: true })
+            : reject(new AuthError("Could not log in"))
         } else {
           const res = await resultGravityAccessToken.json()
-          afterSocialAuthLogin(res, reject, "apple")
+          showError(res, reject, "apple")
         }
       }
     })

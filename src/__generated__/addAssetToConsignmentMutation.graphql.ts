@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 623bbe0f804e946ff688616d607f4bd2 */
+/* @relayHash 5f53465029dab702c75f1af2153f8b99 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type AddAssetToConsignmentSubmissionInput = {
@@ -19,6 +19,7 @@ export type addAssetToConsignmentMutationVariables = {
 export type addAssetToConsignmentMutationResponse = {
     readonly addAssetToConsignmentSubmission: {
         readonly asset: {
+            readonly id: string;
             readonly submissionID: string | null;
         } | null;
     } | null;
@@ -36,8 +37,8 @@ mutation addAssetToConsignmentMutation(
 ) {
   addAssetToConsignmentSubmission(input: $input) {
     asset {
-      submissionID
       id
+      submissionID
     }
   }
 }
@@ -53,49 +54,55 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "Variable",
-    "name": "input",
-    "variableName": "input"
-  }
-],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "submissionID",
-  "storageKey": null
-};
-return {
-  "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "addAssetToConsignmentMutation",
+    "alias": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "input",
+        "variableName": "input"
+      }
+    ],
+    "concreteType": "AddAssetToConsignmentSubmissionPayload",
+    "kind": "LinkedField",
+    "name": "addAssetToConsignmentSubmission",
+    "plural": false,
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "AddAssetToConsignmentSubmissionPayload",
+        "args": null,
+        "concreteType": "ConsignmentSubmissionCategoryAsset",
         "kind": "LinkedField",
-        "name": "addAssetToConsignmentSubmission",
+        "name": "asset",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "ConsignmentSubmissionCategoryAsset",
-            "kind": "LinkedField",
-            "name": "asset",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/)
-            ],
+            "kind": "ScalarField",
+            "name": "id",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "submissionID",
             "storageKey": null
           }
         ],
         "storageKey": null
       }
     ],
+    "storageKey": null
+  }
+];
+return {
+  "fragment": {
+    "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "addAssetToConsignmentMutation",
+    "selections": (v1/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
@@ -104,41 +111,10 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "addAssetToConsignmentMutation",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "AddAssetToConsignmentSubmissionPayload",
-        "kind": "LinkedField",
-        "name": "addAssetToConsignmentSubmission",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "ConsignmentSubmissionCategoryAsset",
-            "kind": "LinkedField",
-            "name": "asset",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "id",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ]
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "id": "623bbe0f804e946ff688616d607f4bd2",
+    "id": "5f53465029dab702c75f1af2153f8b99",
     "metadata": {},
     "name": "addAssetToConsignmentMutation",
     "operationKind": "mutation",
@@ -146,5 +122,5 @@ return {
   }
 };
 })();
-(node as any).hash = '978fb7b6934654ffbae949e10f3d64d1';
+(node as any).hash = '8c0c5988058b24eba7b4de5a8517c618';
 export default node;

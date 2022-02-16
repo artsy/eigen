@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d95ca50500b3ad8e427d435b117e92ae */
+/* @relayHash e9feef1f293d38b290d7c175c09edc0a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -55,6 +55,9 @@ fragment NewMyCollectionArtworkHeader_artwork on Artwork {
   internalID
   slug
   title
+  consignmentSubmission {
+    displayText
+  }
 }
 */
 
@@ -277,6 +280,24 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": "ArtworkConsignmentSubmission",
+            "kind": "LinkedField",
+            "name": "consignmentSubmission",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "displayText",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "kind": "ScalarField",
             "name": "id",
             "storageKey": null
@@ -287,7 +308,7 @@ return {
     ]
   },
   "params": {
-    "id": "d95ca50500b3ad8e427d435b117e92ae",
+    "id": "e9feef1f293d38b290d7c175c09edc0a",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -297,6 +318,13 @@ return {
           "type": "Artwork"
         },
         "artwork.artistNames": (v1/*: any*/),
+        "artwork.consignmentSubmission": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ArtworkConsignmentSubmission"
+        },
+        "artwork.consignmentSubmission.displayText": (v1/*: any*/),
         "artwork.date": (v1/*: any*/),
         "artwork.id": (v2/*: any*/),
         "artwork.images": {

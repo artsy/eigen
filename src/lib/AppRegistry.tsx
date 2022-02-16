@@ -69,6 +69,7 @@ import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { MyBidsQueryRenderer } from "./Scenes/MyBids"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
+import { ArtworkSubmissionStatusFAQ } from "./Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
@@ -311,6 +312,7 @@ export const modules = defineModules({
   Artwork: reactModule(Artwork, {}, ArtworkScreenQuery),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
+  ArtworkSubmissionStatusFAQ: reactModule(ArtworkSubmissionStatusFAQ),
   Auction: nativeModule(),
   Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }, SaleScreenQuery),
   Auctions: reactModule(SalesQueryRenderer, {}, SalesScreenQuery),

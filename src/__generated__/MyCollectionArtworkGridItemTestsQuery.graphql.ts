@@ -1,11 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 90c6f7529d35f4f0478e1e4bca4fe7ba */
+/* @relayHash 3595d3af7ca51955b991ebf7eac8611b */
 
 import { ConcreteRequest } from "relay-runtime";
-export type MyCollectionArtworkListItemTestsQueryVariables = {};
-export type MyCollectionArtworkListItemTestsQueryResponse = {
+export type MyCollectionArtworkGridItemTestsQueryVariables = {};
+export type MyCollectionArtworkGridItemTestsQueryResponse = {
     readonly artwork: {
         readonly artist: {
             readonly internalID: string;
@@ -48,15 +48,15 @@ export type MyCollectionArtworkListItemTestsQueryResponse = {
         } | null;
     } | null;
 };
-export type MyCollectionArtworkListItemTestsQuery = {
-    readonly response: MyCollectionArtworkListItemTestsQueryResponse;
-    readonly variables: MyCollectionArtworkListItemTestsQueryVariables;
+export type MyCollectionArtworkGridItemTestsQuery = {
+    readonly response: MyCollectionArtworkGridItemTestsQueryResponse;
+    readonly variables: MyCollectionArtworkGridItemTestsQueryVariables;
 };
 
 
 
 /*
-query MyCollectionArtworkListItemTestsQuery {
+query MyCollectionArtworkGridItemTestsQuery {
   artwork(id: "some-slug") {
     artist {
       internalID
@@ -351,7 +351,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyCollectionArtworkListItemTestsQuery",
+    "name": "MyCollectionArtworkGridItemTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -417,7 +417,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "MyCollectionArtworkListItemTestsQuery",
+    "name": "MyCollectionArtworkGridItemTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -480,7 +480,7 @@ return {
     ]
   },
   "params": {
-    "id": "90c6f7529d35f4f0478e1e4bca4fe7ba",
+    "id": "3595d3af7ca51955b991ebf7eac8611b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -567,11 +567,11 @@ return {
         "artwork.width": (v23/*: any*/)
       }
     },
-    "name": "MyCollectionArtworkListItemTestsQuery",
+    "name": "MyCollectionArtworkGridItemTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'b72514ea1580ece1c88d0a4606d9f982';
+(node as any).hash = 'e2ce70b0564c10869f1842152d58fea7';
 export default node;

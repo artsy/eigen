@@ -110,7 +110,7 @@ export const Form: React.FC<FormProps> = (props) => {
     <Box>
       {!isEditMode && (
         <Text variant="lg" mb={4}>
-          Create an Alert
+          Create Alert
         </Text>
       )}
 
@@ -187,7 +187,7 @@ export const Form: React.FC<FormProps> = (props) => {
       {!!shouldShowEmailWarning && (
         <Box backgroundColor="orange10" my={1} p={2}>
           <Text variant="xs" color="orange150">
-            Your email frequency is set to None
+            Change your email frequency
           </Text>
           <Text variant="xs" mt={0.5}>
             To receive Email Alerts, please update your email preferences.
@@ -232,7 +232,7 @@ export const Form: React.FC<FormProps> = (props) => {
         )}
         {!isEditMode && (
           <Text variant="sm" color="black60" textAlign="center" my={2}>
-            You will be able to access all your Saved Alerts in your Profile.
+            Access all your saved alerts in your profile.
           </Text>
         )}
       </Box>

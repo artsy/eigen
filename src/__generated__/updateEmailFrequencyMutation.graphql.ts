@@ -4,18 +4,22 @@
 /* @relayHash c11e093b9357a7bb3ebe0c62f4802bcb */
 
 import { ConcreteRequest } from "relay-runtime";
+export type CurrencyPreference = "EUR" | "GBP" | "USD" | "%future added value";
+export type LengthUnitPreference = "CM" | "IN" | "%future added value";
 export type UpdateMyProfileInput = {
     artworksPerYear?: string | null | undefined;
     bio?: string | null | undefined;
     clientMutationId?: string | null | undefined;
     collectorLevel?: number | null | undefined;
     completedOnboarding?: boolean | null | undefined;
+    currencyPreference?: CurrencyPreference | null | undefined;
     email?: string | null | undefined;
     emailFrequency?: string | null | undefined;
     gender?: string | null | undefined;
     iconUrl?: string | null | undefined;
     industry?: string | null | undefined;
     isCollector?: boolean | null | undefined;
+    lengthUnitPreference?: LengthUnitPreference | null | undefined;
     location?: EditableLocation | null | undefined;
     name?: string | null | undefined;
     notes?: string | null | undefined;
