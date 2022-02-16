@@ -9,6 +9,7 @@ This is a living document, expected to be updated regularly, a broad overview of
 
 ## Contents
 
+- [Examples and Hacks](#examples-and-hacks)
 - [History](#history)
 - [TypeScript](#TypeScript)
 - [File Structure Organization](#file-structure-organization)
@@ -20,6 +21,10 @@ This is a living document, expected to be updated regularly, a broad overview of
 - [Analytics](#analytics)
   - [Follow the tracking docs and examples](#follow-the-tracking-docs-and-examples)
 - [Miscellaneous](#miscellaneous)
+
+### Examples & Hacks
+
+Check out our list of [examples](#../../../EXAMPLES.md) and [hacks](#../../../HACKS.md)
 
 ### History
 
