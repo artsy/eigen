@@ -28,24 +28,10 @@ Links should point to specific commits, and not a branch (in case the branch or 
 
 ## Current Preferred Practices
 
-The app is written in Objective-C and Swift, with React Native added in 2016. We only ship an iOS app, and do not yet use React Native for an Android app.
+## History
 
-Objective-C and Swift (sometimes called "Native" code) are responsible for the following parts of the app:
-
-- Sign up/in flow ("onboarding").
-- Live Auctions Integration (LAI) view controller and networking.
-- The Auction view controller.
-- The SwitchBoard (see "SwitchBoard" section below) to navigate between view controllers.
-- The top-level tab bar, and each tab's navigation controller.
-- Deep-link and notification handling (via SwitchBoard).
-- Analytics for Native UI.
-- Initializing the React Native runtime.
-
-Everything else is written in React Native.
-
-### Use React Native for new feature development
-
-New features should be built in React Native. The React Native runtime currently requires an existing user ID and access token to be loaded, and sign up/in is still handled in Native code.
+The app was initially written in Objective-C and Swift and React Native was added in 2016. Some parts of the app are also written with Kotlin.
+New features should be built in React Native.
 
 - [Why Artsy uses React Native](http://artsy.github.io/blog/2016/08/15/React-Native-at-Artsy/)
 - [All React Native posts on Artsy's Engineering Blog](http://artsy.github.io/blog/categories/reactnative/)
@@ -56,9 +42,11 @@ New features should be built in React Native. The React Native runtime currently
 
 We used to have many different `renderX` functions throughout our components, but today we prefer to have a single `render()` function in a component. [See this PR](https://github.com/artsy/eigen/pull/3220) for our rationale and a comparison of approaches.
 
-### Leverage TypeScript to prevent runtime bugs
+### TypeScript
 
-We use TypeScript to maximize runtime code safety. In April 2020, [we adopted TypeScript's `strict` mode](https://github.com/artsy/eigen/pull/3210). This disables "implicit any" and require strict null checks. The change left a lot of comments like this throughout the codebase:
+We use TypeScript to maximize runtime code safety & prevent runtime bugs. In April 2020, we adopted [TypeScript's `strict` mode](https://github.com/artsy/eigen/pull/3210).
+
+This disables "implicit any" and require strict null checks. The change left a lot of comments like this throughout the codebase:
 
 ```ts
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -70,9 +58,10 @@ Our goal is to reduce the number of `STRICTNESS_MIGRATION` migrations checks to 
 touch .i-am-helping-out-with-the-strictness-migration
 ```
 
-### Keep File Structure Organized (in progress)
+### File Structure Organization
 
-Everything in `src/` is React Native. Within this folder things can be a bit of a mess and we are working on improving that.
+The React Nativa parts of the app live in `src/` and most of our components on `lib/`.
+Within this folder things can be a bit of a mess and we are working on improving that.
 
 Files that export a component end in `.tsx`, files that don't export a component end in `.ts` by default.
 
@@ -120,17 +109,17 @@ However, if we have a `Button` folder which exports only one button component, w
 
 `Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
 
-### Use Relay for Network Requests
+### Relay
 
-Data should be loaded from [Metaphysics](https://github.com/artsy/metaphysics), Artsy's GraphQL server. Requests to Metaphysics should be made through [Relay](https://relay.dev).
+[Metaphysics](https://github.com/artsy/metaphysics) is Artsy's GraphQL server. Requests to Metaphysics are made through [Relay](https://relay.dev).
 
 - [Why Artsy uses Relay](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#Relay)
-- [Artsy JavaScriptures seminar on Relay](https://github.com/artsy/javascriptures/tree/master/4_intro-to-relay)
+- [Artsy's Relay Workshop](https://github.com/artsy/relay-workshop)
 - Collections
   - [A top-level Relay component](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/app/Scenes/Collection/Collection.tsx)
   - [A fragment container](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/app/Scenes/Collection/Components/FeaturedArtists.tsx)
 
-### Prefer Relay containers (Higher Order Components) over Hooks
+### Prefer Relay containers (Higher Order Components) over Hooks // !! is this still valid?
 
 We have a preference for Relay containers due to `relay-hooks` hooks not being compatible with Relay containers which represent the majority of our components using Relay.
 
@@ -138,12 +127,12 @@ We have a preference for Relay containers due to `relay-hooks` hooks not being c
 
 ### styled-system / styled-components
 
+// !! is this still valid?
+
 - Our use of [styled-components](https://www.styled-components.com) was supplemented by [styled-system](https://github.com/jxnblk/styled-system) in [#1016](https://github.com/artsy/emission/pull/1016).
 - [Example pull request migrating a component from styled-components to styled-system](https://github.com/artsy/emission/pull/1031)
 
-### Write unit tests for new components
-
-Unit testing on Emission is a bit all over the place. Some top-level notes:
+### Unit tests
 
 - We prefer `react-test-render` over `enzyme`, and would ultimately like to remove `enzyme`.
 - We prefer `relay-test-utils` over our existing [`MockRelayRenderer`](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/app/tests/MockRelayRenderer.tsx) and [`renderRelayTree`](https://github.com/artsy/eigen/blob/164a2aaace3f018cdc472fdf19950163ff2b198d/src/app/tests/renderRelayTree.tsx).
