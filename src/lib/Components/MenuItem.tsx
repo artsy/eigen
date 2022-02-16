@@ -1,4 +1,4 @@
-import { ChevronIcon, Flex, Sans, SansProps, Touchable, useColor } from "palette"
+import { ChevronIcon, Flex, Spacer, Text, TextProps, Touchable, useColor } from "palette"
 import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 
@@ -10,7 +10,7 @@ export const MenuItem: React.FC<{
   isBeta?: boolean
   onPress?: () => void
   chevron?: React.ReactNode
-  ellipsizeMode?: SansProps["ellipsizeMode"]
+  ellipsizeMode?: TextProps["ellipsizeMode"]
   style?: StyleProp<ViewStyle>
   rightView?: React.ReactNode
 }> = ({
@@ -27,48 +27,46 @@ export const MenuItem: React.FC<{
 }) => {
   const color = useColor()
   return (
-    <Touchable onPress={onPress} underlayColor={color("black5")} disabled={disabled}>
-      <Flex
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        py={7.5}
-        px="2"
-        pr="15px"
-        style={style}
-      >
-        <Flex flexDirection="row" mr="2">
-          <Sans size="4">{title}</Sans>
+    <Touchable onPress={onPress} underlayColor="black5" disabled={disabled}>
+      <Flex flexDirection="row" alignItems="center" py={7.5} px="2" style={style}>
+        <Flex>
+          <Text variant="md">{title}</Text>
           {!!isBeta && (
             <Flex px={0.5} mx={1} backgroundColor={color("black10")}>
-              <Sans size="3" color={color("black60")}>
+              <Text variant="sm" color="black60">
                 Beta
-              </Sans>
+              </Text>
             </Flex>
           )}
         </Flex>
-        {!!value && (
-          <Flex flex={1}>
-            <Sans
-              size="4"
-              color="black60"
-              numberOfLines={1}
-              ellipsizeMode={ellipsizeMode}
-              textAlign="right"
-            >
-              {value}
-            </Sans>
-          </Flex>
-        )}
-        {!!(onPress && chevron) && <Flex ml="1">{chevron}</Flex>}
 
-        {!!text && (
-          <Sans size="4" color={color("black60")}>
-            {text}
-          </Sans>
-        )}
+        <Spacer ml={20} />
 
-        {rightView}
+        <Flex flexDirection="row" justifyContent="flex-end" flex={1} height="100%">
+          {!!value && (
+            <Flex flex={1}>
+              <Text
+                variant="md"
+                color="black60"
+                numberOfLines={1}
+                ellipsizeMode={ellipsizeMode}
+                textAlign="right"
+              >
+                {value}
+              </Text>
+            </Flex>
+          )}
+
+          {!!text && (
+            <Text variant="md" color="black60">
+              {text}
+            </Text>
+          )}
+
+          {rightView}
+
+          {!!(onPress && chevron) && <Flex ml="1">{chevron}</Flex>}
+        </Flex>
       </Flex>
     </Touchable>
   )

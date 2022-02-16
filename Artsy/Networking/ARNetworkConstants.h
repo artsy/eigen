@@ -1,8 +1,6 @@
 extern NSString *const ARBaseWebURL;
 extern NSString *const ARBaseDeprecatedMobileWebURL;
 extern NSString *const ARBaseApiURL;
-extern NSString *const ARBaseMetaphysicsApiURL;
-extern NSString *const ARCausalitySocketURL;
 extern NSString *const ARStagingBaseDeprecatedMobileWebURL;
 
 extern NSString *const ARTwitterCallbackPath;
@@ -10,9 +8,7 @@ extern NSString *const ARTwitterCallbackPath;
 extern NSString *const ARAuthHeader;
 extern NSString *const ARXappHeader;
 
-extern NSString *const AROAuthURL;
 extern NSString *const ARXappURL;
-extern NSString *const ARCreateUserURL;
 extern NSString *const ARForgotPasswordURL;
 
 extern NSString *const ARMyInfoURL;
@@ -41,16 +37,13 @@ extern NSString *const ARFollowGeneURL;
 extern NSString *const ARFollowGenesURL;
 extern NSString *const ARUnfollowGeneURLFormat;
 
-extern NSString *const ARProfileFeedURLFormat;
 extern NSString *const ARProfileInformationURLFormat;
 
-extern NSString *const ARNewSearchURL;
 extern NSString *const ARNewArtistSearchURL;
 extern NSString *const ARNewGeneSearchURL;
 
 extern NSString *const ARNewDeviceURL;
 extern NSString *const ARDeleteDeviceURL;
-extern NSString *const ARSiteUpURL;
 
 extern NSString *const ARSystemTimeURL;
 
