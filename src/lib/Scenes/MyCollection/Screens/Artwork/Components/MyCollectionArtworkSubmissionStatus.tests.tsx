@@ -1,5 +1,8 @@
+import { fireEvent } from "@testing-library/react-native"
+import { navigate } from "lib/navigation/navigate"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { act } from "react-test-renderer"
 import { MyCollectionArtworkSubmissionStatus } from "./MyCollectionArtworkSubmissionStatus"
 
 describe("MyCollectionArtworkSubmissionStatus", () => {
@@ -27,5 +30,13 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
     const tree = getWrapper("Submission evaluated")
     expect(tree.getByText("Submission Status")).toBeDefined()
     expect(tree.getByText("Evaluation Complete")).toBeDefined()
+  })
+
+  it("navigates to the artwork-submission-status", () => {
+    const tree = getWrapper("Submission evaluated" || "Submission in progress")
+    const Button = tree.getByText("What is this?")
+    act(() => fireEvent.press(Button))
+
+    expect(navigate).toHaveBeenCalledWith("artwork-submission-status")
   })
 })
