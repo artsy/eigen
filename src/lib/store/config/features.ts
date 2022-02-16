@@ -214,6 +214,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
   },
+  AREnableAvalaraPhase2: {
+    readyForRelease: false,
+    description: "Enable Avalara Phase 2",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
