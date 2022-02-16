@@ -27,7 +27,7 @@ export function useDeepLinks() {
     return () => {
       Linking.removeAllListeners("url")
     }
-  }, [isHydrated])
+  }, [isHydrated, isLoggedIn])
 
   const handleDeepLink = (url: string) => {
     trackEvent(tracks.deepLink(url))
