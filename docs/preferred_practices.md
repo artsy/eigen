@@ -24,7 +24,8 @@ This is a living document, expected to be updated regularly, a broad overview of
 ### History
 
 The app was initially written in Objective-C and Swift and React Native was added in 2016. Some parts of the app are also written with Kotlin.
-New features should be built in React Native.
+
+New features should be built in React Native. Swift and Kotlin should only be used for "glue" code, or native functionality that is impossible to implement with React Native. Objective-C should be avoided.
 
 - [Why Artsy uses React Native](http://artsy.github.io/blog/2016/08/15/React-Native-at-Artsy/)
 - [All React Native posts on Artsy's Engineering Blog](http://artsy.github.io/blog/categories/reactnative/)
@@ -115,11 +116,11 @@ However, if we have a `Button` folder which exports only one button component, w
   - [A fragment container](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/Scenes/Collection/Components/FeaturedArtists.tsx)
     We recently also started using relay-hooks and will soon link documents to that.
 
-### Prefer Relay containers (Higher Order Components) over Hooks // !! is this still valid?
+#### Prefer Relay hooks over relay containers (Higher Order Components)
 
-We have a preference for Relay containers due to `relay-hooks` hooks not being compatible with Relay containers which represent the majority of our components using Relay.
+Refactoring old containers to use hooks is encouraged.
 
-- [Relay Container approach](https://github.com/artsy/eigen/blob/21fbf9e24eaa281f3e16609da5d38a9fb62a5449/src/lib/Scenes/MyAccount/MyAccount.tsx#L70)
+// Add or link to examples with of files using relay hooks here
 
 ### styled-system / styled-components
 
