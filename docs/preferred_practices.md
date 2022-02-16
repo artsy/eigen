@@ -93,25 +93,28 @@ For example `mutations`, `routes`, `state` would be **lowercase** folders, while
 
 Another example is:
 
-If we have a `buttons` folder which exports many button components, we keep it **lowercase**. 
+If we have a `buttons` folder which exports many button components, we keep it **lowercase**.
 
 ```
 ├── buttons
 │   ├── RedButton.tsx
 │   ├── GreenButton.tsx
 │   ├── YellowButton.tsx
+│   ├── buttons.tests.tsx
+│   ├── buttons.stories.tsx
 ├── …
 ```
+
 However, if we have a `Button` folder which exports only one button component, we write that with in **PascalCase**.
 
 ```
 ├── Button
 │   ├── Button.tsx
 │   ├── Button.tests.tsx
-
+│   ├── Button.stories.tsx
 ```
 
-TODO: Add a migration guide? 
+TODO: Add a migration guide?
 
 ### Use Relay for Network Requests
 
