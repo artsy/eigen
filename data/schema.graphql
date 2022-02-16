@@ -13267,6 +13267,9 @@ input UpdateMyProfileInput {
   # The user completed onboarding.
   completedOnboarding: Boolean
 
+  # Currency preference of the user
+  currencyPreference: CurrencyPreference
+
   # The given email of the user.
   email: String
 
@@ -13284,6 +13287,9 @@ input UpdateMyProfileInput {
 
   # Is a collector?
   isCollector: Boolean
+
+  # Length unit preference of the user
+  lengthUnitPreference: LengthUnitPreference
 
   # The given location of the user as structured data
   location: EditableLocation
