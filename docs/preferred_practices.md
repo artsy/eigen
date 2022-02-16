@@ -118,6 +118,8 @@ However, if we have a `Button` folder which exports only one button component, w
 │   ├── Button.stories.tsx
 ```
 
+`Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
+
 ### Use Relay for Network Requests
 
 Data should be loaded from [Metaphysics](https://github.com/artsy/metaphysics), Artsy's GraphQL server. Requests to Metaphysics should be made through [Relay](https://relay.dev).
