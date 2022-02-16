@@ -50,6 +50,7 @@ describe("My Collection Artwork", () => {
         mockEnvironment
       )
 
+      mockEnvironmentPayload(mockEnvironment)
       expect(() => getByTestId("my-collection-artwork")).toBeTruthy()
       expect(() => getByTestId("old-my-collection-artwork")).toThrowError(
         "Unable to find an element with testID: old-my-collection-artwork"
