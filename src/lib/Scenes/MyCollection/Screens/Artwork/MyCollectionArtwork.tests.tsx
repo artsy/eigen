@@ -58,7 +58,7 @@ describe("My Collection Artwork", () => {
     })
   })
 
-  describe.only("edit button", () => {
+  describe("edit button", () => {
     let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
     beforeEach(() => {
