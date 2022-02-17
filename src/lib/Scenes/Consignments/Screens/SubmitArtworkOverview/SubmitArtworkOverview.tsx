@@ -94,6 +94,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
             const disabled = !validSteps[index]
             return (
               <CollapsibleMenuItem
+                hasBackButton={index === 0}
                 key={index}
                 overtitle={overtitle}
                 title={title}
