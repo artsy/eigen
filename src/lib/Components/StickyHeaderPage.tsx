@@ -1,5 +1,5 @@
 import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
-import { useUpdadeShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
+import { useUpdateShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
 import { useAutoCollapsingMeasuredView } from "lib/utils/useAutoCollapsingMeasuredView"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React from "react"
@@ -22,7 +22,7 @@ export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
   const footerOffsetY = useAnimatedValue(-1)
   const scrollOffsetY = useAnimatedValue(0)
   const { width: screenWidth } = useScreenDimensions()
-  const updateShouldHideBackButton = useUpdadeShouldHideBackButton()
+  const updateShouldHideBackButton = useUpdateShouldHideBackButton()
 
   const shouldHideBackButton = Animated.greaterOrEq(scrollOffsetY, 10)
 

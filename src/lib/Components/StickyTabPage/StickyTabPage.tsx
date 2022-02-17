@@ -1,4 +1,4 @@
-import { useUpdadeShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
+import { useUpdateShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
 import { Schema } from "lib/utils/track"
 import { useAutoCollapsingMeasuredView } from "lib/utils/useAutoCollapsingMeasuredView"
 import { useGlobalState } from "lib/utils/useGlobalState"
@@ -92,7 +92,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   const railRef = useRef<SnappyHorizontalRail>(null)
 
   const shouldHideBackButton = Animated.lessOrEq(headerOffsetY, -10)
-  const updateShouldHideBackButton = useUpdadeShouldHideBackButton()
+  const updateShouldHideBackButton = useUpdateShouldHideBackButton()
 
   Animated.useCode(
     () =>
