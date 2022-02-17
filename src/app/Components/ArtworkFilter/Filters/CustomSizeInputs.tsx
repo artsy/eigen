@@ -1,13 +1,15 @@
+import { Metric } from "lib/Scenes/Search/UserPreferencesModel"
 import { Box, Flex, Input, Join, Spacer, Text, useColor } from "palette"
 import React from "react"
 import { TextStyle } from "react-native"
-import { LOCALIZED_UNIT, Numeric, Range } from "./helpers"
+import { Numeric, Range } from "./helpers"
 
 export interface CustomSizeInputsProps {
   label: string
   range: Range
   active?: boolean
   onChange: (range: Range) => void
+  selectedMetric: Metric
 }
 
 // Helpers
@@ -24,6 +26,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
   range,
   active,
   onChange,
+  selectedMetric,
 }) => {
   const color = useColor()
   const handleInputChange = (field: keyof Range) => (text: string) => {
@@ -50,7 +53,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
             <Input
               keyboardType="number-pad"
               onChangeText={handleInputChange("min")}
-              placeholder={LOCALIZED_UNIT}
+              placeholder={selectedMetric}
               accessibilityLabel={`Minimum ${label} Input`}
               defaultValue={getValue(range.min)}
               inputTextStyle={inputTextStyle}
@@ -63,7 +66,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
             <Input
               keyboardType="number-pad"
               onChangeText={handleInputChange("max")}
-              placeholder={LOCALIZED_UNIT}
+              placeholder={selectedMetric}
               accessibilityLabel={`Maximum ${label} Input`}
               defaultValue={getValue(range.max)}
               inputTextStyle={inputTextStyle}

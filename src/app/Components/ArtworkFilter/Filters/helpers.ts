@@ -2,7 +2,7 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { isNull, isUndefined, round as __round__ } from "lodash"
 
 export type Numeric = "*" | number
-type Unit = "in" | "cm"
+export type Unit = "in" | "cm"
 
 export interface Range {
   min: Numeric

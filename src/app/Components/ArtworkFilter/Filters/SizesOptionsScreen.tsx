@@ -1,11 +1,13 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { Box, Spacer } from "palette"
-import React, { useState } from "react"
+import { GlobalStore } from "lib/store/GlobalStore"
+import { useLocalizedUnit } from "lib/utils/useLocalizedUnit"
+import { Box, Flex, RadioButton, Spacer, Text } from "palette"
+import React, { useEffect, useState } from "react"
 import { ArtworkFilterNavigationStack } from ".."
 import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
 import { CustomSizeInputs } from "./CustomSizeInputs"
-import { IS_USA, LOCALIZED_UNIT, localizeDimension, parseRange, Range, toIn } from "./helpers"
+import { IS_USA, localizeDimension, parseRange, Range, toIn, Unit } from "./helpers"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
@@ -20,9 +22,11 @@ interface CustomSizeInputsContainerProps {
   values: CustomSize
   active?: boolean
   onChange: (values: CustomSize) => void
+  handleMetricChange: (metric: Unit) => void
+  metric: Unit
 }
 
-const EUROPE_SIZE_OPTIONS: FilterData[] = [
+export const EUROPE_SIZE_OPTIONS: FilterData[] = [
   {
     displayText: "Small (under 40cm)",
     paramName: FilterParamName.sizes,
@@ -40,7 +44,7 @@ const EUROPE_SIZE_OPTIONS: FilterData[] = [
   },
 ]
 
-const USA_SIZE_OPTIONS: FilterData[] = [
+export const USA_SIZE_OPTIONS: FilterData[] = [
   {
     displayText: "Small (under 16in)",
     paramName: FilterParamName.sizes,
@@ -102,6 +106,8 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
   values,
   active,
   onChange,
+  handleMetricChange,
+  metric,
 }) => {
   const handleChange = (paramName: FilterParamName) => (range: Range) => {
     onChange({ ...values, [paramName]: range })
@@ -109,11 +115,19 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
 
   return (
     <Box mx={15} my={2}>
+      <Flex flexDirection="row">
+        <RadioButton selected={metric === "cm"} onPress={() => handleMetricChange("cm")} />
+        <Text marginRight="3">cm</Text>
+        <RadioButton selected={metric === "in"} onPress={() => handleMetricChange("in")} />
+        <Text>in</Text>
+      </Flex>
+      <Spacer mt={2} />
       <CustomSizeInputs
         label="Width"
         range={values.width}
         active={active}
         onChange={handleChange(FilterParamName.width)}
+        selectedMetric={metric}
       />
       <Spacer mt={2} />
       <CustomSizeInputs
@@ -121,6 +135,7 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
         range={values.height}
         active={active}
         onChange={handleChange(FilterParamName.height)}
+        selectedMetric={metric}
       />
     </Box>
   )
@@ -130,13 +145,30 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
   )
+
+  const { localizedUnit } = useLocalizedUnit()
+
+  const [metric, setMetric] = useState(localizedUnit)
+  const [sizesOptions, setSizesOptions] = useState(
+    localizedUnit === "in" ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS
+  )
+
+  const handleMetricChange = (newMetric: "in" | "cm") => {
+    setMetric(newMetric)
+    GlobalStore.actions.userPreferences.setMetric(newMetric)
+  }
+
+  useEffect(() => {
+    setSizesOptions(metric === "in" ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS)
+  }, [metric])
+
   const {
     handleSelect,
     isSelected,
     handleClear: clearPredefinedValues,
     isActive: isActivePredefinedValues,
   } = useMultiSelect({
-    options: SIZES_OPTIONS,
+    options: sizesOptions,
     paramName: FilterParamName.sizes,
   })
   const selectedOptions = useSelectedOptionsDisplay()
@@ -153,7 +185,7 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   const isActive = isActivePredefinedValues || !checkIsEmptyCustomValues(customValues)
 
   // Options
-  let options: FilterData[] = SIZES_OPTIONS.map((option) => ({
+  let options: FilterData[] = sizesOptions.map((option) => ({
     ...option,
     paramValue: isSelected(option),
   }))
@@ -172,8 +204,8 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   const selectCustomFiltersAction = (values: CustomSize) => {
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
       const value = values[paramName]
-      const localizedMinValue = toIn(value.min, LOCALIZED_UNIT)
-      const localizedMaxValue = toIn(value.max, LOCALIZED_UNIT)
+      const localizedMinValue = toIn(value.min, metric)
+      const localizedMaxValue = toIn(value.max, metric)
 
       selectFiltersAction({
         displayText: `${value.min}-${value.max}`,
@@ -185,7 +217,6 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
 
   const handleCustomInputsChange = (values: CustomSize) => {
     const isEmptyCustomValues = checkIsEmptyCustomValues(values)
-
     setCustomValues(values)
     setCustomSizeSelected(!isEmptyCustomValues)
     selectCustomFiltersAction(values)
@@ -243,6 +274,8 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
             values={customValues}
             active={customSizeSelected}
             onChange={handleCustomInputsChange}
+            handleMetricChange={handleMetricChange}
+            metric={metric}
           />
         ) : null
       }
