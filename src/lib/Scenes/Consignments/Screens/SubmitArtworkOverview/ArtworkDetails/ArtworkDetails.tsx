@@ -1,6 +1,7 @@
 import { captureMessage } from "@sentry/react-native"
 import { Formik } from "formik"
 import { BackButton } from "lib/navigation/BackButton"
+import { goBack } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { BulletedItem, CTAButton, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
@@ -39,14 +40,7 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void; navigation: any
   return (
     <Flex flex={3} p={1} mt={1} style={{ position: "relative" }}>
       <Flex style={{ position: "absolute", top: -170, left: -20 }}>
-        <BackButton
-          onPress={() => {
-            // console.log("whoop presssed... navigation", navigation)
-            // console.log("whoop presssed... navigation", navigation.goBack())
-            // console.log("whoop presssed... navigation", navigation.getParent())
-            // navigation.navigate("Home")
-          }}
-        />
+        <BackButton onPress={() => goBack()} />
       </Flex>
       <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
       <BulletedItem>
