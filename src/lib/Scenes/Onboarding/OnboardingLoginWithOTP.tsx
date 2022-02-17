@@ -33,18 +33,33 @@ export const otpSchema = Yup.object().shape({
   otp: Yup.string().test("otp", "This field is required", (value) => value !== ""),
 })
 
-export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProps> = ({ navigation, otpMode }) => {
+export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProps> = ({
+  navigation,
+  otpMode,
+}) => {
   const color = useColor()
 
-  const { values, handleChange, handleSubmit, errors, setErrors, isValid, dirty, isSubmitting, validateForm } =
-    useFormikContext<OnboardingLoginWithOTPValuesSchema>()
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    errors,
+    setErrors,
+    isValid,
+    dirty,
+    isSubmitting,
+    validateForm,
+  } = useFormikContext<OnboardingLoginWithOTPValuesSchema>()
 
   const otpInputRef = useRef<Input>(null)
 
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
-        contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingHorizontal: 20 }}
+        contentContainerStyle={{
+          paddingTop: useScreenDimensions().safeAreaInsets.top,
+          paddingHorizontal: 20,
+        }}
         keyboardShouldPersistTaps="always"
       >
         <Spacer mt={60} />
@@ -78,8 +93,8 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
             <>
               <Spacer mb={20} />
               <Message testID="on_demand_message">
-                Your safety and security are important to us. Please check your email for a one-time authentication code
-                to complete your login.
+                Your safety and security are important to us. Please check your email for a one-time
+                authentication code to complete your login.
               </Message>
             </>
           ) : null}
@@ -104,7 +119,10 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
   )
 }
 
-export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({ navigation, route }) => {
+export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({
+  navigation,
+  route,
+}) => {
   const email = route.params.email
   const password = route.params.password
   const otpMode = route.params.otpMode

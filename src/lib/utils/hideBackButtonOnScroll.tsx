@@ -60,7 +60,7 @@ export const createHideBackButtonOnScroll: (
   }
 }
 
-export function useUpdadeShouldHideBackButton() {
+export function useUpdateShouldHideBackButton() {
   if (Platform.OS === "ios") {
     return (shouldHide: boolean) =>
       LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton(
@@ -73,6 +73,6 @@ export function useUpdadeShouldHideBackButton() {
 }
 
 export function useHideBackButtonOnScroll() {
-  const updateShouldHideBackButton = useUpdadeShouldHideBackButton()
+  const updateShouldHideBackButton = useUpdateShouldHideBackButton()
   return useMemo(() => createHideBackButtonOnScroll(updateShouldHideBackButton), [])
 }
