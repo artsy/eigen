@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-haptic-feedback/index.d.ts b/node_modules/react-native-haptic-feedback/index.d.ts
-index 3f784ae..7c0ee56 100644
+index 3c08697..ae08cff 100644
 --- a/node_modules/react-native-haptic-feedback/index.d.ts
 +++ b/node_modules/react-native-haptic-feedback/index.d.ts
 @@ -1,5 +1,5 @@
