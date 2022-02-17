@@ -168,7 +168,7 @@ export const FairArticlesPaginationContainer = createPaginationContainer(
       fragment FairArticles_fair on Fair
       @argumentDefinitions(first: { type: "Int" }, after: { type: "String" }) {
         slug
-        articlesConnection(first: $first, after: $after, inEditorialFeed: true)
+        articlesConnection(first: $first, after: $after)
           @connection(key: "FairArticlesQuery_articlesConnection") {
           totalCount
           edges {
