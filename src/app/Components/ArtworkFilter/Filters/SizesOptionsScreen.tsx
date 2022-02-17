@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { GlobalStore } from "lib/store/GlobalStore"
-import { useLocalizedUnit } from "lib/utils/useLocalizedUnit"
+import { GlobalStore } from "app/store/GlobalStore"
+import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { Box, Flex, RadioButton, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { ArtworkFilterNavigationStack } from ".."
@@ -155,15 +155,6 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
     localizedUnit === "in" ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS
   )
 
-  const handleMetricChange = (newMetric: "in" | "cm") => {
-    setMetric(newMetric)
-    GlobalStore.actions.userPreferences.setMetric(newMetric)
-  }
-
-  useEffect(() => {
-    setSizesOptions(metric === "in" ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS)
-  }, [metric])
-
   const {
     handleSelect,
     isSelected,
@@ -185,6 +176,16 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   const [key, setKey] = useState(0)
   const shouldShowCustomInputs = filterType !== "auctionResult"
   const isActive = isActivePredefinedValues || !checkIsEmptyCustomValues(customValues)
+
+  useEffect(() => {
+    setSizesOptions(metric === "in" ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS)
+    handleCustomInputsChange(customValues)
+  }, [metric])
+
+  const handleMetricChange = (newMetric: "in" | "cm") => {
+    setMetric(newMetric)
+    GlobalStore.actions.userPreferences.setMetric(newMetric)
+  }
 
   // Options
   let options: FilterData[] = sizesOptions.map((option) => ({
@@ -208,7 +209,6 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
       const value = values[paramName]
       const localizedMinValue = metric === "cm" ? toIn(value.min, metric) : value.min
       const localizedMaxValue = metric === "cm" ? toIn(value.max, metric) : value.max
-      console.log("localizedMinValue", localizedMinValue)
       selectFiltersAction({
         displayText: `${value.min}-${value.max}`,
         paramName: paramName as FilterParamName,
