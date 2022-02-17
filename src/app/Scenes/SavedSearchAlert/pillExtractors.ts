@@ -71,10 +71,6 @@ export const extractSizeLabel = ({
   const max = localizeDimension(range.max, unit)
   let label
 
-  console.log("[debug] value", value)
-  console.log("[debug] min", min)
-  console.log("[debug] max", max)
-
   if (max === "*") {
     label = `from ${min}`
   } else if (min === "*") {
