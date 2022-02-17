@@ -51,22 +51,22 @@ describe("extractPillFromAggregation", () => {
 describe("extractSizeLabel", () => {
   it("returns correcly label when full range is specified", () => {
     expect(extractSizeLabel({ prefix: "w", value: "5-10", unit: "in" })).toBe("w: 5-10 in")
-    expect(extractSizeLabel({ prefix: "w", value: "5-10", unit: "cm" })).toBe("w: 5-10 cm")
+    expect(extractSizeLabel({ prefix: "w", value: "5-10", unit: "cm" })).toBe("w: 12.7-25.4 cm")
   })
 
   it("returns correcly label when only min value is specified", () => {
     expect(extractSizeLabel({ prefix: "w", value: "5-*", unit: "in" })).toBe("w: from 5 in")
-    expect(extractSizeLabel({ prefix: "w", value: "5-*", unit: "cm" })).toBe("w: from 5 cm")
+    expect(extractSizeLabel({ prefix: "w", value: "5-*", unit: "cm" })).toBe("w: from 12.7 cm")
   })
 
   it("returns correcly label when only max value is specified", () => {
     expect(extractSizeLabel({ prefix: "w", value: "*-10", unit: "in" })).toBe("w: to 10 in")
-    expect(extractSizeLabel({ prefix: "w", value: "*-10", unit: "cm" })).toBe("w: to 10 cm")
+    expect(extractSizeLabel({ prefix: "w", value: "*-10", unit: "cm" })).toBe("w: to 25.4 cm")
   })
 
   it("returns specified prefix", () => {
     expect(extractSizeLabel({ prefix: "h", value: "5-10", unit: "in" })).toBe("h: 5-10 in")
-    expect(extractSizeLabel({ prefix: "h", value: "5-10", unit: "cm" })).toBe("h: 5-10 cm")
+    expect(extractSizeLabel({ prefix: "h", value: "5-10", unit: "cm" })).toBe("h: 12.7-25.4 cm")
   })
 })
 
@@ -157,9 +157,11 @@ describe("extractPills", () => {
     const attributes: SearchCriteriaAttributes = {
       sizes: ["SMALL", "LARGE"],
     }
-    const result = extractPills({ attributes, aggregations, unit: "in" })
 
-    expect(result).toEqual([
+    // with unit inches
+    const inResult = extractPills({ attributes, aggregations, unit: "in" })
+
+    expect(inResult).toEqual([
       {
         label: "Small (under 16in)",
         paramName: SearchCriteria.sizes,
@@ -167,6 +169,22 @@ describe("extractPills", () => {
       },
       {
         label: "Large (over 40in)",
+        paramName: SearchCriteria.sizes,
+        value: "LARGE",
+      },
+    ])
+
+    // with unit centimeters
+    const cmResult = extractPills({ attributes, aggregations, unit: "cm" })
+
+    expect(cmResult).toEqual([
+      {
+        label: "Small (under 40cm)",
+        paramName: SearchCriteria.sizes,
+        value: "SMALL",
+      },
+      {
+        label: "Large (over 100cm)",
         paramName: SearchCriteria.sizes,
         value: "LARGE",
       },
