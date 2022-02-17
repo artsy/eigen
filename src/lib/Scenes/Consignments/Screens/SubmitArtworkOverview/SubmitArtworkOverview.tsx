@@ -20,7 +20,6 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       title: "Artwork Details",
       Content: (
         <ArtworkDetails
-          navigation={navigation}
           handlePress={() => {
             expandCollapsibleMenuContent(1)
             enableStep(1)

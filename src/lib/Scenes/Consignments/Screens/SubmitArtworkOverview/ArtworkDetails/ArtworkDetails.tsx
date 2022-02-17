@@ -10,10 +10,7 @@ import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "./validation"
 
-export const ArtworkDetails: React.FC<{ handlePress: () => void; navigation: any }> = ({
-  handlePress,
-  // navigation,
-}) => {
+export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
   const { submissionId, artworkDetails } = GlobalStore.useAppState(
     (state) => state.artworkSubmission.submission
   )
