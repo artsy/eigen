@@ -22,7 +22,7 @@ export const localizeDimension = (value: Numeric, unit: Unit): { value: Numeric;
     return { value, unit: "in" }
   }
 
-  if (unit === "cm") {
+  if (IS_USA && unit === "cm") {
     return { value: cmToIn(value), unit: "in" }
   }
 
