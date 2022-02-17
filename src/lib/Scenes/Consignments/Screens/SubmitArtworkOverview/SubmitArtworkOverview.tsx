@@ -127,7 +127,7 @@ const StackNavigator = createStackNavigator<SubmitArtworkOverviewNavigationStack
 
 export const SubmitArtworkOverview = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer independent>
       <StackNavigator.Navigator
         headerMode="screen"
         detachInactiveScreens={false}

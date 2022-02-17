@@ -37,7 +37,7 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void; navigation: any
   }
 
   return (
-    <Flex flex={3} p={1} mt={1}>
+    <Flex flex={3} p={1} mt={1} style={{ position: "relative" }}>
       <Flex style={{ position: "absolute", top: -170, left: -20 }}>
         <BackButton
           onPress={() => {
