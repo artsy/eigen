@@ -30,7 +30,9 @@ Check out our list of [examples](#../../../EXAMPLES.md) and [hacks](#../../../HA
 
 The app was initially written in Objective-C and Swift and React Native was added in 2016. Some parts of the app are also written with Kotlin.
 
-New features should be built in React Native. Swift and Kotlin should only be used for "glue" code, or native functionality that is impossible to implement with React Native. Objective-C should be avoided.
+- **React Native** By default we use React Native for new features.
+- **Objective-C**, **Java**, can be used for bridging code to react native (this is referring to native modules that need to talk to javascript, more info in the react native docs here: https://reactnative.dev/docs/native-modules-ios)
+- **Swift**, **Kotlin** for native functionality that can't be done in React Native (such as: an iOS Widget or a Push Notification Extension).
 
 - [Why Artsy uses React Native](http://artsy.github.io/blog/2016/08/15/React-Native-at-Artsy/)
 - [All React Native posts on Artsy's Engineering Blog](http://artsy.github.io/blog/categories/reactnative/)
