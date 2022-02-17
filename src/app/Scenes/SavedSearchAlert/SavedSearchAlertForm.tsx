@@ -30,6 +30,7 @@ import {
   SavedSearchPill,
 } from "./SavedSearchAlertModel"
 import { SavedSearchStore } from "./SavedSearchStore"
+import { useSavedSearchPills } from "./useSavedSearchPills"
 
 export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
   initialValues: SavedSearchAlertFormValues
@@ -56,7 +57,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const isUpdateForm = !!savedSearchAlertId
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const isFirstRender = useFirstMountState()
-  const savedSearchPills = SavedSearchStore.useStoreState((state) => state.pills)
+  const savedSearchPills = useSavedSearchPills()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
