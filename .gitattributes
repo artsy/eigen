@@ -1,3 +1,1 @@
 CHANGELOG.yml merge=union
-src/__generated__/*.graphql.ts linguist-generated=true
-src/__generated__/*.queryMap.json linguist-generated=true
