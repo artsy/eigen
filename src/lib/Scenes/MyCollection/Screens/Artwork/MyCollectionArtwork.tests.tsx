@@ -57,4 +57,82 @@ describe("My Collection Artwork", () => {
       )
     })
   })
+
+  describe("edit button", () => {
+    let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewMyCollectionArtwork: true })
+      mockEnvironment = createMockEnvironment()
+    })
+
+    describe("when submission is not in progress", () => {
+      it("shows the edit button", async () => {
+        const { findByText } = renderWithHookWrappersTL(
+          <MyCollectionArtworkQueryRenderer
+            artworkSlug="random-slug"
+            artistInternalID="internal-id"
+            medium="medium"
+          />,
+          mockEnvironment
+        )
+
+        mockEnvironmentPayload(mockEnvironment, {
+          Artwork: () => ({
+            consignmentSubmission: {
+              inProgress: false,
+            },
+          }),
+        })
+
+        expect(await findByText("Edit")).toBeTruthy()
+      })
+    })
+
+    describe("when there is no submission", () => {
+      it("shows the edit button", async () => {
+        const { findByText } = renderWithHookWrappersTL(
+          <MyCollectionArtworkQueryRenderer
+            artworkSlug="random-slug"
+            artistInternalID="internal-id"
+            medium="medium"
+          />,
+          mockEnvironment
+        )
+
+        mockEnvironmentPayload(mockEnvironment, {
+          Artwork: () => ({
+            consignmentSubmission: null,
+          }),
+        })
+
+        expect(await findByText("Edit")).toBeTruthy()
+      })
+    })
+
+    describe("when submission is in progress", () => {
+      it("hides the edit button", async () => {
+        const { findByText } = renderWithHookWrappersTL(
+          <MyCollectionArtworkQueryRenderer
+            artworkSlug="random-slug"
+            artistInternalID="internal-id"
+            medium="medium"
+          />,
+          mockEnvironment
+        )
+
+        mockEnvironmentPayload(mockEnvironment, {
+          Artwork: () => ({
+            consignmentSubmission: {
+              inProgress: true,
+            },
+          }),
+        })
+
+        await expect(findByText("Edit")).rejects.toThrow(
+          "Unable to find an element with text: Edit"
+        )
+      })
+    })
+  })
 })

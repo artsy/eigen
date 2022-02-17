@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ba3db8a88663d1767414b1b47f47035d */
+/* @relayHash 23b1e374970eb59bad05a66e8bed3bbf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -65,6 +65,9 @@ fragment MyCollectionArtworkFullDetails_artwork on Artwork {
   slug
   title
   width
+  consignmentSubmission {
+    inProgress
+  }
   ...MyCollectionArtworkMeta_artwork
 }
 
@@ -140,13 +143,13 @@ v7 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "Int"
+  "type": "Boolean"
 },
 v8 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "Boolean"
+  "type": "Int"
 };
 return {
   "fragment": {
@@ -382,14 +385,32 @@ return {
             "name": "title",
             "storageKey": null
           },
-          (v4/*: any*/)
+          (v4/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ArtworkConsignmentSubmission",
+            "kind": "LinkedField",
+            "name": "consignmentSubmission",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "inProgress",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
     ]
   },
   "params": {
-    "id": "ba3db8a88663d1767414b1b47f47035d",
+    "id": "23b1e374970eb59bad05a66e8bed3bbf",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -418,6 +439,13 @@ return {
         "artwork.attributionClass.id": (v6/*: any*/),
         "artwork.attributionClass.name": (v5/*: any*/),
         "artwork.category": (v5/*: any*/),
+        "artwork.consignmentSubmission": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ArtworkConsignmentSubmission"
+        },
+        "artwork.consignmentSubmission.inProgress": (v7/*: any*/),
         "artwork.date": (v5/*: any*/),
         "artwork.depth": (v5/*: any*/),
         "artwork.editionNumber": (v5/*: any*/),
@@ -430,7 +458,7 @@ return {
           "plural": true,
           "type": "Image"
         },
-        "artwork.images.height": (v7/*: any*/),
+        "artwork.images.height": (v8/*: any*/),
         "artwork.images.imageURL": (v5/*: any*/),
         "artwork.images.internalID": {
           "enumValues": null,
@@ -438,10 +466,10 @@ return {
           "plural": false,
           "type": "ID"
         },
-        "artwork.images.isDefault": (v8/*: any*/),
-        "artwork.images.width": (v7/*: any*/),
+        "artwork.images.isDefault": (v7/*: any*/),
+        "artwork.images.width": (v8/*: any*/),
         "artwork.internalID": (v6/*: any*/),
-        "artwork.isEdition": (v8/*: any*/),
+        "artwork.isEdition": (v7/*: any*/),
         "artwork.medium": (v5/*: any*/),
         "artwork.metric": (v5/*: any*/),
         "artwork.pricePaid": {

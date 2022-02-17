@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c70292fec01e0a6cd13194876afa4fe6 */
+/* @relayHash 3595d3af7ca51955b991ebf7eac8611b */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkGridItemTestsQueryVariables = {};
@@ -43,6 +43,9 @@ export type MyCollectionArtworkGridItemTestsQueryResponse = {
         readonly slug: string;
         readonly title: string | null;
         readonly width: string | null;
+        readonly consignmentSubmission: {
+            readonly inProgress: boolean | null;
+        } | null;
     } | null;
 };
 export type MyCollectionArtworkGridItemTestsQuery = {
@@ -93,6 +96,9 @@ query MyCollectionArtworkGridItemTestsQuery {
     slug
     title
     width
+    consignmentSubmission {
+      inProgress
+    }
   }
 }
 */
@@ -299,28 +305,46 @@ v21 = {
   "storageKey": null
 },
 v22 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "ArtworkConsignmentSubmission",
+  "kind": "LinkedField",
+  "name": "consignmentSubmission",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "inProgress",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+},
+v23 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v23 = {
+v24 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
-},
-v24 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "Int"
 },
 v25 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Boolean"
+},
+v26 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
 };
 return {
   "fragment": {
@@ -380,7 +404,8 @@ return {
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
-          (v13/*: any*/)
+          (v13/*: any*/),
+          (v22/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
@@ -447,14 +472,15 @@ return {
           (v19/*: any*/),
           (v20/*: any*/),
           (v21/*: any*/),
-          (v13/*: any*/)
+          (v13/*: any*/),
+          (v22/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
     ]
   },
   "params": {
-    "id": "c70292fec01e0a6cd13194876afa4fe6",
+    "id": "3595d3af7ca51955b991ebf7eac8611b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -469,34 +495,41 @@ return {
           "plural": false,
           "type": "Artist"
         },
-        "artwork.artist.formattedNationalityAndBirthday": (v22/*: any*/),
-        "artwork.artist.id": (v23/*: any*/),
-        "artwork.artist.internalID": (v23/*: any*/),
-        "artwork.artistNames": (v22/*: any*/),
-        "artwork.artworkLocation": (v22/*: any*/),
+        "artwork.artist.formattedNationalityAndBirthday": (v23/*: any*/),
+        "artwork.artist.id": (v24/*: any*/),
+        "artwork.artist.internalID": (v24/*: any*/),
+        "artwork.artistNames": (v23/*: any*/),
+        "artwork.artworkLocation": (v23/*: any*/),
         "artwork.attributionClass": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AttributionClass"
         },
-        "artwork.attributionClass.id": (v23/*: any*/),
-        "artwork.attributionClass.name": (v22/*: any*/),
-        "artwork.category": (v22/*: any*/),
-        "artwork.date": (v22/*: any*/),
-        "artwork.depth": (v22/*: any*/),
-        "artwork.editionNumber": (v22/*: any*/),
-        "artwork.editionSize": (v22/*: any*/),
-        "artwork.height": (v22/*: any*/),
-        "artwork.id": (v23/*: any*/),
+        "artwork.attributionClass.id": (v24/*: any*/),
+        "artwork.attributionClass.name": (v23/*: any*/),
+        "artwork.category": (v23/*: any*/),
+        "artwork.consignmentSubmission": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ArtworkConsignmentSubmission"
+        },
+        "artwork.consignmentSubmission.inProgress": (v25/*: any*/),
+        "artwork.date": (v23/*: any*/),
+        "artwork.depth": (v23/*: any*/),
+        "artwork.editionNumber": (v23/*: any*/),
+        "artwork.editionSize": (v23/*: any*/),
+        "artwork.height": (v23/*: any*/),
+        "artwork.id": (v24/*: any*/),
         "artwork.images": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "Image"
         },
-        "artwork.images.height": (v24/*: any*/),
-        "artwork.images.imageURL": (v22/*: any*/),
+        "artwork.images.height": (v26/*: any*/),
+        "artwork.images.imageURL": (v23/*: any*/),
         "artwork.images.internalID": {
           "enumValues": null,
           "nullable": true,
@@ -504,11 +537,11 @@ return {
           "type": "ID"
         },
         "artwork.images.isDefault": (v25/*: any*/),
-        "artwork.images.width": (v24/*: any*/),
-        "artwork.internalID": (v23/*: any*/),
+        "artwork.images.width": (v26/*: any*/),
+        "artwork.internalID": (v24/*: any*/),
         "artwork.isEdition": (v25/*: any*/),
-        "artwork.medium": (v22/*: any*/),
-        "artwork.metric": (v22/*: any*/),
+        "artwork.medium": (v23/*: any*/),
+        "artwork.metric": (v23/*: any*/),
         "artwork.pricePaid": {
           "enumValues": null,
           "nullable": true,
@@ -521,17 +554,17 @@ return {
           "plural": false,
           "type": "String"
         },
-        "artwork.pricePaid.display": (v22/*: any*/),
+        "artwork.pricePaid.display": (v23/*: any*/),
         "artwork.pricePaid.minor": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "Int"
         },
-        "artwork.provenance": (v22/*: any*/),
-        "artwork.slug": (v23/*: any*/),
-        "artwork.title": (v22/*: any*/),
-        "artwork.width": (v22/*: any*/)
+        "artwork.provenance": (v23/*: any*/),
+        "artwork.slug": (v24/*: any*/),
+        "artwork.title": (v23/*: any*/),
+        "artwork.width": (v23/*: any*/)
       }
     },
     "name": "MyCollectionArtworkGridItemTestsQuery",

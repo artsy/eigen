@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash de44b20fe5c7b2ef0889828e4df2ec44 */
+/* @relayHash ffb9326d86f503a728465fd20ea26763 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,6 +11,9 @@ export type MyCollectionArtworkQueryVariables = {
 export type MyCollectionArtworkQueryResponse = {
     readonly artwork: {
         readonly internalID: string;
+        readonly consignmentSubmission: {
+            readonly inProgress: boolean | null;
+        } | null;
         readonly " $fragmentRefs": FragmentRefs<"NewMyCollectionArtworkHeader_artwork">;
     } | null;
 };
@@ -28,6 +31,9 @@ query MyCollectionArtworkQuery(
   artwork(id: $artworkSlug) {
     ...NewMyCollectionArtworkHeader_artwork
     internalID
+    consignmentSubmission {
+      inProgress
+    }
     id
   }
 }
@@ -88,6 +94,13 @@ v2 = {
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "inProgress",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -105,6 +118,18 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ArtworkConsignmentSubmission",
+            "kind": "LinkedField",
+            "name": "consignmentSubmission",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/)
+            ],
+            "storageKey": null
+          },
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -288,7 +313,8 @@ return {
                 "kind": "ScalarField",
                 "name": "displayText",
                 "storageKey": null
-              }
+              },
+              (v3/*: any*/)
             ],
             "storageKey": null
           },
@@ -305,7 +331,7 @@ return {
     ]
   },
   "params": {
-    "id": "de44b20fe5c7b2ef0889828e4df2ec44",
+    "id": "ffb9326d86f503a728465fd20ea26763",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
@@ -313,5 +339,5 @@ return {
   }
 };
 })();
-(node as any).hash = '10fb19cf4c2e44352de798526fc23dfa';
+(node as any).hash = '8b58747cb9ebdb13171da300bee6237d';
 export default node;
