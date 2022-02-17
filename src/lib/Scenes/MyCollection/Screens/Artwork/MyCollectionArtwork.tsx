@@ -55,14 +55,11 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artwork
 
   return (
     <Flex flex={1}>
-      {
-        <FancyModalHeader
-          onLeftButtonPress={goBack}
-          rightButtonText="Edit"
-          displayRightButton={displayEditButton}
-          onRightButtonPress={handleEdit}
-        />
-      }
+      <FancyModalHeader
+        onLeftButtonPress={goBack}
+        rightButtonText="Edit"
+        onRightButtonPress={displayEditButton ? handleEdit : undefined}
+      />
       <StickyTabPage
         tabs={[
           {

@@ -53,21 +53,24 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
     >
       <ScrollView>
         <FancyModalHeader
-          onRightButtonPress={() => {
-            trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
-            GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
-            navigate(`my-collection/artworks/${artwork.internalID}/edit`, {
-              passProps: {
-                mode: "edit",
-                artwork,
-                onSuccess: popToRoot,
-                onDelete: popToRoot,
-              },
-            })
-          }}
+          onRightButtonPress={
+            displayEditButton
+              ? () => {
+                  trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
+                  GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
+                  navigate(`my-collection/artworks/${artwork.internalID}/edit`, {
+                    passProps: {
+                      mode: "edit",
+                      artwork,
+                      onSuccess: popToRoot,
+                      onDelete: popToRoot,
+                    },
+                  })
+                }
+              : undefined
+          }
           onLeftButtonPress={goBack}
           hideBottomDivider
-          displayRightButton={displayEditButton}
           renderRightButton={() => (
             <Flex pt="2px">
               <Text>Edit</Text>
