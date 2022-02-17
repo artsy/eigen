@@ -542,7 +542,6 @@ jest.mock("react-native-config", () => ({
   SENTRY_DSN: "sentry_dsn",
   GOOGLE_MAPS_API_KEY: "google_maps_api_key",
   MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
-  SAILTHRU_KEY: "sailthru_key",
 }))
 
 jest.mock("react-native-view-shot", () => ({}))

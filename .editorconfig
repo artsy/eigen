@@ -1,3 +1,5 @@
+insert_final_newline = true
+
 [*.{js,jsx,ts,tsx}]
 indent_style = space
 indent_size = 2

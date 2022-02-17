@@ -46,6 +46,7 @@
     "relay": "relay-compiler",
     "setup:artsy": "./scripts/setup-env-for-artsy",
     "setup:oss": "./scripts/setup-env-for-oss",
+    "setup:artsy:update!": "scripts/update-env-for-artsy",
     "start-packager": "./scripts/start_packager.sh",
     "start-packager-after-relay": "yarn relay && yarn start-packager",
     "start-servers": "concurrently --kill-others 'yarn start-packager-after-relay' 'yarn relay --watch'",
