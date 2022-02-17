@@ -1,7 +1,5 @@
 This update includes a number of improvements and bug fixes including:
 
-- Improvements to the home screen
-- Improvements to collector profile
-- 2FA now supported for enabled accounts
+- A new improved alerts flow to get first access to works by your favorite artists
 
 Have feedback? Email us at support@artsy.net
