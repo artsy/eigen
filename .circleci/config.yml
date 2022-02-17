@@ -66,6 +66,11 @@ commands:
           key: v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
+  run-relay-compiler:
+    steps:
+      - run:
+          name: Run Relay compiler
+          command: yarn relay
   update-echo:
     steps:
       - run:
@@ -193,6 +198,7 @@ commands:
               circleci step halt
             fi
       - install-node-modules
+      - run-relay-compiler
       - update-echo
       - install-gems
   build-app-android:
@@ -245,6 +251,7 @@ jobs:
       - checkout
       - generate-checksums
       - install-node-modules
+      - run-relay-compiler
       - generate-query-map
       - run:
           name: Update metaphysics
@@ -258,6 +265,7 @@ jobs:
       - checkout
       - generate-checksums
       - install-node-modules
+      - run-relay-compiler
       - run:
           name: Danger
           command: yarn danger ci --verbose
@@ -302,6 +310,7 @@ jobs:
             fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
       - generate-checksums
       - install-node-modules
+      - run-relay-compiler
       - run:
           name: Generate queries json
           command: yarn relay
@@ -320,6 +329,7 @@ jobs:
       - setup-awscli
       - setup-env-file
       - install-node-modules
+      - run-relay-compiler
       - update-echo
       - generate-query-map
       - run:
@@ -383,6 +393,7 @@ jobs:
       - setup-awscli
       - setup-env-file
       - install-node-modules
+      - run-relay-compiler
       - update-echo
       - install-gems
       - install-cocoapods
