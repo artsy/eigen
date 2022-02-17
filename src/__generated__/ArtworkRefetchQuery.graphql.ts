@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 619660f6891264498df3385e8fdd5251 */
+/* @relayHash 8face1da4eeabb868cc20d652fa892fe */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -536,7 +536,6 @@ fragment CommercialButtons_artwork on Artwork {
   isInAuction
   isBuyNowable
   isForSale
-  isPriceHidden
   editionSets {
     id
   }
@@ -1675,13 +1674,6 @@ return {
           },
           {
             "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isPriceHidden",
-            "storageKey": null
-          },
-          {
-            "alias": null,
             "args": [
               {
                 "kind": "Literal",
@@ -1740,6 +1732,13 @@ return {
               }
             ],
             "storageKey": "myLotStanding(live:true)"
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "isPriceHidden",
+            "storageKey": null
           },
           (v30/*: any*/),
           {
@@ -2413,7 +2412,7 @@ return {
     ]
   },
   "params": {
-    "id": "619660f6891264498df3385e8fdd5251",
+    "id": "8face1da4eeabb868cc20d652fa892fe",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",

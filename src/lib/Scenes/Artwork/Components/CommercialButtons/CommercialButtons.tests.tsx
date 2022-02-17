@@ -334,23 +334,7 @@ describe("CommercialButtons", () => {
     expect(commercialButtons.find(Button).at(0).text()).toContain("Make offer")
   })
 
-  it("does not render Make Offer given isOfferableFromInquiry, priceHidden and the AREnableMakeOfferOnAllEligibleArtworks on", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMakeOfferOnAllEligibleArtworks: true })
-    const artwork = {
-      ...ArtworkFixture,
-      isOfferableFromInquiry: true,
-      isForSale: false,
-      isPriceHidden: true,
-      isInquireable: true,
-    }
-
-    const commercialButtons = await relayComponent({
-      artwork,
-    })
-    expect(commercialButtons.find(Button).at(0).text()).not.toContain("Make offer")
-  })
-
-  it("does not render Make Offer given the AREnableMakeOfferOnAllEligibleArtworks on", async () => {
+  it("does not render Make Offer given isInquireable and the AREnableMakeOfferOnAllEligibleArtworks on", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMakeOfferOnAllEligibleArtworks: true })
     const artwork = {
       ...ArtworkFixture,

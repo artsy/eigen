@@ -13,7 +13,6 @@ export type CommercialButtons_artwork = {
     readonly isInAuction: boolean | null;
     readonly isBuyNowable: boolean | null;
     readonly isForSale: boolean | null;
-    readonly isPriceHidden: boolean | null;
     readonly editionSets: ReadonlyArray<{
         readonly id: string;
     } | null> | null;
@@ -96,13 +95,6 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "isPriceHidden",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
       "concreteType": "EditionSet",
       "kind": "LinkedField",
       "name": "editionSets",
@@ -160,5 +152,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '6fa5c89eade343633eadab25cc044757';
+(node as any).hash = '4eb2b2906870ceaadf6f77dddfae0013';
 export default node;

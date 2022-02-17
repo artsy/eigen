@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 27a54a5f9f13acb66d61ea9687619b9e */
+/* @relayHash 84f445dd2ac4e42f5993c14463dd529f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,7 +21,6 @@ export type CommercialButtonsTestsRenderQueryRawResponse = {
         readonly isInAuction: boolean | null;
         readonly isBuyNowable: boolean | null;
         readonly isForSale: boolean | null;
-        readonly isPriceHidden: boolean | null;
         readonly editionSets: ReadonlyArray<({
             readonly id: string;
         }) | null> | null;
@@ -59,6 +58,7 @@ export type CommercialButtonsTestsRenderQueryRawResponse = {
             readonly width: number | null;
             readonly height: number | null;
         }) | null;
+        readonly isPriceHidden: boolean | null;
         readonly title: string | null;
         readonly date: string | null;
         readonly medium: string | null;
@@ -198,7 +198,6 @@ fragment CommercialButtons_artwork on Artwork {
   isInAuction
   isBuyNowable
   isForSale
-  isPriceHidden
   editionSets {
     id
   }
@@ -406,13 +405,6 @@ return {
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "isPriceHidden",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
             "concreteType": "EditionSet",
             "kind": "LinkedField",
             "name": "editionSets",
@@ -594,6 +586,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "isPriceHidden",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "title",
             "storageKey": null
           },
@@ -758,7 +757,7 @@ return {
     ]
   },
   "params": {
-    "id": "27a54a5f9f13acb66d61ea9687619b9e",
+    "id": "84f445dd2ac4e42f5993c14463dd529f",
     "metadata": {},
     "name": "CommercialButtonsTestsRenderQuery",
     "operationKind": "query",
