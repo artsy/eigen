@@ -925,7 +925,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     before: String
     first: Int
 
-    # Articles that are ready to be publicly viewed in the feed by everyone.
+    # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
     limit: Int
@@ -6840,7 +6840,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     before: String
     first: Int
 
-    # Articles that are ready to be publicly viewed in the feed by everyone.
+    # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
     sort: ArticleSorts
@@ -7078,7 +7078,7 @@ type FairOrganizer {
     before: String
     first: Int
 
-    # Articles that are ready to be publicly viewed in the feed by everyone.
+    # Get only articles with with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
     page: Int
@@ -9879,7 +9879,7 @@ type Partner implements Node {
     before: String
     first: Int
 
-    # Articles that are ready to be publicly viewed in the feed by everyone.
+    # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
     page: Int
@@ -10789,7 +10789,7 @@ type Query {
     featured: Boolean
     first: Int
 
-    # Articles that are ready to be publicly viewed in the feed by everyone.
+    # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
     page: Int
@@ -13798,7 +13798,7 @@ type Viewer {
     featured: Boolean
     first: Int
 
-    # Articles that are ready to be publicly viewed in the feed by everyone.
+    # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
     page: Int
