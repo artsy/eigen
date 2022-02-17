@@ -151,3 +151,6 @@ metaflags.json
 
 # Keep these, so we can keep the folders these appear in
 !.gitkeep
+
+# Relay
+src/__generated__/
