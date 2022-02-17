@@ -1,5 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { Formik } from "formik"
+import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { BulletedItem, CTAButton, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
@@ -8,7 +9,10 @@ import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "./validation"
 
-export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
+export const ArtworkDetails: React.FC<{ handlePress: () => void; navigation: any }> = ({
+  handlePress,
+  // navigation,
+}) => {
   const { submissionId, artworkDetails } = GlobalStore.useAppState(
     (state) => state.artworkSubmission.submission
   )
@@ -34,6 +38,16 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
 
   return (
     <Flex flex={3} p={1} mt={1}>
+      <Flex style={{ position: "absolute", top: -170, left: -20 }}>
+        <BackButton
+          onPress={() => {
+            // console.log("whoop presssed... navigation", navigation)
+            // console.log("whoop presssed... navigation", navigation.goBack())
+            // console.log("whoop presssed... navigation", navigation.getParent())
+            // navigation.navigate("Home")
+          }}
+        />
+      </Flex>
       <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
       <BulletedItem>
         Unfortunately, we do not allow{" "}

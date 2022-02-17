@@ -20,6 +20,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       title: "Artwork Details",
       Content: (
         <ArtworkDetails
+          navigation={navigation}
           handlePress={() => {
             expandCollapsibleMenuContent(1)
             enableStep(1)
@@ -126,7 +127,7 @@ const StackNavigator = createStackNavigator<SubmitArtworkOverviewNavigationStack
 
 export const SubmitArtworkOverview = () => {
   return (
-    <NavigationContainer independent>
+    <NavigationContainer>
       <StackNavigator.Navigator
         headerMode="screen"
         detachInactiveScreens={false}
