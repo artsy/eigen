@@ -41,6 +41,9 @@ export type MyCollectionArtworkFullDetails_artwork = {
     readonly slug: string;
     readonly title: string | null;
     readonly width: string | null;
+    readonly consignmentSubmission: {
+        readonly inProgress: boolean | null;
+    } | null;
     readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkMeta_artwork">;
     readonly " $refType": "MyCollectionArtworkFullDetails_artwork";
 };
@@ -278,6 +281,24 @@ return {
       "storageKey": null
     },
     (v2/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "ArtworkConsignmentSubmission",
+      "kind": "LinkedField",
+      "name": "consignmentSubmission",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "inProgress",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
     {
       "args": null,
       "kind": "FragmentSpread",

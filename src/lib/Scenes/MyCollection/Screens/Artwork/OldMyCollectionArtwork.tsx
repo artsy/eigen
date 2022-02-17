@@ -41,6 +41,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
   marketPriceInsights,
 }) => {
   const { trackEvent } = useTracking()
+  const displayEditButton = !artwork.consignmentSubmission?.inProgress
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -52,18 +53,22 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
     >
       <ScrollView>
         <FancyModalHeader
-          onRightButtonPress={() => {
-            trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
-            GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
-            navigate(`my-collection/artworks/${artwork.internalID}/edit`, {
-              passProps: {
-                mode: "edit",
-                artwork,
-                onSuccess: popToRoot,
-                onDelete: popToRoot,
-              },
-            })
-          }}
+          onRightButtonPress={
+            displayEditButton
+              ? () => {
+                  trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
+                  GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
+                  navigate(`my-collection/artworks/${artwork.internalID}/edit`, {
+                    passProps: {
+                      mode: "edit",
+                      artwork,
+                      onSuccess: popToRoot,
+                      onDelete: popToRoot,
+                    },
+                  })
+                }
+              : undefined
+          }
           onLeftButtonPress={goBack}
           hideBottomDivider
           renderRightButton={() => (
@@ -149,6 +154,9 @@ export const ArtworkMetaProps = graphql`
     slug
     title
     width
+    consignmentSubmission {
+      inProgress
+    }
   }
 `
 
