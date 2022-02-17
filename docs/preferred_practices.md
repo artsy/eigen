@@ -17,7 +17,7 @@ This is a living document, expected to be updated regularly, a broad overview of
 - [Prefer Relay containers (Higher Order Components) over Hooks](#prefer-relay-containers--higher-order-components--over-hooks)
 - [styled-system / styled-components](#styled-system---styled-components)
 - [Write unit tests for new components](#write-unit-tests-for-new-components)
-- [Use the Native Switchboard for Navigation (for now...)](#use-the-native-switchboard-for-navigation--for-now-)
+- [Navigation](#Navigation)
 - [Analytics](#analytics)
   - [Follow the tracking docs and examples](#follow-the-tracking-docs-and-examples)
 - [Miscellaneous](#miscellaneous)
@@ -150,15 +150,11 @@ Here are some great examples of what tests and test coverage should look like.
   - [Image uploading tests](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/app/Components/Consignments/Screens/__tests__/Overview-uploading-tests.tsx)
   - [`CollectionsRail` tests](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/app/Scenes/Home/Components/__tests__/CollectionsRail-tests.tsx) demonstrate `relay-test-utils`.
 
-### Use the Native Switchboard for Navigation (for now...)
+### Navigation
 
-Our React Native code ("Emission") is used by our Native code ("Eigen"). They used to be two repositories but were [combined in February 2020](https://github.com/artsy/eigen/pull/3030). Traces of the separation remain. The structure we originally took is [described in this blog post](http://artsy.github.io/blog/2016/08/24/On-Emission/). Interop between JavaScript and Native can be tricky.
+_Use `react-navigation` for navigating between screens, navigate function and new routes when necessary_
 
-_Most_ interactions are made through a "SwitchBoard" to open links. Other interactions are handled by the `APIModules`, for example when Eigen needs to invoke some kind of callback.
-
-- [Switchboard routes defined in Eigen](https://github.com/artsy/eigen/blob/e0567ffc3c9619c66890998ae3cadfc026a290ae/Artsy/App/ARSwitchBoard.m#L131-L255)
-- [Emission switchboard to call out to Eigen](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/Pod/Classes/Core/ARSwitchBoardModule.m)
-- [Callbacks between JS and native code are set up here](https://github.com/artsy/emission/blob/24c0fdaf91aa79654a33fd6e476405047819be5b/Pod/Classes/TemporaryAPI/ARTemporaryAPIModule.m).
+See our documentation on adding a route for more details: [Adding a new route](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_route.md)
 
 ### Analytics
 
