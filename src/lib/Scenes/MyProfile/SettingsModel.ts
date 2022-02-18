@@ -1,6 +1,6 @@
 import { action, Action, computed, Computed } from "easy-peasy"
-import { Appearance } from "react-native"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
+import { Appearance } from "react-native"
 
 export interface SettingsModel {
   // dark mode
