@@ -2,7 +2,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARTTestNativeViewManager : RCTViewManager
+@interface ARTCityGuideViewManager : RCTViewManager
 
 @end
 

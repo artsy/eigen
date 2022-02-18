@@ -107,3 +107,6 @@
 #import <Emission/ARComponentViewController.h>
 
 #import "ARScreenPresenterModule.h"
+
+// CityGuide
+#import "AREigenMapContainerViewController.h"

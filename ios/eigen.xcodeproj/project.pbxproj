@@ -15,7 +15,6 @@
 		4BA54428740D364B54D4A17D /* libPods-eigen-eigenTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE0ED407FA44DD891F5B3246 /* libPods-eigen-eigenTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C11AFA11C74E7B66FF34011D /* libPods-eigen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB231E790C61B818E9DBE3 /* libPods-eigen.a */; };
-		CB61B51527B2F4E80007922D /* ARTTestNativeViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B51427B2F4E80007922D /* ARTTestNativeViewManager.m */; };
 		CB61B72527B303710007922D /* StoryboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B51B27B3036F0007922D /* StoryboardConstants.swift */; };
 		CB61B72627B303710007922D /* StoryboardImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B51C27B3036F0007922D /* StoryboardImages.swift */; };
 		CB61B72727B303710007922D /* ARDispatchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B51D27B3036F0007922D /* ARDispatchManager.m */; };
@@ -315,6 +314,8 @@
 		CB61B85127B45CE00007922D /* LiveAuctionStateManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B63F27B303700007922D /* LiveAuctionStateManagerSpec.swift */; };
 		CB61B85227B54B330007922D /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B53027B3036F0007922D /* ARAppDelegate.m */; };
 		CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B85327B585F00007922D /* GoogleService-Info.plist */; };
+		CBB7352427BEDD48001AC8C0 /* ARTCityGuideViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB7352327BEDD48001AC8C0 /* ARTCityGuideViewManager.m */; };
+		CBB7352627BEEB02001AC8C0 /* CityGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7352527BEEB02001AC8C0 /* CityGuideView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -340,8 +341,6 @@
 		1A38C960279B03760031C1A2 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = eigen/fonts; sourceTree = "<group>"; };
 		236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.release.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = eigen/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		CB61B51327B2F4E80007922D /* ARTTestNativeViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTTestNativeViewManager.h; sourceTree = "<group>"; };
-		CB61B51427B2F4E80007922D /* ARTTestNativeViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTTestNativeViewManager.m; sourceTree = "<group>"; };
 		CB61B51B27B3036F0007922D /* StoryboardConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardConstants.swift; sourceTree = "<group>"; };
 		CB61B51C27B3036F0007922D /* StoryboardImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardImages.swift; sourceTree = "<group>"; };
 		CB61B51D27B3036F0007922D /* ARDispatchManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDispatchManager.m; sourceTree = "<group>"; };
@@ -798,6 +797,9 @@
 		CB61B72327B303700007922D /* ARFeedHostItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedHostItem.h; sourceTree = "<group>"; };
 		CB61B72427B303700007922D /* ARShareableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARShareableObject.h; sourceTree = "<group>"; };
 		CB61B85327B585F00007922D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CBB7352227BEDD48001AC8C0 /* ARTCityGuideViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTCityGuideViewManager.h; sourceTree = "<group>"; };
+		CBB7352327BEDD48001AC8C0 /* ARTCityGuideViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideViewManager.m; sourceTree = "<group>"; };
+		CBB7352527BEEB02001AC8C0 /* CityGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityGuideView.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE0ED407FA44DD891F5B3246 /* libPods-eigen-eigenTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen-eigenTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EB231E790C61B818E9DBE3 /* libPods-eigen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1908,8 +1910,9 @@
 		CBEEEFB7279A008800BA725F /* NativeModules */ = {
 			isa = PBXGroup;
 			children = (
-				CB61B51327B2F4E80007922D /* ARTTestNativeViewManager.h */,
-				CB61B51427B2F4E80007922D /* ARTTestNativeViewManager.m */,
+				CBB7352227BEDD48001AC8C0 /* ARTCityGuideViewManager.h */,
+				CBB7352327BEDD48001AC8C0 /* ARTCityGuideViewManager.m */,
+				CBB7352527BEEB02001AC8C0 /* CityGuideView.swift */,
 			);
 			name = NativeModules;
 			path = eigen/NativeModules;
@@ -2275,6 +2278,7 @@
 				CB61B83027B303720007922D /* AROfflineView.m in Sources */,
 				CB61B81B27B303720007922D /* ARAdminTableViewController.m in Sources */,
 				CB61B7F027B303720007922D /* RefinementOptionsViewController.swift in Sources */,
+				CBB7352427BEDD48001AC8C0 /* ARTCityGuideViewManager.m in Sources */,
 				CB61B7EF27B303720007922D /* AuctionInformationViewController.swift in Sources */,
 				CB61B81927B303720007922D /* ARAdminSettingsViewController.m in Sources */,
 				CB61B81827B303720007922D /* AREchoContentsViewController.m in Sources */,
@@ -2441,6 +2445,7 @@
 				CB61B84A27B303730007922D /* UIViewController+WithLoadedData.m in Sources */,
 				CB61B7FA27B303720007922D /* UIViewController+InnermostTopViewController.m in Sources */,
 				CB61B84127B303730007922D /* UILabel+Styling.swift in Sources */,
+				CBB7352627BEEB02001AC8C0 /* CityGuideView.swift in Sources */,
 				CB61B7B627B303720007922D /* SaleArtwork.m in Sources */,
 				CB61B84627B303730007922D /* UIViewController+Traits.swift in Sources */,
 				CB61B7CA27B303720007922D /* LiveAuctionLotListViewController.swift in Sources */,
@@ -2469,7 +2474,6 @@
 				CB61B83627B303720007922D /* ARNotificationView.m in Sources */,
 				CB61B7F527B303720007922D /* ARScrollNavigationChief.m in Sources */,
 				CB61B74027B303710007922D /* LiveAuctionSocketCommunicator.swift in Sources */,
-				CB61B51527B2F4E80007922D /* ARTTestNativeViewManager.m in Sources */,
 				CB61B74627B303710007922D /* ARKeychainable.m in Sources */,
 				CB61B7A227B303720007922D /* Partner.m in Sources */,
 				CB61B7CC27B303720007922D /* LiveAuctionStaticDataFetcher.swift in Sources */,
