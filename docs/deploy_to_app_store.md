@@ -23,6 +23,8 @@ We _do_ use the IDFA to attribute app installations to previously service advert
 
 Our App Store releases are done manually, instead of automatically once Apple approves the app. Don't release unless you are available over the next few hours to monitor Sentry for errors.
 
+> _When the app is approved for release, a slack message is sent to notify the #practice-mobile channel and an email from Apple Store Connect is sent to mobile [at] artsymail [dot] com_
+
 1. Run `./scripts/release-ios-app`
 2. Monitor [Sentry](https://sentry.io/artsynet/eigen/) in the #practice-mobile channel on Slack for any errors (all production errors are sent to Slack when they first occur).
 3. Make sure to let the team know over at [#dev](https://artsy.slack.com/archives/C02BC3HEJ)!. Don't forget to thank everyone who contributed 💜
