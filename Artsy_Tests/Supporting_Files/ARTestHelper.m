@@ -4,7 +4,7 @@
 #import "ARRouter.h"
 #import "ARUserManager.h"
 
-#import <SDWebImage/SDWebImageManager.h>
+#import <SDWebImage/SDWebImage.h>
 #import <SDWebImage/SDImageCache.h>
 #import "ARFonts.h"
 #import <Emission/AREmission.h>
