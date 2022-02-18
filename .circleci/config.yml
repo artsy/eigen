@@ -502,6 +502,17 @@ jobs:
           command: node scripts/changelog/commitChangelog.js
       - store_artifacts:
           path: .manifests
+  release-ios-app:
+    environment:
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+    macos:
+      xcode: 13.2.1
+    steps:
+      - checkout
+      - install-gems
+      - run:
+          name: Release app version
+          command: ./scripts/release-ios-app
 workflows:
   version: 2
   nightly:
@@ -544,6 +555,14 @@ workflows:
             branches:
               only:
                 - main
+  release-ios-app-workflow:
+    jobs:
+      - release-ios-app:
+          filters:
+            branches:
+              only:
+                - release_ios_app
+                - add-release-ios-app-script
   promote:
     jobs:
       - promote-beta-to-app-store:
