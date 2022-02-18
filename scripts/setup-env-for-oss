@@ -4,3 +4,6 @@ set -euxo pipefail
 
 touch .env.ci
 cp .env.example .env.shared
+
+cp metaflags.example.json metaflags.json
+yarn rimraf storybook.json
