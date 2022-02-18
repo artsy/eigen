@@ -195,6 +195,11 @@ export const features = defineFeatures({
     description: "Enable Avalara Phase 2",
     showInAdminMenu: true,
   },
+  ARDarkModeSupport: {
+    readyForRelease: false,
+    description: "Support dark mode",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
