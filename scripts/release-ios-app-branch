@@ -4,4 +4,4 @@ set -euxo pipefail
 
 source ./scripts/source-for-bash-env
 
-git push origin "${LOCAL_BRANCH}:release_ios_app" -f --no-verify
+git push origin "${LOCAL_BRANCH}:release-ios-app" -f --no-verify
