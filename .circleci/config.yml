@@ -289,6 +289,21 @@ jobs:
           name: Check flags
           command: ./scripts/biweekly-flag-check.sh
 
+  check-if-app-has-been-approved-for-release:
+    environment:
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+
+    macos:
+      xcode: 13.2.1
+
+    steps:
+      - checkout
+      - generate-checksums
+      - install-gems
+      - run:
+          name: Check flags
+          command: ./scripts/check-if-app-has-been-approved-for-release
+
   check-metaphysics-freshness:
     executor:
       name: node/default
@@ -530,6 +545,17 @@ workflows:
     triggers:
       - schedule:
           cron: "0 6 * * 4"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - check-flags
+
+  check-if-app-has-been-approved-for-release-workflow:
+    triggers:
+      - schedule:
+          cron: "0 4 * * 1-5"
           filters:
             branches:
               only:

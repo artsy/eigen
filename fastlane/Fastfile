@@ -479,6 +479,33 @@ lane :release_ios_app do |options|
   end
 end
 
+lane :check_if_app_is_pending_developer_release do |options|
+
+  # There seems to be some delta between spaceship + deliver token format
+   token = Spaceship::ConnectAPI::Token.create(
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+    key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
+    is_key_content_base64: true,
+    in_house: false
+  )
+
+  Spaceship::ConnectAPI.token = token
+
+  app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
+  version = app.get_pending_release_app_store_version
+
+  unless version.nil?
+    message = <<~MSG
+    🎉 The iOS App has been approved in App Store Connect and is now pending developer release
+    In order to release the app, follow the instructions here
+    https://github.com/artsy/eigen/blob/main/docs/deploy_to_app_store.md#release-to-app-store
+  MSG
+  slack(message: message, default_payloads: [])
+  end
+end
+
+
 lane :check_flags do
   sh('yarn check-flags')
   flag_file = File.read('./flags.json')
