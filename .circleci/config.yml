@@ -562,6 +562,7 @@ workflows:
             branches:
               only:
                 - release_ios_app
+                - add-release-ios-app-script
   promote:
     jobs:
       - promote-beta-to-app-store:
