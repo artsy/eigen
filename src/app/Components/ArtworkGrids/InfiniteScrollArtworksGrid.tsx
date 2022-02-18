@@ -234,7 +234,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       const { shouldAddPadding } = this.props
       const artworkPadding = shouldAddPadding ? 40 : 0
 
-      return (width - sectionMargins) / (this.props.sectionCount! - artworkPadding)
+      return (width - sectionMargins - artworkPadding) / this.props.sectionCount!
     }
     return 0
   }
