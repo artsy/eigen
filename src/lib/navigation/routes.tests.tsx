@@ -786,6 +786,16 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to DarkModeSettings", () => {
+    expect(matchRoute("/settings/dark-mode")).toMatchInlineSnapshot(`
+      Object {
+        "module": "DarkModeSettings",
+        "params": Object {},
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to MyProfilePaymentNewCreditCard", () => {
     expect(matchRoute("/my-profile/payment/new-card")).toMatchInlineSnapshot(`
       Object {

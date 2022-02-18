@@ -511,3 +511,22 @@ describe("App version Versions.AddArtworkViewOption", () => {
     expect(migratedState.userPreferences.artworkViewOption).toEqual("grid")
   })
 })
+
+describe("App version Versions.StartDarkModeSupport", () => {
+  const migrationToTest = Versions.StartDarkModeSupport
+
+  it("adds darkMode default", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.settings.darkModeSyncWithSystem).toEqual(false)
+    expect(migratedState.settings.darkModeForceMode).toEqual("light")
+  })
+})
