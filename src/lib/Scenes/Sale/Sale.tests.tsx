@@ -15,13 +15,6 @@ jest.mock("lib/navigation/navigate", () => ({
   navigate: jest.fn(),
 }))
 
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-  reset(this: { defaultEnvironment: any }) {
-    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
-  },
-}))
-
 describe("Sale", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
