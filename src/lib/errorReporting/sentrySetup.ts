@@ -1,9 +1,7 @@
-import * as Sentry from "@sentry/react-native"
-import { useEffect } from "react"
+import Sentry from "@sentry/react-native"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import { getBuildNumber, getVersion } from "react-native-device-info"
-import { GlobalStore, useFeatureFlag } from "./store/GlobalStore"
 
 // important! this must match the release version specified
 // in fastfile in order for sourcemaps/sentry stack traces to work
@@ -14,10 +12,11 @@ export const eigenSentryReleaseName = () => {
   return prefix + "-" + version + "-" + buildNumber
 }
 
-export const setupSentry = (
+export function setupSentry(
   props: Partial<Sentry.ReactNativeOptions> = {},
   captureExceptions: boolean
-) => {
+) {
+  console.log("!!sentry setting up!")
   if (captureExceptions && Config.SENTRY_DSN) {
     Sentry.init({
       dsn: Config.SENTRY_DSN,
@@ -31,19 +30,4 @@ export const setupSentry = (
       ...props,
     })
   }
-}
-
-export function useSentryConfig() {
-  const environment = GlobalStore.useAppState((store) => store.config.environment.env)
-  const captureExceptionsInSentryOnDev = useFeatureFlag("ARCaptureExceptionsInSentryOnDev")
-  const captureExceptions = !__DEV__ ? true : captureExceptionsInSentryOnDev
-
-  useEffect(() => {
-    setupSentry({ environment }, captureExceptions)
-  }, [environment, captureExceptionsInSentryOnDev])
-
-  const userID = GlobalStore.useAppState((store) => store.auth.userID) ?? "none"
-  useEffect(() => {
-    Sentry.setUser({ id: userID })
-  }, [userID])
 }
