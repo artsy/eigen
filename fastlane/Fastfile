@@ -93,6 +93,8 @@ lane :update_version_string do
   File.open(app_json_path, 'w') do |file|
     file.puts JSON.pretty_generate(app_json)
   end
+
+  create_next_app_version(next_version_code: new_version)
 end
 
 date_str = DateTime.now.strftime("%Y.%m.%d.%H")
@@ -477,6 +479,30 @@ lane :release_ios_app do |options|
   unless version.nil?
     Spaceship::ConnectAPI.post_app_store_version_release_request(app_store_version_id: version.id)
   end
+end
+
+lane :create_next_app_version do |options|
+  api_key = app_store_connect_api_key(
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+    key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
+    is_key_content_base64: true,
+    in_house: false,
+  )
+
+  next_version = options[:next_version_code]
+
+  puts "Let's create a new app version #{next_version}."
+  deliver(
+    api_key: api_key,
+    app_version: next_version,
+    force: true, # Skip HTMl report verification
+    skip_screenshots: true,
+    skip_binary_upload: true,
+    skip_metadata: true,
+    submit_for_review: false,
+    precheck_include_in_app_purchases: false,
+  )
 end
 
 lane :check_if_app_is_pending_developer_release do |options|
