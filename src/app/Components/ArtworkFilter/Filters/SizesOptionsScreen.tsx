@@ -115,12 +115,25 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
     onChange({ ...values, [paramName]: range })
   }
 
+  const isCm = metric === "cm"
+  const isIn = metric === "in"
+
   return (
     <Box mx={15} my={2}>
       <Flex flexDirection="row">
-        <RadioButton selected={metric === "cm"} onPress={() => handleMetricChange("cm")} />
+        <RadioButton
+          accessibilityLabel="cm"
+          accessibilityState={{ checked: isCm }}
+          selected={isCm}
+          onPress={() => handleMetricChange("cm")}
+        />
         <Text marginRight="3">cm</Text>
-        <RadioButton selected={metric === "in"} onPress={() => handleMetricChange("in")} />
+        <RadioButton
+          accessibilityLabel="in"
+          accessibilityState={{ checked: isIn }}
+          selected={isIn}
+          onPress={() => handleMetricChange("in")}
+        />
         <Text>in</Text>
       </Flex>
       <Spacer mt={2} />
