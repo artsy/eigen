@@ -456,7 +456,17 @@ lane :tag_and_push do |options|
 end
 
 lane :release_ios_app do |options|
-  client = Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
+
+  # There seems to be some delta between spaceship + deliver token format
+   token = Spaceship::ConnectAPI::Token.create(
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+    key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
+    is_key_content_base64: true,
+    in_house: false
+  )
+
+  Spaceship::ConnectAPI.token = token
 
   app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
   version = app.get_pending_release_app_store_version
