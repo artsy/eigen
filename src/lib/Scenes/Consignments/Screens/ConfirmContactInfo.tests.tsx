@@ -13,11 +13,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ConfirmContactInfoQueryRenderer } from "./ConfirmContactInfo"
 
 jest.unmock("react-relay")
-jest.mock("lib/relay/createEnvironment", () => {
-  return {
-    defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-  }
-})
 
 const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 const navigator = { push: jest.fn() } as any
