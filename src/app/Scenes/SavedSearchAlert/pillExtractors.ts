@@ -7,8 +7,7 @@ import {
 import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import {
-  inToCm,
-  Numeric,
+  localizeDimension,
   parsePriceRangeLabel,
   parseRange,
   Unit,
@@ -48,13 +47,6 @@ export const extractPillFromAggregation = (
   }
 
   return []
-}
-
-const localizeDimension = (dimension: Numeric, unit: Unit) => {
-  if (unit === "cm") {
-    return inToCm(dimension)
-  }
-  return dimension
 }
 
 export const extractSizeLabel = ({

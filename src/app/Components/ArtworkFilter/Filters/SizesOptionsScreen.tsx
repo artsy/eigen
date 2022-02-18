@@ -83,15 +83,15 @@ const CUSTOM_SIZE_OPTION_KEYS: Array<keyof CustomSize> = [
 ]
 
 // Helpers
-export const getCustomValues = (options: FilterData[]) => {
+export const getCustomValues = (options: FilterData[], unit: Unit) => {
   return options.reduce((acc, option) => {
     const { min, max } = parseRange(String(option.paramValue))
 
     return {
       ...acc,
       [option.paramName]: {
-        min: localizeDimension(min, "in").value,
-        max: localizeDimension(max, "in").value,
+        min: localizeDimension(min, unit),
+        max: localizeDimension(max, unit),
       },
     }
   }, DEFAULT_CUSTOM_SIZE)
@@ -166,7 +166,9 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   const selectedCustomOptions = selectedOptions.filter((option) =>
     CUSTOM_SIZE_OPTION_KEYS.includes(option.paramName as keyof CustomSize)
   )
-  const [customValues, setCustomValues] = useState(getCustomValues(selectedCustomOptions))
+  const [customValues, setCustomValues] = useState(
+    getCustomValues(selectedCustomOptions, localizedUnit)
+  )
   const [customSizeSelected, setCustomSizeSelected] = useState(
     !checkIsEmptyCustomValues(customValues)
   )
@@ -202,8 +204,8 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   const selectCustomFiltersAction = (values: CustomSize) => {
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
       const value = values[paramName]
-      const localizedMinValue = localizedUnit === "cm" ? toIn(value.min, localizedUnit) : value.min
-      const localizedMaxValue = localizedUnit === "cm" ? toIn(value.max, localizedUnit) : value.max
+      const localizedMinValue = toIn(value.min, localizedUnit)
+      const localizedMaxValue = toIn(value.max, localizedUnit)
       selectFiltersAction({
         displayText: `${value.min}-${value.max}`,
         paramName: paramName as FilterParamName,

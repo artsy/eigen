@@ -426,7 +426,7 @@ describe("getCustomValues", () => {
       },
     ]
 
-    expect(getCustomValues(filters)).toEqual({
+    expect(getCustomValues(filters, "in")).toEqual({
       width: {
         min: 5,
         max: 10,
@@ -452,7 +452,7 @@ describe("getCustomValues", () => {
       },
     ]
 
-    expect(getCustomValues(filters)).toEqual({
+    expect(getCustomValues(filters, "in")).toEqual({
       width: {
         min: "*",
         max: 10,

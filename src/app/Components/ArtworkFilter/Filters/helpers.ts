@@ -13,25 +13,11 @@ const ONE_IN_TO_CM = 2.54
 export const IS_USA = LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
 export const LOCALIZED_UNIT: Unit = IS_USA ? "in" : "cm"
 
-/**
- * Accepts a value and it's input unit type and returns a localized conversion (or leaves it alone)
- */
-export const localizeDimension = (value: Numeric, unit: Unit): { value: Numeric; unit: Unit } => {
-  // Localize for US (return inches)
-  if (IS_USA && unit === "in") {
-    return { value, unit: "in" }
+export const localizeDimension = (dimension: Numeric, unit: Unit) => {
+  if (unit === "cm") {
+    return inToCm(dimension)
   }
-
-  if (IS_USA && unit === "cm") {
-    return { value: cmToIn(value), unit: "in" }
-  }
-
-  // Localize for rest of world (return centimeters)
-  if (unit === "in") {
-    return { value: inToCm(value), unit: "cm" }
-  }
-
-  return { value, unit: "cm" }
+  return dimension
 }
 
 export const cmToIn = (centimeters: Numeric) => {

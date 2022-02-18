@@ -43,7 +43,7 @@ export const convertCustomSizeToFilterParamByName = (paramName: FilterParamName,
   const widthMaxLocalized = localizeDimension(max, "in")
 
   return {
-    displayText: `${widthMinLocalized.value}-${widthMaxLocalized.value}`,
+    displayText: `${widthMinLocalized}-${widthMaxLocalized}`,
     paramValue: `${min}-${max}`,
     paramName,
   }
