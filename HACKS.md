@@ -54,16 +54,6 @@ https://github.com/ivpusic/react-native-image-crop-picker/pull/1354
 
 We do some swizzling in our AppDelegate that causes [[UIApplication sharedApplication] delegate] window] to return nil, this is used by image-crop-picker to find the currently presented viewController to present the picker onto. This patch looks for our custom window subclass (ARWindow) instead and uses that to find the presented viewController. Note we cannot reliably use the lastWindow rather than checking for our custom subclass because in some circumstances this is not our window but an apple window for example UIInputWindow used for managing the keyboard.
 
-## react-native-haptic-feedback patch-package
-
-#### When can we remove this:
-
-When this is merged: https://github.com/junina-de/react-native-haptic-feedback/pull/60.
-
-#### Explanation/Context:
-
-We use this type in our code, so we need it exported.
-
 ## react-native patch-package (stacktrace-parser part only).
 
 #### When can we remove this:
