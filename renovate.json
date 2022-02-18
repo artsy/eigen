@@ -1,5 +1,5 @@
 {
   "extends": ["@artsy:app"],
   "assignees": ["pvinis", "brainbicycle"],
-  "reviewers": ["artsy/collector-experience"]
+  "reviewers": ["pvinis", "brianbicycle"]
 }
