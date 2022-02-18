@@ -462,7 +462,8 @@ lane :release_ios_app do |options|
   version = app.get_pending_release_app_store_version
 
   unless version.nil?
-  Spaceship::ConnectAPI.post_app_store_version_release_request(app_store_version_id: version.id)
+    Spaceship::ConnectAPI.post_app_store_version_release_request(app_store_version_id: version.id)
+  end
 end
 
 lane :check_flags do
