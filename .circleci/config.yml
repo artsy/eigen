@@ -512,7 +512,7 @@ jobs:
       - install-gems
       - run:
           name: Release app version
-          command: ./scripts/release-ios-app
+          command: ./scripts/release-ios-app-branch
 workflows:
   version: 2
   nightly:
