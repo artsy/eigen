@@ -32,12 +32,6 @@ jest.mock("lib/Scenes/Consignments/Submission/geminiUploadToS3", () => ({
   uploadFileToS3: jest.fn(),
 }))
 
-jest.mock("lib/relay/createEnvironment", () => {
-  return {
-    defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-  }
-})
-
 jest.unmock("react-relay")
 
 const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>

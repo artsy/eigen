@@ -16,13 +16,9 @@ import {
   OpenSettingsBanner,
 } from "./MyProfilePushNotifications"
 
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-}))
-
 jest.unmock("react-relay")
 
-const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
+const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe(SwitchMenu, () => {
   it("title is set to black100 when enabled", () => {
