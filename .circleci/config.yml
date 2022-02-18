@@ -537,16 +537,6 @@ workflows:
     jobs:
       - check-flags
 
-  # metaphysics-check:
-  #   triggers:
-  #     - schedule:
-  #         cron: "13 * * * *"
-  #         filters:
-  #           branches:
-  #             only:
-  #               - main
-  #   jobs:
-  #     - check-metaphysics-freshness
 
   update-changelog-workflow:
     jobs:
