@@ -148,12 +148,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableSplitIOABTesting",
   },
-  AREnableSortFilterForArtworksPill: {
-    readyForRelease: true,
-    description: "Enable sort filter for artworks pill",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableSortFilterForArtworksPill",
-  },
   AREnableArtistRecommendations: {
     readyForRelease: false,
     description: "Enable new artist recommendations",
