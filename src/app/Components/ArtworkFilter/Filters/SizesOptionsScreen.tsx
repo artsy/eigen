@@ -150,10 +150,7 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
 
   const { localizedUnit } = useLocalizedUnit()
 
-  const [metric, setMetric] = useState(localizedUnit)
-  const [sizesOptions, setSizesOptions] = useState(
-    localizedUnit === "in" ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS
-  )
+  const sizesOptions = getSizeOptions(localizedUnit)
 
   const {
     handleSelect,
@@ -178,12 +175,10 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   const isActive = isActivePredefinedValues || !checkIsEmptyCustomValues(customValues)
 
   useEffect(() => {
-    setSizesOptions(metric === "in" ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS)
     handleCustomInputsChange(customValues)
-  }, [metric])
+  }, [localizedUnit])
 
   const handleMetricChange = (newMetric: "in" | "cm") => {
-    setMetric(newMetric)
     GlobalStore.actions.userPreferences.setMetric(newMetric)
   }
 
@@ -207,8 +202,8 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   const selectCustomFiltersAction = (values: CustomSize) => {
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
       const value = values[paramName]
-      const localizedMinValue = metric === "cm" ? toIn(value.min, metric) : value.min
-      const localizedMaxValue = metric === "cm" ? toIn(value.max, metric) : value.max
+      const localizedMinValue = localizedUnit === "cm" ? toIn(value.min, localizedUnit) : value.min
+      const localizedMaxValue = localizedUnit === "cm" ? toIn(value.max, localizedUnit) : value.max
       selectFiltersAction({
         displayText: `${value.min}-${value.max}`,
         paramName: paramName as FilterParamName,
@@ -277,7 +272,7 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
             active={customSizeSelected}
             onChange={handleCustomInputsChange}
             handleMetricChange={handleMetricChange}
-            metric={metric}
+            metric={localizedUnit}
           />
         ) : null
       }

@@ -39,8 +39,6 @@ const savedSearchModel: SavedSearchModel = {
 
     state.dirty = true
   }),
-
-  // pills: computed((state) => extractPills(state.attributes, state.aggregations)),
 }
 
 export const SavedSearchStore = createContextStore<SavedSearchModel>(
