@@ -259,6 +259,7 @@ lane :promote_beta_ios do
   puts "Let's deliver beta #{next_app_store_version} (#{build_number}) with build number #{build_number}."
   deliver(
     api_key: api_key,
+    app_version: app_json['version'],
     build_number: build_number,
     force: true, # Skip HTMl report verification
     skip_screenshots: true,
