@@ -1,10 +1,10 @@
 import { action, Action, computed, Computed } from "easy-peasy"
-
-type DarkModeOption = "light" | "dark" | "system"
+import { Appearance } from "react-native"
+import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 
 export interface SettingsModel {
   // dark mode
-  darkMode: Computed<this, DarkModeOption, this>
+  darkMode: Computed<this, "light" | "dark", GlobalStoreModel>
   darkModeSyncWithSystem: boolean
   darkModeForceMode: "light" | "dark"
 
@@ -13,9 +13,14 @@ export interface SettingsModel {
 }
 
 export const getSettingsModel = (): SettingsModel => ({
-  darkMode: computed((store) =>
-    store.darkModeSyncWithSystem ? "system" : store.darkModeForceMode
-  ),
+  darkMode: computed([(_, store) => store], (store) => {
+    if (!store.config.features.flags.ARDarkModeSupport) {
+      return "light"
+    }
+    return store.settings.darkModeSyncWithSystem
+      ? Appearance.getColorScheme() ?? "light"
+      : store.settings.darkModeForceMode
+  }),
   darkModeSyncWithSystem: false, // TODO: put `true` as default when the flag is ready to go away
   darkModeForceMode: "light",
 

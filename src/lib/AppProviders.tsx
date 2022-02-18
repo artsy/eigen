@@ -1,6 +1,6 @@
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { Theme } from "palette"
-import React, { Component, FC, ReactNode } from "react"
+import React, { Component, ReactNode } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
@@ -8,7 +8,7 @@ import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessa
 import { RetryErrorBoundary } from "./Components/RetryErrorBoundary"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { defaultEnvironment } from "./relay/createEnvironment"
-import { GlobalStoreProvider } from "./store/GlobalStore"
+import { GlobalStore, GlobalStoreProvider, useFeatureFlag } from "./store/GlobalStore"
 import { combineProviders } from "./utils/combineProviders"
 import { track } from "./utils/track"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
@@ -23,7 +23,7 @@ export const AppProviders = ({ children }: { children?: ReactNode }) =>
       ProvideScreenDimensions, // uses: SafeAreaProvider
       GlobalStoreProvider,
       RelayDefaultEnvProvider,
-      Theme,
+      ThemeProvider, // uses: GlobalStoreProvider
       RetryErrorBoundary,
       ActionSheetProvider,
       PopoverMessageProvider,
@@ -36,16 +36,28 @@ export const AppProviders = ({ children }: { children?: ReactNode }) =>
 // Providers with preset props
 
 // relay needs the default environment
-const RelayDefaultEnvProvider: FC = (props) => (
+const RelayDefaultEnvProvider = (props: { children?: ReactNode }) => (
   <RelayEnvironmentProvider environment={defaultEnvironment} {...props} />
 )
 
 // react-track has no provider, we make one using the decorator and a class wrapper
-const TrackingProvider: FC = (props) => <PureWrapper {...props} />
+const TrackingProvider = (props: { children?: ReactNode }) => <PureWrapper {...props} />
 
 @track()
 class PureWrapper extends Component {
   render() {
     return this.props.children
   }
+}
+
+// theme with dark mode support
+function ThemeProvider({ children }: { children?: ReactNode }) {
+  const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
+  const darkMode = GlobalStore.useAppState((state) => state.settings.darkMode)
+
+  return (
+    <Theme theme={supportDarkMode ? (darkMode === "dark" ? "v5dark" : "v5") : undefined}>
+      {children}
+    </Theme>
+  )
 }
