@@ -456,6 +456,8 @@ lane :tag_and_push do |options|
   `git push http #{tag} -f`
 end
 
+# This is a lane that is used to release the app on Apple Store Connect
+# When it has been approved an it's pending developer release
 lane :release_ios_app do |options|
 
   # There seems to be some delta between spaceship + deliver token format
