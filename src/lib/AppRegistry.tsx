@@ -14,7 +14,7 @@ import { InboxQueryRenderer, InboxScreenQuery } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
-import { useSentryConfig } from "./ErrorReporting"
+import { useErrorReporting } from "./errorReporting/hooks"
 import { About } from "./Scenes/About/About"
 import { ArticlesScreen, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
@@ -120,6 +120,7 @@ import {
 } from "./utils/track/SegmentTrackingProvider"
 import { useExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
+import { useIdentifyUser } from "./utils/useIdentifyUser"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
@@ -464,11 +465,12 @@ const Main: React.FC = () => {
     (state) => state.config.echo.forceUpdateMessage
   )
 
-  useSentryConfig()
+  useErrorReporting()
   useStripeConfig()
   useWebViewCookies()
   useExperiments()
   useInitializeQueryPrefetching()
+  useIdentifyUser()
 
   if (!isHydrated) {
     return <View />

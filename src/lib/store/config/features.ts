@@ -170,11 +170,6 @@ export const features = defineFeatures({
     description: "Enable New Artwork Submission Flow with Accordion",
     showInAdminMenu: true,
   },
-  ARCaptureExceptionsInSentryOnDev: {
-    readyForRelease: false,
-    description: "Enable capturing exceptions in Sentry on DEV",
-    showInAdminMenu: true,
-  },
   ARShowLinkedAccounts: {
     readyForRelease: false,
     description: "Show linked social accounts",
@@ -266,6 +261,9 @@ export const devToggles = defineDevToggles({
   },
   DTShowInstagramShot: {
     description: "Show Instagram viewshot",
+  },
+  DTCaptureExceptionsInSentryOnDev: {
+    description: "Enable capturing exceptions in Sentry on DEV",
   },
 })
 
