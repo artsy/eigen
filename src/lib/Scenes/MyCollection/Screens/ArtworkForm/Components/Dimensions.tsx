@@ -7,6 +7,7 @@ import React, { useState } from "react"
 export const Dimensions: React.FC = () => {
   const { formik } = useArtworkForm()
 
+  // Using a local state to improve performance
   const [localMetric, setLocalMetric] = useState(formik.values.metric)
 
   const handleMetricChange = (unit: Metric) => {
