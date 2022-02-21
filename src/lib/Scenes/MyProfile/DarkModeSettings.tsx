@@ -6,9 +6,9 @@ import React from "react"
 
 export function DarkModeSettings() {
   const syncWithSystem = GlobalStore.useAppState(
-    (state) => state.devicePrefs.darkModeSyncWithSystem
+    (state) => state.devicePrefs.usingSystemColorScheme
   )
-  const forceMode = GlobalStore.useAppState((state) => state.devicePrefs.darkModeForceMode)
+  const forceMode = GlobalStore.useAppState((state) => state.devicePrefs.forcedColorScheme)
 
   return (
     <PageWithSimpleHeader title="Dark Mode Settings">
@@ -21,7 +21,7 @@ export function DarkModeSettings() {
           description="Automatically turn dark mode on or off based on the system's dark mode setting."
           value={syncWithSystem}
           onChange={(value) => {
-            GlobalStore.actions.devicePrefs.setDarkModeSyncWithSystem(value)
+            GlobalStore.actions.devicePrefs.setUsingSystemColorScheme(value)
           }}
         />
         <SwitchMenu
@@ -30,7 +30,7 @@ export function DarkModeSettings() {
           value={forceMode === "dark"}
           disabled={syncWithSystem}
           onChange={(value) => {
-            GlobalStore.actions.devicePrefs.setDarkModeForceMode(value ? "dark" : "light")
+            GlobalStore.actions.devicePrefs.setForcedColorScheme(value ? "dark" : "light")
           }}
         />
       </Flex>

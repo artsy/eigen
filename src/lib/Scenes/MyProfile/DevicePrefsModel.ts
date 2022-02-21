@@ -3,31 +3,31 @@ import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { Appearance } from "react-native"
 
 export interface DevicePrefsModel {
-  // dark mode
-  darkMode: Computed<this, "light" | "dark", GlobalStoreModel>
-  darkModeSyncWithSystem: boolean
-  darkModeForceMode: "light" | "dark"
+  // color scheme
+  colorScheme: Computed<this, "light" | "dark", GlobalStoreModel>
+  usingSystemColorScheme: boolean
+  forcedColorScheme: "light" | "dark"
 
-  setDarkModeSyncWithSystem: Action<this, this["darkModeSyncWithSystem"]>
-  setDarkModeForceMode: Action<this, this["darkModeForceMode"]>
+  setUsingSystemColorScheme: Action<this, this["usingSystemColorScheme"]>
+  setForcedColorScheme: Action<this, this["forcedColorScheme"]>
 }
 
 export const getDevicePrefsModel = (): DevicePrefsModel => ({
-  darkMode: computed([(_, store) => store], (store) => {
+  colorScheme: computed([(_, store) => store], (store) => {
     if (!store.artsyPrefs.features.flags.ARDarkModeSupport) {
       return "light"
     }
-    return store.devicePrefs.darkModeSyncWithSystem
+    return store.devicePrefs.usingSystemColorScheme
       ? Appearance.getColorScheme() ?? "light"
-      : store.devicePrefs.darkModeForceMode
+      : store.devicePrefs.forcedColorScheme
   }),
-  darkModeSyncWithSystem: false, // TODO: put `true` as default when the flag is ready to go away
-  darkModeForceMode: "light",
+  usingSystemColorScheme: false, // TODO: put `true` as default when the flag is ready to go away
+  forcedColorScheme: "light",
 
-  setDarkModeSyncWithSystem: action((state, option) => {
-    state.darkModeSyncWithSystem = option
+  setUsingSystemColorScheme: action((state, option) => {
+    state.usingSystemColorScheme = option
   }),
-  setDarkModeForceMode: action((state, option) => {
-    state.darkModeForceMode = option
+  setForcedColorScheme: action((state, option) => {
+    state.forcedColorScheme = option
   }),
 })
