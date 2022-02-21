@@ -289,6 +289,21 @@ jobs:
           name: Check flags
           command: ./scripts/biweekly-flag-check.sh
 
+  check-if-app-has-been-approved-for-release:
+    environment:
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+
+    macos:
+      xcode: 13.2.1
+
+    steps:
+      - checkout
+      - generate-checksums
+      - install-gems
+      - run:
+          name: Check flags
+          command: ./scripts/check-if-app-has-been-approved-for-release
+
   check-metaphysics-freshness:
     executor:
       name: node/default
@@ -502,6 +517,17 @@ jobs:
           command: node scripts/changelog/commitChangelog.js
       - store_artifacts:
           path: .manifests
+  release-ios-app:
+    environment:
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+    macos:
+      xcode: 13.2.1
+    steps:
+      - checkout
+      - install-gems
+      - run:
+          name: Release app version
+          command: ./scripts/release-ios-app-branch
 workflows:
   version: 2
   nightly:
@@ -526,16 +552,17 @@ workflows:
     jobs:
       - check-flags
 
-  # metaphysics-check:
-  #   triggers:
-  #     - schedule:
-  #         cron: "13 * * * *"
-  #         filters:
-  #           branches:
-  #             only:
-  #               - main
-  #   jobs:
-  #     - check-metaphysics-freshness
+  check-if-app-has-been-approved-for-release-workflow:
+    triggers:
+      - schedule:
+          cron: "0 4 * * 1-5"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - check-flags
+
 
   update-changelog-workflow:
     jobs:
@@ -544,6 +571,13 @@ workflows:
             branches:
               only:
                 - main
+  release-ios-app-workflow:
+    jobs:
+      - release-ios-app:
+          filters:
+            branches:
+              only:
+                - release-ios-app
   promote:
     jobs:
       - promote-beta-to-app-store:
