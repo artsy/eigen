@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// Change `metaflags.json` depending on STORYBOOK env variable
+// Change `metaflags.json` depending on env variables (e.g. `STORYBOOK`)
 // to read the file content later in `index.ios.js` and `index.android.js`
 // and either start the app or Storybook.
 
