@@ -141,8 +141,8 @@ export const MyCollectionArtworkFormMain: React.FC<
               enableSearch={false}
               showTitleLabel={false}
               onSelectValue={(value) => {
-                GlobalStore.actions.userPrefs.setCurrency(value as Currency)
                 formik.handleChange("pricePaidCurrency")(value)
+                GlobalStore.actions.userPrefs.setCurrency(value as Currency)
               }}
               testID="CurrencyPicker"
             />
