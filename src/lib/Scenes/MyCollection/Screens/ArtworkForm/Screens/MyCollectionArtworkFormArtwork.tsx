@@ -24,8 +24,8 @@ export const MyCollectionArtworkFormArtwork: React.FC<
   const [loading, setLoading] = useState(false)
 
   const { formik } = useArtworkForm()
-  const preferredCurrency = GlobalStore.useAppState((state) => state.userPreferences.currency)
-  const preferredMetric = GlobalStore.useAppState((state) => state.userPreferences.metric)
+  const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
+  const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
   useEffect(() => {
     // Navigate back to the artist search screen if no artist is selected.

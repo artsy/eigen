@@ -29,7 +29,7 @@ export const getFeaturesModel = (): FeaturesModel => ({
     }
   }),
 
-  flags: computed([(state) => state, (_, store) => store.config.echo], (state, echo) => {
+  flags: computed([(state) => state, (_, store) => store.artsyPrefs.echo], (state, echo) => {
     const result = {} as any
     for (const [key, feature] of Object.entries(features)) {
       if (state.adminOverrides[key as FeatureName] != null) {

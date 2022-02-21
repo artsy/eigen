@@ -31,9 +31,10 @@ export const Versions = {
   AddVisualClueModel: 19,
   AddArtworkSubmissionModel: 20,
   AddArtworkViewOption: 21,
+  RenameModelsAndAddDarkModeSupport: 22,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddArtworkViewOption
+export const CURRENT_APP_VERSION = Versions.RenameModelsAndAddDarkModeSupport
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -163,6 +164,16 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddArtworkViewOption]: (state) => {
     state.userPreferences.artworkViewOption = "grid"
+  },
+  [Versions.RenameModelsAndAddDarkModeSupport]: (state) => {
+    state.artsyPrefs = state.config ?? {}
+    state.userPrefs = state.userPreferences ?? {}
+    state.devicePrefs = {
+      usingSystemColorScheme: false,
+      forcedColorScheme: "light",
+    }
+    delete state.config
+    delete state.userPreferences
   },
 }
 

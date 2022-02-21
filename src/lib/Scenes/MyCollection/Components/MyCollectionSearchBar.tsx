@@ -2,7 +2,7 @@ import { useStickyTabPageContext } from "lib/Components/StickyTabPage/SitckyTabP
 import { GridViewIcon } from "lib/Icons/GridViewIcon"
 import { ListViewIcon } from "lib/Icons/ListViewIcon"
 import SearchIcon from "lib/Icons/SearchIcon"
-import { ViewOption } from "lib/Scenes/Search/UserPreferencesModel"
+import { ViewOption } from "lib/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { debounce } from "lodash"
 import { Flex, Input, Text } from "palette"
@@ -29,9 +29,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
 
   const { hideStaticHeader, showStaticHeader } = useStickyTabPageContext()
 
-  const viewOptionPreference = GlobalStore.useAppState(
-    (state) => state.userPreferences.artworkViewOption
-  )
+  const viewOptionPreference = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   const [viewOption, setViewOption] = useState(viewOptionPreference)
 
@@ -47,7 +45,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
 
     setViewOption(selectedViewOption)
 
-    GlobalStore.actions.userPreferences.setArtworkViewOption(selectedViewOption)
+    GlobalStore.actions.userPrefs.setArtworkViewOption(selectedViewOption)
   }
 
   useEffect(() => {

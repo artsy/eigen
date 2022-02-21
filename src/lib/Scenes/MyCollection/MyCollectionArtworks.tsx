@@ -28,7 +28,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   relay,
 }) => {
   const { height: screenHeight } = useScreenDimensions()
-  const viewOption = GlobalStore.useAppState((state) => state.userPreferences.artworkViewOption)
+  const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)

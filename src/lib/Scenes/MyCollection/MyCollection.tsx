@@ -274,7 +274,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 
 export const MyCollectionPlaceholder: React.FC<{}> = () => {
   const screenWidth = useScreenDimensions().width
-  const viewOption = GlobalStore.useAppState((state) => state.userPreferences.artworkViewOption)
+  const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   return (
     <Flex>

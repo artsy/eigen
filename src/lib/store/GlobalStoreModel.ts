@@ -9,13 +9,11 @@ import {
   getMyCollectionModel,
   MyCollectionModel,
 } from "lib/Scenes/MyCollection/State/MyCollectionModel"
+import { DevicePrefsModel, getDevicePrefsModel } from "lib/Scenes/MyProfile/DevicePrefsModel"
 import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
-import {
-  getUserPreferencesModel,
-  UserPreferencesModel,
-} from "lib/Scenes/Search/UserPreferencesModel"
+import { getUserPrefsModel, UserPrefsModel } from "lib/Scenes/Search/UserPrefsModel"
+import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
-import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
 import { getNativeModel, NativeModel } from "./NativeModel"
@@ -37,11 +35,12 @@ interface GlobalStoreStateModel {
   bottomTabs: BottomTabsModel
   search: SearchModel
   myCollection: MyCollectionModel
-  config: ConfigModel
   auth: AuthModel
   toast: ToastModel
   pendingPushNotification: PendingPushNotificationModel
-  userPreferences: UserPreferencesModel
+  artsyPrefs: ArtsyPrefsModel
+  userPrefs: UserPrefsModel
+  devicePrefs: DevicePrefsModel
   visualClue: VisualClueModel
   artworkSubmission: SubmissionModel
 }
@@ -80,14 +79,14 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     (a) => a.auth.signOut,
     (actions, _, store) => {
       const {
-        config: existingConfig,
+        artsyPrefs: existingConfig,
         search,
         auth: { userID },
       } = store.getState()
 
       // keep existing config state
       const config = sanitize(existingConfig) as typeof existingConfig
-      actions.reset({ config, search, auth: { previousSessionUserID: userID } })
+      actions.reset({ artsyPrefs: config, search, auth: { previousSessionUserID: userID } })
     }
   ),
   didRehydrate: thunkOn(
@@ -109,11 +108,12 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   bottomTabs: getBottomTabsModel(),
   search: getSearchModel(),
   myCollection: getMyCollectionModel(),
-  config: getConfigModel(),
+  artsyPrefs: getArtsyPrefsModel(),
   auth: getAuthModel(),
   toast: getToastModel(),
+  devicePrefs: getDevicePrefsModel(),
   pendingPushNotification: getPendingPushNotificationModel(),
-  userPreferences: getUserPreferencesModel(),
+  userPrefs: getUserPrefsModel(),
   visualClue: getVisualClueModel(),
   artworkSubmission: getSubmissionModel(),
 

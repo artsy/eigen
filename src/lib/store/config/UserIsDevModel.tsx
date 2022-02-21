@@ -20,7 +20,7 @@ export const getUserIsDev = (): UserIsDevModel => ({
     if (store.auth.userHasArtsyEmail) {
       retval = true
     }
-    return store.config.userIsDev.flipValue ? !retval : retval
+    return store.artsyPrefs.userIsDev.flipValue ? !retval : retval
   }),
   setFlipValue: action((state, nextValue) => {
     state.flipValue = nextValue

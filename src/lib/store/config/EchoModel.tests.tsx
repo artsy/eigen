@@ -30,11 +30,11 @@ beforeEach(() => {
 })
 
 const getEchoState = () => {
-  return __globalStoreTestUtils__?.getCurrentState().config.echo.state
+  return __globalStoreTestUtils__?.getCurrentState().artsyPrefs.echo.state
 }
 
 const forceUpdateMessage = () => {
-  return __globalStoreTestUtils__?.getCurrentState().config.echo.forceUpdateMessage
+  return __globalStoreTestUtils__?.getCurrentState().artsyPrefs.echo.forceUpdateMessage
 }
 
 describe("Echo", () => {
@@ -64,7 +64,7 @@ describe("Echo", () => {
     const newEcho = echo({
       updated_at: laterDate.toISOString(),
     })
-    GlobalStore.actions.rehydrate({ config: { echo: { state: newEcho } } })
+    GlobalStore.actions.rehydrate({ artsyPrefs: { echo: { state: newEcho } } })
     expect(getEchoState()?.updated_at).toEqual(newEcho.updated_at)
   })
 
@@ -73,7 +73,7 @@ describe("Echo", () => {
     const oldEcho = echo({
       updated_at: earlierDate.toISOString(),
     })
-    GlobalStore.actions.rehydrate({ config: { echo: { state: oldEcho } } })
+    GlobalStore.actions.rehydrate({ artsyPrefs: { echo: { state: oldEcho } } })
     expect(getEchoState()?.updated_at).toEqual(originalDate.toISOString())
     expect(getEchoState()?.updated_at).not.toEqual(oldEcho.updated_at)
   })
@@ -89,7 +89,7 @@ describe("Echo", () => {
         killedVersions: { ios: {}, android: {} },
       })
       GlobalStore.actions.__manipulate((state) => {
-        state.config.echo.state = echoConfig
+        state.artsyPrefs.echo.state = echoConfig
       })
       expect(forceUpdateMessage()).toEqual(undefined)
     })
@@ -104,7 +104,7 @@ describe("Echo", () => {
         killedVersions: { ios: {}, android: {} },
       })
       GlobalStore.actions.__manipulate((state) => {
-        state.config.echo.state = echoConfig
+        state.artsyPrefs.echo.state = echoConfig
       })
       expect(forceUpdateMessage()).toEqual(
         "New app version required. Please update your Artsy app to continue."
@@ -121,7 +121,7 @@ describe("Echo", () => {
         killedVersions: { ios: {}, android: {} },
       })
       GlobalStore.actions.__manipulate((state) => {
-        state.config.echo.state = echoConfig
+        state.artsyPrefs.echo.state = echoConfig
       })
       expect(forceUpdateMessage()).toEqual(undefined)
     })
@@ -139,7 +139,7 @@ describe("Echo", () => {
         },
       })
       GlobalStore.actions.__manipulate((state) => {
-        state.config.echo.state = echoConfig
+        state.artsyPrefs.echo.state = echoConfig
       })
       expect(forceUpdateMessage()).toEqual("time to update!")
     })
@@ -157,7 +157,7 @@ describe("Echo", () => {
         },
       })
       GlobalStore.actions.__manipulate((state) => {
-        state.config.echo.state = echoConfig1
+        state.artsyPrefs.echo.state = echoConfig1
       })
       expect(forceUpdateMessage()).toEqual(undefined)
 
@@ -171,7 +171,7 @@ describe("Echo", () => {
           android: { "1.6.0": { message: "time to update 2!" } },
         },
       })
-      GlobalStore.actions.rehydrate({ config: { echo: { state: echoConfig2 } } })
+      GlobalStore.actions.rehydrate({ artsyPrefs: { echo: { state: echoConfig2 } } })
       expect(forceUpdateMessage()).toEqual("time to update 2!")
     })
   })
