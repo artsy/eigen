@@ -3,6 +3,7 @@ import { Metric } from "lib/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Flex, Input, RadioButton, Spacer, Text } from "palette"
 import React, { useState } from "react"
+import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 
 export const Dimensions: React.FC = () => {
   const { formik } = useArtworkForm()
@@ -26,10 +27,18 @@ export const Dimensions: React.FC = () => {
       </Flex>
       <Spacer mt={1} mb={0.3} />
       <Flex flexDirection="row">
-        <RadioButton selected={localMetric === "cm"} onPress={() => handleMetricChange("cm")} />
-        <Text marginRight="3">cm</Text>
-        <RadioButton selected={localMetric === "in"} onPress={() => handleMetricChange("in")} />
-        <Text>in</Text>
+        <TouchableWithoutFeedback onPress={() => handleMetricChange("cm")}>
+          <Flex flexDirection="row">
+            <RadioButton selected={localMetric === "cm"} />
+            <Text marginRight="3">cm</Text>
+          </Flex>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => handleMetricChange("in")}>
+          <Flex flexDirection="row">
+            <RadioButton selected={localMetric === "in"} />
+            <Text>in</Text>
+          </Flex>
+        </TouchableWithoutFeedback>
       </Flex>
       <Spacer my={1} />
       <Flex flexDirection="row">
