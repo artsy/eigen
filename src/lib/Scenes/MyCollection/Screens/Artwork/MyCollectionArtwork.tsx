@@ -4,9 +4,12 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { goBack, navigate, popToRoot } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { PlaceholderBox, ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
 import React, { Suspense, useCallback } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
+import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 import { MyCollectionArtworkHeader } from "./NewComponents/NewMyCollectionArtworkHeader"
 import { OldMyCollectionArtworkQueryRenderer } from "./OldMyCollectionArtwork"
 
@@ -16,20 +19,31 @@ export enum Tab {
 }
 
 const MyCollectionArtworkScreenQuery = graphql`
-  query MyCollectionArtworkQuery($artworkSlug: String!) {
+  query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
     artwork(id: $artworkSlug) {
       ...NewMyCollectionArtworkHeader_artwork
       internalID
       consignmentSubmission {
         inProgress
       }
+      ...MyCollectionArtworkInsights_artwork
+      ...MyCollectionArtworkAbout_artwork
+    }
+    marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
+      ...MyCollectionArtworkInsights_marketPriceInsights
     }
   }
 `
 
-const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artworkSlug }) => {
+const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
+  artworkSlug,
+  artistInternalID,
+  medium,
+}) => {
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(MyCollectionArtworkScreenQuery, {
     artworkSlug,
+    artistInternalID,
+    medium,
   })
 
   if (!data.artwork) {
@@ -53,33 +67,34 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artwork
 
   const displayEditButton = !data.artwork.consignmentSubmission?.inProgress
 
+  // TODO: Hide insight tabs if not insights available
+  const tabs = compact([
+    {
+      title: Tab.insights,
+      content: (
+        <MyCollectionArtworkInsights
+          artwork={data.artwork}
+          marketPriceInsights={data.marketPriceInsights!}
+        />
+      ),
+      initial: true,
+    },
+    {
+      title: Tab.about,
+      content: <MyCollectionArtworkAbout artwork={data.artwork} />,
+    },
+  ])
+
   return (
     <Flex flex={1}>
       <FancyModalHeader
         onLeftButtonPress={goBack}
         rightButtonText="Edit"
         onRightButtonPress={displayEditButton ? handleEdit : undefined}
+        hideBottomDivider
       />
       <StickyTabPage
-        tabs={[
-          {
-            title: Tab.insights,
-            content: (
-              <Flex>
-                <Text>Insights Tab</Text>
-              </Flex>
-            ),
-            initial: true,
-          },
-          {
-            title: Tab.about,
-            content: (
-              <Flex>
-                <Text>About Tab</Text>
-              </Flex>
-            ),
-          },
-        ]}
+        tabs={tabs}
         staticHeaderContent={<MyCollectionArtworkHeader artwork={data.artwork!} />}
       />
     </Flex>

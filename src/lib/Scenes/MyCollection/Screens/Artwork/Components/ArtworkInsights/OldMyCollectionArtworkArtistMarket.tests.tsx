@@ -1,4 +1,4 @@
-import { MyCollectionArtworkArtistMarketTestsQuery } from "__generated__/MyCollectionArtworkArtistMarketTestsQuery.graphql"
+import { OldMyCollectionArtworkArtistMarketTestsQuery } from "__generated__/OldMyCollectionArtworkArtistMarketTestsQuery.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { extractText } from "lib/tests/extractText"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
@@ -6,22 +6,22 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkArtistMarketFragmentContainer } from "./MyCollectionArtworkArtistMarket"
+import { OldMyCollectionArtworkArtistMarketFragmentContainer } from "./OldMyCollectionArtworkArtistMarket"
 
 jest.unmock("react-relay")
 
-describe("MyCollectionArtworkArtistMarket", () => {
+describe("OldMyCollectionArtworkArtistMarket", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<MyCollectionArtworkArtistMarketTestsQuery>
+    <QueryRenderer<OldMyCollectionArtworkArtistMarketTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query MyCollectionArtworkArtistMarketTestsQuery @relay_test_operation {
+        query OldMyCollectionArtworkArtistMarketTestsQuery @relay_test_operation {
           artwork(id: "foo") {
-            ...MyCollectionArtworkArtistMarket_artwork
+            ...OldMyCollectionArtworkArtistMarket_artwork
           }
           marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
-            ...MyCollectionArtworkArtistMarket_marketPriceInsights
+            ...OldMyCollectionArtworkArtistMarket_marketPriceInsights
           }
         }
       `}
@@ -29,7 +29,7 @@ describe("MyCollectionArtworkArtistMarket", () => {
       render={({ props }) => {
         if (props?.artwork && props?.marketPriceInsights) {
           return (
-            <MyCollectionArtworkArtistMarketFragmentContainer
+            <OldMyCollectionArtworkArtistMarketFragmentContainer
               artwork={props.artwork}
               marketPriceInsights={props.marketPriceInsights}
             />

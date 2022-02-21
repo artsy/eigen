@@ -1,30 +1,30 @@
-import { MyCollectionArtworkInsightsTestsQuery } from "__generated__/MyCollectionArtworkInsightsTestsQuery.graphql"
+import { OldMyCollectionArtworkInsightsTestsQuery } from "__generated__/OldMyCollectionArtworkInsightsTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkArtistArticlesFragmentContainer } from "./MyCollectionArtworkArtistArticles"
-import { MyCollectionArtworkArtistAuctionResultsFragmentContainer } from "./MyCollectionArtworkArtistAuctionResults"
-import { MyCollectionArtworkArtistMarketFragmentContainer } from "./MyCollectionArtworkArtistMarket"
-import { MyCollectionArtworkDemandIndexFragmentContainer } from "./MyCollectionArtworkDemandIndex"
-import { MyCollectionArtworkInsightsFragmentContainer } from "./MyCollectionArtworkInsights"
+import { OldMyCollectionArtworkArtistAuctionResultsFragmentContainer } from "./OldMyCollectionArtworkArtistAuctionResults"
+import { OldMyCollectionArtworkArtistMarketFragmentContainer } from "./OldMyCollectionArtworkArtistMarket"
+import { OldMyCollectionArtworkDemandIndexFragmentContainer } from "./OldMyCollectionArtworkDemandIndex"
+import { OldMyCollectionArtworkInsightsFragmentContainer } from "./OldMyCollectionArtworkInsights"
 
 jest.unmock("react-relay")
 
 describe("MyCollectionArtworkInsights", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<MyCollectionArtworkInsightsTestsQuery>
+    <QueryRenderer<OldMyCollectionArtworkInsightsTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query MyCollectionArtworkInsightsTestsQuery @relay_test_operation {
+        query OldMyCollectionArtworkInsightsTestsQuery @relay_test_operation {
           artwork(id: "some-artwork-id") {
-            ...MyCollectionArtworkInsights_artwork
+            ...OldMyCollectionArtworkInsights_artwork
           }
 
           marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
-            ...MyCollectionArtworkInsights_marketPriceInsights
+            ...OldMyCollectionArtworkInsights_marketPriceInsights
           }
         }
       `}
@@ -32,7 +32,7 @@ describe("MyCollectionArtworkInsights", () => {
       render={({ props }) => {
         if (props?.artwork && props?.marketPriceInsights) {
           return (
-            <MyCollectionArtworkInsightsFragmentContainer
+            <OldMyCollectionArtworkInsightsFragmentContainer
               marketPriceInsights={props.marketPriceInsights}
               artwork={props?.artwork}
             />
@@ -61,10 +61,14 @@ describe("MyCollectionArtworkInsights", () => {
     expect(text).toContain(
       '<mock-value-for-field-"sizebucket"> other by <mock-value-for-field-"name">'
     )
-    expect(wrapper.root.findByType(MyCollectionArtworkDemandIndexFragmentContainer)).toBeDefined()
-    expect(wrapper.root.findByType(MyCollectionArtworkArtistMarketFragmentContainer)).toBeDefined()
     expect(
-      wrapper.root.findByType(MyCollectionArtworkArtistAuctionResultsFragmentContainer)
+      wrapper.root.findByType(OldMyCollectionArtworkDemandIndexFragmentContainer)
+    ).toBeDefined()
+    expect(
+      wrapper.root.findByType(OldMyCollectionArtworkArtistMarketFragmentContainer)
+    ).toBeDefined()
+    expect(
+      wrapper.root.findByType(OldMyCollectionArtworkArtistAuctionResultsFragmentContainer)
     ).toBeDefined()
     expect(
       wrapper.root.findByType(MyCollectionArtworkArtistArticlesFragmentContainer)

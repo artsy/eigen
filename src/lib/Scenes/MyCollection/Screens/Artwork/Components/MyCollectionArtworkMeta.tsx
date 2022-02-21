@@ -9,7 +9,7 @@ import { Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { Field } from "./Field"
+import { Field } from "./OldField"
 
 interface MyCollectionArtworkMetaProps {
   artwork: MyCollectionArtworkMeta_artwork

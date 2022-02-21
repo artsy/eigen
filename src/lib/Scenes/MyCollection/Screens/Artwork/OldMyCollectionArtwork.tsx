@@ -15,7 +15,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { goBack, navigate, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { MyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/MyCollectionArtworkInsights"
+import { OldMyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/OldMyCollectionArtworkInsights"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -80,7 +80,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
         <Join separator={<Spacer my={1} />}>
           <MyCollectionArtworkHeaderFragmentContainer artwork={artwork} />
           <MyCollectionArtworkMetaFragmentContainer artwork={artwork} />
-          <MyCollectionArtworkInsightsFragmentContainer
+          <OldMyCollectionArtworkInsightsFragmentContainer
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
@@ -178,11 +178,11 @@ export const OldMyCollectionArtworkQueryRenderer: React.FC<MyCollectionArtworkSc
             ...OldMyCollectionArtwork_sharedProps @relay(mask: false)
             ...MyCollectionArtworkHeader_artwork
             ...MyCollectionArtworkMeta_artwork
-            ...MyCollectionArtworkInsights_artwork
+            ...OldMyCollectionArtworkInsights_artwork
           }
 
           marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
-            ...MyCollectionArtworkInsights_marketPriceInsights
+            ...OldMyCollectionArtworkInsights_marketPriceInsights
           }
         }
       `}
