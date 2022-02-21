@@ -11,13 +11,14 @@ if (__DEV__) {
   } catch {}
 }
 
+require("./src/lib/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
+
 if (startStorybook) {
   global.__STORYBOOK__ = true
   require("./src/storybook")
 } else {
   require("react-native-gesture-handler")
   require("react-native-screens").enableScreens()
-  require("./src/lib/ErrorReporting").setupSentry()
   require("./src/lib/AppRegistry")
 }
 

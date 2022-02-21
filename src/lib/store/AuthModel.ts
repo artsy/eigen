@@ -2,17 +2,7 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import {
-  action,
-  Action,
-  Computed,
-  computed,
-  StateMapper,
-  thunk,
-  Thunk,
-  thunkOn,
-  ThunkOn,
-} from "easy-peasy"
+import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
 import * as RelayCache from "lib/relay/RelayCache"
 import { isArtsyEmail } from "lib/utils/general"
 import {
@@ -20,7 +10,6 @@ import {
   PushAuthorizationStatus,
 } from "lib/utils/PushNotification"
 import { postEventToProviders } from "lib/utils/track/providers"
-import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
 import { Alert, Linking, Platform } from "react-native"
@@ -176,9 +165,7 @@ export interface AuthModel {
   >
   signOut: Thunk<this>
 
-  notifyTracking: Thunk<this, { userId: string | null }>
   requestPushNotifPermission: Thunk<this>
-  didRehydrate: ThunkOn<this, {}, GlobalStoreModel>
 }
 
 const clientKey = __DEV__ ? Config.ARTSY_DEV_API_CLIENT_KEY : Config.ARTSY_PROD_API_CLIENT_KEY
@@ -339,7 +326,6 @@ export const getAuthModel = (): AuthModel => ({
         store.getStoreActions().search.clearRecentSearches()
       }
 
-      actions.notifyTracking({ userId: user.id })
       postEventToProviders(tracks.loggedIn(oauthProvider))
 
       // Keep native iOS in sync with react-native auth state
@@ -777,9 +763,6 @@ export const getAuthModel = (): AuthModel => ({
       RelayCache.clearAll(),
     ])
   }),
-  notifyTracking: thunk((_, { userId }) => {
-    SegmentTrackingProvider.identify?.(userId, { is_temporary_user: userId === null ? 1 : 0 })
-  }),
   requestPushNotifPermission: thunk(async () => {
     const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
     if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
@@ -799,12 +782,6 @@ export const getAuthModel = (): AuthModel => ({
       }, 3000)
     }
   }),
-  didRehydrate: thunkOn(
-    (_, storeActions) => storeActions.rehydrate,
-    (actions, __, store) => {
-      actions.notifyTracking({ userId: store.getState().userID })
-    }
-  ),
 })
 
 const tracks = {

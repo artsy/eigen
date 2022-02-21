@@ -11,6 +11,8 @@ if (__DEV__) {
   } catch {}
 }
 
+require("./src/lib/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
+
 if (startStorybook) {
   global.__STORYBOOK__ = true
   require("./src/storybook")
