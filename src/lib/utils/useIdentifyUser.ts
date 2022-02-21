@@ -3,7 +3,11 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { useEffect } from "react"
 import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
 
-export const useIdentifyUser = () => {
+/**
+ * This hook is used to update and notify any and all services that need a user id.
+ * Once the user logs in or logs out, we will have their user id, and that will update all services.
+ */
+export function useIdentifyUser() {
   const userId = GlobalStore.useAppState((store) => store.auth.userID)
 
   useEffect(() => {
