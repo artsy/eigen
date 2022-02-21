@@ -40,10 +40,9 @@ import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-inf
 import Keychain from "react-native-keychain"
 import { useScreenDimensions } from "./useScreenDimensions"
 
-const configurableFeatureFlagKeys = sortBy(
-  Object.entries(features).filter(([_, { showInAdminMenu }]) => showInAdminMenu),
-  ([k, { description }]) => description ?? k
-).map(([k]) => k as FeatureName)
+const configurableFeatureFlagKeys = Object.entries(features)
+  .filter(([_, { showInAdminMenu }]) => showInAdminMenu)
+  .map(([k]) => k as FeatureName)
 
 const configurableDevToggleKeys = sortBy(
   Object.entries(devToggles),
