@@ -3,6 +3,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useState } from "rea
 import { LayoutAnimation } from "react-native"
 
 interface CollapsableMenuItemProps {
+  hasBackButton?: boolean
   overtitle?: string
   title: string
   isExpanded?: boolean
