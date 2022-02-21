@@ -1,6 +1,3 @@
-# Set storybook environment depending on STORYBOOK env variable
-./scripts/set-storybook-environment.js
-
 # if the user has the React Native Debugger app installed, then use that
 # otherwise, at time of writing, it opens chrome
 
