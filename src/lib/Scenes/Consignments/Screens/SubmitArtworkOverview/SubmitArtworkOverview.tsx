@@ -1,6 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
-import { CollapsibleMenuItem, Join, Separator, Spacer } from "palette"
+import { BackButton } from "lib/navigation/BackButton"
+import { goBack } from "lib/navigation/navigate"
+import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
@@ -80,38 +82,41 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
   }
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        paddingVertical: 20,
-        paddingHorizontal: 20,
-        justifyContent: "center",
-      }}
-    >
-      <Spacer mb={3} />
-      <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
-        {items.map(({ overtitle, title, Content }, index) => {
-          const disabled = !validSteps[index]
-          return (
-            <CollapsibleMenuItem
-              hasBackButton={index === 0}
-              key={index}
-              overtitle={overtitle}
-              title={title}
-              onExpand={() => expandCollapsibleMenuContent(index)}
-              isExpanded={index === 0}
-              disabled={disabled}
-              ref={(ref) => {
-                if (ref) {
-                  stepsRefs[index] = ref
-                }
-              }}
-            >
-              {Content}
-            </CollapsibleMenuItem>
-          )
-        })}
-      </Join>
-    </ScrollView>
+    <Flex>
+      <ScrollView
+        contentContainerStyle={{
+          paddingVertical: 20,
+          paddingHorizontal: 20,
+          justifyContent: "center",
+        }}
+      >
+        <BackButton onPress={() => goBack()} style={{ top: 10 }} />
+        <Spacer mb={3} />
+        <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
+          {items.map(({ overtitle, title, Content }, index) => {
+            const disabled = !validSteps[index]
+            return (
+              <CollapsibleMenuItem
+                hasBackButton={index === 0}
+                key={index}
+                overtitle={overtitle}
+                title={title}
+                onExpand={() => expandCollapsibleMenuContent(index)}
+                isExpanded={index === 0}
+                disabled={disabled}
+                ref={(ref) => {
+                  if (ref) {
+                    stepsRefs[index] = ref
+                  }
+                }}
+              >
+                {Content}
+              </CollapsibleMenuItem>
+            )
+          })}
+        </Join>
+      </ScrollView>
+    </Flex>
   )
 }
 
