@@ -43,13 +43,11 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AROptionsInquiryCheckout",
     description: "Enable inquiry checkout",
-    showInAdminMenu: true,
   },
   AROptionsPriceTransparency: {
     readyForRelease: true,
     echoFlagKey: "AROptionsPriceTransparency",
     description: "Price Transparency",
-    showInAdminMenu: true,
   },
   ARDisableReactNativeBidFlow: {
     readyForRelease: true,
@@ -63,7 +61,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: Platform.OS === "ios" ? "AREnableReactNativeWebView" : undefined,
     description: "Use react-native web views",
-    showInAdminMenu: Platform.OS !== "android",
   },
   AROptionsLotConditionReport: {
     readyForRelease: true,
@@ -81,47 +78,39 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "ARHomeAuctionResultsByFollowedArtists",
     description: "Enable home auction results",
-    showInAdminMenu: true,
   },
   AREnableCustomSharesheet: {
     readyForRelease: true,
     echoFlagKey: "AREnableCustomSharesheet",
     description: "Enable custom share sheet",
-    showInAdminMenu: true,
   },
   AREnableOrderHistoryOption: {
     readyForRelease: true,
     echoFlagKey: "AREnableOrderHistoryOption",
     description: "Enable Order History in settings",
-    showInAdminMenu: true,
   },
   AREnableSavedAddresses: {
     readyForRelease: false,
     description: "Enable Saved Addresses",
-    showInAdminMenu: true,
   },
   AREnableImprovedSearchPills: {
     readyForRelease: false,
     description: "Enable improved search pills",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableImprovedSearchPills",
   },
   AREnableTrove: {
     readyForRelease: true,
     description: "Enable Trove in homepage",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableTrove",
   },
   AREnableShowsRail: {
     readyForRelease: true,
     description: "Enable Shows in homepage",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableShowsRail",
   },
   ARShowNetworkUnavailableModal: {
     readyForRelease: true,
     description: "Enable network unavailable modal",
-    showInAdminMenu: true,
     echoFlagKey: "ARShowNetworkUnavailableModal",
   },
   ARGoogleAuth: {
@@ -133,13 +122,11 @@ export const features = defineFeatures({
   AREnableImprovedAlertsFlow: {
     readyForRelease: true,
     description: "Enable Improved Alerts flow",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableImprovedAlertsFlow",
   },
   AREnableWebPImages: {
     readyForRelease: true,
     description: "Enable WebP Images",
-    showInAdminMenu: true,
     echoFlagKey: "AREnableWebPImages",
   },
   AREnableSplitIOABTesting: {
@@ -151,7 +138,6 @@ export const features = defineFeatures({
   AREnableArtistRecommendations: {
     readyForRelease: false,
     description: "Enable new artist recommendations",
-    showInAdminMenu: true,
   },
   AREnableQueriesPrefetching: {
     readyForRelease: true,
@@ -197,6 +183,7 @@ export const features = defineFeatures({
   ARShowConsignmentsInMyCollection: {
     readyForRelease: false,
     description: "Show consignments in My Collection",
+    showInAdminMenu: true,
   },
   AREnablePlaceholderLayoutAnimation: {
     readyForRelease: true,
