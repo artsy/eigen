@@ -2,7 +2,7 @@ import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { Platform } from "react-native"
 
 const getState = () => {
-  return __globalStoreTestUtils__?.getCurrentState().config.userIsDev!
+  return __globalStoreTestUtils__?.getCurrentState().artsyPrefs.userIsDev!
 }
 
 describe("UserIsDevModel", () => {
@@ -50,12 +50,12 @@ describe("UserIsDevModel", () => {
     expect(getState().value).toEqual(false)
 
     __globalStoreTestUtils__?.injectState({
-      config: { userIsDev: { flipValue: true } },
+      artsyPrefs: { userIsDev: { flipValue: true } },
     })
     expect(getState().value).toEqual(true)
 
     __globalStoreTestUtils__?.injectState({
-      config: { userIsDev: { flipValue: false } },
+      artsyPrefs: { userIsDev: { flipValue: false } },
     })
     expect(getState().value).toEqual(false)
   })
@@ -66,12 +66,12 @@ describe("UserIsDevModel", () => {
     expect(getState().value).toEqual(true)
 
     __globalStoreTestUtils__?.injectState({
-      config: { userIsDev: { flipValue: true } },
+      artsyPrefs: { userIsDev: { flipValue: true } },
     })
     expect(getState().value).toEqual(false)
 
     __globalStoreTestUtils__?.injectState({
-      config: { userIsDev: { flipValue: false } },
+      artsyPrefs: { userIsDev: { flipValue: false } },
     })
     expect(getState().value).toEqual(true)
   })

@@ -46,7 +46,7 @@ const Main: React.FC = () => {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const forceUpdateMessage = GlobalStore.useAppState(
-    (state) => state.config.echo.forceUpdateMessage
+    (state) => state.artsyPrefs.echo.forceUpdateMessage
   )
 
   useErrorReporting()

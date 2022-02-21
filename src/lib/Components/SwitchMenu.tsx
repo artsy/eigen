@@ -35,7 +35,7 @@ export const SwitchMenu = ({
             true: disabled ? color("black30") : color("black100"),
           }}
           onValueChange={onChange}
-          value={disabled || value}
+          value={value}
           disabled={disabled}
         />
       </Flex>

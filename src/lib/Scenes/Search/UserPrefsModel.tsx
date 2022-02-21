@@ -18,13 +18,13 @@ const DEFAULT_CURRENCY =
 const DEFAULT_METRIC = ""
 const DEFAULT_VIEW_OPTION = "grid"
 // please update this when adding new user preferences
-export interface UserPreferences {
+export interface UserPrefs {
   pricePaidCurrency: Currency
   metric: Metric
   artworkViewOption: ViewOption
 }
 
-export interface UserPreferencesModel {
+export interface UserPrefsModel {
   currency: Currency
   metric: Metric | ""
   artworkViewOption: ViewOption
@@ -33,7 +33,7 @@ export interface UserPreferencesModel {
   setArtworkViewOption: Action<this, ViewOption>
 }
 
-export const getUserPreferencesModel = (): UserPreferencesModel => ({
+export const getUserPrefsModel = (): UserPrefsModel => ({
   currency: DEFAULT_CURRENCY,
   metric: DEFAULT_METRIC,
   artworkViewOption: DEFAULT_VIEW_OPTION,
