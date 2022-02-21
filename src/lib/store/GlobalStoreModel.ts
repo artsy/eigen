@@ -9,7 +9,7 @@ import {
   getMyCollectionModel,
   MyCollectionModel,
 } from "lib/Scenes/MyCollection/State/MyCollectionModel"
-import { getSettingsModel, SettingsModel } from "lib/Scenes/MyProfile/SettingsModel"
+import { DevicePrefsModel, getDevicePrefsModel } from "lib/Scenes/MyProfile/DevicePrefsModel"
 import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
 import { getUserPrefsModel, UserPrefsModel } from "lib/Scenes/Search/UserPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
@@ -38,9 +38,9 @@ interface GlobalStoreStateModel {
   config: ConfigModel
   auth: AuthModel
   toast: ToastModel
-  settings: SettingsModel
   pendingPushNotification: PendingPushNotificationModel
   userPrefs: UserPrefsModel
+  devicePrefs: DevicePrefsModel
   visualClue: VisualClueModel
   artworkSubmission: SubmissionModel
 }
@@ -111,7 +111,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   config: getConfigModel(),
   auth: getAuthModel(),
   toast: getToastModel(),
-  settings: getSettingsModel(),
+  devicePrefs: getDevicePrefsModel(),
   pendingPushNotification: getPendingPushNotificationModel(),
   userPrefs: getUserPrefsModel(),
   visualClue: getVisualClueModel(),

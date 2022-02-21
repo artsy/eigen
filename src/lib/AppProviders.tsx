@@ -53,7 +53,7 @@ class PureWrapper extends Component {
 // theme with dark mode support
 function ThemeProvider({ children }: { children?: ReactNode }) {
   const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
-  const darkMode = GlobalStore.useAppState((state) => state.settings.darkMode)
+  const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.darkMode)
 
   return (
     <Theme theme={supportDarkMode ? (darkMode === "dark" ? "v5dark" : "v5") : undefined}>
