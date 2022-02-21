@@ -36,7 +36,7 @@ export const BackButton: React.FC<{
           borderRadius: 20,
           opacity,
         },
-        { ...style },
+        style,
       ]}
     >
       <TouchableOpacity
