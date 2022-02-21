@@ -5,4 +5,7 @@ set -euxo pipefail
 touch .env.ci
 aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.shared
 
+cp metaflags.example.json metaflags.json
+yarn rimraf storybook.json
+
 ./scripts/download-assets
