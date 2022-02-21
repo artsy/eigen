@@ -11,10 +11,7 @@ import {
 } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { getSettingsModel, SettingsModel } from "lib/Scenes/MyProfile/SettingsModel"
 import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
-import {
-  getUserPreferencesModel,
-  UserPreferencesModel,
-} from "lib/Scenes/Search/UserPreferencesModel"
+import { getUserPrefsModel, UserPrefsModel } from "lib/Scenes/Search/UserPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
@@ -43,7 +40,7 @@ interface GlobalStoreStateModel {
   toast: ToastModel
   settings: SettingsModel
   pendingPushNotification: PendingPushNotificationModel
-  userPreferences: UserPreferencesModel
+  userPrefs: UserPrefsModel
   visualClue: VisualClueModel
   artworkSubmission: SubmissionModel
 }
@@ -116,7 +113,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   toast: getToastModel(),
   settings: getSettingsModel(),
   pendingPushNotification: getPendingPushNotificationModel(),
-  userPreferences: getUserPreferencesModel(),
+  userPrefs: getUserPrefsModel(),
   visualClue: getVisualClueModel(),
   artworkSubmission: getSubmissionModel(),
 

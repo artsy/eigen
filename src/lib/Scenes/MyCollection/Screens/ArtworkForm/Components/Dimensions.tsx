@@ -1,5 +1,5 @@
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
-import { Metric } from "lib/Scenes/Search/UserPreferencesModel"
+import { Metric } from "lib/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Flex, Input, RadioButton, Spacer, Text } from "palette"
 import React from "react"
@@ -8,7 +8,7 @@ export const Dimensions: React.FC = () => {
   const { formik } = useArtworkForm()
 
   const handleMetricChange = (unit: Metric) => {
-    GlobalStore.actions.userPreferences.setMetric(unit)
+    GlobalStore.actions.userPrefs.setMetric(unit)
     formik.handleChange("metric")(unit)
   }
 
