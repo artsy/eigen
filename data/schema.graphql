@@ -9681,6 +9681,7 @@ input MyCollectionCreateArtworkInput {
   provenance: String
   submissionId: String
   title: String!
+  userId: String
   width: String
 }
 
