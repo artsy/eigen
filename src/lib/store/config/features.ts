@@ -228,10 +228,10 @@ export const devToggles = defineDevToggles({
     description: "Disable fetching remote echo",
     onChange: (value, { toast }) => {
       if (value) {
-        GlobalStore.actions.config.echo.setEchoState(echoLaunchJson())
+        GlobalStore.actions.artsyPrefs.echo.setEchoState(echoLaunchJson())
         toast.show("Loaded bundled echo config", "middle")
       } else {
-        GlobalStore.actions.config.echo.fetchRemoteEcho()
+        GlobalStore.actions.artsyPrefs.echo.fetchRemoteEcho()
         toast.show("Fetched remote echo config", "middle")
       }
     },

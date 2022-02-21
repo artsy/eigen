@@ -14,7 +14,7 @@ export interface DevicePrefsModel {
 
 export const getDevicePrefsModel = (): DevicePrefsModel => ({
   darkMode: computed([(_, store) => store], (store) => {
-    if (!store.config.features.flags.ARDarkModeSupport) {
+    if (!store.artsyPrefs.features.flags.ARDarkModeSupport) {
       return "light"
     }
     return store.devicePrefs.darkModeSyncWithSystem

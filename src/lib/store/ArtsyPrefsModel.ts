@@ -4,7 +4,7 @@ import { ExperimentsModel, getExperimentsModel } from "./config/ExperimentsModel
 import { FeaturesModel, getFeaturesModel } from "./config/FeaturesModel"
 import { getUserIsDev, UserIsDevModel } from "./config/UserIsDevModel"
 
-export interface ConfigModel {
+export interface ArtsyPrefsModel {
   echo: EchoModel
   environment: EnvironmentModel
   features: FeaturesModel
@@ -12,7 +12,7 @@ export interface ConfigModel {
   experiments: ExperimentsModel
 }
 
-export const getConfigModel = (): ConfigModel => ({
+export const getArtsyPrefsModel = (): ArtsyPrefsModel => ({
   echo: getEchoModel(),
   environment: getEnvironmentModel(),
   features: getFeaturesModel(),

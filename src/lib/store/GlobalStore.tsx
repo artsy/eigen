@@ -70,10 +70,10 @@ export const __globalStoreTestUtils__ = __TEST__
         GlobalStore.actions.__inject(state)
       },
       setProductionMode() {
-        this.injectState({ config: { environment: { env: "production" } } })
+        this.injectState({ artsyPrefs: { environment: { env: "production" } } })
       },
       injectFeatureFlags(options: Partial<FeatureMap>) {
-        this.injectState({ config: { features: { adminOverrides: options } } })
+        this.injectState({ artsyPrefs: { features: { adminOverrides: options } } })
       },
       getCurrentState: () => globalStoreInstance().getState(),
       dispatchedActions: [] as Action[],
@@ -130,11 +130,11 @@ const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
 }
 
 export function useFeatureFlag(key: FeatureName) {
-  return GlobalStore.useAppState((state) => state.config.features.flags[key])
+  return GlobalStore.useAppState((state) => state.artsyPrefs.features.flags[key])
 }
 
 export function useDevToggle(key: DevToggleName) {
-  return GlobalStore.useAppState((state) => state.config.features.devToggles[key])
+  return GlobalStore.useAppState((state) => state.artsyPrefs.features.devToggles[key])
 }
 
 /**
@@ -145,7 +145,7 @@ export function useDevToggle(key: DevToggleName) {
 export function unsafe_getFeatureFlag(key: FeatureName): boolean {
   const state = globalStoreInstance().getState() ?? null
   if (state) {
-    return state.config.features.flags[key]
+    return state.artsyPrefs.features.flags[key]
   }
   if (__DEV__) {
     throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
@@ -156,7 +156,7 @@ export function unsafe_getFeatureFlag(key: FeatureName): boolean {
 export function unsafe_getDevToggle(key: DevToggleName) {
   const state = globalStoreInstance().getState() ?? null
   if (state) {
-    return state.config.features.devToggles[key]
+    return state.artsyPrefs.features.devToggles[key]
   }
   if (__DEV__) {
     throw new Error(`Unable to access ${key} before GlobalStore bootstraps`)
@@ -238,7 +238,7 @@ export function unsafe__getSelectedTab(): BottomTabType {
 }
 
 export function useIsStaging() {
-  return GlobalStore.useAppState((state) => state.config.environment.env === "staging")
+  return GlobalStore.useAppState((state) => state.artsyPrefs.environment.env === "staging")
 }
 
 /**
@@ -251,7 +251,7 @@ export function unsafe__getEnvironment() {
     environment: { env, strings },
     echo: { stripePublishableKey },
     userIsDev: { value },
-  } = globalStoreInstance().getState().config
+  } = globalStoreInstance().getState().artsyPrefs
   return { ...strings, stripePublishableKey, env, userIsDev: value }
 }
 
@@ -259,6 +259,6 @@ export function useEnvironment() {
   const {
     environment: { env, strings },
     echo: { stripePublishableKey },
-  } = GlobalStore.useAppState((state) => state.config)
+  } = GlobalStore.useAppState((state) => state.artsyPrefs)
   return { ...strings, stripePublishableKey, env }
 }

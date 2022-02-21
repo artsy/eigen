@@ -11,7 +11,7 @@ let client: SplitIO.IClient | null = null
 
 export const useExperiments = () => {
   const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
-  const environment = GlobalStore.useAppState((store) => store.config.environment.env)
+  const environment = GlobalStore.useAppState((store) => store.artsyPrefs.environment.env)
   const userIdOrDeviceId = GlobalStore.useAppState(
     (store) => store.auth.userID ?? `not-logged-in_${getUniqueId()}`
   )
@@ -32,16 +32,16 @@ export const useExperiments = () => {
       client = client ?? factory.client()
 
       client?.on(client.Event.SDK_READY, () => {
-        GlobalStore.actions.config.experiments.setSessionState({
+        GlobalStore.actions.artsyPrefs.experiments.setSessionState({
           isReady: true,
           lastUpdate: DateTime.utc().toISO(),
         })
       })
       client?.on(client.Event.SDK_READY_TIMED_OUT, () => {
-        GlobalStore.actions.config.experiments.setSessionState({ isReady: false })
+        GlobalStore.actions.artsyPrefs.experiments.setSessionState({ isReady: false })
       })
       client?.on(client.Event.SDK_UPDATE, () => {
-        GlobalStore.actions.config.experiments.setSessionState({
+        GlobalStore.actions.artsyPrefs.experiments.setSessionState({
           lastUpdate: DateTime.now().toISO(),
         })
       })
@@ -51,7 +51,9 @@ export const useExperiments = () => {
 
 export const useTreatment = (treatment: EXPERIMENT_NAME) => {
   const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
-  const isReady = GlobalStore.useAppState((store) => store.config.experiments.sessionState.isReady)
+  const isReady = GlobalStore.useAppState(
+    (store) => store.artsyPrefs.experiments.sessionState.isReady
+  )
 
   // `_lastUpdate` needs to be here, even though it is not actually used in this hook.
   // The reason this is needed here is this:
@@ -60,7 +62,7 @@ export const useTreatment = (treatment: EXPERIMENT_NAME) => {
   // So we "read" this value, in order to make the hook re-render the components it is used in.
   // @ts-ignore
   const _lastUpdate = GlobalStore.useAppState(
-    (store) => store.config.experiments.sessionState.lastUpdate
+    (store) => store.artsyPrefs.experiments.sessionState.lastUpdate
   )
 
   if (!enableSplitIOABTesting) {

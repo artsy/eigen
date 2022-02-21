@@ -21,7 +21,7 @@ let limiter: RateLimiter
 
 // Inintializes the rate limiter because we load parameters from Echo.
 export const useInitializeQueryPrefetching = () => {
-  const echoMessages = GlobalStore.useAppState((state) => state.config.echo.state.messages)
+  const echoMessages = GlobalStore.useAppState((state) => state.artsyPrefs.echo.state.messages)
 
   useEffect(() => {
     const queriesPerInterval = Number(
