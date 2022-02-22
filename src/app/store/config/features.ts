@@ -251,6 +251,9 @@ export const devToggles = defineDevToggles({
   DTCaptureExceptionsInSentryOnDev: {
     description: "Enable capturing exceptions in Sentry on DEV",
   },
+  DTUseProductionUnleash: {
+    description: "Use Production Unleash",
+  },
 })
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {

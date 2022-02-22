@@ -9,7 +9,7 @@ import { EXPERIMENT_NAME, experiments } from "./experiments"
 
 let client: SplitIO.IClient | null = null
 
-export const useExperiments = () => {
+export const useSplitExperiments = () => {
   const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
   const environment = GlobalStore.useAppState((store) => store.artsyPrefs.environment.env)
   const userIdOrDeviceId = GlobalStore.useAppState(

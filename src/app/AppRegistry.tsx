@@ -119,7 +119,7 @@ import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
-import { useExperiments } from "./utils/useExperiments"
+import { useSplitExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useIdentifyUser } from "./utils/useIdentifyUser"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
@@ -470,7 +470,7 @@ const Main: React.FC = () => {
   useErrorReporting()
   useStripeConfig()
   useWebViewCookies()
-  useExperiments()
+  useSplitExperiments()
   useInitializeQueryPrefetching()
   useIdentifyUser()
 
