@@ -40,7 +40,7 @@ const showError = (
         new AuthError(
           `Your ${providerName} account is not linked to any Artsy account. ` +
             "Please log in using your email and password if you have an Artsy account, " +
-            `or register on Artsy using your ${providerName}. `
+            `or sign up on Artsy using ${providerName}. `
         )
       )
     } else {
