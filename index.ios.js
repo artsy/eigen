@@ -22,3 +22,5 @@ if (metaflags.startStorybook) {
   require("react-native-screens").enableScreens()
   require("./src/app/AppRegistry")
 }
+
+// add a comment
