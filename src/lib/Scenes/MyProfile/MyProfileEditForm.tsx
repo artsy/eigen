@@ -44,6 +44,7 @@ import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 import { MyProfileContext } from "./MyProfileProvider"
 
 const PRIMARY_LOCATION_OFFSET = 240
+const ICON_SIZE = 22
 
 interface EditMyProfileValuesSchema {
   photo: string
@@ -467,8 +468,7 @@ const ProfileVerifications = ({
   isIDVerified: boolean
 }) => {
   const color = useColor()
-  const fontScale = PixelRatio.getFontScale()
-  const iconSize = 22 * fontScale
+  const iconSize = ICON_SIZE * PixelRatio.getFontScale()
 
   return (
     <Flex testID="profile-verifications" pr={2}>
