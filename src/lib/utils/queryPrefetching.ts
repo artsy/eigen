@@ -1,9 +1,9 @@
 import { modules } from "lib/AppRegistry"
 import { matchRoute } from "lib/navigation/routes"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"
+import { useRelayEnvironment } from "react-relay"
 import {
   createOperationDescriptor,
   Environment,
@@ -12,7 +12,6 @@ import {
   GraphQLTaggedNode,
   Variables,
 } from "relay-runtime"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { useTreatment } from "./useExperiments"
 
 const DEFAULT_QUERIES_PER_INTERVAL = 60
@@ -97,6 +96,8 @@ const prefetchUrl = async (environment: Environment, url: string, variables: Var
 }
 
 export const usePrefetch = () => {
+  const environment = useRelayEnvironment()
+
   const enablePrefetching = useFeatureFlag("AREnableQueriesPrefetching")
   const queryPrefetchingTreatment = useTreatment("QueryPrefetching")
 
@@ -104,7 +105,7 @@ export const usePrefetch = () => {
     return () => null
   }
 
-  return prefetchUrl.bind(this, defaultEnvironment as RelayModernEnvironment)
+  return prefetchUrl.bind(this, environment)
 }
 
 export const ˆ = (attribute: string) => (item?: any) => item && item[attribute]
