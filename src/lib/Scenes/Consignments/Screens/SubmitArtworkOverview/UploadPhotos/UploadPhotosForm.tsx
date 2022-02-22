@@ -9,6 +9,7 @@ import { removeAssetFromSubmission } from "../Mutations/removeAssetFromConsignme
 import { PhotoRow } from "./PhotoRow"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
 import { calculateSinglePhotoSize } from "./utils/calculatePhotoSize"
+import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"
 import { Photo, PhotosFormModel } from "./validation"
 
 export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
@@ -27,12 +28,19 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     setFieldValue("photos", [...values.photos, ...photos])
 
     for (const photo of photos) {
-      console.log({ photo })
       try {
         // upload & size the photo, and add it to processed photos
         const uploadedPhoto = await addPhotoToConsignment(photo, submission.submissionId)
         if (uploadedPhoto?.id) {
           const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
+          const isTotalSizeLimitExceeded = isSizeLimitExceeded([...values.photos, sizedPhoto])
+          if (isTotalSizeLimitExceeded) {
+            sizedPhoto.error = true
+            sizedPhoto.errorMessage =
+              "File exceeds the total size limit. Please delete photos or upload smaller file sizes"
+            processedPhotos.push(sizedPhoto)
+            break
+          }
           processedPhotos.push(sizedPhoto)
         }
       } catch (error) {
@@ -84,7 +92,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
           Total Maximum Size: 30MB
         </Text>
         <Button
-          disabled={isAnyPhotoLoading}
+          disabled={isAnyPhotoLoading || isSizeLimitExceeded(values.photos)}
           onPress={handleAddPhotoPress}
           variant="outline"
           size="large"
