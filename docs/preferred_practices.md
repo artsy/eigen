@@ -18,7 +18,7 @@ This is a living document, expected to be updated regularly, a broad overview of
 - [styling](#styling)
 - [Write unit tests for new components](#write-unit-tests-for-new-components)
 - [Navigation](#Navigation)
-- [Analytics](#analytics)
+- [Analytics and tracking](#analytics-and-tracking)
   - [Follow the tracking docs and examples](#follow-the-tracking-docs-and-examples)
 - [Miscellaneous](#miscellaneous)
 
@@ -148,10 +148,6 @@ _Use `react-navigation` for navigating between screens, navigate function and ne
 
 See our documentation on adding a route for more details: [Adding a new route](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_route.md)
 
-#### Follow the tracking docs and examples
+#### Analytics and tracking
 
-See our docs on implementing analytics [here](./analytics_and_tracking.md)
-
-### Miscellaneous
-
-- [Making network requests outside of Relay](https://github.com/artsy/emission/blob/019a106517b31cebfb1c5293891215cc7ebf7a4d/src/lib/Components/Consignments/Screens/Overview.tsx#L135-L150)
+Implementing analytics and tracking [here](./analytics_and_tracking.md)
