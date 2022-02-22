@@ -34,6 +34,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         if (uploadedPhoto?.id) {
           const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
           const isTotalSizeLimitExceeded = isSizeLimitExceeded([...values.photos, sizedPhoto])
+          // when total size limit exceeded, set photo's err state and stop the upload loop
           if (isTotalSizeLimitExceeded) {
             sizedPhoto.error = true
             sizedPhoto.errorMessage =
@@ -71,6 +72,14 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     try {
       await removeAssetFromSubmission({ assetID: photo.id })
       const filteredPhotos = values.photos.filter((p: Photo) => p.id !== photo.id)
+      const isTotalSizeLimitExceeded = isSizeLimitExceeded(filteredPhotos)
+      // make sure to clean error state from photos, if total size limit is not exceed after deletion
+      if (!isTotalSizeLimitExceeded) {
+        filteredPhotos.forEach((p: Photo) => {
+          p.error = false
+          p.errorMessage = ""
+        })
+      }
       setFieldValue("photos", filteredPhotos)
     } catch (error) {
       photo.error = true

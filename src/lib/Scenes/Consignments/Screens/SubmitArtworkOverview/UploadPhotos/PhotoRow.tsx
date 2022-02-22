@@ -85,7 +85,7 @@ const PhotoRowWrapper: React.FC<{ error?: boolean; errorMsg?: string }> = ({
     >
       {children}
     </Flex>
-    {errorMsg && (
+    {error && errorMsg && (
       <Text variant="xs" color="red100">
         {errorMsg}
       </Text>
