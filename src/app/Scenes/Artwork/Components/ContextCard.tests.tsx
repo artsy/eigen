@@ -1,5 +1,5 @@
-// @ts-ignore
 import { GlobalStoreProvider } from "app/store/GlobalStore"
+// @ts-ignore
 import { mount } from "enzyme"
 import { Box, Button, EntityHeader, Sans, Theme } from "palette"
 import React from "react"
