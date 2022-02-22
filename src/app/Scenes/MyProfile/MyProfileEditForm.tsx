@@ -66,6 +66,8 @@ const editMyProfileSchema = Yup.object().shape({
   bio: Yup.string(),
 })
 
+type IsIDOrEmailType = "ID" | "Email"
+
 export const MyProfileEditForm: React.FC = () => {
   const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {})
 
@@ -88,11 +90,10 @@ export const MyProfileEditForm: React.FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
-  const [showVerificationBannerForEmail, setShowVerificationBannerForEmail] = useState(false)
-  const [showVerificationBannerForID, setShowVerificationBannerForID] = useState(false)
+  const [showVerificationBanner, setShowVerificationBanner] = useState(false)
   const [isverificationLoading, setIsVerificationLoading] = useState(false)
-  const [didSuccessfullyVerifyEmail, setDidSuccessfullyVerifyEmail] = useState<boolean | null>(null)
-  const [didSuccessfullyVerifyID, setDidSuccessfullyVerifyID] = useState<boolean | null>(null)
+  const [didSuccessfullyVerify, setDidSuccessfullyVerify] = useState<boolean | null>(null)
+  const [isIDOrEmail, setIsIDOrEmail] = useState<IsIDOrEmailType>("ID")
 
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
@@ -184,7 +185,7 @@ export const MyProfileEditForm: React.FC = () => {
   useEffect(() => {
     const refetchProfileIdentificationInterval = setInterval(() => {
       // When the user applies the email verification and the modal is visible
-      if (didSuccessfullyVerifyEmail || didSuccessfullyVerifyID) {
+      if (didSuccessfullyVerify) {
         refetch({ enableCollectorProfile })
       }
     }, 3000)
@@ -192,7 +193,7 @@ export const MyProfileEditForm: React.FC = () => {
     return () => {
       clearInterval(refetchProfileIdentificationInterval)
     }
-  }, [didSuccessfullyVerifyEmail, didSuccessfullyVerifyID])
+  }, [didSuccessfullyVerify])
 
   const onLeftButtonPressHandler = () => {
     setDidUpdatePhoto(false)
@@ -201,8 +202,9 @@ export const MyProfileEditForm: React.FC = () => {
 
   const handleEmailVerification = useCallback(async () => {
     try {
-      setShowVerificationBannerForEmail(true)
+      setShowVerificationBanner(true)
       setIsVerificationLoading(true)
+      setIsIDOrEmail("Email")
 
       const { sendConfirmationEmail } = await verifyEmail(defaultEnvironment)
 
@@ -213,10 +215,10 @@ export const MyProfileEditForm: React.FC = () => {
       // "Sending a confirmation email..."
       setTimeout(() => {
         if (emailToConfirm) {
-          setDidSuccessfullyVerifyEmail(true)
+          setDidSuccessfullyVerify(true)
           setIsVerificationLoading(false)
         } else {
-          setDidSuccessfullyVerifyEmail(false)
+          setDidSuccessfullyVerify(false)
           setIsVerificationLoading(false)
         }
       }, 500)
@@ -225,15 +227,16 @@ export const MyProfileEditForm: React.FC = () => {
     } finally {
       // Allow the user some time to read the message
       setTimeout(() => {
-        setShowVerificationBannerForEmail(false)
+        setShowVerificationBanner(false)
       }, 2000)
     }
   }, [])
 
   const handleIDVerification = useCallback(async () => {
     try {
-      setShowVerificationBannerForID(true)
+      setShowVerificationBanner(true)
       setIsVerificationLoading(true)
+      setIsIDOrEmail("ID")
 
       const { sendIdentityVerificationEmail } = await verifyID(defaultEnvironment)
 
@@ -244,10 +247,10 @@ export const MyProfileEditForm: React.FC = () => {
       // "Sending an ID verification email..."
       setTimeout(() => {
         if (state && state in StateToBlockFurtherIDVerification) {
-          setDidSuccessfullyVerifyID(false)
+          setDidSuccessfullyVerify(false)
           setIsVerificationLoading(false)
         } else {
-          setDidSuccessfullyVerifyID(true)
+          setDidSuccessfullyVerify(true)
           setIsVerificationLoading(false)
         }
       }, 500)
@@ -256,7 +259,7 @@ export const MyProfileEditForm: React.FC = () => {
     } finally {
       // Allow the user some time to read the message
       setTimeout(() => {
-        setShowVerificationBannerForID(false)
+        setShowVerificationBanner(false)
       }, 2000)
     }
   }, [])
@@ -406,18 +409,12 @@ export const MyProfileEditForm: React.FC = () => {
           </Flex>
         </Join>
       </ScrollView>
-      {!!showVerificationBannerForEmail && (
+      {!!showVerificationBanner && (
         <VerificationConfirmationBannerForEmail
           isLoading={isverificationLoading}
-          didSuccessfullyVerifyEmail={didSuccessfullyVerifyEmail}
-          resultText={`Email sent to ${me?.email ?? ""}`}
-        />
-      )}
-      {!!showVerificationBannerForID && (
-        <VerificationConfirmationBannerForID
-          isLoading={isverificationLoading}
-          didSuccessfullyVerifyID={didSuccessfullyVerifyID}
-          resultText={`ID verification link sent to ${me?.email ?? ""}`}
+          didSuccessfullyVerify={didSuccessfullyVerify}
+          email={me?.email ?? ""}
+          isIDOrEmail={isIDOrEmail}
         />
       )}
       <LoadingModal isVisible={loading} />
@@ -630,20 +627,28 @@ const ProfileVerifications = ({
 
 const VerificationConfirmationBannerForEmail = ({
   isLoading,
-  didSuccessfullyVerifyEmail,
-  resultText,
+  didSuccessfullyVerify,
+  email,
+  isIDOrEmail,
 }: {
   isLoading: boolean
-  didSuccessfullyVerifyEmail: boolean | null
-  resultText: string
+  didSuccessfullyVerify: boolean | null
+  email: string
+  isIDOrEmail: IsIDOrEmailType
 }) => {
   const color = useColor()
+
+  const loadingText =
+    isIDOrEmail === "ID" ? `Sending ID verification email...` : `Sending a confirmation email...`
+
+  const resultText =
+    isIDOrEmail === "ID" ? `ID verification link sent to ${email}.` : `Email sent to ${email}.`
 
   const renderContent = () => {
     if (isLoading) {
       return (
         <>
-          <Text color={color("white100")}>Sending a confirmation email...</Text>
+          <Text color={color("white100")}>{loadingText}</Text>
 
           <Flex pr="1">
             <Spinner size="small" color="white100" />
@@ -654,54 +659,7 @@ const VerificationConfirmationBannerForEmail = ({
     return (
       <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
         <Text color={color("white100")} numberOfLines={2}>
-          {didSuccessfullyVerifyEmail ? resultText : "Something went wrong, please try again"}
-        </Text>
-      </Flex>
-    )
-  }
-  return (
-    <Flex
-      px={2}
-      py={1}
-      // Avoid system bottom navigation bar
-      background={color("black100")}
-      flexDirection="row"
-      justifyContent="space-between"
-      alignItems="center"
-      testID="verification-confirmation-banner"
-    >
-      {renderContent()}
-    </Flex>
-  )
-}
-
-const VerificationConfirmationBannerForID = ({
-  isLoading,
-  didSuccessfullyVerifyID,
-  resultText,
-}: {
-  isLoading: boolean
-  didSuccessfullyVerifyID: boolean | null
-  resultText: string
-}) => {
-  const color = useColor()
-
-  const renderContent = () => {
-    if (isLoading) {
-      return (
-        <>
-          <Text color={color("white100")}>Sending ID verification email...</Text>
-
-          <Flex pr="1">
-            <Spinner size="small" color="white100" />
-          </Flex>
-        </>
-      )
-    }
-    return (
-      <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
-        <Text color={color("white100")} numberOfLines={2}>
-          {didSuccessfullyVerifyID ? resultText : "Something went wrong, please try again"}
+          {didSuccessfullyVerify ? resultText : "Something went wrong, please try again"}
         </Text>
       </Flex>
     )

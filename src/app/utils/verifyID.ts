@@ -27,7 +27,7 @@ export const verifyID = async (relayEnvironment: Environment) => {
           }
         }
       `,
-      variables: { input: { userID: null } },
+      variables: { input: {} },
     })
   })
 }
