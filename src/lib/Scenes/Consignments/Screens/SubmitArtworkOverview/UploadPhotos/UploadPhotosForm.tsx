@@ -67,6 +67,9 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       await removeAssetFromSubmission({ assetID: photo.id })
       const filteredPhotos = values.photos.filter((p: Photo) => p.id !== photo.id)
       setFieldValue("photos", filteredPhotos)
+      GlobalStore.actions.artworkSubmission.submission.setPhotos({
+        photos: [...filteredPhotos],
+      })
     } catch (error) {
       photo.error = true
       photo.errorMessage = "Photo could not be deleted"
