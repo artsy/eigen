@@ -21,10 +21,12 @@ interface ScreenProps {
  */
 const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) => {
   const module = modules[route.params.moduleName]
-  if (module.type !== "react") {
-    console.warn(route.params.moduleName, { module })
+
+  if (module.type === "native") {
+    console.warn("Unhandled legacy native module!", route.params.moduleName, { module })
     throw new Error("native modules not yet supported in new nav setup")
   }
+
   // tslint:disable-next-line:variable-name
   const [legacy_shouldHideBackButton, updateShouldHideBackButton] = useState(false)
 

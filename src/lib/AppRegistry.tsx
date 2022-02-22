@@ -123,6 +123,8 @@ import { useStripeConfig } from "./utils/useStripeConfig"
 
 // keep this import of storybook last, otherwise it produces an error when debugging
 import { StorybookUIRoot } from "../storybook/storybook-ui"
+import { CityGuideView } from "./NativeModules/CityGuideView"
+import { usingNewIOSAppShell } from "./NativeModules/LegacyNativeModules"
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
@@ -168,6 +170,7 @@ const Conversation: React.FC<ConversationProps> = screenTrack<ConversationProps>
 interface PageWrapperProps {
   fullBleed?: boolean
   isMainView?: boolean
+  ignoreTabs?: boolean
   ViewComponent: React.ComponentType<any>
   viewProps: any
   moduleName: string
@@ -176,6 +179,7 @@ interface PageWrapperProps {
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({
   fullBleed,
   isMainView,
+  ignoreTabs = false,
   ViewComponent,
   viewProps,
 }) => {
@@ -184,12 +188,16 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({
   const paddingBottom = isMainView ? 0 : safeAreaInsets.bottom
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   // if we're in a modal, just pass isVisible through
-  const currentTab = useSelectedTab()
+
   let isVisible = viewProps.isVisible
-  if (BottomTabOption[viewProps.navStackID as BottomTabType]) {
-    // otherwise, make sure it respects the current tab
-    isVisible = isVisible && currentTab === viewProps.navStackID
+  if (!ignoreTabs) {
+    const currentTab = useSelectedTab()
+    if (BottomTabOption[viewProps.navStackID as BottomTabType]) {
+      // otherwise, make sure it respects the current tab
+      isVisible = isVisible && currentTab === viewProps.navStackID
+    }
   }
+
   const isPresentedModally = viewProps.isPresentedModally
   return (
     <ArtsyKeyboardAvoidingViewContext.Provider
@@ -242,6 +250,7 @@ export interface ViewOptions {
   alwaysPresentModally?: boolean
   hidesBackButton?: boolean
   fullBleed?: boolean
+  ignoreTabs?: boolean
   // If this module is the root view of a particular tab, name it here
   isRootViewForTabName?: BottomTabType
   // If this module should only be shown in one particular tab, name it here
@@ -259,6 +268,12 @@ type ModuleDescriptor =
       type: "native"
       options: ViewOptions
     }
+  | {
+      type: "new_native"
+      Component: React.ComponentType<any>
+      Query?: GraphQLTaggedNode
+      options: ViewOptions
+    }
 
 function reactModule(
   Component: React.ComponentType<any>,
@@ -266,6 +281,14 @@ function reactModule(
   Query?: GraphQLTaggedNode
 ): ModuleDescriptor {
   return { type: "react", options, Component, Query }
+}
+
+function newNativeModule(
+  Component: React.ComponentType<any>,
+  options: ViewOptions = {},
+  Query?: GraphQLTaggedNode
+): ModuleDescriptor {
+  return { type: "new_native", options, Component, Query }
 }
 
 function nativeModule(options: ViewOptions = {}): ModuleDescriptor {
@@ -314,10 +337,10 @@ export const modules = defineModules({
     fullBleed: true,
   }),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
-  City: reactModule(CityView, { fullBleed: true }),
+  City: reactModule(CityView, { fullBleed: true, ignoreTabs: true }),
   CityBMWList: reactModule(CityBMWListQueryRenderer, { fullBleed: true }),
   CityFairList: reactModule(CityFairListQueryRenderer, { fullBleed: true }),
-  CityPicker: reactModule(CityPicker, { fullBleed: true }),
+  CityPicker: reactModule(CityPicker, { fullBleed: true, ignoreTabs: true }),
   CitySavedList: reactModule(CitySavedListQueryRenderer),
   CitySectionList: reactModule(CitySectionListQueryRenderer),
   Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
@@ -342,7 +365,9 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
     modalPresentationStyle: "fullScreen",
   }),
-  LocalDiscovery: nativeModule(),
+  LocalDiscovery: newNativeModule(CityGuideView, {
+    fullBleed: true,
+  }),
   WebView: nativeModule(),
   ReactWebView: reactModule(ArtsyReactWebViewPage, {
     fullBleed: true,
@@ -352,7 +377,7 @@ export const modules = defineModules({
   MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
     hasOwnModalCloseButton: true,
   }),
-  Map: reactModule(MapContainer, { fullBleed: true }),
+  Map: reactModule(MapContainer, { fullBleed: true, ignoreTabs: true }),
   MyAccount: reactModule(MyAccountQueryRenderer),
   MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
   MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
@@ -412,10 +437,11 @@ export const modules = defineModules({
 // Register react modules with the app registry
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
-  if ("Component" in descriptor) {
+  if ("Component" in descriptor && descriptor.type !== "new_native") {
     if (Platform.OS === "ios") {
       register(moduleName, descriptor.Component, {
         fullBleed: descriptor.options.fullBleed,
+        ignoreTabs: descriptor.options.ignoreTabs,
         moduleName,
       })
     }
@@ -461,6 +487,6 @@ const Main: React.FC<{}> = track()(({}) => {
   return <BottomTabsNavigator />
 })
 
-if (Platform.OS === "ios") {
+if (Platform.OS === "ios" && !usingNewIOSAppShell()) {
   register("Artsy", Main, { fullBleed: true, isMainView: true, moduleName: "Artsy" })
 }
