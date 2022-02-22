@@ -56,9 +56,7 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
           </>
         )}
         ItemSeparatorComponent={() => (
-          <Flex px={2}>
-            <Separator />
-          </Flex>
+ <Separator px={2} />
         )}
         style={{ width: useScreenDimensions().width, left: -20 }}
       />
