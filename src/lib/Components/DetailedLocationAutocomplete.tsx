@@ -15,11 +15,13 @@ import { ScrollView } from "react-native-gesture-handler"
 interface DetailedLocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   initialLocation?: string
   onChange: (location: LocationWithDetails) => void
+  locationInputRef?: React.RefObject<Input>
 }
 
 export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocompleteProps> = ({
   initialLocation = "",
   onChange,
+  locationInputRef,
   ...restProps
 }) => {
   const [query, setQuery] = useState(initialLocation)
@@ -28,7 +30,7 @@ export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocomplete
   const [currentResult, setCurrentResult] = useState<LocationResult | null>(null)
   const [isFocused, setIsFocused] = useState(false)
 
-  const inputRef = useRef<Input>(null)
+  const inputRef = locationInputRef || useRef<Input>(null)
 
   const { height: screenHeight } = useScreenDimensions()
 
