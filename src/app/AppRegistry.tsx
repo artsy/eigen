@@ -152,14 +152,14 @@ interface ArtworkProps {
   isVisible: boolean
 }
 
-const Artwork: React.FC<ArtworkProps> = (props) => <ArtworkQueryRenderer {...props} />
+const Artwork = (props: ArtworkProps) => <ArtworkQueryRenderer {...props} />
 
 interface PartnerLocationsProps {
   partnerID: string
   safeAreaInsets: SafeAreaInsets
   isVisible: boolean
 }
-const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => (
+const PartnerLocations = (props: PartnerLocationsProps) => (
   <PartnerLocationsQueryRenderer {...props} />
 )
 
@@ -193,12 +193,7 @@ interface PageWrapperProps {
   moduleName: string
 }
 
-const InnerPageWrapper: React.FC<PageWrapperProps> = ({
-  fullBleed,
-  isMainView,
-  ViewComponent,
-  viewProps,
-}) => {
+function InnerPageWrapper({ fullBleed, isMainView, ViewComponent, viewProps }: PageWrapperProps) {
   const safeAreaInsets = useScreenDimensions().safeAreaInsets
   const paddingTop = fullBleed ? 0 : safeAreaInsets.top
   const paddingBottom = isMainView ? 0 : safeAreaInsets.bottom

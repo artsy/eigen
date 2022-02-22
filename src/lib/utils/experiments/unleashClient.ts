@@ -11,7 +11,6 @@ import { UnleashClient } from "unleash-proxy-client"
  */
 export function getUnleashClient(env?: "production" | "staging") {
   if (!unleashClient || (env !== undefined && env !== envBeingUsed)) {
-    console.log({ _unleashClient: unleashClient === null, env, envBeingUsed })
     if (env !== undefined) {
       envBeingUsed = env
     }
@@ -38,7 +37,7 @@ const createUnleashClient = () => {
         ? Config.UNLEASH_PROXY_CLIENT_KEY_PRODUCTION
         : Config.UNLEASH_PROXY_CLIENT_KEY_STAGING,
     appName: "eigen",
-    refreshInterval: 6, // seconds
+    refreshInterval: 0, // don't refresh. we will manually refresh on appStart and goingForeground.
     storageProvider: {
       save: async (name, data) => AsyncStorage.setItem(storageName(name), JSON.stringify(data)),
       get: async (name) => {

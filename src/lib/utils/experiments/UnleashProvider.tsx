@@ -1,5 +1,7 @@
 import { useDevToggle } from "lib/store/GlobalStore"
-import React, { createContext, ReactNode, useEffect, useState } from "react"
+import React, { createContext, ReactNode, useCallback, useEffect, useState } from "react"
+import useAppState from "../useAppState"
+import { forceFetchToggles } from "./helpers"
 import { getUnleashClient } from "./unleashClient"
 
 interface UnleashContext {
@@ -36,6 +38,11 @@ export function UnleashProvider({ children }: { children?: ReactNode }) {
       client.stop()
     }
   }, [unleashEnv])
+
+  const onForeground = useCallback(() => {
+    forceFetchToggles(unleashEnv)
+  }, [unleashEnv])
+  useAppState({ onForeground })
 
   return <UnleashContext.Provider value={{ lastUpdate }}>{children}</UnleashContext.Provider>
 }
