@@ -28,7 +28,7 @@ export const PhotoRow: React.FC<Props> = ({ photo, onPhotoDelete }) => {
 
 const PhotoRowContent: React.FC<Props> = ({ photo, onPhotoDelete }) => (
   <Flex flexDirection="row">
-    <Flex width="55%" justifyContent="center">
+    <Flex width="53%" justifyContent="center">
       <Image
         resizeMode="contain"
         source={{ uri: photo.path }}
@@ -36,7 +36,7 @@ const PhotoRowContent: React.FC<Props> = ({ photo, onPhotoDelete }) => (
         testID="Submission_Image"
       />
     </Flex>
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" width="45%">
+    <Flex flexDirection="row" justifyContent="space-around" alignItems="center" width="47%">
       <Text>{photo.sizeDisplayValue}</Text>
       <Button
         ml={1}
