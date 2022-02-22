@@ -41,7 +41,9 @@ const RelayDefaultEnvProvider = (props: { children?: ReactNode }) => (
   <RelayEnvironmentProvider environment={defaultEnvironment} {...props} />
 )
 
-const SuspenseProvider = () => <Suspense fallback={<Spinner />} />
+const SuspenseProvider = (props: { children?: ReactNode }) => (
+  <Suspense fallback={<Spinner />} {...props} />
+)
 
 // react-track has no provider, we make one using the decorator and a class wrapper
 const TrackingProvider = (props: { children?: ReactNode }) => <PureWrapper {...props} />
