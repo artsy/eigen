@@ -67,15 +67,6 @@ const OldMyCollectionArtworkArtistAuctionResults: React.FC<
             />
           </>
         )}
-        ListHeaderComponent={() => (
-          <Flex px={2}>
-            <Text variant="md">Auction results</Text>
-            <Text variant="xs" color="black60">
-              Sorted by most recent sale date
-            </Text>
-            <Separator mt="2" />
-          </Flex>
-        )}
         ItemSeparatorComponent={() => (
           <Flex px={2}>
             <Separator />
