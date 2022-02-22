@@ -46,7 +46,10 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       }
     }
 
-    // let Formik know about processed photos
+    // let GlobalStore and Formik know about processed photos
+    GlobalStore.actions.artworkSubmission.submission.setPhotos({
+      photos: [...values.photos, ...processedPhotos],
+    })
     setFieldValue("photos", [...values.photos, ...processedPhotos])
   }
 

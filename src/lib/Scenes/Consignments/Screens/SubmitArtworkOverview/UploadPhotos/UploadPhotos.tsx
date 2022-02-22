@@ -9,14 +9,6 @@ import { Photo, PhotosFormModel, photosValidationSchema } from "./validation"
 export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
 
-  const handlePhotosSavePress = (values: PhotosFormModel) => {
-    // set uploaded photos to GStore and move to the next step
-    GlobalStore.actions.artworkSubmission.submission.setPhotos({
-      photos: [...values.photos],
-    })
-    handlePress()
-  }
-
   return (
     <Flex p={1} mt={1}>
       <Flex>
@@ -31,7 +23,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
 
       <Formik<PhotosFormModel>
         initialValues={submission.photos}
-        onSubmit={handlePhotosSavePress}
+        onSubmit={handlePress}
         validationSchema={photosValidationSchema}
         validateOnMount
       >
@@ -44,7 +36,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
               <Spacer mt={2} />
               <CTAButton
                 disabled={!isValid || isAnyPhotoLoading || isSizeLimitExceeded(values.photos)}
-                onPress={() => handlePhotosSavePress(values)}
+                onPress={handlePress}
                 testID="Submission_Save_Photos_Button"
               >
                 {!!isAnyPhotoLoading ? "Processing Photos..." : "Save & Continue"}
