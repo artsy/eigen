@@ -2,11 +2,11 @@ import { ArtworkDetailsFormModel } from "../validation"
 import { limitedEditionValue } from "./rarityOptions"
 
 export const mockFormValues: ArtworkDetailsFormModel = {
-  artist: "123",
+  artist: "Caspar David Friedrich",
   artistId: "200",
   title: "hello",
   year: "2000",
-  medium: "oil",
+  medium: "oil on canvas",
   attributionClass: limitedEditionValue,
   editionNumber: "1",
   editionSizeFormatted: "1",

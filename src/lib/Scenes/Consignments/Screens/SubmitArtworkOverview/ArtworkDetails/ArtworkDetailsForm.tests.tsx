@@ -1,5 +1,6 @@
 import { useFormikContext } from "formik"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
@@ -21,84 +22,29 @@ describe("ArtworkDetailsForm", () => {
     }))
   })
 
-  afterEach(() => jest.clearAllMocks())
+  afterEach(async () => {
+    jest.clearAllMocks()
+    await flushPromiseQueue()
+  })
 
-  it("Validation", async () => {
+  it("correctly displays formik values in form", () => {
     const { findByText } = renderWithWrappersTL(<ArtworkDetailsForm />)
     expect(findByText("hello")).toBeTruthy()
+    expect(findByText("Caspar David Friedrich")).toBeTruthy()
+    expect(findByText("oil on canvas")).toBeTruthy()
+    expect(findByText("found")).toBeTruthy()
+    expect(findByText("London")).toBeTruthy()
+  })
+
+  it("when rarity is limited edition, renders additional inputs for edition number and size", () => {
+    const { getByTestId } = renderWithWrappersTL(<ArtworkDetailsForm />)
+
+    const inputs = {
+      editionNumber: getByTestId("Submission_EditionNumberInput"),
+      editionSize: getByTestId("Submission_EditionSizeInput"),
+    }
+
+    expect(inputs.editionNumber).toBeTruthy()
+    expect(inputs.editionSize).toBeTruthy()
   })
 })
-
-// describe("validation", () => {
-//   it("keeps Save & Continue button disabled until all required fields validated", async () => {
-//     const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
-
-//     const SaveButton = UNSAFE_getByProps({
-//       testID: "Submission_ArtworkDetails_Button",
-//     })
-
-//     const inputs = {
-//       title: getByTestId("Submission_TitleInput"),
-//       year: getByTestId("Submission_YearInput"),
-//       material: getByTestId("Submission_MaterialsInput"),
-//       height: getByTestId("Submission_HeightInput"),
-//       width: getByTestId("Submission_WidthInput"),
-//       depth: getByTestId("Submission_DepthInput"),
-//       provenance: getByTestId("Submission_ProvenanceInput"),
-//     }
-
-//     await flushPromiseQueue()
-
-//     // title missing
-//     act(() => fireEvent.changeText(inputs.title, ""))
-//     expect(SaveButton.props.disabled).toBe(true)
-
-//     // year missing
-//     act(() => {
-//       fireEvent.changeText(inputs.year, "")
-//       fireEvent.changeText(inputs.title, "someTitle")
-//     })
-//     expect(SaveButton.props.disabled).toBe(true)
-
-//     // material missing
-//     act(() => {
-//       fireEvent.changeText(inputs.material, "")
-//       fireEvent.changeText(inputs.year, "1999")
-//     })
-//     expect(SaveButton.props.disabled).toBe(true)
-
-//     // height missing
-//     act(() => {
-//       fireEvent.changeText(inputs.height, "")
-//       fireEvent.changeText(inputs.material, "oil on c")
-//     })
-//     expect(SaveButton.props.disabled).toBe(true)
-
-//     // width missing
-//     act(() => {
-//       fireEvent.changeText(inputs.width, "")
-//       fireEvent.changeText(inputs.height, "123")
-//     })
-//     expect(SaveButton.props.disabled).toBe(true)
-
-//     // depth missing
-//     act(() => {
-//       fireEvent.changeText(inputs.depth, "")
-//       fireEvent.changeText(inputs.width, "123")
-//     })
-
-//     expect(SaveButton.props.disabled).toBe(true)
-
-//     // provenance missing
-//     act(() => {
-//       fireEvent.changeText(inputs.provenance, "")
-//       fireEvent.changeText(inputs.depth, "123")
-//     })
-
-//     expect(SaveButton.props.disabled).toBe(true)
-
-//     act(() => {
-//       fireEvent.changeText(inputs.provenance, "found it")
-//     })
-//   })
-// })
