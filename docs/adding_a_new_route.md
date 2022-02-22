@@ -9,7 +9,7 @@ In Eigen, as in many mobile apps, we have mainly two types for routes.
 
 ### Global App Routes
 
-Global app routes in Eigen, are routes that are accessible everywhere in the app using the `src/lib/navigation/navigate` helper.
+Global app routes in Eigen, are routes that are accessible everywhere in the app using the `src/app/navigation/navigate` helper.
 
 Before making the decision of creating a new global route - make sure it is really needed. In many occasions, there is no need for it and using an independent Navigation container is all you need.
 

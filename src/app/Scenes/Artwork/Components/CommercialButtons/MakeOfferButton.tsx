@@ -53,7 +53,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
         },
       ]
     )
-    console.log("src/lib/Scenes/Artwork/Components/MakeOfferButton.tsx", error)
+    console.log("src/app/Scenes/Artwork/Components/MakeOfferButton.tsx", error)
   }
 
   @track(

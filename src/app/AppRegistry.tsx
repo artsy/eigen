@@ -1,5 +1,5 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
+import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import React, { useEffect } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"

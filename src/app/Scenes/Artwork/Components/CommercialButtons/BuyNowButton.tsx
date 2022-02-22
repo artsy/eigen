@@ -47,7 +47,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
         },
       ]
     )
-    console.log("src/lib/Scenes/Artwork/Components/BuyNowButton.tsx", error)
+    console.log("src/app/Scenes/Artwork/Components/BuyNowButton.tsx", error)
   }
 
   @track(

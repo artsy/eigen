@@ -48,7 +48,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
         },
       ]
     )
-    console.log("src/lib/Scenes/Inbox/Components/Conversations/InquiryMakeOfferButton.tsx", error)
+    console.log("src/app/Scenes/Inbox/Components/Conversations/InquiryMakeOfferButton.tsx", error)
   }
 
   handleCreateInquiryOfferOrder() {

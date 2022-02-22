@@ -142,7 +142,9 @@ export const validatePRChangelog = () => {
 
   if (res.type === "error") {
     console.log("Something went wrong while parsing the PR description")
-    warn("❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**")
+    warn(
+      "❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**"
+    )
     return
   }
 
@@ -162,7 +164,9 @@ export const validatePRChangelog = () => {
     "### This PR contains the following changes:\n" +
     Object.entries(pickBy(changedSections, (changesArray) => changesArray.length))
       .map(([section, sectionValue]) => {
-        return `\n- ${changelogTemplateSections[section as keyof typeof changedSections]} (${sectionValue})`
+        return `\n- ${
+          changelogTemplateSections[section as keyof typeof changedSections]
+        } (${sectionValue})`
       })
       .join("")
 

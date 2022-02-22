@@ -67,7 +67,7 @@ interface ArtworkFilterOptionsScreenParams {
 }
 
 // This needs to be a `type` rather than an `interface`
-// see src/lib/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm.tsx#L35
+// see src/app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm.tsx#L35
 // tslint:disable-next-line:interface-over-type-literal
 export type ArtworkFilterNavigationStack = {
   AdditionalGeneIDsOptionsScreen: undefined

@@ -1,5 +1,5 @@
 /**
- * This file is an exact copy of /Users/mounirdhahri/work/eigen/src/lib/Components/ArtistListItem.tsx
+ * This file is an exact copy of /Users/mounirdhahri/work/eigen/src/app/Components/ArtistListItem.tsx
  * We needed it because relay still do not support named fragment spreads for search
  */
 import { OnboardingPersonalizationModal_artists } from "__generated__/OnboardingPersonalizationModal_artists.graphql"
