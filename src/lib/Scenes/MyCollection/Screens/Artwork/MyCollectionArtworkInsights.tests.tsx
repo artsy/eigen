@@ -84,6 +84,10 @@ describe("MyCollectionArtworkInsights", () => {
     expect(getByText("High")).toBeTruthy()
     expect(getByText("One-Year Trend")).toBeTruthy()
     expect(getByText("Trending up")).toBeTruthy()
+
+    // Why Sell
+
+    expect(getByText("Interested in selling this work?")).toBeTruthy()
   })
 })
 

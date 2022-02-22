@@ -17,6 +17,8 @@ interface MyCollectionArtworkDemandIndexProps {
 export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexProps> = (
   props
 ) => {
+  const { trackEvent } = useTracking()
+
   const artwork = useFragment<MyCollectionArtworkDemandIndex_artwork$key>(
     artworkFragment,
     props.artwork
@@ -27,16 +29,14 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
     props.marketPriceInsights
   )
 
-  const { trackEvent } = useTracking()
-
-  if (!artwork || !marketPriceInsights) {
+  if (!artwork || !marketPriceInsights?.demandRank) {
     return null
   }
 
-  const demandRank = Number((marketPriceInsights.demandRank! * 10).toFixed(2))
+  const demandRank = Number((marketPriceInsights.demandRank * 10).toFixed(2))
 
   return (
-    <Flex mb={3}>
+    <Flex mb={6}>
       <InfoButton
         title="Demand index"
         modalContent={
@@ -161,6 +161,7 @@ const getDemandRankTitle = (demandRank: number) => {
     }
   }
 }
+
 const tracks = {
   tappedInfoBubble: (internalID: string, slug: string): TappedInfoBubble => ({
     action: ActionType.tappedInfoBubble,

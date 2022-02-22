@@ -1,13 +1,15 @@
+import { editCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { goBack, navigate, popToRoot } from "lib/navigation/navigate"
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { PlaceholderBox, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
 import React, { Suspense, useCallback } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 import { MyCollectionArtworkHeader } from "./NewComponents/NewMyCollectionArtworkHeader"
@@ -21,11 +23,8 @@ export enum Tab {
 const MyCollectionArtworkScreenQuery = graphql`
   query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
     artwork(id: $artworkSlug) {
+      ...MyCollectionArtwork_sharedProps @relay(mask: false)
       ...NewMyCollectionArtworkHeader_artwork
-      internalID
-      consignmentSubmission {
-        inProgress
-      }
       ...MyCollectionArtworkInsights_artwork
       ...MyCollectionArtworkAbout_artwork
     }
@@ -40,6 +39,8 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   artistInternalID,
   medium,
 }) => {
+  const { trackEvent } = useTracking()
+
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(MyCollectionArtworkScreenQuery, {
     artworkSlug,
     artistInternalID,
@@ -55,7 +56,10 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   }
 
   const handleEdit = useCallback(() => {
-    navigate(`my-collection/artworks/${data.artwork!.internalID}/edit`, {
+    trackEvent(tracks.editCollectedArtwork(data.artwork!.internalID, data.artwork!.slug))
+    GlobalStore.actions.myCollection.artwork.startEditingArtwork(data.artwork as any)
+
+    navigate(`my-collection/artworks/${data.artwork?.internalID}/edit`, {
       passProps: {
         mode: "edit",
         artwork: data.artwork,
@@ -67,14 +71,13 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const displayEditButton = !data.artwork.consignmentSubmission?.inProgress
 
-  // TODO: Hide insight tabs if not insights available
   const tabs = compact([
     {
       title: Tab.insights,
       content: (
         <MyCollectionArtworkInsights
           artwork={data.artwork}
-          marketPriceInsights={data.marketPriceInsights!}
+          marketPriceInsights={data.marketPriceInsights}
         />
       ),
       initial: true,
@@ -86,7 +89,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   ])
 
   return (
-    <Flex flex={1}>
+    <>
       <FancyModalHeader
         onLeftButtonPress={goBack}
         rightButtonText="Edit"
@@ -95,9 +98,9 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       />
       <StickyTabPage
         tabs={tabs}
-        staticHeaderContent={<MyCollectionArtworkHeader artwork={data.artwork!} />}
+        staticHeaderContent={<MyCollectionArtworkHeader artwork={data.artwork} />}
       />
-    </Flex>
+    </>
   )
 }
 
@@ -129,3 +132,64 @@ export const MyCollectionArtworkQueryRenderer: React.FC<MyCollectionArtworkScree
 
   return <OldMyCollectionArtworkQueryRenderer {...props} />
 }
+
+const tracks = {
+  editCollectedArtwork: (internalID: string, slug: string) => {
+    return editCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
+  },
+}
+
+/**
+ * * IMPORTANT *
+ *
+ * The following shared artwork fields are needed for initializing the edit
+ * artwork view. This is also used for handling mutation view updates.
+ *
+ * When adding new fields this fragment needs to be updated.
+ */
+export const ArtworkMetaProps = graphql`
+  fragment MyCollectionArtwork_sharedProps on Artwork {
+    artist {
+      internalID
+      formattedNationalityAndBirthday
+    }
+    consignmentSubmission {
+      inProgress
+    }
+    artistNames
+    category
+    pricePaid {
+      display
+      minor
+      currencyCode
+    }
+    date
+    depth
+    editionSize
+    editionNumber
+    height
+    attributionClass {
+      name
+    }
+    id
+    images {
+      isDefault
+      imageURL
+      width
+      height
+      internalID
+    }
+    internalID
+    isEdition
+    medium
+    metric
+    artworkLocation
+    provenance
+    slug
+    title
+    width
+    consignmentSubmission {
+      inProgress
+    }
+  }
+`

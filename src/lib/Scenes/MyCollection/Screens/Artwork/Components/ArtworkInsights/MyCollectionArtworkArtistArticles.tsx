@@ -27,10 +27,9 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
 
   return (
     <ScreenMargin>
-      <Box my={3}>
-        <Separator />
-      </Box>
-      <Text variant="sm" mb="1">
+      <Separator mb={3} />
+
+      <Text variant="sm" mb={2}>
         Latest Articles featuring {artist?.name}
       </Text>
 
@@ -59,7 +58,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
 
       <Spacer my={1} />
 
-      <Box>
+      <Box mb={2}>
         <CaretButton
           onPress={() => {
             trackEvent(

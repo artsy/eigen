@@ -8,10 +8,11 @@ import { graphql } from "relay-runtime"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkDemandIndex } from "./Components/ArtworkInsights/MyCollectionArtworkDemandIndex"
+import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 
 interface MyCollectionArtworkInsightsProps {
   artwork: MyCollectionArtworkInsights_artwork$key
-  marketPriceInsights: MyCollectionArtworkInsights_marketPriceInsights$key
+  marketPriceInsights: MyCollectionArtworkInsights_marketPriceInsights$key | null
 }
 
 export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = ({
@@ -34,21 +35,23 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         <Spacer mb={2} />
 
-        <MyCollectionArtworkDemandIndex
-          artwork={artwork}
-          marketPriceInsights={marketPriceInsights}
-        />
+        {!!marketPriceInsights && (
+          <>
+            <MyCollectionArtworkDemandIndex
+              artwork={artwork}
+              marketPriceInsights={marketPriceInsights}
+            />
 
-        <Spacer mb={2} />
-
-        <MyCollectionArtworkArtistMarket
-          artwork={artwork}
-          marketPriceInsights={marketPriceInsights}
-        />
-
-        <Spacer mb={2} />
+            <MyCollectionArtworkArtistMarket
+              artwork={artwork}
+              marketPriceInsights={marketPriceInsights}
+            />
+          </>
+        )}
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
+
+        <MyCollectionWhySell artwork={artwork} />
       </Flex>
     </StickyTabPageScrollView>
   )
@@ -62,6 +65,7 @@ const artworkFragment = graphql`
     ...MyCollectionArtworkDemandIndex_artwork
     ...MyCollectionArtworkArtistMarket_artwork
     ...MyCollectionArtworkArtistAuctionResults_artwork
+    ...MyCollectionWhySell_artwork
   }
 `
 

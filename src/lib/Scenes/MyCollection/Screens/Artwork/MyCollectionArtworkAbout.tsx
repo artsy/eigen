@@ -1,6 +1,5 @@
 import { MyCollectionArtworkAbout_artwork$key } from "__generated__/MyCollectionArtworkAbout_artwork.graphql"
-import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import { Text } from "palette/elements"
+import { Flex, Text } from "palette/elements"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -18,10 +17,10 @@ export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> =
   )
 
   return (
-    <StickyTabPageScrollView>
+    <Flex>
       <Text>Price & Market Insights</Text>
       <Text>{artwork.id}</Text>
-    </StickyTabPageScrollView>
+    </Flex>
   )
 }
 

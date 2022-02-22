@@ -17,6 +17,8 @@ interface MyCollectionArtworkArtistMarketProps {
 export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtistMarketProps> = (
   props
 ) => {
+  const { trackEvent } = useTracking()
+
   const artwork = useFragment<MyCollectionArtworkArtistMarket_artwork$key>(
     artworkFragment,
     props.artwork
@@ -26,8 +28,6 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
     marketPriceInsightsFragment,
     props.marketPriceInsights
   )
-
-  const { trackEvent } = useTracking()
 
   if (!artwork || !marketPriceInsights) {
     return null
@@ -47,7 +47,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
   const formatLiquidityRank = getFormattedLiquidityRank(liquidityRank)
 
   return (
-    <Flex mb={3}>
+    <Flex mb={6}>
       <InfoButton
         title="Artist Market"
         subTitle="Based on the last 36 months of auction data"

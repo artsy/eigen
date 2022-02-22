@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistAuctionResults_artwork$key } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { AuctionResultListItemFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "lib/Components/SectionTitle"
@@ -17,12 +17,12 @@ interface MyCollectionArtworkArtistAuctionResultsProps {
 
 export const MyCollectionArtworkArtistAuctionResults: React.FC<
   MyCollectionArtworkArtistAuctionResultsProps
-> = (restProps) => {
+> = (props) => {
   const { trackEvent } = useTracking()
 
   const artwork = useFragment<MyCollectionArtworkArtistAuctionResults_artwork$key>(
     artworkFragment,
-    restProps.artwork
+    props.artwork
   )
 
   const artist = artwork.artist
@@ -33,14 +33,14 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
   }
 
   return (
-    <Flex>
+    <Flex mb={6}>
       <SectionTitle
         title={`Auction Results for ${artwork?.artist?.name}`}
         onPress={() => {
           trackEvent(
             tracks.tappedShowMore(artwork?.internalID, artwork?.slug, "Explore auction results")
           )
-          navigate(`artist/${artist?.slug}/auction-results`)
+          navigate(`/artist/${artwork?.artist?.slug!}/auction-results`)
         }}
       />
 
@@ -87,6 +87,14 @@ const artworkFragment = graphql`
 `
 
 const tracks = {
+  tappedInfoBubble: (internalID: string, slug: string): TappedInfoBubble => ({
+    action: ActionType.tappedInfoBubble,
+    context_module: ContextModule.auctionResults,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+    subject: "auctionResults",
+  }),
   tappedShowMore: (internalID: string, slug: string, subject: string) => ({
     action: ActionType.tappedShowMore,
     context_module: ContextModule.auctionResults,
