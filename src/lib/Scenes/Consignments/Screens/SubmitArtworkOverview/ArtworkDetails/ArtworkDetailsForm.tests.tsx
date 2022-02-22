@@ -2,8 +2,8 @@ import { useFormikContext } from "formik"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { mockSubmissionForm } from "./ArtworkDetails.tests"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
+import { mockFormValues } from "./utils/testUtils"
 
 jest.unmock("react-relay")
 jest.mock("formik")
@@ -17,7 +17,7 @@ describe("ArtworkDetailsForm", () => {
       handleChange: jest.fn(),
       setFieldValue: jest.fn(),
       errors: {},
-      values: mockSubmissionForm,
+      values: mockFormValues,
     }))
   })
 

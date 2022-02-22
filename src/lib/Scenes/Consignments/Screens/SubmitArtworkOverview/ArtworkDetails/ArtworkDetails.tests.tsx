@@ -7,8 +7,7 @@ import { createMockEnvironment } from "relay-test-utils"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
 import { ArtworkDetails } from "./ArtworkDetails"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
-import { limitedEditionValue } from "./utils/rarityOptions"
-import { ArtworkDetailsFormModel } from "./validation"
+import { mockFormValues } from "./utils/testUtils"
 
 jest.mock(
   "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/createConsignSubmissionMutation",
@@ -51,38 +50,13 @@ describe("ArtworkDetails", () => {
     })
 
     it("creates new submission", async () => {
-      await createOrUpdateSubmission(mockSubmissionForm, "")
+      await createOrUpdateSubmission(mockFormValues, "")
       expect(createConsignSubmissionMock).toHaveBeenCalled()
     })
 
     it("updates existing submission when ID passed", async () => {
-      await createOrUpdateSubmission(mockSubmissionForm, "12345")
+      await createOrUpdateSubmission(mockFormValues, "12345")
       expect(updateConsignSubmissionMock).toHaveBeenCalled()
     })
   })
 })
-
-export const mockSubmissionForm: ArtworkDetailsFormModel = {
-  artist: "123",
-  artistId: "200",
-  title: "hello",
-  year: "2000",
-  medium: "oil",
-  attributionClass: limitedEditionValue,
-  editionNumber: "1",
-  editionSizeFormatted: "1",
-  dimensionsMetric: "in",
-  height: "2",
-  width: "2",
-  depth: "2",
-  provenance: "found",
-  state: "DRAFT",
-  utmMedium: "",
-  utmSource: "",
-  utmTerm: "",
-  location: {
-    city: "London",
-    state: "England",
-    country: "UK",
-  },
-}
