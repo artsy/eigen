@@ -21,14 +21,14 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import { Button, Flex, Join, Spacer, Text } from "palette"
+import { Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
-import { WhySell } from "./Components/WhySell"
+import { OldWhySell } from "./Components/OldWhySell"
 import { MyCollectionArtworkScreenProps } from "./MyCollectionArtwork"
 
 export interface MyCollectionArtworkProps {
@@ -84,9 +84,13 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
-          <WhySell />
-
           <ScreenMargin>
+            <Separator />
+
+            <OldWhySell />
+
+            <Spacer mb={3} />
+
             <Button
               size="large"
               variant="fillGray"

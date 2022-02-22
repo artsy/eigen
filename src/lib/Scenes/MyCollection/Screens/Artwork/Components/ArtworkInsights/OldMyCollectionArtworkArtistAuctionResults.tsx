@@ -84,7 +84,7 @@ const OldMyCollectionArtworkArtistAuctionResults: React.FC<
         style={{ width: useScreenDimensions().width, left: -20 }}
       />
       <Separator />
-      <Box pt={3}>
+      <Box pt={2}>
         <CaretButton
           testID="AuctionsResultsButton"
           onPress={() => {

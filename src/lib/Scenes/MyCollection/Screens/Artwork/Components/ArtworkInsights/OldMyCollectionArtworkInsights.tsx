@@ -40,18 +40,26 @@ export const OldMyCollectionArtworkInsights: React.FC<OldMyCollectionArtworkInsi
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
-          <ScreenMargin mt={2} mb={3}>
-            <Separator />
 
-            <OldMyCollectionArtworkArtistMarketFragmentContainer
-              artwork={artwork}
-              marketPriceInsights={marketPriceInsights}
-            />
+          <ScreenMargin>
+            <Spacer my={1} />
+            <Separator />
+            <Spacer my={2} />
           </ScreenMargin>
+
+          <OldMyCollectionArtworkArtistMarketFragmentContainer
+            artwork={artwork}
+            marketPriceInsights={marketPriceInsights}
+          />
         </>
       )}
+      <ScreenMargin mt={2} mb={3}>
+        <Spacer my={1} />
+        <Separator />
+        <Spacer my={2} />
+        <OldMyCollectionArtworkArtistAuctionResultsFragmentContainer artwork={artwork} />
+      </ScreenMargin>
 
-      <OldMyCollectionArtworkArtistAuctionResultsFragmentContainer artwork={artwork} />
       <MyCollectionArtworkArtistArticlesFragmentContainer artwork={artwork} />
     </>
   )
