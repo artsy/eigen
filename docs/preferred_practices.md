@@ -39,7 +39,7 @@ The app was initially written in Objective-C and Swift and React Native was adde
 - Some great React Native components:
   // (should we update those? suggestions are welcome!)
   - [Partner](https://github.com/artsy/eigen/blob/main/src/lib/Scenes/Partner/Partner.tsx) is a simple top-level component.
-  - [PartnerShows](https://github.com/artsy/eigen/blob/main/src/lib/Scenes/Partner/Components/PartnerShows.tsx) is a fragment container that uses FlatList to paginate through Relay data.
+  - [Articles](https://github.com/artsy/eigen/blob/main/src/lib/Scenes/Articles/Articles.tsx) uses hooks in combination with FlatList to paginate through Relay data.
   - [Search](https://github.com/artsy/eigen/blob/main/src/lib/Scenes/Search/Search.tsx) is a functional component that loads data in response to user input.
 
 We used to have many different `renderX` functions throughout our components, but today we prefer to have a single `render()` function in a component. [See this PR](https://github.com/artsy/eigen/pull/3220) for our rationale and a comparison of approaches.
@@ -124,16 +124,12 @@ For styling we use custom inline elements like `Flex`, `Box`, `Text`.
 - [Why Artsy uses Relay](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#Relay)
 - [Artsy's Relay Workshop](https://github.com/artsy/relay-workshop)
 - Collections
-  // should we update these links?
-  - [A top-level Relay component](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/Scenes/Collection/Collection.tsx)
-  - [A fragment container](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/Scenes/Collection/Components/FeaturedArtists.tsx)
-    We recently also started using relay-hooks and will soon link documents to that.
+  - [A top-level Relay component](https://github.com/artsy/eigen/blob/1992cd6d96a2240acf1c70bc5648651ca99f5a16/src/lib/Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork.tsx)
+  - [A Relay component using a fragment](https://github.com/artsy/eigen/blob/1992cd6d96a2240acf1c70bc5648651ca99f5a16/src/lib/Components/ArtworkRail/LargeArtworkRail.tsx)
 
-#### Prefer Relay hooks over relay containers (Higher Order Components)
+### Prefer Relay Hooks over containers (Higher Order Components)
 
-Refactoring old containers to use hooks is encouraged.
-
-// Add or link to examples with of files using relay hooks here
+Although a lot of our components still use Relay containers, we prefer Relay hooks ([Relay Hooks RFC](https://github.com/artsy/eigen/issues/6080)) and try to use them whenever possible. Refactoring old containers to use hooks is encouraged.
 
 ### Unit tests
 
