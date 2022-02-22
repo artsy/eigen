@@ -57,11 +57,11 @@ jest.mock("react-tracking/build/dispatchTrackingEvent")
 
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
-jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
+jest.mock("./app/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: new (require("events").EventEmitter)(),
 }))
 
-jest.mock("./lib/utils/userHadMeaningfulInteraction.tsx", () => ({
+jest.mock("./app/utils/userHadMeaningfulInteraction.tsx", () => ({
   userHadMeaningfulInteraction: jest.fn(),
 }))
 
@@ -180,14 +180,14 @@ console.error = (message?: any) => {
   }
 }
 
-mockedModule("./lib/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
-// mockedModule("./lib/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
+mockedModule("./app/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
+// mockedModule("./app/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
 
 // Artist tests
-mockedModule("./lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
+mockedModule("./app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
 
 // Gene tests
-mockedModule("./lib/Components/Gene/Header.tsx", "Header")
+mockedModule("./app/Components/Gene/Header.tsx", "Header")
 
 // Native modules
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
@@ -361,7 +361,7 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   })
 }
 
-jest.mock("./lib/utils/useScreenDimensions", () => {
+jest.mock("./app/utils/useScreenDimensions", () => {
   const React = require("react")
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,
