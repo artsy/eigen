@@ -79,6 +79,8 @@ export const MyProfileEditForm: React.FC = () => {
 
   const nameInputRef = useRef<Input>(null)
   const bioInputRef = useRef<TextInput>(null)
+  const relevantPositionsInputRef = useRef<Input>(null)
+  const locationInputRef = useRef<Input>(null)
 
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
@@ -269,10 +271,14 @@ export const MyProfileEditForm: React.FC = () => {
                 error={errors.name}
                 returnKeyType="next"
                 defaultValue={values.name}
+                onSubmitEditing={() => {
+                  locationInputRef.current?.focus()
+                }}
               />
 
               {!!enableCollectorProfile && (
                 <DetailedLocationAutocomplete
+                  locationInputRef={locationInputRef}
                   title="Primary Location"
                   placeholder="City Name"
                   returnKeyType="next"
@@ -296,7 +302,6 @@ export const MyProfileEditForm: React.FC = () => {
 
               {!!enableCollectorProfile && (
                 <Input
-                  ref={nameInputRef}
                   title="Profession"
                   onChangeText={handleChange("profession")}
                   onBlur={() => validateForm()}
@@ -304,12 +309,15 @@ export const MyProfileEditForm: React.FC = () => {
                   returnKeyType="next"
                   defaultValue={values.profession}
                   placeholder="Select Your Profession"
+                  onSubmitEditing={() => {
+                    relevantPositionsInputRef.current?.focus()
+                  }}
                 />
               )}
 
               {!!enableCollectorProfile && (
                 <Input
-                  ref={nameInputRef}
+                  ref={relevantPositionsInputRef}
                   title="Other Relevant Positions"
                   onChangeText={handleChange("otherRelevantPositions")}
                   onBlur={() => validateForm()}
@@ -317,6 +325,9 @@ export const MyProfileEditForm: React.FC = () => {
                   returnKeyType="next"
                   defaultValue={values.otherRelevantPositions}
                   placeholder="Institution Name and Position"
+                  onSubmitEditing={() => {
+                    bioInputRef.current?.focus()
+                  }}
                 />
               )}
 
