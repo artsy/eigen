@@ -2,7 +2,6 @@ import { ActionType, OwnerType, TappedCreateAlert, ToggledSavedSearch } from "@a
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
-import { EventEmitter } from "events"
 import { Aggregations, FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { getSearchCriteriaFromFilters } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
@@ -15,6 +14,7 @@ import {
   SavedSearchAlertFormPropsBase,
   SavedSearchAlertMutationResult,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { EventEmitter } from "events"
 import { BellIcon, Box, Button } from "palette"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"

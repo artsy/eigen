@@ -1,6 +1,5 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
 import {
   ArtsyWebViewConditionsOfSale,
   ArtsyWebViewPrivacy,
@@ -9,6 +8,7 @@ import {
 import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
+import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
 import { Alert, Animated, ScrollView } from "react-native"

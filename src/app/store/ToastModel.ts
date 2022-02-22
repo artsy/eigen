@@ -1,5 +1,5 @@
-import { action, Action } from "easy-peasy"
 import { ToastDetails, ToastOptions, ToastPlacement } from "app/Components/Toast/types"
+import { action, Action } from "easy-peasy"
 
 export interface ToastModel {
   sessionState: {

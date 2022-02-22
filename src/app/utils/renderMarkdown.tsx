@@ -1,6 +1,6 @@
-import { decode } from "html-entities"
 import { LinkText } from "app/Components/Text/LinkText"
 import { navigate } from "app/navigation/navigate"
+import { decode } from "html-entities"
 import _ from "lodash"
 import { ClassTheme, Sans, Separator, Serif, Text } from "palette"
 import React from "react"

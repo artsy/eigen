@@ -2,11 +2,11 @@ import { MockRelayRendererFixtures_artist } from "__generated__/MockRelayRendere
 import { MockRelayRendererFixtures_artwork } from "__generated__/MockRelayRendererFixtures_artwork.graphql"
 import { MockRelayRendererFixtures_artworkMetadata } from "__generated__/MockRelayRendererFixtures_artworkMetadata.graphql"
 import { MockRelayRendererFixturesArtistQuery } from "__generated__/MockRelayRendererFixturesArtistQuery.graphql"
+import { ContextConsumer } from "app/utils/Context"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import cheerio from "cheerio"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { render } from "enzyme"
-import { ContextConsumer } from "app/utils/Context"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import * as React from "react"
 import { Image, Text, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"

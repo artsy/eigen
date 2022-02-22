@@ -1,7 +1,7 @@
 import { act, fireEvent } from "@testing-library/react-native"
-import { useFormikContext } from "formik"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { useFormikContext } from "formik"
 import React from "react"
 import { Rarity } from "./Rarity"
 

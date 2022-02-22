@@ -1,10 +1,10 @@
 import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { renderRelayTree } from "app/tests/renderRelayTree"
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+import { mount } from "enzyme"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"

@@ -1,9 +1,9 @@
 import { OldMyCollectionArtwork_sharedProps } from "__generated__/OldMyCollectionArtwork_sharedProps.graphql"
-import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
+import { Action, action, thunk, Thunk } from "easy-peasy"
 import { pick, uniqBy } from "lodash"
 
 export interface Image {

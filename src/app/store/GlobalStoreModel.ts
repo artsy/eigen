@@ -1,4 +1,3 @@
-import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabsModel, getBottomTabsModel } from "app/Scenes/BottomTabs/BottomTabsModel"
 import {
@@ -12,6 +11,7 @@ import {
 import { DevicePrefsModel, getDevicePrefsModel } from "app/Scenes/MyProfile/DevicePrefsModel"
 import { getSearchModel, SearchModel } from "app/Scenes/Search/SearchModel"
 import { getUserPrefsModel, UserPrefsModel } from "app/Scenes/Search/UserPrefsModel"
+import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { unsafe__getEnvironment } from "./GlobalStore"

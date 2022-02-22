@@ -1,5 +1,5 @@
-import * as glibphone from "google-libphonenumber"
 import { TriangleDown } from "app/Icons/TriangleDown"
+import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
 import { Flex, Input, InputProps, Sans, Spacer, Text, Touchable, useColor } from "palette"
 import { useEffect, useRef, useState } from "react"

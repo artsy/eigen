@@ -1,6 +1,6 @@
 // @ts-ignore
-import { mount } from "enzyme"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
+import { mount } from "enzyme"
 import { Box, Button, EntityHeader, Sans, Theme } from "palette"
 import React from "react"
 import { Image } from "react-native"

@@ -1,5 +1,5 @@
-import { Action, action, createContextStore, State } from "easy-peasy"
 import { assignDeep } from "app/store/persistence"
+import { Action, action, createContextStore, State } from "easy-peasy"
 import { filter, find, isEqual, unionBy } from "lodash"
 import {
   Aggregations,

@@ -1,5 +1,5 @@
-import { yupToFormErrors } from "formik"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
+import { yupToFormErrors } from "formik"
 import { trim } from "lodash"
 import * as Yup from "yup"
 

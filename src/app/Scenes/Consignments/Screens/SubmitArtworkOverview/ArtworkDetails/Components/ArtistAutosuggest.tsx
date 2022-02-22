@@ -1,6 +1,6 @@
-import { useFormikContext } from "formik"
 import SearchIcon from "app/Icons/SearchIcon"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
+import { useFormikContext } from "formik"
 import { Box, Input } from "palette"
 import React, { useEffect, useState } from "react"
 import { ArtworkDetailsFormModel } from "../validation"

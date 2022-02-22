@@ -1,5 +1,5 @@
-import { Action, action } from "easy-peasy"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Action, action } from "easy-peasy"
 import { AutosuggestResult } from "./AutosuggestResults"
 
 export const MAX_SAVED_RECENT_SEARCHES = 100

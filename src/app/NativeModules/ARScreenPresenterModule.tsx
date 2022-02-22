@@ -4,9 +4,9 @@ import {
   StackActions,
   TabActions,
 } from "@react-navigation/native"
-import immer from "immer-peasy"
 import { ViewDescriptor } from "app/navigation/navigate"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import immer from "immer-peasy"
 import { last } from "lodash"
 import { NativeModules } from "react-native"
 

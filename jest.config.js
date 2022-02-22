@@ -2,7 +2,7 @@ module.exports = {
   preset: "react-native",
   moduleFileExtensions: ["ts", "tsx", "js"],
   moduleNameMapper: {
-    "^lib/(.*)": "<rootDir>/src/app/$1",
+    "^app/(.*)": "<rootDir>/src/app/$1",
     "^palette$": "<rootDir>/src/palette",
     "^palette/(.*)": "<rootDir>/src/palette/$1",
     "^storybook$": "<rootDir>/src/storybook",

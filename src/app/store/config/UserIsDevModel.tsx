@@ -1,5 +1,5 @@
-import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
 import { unsafe__getEnvironment } from "../GlobalStore"
 import { GlobalStoreModel } from "../GlobalStoreModel"
 

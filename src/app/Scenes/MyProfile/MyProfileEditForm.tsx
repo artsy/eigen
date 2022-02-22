@@ -4,7 +4,6 @@ import { captureException } from "@sentry/react-native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
-import { useFormik } from "formik"
 import { Image } from "app/Components/Bidding/Elements/Image"
 import {
   buildLocationDisplay,
@@ -19,6 +18,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { verifyEmail } from "app/utils/verifyEmail"
+import { useFormik } from "formik"
 import { compact, isArray, throttle } from "lodash"
 import {
   Avatar,

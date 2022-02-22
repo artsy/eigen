@@ -1,5 +1,5 @@
-import { useFormikContext } from "formik"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
+import { useFormikContext } from "formik"
 import { Box, BulletedItem, Flex, Input, InputTitle, RadioButton, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"

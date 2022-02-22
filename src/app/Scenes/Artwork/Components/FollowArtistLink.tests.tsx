@@ -1,10 +1,10 @@
 import { FollowArtistLinkTestsErrorQueryRawResponse } from "__generated__/FollowArtistLinkTestsErrorQuery.graphql"
 import { FollowArtistLinkTestsQueryRawResponse } from "__generated__/FollowArtistLinkTestsQuery.graphql"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderRelayTree } from "app/tests/renderRelayTree"
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+import { mount } from "enzyme"
 import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"

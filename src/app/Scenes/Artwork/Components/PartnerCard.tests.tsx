@@ -1,10 +1,10 @@
 import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
-// @ts-ignore
-import { mount } from "enzyme"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderRelayTree } from "app/tests/renderRelayTree"
+// @ts-ignore
+import { mount } from "enzyme"
 import { Button, Sans, Theme } from "palette"
 import React from "react"
 import { Image } from "react-native"

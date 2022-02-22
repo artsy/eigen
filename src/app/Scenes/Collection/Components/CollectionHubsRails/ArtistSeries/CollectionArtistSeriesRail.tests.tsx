@@ -7,8 +7,6 @@ import {
   CollectionArtistSeriesRailTestsQuery,
   CollectionArtistSeriesRailTestsQueryRawResponse,
 } from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import {
   GenericArtistSeriesMeta,
   GenericArtistSeriesRail,
@@ -27,6 +25,8 @@ import {
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+import { mount } from "enzyme"
 import { Theme } from "palette"
 
 jest.unmock("react-relay")

@@ -4,7 +4,6 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
 import { OldMyCollectionArtwork_sharedProps } from "__generated__/OldMyCollectionArtwork_sharedProps.graphql"
-import { FormikProvider, useFormik } from "formik"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { goBack } from "app/navigation/navigate"
 import {
@@ -12,6 +11,7 @@ import {
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { GlobalStore } from "app/store/GlobalStore"
+import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
