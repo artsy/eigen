@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Tab, TabsProps } from "palette/elements/Tabs"
 import { CheckIcon, ChevronIcon } from "palette/svgs"
 import React, { useState } from "react"

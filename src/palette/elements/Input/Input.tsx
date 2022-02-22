@@ -1,8 +1,8 @@
 import { themeGet } from "@styled-system/theme-get"
+import { ImageSearchModal } from "app/Scenes/Search/components/ImageSearchModal"
+import { MeasuredView } from "app/utils/MeasuredView"
+import { useImageSearch } from "app/utils/useImageSearch"
 import { EventEmitter } from "events"
-import { ImageSearchModal } from "lib/Scenes/Search/components/ImageSearchModal"
-import { MeasuredView } from "lib/utils/MeasuredView"
-import { useImageSearch } from "lib/utils/useImageSearch"
 import _ from "lodash"
 import {
   CameraIcon,

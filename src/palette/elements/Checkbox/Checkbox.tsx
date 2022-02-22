@@ -9,8 +9,8 @@ import {
 } from "react-native"
 import styled from "styled-components/native"
 
-import { CssTransition } from "../../../lib/Components/Bidding/Components/Animation/CssTransition"
-import { Flex, FlexProps } from "../../../lib/Components/Bidding/Elements/Flex"
+import { CssTransition } from "../../../app/Components/Bidding/Components/Animation/CssTransition"
+import { Flex, FlexProps } from "../../../app/Components/Bidding/Elements/Flex"
 
 const CHECKBOX_SIZE = 20
 const DURATION = 250
