@@ -145,9 +145,11 @@ android/app/google-services.json
 GoogleService-Info.plist
 eigen-firebase-app-distribution.json
 
-storybook.json
 metaflags.json
 
+# Relay
+src/__generated__/*
 
-# Keep these, so we can keep the folders these appear in
+# Keep this rule last.
+# Keep these, so we can keep the folders these appear in.
 !.gitkeep

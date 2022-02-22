@@ -4,6 +4,7 @@ import { NativeTabs } from "lib/Components/NativeTabs"
 import { NavStack } from "lib/navigation/NavStack"
 import { useSelectedTab } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useColor } from "palette"
 import React, { useEffect, useRef } from "react"
 import { Animated, Platform, View } from "react-native"
 import usePrevious from "react-use/lib/usePrevious"
@@ -27,9 +28,11 @@ const TabContent = ({
 export const BottomTabsNavigator = () => {
   const selectedTab = useSelectedTab()
   const { bottom } = useScreenDimensions().safeAreaInsets
+  const color = useColor()
+
   if (Platform.OS === "ios") {
     return (
-      <View style={{ flex: 1, paddingBottom: bottom }}>
+      <View style={{ flex: 1, paddingBottom: bottom, backgroundColor: color("appBackground") }}>
         <FadeBetween
           views={[
             <TabContent

@@ -86,7 +86,7 @@ target 'Artsy' do
   pod 'NPKeyboardLayoutGuide'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
-  pod 'EDColor'
+  pod 'EDColor', '1.0.1'
 
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'
@@ -116,7 +116,7 @@ target 'Artsy' do
 
   # Google & Firebase
   pod 'GoogleSignIn', '~> 5.0.2'
-  pod 'Firebase/Auth'
+  pod 'Firebase/Auth', '8.1.1'
 
   # Analytics
   pod 'Segment-Appboy'
@@ -127,13 +127,13 @@ target 'Artsy' do
   pod 'ORKeyboardReactingApplication'
 
   # Swift pods 🎉
-  pod 'Then'
+  pod 'Then', '2.3.0'
   pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
-  pod 'Starscream'
-  pod 'SwiftyJSON'
+  pod 'Starscream', '3.0.4'
+  pod 'SwiftyJSON', '4.0.0'
 
   # Used in Live Auctions to hold user-state
-  pod 'JWTDecode'
+  pod 'JWTDecode', '2.0.0'
 
   target 'Artsy Tests' do
     inherit! :search_paths
@@ -157,7 +157,7 @@ end
 # Enables Flipper.
 # Note that if you have use_frameworks! enabled, Flipper will not work and
 # you should disable these next few lines.
-use_flipper!({ 'Flipper-Folly' => '2.5.3', 'Flipper' => '0.87.0', 'Flipper-RSocket' => '1.3.1' })
+use_flipper!({ 'Flipper' => '0.87.0', 'Flipper-Folly' => '2.5.3',  'Flipper-RSocket' => '1.3.1' })
 post_install do |installer|
   flipper_post_install(installer)
 

@@ -13,7 +13,7 @@ import { UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
-import { useSentryConfig } from "./ErrorReporting"
+import { useErrorReporting } from "./errorReporting/hooks"
 import { ArtsyNativeModule } from "./NativeModules/ArtsyNativeModule"
 import { ModalStack } from "./navigation/ModalStack"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
@@ -24,6 +24,7 @@ import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
+import { useIdentifyUser } from "./utils/useIdentifyUser"
 import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
@@ -45,16 +46,17 @@ const Main: React.FC = () => {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const forceUpdateMessage = GlobalStore.useAppState(
-    (state) => state.config.echo.forceUpdateMessage
+    (state) => state.artsyPrefs.echo.forceUpdateMessage
   )
 
-  useSentryConfig()
+  useErrorReporting()
   useStripeConfig()
   useWebViewCookies()
   useDeepLinks()
   useInitialNotification()
   useExperiments()
   useInitializeQueryPrefetching()
+  useIdentifyUser()
 
   useEffect(() => {
     createAllChannels()

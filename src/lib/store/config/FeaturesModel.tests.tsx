@@ -41,12 +41,12 @@ jest.mock("lib/store/config/features", () => {
 })
 
 const getComputedFeatures = () =>
-  __globalStoreTestUtils__?.getCurrentState().config.features.flags as unknown as Record<
+  __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.flags as unknown as Record<
     TestFeatures,
     boolean
   >
 const getComputedDevToggles = () =>
-  __globalStoreTestUtils__?.getCurrentState().config.features.devToggles as unknown as Record<
+  __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.devToggles as unknown as Record<
     TestDevToggles,
     boolean
   >
@@ -62,24 +62,39 @@ describe("Feature flags", () => {
   })
   it("support admin overrides", () => {
     expect(getComputedFeatures().FeatureA).toBe(true)
-    GlobalStore.actions.config.features.setAdminOverride({ key: "FeatureA" as any, value: false })
+    GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+      key: "FeatureA" as any,
+      value: false,
+    })
     expect(getComputedFeatures().FeatureA).toBe(false)
-    GlobalStore.actions.config.features.setAdminOverride({ key: "FeatureA" as any, value: null })
+    GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+      key: "FeatureA" as any,
+      value: null,
+    })
     expect(getComputedFeatures().FeatureA).toBe(true)
 
     expect(getComputedFeatures().FeatureB).toBe(false)
-    GlobalStore.actions.config.features.setAdminOverride({ key: "FeatureB" as any, value: true })
+    GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+      key: "FeatureB" as any,
+      value: true,
+    })
     expect(getComputedFeatures().FeatureB).toBe(true)
-    GlobalStore.actions.config.features.setAdminOverride({ key: "FeatureB" as any, value: null })
+    GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+      key: "FeatureB" as any,
+      value: null,
+    })
     expect(getComputedFeatures().FeatureB).toBe(false)
 
-    GlobalStore.actions.config.features.setAdminOverride({ key: "DevToggleA" as any, value: true })
+    GlobalStore.actions.artsyPrefs.features.setAdminOverride({
+      key: "DevToggleA" as any,
+      value: true,
+    })
     expect(getComputedDevToggles().DevToggleA).toBe(true)
   })
   it("use echo if an echo flag is given and the feature is ready for release", () => {
     expect(getComputedFeatures().FeatureA).toBe(true)
     // set A's echo flag to false
-    GlobalStore.actions.config.echo.setEchoState({
+    GlobalStore.actions.artsyPrefs.echo.setEchoState({
       ...echoLaunchJson(),
       features: [
         { name: "FeatureAEchoKey", value: false },
@@ -92,7 +107,7 @@ describe("Feature flags", () => {
   it("ignores echo if feature is not ready for release", () => {
     expect(getComputedFeatures().FeatureB).toBe(false)
     // set A's echo flag to false
-    GlobalStore.actions.config.echo.setEchoState({
+    GlobalStore.actions.artsyPrefs.echo.setEchoState({
       ...echoLaunchJson(),
       features: [
         { name: "FeatureAEchoKey", value: false },

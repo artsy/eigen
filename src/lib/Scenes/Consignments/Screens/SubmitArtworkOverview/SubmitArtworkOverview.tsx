@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { BackButton } from "lib/navigation/BackButton"
+import { goBack } from "lib/navigation/navigate"
 import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
@@ -89,6 +90,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
           justifyContent: "center",
         }}
       >
+        <BackButton onPress={() => goBack()} style={{ top: 10 }} />
         <Spacer mb={3} />
         <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
           {items.map(({ overtitle, title, Content }, index) => {
@@ -113,9 +115,6 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
           })}
         </Join>
       </ScrollView>
-      <Flex position="absolute" top={-50} left={0}>
-        <BackButton />
-      </Flex>
     </Flex>
   )
 }

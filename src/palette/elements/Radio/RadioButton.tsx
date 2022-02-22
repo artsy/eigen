@@ -1,6 +1,8 @@
 import { themeGet } from "@styled-system/theme-get"
+import { CssTransition } from "lib/Components/Bidding/Components/Animation/CssTransition"
+import { Flex, FlexProps } from "lib/Components/Bidding/Elements/Flex"
 import { Text, useTheme } from "palette"
-import React, { useState } from "react"
+import React from "react"
 import {
   PixelRatio,
   StyleSheet,
@@ -9,11 +11,8 @@ import {
 } from "react-native"
 import styled from "styled-components/native"
 
-import { CssTransition } from "lib/Components/Bidding/Components/Animation/CssTransition"
-import { Flex, FlexProps } from "lib/Components/Bidding/Elements/Flex"
-
 const RADIOBUTTON_SIZE = 20
-const DURATION = 250
+const DURATION = 150
 
 export interface RadioButtonProps extends TouchableWithoutFeedbackProps, FlexProps {
   selected?: boolean
@@ -25,7 +24,7 @@ export interface RadioButtonProps extends TouchableWithoutFeedbackProps, FlexPro
 }
 
 export const RadioButton: React.FC<RadioButtonProps> = ({
-  selected: selectedProp,
+  selected,
   disabled,
   error,
   onPress,
@@ -39,9 +38,6 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
   const fontScale = PixelRatio.getFontScale()
   const radioButtonSize = RADIOBUTTON_SIZE * fontScale
-
-  const [selected, setSelected] = useState(selectedProp)
-  const isSelected = selectedProp ?? selected
 
   const defaultRadioButtonStyle = {
     backgroundColor: color("white100"),
@@ -71,7 +67,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
   const radioButtonStyle = disabled
     ? disabledRadioButtonStyle
-    : radioButtonStyles[error ? "error" : "default"][isSelected ? "selected" : "notSelected"]
+    : radioButtonStyles[error ? "error" : "default"][selected ? "selected" : "notSelected"]
 
   const textColor = error ? color("red100") : disabled ? color("black30") : color("black100")
   const subtitleColor = error ? color("red100") : color("black30")
@@ -83,7 +79,6 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
           return
         }
 
-        setSelected(!selected)
         onPress?.(event)
       }}
     >
@@ -96,10 +91,10 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
                 { marginRight: space("1") * fontScale },
                 radioButtonStyle,
               ]}
-              animate={["backgroundColor", "borderColor"]}
+              animate={["borderColor"]}
               duration={DURATION}
             >
-              {!!isSelected &&
+              {!!selected &&
                 (!!disabled ? (
                   <DisabledDot size={radioButtonSize} />
                 ) : (

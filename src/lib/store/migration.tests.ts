@@ -493,3 +493,55 @@ describe("App version Versions.AddArtworkSubmissionModel", () => {
     })
   })
 })
+
+describe("App version Versions.AddArtworkViewOption", () => {
+  const migrationToTest = Versions.AddArtworkViewOption
+
+  it("adds viewOption details to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.userPreferences.artworkViewOption).toEqual("grid")
+  })
+})
+
+describe("App version Versions.RenameModelsAndAddDarkModeSupport", () => {
+  const migrationToTest = Versions.RenameModelsAndAddDarkModeSupport
+
+  it("adds darkMode default", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    // just checking some things that they exist, then checking the same things later to make sure we moved them correctly
+    expect(previousState.config.echo.state.name).toEqual("eigen")
+    const prevConfig = previousState.config
+
+    expect(previousState.userPreferences.artworkViewOption).toEqual("grid")
+    const prevUserPreferences = previousState.userPreferences
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.devicePrefs.usingSystemColorScheme).toEqual(false)
+    expect(migratedState.devicePrefs.forcedColorScheme).toEqual("light")
+
+    expect(migratedState.config).toEqual(undefined)
+    expect(migratedState.artsyPrefs.echo.state.name).toEqual("eigen")
+    expect(migratedState.artsyPrefs).toEqual(prevConfig)
+
+    expect(migratedState.userPreferences).toEqual(undefined)
+    expect(migratedState.userPrefs.artworkViewOption).toEqual("grid")
+    expect(migratedState.userPrefs).toEqual(prevUserPreferences)
+  })
+})

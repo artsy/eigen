@@ -15,20 +15,20 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { goBack, navigate, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { MyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/MyCollectionArtworkInsights"
+import { OldMyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/OldMyCollectionArtworkInsights"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import { Button, Flex, Join, Spacer, Text } from "palette"
+import { Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
-import { WhySell } from "./Components/WhySell"
+import { OldWhySell } from "./Components/OldWhySell"
 import { MyCollectionArtworkScreenProps } from "./MyCollectionArtwork"
 
 export interface MyCollectionArtworkProps {
@@ -41,6 +41,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
   marketPriceInsights,
 }) => {
   const { trackEvent } = useTracking()
+  const displayEditButton = !artwork.consignmentSubmission?.inProgress
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -52,18 +53,22 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
     >
       <ScrollView>
         <FancyModalHeader
-          onRightButtonPress={() => {
-            trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
-            GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
-            navigate(`my-collection/artworks/${artwork.internalID}/edit`, {
-              passProps: {
-                mode: "edit",
-                artwork,
-                onSuccess: popToRoot,
-                onDelete: popToRoot,
-              },
-            })
-          }}
+          onRightButtonPress={
+            displayEditButton
+              ? () => {
+                  trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
+                  GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
+                  navigate(`my-collection/artworks/${artwork.internalID}/edit`, {
+                    passProps: {
+                      mode: "edit",
+                      artwork,
+                      onSuccess: popToRoot,
+                      onDelete: popToRoot,
+                    },
+                  })
+                }
+              : undefined
+          }
           onLeftButtonPress={goBack}
           hideBottomDivider
           renderRightButton={() => (
@@ -75,13 +80,17 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
         <Join separator={<Spacer my={1} />}>
           <MyCollectionArtworkHeaderFragmentContainer artwork={artwork} />
           <MyCollectionArtworkMetaFragmentContainer artwork={artwork} />
-          <MyCollectionArtworkInsightsFragmentContainer
+          <OldMyCollectionArtworkInsightsFragmentContainer
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
-          <WhySell />
-
           <ScreenMargin>
+            <Separator />
+
+            <OldWhySell />
+
+            <Spacer mb={3} />
+
             <Button
               size="large"
               variant="fillGray"
@@ -149,6 +158,9 @@ export const ArtworkMetaProps = graphql`
     slug
     title
     width
+    consignmentSubmission {
+      inProgress
+    }
   }
 `
 
@@ -170,11 +182,11 @@ export const OldMyCollectionArtworkQueryRenderer: React.FC<MyCollectionArtworkSc
             ...OldMyCollectionArtwork_sharedProps @relay(mask: false)
             ...MyCollectionArtworkHeader_artwork
             ...MyCollectionArtworkMeta_artwork
-            ...MyCollectionArtworkInsights_artwork
+            ...OldMyCollectionArtworkInsights_artwork
           }
 
           marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
-            ...MyCollectionArtworkInsights_marketPriceInsights
+            ...OldMyCollectionArtworkInsights_marketPriceInsights
           }
         }
       `}

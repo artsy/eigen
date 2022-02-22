@@ -10,6 +10,7 @@ import { Tab } from "../Favorites/Favorites"
 export const MyProfileSettings: React.FC<{}> = () => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
+  const darkModeSupport = useFeatureFlag("ARDarkModeSupport")
 
   const color = useColor()
   const separatorColor = color("black5")
@@ -49,6 +50,12 @@ export const MyProfileSettings: React.FC<{}> = () => {
       )}
       <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
       <Separator my={1} borderColor={separatorColor} />
+      {!!darkModeSupport && (
+        <>
+          <MenuItem title="Dark Mode" onPress={() => navigate("settings/dark-mode")} />
+          <Separator my={1} borderColor={separatorColor} />
+        </>
+      )}
 
       {!!showSavedAddresses && (
         <>

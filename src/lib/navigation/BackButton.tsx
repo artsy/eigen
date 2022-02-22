@@ -1,7 +1,7 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ChevronIcon, CloseIcon } from "palette"
 import React, { useEffect, useRef } from "react"
-import { Animated } from "react-native"
+import { Animated, ViewStyle } from "react-native"
 import { TouchableOpacity } from "react-native"
 import { useFirstMountState } from "react-use/esm/useFirstMountState"
 import { goBack } from "./navigate"
@@ -9,8 +9,9 @@ import { goBack } from "./navigate"
 export const BackButton: React.FC<{
   show?: boolean
   showCloseIcon?: boolean
+  style?: ViewStyle
   onPress?(): void
-}> = ({ onPress = goBack, show = true, showCloseIcon = false }) => {
+}> = ({ onPress = goBack, show = true, showCloseIcon = false, style }) => {
   const isFirstRender = useFirstMountState()
   const opacity = useRef(new Animated.Value(show ? 1 : 0)).current
   useEffect(() => {
@@ -24,16 +25,19 @@ export const BackButton: React.FC<{
   return (
     <Animated.View
       pointerEvents={show ? undefined : "none"}
-      style={{
-        position: "absolute",
-        top: 13 + useScreenDimensions().safeAreaInsets.top,
-        left: 10,
-        backgroundColor: "white",
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        opacity,
-      }}
+      style={[
+        {
+          position: "absolute",
+          top: 13 + useScreenDimensions().safeAreaInsets.top,
+          left: 10,
+          backgroundColor: "white",
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          opacity,
+        },
+        style,
+      ]}
     >
       <TouchableOpacity
         onPress={() => onPress()}

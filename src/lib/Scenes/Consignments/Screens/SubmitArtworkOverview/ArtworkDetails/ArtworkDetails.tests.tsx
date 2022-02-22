@@ -25,12 +25,6 @@ jest.mock(
   })
 )
 
-jest.mock("lib/relay/createEnvironment", () => {
-  return {
-    defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-  }
-})
-
 jest.unmock("react-relay")
 
 const createConsignSubmissionMock = createConsignSubmission as jest.Mock

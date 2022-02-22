@@ -184,6 +184,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-profile/saved-addresses/new-address", "SavedAddressesForm"),
     addRoute("/my-profile/saved-addresses/edit-address", "SavedAddressesForm"),
     addRoute("/my-profile/settings", "MyProfileSettings"),
+    addRoute("/settings/dark-mode", "DarkModeSettings"),
     addRoute("/local-discovery", "LocalDiscovery"),
     addRoute("/privacy-request", "PrivacyRequest"),
 
@@ -207,6 +208,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     addWebViewRoute("/conditions-of-sale"),
     addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
+    addRoute("/artwork-submission-status", "ArtworkSubmissionStatusFAQ"),
 
     addRoute("/partner/:partnerID", "Partner"),
     addRoute("/partner/:partnerID/works", "Partner"),

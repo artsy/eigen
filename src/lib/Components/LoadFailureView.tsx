@@ -71,7 +71,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = ({ error, onRetry
         </Animated.View>
       </Touchable>
       {!!__DEV__ && (
-        <Flex mx={2}>
+        <Flex m={2}>
           <Text>Error: {error?.message}</Text>
         </Flex>
       )}

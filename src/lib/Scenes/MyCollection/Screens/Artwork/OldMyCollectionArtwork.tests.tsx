@@ -5,7 +5,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { MyCollectionArtworkInsightsFragmentContainer } from "./Components/ArtworkInsights/MyCollectionArtworkInsights"
+import { OldMyCollectionArtworkInsightsFragmentContainer } from "./Components/ArtworkInsights/OldMyCollectionArtworkInsights"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
 import { tests } from "./OldMyCollectionArtwork"
@@ -18,8 +18,8 @@ jest.mock("./Components/MyCollectionArtworkMeta", () => ({
   MyCollectionArtworkMetaFragmentContainer: () => null,
 }))
 
-jest.mock("./Components/ArtworkInsights/MyCollectionArtworkInsights", () => ({
-  MyCollectionArtworkInsightsFragmentContainer: () => null,
+jest.mock("./Components/ArtworkInsights/OldMyCollectionArtworkInsights", () => ({
+  OldMyCollectionArtworkInsightsFragmentContainer: () => null,
 }))
 
 describe("MyCollectionArtworkDetail", () => {
@@ -37,7 +37,7 @@ describe("MyCollectionArtworkDetail", () => {
       const wrapper = getWrapper(artworkProps)
       expect(wrapper.root.findByType(MyCollectionArtworkHeaderFragmentContainer)).toBeDefined()
       expect(wrapper.root.findByType(MyCollectionArtworkMetaFragmentContainer)).toBeDefined()
-      expect(wrapper.root.findByType(MyCollectionArtworkInsightsFragmentContainer)).toBeDefined()
+      expect(wrapper.root.findByType(OldMyCollectionArtworkInsightsFragmentContainer)).toBeDefined()
     })
 
     it("calls startEditingArtworkAction when header edit button is pressed", () => {

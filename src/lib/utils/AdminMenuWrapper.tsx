@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react"
 import { AdminMenu } from "./AdminMenu"
 
 export const AdminMenuWrapper: React.FC = ({ children }) => {
-  const userIsDev = GlobalStore.useAppState((store) => store.config.userIsDev.value)
+  const userIsDev = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev.value)
   const [isShowingAdminMenu, setIsShowingAdminMenu] = useState(false)
   const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
 

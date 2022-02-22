@@ -1,15 +1,23 @@
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
-import { Metric } from "lib/Scenes/Search/UserPreferencesModel"
+import { Metric } from "lib/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Flex, Input, RadioButton, Spacer, Text } from "palette"
-import React from "react"
+import React, { useState } from "react"
+import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 
 export const Dimensions: React.FC = () => {
   const { formik } = useArtworkForm()
 
+  // Using a local state to improve performance
+  const [localMetric, setLocalMetric] = useState(formik.values.metric)
+
   const handleMetricChange = (unit: Metric) => {
-    GlobalStore.actions.userPreferences.setMetric(unit)
-    formik.handleChange("metric")(unit)
+    setLocalMetric(unit)
+
+    requestAnimationFrame(() => {
+      formik.handleChange("metric")(unit)
+      GlobalStore.actions.userPrefs.setMetric(unit)
+    })
   }
 
   return (
@@ -19,16 +27,18 @@ export const Dimensions: React.FC = () => {
       </Flex>
       <Spacer mt={1} mb={0.3} />
       <Flex flexDirection="row">
-        <RadioButton
-          selected={formik.values.metric === "cm"}
-          onPress={() => handleMetricChange("cm")}
-        />
-        <Text marginRight="3">cm</Text>
-        <RadioButton
-          selected={formik.values.metric === "in"}
-          onPress={() => handleMetricChange("in")}
-        />
-        <Text>in</Text>
+        <TouchableWithoutFeedback onPress={() => handleMetricChange("cm")}>
+          <Flex flexDirection="row">
+            <RadioButton selected={localMetric === "cm"} />
+            <Text marginRight="3">cm</Text>
+          </Flex>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => handleMetricChange("in")}>
+          <Flex flexDirection="row">
+            <RadioButton selected={localMetric === "in"} />
+            <Text>in</Text>
+          </Flex>
+        </TouchableWithoutFeedback>
       </Flex>
       <Spacer my={1} />
       <Flex flexDirection="row">

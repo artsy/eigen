@@ -1,33 +1,42 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { MyCollectionArtworkDemandIndex_artwork } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
-import { MyCollectionArtworkDemandIndex_marketPriceInsights } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
+import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
+import { MyCollectionArtworkDemandIndex_marketPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { TriangleDown } from "lib/Icons/TriangleDown"
-import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { Box, Flex, Spacer, Text } from "palette"
+import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface MyCollectionArtworkDemandIndexProps {
-  artwork: MyCollectionArtworkDemandIndex_artwork
-  marketPriceInsights: MyCollectionArtworkDemandIndex_marketPriceInsights
+  artwork: MyCollectionArtworkDemandIndex_artwork$key
+  marketPriceInsights: MyCollectionArtworkDemandIndex_marketPriceInsights$key
 }
 
-const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexProps> = ({
-  artwork,
-  marketPriceInsights,
-}) => {
+export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexProps> = (
+  props
+) => {
   const { trackEvent } = useTracking()
-  if (!artwork || !marketPriceInsights) {
+
+  const artwork = useFragment<MyCollectionArtworkDemandIndex_artwork$key>(
+    artworkFragment,
+    props.artwork
+  )
+
+  const marketPriceInsights = useFragment<MyCollectionArtworkDemandIndex_marketPriceInsights$key>(
+    marketPriceInsightsFragment,
+    props.marketPriceInsights
+  )
+
+  if (!artwork || !marketPriceInsights?.demandRank) {
     return null
   }
 
-  const demandRank = Number((marketPriceInsights.demandRank! * 10).toFixed(2))
+  const demandRank = Number((marketPriceInsights.demandRank * 10).toFixed(2))
 
   return (
-    <ScreenMargin>
+    <Flex mb={6}>
       <InfoButton
         title="Demand index"
         modalContent={
@@ -42,39 +51,30 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
         onPress={() => trackEvent(tracks.tappedInfoBubble(artwork?.internalID, artwork?.slug))}
       />
 
-      <Spacer my={0.5} />
+      <Spacer my={1} />
       <DemandRankScale demandRank={demandRank} />
       <Spacer my={1} />
       <DemandRankDetails demandRank={demandRank} />
-    </ScreenMargin>
+    </Flex>
   )
 }
 
 const DemandRankDetails: React.FC<{ demandRank: number }> = ({ demandRank }) => {
-  const Bubble: React.FC<{ title: string }> = ({ title }) => (
-    <Box>
-      <Text>{title}</Text>
-    </Box>
-  )
+  const title = getDemandRankTitle(demandRank)
 
-  const getContent = () => {
-    switch (true) {
-      case demandRank >= 9: {
-        return <Bubble title="Very Strong Demand (> 9.0)" />
-      }
-      case demandRank >= 7 && demandRank < 9: {
-        return <Bubble title="Strong Demand (7.0 – 9.0)" />
-      }
-      case demandRank >= 4 && demandRank < 7: {
-        return <Bubble title="Stable Market (4.0 – 7.0)" />
-      }
-      case demandRank < 4: {
-        return <Bubble title="Less Active Market  (< 4.0)" />
-      }
-    }
-  }
-  const content = getContent()
-  return <>{content}</>
+  const details =
+    demandRank >= 7 &&
+    "Demand is higher than the supply available in the market and sale price exceeds estimates."
+
+  return (
+    <Flex>
+      <Text textAlign="center">{title}</Text>
+
+      <Text variant="xs" color="black60" textAlign="center">
+        {details}
+      </Text>
+    </Flex>
+  )
 }
 
 const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
@@ -83,23 +83,24 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
     width = 100
   }
 
-  let adjustedDemandRank = demandRank.toFixed(1)
-  if (adjustedDemandRank === "10.0") {
-    adjustedDemandRank = "9.9"
-  }
+  const adjustedDemandRank = demandRank.toFixed(1) === "10.0" ? "9.9" : demandRank.toFixed(1)
 
   return (
     <>
-      <Box>
+      <Flex>
         <Text variant="lg" color="blue100">
           {adjustedDemandRank}
         </Text>
-      </Box>
+      </Flex>
       <ProgressBar width={width} />
-      <Spacer my={0.3} />
+      <Spacer />
       <Flex flexDirection="row" justifyContent="space-between">
-        <Text>0</Text>
-        <Text>10</Text>
+        <Text variant="xs" color="black60">
+          0
+        </Text>
+        <Text variant="xs" color="black60">
+          10
+        </Text>
       </Flex>
     </>
   )
@@ -111,12 +112,12 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
 
   return (
     <>
-      <Box width="100%" position="relative" height={10} left={-6}>
-        <Box left={pctWidth} position="absolute">
+      <Flex width="100%" position="relative" height={10} left={-6}>
+        <Flex left={pctWidth} position="absolute">
           <TriangleDown />
-        </Box>
-      </Box>
-      <Box height={24} width="100%" bg="black5">
+        </Flex>
+      </Flex>
+      <Flex height={24} width="100%" bg="black5">
         <LinearGradient
           colors={["rgba(243, 240, 248, 2.6)", `rgba(110, 30, 255, ${opacity})`]}
           start={{ x: 0, y: 0 }}
@@ -126,31 +127,39 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
             height: 24,
           }}
         />
-      </Box>
+      </Flex>
     </>
   )
 }
 
-export const MyCollectionArtworkDemandIndexFragmentContainer = createFragmentContainer(
-  MyCollectionArtworkDemandIndex,
-  {
-    marketPriceInsights: graphql`
-      fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsights {
-        demandRank
-      }
-    `,
-    artwork: graphql`
-      fragment MyCollectionArtworkDemandIndex_artwork on Artwork {
-        internalID
-        slug
-      }
-    `,
+const artworkFragment = graphql`
+  fragment MyCollectionArtworkDemandIndex_artwork on Artwork {
+    internalID
+    slug
   }
-)
+`
 
-export const tests = {
-  DemandRankScale,
-  DemandRankDetails,
+const marketPriceInsightsFragment = graphql`
+  fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsights {
+    demandRank
+  }
+`
+
+const getDemandRankTitle = (demandRank: number) => {
+  switch (true) {
+    case demandRank >= 9: {
+      return "Very Strong Demand (> 9.0)"
+    }
+    case demandRank >= 7 && demandRank < 9: {
+      return "Strong Demand (7.0 – 9.0)"
+    }
+    case demandRank >= 4 && demandRank < 7: {
+      return "Stable Market (4.0 – 7.0)"
+    }
+    case demandRank < 4: {
+      return "Less Active Market  (< 4.0)"
+    }
+  }
 }
 
 const tracks = {

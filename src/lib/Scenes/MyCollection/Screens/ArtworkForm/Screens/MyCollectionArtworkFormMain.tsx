@@ -2,7 +2,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Currency } from "lib/Scenes/Search/UserPreferencesModel"
+import { Currency } from "lib/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isEmpty } from "lodash"
@@ -141,8 +141,8 @@ export const MyCollectionArtworkFormMain: React.FC<
               enableSearch={false}
               showTitleLabel={false}
               onSelectValue={(value) => {
-                GlobalStore.actions.userPreferences.setCurrency(value as Currency)
                 formik.handleChange("pricePaidCurrency")(value)
+                GlobalStore.actions.userPrefs.setCurrency(value as Currency)
               }}
               testID="CurrencyPicker"
             />

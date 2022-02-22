@@ -1,12 +1,17 @@
+import { editCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { goBack, navigate, popToRoot } from "lib/navigation/navigate"
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { PlaceholderBox, ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
 import React, { Suspense, useCallback } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
+import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
+import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 import { MyCollectionArtworkHeader } from "./NewComponents/NewMyCollectionArtworkHeader"
 import { OldMyCollectionArtworkQueryRenderer } from "./OldMyCollectionArtwork"
 
@@ -16,17 +21,30 @@ export enum Tab {
 }
 
 const MyCollectionArtworkScreenQuery = graphql`
-  query MyCollectionArtworkQuery($artworkSlug: String!) {
+  query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
     artwork(id: $artworkSlug) {
+      ...MyCollectionArtwork_sharedProps @relay(mask: false)
       ...NewMyCollectionArtworkHeader_artwork
-      internalID
+      ...MyCollectionArtworkInsights_artwork
+      ...MyCollectionArtworkAbout_artwork
+    }
+    marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
+      ...MyCollectionArtworkInsights_marketPriceInsights
     }
   }
 `
 
-const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artworkSlug }) => {
+const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
+  artworkSlug,
+  artistInternalID,
+  medium,
+}) => {
+  const { trackEvent } = useTracking()
+
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(MyCollectionArtworkScreenQuery, {
     artworkSlug,
+    artistInternalID,
+    medium,
   })
 
   if (!data.artwork) {
@@ -38,7 +56,10 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artwork
   }
 
   const handleEdit = useCallback(() => {
-    navigate(`my-collection/artworks/${data.artwork!.internalID}/edit`, {
+    trackEvent(tracks.editCollectedArtwork(data.artwork!.internalID, data.artwork!.slug))
+    GlobalStore.actions.myCollection.artwork.startEditingArtwork(data.artwork as any)
+
+    navigate(`my-collection/artworks/${data.artwork?.internalID}/edit`, {
       passProps: {
         mode: "edit",
         artwork: data.artwork,
@@ -48,36 +69,38 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artwork
     })
   }, [data.artwork])
 
+  const displayEditButton = !data.artwork.consignmentSubmission?.inProgress
+
+  const tabs = compact([
+    {
+      title: Tab.insights,
+      content: (
+        <MyCollectionArtworkInsights
+          artwork={data.artwork}
+          marketPriceInsights={data.marketPriceInsights}
+        />
+      ),
+      initial: true,
+    },
+    {
+      title: Tab.about,
+      content: <MyCollectionArtworkAbout artwork={data.artwork} />,
+    },
+  ])
+
   return (
-    <Flex flex={1}>
+    <>
       <FancyModalHeader
         onLeftButtonPress={goBack}
         rightButtonText="Edit"
-        onRightButtonPress={handleEdit}
+        onRightButtonPress={displayEditButton ? handleEdit : undefined}
+        hideBottomDivider
       />
       <StickyTabPage
-        tabs={[
-          {
-            title: Tab.insights,
-            content: (
-              <Flex>
-                <Text>Insights Tab</Text>
-              </Flex>
-            ),
-            initial: true,
-          },
-          {
-            title: Tab.about,
-            content: (
-              <Flex>
-                <Text>About Tab</Text>
-              </Flex>
-            ),
-          },
-        ]}
-        staticHeaderContent={<MyCollectionArtworkHeader artwork={data.artwork!} />}
+        tabs={tabs}
+        staticHeaderContent={<MyCollectionArtworkHeader artwork={data.artwork} />}
       />
-    </Flex>
+    </>
   )
 }
 
@@ -109,3 +132,64 @@ export const MyCollectionArtworkQueryRenderer: React.FC<MyCollectionArtworkScree
 
   return <OldMyCollectionArtworkQueryRenderer {...props} />
 }
+
+const tracks = {
+  editCollectedArtwork: (internalID: string, slug: string) => {
+    return editCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
+  },
+}
+
+/**
+ * * IMPORTANT *
+ *
+ * The following shared artwork fields are needed for initializing the edit
+ * artwork view. This is also used for handling mutation view updates.
+ *
+ * When adding new fields this fragment needs to be updated.
+ */
+export const ArtworkMetaProps = graphql`
+  fragment MyCollectionArtwork_sharedProps on Artwork {
+    artist {
+      internalID
+      formattedNationalityAndBirthday
+    }
+    consignmentSubmission {
+      inProgress
+    }
+    artistNames
+    category
+    pricePaid {
+      display
+      minor
+      currencyCode
+    }
+    date
+    depth
+    editionSize
+    editionNumber
+    height
+    attributionClass {
+      name
+    }
+    id
+    images {
+      isDefault
+      imageURL
+      width
+      height
+      internalID
+    }
+    internalID
+    isEdition
+    medium
+    metric
+    artworkLocation
+    provenance
+    slug
+    title
+    width
+    consignmentSubmission {
+      inProgress
+    }
+  }
+`
