@@ -340,7 +340,7 @@ export const __webViewTestUtils__ = __TEST__
     }
   : null
 
-export const tracks = {
+const tracks = {
   share: (slug: string) => ({
     action: Schema.ActionNames.Share,
     action_type: Schema.ActionTypes.Tap,
