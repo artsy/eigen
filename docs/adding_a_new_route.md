@@ -7,6 +7,10 @@ In Eigen, as in many mobile apps, we have mainly two types for routes.
 - Global app routes
 - Context specific app routes
 
+### Global Navigation functions
+
+In src/lib/navigation/navigate.ts we have helper functions we can globally use to navigate through the app. A good example is goBack() which takes you to the previous screen, no matter if it's part of the same StackNavigator or not.
+
 ### Global App Routes
 
 Global app routes in Eigen, are routes that are accessible everywhere in the app using the `src/lib/navigation/navigate` helper.
@@ -95,7 +99,7 @@ Example of situations where we should use an independent navigation container
   ![inquiry-information](./screenshots/adding-a-new-route-add-artwork-to-my-collection.gif)
   </details>
 
-#### How to add an independent navigation container
+#### How to add a content specific app route using a react-navigation independent navigationContainer
 
 Inside the route that you would like to add the screens to, create a stack navigate as follows:
 
