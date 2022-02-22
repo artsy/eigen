@@ -38,7 +38,9 @@ const showError = (
     if (res.error_description.includes("no account linked to oauth token")) {
       reject(
         new AuthError(
-          `There is no email associated with your ${providerName} account. Please log in using your email and password instead.`
+          `Your ${providerName} account is not linked to any Artsy account. ` +
+            "Please log in using your email and password if you have an Artsy account, " +
+            `or sign up on Artsy using ${providerName}. `
         )
       )
     } else {
