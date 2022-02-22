@@ -15,7 +15,7 @@ This is a living document, expected to be updated regularly, a broad overview of
 - [File Structure Organization](#file-structure-organization)
 - [Relay](#relay)
 - [Prefer Relay containers (Higher Order Components) over Hooks](#prefer-relay-containers--higher-order-components--over-hooks)
-- [styled-system / styled-components](#styled-system---styled-components)
+- [styling](#styling)
 - [Write unit tests for new components](#write-unit-tests-for-new-components)
 - [Navigation](#Navigation)
 - [Analytics](#analytics)
@@ -110,6 +110,12 @@ However, if we have a `Button` folder which exports only one button component, w
 
 `Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
 
+### Styling
+
+We use [palette](src/palette) which uses `styled-system` under the hood.
+
+For styling we use custom inline elements like `Flex`, `Box`, `Text`.
+
 ### Relay
 
 [Metaphysics](https://github.com/artsy/metaphysics) is Artsy's GraphQL server. Requests to Metaphysics are made through [Relay](https://relay.dev).
@@ -125,13 +131,6 @@ However, if we have a `Button` folder which exports only one button component, w
 Refactoring old containers to use hooks is encouraged.
 
 - [Relay Container approach](https://github.com/artsy/eigen/blob/21fbf9e24eaa281f3e16609da5d38a9fb62a5449/src/app/Scenes/MyAccount/MyAccount.tsx#L70)
-
-### styled-system / styled-components
-
-// !! is this still valid?
-
-- Our use of [styled-components](https://www.styled-components.com) was supplemented by [styled-system](https://github.com/jxnblk/styled-system) in [#1016](https://github.com/artsy/emission/pull/1016).
-- [Example pull request migrating a component from styled-components to styled-system](https://github.com/artsy/emission/pull/1031)
 
 ### Unit tests
 
