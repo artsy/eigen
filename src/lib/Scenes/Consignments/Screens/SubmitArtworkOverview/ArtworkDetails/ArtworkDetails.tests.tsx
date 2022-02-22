@@ -1,6 +1,7 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -63,7 +64,7 @@ describe("ArtworkDetailsForm", () => {
     })
 
     describe("validation", () => {
-      it("keeps Save & Continue button disabled until required fields validated", async () => {
+      it("keeps Save & Continue button disabled until all required fields validated", async () => {
         const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
 
         const SaveButton = UNSAFE_getByProps({
@@ -80,63 +81,59 @@ describe("ArtworkDetailsForm", () => {
           provenance: getByTestId("Submission_ProvenanceInput"),
         }
 
+        await flushPromiseQueue()
+
         // title missing
-        await waitFor(() => act(() => fireEvent.changeText(inputs.title, "")))
+        act(() => fireEvent.changeText(inputs.title, ""))
         expect(SaveButton.props.disabled).toBe(true)
 
         // year missing
-        await waitFor(() => {
-          act(() => {
-            fireEvent.changeText(inputs.year, "")
-            fireEvent.changeText(inputs.title, "someTitle")
-          })
+        act(() => {
+          fireEvent.changeText(inputs.year, "")
+          fireEvent.changeText(inputs.title, "someTitle")
         })
         expect(SaveButton.props.disabled).toBe(true)
 
         // material missing
-        await waitFor(() => {
-          act(() => {
-            fireEvent.changeText(inputs.material, "")
-            fireEvent.changeText(inputs.year, "1999")
-          })
+        act(() => {
+          fireEvent.changeText(inputs.material, "")
+          fireEvent.changeText(inputs.year, "1999")
         })
         expect(SaveButton.props.disabled).toBe(true)
 
         // height missing
-        await waitFor(() => {
-          act(() => {
-            fireEvent.changeText(inputs.height, "")
-            fireEvent.changeText(inputs.material, "oil on c")
-          })
+        act(() => {
+          fireEvent.changeText(inputs.height, "")
+          fireEvent.changeText(inputs.material, "oil on c")
         })
         expect(SaveButton.props.disabled).toBe(true)
 
         // width missing
-        await waitFor(() => {
-          act(() => {
-            fireEvent.changeText(inputs.width, "")
-            fireEvent.changeText(inputs.height, "123")
-          })
+        act(() => {
+          fireEvent.changeText(inputs.width, "")
+          fireEvent.changeText(inputs.height, "123")
         })
         expect(SaveButton.props.disabled).toBe(true)
 
         // depth missing
-        await waitFor(() => {
-          act(() => {
-            fireEvent.changeText(inputs.depth, "")
-            fireEvent.changeText(inputs.width, "123")
-          })
+        act(() => {
+          fireEvent.changeText(inputs.depth, "")
+          fireEvent.changeText(inputs.width, "123")
         })
+
         expect(SaveButton.props.disabled).toBe(true)
 
         // provenance missing
-        await waitFor(() => {
-          act(() => {
-            fireEvent.changeText(inputs.provenance, "")
-            fireEvent.changeText(inputs.depth, "123")
-          })
+        act(() => {
+          fireEvent.changeText(inputs.provenance, "")
+          fireEvent.changeText(inputs.depth, "123")
         })
+
         expect(SaveButton.props.disabled).toBe(true)
+
+        act(() => {
+          fireEvent.changeText(inputs.provenance, "found it")
+        })
       })
     })
   })
