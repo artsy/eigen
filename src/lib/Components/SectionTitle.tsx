@@ -28,7 +28,7 @@ export const SectionTitle: React.FC<{
       <Flex mb={2} flexDirection="row" alignItems="center">
         <View style={{ overflow: "hidden", flex: 1 }}>
           <Text lineHeight="20" variant="sm" ellipsizeMode="tail" numberOfLines={1} testID="title">
-            {toTitleCase(String(title))}
+            {typeof title === "string" ? toTitleCase(String(title)) : title}
           </Text>
           {Boolean(subtitle) && (
             <Text variant="sm" color={color("black60")} lineHeight="20" testID="subtitle">
