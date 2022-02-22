@@ -2,19 +2,19 @@ import React from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import Spinner from "lib/Components/Spinner"
-import { ZeroState } from "lib/Components/States/ZeroState"
+import Spinner from "app/Components/Spinner"
+import { ZeroState } from "app/Components/States/ZeroState"
 
-import { PAGE_SIZE } from "lib/Components/constants"
+import { PAGE_SIZE } from "app/Components/constants"
 
 import { FavoriteArtists_me } from "__generated__/FavoriteArtists_me.graphql"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
-import { ArtistListItemContainer as ArtistListItem } from "lib/Components/ArtistListItem"
-import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { extractNodes } from "lib/utils/extractNodes"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
+import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { extractNodes } from "app/utils/extractNodes"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ClassTheme, Spacer } from "palette"
 
 interface Props {

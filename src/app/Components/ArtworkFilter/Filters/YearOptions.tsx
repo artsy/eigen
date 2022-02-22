@@ -1,21 +1,21 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
   aggregationForFilter,
   FilterData,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ArtworkFilterBackHeader } from "lib/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
-import { CircleWithBorder } from "lib/Components/CircleWithBorder/CircleWithBorder"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { TouchableRow } from "lib/Components/TouchableRow"
-import { useFeatureFlag } from "lib/store/GlobalStore"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
+import { CircleWithBorder } from "app/Components/CircleWithBorder/CircleWithBorder"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { TouchableRow } from "app/Components/TouchableRow"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, CheckIcon, Flex, Separator, Text, useColor } from "palette"
 import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"

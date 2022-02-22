@@ -1,4 +1,4 @@
-import { appJson } from "lib/utils/jsonFiles"
+import { appJson } from "app/utils/jsonFiles"
 import { NativeModules, PixelRatio, Platform } from "react-native"
 import { LegacyNativeModules } from "./LegacyNativeModules"
 

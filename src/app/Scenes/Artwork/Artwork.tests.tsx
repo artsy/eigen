@@ -3,17 +3,17 @@ import {
   ArtworkFromLiveAuctionRegistrationOpen,
   NotRegisteredToBid,
   RegisteredBidder,
-} from "lib/__fixtures__/ArtworkBidAction"
-import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
-import { Countdown } from "lib/Components/Bidding/Components/Timer"
-import { navigationEvents } from "lib/navigation/navigate"
-import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
-import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { extractText } from "lib/tests/extractText"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/__fixtures__/ArtworkBidAction"
+import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
+import { Countdown } from "app/Components/Bidding/Components/Timer"
+import { navigationEvents } from "app/navigation/navigate"
+import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
+import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { extractText } from "app/tests/extractText"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
 import { Touchable } from "palette"
@@ -40,7 +40,7 @@ type ArtworkQueries =
 
 jest.unmock("react-relay")
 
-jest.mock("lib/Components/Bidding/Context/TimeOffsetProvider", () => {
+jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   class TimeOffsetProvider extends require("react").Component {
     static childContextTypes = {
       timeOffsetInMilliSeconds: () => true,
@@ -91,8 +91,8 @@ describe("Artwork", () => {
   )
 
   beforeEach(() => {
-    require("lib/relay/createEnvironment").reset()
-    environment = require("lib/relay/createEnvironment").defaultEnvironment
+    require("app/relay/createEnvironment").reset()
+    environment = require("app/relay/createEnvironment").defaultEnvironment
   })
 
   afterEach(() => {

@@ -3,11 +3,11 @@ import {
   FilterData,
   FilterDisplayName,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import React, { useState } from "react"
 import { ArtworkFilterNavigationStack } from "../ArtworkFilterNavigator"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"

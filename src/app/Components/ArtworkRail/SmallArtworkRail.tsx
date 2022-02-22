@@ -4,7 +4,7 @@ import {
   PlaceholderText,
   RandomWidthPlaceholderText,
   useMemoizedRandom,
-} from "lib/utils/placeholders"
+} from "app/utils/placeholders"
 import { times } from "lodash"
 import { Flex, Join, Spacer } from "palette"
 import React from "react"

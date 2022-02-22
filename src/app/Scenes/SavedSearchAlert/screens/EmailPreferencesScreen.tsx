@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtsyReactWebView } from "lib/Components/ArtsyReactWebView"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { ArtsyReactWebView } from "app/Components/ArtsyReactWebView"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Box } from "palette"
 import React from "react"
 import { CreateSavedSearchAlertNavigationStack } from "../SavedSearchAlertModel"

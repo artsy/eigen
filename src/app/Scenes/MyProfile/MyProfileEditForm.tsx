@@ -5,20 +5,20 @@ import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.gra
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
 import { useFormik } from "formik"
-import { Image } from "lib/Components/Bidding/Elements/Image"
+import { Image } from "app/Components/Bidding/Elements/Image"
 import {
   buildLocationDisplay,
   DetailedLocationAutocomplete,
-} from "lib/Components/DetailedLocationAutocomplete"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import LoadingModal from "lib/Components/Modals/LoadingModal"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useFeatureFlag } from "lib/store/GlobalStore"
-import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
-import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
-import { showPhotoActionSheet } from "lib/utils/requestPhotos"
-import { sendEmail } from "lib/utils/sendEmail"
-import { verifyEmail } from "lib/utils/verifyEmail"
+} from "app/Components/DetailedLocationAutocomplete"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import LoadingModal from "app/Components/Modals/LoadingModal"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { showPhotoActionSheet } from "app/utils/requestPhotos"
+import { sendEmail } from "app/utils/sendEmail"
+import { verifyEmail } from "app/utils/verifyEmail"
 import { compact, isArray, throttle } from "lodash"
 import {
   Avatar,

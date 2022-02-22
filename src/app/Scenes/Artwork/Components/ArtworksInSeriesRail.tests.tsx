@@ -2,10 +2,10 @@ import {
   ArtworksInSeriesRailTestsQuery,
   ArtworksInSeriesRailTestsQueryRawResponse,
 } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
-import { ArtworkRailCard } from "lib/Components/ArtworkRail/ArtworkRailCard"
-import { navigate } from "lib/navigation/navigate"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { navigate } from "app/navigation/navigate"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"

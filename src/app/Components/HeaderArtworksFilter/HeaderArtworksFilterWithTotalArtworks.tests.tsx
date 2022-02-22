@@ -1,10 +1,10 @@
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { useAnimatedValue } from "lib/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
+import { extractText } from "app/tests/extractText"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { HeaderArtworksFilterWithTotalArtworks } from "./HeaderArtworksFilterWithTotalArtworks"
 

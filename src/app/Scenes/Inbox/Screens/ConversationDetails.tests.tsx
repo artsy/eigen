@@ -1,4 +1,4 @@
-import { setupTestWrapperTL } from "lib/tests/setupTestWrapper"
+import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
 import React from "react"
 import "react-native"

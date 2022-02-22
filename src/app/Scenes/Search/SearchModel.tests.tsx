@@ -1,5 +1,5 @@
-import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { times } from "lodash"
 import React from "react"
 import {

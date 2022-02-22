@@ -3,8 +3,8 @@ import {
   updateSavedSearchAlertMutationResponse,
   updateSavedSearchAlertMutationVariables,
 } from "__generated__/updateSavedSearchAlertMutation.graphql"
-import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 import { SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
 

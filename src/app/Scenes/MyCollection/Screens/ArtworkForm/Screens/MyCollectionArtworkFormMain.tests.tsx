@@ -1,9 +1,9 @@
 import { Route } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Dimensions } from "../Components/Dimensions"
 import { MediumPicker } from "../Components/MediumPicker"
@@ -12,7 +12,7 @@ import { MyCollectionArtworkFormMain } from "./MyCollectionArtworkFormMain"
 
 jest.mock("formik")
 
-jest.mock("lib/Components/FancyModal/FancyModalHeader", () => ({
+jest.mock("app/Components/FancyModal/FancyModalHeader", () => ({
   FancyModalHeader: () => null,
 }))
 
@@ -38,7 +38,7 @@ jest.mock("@expo/react-native-action-sheet", () => ({
   useActionSheet: () => ({ showActionSheetWithOptions: mockShowActionSheetWithOptions }),
 }))
 
-jest.mock("lib/utils/requestPhotos", () => ({
+jest.mock("app/utils/requestPhotos", () => ({
   showPhotoActionSheet: jest.fn(() => Promise.resolve({ photos: [] })),
 }))
 

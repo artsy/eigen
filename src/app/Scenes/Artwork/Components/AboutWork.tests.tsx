@@ -1,13 +1,13 @@
 import { AboutWork_artwork } from "__generated__/AboutWork_artwork.graphql"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { AboutWork } from "./AboutWork"
 
-jest.mock("lib/utils/hardware", () => ({
+jest.mock("app/utils/hardware", () => ({
   truncatedTextLimit: jest.fn(),
 }))
 
-import { truncatedTextLimit } from "lib/utils/hardware"
+import { truncatedTextLimit } from "app/utils/hardware"
 
 describe("AboutWork", () => {
   beforeEach(() => {

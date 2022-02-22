@@ -5,8 +5,8 @@ import React from "react"
 import { Header } from "./OtherWorks/Header"
 import { OtherWorksFragmentContainer as OtherWorks } from "./OtherWorks/OtherWorks"
 
-import { navigate } from "lib/navigation/navigate"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { navigate } from "app/navigation/navigate"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { TouchableWithoutFeedback } from "react-native"
 
 describe("OtherWorks", () => {

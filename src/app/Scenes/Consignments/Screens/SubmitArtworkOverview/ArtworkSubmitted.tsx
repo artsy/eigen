@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import { Box, Button, Flex, Spacer, Text } from "palette"
 import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
 import React from "react"

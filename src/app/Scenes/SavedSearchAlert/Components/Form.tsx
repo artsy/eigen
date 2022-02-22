@@ -1,7 +1,7 @@
 import { useFormikContext } from "formik"
-import { SearchCriteria } from "lib/Components/ArtworkFilter/SavedSearch/types"
-import { navigate } from "lib/navigation/navigate"
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { navigate } from "app/navigation/navigate"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import {
   Box,
   Button,

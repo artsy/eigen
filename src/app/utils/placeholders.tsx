@@ -1,5 +1,5 @@
-import { GenericGridPlaceholder } from "lib/Components/ArtworkGrids/GenericGrid"
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, useColor } from "palette"
 import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { LayoutAnimation, Platform, View, ViewStyle } from "react-native"

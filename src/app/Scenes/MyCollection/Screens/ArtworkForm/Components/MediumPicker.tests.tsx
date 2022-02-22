@@ -1,5 +1,5 @@
 import { useFormikContext } from "formik"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Select } from "palette/elements/Select"
 import React from "react"
 import { MediumPicker } from "./MediumPicker"

@@ -6,7 +6,7 @@ describe("useArtworkForm", () => {
 // TODO: Reenable once we figure out circular dep issue involving GlobalStore
 
 import { useFormikContext } from "formik"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 import { useArtworkForm } from "./useArtworkForm"
 

@@ -1,4 +1,4 @@
-jest.mock("lib/utils/googleMaps", () => ({
+jest.mock("app/utils/googleMaps", () => ({
   getLocationPredictions: jest.fn(),
   getLocationDetails: jest.fn(),
 }))
@@ -7,14 +7,14 @@ import {
   InquiryModalTestsQuery,
   InquiryModalTestsQueryResponse,
 } from "__generated__/InquiryModalTestsQuery.graphql"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { extractText } from "lib/tests/extractText"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { extractText } from "app/tests/extractText"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
-} from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
+} from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import React from "react"
 import { TextInput } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"

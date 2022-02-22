@@ -1,9 +1,9 @@
 import { Action, action, Thunk, thunk } from "easy-peasy"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
-import { navigate, navigationEvents } from "lib/navigation/navigate"
-import { InfoType } from "lib/utils/track/providers"
-import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { NotificationsManager } from "app/NativeModules/NotificationsManager"
+import { navigate, navigationEvents } from "app/navigation/navigate"
+import { InfoType } from "app/utils/track/providers"
+import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { GlobalStore } from "./GlobalStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m

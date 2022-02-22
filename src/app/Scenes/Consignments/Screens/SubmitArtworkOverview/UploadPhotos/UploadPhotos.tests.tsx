@@ -1,5 +1,5 @@
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"

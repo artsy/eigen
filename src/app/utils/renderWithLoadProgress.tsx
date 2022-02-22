@@ -1,4 +1,4 @@
-import Spinner from "lib/Components/Spinner"
+import Spinner from "app/Components/Spinner"
 import React from "react"
 import { QueryRenderer } from "react-relay"
 import { renderWithPlaceholder } from "./renderWithPlaceholder"

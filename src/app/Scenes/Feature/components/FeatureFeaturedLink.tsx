@@ -1,6 +1,6 @@
 import { FeatureFeaturedLink_featuredLink } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/navigation/navigate"
 import { Flex, Sans } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"

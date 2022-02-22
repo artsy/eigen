@@ -7,7 +7,7 @@
  *  const { text }  = getTestSnapshot(<MyComponent title='Hi!' />)
  *  expect(text).toContain('Hi!')
  */
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import "react-native"
 
 export function getTestWrapper(TestComponent: any /* STRICTNESS_MIGRATION */) {

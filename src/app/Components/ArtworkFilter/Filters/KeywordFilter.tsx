@@ -2,10 +2,10 @@ import { ActionType, ContextModule } from "@artsy/cohesion"
 import {
   filterArtworksParams,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import SearchIcon from "lib/Icons/SearchIcon"
-import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import SearchIcon from "app/Icons/SearchIcon"
+import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { debounce, throttle } from "lodash"
 import { Input } from "palette"
 import React, { useEffect, useMemo, useRef } from "react"

@@ -1,16 +1,16 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import React from "react"
 import "react-native"
 
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
-import { extractText } from "lib/tests/extractText"
+import { extractText } from "app/tests/extractText"
 import { FairsRailFragmentContainer } from "./FairsRail"
 
-import { CardRailCard } from "lib/Components/Home/CardRailCard"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { navigate } from "lib/navigation/navigate"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
+import { CardRailCard } from "app/Components/Home/CardRailCard"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/navigation/navigate"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { Text } from "palette"
 import HomeAnalytics from "../homeAnalytics"
 

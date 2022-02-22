@@ -1,6 +1,6 @@
 import { DecoratorFunction } from "@storybook/addons"
-import { TrackProvider } from "lib/tests/renderWithWrappers"
-import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
+import { TrackProvider } from "app/tests/renderWithWrappers"
+import { ProvideScreenDimensions } from "app/utils/useScreenDimensions"
 import { Theme } from "palette"
 import React from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"

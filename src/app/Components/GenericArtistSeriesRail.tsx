@@ -6,12 +6,12 @@ import {
   CardRailArtworkImageContainer as ArtworkImageContainer,
   CardRailCard,
   CardRailDivision as Division,
-} from "lib/Components/Home/CardRailCard"
-import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
-import { extractNodes } from "lib/utils/extractNodes"
-import { Schema } from "lib/utils/track"
+} from "app/Components/Home/CardRailCard"
+import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
+import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
+import { Schema } from "app/utils/track"
 import { Sans, Spacer, useColor } from "palette"
 import React from "react"
 import { View } from "react-native"

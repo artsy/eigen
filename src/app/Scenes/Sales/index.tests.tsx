@@ -3,13 +3,13 @@ import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
 
-import { renderWithLayout } from "lib/tests/renderWithLayout"
+import { renderWithLayout } from "app/tests/renderWithLayout"
 
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { Theme } from "palette"
 import { SalesFragmentContainer } from "./index"
 
-jest.mock("lib/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail.tsx", () => "")
+jest.mock("app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail.tsx", () => "")
 
 it("renders the ZeroState when there are no sales", () => {
   const auctions = shallow(

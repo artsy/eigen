@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Image } from "react-native-image-crop-picker"
 import {
@@ -10,15 +10,15 @@ import {
 import { fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionAddArtworkMutationResponse } from "__generated__/myCollectionAddArtworkMutation.graphql"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 
 import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "lib/Scenes/Consignments/Submission/geminiUploadToS3"
-import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+} from "app/Scenes/Consignments/Submission/geminiUploadToS3"
+import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -26,7 +26,7 @@ import * as artworkMutations from "../../mutations/myCollectionAddArtwork"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import * as photoUtil from "./MyCollectionImageUtil"
 
-jest.mock("lib/Scenes/Consignments/Submission/geminiUploadToS3", () => ({
+jest.mock("app/Scenes/Consignments/Submission/geminiUploadToS3", () => ({
   getConvectionGeminiKey: jest.fn(),
   getGeminiCredentialsForEnvironment: jest.fn(),
   uploadFileToS3: jest.fn(),

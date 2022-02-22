@@ -1,6 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { Formik } from "formik"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { BulletedItem, CTAButton, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { ErrorView } from "../Components/ErrorView"

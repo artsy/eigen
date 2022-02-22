@@ -7,13 +7,13 @@ import {
   FilterParamName,
   FilterParams,
   ViewAsValues,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ORDERED_SALE_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
-import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
-import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { Schema } from "lib/utils/track"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ORDERED_SALE_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
+import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
+import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { Schema } from "app/utils/track"
 import { Box, Flex, Sans } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"

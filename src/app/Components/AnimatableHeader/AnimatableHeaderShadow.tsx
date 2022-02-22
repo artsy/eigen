@@ -1,4 +1,4 @@
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Box, useColor } from "palette"
 import React from "react"
 import Animated, { Extrapolate } from "react-native-reanimated"

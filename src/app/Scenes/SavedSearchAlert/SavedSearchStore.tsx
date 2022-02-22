@@ -1,9 +1,9 @@
 import { action, Action, computed, Computed, createContextStore, State } from "easy-peasy"
-import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SearchCriteria,
   SearchCriteriaAttributes,
-} from "lib/Components/ArtworkFilter/SavedSearch/types"
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { extractPills } from "./pillExtractors"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 

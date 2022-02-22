@@ -1,6 +1,6 @@
 import { BuyNowArtworksRailTestsQuery } from "__generated__/BuyNowArtworksRailTestsQuery.graphql"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"

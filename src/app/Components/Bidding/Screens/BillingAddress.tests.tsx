@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { FakeNavigator } from "../Helpers/FakeNavigator"
 import { BillingAddress } from "./BillingAddress"

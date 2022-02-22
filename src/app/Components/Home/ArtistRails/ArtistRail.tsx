@@ -12,7 +12,7 @@ import {
   RelayProp,
 } from "react-relay"
 
-import HomeAnalytics from "lib/Scenes/Home/homeAnalytics"
+import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { useTracking } from "react-tracking"
 
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
@@ -22,12 +22,12 @@ import {
   ArtistRailNewSuggestionQuery,
   ArtistRailNewSuggestionQueryResponse,
 } from "__generated__/ArtistRailNewSuggestionQuery.graphql"
-import { Disappearable } from "lib/Components/Disappearable"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { defaultArtistVariables } from "lib/Scenes/Artist/Artist"
-import { RailScrollProps } from "lib/Scenes/Home/Components/types"
-import { Schema } from "lib/utils/track"
+import { Disappearable } from "app/Components/Disappearable"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
+import { RailScrollProps } from "app/Scenes/Home/Components/types"
+import { Schema } from "app/utils/track"
 import { sample, uniq } from "lodash"
 import { Flex } from "palette"
 import { CARD_WIDTH } from "../CardRailCard"

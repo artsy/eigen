@@ -6,13 +6,13 @@ import {
   FilterParamName,
   getSelectedFiltersCounts,
   getUnitedSelectedAndAppliedFilters,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersModel,
   ArtworksFiltersStore,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { Schema } from "lib/utils/track"
-import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { Schema } from "app/utils/track"
+import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import _ from "lodash"
 import { FilterIcon, Flex, Sans } from "palette"
 import React, { useMemo } from "react"

@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import { Box, Button, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
 import { useFragment } from "react-relay"

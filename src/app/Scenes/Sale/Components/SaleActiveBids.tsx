@@ -1,5 +1,5 @@
 import { SaleActiveBids_me } from "__generated__/SaleActiveBids_me.graphql"
-import { SectionTitle } from "lib/Components/SectionTitle"
+import { SectionTitle } from "app/Components/SectionTitle"
 import { Flex, Separator } from "palette"
 import React from "react"
 import { FlatList, LayoutAnimation } from "react-native"

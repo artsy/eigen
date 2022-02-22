@@ -1,6 +1,6 @@
 import { PartnerHeaderTestsQuery } from "__generated__/PartnerHeaderTestsQuery.graphql"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { extractText } from "app/tests/extractText"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"

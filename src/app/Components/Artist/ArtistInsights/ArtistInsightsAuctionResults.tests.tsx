@@ -2,13 +2,13 @@ import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsi
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { AuctionResultListItemFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
-import { extractText } from "lib/tests/extractText"
-import { mockEdges } from "lib/tests/mockEnvironmentPayload"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
+import { extractText } from "app/tests/extractText"
+import { mockEdges } from "app/tests/mockEnvironmentPayload"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"

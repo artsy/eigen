@@ -3,10 +3,10 @@ import { Dimensions, FlatList, RefreshControl, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 
-import { PAGE_SIZE } from "lib/Components/constants"
+import { PAGE_SIZE } from "app/Components/constants"
 
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
-import { extractNodes } from "lib/utils/extractNodes"
+import { extractNodes } from "app/utils/extractNodes"
 
 import { dropWhile, sortBy } from "lodash"
 import { DateTime } from "luxon"

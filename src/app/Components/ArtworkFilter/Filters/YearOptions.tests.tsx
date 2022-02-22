@@ -1,12 +1,12 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
-import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   ArtworksFiltersStore,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { extractText } from "app/tests/extractText"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { act } from "react-test-renderer"
 import { getEssentialProps } from "./helper"

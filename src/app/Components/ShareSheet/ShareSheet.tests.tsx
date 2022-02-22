@@ -1,9 +1,9 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import Clipboard from "@react-native-community/clipboard"
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
-import { useCanOpenURL } from "lib/utils/useCanOpenURL"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import React from "react"
 import Share from "react-native-share"
 import * as helpers from "./helpers"
@@ -11,13 +11,13 @@ import { ShareSheet, ShareSheetProps } from "./ShareSheet"
 
 const setVisibleMock = jest.fn()
 
-jest.mock("lib/utils/useCanOpenURL")
+jest.mock("app/utils/useCanOpenURL")
 
 jest.mock("@react-native-community/clipboard", () => ({
   setString: jest.fn(),
 }))
 
-jest.mock("lib/Scenes/Artwork/Components/InstagramStoryViewShot", () => ({
+jest.mock("app/Scenes/Artwork/Components/InstagramStoryViewShot", () => ({
   InstagramStoryViewShot: () => null,
 }))
 

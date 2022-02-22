@@ -1,4 +1,4 @@
-import { unsafe__getEnvironment } from "lib/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import ViewShot from "react-native-view-shot"
 
 export const getShareURL = (href: string) => {

@@ -4,10 +4,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { ArtistListTestsQuery } from "__generated__/ArtistListTestsQuery.graphql"
-import { extractText } from "lib/tests/extractText"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { extractText } from "app/tests/extractText"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ArtistListFragmentContainer } from "./ArtistList"
 
 jest.unmock("react-relay")

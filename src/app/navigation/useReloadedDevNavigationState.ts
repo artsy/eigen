@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { NavigationContainerRef } from "@react-navigation/native"
-import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
-import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { useEffect } from "react"
 
 const NAV_STATE_STORAGE_KEY = "ARDevNavState"

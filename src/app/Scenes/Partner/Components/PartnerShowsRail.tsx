@@ -1,6 +1,6 @@
 import { PartnerShowsRail_partner } from "__generated__/PartnerShowsRail_partner.graphql"
-import { extractNodes } from "lib/utils/extractNodes"
-import { isCloseToEdge } from "lib/utils/isCloseToEdge"
+import { extractNodes } from "app/utils/extractNodes"
+import { isCloseToEdge } from "app/utils/isCloseToEdge"
 import { Sans, Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"

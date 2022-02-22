@@ -1,6 +1,6 @@
 import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
-import Spinner from "lib/Components/Spinner"
-import { RandomNumberGenerator } from "lib/utils/placeholders"
+import Spinner from "app/Components/Spinner"
+import { RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"

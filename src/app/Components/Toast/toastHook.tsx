@@ -1,4 +1,4 @@
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import React, { useContext, useMemo } from "react"
 import { Toast } from "./Toast"
 import { ToastComponent } from "./ToastComponent"

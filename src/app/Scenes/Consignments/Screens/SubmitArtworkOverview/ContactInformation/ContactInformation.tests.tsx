@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
@@ -9,7 +9,7 @@ import { updateConsignSubmission } from "../Mutations"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
 
 jest.mock(
-  "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/updateConsignSubmissionMutation",
+  "app/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/updateConsignSubmissionMutation",
   () => ({
     updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
   })

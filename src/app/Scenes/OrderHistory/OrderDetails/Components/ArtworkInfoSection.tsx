@@ -1,6 +1,6 @@
 import { ArtworkInfoSection_artwork } from "__generated__/ArtworkInfoSection_artwork.graphql"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { extractNodes } from "lib/utils/extractNodes"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { extractNodes } from "app/utils/extractNodes"
 import { Box, Flex, Text } from "palette"
 import React from "react"
 import { Image } from "react-native"

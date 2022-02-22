@@ -1,8 +1,8 @@
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
-import { getMeasurements, Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
-import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
-import { deleteLocalImages, LocalImage, storeLocalImages } from "lib/utils/LocalImageStore"
-import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
+import { getMeasurements, Size } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
+import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
+import { deleteLocalImages, LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
+import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
 import { ArtworkFormValues, Image } from "../../State/MyCollectionArtworkModel"
 
 export const storeLocalPhotos = (slug: string, photos: Image[]) => {

@@ -1,6 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
+import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { Text } from "react-native"
@@ -9,10 +9,10 @@ import { ArtworkExtraLinks } from "./index"
 jest.unmock("react-tracking")
 
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
-import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
-import { navigate } from "lib/navigation/navigate"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
-import { postEventToProviders } from "lib/utils/track/providers"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { navigate } from "app/navigation/navigate"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { postEventToProviders } from "app/utils/track/providers"
 
 function getWrapper({
   artwork,

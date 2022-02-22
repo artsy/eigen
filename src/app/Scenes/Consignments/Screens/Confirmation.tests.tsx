@@ -1,5 +1,5 @@
-import { dismissModal } from "lib/navigation/navigate"
-import { getTextTree } from "lib/utils/getTestWrapper"
+import { dismissModal } from "app/navigation/navigate"
+import { getTextTree } from "app/utils/getTestWrapper"
 import React from "react"
 import "react-native"
 import Confirmation, { SubmissionTypes } from "./Confirmation"

@@ -1,6 +1,6 @@
 import { FairTiming_fair } from "__generated__/FairTiming_fair.graphql"
-import { EventTiming } from "lib/Components/EventTiming"
-import { WithCurrentTime } from "lib/Components/WithCurrentTime"
+import { EventTiming } from "app/Components/EventTiming"
+import { WithCurrentTime } from "app/Components/WithCurrentTime"
 import { Box, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"

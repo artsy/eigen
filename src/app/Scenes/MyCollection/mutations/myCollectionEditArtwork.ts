@@ -3,7 +3,7 @@ import {
   myCollectionEditArtworkMutationResponse,
   myCollectionEditArtworkMutationVariables,
 } from "__generated__/myCollectionEditArtworkMutation.graphql"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
 export function myCollectionEditArtwork(input: myCollectionEditArtworkMutationVariables["input"]) {

@@ -1,12 +1,12 @@
 import { MyProfileEditForm_me } from "__generated__/MyProfileEditForm_me.graphql"
-import { LocationResult } from "lib/Scenes/Consignments"
+import { LocationResult } from "app/Scenes/Consignments"
 import {
   getLocationDetails,
   getLocationPredictions,
   LocationWithDetails,
   SimpleLocation,
-} from "lib/utils/googleMaps"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+} from "app/utils/googleMaps"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Input, InputProps, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Text } from "react-native"

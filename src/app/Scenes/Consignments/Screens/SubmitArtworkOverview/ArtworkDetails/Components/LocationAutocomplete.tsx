@@ -1,5 +1,5 @@
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { getLocationDetails, getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
+import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { getLocationDetails, getLocationPredictions, SimpleLocation } from "app/utils/googleMaps"
 import { Box, Flex, Input, LocationIcon, Separator, Text, Touchable, useSpace } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList, Image } from "react-native"

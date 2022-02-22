@@ -1,14 +1,14 @@
 import { SaleLotsListTestsQuery } from "__generated__/SaleLotsListTestsQuery.graphql"
-import { FilterParamName, ViewAsValues } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { FilterParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterParamName, ViewAsValues } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { extractText } from "lib/tests/extractText"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { extractText } from "app/tests/extractText"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"

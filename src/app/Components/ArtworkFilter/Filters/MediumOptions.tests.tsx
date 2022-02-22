@@ -1,4 +1,4 @@
-import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
 import {
   sharedAggregateFilterValidation,

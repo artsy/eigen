@@ -1,8 +1,8 @@
 import { InboxTestsQuery } from "__generated__/InboxTestsQuery.graphql"
-import { press } from "lib/Scenes/Artwork/Components/CommercialButtons/helpers"
-import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
-import { MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { press } from "app/Scenes/Artwork/Components/CommercialButtons/helpers"
+import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
+import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"
 import "react-native"
@@ -15,13 +15,13 @@ import { InboxContainer } from "./Inbox"
 jest.unmock("react-relay")
 jest.unmock("react-native-scrollable-tab-view")
 
-jest.mock("lib/Scenes/Inbox/Components/Conversations/Conversations", () => {
+jest.mock("app/Scenes/Inbox/Components/Conversations/Conversations", () => {
   return {
     ConversationsContainer: () => "(The ConversationsContainer)",
   }
 })
 
-jest.mock("lib/Scenes/MyBids/MyBids", () => {
+jest.mock("app/Scenes/MyBids/MyBids", () => {
   return {
     MyBidsContainer: () => "(The MyBidsContainer)",
   }

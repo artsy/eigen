@@ -1,12 +1,12 @@
-import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
   useSelectedOptionsDisplay,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { extractText } from "lib/tests/extractText"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { extractText } from "app/tests/extractText"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Text, TouchableHighlight, TouchableWithoutFeedback, View } from "react-native"
 import { getEssentialProps } from "./helper"

@@ -1,6 +1,6 @@
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { unsafe__getSelectedTab } from "lib/store/GlobalStore"
-import { createHideBackButtonOnScroll } from "lib/utils/hideBackButtonOnScroll"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { unsafe__getSelectedTab } from "app/store/GlobalStore"
+import { createHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
 
 const hideBackButtonOnScroll = createHideBackButtonOnScroll((shouldHide) =>
   LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton(

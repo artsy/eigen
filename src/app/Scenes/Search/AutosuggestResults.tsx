@@ -4,12 +4,12 @@ import {
   AutosuggestResultsQuery,
   AutosuggestResultsQueryVariables,
 } from "__generated__/AutosuggestResultsQuery.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { LoadFailureView } from "lib/Components/LoadFailureView"
-import Spinner from "lib/Components/Spinner"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { isPad } from "lib/utils/hardware"
-import { ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
+import { LoadFailureView } from "app/Components/LoadFailureView"
+import Spinner from "app/Components/Spinner"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { isPad } from "app/utils/hardware"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Flex, quoteLeft, quoteRight, Spacer, Text, useSpace } from "palette"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import React from "react"

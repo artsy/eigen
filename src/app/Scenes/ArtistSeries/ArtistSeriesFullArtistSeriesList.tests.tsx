@@ -2,11 +2,11 @@ import {
   ArtistSeriesFullArtistSeriesListTestsQuery,
   ArtistSeriesFullArtistSeriesListTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesFullArtistSeriesListTestsQuery.graphql"
-import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
-import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
-import { extractText } from "lib/tests/extractText"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
+import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
+import { extractText } from "app/tests/extractText"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"

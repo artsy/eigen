@@ -1,18 +1,18 @@
 import MapboxGL, { MapViewProps, OnPressEvent } from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
-import { Pin } from "lib/Icons/Pin"
-import PinFairSelected from "lib/Icons/PinFairSelected"
-import PinSavedSelected from "lib/Icons/PinSavedSelected"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
+import { Pin } from "app/Icons/Pin"
+import PinFairSelected from "app/Icons/PinFairSelected"
+import PinSavedSelected from "app/Icons/PinSavedSelected"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import {
   convertCityToGeoJSON,
   fairToGeoCityFairs,
   showsToGeoCityShow,
-} from "lib/utils/convertCityToGeoJSON"
-import { extractNodes } from "lib/utils/extractNodes"
-import { Schema, screenTrack, track } from "lib/utils/track"
+} from "app/utils/convertCityToGeoJSON"
+import { extractNodes } from "app/utils/extractNodes"
+import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEqual, uniq } from "lodash"
 import { Box, ClassTheme, Flex, Sans } from "palette"
 import React from "react"

@@ -1,5 +1,5 @@
 import { ShowInstallShots_show } from "__generated__/ShowInstallShots_show.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { compact } from "lodash"
 import { Box, BoxProps, Spacer, Text } from "palette"
 import React from "react"

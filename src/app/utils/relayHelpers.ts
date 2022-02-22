@@ -1,4 +1,4 @@
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Record } from "relay-runtime/lib/store/RelayStoreTypes"
 
 const getStore = () => defaultEnvironment.getStore()

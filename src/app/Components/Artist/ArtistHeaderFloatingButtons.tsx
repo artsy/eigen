@@ -1,9 +1,9 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistHeaderFloatingButtons_artist } from "__generated__/ArtistHeaderFloatingButtons_artist.graphql"
-import { ArtistHeaderButton } from "lib/Components/Artist/ArtistHeaderButton"
-import { ShareSheet } from "lib/Components/ShareSheet/ShareSheet"
-import { useStickyTabPageContext } from "lib/Components/StickyTabPage/SitckyTabPageContext"
-import { goBack } from "lib/navigation/navigate"
+import { ArtistHeaderButton } from "app/Components/Artist/ArtistHeaderButton"
+import { ShareSheet } from "app/Components/ShareSheet/ShareSheet"
+import { useStickyTabPageContext } from "app/Components/StickyTabPage/SitckyTabPageContext"
+import { goBack } from "app/navigation/navigate"
 import { ChevronIcon, ShareIcon } from "palette"
 import React, { Fragment, useRef, useState } from "react"
 import Animated, {

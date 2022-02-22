@@ -5,13 +5,13 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
 import { OldMyCollectionArtwork_sharedProps } from "__generated__/OldMyCollectionArtwork_sharedProps.graphql"
 import { FormikProvider, useFormik } from "formik"
-import LoadingModal from "lib/Components/Modals/LoadingModal"
-import { goBack } from "lib/navigation/navigate"
+import LoadingModal from "app/Components/Modals/LoadingModal"
+import { goBack } from "app/navigation/navigate"
 import {
   cleanArtworkPayload,
   explicitlyClearedFields,
-} from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
-import { GlobalStore } from "lib/store/GlobalStore"
+} from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
+import { GlobalStore } from "app/store/GlobalStore"
 import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"

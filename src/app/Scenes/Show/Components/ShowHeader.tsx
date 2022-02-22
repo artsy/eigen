@@ -1,5 +1,5 @@
 import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
-import { useEventTiming } from "lib/utils/useEventTiming"
+import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import { Box, BoxProps, Text } from "palette"
 import React, { useEffect, useState } from "react"

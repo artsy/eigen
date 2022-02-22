@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import * as input from "palette/elements/Input/Input"
 import React from "react"
 import { TextInput } from "react-native"

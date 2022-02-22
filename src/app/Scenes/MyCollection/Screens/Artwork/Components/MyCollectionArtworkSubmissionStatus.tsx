@@ -1,5 +1,5 @@
 import { toTitleCase } from "@artsy/to-title-case"
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import { Box, Flex, Text, Touchable } from "palette"
 import React from "react"
 

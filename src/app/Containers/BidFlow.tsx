@@ -1,4 +1,4 @@
-import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
+import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
 import { View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"

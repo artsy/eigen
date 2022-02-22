@@ -1,13 +1,13 @@
 import { toTitleCase } from "@artsy/to-title-case"
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
   FilterData,
   FilterDisplayName,
   FilterParamName,
   getDisplayNameForTimePeriod,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
 import React from "react"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"

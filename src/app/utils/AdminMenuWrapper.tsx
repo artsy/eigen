@@ -1,4 +1,4 @@
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Flex } from "palette"
 import React, { useRef, useState } from "react"
 import { AdminMenu } from "./AdminMenu"

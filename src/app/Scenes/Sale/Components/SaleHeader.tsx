@@ -1,6 +1,6 @@
 import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
-import { saleTime } from "lib/utils/saleTime"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { saleTime } from "app/utils/saleTime"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import moment from "moment"
 import { Flex, Text } from "palette"
 import React from "react"

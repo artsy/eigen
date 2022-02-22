@@ -1,9 +1,9 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 
 import ActiveBid from "./ActiveBid"
 
-import { extractText } from "lib/tests/extractText"
+import { extractText } from "app/tests/extractText"
 
 it("renders without throwing a error", () => {
   renderWithWrappers(<ActiveBid bid={bid()} />)

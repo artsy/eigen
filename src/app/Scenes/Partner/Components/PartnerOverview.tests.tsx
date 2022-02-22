@@ -2,9 +2,9 @@ import {
   PartnerOverviewTestsQuery,
   PartnerOverviewTestsQueryRawResponse,
 } from "__generated__/PartnerOverviewTestsQuery.graphql"
-import { ArtistListItem } from "lib/Components/ArtistListItem"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ArtistListItem } from "app/Components/ArtistListItem"
+import { extractText } from "app/tests/extractText"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

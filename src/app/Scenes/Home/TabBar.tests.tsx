@@ -1,8 +1,8 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Animated } from "react-native"
 
-import TabBar from "lib/Components/TabBar"
+import TabBar from "app/Components/TabBar"
 
 it("renders without throwing an error", () => {
   renderWithWrappers(

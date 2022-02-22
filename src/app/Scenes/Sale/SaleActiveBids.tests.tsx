@@ -1,6 +1,6 @@
 import { SaleActiveBidsTestsQuery } from "__generated__/SaleActiveBidsTestsQuery.graphql"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"

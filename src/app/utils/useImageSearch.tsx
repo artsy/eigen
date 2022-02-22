@@ -1,9 +1,9 @@
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "lib/Scenes/Consignments/Submission/geminiUploadToS3"
+} from "app/Scenes/Consignments/Submission/geminiUploadToS3"
 import { isEmpty } from "lodash"
 import { useState } from "react"
 import ImagePicker from "react-native-image-crop-picker"

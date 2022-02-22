@@ -1,6 +1,6 @@
 import { FormikProps, useFormikContext } from "formik"
-import { ArtworkFormValues } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 
 export function useArtworkForm(): { formik: FormikProps<ArtworkFormValues> } {

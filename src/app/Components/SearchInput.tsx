@@ -1,4 +1,4 @@
-import SearchIcon from "lib/Icons/SearchIcon"
+import SearchIcon from "app/Icons/SearchIcon"
 import {
   emitInputClearEvent,
   Flex,

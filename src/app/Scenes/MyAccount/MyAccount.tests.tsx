@@ -1,8 +1,8 @@
 import { MyAccountTestsQuery } from "__generated__/MyAccountTestsQuery.graphql"
-import { MenuItem } from "lib/Components/MenuItem"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { MenuItem } from "app/Components/MenuItem"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { extractText } from "app/tests/extractText"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"
 import { Platform } from "react-native"
@@ -20,7 +20,7 @@ const mockedUseFBLinks = {
   linkUsingOauthToken: jest.fn(),
 }
 
-jest.mock("lib/utils/LinkedAccounts/facebook", () => ({
+jest.mock("app/utils/LinkedAccounts/facebook", () => ({
   useFacebookLink: jest.fn(() => mockedUseFBLinks),
 }))
 
@@ -33,7 +33,7 @@ const mockedUseGoogleLinks = {
   linkUsingOauthToken: jest.fn(),
 }
 
-jest.mock("lib/utils/LinkedAccounts/google", () => ({
+jest.mock("app/utils/LinkedAccounts/google", () => ({
   useGoogleLink: jest.fn(() => mockedUseGoogleLinks),
 }))
 

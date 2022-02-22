@@ -1,6 +1,6 @@
-import { plainTextFromTree } from "lib/utils/plainTextFromTree"
-import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
-import { Schema } from "lib/utils/track"
+import { plainTextFromTree } from "app/utils/plainTextFromTree"
+import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
+import { Schema } from "app/utils/track"
 import _ from "lodash"
 import {
   Color,

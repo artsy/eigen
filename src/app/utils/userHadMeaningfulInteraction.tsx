@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { PromptForReview } from "@artsy/cohesion/dist/Schema/Events/PromptForReview"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { getCurrentEmissionState } from "app/store/GlobalStore"
 import { Platform } from "react-native"
 import InAppReview from "react-native-in-app-review"
 import { postEventToProviders } from "./track/providers"

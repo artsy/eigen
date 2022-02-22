@@ -2,7 +2,7 @@ import {
   SavedSearchAlertQuery,
   SavedSearchAlertQueryResponse,
 } from "__generated__/SavedSearchAlertQuery.graphql"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 

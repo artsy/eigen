@@ -5,17 +5,17 @@ import {
   ArtworkFilterNavigator,
   ArtworkFilterOptionsScreen,
   FilterModalMode,
-} from "lib/Components/ArtworkFilter"
-import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+} from "app/Components/ArtworkFilter"
+import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { CollectionFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
+import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Theme } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"

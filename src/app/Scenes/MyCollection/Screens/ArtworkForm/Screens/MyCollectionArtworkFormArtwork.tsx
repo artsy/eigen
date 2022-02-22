@@ -3,10 +3,10 @@ import {
   MyCollectionArtworkFormArtworkQuery,
   MyCollectionArtworkFormArtworkQueryResponse,
 } from "__generated__/MyCollectionArtworkFormArtworkQuery.graphql"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import LoadingModal from "lib/Components/Modals/LoadingModal"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import LoadingModal from "app/Components/Modals/LoadingModal"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { GlobalStore } from "app/store/GlobalStore"
 import { omit, pickBy } from "lodash"
 import { Spacer } from "palette"
 import React, { useEffect, useState } from "react"

@@ -1,6 +1,6 @@
 import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsListFeaturedTestsQuery.graphql"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { MediumCard } from "palette"
 import React from "react"
 import { graphql, QueryRenderer, RelayEnvironmentProvider } from "react-relay"

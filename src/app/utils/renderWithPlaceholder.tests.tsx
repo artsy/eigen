@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Text } from "react-native"
 import { renderWithPlaceholder } from "./renderWithPlaceholder"

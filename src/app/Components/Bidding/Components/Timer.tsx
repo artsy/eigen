@@ -1,5 +1,5 @@
-import { SimpleTicker, StateManager as CountdownStateManager } from "lib/Components/Countdown"
-import { CountdownProps } from "lib/Components/Countdown/CountdownTimer"
+import { SimpleTicker, StateManager as CountdownStateManager } from "app/Components/Countdown"
+import { CountdownProps } from "app/Components/Countdown/CountdownTimer"
 import moment from "moment-timezone"
 import { Flex, Sans } from "palette"
 import PropTypes from "prop-types"

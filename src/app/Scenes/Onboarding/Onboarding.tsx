@@ -7,10 +7,10 @@ import {
 import {
   ArtsyKeyboardAvoidingView,
   ArtsyKeyboardAvoidingViewContext,
-} from "lib/Components/ArtsyKeyboardAvoidingView"
-import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "lib/Components/ArtsyReactWebViewPolicy"
-import { GlobalStore } from "lib/store/GlobalStore"
-import { NetworkAwareProvider } from "lib/utils/NetworkAwareProvider"
+} from "app/Components/ArtsyKeyboardAvoidingView"
+import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "app/Components/ArtsyReactWebViewPolicy"
+import { GlobalStore } from "app/store/GlobalStore"
+import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import React from "react"
 import { View } from "react-native"
 import { useFeatureFlag } from "../../store/GlobalStore"

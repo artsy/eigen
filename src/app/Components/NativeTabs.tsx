@@ -1,5 +1,5 @@
-import type { AppModule } from "lib/AppRegistry"
-import type { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
+import type { AppModule } from "app/AppRegistry"
+import type { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import React from "react"
 import { requireNativeComponent } from "react-native"
 

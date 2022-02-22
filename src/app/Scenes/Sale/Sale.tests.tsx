@@ -1,7 +1,7 @@
 import { waitFor } from "@testing-library/react-native"
-import { navigate, popParentViewController } from "lib/navigation/navigate"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { navigate, popParentViewController } from "app/navigation/navigate"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import React, { Suspense } from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -10,7 +10,7 @@ import { SaleQueryRenderer } from "./Sale"
 
 jest.unmock("react-relay")
 
-jest.mock("lib/navigation/navigate", () => ({
+jest.mock("app/navigation/navigate", () => ({
   popParentViewController: jest.fn(),
   navigate: jest.fn(),
 }))

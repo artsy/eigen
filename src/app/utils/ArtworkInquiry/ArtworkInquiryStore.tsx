@@ -5,7 +5,7 @@ import {
   ArtworkInquiryContextState,
   InquiryOptions,
   InquiryQuestionIDs,
-} from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
+} from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import React, { createContext, Reducer, useReducer } from "react"
 
 const initialArtworkInquiryState: ArtworkInquiryContextState = {

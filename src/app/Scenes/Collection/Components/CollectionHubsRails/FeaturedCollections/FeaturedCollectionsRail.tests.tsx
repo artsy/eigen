@@ -2,14 +2,14 @@ import {
   FeaturedCollectionsRailTestsQuery,
   FeaturedCollectionsRailTestsQueryRawResponse,
 } from "__generated__/FeaturedCollectionsRailTestsQuery.graphql"
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import {
   FeaturedCollectionsRail,
   FeaturedCollectionsRailContainer,
   ImageWrapper,
-} from "lib/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"

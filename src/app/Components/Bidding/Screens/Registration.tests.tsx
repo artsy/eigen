@@ -3,12 +3,12 @@ import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import {
   RegistrationResult,
   RegistrationStatus,
-} from "lib/Components/Bidding/Screens/RegistrationResult"
-import { Modal } from "lib/Components/Modal"
-import { LinkText } from "lib/Components/Text/LinkText"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { mockTimezone } from "lib/tests/mockTimezone"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Components/Bidding/Screens/RegistrationResult"
+import { Modal } from "app/Components/Modal"
+import { LinkText } from "app/Components/Text/LinkText"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { mockTimezone } from "app/tests/mockTimezone"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Button, Sans, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"

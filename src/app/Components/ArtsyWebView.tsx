@@ -1,4 +1,4 @@
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import React from "react"
 import { ArtsyReactWebView } from "./ArtsyReactWebView"
 import InternalWebView from "./InternalWebView"

@@ -1,12 +1,12 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import { Sans, Theme } from "palette"
 import React from "react"
 import "react-native"
 
-import { mockTimezone } from "lib/tests/mockTimezone"
+import { mockTimezone } from "app/tests/mockTimezone"
 import { Timer } from "./Timer"
 
 const SECONDS = 1000

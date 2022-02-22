@@ -1,4 +1,4 @@
-import { PlaceholderBox, RandomWidthPlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Box, Flex } from "palette"
 import React from "react"

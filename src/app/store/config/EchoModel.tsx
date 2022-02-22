@@ -1,5 +1,5 @@
 import { action, Action, computed, Computed, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
-import { appJson, echoLaunchJson } from "lib/utils/jsonFiles"
+import { appJson, echoLaunchJson } from "app/utils/jsonFiles"
 import moment from "moment-timezone"
 import { Platform } from "react-native"
 import { lt as lessThan } from "semver"

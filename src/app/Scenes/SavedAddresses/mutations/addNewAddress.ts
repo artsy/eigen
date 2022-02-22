@@ -3,7 +3,7 @@ import {
   addNewAddressMutationResponse,
   UserAddressAttributes,
 } from "__generated__/addNewAddressMutation.graphql"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
 export const createUserAddress = (address: UserAddressAttributes) => {

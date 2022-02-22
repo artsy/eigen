@@ -1,7 +1,7 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
@@ -12,14 +12,14 @@ import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel } from "./validation"
 
 jest.mock(
-  "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/createConsignSubmissionMutation",
+  "app/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/createConsignSubmissionMutation",
   () => ({
     createConsignSubmission: jest.fn().mockResolvedValue("12345"),
   })
 )
 
 jest.mock(
-  "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/updateConsignSubmissionMutation",
+  "app/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/updateConsignSubmissionMutation",
   () => ({
     updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
   })

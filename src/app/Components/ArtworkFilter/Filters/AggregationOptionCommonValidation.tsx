@@ -2,14 +2,14 @@ import {
   aggregationForFilter,
   Aggregations,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { TouchableRow } from "lib/Components/TouchableRow"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { TouchableRow } from "app/Components/TouchableRow"
+import { extractText } from "app/tests/extractText"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RadioDot } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"

@@ -1,9 +1,9 @@
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
-import { dismissModal, navigate } from "lib/navigation/navigate"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { dismissModal, navigate } from "app/navigation/navigate"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
 import { BidderPositionResult } from "../types"

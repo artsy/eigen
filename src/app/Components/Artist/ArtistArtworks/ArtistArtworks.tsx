@@ -1,32 +1,32 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
-import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
   Aggregations,
   filterArtworksParams,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersStoreProvider,
   ArtworksFiltersStore,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ORDERED_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
-import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
-import { getAllowedFiltersForSavedSearchInput } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
-import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
+import { convertSavedSearchCriteriaToFilterParams } from "app/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
+import { getAllowedFiltersForSavedSearchInput } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
+import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import {
   useArtworkFilters,
   useSelectedFiltersCount,
-} from "lib/Components/ArtworkFilter/useArtworkFilters"
-import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
-import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+} from "app/Components/ArtworkFilter/useArtworkFilters"
+import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
   InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid,
   Props as InfiniteScrollGridProps,
-} from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import { useFeatureFlag } from "lib/store/GlobalStore"
-import { Schema } from "lib/utils/track"
+} from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { Schema } from "app/utils/track"
 import { Box, Spacer } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"

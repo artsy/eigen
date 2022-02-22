@@ -1,4 +1,4 @@
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { Platform } from "react-native"
 import { openPicker } from "react-native-image-crop-picker"
 import { requestPhotos } from "./requestPhotos"

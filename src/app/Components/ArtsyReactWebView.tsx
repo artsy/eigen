@@ -1,16 +1,16 @@
 import { OwnerType } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
-import { dismissModal, goBack, GoBackProps, navigate } from "lib/navigation/navigate"
-import { matchRoute } from "lib/navigation/routes"
-import { BottomTabRoutes } from "lib/Scenes/BottomTabs/bottomTabsConfig"
+import { dismissModal, goBack, GoBackProps, navigate } from "app/navigation/navigate"
+import { matchRoute } from "app/navigation/routes"
+import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import {
   getCurrentEmissionState,
   GlobalStore,
   useDevToggle,
   useEnvironment,
-} from "lib/store/GlobalStore"
-import { Schema } from "lib/utils/track"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+} from "app/store/GlobalStore"
+import { Schema } from "app/utils/track"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Text } from "palette"
 import { parse as parseQueryString } from "query-string"
 import React, { useEffect, useRef, useState } from "react"

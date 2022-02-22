@@ -1,8 +1,8 @@
 import { ActionType, OwnerType, TappedMakeOffer } from "@artsy/cohesion"
 import { MakeOfferButton_artwork } from "__generated__/MakeOfferButton_artwork.graphql"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
-import { navigate } from "lib/navigation/navigate"
-import { Track, track as _track } from "lib/utils/track"
+import { navigate } from "app/navigation/navigate"
+import { Track, track as _track } from "app/utils/track"
 
 import { Button, ButtonProps } from "palette"
 import React from "react"

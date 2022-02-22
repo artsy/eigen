@@ -3,9 +3,9 @@
  * We needed it because relay still do not support named fragment spreads for search
  */
 import { OnboardingPersonalizationModal_artists } from "__generated__/OnboardingPersonalizationModal_artists.graphql"
-import { followArtistMutation } from "lib/Components/ArtistListItem"
-import { navigate } from "lib/navigation/navigate"
-import { Schema, track } from "lib/utils/track"
+import { followArtistMutation } from "app/Components/ArtistListItem"
+import { navigate } from "app/navigation/navigate"
+import { Schema, track } from "app/utils/track"
 import { ClassTheme, EntityHeader, Flex, FollowButton, Touchable } from "palette"
 import React from "react"
 import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"

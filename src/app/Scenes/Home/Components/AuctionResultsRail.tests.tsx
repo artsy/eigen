@@ -4,11 +4,11 @@ import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 
 import { AuctionResultsRailTestsQuery } from "__generated__/AuctionResultsRailTestsQuery.graphql"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { AuctionResultsRailFragmentContainer } from "./AuctionResultsRail"
 
 jest.unmock("react-relay")

@@ -2,14 +2,14 @@ import { fireEvent } from "@testing-library/react-native"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { navigate } from "lib/navigation/navigate"
-import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
-import { SavedSearchAlertMutationResult } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
-import { delay } from "lib/utils/delay"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { navigate } from "app/navigation/navigate"
+import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
+import { SavedSearchAlertMutationResult } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { delay } from "app/utils/delay"
 import React from "react"
 import {
   CreateSavedSearchModal,

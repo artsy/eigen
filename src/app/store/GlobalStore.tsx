@@ -1,9 +1,9 @@
 import { useNavigationState } from "@react-navigation/native"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
-import { __unsafe_mainModalStackRef } from "lib/NativeModules/ARScreenPresenterModule"
-import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
-import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
-import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
+import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { loadDevNavigationStateCache } from "app/navigation/useReloadedDevNavigationState"
+import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import React from "react"
 import { Platform } from "react-native"
 // @ts-ignore

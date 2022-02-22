@@ -1,5 +1,5 @@
-import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
-import { navigate } from "lib/navigation/navigate"
+import { NotificationsManager } from "app/NativeModules/NotificationsManager"
+import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "./GlobalStore"
 import { NativeEvent } from "./NativeModel"
 

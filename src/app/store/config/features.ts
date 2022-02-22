@@ -1,5 +1,5 @@
-import { useToast } from "lib/Components/Toast/toastHook"
-import { echoLaunchJson } from "lib/utils/jsonFiles"
+import { useToast } from "app/Components/Toast/toastHook"
+import { echoLaunchJson } from "app/utils/jsonFiles"
 import { Platform } from "react-native"
 import { GlobalStore } from "../GlobalStore"
 

@@ -1,6 +1,6 @@
-import { ArtsyWebView } from "lib/Components/ArtsyWebView"
-import { useEnvironment } from "lib/store/GlobalStore"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { ArtsyWebView } from "app/Components/ArtsyWebView"
+import { useEnvironment } from "app/store/GlobalStore"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import React from "react"
 import { View } from "react-native"
 

@@ -1,5 +1,5 @@
-import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
 

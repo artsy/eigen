@@ -1,5 +1,5 @@
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { WorksForYou } from "./WorksForYou"
 

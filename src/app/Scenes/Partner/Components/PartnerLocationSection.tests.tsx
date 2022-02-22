@@ -1,6 +1,6 @@
 import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
+import { renderRelayTree } from "app/tests/renderRelayTree"
 import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"

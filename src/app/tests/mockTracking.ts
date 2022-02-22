@@ -1,4 +1,4 @@
-import { postEventToProviders } from "lib/utils/track/providers"
+import { postEventToProviders } from "app/utils/track/providers"
 import track from "react-tracking"
 
 /**
@@ -6,9 +6,9 @@ import track from "react-tracking"
  * make sure to call
  *   jest.unmock('react-tracking')
  * and mock out Events
- *   jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
+ *   jest.mock("app/NativeModules/Events", () => ({ postEvent: jest.fn() }))
  * and then import Events
- *   import Events from "lib/NativeModules/Events"
+ *   import Events from "app/NativeModules/Events"
  * and then make assertions like
  *   expect(Events.postEvent).toHaveBeenCalledWith({myTrackingProperty: "whateve"})
  */

@@ -1,11 +1,11 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Stack } from "lib/Components/Stack"
-import { Photo } from "lib/Scenes/Consignments"
-import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { isPad } from "lib/utils/hardware"
-import { showPhotoActionSheet } from "lib/utils/requestPhotos"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { Stack } from "app/Components/Stack"
+import { Photo } from "app/Scenes/Consignments"
+import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import { isPad } from "app/utils/hardware"
+import { showPhotoActionSheet } from "app/utils/requestPhotos"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { chunk } from "lodash"
 import {
   AddIcon,

@@ -1,4 +1,4 @@
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import PushNotification from "react-native-push-notification"
 
 export const mockFetchNotificationPermissions = (isAndroid: boolean) => {

@@ -6,10 +6,10 @@ import {
   currentTimerState,
   nextTimerState,
   relevantStateData,
-} from "lib/Components/Bidding/Components/Timer"
-import { TimeOffsetProvider } from "lib/Components/Bidding/Context/TimeOffsetProvider"
-import { StateManager as CountdownStateManager } from "lib/Components/Countdown"
-import { Schema } from "lib/utils/track"
+} from "app/Components/Bidding/Components/Timer"
+import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
+import { StateManager as CountdownStateManager } from "app/Components/Countdown"
+import { Schema } from "app/utils/track"
 import { capitalize } from "lodash"
 import { Duration } from "moment"
 import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"

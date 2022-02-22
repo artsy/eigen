@@ -1,6 +1,6 @@
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { SectionTitle } from "lib/Components/SectionTitle"
+import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { SectionTitle } from "app/Components/SectionTitle"
 import { bullet, Flex, Text } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -13,10 +13,10 @@ import {
   CardRailCard,
   CardRailDivision as Division,
   CardRailMetadataContainer as MetadataContainer,
-} from "lib/Components/Home/CardRailCard"
-import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import { navigate } from "lib/navigation/navigate"
-import { extractNodes } from "lib/utils/extractNodes"
+} from "app/Components/Home/CardRailCard"
+import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
+import { navigate } from "app/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
 import { concat, take } from "lodash"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"

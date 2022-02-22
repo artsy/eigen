@@ -2,8 +2,8 @@ import {
   PartnerShowsTestsQuery,
   PartnerShowsTestsQueryRawResponse,
 } from "__generated__/PartnerShowsTestsQuery.graphql"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"

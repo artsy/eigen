@@ -4,8 +4,8 @@ import {
   FilterData,
   FilterDisplayName,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { orderBy } from "lodash"
 import React from "react"
 import { ArtworkFilterNavigationStack } from "../ArtworkFilterNavigator"

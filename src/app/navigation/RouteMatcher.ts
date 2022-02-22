@@ -1,4 +1,4 @@
-import { AppModule } from "lib/AppRegistry"
+import { AppModule } from "app/AppRegistry"
 
 type RoutePart =
   | { type: "match"; value: string }

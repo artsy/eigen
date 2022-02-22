@@ -1,6 +1,6 @@
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
-import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { SearchCriteria } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { Aggregations, FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 
 export interface SavedSearchAlertFormValues {
   name: string

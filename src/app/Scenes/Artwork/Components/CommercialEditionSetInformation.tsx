@@ -1,5 +1,5 @@
 import { CommercialEditionSetInformation_artwork } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { Box, Flex, RadioButton, Sans, Spacer } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"

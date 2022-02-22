@@ -1,4 +1,4 @@
-import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { Platform } from "react-native"
 
 export function createGeminiUrl({

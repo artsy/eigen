@@ -1,5 +1,5 @@
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { LocalImage, retrieveLocalImages } from "lib/utils/LocalImageStore"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
 import { Flex, NoImageIcon, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"

@@ -1,5 +1,5 @@
-import { Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
-import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
+import { Size } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
+import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
 import { getBoundingBox } from "./MyCollectionImageUtil"
 
 describe("MyCollectionImageUtil", () => {

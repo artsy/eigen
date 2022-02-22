@@ -1,5 +1,5 @@
-import { TouchableRow } from "lib/Components/TouchableRow"
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { TouchableRow } from "app/Components/TouchableRow"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { ArrowRightIcon, bullet, Flex, Text } from "palette"
 import React from "react"
 import { FilterDisplayConfig } from "../types"

@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import React, { useEffect, useMemo } from "react"
 import { Animated, View } from "react-native"
 import { fitInside, Rect } from "../../geometry"

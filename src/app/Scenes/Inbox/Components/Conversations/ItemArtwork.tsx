@@ -1,6 +1,6 @@
 import { ItemArtwork_artwork } from "__generated__/ItemArtwork_artwork.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/navigation/navigate"
 import { Box, Flex, Separator, Text, Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"

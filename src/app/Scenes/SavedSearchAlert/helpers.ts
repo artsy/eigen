@@ -1,12 +1,12 @@
 import {
   SearchCriteria,
   SearchCriteriaAttributes,
-} from "lib/Components/ArtworkFilter/SavedSearch/types"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+} from "app/Components/ArtworkFilter/SavedSearch/types"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
-} from "lib/utils/PushNotification"
+} from "app/utils/PushNotification"
 import { bullet } from "palette"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 import { SavedSearchPill } from "./SavedSearchAlertModel"

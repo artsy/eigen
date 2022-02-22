@@ -1,6 +1,6 @@
 import { getSavedSearchIdByCriteriaQuery } from "__generated__/getSavedSearchIdByCriteriaQuery.graphql"
-import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { fetchQuery, graphql } from "relay-runtime"
 
 export const getSavedSearchIdByCriteria = async (criteria: SearchCriteriaAttributes) => {

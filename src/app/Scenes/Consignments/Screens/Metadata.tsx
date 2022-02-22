@@ -1,9 +1,9 @@
 import React from "react"
 
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import { ScreenDimensionsContext } from "app/utils/useScreenDimensions"
 import { Sans } from "palette"
 import { Select } from "palette/elements/Select"
 import { ScrollView, View, ViewProps } from "react-native"

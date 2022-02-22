@@ -3,9 +3,9 @@ import moment from "moment"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { Schema, Track, track as _track } from "lib/utils/track"
+import { Schema, Track, track as _track } from "app/utils/track"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import styled from "styled-components/native"
 
 import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"

@@ -1,5 +1,5 @@
-import { extractText } from "lib/tests/extractText"
-import { setupTestWrapper } from "lib/tests/setupTestWrapper"
+import { extractText } from "app/tests/extractText"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import {
   FAIR_BMW_ART_ACTIVATION_QUERY,
   FairBMWArtActivationFragmentContainer,

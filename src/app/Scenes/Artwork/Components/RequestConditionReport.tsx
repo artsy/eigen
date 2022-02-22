@@ -5,9 +5,9 @@ import {
   RequestConditionReportMutationResponse,
 } from "__generated__/RequestConditionReportMutation.graphql"
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
-import { Modal } from "lib/Components/Modal"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { Schema, track } from "lib/utils/track"
+import { Modal } from "app/Components/Modal"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { Schema, track } from "app/utils/track"
 import { Button, Flex } from "palette"
 import React from "react"
 import { View } from "react-native"

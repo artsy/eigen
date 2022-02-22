@@ -1,6 +1,6 @@
 import { OldMyCollectionArtworkInsights_artwork } from "__generated__/OldMyCollectionArtworkInsights_artwork.graphql"
 import { OldMyCollectionArtworkInsights_marketPriceInsights } from "__generated__/OldMyCollectionArtworkInsights_marketPriceInsights.graphql"
-import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
+import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { capitalize } from "lodash"
 import { Separator, Spacer, Text } from "palette"
 import React from "react"

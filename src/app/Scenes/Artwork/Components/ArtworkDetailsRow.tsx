@@ -1,6 +1,6 @@
-import { ReadMore } from "lib/Components/ReadMore"
-import { truncatedTextLimit } from "lib/utils/hardware"
-import { Schema } from "lib/utils/track"
+import { ReadMore } from "app/Components/ReadMore"
+import { truncatedTextLimit } from "app/utils/hardware"
+import { Schema } from "app/utils/track"
 import { Text } from "palette"
 import React from "react"
 

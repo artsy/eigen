@@ -1,4 +1,4 @@
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Flex, Text } from "palette"
 import React, { useMemo, useRef } from "react"
 import { Animated, NativeScrollEvent, NativeSyntheticEvent } from "react-native"

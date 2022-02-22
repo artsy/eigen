@@ -1,5 +1,5 @@
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import React from "react"
 import { Text } from "react-native"

@@ -1,4 +1,4 @@
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import { Box, ClassTheme, Flex, Serif } from "palette"
 import React from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"

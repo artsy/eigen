@@ -1,6 +1,6 @@
 import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
-import { Stack } from "lib/Components/Stack"
-import { formatLargeNumberOfItems } from "lib/utils/formatLargeNumberOfItems"
+import { Stack } from "app/Components/Stack"
+import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
 import { Box, Flex, Sans } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"

@@ -1,6 +1,6 @@
 import { FairTestsQuery } from "__generated__/FairTestsQuery.graphql"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { extractText } from "app/tests/extractText"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { NavigationalTabs, Tab } from "palette/elements/Tabs"
 import { TabV3 } from "palette/elements/Tabs/Tab"
 import React from "react"

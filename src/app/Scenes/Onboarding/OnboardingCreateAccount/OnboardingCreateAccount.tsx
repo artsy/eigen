@@ -5,10 +5,10 @@ import {
   ArtsyWebViewConditionsOfSale,
   ArtsyWebViewPrivacy,
   ArtsyWebViewTerms,
-} from "lib/Components/ArtsyReactWebViewPolicy"
-import { BackButton } from "lib/navigation/BackButton"
-import { GlobalStore } from "lib/store/GlobalStore"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+} from "app/Components/ArtsyReactWebViewPolicy"
+import { BackButton } from "app/navigation/BackButton"
+import { GlobalStore } from "app/store/GlobalStore"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
 import { Alert, Animated, ScrollView } from "react-native"

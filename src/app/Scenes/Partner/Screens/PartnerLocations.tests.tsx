@@ -1,5 +1,5 @@
 import { PartnerLocations_partner } from "__generated__/PartnerLocations_partner.graphql"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { renderRelayTree } from "app/tests/renderRelayTree"
 import React from "react"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { PartnerLocationsFixture } from "./__fixtures__/PartnerLocations-fixture"

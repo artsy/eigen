@@ -1,6 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/navigation/navigate"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

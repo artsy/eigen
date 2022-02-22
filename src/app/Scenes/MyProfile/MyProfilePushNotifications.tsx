@@ -1,13 +1,13 @@
-import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import { SwitchMenu } from "lib/Components/SwitchMenu"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { SwitchMenu } from "app/Components/SwitchMenu"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
-} from "lib/utils/PushNotification"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import useAppState from "lib/utils/useAppState"
+} from "app/utils/PushNotification"
+import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
 import { Box, Button, Flex, Join, Sans, Separator } from "palette"
 import React, { useCallback, useEffect, useState } from "react"

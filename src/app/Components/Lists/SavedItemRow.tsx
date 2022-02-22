@@ -1,6 +1,6 @@
 import React from "react"
 
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import { Flex, Sans, Spacer, Touchable, useColor } from "palette"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 

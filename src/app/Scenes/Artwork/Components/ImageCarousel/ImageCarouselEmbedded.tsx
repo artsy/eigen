@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/react-native"
-import { isPad } from "lib/utils/hardware"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { isPad } from "app/utils/hardware"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import React, { useCallback, useContext } from "react"
 import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
 

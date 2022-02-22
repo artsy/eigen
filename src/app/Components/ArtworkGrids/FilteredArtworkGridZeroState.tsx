@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { Button, Flex, Sans } from "palette"
 import React from "react"
 import styled from "styled-components/native"

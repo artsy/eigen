@@ -1,4 +1,4 @@
-import { renderWithLayout } from "lib/tests/renderWithLayout"
+import { renderWithLayout } from "app/tests/renderWithLayout"
 import React from "react"
 import "react-native"
 

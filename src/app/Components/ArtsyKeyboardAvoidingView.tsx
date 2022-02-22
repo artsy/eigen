@@ -1,4 +1,4 @@
-import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import React, { useContext } from "react"
 import {
   Dimensions,

@@ -1,5 +1,5 @@
-import { navigate } from "lib/navigation/navigate"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { navigate } from "app/navigation/navigate"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { About } from "./About"
 

@@ -3,8 +3,8 @@ import React from "react"
 import { View } from "react-native"
 
 import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { FragmentRef } from "react-relay"
 import SaleListItem from "./SaleListItem"
 

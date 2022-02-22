@@ -5,8 +5,8 @@ import {
   TabActions,
 } from "@react-navigation/native"
 import immer from "immer-peasy"
-import { ViewDescriptor } from "lib/navigation/navigate"
-import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
+import { ViewDescriptor } from "app/navigation/navigate"
+import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { last } from "lodash"
 import { NativeModules } from "react-native"
 

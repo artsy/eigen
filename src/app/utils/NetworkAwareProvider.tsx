@@ -1,5 +1,5 @@
 import NetInfo from "@react-native-community/netinfo"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, Flex, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { Modal } from "react-native"

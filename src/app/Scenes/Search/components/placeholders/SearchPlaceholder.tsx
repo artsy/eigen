@@ -3,7 +3,7 @@ import {
   PlaceholderRaggedText,
   PlaceholderText,
   ProvidePlaceholderContext,
-} from "lib/utils/placeholders"
+} from "app/utils/placeholders"
 import { times } from "lodash"
 import { Box, Flex, Spacer } from "palette"
 import React from "react"

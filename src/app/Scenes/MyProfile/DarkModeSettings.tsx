@@ -1,6 +1,6 @@
-import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import { SwitchMenu } from "lib/Components/SwitchMenu"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { SwitchMenu } from "app/Components/SwitchMenu"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Flex, Text } from "palette"
 import React from "react"
 

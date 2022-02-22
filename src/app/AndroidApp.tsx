@@ -1,13 +1,13 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { GlobalStore } from "lib/store/GlobalStore"
-import { AdminMenuWrapper } from "lib/utils/AdminMenuWrapper"
-import { addTrackingProvider } from "lib/utils/track"
+import { GlobalStore } from "app/store/GlobalStore"
+import { AdminMenuWrapper } from "app/utils/AdminMenuWrapper"
+import { addTrackingProvider } from "app/utils/track"
 import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
-} from "lib/utils/track/SegmentTrackingProvider"
-import { useDeepLinks } from "lib/utils/useDeepLinks"
-import { useStripeConfig } from "lib/utils/useStripeConfig"
+} from "app/utils/track/SegmentTrackingProvider"
+import { useDeepLinks } from "app/utils/useDeepLinks"
+import { useStripeConfig } from "app/utils/useStripeConfig"
 import React, { useEffect } from "react"
 import { UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"

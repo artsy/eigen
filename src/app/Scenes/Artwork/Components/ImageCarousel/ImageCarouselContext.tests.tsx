@@ -1,6 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import React from "react"
 import { ImageCarouselContext, useNewImageCarouselContext } from "./ImageCarouselContext"
 

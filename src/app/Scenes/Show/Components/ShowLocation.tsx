@@ -1,5 +1,5 @@
 import { ShowLocation_show } from "__generated__/ShowLocation_show.graphql"
-import { LocationMapContainer as LocationMap } from "lib/Components/LocationMap/LocationMap"
+import { LocationMapContainer as LocationMap } from "app/Components/LocationMap/LocationMap"
 import { Box, BoxProps } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"

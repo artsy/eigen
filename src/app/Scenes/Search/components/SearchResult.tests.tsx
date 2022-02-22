@@ -1,14 +1,14 @@
-import * as navigation from "lib/navigation/navigate"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
-import * as useSearchInsightsConfig from "lib/utils/useSearchInsightsConfig"
+import * as navigation from "app/navigation/navigate"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import * as useSearchInsightsConfig from "app/utils/useSearchInsightsConfig"
 import { Touchable } from "palette"
 import React from "react"
 import { SearchHighlight } from "./SearchHighlight"
 import { SearchResult } from "./SearchResult"
 import { SearchResultImage } from "./SearchResultImage"
 
-jest.mock("lib/utils/useSearchInsightsConfig", () => ({
+jest.mock("app/utils/useSearchInsightsConfig", () => ({
   searchInsights: jest.fn(),
 }))
 jest.mock("./SearchHighlight.tsx", () => ({ SearchHighlight: () => null }))

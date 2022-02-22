@@ -1,5 +1,5 @@
-import { navigate } from "lib/navigation/navigate"
-import { Schema } from "lib/utils/track"
+import { navigate } from "app/navigation/navigate"
+import { Schema } from "app/utils/track"
 import { Flex, Sans } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"

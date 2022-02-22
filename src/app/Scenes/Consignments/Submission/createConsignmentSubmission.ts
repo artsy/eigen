@@ -1,6 +1,6 @@
 import { createConsignmentSubmissionMutation } from "__generated__/createConsignmentSubmissionMutation.graphql"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { getCurrentEmissionState } from "lib/store/GlobalStore"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getCurrentEmissionState } from "app/store/GlobalStore"
 import { commitMutation, graphql } from "relay-runtime"
 import { ConsignmentSetup } from "../index"
 import { consignmentSetupToMutationInput } from "./consignmentSetupToSubmission"

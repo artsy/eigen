@@ -1,4 +1,4 @@
-import { useEnvironment } from "lib/store/GlobalStore"
+import { useEnvironment } from "app/store/GlobalStore"
 import { useEffect } from "react"
 // @ts-expect-error no typings
 import stripe from "tipsi-stripe"

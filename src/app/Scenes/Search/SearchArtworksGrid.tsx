@@ -1,16 +1,16 @@
 import { SearchArtworksGrid_viewer } from "__generated__/SearchArtworksGrid_viewer.graphql"
-import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
   useArtworkFilters,
   useSelectedFiltersCount,
-} from "lib/Components/ArtworkFilter/useArtworkFilters"
-import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+} from "app/Components/ArtworkFilter/useArtworkFilters"
+import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 
 import { OwnerType } from "@artsy/cohesion"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
-import { Schema } from "lib/utils/track"
-import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { Schema } from "app/utils/track"
+import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { Box, quoteLeft, quoteRight, Text, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList } from "react-native"

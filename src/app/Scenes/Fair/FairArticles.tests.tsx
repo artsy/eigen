@@ -1,6 +1,6 @@
-import { FAIR2_ARTICLES_QUERY, FairArticlesPaginationContainer } from "lib/Scenes/Fair/FairArticles"
-import { extractText } from "lib/tests/extractText"
-import { setupTestWrapper } from "lib/tests/setupTestWrapper"
+import { FAIR2_ARTICLES_QUERY, FairArticlesPaginationContainer } from "app/Scenes/Fair/FairArticles"
+import { extractText } from "app/tests/extractText"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 
 jest.unmock("react-relay")
 

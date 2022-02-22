@@ -1,13 +1,13 @@
-jest.mock("lib/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
+jest.mock("app/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
   PriceSummary: () => null,
 }))
 
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 import { FakeNavigator } from "../Helpers/FakeNavigator"
 
-import Spinner from "lib/Components/Spinner"
+import Spinner from "app/Components/Spinner"
 import { Button } from "palette"
 
 import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"

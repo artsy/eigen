@@ -3,12 +3,12 @@ import {
   ArtistSeriesMoreSeriesTestsQuery,
   ArtistSeriesMoreSeriesTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesMoreSeriesTestsQuery.graphql"
-import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
+import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import {
   ArtistSeriesMoreSeries,
   ArtistSeriesMoreSeriesFragmentContainer,
-} from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"

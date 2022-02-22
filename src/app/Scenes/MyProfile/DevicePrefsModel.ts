@@ -1,5 +1,5 @@
 import { action, Action, computed, Computed } from "easy-peasy"
-import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
+import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { Appearance } from "react-native"
 
 export interface DevicePrefsModel {

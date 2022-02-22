@@ -1,16 +1,16 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
-import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
-import { GlobalStore } from "lib/store/GlobalStore"
-import { getUrgencyTag } from "lib/utils/getUrgencyTag"
+import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/navigation/navigate"
+import { GlobalStore } from "app/store/GlobalStore"
+import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
   RandomNumberGenerator,
-} from "lib/utils/placeholders"
+} from "app/utils/placeholders"
 import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"

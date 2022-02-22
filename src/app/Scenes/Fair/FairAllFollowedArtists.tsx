@@ -5,16 +5,16 @@ import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
   FilterModalMode,
-} from "lib/Components/ArtworkFilter"
+} from "app/Components/ArtworkFilter"
 import {
   Aggregations,
   FilterArray,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
+import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"

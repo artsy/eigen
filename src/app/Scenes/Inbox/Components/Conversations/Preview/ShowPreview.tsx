@@ -1,9 +1,9 @@
-import { Schema, Track, track as _track } from "lib/utils/track"
+import { Schema, Track, track as _track } from "app/utils/track"
 import { ClassTheme, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import styled from "styled-components/native"
 
 import { themeGet } from "@styled-system/theme-get"

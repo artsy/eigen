@@ -3,15 +3,15 @@ import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.g
 import { ConfirmBidCreateBidderPositionMutationResponse } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutationResponse } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { ConfirmBidUpdateUserMutationResponse } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
-import { FakeNavigator } from "lib/Components/Bidding/Helpers/FakeNavigator"
-import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
-import { Modal } from "lib/Components/Modal"
-import Spinner from "lib/Components/Spinner"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { waitUntil } from "lib/tests/waitUntil"
+import { FakeNavigator } from "app/Components/Bidding/Helpers/FakeNavigator"
+import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
+import { Modal } from "app/Components/Modal"
+import Spinner from "app/Components/Spinner"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { waitUntil } from "app/tests/waitUntil"
 import { merge } from "lodash"
 import { Button, Sans, Serif, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
@@ -30,7 +30,7 @@ import { ConfirmBid, ConfirmBidProps } from "./ConfirmBid"
 import { CreditCardForm } from "./CreditCardForm"
 import { SelectMaxBid } from "./SelectMaxBid"
 
-jest.mock("lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
+jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
 }))
 const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>

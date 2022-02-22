@@ -10,9 +10,9 @@ import {
   NotRegisteredToBid,
   RegistedBidderWithBids,
   RegisteredBidder,
-} from "lib/__fixtures__/ArtworkBidAction"
-import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
+} from "app/__fixtures__/ArtworkBidAction"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { renderRelayTree } from "app/tests/renderRelayTree"
 import { merge as _merge } from "lodash"
 import { Settings } from "luxon"
 import { Button, Theme } from "palette"
@@ -20,7 +20,7 @@ import React from "react"
 import { View } from "react-native"
 import { graphql } from "react-relay"
 
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { BidButtonFragmentContainer as BidButton } from "./BidButton"
 
 jest.unmock("react-relay")

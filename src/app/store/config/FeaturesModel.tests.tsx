@@ -1,8 +1,8 @@
-import { echoLaunchJson } from "lib/utils/jsonFiles"
+import { echoLaunchJson } from "app/utils/jsonFiles"
 import { __globalStoreTestUtils__, GlobalStore } from "../GlobalStore"
 import { DevToggleDescriptor, FeatureDescriptor, features } from "./features"
 
-import * as loads from "lib/utils/jsonFiles"
+import * as loads from "app/utils/jsonFiles"
 const echoLaunchJsonSpy = jest.spyOn(loads, "echoLaunchJson")
 
 const echoLaunchJsonActual = loads.echoLaunchJson()
@@ -18,7 +18,7 @@ echoLaunchJsonSpy.mockReturnValue(mockEcho)
 type TestFeatures = "FeatureA" | "FeatureB"
 type TestDevToggles = "DevToggleA"
 
-jest.mock("lib/store/config/features", () => {
+jest.mock("app/store/config/features", () => {
   const mockFeatures: { readonly [key: string]: FeatureDescriptor } = {
     FeatureA: {
       readyForRelease: true,

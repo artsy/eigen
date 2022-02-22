@@ -1,11 +1,11 @@
 import { act, fireEvent, RenderAPI, waitFor } from "@testing-library/react-native"
-import { RecentSearch } from "lib/Scenes/Search/SearchModel"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
-import { isPad } from "lib/utils/hardware"
+import { RecentSearch } from "app/Scenes/Search/SearchModel"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { isPad } from "app/utils/hardware"
 import React from "react"
 import { Keyboard } from "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -24,13 +24,13 @@ const banksy: RecentSearch = {
 }
 
 jest.unmock("react-relay")
-jest.mock("lib/utils/hardware", () => ({
+jest.mock("app/utils/hardware", () => ({
   isPad: jest.fn(),
 }))
-jest.mock("lib/utils/useSearchInsightsConfig", () => ({
+jest.mock("app/utils/useSearchInsightsConfig", () => ({
   useSearchInsightsConfig: () => true,
 }))
-jest.mock("lib/utils/useAlgoliaIndices", () => ({
+jest.mock("app/utils/useAlgoliaIndices", () => ({
   useAlgoliaIndices: () => ({
     indicesInfo: {
       Artist_staging: { hasResults: true },
@@ -54,8 +54,8 @@ describe("Search Screen", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    require("lib/relay/createEnvironment").reset()
-    mockEnvironment = require("lib/relay/createEnvironment").defaultEnvironment
+    require("app/relay/createEnvironment").reset()
+    mockEnvironment = require("app/relay/createEnvironment").defaultEnvironment
   })
 
   const TestRenderer = () => {

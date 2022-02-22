@@ -1,5 +1,5 @@
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { HeaderArtworksFilter } from "lib/Components/HeaderArtworksFilter/HeaderArtworksFilter"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilter"
 import React from "react"
 import { Animated } from "react-native"
 

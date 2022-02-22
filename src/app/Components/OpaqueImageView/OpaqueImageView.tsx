@@ -1,4 +1,4 @@
-import { isALocalImage } from "lib/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import { isALocalImage } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import React from "react"
 import {
   Image,

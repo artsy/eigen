@@ -3,10 +3,10 @@ import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupp
 import {
   SmallArtworkRail,
   SmallArtworkRailPlaceholder,
-} from "lib/Components/ArtworkRail/SmallArtworkRail"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { navigate } from "lib/navigation/navigate"
-import { PlaceholderText } from "lib/utils/placeholders"
+} from "app/Components/ArtworkRail/SmallArtworkRail"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/navigation/navigate"
+import { PlaceholderText } from "app/utils/placeholders"
 import { compact, shuffle } from "lodash"
 import { Box, Flex, Spacer } from "palette"
 import React from "react"

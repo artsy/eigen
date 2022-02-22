@@ -1,10 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import { AggregateOption, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
+import { AggregateOption, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { Sans, Separator } from "palette"
 import React from "react"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"

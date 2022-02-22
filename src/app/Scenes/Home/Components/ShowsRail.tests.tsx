@@ -1,5 +1,5 @@
 import { ShowsRailTestsQuery } from "__generated__/ShowsRailTestsQuery.graphql"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import React from "react"
 import "react-native"

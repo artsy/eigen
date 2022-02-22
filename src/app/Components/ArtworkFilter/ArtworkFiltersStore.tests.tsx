@@ -1,9 +1,9 @@
 import { createStore } from "easy-peasy"
-import { FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterArray, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   getArtworkFiltersModel,
   selectedOptionsUnion,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFiltersModel, ArtworkFiltersState } from "./ArtworkFilterStore"
 
 let filterState: ArtworkFiltersState

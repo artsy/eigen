@@ -1,7 +1,7 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { google_LinkAccountMutation } from "__generated__/google_LinkAccountMutation.graphql"
 import { google_UnlinkAccountMutation } from "__generated__/google_UnlinkAccountMutation.graphql"
-import { Toast } from "lib/Components/Toast/Toast"
+import { Toast } from "app/Components/Toast/Toast"
 import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, graphql } from "relay-runtime"

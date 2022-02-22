@@ -2,7 +2,7 @@ import moment from "moment"
 import React from "react"
 import "react-native"
 
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import SaleListItem from "./SaleListItem"
 
 it("renders without throwing an error", () => {

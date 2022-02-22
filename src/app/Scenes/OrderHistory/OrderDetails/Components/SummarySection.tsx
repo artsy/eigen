@@ -1,5 +1,5 @@
 import { SummarySection_section } from "__generated__/SummarySection_section.graphql"
-import { extractNodes } from "lib/utils/extractNodes"
+import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"

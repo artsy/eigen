@@ -1,4 +1,4 @@
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect, useState } from "react"
 import { createInsightsClient } from "search-insights"
 import { RequestFnType } from "search-insights/dist/utils/request"

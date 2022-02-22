@@ -1,6 +1,6 @@
 import { NewWorksForYouTestsQuery } from "__generated__/NewWorksForYouTestsQuery.graphql"
-import { Artwork } from "lib/Components/ArtworkGrids/ArtworkGridItem"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

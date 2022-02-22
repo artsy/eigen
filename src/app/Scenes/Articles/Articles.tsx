@@ -1,6 +1,6 @@
 import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
 import { ArticleSorts, ArticlesQuery } from "__generated__/ArticlesQuery.graphql"
-import { extractNodes } from "lib/utils/extractNodes"
+import { extractNodes } from "app/utils/extractNodes"
 import React, { Suspense, useState } from "react"
 import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"

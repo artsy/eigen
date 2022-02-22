@@ -1,6 +1,6 @@
 import { PartnerSubscriberBanner_partner } from "__generated__/PartnerSubscriberBanner_partner.graphql"
-import { LinkText } from "lib/Components/Text/LinkText"
-import { navigate } from "lib/navigation/navigate"
+import { LinkText } from "app/Components/Text/LinkText"
+import { navigate } from "app/navigation/navigate"
 import { Box, Message } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"

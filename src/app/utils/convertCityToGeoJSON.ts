@@ -1,6 +1,6 @@
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 
-import { Fair, Show } from "lib/Scenes/Map/types"
+import { Fair, Show } from "app/Scenes/Map/types"
 
 // Here is a sample GeoJSON document
 // {

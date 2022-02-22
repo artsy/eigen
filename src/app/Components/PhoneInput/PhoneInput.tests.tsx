@@ -1,5 +1,5 @@
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { extractText } from "app/tests/extractText"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Input, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React from "react"

@@ -2,12 +2,12 @@ import {
   aggregationForFilter,
   Aggregations,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ColorsOptionsScreen } from "./ColorsOptions"

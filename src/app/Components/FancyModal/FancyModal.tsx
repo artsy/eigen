@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { Modal, Platform } from "react-native"
 import { useSafeAreaFrame } from "react-native-safe-area-context"

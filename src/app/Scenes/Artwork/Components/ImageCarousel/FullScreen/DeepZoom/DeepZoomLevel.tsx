@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { throttle } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated } from "react-native"

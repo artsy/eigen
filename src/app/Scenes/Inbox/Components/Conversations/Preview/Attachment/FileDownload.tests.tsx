@@ -1,5 +1,5 @@
 import { FileDownload_attachment } from "__generated__/FileDownload_attachment.graphql"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 import { Linking } from "react-native"

@@ -2,9 +2,9 @@ import { FollowArtistLinkTestsErrorQueryRawResponse } from "__generated__/Follow
 import { FollowArtistLinkTestsQueryRawResponse } from "__generated__/FollowArtistLinkTestsQuery.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderRelayTree } from "app/tests/renderRelayTree"
 import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"

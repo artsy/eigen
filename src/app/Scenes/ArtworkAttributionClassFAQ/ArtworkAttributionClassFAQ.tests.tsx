@@ -1,6 +1,6 @@
-import { goBack } from "lib/navigation/navigate"
-import { extractText } from "lib/tests/extractText"
-import { setupTestWrapper } from "lib/tests/setupTestWrapper"
+import { goBack } from "app/navigation/navigate"
+import { extractText } from "app/tests/extractText"
+import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { Button, Text } from "palette"
 import {
   ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY,

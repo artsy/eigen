@@ -1,12 +1,12 @@
 import { ContextModule, CustomService, OwnerType, share } from "@artsy/cohesion"
 import Clipboard from "@react-native-community/clipboard"
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
-import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomShareSheet"
-import { useToast } from "lib/Components/Toast/toastHook"
-import { unsafe__getEnvironment, useDevToggle, useFeatureFlag } from "lib/store/GlobalStore"
-import { Schema } from "lib/utils/track"
-import { useCanOpenURL } from "lib/utils/useCanOpenURL"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
+import { useToast } from "app/Components/Toast/toastHook"
+import { unsafe__getEnvironment, useDevToggle, useFeatureFlag } from "app/store/GlobalStore"
+import { Schema } from "app/utils/track"
+import { useCanOpenURL } from "app/utils/useCanOpenURL"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import {
   Box,
   Flex,

@@ -1,6 +1,6 @@
 import { ArtistAboutShows_artist } from "__generated__/ArtistAboutShows_artist.graphql"
-import { navigate } from "lib/navigation/navigate"
-import { extractNodes } from "lib/utils/extractNodes"
+import { navigate } from "app/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
 import { Button, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"

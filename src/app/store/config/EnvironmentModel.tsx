@@ -1,6 +1,6 @@
 import { action, Action, computed, Computed, thunkOn, ThunkOn } from "easy-peasy"
-import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { Platform } from "react-native"
 import { unsafe__getEnvironment } from "../GlobalStore"
 import { GlobalStoreModel } from "../GlobalStoreModel"

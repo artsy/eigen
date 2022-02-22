@@ -1,15 +1,15 @@
 import { CreateSavedSearchAlertTestsQuery } from "__generated__/CreateSavedSearchAlertTestsQuery.graphql"
-import { FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterData, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
-import { PushAuthorizationStatus } from "lib/utils/PushNotification"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
+import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"

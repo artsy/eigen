@@ -1,5 +1,5 @@
 import { MyCollectionCreateArtworkInput } from "__generated__/myCollectionAddArtworkMutation.graphql"
-import { requestPhotos } from "lib/utils/requestPhotos"
+import { requestPhotos } from "app/utils/requestPhotos"
 import { myCollectionAddArtwork } from "../mutations/myCollectionAddArtwork"
 import { storeLocalPhotos, uploadPhotos } from "../Screens/ArtworkForm/MyCollectionImageUtil"
 

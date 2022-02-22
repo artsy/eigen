@@ -3,10 +3,10 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
-import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
-import { extractText } from "lib/tests/extractText"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
+import { extractText } from "app/tests/extractText"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Button, Sans } from "palette"
 
 jest.unmock("react-relay")

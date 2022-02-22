@@ -6,9 +6,9 @@ import {
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
 import { SaleArtworkListItem_artwork } from "__generated__/SaleArtworkListItem_artwork.graphql"
-import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
+import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/navigation/navigate"
 import { Flex, Sans } from "palette"
 import { Touchable } from "palette"
 import React, { useRef } from "react"

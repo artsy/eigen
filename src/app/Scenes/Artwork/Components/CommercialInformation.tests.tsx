@@ -1,8 +1,8 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
-import { Countdown } from "lib/Components/Bidding/Components/Timer"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
+import { Countdown } from "app/Components/Bidding/Components/Timer"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
 import "moment-timezone"
 import { _test_THEMES, Sans, Theme } from "palette"
 import React from "react"

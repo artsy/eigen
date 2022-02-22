@@ -1,5 +1,5 @@
 import { ActionSheetOptions } from "@expo/react-native-action-sheet"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { isArray } from "lodash"
 import { Platform } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"

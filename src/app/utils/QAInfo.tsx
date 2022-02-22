@@ -1,6 +1,6 @@
 import Clipboard from "@react-native-community/clipboard"
-import { useToast } from "lib/Components/Toast/toastHook"
-import { useDevToggle } from "lib/store/GlobalStore"
+import { useToast } from "app/Components/Toast/toastHook"
+import { useDevToggle } from "app/store/GlobalStore"
 import { Flex, FlexProps, Text, Touchable, useColor } from "palette"
 import React from "react"
 

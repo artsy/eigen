@@ -1,10 +1,10 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistAuctionResults_artwork$key } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
-import { AuctionResultListItemFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { navigate } from "lib/navigation/navigate"
-import { extractNodes } from "lib/utils/extractNodes"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Separator } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
@@ -55,9 +55,7 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
             />
           </>
         )}
-        ItemSeparatorComponent={() => (
- <Separator px={2} />
-        )}
+        ItemSeparatorComponent={() => <Separator px={2} />}
         style={{ width: useScreenDimensions().width, left: -20 }}
       />
     </Flex>

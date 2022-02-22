@@ -1,4 +1,4 @@
-import { useEventTiming } from "lib/utils/useEventTiming"
+import { useEventTiming } from "app/utils/useEventTiming"
 import { Text, TextProps } from "palette"
 import React from "react"
 

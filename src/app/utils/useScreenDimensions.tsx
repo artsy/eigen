@@ -1,4 +1,4 @@
-import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
+import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import { createContext, useContext, useEffect, useState } from "react"
 import React from "react"
 import { Dimensions } from "react-native"

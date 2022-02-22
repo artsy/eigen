@@ -1,12 +1,12 @@
-jest.mock("lib/utils/googleMaps", () => ({
+jest.mock("app/utils/googleMaps", () => ({
   getLocationPredictions: jest.fn(),
   getLocationDetails: jest.fn(),
 }))
 
 import { fireEvent } from "@testing-library/react-native"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
-import { getLocationDetails, getLocationPredictions } from "lib/utils/googleMaps"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
 import React from "react"
 import { DetailedLocationAutocomplete } from "./DetailedLocationAutocomplete"
 

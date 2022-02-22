@@ -1,4 +1,4 @@
-import { FadeIn } from "lib/Components/FadeIn"
+import { FadeIn } from "app/Components/FadeIn"
 import { Join, Spacer } from "palette"
 import React from "react"
 import { AutosuggestSearchResult } from "./AutosuggestSearchResult"

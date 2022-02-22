@@ -1,8 +1,8 @@
 import { InquiryButtonsTestsQuery } from "__generated__/InquiryButtonsTestsQuery.graphql"
-import { navigate } from "lib/navigation/navigate"
-import { InquiryButtonsFragmentContainer } from "lib/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
-import { InquirySuccessNotification } from "lib/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { navigate } from "app/navigation/navigate"
+import { InquiryButtonsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
+import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -10,7 +10,7 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 jest.unmock("react-relay")
-jest.mock("lib/Scenes/Artwork/Components/CommercialButtons/InquiryModal", () => {
+jest.mock("app/Scenes/Artwork/Components/CommercialButtons/InquiryModal", () => {
   return {
     InquiryModalFragmentContainer: ({ onMutationSuccessful }: any) => {
       mockSuccessfulMutation.mockImplementation((mockState) => {

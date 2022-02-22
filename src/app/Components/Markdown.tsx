@@ -1,4 +1,4 @@
-import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
+import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
 import _ from "lodash"
 import { Flex, FlexProps } from "palette"
 import React from "react"

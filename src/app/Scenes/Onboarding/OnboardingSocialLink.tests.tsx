@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Platform } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"

@@ -1,7 +1,7 @@
 import React from "react"
 import "react-native"
 
-import { getTestWrapper } from "lib/utils/getTestWrapper"
+import { getTestWrapper } from "app/utils/getTestWrapper"
 import { ZeroState } from "./ZeroState"
 
 it("presents the title and subtitle", () => {

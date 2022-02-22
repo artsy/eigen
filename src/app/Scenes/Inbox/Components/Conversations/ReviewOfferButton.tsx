@@ -1,6 +1,6 @@
 import { tappedViewOffer } from "@artsy/cohesion"
-import { navigate } from "lib/navigation/navigate"
-import { useEventTiming } from "lib/utils/useEventTiming"
+import { navigate } from "app/navigation/navigate"
+import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import {
   AlertCircleFillIcon,

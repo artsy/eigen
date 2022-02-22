@@ -6,7 +6,7 @@ import {
 } from "react-relay-network-modern/node8"
 
 import * as Sentry from "@sentry/react-native"
-import { volleyClient } from "lib/utils/volleyClient"
+import { volleyClient } from "app/utils/volleyClient"
 import { GraphQLResponse } from "relay-runtime/lib/network/RelayNetworkTypes"
 import { GraphQLRequest } from "./types"
 

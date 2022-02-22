@@ -1,15 +1,15 @@
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import _ from "lodash"
 import { Platform } from "react-native"
 import { __globalStoreTestUtils__ } from "./GlobalStore"
 import { CURRENT_APP_VERSION, migrate, Versions } from "./migration"
 import { sanitize } from "./persistence"
 
-jest.mock("lib/NativeModules/LegacyNativeModules", () => ({
+jest.mock("app/NativeModules/LegacyNativeModules", () => ({
   LegacyNativeModules: {
-    ...jest.requireActual("lib/NativeModules/LegacyNativeModules").LegacyNativeModules,
+    ...jest.requireActual("app/NativeModules/LegacyNativeModules").LegacyNativeModules,
     ARNotificationsManager: {
-      ...jest.requireActual("lib/NativeModules/LegacyNativeModules").LegacyNativeModules
+      ...jest.requireActual("app/NativeModules/LegacyNativeModules").LegacyNativeModules
         .ARNotificationsManager,
       nativeState: {
         userAgent: "Jest Unit Tests",

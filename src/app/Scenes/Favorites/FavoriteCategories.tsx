@@ -2,20 +2,20 @@ import React from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
-import { PAGE_SIZE } from "lib/Components/constants"
-import { SavedItemRow } from "lib/Components/Lists/SavedItemRow"
-import Spinner from "lib/Components/Spinner"
-import { ZeroState } from "lib/Components/States/ZeroState"
+import { PAGE_SIZE } from "app/Components/constants"
+import { SavedItemRow } from "app/Components/Lists/SavedItemRow"
+import Spinner from "app/Components/Spinner"
+import { ZeroState } from "app/Components/States/ZeroState"
 
 import { FavoriteCategories_me } from "__generated__/FavoriteCategories_me.graphql"
-import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
-import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import { extractNodes } from "lib/utils/extractNodes"
+import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
+import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { extractNodes } from "app/utils/extractNodes"
 import { Spacer } from "palette"
 
 import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 
 interface Props {
   me: FavoriteCategories_me

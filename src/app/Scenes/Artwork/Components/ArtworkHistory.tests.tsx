@@ -1,7 +1,7 @@
 import { ArtworkHistory_artwork } from "__generated__/ArtworkHistory_artwork.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { ArtworkHistory } from "./ArtworkHistory"

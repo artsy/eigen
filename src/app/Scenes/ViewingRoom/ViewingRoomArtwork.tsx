@@ -1,9 +1,9 @@
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { navigate } from "lib/navigation/navigate"
-import { cm2in } from "lib/utils/conversions"
-import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { navigate } from "app/navigation/navigate"
+import { cm2in } from "app/utils/conversions"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import _ from "lodash"
 import {
   Box,

@@ -7,8 +7,8 @@ import { createMockEnvironment } from "relay-test-utils"
 
 import { EmailConfirmationBanner_me } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { EmailConfirmationBannerFragmentContainer } from "./EmailConfirmationBanner"
 
 jest.unmock("react-relay")

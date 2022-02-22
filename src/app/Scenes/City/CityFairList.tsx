@@ -3,12 +3,12 @@ import {
   CityFairListQuery,
   CityFairListQueryVariables,
 } from "__generated__/CityFairListQuery.graphql"
-import { PAGE_SIZE } from "lib/Components/constants"
-import Spinner from "lib/Components/Spinner"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Schema, screenTrack } from "lib/utils/track"
+import { PAGE_SIZE } from "app/Components/constants"
+import Spinner from "app/Components/Spinner"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { isCloseToBottom } from "app/utils/isCloseToBottom"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { Schema, screenTrack } from "app/utils/track"
 import { Box, Separator, Serif } from "palette"
 import React from "react"
 import { FlatList } from "react-native"

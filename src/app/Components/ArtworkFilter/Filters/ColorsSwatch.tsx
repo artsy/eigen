@@ -1,4 +1,4 @@
-import { TouchableRow, TouchableRowProps } from "lib/Components/TouchableRow"
+import { TouchableRow, TouchableRowProps } from "app/Components/TouchableRow"
 import { Box, CheckIcon, Text } from "palette"
 import React from "react"
 

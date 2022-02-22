@@ -1,4 +1,4 @@
-import { volleyClient } from "lib/utils/volleyClient"
+import { volleyClient } from "app/utils/volleyClient"
 
 export function timingMiddleware() {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

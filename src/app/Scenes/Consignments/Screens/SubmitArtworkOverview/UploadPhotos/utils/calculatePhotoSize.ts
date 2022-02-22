@@ -1,4 +1,4 @@
-import { transformBytesToSize } from "lib/utils/transformBytesToSize"
+import { transformBytesToSize } from "app/utils/transformBytesToSize"
 import { Photo } from "../validation"
 
 const totalSizeLimitInBytes = 30000000

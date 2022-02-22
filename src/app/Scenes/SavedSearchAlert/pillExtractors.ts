@@ -3,25 +3,25 @@ import {
   Aggregations,
   FilterParamName,
   getDisplayNameForTimePeriod,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ATTRIBUTION_CLASS_OPTIONS } from "lib/Components/ArtworkFilter/Filters/AttributionClassOptions"
-import { COLORS_INDEXED_BY_VALUE } from "lib/Components/ArtworkFilter/Filters/ColorsOptions"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
+import { COLORS_INDEXED_BY_VALUE } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import {
   LOCALIZED_UNIT,
   localizeDimension,
   parsePriceRangeLabel,
   parseRange,
-} from "lib/Components/ArtworkFilter/Filters/helpers"
-import { SIZES_OPTIONS } from "lib/Components/ArtworkFilter/Filters/SizesOptionsScreen"
+} from "app/Components/ArtworkFilter/Filters/helpers"
+import { SIZES_OPTIONS } from "app/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import {
   WAYS_TO_BUY_OPTIONS,
   WAYS_TO_BUY_PARAM_NAMES,
-} from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
-import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
+} from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
+import { shouldExtractValueNamesFromAggregation } from "app/Components/ArtworkFilter/SavedSearch/constants"
 import {
   SearchCriteria,
   SearchCriteriaAttributes,
-} from "lib/Components/ArtworkFilter/SavedSearch/types"
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 

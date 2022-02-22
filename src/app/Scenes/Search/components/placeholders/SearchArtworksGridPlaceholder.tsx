@@ -1,4 +1,4 @@
-import { PlaceholderButton, PlaceholderGrid } from "lib/utils/placeholders"
+import { PlaceholderButton, PlaceholderGrid } from "app/utils/placeholders"
 import { Flex, Separator } from "palette"
 import React from "react"
 

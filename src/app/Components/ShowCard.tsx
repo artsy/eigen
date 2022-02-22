@@ -1,6 +1,6 @@
 import { ShowCard_show } from "__generated__/ShowCard_show.graphql"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
+import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/navigation/navigate"
 import { Flex, Spacer, Text, Touchable } from "palette"
 import React from "react"
 import { GestureResponderEvent, ViewProps } from "react-native"

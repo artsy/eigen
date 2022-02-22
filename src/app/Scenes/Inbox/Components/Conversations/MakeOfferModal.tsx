@@ -4,12 +4,12 @@ import {
   MakeOfferModalQuery,
   MakeOfferModalQueryResponse,
 } from "__generated__/MakeOfferModalQuery.graphql"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { dismissModal } from "lib/navigation/navigate"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "lib/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { dismissModal } from "app/navigation/navigate"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { BorderBox, Button, Flex, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView, View } from "react-native"

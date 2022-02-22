@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import {
   Animated,

@@ -1,6 +1,6 @@
 import { OtherCollectionsRail_collectionGroup } from "__generated__/OtherCollectionsRail_collectionGroup.graphql"
-import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import { navigate } from "lib/navigation/navigate"
+import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
+import { navigate } from "app/navigation/navigate"
 import { Sans, SansProps, Spacer } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity, View } from "react-native"

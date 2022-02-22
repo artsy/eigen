@@ -1,6 +1,6 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { GlobalStore } from "lib/store/GlobalStore"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { GlobalStore } from "app/store/GlobalStore"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated } from "react-native"

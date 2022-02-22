@@ -2,9 +2,9 @@ import {
   ArtistSeriesHeaderTestsQuery,
   ArtistSeriesHeaderTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesHeaderTestsQuery.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

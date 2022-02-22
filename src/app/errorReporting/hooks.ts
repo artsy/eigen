@@ -1,4 +1,4 @@
-import { GlobalStore, useDevToggle } from "lib/store/GlobalStore"
+import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { useEffect } from "react"
 import { setupSentry } from "./sentrySetup"
 

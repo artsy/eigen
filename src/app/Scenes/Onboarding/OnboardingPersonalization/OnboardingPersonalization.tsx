@@ -5,10 +5,10 @@ import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPers
 import {
   ArtistListItemContainer as ArtistListItem,
   ArtistListItemPlaceholder,
-} from "lib/Components/ArtistListItem"
-import SearchIcon from "lib/Icons/SearchIcon"
-import { GlobalStore } from "lib/store/GlobalStore"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+} from "app/Components/ArtistListItem"
+import SearchIcon from "app/Icons/SearchIcon"
+import { GlobalStore } from "app/store/GlobalStore"
+import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact, times } from "lodash"
 import { Box, Button, Flex, Join, Spacer, Text, Touchable, useColor, useSpace } from "palette"
 import { INPUT_HEIGHT } from "palette/elements/Input/Input"

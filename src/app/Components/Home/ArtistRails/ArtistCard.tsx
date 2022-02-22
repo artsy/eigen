@@ -3,8 +3,8 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
+import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/navigation/navigate"
 import { CloseIcon, Flex, FollowButton, Text, Touchable, useColor } from "palette"
 
 const ARTIST_CARD_WIDTH = 295

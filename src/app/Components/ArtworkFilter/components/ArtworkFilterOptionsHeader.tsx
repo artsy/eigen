@@ -1,6 +1,6 @@
-import { AnimatableHeader } from "lib/Components/AnimatableHeader/AnimatableHeader"
-import { FancyModalHeader, FancyModalHeaderProps } from "lib/Components/FancyModal/FancyModalHeader"
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { AnimatableHeader } from "app/Components/AnimatableHeader/AnimatableHeader"
+import { FancyModalHeader, FancyModalHeaderProps } from "app/Components/FancyModal/FancyModalHeader"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import React from "react"
 
 export interface ArtworkFilterOptionsHeaderProps extends FancyModalHeaderProps {

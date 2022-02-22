@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { useCallback, useContext, useEffect, useMemo, useRef } from "react"
 import React from "react"
 import { Animated, NativeScrollEvent, NativeSyntheticEvent, ScrollView, View } from "react-native"

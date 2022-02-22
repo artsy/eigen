@@ -1,4 +1,4 @@
-import { delay } from "lib/utils/delay"
+import { delay } from "app/utils/delay"
 import React, { useCallback, useState } from "react"
 import { useEffect } from "react"
 import { useRef } from "react"

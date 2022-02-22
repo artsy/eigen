@@ -1,14 +1,14 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArticleCard_article } from "__generated__/ArticleCard_article.graphql"
-import { ArticleCardContainer } from "lib/Components/ArticleCard"
+import { ArticleCardContainer } from "app/Components/ArticleCard"
 import {
   PlaceholderBox,
   ProvidePlaceholderContext,
   RandomWidthPlaceholderText,
-} from "lib/utils/placeholders"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
-import { screen } from "lib/utils/track/helpers"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+} from "app/utils/placeholders"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import _ from "lodash"
 import { Flex, Separator, Spacer, Text } from "palette"
 import React from "react"

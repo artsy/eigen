@@ -1,4 +1,4 @@
-import { CityFixture } from "lib/__fixtures__/CityFixture"
+import { CityFixture } from "app/__fixtures__/CityFixture"
 import { uniq } from "lodash"
 import { bucketCityResults } from "./bucketCityResults"
 

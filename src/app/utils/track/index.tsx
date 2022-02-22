@@ -17,7 +17,7 @@ export { Schema }
  * @example
  *
  *      ```ts
- *      import { Schema, Track, track as _track } from "lib/utils/track"
+ *      import { Schema, Track, track as _track } from "app/utils/track"
  *
  *      interface Props {
  *        artist: {
@@ -67,7 +67,7 @@ export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entit
  * @example
  *
  *      ```ts
- *      import { track } from "lib/utils/track"
+ *      import { track } from "app/utils/track"
  *
  *      @track()
  *      class Artist extends React.Component<{}, null> {
@@ -135,7 +135,7 @@ export class ProvideScreenTrackingWithCohesionSchema extends React.Component<Pro
  * @example
  *
  *      ```ts
- *      import { screenTrack, Schema } from "lib/utils/track"
+ *      import { screenTrack, Schema } from "app/utils/track"
  *
  *       @screenTrack({
  *        context_screen: Schema.PageNames.ConsignmentsWelcome,
@@ -152,7 +152,7 @@ export class ProvideScreenTrackingWithCohesionSchema extends React.Component<Pro
  * @example
  *
  *      ```ts
- *      import { screenTrack, Schema } from "lib/utils/track"
+ *      import { screenTrack, Schema } from "app/utils/track"
  *
  *      interface Props extends ViewProps {
  *        // [...]
@@ -190,7 +190,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *
  *       ```ts
  *      import { shallow } from "enzyme"
- *      import Event from "lib/NativeModules/Events"
+ *      import Event from "app/NativeModules/Events"
  *      import React from "react"
  *
  *      // Unmock react-tracking so that it will wrap our code
@@ -199,7 +199,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *
  *      // Create a stub for checking the events sent to the native code
  *      // and make it reset between tests
- *      jest.mock("lib/NativeModules/Events", () => ({ postEvent: jest.fn() }))
+ *      jest.mock("app/NativeModules/Events", () => ({ postEvent: jest.fn() }))
  *      beforeEach(jest.resetAllMocks)
  *
  *      it("calls the draft created event", () => {

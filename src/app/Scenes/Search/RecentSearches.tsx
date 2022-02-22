@@ -1,5 +1,5 @@
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Message } from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"

@@ -1,4 +1,4 @@
-import { echoLaunchJson } from "lib/utils/jsonFiles"
+import { echoLaunchJson } from "app/utils/jsonFiles"
 import { intersection } from "lodash"
 import { env } from "process"
 import { devToggles, features } from "./features"

@@ -4,10 +4,10 @@ import {
   CarouselImageDescriptor,
   ImageCarousel,
   ImageCarouselFragmentContainer,
-} from "lib/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
-import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { retrieveLocalImages } from "lib/utils/LocalImageStore"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+} from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
+import { retrieveLocalImages } from "app/utils/LocalImageStore"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, NoImageIcon, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"

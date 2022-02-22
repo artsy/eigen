@@ -8,7 +8,7 @@ import moment from "moment"
 import { Flex, Spacer, Text } from "palette"
 
 import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import { Message } from "./Message"
 import { OrderUpdateFragmentContainer } from "./OrderUpdate"
 import ArtworkPreview from "./Preview/ArtworkPreview"

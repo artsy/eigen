@@ -1,5 +1,5 @@
 import { Formik } from "formik"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { BulletedItem, CTAButton, Flex, Spacer } from "palette"
 import React from "react"
 import { UploadPhotosForm } from "./UploadPhotosForm"

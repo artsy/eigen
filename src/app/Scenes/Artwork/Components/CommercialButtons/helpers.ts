@@ -1,5 +1,5 @@
-import { extractText } from "lib/tests/extractText"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { extractText } from "app/tests/extractText"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { Input } from "palette"
 import { TouchableOpacity } from "react-native"
 import { act, ReactTestInstance } from "react-test-renderer"

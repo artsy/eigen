@@ -1,4 +1,4 @@
-import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
+import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { Avatar, Flex, Spacer, Text } from "palette"
 import React from "react"
 

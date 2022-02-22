@@ -13,7 +13,7 @@ import { INetwork as RelayNetwork, Network } from "relay-runtime"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import uuid from "uuid"
 
-import { get } from "lib/utils/get"
+import { get } from "app/utils/get"
 import schema from "../../../../data/schema.graphql"
 import FormattedNumber from "./CustomScalars/formatted_number"
 /**

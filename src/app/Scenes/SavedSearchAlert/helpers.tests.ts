@@ -1,8 +1,8 @@
 import {
   SearchCriteria,
   SearchCriteriaAttributes,
-} from "lib/Components/ArtworkFilter/SavedSearch/types"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+} from "app/Components/ArtworkFilter/SavedSearch/types"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { clearDefaultAttributes, getNamePlaceholder } from "./helpers"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 

@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Button, View } from "react-native"
 import { useTracking } from "react-tracking"

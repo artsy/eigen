@@ -1,14 +1,14 @@
 import { themeGet } from "@styled-system/theme-get"
 import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
-import { useNativeValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
+import { useNativeValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import {
   StickyTabPageFlatList,
   StickyTabPageFlatListContext,
   StickyTabSection,
-} from "lib/Components/StickyTabPage/StickyTabPageFlatList"
-import { TabEmptyState } from "lib/Components/TabEmptyState"
-import { navigate } from "lib/navigation/navigate"
-import { extractNodes } from "lib/utils/extractNodes"
+} from "app/Components/StickyTabPage/StickyTabPageFlatList"
+import { TabEmptyState } from "app/Components/TabEmptyState"
+import { navigate } from "app/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
 import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React, { useContext, useState } from "react"
 import { ActivityIndicator, ImageBackground, TouchableWithoutFeedback, View } from "react-native"

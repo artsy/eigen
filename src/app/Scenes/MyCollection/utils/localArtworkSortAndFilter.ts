@@ -3,10 +3,10 @@ import {
   FilterData,
   FilterDisplayName,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilterDisplayConfig } from "lib/Components/ArtworkFilter/types"
-import { normalizeText } from "lib/utils/normalizeText"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
+import { normalizeText } from "app/utils/normalizeText"
 import { filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { useEffect } from "react"

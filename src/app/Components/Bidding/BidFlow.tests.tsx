@@ -1,8 +1,8 @@
-jest.mock("lib/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
+jest.mock("app/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
   PriceSummary: () => null,
 }))
 
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
@@ -12,10 +12,10 @@ import relay from "react-relay"
 import { FakeNavigator } from "./Helpers/FakeNavigator"
 import { SelectMaxBid } from "./Screens/SelectMaxBid"
 
-jest.mock("lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
+jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
 }))
-import { bidderPositionQuery } from "lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
+import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
@@ -26,8 +26,8 @@ jest.mock("tipsi-stripe", () => ({
 import stripe from "tipsi-stripe"
 
 import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
-import { extractText } from "lib/tests/extractText"
-import { waitUntil } from "lib/tests/waitUntil"
+import { extractText } from "app/tests/extractText"
+import { waitUntil } from "app/tests/waitUntil"
 import { Select } from "palette/elements/Select"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>

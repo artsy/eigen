@@ -1,6 +1,6 @@
 import { ImageCarouselTestsQueryRawResponse } from "__generated__/ImageCarouselTestsQuery.graphql"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderRelayTree } from "app/tests/renderRelayTree"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Animated, FlatList } from "react-native"
 import { graphql } from "react-relay"

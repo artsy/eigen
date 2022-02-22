@@ -1,6 +1,6 @@
 import { OrderDetailsHeader_info } from "__generated__/OrderDetailsHeader_info.graphql"
-import { extractNodes } from "lib/utils/extractNodes"
-import { getOrderStatus, OrderState } from "lib/utils/getOrderStatus"
+import { extractNodes } from "app/utils/extractNodes"
+import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
 import { DateTime } from "luxon"
 import { Flex, Text } from "palette"
 import React from "react"

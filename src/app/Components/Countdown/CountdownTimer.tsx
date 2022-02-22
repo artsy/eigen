@@ -1,4 +1,4 @@
-import { StateManager as CountdownStateManager } from "lib/Components/Countdown"
+import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { Duration } from "moment"
 import React from "react"
 

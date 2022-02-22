@@ -2,9 +2,9 @@ import { Box, Flex, Sans, Serif } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
-import { Bid } from "lib/Components/Bidding/types"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { Bid } from "app/Components/Bidding/types"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 
 import { PriceSummary_calculatedCost } from "__generated__/PriceSummary_calculatedCost.graphql"
 import {

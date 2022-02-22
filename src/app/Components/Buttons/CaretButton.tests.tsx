@@ -1,9 +1,9 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 
 import { CaretButton } from "./CaretButton"
 
-import { extractText } from "lib/tests/extractText"
+import { extractText } from "app/tests/extractText"
 import { TouchableOpacity } from "react-native"
 
 describe("CaretButton", () => {

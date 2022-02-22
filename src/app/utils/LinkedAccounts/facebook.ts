@@ -1,6 +1,6 @@
 import { facebook_LinkAccountMutation } from "__generated__/facebook_LinkAccountMutation.graphql"
 import { facebook_UnlinkAccountMutation } from "__generated__/facebook_UnlinkAccountMutation.graphql"
-import { Toast } from "lib/Components/Toast/Toast"
+import { Toast } from "app/Components/Toast/Toast"
 import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { AccessToken, LoginManager } from "react-native-fbsdk-next"

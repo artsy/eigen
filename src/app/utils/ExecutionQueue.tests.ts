@@ -1,4 +1,4 @@
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { ExecutionQueue } from "./ExecutionQueue"
 
 describe(ExecutionQueue, () => {

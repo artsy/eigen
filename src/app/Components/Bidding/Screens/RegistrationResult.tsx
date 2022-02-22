@@ -9,10 +9,10 @@ import { Flex } from "../Elements/Flex"
 import { Markdown } from "../../Markdown"
 import { Title } from "../Components/Title"
 
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { dismissModal } from "lib/navigation/navigate"
-import { defaultRules } from "lib/utils/renderMarkdown"
-import { Schema, screenTrack } from "lib/utils/track"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { dismissModal } from "app/navigation/navigate"
+import { defaultRules } from "app/utils/renderMarkdown"
+import { Schema, screenTrack } from "app/utils/track"
 
 interface RegistrationResultProps {
   status: RegistrationStatus

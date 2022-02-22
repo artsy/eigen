@@ -1,9 +1,9 @@
-import { reducer } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
+import { reducer } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import {
   ArtworkInquiryActions,
   ArtworkInquiryContextState,
-} from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
+} from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
+import { InquiryOptions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 
 let inquiryState: ArtworkInquiryContextState
 let inquiryAction: ArtworkInquiryActions

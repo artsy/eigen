@@ -4,8 +4,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { LayoutChangeEvent, StyleSheet, View } from "react-native"
 
 import { VariableSizeShowsList_shows } from "__generated__/VariableSizeShowsList_shows.graphql"
-import { Stack } from "lib/Components/Stack"
-import { isPad } from "lib/utils/hardware"
+import { Stack } from "app/Components/Stack"
+import { isPad } from "app/utils/hardware"
 import { chunk } from "lodash"
 import { ArtistShowFragmentContainer } from "./ArtistShow"
 

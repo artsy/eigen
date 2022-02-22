@@ -1,13 +1,13 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
 import { SaleArtworkGridItem_saleArtwork } from "__generated__/SaleArtworkGridItem_saleArtwork.graphql"
-import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
   RandomNumberGenerator,
-} from "lib/utils/placeholders"
+} from "app/utils/placeholders"
 import { Box, Flex, Sans, Spacer, Touchable } from "palette"
 import React from "react"
 import { StyleSheet, View } from "react-native"

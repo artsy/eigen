@@ -1,15 +1,15 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 
 import { Button } from "palette"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
-import { dismissModal, navigate } from "lib/navigation/navigate"
+import { dismissModal, navigate } from "app/navigation/navigate"
 
 import { Linking } from "react-native"
 
-import { LinkText } from "lib/Components/Text/LinkText"
-import { extractText } from "lib/tests/extractText"
+import { LinkText } from "app/Components/Text/LinkText"
+import { extractText } from "app/tests/extractText"
 import { Icon20 } from "../Components/Icon"
 
 describe("Registration result component", () => {

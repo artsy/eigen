@@ -1,4 +1,4 @@
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import {
   GraphQLResponseErrors,
   MiddlewareNextFn,

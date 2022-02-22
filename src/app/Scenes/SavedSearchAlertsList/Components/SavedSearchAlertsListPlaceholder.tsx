@@ -1,4 +1,4 @@
-import { PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Box, Flex } from "palette"
 import React from "react"

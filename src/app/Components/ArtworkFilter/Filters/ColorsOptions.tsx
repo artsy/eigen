@@ -1,15 +1,15 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
   FilterData,
   FilterDisplayName,
   FilterParamName,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFilterBackHeader } from "lib/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
-import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { useFeatureFlag } from "lib/store/GlobalStore"
-import { useLayout } from "lib/utils/useLayout"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
+import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { useLayout } from "app/utils/useLayout"
 import { sortBy } from "lodash"
 import { Flex, useSpace } from "palette"
 import React from "react"

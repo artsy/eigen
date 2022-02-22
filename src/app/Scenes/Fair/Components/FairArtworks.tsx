@@ -4,14 +4,14 @@ import {
   aggregationsType,
   aggregationsWithFollowedArtists,
   FilterArray,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
-import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { FAIR2_ARTWORKS_PAGE_SIZE } from "lib/Components/constants"
-import { Schema } from "lib/utils/track"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
+import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { FAIR2_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
+import { Schema } from "app/utils/track"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"

@@ -1,5 +1,5 @@
 import { ShowInfo_show } from "__generated__/ShowInfo_show.graphql"
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import { Box, BoxProps, ChevronIcon, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"

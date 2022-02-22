@@ -1,12 +1,12 @@
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { showPhotoActionSheet } from "lib/utils/requestPhotos"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import React, { ReactElement } from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { MyCollectionAddPhotos, tests } from "./MyCollectionArtworkFormAddPhotos"
 
-jest.mock("lib/utils/requestPhotos", () => ({
+jest.mock("app/utils/requestPhotos", () => ({
   showPhotoActionSheet: jest.fn(() => Promise.resolve({ photos: [] })),
 }))
 

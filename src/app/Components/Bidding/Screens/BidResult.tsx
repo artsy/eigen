@@ -1,9 +1,9 @@
-import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
+import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { dismissModal, navigate } from "lib/navigation/navigate"
+import { dismissModal, navigate } from "app/navigation/navigate"
 
 import { Button, Theme } from "palette"
 import { Icon20 } from "../Components/Icon"
@@ -16,8 +16,8 @@ import { Title } from "../Components/Title"
 import { BidderPositionResult } from "../types"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { unsafe__getEnvironment } from "lib/store/GlobalStore"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 

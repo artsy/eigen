@@ -1,6 +1,6 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import { Flex, Text, Touchable } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"

@@ -1,8 +1,8 @@
-import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SearchCriteria,
   SearchCriteriaAttributes,
-} from "lib/Components/ArtworkFilter/SavedSearch/types"
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { extractPillFromAggregation, extractPills, extractSizeLabel } from "./pillExtractors"
 
 describe("extractPillFromAggregation", () => {

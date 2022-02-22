@@ -1,5 +1,5 @@
 import { ViewingRoomSubsections_viewingRoom } from "__generated__/ViewingRoomSubsections_viewingRoom.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Box, Text } from "palette"
 import { _maxWidth as maxWidth } from "palette"
 import React from "react"

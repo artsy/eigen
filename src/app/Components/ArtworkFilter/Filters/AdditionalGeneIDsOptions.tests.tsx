@@ -1,11 +1,11 @@
 import { fireEvent, within } from "@testing-library/react-native"
-import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { AdditionalGeneIDsOptionsScreen } from "./AdditionalGeneIDsOptions"
 import { getEssentialProps } from "./helper"

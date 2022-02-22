@@ -1,12 +1,12 @@
-import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { RightButtonContainer } from "lib/Components/FancyModal/FancyModalHeader"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { RightButtonContainer } from "app/Components/FancyModal/FancyModalHeader"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { extractText } from "app/tests/extractText"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Check } from "palette"
 import React from "react"
 import { ArtistNationalitiesOptionsScreen } from "./ArtistNationalitiesOptions"

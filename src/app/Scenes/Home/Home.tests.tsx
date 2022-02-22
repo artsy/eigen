@@ -1,25 +1,25 @@
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import React from "react"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.mock("lib/Components/Home/ArtistRails/ArtistRail", () => ({
+jest.mock("app/Components/Home/ArtistRails/ArtistRail", () => ({
   ArtistRailFragmentContainer: jest.fn(() => null),
 }))
-jest.mock("lib/Scenes/Home/Components/ArtworkModuleRail", () => ({
+jest.mock("app/Scenes/Home/Components/ArtworkModuleRail", () => ({
   ArtworkModuleRailFragmentContainer: jest.fn(() => null),
 }))
-jest.mock("lib/Scenes/Home/Components/FairsRail", () => ({
+jest.mock("app/Scenes/Home/Components/FairsRail", () => ({
   FairsRailFragmentContainer: jest.fn(() => null),
 }))
-jest.mock("lib/Scenes/Home/Components/SalesRail", () => ({
+jest.mock("app/Scenes/Home/Components/SalesRail", () => ({
   SalesRailFragmentContainer: jest.fn(() => null),
 }))
 
-import { EmailConfirmationBanner } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
-import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { EmailConfirmationBanner } from "app/Scenes/Home/Components/EmailConfirmationBanner"
+import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { GraphQLResponse } from "relay-runtime"
 import { FairsRailFragmentContainer } from "./Components/FairsRail"
 import { HomeQueryRenderer } from "./Home"

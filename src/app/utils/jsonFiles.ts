@@ -1,4 +1,4 @@
-import { Echo } from "lib/store/config/EchoModel"
+import { Echo } from "app/store/config/EchoModel"
 import appJsonFile from "../../../app.json"
 import echoLaunchJsonFile from "../../../Artsy/App/EchoNew.json"
 

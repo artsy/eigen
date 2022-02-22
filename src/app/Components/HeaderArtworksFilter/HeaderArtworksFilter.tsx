@@ -1,5 +1,5 @@
-import { isPad } from "lib/utils/hardware"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { isPad } from "app/utils/hardware"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, FilterIcon, Flex, Separator, Text, TouchableHighlightColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"

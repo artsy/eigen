@@ -1,4 +1,4 @@
-import { GlobalState } from "lib/utils/useGlobalState"
+import { GlobalState } from "app/utils/useGlobalState"
 import React from "react"
 import Animated from "react-native-reanimated"
 

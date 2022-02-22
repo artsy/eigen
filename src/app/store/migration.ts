@@ -1,7 +1,7 @@
 // easy-peasy ships with a fork of immer so let's use that instead of adding another copy of immer to our bundle.
 import { produce } from "immer-peasy"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { echoLaunchJson } from "lib/utils/jsonFiles"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { echoLaunchJson } from "app/utils/jsonFiles"
 import { Platform } from "react-native"
 
 /**

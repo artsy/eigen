@@ -4,9 +4,9 @@ import {
   navigateToEntity,
   navigateToPartner,
   SlugType,
-} from "lib/navigation/navigate"
-import { GlobalStore } from "lib/store/GlobalStore"
-import { Schema } from "lib/utils/track"
+} from "app/navigation/navigate"
+import { GlobalStore } from "app/store/GlobalStore"
+import { Schema } from "app/utils/track"
 import { ArtworkIcon, AuctionIcon, CloseIcon, Flex, Pill, Spacer, Text, Touchable } from "palette"
 import React, { useContext } from "react"
 import { useTracking } from "react-tracking"

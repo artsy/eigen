@@ -1,6 +1,6 @@
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
-import { showPhotoActionSheet } from "lib/utils/requestPhotos"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import React from "react"
 import "react-native"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
@@ -13,7 +13,7 @@ import { Overview } from "./Overview"
 
 import Provenance from "./Provenance"
 
-jest.mock("lib/utils/requestPhotos", () => ({
+jest.mock("app/utils/requestPhotos", () => ({
   showPhotoActionSheet: jest.fn(() => Promise.resolve({ photos: [] })),
 }))
 

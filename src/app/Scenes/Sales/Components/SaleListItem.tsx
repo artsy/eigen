@@ -2,11 +2,11 @@ import React from "react"
 import { TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/navigation/navigate"
 
 import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
-import { formatDisplayTimelyAt } from "lib/Scenes/Sale/helpers"
+import { formatDisplayTimelyAt } from "app/Scenes/Sale/helpers"
 import { Sans } from "palette"
 
 interface Props {

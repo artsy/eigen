@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { DecreaseIcon, IncreaseIcon, Text } from "palette"
 import React from "react"
 import { AuctionResultsMidEstimate } from "./AuctionResultMidEstimate"

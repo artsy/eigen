@@ -1,6 +1,6 @@
 import "react-native"
 
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 
 import SmallList from "./SmallList"

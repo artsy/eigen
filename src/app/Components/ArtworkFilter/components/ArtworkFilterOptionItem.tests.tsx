@@ -1,6 +1,6 @@
 import { fireEvent, within } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 

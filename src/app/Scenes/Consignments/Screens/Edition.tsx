@@ -1,11 +1,11 @@
-import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
+import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
 import { LayoutAnimation, ViewProps } from "react-native"
 import Text from "../Components/TextInput"
 import Toggle from "../Components/Toggle"
 import { ConsignmentSetup } from "../index"
 
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Flex, Sans, Spacer } from "palette"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Form, Row } from "../Components/FormElements"

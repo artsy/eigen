@@ -1,5 +1,5 @@
 import { ActionType, OwnerType, TappedMakeOffer } from "@artsy/cohesion"
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import { Button, CheckCircleIcon, Flex, Text } from "palette"
 import React from "react"
 import { useTracking } from "react-tracking"

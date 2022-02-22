@@ -1,5 +1,5 @@
 import { EmailConfirmationBanner_me } from "__generated__/EmailConfirmationBanner_me.graphql"
-import { verifyEmail } from "lib/utils/verifyEmail"
+import { verifyEmail } from "app/utils/verifyEmail"
 import { Flex, Sans, SansProps, Spinner, useColor } from "palette"
 import React, { FC, useState } from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"

@@ -1,4 +1,4 @@
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { isNull, isUndefined, round as __round__ } from "lodash"
 
 export type Numeric = "*" | number

@@ -1,11 +1,11 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { unsafe__getEnvironment } from "lib/store/GlobalStore"
-import { cm2in } from "lib/utils/conversions"
-import { Schema, track } from "lib/utils/track"
-import { userHadMeaningfulInteraction } from "lib/utils/userHadMeaningfulInteraction"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { cm2in } from "app/utils/conversions"
+import { Schema, track } from "app/utils/track"
+import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { take } from "lodash"
 import {
   BellFillIcon,

@@ -1,12 +1,12 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Linking, Text } from "react-native"
 
 import { Markdown } from "./Markdown"
 import { LinkText } from "./Text/LinkText"
 
-import { navigate } from "lib/navigation/navigate"
-import { defaultRules } from "lib/utils/renderMarkdown"
+import { navigate } from "app/navigation/navigate"
+import { defaultRules } from "app/utils/renderMarkdown"
 
 describe("Markdown", () => {
   it("renders multiple paragraphs as Text elements", () => {

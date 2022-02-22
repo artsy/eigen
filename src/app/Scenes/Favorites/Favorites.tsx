@@ -1,13 +1,13 @@
 import React from "react"
 import { View, ViewProps } from "react-native"
 
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { ProvideScreenTracking, Schema } from "app/utils/track"
 
-import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
+import DarkNavigationButton from "app/Components/Buttons/DarkNavigationButton"
 
-import { StickyTabPage, TabProps } from "lib/Components/StickyTabPage/StickyTabPage"
-import { StickyTabPageTabBar } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
-import { useIsStaging } from "lib/store/GlobalStore"
+import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
+import { StickyTabPageTabBar } from "app/Components/StickyTabPage/StickyTabPageTabBar"
+import { useIsStaging } from "app/store/GlobalStore"
 import { compact } from "lodash"
 import { Flex, SettingsIcon as _SettingsIcon, Text } from "palette"
 import { useTracking } from "react-tracking"

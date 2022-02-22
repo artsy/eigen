@@ -1,7 +1,7 @@
-import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
-import LoadingModal from "lib/Components/Modals/LoadingModal"
-import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import { goBack } from "lib/navigation/navigate"
+import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
+import LoadingModal from "app/Components/Modals/LoadingModal"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { goBack } from "app/navigation/navigate"
 import { Text } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import {

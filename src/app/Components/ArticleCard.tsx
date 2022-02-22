@@ -1,6 +1,6 @@
 import { ArticleCard_article } from "__generated__/ArticleCard_article.graphql"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
+import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/navigation/navigate"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback, View, ViewProps } from "react-native"

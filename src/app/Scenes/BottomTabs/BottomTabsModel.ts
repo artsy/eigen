@@ -1,14 +1,14 @@
 import { captureException } from "@sentry/react-native"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
 import { Action, action, Thunk, thunk } from "easy-peasy"
-import { saveDevNavigationStateSelectedTab } from "lib/navigation/useReloadedDevNavigationState"
-import { createEnvironment } from "lib/relay/createEnvironment"
+import { saveDevNavigationStateSelectedTab } from "app/navigation/useReloadedDevNavigationState"
+import { createEnvironment } from "app/relay/createEnvironment"
 import {
   metaphysicsURLMiddleware,
   persistedQueryMiddleware,
-} from "lib/relay/middlewares/metaphysicsMiddleware"
-import { simpleLoggerMiddleware } from "lib/relay/middlewares/simpleLoggerMiddleware"
-import { GlobalStore } from "lib/store/GlobalStore"
+} from "app/relay/middlewares/metaphysicsMiddleware"
+import { simpleLoggerMiddleware } from "app/relay/middlewares/simpleLoggerMiddleware"
+import { GlobalStore } from "app/store/GlobalStore"
 import { fetchQuery, graphql } from "react-relay"
 import { BottomTabType } from "./BottomTabType"
 

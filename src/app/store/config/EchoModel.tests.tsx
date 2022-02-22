@@ -1,10 +1,10 @@
-import * as loads from "lib/utils/jsonFiles"
+import * as loads from "app/utils/jsonFiles"
 const appJsonSpy = jest.spyOn(loads, "appJson")
 const echoLaunchJsonSpy = jest.spyOn(loads, "echoLaunchJson")
 
 import fetchMock from "jest-fetch-mock"
-import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import moment from "moment"
 import { Echo } from "./EchoModel"
 

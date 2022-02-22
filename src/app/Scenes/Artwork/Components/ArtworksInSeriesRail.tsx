@@ -3,10 +3,10 @@ import {
   ArtworksInSeriesRail_artwork,
   ArtworksInSeriesRail_artwork$key,
 } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
-import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { navigate } from "lib/navigation/navigate"
-import { extractNodes } from "lib/utils/extractNodes"
+import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
+import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
 import { Flex } from "palette"
 import React from "react"
 import { graphql, useFragment } from "react-relay"

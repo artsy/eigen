@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { compact } from "lodash"
 import { useColor } from "palette/hooks"
 import React, { useEffect, useRef } from "react"

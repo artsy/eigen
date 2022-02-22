@@ -3,11 +3,11 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 import { ArtworkPreview_artwork } from "__generated__/ArtworkPreview_artwork.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ClassTheme, Flex, Text, Touchable } from "palette"
 
 import { themeGet } from "@styled-system/theme-get"
-import { Schema, Track, track as _track } from "lib/utils/track"
+import { Schema, Track, track as _track } from "app/utils/track"
 
 const Container = styled.View`
   background-color: ${themeGet("colors.black100")};

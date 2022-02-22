@@ -1,4 +1,4 @@
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { ToastOptions, ToastPlacement } from "./types"
 
 export const Toast = {

@@ -1,6 +1,6 @@
 import { PartnerFollowButton_partner } from "__generated__/PartnerFollowButton_partner.graphql"
 import { PartnerFollowButtonFollowMutation } from "__generated__/PartnerFollowButtonFollowMutation.graphql"
-import { Schema, Track, track as _track } from "lib/utils/track"
+import { Schema, Track, track as _track } from "app/utils/track"
 import { ButtonProps, FollowButton } from "palette"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"

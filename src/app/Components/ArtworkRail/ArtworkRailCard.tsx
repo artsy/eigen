@@ -3,7 +3,7 @@ import {
   ArtworkRailCard_artwork,
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
-import { getUrgencyTag } from "lib/utils/getUrgencyTag"
+import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { Flex, Sans, Text, useColor } from "palette"
 import React from "react"
 import { GestureResponderEvent } from "react-native"

@@ -1,6 +1,6 @@
 import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
-import { navigate } from "lib/navigation/navigate"
-import { get } from "lib/utils/get"
+import { navigate } from "app/navigation/navigate"
+import { get } from "app/utils/get"
 import { Button, Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"

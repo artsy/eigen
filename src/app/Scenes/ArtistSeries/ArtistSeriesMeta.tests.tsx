@@ -2,13 +2,13 @@ import {
   ArtistSeriesMetaTestsQuery,
   ArtistSeriesMetaTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
-import { navigate } from "lib/navigation/navigate"
+import { navigate } from "app/navigation/navigate"
 import {
   ArtistSeriesMeta,
   ArtistSeriesMetaFragmentContainer,
-} from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+} from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { EntityHeader } from "palette"
 import React from "react"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"

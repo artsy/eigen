@@ -1,4 +1,4 @@
-import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
+import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { Image } from "react-native-image-crop-picker"
 
 describe("MyCollectionArtworkModel", () => {

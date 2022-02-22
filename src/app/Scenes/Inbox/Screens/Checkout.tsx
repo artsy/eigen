@@ -1,8 +1,8 @@
-import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
-import { ArtsyWebView } from "lib/Components/ArtsyWebView"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { dismissModal } from "lib/navigation/navigate"
-import { useEnvironment } from "lib/store/GlobalStore"
+import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
+import { ArtsyWebView } from "app/Components/ArtsyWebView"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { dismissModal } from "app/navigation/navigate"
+import { useEnvironment } from "app/store/GlobalStore"
 import React from "react"
 import { View } from "react-native"
 

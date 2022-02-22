@@ -1,6 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
-import { postEventToProviders } from "lib/utils/track/providers"
+import { postEventToProviders } from "app/utils/track/providers"
 import React from "react"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())

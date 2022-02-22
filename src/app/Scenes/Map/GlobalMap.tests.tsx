@@ -1,5 +1,5 @@
-import { CityFixture } from "lib/__fixtures__/CityFixture"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { CityFixture } from "app/__fixtures__/CityFixture"
+import { renderRelayTree } from "app/tests/renderRelayTree"
 import { graphql } from "react-relay"
 import { GlobalMapContainer } from "./GlobalMap"
 

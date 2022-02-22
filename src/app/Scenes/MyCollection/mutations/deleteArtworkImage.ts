@@ -2,7 +2,7 @@ import {
   deleteArtworkImageMutation,
   deleteArtworkImageMutationResponse,
 } from "__generated__/deleteArtworkImageMutation.graphql"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
 export function deleteArtworkImage(artworkID: string, imageID: string) {

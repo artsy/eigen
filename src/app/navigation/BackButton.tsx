@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { ChevronIcon, CloseIcon } from "palette"
 import React, { useEffect, useRef } from "react"
 import { Animated, ViewStyle } from "react-native"

@@ -3,10 +3,10 @@ import {
   ArtworkFilterNavigationStack,
   ArtworkFilterOptionsScreen,
   FilterModalMode,
-} from "lib/Components/ArtworkFilter"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+} from "app/Components/ArtworkFilter"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 

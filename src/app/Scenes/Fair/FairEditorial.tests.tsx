@@ -1,6 +1,6 @@
 import { FairEditorialTestsQuery } from "__generated__/FairEditorialTestsQuery.graphql"
-import { FairEditorialFragmentContainer } from "lib/Scenes/Fair/Components/FairEditorial"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { FairEditorialFragmentContainer } from "app/Scenes/Fair/Components/FairEditorial"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text, Touchable } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"

@@ -1,6 +1,6 @@
 import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import { useTheme } from "palette"
 import React from "react"
 import { View } from "react-native"

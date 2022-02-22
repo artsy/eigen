@@ -1,4 +1,4 @@
-import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
+import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { Box, Button, Separator, Spacer } from "palette"
 import React from "react"
 import { View } from "react-native"

@@ -1,4 +1,4 @@
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect, useState } from "react"
 import PushNotification from "react-native-push-notification"
 import { handlePendingNotification, handleReceivedNotification } from "./PushNotification"

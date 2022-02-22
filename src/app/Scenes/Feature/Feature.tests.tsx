@@ -1,6 +1,6 @@
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { extractText } from "app/tests/extractText"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeatureQueryRenderer } from "./Feature"
@@ -9,7 +9,7 @@ jest.unmock("react-relay")
 
 let mockRelayEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 beforeEach(() => {
-  mockRelayEnvironment = require("lib/relay/createEnvironment").defaultEnvironment =
+  mockRelayEnvironment = require("app/relay/createEnvironment").defaultEnvironment =
     createMockEnvironment()
 })
 

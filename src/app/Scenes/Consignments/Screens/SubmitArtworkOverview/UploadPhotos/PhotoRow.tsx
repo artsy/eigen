@@ -1,5 +1,5 @@
-import { ProvidePlaceholderContext } from "lib/utils/placeholders"
-import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
+import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { Button, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { Image } from "react-native"

@@ -11,7 +11,7 @@ import Adapter from "enzyme-adapter-react-16"
 import expect from "expect"
 import { format } from "util"
 
-import "lib/tests/renderUntil"
+import "app/tests/renderUntil"
 Enzyme.configure({ adapter: new Adapter() })
 
 // Waiting on https://github.com/thymikee/snapshot-diff/pull/17
@@ -27,19 +27,19 @@ jest.mock("react-native-screens/native-stack", () => {
 // tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
 
-import { mockPostEventToProviders, mockTrackEvent } from "lib/tests/globallyMockedStuff"
+import { mockPostEventToProviders, mockTrackEvent } from "app/tests/globallyMockedStuff"
 
 jest.mock("react-tracking")
 import track, { useTracking } from "react-tracking"
 ;(track as jest.Mock).mockImplementation(() => (x: any) => x)
 ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent: mockTrackEvent }))
 
-jest.mock("lib/utils/track/providers", () => ({
-  ...jest.requireActual("lib/utils/track/providers"),
+jest.mock("app/utils/track/providers", () => ({
+  ...jest.requireActual("app/utils/track/providers"),
   postEventToProviders: jest.fn(),
 }))
 
-jest.mock("lib/relay/createEnvironment", () => ({
+jest.mock("app/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
   reset(this: { defaultEnvironment: any }) {
     this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
@@ -190,9 +190,9 @@ mockedModule("./lib/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "Artis
 mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 
 // Native modules
-import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
@@ -273,7 +273,7 @@ function getNativeModules(): OurNativeModules {
   }
 }
 
-jest.mock("lib/navigation/navigate", () => ({
+jest.mock("app/navigation/navigate", () => ({
   navigate: jest.fn(),
   goBack: jest.fn(),
   dismissModal: jest.fn(),
@@ -303,7 +303,7 @@ beforeEach(() => {
     })
   }
   reset(NativeModules, getNativeModules())
-  reset(require("lib/navigation/navigate"), {})
+  reset(require("app/navigation/navigate"), {})
 })
 
 declare const process: any
@@ -555,7 +555,7 @@ jest.mock("@segment/analytics-react-native", () => ({
 
 jest.mock("@segment/analytics-react-native-appboy", () => ({}))
 
-jest.mock("lib/utils/track/SegmentTrackingProvider", () => ({
+jest.mock("app/utils/track/SegmentTrackingProvider", () => ({
   SegmentTrackingProvider: {
     setup: () => null,
     identify: jest.fn(),
@@ -563,7 +563,7 @@ jest.mock("lib/utils/track/SegmentTrackingProvider", () => ({
   },
 }))
 
-jest.mock("lib/utils/track/providers.tsx", () => ({
+jest.mock("app/utils/track/providers.tsx", () => ({
   postEventToProviders: jest.fn(),
   _addTrackingProvider: jest.fn(),
 }))

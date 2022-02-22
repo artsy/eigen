@@ -1,9 +1,9 @@
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
-} from "lib/utils/PushNotification"
-import useAppState from "lib/utils/useAppState"
+} from "app/utils/PushNotification"
+import useAppState from "app/utils/useAppState"
 import { Box } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { SavedSearchAlertForm } from "../SavedSearchAlertForm"

@@ -1,6 +1,6 @@
 import { ConversationCTA_conversation } from "__generated__/ConversationCTA_conversation.graphql"
-import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
-import { extractNodes } from "lib/utils/extractNodes"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { extractNodes } from "app/utils/extractNodes"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CTAPopUp } from "./CTAPopUp"

@@ -62,7 +62,7 @@ const preventUsingTestRenderer = () => {
     .filter((filename) => {
       const content = fs.readFileSync(filename).toString()
       return (
-        content.includes('from "lib/tests/renderWithWrappers"') &&
+        content.includes('from "app/tests/renderWithWrappers"') &&
         (content.includes("renderWithWrappers ") || content.includes("renderWithWrappers,"))
       )
     })
@@ -81,7 +81,7 @@ const preventUsingRenderRelayTree = () => {
     .filter(testOnlyFilter)
     .filter((filename) => {
       const content = fs.readFileSync(filename).toString()
-      return content.includes('from "lib/tests/renderRelayTree"')
+      return content.includes('from "app/tests/renderRelayTree"')
     })
   if (newRenderRelayTreeImports.length > 0) {
     warn(`We are trying to migrate away from \`renderRelayTree\` towards \`relay-test-utils\`, but found Enzyme imports in the following new unit test files:

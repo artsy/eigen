@@ -1,8 +1,8 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
-import { LinkText } from "lib/Components/Text/LinkText"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { navigate } from "lib/navigation/navigate"
+import { LinkText } from "app/Components/Text/LinkText"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { navigate } from "app/navigation/navigate"
 import { Button } from "palette"
 import React from "react"
 import { PrivacyRequest } from "./PrivacyRequest"

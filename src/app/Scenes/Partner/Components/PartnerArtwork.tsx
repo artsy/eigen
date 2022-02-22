@@ -3,12 +3,12 @@ import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
   FilterModalMode,
-} from "lib/Components/ArtworkFilter"
-import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
-import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
-import { TabEmptyState } from "lib/Components/TabEmptyState"
-import { get } from "lib/utils/get"
+} from "app/Components/ArtworkFilter"
+import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
+import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { TabEmptyState } from "app/Components/TabEmptyState"
+import { get } from "app/utils/get"
 import { Spacer } from "palette"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"

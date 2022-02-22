@@ -1,11 +1,11 @@
 import { ActionType, OwnerType, ToggledSavedSearch } from "@artsy/cohesion"
-import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
-import { navigate, NavigateOptions } from "lib/navigation/navigate"
-import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
+import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
+import { navigate, NavigateOptions } from "app/navigation/navigate"
+import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import {
   CreateSavedSearchAlertParams,
   SavedSearchAlertMutationResult,
-} from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+} from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import React from "react"
 import { useTracking } from "react-tracking"
 

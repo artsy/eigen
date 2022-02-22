@@ -13,20 +13,20 @@ import {
   GenericArtistSeriesMeta,
   GenericArtistSeriesRail,
   GenericArtistSeriesTitle,
-} from "lib/Components/GenericArtistSeriesRail"
+} from "app/Components/GenericArtistSeriesRail"
 import {
   CardRailArtworkImageContainer as ArtworkImageContainer,
   CardRailCard,
-} from "lib/Components/Home/CardRailCard"
-import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
+} from "app/Components/Home/CardRailCard"
+import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { navigate } from "app/navigation/navigate"
 import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
-} from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+} from "app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
+import { GlobalStoreProvider } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Theme } from "palette"
 
 jest.unmock("react-relay")

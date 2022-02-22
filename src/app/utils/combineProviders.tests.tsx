@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React, { ReactNode } from "react"
 import { View } from "react-native"
 import { combineProviders } from "./combineProviders"

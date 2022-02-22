@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/react-native"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
 
