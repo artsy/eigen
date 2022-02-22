@@ -117,7 +117,7 @@ We use [palette](src/palette) which uses `styled-system` under the hood.
 
 For styling we use custom inline elements like `Flex`, `Box`, `Text`.
 
-### Relay
+### Relay [WIP]
 
 [Metaphysics](https://github.com/artsy/metaphysics) is Artsy's GraphQL server. Requests to Metaphysics are made through [Relay](https://relay.dev).
 
@@ -147,8 +147,6 @@ Refactoring old containers to use hooks is encouraged.
 _Use `react-navigation` for navigating between screens, navigate function and new routes when necessary_
 
 See our documentation on adding a route for more details: [Adding a new route](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_route.md)
-
-### Analytics
 
 #### Follow the tracking docs and examples
 
