@@ -1,6 +1,6 @@
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
-import { Theme } from "palette"
-import React, { Component, ReactNode } from "react"
+import { Spinner, Theme } from "palette"
+import React, { Component, ReactNode, Suspense } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
@@ -25,6 +25,7 @@ export const AppProviders = ({ children }: { children?: ReactNode }) =>
       RelayDefaultEnvProvider,
       ThemeProvider, // uses: GlobalStoreProvider
       RetryErrorBoundary,
+      SuspenseProvider,
       ActionSheetProvider,
       PopoverMessageProvider,
       _FancyModalPageWrapper,
@@ -38,6 +39,10 @@ export const AppProviders = ({ children }: { children?: ReactNode }) =>
 // relay needs the default environment
 const RelayDefaultEnvProvider = (props: { children?: ReactNode }) => (
   <RelayEnvironmentProvider environment={defaultEnvironment} {...props} />
+)
+
+const SuspenseProvider = (props: { children?: ReactNode }) => (
+  <Suspense fallback={<Spinner />} {...props} />
 )
 
 // react-track has no provider, we make one using the decorator and a class wrapper
