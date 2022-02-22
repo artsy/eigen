@@ -95,7 +95,7 @@
   "files": [
     "index.js",
     "data",
-    "lib"
+    "app"
   ],
   "resolutions": {
     "//": "don't forget to document the resolutions in HACKS.md",
