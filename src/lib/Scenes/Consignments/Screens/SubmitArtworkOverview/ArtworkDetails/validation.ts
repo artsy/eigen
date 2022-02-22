@@ -3,6 +3,7 @@ import {
   ConsignmentSubmissionStateAggregation,
 } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import * as Yup from "yup"
+import { limitedEditionValue } from "./utils/rarityOptions"
 
 export interface Location {
   city: string
@@ -65,11 +66,11 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
   medium: Yup.string().required().trim(),
   attributionClass: Yup.string().required(),
   editionNumber: Yup.string().when("attributionClass", {
-    is: "limited edition",
+    is: limitedEditionValue,
     then: Yup.string().required().trim(),
   }),
   editionSizeFormatted: Yup.string().when("attributionClass", {
-    is: "limited edition",
+    is: limitedEditionValue,
     then: Yup.string().required().trim(),
   }),
   dimensionsMetric: Yup.string().required(),
