@@ -62,7 +62,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     : ImageCarouselFragmentContainer
 
   return (
-    <Join separator={<Spacer my={2} />}>
+    <Join separator={<Spacer my={1} />}>
       {/* ImageCarousel */}
       {!!imagesToDisplay ? (
         <ImagesToDisplayCarousel
@@ -86,7 +86,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       {/* Image Meta */}
       <Flex px={2}>
         <Text variant="lg">{artistNames}</Text>
-        <Text variant="lg" color="black60" italic>
+        <Text variant="lg" color="black60" italic mb={2}>
           {formattedTitleAndYear}
         </Text>
       </Flex>

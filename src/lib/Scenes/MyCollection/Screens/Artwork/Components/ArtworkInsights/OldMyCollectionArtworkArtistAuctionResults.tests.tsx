@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { MyCollectionArtworkArtistAuctionResultsTestsQuery } from "__generated__/MyCollectionArtworkArtistAuctionResultsTestsQuery.graphql"
+import { OldMyCollectionArtworkArtistAuctionResultsTestsQuery } from "__generated__/OldMyCollectionArtworkArtistAuctionResultsTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -10,19 +10,19 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkArtistAuctionResultsFragmentContainer } from "./MyCollectionArtworkArtistAuctionResults"
+import { OldMyCollectionArtworkArtistAuctionResultsFragmentContainer } from "./OldMyCollectionArtworkArtistAuctionResults"
 
 jest.unmock("react-relay")
 
-describe("MyCollectionArtworkArtistAuctionResults", () => {
+describe("OldMyCollectionArtworkArtistAuctionResults", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<MyCollectionArtworkArtistAuctionResultsTestsQuery>
+    <QueryRenderer<OldMyCollectionArtworkArtistAuctionResultsTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query MyCollectionArtworkArtistAuctionResultsTestsQuery @relay_test_operation {
+        query OldMyCollectionArtworkArtistAuctionResultsTestsQuery @relay_test_operation {
           artwork(id: "some-slug") {
-            ...MyCollectionArtworkArtistAuctionResults_artwork
+            ...OldMyCollectionArtworkArtistAuctionResults_artwork
           }
         }
       `}
@@ -30,7 +30,7 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
       render={({ props }) => {
         if (props?.artwork) {
           return (
-            <MyCollectionArtworkArtistAuctionResultsFragmentContainer artwork={props.artwork} />
+            <OldMyCollectionArtworkArtistAuctionResultsFragmentContainer artwork={props.artwork} />
           )
         }
         return null

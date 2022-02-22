@@ -1,142 +1,88 @@
-import {
-  ActionType,
-  ContextModule,
-  OwnerType,
-  TappedInfoBubble,
-  TappedShowMore,
-} from "@artsy/cohesion"
-import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
-import { CaretButton } from "lib/Components/Buttons/CaretButton"
-import { InfoButton } from "lib/Components/Buttons/InfoButton"
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { MyCollectionArtworkArtistAuctionResults_artwork$key } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { AuctionResultListItemFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
-import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { extractNodes } from "lib/utils/extractNodes"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Flex, Separator, Spacer, Text } from "palette"
+import { Flex, Separator } from "palette"
 import React from "react"
-import { FlatList, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { FlatList } from "react-native"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface MyCollectionArtworkArtistAuctionResultsProps {
-  artwork: MyCollectionArtworkArtistAuctionResults_artwork
+  artwork: MyCollectionArtworkArtistAuctionResults_artwork$key
 }
 
-const MyCollectionArtworkArtistAuctionResults: React.FC<
+export const MyCollectionArtworkArtistAuctionResults: React.FC<
   MyCollectionArtworkArtistAuctionResultsProps
 > = (props) => {
   const { trackEvent } = useTracking()
-  const auctionResults = extractNodes(props?.artwork?.artist?.auctionResultsConnection)
+
+  const artwork = useFragment<MyCollectionArtworkArtistAuctionResults_artwork$key>(
+    artworkFragment,
+    props.artwork
+  )
+
+  const artist = artwork.artist
+  const auctionResults = extractNodes(artist?.auctionResultsConnection)
 
   if (!auctionResults.length) {
     return null
   }
 
   return (
-    <View>
-      <ScreenMargin>
-        <Box my={3}>
-          <Separator />
-        </Box>
-        <InfoButton
-          title={`Auction Results for ${props?.artwork?.artist?.name}`}
-          modalContent={
-            <>
-              <Spacer my={1} />
-              <Text>
-                This data set includes the latest lots from auction sales at top commercial auction
-                houses. Lots are updated daily.
-              </Text>
-            </>
-          }
-          onPress={() =>
-            trackEvent(tracks.tappedInfoBubble(props?.artwork?.internalID, props?.artwork?.slug))
-          }
-        />
+    <Flex mb={6}>
+      <SectionTitle
+        title={`Auction Results for ${artwork?.artist?.name}`}
+        onPress={() => {
+          trackEvent(
+            tracks.tappedShowMore(artwork?.internalID, artwork?.slug, "Explore auction results")
+          )
+          navigate(`/artist/${artwork?.artist?.slug!}/auction-results`)
+        }}
+      />
 
-        <Spacer my={0.5} />
-
-        <FlatList
-          data={auctionResults}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <>
-              <AuctionResultListItemFragmentContainer
-                auctionResult={item}
-                onPress={() =>
-                  navigate(
-                    `/artist/${props?.artwork?.artist?.slug!}/auction-result/${item.internalID}`
-                  )
-                }
-              />
-            </>
-          )}
-          ListHeaderComponent={() => (
-            <Flex px={2}>
-              <Text variant="md">Auction results</Text>
-              <Text variant="xs" color="black60">
-                Sorted by most recent sale date
-              </Text>
-              <Separator mt="2" />
-            </Flex>
-          )}
-          ItemSeparatorComponent={() => (
-            <Flex px={2}>
-              <Separator />
-            </Flex>
-          )}
-          style={{ width: useScreenDimensions().width, left: -20 }}
-        />
-        <Separator />
-        <Box pt={3}>
-          <CaretButton
-            testID="AuctionsResultsButton"
-            onPress={() => {
-              trackEvent(
-                tracks.tappedShowMore(
-                  props.artwork?.internalID,
-                  props.artwork?.slug,
-                  "Explore auction results"
-                )
-              )
-              navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)
-            }}
-            text="Explore auction results"
-          />
-        </Box>
-      </ScreenMargin>
-    </View>
+      <FlatList
+        data={auctionResults}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <>
+            <AuctionResultListItemFragmentContainer
+              auctionResult={item}
+              onPress={() => navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)}
+            />
+          </>
+        )}
+        ItemSeparatorComponent={() => (
+ <Separator px={2} />
+        )}
+        style={{ width: useScreenDimensions().width, left: -20 }}
+      />
+    </Flex>
   )
 }
 
-export const MyCollectionArtworkArtistAuctionResultsFragmentContainer = createFragmentContainer(
-  MyCollectionArtworkArtistAuctionResults,
-  {
-    artwork: graphql`
-      fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
-        internalID
-        slug
-        artist {
-          slug
-          name
-          auctionResultsConnection(
-            first: 3
-            sort: DATE_DESC # organizations: $organizations # categories: $categories # sizes: $sizes # earliestCreatedYear: $createdAfterYear # latestCreatedYear: $createdBeforeYear # allowEmptyCreatedDates: $allowEmptyCreatedDates
-          ) {
-            edges {
-              node {
-                id
-                internalID
-                ...AuctionResultListItem_auctionResult
-              }
-            }
+const artworkFragment = graphql`
+  fragment MyCollectionArtworkArtistAuctionResults_artwork on Artwork {
+    internalID
+    slug
+    artist {
+      slug
+      name
+      auctionResultsConnection(first: 3, sort: DATE_DESC) {
+        edges {
+          node {
+            id
+            internalID
+            ...AuctionResultListItem_auctionResult
           }
         }
       }
-    `,
+    }
   }
-)
+`
 
 const tracks = {
   tappedInfoBubble: (internalID: string, slug: string): TappedInfoBubble => ({
@@ -147,15 +93,12 @@ const tracks = {
     context_screen_owner_slug: slug,
     subject: "auctionResults",
   }),
-  tappedShowMore: (internalID: string, slug: string, subject: string) => {
-    const tappedShowMore: TappedShowMore = {
-      action: ActionType.tappedShowMore,
-      context_module: ContextModule.auctionResults,
-      context_screen_owner_type: OwnerType.myCollectionArtwork,
-      context_screen_owner_id: internalID,
-      context_screen_owner_slug: slug,
-      subject,
-    }
-    return tappedShowMore
-  },
+  tappedShowMore: (internalID: string, slug: string, subject: string) => ({
+    action: ActionType.tappedShowMore,
+    context_module: ContextModule.auctionResults,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+    subject,
+  }),
 }
