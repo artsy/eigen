@@ -1,6 +1,8 @@
 import * as Sentry from "@sentry/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
+import { updateExperimentsContext } from "./experiments/helpers"
+import { nullToUndef } from "./nullAndUndef"
 import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
 
 /**
@@ -13,5 +15,6 @@ export function useIdentifyUser() {
   useEffect(() => {
     Sentry.setUser({ id: userId ?? "none" })
     SegmentTrackingProvider.identify?.(userId, { is_temporary_user: userId === null ? 1 : 0 })
+    updateExperimentsContext({ userId: nullToUndef(userId) })
   }, [userId])
 }

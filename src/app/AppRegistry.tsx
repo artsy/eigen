@@ -1,10 +1,11 @@
+// keep this import of storybook first, otherwise it might produce errors when debugging
+import { StorybookUIRoot } from "../storybook/storybook-ui"
+
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import React, { useEffect } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
-// keep this import of storybook last, otherwise it produces an error when debugging
-import { StorybookUIRoot } from "../storybook/storybook-ui"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -119,6 +120,7 @@ import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
+import { useDebugging } from "./utils/useDebugging"
 import { useSplitExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useIdentifyUser } from "./utils/useIdentifyUser"
@@ -450,6 +452,7 @@ for (const moduleName of Object.keys(modules)) {
 }
 
 const Main: React.FC = () => {
+  useDebugging()
   usePreferredThemeTracking()
   useScreenReaderTracking()
   useFreshInstallTracking()
