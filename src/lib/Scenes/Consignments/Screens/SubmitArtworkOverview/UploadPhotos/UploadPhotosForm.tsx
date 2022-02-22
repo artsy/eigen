@@ -46,7 +46,10 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       }
     }
 
-    // let Formik know about processed photos
+    // let GlobalStore and Formik know about processed photos
+    GlobalStore.actions.artworkSubmission.submission.setPhotos({
+      photos: [...values.photos, ...processedPhotos],
+    })
     setFieldValue("photos", [...values.photos, ...processedPhotos])
   }
 
@@ -64,6 +67,9 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       await removeAssetFromSubmission({ assetID: photo.id })
       const filteredPhotos = values.photos.filter((p: Photo) => p.id !== photo.id)
       setFieldValue("photos", filteredPhotos)
+      GlobalStore.actions.artworkSubmission.submission.setPhotos({
+        photos: [...filteredPhotos],
+      })
     } catch (error) {
       photo.error = true
       photo.errorMessage = "Photo could not be deleted"
