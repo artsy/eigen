@@ -139,18 +139,6 @@ Refactoring old containers to use hooks is encouraged.
 - We have native unit tests too. See [`getting_started.md`](./getting_started.md)
 - We don't like snapshot tests; they produce too much churn for too little value. It's okay to test that a component doesn't throw when rendered, but use [`extractText`](https://github.com/artsy/eigen/blob/4c7c9be69ab1c2095f4d2fed11a040b1bde6eba8/src/app/tests/extractText.ts) (or similar) to test the actual component tree.
 
-Here are some great examples of what tests and test coverage should look like.
-
-- [Tests for Gene component](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/app/Containers/__tests__/Gene-tests.tsx)
-- [Tests for Consignments submission flow](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/app/Components/Consignments/Screens/__tests__/Confirmation-tests.tsx)
-- [Tests for Consignments photo-selection component interactions](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/app/Components/Consignments/Screens/__tests__/SelectFromPhotoLibrary-tests.tsx).
-- Consignments Overview is a really complex component, so tests are broken into four test files:
-  - [General component tests](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/app/Components/Consignments/Screens/__tests__/Overview-tests.tsx)
-  - [Analytics tests](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/app/Components/Consignments/Screens/__tests__/Overview-analytics-tests.tsx)
-  - [Local storage tests](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/app/Components/Consignments/Screens/__tests__/Overview-local-storage-tests.tsx)
-  - [Image uploading tests](https://github.com/artsy/emission/blob/751d24306a2d6ace58b21491e25b37f345c7a206/src/app/Components/Consignments/Screens/__tests__/Overview-uploading-tests.tsx)
-  - [`CollectionsRail` tests](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/app/Scenes/Home/Components/__tests__/CollectionsRail-tests.tsx) demonstrate `relay-test-utils`.
-
 ### Navigation
 
 _Use `react-navigation` for navigating between screens, navigate function and new routes when necessary_
