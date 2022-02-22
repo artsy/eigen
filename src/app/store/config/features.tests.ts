@@ -52,7 +52,7 @@ describe("feature conventions", () => {
     })
   })
   it("should be located in expected directory", () => {
-    expect(__dirname).toContain("src/lib/store/config")
+    expect(__dirname).toContain("src/app/store/config")
     expect(__filename).toContain("features.tests.ts")
   })
 })
