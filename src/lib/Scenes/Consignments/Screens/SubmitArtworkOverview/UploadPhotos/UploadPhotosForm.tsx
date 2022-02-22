@@ -38,7 +38,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
           if (isTotalSizeLimitExceeded) {
             sizedPhoto.error = true
             sizedPhoto.errorMessage =
-              "File exceeds the total size limit. Please delete photos or upload smaller file sizes"
+              "File exceeds the total size limit. Please delete photos or upload smaller file sizes."
             processedPhotos.push(sizedPhoto)
             break
           }
