@@ -33,7 +33,11 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         const uploadedPhoto = await addPhotoToConsignment(photo, submission.submissionId)
         if (uploadedPhoto?.id) {
           const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
-          const isTotalSizeLimitExceeded = isSizeLimitExceeded([...values.photos, sizedPhoto])
+          const isTotalSizeLimitExceeded = isSizeLimitExceeded([
+            ...values.photos,
+            ...processedPhotos,
+            sizedPhoto,
+          ])
           // when total size limit exceeded, set photo's err state and stop the upload loop
           if (isTotalSizeLimitExceeded) {
             sizedPhoto.error = true
