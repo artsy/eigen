@@ -7239,6 +7239,9 @@ type FeaturedGeneLink {
 
 type FeaturedLink {
   description(format: Format): String
+
+  # Parses the `href` to get the underlying entity
+  entity: FeaturedLinkEntity
   href: String
 
   # A globally unique ID.
@@ -7247,10 +7250,12 @@ type FeaturedLink {
   initials(length: Int = 3): String
 
   # A type-specific ID likely used as a database ID.
-  internalID: String
+  internalID: ID!
   subtitle(format: Format): String
   title: String
 }
+
+union FeaturedLinkEntity = Artist | Gene | Partner
 
 enum FeatureLayouts {
   DEFAULT
