@@ -19,7 +19,7 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
 import { useFormik } from "formik"
-import { compact, isArray, throttle } from "lodash"
+import { compact, isArray } from "lodash"
 import {
   Avatar,
   Box,
@@ -30,19 +30,23 @@ import {
   Input,
   Join,
   Spacer,
-  Spinner,
   Text,
   Touchable,
   useColor,
 } from "palette"
+<<<<<<< HEAD:src/app/Scenes/MyProfile/MyProfileEditForm.tsx
 import React, { Suspense, useCallback, useContext, useEffect, useRef, useState } from "react"
 import { PixelRatio, ScrollView, TextInput } from "react-native"
+=======
+import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
+import { ScrollView, TextInput } from "react-native"
+>>>>>>> 65410620f (PR comments update):src/lib/Scenes/MyProfile/MyProfileEditForm.tsx
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import * as Yup from "yup"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 import { MyProfileContext } from "./MyProfileProvider"
-import { useHandleVerification } from "./useHandleVerification"
+import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
 
 const PRIMARY_LOCATION_OFFSET = 240
 const ICON_SIZE = 22
@@ -86,16 +90,10 @@ export const MyProfileEditForm: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
 
-  const {
-    handleEmailVerification,
-    handleIDVerification,
-    isIDVerificationLoading,
-    isEmailVerificationLoading,
-    showVerificationBannerForID,
-    showVerificationBannerForEmail,
-    didSuccessfullyVerifyID,
-    didSuccessfullyVerifyEmail,
-  } = useHandleVerification()
+  const { emailVerificationState, showVerificationBannerForEmail, handleEmailVerification } =
+    useHandleEmailVerification()
+  const { iDVerificationState, showVerificationBannerForID, handleIDVerification } =
+    useHandleIDVerification()
 
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
@@ -187,7 +185,7 @@ export const MyProfileEditForm: React.FC = () => {
   useEffect(() => {
     const refetchProfileIdentificationInterval = setInterval(() => {
       // When the user applies the email verification and the modal is visible
-      if (didSuccessfullyVerifyID || didSuccessfullyVerifyEmail) {
+      if (emailVerificationState || iDVerificationState) {
         refetch({ enableCollectorProfile })
       }
     }, 3000)
@@ -195,22 +193,12 @@ export const MyProfileEditForm: React.FC = () => {
     return () => {
       clearInterval(refetchProfileIdentificationInterval)
     }
-  }, [didSuccessfullyVerifyID, didSuccessfullyVerifyEmail])
+  }, [emailVerificationState, iDVerificationState])
 
   const onLeftButtonPressHandler = () => {
     setDidUpdatePhoto(false)
     navigation.goBack()
   }
-
-  const throttleHandledEmailVerification = useCallback(
-    throttle(handleEmailVerification, 2000, { trailing: true }),
-    []
-  )
-
-  const throttleHandledIDVerification = useCallback(
-    throttle(handleIDVerification, 2000, { trailing: true }),
-    []
-  )
 
   return (
     <>
@@ -335,8 +323,8 @@ export const MyProfileEditForm: React.FC = () => {
                   isIDVerified={!!me?.identityVerified}
                   canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
                   emailConfirmed={!!me?.emailConfirmed}
-                  handleEmailVerification={throttleHandledEmailVerification}
-                  handleIDVerification={throttleHandledIDVerification}
+                  handleEmailVerification={handleEmailVerification!}
+                  handleIDVerification={handleIDVerification!}
                 />
               )}
 
@@ -348,16 +336,14 @@ export const MyProfileEditForm: React.FC = () => {
         </Join>
       </ScrollView>
       {!!showVerificationBannerForEmail && (
-        <VerificationBannerForEmail
-          isLoading={isEmailVerificationLoading}
-          didSuccessfullyVerifyEmail={didSuccessfullyVerifyEmail}
+        <EmailVerificationBanner
+          emailVerificationState={emailVerificationState!}
           resultText={`Email sent to ${me?.email ?? ""}`}
         />
       )}
       {!!showVerificationBannerForID && (
-        <VerificationBannerForID
-          isLoading={isIDVerificationLoading}
-          didSuccessfullyVerifyID={didSuccessfullyVerifyID}
+        <IDVerificationBanner
+          iDVerificationState={iDVerificationState!}
           resultText={`ID verification link sent to ${me?.email ?? ""}.`}
         />
       )}
@@ -569,33 +555,21 @@ const ProfileVerifications = ({
   )
 }
 
-const VerificationBannerForEmail = ({
-  isLoading,
-  didSuccessfullyVerifyEmail,
+// This should be replaced by Palette v3 Toast which is not yet implemented
+const EmailVerificationBanner = ({
+  emailVerificationState,
   resultText,
 }: {
-  isLoading: boolean
-  didSuccessfullyVerifyEmail: boolean | null
+  emailVerificationState: boolean | null
   resultText: string
 }) => {
   const color = useColor()
 
   const renderContent = () => {
-    if (isLoading) {
-      return (
-        <>
-          <Text color={color("white100")}>Sending a confirmation email...</Text>
-
-          <Flex pr="1">
-            <Spinner size="small" color="white100" />
-          </Flex>
-        </>
-      )
-    }
     return (
       <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
         <Text color={color("white100")} numberOfLines={2}>
-          {didSuccessfullyVerifyEmail ? resultText : "Something went wrong, please try again"}
+          {emailVerificationState ? resultText : "Something went wrong, please try again"}
         </Text>
       </Flex>
     )
@@ -609,40 +583,28 @@ const VerificationBannerForEmail = ({
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
-      testID="verification-confirmation-banner"
+      testID="email-verification-confirmation-banner"
     >
       {renderContent()}
     </Flex>
   )
 }
 
-const VerificationBannerForID = ({
-  isLoading,
-  didSuccessfullyVerifyID,
+// This should be replaced by Palette v3 Toast which is not yet implemented
+const IDVerificationBanner = ({
+  iDVerificationState,
   resultText,
 }: {
-  isLoading: boolean
-  didSuccessfullyVerifyID: boolean | null
+  iDVerificationState: boolean | null
   resultText: string
 }) => {
   const color = useColor()
 
   const renderContent = () => {
-    if (isLoading) {
-      return (
-        <>
-          <Text color={color("white100")}>Sending ID verification email...</Text>
-
-          <Flex pr="1">
-            <Spinner size="small" color="white100" />
-          </Flex>
-        </>
-      )
-    }
     return (
       <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
         <Text color={color("white100")} numberOfLines={2}>
-          {didSuccessfullyVerifyID ? resultText : "Something went wrong, please try again"}
+          {iDVerificationState ? resultText : "Something went wrong, please try again"}
         </Text>
       </Flex>
     )
@@ -656,7 +618,6 @@ const VerificationBannerForID = ({
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
-      testID="verification-confirmation-banner"
     >
       {renderContent()}
     </Flex>

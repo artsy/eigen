@@ -106,9 +106,7 @@ describe("MyProfileEditForm", () => {
             errors: [],
           })
 
-          expect(getByTestId("verification-confirmation-banner")).toBeTruthy()
-          expect(getByText("Sending a confirmation email...")).toBeTruthy()
-          await waitForElementToBeRemoved(() => getByText("Sending a confirmation email..."))
+          expect(getByTestId("email-verification-confirmation-banner")).toBeTruthy()
         })
 
         it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to false", async () => {
@@ -124,7 +122,7 @@ describe("MyProfileEditForm", () => {
 
           fireEvent(VerifyYouEmailButton, "onPress")
 
-          expect(() => getByTestId("verification-confirmation-banner")).toThrow()
+          expect(() => getByTestId("email-verification-confirmation-banner")).toThrow()
         })
       })
     })

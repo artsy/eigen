@@ -4,86 +4,90 @@ import { verifyEmail } from "lib/utils/verifyEmail"
 import { verifyID } from "lib/utils/verifyID"
 import { useCallback, useState } from "react"
 
-export const useHandleVerification = () => {
+type verificationType = "ID" | "Email"
+
+const useHandleVerification = (type: verificationType) => {
+  const [emailVerificationState, setEmailVerificationState] = useState<boolean | null>(null)
+  const [iDVerificationState, setIDVerificationState] = useState<boolean | null>(null)
   const [showVerificationBannerForEmail, setShowVerificationBannerForEmail] = useState(false)
-  const [isEmailVerificationLoading, setIsEmailVerificationLoading] = useState(false)
-  const [didSuccessfullyVerifyEmail, setDidSuccessfullyVerifyEmail] = useState<boolean | null>(null)
   const [showVerificationBannerForID, setShowVerificationBannerForID] = useState(false)
-  const [isIDVerificationLoading, setIsIDVerificationLoading] = useState(false)
-  const [didSuccessfullyVerifyID, setDidSuccessfullyVerifyID] = useState<boolean | null>(null)
 
-  const handleEmailVerification = useCallback(async () => {
-    try {
-      setShowVerificationBannerForEmail(true)
-      setIsEmailVerificationLoading(true)
+  if (type === "Email") {
+    const handleEmailVerification = useCallback(async () => {
+      try {
+        setShowVerificationBannerForEmail(true)
 
-      const { sendConfirmationEmail } = await verifyEmail(defaultEnvironment)
+        const { sendConfirmationEmail } = await verifyEmail(defaultEnvironment)
 
-      const confirmationOrError = sendConfirmationEmail?.confirmationOrError
-      const emailToConfirm = confirmationOrError?.unconfirmedEmail
+        const confirmationOrError = sendConfirmationEmail?.confirmationOrError
+        const emailToConfirm = confirmationOrError?.unconfirmedEmail
 
-      // this timeout is here to make sure that the user have enough time to read
-      // "Sending a confirmation email..."
-      setTimeout(() => {
-        if (emailToConfirm) {
-          setDidSuccessfullyVerifyEmail(true)
-          setIsEmailVerificationLoading(false)
-        } else {
-          setDidSuccessfullyVerifyEmail(false)
-          setIsEmailVerificationLoading(false)
-        }
-      }, 500)
-    } catch (error) {
-      captureException(error)
-    } finally {
-      // Allow the user some time to read the message
-      setTimeout(() => {
-        setShowVerificationBannerForEmail(false)
-      }, 2000)
+        // this timeout is here to make sure that the user have enough time to read
+        // "Sending a confirmation email..."
+        setTimeout(() => {
+          if (emailToConfirm) {
+            setEmailVerificationState(true)
+          } else {
+            setEmailVerificationState(false)
+          }
+        }, 500)
+      } catch (error) {
+        captureException(error)
+      } finally {
+        // Allow the user some time to read the message
+        setTimeout(() => {
+          setShowVerificationBannerForEmail(false)
+        }, 6000)
+      }
+    }, [])
+
+    return {
+      emailVerificationState,
+      showVerificationBannerForEmail,
+      handleEmailVerification,
     }
-  }, [])
+  } else {
+    const handleIDVerification = useCallback(async () => {
+      try {
+        setShowVerificationBannerForID(true)
+        const { sendIdentityVerificationEmail } = await verifyID(defaultEnvironment)
 
-  const handleIDVerification = useCallback(async () => {
-    try {
-      setShowVerificationBannerForID(true)
-      setIsIDVerificationLoading(true)
+        const confirmationOrError = sendIdentityVerificationEmail?.confirmationOrError
+        const state = confirmationOrError?.identityVerificationEmail?.state
 
-      const { sendIdentityVerificationEmail } = await verifyID(defaultEnvironment)
+        // this timeout is here to make sure that the user have enough time to read
+        // "Sending an ID verification email..."
+        setTimeout(() => {
+          if (state && Object.values(StateToBlockFurtherIDVerification).includes(state)) {
+            setIDVerificationState(false)
+          } else {
+            setIDVerificationState(true)
+          }
+        }, 500)
+      } catch (error) {
+        captureException(error)
+      } finally {
+        // Allow the user some time to read the message
+        setTimeout(() => {
+          setShowVerificationBannerForID(false)
+        }, 6000)
+      }
+    }, [])
 
-      const confirmationOrError = sendIdentityVerificationEmail?.confirmationOrError
-      const state = confirmationOrError?.identityVerificationEmail?.state
-
-      // this timeout is here to make sure that the user have enough time to read
-      // "Sending an ID verification email..."
-      setTimeout(() => {
-        if (state && Object.values(StateToBlockFurtherIDVerification).includes(state)) {
-          setDidSuccessfullyVerifyID(false)
-          setIsIDVerificationLoading(false)
-        } else {
-          setDidSuccessfullyVerifyID(true)
-          setIsIDVerificationLoading(false)
-        }
-      }, 500)
-    } catch (error) {
-      captureException(error)
-    } finally {
-      // Allow the user some time to read the message
-      setTimeout(() => {
-        setShowVerificationBannerForID(false)
-      }, 2000)
+    return {
+      iDVerificationState,
+      showVerificationBannerForID,
+      handleIDVerification,
     }
-  }, [])
-
-  return {
-    handleEmailVerification,
-    handleIDVerification,
-    isEmailVerificationLoading,
-    didSuccessfullyVerifyEmail,
-    showVerificationBannerForEmail,
-    isIDVerificationLoading,
-    showVerificationBannerForID,
-    didSuccessfullyVerifyID,
   }
+}
+
+export const useHandleEmailVerification = () => {
+  return useHandleVerification("Email")
+}
+
+export const useHandleIDVerification = () => {
+  return useHandleVerification("ID")
 }
 
 enum StateToBlockFurtherIDVerification {
