@@ -31,7 +31,7 @@ The Artsy app was initially written in Objective-C and Swift and React Native wa
 
 - [Why Artsy uses React Native](http://artsy.github.io/blog/2016/08/15/React-Native-at-Artsy/)
 - [All React Native posts on Artsy's Engineering Blog](http://artsy.github.io/blog/categories/reactnative/)
-- Some great React Native components:
+- Sample React Native components:
   - [Partner](https://github.com/artsy/eigen/blob/main/src/app/Scenes/Partner/Partner.tsx) is a simple top-level component.
   - [PartnerShows](https://github.com/artsy/eigen/blob/main/src/app/Scenes/Partner/Components/PartnerShows.tsx) is a fragment container that uses FlatList to paginate through Relay data.
   - [Search](https://github.com/artsy/eigen/blob/main/src/app/Scenes/Search/Search.tsx) is a functional component that loads data in response to user input.
