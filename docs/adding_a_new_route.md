@@ -157,5 +157,3 @@ const MyScreenFirstPage: React.FC<MyScreenFirstPageProps> = ({navigation, route}
   ...
 }
 ```
-
-or you can as well get the same values
