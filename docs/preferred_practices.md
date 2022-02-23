@@ -149,7 +149,7 @@ But we also use `test-renderer` and `enzyme` (in order of preference), that we'd
 
 ### Navigation
 
-_Use `react-navigation` for navigating between screens, navigate function and new routes when necessary_
+We use `react-navigation` for navigating between screens, navigate function and new routes.
 
 See our documentation on adding a route for more details: [Adding a new route](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_route.md)
 
