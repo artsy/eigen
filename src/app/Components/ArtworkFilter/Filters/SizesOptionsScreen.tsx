@@ -193,7 +193,7 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
     handleCustomInputsChange(customValues)
   }, [localizedUnit])
 
-  const handleMetricChange = (newMetric: "in" | "cm") => {
+  const handleMetricChange = (newMetric: Unit) => {
     GlobalStore.actions.userPreferences.setMetric(newMetric)
   }
 
