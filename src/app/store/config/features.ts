@@ -200,6 +200,16 @@ export const features = defineFeatures({
     description: "Support dark mode",
     showInAdminMenu: true,
   },
+  ARShowwRequestPriceEstimateBanner: {
+    readyForRelease: false,
+    description: "Show request price estimate banner",
+    showInAdminMenu: true,
+  },
+  ARShowDemandIndexHints: {
+    readyForRelease: false,
+    description: "Show demand index hints",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
