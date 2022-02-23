@@ -116,7 +116,7 @@ We use [palette](src/palette) which uses `styled-system` under the hood.
 
 For styling we use custom inline elements like `Flex`, `Box`, `Text`.
 
-### Relay [WIP]
+### Relay
 
 [Metaphysics](https://github.com/artsy/metaphysics) is Artsy's GraphQL server. Requests to Metaphysics are made through [Relay](https://relay.dev).
 
