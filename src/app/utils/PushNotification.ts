@@ -300,4 +300,5 @@ module.exports = {
   getNotificationPermissionsStatus,
   CHANNELS,
   PushAuthorizationStatus,
+  requestPushNotificationsPermission,
 }
