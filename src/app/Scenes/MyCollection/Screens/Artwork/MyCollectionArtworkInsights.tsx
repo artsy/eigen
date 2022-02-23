@@ -9,6 +9,7 @@ import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkIns
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkDemandIndex } from "./Components/ArtworkInsights/MyCollectionArtworkDemandIndex"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
+import { SubmitToSell } from "./Components/SubmitToSell"
 
 interface MyCollectionArtworkInsightsProps {
   artwork: MyCollectionArtworkInsights_artwork$key
@@ -27,7 +28,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
     marketPriceInsightsFragment,
     restProps.marketPriceInsights
   )
-
+  const p1Orp2Artist = true // TODO: how to tell p1/p2 or other ?
   return (
     <StickyTabPageScrollView>
       <Flex my={3}>
@@ -51,7 +52,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 
-        <MyCollectionWhySell artwork={artwork} />
+        {p1Orp2Artist ? <SubmitToSell /> : <MyCollectionWhySell artwork={artwork} />}
       </Flex>
     </StickyTabPageScrollView>
   )
