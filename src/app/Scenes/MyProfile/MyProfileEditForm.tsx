@@ -4,6 +4,7 @@ import { captureException } from "@sentry/react-native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
+import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { Image } from "app/Components/Bidding/Elements/Image"
 import {
   buildLocationDisplay,
@@ -408,9 +409,11 @@ const MyProfileEditFormScreenQuery = graphql`
 
 export const MyProfileEditFormScreen: React.FC = () => {
   return (
-    <Suspense fallback={<LoadingSkeleton />}>
-      <MyProfileEditForm />
-    </Suspense>
+    <ArtsyKeyboardAvoidingView>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <MyProfileEditForm />
+      </Suspense>
+    </ArtsyKeyboardAvoidingView>
   )
 }
 
