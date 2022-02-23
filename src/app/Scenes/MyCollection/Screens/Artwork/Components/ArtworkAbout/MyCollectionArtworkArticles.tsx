@@ -32,6 +32,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
       </Flex>
 
       <FlatList<MyCollectionArtworkArticles_article[number]>
+        testID="test-articles-flatlist"
         horizontal
         ItemSeparatorComponent={() => <Spacer ml="2" />}
         scrollsToTop={false}

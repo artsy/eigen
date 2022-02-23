@@ -53,7 +53,6 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
 
 const artworkFragment = graphql`
   fragment MyCollectionArtworkAboutWork_artwork on Artwork {
-    # Price Estimate
     category
     medium
     dimensions {

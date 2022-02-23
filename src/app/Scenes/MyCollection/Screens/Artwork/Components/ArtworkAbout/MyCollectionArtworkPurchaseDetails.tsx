@@ -28,26 +28,15 @@ export const MyCollectionArtworkPurchaseDetails: React.FC<
         Purchase Details
       </Text>
 
-      {/* <Field label="Date Purchased" value="October 15th, 2020" /> */}
-
       {!!pricePaid && <Field label="Price Paid" value={pricePaid.display} />}
-
-      {/*
-      <Field
-        label="Notes"
-        value="Purchase through CFHILL, on Artsy, with a slight increase in price due to shipping (went white glove to ensure safety of painting). "
-      />
-      */}
     </Flex>
   )
 }
 
 const artworkFragment = graphql`
   fragment MyCollectionArtworkPurchaseDetails_artwork on Artwork {
-    # Purchase Date
     pricePaid {
       display
     }
-    # Notes
   }
 `
