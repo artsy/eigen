@@ -33,7 +33,6 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
 
       <FlatList<MyCollectionArtworkArticles_article[number]>
         horizontal
-        showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => <Spacer ml="2" />}
         scrollsToTop={false}
         style={{ overflow: "visible" }}

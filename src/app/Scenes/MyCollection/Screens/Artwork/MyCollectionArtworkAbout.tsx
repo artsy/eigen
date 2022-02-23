@@ -44,7 +44,7 @@ const artworkFragment = graphql`
     ...MyCollectionArtworkPurchaseDetails_artwork
     artistNames
     artist {
-      articles: articlesConnection(first: 1, inEditorialFeed: true) {
+      articles: articlesConnection(first: 10, inEditorialFeed: true) {
         edges {
           node {
             ...MyCollectionArtworkArticles_article
