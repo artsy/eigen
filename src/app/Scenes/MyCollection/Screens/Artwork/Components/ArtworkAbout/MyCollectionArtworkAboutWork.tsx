@@ -1,17 +1,21 @@
-import {
-  MyCollectionArtworkAboutWork_artwork,
-  MyCollectionArtworkAboutWork_artwork$key,
-} from "__generated__/MyCollectionArtworkAboutWork_artwork.graphql"
-import {
-  MyCollectionArtworkAboutWork_marketPriceInsights,
-  MyCollectionArtworkAboutWork_marketPriceInsights$key,
-} from "__generated__/MyCollectionArtworkAboutWork_marketPriceInsights.graphql"
+import { MyCollectionArtworkAboutWork_artwork$key } from "__generated__/MyCollectionArtworkAboutWork_artwork.graphql"
+import { MyCollectionArtworkAboutWork_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAboutWork_marketPriceInsights.graphql"
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
 import { capitalize } from "lodash"
 import { Flex, Text } from "palette"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { Field } from "../Field"
+
+interface EstimatePriceType {
+  lowRangeCents: number | null
+  highRangeCents: number | null
+}
+
+interface DimensionsType {
+  in: string | null
+  cm: string | null
+}
 
 interface MyCollectionArtworkAboutWorkProps {
   artwork: MyCollectionArtworkAboutWork_artwork$key
@@ -33,7 +37,11 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
   const { category, medium, dimensions, date, provenance } = artwork
 
   const dimensionsText = getDimensionsText(dimensions)
-  const estimatePrice = marketPriceInsights ? getEstimatePrice(marketPriceInsights) : ""
+  // FIXME: types of these values are unknown (coming from MP), so it needs to be casted to Number to work properly here
+  const estimatePrice = getEstimatePrice({
+    lowRangeCents: Number(marketPriceInsights?.lowRangeCents),
+    highRangeCents: Number(marketPriceInsights?.highRangeCents),
+  })
 
   return (
     <Flex mb={4}>
@@ -71,7 +79,7 @@ const marketPriceInsightsFragment = graphql`
   }
 `
 
-const getDimensionsText = (dimensions: MyCollectionArtworkAboutWork_artwork["dimensions"]) => {
+export const getDimensionsText = (dimensions: DimensionsType | null) => {
   if (dimensions === null) {
     return ""
   }
@@ -79,15 +87,10 @@ const getDimensionsText = (dimensions: MyCollectionArtworkAboutWork_artwork["dim
   return [dimensions.in, dimensions.cm].filter((d) => d).join("\n")
 }
 
-const getEstimatePrice = ({
-  lowRangeCents,
-  highRangeCents,
-}: MyCollectionArtworkAboutWork_marketPriceInsights) => {
+export const getEstimatePrice = ({ lowRangeCents, highRangeCents }: EstimatePriceType) => {
   if (!lowRangeCents || !highRangeCents) {
     return ""
   }
 
-  return `${formatCentsToDollars(Number(lowRangeCents))} - ${formatCentsToDollars(
-    Number(highRangeCents)
-  )}`
+  return `${formatCentsToDollars(lowRangeCents)} - ${formatCentsToDollars(highRangeCents)}`
 }
