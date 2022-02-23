@@ -3,9 +3,9 @@ import {
   MyCollectionArtworkArticles_article$key,
 } from "__generated__/MyCollectionArtworkArticles_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
-import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
+import { FlatList } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
@@ -22,14 +22,16 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
 
   return (
     <Flex>
-      <Flex flexDirection="row">
+      <Flex flexDirection="row" justifyContent="flex-start">
         <Text variant="md" mb={2}>{`Articles featuring ${props.artistNames || ""}`}</Text>
-        <Text variant="xs" color="blue100" ml={0.5}>
-          {articles.length}
-        </Text>
+        {articles.length > 3 && (
+          <Text variant="xs" color="blue100" ml={0.5}>
+            {articles.length}
+          </Text>
+        )}
       </Flex>
 
-      <PrefetchFlatList<MyCollectionArtworkArticles_article[number]>
+      <FlatList<MyCollectionArtworkArticles_article[number]>
         horizontal
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => <Spacer ml="2" />}
@@ -45,7 +47,6 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
 }
 
 const articleFragment = graphql`
-  # fragment MyCollectionArtworkArticles_artwork on Article { FIXME:
   fragment MyCollectionArtworkArticles_article on Article @relay(plural: true) {
     id
     ...ArticleCard_article

@@ -1,4 +1,5 @@
 import { MyCollectionArtworkAbout_artwork$key } from "__generated__/MyCollectionArtworkAbout_artwork.graphql"
+import { MyCollectionArtworkAbout_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAbout_marketPriceInsights.graphql"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex } from "palette/elements"
@@ -11,16 +12,21 @@ import { MyCollectionArtworkPurchaseDetails } from "./Components/ArtworkAbout/My
 
 interface MyCollectionArtworkAboutProps {
   artwork: MyCollectionArtworkAbout_artwork$key
+  marketPriceInsights: MyCollectionArtworkAbout_marketPriceInsights$key | null
 }
 
 export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> = (props) => {
   const artwork = useFragment<MyCollectionArtworkAbout_artwork$key>(artworkFragment, props.artwork)
+  const marketPriceInsights = useFragment<MyCollectionArtworkAbout_marketPriceInsights$key>(
+    marketPriceInsightsFragment,
+    props.marketPriceInsights
+  )
   const articles = extractNodes(artwork.artist?.articles)
 
   return (
     <StickyTabPageScrollView>
       <Flex my={3}>
-        <MyCollectionArtworkAboutWork artwork={artwork} />
+        <MyCollectionArtworkAboutWork artwork={artwork} marketPriceInsights={marketPriceInsights} />
 
         <MyCollectionArtworkPurchaseDetails artwork={artwork} />
 
@@ -46,5 +52,11 @@ const artworkFragment = graphql`
         }
       }
     }
+  }
+`
+
+const marketPriceInsightsFragment = graphql`
+  fragment MyCollectionArtworkAbout_marketPriceInsights on MarketPriceInsights {
+    ...MyCollectionArtworkAboutWork_marketPriceInsights
   }
 `
