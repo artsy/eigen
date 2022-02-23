@@ -6,7 +6,7 @@ import {
   MyCollectionArtworkAboutWork_marketPriceInsights,
   MyCollectionArtworkAboutWork_marketPriceInsights$key,
 } from "__generated__/MyCollectionArtworkAboutWork_marketPriceInsights.graphql"
-import { formatCentsToDollars } from "lib/Scenes/MyCollection/utils/formatCentsToDollars"
+import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
 import { capitalize } from "lodash"
 import { Flex, Text } from "palette"
 import React from "react"
