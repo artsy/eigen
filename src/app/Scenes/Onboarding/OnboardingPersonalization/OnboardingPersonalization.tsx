@@ -8,6 +8,7 @@ import {
 } from "app/Components/ArtistListItem"
 import SearchIcon from "app/Icons/SearchIcon"
 import { GlobalStore } from "app/store/GlobalStore"
+import { requestPushNotificationsPermission } from "app/utils/PushNotification"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact, times } from "lodash"
 import { Box, Button, Flex, Join, Spacer, Text, Touchable, useColor, useSpace } from "palette"
@@ -161,7 +162,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
 
 const handleFinishOnboardingPersonalization = async () => {
   GlobalStore.actions.auth.setState({ onboardingState: "complete" })
-  GlobalStore.actions.auth.requestPushNotifPermission()
+  requestPushNotificationsPermission()
 }
 
 export const OnboardingPersonalizationListRefetchContainer = createFragmentContainer(

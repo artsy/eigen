@@ -4,15 +4,11 @@ import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as RelayCache from "app/relay/RelayCache"
 import { isArtsyEmail } from "app/utils/general"
-import {
-  getNotificationPermissionsStatus,
-  PushAuthorizationStatus,
-} from "app/utils/PushNotification"
 import { postEventToProviders } from "app/utils/track/providers"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
-import { Alert, Linking, Platform } from "react-native"
+import { Platform } from "react-native"
 import Config from "react-native-config"
 import {
   AccessToken,
@@ -22,6 +18,7 @@ import {
 } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
+import { requestPushNotificationsPermission } from "../utils/PushNotification"
 import { AuthError } from "./AuthError"
 import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
@@ -51,6 +48,43 @@ const showError = (
 
 type SignInStatus = "failure" | "success" | "otp_missing" | "on_demand_otp_missing" | "invalid_otp"
 
+type OAuthProviderT = "google" | "apple" | "email" | "facebook"
+
+const handleSignUpError = ({
+  errorObject,
+  oauthProvider,
+}: {
+  errorObject: any
+  oauthProvider: OAuthProviderT
+}) => {
+  let message = ""
+  let existingProviders: string[] = []
+  const providerName = capitalize(oauthProvider)
+
+  if (errorObject?.error === "User Already Exists") {
+    message = `Your ${
+      providerName === "Email" ? "" : providerName
+    } email account is linked to an Artsy user account please Log in using your email and password instead.`
+    const authentications = (errorObject?.providers ?? []) as string[]
+    if (errorObject?.has_password && oauthProvider !== "email") {
+      existingProviders = ["email"]
+    }
+    existingProviders = [...existingProviders, ...authentications.map((p) => p.toLowerCase())]
+  } else if (errorObject?.error === "Another Account Already Linked") {
+    message =
+      `Your ${providerName} account is already linked to another Artsy account. ` +
+      `Try logging in with ${providerName}.`
+  } else if (errorObject.message && errorObject.message.match("Unauthorized source IP address")) {
+    message = `You could not create an account because your IP address was blocked by ${providerName}`
+  } else {
+    message = "Failed to sign up"
+  }
+
+  return {
+    message,
+    existingProviders,
+  }
+}
 interface EmailOAuthParams {
   oauthProvider: "email"
   email: string
@@ -114,6 +148,7 @@ export interface AuthModel {
   // Actions
   setState: Action<this, Partial<StateMapper<this, "1">>>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
+  getUser: Thunk<this, { accessToken: string }, {}, GlobalStoreModel>
   userExists: Thunk<this, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<
     this,
@@ -166,8 +201,6 @@ export interface AuthModel {
     ReturnType<typeof fetch>
   >
   signOut: Thunk<this>
-
-  requestPushNotifPermission: Thunk<this>
 }
 
 const clientKey = __DEV__ ? Config.ARTSY_DEV_API_CLIENT_KEY : Config.ARTSY_PROD_API_CLIENT_KEY
@@ -263,6 +296,18 @@ export const getAuthModel = (): AuthModel => ({
     }
     return false
   }),
+  getUser: thunk(async (actions, { accessToken }) => {
+    return await (
+      await actions.gravityUnauthenticatedRequest({
+        path: `/api/v1/me`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-ACCESS-TOKEN": accessToken,
+        },
+      })
+    ).json()
+  }),
   signIn: thunk(async (actions, args, store) => {
     const { oauthProvider, email, onboardingState, onSignIn } = args
 
@@ -296,20 +341,11 @@ export const getAuthModel = (): AuthModel => ({
     })
 
     if (result.status === 201) {
-      const { expires_in, access_token } = await result.json()
-      const user = await (
-        await actions.gravityUnauthenticatedRequest({
-          path: `/api/v1/me`,
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "X-ACCESS-TOKEN": access_token,
-          },
-        })
-      ).json()
+      const { expires_in, access_token: userAccessToken } = await result.json()
+      const user = await actions.getUser({ accessToken: userAccessToken })
 
       actions.setState({
-        userAccessToken: access_token,
+        userAccessToken,
         userAccessTokenExpiresIn: expires_in,
         userID: user.id,
         userEmail: email,
@@ -333,12 +369,12 @@ export const getAuthModel = (): AuthModel => ({
       // Keep native iOS in sync with react-native auth state
       if (Platform.OS === "ios") {
         requestAnimationFrame(() => {
-          LegacyNativeModules.ArtsyNativeModule.updateAuthState(access_token, expires_in, user)
+          LegacyNativeModules.ArtsyNativeModule.updateAuthState(userAccessToken, expires_in, user)
         })
       }
 
       if (!onboardingState || onboardingState === "complete" || onboardingState === "none") {
-        actions.requestPushNotifPermission()
+        requestPushNotificationsPermission()
       }
 
       onSignIn?.()
@@ -346,20 +382,19 @@ export const getAuthModel = (): AuthModel => ({
       return "success"
     }
 
-    const resultJSON = await result.json()
-    if (resultJSON?.error_description === "missing two-factor authentication code") {
-      return "otp_missing"
-    }
+    const { error_description: errorDescription } = await result.json()
 
-    if (resultJSON?.error_description === "missing on-demand authentication code") {
-      return "on_demand_otp_missing"
-    }
+    switch (errorDescription) {
+      case "missing two-factor authentication code":
+        return "otp_missing"
+      case "missing on-demand authentication code":
+        return "on_demand_otp_missing"
+      case "invalid two-factor authentication code":
+        return "invalid_otp"
 
-    if (resultJSON?.error_description === "invalid two-factor authentication code") {
-      return "invalid_otp"
+      default:
+        return "failure"
     }
-
-    return "failure"
   }),
   signUp: thunk(async (actions, args) => {
     const { oauthProvider, email, name, agreedToReceiveEmails } = args
@@ -424,34 +459,17 @@ export const getAuthModel = (): AuthModel => ({
     }
 
     const resultJson = await result.json()
-    let message = ""
-    const error = resultJson?.error
-    let existingProviders: string[] = []
-    const providerName = capitalize(oauthProvider)
-    if (resultJson?.error === "User Already Exists") {
-      message = `Your ${
-        providerName === "Email" ? "" : providerName
-      } email account is linked to an Artsy user account please Log in using your email and password instead.`
-      const authentications = (resultJson?.providers ?? []) as string[]
-      if (resultJson?.has_password && oauthProvider !== "email") {
-        existingProviders = ["email"]
-      }
-      existingProviders = [...existingProviders, ...authentications.map((p) => p.toLowerCase())]
-    } else if (resultJson?.error === "Another Account Already Linked") {
-      message =
-        `Your ${providerName} account is already linked to another Artsy account. ` +
-        `Try logging in with ${providerName}.`
-    } else if (resultJson.message && resultJson.message.match("Unauthorized source IP address")) {
-      message = `You could not create an account because your IP address was blocked by ${providerName}`
-    } else {
-      message = "Failed to sign up"
-    }
+
+    const { message, existingProviders } = handleSignUpError({
+      errorObject: resultJson,
+      oauthProvider,
+    })
 
     const { accessToken } = args as SignUpParams & (FacebookOAuthParams | GoogleOAuthParams)
     const { appleUid, idToken } = args as SignUpParams & AppleOAuthParams
     return {
       success: false,
-      error,
+      error: resultJson?.error,
       message,
       meta: {
         existingProviders: existingProviders.length ? existingProviders : undefined,
@@ -535,12 +553,8 @@ export const getAuthModel = (): AuthModel => ({
           })
 
           if (resultGravityAccessToken.status === 201) {
-            const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-            const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-              path: `/api/v1/me`,
-              headers: { "X-ACCESS-TOKEN": xAccessToken },
-            })
-            const { email } = await resultGravityEmail.json()
+            const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+            const { email } = await actions.getUser({ accessToken: userAccessToken })
             const resultGravitySignIn = await actions.signIn({
               oauthProvider: "facebook",
               email,
@@ -622,12 +636,9 @@ export const getAuthModel = (): AuthModel => ({
         })
 
         if (resultGravityAccessToken.status === 201) {
-          const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-          const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-            path: `/api/v1/me`,
-            headers: { "X-ACCESS-TOKEN": xAccessToken },
-          })
-          const { email } = await resultGravityEmail.json()
+          const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+          const { email } = await actions.getUser({ accessToken: userAccessToken })
+
           const resultGravitySignIn = await actions.signIn({
             oauthProvider: "google",
             email,
@@ -721,12 +732,9 @@ export const getAuthModel = (): AuthModel => ({
           },
         })
         if (resultGravityAccessToken.status === 201) {
-          const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-          const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-            path: `/api/v1/me`,
-            headers: { "X-ACCESS-TOKEN": xAccessToken },
-          })
-          const { email } = await resultGravityEmail.json()
+          const { access_token: userAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
+          const { email } = await actions.getUser({ accessToken: userAccessToken })
+
           const resultGravitySignIn = await actions.signIn({
             oauthProvider: "apple",
             email,
@@ -764,25 +772,6 @@ export const getAuthModel = (): AuthModel => ({
       CookieManager.clearAll(),
       RelayCache.clearAll(),
     ])
-  }),
-  requestPushNotifPermission: thunk(async () => {
-    const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
-    if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
-      setTimeout(() => {
-        if (Platform.OS === "ios") {
-          LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions()
-        } else {
-          Alert.alert(
-            "Artsy Would Like to Send You Notifications",
-            "Turn on notifications to get important updates about artists you follow.",
-            [
-              { text: "Dismiss", style: "cancel" },
-              { text: "Settings", onPress: () => Linking.openSettings() },
-            ]
-          )
-        }
-      }, 3000)
-    }
   }),
 })
 
