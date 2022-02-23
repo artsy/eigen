@@ -3,10 +3,10 @@
 // @ts-check
 "use strict"
 
-const fs = require('fs');
+const fs = require("fs")
 module.exports.checkFlags = () => {
   try {
-    const fileContent = fs.readFileSync('./src/lib/store/config/features.ts', 'utf8');
+    const fileContent = fs.readFileSync("./src/app/store/config/features.ts", "utf8")
     const allFlags = this.parseAllFlags(fileContent) ?? [[], []]
     const hiddenFlags = allFlags[0]
     const releasedFlags = allFlags[1]
@@ -21,7 +21,7 @@ module.exports.checkFlags = () => {
  */
 function matchFlags(content) {
   const flagsRE = /(?<flag>AR\w+):\s*{\s*|.*readyForRelease:\s+(?<readyForRelease>true|false)/g
-  const results = matchAll(flagsRE, content);
+  const results = matchAll(flagsRE, content)
   return results
 }
 
@@ -32,12 +32,11 @@ function matchFlags(content) {
 function matchAll(regex, content) {
   var result
   var results = []
-  while (result = regex.exec(content)) {
+  while ((result = regex.exec(content))) {
     results.push(result)
   }
   return results
 }
-
 
 /**
  * @param {string} content
@@ -51,15 +50,15 @@ module.exports.parseAllFlags = (content) => {
     if (!result.groups) {
       break
     }
-    if (result.groups['flag']) {
-      const currentFlag = result.groups['flag']
+    if (result.groups["flag"]) {
+      const currentFlag = result.groups["flag"]
       lastFlag = currentFlag
     }
-    if (result.groups['readyForRelease']) {
-      const readyForRelease = result.groups['readyForRelease']
-      if (readyForRelease === 'true' && lastFlag) {
+    if (result.groups["readyForRelease"]) {
+      const readyForRelease = result.groups["readyForRelease"]
+      if (readyForRelease === "true" && lastFlag) {
         releasedFlags.push(lastFlag)
-      } else if (readyForRelease === 'false' && lastFlag) {
+      } else if (readyForRelease === "false" && lastFlag) {
         hiddenFlags.push(lastFlag)
       }
     }
@@ -71,6 +70,5 @@ module.exports.parseAllFlags = (content) => {
 if (require.main === module) {
   const flags = this.checkFlags()
   // write output to a file so we can retrieve in fastlane
-  fs.writeFileSync('./fastlane/flags.json', JSON.stringify(flags))
+  fs.writeFileSync("./fastlane/flags.json", JSON.stringify(flags))
 }
-

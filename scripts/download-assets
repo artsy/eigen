@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 
-if test ${CI:-} = true
+if test ${CI:-false} = true
 then
   ./scripts/setup-distribute
 fi

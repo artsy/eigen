@@ -66,6 +66,11 @@ commands:
           key: v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
+  run-relay-compiler:
+    steps:
+      - run:
+          name: Run Relay compiler
+          command: yarn relay
   update-echo:
     steps:
       - run:
@@ -193,6 +198,7 @@ commands:
               circleci step halt
             fi
       - install-node-modules
+      - run-relay-compiler
       - update-echo
       - install-gems
   build-app-android:
@@ -228,7 +234,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: 13.0.0
+      xcode: 13.2.1
 
     steps:
       - checkout
@@ -245,6 +251,7 @@ jobs:
       - checkout
       - generate-checksums
       - install-node-modules
+      - run-relay-compiler
       - generate-query-map
       - run:
           name: Update metaphysics
@@ -258,6 +265,7 @@ jobs:
       - checkout
       - generate-checksums
       - install-node-modules
+      - run-relay-compiler
       - run:
           name: Danger
           command: yarn danger ci --verbose
@@ -270,7 +278,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: 13.0.0
+      xcode: 13.2.1
 
     steps:
       - checkout
@@ -280,6 +288,21 @@ jobs:
       - run:
           name: Check flags
           command: ./scripts/biweekly-flag-check.sh
+
+  check-if-app-has-been-approved-for-release:
+    environment:
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+
+    macos:
+      xcode: 13.2.1
+
+    steps:
+      - checkout
+      - generate-checksums
+      - install-gems
+      - run:
+          name: Check flags
+          command: ./scripts/check-if-app-has-been-approved-for-release
 
   check-metaphysics-freshness:
     executor:
@@ -302,6 +325,7 @@ jobs:
             fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
       - generate-checksums
       - install-node-modules
+      - run-relay-compiler
       - run:
           name: Generate queries json
           command: yarn relay
@@ -320,6 +344,7 @@ jobs:
       - setup-awscli
       - setup-env-file
       - install-node-modules
+      - run-relay-compiler
       - update-echo
       - generate-query-map
       - run:
@@ -348,7 +373,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: 13.0.0
+      xcode: 13.2.1
 
     steps:
       - attach_workspace:
@@ -383,6 +408,7 @@ jobs:
       - setup-awscli
       - setup-env-file
       - install-node-modules
+      - run-relay-compiler
       - update-echo
       - install-gems
       - install-cocoapods
@@ -448,7 +474,7 @@ jobs:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
     macos:
-      xcode: 13.0.0
+      xcode: 13.2.1
     steps:
       - checkout
       - install-gems
@@ -491,6 +517,17 @@ jobs:
           command: node scripts/changelog/commitChangelog.js
       - store_artifacts:
           path: .manifests
+  release-ios-app:
+    environment:
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+    macos:
+      xcode: 13.2.1
+    steps:
+      - checkout
+      - install-gems
+      - run:
+          name: Release app version
+          command: ./scripts/release-ios-app-branch
 workflows:
   version: 2
   nightly:
@@ -515,16 +552,17 @@ workflows:
     jobs:
       - check-flags
 
-  # metaphysics-check:
-  #   triggers:
-  #     - schedule:
-  #         cron: "13 * * * *"
-  #         filters:
-  #           branches:
-  #             only:
-  #               - main
-  #   jobs:
-  #     - check-metaphysics-freshness
+  check-if-app-has-been-approved-for-release-workflow:
+    triggers:
+      - schedule:
+          cron: "0 4 * * 1-5"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - check-flags
+
 
   update-changelog-workflow:
     jobs:
@@ -533,6 +571,13 @@ workflows:
             branches:
               only:
                 - main
+  release-ios-app-workflow:
+    jobs:
+      - release-ios-app:
+          filters:
+            branches:
+              only:
+                - release-ios-app
   promote:
     jobs:
       - promote-beta-to-app-store:

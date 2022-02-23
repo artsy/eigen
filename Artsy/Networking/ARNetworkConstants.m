@@ -4,18 +4,13 @@ NSString *const ARBaseWebURL = @"https://www.artsy.net";
 NSString *const ARBaseDeprecatedMobileWebURL = @"https://m.artsy.net";
 NSString *const ARStagingBaseDeprecatedMobileWebURL = @"https://m-staging.artsy.net";
 NSString *const ARBaseApiURL = @"https://api.artsy.net";
-NSString *const ARBaseMetaphysicsApiURL = @"https://metaphysics-production.artsy.net/v2";
-NSString *const ARCausalitySocketURL = @"wss://causality.artsy.net";
 
 NSString *const ARTwitterCallbackPath = @"artsy://twitter-callback";
 
 NSString *const ARAuthHeader = @"X-Access-Token";
 NSString *const ARXappHeader = @"X-Xapp-Token";
 
-NSString *const AROAuthURL = @"/oauth2/access_token";
 NSString *const ARXappURL = @"/api/v1/xapp_token";
-
-NSString *const ARCreateUserURL = @"/api/v1/user";
 
 NSString *const ARForgotPasswordURL = @"/api/v1/users/send_reset_password_instructions";
 
@@ -44,8 +39,6 @@ NSString *const ARFollowingProfileURLFormat = @"/api/v1/me/follow/profile/%@";
 NSString *const ARUnfollowProfileURLFormat = @"/api/v1/me/follow/profile/%@";
 NSString *const ARFollowProfilesURL = @"/api/v1/me/follow/profiles";
 
-NSString *const ARProfileFeedURLFormat = @"/api/v1/profile/%@/posts";
-
 NSString *const ARProfileInformationURLFormat = @"/api/v1/profile/%@";
 
 NSString *const ARNewArtistSearchURL = @"/api/v1/match/artists";
@@ -55,7 +48,6 @@ NSString *const ARNotificationsURL = @"/api/v1/me/notifications";
 
 NSString *const ARNewDeviceURL = @"/api/v1/device";
 NSString *const ARDeleteDeviceURL = @"/api/v1/device/%@";
-NSString *const ARSiteUpURL = @"/api/v1/system/up";
 
 NSString *const ARSystemTimeURL = @"/api/v1/system/time";
 

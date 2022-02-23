@@ -1,7 +1,0 @@
-{
-  "name": "lib",
-  "devDependencies": {
-    "@types/enzyme": "3.9.3",
-    "@types/semver": "^7.3.4"
-  }
-}

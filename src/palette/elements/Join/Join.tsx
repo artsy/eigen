@@ -1,4 +1,4 @@
-import { flattenChildren } from "lib/utils/flattenChildren"
+import { flattenChildren } from "app/utils/flattenChildren"
 import React from "react"
 
 interface JoinProps {

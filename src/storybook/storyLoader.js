@@ -23,9 +23,9 @@ function loadStories() {
   require("../palette/icons.stories")
   require("../palette/space.stories")
   require("../palette/elements/VisualClue/VisualClue.stories")
-  require("../lib/Components/ArtworkGrids/ArtworksFilterHeader.stories")
-  require("../lib/Components/PopoverMessage/PopoverMessage.stories")
-  require("../lib/Components/ReadMore.stories")
+  require("../app/Components/ArtworkGrids/ArtworksFilterHeader.stories")
+  require("../app/Components/PopoverMessage/PopoverMessage.stories")
+  require("../app/Components/ReadMore.stories")
 }
 
 const stories = [
@@ -51,6 +51,10 @@ const stories = [
   "../palette/elements/VisualClue/VisualClue.stories",
   "../palette/icons.stories",
   "../palette/space.stories",
+  "../palette/elements/VisualClue/VisualClue.stories",
+  "../app/Components/ArtworkGrids/ArtworksFilterHeader.stories",
+  "../app/Components/PopoverMessage/PopoverMessage.stories",
+  "../app/Components/ReadMore.stories",
 ]
 
 module.exports = {

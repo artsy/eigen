@@ -24,11 +24,15 @@ export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
 export type Color =
   | ColorV3BeforeDevPurple
   | "devpurple"
+  | "yellow150"
   | "yellow100"
   | "yellow30"
   | "yellow10"
   | "orange10"
   | "orange100" // yellows and orange are temporary, until we add them to palette-tokens
+  // v5 stuff
+  | "appBackground"
+  | "appForeground"
 export { SpacingUnitV2, SpacingUnitV3 }
 export { TextVariantV3 }
 
@@ -102,6 +106,7 @@ const fixColorV3 = (
 ): typeof eigenUsefulTHEME_V3.colors & { devpurple: string } => {
   const ourColors = colors as any
   ourColors.devpurple = "#6E1EFF"
+  ourColors.yellow150 = "#A47A0F"
   ourColors.yellow100 = "#A85F00"
   ourColors.yellow30 = "#FAE7BA"
   ourColors.yellow10 = "#F6EFE5"
@@ -177,6 +182,42 @@ const THEMES = {
     },
     textTreatments: fixTextTreatments(textVariantsWithUnits),
   },
+  v5: {
+    ...eigenUsefulTHEME_V3,
+    colors: {
+      ...fixColorV3(eigenUsefulTHEME_V3.colors),
+      appBackground: "white",
+      appForeground: "black",
+    },
+    space: fixSpaceUnitsV3(spaceNumbers),
+    fonts: {
+      sans: {
+        regular: "Unica77LL-Regular",
+        italic: "Unica77LL-Italic",
+        medium: "Unica77LL-Medium",
+        mediumItalic: "Unica77LL-MediumItalic",
+      },
+    },
+    textTreatments: fixTextTreatments(textVariantsWithUnits),
+  },
+  v5dark: {
+    ...eigenUsefulTHEME_V3,
+    colors: {
+      ...fixColorV3(eigenUsefulTHEME_V3.colors),
+      appBackground: "black",
+      appForeground: "white",
+    },
+    space: fixSpaceUnitsV3(spaceNumbers),
+    fonts: {
+      sans: {
+        regular: "Unica77LL-Regular",
+        italic: "Unica77LL-Italic",
+        medium: "Unica77LL-Medium",
+        mediumItalic: "Unica77LL-MediumItalic",
+      },
+    },
+    textTreatments: fixTextTreatments(textVariantsWithUnits),
+  },
 }
 
 export type ThemeV3Type = typeof THEMES.v3
@@ -205,6 +246,13 @@ const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
     "18": THEMES.v3.space["12"], // TODO-PALETTE-V3 replace all {18} and "18" with "12"
   }
   // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done for space
+
+  if (theme === "v5") {
+    return THEMES.v5
+  }
+  if (theme === "v5dark") {
+    return THEMES.v5dark
+  }
 
   return { ...THEMES.v3, space: mergedSpacesV2WithV3OnTop }
 }

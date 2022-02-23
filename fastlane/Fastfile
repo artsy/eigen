@@ -63,8 +63,7 @@ lane :ship_beta_ios do
 
   # important! this much match the release version specified
   # in Eigen in order for sourcemaps to work correctly
-  sentry_release_name = "ios-#{latest_version}+#{bundle_version}"
-  update_sentry_release_name(sentry_release_name: sentry_release_name)
+  sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
 
   build_ios_app(configuration: 'Store', silent: true)
 
@@ -79,6 +78,7 @@ lane :ship_beta_ios do
     demo_account_name: ENV['BETA_DEMO_ACCOUNT_NAME'],
     demo_account_password: ENV['BETA_DEMO_ACCOUNT_PWD']
   }
+
   pilot(api_key: api_key,
         beta_app_review_info: beta_app_review_info,
         changelog: beta_readme,
@@ -93,6 +93,8 @@ lane :update_version_string do
   File.open(app_json_path, 'w') do |file|
     file.puts JSON.pretty_generate(app_json)
   end
+
+  create_next_app_version(next_version_code: new_version)
 end
 
 date_str = DateTime.now.strftime("%Y.%m.%d.%H")
@@ -163,7 +165,6 @@ lane :ship_beta_android_play_store do
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
   sentry_release_name = "android-#{vname}-#{vcode}"
-  update_sentry_release_name(sentry_release_name: sentry_release_name)
 
   # build again with flag set to false for release candidates
   flag_android_beta(is_android_beta: false)
@@ -196,7 +197,6 @@ lane :ship_beta_android_firebase do
   vname, vcode = set_build_version_android
 
   sentry_release_name = "android-#{vname}-#{vcode}"
-  update_sentry_release_name(sentry_release_name: sentry_release_name)
 
   sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
   gradle(
@@ -261,6 +261,7 @@ lane :promote_beta_ios do
   puts "Let's deliver beta #{next_app_store_version} (#{build_number}) with build number #{build_number}."
   deliver(
     api_key: api_key,
+    app_version: app_json['version'],
     build_number: build_number,
     force: true, # Skip HTMl report verification
     skip_screenshots: true,
@@ -303,15 +304,6 @@ lane :promote_beta_ios do
 
   tag_and_push(tag: "ios-#{next_app_store_version}-#{build_version}-submission")
   puts 'All done.'
-end
-
-# update releaseName in app.json to tag errors in sentry correctly
-lane :update_sentry_release_name do |options|
-  sentry_release_name = options[:sentry_release_name]
-  app_json['sentryReleaseName'] = sentry_release_name
-  File.open(app_json_path, 'w') do |file|
-    file.puts JSON.pretty_generate(app_json)
-  end
 end
 
 lane :flag_android_beta do |options|
@@ -465,6 +457,80 @@ lane :tag_and_push do |options|
   `git remote add http https://github.com/artsy/eigen.git`
   `git push http #{tag} -f`
 end
+
+# This is a lane that is used to release the app on Apple Store Connect
+# When it has been approved an it's pending developer release
+lane :release_ios_app do |options|
+
+  # There seems to be some delta between spaceship + deliver token format
+   token = Spaceship::ConnectAPI::Token.create(
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+    key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
+    is_key_content_base64: true,
+    in_house: false
+  )
+
+  Spaceship::ConnectAPI.token = token
+
+  app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
+  version = app.get_pending_release_app_store_version
+
+  unless version.nil?
+    Spaceship::ConnectAPI.post_app_store_version_release_request(app_store_version_id: version.id)
+  end
+end
+
+lane :create_next_app_version do |options|
+  api_key = app_store_connect_api_key(
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+    key_content: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
+    is_key_content_base64: true,
+    in_house: false,
+  )
+
+  next_version = options[:next_version_code]
+
+  puts "Let's create a new app version #{next_version}."
+  deliver(
+    api_key: api_key,
+    app_version: next_version,
+    force: true, # Skip HTMl report verification
+    skip_screenshots: true,
+    skip_binary_upload: true,
+    skip_metadata: true,
+    submit_for_review: false,
+    precheck_include_in_app_purchases: false,
+  )
+end
+
+lane :check_if_app_is_pending_developer_release do |options|
+
+  # There seems to be some delta between spaceship + deliver token format
+   token = Spaceship::ConnectAPI::Token.create(
+    key_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ID'],
+    issuer_id: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_ISSUER_ID'],
+    key: ENV['ARTSY_APP_STORE_CONNECT_API_KEY_CONTENT_BASE64'],
+    is_key_content_base64: true,
+    in_house: false
+  )
+
+  Spaceship::ConnectAPI.token = token
+
+  app = Spaceship::ConnectAPI::App.find('net.artsy.artsy')
+  version = app.get_pending_release_app_store_version
+
+  unless version.nil?
+    message = <<~MSG
+    🎉 The iOS App has been approved in App Store Connect and is now pending developer release
+    In order to release the app, follow the instructions here
+    https://github.com/artsy/eigen/blob/main/docs/deploy_to_app_store.md#release-to-app-store
+  MSG
+  slack(message: message, default_payloads: [])
+  end
+end
+
 
 lane :check_flags do
   sh('yarn check-flags')

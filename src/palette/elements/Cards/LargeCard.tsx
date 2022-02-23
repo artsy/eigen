@@ -2,7 +2,7 @@ import React from "react"
 import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useTheme } from "palette/Theme"
 import { Flex } from "../Flex"
 import { Spacer } from "../Spacer"

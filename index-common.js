@@ -1,10 +1,11 @@
 global.__TEST__ = false
 global.__STORYBOOK__ = false
 
-let newIosAppShell = false
-let startStorybook = false
-
-require("./src/lib/ignoreLogs")
+// for more info about metaflags, look [here](/docs/metaflags.md)
+let metaflags = {
+  newIosAppShell: false,
+  startStorybook: false
+}
 
 if (__DEV__) {
   try {
@@ -14,30 +15,34 @@ if (__DEV__) {
   } catch {}
 }
 
-if (startStorybook) {
-  console.log("aaaa")
+require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
+
+if (metaflags.startStorybook) {
   global.__STORYBOOK__ = true
   require("./src/storybook")
-}
+} else {
+  const { Platform } = require("react-native")
 
-const { Platform } = require("react-native")
-
-if (Platform.OS === "ios" && !newIosAppShell) {
-  // old ios
-  require("react-native-gesture-handler")
-  require("react-native-screens").enableScreens()
-  require("./src/lib/ErrorReporting").setupSentry()
-  require("./src/lib/AppRegistry")
-}
-
-if (Platform.OS === "android" || newIosAppShell) {
-  const appName = newIosAppShell ? require("./app.json").appName : "Artsy"
-  require("react-native-gesture-handler")
-  require("react-native-screens").enableScreens()
-  if (!newIosAppShell) {
-    require("./src/lib/utils/PushNotification").configure()
+  if (Platform.OS === "ios" && !newIosAppShell) {
+    // old ios
+    require("react-native-gesture-handler")
+    require("react-native-screens").enableScreens()
+    require("./src/app/AppRegistry")
   }
-  const { AppRegistry } = require("react-native")
-  const { App } = require("./src/lib/AndroidApp")
-  AppRegistry.registerComponent(appName, () => App)
+
+  if (Platform.OS === "android" || newIosAppShell) {
+    const appName = newIosAppShell ? require("./app.json").appName : "Artsy"
+    // polyfills are required for react-tracking to work properly
+    require("core-js/actual")
+    require("react-native-gesture-handler")
+    require("react-native-screens").enableScreens()
+    if (!newIosAppShell) {
+      require("./src/app/utils/PushNotification").configure()
+    }
+    const { AppRegistry } = require("react-native")
+    const { App } = require("./src/app/AndroidApp")
+    AppRegistry.registerComponent(appName, () => App)
+  }
 }
+
+

@@ -1,4 +1,5 @@
 end_of_line = lf # even on windows files
+insert_final_newline = true
 
 [*.{js,jsx,ts,tsx}]
 indent_style = space
