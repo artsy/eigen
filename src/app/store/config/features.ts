@@ -222,7 +222,7 @@ export type DevToggleName = keyof typeof devToggles
 
 export const devToggles = defineDevToggles({
   DTShowQuickAccessInfo: {
-    description: "Show quick access info",
+    description: "Quick Access Info",
   },
   DTDisableEchoRemoteFetch: {
     description: "Disable fetching remote echo",
@@ -237,19 +237,22 @@ export const devToggles = defineDevToggles({
     },
   },
   DTShowAnalyticsVisualiser: {
-    description: "Show analytics visualiser",
+    description: "Analytics visualiser",
   },
   DTEasyMyCollectionArtworkCreation: {
-    description: "Easily add my collection artworks",
+    description: "MyCollection artworks easy add",
   },
   DTShowWebviewIndicator: {
-    description: "Show webview indicator",
+    description: "Webview indicator",
   },
   DTShowInstagramShot: {
-    description: "Show Instagram viewshot",
+    description: "Instagram viewshot debug",
   },
   DTCaptureExceptionsInSentryOnDev: {
-    description: "Enable capturing exceptions in Sentry on DEV",
+    description: "Capture exceptions in Sentry on DEV",
+  },
+  DTFPSCounter: {
+    description: "FPS counter",
   },
 })
 
