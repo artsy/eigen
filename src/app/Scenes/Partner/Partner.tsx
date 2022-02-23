@@ -1,16 +1,15 @@
 import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
-import { RetryErrorBoundaryLegacy } from "lib/Components/RetryErrorBoundary"
-import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Schema, screenTrack } from "lib/utils/track"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
+import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
+import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { Schema, screenTrack } from "app/utils/track"
 import { Separator } from "palette"
 import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { Marquee } from "./Components/Marquee"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
 import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHeader"
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "./Components/PartnerOverview"
@@ -31,14 +30,13 @@ interface Props {
 class Partner extends React.Component<Props> {
   render() {
     const { partner } = this.props
-    const { partnerType, displayFullPartnerPage, categories } = partner
-    const isBlackOwned = categories!.filter((c) => c && c.name === "Black Owned").length > 0
+    const { partnerType, displayFullPartnerPage } = partner
 
     if (!displayFullPartnerPage && partnerType !== "Brand") {
       return (
         <>
           <PartnerHeader partner={partner} />
-          {isBlackOwned ? <Marquee marqueeText="Black Owned" /> : <Separator my={2} />}
+          <Separator my={2} />
           <PartnerSubscriberBanner partner={partner} />
         </>
       )
@@ -49,7 +47,6 @@ class Partner extends React.Component<Props> {
         staticHeaderContent={
           <>
             <PartnerHeader partner={partner} />
-            <Marquee marqueeText="Black Owned" />
           </>
         }
         tabs={[
@@ -86,9 +83,6 @@ export const PartnerContainer = createRefetchContainer(
         slug
         partnerType
         displayFullPartnerPage
-        categories {
-          name
-        }
         profile {
           id
           isFollowed
