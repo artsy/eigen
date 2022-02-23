@@ -16,11 +16,12 @@ export const MyCollectionArtworkPurchaseDetails: React.FC<
     artworkFragment,
     props.artwork
   )
-  if (!!isEmpty(artwork.pricePaid)) {
-    return null
-  }
 
   const { pricePaid } = artwork
+
+  if (isEmpty(pricePaid)) {
+    return null
+  }
 
   return (
     <Flex mb={4}>
