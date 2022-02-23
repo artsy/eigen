@@ -98,11 +98,6 @@ export const features = defineFeatures({
     description: "Enable improved search pills",
     echoFlagKey: "AREnableImprovedSearchPills",
   },
-  AREnableTrove: {
-    readyForRelease: true,
-    description: "Enable Trove in homepage",
-    echoFlagKey: "AREnableTrove",
-  },
   ARShowNetworkUnavailableModal: {
     readyForRelease: true,
     description: "Enable network unavailable modal",
