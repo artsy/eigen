@@ -146,7 +146,7 @@ describe("SizesOptionsScreen", () => {
   describe("Metric Radio Buttons", () => {
     it("should convert successfully the predefined sizes and placeholders on metric change", () => {
       __globalStoreTestUtils__?.injectState({
-        userPreferences: { metric: "in" },
+        userPrefs: { metric: "in" },
       })
       const { queryByText, queryAllByText, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
 

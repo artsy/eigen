@@ -3,7 +3,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 
 export const useLocalizedUnit = () => {
   const userPreferredMetric =
-    GlobalStore.useAppState((state) => state.userPreferences.metric) || LOCALIZED_UNIT
+    GlobalStore.useAppState((state) => state.userPrefs.metric) || LOCALIZED_UNIT
 
   return {
     localizedUnit: userPreferredMetric,

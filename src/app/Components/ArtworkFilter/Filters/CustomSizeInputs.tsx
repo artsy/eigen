@@ -1,4 +1,4 @@
-import { Metric } from "lib/Scenes/Search/UserPreferencesModel"
+import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { Box, Flex, Input, Join, Spacer, Text, useColor } from "palette"
 import React from "react"
 import { TextStyle } from "react-native"

@@ -194,7 +194,7 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   }, [localizedUnit])
 
   const handleMetricChange = (newMetric: Unit) => {
-    GlobalStore.actions.userPreferences.setMetric(newMetric)
+    GlobalStore.actions.userPrefs.setMetric(newMetric)
   }
 
   // Options
