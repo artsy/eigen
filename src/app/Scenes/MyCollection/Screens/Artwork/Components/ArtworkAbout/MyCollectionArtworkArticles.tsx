@@ -22,10 +22,10 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
 
   return (
     <Flex>
-      <Flex flexDirection="row" justifyContent="flex-start">
-        <Text variant="md" mb={2}>{`Articles featuring ${props.artistNames || ""}`}</Text>
+      <Flex flexDirection="row" alignItems="flex-start" mb={2}>
+        <Text variant="md">{`Articles featuring ${props.artistNames || ""}`}</Text>
         {articles.length > 3 && (
-          <Text variant="xs" color="blue100" ml={0.5}>
+          <Text variant="xs" color="blue100" ml={0.5} style={{ top: -3 }}>
             {articles.length}
           </Text>
         )}
