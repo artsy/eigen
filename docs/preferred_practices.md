@@ -134,10 +134,18 @@ Refactoring old containers to use hooks is encouraged.
 
 ### Unit tests
 
-- We prefer `react-test-render` over `enzyme`, and would ultimately like to remove `enzyme`.
-- We prefer `relay-test-utils` over our existing [`MockRelayRenderer`](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/app/tests/MockRelayRenderer.tsx) and [`renderRelayTree`](https://github.com/artsy/eigen/blob/164a2aaace3f018cdc472fdf19950163ff2b198d/src/app/tests/renderRelayTree.tsx).
-- We have native unit tests too. See [`getting_started.md`](./getting_started.md)
-- We don't like snapshot tests; they produce too much churn for too little value. It's okay to test that a component doesn't throw when rendered, but use [`extractText`](https://github.com/artsy/eigen/blob/4c7c9be69ab1c2095f4d2fed11a040b1bde6eba8/src/app/tests/extractText.ts) (or similar) to test the actual component tree.
+We currently use several libraries for testing.
+[`@testing-library/react-native`](https://testing-library.com/docs/react-native-testing-library/intro/#:~:text=The%20React%20Native%20Testing%20Library,that%20encourages%20better%20testing%20practices.) is our preferred way to go.
+But we also use `test-renderer` and `enzyme` (in order of preference), that we'd ultimately like to remove.
+
+- For setting up a test environment and mocking requests:
+
+  - [`relay-test-utils`](https://relay.dev/docs/guides/testing-relay-components/) is the preferred way
+  - [`MockRelayRenderer`](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/tests/MockRelayRenderer.tsx) and
+  - [`renderRelayTree`](https://github.com/artsy/eigen/blob/164a2aaace3f018cdc472fdf19950163ff2b198d/src/lib/tests/renderRelayTree.tsx) are also being used but should gradually be removed.
+
+- We write native unit tests when we work with native code
+- We don't use snapshot tests; they produce too much churn for too little value.
 
 ### Navigation
 
