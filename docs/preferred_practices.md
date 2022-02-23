@@ -1,11 +1,6 @@
 # :world_map: Preferred Practices
 
-This is a living document, expected to be updated regularly, a broad overview of the history and how we prefere to do things on eigen. Here you can find links to
-
-- Tools we use
-- Examples
-- Pull requests with interesting discussions
-- Blog posts
+This is a living document, expected to be updated regularly, a broad overview of the history and how we prefere to do things on eigen. Here you can find links to the tools we use, examples, pull requests with interesting discussions & Blog posts.
 
 ## Contents
 
