@@ -339,7 +339,9 @@ export const MyProfileEditForm: React.FC = () => {
               <Input
                 ref={bioInputRef}
                 title="About"
-                onChangeText={handleChange("bio")}
+                onChangeText={(text) => {
+                  handleChange("bio")(text.trim())
+                }}
                 onBlur={() => validateForm()}
                 error={errors.bio}
                 maxLength={150}
