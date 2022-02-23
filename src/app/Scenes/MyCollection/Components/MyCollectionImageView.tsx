@@ -70,7 +70,9 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
           testID="Image-Local"
           style={{
             width: imageWidth,
-            height: (imageWidth / localImageConsignments.width) * localImageConsignments.height,
+            height:
+              (imageWidth / (localImageConsignments.width || 120)) *
+              (localImageConsignments.height || 120),
           }}
           resizeMode="contain"
           source={{
