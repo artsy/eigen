@@ -9,10 +9,10 @@ Last update: February 2022
 
 - [Examples and Hacks](#examples-and-hacks)
 - [History](#history)
-- [TypeScript](#TypeScript)
 - [File Structure Organization](#file-structure-organization)
-- [Relay](#relay)
 - [Styling](#styling)
+- [TypeScript](#TypeScript)
+- [Relay](#relay)
 - [Testing](#testing)
 - [Navigation](#Navigation)
 - [Analytics and tracking](#analytics-and-tracking)
@@ -35,20 +35,6 @@ The Artsy app was initially written in Objective-C and Swift and React Native wa
   - [Partner](https://github.com/artsy/eigen/blob/main/src/app/Scenes/Partner/Partner.tsx) is a simple top-level component.
   - [PartnerShows](https://github.com/artsy/eigen/blob/main/src/app/Scenes/Partner/Components/PartnerShows.tsx) is a fragment container that uses FlatList to paginate through Relay data.
   - [Search](https://github.com/artsy/eigen/blob/main/src/app/Scenes/Search/Search.tsx) is a functional component that loads data in response to user input.
-
-### TypeScript
-
-We use TypeScript to maximize runtime code safety & prevent runtime bugs.
-
-In April 2020, we adopted [TypeScript's `strict` mode](https://github.com/artsy/eigen/pull/3210).
-
-This disables "implicit any" and requires strict null checks.
-
-The change left comments like this throughout the codebase that we aim to gradually remove.
-
-```ts
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-```
 
 ### File Structure Organization
 
@@ -103,9 +89,23 @@ However, if we have a `Button` folder which exports only one button component, w
 
 ### Styling
 
-We use [palette](src/palette) which uses `styled-system` under the hood.
+We use [palette](src/palette) as our reusable component toolkit, which uses `styled-system` under the hood. [Here](palette.artsy.net) you can see palette in action.
 
-For styling we use custom inline elements like `Flex`, `Box`, `Text`.
+For styling we use custom inline elements like `Flex`, `Box`, `Text`. `Separator` and `Spacer` are also useful elements.
+
+### TypeScript
+
+We use TypeScript to maximize runtime code safety & prevent runtime bugs.
+
+In April 2020, we adopted [TypeScript's `strict` mode](https://github.com/artsy/eigen/pull/3210).
+
+This disables "implicit any" and requires strict null checks.
+
+The change left comments like this throughout the codebase that we aim to gradually remove.
+
+```ts
+// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+```
 
 ### Relay
 
@@ -137,6 +137,6 @@ We use `react-navigation` for navigating between screens, navigate function and 
 
 See our documentation on adding a route for more details: [Adding a new route](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_route.md).
 
-#### Analytics and tracking
+### Analytics and tracking
 
 Implementing analytics and tracking [here](./analytics_and_tracking.md).
