@@ -96,7 +96,6 @@ const Home = (props: Props) => {
     "ARHomeAuctionResultsByFollowedArtists"
   )
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
-  const enableTrove = useFeatureFlag("AREnableTrove")
 
   const newWorksTreatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
   const artistRecommendationsTreatment = useTreatment("HomeScreenArtistRecommendations")
@@ -170,7 +169,7 @@ const Home = (props: Props) => {
       type: "shows",
       data: showsByFollowedArtists,
     },
-    { title: "Trove", type: "trove", data: homePageBelow, hidden: !enableTrove },
+    { title: "Trove", type: "trove", data: homePageBelow },
     {
       title: "Viewing Rooms",
       type: "viewing-rooms",
