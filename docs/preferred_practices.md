@@ -39,9 +39,9 @@ The Artsy app was initially written in Objective-C and Swift and React Native wa
 ### File Structure Organization
 
 The React Nativa parts of the app live in `src/` and most of our components on `app/`.
-Within this folder things can be a bit of a mess and we are working on improving that.
+Within this folder things can be a bit messy 👀 but we are working on improving that!
 
-Files that export a component end in `.tsx`, files that don't export a component end in `.ts` by default.
+Files that export a JSX component end in `.tsx` and files that don't end in `.ts` by default.
 
 We use **PascalCase** for **Components and Component Folders**, but keep everything else within the Component folder(eg. mutations, state, utils) **camelCase**.
 Test files follow the same pattern.
@@ -89,7 +89,7 @@ However, if we have a `Button` folder which exports only one button component, w
 
 ### Styling
 
-We use [palette](src/palette) as our reusable component toolkit, which uses `styled-system` under the hood. [Here](palette.artsy.net) you can see palette in action.
+We use [palette](src/palette) as our reusable component toolkit, which uses `styled-system` under the hood. [Here](palette.artsy.net) you can see palette in action!
 
 For styling we use custom inline elements like `Flex`, `Box`, `Text`. `Separator` and `Spacer` are also useful elements.
 
@@ -109,9 +109,9 @@ The change left comments like this throughout the codebase that we aim to gradua
 
 ### Relay
 
-Artsy's GraphQL server is [Metaphysics](https://github.com/artsy/metaphysics). Requests to Metaphysics are made through [Relay](https://relay.dev).
+Artsy's GraphQL server is [Metaphysics](https://github.com/artsy/metaphysics) and requests to Metaphysics are made through [Relay](https://relay.dev).
 
-We prefer using Relay hooks over relay containers (Higher Order Components). Refactoring old containers in favour of using hooks is encouraged.
+We prefer using Relay hooks over relay containers (Higher Order Components). Refactoring components using HoCs in favour of hooks is encouraged.
 
 - [Why Artsy uses Relay](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#Relay)
 - [Artsy's Relay Workshop](https://github.com/artsy/relay-workshop)
