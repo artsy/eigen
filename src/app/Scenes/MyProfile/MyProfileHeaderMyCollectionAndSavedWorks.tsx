@@ -78,8 +78,6 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
 
   const userProfileImagePath = localImage || me?.icon?.url
 
-  console.log("me.bio => ", me.bio)
-
   return (
     <>
       <FancyModalHeader
