@@ -1,5 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { navigate } from "app/navigation/navigate"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Box, Button, Flex, Spacer, Text } from "palette"
 import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
 import React from "react"
@@ -34,6 +35,7 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
           haptic
           maxWidth={540}
           onPress={() => {
+            GlobalStore.actions.artworkSubmission.submission.resetSessionStateAll()
             navigation.replace("SubmitArtworkScreen")
           }}
         >
