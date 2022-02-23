@@ -1,6 +1,7 @@
 # :world_map: Preferred Practices
 
-This is a living document, expected to be updated regularly, a broad overview of the history and how we prefere to do things on eigen. Here you can find links to the tools we use, examples, pull requests with interesting discussions & blog posts.
+This is a living document, expected to be updated regularly, with a broad overview of the history and how we prefere to do things on eigen.
+Here you can find links to the tools we use, examples, pull requests with interesting discussions & blog posts.
 
 ## Contents
 
@@ -9,13 +10,10 @@ This is a living document, expected to be updated regularly, a broad overview of
 - [TypeScript](#TypeScript)
 - [File Structure Organization](#file-structure-organization)
 - [Relay](#relay)
-- [Prefer Relay containers (Higher Order Components) over Hooks](#prefer-relay-containers--higher-order-components--over-hooks)
-- [styling](#styling)
-- [Write unit tests for new components](#write-unit-tests-for-new-components)
+- [Styling](#styling)
+- [Testing](#testing)
 - [Navigation](#Navigation)
 - [Analytics and tracking](#analytics-and-tracking)
-  - [Follow the tracking docs and examples](#follow-the-tracking-docs-and-examples)
-- [Miscellaneous](#miscellaneous)
 
 ### Examples & Hacks
 
@@ -36,11 +34,11 @@ The app was initially written in Objective-C and Swift and React Native was adde
   - [PartnerShows](https://github.com/artsy/eigen/blob/main/src/app/Scenes/Partner/Components/PartnerShows.tsx) is a fragment container that uses FlatList to paginate through Relay data.
   - [Search](https://github.com/artsy/eigen/blob/main/src/app/Scenes/Search/Search.tsx) is a functional component that loads data in response to user input.
 
-We used to have many different `renderX` functions throughout our components, but today we prefer to have a single `render()` function in a component. [See this PR](https://github.com/artsy/eigen/pull/3220) for our rationale and a comparison of approaches.
-
 ### TypeScript
 
-We use TypeScript to maximize runtime code safety & prevent runtime bugs. In April 2020, we adopted [TypeScript's `strict` mode](https://github.com/artsy/eigen/pull/3210).
+We use TypeScript to maximize runtime code safety & prevent runtime bugs.
+
+In April 2020, we adopted [TypeScript's `strict` mode](https://github.com/artsy/eigen/pull/3210).
 
 This disables "implicit any" and require strict null checks. The change left a lot of comments like this throughout the codebase:
 
@@ -113,21 +111,15 @@ For styling we use custom inline elements like `Flex`, `Box`, `Text`.
 
 ### Relay
 
-[Metaphysics](https://github.com/artsy/metaphysics) is Artsy's GraphQL server. Requests to Metaphysics are made through [Relay](https://relay.dev).
+Artsy's GraphQL server is [Metaphysics](https://github.com/artsy/metaphysics). Requests to Metaphysics are made through [Relay](https://relay.dev).
+
+We prefer using Relay hooks over relay containers (Higher Order Components). Refactoring old containers to use hooks is encouraged.
 
 - [Why Artsy uses Relay](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#Relay)
 - [Artsy's Relay Workshop](https://github.com/artsy/relay-workshop)
-- Collections
-  - [A top-level Relay component](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/app/Scenes/Collection/Collection.tsx)
-  - [A fragment container](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/app/Scenes/Collection/Components/FeaturedArtists.tsx)
-
-#### Prefer Relay hooks over relay containers (Higher Order Components)
-
-Refactoring old containers to use hooks is encouraged.
-
 - [Relay Container approach](https://github.com/artsy/eigen/blob/21fbf9e24eaa281f3e16609da5d38a9fb62a5449/src/app/Scenes/MyAccount/MyAccount.tsx#L70)
 
-### Unit tests
+### Testing
 
 We currently use the following libraries for testing.
 [`@testing-library/react-native`](https://testing-library.com/docs/react-native-testing-library/intro/#:~:text=The%20React%20Native%20Testing%20Library,that%20encourages%20better%20testing%20practices.) is our preferred way to go.
