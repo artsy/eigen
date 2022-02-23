@@ -86,7 +86,7 @@ if ENV['INCLUDE_METADATA']
   podspec.attributes_hash['release_date'] = DateTime.now.strftime('%h %d, %Y')
   podspec.attributes_hash['sha'] = `git rev-parse HEAD`.strip
   podspec.attributes_hash['react_native_version'] = react_native_version
-  podspec.attributes_hash['app_registry'] = File.read('./src/lib/AppRegistry.tsx').scan(/AppRegistry.registerComponent\(\"(.*)\"/).flatten
+  podspec.attributes_hash['app_registry'] = File.read('./src/app/AppRegistry.tsx').scan(/AppRegistry.registerComponent\(\"(.*)\"/).flatten
 end
 
 podspec

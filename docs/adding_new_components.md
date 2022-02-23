@@ -4,7 +4,7 @@ Adding a new component involves a few pieces of work! But don't worry, it's not 
 
 ## Create the React Native Component
 
-Create a new file in the `src/lib/Components` directory. You'll likely need to create a subdirectory with a good name, too. Create a basic component.
+Create a new file in the `src/app/Components` directory. You'll likely need to create a subdirectory with a good name, too. Create a basic component.
 
 ```tsx
 import { Serif } from "palette"

@@ -9,7 +9,7 @@
 
 
 @implementation ARStateKey
-// These should match the values in src/lib/store/NativeModel.ts
+// These should match the values in src/app/store/NativeModel.ts
 + (NSString *)userID { return @"userID"; }
 + (NSString *)authenticationToken { return @"authenticationToken"; }
 + (NSString *)launchCount { return @"launchCount"; }
@@ -42,7 +42,7 @@
 @end
 
 // event keys
-// These should match the values in src/lib/store/NativeModel.ts
+// These should match the values in src/app/store/NativeModel.ts
 static NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
 static NSString *modalDismissed = @"MODAL_DISMISSED";
 static NSString *stateChanged = @"STATE_CHANGED";

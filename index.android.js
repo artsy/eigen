@@ -12,7 +12,7 @@ if (__DEV__) {
   } catch {}
 }
 
-require("./src/lib/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
+require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
 
 if (metaflags.startStorybook) {
   global.__STORYBOOK__ = true
@@ -22,8 +22,8 @@ if (metaflags.startStorybook) {
   require("core-js/actual")
   require("react-native-gesture-handler")
   require("react-native-screens").enableScreens()
-  require("./src/lib/utils/PushNotification").configure()
+  require("./src/app/utils/PushNotification").configure()
   const { AppRegistry } = require("react-native")
-  const { App } = require("./src/lib/AndroidApp")
+  const { App } = require("./src/app/AndroidApp")
   AppRegistry.registerComponent("Artsy", () => App)
 }

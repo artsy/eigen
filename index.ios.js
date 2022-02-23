@@ -12,7 +12,7 @@ if (__DEV__) {
   } catch {}
 }
 
-require("./src/lib/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
+require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
 
 if (metaflags.startStorybook) {
   global.__STORYBOOK__ = true
@@ -20,5 +20,7 @@ if (metaflags.startStorybook) {
 } else {
   require("react-native-gesture-handler")
   require("react-native-screens").enableScreens()
-  require("./src/lib/AppRegistry")
+  require("./src/app/AppRegistry")
 }
+
+// add a comment

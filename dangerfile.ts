@@ -62,7 +62,7 @@ const preventUsingTestRenderer = () => {
     .filter((filename) => {
       const content = fs.readFileSync(filename).toString()
       return (
-        content.includes('from "lib/tests/renderWithWrappers"') &&
+        content.includes('from "app/tests/renderWithWrappers"') &&
         (content.includes("renderWithWrappers ") || content.includes("renderWithWrappers,"))
       )
     })
@@ -81,7 +81,7 @@ const preventUsingRenderRelayTree = () => {
     .filter(testOnlyFilter)
     .filter((filename) => {
       const content = fs.readFileSync(filename).toString()
-      return content.includes('from "lib/tests/renderRelayTree"')
+      return content.includes('from "app/tests/renderRelayTree"')
     })
   if (newRenderRelayTreeImports.length > 0) {
     warn(`We are trying to migrate away from \`renderRelayTree\` towards \`relay-test-utils\`, but found Enzyme imports in the following new unit test files:
@@ -142,7 +142,9 @@ export const validatePRChangelog = () => {
 
   if (res.type === "error") {
     console.log("Something went wrong while parsing the PR description")
-    warn("❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**")
+    warn(
+      "❌ **An error occurred while validating your changelog, please make sure you provided a valid changelog.**"
+    )
     return
   }
 
@@ -162,7 +164,9 @@ export const validatePRChangelog = () => {
     "### This PR contains the following changes:\n" +
     Object.entries(pickBy(changedSections, (changesArray) => changesArray.length))
       .map(([section, sectionValue]) => {
-        return `\n- ${changelogTemplateSections[section as keyof typeof changedSections]} (${sectionValue})`
+        return `\n- ${
+          changelogTemplateSections[section as keyof typeof changedSections]
+        } (${sectionValue})`
       })
       .join("")
 

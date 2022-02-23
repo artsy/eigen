@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
-import { LinkText } from "lib/Components/Text/LinkText"
+import { LinkText } from "app/Components/Text/LinkText"
 import { Text } from "palette"
 import React from "react"
 import { withTheme } from "storybook/decorators"

@@ -1,8 +1,8 @@
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, FlexProps } from "../Flex"
 import { Text, useTextStyleForPalette } from "../Text"
 
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { IconProps, Spacer, useColor } from "palette"
 import React, { ReactNode, useEffect, useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"

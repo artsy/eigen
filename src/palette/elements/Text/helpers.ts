@@ -1,4 +1,4 @@
-import { NoUndefined } from "lib/utils/types"
+import { NoUndefined } from "app/utils/types"
 import { useTheme } from "palette"
 import { isThemeV3 } from "palette/Theme"
 import { TextStyle } from "react-native"
