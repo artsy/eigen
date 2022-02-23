@@ -38,7 +38,7 @@ The Artsy app was initially written in Objective-C and Swift and React Native wa
 
 ### File Structure Organization
 
-The React Nativa parts of the app live in `src/` and most of our components on `lib/`.
+The React Nativa parts of the app live in `src/` and most of our components on `app/`.
 Within this folder things can be a bit of a mess and we are working on improving that.
 
 Files that export a component end in `.tsx`, files that don't export a component end in `.ts` by default.
