@@ -1,6 +1,7 @@
 import { fireEvent, within } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { Checkbox } from "palette"
 import React from "react"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
@@ -42,5 +43,19 @@ describe("ArtworkFilterOptionItem", () => {
     fireEvent.press(getByText("Rarity"))
 
     expect(onPressMock).toBeCalled()
+  })
+
+  it("renders the right accessory item if passed as props instead of arrow icon", () => {
+    const RightAccessoryItem = () => <Checkbox checked testID="checktestid" />
+    const treeWithAccessory = renderWithWrappersTL(
+      <TestWrapper RightAccessoryItem={<RightAccessoryItem />} />
+    )
+
+    const treeWithoutAccessory = renderWithWrappersTL(<TestWrapper />)
+
+    expect(treeWithAccessory.queryByTestId("checktestid")).toBeDefined()
+    expect(treeWithAccessory.queryByTestId("ArtworkFilterOptionItemArrowIcon")).toBe(null)
+
+    expect(treeWithoutAccessory.queryByTestId("ArtworkFilterOptionItemArrowIcon")).toBeDefined()
   })
 })

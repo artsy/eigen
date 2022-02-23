@@ -1,15 +1,18 @@
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Check, Checkbox } from "palette"
-import React, { useEffect } from "react"
+import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { FILTER_OPTION_ITEM_PRESSED_EVENT_KEY, filterOptionItemPressedEvent } from ".."
 import { FilterParamName, getUnitedSelectedAndAppliedFilters } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "../ArtworkFilterStore"
-import { ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
+import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
-export const ShowOnlySubmittedArtworksRightAccessoryItem: React.FC<
-  ArtworkFilterOptionItemProps
-> = ({ item }) => {
+export interface ArtworkFilterOptionCheckboxItemProps
+  extends Omit<ArtworkFilterOptionItemProps, "onPress"> {}
+
+export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckboxItemProps> = ({
+  item,
+  count,
+}) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
   )
@@ -28,13 +31,11 @@ export const ShowOnlySubmittedArtworksRightAccessoryItem: React.FC<
     previouslyAppliedFilters,
   }).find((f) => f.paramName === item.filterType)?.paramValue
 
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
-
-  const setValueOnFilters = (showOnlySubmitted: boolean) => {
+  const setValueOnFilters = (value: boolean) => {
     selectFiltersAction({
       paramName: FilterParamName.showOnlySubmittedArtworks,
-      paramValue: showOnlySubmitted,
-      displayText: "Show Only Submitted Artworks",
+      paramValue: value,
+      displayText: item.displayText,
     })
   }
 
@@ -43,27 +44,26 @@ export const ShowOnlySubmittedArtworksRightAccessoryItem: React.FC<
     setValueOnFilters(nextValue)
   }
 
-  function consumePressEvent(displayText: string) {
-    if (displayText === item.displayText) {
-      onPress()
-    }
-  }
+  return (
+    <ArtworkFilterOptionItem
+      item={item}
+      onPress={onPress}
+      count={count}
+      RightAccessoryItem={<CheckboxItem onPress={onPress} checked={checked} />}
+    />
+  )
+}
 
-  useEffect(() => {
-    filterOptionItemPressedEvent.addListener(
-      FILTER_OPTION_ITEM_PRESSED_EVENT_KEY,
-      consumePressEvent
-    )
-    return () => {
-      filterOptionItemPressedEvent.removeListener(
-        FILTER_OPTION_ITEM_PRESSED_EVENT_KEY,
-        consumePressEvent
-      )
-    }
-  }, [checked])
-
+const CheckboxItem = ({ checked, onPress }: { checked: boolean; onPress: () => void }) => {
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   if (isEnabledImprovedAlertsFlow) {
-    return <Checkbox checked={checked} onPress={onPress} />
+    return (
+      <Checkbox
+        checked={checked}
+        onPress={onPress}
+        testID="ArtworkFilterOptionCheckboxItemCheckbox"
+      />
+    )
   }
   return (
     <TouchableWithoutFeedback onPress={onPress}>

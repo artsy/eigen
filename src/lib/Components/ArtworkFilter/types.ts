@@ -1,6 +1,5 @@
-import { FunctionComponent } from "react"
+import { FilterConfigTypes } from "."
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
-import { ArtworkFilterOptionItemProps } from "./components/ArtworkFilterOptionItem"
 
 export type FilterScreen =
   | "additionalGeneIDs"
@@ -20,17 +19,19 @@ export type FilterScreen =
   | "priceRange"
   | "organizations"
   | "sizes"
-  | "showOnlySubmittedArtworks"
   | "sort"
   | "viewAs"
   | "waysToBuy"
   | "year"
 
+// Please add other filter screen item that uses a checkbox as right accessory item here
+export type FilterScreenCheckboxItem = "showOnlySubmittedArtworks"
+
 export interface FilterDisplayConfig {
-  filterType: FilterScreen
+  configType?: FilterConfigTypes // optional to specify whether the FilterDisplayConfig is FilterScreen or FilterScreenCheckboxItem or others to come
+  filterType: FilterScreen | FilterScreenCheckboxItem
   displayText: string
   ScreenComponent: keyof ArtworkFilterNavigationStack
-  RightAccessoryItem?: FunctionComponent<ArtworkFilterOptionItemProps>
 
   // for `local` filtering
   values?: any[]

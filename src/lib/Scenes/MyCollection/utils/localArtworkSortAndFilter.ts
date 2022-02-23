@@ -1,3 +1,4 @@
+import { FilterConfigTypes } from "lib/Components/ArtworkFilter"
 import {
   FilterArray,
   FilterData,
@@ -5,7 +6,6 @@ import {
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ShowOnlySubmittedArtworksRightAccessoryItem } from "lib/Components/ArtworkFilter/components/ShowOnlySubmittedArtworksRightAccessoryItem"
 import { FilterDisplayConfig } from "lib/Components/ArtworkFilter/types"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { normalizeText } from "lib/utils/normalizeText"
@@ -101,10 +101,10 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
     setFilterOptions(
       compact([
         allowOnlySubmittedArtworks && {
+          configType: FilterConfigTypes.FilterScreenCheckboxItem,
           displayText: "Show Only Submitted Artworks",
           filterType: "showOnlySubmittedArtworks",
           ScreenComponent: "FilterOptionsScreen", // using FilterOptionsScreen so users remain on FilterOptionsScreen if they tap on it
-          RightAccessoryItem: ShowOnlySubmittedArtworksRightAccessoryItem,
           // tslint:disable-next-line: no-shadowed-variable
           localSortAndFilter: (artworks, showOnlySubmittedArtworks: boolean) => {
             if (!showOnlySubmittedArtworks) {
