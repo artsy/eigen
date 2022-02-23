@@ -14,6 +14,7 @@ import LoadingModal from "app/Components/Modals/LoadingModal"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
+import { useHasBeenTrue } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
@@ -160,6 +161,9 @@ export const MyProfileEditForm: React.FC = () => {
       },
       validationSchema: editMyProfileSchema,
     })
+
+  // We want to keep the "Save" button enabled as soon as the user edits an input
+  const touched = useHasBeenTrue(dirty)
 
   const chooseImageHandler = () => {
     showPhotoActionSheet(showActionSheetWithOptions, true, false)
@@ -353,7 +357,7 @@ export const MyProfileEditForm: React.FC = () => {
                 />
               )}
 
-              <Button flex={1} disabled={!dirty} onPress={handleSubmit} mb={2}>
+              <Button flex={1} disabled={!touched} onPress={handleSubmit} mb={2}>
                 Save
               </Button>
             </Join>
