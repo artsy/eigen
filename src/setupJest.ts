@@ -593,24 +593,28 @@ jest.mock("react-native-gesture-handler", () => {
   }
 })
 
-jest.mock("react-native-config", () => ({
-  ARTSY_DEV_API_CLIENT_SECRET: "artsy_api_client_secret",
-  ARTSY_DEV_API_CLIENT_KEY: "artsy_api_client_key",
-  ARTSY_PROD_API_CLIENT_SECRET: "artsy_api_client_secret",
-  ARTSY_PROD_API_CLIENT_KEY: "artsy_api_client_key",
-  ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
-  SEGMENT_PRODUCTION_WRITE_KEY_IOS: "segment_production_write_key_ios",
-  SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: "segment_production_write_key_android",
-  SEGMENT_STAGING_WRITE_KEY_IOS: "segment_staging_write_key_ios",
-  SEGMENT_STAGING_WRITE_KEY_ANDROID: "segment_staging_write_key_android",
-  SENTRY_DSN: "sentry_dsn",
-  GOOGLE_MAPS_API_KEY: "google_maps_api_key",
-  MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
-  UNLEASH_PROXY_CLIENT_KEY_PRODUCTION: "unleash_proxy_client_key_production", // pragma: allowlist secret
-  UNLEASH_PROXY_CLIENT_KEY_STAGING: "unleash_proxy_client_key_staging", // pragma: allowlist secret
-  UNLEASH_PROXY_URL_PRODUCTION: "unleash_proxy_url_production", // pragma: allowlist secret
-  UNLEASH_PROXY_URL_STAGING: "unleash_proxy_url_staging", // pragma: allowlist secret
-}))
+jest.mock("react-native-config", () => {
+  const mockConfig = {
+    ARTSY_DEV_API_CLIENT_SECRET: "artsy_api_client_secret",
+    ARTSY_DEV_API_CLIENT_KEY: "artsy_api_client_key",
+    ARTSY_PROD_API_CLIENT_SECRET: "artsy_api_client_secret",
+    ARTSY_PROD_API_CLIENT_KEY: "artsy_api_client_key",
+    ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
+    SEGMENT_PRODUCTION_WRITE_KEY_IOS: "segment_production_write_key_ios",
+    SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: "segment_production_write_key_android",
+    SEGMENT_STAGING_WRITE_KEY_IOS: "segment_staging_write_key_ios",
+    SEGMENT_STAGING_WRITE_KEY_ANDROID: "segment_staging_write_key_android",
+    SENTRY_DSN: "sentry_dsn",
+    GOOGLE_MAPS_API_KEY: "google_maps_api_key",
+    MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
+    UNLEASH_PROXY_CLIENT_KEY_PRODUCTION: "unleash_proxy_client_key_production", // pragma: allowlist secret
+    UNLEASH_PROXY_CLIENT_KEY_STAGING: "unleash_proxy_client_key_staging", // pragma: allowlist secret
+    UNLEASH_PROXY_URL_PRODUCTION: "unleash_proxy_url_production", // pragma: allowlist secret
+    UNLEASH_PROXY_URL_STAGING: "unleash_proxy_url_staging", // pragma: allowlist secret
+  }
+  // support both default and named export
+  return { ...mockConfig, Config: mockConfig }
+})
 
 jest.mock("react-native-view-shot", () => ({}))
 
