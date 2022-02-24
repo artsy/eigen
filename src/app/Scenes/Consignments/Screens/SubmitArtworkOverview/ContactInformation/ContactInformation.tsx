@@ -4,7 +4,7 @@ import { ContactInformationQueryRendererQuery } from "__generated__/ContactInfor
 import { PhoneInput } from "app/Components/PhoneInput/PhoneInput"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useFormik } from "formik"
+import { Formik } from "formik"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -47,58 +47,59 @@ export const ContactInformation: React.FC<{
   const userEmail = me?.email || ""
   const userPhone = me?.phoneNumber?.isValid ? me?.phoneNumber?.originalNumber || "" : ""
 
-  const { handleChange, handleBlur, handleSubmit, values, errors, isValid, touched } =
-    useFormik<ContactInformationFormModel>({
-      validateOnMount: true,
-      initialValues: {
+  return (
+    <Formik<ContactInformationFormModel>
+      initialValues={{
         userName,
         userEmail,
         userPhone,
-      },
-      onSubmit: handleFormSubmit,
-      validationSchema: contactInformationValidationSchema,
-    })
-
-  return (
-    <Flex p={1} mt={1}>
-      <Text color="black60">
-        We will only use these details to contact you regarding your submission.
-      </Text>
-      <Spacer mt={4} />
-      <Input
-        title="Name"
-        placeholder="Your Full Name"
-        onChangeText={handleChange("userName")}
-        value={values.userName}
-        onBlur={handleBlur("userName")}
-        error={touched.userName ? errors.userName : undefined}
-      />
-      <Spacer mt={4} />
-      <Input
-        title="Email"
-        placeholder="Your Email Address"
-        onChangeText={handleChange("userEmail")}
-        value={values.userEmail}
-        onBlur={handleBlur("userEmail")}
-        error={touched.userEmail ? errors.userEmail : undefined}
-      />
-      <Spacer mt={4} />
-      <PhoneInput
-        style={{ flex: 1 }}
-        title="Phone number"
-        placeholder="(000) 000-0000"
-        onChangeText={handleChange("userPhone")}
-        value={values.userPhone}
-        setValidation={() => {
-          // do nothing
-        }}
-        onBlur={handleBlur("userPhone")}
-      />
-      <Spacer mt={6} />
-      <CTAButton onPress={handleSubmit} disabled={!isValid}>
-        Submit Artwork
-      </CTAButton>
-    </Flex>
+      }}
+      onSubmit={handleFormSubmit}
+      validationSchema={contactInformationValidationSchema}
+      validateOnMount
+    >
+      {({ values, isValid, touched, errors, handleChange, handleBlur, handleSubmit }) => (
+        <Flex p={1} mt={1}>
+          <Text color="black60">
+            We will only use these details to contact you regarding your submission.
+          </Text>
+          <Spacer mt={4} />
+          <Input
+            title="Name"
+            placeholder="Your Full Name"
+            onChangeText={handleChange("userName")}
+            value={values.userName}
+            onBlur={handleBlur("userName")}
+            error={touched.userName ? errors.userName : undefined}
+          />
+          <Spacer mt={4} />
+          <Input
+            title="Email"
+            placeholder="Your Email Address"
+            onChangeText={handleChange("userEmail")}
+            value={values.userEmail}
+            onBlur={handleBlur("userEmail")}
+            error={touched.userEmail ? errors.userEmail : undefined}
+          />
+          <Spacer mt={4} />
+          <PhoneInput
+            style={{ flex: 1 }}
+            title="Phone number"
+            placeholder="(000) 000-0000"
+            onChangeText={handleChange("userPhone")}
+            value={values.userPhone}
+            setValidation={() => {
+              // do nothing
+            }}
+            onBlur={handleBlur("userPhone")}
+          />
+          <Spacer mt={6} />
+          <CTAButton onPress={handleSubmit} disabled={!isValid}>
+            Submit Artwork
+          </CTAButton>
+        </Flex>
+      )}
+    </Formik>
   )
 }
 
