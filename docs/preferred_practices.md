@@ -140,8 +140,10 @@ But we also use `test-renderer` and `enzyme` (in order of preference), that we'd
 
 We use `react-navigation` for navigating between screens, navigate function and new routes.
 
+In iOS we use the Native Switchboard.
+
 See our documentation on adding a route for more details: [Adding a new route](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_route.md).
 
 ### Analytics and tracking
 
-Implementing analytics and tracking [here](./analytics_and_tracking.md).
+In React-native, we use react-tracking as a wrapper for the tracking events we send to Segment. You can read more about the implementation [here](./analytics_and_tracking.md).
