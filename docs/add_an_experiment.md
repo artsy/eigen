@@ -4,8 +4,7 @@ We are using Unleash to run A/B Testing experiments at Artsy. In order to create
 
 ## Adding an experiment to Unleash dashboard
 
-1. Log into Unleash using your personal Artsy account, then find the admin account in 1Password.
-   `https://unleash.artsy.net/projects/default`
+1. To login to our [Unleash instance](https://unleash.artsy.net/projects/default), use your Artsy Google account to proceed past the Cloudflare Access prompt and then use the shared admin credentials in 1Password to login to the dashboard.
 2. Tap on **New feature toggle** and fill in required details.
 3. Tap on **Variants** and define your different variations that users can get.
 4. Tap on **Strategies** and define how many/who can be part of that experiment.
