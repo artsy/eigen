@@ -606,6 +606,10 @@ jest.mock("react-native-config", () => ({
   SENTRY_DSN: "sentry_dsn",
   GOOGLE_MAPS_API_KEY: "google_maps_api_key",
   MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
+  UNLEASH_PROXY_CLIENT_KEY_PRODUCTION: "unleash_proxy_client_key_production", // pragma: allowlist secret
+  UNLEASH_PROXY_CLIENT_KEY_STAGING: "unleash_proxy_client_key_staging", // pragma: allowlist secret
+  UNLEASH_PROXY_URL_PRODUCTION: "unleash_proxy_url_production", // pragma: allowlist secret
+  UNLEASH_PROXY_URL_STAGING: "unleash_proxy_url_staging", // pragma: allowlist secret
 }))
 
 jest.mock("react-native-view-shot", () => ({}))
