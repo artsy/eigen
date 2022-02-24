@@ -40,7 +40,7 @@ export const EditionSelectBox: React.FC<Props> = ({ edition, selected, onPress }
           <Text color={available ? "black60" : "black30"}>{edition.editionOf}</Text>
         </Flex>
         {available ? (
-          <Text>{edition.listPrice?.display || "Contact for price"}</Text>
+          <Text>{edition.listPrice?.display || "Price on Request"}</Text>
         ) : (
           <Flex flexDirection="row" alignItems="baseline">
             <UnavailableIndicator />

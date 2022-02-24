@@ -93,7 +93,7 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.text()).toContain("Contact gallery")
+    expect(commercialButtons.text()).toContain("Contact Gallery")
   })
 
   it("renders Make Offer button if isOfferable", async () => {
@@ -108,7 +108,7 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.text()).toContain("Make offer")
+    expect(commercialButtons.text()).toContain("Make an Offer")
   })
 
   it("renders Buy Now button if isAcquireable", async () => {
@@ -123,7 +123,7 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.text()).toContain("Buy now")
+    expect(commercialButtons.text()).toContain("Purchase")
   })
 
   it("renders Bid button if isInAuction & isBiddable", async () => {
@@ -174,8 +174,8 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Buy now")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Make offer")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Purchase")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Make an Offer")
   })
 
   it("commits the Buy Now mutation", async () => {
@@ -271,7 +271,7 @@ describe("CommercialButtons", () => {
       artwork,
     })
     expect(commercialButtons.find(Button).at(0).text()).toContain("Bid")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Buy now $8000")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Purchase $8000")
   })
 
   it("doesn't render the Buy Now or Bid buttons when isInAuction and isBuyNowable but has sold via buy now", async () => {
@@ -304,7 +304,7 @@ describe("CommercialButtons", () => {
     expect(commercialButtons.find(Button).length).toEqual(0)
   })
 
-  it("renders both Make Offer and Contact Gallery buttons when isOfferable and isInquiriable", async () => {
+  it("renders both Make an Offer and Contact Gallery buttons when isOfferable and isInquiriable", async () => {
     const artwork = {
       ...ArtworkFixture,
       isOfferable: true,
@@ -315,7 +315,7 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Make offer")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact gallery")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Make an Offer")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact Gallery")
   })
 })

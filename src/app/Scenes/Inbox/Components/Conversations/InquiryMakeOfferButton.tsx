@@ -137,7 +137,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
         variant={this.props.variant}
         haptic
       >
-        {this.props.buttonText ? this.props.buttonText : "Make offer"}
+        {this.props.buttonText ? this.props.buttonText : "Make an Offer"}
       </Button>
     )
   }
