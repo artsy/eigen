@@ -1,13 +1,10 @@
 import { GeneTestsQuery } from "__generated__/GeneTestsQuery.graphql"
-import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
 import About from "app/Components/Gene/About"
 import { GeneArtworks } from "app/Components/Gene/GeneArtworks"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { TouchableHighlightColor } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { Gene } from "./Gene"
 
@@ -65,14 +62,5 @@ describe("Gene", () => {
 
     expect(tree.root.findAllByType(GeneArtworks)).toHaveLength(1)
     expect(tree.root.findAllByType(About)).toHaveLength(1)
-  })
-
-  it("renders filter modal", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironmentPayload(environment)
-
-    act(() => tree.root.findByType(TouchableHighlightColor).props.onPress())
-
-    expect(tree.root.findAllByType(ArtworkFilterOptionsScreen)).toHaveLength(1)
   })
 })

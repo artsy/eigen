@@ -6,6 +6,7 @@ import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+import { flushPromiseQueue } from "../../tests/flushPromiseQueue"
 import { GeneArtworksPaginationContainer } from "./GeneArtworks"
 
 jest.unmock("react-relay")
@@ -63,9 +64,18 @@ describe("GeneArtworks", () => {
     mockEnvironmentPayload(environment)
   })
 
-  it("renders filter header", () => {
+  it("renders filter header", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(environment)
+    mockEnvironmentPayload(environment, {
+      FilterArtworksConnection() {
+        return {
+          counts: {
+            total: 10,
+          },
+        }
+      },
+    })
+    await flushPromiseQueue()
 
     expect(getByText("Sort & Filter")).toBeTruthy()
   })
@@ -86,7 +96,7 @@ describe("GeneArtworks", () => {
     expect(getByText("title-1")).toBeTruthy()
   })
 
-  it("renders empty artworks grid view", () => {
+  it("renders empty artworks grid view", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment, {
       FilterArtworksConnection() {
@@ -98,6 +108,7 @@ describe("GeneArtworks", () => {
       },
     })
 
+    await flushPromiseQueue()
     // Change sort filter
     fireEvent.press(getByText("Sort & Filter"))
     fireEvent.press(getByText("Sort By"))

@@ -3,16 +3,18 @@ import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js
 import "@testing-library/jest-native/extend-expect"
 import "jest-extended"
 
+// @ts-ignore
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
 import chalk from "chalk"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
-// @ts-ignore
-import Adapter from "enzyme-adapter-react-16"
 import expect from "expect"
 import { format } from "util"
 
 import "app/tests/renderUntil"
 Enzyme.configure({ adapter: new Adapter() })
+
+Settings.defaultZone = "America/New_York"
 
 // Waiting on https://github.com/thymikee/snapshot-diff/pull/17
 import diff from "snapshot-diff"
@@ -165,14 +167,18 @@ const originalConsoleError = console.error
 // TODO: Remove once we're no longer using JSDOM for enzyme static rendering.
 console.error = (message?: any) => {
   if (
-    typeof message === "string" &&
-    (message.includes("is using uppercase HTML. Always use lowercase HTML tags in React.") ||
-      /Warning: React does not recognize the `\w+` prop on a DOM element\./.test(message) ||
-      /Warning: The tag <\w+> is unrecognized in this browser\./.test(message) ||
-      /Warning: Unknown event handler property `\w+`\./.test(message) ||
-      /Warning: An update to [\w\s]+ inside a test was not wrapped in act/.test(message) ||
-      /Warning: Received `\w+` for a non-boolean attribute `\w+`\./.test(message) ||
-      /Warning: [\w\s]+ has been extracted from react-native core/.test(message))
+    (typeof message === "string" &&
+      (message.includes("is using uppercase HTML. Always use lowercase HTML tags in React.") ||
+        /Warning: React does not recognize the `\w+` prop on a DOM element\./.test(message) ||
+        /Warning: The tag <\w+> is unrecognized in this browser\./.test(message) ||
+        /Warning: Unknown event handler property `\w+`\./.test(message) ||
+        /Warning: An update to [\w\s]+ inside a test was not wrapped in act/.test(message) ||
+        /Warning: Received `\w+` for a non-boolean attribute `\w+`\./.test(message) ||
+        /Warning: [\w\s]+ has been extracted from react-native core/.test(message))) ||
+    /use `useFragment` instead of a Relay Container/.test(message) ||
+    /Warning: RelayResponseNormalizer:/.test(message) ||
+    /Warning: RelayModernRecord:/.test(message) ||
+    /Use PascalCase for React components/.test(message)
   ) {
     // NOOP
   } else {
@@ -193,6 +199,7 @@ mockedModule("./app/Components/Gene/Header.tsx", "Header")
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
+import { Settings } from "luxon"
 import { NativeModules } from "react-native"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }

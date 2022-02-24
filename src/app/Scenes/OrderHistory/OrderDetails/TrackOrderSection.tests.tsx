@@ -5,6 +5,7 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+import { flushPromiseQueue } from "../../../tests/flushPromiseQueue"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
 
 jest.unmock("react-relay")
@@ -172,7 +173,7 @@ describe("TrackOrderSection", () => {
       expect(tree.findAllByProps({ testID: "trackingUrl" })).toHaveLength(0)
     })
 
-    it("when delivered", () => {
+    it("when delivered", async () => {
       const tree = renderWithWrappers(<TestRenderer />).root
       mockEnvironmentPayload(mockEnvironment, {
         CommerceOrder: () => ({
@@ -189,6 +190,7 @@ describe("TrackOrderSection", () => {
         }),
       })
 
+      await flushPromiseQueue()
       expect(extractText(tree.findByProps({ testID: "deliveredStatus" }))).toBe(
         "Delivered on Sep 2, 2021"
       )
