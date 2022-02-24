@@ -1,4 +1,4 @@
-import { validatePhoneNumber } from "app/utils/validatePhoneNumber"
+import { isValidPhoneNumber } from "app/utils/isValidPhoneNumber"
 import * as Yup from "yup"
 
 export interface ContactInformationFormModel {
@@ -12,5 +12,5 @@ export const contactInformationValidationSchema = Yup.object().shape({
   userEmail: Yup.string().required().email(),
   userPhone: Yup.string()
     .required()
-    .test("userPhone", "This field is required", validatePhoneNumber),
+    .test("userPhone", "This field is required", isValidPhoneNumber),
 })
