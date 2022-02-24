@@ -30,9 +30,12 @@ export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> =
 
         <MyCollectionArtworkPurchaseDetails artwork={artwork} />
 
-        {!!articles.length && (
-          <MyCollectionArtworkArticles artistNames={artwork.artistNames} articles={articles} />
-        )}
+        <MyCollectionArtworkArticles
+          artistSlug={artwork.artist?.slug}
+          artistNames={artwork.artistNames}
+          articles={articles}
+          totalCount={artwork.artist?.articles?.totalCount}
+        />
       </Flex>
     </StickyTabPageScrollView>
   )
@@ -44,7 +47,9 @@ const artworkFragment = graphql`
     ...MyCollectionArtworkPurchaseDetails_artwork
     artistNames
     artist {
-      articles: articlesConnection(first: 10, inEditorialFeed: true) {
+      slug
+      articles: articlesConnection(first: 10, inEditorialFeed: true, sort: PUBLISHED_AT_DESC) {
+        totalCount
         edges {
           node {
             ...MyCollectionArtworkArticles_article

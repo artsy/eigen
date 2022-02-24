@@ -3,15 +3,18 @@ import {
   MyCollectionArtworkArticles_article$key,
 } from "__generated__/MyCollectionArtworkArticles_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
-import { Flex, Spacer, Text } from "palette"
+import { navigate } from "app/navigation/navigate"
+import { ArrowRightIcon, Flex, Spacer, Text } from "palette"
 import React from "react"
-import { FlatList } from "react-native"
+import { FlatList, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 
 interface MyCollectionArtworkArticlesProps {
   articles: MyCollectionArtworkArticles_article$key
   artistNames: string | null
+  artistSlug: string | undefined
+  totalCount: number | null | undefined
 }
 
 export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesProps> = (props) => {
@@ -20,16 +23,28 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
     props.articles
   )
 
+  if (!articles.length) {
+    return null
+  }
+
   return (
     <Flex>
-      <Flex flexDirection="row" alignItems="flex-start" mb={2}>
-        <Text variant="md">{`Articles featuring ${props.artistNames || ""}`}</Text>
-        {articles.length > 3 && (
-          <Text variant="xs" color="blue100" ml={0.5} style={{ top: -3 }}>
-            {articles.length}
-          </Text>
-        )}
-      </Flex>
+      <TouchableOpacity onPress={() => navigate(`/artist/${props.artistSlug}/articles`)}>
+        <Flex flexDirection="row" alignItems="flex-start" mb={2}>
+          <Flex flex={1} flexDirection="row">
+            <Text variant="md">{`Articles featuring ${props.artistNames || ""}`}</Text>
+            {!!props?.totalCount && (
+              <Text variant="xs" color="blue100" ml={0.5} mt={-0.5}>
+                {props?.totalCount}
+              </Text>
+            )}
+          </Flex>
+
+          <Flex my="auto">
+            <ArrowRightIcon width={12} fill="black60" ml={0.5} />
+          </Flex>
+        </Flex>
+      </TouchableOpacity>
 
       <FlatList<MyCollectionArtworkArticles_article[number]>
         testID="test-articles-flatlist"
