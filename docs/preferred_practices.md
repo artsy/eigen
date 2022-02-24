@@ -16,6 +16,7 @@ Last update: February 2022
 - [Testing](#testing)
 - [Navigation](#Navigation)
 - [Analytics and tracking](#analytics-and-tracking)
+- [Formik](#formik)
 
 ### Examples & Hacks
 
@@ -148,3 +149,7 @@ See our documentation on adding a route for more details: [Adding a new route](h
 ### Analytics and tracking
 
 In React-native, we use react-tracking as a wrapper for the tracking events we send to Segment. You can read more about the implementation [here](./analytics_and_tracking.md).
+
+### Formik
+
+We use Formik for handling forms. You can see an example that's also using form validation [here](https://github.com/artsy/eigen/blob/main/src/app/Scenes/Consignments/Screens/SubmitArtworkOverview/ContactInformation/ContactInformation.tsx)
