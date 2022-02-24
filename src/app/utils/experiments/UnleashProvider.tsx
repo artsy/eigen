@@ -1,4 +1,4 @@
-import { useDevToggle } from "lib/store/GlobalStore"
+import { useDevToggle } from "app/store/GlobalStore"
 import React, { createContext, ReactNode, useCallback, useEffect, useState } from "react"
 import useAppState from "../useAppState"
 import { forceFetchToggles } from "./helpers"
