@@ -39,7 +39,7 @@ In order to use an experiment, we have two custom hooks that we created that sup
 
 ### Querying for a single flag
 
-You can access the flag value in a functional react component using `useExperiementFlag`.
+You can access the flag value in a functional react component using `useExperimentFlag`.
 
 ```diff
 + const ourNewFlagEnabled = useExperiementFlag("our-new-flag")
