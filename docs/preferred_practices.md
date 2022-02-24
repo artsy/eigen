@@ -109,9 +109,13 @@ The change left comments like this throughout the codebase that we aim to gradua
 
 ### Relay
 
-Artsy's GraphQL server is [Metaphysics](https://github.com/artsy/metaphysics) and requests to Metaphysics are made through [Relay](https://relay.dev).
+We use [Relay](https://relay.dev) for network requests.
 
-We prefer using Relay hooks over relay containers (Higher Order Components). Refactoring components using HoCs in favour of hooks is encouraged.
+Artsy's **GraphQL** server is [Metaphysics](https://github.com/artsy/metaphysics).
+
+We prefer using **Relay hooks** over relay containers (Higher Order Components).
+
+Refactoring components using HoCs in favour of hooks is encouraged.
 
 - [Why Artsy uses Relay](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#Relay)
 - [Artsy's Relay Workshop](https://github.com/artsy/relay-workshop)
@@ -120,6 +124,7 @@ We prefer using Relay hooks over relay containers (Higher Order Components). Ref
 ### Testing
 
 We currently use [`@testing-library/react-native`](https://testing-library.com/docs/react-native-testing-library/intro/#:~:text=The%20React%20Native%20Testing%20Library,that%20encourages%20better%20testing%20practices.) as our preferred way of testing.
+
 But we also use `test-renderer` and `enzyme` (in order of preference), that we'd ultimately like to remove.
 
 - For setting up a test environment and mocking requests:
