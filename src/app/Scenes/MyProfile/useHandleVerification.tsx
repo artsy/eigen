@@ -16,7 +16,7 @@ export const useHandleIDVerification = () => {
   return useHandleVerification("ID")
 }
 
-const SENT_STATE_TIMEOUT = 6000
+const VERIFICATION_BANNER_TIMEOUT = 6000
 
 const useHandleVerification = (type: verificationType) => {
   const [showVerificationBanner, setShowVerificationBanner] = useState(false)
@@ -38,7 +38,7 @@ const useHandleVerification = (type: verificationType) => {
       // Allow the user some time to read the message
       setTimeout(() => {
         setShowVerificationBanner(false)
-      }, SENT_STATE_TIMEOUT)
+      }, VERIFICATION_BANNER_TIMEOUT)
     }
   }, [])
 
@@ -50,13 +50,11 @@ const verify = async (type: verificationType) => {
     const { sendConfirmationEmail } = await verifyEmail(defaultEnvironment)
 
     const confirmationOrError = sendConfirmationEmail?.confirmationOrError
-    const emailToConfirm = confirmationOrError?.unconfirmedEmail
-    return emailToConfirm
+    return confirmationOrError?.unconfirmedEmail
   } else {
     const { sendIdentityVerificationEmail } = await verifyID(defaultEnvironment)
 
     const confirmationOrError = sendIdentityVerificationEmail?.confirmationOrError
-    const state = confirmationOrError?.identityVerificationEmail?.state
-    return state
+    return confirmationOrError?.identityVerificationEmail?.state
   }
 }
