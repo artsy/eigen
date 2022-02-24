@@ -5,7 +5,7 @@ import { useEffect } from "react"
 import Config from "react-native-config"
 import { getUniqueId } from "react-native-device-info"
 import { GlobalStore, useFeatureFlag } from "../store/GlobalStore"
-import { EXPERIMENT_NAME, experiments } from "./experiments"
+import { SPLIT_EXPERIMENT_NAME, splitExperiments } from "./experiments"
 
 let client: SplitIO.IClient | null = null
 

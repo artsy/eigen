@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { Config } from "react-native-config"
 import { UnleashClient } from "unleash-proxy-client"
+import { EXPERIMENT_NAME, experiments } from "../experiments"
 
 /**
  * This will return an unleash client
@@ -45,6 +46,20 @@ const createUnleashClient = () => {
         return data ? JSON.parse(data) : undefined
       },
     },
+    bootstrapOverride: false,
+    bootstrap: (Object.keys(experiments) as EXPERIMENT_NAME[]).map((key) => ({
+      name: key,
+      enabled: experiments[key].fallbackEnabled,
+      variant: {
+        enabled: experiments[key].fallbackVariant ?? false,
+        name: experiments[key].fallbackVariant ?? "disabled",
+        payload:
+          experiments[key].fallbackPayload === undefined
+            ? undefined
+            : { type: "string", value: String(experiments[key].fallbackPayload) },
+      },
+      impressionData: true,
+    })),
   })
 }
 
