@@ -5,7 +5,7 @@ import { EXPERIMENT_NAME, experiments } from "../experiments"
 
 /**
  * This will return an unleash client
- * If `env` is undefined, it will use whatever enviroment we are currently using,
+ * If `env` is undefined, it will use whatever environment we are currently using,
  * production by default.
  * If a specific env is asked, then it will either use the current one if it's right,
  * or create a new one in the requested env.
