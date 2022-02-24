@@ -10,6 +10,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
+import { flushPromiseQueue } from "../../tests/flushPromiseQueue"
 import { Tag } from "./Tag"
 
 jest.unmock("react-relay")
@@ -85,10 +86,11 @@ describe("Tag", () => {
     expect(tree.root.findAllByType(About)).toHaveLength(0)
   })
 
-  it("renders filter modal", () => {
+  it("renders filter modal", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironmentPayload(environment)
 
+    await flushPromiseQueue()
     act(() => tree.root.findByType(TouchableHighlightColor).props.onPress())
 
     expect(tree.root.findAllByType(ArtworkFilterOptionsScreen)).toHaveLength(1)

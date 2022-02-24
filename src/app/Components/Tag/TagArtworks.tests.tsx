@@ -6,6 +6,7 @@ import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+import { flushPromiseQueue } from "../../tests/flushPromiseQueue"
 import { TagArtworksPaginationContainer } from "./TagArtworks"
 
 jest.unmock("react-relay")
@@ -59,10 +60,11 @@ describe("TagArtworks", () => {
     mockEnvironmentPayload(environment)
   })
 
-  it("renders filter header", () => {
+  it("renders filter header", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment)
 
+    await flushPromiseQueue()
     expect(getByText("Sort & Filter")).toBeTruthy()
   })
 
@@ -82,7 +84,7 @@ describe("TagArtworks", () => {
     expect(getByText("title-1")).toBeTruthy()
   })
 
-  it("renders empty artworks grid view", () => {
+  it("renders empty artworks grid view", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment, {
       FilterArtworksConnection() {
@@ -93,6 +95,8 @@ describe("TagArtworks", () => {
         }
       },
     })
+
+    await flushPromiseQueue()
 
     // Change sort filter
     fireEvent.press(getByText("Sort & Filter"))

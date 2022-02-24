@@ -1,0 +1,9 @@
+diff --git a/node_modules/@wojtekmaj/enzyme-adapter-react-17/index.d.ts b/node_modules/@wojtekmaj/enzyme-adapter-react-17/index.d.ts
+index a991d3e..aa7dc75 100644
+--- a/node_modules/@wojtekmaj/enzyme-adapter-react-17/index.d.ts
++++ b/node_modules/@wojtekmaj/enzyme-adapter-react-17/index.d.ts
+@@ -1,3 +1,4 @@
++// @ts-ignore
+ import { EnzymeAdapter } from 'enzyme';
+ 
+ declare class ReactSeventeenAdapter extends EnzymeAdapter {

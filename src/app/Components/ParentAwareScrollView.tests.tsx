@@ -1,6 +1,7 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { FlatList } from "react-native"
+import { flushPromiseQueue } from "../tests/flushPromiseQueue"
 import ParentAwareScrollView from "./ParentAwareScrollView"
 
 const props = {
@@ -16,7 +17,7 @@ const scrollEvent = {
 }
 
 describe("<ParentAwareScrollView>", () => {
-  it("receives parent onScroll event when nested in a virtualized list", () => {
+  it("receives parent onScroll event when nested in a virtualized list", async () => {
     // the ParentAwareScrollView nested inside the Flatlist should
     // react to the parent flatlist scroll by calling props.aFunc
     const AFlatList = () => (
@@ -31,6 +32,7 @@ describe("<ParentAwareScrollView>", () => {
     const flatList = tree.root.findByType(FlatList)
     flatList.instance._listRef._onScroll(scrollEvent)
 
+    await flushPromiseQueue()
     expect(props.aFunc).toHaveBeenCalled()
     expect(props.aFunc).toHaveBeenCalledWith(scrollEvent)
   })

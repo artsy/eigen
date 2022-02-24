@@ -14,8 +14,6 @@ import { format } from "util"
 import "app/tests/renderUntil"
 Enzyme.configure({ adapter: new Adapter() })
 
-Settings.defaultZone = "America/New_York"
-
 // Waiting on https://github.com/thymikee/snapshot-diff/pull/17
 import diff from "snapshot-diff"
 expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
@@ -199,7 +197,6 @@ mockedModule("./app/Components/Gene/Header.tsx", "Header")
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
-import { Settings } from "luxon"
 import { NativeModules } from "react-native"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
