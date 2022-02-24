@@ -34,13 +34,8 @@ import {
   Touchable,
   useColor,
 } from "palette"
-<<<<<<< HEAD:src/app/Scenes/MyProfile/MyProfileEditForm.tsx
-import React, { Suspense, useCallback, useContext, useEffect, useRef, useState } from "react"
-import { PixelRatio, ScrollView, TextInput } from "react-native"
-=======
 import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
-import { ScrollView, TextInput } from "react-native"
->>>>>>> 65410620f (PR comments update):src/lib/Scenes/MyProfile/MyProfileEditForm.tsx
+import { PixelRatio, ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import * as Yup from "yup"

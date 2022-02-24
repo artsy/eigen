@@ -1,7 +1,7 @@
 import { captureException } from "@sentry/react-native"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { verifyEmail } from "lib/utils/verifyEmail"
-import { verifyID } from "lib/utils/verifyID"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { verifyEmail } from "app/utils/verifyEmail"
+import { verifyID } from "app/utils/verifyID"
 import { useCallback, useState } from "react"
 
 type verificationType = "ID" | "Email"
