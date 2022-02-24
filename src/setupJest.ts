@@ -464,6 +464,70 @@ jest.mock("@react-native-community/async-storage", () => {
   }
 })
 
+jest.mock("@react-native-async-storage/async-storage", () => {
+  let state: any = {}
+  return {
+    __resetState() {
+      state = {}
+    },
+    async setItem(key: string, val: any) {
+      state[key] = val
+    },
+    async getItem(key: string) {
+      return state[key]
+    },
+    async removeItem(key: string) {
+      delete state[key]
+    },
+    async clear() {
+      state = {}
+    },
+    async getAllKeys() {
+      return Object.keys(state)
+    },
+    mergeItem() {
+      throw new Error("mock version of mergeItem not yet implemented")
+    },
+    multiGet(
+      keys: string[],
+      callback?: (
+        errors?: string[] | undefined,
+        result?: Array<[string, string | null]> | undefined
+      ) => void | undefined
+    ) {
+      return new Promise((resolve) => {
+        const res = []
+        for (const key of keys) {
+          const val = [key, state[key]]
+          res.push(val)
+        }
+        callback?.(undefined, undefined) // TODO: Do a proper callback
+        resolve(res)
+      })
+    },
+    multiMerge() {
+      throw new Error("mock version of multiMerge not yet implemented")
+    },
+    async multiRemove(keys: string[]) {
+      keys.forEach((k) => {
+        delete state[k]
+      })
+    },
+    multiSet(
+      keyValuePairs: string[][],
+      callback?: ((errors?: string[] | undefined) => void) | undefined
+    ) {
+      return new Promise((resolve) => {
+        for (const keyValue of keyValuePairs) {
+          state[keyValue[0]] = keyValue[1]
+        }
+        callback?.()
+        resolve(true)
+      })
+    },
+  }
+})
+
 jest.mock("react-native-localize", () => ({
   getCountry: jest.fn(() => "US"),
   getLocales() {
