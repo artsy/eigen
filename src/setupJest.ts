@@ -609,8 +609,8 @@ jest.mock("react-native-config", () => {
     MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
     UNLEASH_PROXY_CLIENT_KEY_PRODUCTION: "unleash_proxy_client_key_production", // pragma: allowlist secret
     UNLEASH_PROXY_CLIENT_KEY_STAGING: "unleash_proxy_client_key_staging", // pragma: allowlist secret
-    UNLEASH_PROXY_URL_PRODUCTION: "unleash_proxy_url_production", // pragma: allowlist secret
-    UNLEASH_PROXY_URL_STAGING: "unleash_proxy_url_staging", // pragma: allowlist secret
+    UNLEASH_PROXY_URL_PRODUCTION: "https://unleash_proxy_url_production", // pragma: allowlist secret
+    UNLEASH_PROXY_URL_STAGING: "https://unleash_proxy_url_staging", // pragma: allowlist secret
   }
   // support both default and named export
   return { ...mockConfig, Config: mockConfig }
