@@ -17,6 +17,7 @@ import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/W
 import { useErrorReporting } from "./errorReporting/hooks"
 import { CityGuideView } from "./NativeModules/CityGuideView"
 import { usingNewIOSAppShell } from "./NativeModules/LegacyNativeModules"
+import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
 import { About } from "./Scenes/About/About"
 import { ArticlesScreen, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
@@ -384,7 +385,7 @@ export const modules = defineModules({
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
   Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, InboxScreenQuery),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
-  LiveAuction: nativeModule({
+  LiveAuction: newNativeModule(LiveAuctionView, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
     modalPresentationStyle: "fullScreen",
