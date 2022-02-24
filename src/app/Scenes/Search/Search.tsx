@@ -117,6 +117,7 @@ export const Search: React.FC = () => {
   const { trackEvent } = useTracking()
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
+  const exampleExperiments = useFeatureFlag("AREnableExampleExperiments")
   const smudgeValue = useExperimentVariant("test-search-smudge")
   nonCohesionTracks.experimentVariant(
     "test-search-smudge",
@@ -277,7 +278,7 @@ export const Search: React.FC = () => {
               </Scrollable>
             )}
           </Flex>
-          {!!__DEV__ && !!smudge2Value && (
+          {!!exampleExperiments && !!smudge2Value && (
             <Flex
               position="absolute"
               width={51}
@@ -293,7 +294,7 @@ export const Search: React.FC = () => {
               <Text color="white100">wow</Text>
             </Flex>
           )}
-          {!!__DEV__ && !!smudgeValue.enabled && (
+          {!!exampleExperiments && !!smudgeValue.enabled && (
             <Flex
               position="absolute"
               width={51}
