@@ -55,7 +55,7 @@ You can access the flag value in a functional react component using `useExperime
 You can access the variant value in a functional react component using `useExperimentVariant`.
 
 ```diff
-+ const ourNewExperiment = useExperiementFlag("our-new-experiment")
++ const ourNewExperiment = useExperimentVariant("our-new-experiment")
   return (
     <>
 +    {ourNewExperiment.enabled && ourNewExperiment.variant === "varA" && <AComponent />}
