@@ -42,7 +42,7 @@ In order to use an experiment, we have two custom hooks that we created that sup
 You can access the flag value in a functional react component using `useExperimentFlag`.
 
 ```diff
-+ const ourNewFlagEnabled = useExperiementFlag("our-new-flag")
++ const ourNewFlagEnabled = useExperimentFlag("our-new-flag")
   return (
     <>
 +    {ourNewFlagEnabled && <ConditionallyShownComponent />}
