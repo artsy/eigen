@@ -12,6 +12,7 @@ class CityGuideView: UIView {
           mapContainerViewController?.view.frame = bounds
       }
   }
+
   private func embed() {
       guard
           let parentVC = parentViewController

@@ -316,6 +316,8 @@
 		CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B85327B585F00007922D /* GoogleService-Info.plist */; };
 		CBB7352427BEDD48001AC8C0 /* ARTCityGuideViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB7352327BEDD48001AC8C0 /* ARTCityGuideViewManager.m */; };
 		CBB7352627BEEB02001AC8C0 /* CityGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7352527BEEB02001AC8C0 /* CityGuideView.swift */; };
+		CBB7352B27C8216F001AC8C0 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB7352A27C8216F001AC8C0 /* ARTLiveAuctionViewManager.m */; };
+		CBB7352D27C821C3001AC8C0 /* LiveAuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7352C27C821C3001AC8C0 /* LiveAuctionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -800,6 +802,9 @@
 		CBB7352227BEDD48001AC8C0 /* ARTCityGuideViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTCityGuideViewManager.h; sourceTree = "<group>"; };
 		CBB7352327BEDD48001AC8C0 /* ARTCityGuideViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideViewManager.m; sourceTree = "<group>"; };
 		CBB7352527BEEB02001AC8C0 /* CityGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityGuideView.swift; sourceTree = "<group>"; };
+		CBB7352927C8216F001AC8C0 /* ARTLiveAuctionViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTLiveAuctionViewManager.h; sourceTree = "<group>"; };
+		CBB7352A27C8216F001AC8C0 /* ARTLiveAuctionViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTLiveAuctionViewManager.m; sourceTree = "<group>"; };
+		CBB7352C27C821C3001AC8C0 /* LiveAuctionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionView.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE0ED407FA44DD891F5B3246 /* libPods-eigen-eigenTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen-eigenTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EB231E790C61B818E9DBE3 /* libPods-eigen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1913,6 +1918,9 @@
 				CBB7352227BEDD48001AC8C0 /* ARTCityGuideViewManager.h */,
 				CBB7352327BEDD48001AC8C0 /* ARTCityGuideViewManager.m */,
 				CBB7352527BEEB02001AC8C0 /* CityGuideView.swift */,
+				CBB7352927C8216F001AC8C0 /* ARTLiveAuctionViewManager.h */,
+				CBB7352A27C8216F001AC8C0 /* ARTLiveAuctionViewManager.m */,
+				CBB7352C27C821C3001AC8C0 /* LiveAuctionView.swift */,
 			);
 			name = NativeModules;
 			path = eigen/NativeModules;
@@ -2407,6 +2415,7 @@
 				CB61B72A27B303710007922D /* ARScreenPresenterModule.m in Sources */,
 				CB61B84327B303730007922D /* UIImage+ImageFromColor.m in Sources */,
 				CB61B7A427B303720007922D /* Artist.m in Sources */,
+				CBB7352B27C8216F001AC8C0 /* ARTLiveAuctionViewManager.m in Sources */,
 				CB61B74327B303710007922D /* ArtsyAPI+HEAD.m in Sources */,
 				CB61B7C327B303720007922D /* ARInternalWebView.m in Sources */,
 				CB61B73727B303710007922D /* ARTArtsyNativeModule.m in Sources */,
@@ -2423,6 +2432,7 @@
 				CB61B7B027B303720007922D /* SaleStatusType.swift in Sources */,
 				CB61B7DC27B303720007922D /* LiveAuctionsAdminViewController.swift in Sources */,
 				CB61B80427B303720007922D /* ARLogger.m in Sources */,
+				CBB7352D27C821C3001AC8C0 /* LiveAuctionView.swift in Sources */,
 				CB61B80A27B303720007922D /* ARAugmentedFloorBasedVIRViewController.m in Sources */,
 				CB61B7F627B303720007922D /* ARMessageItemProvider.m in Sources */,
 				CB61B73227B303710007922D /* ARApplicationShortcutItemDelegate.m in Sources */,
