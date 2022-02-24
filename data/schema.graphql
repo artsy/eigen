@@ -2981,6 +2981,8 @@ type CommerceBuyerRejectOfferPayload {
 }
 
 type CommerceBuyOrder implements CommerceOrder {
+  # Whether Artsy collects taxes (e.g., sales tax or VAT) on this order.
+  artsyCollectsTaxes: Boolean
   artsyRemitsTaxes: Boolean
   artsyTotal(
     decimal: String = "."
@@ -3631,6 +3633,8 @@ type CommerceOfferEdge {
 }
 
 type CommerceOfferOrder implements CommerceOrder {
+  # Whether Artsy collects taxes (e.g., sales tax or VAT) on this order.
+  artsyCollectsTaxes: Boolean
   artsyRemitsTaxes: Boolean
   artsyTotal(
     decimal: String = "."
@@ -3858,6 +3862,8 @@ type CommerceOfferSubmittedEvent implements CommerceEventInterface {
 
 # Order
 interface CommerceOrder {
+  # Whether Artsy collects taxes (e.g., sales tax or VAT) on this order.
+  artsyCollectsTaxes: Boolean
   artsyRemitsTaxes: Boolean
   artsyTotal(
     decimal: String = "."
