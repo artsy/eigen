@@ -106,7 +106,6 @@ describe("MyProfileEditForm", () => {
             errors: [],
           })
 
-          jest.setTimeout(1000)
           await flushPromiseQueue()
 
           expect(getByTestId("verification-confirmation-banner")).toBeTruthy()
@@ -125,7 +124,6 @@ describe("MyProfileEditForm", () => {
 
           fireEvent(VerifyYouEmailButton, "onPress")
 
-          jest.setTimeout(1000)
           await flushPromiseQueue()
 
           expect(() => getByTestId("verification-confirmation-banner")).toThrow()
