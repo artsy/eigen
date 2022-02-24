@@ -56,7 +56,7 @@ podspec = Pod::Spec.new do |s|
   # s.dependency 'Yoga', "#{react_native_version}.React"
   react_podspecs = [
     '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec',
-    '../node_modules/react-native/third-party-podspecs/Folly.podspec',
+    '../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec',
     '../node_modules/react-native/third-party-podspecs/glog.podspec'
   ]
 

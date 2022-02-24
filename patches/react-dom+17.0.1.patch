@@ -1,12 +1,11 @@
 diff --git a/node_modules/react-dom/cjs/react-dom.development.js b/node_modules/react-dom/cjs/react-dom.development.js
-index 13bea1e..8b4105c 100644
+index d51615a..2a6ff74 100644
 --- a/node_modules/react-dom/cjs/react-dom.development.js
 +++ b/node_modules/react-dom/cjs/react-dom.development.js
-@@ -5069,7 +5069,9 @@ function getActiveElement(doc) {
-   try {
+@@ -1447,6 +1447,9 @@ function getActiveElement(doc) {
      return doc.activeElement || doc.body;
    } catch (e) {
--    return doc.body;
+     return doc.body;
 +    // this is causing occasional flaky failures in our test suite
 +    // https://github.com/facebook/react/issues/15691
 +    return doc && doc.body;
