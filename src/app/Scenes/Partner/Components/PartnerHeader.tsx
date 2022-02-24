@@ -11,7 +11,7 @@ const PartnerHeader: React.FC<{
   partner: PartnerHeader_partner
 }> = ({ partner }) => {
   const eligibleArtworks = partner.counts?.eligibleArtworks ?? 0
-  const isBlackOwned = true
+  const isBlackOwned = partner.categories!.filter((c) => c && c.name === "Black Owned").length > 0
 
   return (
     <>
