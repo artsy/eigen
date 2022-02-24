@@ -11,7 +11,6 @@ export function updateExperimentsContext(newContext: IMutableContext) {
 // we will make sure to throttle it.
 export const forceFetchToggles = throttle(unthrottledForceFetch, 2000, { trailing: false })
 function unthrottledForceFetch(unleashEnv: "production" | "staging") {
-  console.log("unleash CALLED FORCE")
   const client = getUnleashClient(unleashEnv)
   client.start()
 }

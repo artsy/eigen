@@ -8,7 +8,12 @@ import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
-import { Box, Flex, Spacer } from "palette"
+import { useExperimentFlag, useExperimentVariant } from "app/utils/experiments/hooks"
+import {
+  maybeReportExperimentFlag,
+  maybeReportExperimentVariant,
+} from "app/utils/experiments/reporter"
+import { Box, Flex, Spacer, Text } from "palette"
 import React, { Suspense, useMemo, useRef, useState } from "react"
 import {
   Configure,
@@ -111,6 +116,16 @@ export const Search: React.FC = () => {
   } = useAlgoliaIndices(searchClient, indices)
   const { trackEvent } = useTracking()
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
+
+  const smudgeValue = useExperimentVariant("test-search-smudge")
+  nonCohesionTracks.experimentVariant(
+    "test-search-smudge",
+    smudgeValue.enabled,
+    smudgeValue.variant,
+    smudgeValue.payload
+  )
+  const smudge2Value = useExperimentFlag("test-eigen-smudge2")
+  nonCohesionTracks.experimentFlag("test-eigen-smudge2", smudge2Value)
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
@@ -262,6 +277,32 @@ export const Search: React.FC = () => {
               </Scrollable>
             )}
           </Flex>
+          {!!__DEV__ && !!smudge2Value && (
+            <Flex
+              position="absolute"
+              width={51}
+              height={51}
+              backgroundColor="black"
+              top={0}
+              left={0}
+              alignItems="center"
+              justifyContent="center"
+              borderWidth={4}
+              borderColor="red100"
+            >
+              <Text color="white100">wow</Text>
+            </Flex>
+          )}
+          {!!__DEV__ && !!smudgeValue.enabled && (
+            <Flex
+              position="absolute"
+              width={51}
+              height={51}
+              backgroundColor={smudgeValue.payload ?? "orange"}
+              top={0}
+              right={0}
+            />
+          )}
         </InstantSearch>
       </ArtsyKeyboardAvoidingView>
     </SearchContext.Provider>
@@ -291,7 +332,7 @@ const Scrollable = styled(ScrollView).attrs(() => ({
   padding-top: 20px;
 `
 
-export const tracks = {
+const tracks = {
   tappedPill: (contextModule: ContextModule, subject: string, query: string) => ({
     context_screen_owner_type: OwnerType.search,
     context_screen: Schema.PageNames.Search,
@@ -310,4 +351,23 @@ export const tracks = {
     context_module: data.contextModule,
     action: Schema.ActionNames.SelectedResultFromSearchScreen,
   }),
+}
+
+const nonCohesionTracks = {
+  experimentFlag: (name: string, enabled: boolean) =>
+    maybeReportExperimentFlag({
+      name,
+      enabled,
+      context_screen_owner_type: OwnerType.search,
+      context_screen: Schema.PageNames.Search,
+    }),
+  experimentVariant: (name: string, enabled: boolean, variant: string, payload?: string) =>
+    maybeReportExperimentVariant({
+      name,
+      enabled,
+      variant,
+      payload,
+      context_screen_owner_type: OwnerType.search,
+      context_screen: Schema.PageNames.Search,
+    }),
 }
