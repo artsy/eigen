@@ -138,7 +138,8 @@ But we also use `test-renderer` and `enzyme` (in order of preference), that we'd
 
 ### Navigation
 
-We use `react-navigation` for navigating between screens, navigate function and new routes.
+We use `react-navigation` for navigating between screens.
+For adding a screen that corresponds to a page on artsy.net use the `navigate(<route-name>)` function and add a new route.
 
 In iOS we use the Native Switchboard.
 
