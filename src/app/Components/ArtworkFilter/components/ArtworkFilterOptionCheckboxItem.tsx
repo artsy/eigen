@@ -7,11 +7,10 @@ import { ArtworksFiltersStore } from "../ArtworkFilterStore"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
 export interface ArtworkFilterOptionCheckboxItemProps
-  extends Omit<ArtworkFilterOptionItemProps, "onPress"> {}
+  extends Omit<ArtworkFilterOptionItemProps, "onPress" | "count"> {}
 
 export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckboxItemProps> = ({
   item,
-  count,
 }) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
@@ -48,7 +47,6 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
     <ArtworkFilterOptionItem
       item={item}
       onPress={onPress}
-      count={count}
       RightAccessoryItem={<CheckboxItem onPress={onPress} checked={checked} />}
     />
   )

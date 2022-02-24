@@ -159,7 +159,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
           renderItem={({ item }) => {
             const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
             if (item.configType === FilterConfigTypes.FilterScreenCheckboxItem) {
-              return <ArtworkFilterOptionCheckboxItem item={item} count={selectedFiltersCount} />
+              return <ArtworkFilterOptionCheckboxItem item={item} />
             }
             return (
               <ArtworkFilterOptionItem
