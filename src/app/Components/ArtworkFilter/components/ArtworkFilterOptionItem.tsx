@@ -8,15 +8,16 @@ export interface ArtworkFilterOptionItemProps {
   item: FilterDisplayConfig
   count?: number
   onPress: () => void
+  RightAccessoryItem?: JSX.Element
 }
 
 export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (props) => {
-  const { item, count, onPress } = props
+  const { item, count, onPress, RightAccessoryItem } = props
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   if (isEnabledImprovedAlertsFlow) {
     return (
-      <TouchableRow onPress={onPress}>
+      <TouchableRow onPress={onPress} testID="ArtworkFilterOptionItemRow">
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between" p={2}>
           <Flex flex={1}>
             <Text variant="md">
@@ -24,15 +25,18 @@ export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (
               {!!count && <Text variant="md" color="blue100">{` ${bullet} ${count}`}</Text>}
             </Text>
           </Flex>
-
-          <ArrowRightIcon fill="black100" ml={1} />
+          <Flex alignItems="center" justifyContent="flex-end">
+            {RightAccessoryItem || (
+              <ArrowRightIcon fill="black100" ml={1} testID="ArtworkFilterOptionItemArrowIcon" />
+            )}
+          </Flex>
         </Flex>
       </TouchableRow>
     )
   }
 
   return (
-    <TouchableRow onPress={onPress}>
+    <TouchableRow onPress={onPress} testID="ArtworkFilterOptionItemRow">
       <Flex flexDirection="row" justifyContent="space-between" p={2} pr={1.5}>
         <Flex minWidth="45%">
           <Text variant="xs">
@@ -45,8 +49,10 @@ export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (
           </Text>
         </Flex>
 
-        <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="flex-end">
-          <ArrowRightIcon fill="black30" ml={1} />
+        <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
+          {RightAccessoryItem || (
+            <ArrowRightIcon fill="black30" ml={1} testID="ArtworkFilterOptionItemArrowIcon" />
+          )}
         </Flex>
       </Flex>
     </TouchableRow>

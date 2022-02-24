@@ -98,6 +98,16 @@ export const features = defineFeatures({
     description: "Enable improved search pills",
     echoFlagKey: "AREnableImprovedSearchPills",
   },
+  AREnableTrove: {
+    readyForRelease: true,
+    description: "Enable Trove in homepage",
+    echoFlagKey: "AREnableTrove",
+  },
+  AREnableShowsRail: {
+    readyForRelease: true,
+    description: "Enable Shows in homepage",
+    echoFlagKey: "AREnableShowsRail",
+  },
   ARShowNetworkUnavailableModal: {
     readyForRelease: true,
     description: "Enable network unavailable modal",
@@ -179,6 +189,11 @@ export const features = defineFeatures({
     description: "Enable new my collection artwork page",
     showInAdminMenu: true,
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
+  },
+  AREnableShowOnlySubmittedMyCollectionArtworkFilter: {
+    readyForRelease: false,
+    description: "Enable Show Only Submitted MyCollection Artwork Filter",
+    showInAdminMenu: true,
   },
   AREnableAvalaraPhase2: {
     readyForRelease: false,

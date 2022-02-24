@@ -18,10 +18,12 @@ import { FilterIcon, Flex, Sans } from "palette"
 import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
+import { FilterConfigTypes } from "."
 import { AnimatableHeaderFlatList } from "../AnimatableHeader/AnimatableHeaderFlatList"
 import { AnimatableHeaderProvider } from "../AnimatableHeader/AnimatableHeaderProvider"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
+import { ArtworkFilterOptionCheckboxItem } from "./components/ArtworkFilterOptionCheckboxItem"
 import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
 import { ArtworkFilterOptionsHeader } from "./components/ArtworkFilterOptionsHeader"
 import { FilterDisplayConfig, FilterScreen } from "./types"
@@ -156,12 +158,16 @@ export const ArtworkFilterOptionsScreen: React.FC<
           style={{ flexGrow: 1 }}
           renderItem={({ item }) => {
             const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
-
+            if (item.configType === FilterConfigTypes.FilterScreenCheckboxItem) {
+              return <ArtworkFilterOptionCheckboxItem item={item} />
+            }
             return (
               <ArtworkFilterOptionItem
                 item={item}
                 count={selectedFiltersCount}
-                onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}
+                onPress={() => {
+                  navigateToNextFilterScreen(item.ScreenComponent)
+                }}
               />
             )
           }}
@@ -207,7 +213,7 @@ export const getStaticFilterOptionsByMode = (
 export const getFilterScreenSortByMode =
   (mode: FilterModalMode, localFilterOptions: ArtworkFiltersModel["filterOptions"]) =>
   (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
-    let sortOrder: FilterScreen[] = []
+    let sortOrder: Array<FilterDisplayConfig["filterType"]> = []
 
     // Filter order is based on frequency of use for a given page
     switch (mode) {

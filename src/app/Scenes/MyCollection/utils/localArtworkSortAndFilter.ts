@@ -1,3 +1,4 @@
+import { FilterConfigTypes } from "app/Components/ArtworkFilter"
 import {
   FilterArray,
   FilterData,
@@ -6,8 +7,9 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { normalizeText } from "app/utils/normalizeText"
-import { filter, orderBy, uniqBy } from "lodash"
+import { compact, filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { useEffect } from "react"
 import { MyCollectionArtworkEdge } from "../MyCollection"
@@ -16,6 +18,9 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
   const setFilterType = ArtworksFiltersStore.useStoreActions((s) => s.setFilterTypeAction)
   const setSortOptions = ArtworksFiltersStore.useStoreActions((s) => s.setSortOptions)
   const setFilterOptions = ArtworksFiltersStore.useStoreActions((s) => s.setFilterOptions)
+  const allowOnlySubmittedArtworks = useFeatureFlag(
+    "AREnableShowOnlySubmittedMyCollectionArtworkFilter"
+  )
 
   useEffect(() => {
     setFilterType("local")
@@ -93,115 +98,83 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
         localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "desc"),
       },
     ])
-    setFilterOptions([
-      {
-        displayText: FilterDisplayName.sort,
-        filterType: "sort",
-        ScreenComponent: "SortOptionsScreen",
-      },
-      {
-        displayText: FilterDisplayName.artistIDs,
-        filterType: "artistIDs",
-        ScreenComponent: "ArtistIDsOptionsScreen",
-        values: uniqBy(
-          artworks.map(
-            (a): FilterData => ({
-              displayText: a.artist?.name ?? "N/A",
-              paramName: FilterParamName.artistIDs,
-              paramValue: a.artist?.internalID ?? "",
-            })
-          ),
-          (m) => m.paramValue
-        ),
-        // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks, artistIDs: string[]) =>
-          filter(artworks, (a) => artistIDs.includes(a.artist.internalID)),
-      },
-      {
-        displayText: FilterDisplayName.attributionClass,
-        filterType: "attributionClass",
-        ScreenComponent: "AttributionClassOptionsScreen",
-        // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks, attributionClasses: string[]) => {
-          return filter(artworks, (a) => {
-            if (a.attributionClass && a.attributionClass.name) {
-              return attributionClasses.includes(a.attributionClass.name)
-            }
-            return false
-          })
-        },
-      },
-      {
-        displayText: FilterDisplayName.additionalGeneIDs,
-        filterType: "additionalGeneIDs",
-        ScreenComponent: "AdditionalGeneIDsOptionsScreen",
-        values: uniqBy(
-          artworks.map(
-            (a): FilterData => ({
-              displayText: a.medium ?? "N/A",
-              paramName: FilterParamName.additionalGeneIDs,
-              paramValue: a.medium ?? undefined,
-            })
-          ),
-          (m) => m.paramValue
-        ),
-        // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks, mediums: string[]) =>
-          filter(artworks, (a) => mediums.includes(a.medium)),
-      },
-      {
-        displayText: FilterDisplayName.priceRange,
-        filterType: "priceRange",
-        ScreenComponent: "PriceRangeOptionsScreen",
-        // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks, priceRange: string) => {
-          const splitRange = priceRange.split("-")
-          const lowerBoundStr = splitRange[0]
-          const upperBoundStr = splitRange[1]
-
-          let lowerBound = 0
-          let upperBound = Number.POSITIVE_INFINITY
-
-          const parsedLower = parseInt(lowerBoundStr, 10)
-          const parsedUpper = parseInt(upperBoundStr, 10)
-
-          if (!isNaN(parsedLower)) {
-            lowerBound = parsedLower
-          }
-
-          if (!isNaN(parsedUpper)) {
-            upperBound = parsedUpper
-          }
-
-          return filter(artworks, (a) => {
-            if (isNaN(a.pricePaid?.minor)) {
-              return false
-            }
-            const pricePaid = a.pricePaid?.minor / 100
-            return pricePaid >= lowerBound && pricePaid <= upperBound
-          })
-        },
-      },
-      {
-        displayText: FilterDisplayName.sizes,
-        filterType: "sizes",
-        ScreenComponent: "SizesOptionsScreen",
-
-        localSortAndFilter: (
+    setFilterOptions(
+      compact([
+        allowOnlySubmittedArtworks && {
+          configType: FilterConfigTypes.FilterScreenCheckboxItem,
+          displayText: "Show Only Submitted Artworks",
+          filterType: "showOnlySubmittedArtworks",
+          ScreenComponent: "FilterOptionsScreen", // using FilterOptionsScreen so users remain on FilterOptionsScreen if they tap on it
           // tslint:disable-next-line: no-shadowed-variable
-          artworks,
-          sizeParams: {
-            paramName: FilterParamName.width | FilterParamName.height | FilterParamName.sizes
-            paramValue: string
-          }
-        ) => {
-          if (sizeParams.paramName === "sizes") {
+          localSortAndFilter: (artworks, showOnlySubmittedArtworks: boolean) => {
+            if (!showOnlySubmittedArtworks) {
+              return artworks
+            }
+            return filter(artworks, (a) => Boolean(a.consignmentSubmission?.displayText))
+          },
+        },
+        {
+          displayText: FilterDisplayName.sort,
+          filterType: "sort",
+          ScreenComponent: "SortOptionsScreen",
+        },
+        {
+          displayText: FilterDisplayName.artistIDs,
+          filterType: "artistIDs",
+          ScreenComponent: "ArtistIDsOptionsScreen",
+          values: uniqBy(
+            artworks.map(
+              (a): FilterData => ({
+                displayText: a.artist?.name ?? "N/A",
+                paramName: FilterParamName.artistIDs,
+                paramValue: a.artist?.internalID ?? "",
+              })
+            ),
+            (m) => m.paramValue
+          ),
+          // tslint:disable-next-line: no-shadowed-variable
+          localSortAndFilter: (artworks, artistIDs: string[]) =>
+            filter(artworks, (a) => artistIDs.includes(a.artist.internalID)),
+        },
+        {
+          displayText: FilterDisplayName.attributionClass,
+          filterType: "attributionClass",
+          ScreenComponent: "AttributionClassOptionsScreen",
+          // tslint:disable-next-line: no-shadowed-variable
+          localSortAndFilter: (artworks, attributionClasses: string[]) => {
             return filter(artworks, (a) => {
-              const size: string = a.sizeBucket
-              return sizeParams.paramValue.includes(size.toUpperCase())
+              if (a.attributionClass && a.attributionClass.name) {
+                return attributionClasses.includes(a.attributionClass.name)
+              }
+              return false
             })
-          } else {
-            const splitRange = sizeParams.paramValue.split("-")
+          },
+        },
+        {
+          displayText: FilterDisplayName.additionalGeneIDs,
+          filterType: "additionalGeneIDs",
+          ScreenComponent: "AdditionalGeneIDsOptionsScreen",
+          values: uniqBy(
+            artworks.map(
+              (a): FilterData => ({
+                displayText: a.medium ?? "N/A",
+                paramName: FilterParamName.additionalGeneIDs,
+                paramValue: a.medium ?? undefined,
+              })
+            ),
+            (m) => m.paramValue
+          ),
+          // tslint:disable-next-line: no-shadowed-variable
+          localSortAndFilter: (artworks, mediums: string[]) =>
+            filter(artworks, (a) => mediums.includes(a.medium)),
+        },
+        {
+          displayText: FilterDisplayName.priceRange,
+          filterType: "priceRange",
+          ScreenComponent: "PriceRangeOptionsScreen",
+          // tslint:disable-next-line: no-shadowed-variable
+          localSortAndFilter: (artworks, priceRange: string) => {
+            const splitRange = priceRange.split("-")
             const lowerBoundStr = splitRange[0]
             const upperBoundStr = splitRange[1]
 
@@ -220,16 +193,63 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
             }
 
             return filter(artworks, (a) => {
-              const targetMetric = sizeParams.paramName === "width" ? a.width : a.height
-              if (isNaN(targetMetric)) {
+              if (isNaN(a.pricePaid?.minor)) {
                 return false
               }
-              return targetMetric >= lowerBound && targetMetric <= upperBound
+              const pricePaid = a.pricePaid?.minor / 100
+              return pricePaid >= lowerBound && pricePaid <= upperBound
             })
-          }
+          },
         },
-      },
-    ])
+        {
+          displayText: FilterDisplayName.sizes,
+          filterType: "sizes",
+          ScreenComponent: "SizesOptionsScreen",
+
+          localSortAndFilter: (
+            // tslint:disable-next-line: no-shadowed-variable
+            artworks,
+            sizeParams: {
+              paramName: FilterParamName.width | FilterParamName.height | FilterParamName.sizes
+              paramValue: string
+            }
+          ) => {
+            if (sizeParams.paramName === "sizes") {
+              return filter(artworks, (a) => {
+                const size: string = a.sizeBucket
+                return sizeParams.paramValue.includes(size.toUpperCase())
+              })
+            } else {
+              const splitRange = sizeParams.paramValue.split("-")
+              const lowerBoundStr = splitRange[0]
+              const upperBoundStr = splitRange[1]
+
+              let lowerBound = 0
+              let upperBound = Number.POSITIVE_INFINITY
+
+              const parsedLower = parseInt(lowerBoundStr, 10)
+              const parsedUpper = parseInt(upperBoundStr, 10)
+
+              if (!isNaN(parsedLower)) {
+                lowerBound = parsedLower
+              }
+
+              if (!isNaN(parsedUpper)) {
+                upperBound = parsedUpper
+              }
+
+              return filter(artworks, (a) => {
+                const targetMetric = sizeParams.paramName === "width" ? a.width : a.height
+                if (isNaN(targetMetric)) {
+                  return false
+                }
+                return targetMetric >= lowerBound && targetMetric <= upperBound
+              })
+            }
+          },
+        },
+      ])
+    )
   }, [])
 }
 
