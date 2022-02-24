@@ -69,9 +69,13 @@ describe("ContactInformationForm", () => {
 
     fireEvent(getAllByText("Submit Artwork")[0], "press")
 
+    await flushPromiseQueue()
+
     expect(updateConsignSubmissionMock).toHaveBeenCalled()
     expect(updateConsignSubmissionMock).toHaveBeenCalledWith({ ...mockFormDataForSubmission })
+
     await flushPromiseQueue()
+
     expect(handlePressTest).toHaveBeenCalled()
   })
 
@@ -110,7 +114,7 @@ describe("ContactInformationForm", () => {
 export const mockQueryData: any = {
   name: "Angela",
   email: "a@a.aaa",
-  phoneNumber: { isValid: true, originalNumber: "(202) 555-0174" },
+  phoneNumber: { isValid: true, originalNumber: "+1 (202) 555-0174" },
 }
 
 export const mockQueryDataInfoMissing: any = {
