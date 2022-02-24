@@ -3,16 +3,16 @@ import { Search_system$key } from "__generated__/Search_system.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { isPad } from "app/utils/hardware"
-import { Schema } from "app/utils/track"
-import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
-import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
-import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
 import { useExperimentFlag, useExperimentVariant } from "app/utils/experiments/hooks"
 import {
   maybeReportExperimentFlag,
   maybeReportExperimentVariant,
 } from "app/utils/experiments/reporter"
+import { isPad } from "app/utils/hardware"
+import { Schema } from "app/utils/track"
+import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
+import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
+import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
 import { Box, Flex, Spacer, Text } from "palette"
 import React, { Suspense, useMemo, useRef, useState } from "react"
 import {
