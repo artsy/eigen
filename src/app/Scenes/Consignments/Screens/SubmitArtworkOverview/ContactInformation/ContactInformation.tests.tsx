@@ -31,9 +31,10 @@ describe("ContactInformationForm", () => {
   })
 
   it("renders Form instructions", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { findByText } = renderWithWrappersTL(<TestRenderer />)
+
     expect(
-      getByText("We will only use these details to contact you regarding your submission.")
+      findByText("We will only use these details to contact you regarding your submission.")
     ).toBeTruthy()
   })
 
