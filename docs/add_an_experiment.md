@@ -32,6 +32,8 @@ or if we want a variant we can use something like
 
 _The `fallback*` values are values we would like to fall back to in case something goes wrong with the client sdk_
 
+Don't forget to add some tracking on this, using `maybeReportExperimentFlag`. Look for other examples in the code.
+
 ## Using an experiment
 
 In order to use an experiment, we have two custom hooks that we created that support querying for a flag (`useExperimentFlag`) or an experiment (`useExperimentVariant`). The first one returns a boolean, the second returns a small object for variants and their payloads etc.
