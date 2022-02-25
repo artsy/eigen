@@ -59,7 +59,7 @@ export const ContactInformation: React.FC<{
       validateOnMount
     >
       {({ values, isValid, touched, errors, handleChange, handleBlur, handleSubmit }) => (
-        <Flex p={1} mt={1}>
+        <Flex py={1} mt={1}>
           <Text color="black60">
             We will only use these details to contact you regarding your submission.
           </Text>

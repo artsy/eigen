@@ -33,7 +33,7 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
   }
 
   return (
-    <Flex flex={3} p={1} mt={1}>
+    <Flex flex={3} py={1} mt={1}>
       <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
       <BulletedItem>
         Unfortunately, we do not allow{" "}
