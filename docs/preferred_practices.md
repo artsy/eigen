@@ -39,7 +39,7 @@ The Artsy app was initially written in Objective-C and Swift and React Native wa
 
 ### File Structure Organization
 
-The React Nativa parts of the app live in `src/` and most of our components on `app/`.
+The React Native parts of the app live in `src/` and most of our components on `app/`.
 Within this folder things can be a bit messy 👀 but we are working on improving that!
 
 Files that export a JSX component end in `.tsx` and files that don't end in `.ts` by default.
@@ -140,11 +140,18 @@ But we also use `test-renderer` and `enzyme` (in order of preference), that we'd
 ### Navigation
 
 We use `react-navigation` for navigating between screens.
-For adding a screen that corresponds to a page on artsy.net use the `navigate(<route-name>)` function and add a new route.
 
-In iOS we use the Native Switchboard.
+For adding a screen that corresponds to a page on artsy.net add a new route and use the `navigate(<route-name>)` function. Navigation will then be handled for you. And that's how it's done: (add links to code here).
 
 See our documentation on adding a route for more details: [Adding a new route](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_route.md).
+
+#### iOS and android Navigation
+
+- For native iOS code we use the **Native Switchboard**.
+
+- On android we use **react-navigation** for navigating between screens on iOS in many places we still use native code via the ARScreenPresenterModule class. We are actively working on using react-navigation everywhere.
+
+For the most part you don't have to worry about this.
 
 ### Analytics and tracking
 
@@ -153,3 +160,16 @@ In React-native, we use react-tracking as a wrapper for the tracking events we s
 ### Formik
 
 We use Formik for handling forms. You can see an example that's also using form validation [here](https://github.com/artsy/eigen/blob/main/src/app/Scenes/Consignments/Screens/SubmitArtworkOverview/ContactInformation/ContactInformation.tsx)
+
+### Miscellaneous
+
+#### Parts of the app that are still being handled in native code (Objective-C and Swift) instead of react-native on iOS
+
+- Sign up/in flow ("onboarding").
+- Live Auctions Integration (LAI) view controller and networking.
+- The Auction view controller.
+- The SwitchBoard (see "SwitchBoard" section below) to navigate between view controllers.
+- The top-level tab bar, and each tab's navigation controller.
+- Deep-link and notification handling (via SwitchBoard).
+- Analytics for Native UI.
+- Initializing the React Native runtime.
