@@ -16,7 +16,7 @@ describe("callbacks", () => {
     expect(navigator.popToTop).toHaveBeenCalled()
   })
 
-  it("dismisses modal when done is tapped", () => {
+  it("dismisses when done is tapped", () => {
     const confirmation = new Confirmation(emptyProps)
     confirmation.exit()
     expect(popToRoot).toHaveBeenCalled()
