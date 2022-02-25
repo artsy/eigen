@@ -32,7 +32,7 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
           // TODO:- CX-2355: Implement the actual email sending feature
           trackEvent(
             tracks.trackTappedRequestPriceEstimate(
-              artwork.id,
+              artwork.internalID,
               artwork.slug,
               marketPriceInsights?.demandRank ?? undefined
             )
@@ -58,7 +58,7 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
 
 const artworkFragment = graphql`
   fragment RequestForPriceEstimate_artwork on Artwork {
-    id
+    internalID
     slug
     title
     medium
