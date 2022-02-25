@@ -11,7 +11,7 @@ describe(cleanUserPhoneNumber, () => {
       countryCode: "ca",
       phoneNumber: "8076221000",
     })
-    expect(cleanUserPhoneNumber("+1(555)-622-100")).toEqual({
+    expect(cleanUserPhoneNumber("+1 555-622-100")).toEqual({
       countryCode: "us",
       phoneNumber: "555622100",
     })
@@ -28,7 +28,7 @@ describe(cleanUserPhoneNumber, () => {
       phoneNumber: "43523453434",
     })
     ;(getCountry as jest.Mock).mockReturnValueOnce("US")
-    expect(cleanUserPhoneNumber("0111(555)-823-394")).toEqual({
+    expect(cleanUserPhoneNumber("0111 555-823-394")).toEqual({
       countryCode: "us",
       phoneNumber: "555823394",
     })

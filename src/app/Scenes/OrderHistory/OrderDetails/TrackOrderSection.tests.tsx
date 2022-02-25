@@ -190,7 +190,7 @@ describe("TrackOrderSection", () => {
       })
 
       expect(extractText(tree.findByProps({ testID: "deliveredStatus" }))).toBe(
-        "Delivered on Sep 2, 2021"
+        "Delivered on 2 Sept 2021"
       )
     })
   })

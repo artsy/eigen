@@ -95,7 +95,7 @@ describe("ConfirmContactInfo", () => {
       "updateMyUserProfileMutation"
     )
     expect(env.mock.getMostRecentOperation().request.variables).toEqual({
-      input: { phone: "+1 (555) 890-2345" },
+      input: { phone: "+1 555 890-2345" },
     })
   })
 

@@ -67,7 +67,7 @@ describe("PhoneInput", () => {
     tree.root.findByType(Select).props.onSelectValue("fr")
     expect(extractText(tree.root)).toContain("🇫🇷+3378 25 57 76 64")
     tree.root.findByType(Select).props.onSelectValue("us")
-    expect(extractText(tree.root)).toContain("🇺🇸+1(782) 557-7664")
+    expect(extractText(tree.root)).toContain("🇺🇸+1782 557-7664")
   })
 
   it("calls onChange and onChangeText when the value changes", () => {
@@ -91,8 +91,8 @@ describe("PhoneInput", () => {
     act(() => {
       tree.root.findByType(Select).props.onSelectValue("us")
     })
-    expect(onChange).toHaveBeenCalledWith("+1 (999) ")
-    expect(onChangeText).toHaveBeenCalledWith("+1 (999) ")
+    expect(onChange).toHaveBeenCalledWith("+1 999 ")
+    expect(onChangeText).toHaveBeenCalledWith("+1 999 ")
   })
 
   it("shows a validation message when a phone number is invalid", () => {

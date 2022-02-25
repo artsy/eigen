@@ -46,7 +46,7 @@ describe("OrderDetailsHeader", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => mockInfo })
 
-    expect(extractText(tree.findByProps({ testID: "date" }))).toBe("Jun 2, 2021")
+    expect(extractText(tree.findByProps({ testID: "date" }))).toBe("2 Jun 2021")
     expect(extractText(tree.findByProps({ testID: "code" }))).toBe("075381384")
     expect(extractText(tree.findByProps({ testID: "status" }))).toBe("pending")
     expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")

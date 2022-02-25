@@ -54,7 +54,7 @@ describe("ContactInformationForm", () => {
     const inputs = {
       nameInput: getByPlaceholderText("Your Full Name"),
       emailInput: getByPlaceholderText("Your Email Address"),
-      phoneInput: getByPlaceholderText("(000) 000-0000"),
+      phoneInput: getByPlaceholderText("000 000-0000"),
     }
 
     expect(inputs.nameInput).toBeTruthy()
@@ -64,7 +64,7 @@ describe("ContactInformationForm", () => {
     expect(inputs.emailInput).toHaveProp("value", "a@a.aaa")
 
     expect(inputs.phoneInput).toBeTruthy()
-    expect(inputs.phoneInput).toHaveProp("value", "(202) 555-0174")
+    expect(inputs.phoneInput).toHaveProp("value", "202 555-0174")
 
     expect(getAllByText("Submit Artwork")).toBeTruthy()
 
@@ -93,7 +93,7 @@ describe("ContactInformationForm", () => {
     const inputs = {
       nameInput: getByPlaceholderText("Your Full Name"),
       emailInput: getByPlaceholderText("Your Email Address"),
-      phoneInput: getByPlaceholderText("(000) 000-0000"),
+      phoneInput: getByPlaceholderText("000 000-0000"),
     }
 
     const submitButton = getAllByText("Submit Artwork")[0]
@@ -115,7 +115,7 @@ describe("ContactInformationForm", () => {
 export const mockQueryData: any = {
   name: "Angela",
   email: "a@a.aaa",
-  phoneNumber: { isValid: true, originalNumber: "+1 (202) 555-0174" },
+  phoneNumber: { isValid: true, originalNumber: "+1 202 555-0174" },
 }
 
 export const mockQueryDataInfoMissing: any = {
@@ -129,5 +129,5 @@ export const mockFormDataForSubmission: any = {
   state: "SUBMITTED",
   userEmail: "a@a.aaa",
   userName: "Angela",
-  userPhone: "+1 (202) 555-0174",
+  userPhone: "+1 202 555-0174",
 }
