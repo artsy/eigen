@@ -25,7 +25,6 @@ import {
   useColor,
 } from "palette"
 import React, { useContext } from "react"
-import { PixelRatio } from "react-native"
 import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
@@ -68,7 +67,6 @@ export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
 export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSavedWorks_me }> = ({
   me,
 }) => {
-  const iconSize = ICON_SIZE * PixelRatio.getFontScale()
   const color = useColor()
   const navigation = useNavigation()
 
@@ -119,7 +117,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
           <Join separator={<Spacer my={0.5} />}>
             {!!me?.location?.display && (
               <Flex flexDirection="row" alignItems="flex-end">
-                <MapPinIcon width={iconSize} height={iconSize} />
+                <MapPinIcon width={ICON_SIZE} height={ICON_SIZE} />
                 <Text variant="xs" color={color("black100")} px={0.5}>
                   {me.location.display}
                 </Text>
@@ -128,7 +126,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
 
             {!!me?.profession && (
               <Flex flexDirection="row" alignItems="flex-end">
-                <BriefcaseIcon width={iconSize} height={iconSize} />
+                <BriefcaseIcon width={ICON_SIZE} height={ICON_SIZE} />
                 <Text variant="xs" color={color("black100")} px={0.5}>
                   {me.profession}
                 </Text>
@@ -137,7 +135,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
 
             {!!me?.otherRelevantPositions && (
               <Flex flexDirection="row" alignItems="flex-end">
-                <MuseumIcon width={iconSize} height={iconSize} />
+                <MuseumIcon width={ICON_SIZE} height={ICON_SIZE} />
                 <Text variant="xs" color={color("black100")} px={0.5}>
                   {me?.otherRelevantPositions}
                 </Text>

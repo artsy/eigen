@@ -35,7 +35,7 @@ import {
   useColor,
 } from "palette"
 import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
-import { PixelRatio, ScrollView, TextInput } from "react-native"
+import { ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import * as Yup from "yup"
@@ -419,20 +419,13 @@ const LoadingSkeleton = () => {
   )
 }
 
-const renderVerifiedRow = ({
-  title,
-  subtitle,
-  iconSize,
-}: {
-  title: string
-  subtitle: string
-  iconSize: number
-}) => {
+const renderVerifiedRow = ({ title, subtitle }: { title: string; subtitle: string }) => {
   const color = useColor()
+
   return (
     <Flex flexDirection="row">
       <Flex mt="3px">
-        <CheckCircleFillIcon height={iconSize} width={iconSize} fill="green100" />
+        <CheckCircleFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
       </Flex>
       <Flex ml={1}>
         <Text>{title}</Text>
@@ -456,7 +449,6 @@ const ProfileVerifications = ({
   isIDVerified: boolean
 }) => {
   const color = useColor()
-  const iconSize = ICON_SIZE * PixelRatio.getFontScale()
 
   return (
     <Flex testID="profile-verifications" pr={2}>
@@ -465,12 +457,11 @@ const ProfileVerifications = ({
         renderVerifiedRow({
           title: "ID Verified",
           subtitle: "For details, see FAQs or contact verification@artsy.net",
-          iconSize,
         })
       ) : (
         <Flex flexDirection="row">
           <Flex mt="3px">
-            <CheckCircleIcon height={iconSize} width={iconSize} fill="black30" />
+            <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="black30" />
           </Flex>
           <Flex ml={1}>
             <Text onPress={handleIDVerification} style={{ textDecorationLine: "underline" }}>
@@ -504,12 +495,11 @@ const ProfileVerifications = ({
         renderVerifiedRow({
           title: "Email Address Verified",
           subtitle: "Description Text explaining Email verification for the Collector.",
-          iconSize,
         })
       ) : (
         <Flex flexDirection="row">
           <Flex mt="3px">
-            <CheckCircleIcon height={iconSize} width={iconSize} fill="black30" />
+            <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="black30" />
           </Flex>
           <Flex ml={1}>
             {canRequestEmailConfirmation ? (
