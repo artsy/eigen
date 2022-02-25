@@ -21,7 +21,7 @@ export interface ArtworkInquiryContextState {
   readonly message: string | null
 }
 
-export type InquiryTypes = "Inquire on price" | "Contact gallery" | "Inquire to purchase"
+export type InquiryTypes = "Inquire on price" | "Contact Gallery" | "Inquire to purchase"
 
 interface ResetForm {
   type: "resetForm"
@@ -49,7 +49,7 @@ interface SelectInquiryQuestion {
 
 export enum InquiryOptions {
   RequestPrice = "Inquire on price",
-  ContactGallery = "Contact gallery",
+  ContactGallery = "Contact Gallery",
   InquireToPurchase = "Inquire to purchase",
 }
 

@@ -279,7 +279,7 @@ export const saleMessageOrBidInfo = ({
   }
 
   if (artwork.saleMessage === "Contact For Price") {
-    return "Contact for price"
+    return "Price on Request"
   }
 
   return artwork.saleMessage

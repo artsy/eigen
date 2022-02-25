@@ -1,6 +1,5 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
-import { captureException } from "@sentry/react-native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
@@ -12,16 +11,15 @@ import {
 } from "app/Components/DetailedLocationAutocomplete"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { useHasBeenTrue } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { sendEmail } from "app/utils/sendEmail"
-import { verifyEmail } from "app/utils/verifyEmail"
 import { useFormik } from "formik"
-import { compact, isArray, throttle } from "lodash"
+import { compact, isArray } from "lodash"
 import {
   Avatar,
   Box,
@@ -32,18 +30,18 @@ import {
   Input,
   Join,
   Spacer,
-  Spinner,
   Text,
   Touchable,
   useColor,
 } from "palette"
-import React, { Suspense, useCallback, useContext, useEffect, useRef, useState } from "react"
+import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
 import { PixelRatio, ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import * as Yup from "yup"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 import { MyProfileContext } from "./MyProfileProvider"
+import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
 
 const PRIMARY_LOCATION_OFFSET = 240
 const ICON_SIZE = 22
@@ -86,11 +84,15 @@ export const MyProfileEditForm: React.FC = () => {
 
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
-  const [showVerificationBanner, setShowVerificationBanner] = useState(false)
-  const [isverificationLoading, setIsVerificationLoading] = useState(false)
-  const [didSuccessfullyVerifiyEmail, setDidSuccessfullyVerifiyEmail] = useState<boolean | null>(
-    null
-  )
+
+  const {
+    showVerificationBanner: showVerificationBannerForEmail,
+    handleVerification: handleEmailVerification,
+  } = useHandleEmailVerification()
+  const {
+    showVerificationBanner: showVerificationBannerForID,
+    handleVerification: handleIDVerification,
+  } = useHandleIDVerification()
 
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
@@ -182,7 +184,7 @@ export const MyProfileEditForm: React.FC = () => {
   useEffect(() => {
     const refetchProfileIdentificationInterval = setInterval(() => {
       // When the user applies the email verification and the modal is visible
-      if (didSuccessfullyVerifiyEmail) {
+      if (showVerificationBannerForEmail || showVerificationBannerForID) {
         refetch({ enableCollectorProfile })
       }
     }, 3000)
@@ -190,48 +192,12 @@ export const MyProfileEditForm: React.FC = () => {
     return () => {
       clearInterval(refetchProfileIdentificationInterval)
     }
-  }, [didSuccessfullyVerifiyEmail])
+  }, [showVerificationBannerForEmail, showVerificationBannerForID])
 
   const onLeftButtonPressHandler = () => {
     setDidUpdatePhoto(false)
     navigation.goBack()
   }
-
-  const handleEmailVerification = useCallback(async () => {
-    try {
-      setShowVerificationBanner(true)
-      setIsVerificationLoading(true)
-
-      const { sendConfirmationEmail } = await verifyEmail(defaultEnvironment)
-
-      const confirmationOrError = sendConfirmationEmail?.confirmationOrError
-      const emailToConfirm = confirmationOrError?.unconfirmedEmail
-
-      // this timeout is here to make sure that the user have enough time to read
-      // "Sending a confirmation email..."
-      setTimeout(() => {
-        if (emailToConfirm) {
-          setDidSuccessfullyVerifiyEmail(true)
-          setIsVerificationLoading(false)
-        } else {
-          setDidSuccessfullyVerifiyEmail(false)
-          setIsVerificationLoading(false)
-        }
-      }, 500)
-    } catch (error) {
-      captureException(error)
-    } finally {
-      // Allow the user some time to read the message
-      setTimeout(() => {
-        setShowVerificationBanner(false)
-      }, 2000)
-    }
-  }, [])
-
-  const throttleHandledEmailVerification = useCallback(
-    throttle(handleEmailVerification, 2000, { trailing: true }),
-    []
-  )
 
   return (
     <>
@@ -356,7 +322,8 @@ export const MyProfileEditForm: React.FC = () => {
                   isIDVerified={!!me?.identityVerified}
                   canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
                   emailConfirmed={!!me?.emailConfirmed}
-                  handleEmailVerification={throttleHandledEmailVerification}
+                  handleEmailVerification={handleEmailVerification}
+                  handleIDVerification={handleIDVerification}
                 />
               )}
 
@@ -367,12 +334,11 @@ export const MyProfileEditForm: React.FC = () => {
           </Flex>
         </Join>
       </ScrollView>
-      {!!showVerificationBanner && (
-        <VerificationConfirmationBanner
-          isLoading={isverificationLoading}
-          didSuccessfullyVerifiyEmail={didSuccessfullyVerifiyEmail}
-          resultText={`Email sent to ${me?.email ?? ""}`}
-        />
+      {!!showVerificationBannerForEmail && (
+        <VerificationBanner resultText={`Email sent to ${me?.email ?? ""}`} />
+      )}
+      {!!showVerificationBannerForID && (
+        <VerificationBanner resultText={`ID verification link sent to ${me?.email ?? ""}.`} />
       )}
       <LoadingModal isVisible={loading} />
     </>
@@ -480,11 +446,13 @@ const ProfileVerifications = ({
   canRequestEmailConfirmation,
   emailConfirmed,
   handleEmailVerification,
+  handleIDVerification,
   isIDVerified,
 }: {
   canRequestEmailConfirmation: boolean
   emailConfirmed: boolean
   handleEmailVerification: () => void
+  handleIDVerification: () => void
   isIDVerified: boolean
 }) => {
   const color = useColor()
@@ -505,17 +473,18 @@ const ProfileVerifications = ({
             <CheckCircleIcon height={iconSize} width={iconSize} fill="black30" />
           </Flex>
           <Flex ml={1}>
-            <Text
-              onPress={() => {
-                // Trigger ID Verification Process
-                // This will be done in a separate ticket
-              }}
-              style={{ textDecorationLine: "underline" }}
-            >
+            <Text onPress={handleIDVerification} style={{ textDecorationLine: "underline" }}>
               Verify Your ID
             </Text>
             <Text color={color("black60")}>
-              For details about identity verification, see the FAQ or contact{" "}
+              For details, see{" "}
+              <Text
+                style={{ textDecorationLine: "underline" }}
+                onPress={() => navigate(`https://www.artsy.net/identity-verification-faq`)}
+              >
+                FAQs
+              </Text>{" "}
+              or contact{" "}
               <Text
                 style={{ textDecorationLine: "underline" }}
                 onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
@@ -546,9 +515,7 @@ const ProfileVerifications = ({
             {canRequestEmailConfirmation ? (
               <Text
                 style={{ textDecorationLine: "underline" }}
-                onPress={() => {
-                  handleEmailVerification()
-                }}
+                onPress={handleEmailVerification}
                 testID="verify-your-email"
               >
                 Verify Your Email
@@ -574,37 +541,9 @@ const ProfileVerifications = ({
   )
 }
 
-export const VerificationConfirmationBanner = ({
-  isLoading,
-  didSuccessfullyVerifiyEmail,
-  resultText,
-}: {
-  isLoading: boolean
-  didSuccessfullyVerifiyEmail: boolean | null
-  resultText: string
-}) => {
+const VerificationBanner = ({ resultText }: { resultText: string }) => {
   const color = useColor()
 
-  const renderContent = () => {
-    if (isLoading) {
-      return (
-        <>
-          <Text color={color("white100")}>Sending a confirmation email...</Text>
-
-          <Flex pr="1">
-            <Spinner size="small" color="white100" />
-          </Flex>
-        </>
-      )
-    }
-    return (
-      <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
-        <Text color={color("white100")} numberOfLines={2}>
-          {didSuccessfullyVerifiyEmail ? resultText : "Something went wrong, please try again"}
-        </Text>
-      </Flex>
-    )
-  }
   return (
     <Flex
       px={2}
@@ -616,7 +555,11 @@ export const VerificationConfirmationBanner = ({
       alignItems="center"
       testID="verification-confirmation-banner"
     >
-      {renderContent()}
+      <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
+        <Text color={color("white100")} numberOfLines={2}>
+          {resultText}
+        </Text>
+      </Flex>
     </Flex>
   )
 }

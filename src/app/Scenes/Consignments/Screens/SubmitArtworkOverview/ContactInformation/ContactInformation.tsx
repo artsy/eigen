@@ -19,13 +19,13 @@ export const ContactInformation: React.FC<{
   const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
   const [submissionError, setSubmissionError] = useState(false)
 
-  const handleSubmit = async (values: ContactInformationFormModel) => {
+  const handleFormSubmit = async (formValues: ContactInformationFormModel) => {
     try {
       const updatedSubmissionId = await updateConsignSubmission({
         id: submissionId,
-        userName: values.userName,
-        userEmail: values.userEmail,
-        userPhone: values.userPhone,
+        userName: formValues.userName,
+        userEmail: formValues.userEmail,
+        userPhone: formValues.userPhone,
         state: "SUBMITTED",
       })
 
@@ -54,12 +54,11 @@ export const ContactInformation: React.FC<{
         userEmail,
         userPhone,
       }}
-      onSubmit={handleSubmit}
+      onSubmit={handleFormSubmit}
       validationSchema={contactInformationValidationSchema}
       validateOnMount
-      enableReinitialize
     >
-      {({ values, setFieldValue, isValid }) => (
+      {({ values, isValid, touched, errors, handleChange, handleBlur, handleSubmit }) => (
         <Flex p={1} mt={1}>
           <Text color="black60">
             We will only use these details to contact you regarding your submission.
@@ -68,34 +67,34 @@ export const ContactInformation: React.FC<{
           <Input
             title="Name"
             placeholder="Your Full Name"
-            onChangeText={(e) => setFieldValue("userName", e)}
+            onChangeText={handleChange("userName")}
             value={values.userName}
+            onBlur={handleBlur("userName")}
+            error={touched.userName ? errors.userName : undefined}
           />
           <Spacer mt={4} />
           <Input
             title="Email"
             placeholder="Your Email Address"
-            onChangeText={(e) => setFieldValue("userEmail", e)}
+            onChangeText={handleChange("userEmail")}
             value={values.userEmail}
+            onBlur={handleBlur("userEmail")}
+            error={touched.userEmail ? errors.userEmail : undefined}
           />
           <Spacer mt={4} />
           <PhoneInput
             style={{ flex: 1 }}
             title="Phone number"
             placeholder="(000) 000-0000"
-            onChangeText={(e) => setFieldValue("userPhone", e)}
+            onChangeText={handleChange("userPhone")}
             value={values.userPhone}
             setValidation={() => {
-              //  validation function
+              // do nothing
             }}
+            onBlur={handleBlur("userPhone")}
           />
           <Spacer mt={6} />
-          <CTAButton
-            onPress={() => {
-              handleSubmit(values)
-            }}
-            disabled={!isValid}
-          >
+          <CTAButton onPress={handleSubmit} disabled={!isValid}>
             Submit Artwork
           </CTAButton>
         </Flex>
@@ -132,13 +131,11 @@ export const ContactInformationQueryRenderer: React.FC<{
       `}
       variables={{}}
       render={({ error, props }) => {
-        if (error) {
+        if (error || !props?.me) {
           return null
         }
 
-        return (
-          <ContactInformationFragmentContainer handlePress={handlePress} me={props?.me || null} />
-        )
+        return <ContactInformationFragmentContainer handlePress={handlePress} me={props?.me} />
       }}
     />
   )
