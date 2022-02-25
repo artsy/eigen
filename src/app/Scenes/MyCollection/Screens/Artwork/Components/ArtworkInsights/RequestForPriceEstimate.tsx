@@ -1,8 +1,10 @@
+import { ActionType, ContextModule, OwnerType, TappedRequestPriceEstimate } from "@artsy/cohesion"
 import { RequestForPriceEstimate_artwork$key } from "__generated__/RequestForPriceEstimate_artwork.graphql"
 import { RequestForPriceEstimate_marketPriceInsights$key } from "__generated__/RequestForPriceEstimate_marketPriceInsights.graphql"
 import { Box, Button, Text } from "palette"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface RequestForPriceEstimateProps {
   artwork: RequestForPriceEstimate_artwork$key
@@ -11,6 +13,8 @@ interface RequestForPriceEstimateProps {
 export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = ({
   ...otherProps
 }) => {
+  const { trackEvent } = useTracking()
+
   const artwork = useFragment<RequestForPriceEstimate_artwork$key>(
     artworkFragment,
     otherProps.artwork
@@ -26,6 +30,13 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
         testID="request-price-estimate-button"
         onPress={() => {
           // TODO:- CX-2355: Implement the actual email sending feature
+          trackEvent(
+            tracks.trackTappedRequestPriceEstimate(
+              artwork.id,
+              artwork.slug,
+              marketPriceInsights?.demandRank ?? undefined
+            )
+          )
         }}
         block
       >
@@ -47,6 +58,8 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
 
 const artworkFragment = graphql`
   fragment RequestForPriceEstimate_artwork on Artwork {
+    id
+    slug
     title
     medium
     artist {
@@ -69,3 +82,18 @@ const marketPriceInsightsFragment = graphql`
     demandRank
   }
 `
+
+const tracks = {
+  trackTappedRequestPriceEstimate: (
+    artworkId: string,
+    artworkSlug?: string,
+    demandRank?: number
+  ): TappedRequestPriceEstimate => ({
+    action: ActionType.tappedRequestPriceEstimate,
+    context_module: ContextModule.myCollectionArtworkInsights,
+    context_screen: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: artworkId,
+    context_screen_owner_slug: artworkSlug,
+    demand_index: demandRank,
+  }),
+}
