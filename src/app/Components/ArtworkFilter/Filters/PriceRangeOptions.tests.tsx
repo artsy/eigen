@@ -117,35 +117,14 @@ describe("PriceRangeOptions", () => {
     )
   }
 
-  it("renders the options", () => {
-    const { getByText } = getTree()
+  it("renders the header and the inputs", () => {
+    const { getByText, getByTestId } = getTree()
 
-    expect(getByText("Choose Your Price")).toBeTruthy()
-    expect(getByText("$50,000+")).toBeTruthy()
-    expect(getByText("$10,000–50,000")).toBeTruthy()
-    expect(getByText("$5,000–10,000")).toBeTruthy()
-    expect(getByText("$1,000–5,000")).toBeTruthy()
-    expect(getByText("$0–1,000")).toBeTruthy()
-  })
-
-  it("renders the min and max input by default", () => {
-    const { getByTestId } = getTree()
+    expect(getByText("Choose Your Price Range")).toBeTruthy()
 
     expect(getByTestId("price-min-input")).toBeTruthy()
     expect(getByTestId("price-max-input")).toBeTruthy()
-  })
-
-  it("custom price values should not be cleared if a predefined value is selected", () => {
-    const { getByTestId, getByText } = getTree()
-    const minInput = getByTestId("price-min-input")
-    const maxInput = getByTestId("price-max-input")
-
-    fireEvent.changeText(minInput, "1000")
-    fireEvent.changeText(maxInput, "5000")
-    fireEvent.press(getByText("$10,000–50,000"))
-
-    expect(minInput.props.value).toBe("1000")
-    expect(maxInput.props.value).toBe("5000")
+    expect(getByTestId("slider")).toBeTruthy()
   })
 
   it("dispatches a custom price", () => {
@@ -160,25 +139,13 @@ describe("PriceRangeOptions", () => {
   })
 
   it("dispatches the last entered price", () => {
-    const { getByTestId, getByText } = getTree()
+    const { getByTestId } = getTree()
 
     fireEvent.changeText(getByTestId("price-min-input"), "1111")
-    fireEvent.press(getByText("$10,000–50,000"))
     fireEvent.changeText(getByTestId("price-min-input"), "2222")
 
     expect(extractText(getByTestId("debug"))).toContain(
       `{"displayText":"$2,222+","paramValue":"2222-*","paramName":"priceRange"}`
-    )
-  })
-
-  it("dispatches the last selected price", () => {
-    const { getByTestId, getByText } = getTree()
-
-    fireEvent.press(getByText("$10,000–50,000"))
-    fireEvent.press(getByText("$1,000–5,000"))
-
-    expect(extractText(getByTestId("debug"))).toContain(
-      `{"displayText":"$1,000–5,000","paramValue":"1000-5000","paramName":"priceRange"}`
     )
   })
 
@@ -190,19 +157,8 @@ describe("PriceRangeOptions", () => {
     expect(getByText("Clear")).toBeTruthy()
   })
 
-  it('should display the "clear" button if a predefined value is selected', () => {
-    const { getByText } = getTree()
-
-    fireEvent.press(getByText("$10,000–50,000"))
-
-    expect(getByText("Clear")).toBeTruthy()
-  })
-
   it('should not display the "clear" button if the default value is selected', () => {
-    const { queryByText, getByText } = getTree()
-
-    fireEvent.press(getByText("$10,000–50,000"))
-    fireEvent.press(getByText("Choose Your Price"))
+    const { queryByText } = getTree()
 
     expect(queryByText("Clear")).toBeNull()
   })
@@ -214,6 +170,6 @@ describe("PriceRangeOptions", () => {
     fireEvent.changeText(minInput, "1111")
     fireEvent.press(getByText("Clear"))
 
-    expect(minInput.props.value).toBeUndefined()
+    expect(minInput.props.value).toBe("")
   })
 })

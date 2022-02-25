@@ -32,7 +32,7 @@ const DEFAULT_RANGE = [0, 50000]
 
 type CustomRange = Array<number | "*">
 
-const parseRange = (range: string = DEFAULT_PRICE_RANGE) => {
+const parseRange = (range: string = DEFAULT_PRICE_RANGE): CustomRange => {
   return range.split("-").map((s) => {
     if (s === "*") {
       return s
@@ -41,7 +41,7 @@ const parseRange = (range: string = DEFAULT_PRICE_RANGE) => {
   })
 }
 
-const parseSliderRange = (range: CustomRange) => {
+const parseSliderRange = (range: CustomRange): number[] => {
   return range.map((value, index) => {
     if (value === "*") {
       return DEFAULT_RANGE[index]
@@ -51,7 +51,7 @@ const parseSliderRange = (range: CustomRange) => {
   })
 }
 
-const convertToArtworkFilterFormatRange = (range: number[]) => {
+const convertToArtworkFilterFormatRange = (range: number[]): CustomRange => {
   return range.map((value, index) => {
     if (value === DEFAULT_RANGE[index]) {
       return "*"
@@ -62,7 +62,7 @@ const convertToArtworkFilterFormatRange = (range: number[]) => {
 }
 
 const getValue = (value: CustomRange[number]) => {
-  return value === "*" || value === 0 ? "" : value
+  return value === "*" || value === 0 ? "" : value.toString()
 }
 
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
@@ -118,12 +118,12 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     updateRange(convertedRange)
   }
 
-  const updateRange = (updatedRange: Array<number | "*">) => {
+  const updateRange = (updatedRange: CustomRange) => {
     setRange(updatedRange)
     handleCustomPriceChange(updatedRange)
   }
 
-  const handleCustomPriceChange = (value: Array<number | "*">) => {
+  const handleCustomPriceChange = (value: CustomRange) => {
     selectFiltersAction({
       displayText: parsePriceRangeLabel(value[0], value[1]),
       paramValue: `${value[0]}-${value[1]}`,
@@ -146,16 +146,16 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
       )}
       <Flex flexGrow={1}>
         <ScrollView style={{ flex: 1 }}>
-          <Flex m={2} key="title">
+          <Flex m={2}>
             <Text variant="md">Choose Your Price Range</Text>
           </Flex>
-          <Flex key="custom-price-holder" flexDirection="row" alignItems="center" mb={1} mx={2}>
+          <Flex flexDirection="row" alignItems="center" mb={1} mx={2}>
             <Input
               description="Min"
               placeholder="$USD"
               enableClearButton
               keyboardType="number-pad"
-              value={getValue(minValue).toString()}
+              value={getValue(minValue)}
               onChangeText={handleTextChange(0)}
               testID="price-min-input"
               descriptionColor="black100"
@@ -166,22 +166,23 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
               placeholder="$USD"
               enableClearButton
               keyboardType="number-pad"
-              value={getValue(maxValue).toString()}
+              value={getValue(maxValue)}
               onChangeText={handleTextChange(1)}
               testID="price-max-input"
               descriptionColor="black100"
             />
           </Flex>
-          <Spacer key="spacer" mx={2} my={2} />
-          <Flex key="slider" mx={2}>
-            <Flex key="ssslider" alignItems="center">
+          <Spacer mx={2} my={2} />
+          <Flex mx={2}>
+            <Flex alignItems="center" testID="slider">
               <MultiSlider
-                // @ts-ignore
-                testID="price-slider"
                 min={defaultMinValue}
                 max={defaultMaxValue}
                 step={5}
                 snapped
+                // 70 here comes from the width of the padding on the left and right of the slider
+                // which is 20 + 20 plus the 15 for each side in order for the toggles to be displayed
+                // according to the design specs
                 sliderLength={width - 70}
                 onValuesChange={handleSliderValueChange}
                 allowOverlap={false}
