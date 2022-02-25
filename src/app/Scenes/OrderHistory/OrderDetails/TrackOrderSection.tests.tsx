@@ -91,7 +91,9 @@ describe("TrackOrderSection", () => {
       expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe(
         "Tracking not available"
       )
-      expect(extractText(tree.findByProps({ testID: "shippedOn" }))).toContain("Sep 2, 2021")
+      expect(extractText(tree.findByProps({ testID: "shippedOn" }))).toContain(
+        "Shipped on 2 Sept 2021"
+      )
       expect(extractText(tree.findByProps({ testID: "estimatedDelivery" }))).toContain(
         "Oct 2, 2021"
       )
@@ -128,7 +130,9 @@ describe("TrackOrderSection", () => {
       expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("in transit")
       expect(extractText(tree.findByProps({ testID: "trackingNumber" }))).toContain("12345678910")
       expect(tree.findAllByProps({ testID: "noTrackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.findByProps({ testID: "shippedOn" }))).toContain("Oct 3, 2021")
+      expect(extractText(tree.findByProps({ testID: "shippedOn" }))).toContain(
+        "Shipped on 3 Oct 2021"
+      )
       expect(extractText(tree.findByProps({ testID: "estimatedDelivery" }))).toContain(
         "on September 20, 2021"
       )
