@@ -10,6 +10,7 @@ import { ToastProvider } from "./Components/Toast/toastHook"
 import { defaultEnvironment } from "./relay/createEnvironment"
 import { GlobalStore, GlobalStoreProvider, useFeatureFlag } from "./store/GlobalStore"
 import { combineProviders } from "./utils/combineProviders"
+import { UnleashProvider } from "./utils/experiments/UnleashProvider"
 import { track } from "./utils/track"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -19,9 +20,10 @@ export const AppProviders = ({ children }: { children?: ReactNode }) =>
       // order matters here, be careful!
       // if Provider A is using another Provider B, then A needs to appear below B.
       TrackingProvider,
+      GlobalStoreProvider,
+      UnleashProvider, // uses: GlobalStoreProvider
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
-      GlobalStoreProvider,
       RelayDefaultEnvProvider,
       ThemeProvider, // uses: GlobalStoreProvider
       RetryErrorBoundary,

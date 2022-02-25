@@ -192,7 +192,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
   )
 }
 
-const MyAccountPlaceholder: React.FC<{}> = ({}) => {
+const MyAccountPlaceholder: React.FC = () => {
   return (
     <PageWithSimpleHeader title="Account">
       <Flex px={2} py={1}>

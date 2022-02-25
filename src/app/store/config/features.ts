@@ -130,6 +130,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableSplitIOABTesting",
   },
+  AREnableExampleExperiments: {
+    // we can remove this as soon as we have a real experiment on Unleash
+    readyForRelease: false,
+    description: "Show example Unleash experiments",
+    showInAdminMenu: true,
+  },
   AREnableArtistRecommendations: {
     readyForRelease: false,
     description: "Enable new artist recommendations",
@@ -263,6 +269,9 @@ export const devToggles = defineDevToggles({
   },
   DTFPSCounter: {
     description: "FPS counter",
+  },
+  DTUseProductionUnleash: {
+    description: "Use Production Unleash",
   },
 })
 

@@ -179,6 +179,7 @@
     "react-use": "17.1.0",
     "redux-logger": "3.0.6",
     "remove-markdown": "0.1.0",
+    "rn-async-storage-flipper": "0.0.10",
     "rn-fetch-blob": "0.12.0",
     "search-insights": "2.0.3",
     "semver": "7.3.5",
@@ -187,6 +188,7 @@
     "styled-system": "5.1.5",
     "supercluster": "6.0.2",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
+    "unleash-proxy-client": "1.11.0",
     "url": "0.11.0",
     "yup": "0.29.1",
     "zustand": "3.6.9"

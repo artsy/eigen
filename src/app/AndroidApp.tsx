@@ -23,7 +23,8 @@ import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import { useExperiments } from "./utils/useExperiments"
+import { useDebugging } from "./utils/useDebugging"
+import { useSplitExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useIdentifyUser } from "./utils/useIdentifyUser"
 import { useInitialNotification } from "./utils/useInitialNotification"
@@ -38,6 +39,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 }
 
 const Main: React.FC = () => {
+  useDebugging()
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
@@ -57,7 +59,7 @@ const Main: React.FC = () => {
   useWebViewCookies()
   useDeepLinks()
   useInitialNotification()
-  useExperiments()
+  useSplitExperiments()
   useInitializeQueryPrefetching()
   useIdentifyUser()
 
