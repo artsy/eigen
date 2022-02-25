@@ -1,9 +1,11 @@
 # :world_map: Preferred Practices
 
+**Last update: February 2022**
+
 This is a living document, expected to be updated regularly, with a broad overview of the history and how we prefere to do things on eigen.
 Here you can find links to the tools we use, examples, pull requests with interesting discussions & blog posts.
 
-Last update: February 2022
+_Please note: Links should point to specific commits, and not a branch (in case the branch or file is deleted, these links should always work). But it's possible that a file is outdated, that our understanding has moved on since it was linked to; in that case, please update this document._
 
 ## Contents
 
@@ -158,7 +160,7 @@ In React-native, we use react-tracking as a wrapper for the tracking events we s
 
 ### Formik
 
-We use Formik for handling forms. You can see an example that's also using form validation [here](https://github.com/artsy/eigen/blob/main/src/app/Scenes/Consignments/Screens/SubmitArtworkOverview/ContactInformation/ContactInformation.tsx)
+We use Formik for handling forms. You can see an example that's also using form validation [here](https://github.com/artsy/eigen/blob/9faccb0ffd987da74f76e98e55432992f07231cf/src/app/Scenes/Consignments/Screens/SubmitArtworkOverview/ContactInformation/ContactInformation.tsx)
 
 ### Miscellaneous
 
