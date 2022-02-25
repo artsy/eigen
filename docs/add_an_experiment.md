@@ -1,62 +1,76 @@
 # Adding a New Experiment
 
-We are using Split.io to run AB Testing experiments in Artsy. In order to create an experiment, we will need to first add it to the Split.io dashboard then make code adjustments to use it.
+We are using Unleash to run A/B Testing experiments at Artsy. In order to create an experiment, we will need to first add it to the [Unleash dashboard](https://unleash.artsy.net/projects/default) then make code adjustments to use it.
 
-## Adding an experiment (aka Split) to Split.io dashboard
+## Adding an experiment to Unleash dashboard
 
-1. Log into your Split.io using your personal Artsy account
-   `https://app.split.io/login`
-2. Choose the **Splits** tab from the left menu
-3. Tap on **Create split** and fill in required details as described in screenshot
-   ![create-split](./screenshots/create-split.png)
-4. Tap on **Add rules** and define your treatments.
-   A _treatment_ refers to possible values for your experiment. The values are of `string` type.
-   ![split-rules](./screenshots/split-rules.png)
-5. Tap on **Save** and confirm while using **Pre-production** as a Status.
+1. To login to our [Unleash instance](https://unleash.artsy.net/projects/default), use your Artsy Google account to proceed past the Cloudflare Access prompt and then use the shared admin credentials in 1Password to login to the dashboard.
+2. Tap on **New feature toggle** and fill in required details.
+3. Tap on **Variants** and define your different variations that users can get.
+4. Tap on **Strategies** and define how many/who can be part of that experiment.
+5. Try turning it on for `development` and test on eigen.
 
 ## Adding an experiment to Eigen
 
 1. In the file `experiments.ts` add your new experiment.
 
-```diff
-   Treatment1VsTreatment2: {
-     echoFlagKey: "Treatment1VsTreatment2",
-     fallbackTreatment: "Treatment1"
-   },
-+  HomeScreenWorksForYouVsWorksByArtistsYouFollow: {
-+    treatmentKey: "HomeScreenWorksForYouVsWorksByArtistsYouFollow",
-+    fallbackTreatment: "worksByArtistsYouFolow",
-+  },
+```ts
+  "our-new-experiment": {
+    fallbackEnabled: false,
+  },
 ```
 
-_The `fallbackTreatment` refers to the value we would like to return in case something goes wrong with the client sdk_
+or if we want a variant we can use something like
+
+```ts
+  "our-new-experiment": {
+    fallbackEnabled: true,
+    fallbackVariant: "the-variant-name",
+  },
+```
+
+_The `fallback*` values are values we would like to fall back to in case something goes wrong with the client sdk_
+
+Don't forget to add some tracking on this, using `maybeReportExperimentFlag`. Look for other examples in the code.
 
 ## Using an experiment
 
-In order to use an experiment, we have two custom hooks that we created that support querying for a single experiment (`useTreatment`).
+In order to use an experiment, we have two custom hooks that we created that support querying for a flag (`useExperimentFlag`) or an experiment (`useExperimentVariant`). The first one returns a boolean, the second returns a small object for variants and their payloads etc.
 
-### Querying for a single treatment
+### Querying for a single flag
 
-You can access the treatment value in a functional react component using `useTreatment`.
+You can access the flag value in a functional react component using `useExperimentFlag`.
 
 ```diff
-+ const treatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
++ const ourNewFlagEnabled = useExperimentFlag("our-new-flag")
   return (
     <>
-+    {treatment === "worksByArtistsYouFolow" && <WorksForYouRail />}
-+    {treatment === "worksForYou" && <WorksForYouRail />}
++    {ourNewFlagEnabled && <ConditionallyShownComponent />}
+    <>
+  )
+```
+
+### Querying for a single experiment
+
+You can access the variant value in a functional react component using `useExperimentVariant`.
+
+```diff
++ const ourNewExperiment = useExperimentVariant("our-new-experiment")
+  return (
+    <>
++    {ourNewExperiment.enabled && ourNewExperiment.variant === "varA" && <AComponent />}
++    {ourNewExperiment.enabled && ourNewExperiment.variant === "varB" && <BComponent custom={ourNewExperiment.payload} />}
     <>
   )
 ```
 
 ## Removing/Killing an Experiment
 
-Once an experiment is done, usually we have a winner treatment. In order to roll out that treatment for everyone targeted by it, we will need to set it as a default treatment before "killing" it.
+Once an experiment is done, usually we have a winner variant. In order to roll out that variant for everyone targeted by it, we will need to set it as a default strategy before "killing" it.
 
-For example, in the previous experiment, we were testing if `worksForYou` is performing better than `worksByArtistsYouFolow`. Assuming that it actually did, we then set `worksForYou` as a default treatment, **Save changes**, then kill treatment by tapping on **Kill**
-![kill-treatment](./screenshots/kill-treatment.png)
-
-Then, all we need to do is remove any code that is relying on this experiment in Eigen.
+For example, in the previous experiment, we were testing if `varA` is performing better than `varB`. Assuming that it actually did, we then set `varA` as a default variant.
+Then we need to update eigen to remove the experiment code and use only the winner variant code.
+After that, we can archive that experiment in the Unleash dashboard.
 
 ## Still need help?
 

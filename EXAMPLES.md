@@ -65,3 +65,15 @@ Links:
 
 - [migration.ts](src/app/store/migration.ts).
 - [migration.tests.ts](src/app/store/migration.tests.ts)
+
+## I want to add a dev-only tool to the app.
+
+We call these "Dev Toggles", and you can find them in the Dev Menu close to the bottom of the screen.
+
+The code for them is in [features.ts](src/app/store/config/features.ts). Their key starts with `DT` as an homage to the ObjC style of naming things, and the letters specifically stand for "Dev Toggle".
+
+You can easily add a new one, and it will appear in the Dev Menu. Then you can use they in code using `useDevToggle`.
+
+Links:
+
+- [features.ts](src/app/store/config/features.ts).

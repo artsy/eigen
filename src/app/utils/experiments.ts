@@ -1,4 +1,4 @@
-export interface ExperimentDescriptor {
+interface SplitExperimentDescriptor {
   /**
    * Provide a split name to allow this feature to be toggled via split.io.
    */
@@ -10,14 +10,13 @@ export interface ExperimentDescriptor {
   readonly fallbackTreatment: string
 }
 
-// Helper function to get good typings and intellisense
-function defineExperiments<T extends string>(expirmentMap: {
-  readonly [experimentName in T]: ExperimentDescriptor
-}) {
-  return expirmentMap
+interface ExperimentDescriptor {
+  readonly fallbackEnabled: boolean
+  readonly fallbackVariant?: string
+  readonly fallbackPayload?: boolean
 }
 
-export const experiments = defineExperiments({
+export const splitExperiments: Record<string, SplitExperimentDescriptor> = {
   HomeScreenWorksForYouVsWorksByArtistsYouFollow: {
     splitName: "HomeScreenWorksForYouVsWorksByArtistsYouFollow",
     fallbackTreatment: "worksByArtistsYouFolow",
@@ -30,5 +29,17 @@ export const experiments = defineExperiments({
     splitName: "QueryPrefetching",
     fallbackTreatment: "disabled",
   },
-})
+}
+export type SPLIT_EXPERIMENT_NAME = keyof typeof splitExperiments
+
+export const experiments: Record<string, ExperimentDescriptor> = {
+  // this can go away whenever
+  "test-search-smudge": {
+    fallbackEnabled: false,
+  },
+  // this can go away whenever
+  "test-eigen-smudge2": {
+    fallbackEnabled: false,
+  },
+}
 export type EXPERIMENT_NAME = keyof typeof experiments

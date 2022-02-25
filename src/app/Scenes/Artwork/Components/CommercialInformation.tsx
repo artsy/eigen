@@ -132,7 +132,9 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   const renderSingleEditionArtwork = () => {
     const artworkIsInClosedAuction = artwork.isInAuction && timerState === AuctionTimerState.CLOSED
     const saleMessage = artwork.saleMessage
-      ? artwork.saleMessage
+      ? artwork.saleMessage === "Contact For Price"
+        ? "Price on Request"
+        : artwork.saleMessage
       : capitalize(artwork.availability || undefined)
 
     return (

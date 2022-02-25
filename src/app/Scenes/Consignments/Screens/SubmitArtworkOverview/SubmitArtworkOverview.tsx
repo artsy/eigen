@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { BackButton } from "app/navigation/BackButton"
 import { goBack } from "app/navigation/navigate"
+import { refreshMyCollection } from "app/Scenes/MyCollection/MyCollection"
 import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
@@ -47,6 +48,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       Content: (
         <ContactInformationQueryRenderer
           handlePress={() => {
+            refreshMyCollection()
             navigation.navigate("ArtworkSubmittedScreen")
           }}
         />

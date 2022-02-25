@@ -223,6 +223,9 @@ export const MyCollectionContainer = createPaginationContainer(
                 internalID
                 name
               }
+              consignmentSubmission {
+                displayText
+              }
             }
           }
           ...MyCollectionArtworkList_myCollectionConnection

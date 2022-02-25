@@ -1,5 +1,5 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { AdminMenuWrapper } from "app/utils/AdminMenuWrapper"
 import { addTrackingProvider } from "app/utils/track"
 import {
@@ -13,6 +13,7 @@ import { UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
+import { FPSCounter } from "./Components/FPSCounter"
 import { useErrorReporting } from "./errorReporting/hooks"
 import { ArtsyNativeModule } from "./NativeModules/ArtsyNativeModule"
 import { ModalStack } from "./navigation/ModalStack"
@@ -22,7 +23,8 @@ import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import { useExperiments } from "./utils/useExperiments"
+import { useDebugging } from "./utils/useDebugging"
+import { useSplitExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useIdentifyUser } from "./utils/useIdentifyUser"
 import { useInitialNotification } from "./utils/useInitialNotification"
@@ -37,6 +39,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 }
 
 const Main: React.FC = () => {
+  useDebugging()
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
@@ -49,12 +52,14 @@ const Main: React.FC = () => {
     (state) => state.artsyPrefs.echo.forceUpdateMessage
   )
 
+  const fpsCounter = useDevToggle("DTFPSCounter")
+
   useErrorReporting()
   useStripeConfig()
   useWebViewCookies()
   useDeepLinks()
   useInitialNotification()
-  useExperiments()
+  useSplitExperiments()
   useInitializeQueryPrefetching()
   useIdentifyUser()
 
@@ -104,6 +109,7 @@ const Main: React.FC = () => {
   return (
     <ModalStack>
       <BottomTabsNavigator />
+      {!!fpsCounter && <FPSCounter />}
     </ModalStack>
   )
 }

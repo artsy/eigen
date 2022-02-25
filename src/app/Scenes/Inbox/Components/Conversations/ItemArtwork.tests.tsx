@@ -36,7 +36,7 @@ describe("ItemArtworkFragmentContainer", () => {
         image: {
           thumbnailUrl: "https://testthumbnail",
         },
-        saleMessage: "Contact for price",
+        saleMessage: "Contact For Price",
       }),
     })
 
@@ -44,7 +44,7 @@ describe("ItemArtworkFragmentContainer", () => {
     expect(getByText("Test Artwork, December, 2021")).toBeDefined()
     expect(getByText("Test Artists")).toBeDefined()
     expect(getByText("Test Partner")).toBeDefined()
-    expect(getByText("Contact for price")).toBeDefined()
+    expect(getByText("Price on Request")).toBeDefined()
     expect(getByTestId("artworkImage")).toBeDefined()
   })
 

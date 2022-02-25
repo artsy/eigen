@@ -136,8 +136,8 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
         haptic
       >
         {variant && variant === "outline" && artwork.saleMessage
-          ? `Buy now ${artwork.saleMessage}`
-          : "Buy now"}
+          ? `Purchase ${artwork.saleMessage}`
+          : "Purchase"}
       </Button>
     )
   }

@@ -465,6 +465,70 @@ jest.mock("@react-native-community/async-storage", () => {
   }
 })
 
+jest.mock("@react-native-async-storage/async-storage", () => {
+  let state: any = {}
+  return {
+    __resetState() {
+      state = {}
+    },
+    async setItem(key: string, val: any) {
+      state[key] = val
+    },
+    async getItem(key: string) {
+      return state[key]
+    },
+    async removeItem(key: string) {
+      delete state[key]
+    },
+    async clear() {
+      state = {}
+    },
+    async getAllKeys() {
+      return Object.keys(state)
+    },
+    mergeItem() {
+      throw new Error("mock version of mergeItem not yet implemented")
+    },
+    multiGet(
+      keys: string[],
+      callback?: (
+        errors?: string[] | undefined,
+        result?: Array<[string, string | null]> | undefined
+      ) => void | undefined
+    ) {
+      return new Promise((resolve) => {
+        const res = []
+        for (const key of keys) {
+          const val = [key, state[key]]
+          res.push(val)
+        }
+        callback?.(undefined, undefined) // TODO: Do a proper callback
+        resolve(res)
+      })
+    },
+    multiMerge() {
+      throw new Error("mock version of multiMerge not yet implemented")
+    },
+    async multiRemove(keys: string[]) {
+      keys.forEach((k) => {
+        delete state[k]
+      })
+    },
+    multiSet(
+      keyValuePairs: string[][],
+      callback?: ((errors?: string[] | undefined) => void) | undefined
+    ) {
+      return new Promise((resolve) => {
+        for (const keyValue of keyValuePairs) {
+          state[keyValue[0]] = keyValue[1]
+        }
+        callback?.()
+        resolve(true)
+      })
+    },
+  }
+})
+
 jest.mock("react-native-localize", () => ({
   getCountry: jest.fn(() => "US"),
   getLocales() {
@@ -530,20 +594,28 @@ jest.mock("react-native-gesture-handler", () => {
   }
 })
 
-jest.mock("react-native-config", () => ({
-  ARTSY_DEV_API_CLIENT_SECRET: "artsy_api_client_secret",
-  ARTSY_DEV_API_CLIENT_KEY: "artsy_api_client_key",
-  ARTSY_PROD_API_CLIENT_SECRET: "artsy_api_client_secret",
-  ARTSY_PROD_API_CLIENT_KEY: "artsy_api_client_key",
-  ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
-  SEGMENT_PRODUCTION_WRITE_KEY_IOS: "segment_production_write_key_ios",
-  SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: "segment_production_write_key_android",
-  SEGMENT_STAGING_WRITE_KEY_IOS: "segment_staging_write_key_ios",
-  SEGMENT_STAGING_WRITE_KEY_ANDROID: "segment_staging_write_key_android",
-  SENTRY_DSN: "sentry_dsn",
-  GOOGLE_MAPS_API_KEY: "google_maps_api_key",
-  MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
-}))
+jest.mock("react-native-config", () => {
+  const mockConfig = {
+    ARTSY_DEV_API_CLIENT_SECRET: "artsy_api_client_secret",
+    ARTSY_DEV_API_CLIENT_KEY: "artsy_api_client_key",
+    ARTSY_PROD_API_CLIENT_SECRET: "artsy_api_client_secret",
+    ARTSY_PROD_API_CLIENT_KEY: "artsy_api_client_key",
+    ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
+    SEGMENT_PRODUCTION_WRITE_KEY_IOS: "segment_production_write_key_ios",
+    SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: "segment_production_write_key_android",
+    SEGMENT_STAGING_WRITE_KEY_IOS: "segment_staging_write_key_ios",
+    SEGMENT_STAGING_WRITE_KEY_ANDROID: "segment_staging_write_key_android",
+    SENTRY_DSN: "sentry_dsn",
+    GOOGLE_MAPS_API_KEY: "google_maps_api_key",
+    MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
+    UNLEASH_PROXY_CLIENT_KEY_PRODUCTION: "unleash_proxy_client_key_production", // pragma: allowlist secret
+    UNLEASH_PROXY_CLIENT_KEY_STAGING: "unleash_proxy_client_key_staging", // pragma: allowlist secret
+    UNLEASH_PROXY_URL_PRODUCTION: "https://unleash_proxy_url_production", // pragma: allowlist secret
+    UNLEASH_PROXY_URL_STAGING: "https://unleash_proxy_url_staging", // pragma: allowlist secret
+  }
+  // support both default and named export
+  return { ...mockConfig, Config: mockConfig }
+})
 
 jest.mock("react-native-view-shot", () => ({}))
 
