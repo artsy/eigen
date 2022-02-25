@@ -17,6 +17,7 @@ Last update: February 2022
 - [Navigation](#Navigation)
 - [Analytics and tracking](#analytics-and-tracking)
 - [Formik](#formik)
+- [Miscellaneous](#miscellaneous)
 
 ### Examples & Hacks
 
