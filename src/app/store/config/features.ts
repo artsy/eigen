@@ -205,7 +205,7 @@ export const features = defineFeatures({
     description: "Support dark mode",
     showInAdminMenu: true,
   },
-  ARShowwRequestPriceEstimateBanner: {
+  ARShowRequestPriceEstimateBanner: {
     readyForRelease: false,
     description: "Show request price estimate banner",
     showInAdminMenu: true,
