@@ -495,7 +495,6 @@ const ProfileVerifications = ({
         renderVerifiedRow({
           title: "Email Address Verified",
           subtitle: "Secure your account and receive updates about your transactions on Artsy.",
-          iconSize,
         })
       ) : (
         <Flex flexDirection="row">
