@@ -279,7 +279,7 @@ export const MyProfileEditForm: React.FC = () => {
                   error={errors.name}
                   returnKeyType="next"
                   defaultValue={values.profession}
-                  placeholder="Select Your Profession"
+                  placeholder="Profession or Job Title"
                   onSubmitEditing={() => {
                     relevantPositionsInputRef.current?.focus()
                   }}
@@ -295,7 +295,7 @@ export const MyProfileEditForm: React.FC = () => {
                   error={errors.name}
                   returnKeyType="next"
                   defaultValue={values.otherRelevantPositions}
-                  placeholder="Institution Name and Position"
+                  placeholder="Memberships, Institutions, Positions"
                   onSubmitEditing={() => {
                     bioInputRef.current?.focus()
                   }}
@@ -314,7 +314,7 @@ export const MyProfileEditForm: React.FC = () => {
                 multiline
                 showLimit
                 defaultValue={values.bio}
-                placeholder="You can add a short bio to tell more about yourself and your collection. It can be anything like the artists you collect, the genres you're interested in , etc."
+                placeholder="Add a brief bio, so galleries know which artists or genres you collect"
               />
 
               {!!enableCollectorProfile && (
@@ -503,7 +503,7 @@ const ProfileVerifications = ({
       {emailConfirmed ? (
         renderVerifiedRow({
           title: "Email Address Verified",
-          subtitle: "Description Text explaining Email verification for the Collector.",
+          subtitle: "Secure your account and receive updates about your transactions on Artsy.",
           iconSize,
         })
       ) : (
@@ -530,7 +530,6 @@ const ProfileVerifications = ({
               </Text>
             )}
 
-            {/* This text will be replaced in a separate ticket */}
             <Text color="black60">
               Secure your account and receive updates about your transactions on Artsy.
             </Text>
