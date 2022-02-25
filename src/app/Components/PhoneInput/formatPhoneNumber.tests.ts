@@ -4,26 +4,26 @@ describe(formatPhoneNumber, () => {
   it("leaves the current value alone if the user is deleting characters", () => {
     expect(
       formatPhoneNumber({
-        current: "(333)-894900",
-        previous: "(333)-894-900",
+        current: "333-894900",
+        previous: "333-894-900",
         countryCode: "us",
       })
-    ).toBe("(333)-894900")
+    ).toBe("333-894900")
 
     expect(
       formatPhoneNumber({
-        current: "(333-894-900",
-        previous: "(333)-894-900",
+        current: "333894900",
+        previous: "333894900",
         countryCode: "us",
       })
-    ).toBe("(333-894-900")
+    ).toBe("333 894-900")
   })
 
   it("works with empty strings", () => {
     expect(
       formatPhoneNumber({
         current: "",
-        previous: "(333)-894-900",
+        previous: "333-894-900",
         countryCode: "us",
       })
     ).toBe("")
@@ -49,6 +49,6 @@ describe(formatPhoneNumber, () => {
         current: "782557766",
         countryCode: "us",
       })
-    ).toBe("(782) 557-766")
+    ).toBe("782 557-766")
   })
 })
