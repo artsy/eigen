@@ -146,11 +146,9 @@ For adding a screen that corresponds to a page on artsy.net add a new route and 
 
 See our documentation on adding a route for more details: [Adding a new route](https://github.com/artsy/eigen/blob/main/docs/adding_a_new_route.md).
 
-#### iOS and android Navigation
+#### iOS Navigation
 
-- For native iOS code we use the **Native Switchboard**.
-
-- On android we use **react-navigation** for navigating between screens on iOS in many places we still use native code via the ARScreenPresenterModule class. We are actively working on using react-navigation everywhere.
+- For native iOS code we use the **Native Switchboard**. Once the new app shell is finished (expected March 2022), we will be using `react-navigation`.
 
 For the most part you don't have to worry about this.
 
@@ -166,11 +164,15 @@ We use Formik for handling forms. You can see an example that's also using form 
 
 #### Parts of the app that are still being handled in native code (Objective-C and Swift) instead of react-native on iOS
 
-- Sign up/in flow ("onboarding").
+The following parts of the iOS app are handled in native code:
+
 - Live Auctions Integration (LAI) view controller and networking.
-- The Auction view controller.
+- Initializing the React Native runtime.
+- Analytics for Native UI.
+- View In Room (Augmented Reality)
+
+The following parts of the iOS app are handled in native code, but will be managed by React Native once the new app shell is finished (expected March 2022):
+
 - The SwitchBoard (see "SwitchBoard" section below) to navigate between view controllers.
 - The top-level tab bar, and each tab's navigation controller.
 - Deep-link and notification handling (via SwitchBoard).
-- Analytics for Native UI.
-- Initializing the React Native runtime.
