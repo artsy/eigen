@@ -69,16 +69,23 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const { width } = useWindowDimensions()
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const [defaultMinValue, defaultMaxValue] = DEFAULT_RANGE
-  const [range, setRange] = useState(parseRange(DEFAULT_PRICE_OPTION.paramValue))
-  const [minValue, maxValue] = range
-  const sliderRange = parseSliderRange(range)
+
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
   )
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedFilterOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
 
+  const selectedFilterOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
+  const isCustomOption = DEFAULT_PRICE_OPTION.paramValue !== selectedFilterOption.paramValue
+
+  const [range, setRange] = useState(
+    isCustomOption
+      ? parseRange(selectedFilterOption.paramValue as string)
+      : parseRange(DEFAULT_PRICE_OPTION.paramValue)
+  )
+  const [minValue, maxValue] = range
+  const sliderRange = parseSliderRange(range)
   const filterHeaderText = FilterDisplayName.priceRange
 
   const handleClear = () => {
