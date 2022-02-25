@@ -11,7 +11,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, Input, Spacer, Text } from "palette"
+import { Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
@@ -61,12 +61,13 @@ const convertToArtworkFilterFormatRange = (range: number[]): CustomRange => {
   })
 }
 
-const getValue = (value: CustomRange[number]) => {
+const getInputValue = (value: CustomRange[number]) => {
   return value === "*" || value === 0 ? "" : value.toString()
 }
 
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { width } = useWindowDimensions()
+  const color = useColor()
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const [defaultMinValue, defaultMaxValue] = DEFAULT_RANGE
 
@@ -155,7 +156,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
               placeholder="$USD"
               enableClearButton
               keyboardType="number-pad"
-              value={getValue(minValue)}
+              value={getInputValue(minValue)}
               onChangeText={handleTextChange(0)}
               testID="price-min-input"
               descriptionColor="black100"
@@ -166,7 +167,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
               placeholder="$USD"
               enableClearButton
               keyboardType="number-pad"
-              value={getValue(maxValue)}
+              value={getInputValue(maxValue)}
               onChangeText={handleTextChange(1)}
               testID="price-max-input"
               descriptionColor="black100"
@@ -180,13 +181,32 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
                 max={defaultMaxValue}
                 step={5}
                 snapped
-                // 70 here comes from the width of the padding on the left and right of the slider
-                // which is 20 + 20 plus the 15 for each side in order for the toggles to be displayed
-                // according to the design specs
-                sliderLength={width - 70}
+                // 40 here is the horizontal padding of the slider container
+                sliderLength={width - 40}
                 onValuesChange={handleSliderValueChange}
                 allowOverlap={false}
                 values={sliderRange}
+                trackStyle={{
+                  backgroundColor: color("black30"),
+                }}
+                selectedStyle={{
+                  backgroundColor: color("blue100"),
+                }}
+                markerStyle={{
+                  height: 32,
+                  width: 32,
+                  borderRadius: 16,
+                  backgroundColor: color("white100"),
+                  borderColor: color("black10"),
+                  borderWidth: 1,
+                  shadowRadius: 2,
+                  elevation: 5,
+                }}
+                pressedMarkerStyle={{
+                  height: 32,
+                  width: 32,
+                  borderRadius: 16,
+                }}
               />
             </Flex>
             <Flex flexDirection="row" justifyContent="space-between">
