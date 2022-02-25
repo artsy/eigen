@@ -9,6 +9,7 @@ import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { FadeIn } from "./Components/FadeIn"
+import { FPSCounter } from "./Components/FPSCounter"
 import { BidFlow } from "./Containers/BidFlow"
 import { InboxQueryRenderer, InboxScreenQuery } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
@@ -109,7 +110,7 @@ import {
   ViewingRoomsListScreen,
   ViewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore, useDevToggle, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
@@ -467,6 +468,7 @@ const Main: React.FC = () => {
     (state) => state.artsyPrefs.echo.forceUpdateMessage
   )
 
+  const fpsCounter = useDevToggle("DTFPSCounter")
   useErrorReporting()
   useStripeConfig()
   useWebViewCookies()
@@ -486,7 +488,12 @@ const Main: React.FC = () => {
     return <Onboarding />
   }
 
-  return <BottomTabsNavigator />
+  return (
+    <>
+      <BottomTabsNavigator />
+      {!!fpsCounter && <FPSCounter style={{ bottom: 94 }} />}
+    </>
+  )
 }
 
 if (Platform.OS === "ios") {
