@@ -79,11 +79,6 @@ export const features = defineFeatures({
     echoFlagKey: "ARHomeAuctionResultsByFollowedArtists",
     description: "Enable home auction results",
   },
-  AREnableCustomSharesheet: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableCustomSharesheet",
-    description: "Enable custom share sheet",
-  },
   AREnableOrderHistoryOption: {
     readyForRelease: true,
     echoFlagKey: "AREnableOrderHistoryOption",
