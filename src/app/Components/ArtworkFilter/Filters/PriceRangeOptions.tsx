@@ -91,8 +91,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const handleClear = () => {
     const defaultRangeValue = parseRange(DEFAULT_PRICE_RANGE)
 
-    setRange(defaultRangeValue)
-    handleCustomPriceChange(defaultRangeValue)
+    updateRange(defaultRangeValue)
   }
 
   const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_OPTION.paramValue
@@ -120,14 +119,12 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   }
 
   const updateRange = (updatedRange: CustomRange) => {
-    setRange(updatedRange)
-    handleCustomPriceChange(updatedRange)
-  }
+    const [min, max] = updatedRange
 
-  const handleCustomPriceChange = (value: CustomRange) => {
+    setRange(updatedRange)
     selectFiltersActionDebounced({
-      displayText: parsePriceRangeLabel(value[0], value[1]),
-      paramValue: `${value[0]}-${value[1]}`,
+      displayText: parsePriceRangeLabel(min, max),
+      paramValue: updatedRange.join("-"),
       paramName: PARAM_NAME,
     })
   }
