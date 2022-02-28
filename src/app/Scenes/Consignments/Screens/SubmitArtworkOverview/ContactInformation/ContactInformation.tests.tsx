@@ -1,9 +1,12 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
 import { updateConsignSubmission } from "../Mutations"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
@@ -109,6 +112,52 @@ describe("ContactInformationForm", () => {
     await flushPromiseQueue()
 
     expect(submitButton).not.toBeDisabled()
+  })
+
+  describe("analytics", () => {
+    let trackEvent: (data: Partial<{}>) => void
+    beforeEach(() => {
+      trackEvent = useTracking().trackEvent
+      GlobalStore.actions.artworkSubmission.submission.setSubmissionId("54321")
+      GlobalStore.actions.auth.setState({
+        userID: "1",
+      })
+    })
+
+    afterEach(() => {
+      GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+      GlobalStore.actions.auth.setState({
+        userID: null,
+      })
+    })
+
+    it("tracks consignmentSubmitted event on save", async () => {
+      const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+      updateConsignSubmissionMock.mockResolvedValue("54321")
+      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Me: () => ({
+            ...mockQueryData,
+          }),
+        })
+      )
+
+      await flushPromiseQueue()
+
+      fireEvent(getAllByText("Submit Artwork")[0], "press")
+
+      await flushPromiseQueue()
+
+      expect(trackEvent).toHaveBeenCalled()
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: ActionType.consignmentSubmitted,
+        context_owner_type: OwnerType.consignmentFlow,
+        context_module: ContextModule.contactInformation,
+        submission_id: "54321",
+        user_email: "a@a.aaa",
+        user_id: "1",
+      })
+    })
   })
 })
 
