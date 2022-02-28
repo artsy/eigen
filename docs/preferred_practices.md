@@ -140,6 +140,11 @@ But we also use `test-renderer` and `enzyme` (in order of preference), that we'd
 - We write native unit tests when we work with native code
 - We don’t use snapshot tests; they produce too much churn for too little value. It’s okay to test that a component doesn’t throw when rendered, but use [`extractText`](https://github.com/artsy/eigen/blob/4c7c9be69ab1c2095f4d2fed11a040b1bde6eba8/src/lib/tests/extractText.ts) (or similar) to test the actual component tree.
 
+#### How to write tests
+
+Based on the [Guiding Principles](https://testing-library.com/docs/guiding-principles/), your test should resemble how users interact with your code (component, page, etc.) as much as possible. Therefore we prefer using `getByText`, `getByDisplayValue`, etc, and as a last resort use a `testID`.
+You can read more about that [here](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/)
+
 ### Navigation
 
 We use `react-navigation` for navigating between screens.
