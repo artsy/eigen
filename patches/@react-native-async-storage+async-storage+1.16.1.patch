@@ -6,7 +6,7 @@ index 82f4649..c8276be 100644
  export { useAsyncStorage } from './hooks';
  export type { AsyncStorageStatic } from './types';
  export default AsyncStorage;
-+// @ts-expect-error
++// @ts-ignore
  declare module '@react-native-async-storage/async-storage/jest/async-storage-mock' {
      export function useAsyncStorage(key: string): AsyncStorageHook;
      const AsyncStorageLib: AsyncStorageStatic;

@@ -220,7 +220,7 @@
     "@types/dedent": "0.7.0",
     "@types/google-libphonenumber": "7.4.23",
     "@types/jest": "26.0.24",
-    "@types/lodash": "4.14.178",
+    "@types/lodash": "4.14.179",
     "@types/luxon": "2.0.9",
     "@types/moment-timezone": "0.5.30",
     "@types/node": "12.7.5",
