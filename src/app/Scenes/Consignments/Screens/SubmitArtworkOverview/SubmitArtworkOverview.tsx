@@ -62,6 +62,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
   const [validSteps, setValidSteps] = useState([true, ...new Array(TOTAL_STEPS - 1).fill(false)])
 
   const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(TOTAL_STEPS).fill(null)).current
+  const scrollViewRef = useRef<ScrollView>(null)
 
   // This will also be removed, it's temporary for the boilerplate
   const enableStep = (stepIndex: number) => {
@@ -71,21 +72,32 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
   }
 
   const expandCollapsibleMenuContent = (indexToExpand: number) => {
-    items.forEach((_, index) => {
-      if (indexToExpand !== index) {
-        stepsRefs[index].collapse()
-      } else {
-        if (index > 0) {
-          stepsRefs[index - 1].completed()
-        }
-        stepsRefs[index].expand()
-      }
-    })
+    const indexToCollapse = stepsRefs.findIndex((ref) => ref.isExpanded())
+
+    const scrollToStep = () =>
+      stepsRefs[indexToExpand].offsetTop().then((offset) => {
+        scrollViewRef.current?.scrollTo({ y: offset })
+      })
+
+    if (indexToCollapse >= 0) {
+      stepsRefs[indexToCollapse].collapse(() => {
+        setTimeout(() => {
+          if (indexToExpand > 0) {
+            stepsRefs[indexToExpand - 1].completed()
+          }
+
+          stepsRefs[indexToExpand].expand(() => scrollToStep())
+        }, 100)
+      })
+    } else {
+      stepsRefs[indexToExpand].expand(() => scrollToStep())
+    }
   }
 
   return (
     <Flex>
       <ScrollView
+        ref={scrollViewRef}
         contentContainerStyle={{
           paddingVertical: 20,
           paddingHorizontal: 20,

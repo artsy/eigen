@@ -1,6 +1,6 @@
 import { CheckCircleIcon, ChevronIcon, Collapse, Flex, Text, Touchable } from "palette"
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react"
-import { LayoutAnimation } from "react-native"
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { LayoutAnimation, View } from "react-native"
 
 interface CollapsableMenuItemProps {
   overtitle?: string
@@ -11,9 +11,11 @@ interface CollapsableMenuItemProps {
 }
 
 export interface CollapsibleMenuItem {
-  collapse: () => void
-  expand: () => void
+  isExpanded: () => boolean
+  collapse: (onAnimationEnd?: () => void) => void
+  expand: (onAnimationEnd?: () => void) => void
   completed: () => void
+  offsetTop: () => Promise<number>
 }
 
 export const CollapsibleMenuItem = forwardRef<
@@ -22,6 +24,7 @@ export const CollapsibleMenuItem = forwardRef<
 >(({ children, overtitle, title, isExpanded = false, disabled = false, onExpand }, ref) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isCompleted, setIsCompleted] = useState(false)
+  const componentRef = useRef<View>(null)
 
   useEffect(() => {
     setIsOpen(isExpanded)
@@ -30,23 +33,33 @@ export const CollapsibleMenuItem = forwardRef<
   useImperativeHandle(
     ref,
     () => ({
-      collapse() {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+      collapse(onAnimationEnd) {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut, onAnimationEnd)
         setIsOpen(false)
       },
-      expand() {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+      expand(onAnimationEnd) {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut, onAnimationEnd)
         setIsOpen(true)
       },
       completed() {
         setIsCompleted(true)
       },
+      isExpanded() {
+        return isOpen
+      },
+      offsetTop: () => {
+        return new Promise<number>((resolve) => {
+          componentRef.current?.measure((_, fy) => {
+            resolve(fy)
+          })
+        })
+      },
     }),
-    []
+    [isOpen]
   )
 
   return (
-    <Flex>
+    <Flex ref={componentRef}>
       <Touchable
         onPress={() => {
           setIsOpen(!isOpen)
