@@ -14,7 +14,11 @@ Want to know more about Eigen? Read the [mobile](http://artsy.github.io/blog/cat
 
 ### Getting Started
 
-Get set up [here](docs/getting_started.md). Further documentation can be found in the [documentation folder](docs#readme). Please read about our [preferred practices](docs/preferred_practices.md).
+- Get set up [here](docs/getting_started.md).
+
+- Please read about our [best practices](docs/best_practices.md).
+
+- Further documentation can be found in the [documentation folder](docs#readme).
 
 ### Deployment
 
