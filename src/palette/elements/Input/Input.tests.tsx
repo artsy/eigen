@@ -34,7 +34,7 @@ describe("Input", () => {
     expect(value).toEqual("mockStr")
   })
 
-  it.only("Shows an error message when input has an error", () => {
+  it("Shows an error message when input has an error", () => {
     const { getByTestId } = renderWithWrappersTL(<Input value="" error="input has an error" />)
 
     expect(getByTestId("input-error")).not.toBeNull()
