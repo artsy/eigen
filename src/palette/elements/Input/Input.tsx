@@ -362,7 +362,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
           </View>
         </TouchableWithoutFeedback>
         {!!error && (
-          <Text color="red100" mt={1} variant="xs">
+          <Text color="red100" mt={1} variant="xs" testID="input-error">
             {error}
           </Text>
         )}
