@@ -9,6 +9,7 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { debounce } from "lodash"
 import { Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
@@ -26,6 +27,7 @@ const DEFAULT_PRICE_OPTION = {
   paramName: PARAM_NAME,
 }
 
+const DEBOUNCE_DELAY = 500
 const DEFAULT_PRICE_RANGE = DEFAULT_PRICE_OPTION.paramValue
 const DEFAULT_RANGE = [0, 50000]
 
@@ -118,11 +120,15 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   }
 
   const handleCustomPriceChange = (value: CustomRange) => {
-    selectFiltersAction({
-      displayText: parsePriceRangeLabel(value[0], value[1]),
-      paramValue: `${value[0]}-${value[1]}`,
-      paramName: PARAM_NAME,
-    })
+    debounce(
+      () =>
+        selectFiltersAction({
+          displayText: parsePriceRangeLabel(value[0], value[1]),
+          paramValue: `${value[0]}-${value[1]}`,
+          paramName: PARAM_NAME,
+        }),
+      DEBOUNCE_DELAY
+    )
   }
 
   return (
