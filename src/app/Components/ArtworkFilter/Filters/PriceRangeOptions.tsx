@@ -9,8 +9,6 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
@@ -68,7 +66,6 @@ const getInputValue = (value: CustomRange[number]) => {
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { width } = useWindowDimensions()
   const color = useColor()
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const [defaultMinValue, defaultMaxValue] = DEFAULT_RANGE
 
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
@@ -134,17 +131,11 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
   return (
     <Flex flexGrow={1}>
-      {isEnabledImprovedAlertsFlow ? (
-        <ArtworkFilterBackHeader
-          title={filterHeaderText}
-          onLeftButtonPress={navigation.goBack}
-          {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
-        />
-      ) : (
-        <FancyModalHeader onLeftButtonPress={navigation.goBack}>
-          {filterHeaderText}
-        </FancyModalHeader>
-      )}
+      <ArtworkFilterBackHeader
+        title={filterHeaderText}
+        onLeftButtonPress={navigation.goBack}
+        {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
+      />
       <Flex flexGrow={1}>
         <ScrollView style={{ flex: 1 }}>
           <Flex m={2}>
