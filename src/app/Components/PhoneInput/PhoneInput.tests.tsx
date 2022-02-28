@@ -114,7 +114,7 @@ describe("PhoneInput", () => {
     expect(tree.root.findAllByType(Text)[2].props.children).toBe("This phone number is incomplete")
   })
 
-  it.only("does not show a validation message when phone number valid", () => {
+  it("does not show a validation message when phone number valid", () => {
     const { queryByTestId } = renderWithWrappersTL(
       <PhoneInput
         value=""
