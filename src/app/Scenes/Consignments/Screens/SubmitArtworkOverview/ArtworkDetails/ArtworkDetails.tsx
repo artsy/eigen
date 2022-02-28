@@ -34,12 +34,12 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
 
   return (
     <Flex flex={3} p={1} mt={1}>
-      <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
       <BulletedItem>
-        Unfortunately, we do not allow{" "}
-        <Text style={{ textDecorationLine: "underline" }}>artists to sell their own work</Text> on
-        Artsy.
+        Currently, artists can not sell their own work on Artsy.{" "}
+        <Text style={{ textDecorationLine: "underline" }}>Learn more.</Text>
       </BulletedItem>
+      <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
+
       <Spacer mt={4} />
       <Formik<ArtworkDetailsFormModel>
         initialValues={artworkDetails}
