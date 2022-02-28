@@ -5,12 +5,10 @@ import {
   RegistrationStatus,
 } from "app/Components/Bidding/Screens/RegistrationResult"
 import { Modal } from "app/Components/Modal"
-import { LinkText } from "app/Components/Text/LinkText"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { mockTimezone } from "app/tests/mockTimezone"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Button, Sans, Text } from "palette"
-import { Checkbox } from "palette/elements/Checkbox"
+import { Button, Checkbox, LinkText, Sans, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
