@@ -178,7 +178,7 @@ export const OnboardingSocialLink: React.FC<
               secureTextEntry
               autoFocus
               autoCapitalize="none"
-              autoCompleteType="password"
+              autoComplete="password"
               autoCorrect={false}
               onChangeText={(text) => {
                 setErrors({ password: undefined })
