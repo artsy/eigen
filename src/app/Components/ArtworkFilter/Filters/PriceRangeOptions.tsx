@@ -13,7 +13,7 @@ import { Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
-import { parsePriceRangeLabel } from "./helpers"
+import { Numeric, parsePriceRangeLabel } from "./helpers"
 
 interface PriceRangeOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "PriceRangeOptionsScreen"> {}
@@ -25,10 +25,11 @@ const DEFAULT_PRICE_OPTION = {
   paramValue: "*-*",
   paramName: PARAM_NAME,
 }
-const DEFAULT_PRICE_RANGE = "*-*"
+
+const DEFAULT_PRICE_RANGE = DEFAULT_PRICE_OPTION.paramValue
 const DEFAULT_RANGE = [0, 50000]
 
-type CustomRange = Array<number | "*">
+type CustomRange = Numeric[]
 
 const parseRange = (range: string = DEFAULT_PRICE_RANGE): CustomRange => {
   return range.split("-").map((s) => {
@@ -75,20 +76,15 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const selectedOptions = useSelectedOptionsDisplay()
 
   const selectedFilterOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
-  const isCustomOption = DEFAULT_PRICE_OPTION.paramValue !== selectedFilterOption.paramValue
 
-  const [range, setRange] = useState(
-    isCustomOption
-      ? parseRange(selectedFilterOption.paramValue as string)
-      : parseRange(DEFAULT_PRICE_OPTION.paramValue)
-  )
+  const [range, setRange] = useState(parseRange(selectedFilterOption.paramValue as string))
   const [minValue, maxValue] = range
   const sliderRange = parseSliderRange(range)
   const filterHeaderText = FilterDisplayName.priceRange
 
   const handleClear = () => {
-    const defaultRangeValue = parseRange(DEFAULT_PRICE_OPTION.paramValue)
-    setRange(parseRange(DEFAULT_PRICE_OPTION.paramValue))
+    const defaultRangeValue = parseRange(DEFAULT_PRICE_RANGE)
+    setRange(parseRange(DEFAULT_PRICE_RANGE))
     handleCustomPriceChange(defaultRangeValue)
   }
 
