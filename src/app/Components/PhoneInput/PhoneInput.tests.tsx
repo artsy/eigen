@@ -16,39 +16,6 @@ describe("PhoneInput", () => {
     onChangeText = jest.fn()
   })
 
-  it("renders an input with the phone number pre-filled", () => {
-    const tree = renderWithWrappers(
-      <PhoneInput
-        value="+447825577664"
-        onChange={onChange}
-        onChangeText={onChangeText}
-        setValidation={setValidation}
-      />
-    )
-    expect(tree.root.findAllByType(Input)).toHaveLength(1)
-    expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+447825 577664")
-    tree.root.findByType(Input).props.onChangeText("999")
-    expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+44999")
-    tree.root.findByType(Input).props.onChangeText("9998764")
-    expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+449998 764")
-  })
-  it("renders an input with the phone number pre-filled", () => {
-    const tree = renderWithWrappers(
-      <PhoneInput
-        value="+447825577664"
-        onChange={onChange}
-        onChangeText={onChangeText}
-        setValidation={setValidation}
-      />
-    )
-    expect(tree.root.findAllByType(Input)).toHaveLength(1)
-    expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+447825 577664")
-    tree.root.findByType(Input).props.onChangeText("999")
-    expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+44999")
-    tree.root.findByType(Input).props.onChangeText("9998764")
-    expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+449998 764")
-  })
-
   it("provides a Select for the country", () => {
     const tree = renderWithWrappers(
       <PhoneInput
@@ -70,7 +37,7 @@ describe("PhoneInput", () => {
     expect(extractText(tree.root)).toContain("🇺🇸+1(782) 557-7664")
   })
 
-  it("calls onChange and onChangeText when the value changes", () => {
+  it("renders an input with the phone number pre-filled", () => {
     const tree = renderWithWrappers(
       <PhoneInput
         value="+447825577664"
@@ -79,20 +46,8 @@ describe("PhoneInput", () => {
         setValidation={setValidation}
       />
     )
-    expect(onChange).not.toHaveBeenCalled()
-    expect(onChangeText).not.toHaveBeenCalled()
-
-    act(() => {
-      tree.root.findByType(Input).props.onChangeText("999")
-    })
-    expect(onChange).toHaveBeenCalledWith("+44 999")
-    expect(onChangeText).toHaveBeenCalledWith("+44 999")
-
-    act(() => {
-      tree.root.findByType(Select).props.onSelectValue("us")
-    })
-    expect(onChange).toHaveBeenCalledWith("+1 (999) ")
-    expect(onChangeText).toHaveBeenCalledWith("+1 (999) ")
+    expect(tree.root.findAllByType(Input)).toHaveLength(1)
+    expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+447825 577664")
   })
 
   it("shows a validation message when a phone number is invalid", () => {
@@ -127,5 +82,30 @@ describe("PhoneInput", () => {
     )
 
     expect(queryByTestId("input-error")).toBeNull()
+  })
+
+  it("calls onChange and onChangeText when the value changes", () => {
+    const tree = renderWithWrappers(
+      <PhoneInput
+        value="+447825577664"
+        onChange={onChange}
+        onChangeText={onChangeText}
+        setValidation={setValidation}
+      />
+    )
+    expect(onChange).not.toHaveBeenCalled()
+    expect(onChangeText).not.toHaveBeenCalled()
+
+    act(() => {
+      tree.root.findByType(Input).props.onChangeText("999")
+    })
+    expect(onChange).toHaveBeenCalledWith("+44 999")
+    expect(onChangeText).toHaveBeenCalledWith("+44 999")
+
+    act(() => {
+      tree.root.findByType(Select).props.onSelectValue("us")
+    })
+    expect(onChange).toHaveBeenCalledWith("+1 (999) ")
+    expect(onChangeText).toHaveBeenCalledWith("+1 (999) ")
   })
 })
