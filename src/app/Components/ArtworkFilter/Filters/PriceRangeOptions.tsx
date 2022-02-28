@@ -52,7 +52,7 @@ const parseSliderRange = (range: CustomRange): number[] => {
   })
 }
 
-const convertToArtworkFilterFormatRange = (range: number[]): CustomRange => {
+const convertToFilterFormatRange = (range: number[]): CustomRange => {
   return range.map((value, index) => {
     if (value === DEFAULT_RANGE[index]) {
       return "*"
@@ -90,8 +90,8 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
   const handleClear = () => {
     const defaultRangeValue = parseRange(DEFAULT_PRICE_RANGE)
-    setRange(parseRange(DEFAULT_PRICE_RANGE))
-    handleCustomPriceChange(defaultRangeValue)
+
+    updateRange(defaultRangeValue)
   }
 
   const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_OPTION.paramValue
@@ -113,20 +113,18 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   }
 
   const handleSliderValueChange = (value: number[]) => {
-    const convertedRange = convertToArtworkFilterFormatRange(value)
+    const convertedRange = convertToFilterFormatRange(value)
 
     updateRange(convertedRange)
   }
 
   const updateRange = (updatedRange: CustomRange) => {
-    setRange(updatedRange)
-    handleCustomPriceChange(updatedRange)
-  }
+    const [min, max] = updatedRange
 
-  const handleCustomPriceChange = (value: CustomRange) => {
+    setRange(updatedRange)
     selectFiltersActionDebounced({
-      displayText: parsePriceRangeLabel(value[0], value[1]),
-      paramValue: `${value[0]}-${value[1]}`,
+      displayText: parsePriceRangeLabel(min, max),
+      paramValue: updatedRange.join("-"),
       paramName: PARAM_NAME,
     })
   }
