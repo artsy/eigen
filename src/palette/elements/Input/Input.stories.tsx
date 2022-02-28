@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
-import { PhoneInput } from "app/Components/PhoneInput/PhoneInput"
 import SearchIcon from "app/Icons/SearchIcon"
-import { Box, Input } from "palette"
+import { Box, Input, PhoneInput } from "palette"
 import React from "react"
 import { withTheme } from "storybook/decorators"
 import { DataList, List } from "storybook/helpers"
