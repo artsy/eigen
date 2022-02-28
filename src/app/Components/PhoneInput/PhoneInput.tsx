@@ -49,7 +49,7 @@ export const PhoneInput = React.forwardRef<
       countryCode: cleanPhoneNumber.countryCode,
     })
 
-    setPhoneNumber(formattedPhoneNumber.replace(/[\D]$/, ""))
+    setPhoneNumber(formattedPhoneNumber.replace(/\D+$/, ""))
     setCountryCode(cleanPhoneNumber.countryCode)
   }, [value])
 
