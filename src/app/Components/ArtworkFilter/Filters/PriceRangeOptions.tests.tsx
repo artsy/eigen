@@ -12,12 +12,18 @@ import { getEssentialProps } from "./helper"
 import { Range } from "./helpers"
 import { PriceRangeOptionsScreen } from "./PriceRangeOptions"
 
+import { debounce } from "lodash"
 import { Input } from "palette"
 
 const DEFAULT_RANGE: Range = {
   min: "*",
   max: "*",
 }
+
+jest.mock("lodash", () => ({
+  ...jest.requireActual("lodash"),
+  debounce: jest.fn(),
+}))
 
 describe("CustomPriceInput", () => {
   it("renders without error", () => {
@@ -116,6 +122,10 @@ describe("PriceRangeOptions", () => {
       </ArtworkFiltersStoreProvider>
     )
   }
+
+  beforeEach(() => {
+    ;(debounce as jest.Mock).mockImplementation((func) => func)
+  })
 
   it("renders the header and the inputs", () => {
     const { getByText, getByTestId } = getTree()
