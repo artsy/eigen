@@ -46,10 +46,15 @@ export function refreshMyCollection() {
 }
 
 export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
+export const SHOW_CONSIGNMENTS_BANNER = "SHOW_CONSIGNMENTS_BANNER"
 
 const hasBeenShownBanner = async () => {
   const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-  return hasSeen === "true"
+  const shouldShowConsignments = await AsyncStorage.getItem(SHOW_CONSIGNMENTS_BANNER)
+  return {
+    hasSeenBanner: hasSeen === "true",
+    shouldShowConsignments: shouldShowConsignments === "true",
+  }
 }
 
 const MyCollection: React.FC<{
@@ -59,6 +64,7 @@ const MyCollection: React.FC<{
   const { trackEvent } = useTracking()
 
   const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
+  const enableConsignmentsInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
   const [keywordFilter, setKeywordFilter] = useState("")
@@ -101,8 +107,9 @@ const MyCollection: React.FC<{
 
   useEffect(() => {
     if (artworks.length) {
-      hasBeenShownBanner().then((hasSeenBanner) => {
+      hasBeenShownBanner().then(({ hasSeenBanner, shouldShowConsignments }) => {
         const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
+        const showConsignmentsBanner = shouldShowConsignments && enableConsignmentsInMyCollection
 
         setJSX(
           <Flex>
@@ -139,6 +146,14 @@ const MyCollection: React.FC<{
                 onClose={() =>
                   AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
                 }
+              />
+            )}
+            {!!showConsignmentsBanner && (
+              <Banner
+                title="Artwork added to My Collection"
+                text="The artwork you submitted for sale has been automatically added."
+                showCloseButton
+                onClose={() => AsyncStorage.setItem(SHOW_CONSIGNMENTS_BANNER, "false")}
               />
             )}
           </Flex>

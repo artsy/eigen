@@ -1,8 +1,10 @@
+import AsyncStorage from "@react-native-community/async-storage"
 import { captureMessage } from "@sentry/react-native"
 import { ContactInformation_me } from "__generated__/ContactInformation_me.graphql"
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { PhoneInput } from "app/Components/PhoneInput/PhoneInput"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { SHOW_CONSIGNMENTS_BANNER } from "app/Scenes/MyCollection/MyCollection"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
@@ -31,6 +33,7 @@ export const ContactInformation: React.FC<{
 
       if (updatedSubmissionId) {
         GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+        AsyncStorage.setItem(SHOW_CONSIGNMENTS_BANNER, "true")
         handlePress()
       }
     } catch (error) {
