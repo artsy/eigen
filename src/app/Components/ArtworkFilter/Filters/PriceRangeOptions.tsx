@@ -11,7 +11,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { debounce } from "lodash"
 import { Flex, Input, Spacer, Text, useColor } from "palette"
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
 import { Numeric, parsePriceRangeLabel } from "./helpers"
@@ -83,6 +83,10 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const [minValue, maxValue] = range
   const sliderRange = parseSliderRange(range)
   const filterHeaderText = FilterDisplayName.priceRange
+  const selectFiltersActionDebounced = useMemo(
+    () => debounce(selectFiltersAction, DEBOUNCE_DELAY),
+    []
+  )
 
   const handleClear = () => {
     const defaultRangeValue = parseRange(DEFAULT_PRICE_RANGE)
@@ -120,15 +124,11 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   }
 
   const handleCustomPriceChange = (value: CustomRange) => {
-    debounce(
-      () =>
-        selectFiltersAction({
-          displayText: parsePriceRangeLabel(value[0], value[1]),
-          paramValue: `${value[0]}-${value[1]}`,
-          paramName: PARAM_NAME,
-        }),
-      DEBOUNCE_DELAY
-    )
+    selectFiltersActionDebounced({
+      displayText: parsePriceRangeLabel(value[0], value[1]),
+      paramValue: `${value[0]}-${value[1]}`,
+      paramName: PARAM_NAME,
+    })
   }
 
   return (
