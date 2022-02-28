@@ -38,17 +38,15 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) =
   }, [])
 
   return (
-    <>
-      <ScrollView>
-        <Join separator={<Separator my={3} />}>
-          <Header onConsignPress={handleConsignPress} />
-          <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
-          <HowItWorks />
-          <ArtistList targetSupply={targetSupply} isLoading={isLoading} />
-          <Footer onConsignPress={handleConsignPress} />
-        </Join>
-      </ScrollView>
-    </>
+    <ScrollView>
+      <Join separator={<Separator my={3} />}>
+        <Header onConsignPress={handleConsignPress} />
+        <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
+        <HowItWorks />
+        <ArtistList targetSupply={targetSupply} isLoading={isLoading} />
+        <Footer onConsignPress={handleConsignPress} />
+      </Join>
+    </ScrollView>
   )
 }
 
