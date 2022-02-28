@@ -76,7 +76,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
 
     const scrollToStep = () =>
       stepsRefs[indexToExpand].offsetTop().then((offset) => {
-        scrollViewRef.current?.scrollTo({ y: offset })
+        scrollViewRef.current?.scrollTo({ y: offset - 20 || 0 })
       })
 
     if (indexToCollapse >= 0) {

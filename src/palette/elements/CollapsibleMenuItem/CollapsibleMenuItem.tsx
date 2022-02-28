@@ -49,8 +49,8 @@ export const CollapsibleMenuItem = forwardRef<
       },
       offsetTop: () => {
         return new Promise<number>((resolve) => {
-          componentRef.current?.measure((_, fy) => {
-            resolve(fy)
+          componentRef.current?.measureInWindow((_, h) => {
+            resolve(h)
           })
         })
       },
@@ -59,7 +59,7 @@ export const CollapsibleMenuItem = forwardRef<
   )
 
   return (
-    <Flex ref={componentRef}>
+    <Flex ref={componentRef} collapsable={false}>
       <Touchable
         onPress={() => {
           setIsOpen(!isOpen)

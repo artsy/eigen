@@ -55,6 +55,7 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
           >
             View Artwork in My Collection
           </Button>
+          <Spacer mb={2} />
         </Flex>
       </Box>
     </ScrollView>
