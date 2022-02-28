@@ -15,8 +15,7 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { saleTime } from "app/utils/saleTime"
 import { Schema, screenTrack } from "app/utils/track"
 import { get, isEmpty } from "lodash"
-import { Box, Button, Flex, Text } from "palette"
-import { Checkbox } from "palette/elements/Checkbox"
+import { Box, Button, Checkbox, Flex, LinkText, Text } from "palette"
 import React from "react"
 import { ScrollView, View, ViewProps } from "react-native"
 import {
@@ -28,7 +27,6 @@ import {
 } from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
-import { LinkText } from "../../Text/LinkText"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"

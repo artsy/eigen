@@ -2,11 +2,10 @@ import { act, fireEvent, getDefaultNormalizer, within } from "@testing-library/r
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { emdash, nbsp } from "palette"
+import { emdash, LinkText, nbsp } from "palette"
 import React from "react"
 import { Text as RNText } from "react-native"
 import { ReadMore } from "./ReadMore"
-import { LinkText } from "./Text/LinkText"
 
 describe("ReadMore", () => {
   it("Doesn't show the 'Read more' link when the length of the text is < the number of characters allowed", () => {

@@ -1,7 +1,15 @@
 import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
-import { LinkText } from "app/Components/Text/LinkText"
 import { navigate } from "app/navigation/navigate"
-import { AlertCircleFillIcon, Color, Flex, IconProps, MoneyFillIcon, Spacer, Text } from "palette"
+import {
+  AlertCircleFillIcon,
+  Color,
+  Flex,
+  IconProps,
+  LinkText,
+  MoneyFillIcon,
+  Spacer,
+  Text,
+} from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TimeSince } from "./TimeSince"
