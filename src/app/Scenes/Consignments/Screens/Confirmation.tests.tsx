@@ -1,4 +1,4 @@
-import { dismissModal } from "app/navigation/navigate"
+import { popToRoot } from "app/navigation/navigate"
 import { getTextTree } from "app/utils/getTestWrapper"
 import React from "react"
 import "react-native"
@@ -16,10 +16,10 @@ describe("callbacks", () => {
     expect(navigator.popToTop).toHaveBeenCalled()
   })
 
-  it("dismisses modal when done is tapped", () => {
+  it("dismisses when done is tapped", () => {
     const confirmation = new Confirmation(emptyProps)
-    confirmation.exitModal()
-    expect(dismissModal).toHaveBeenCalled()
+    confirmation.exit()
+    expect(popToRoot).toHaveBeenCalled()
   })
 
   it("requests submission status after 1 second", () => {
