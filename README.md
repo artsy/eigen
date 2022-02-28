@@ -16,7 +16,7 @@ Want to know more about Eigen? Read the [mobile](http://artsy.github.io/blog/cat
 
 - Get set up [here](docs/getting_started.md).
 
-- Please read about our [best practices](docs/best_practices.md).
+- Read about our [best practices](docs/best_practices.md).
 
 - Further documentation can be found in the [documentation folder](docs#readme).
 
