@@ -119,11 +119,6 @@ export const features = defineFeatures({
     description: "Enable Improved Alerts flow",
     echoFlagKey: "AREnableImprovedAlertsFlow",
   },
-  AREnableWebPImages: {
-    readyForRelease: true,
-    description: "Enable WebP Images",
-    echoFlagKey: "AREnableWebPImages",
-  },
   AREnableSplitIOABTesting: {
     readyForRelease: true,
     description: "Enable Split.io A/B testing",

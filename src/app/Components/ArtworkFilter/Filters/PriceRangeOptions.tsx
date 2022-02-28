@@ -1,8 +1,7 @@
+import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
-  AggregateOption,
-  FilterData,
   FilterDisplayName,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -10,10 +9,12 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { Flex, Input, Spacer } from "palette"
-import React, { useState } from "react"
-import { parsePriceRangeLabel, parseRange, Range } from "./helpers"
-import { ListItem, SingleSelectOptionScreen } from "./SingleSelectOption"
+import { debounce } from "lodash"
+import { Flex, Input, Spacer, Text, useColor } from "palette"
+import React, { useMemo, useState } from "react"
+import { ScrollView, useWindowDimensions } from "react-native"
+import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
+import { Numeric, parsePriceRangeLabel } from "./helpers"
 
 interface PriceRangeOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "PriceRangeOptionsScreen"> {}
@@ -26,107 +27,190 @@ const DEFAULT_PRICE_OPTION = {
   paramName: PARAM_NAME,
 }
 
-const PRICE_RANGE_OPTIONS: FilterData[] = [
-  { displayText: "$50,000+", paramValue: "50000-*", paramName: PARAM_NAME },
-  { displayText: "$10,000–50,000", paramValue: "10000-50000", paramName: PARAM_NAME },
-  { displayText: "$5,000–10,000", paramValue: "5000-10000", paramName: PARAM_NAME },
-  { displayText: "$1,000–5,000", paramValue: "1000-5000", paramName: PARAM_NAME },
-  { displayText: "$0–1,000", paramValue: "*-1000", paramName: PARAM_NAME },
-]
+const DEBOUNCE_DELAY = 500
+const DEFAULT_PRICE_RANGE = DEFAULT_PRICE_OPTION.paramValue
+const DEFAULT_RANGE = [0, 50000]
+
+type CustomRange = Numeric[]
+
+const parseRange = (range: string = DEFAULT_PRICE_RANGE): CustomRange => {
+  return range.split("-").map((s) => {
+    if (s === "*") {
+      return s
+    }
+    return parseInt(s, 10)
+  })
+}
+
+const parseSliderRange = (range: CustomRange): number[] => {
+  return range.map((value, index) => {
+    if (value === "*") {
+      return DEFAULT_RANGE[index]
+    }
+
+    return value as number
+  })
+}
+
+const convertToFilterFormatRange = (range: number[]): CustomRange => {
+  return range.map((value, index) => {
+    if (value === DEFAULT_RANGE[index]) {
+      return "*"
+    }
+
+    return value
+  })
+}
+
+const getInputValue = (value: CustomRange[number]) => {
+  return value === "*" || value === 0 ? "" : value.toString()
+}
 
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
+  const { width } = useWindowDimensions()
+  const color = useColor()
+  const [defaultMinValue, defaultMaxValue] = DEFAULT_RANGE
+
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
   )
 
   const selectedOptions = useSelectedOptionsDisplay()
+
   const selectedFilterOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
-  const isCustomOption = PRICE_RANGE_OPTIONS.every(
-    (option) => option.paramValue !== selectedFilterOption.paramValue
+
+  const [range, setRange] = useState(parseRange(selectedFilterOption.paramValue as string))
+  const [minValue, maxValue] = range
+  const sliderRange = parseSliderRange(range)
+  const filterHeaderText = FilterDisplayName.priceRange
+  const selectFiltersActionDebounced = useMemo(
+    () => debounce(selectFiltersAction, DEBOUNCE_DELAY),
+    []
   )
-  const [customPriceValue, setCustomPriceValue] = useState(
-    parseRange(
-      isCustomOption ? (selectedFilterOption.paramValue as string) : DEFAULT_PRICE_OPTION.paramValue
-    )
-  )
-  const [customSelected, setCustomSelected] = useState(isCustomOption)
-  const selectedOption = customSelected ? DEFAULT_PRICE_OPTION : selectedFilterOption
-  const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_OPTION.paramValue
-
-  const handleChange = (key: "min" | "max") => (text: string) => {
-    const parsed = parseInt(text, 10)
-    const parsedValue = isNaN(parsed) ? "*" : parsed
-    handleCustomPriceChange({ ...customPriceValue, [key]: parsedValue })
-  }
-
-  const selectOption = (option: AggregateOption) => {
-    setCustomSelected(false)
-    selectFiltersAction({
-      displayText: option.displayText,
-      paramValue: option.paramValue,
-      paramName: PARAM_NAME,
-    })
-  }
-
-  const handleSelectCustomOption = () => {
-    handleCustomPriceChange(customPriceValue)
-  }
-
-  const handleCustomPriceChange = (value: Range) => {
-    setCustomPriceValue(value)
-    setCustomSelected(true)
-    selectFiltersAction({
-      displayText: parsePriceRangeLabel(value.min, value.max),
-      paramValue: `${value.min}-${value.max}`,
-      paramName: PARAM_NAME,
-    })
-  }
 
   const handleClear = () => {
-    const defaultRangeValue = parseRange(DEFAULT_PRICE_OPTION.paramValue)
-    handleCustomPriceChange(defaultRangeValue)
+    const defaultRangeValue = parseRange(DEFAULT_PRICE_RANGE)
+
+    updateRange(defaultRangeValue)
+  }
+
+  const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_OPTION.paramValue
+
+  const handleTextChange = (changedIndex: number) => (value: string) => {
+    const updatedRange = range.map((rangeValue, index) => {
+      if (index === changedIndex) {
+        if (value === "" || value === "0") {
+          return "*"
+        }
+
+        return parseInt(value, 10)
+      }
+
+      return rangeValue
+    })
+
+    updateRange(updatedRange)
+  }
+
+  const handleSliderValueChange = (value: number[]) => {
+    const convertedRange = convertToFilterFormatRange(value)
+
+    updateRange(convertedRange)
+  }
+
+  const updateRange = (updatedRange: CustomRange) => {
+    const [min, max] = updatedRange
+
+    setRange(updatedRange)
+    selectFiltersActionDebounced({
+      displayText: parsePriceRangeLabel(min, max),
+      paramValue: updatedRange.join("-"),
+      paramName: PARAM_NAME,
+    })
   }
 
   return (
-    <SingleSelectOptionScreen
-      onSelect={selectOption}
-      filterHeaderText={FilterDisplayName.priceRange}
-      useScrollView
-      filterOptions={[
-        <ListItem
-          key="default-price"
-          item={DEFAULT_PRICE_OPTION}
-          selectedOption={selectedOption}
-          onSelect={handleSelectCustomOption}
-        />,
-        <Flex key="custom-price-holder" flexDirection="row" alignItems="center" mb={1} mx={2}>
-          <Input
-            description="Min"
-            placeholder="$USD"
-            enableClearButton
-            keyboardType="number-pad"
-            value={customPriceValue.min === "*" ? undefined : String(customPriceValue.min)}
-            onChangeText={handleChange("min")}
-            onFocus={handleSelectCustomOption}
-            testID="price-min-input"
-          />
-          <Spacer mx={2} />
-          <Input
-            description="Max"
-            placeholder="$USD"
-            enableClearButton
-            keyboardType="number-pad"
-            value={customPriceValue.max === "*" ? undefined : String(customPriceValue.max)}
-            onChangeText={handleChange("max")}
-            onFocus={handleSelectCustomOption}
-            testID="price-max-input"
-          />
-        </Flex>,
-        ...PRICE_RANGE_OPTIONS,
-      ]}
-      selectedOption={selectedOption}
-      navigation={navigation}
-      {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
-    />
+    <Flex flexGrow={1}>
+      <ArtworkFilterBackHeader
+        title={filterHeaderText}
+        onLeftButtonPress={navigation.goBack}
+        {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
+      />
+      <Flex flexGrow={1}>
+        <ScrollView style={{ flex: 1 }}>
+          <Flex m={2}>
+            <Text variant="md">Choose Your Price Range</Text>
+          </Flex>
+          <Flex flexDirection="row" alignItems="center" mb={1} mx={2}>
+            <Input
+              description="Min"
+              placeholder="$USD"
+              enableClearButton
+              keyboardType="number-pad"
+              value={getInputValue(minValue)}
+              onChangeText={handleTextChange(0)}
+              testID="price-min-input"
+              descriptionColor="black100"
+            />
+            <Spacer mx={2} />
+            <Input
+              description="Max"
+              placeholder="$USD"
+              enableClearButton
+              keyboardType="number-pad"
+              value={getInputValue(maxValue)}
+              onChangeText={handleTextChange(1)}
+              testID="price-max-input"
+              descriptionColor="black100"
+            />
+          </Flex>
+          <Spacer mx={2} my={2} />
+          <Flex mx={2}>
+            <Flex alignItems="center" testID="slider">
+              <MultiSlider
+                min={defaultMinValue}
+                max={defaultMaxValue}
+                step={5}
+                snapped
+                // 40 here is the horizontal padding of the slider container
+                sliderLength={width - 40}
+                onValuesChange={handleSliderValueChange}
+                allowOverlap={false}
+                values={sliderRange}
+                trackStyle={{
+                  backgroundColor: color("black30"),
+                }}
+                selectedStyle={{
+                  backgroundColor: color("blue100"),
+                }}
+                markerStyle={{
+                  height: 32,
+                  width: 32,
+                  borderRadius: 16,
+                  backgroundColor: color("white100"),
+                  borderColor: color("black10"),
+                  borderWidth: 1,
+                  shadowRadius: 2,
+                  elevation: 5,
+                }}
+                pressedMarkerStyle={{
+                  height: 32,
+                  width: 32,
+                  borderRadius: 16,
+                }}
+              />
+            </Flex>
+            <Flex flexDirection="row" justifyContent="space-between">
+              <Text variant="xs" color="black60">
+                ${defaultMinValue}
+              </Text>
+              <Text variant="xs" color="black60">
+                ${defaultMaxValue}+
+              </Text>
+            </Flex>
+          </Flex>
+        </ScrollView>
+      </Flex>
+    </Flex>
   )
 }

@@ -3,7 +3,7 @@
 ### Meta
 
 - **State:** production
-- **Point People:** [Brian Beckerle](https://github.com/brainbicycle), [Mounir Dhahri](https://github.com/MounirDhahri), [Pavlos Vinieratos](https://github.com/pvinis)
+- **[Point People](https://www.notion.so/artsy/17c4b550458a4cb8bcbf1b68060d63e6?v=3604e2682d024b64bde705abb2facebd):** [Brian Beckerle](https://github.com/brainbicycle), [Mounir Dhahri](https://github.com/MounirDhahri), [Pavlos Vinieratos](https://github.com/pvinis)
 - **CI :** [![Build Status](https://circleci.com/gh/artsy/eigen/tree/main.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
 
 This is an [Artsy](https://github.com/artsy) OSS project. Other mobile projects are [Energy](https://github.com/artsy/energy) and [Eidolon](https://github.com/artsy/eidolon), with the retired [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
@@ -14,7 +14,7 @@ Want to know more about Eigen? Read the [mobile](http://artsy.github.io/blog/cat
 
 ### Getting Started
 
-Get set up [here](docs/getting_started.md). Further documentation can be found in the [documentation folder](docs#readme). Please read about our [preferred practices](docs#preferred_practices.md).
+Get set up [here](docs/getting_started.md). Further documentation can be found in the [documentation folder](docs#readme). Please read about our [preferred practices](docs/preferred_practices.md).
 
 ### Deployment
 
