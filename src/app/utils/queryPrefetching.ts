@@ -1,9 +1,9 @@
 import { modules } from "app/AppRegistry"
 import { matchRoute } from "app/navigation/routes"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"
+import { useRelayEnvironment } from "react-relay"
 import {
   createOperationDescriptor,
   fetchQuery,
@@ -43,7 +43,7 @@ async function isRateLimited() {
 }
 
 const prefetchQuery = async (query: GraphQLTaggedNode, variables?: Variables) => {
-  const environment = defaultEnvironment
+  const environment = useRelayEnvironment()
   const operation = createOperationDescriptor(getRequest(query), variables ?? {})
 
   await fetchQuery(environment, query, variables ?? {}, {
