@@ -1,5 +1,5 @@
 {
-  "extends": ["@artsy:app"],
+  "extends": ["@artsy:app", ":automergePatch"],
   "assignees": ["pvinis", "brainbicycle"],
-  "reviewers": ["artsy/collector-experience"]
+  "reviewers": ["pvinis", "brianbicycle"]
 }

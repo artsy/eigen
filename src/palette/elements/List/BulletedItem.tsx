@@ -1,15 +1,19 @@
-import { bullet, Flex, Spacer } from "palette"
+import { bullet, Flex, FlexProps, Spacer } from "palette"
 import { Text } from "palette"
 import React from "react"
 
-interface Props {
+interface BulletedItemProps extends FlexProps {
   children: string | Array<string | Element>
   color?: string
 }
 
-export const BulletedItem = ({ children, color = "black60" }: Props) => {
+export const BulletedItem: React.FC<BulletedItemProps> = ({
+  children,
+  color = "black60",
+  ...otherFlexProps
+}) => {
   return (
-    <Flex flexDirection="row" px={1}>
+    <Flex flexDirection="row" px={1} {...otherFlexProps}>
       <Text variant="sm" color={color}>
         {bullet}
       </Text>

@@ -28,9 +28,12 @@ export type MyCollection_me = {
                     readonly internalID: string;
                     readonly name: string | null;
                 } | null;
+                readonly consignmentSubmission: {
+                    readonly displayText: string | null;
+                } | null;
             } | null;
         } | null> | null;
-        readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
+        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkList_myCollectionConnection" | "InfiniteScrollArtworksGrid_myCollectionConnection">;
     } | null;
     readonly " $refType": "MyCollection_me";
 };
@@ -60,7 +63,7 @@ v1 = {
 return {
   "argumentDefinitions": [
     {
-      "defaultValue": 100,
+      "defaultValue": 30,
       "kind": "LocalArgument",
       "name": "count"
     },
@@ -216,6 +219,24 @@ return {
                 {
                   "alias": null,
                   "args": null,
+                  "concreteType": "ArtworkConsignmentSubmission",
+                  "kind": "LinkedField",
+                  "name": "consignmentSubmission",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "displayText",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
@@ -259,6 +280,11 @@ return {
           "storageKey": null
         },
         {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "MyCollectionArtworkList_myCollectionConnection"
+        },
+        {
           "args": [
             {
               "kind": "Literal",
@@ -277,5 +303,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '63589ba403bbb9690e2d7aab64fe2cd8';
+(node as any).hash = 'f85884aaa191d0ce7fa38b1f1c322246';
 export default node;

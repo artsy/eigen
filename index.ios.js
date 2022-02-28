@@ -1,22 +1,26 @@
 global.__TEST__ = false
 global.__STORYBOOK__ = false
 
-// start storybook depending on content of storybook.json
-let startStorybook = false
-
+// for more info about metaflags, look [here](/docs/metaflags.md)
+let metaflags = {
+  startStorybook: false,
+}
 if (__DEV__) {
   try {
-    const fileContent = require("./storybook.json")
-    startStorybook = fileContent.startStorybook
+    const fileContents = require("./metaflags.json")
+    metaflags = { ...metaflags, ...fileContents }
   } catch {}
 }
 
-if (startStorybook) {
+require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
+
+if (metaflags.startStorybook) {
   global.__STORYBOOK__ = true
   require("./src/storybook")
 } else {
   require("react-native-gesture-handler")
   require("react-native-screens").enableScreens()
-  require("./src/lib/ErrorReporting").setupSentry()
-  require("./src/lib/AppRegistry")
+  require("./src/app/AppRegistry")
 }
+
+// add a comment

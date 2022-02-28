@@ -9,8 +9,8 @@ import {
 } from "react-native"
 import styled from "styled-components/native"
 
-import { CssTransition } from "../../../lib/Components/Bidding/Components/Animation/CssTransition"
-import { Flex, FlexProps } from "../../../lib/Components/Bidding/Elements/Flex"
+import { CssTransition } from "../../../app/Components/Bidding/Components/Animation/CssTransition"
+import { Flex, FlexProps } from "../../../app/Components/Bidding/Elements/Flex"
 
 const CHECKBOX_SIZE = 20
 const DURATION = 250
@@ -93,7 +93,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             <CssTransition
               style={[
                 styles(fontScale).container,
-                { marginRight: space("1") * fontScale },
+                text || subtitle || children ? { marginRight: space("1") * fontScale } : {},
                 checkboxStyle,
               ]}
               animate={["backgroundColor", "borderColor"]}
@@ -118,13 +118,13 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           </Flex>
         </Flex>
 
-        <Flex ml={(CHECKBOX_SIZE + space("1")) * fontScale} mt="6px">
-          {!!subtitle && (
+        {!!subtitle && (
+          <Flex ml={(CHECKBOX_SIZE + space("1")) * fontScale} mt="6px">
             <Text variant="xs" color={subtitleColor}>
               {subtitle}
             </Text>
-          )}
-        </Flex>
+          </Flex>
+        )}
       </Flex>
     </TouchableWithoutFeedback>
   )

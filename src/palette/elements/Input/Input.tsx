@@ -1,8 +1,8 @@
 import { themeGet } from "@styled-system/theme-get"
+import { ImageSearchModal } from "app/Scenes/Search/components/ImageSearchModal"
+import { MeasuredView } from "app/utils/MeasuredView"
+import { useImageSearch } from "app/utils/useImageSearch"
 import { EventEmitter } from "events"
-import { ImageSearchModal } from "lib/Scenes/Search/components/ImageSearchModal"
-import { MeasuredView } from "lib/utils/MeasuredView"
-import { useImageSearch } from "lib/utils/useImageSearch"
 import _ from "lodash"
 import {
   CameraIcon,
@@ -41,6 +41,7 @@ export const emitInputClearEvent = () => {
 export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   containerStyle?: React.ComponentProps<typeof Flex>["style"]
   description?: string
+  descriptionColor?: Color
   error?: string
   icon?: JSX.Element
   loading?: boolean
@@ -88,6 +89,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     {
       containerStyle,
       description,
+      descriptionColor,
       disabled,
       error,
       icon,
@@ -255,7 +257,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         </Flex>
 
         {!!description && (
-          <Text color="black60" variant="xs" mb={0.5}>
+          <Text color={descriptionColor ?? "black60"} variant="xs" mb={0.5}>
             {description}
           </Text>
         )}

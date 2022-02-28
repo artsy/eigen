@@ -1,0 +1,15 @@
+diff --git a/node_modules/@react-native-mapbox-gl/maps/index.d.ts b/node_modules/@react-native-mapbox-gl/maps/index.d.ts
+index 5f2d4b1..04080d9 100644
+--- a/node_modules/@react-native-mapbox-gl/maps/index.d.ts
++++ b/node_modules/@react-native-mapbox-gl/maps/index.d.ts
+@@ -164,8 +164,8 @@ declare namespace MapboxGL {
+
+    class AnimatedPoint {
+     constructor(point?: GeoJSON.Point);
+-    longitude: ReactNative.Animated.Value<number>;
+-    latitude: ReactNative.Animated.Value<number>;
++    longitude: ReactNative.Animated.Value;
++    latitude: ReactNative.Animated.Value;
+     setValue: (point: GeoJSON.Point) => void;
+     setOffset: (point: GeoJSON.Point) => void;
+     flattenOffset: () => void;
