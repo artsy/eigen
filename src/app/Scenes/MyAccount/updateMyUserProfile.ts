@@ -5,7 +5,7 @@ import {
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
-export const updateMyUserProfile = async (input: UpdateMyProfileInput = {}) => {
+export const updateMyUserProfile = async (input: UpdateMyProfileInput) => {
   await new Promise((resolve, reject) =>
     commitMutation<updateMyUserProfileMutation>(defaultEnvironment, {
       onCompleted: resolve,
@@ -40,11 +40,9 @@ export const updateMyUserProfile = async (input: UpdateMyProfileInput = {}) => {
           }
         }
       `,
-      variables: {
-        input,
-      },
+      variables: { input: input ?? {} },
       onError: (e) => {
-        // try to ge a user-facing error message
+        // try to get a user-facing error message
         try {
           const message = JSON.parse(JSON.stringify(e))?.res?.json?.errors?.[0]?.message ?? ""
           // should be like "https://api.artsy.net/api/v1/me?email=david@artsymail.com - {"error": "User-facing error message"}"
