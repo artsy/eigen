@@ -10,7 +10,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
 
   return (
-    <Flex p={1} mt={1}>
+    <Flex py={1} mt={1}>
       <Flex>
         <BulletedItem>
           To evaluate your submission faster, please upload high-quality photos of the work's front
