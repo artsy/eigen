@@ -52,7 +52,7 @@ const parseSliderRange = (range: CustomRange): number[] => {
   })
 }
 
-const convertToArtworkFilterFormatRange = (range: number[]): CustomRange => {
+const convertToFilterFormatRange = (range: number[]): CustomRange => {
   return range.map((value, index) => {
     if (value === DEFAULT_RANGE[index]) {
       return "*"
@@ -90,7 +90,8 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
 
   const handleClear = () => {
     const defaultRangeValue = parseRange(DEFAULT_PRICE_RANGE)
-    setRange(parseRange(DEFAULT_PRICE_RANGE))
+
+    setRange(defaultRangeValue)
     handleCustomPriceChange(defaultRangeValue)
   }
 
@@ -113,7 +114,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   }
 
   const handleSliderValueChange = (value: number[]) => {
-    const convertedRange = convertToArtworkFilterFormatRange(value)
+    const convertedRange = convertToFilterFormatRange(value)
 
     updateRange(convertedRange)
   }
