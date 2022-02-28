@@ -167,7 +167,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableCollectorProfile: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable collector profile",
     showInAdminMenu: true,
   },
