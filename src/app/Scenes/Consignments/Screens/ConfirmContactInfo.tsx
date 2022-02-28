@@ -4,7 +4,7 @@ import { ConfirmContactInfo_me } from "__generated__/ConfirmContactInfo_me.graph
 import { ConfirmContactInfoQuery } from "__generated__/ConfirmContactInfoQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { PhoneInput } from "app/Components/PhoneInput/PhoneInput"
-import { popToRoot } from "app/navigation/navigate"
+import { dismissModal } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -45,11 +45,11 @@ const ConfirmContactInfo: React.FC<{
   const handleDismiss = () => {
     if (!submissionRequestValidationCheck()) {
       Alert.alert("Leave this screen?", "Your consignment submission is still in progress", [
-        { text: "Leave Now", onPress: () => popToRoot() },
+        { text: "Leave Now", onPress: () => dismissModal() },
         { text: "Wait", style: "default" },
       ])
     } else {
-      popToRoot()
+      dismissModal()
     }
     return true
   }
