@@ -150,7 +150,7 @@ See our documentation on adding a route for more details: [Adding a new route](h
 
 #### iOS Navigation
 
-- For native iOS code we use the **Native Switchboard**. Once the new app shell is finished (expected March 2022), we will be using `react-navigation`.
+- For native iOS code we use the **ARScreenPresenterModule**. Once the new app shell is finished (expected March 2022), we will be using `react-navigation`.
 
 For the most part you don't have to worry about this.
 
@@ -172,9 +172,10 @@ The following parts of the iOS app are handled in native code:
 - Initializing the React Native runtime.
 - Analytics for Native UI.
 - View In Room (Augmented Reality)
+- City Guide Drawer Handling
 
 The following parts of the iOS app are handled in native code, but will be managed by React Native once the new app shell is finished (expected March 2022):
 
-- The SwitchBoard (see "SwitchBoard" section below) to navigate between view controllers.
+- ARScreenPresenterModule to navigate between view controllers.
 - The top-level tab bar, and each tab's navigation controller.
-- Deep-link and notification handling (via SwitchBoard).
+- Deep-link and notification handling.
