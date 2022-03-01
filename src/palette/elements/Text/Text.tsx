@@ -22,10 +22,23 @@ export interface TextProps extends RNTextProps, InnerStyledTextProps {
   caps?: boolean
   weight?: "regular" | "medium"
   maxChars?: number
+  underline?: boolean
 }
 
 export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
-  ({ variant = "sm", italic = false, caps, weight = "regular", style, children, ...rest }, ref) => {
+  (
+    {
+      variant = "sm",
+      italic = false,
+      caps,
+      weight = "regular",
+      underline = false,
+      style,
+      children,
+      ...rest
+    },
+    ref
+  ) => {
     const { theme } = useTheme()
     const fontFamily = useFontFamilyFor({ italic, weight })
     if (!isThemeV3(theme)) {
@@ -42,6 +55,7 @@ export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
           ...nativeTextStyle,
           style,
           { textAlignVertical: "center" }, // android renders text higher by default, so we bring it down to be consistent with ios
+          { textDecorationLine: !!underline ? "underline" : "none" },
         ]}
         fontFamily={fontFamily}
         {...theme.textTreatments[variant]}

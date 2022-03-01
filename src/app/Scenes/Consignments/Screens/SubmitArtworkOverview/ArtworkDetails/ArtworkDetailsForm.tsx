@@ -1,8 +1,19 @@
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { useFormikContext } from "formik"
-import { Box, BulletedItem, Flex, Input, InputTitle, RadioButton, Spacer, Text } from "palette"
+import {
+  Box,
+  BulletedItem,
+  Flex,
+  Input,
+  InputTitle,
+  LinkText,
+  RadioButton,
+  Spacer,
+  Text,
+} from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
+import { TouchableOpacity } from "react-native-gesture-handler"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { InfoModal } from "./Components/InfoModal"
 import { LocationAutocomplete } from "./Components/LocationAutocomplete"
@@ -50,7 +61,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.attributionClass}
         enableSearch={false}
         title="Rarity"
-        tooltipText="What is this?"
+        tooltipText={<LinkText>What is this?</LinkText>}
         onTooltipPress={() => setIsRarityInfoModalVisible(true)}
         placeholder="Select a Classification"
         options={rarityOptions}
@@ -136,9 +147,9 @@ export const ArtworkDetailsForm: React.FC = () => {
       <StandardSpace />
       <Flex flexDirection="row" justifyContent="space-between">
         <InputTitle>Provenance</InputTitle>
-        <Text variant="xs" color="black60" onPress={() => setIsProvenanceInfoModalVisible(true)}>
-          What is this?
-        </Text>
+        <TouchableOpacity onPress={() => setIsProvenanceInfoModalVisible(true)}>
+          <LinkText color="black60">What is this?</LinkText>
+        </TouchableOpacity>
       </Flex>
       <Input
         placeholder="Describe How You Acquired the Artwork"
