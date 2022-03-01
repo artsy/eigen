@@ -67,7 +67,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 
-        {p1Orp2Artist ? <SubmitToSell /> : <MyCollectionWhySell artwork={artwork} />}
+        {isPOneArtist ? <SubmitToSell /> : <MyCollectionWhySell artwork={artwork} />}
       </Flex>
     </StickyTabPageScrollView>
   )
