@@ -1,8 +1,9 @@
 import { captureMessage } from "@sentry/react-native"
+import { navigate } from "app/navigation/navigate"
 import { artworkDetailsCompletedEvent } from "app/Scenes/Consignments/Utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
-import { BulletedItem, CTAButton, Flex, Spacer, Text } from "palette"
+import { BulletedItem, CTAButton, Flex, LinkText, Spacer } from "palette"
 import React, { useState } from "react"
 import { useTracking } from "react-tracking"
 import { ErrorView } from "../Components/ErrorView"
@@ -41,12 +42,20 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
 
   return (
     <Flex flex={3} py={1} mt={1}>
-      <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
       <BulletedItem>
-        Unfortunately, we do not allow{" "}
-        <Text style={{ textDecorationLine: "underline" }}>artists to sell their own work</Text> on
-        Artsy.
+        Currently, artists can not sell their own work on Artsy.{" "}
+        <LinkText
+          onPress={() =>
+            navigate(
+              "https://support.artsy.net/hc/en-us/articles/360046646374-I-m-an-artist-Can-I-submit-my-own-work-to-sell-"
+            )
+          }
+        >
+          Learn more.
+        </LinkText>
       </BulletedItem>
+      <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
+
       <Spacer mt={4} />
       <Formik<ArtworkDetailsFormModel>
         initialValues={artworkDetails}

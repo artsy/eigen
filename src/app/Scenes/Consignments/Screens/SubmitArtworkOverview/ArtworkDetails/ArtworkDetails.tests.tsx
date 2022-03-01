@@ -50,6 +50,8 @@ describe("ArtworkDetails", () => {
 
   it("renders correct explanation for form fields", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    expect(getByText("Currently, artists can not sell their own work on Artsy.")).toBeTruthy()
+    expect(getByText("Learn more.")).toBeTruthy()
     expect(getByText("All fields are required to submit an artwork.")).toBeTruthy()
   })
 
