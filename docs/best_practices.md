@@ -1,4 +1,4 @@
-# :world_map: Preferred Practices
+# :world_map: Our Best Practices
 
 **Last update: February 2022**
 
