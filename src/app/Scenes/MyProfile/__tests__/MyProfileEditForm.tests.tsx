@@ -1,7 +1,8 @@
-import { fireEvent, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { MyProfileEditFormTestsQuery } from "__generated__/MyProfileEditFormTestsQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
@@ -82,7 +83,7 @@ describe("MyProfileEditForm", () => {
         })
 
         it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to true", async () => {
-          const { getByTestId, getByText } = renderWithWrappersTL(<TestRenderer />)
+          const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
           mockEnvironmentPayload(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: true,
@@ -106,9 +107,9 @@ describe("MyProfileEditForm", () => {
             errors: [],
           })
 
+          await flushPromiseQueue()
+
           expect(getByTestId("verification-confirmation-banner")).toBeTruthy()
-          expect(getByText("Sending a confirmation email...")).toBeTruthy()
-          await waitForElementToBeRemoved(() => getByText("Sending a confirmation email..."))
         })
 
         it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to false", async () => {
@@ -123,6 +124,8 @@ describe("MyProfileEditForm", () => {
           expect(VerifyYouEmailButton).toBeTruthy()
 
           fireEvent(VerifyYouEmailButton, "onPress")
+
+          await flushPromiseQueue()
 
           expect(() => getByTestId("verification-confirmation-banner")).toThrow()
         })

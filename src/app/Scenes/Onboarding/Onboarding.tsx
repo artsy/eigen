@@ -9,10 +9,11 @@ import {
   ArtsyKeyboardAvoidingViewContext,
 } from "app/Components/ArtsyKeyboardAvoidingView"
 import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "app/Components/ArtsyReactWebViewPolicy"
-import { GlobalStore } from "app/store/GlobalStore"
+import { FPSCounter } from "app/Components/FPSCounter"
+import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import React from "react"
-import { View } from "react-native"
+import { Platform, View } from "react-native"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { ForgotPassword } from "./ForgotPassword"
 import {
@@ -111,6 +112,7 @@ export const OnboardingWelcomeScreens = () => {
 export const Onboarding = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const showNetworkUnavailableModal = useFeatureFlag("ARShowNetworkUnavailableModal")
+  const fpsCounter = useDevToggle("DTFPSCounter")
 
   return (
     <View style={{ flex: 1 }}>
@@ -126,6 +128,7 @@ export const Onboarding = () => {
           {!!showNetworkUnavailableModal && <NetworkAwareProvider />}
         </ArtsyKeyboardAvoidingView>
       </ArtsyKeyboardAvoidingViewContext.Provider>
+      {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}
     </View>
   )
 }

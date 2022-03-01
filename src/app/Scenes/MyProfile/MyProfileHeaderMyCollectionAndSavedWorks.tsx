@@ -25,7 +25,6 @@ import {
   useColor,
 } from "palette"
 import React, { useContext } from "react"
-import { PixelRatio } from "react-native"
 import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
@@ -68,7 +67,6 @@ export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
 export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSavedWorks_me }> = ({
   me,
 }) => {
-  const iconSize = ICON_SIZE * PixelRatio.getFontScale()
   const color = useColor()
   const navigation = useNavigation()
 
@@ -118,27 +116,27 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
         <Flex px={2} mt={2}>
           <Join separator={<Spacer my={0.5} />}>
             {!!me?.location?.display && (
-              <Flex flexDirection="row" alignItems="flex-end">
-                <MapPinIcon width={iconSize} height={iconSize} />
-                <Text variant="xs" color={color("black100")} px={0.5}>
+              <Flex flexDirection="row" alignItems="center">
+                <MapPinIcon width={ICON_SIZE} height={ICON_SIZE} />
+                <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
                   {me.location.display}
                 </Text>
               </Flex>
             )}
 
             {!!me?.profession && (
-              <Flex flexDirection="row" alignItems="flex-end">
-                <BriefcaseIcon width={iconSize} height={iconSize} />
-                <Text variant="xs" color={color("black100")} px={0.5}>
+              <Flex flexDirection="row" alignItems="center">
+                <BriefcaseIcon width={ICON_SIZE} height={ICON_SIZE} />
+                <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
                   {me.profession}
                 </Text>
               </Flex>
             )}
 
             {!!me?.otherRelevantPositions && (
-              <Flex flexDirection="row" alignItems="flex-end">
-                <MuseumIcon width={iconSize} height={iconSize} />
-                <Text variant="xs" color={color("black100")} px={0.5}>
+              <Flex flexDirection="row" alignItems="center">
+                <MuseumIcon width={ICON_SIZE} height={ICON_SIZE} />
+                <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
                   {me?.otherRelevantPositions}
                 </Text>
               </Flex>

@@ -93,7 +93,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             <CssTransition
               style={[
                 styles(fontScale).container,
-                { marginRight: space("1") * fontScale },
+                text || subtitle || children ? { marginRight: space("1") * fontScale } : {},
                 checkboxStyle,
               ]}
               animate={["backgroundColor", "borderColor"]}
@@ -118,13 +118,13 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           </Flex>
         </Flex>
 
-        <Flex ml={(CHECKBOX_SIZE + space("1")) * fontScale} mt="6px">
-          {!!subtitle && (
+        {!!subtitle && (
+          <Flex ml={(CHECKBOX_SIZE + space("1")) * fontScale} mt="6px">
             <Text variant="xs" color={subtitleColor}>
               {subtitle}
             </Text>
-          )}
-        </Flex>
+          </Flex>
+        )}
       </Flex>
     </TouchableWithoutFeedback>
   )

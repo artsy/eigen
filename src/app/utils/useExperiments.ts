@@ -5,11 +5,11 @@ import { useEffect } from "react"
 import Config from "react-native-config"
 import { getUniqueId } from "react-native-device-info"
 import { GlobalStore, useFeatureFlag } from "../store/GlobalStore"
-import { EXPERIMENT_NAME, experiments } from "./experiments"
+import { SPLIT_EXPERIMENT_NAME, splitExperiments } from "./experiments"
 
 let client: SplitIO.IClient | null = null
 
-export const useExperiments = () => {
+export const useSplitExperiments = () => {
   const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
   const environment = GlobalStore.useAppState((store) => store.artsyPrefs.environment.env)
   const userIdOrDeviceId = GlobalStore.useAppState(
@@ -49,7 +49,7 @@ export const useExperiments = () => {
   }, [enableSplitIOABTesting])
 }
 
-export const useTreatment = (treatment: EXPERIMENT_NAME) => {
+export const useTreatment = (treatment: SPLIT_EXPERIMENT_NAME) => {
   const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
   const isReady = GlobalStore.useAppState(
     (store) => store.artsyPrefs.experiments.sessionState.isReady
@@ -66,12 +66,12 @@ export const useTreatment = (treatment: EXPERIMENT_NAME) => {
   )
 
   if (!enableSplitIOABTesting) {
-    return experiments[treatment].fallbackTreatment
+    return splitExperiments[treatment].fallbackTreatment
   }
 
   if (!isReady || !client) {
     // just return the fallback if anything went wrong with the Split setup
-    return experiments[treatment].fallbackTreatment
+    return splitExperiments[treatment].fallbackTreatment
   }
 
   return client.getTreatment(treatment)

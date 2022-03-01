@@ -79,11 +79,6 @@ export const features = defineFeatures({
     echoFlagKey: "ARHomeAuctionResultsByFollowedArtists",
     description: "Enable home auction results",
   },
-  AREnableCustomSharesheet: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableCustomSharesheet",
-    description: "Enable custom share sheet",
-  },
   AREnableOrderHistoryOption: {
     readyForRelease: true,
     echoFlagKey: "AREnableOrderHistoryOption",
@@ -97,6 +92,16 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable improved search pills",
     echoFlagKey: "AREnableImprovedSearchPills",
+  },
+  AREnableTrove: {
+    readyForRelease: true,
+    description: "Enable Trove in homepage",
+    echoFlagKey: "AREnableTrove",
+  },
+  AREnableShowsRail: {
+    readyForRelease: true,
+    description: "Enable Shows in homepage",
+    echoFlagKey: "AREnableShowsRail",
   },
   ARShowNetworkUnavailableModal: {
     readyForRelease: true,
@@ -114,16 +119,17 @@ export const features = defineFeatures({
     description: "Enable Improved Alerts flow",
     echoFlagKey: "AREnableImprovedAlertsFlow",
   },
-  AREnableWebPImages: {
-    readyForRelease: true,
-    description: "Enable WebP Images",
-    echoFlagKey: "AREnableWebPImages",
-  },
   AREnableSplitIOABTesting: {
     readyForRelease: true,
     description: "Enable Split.io A/B testing",
     showInAdminMenu: true,
     echoFlagKey: "AREnableSplitIOABTesting",
+  },
+  AREnableExampleExperiments: {
+    // we can remove this as soon as we have a real experiment on Unleash
+    readyForRelease: false,
+    description: "Show example Unleash experiments",
+    showInAdminMenu: true,
   },
   AREnableArtistRecommendations: {
     readyForRelease: false,
@@ -141,12 +147,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   ARShowLinkedAccounts: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Show linked social accounts",
     showInAdminMenu: true,
   },
   ARAllowLinkSocialAccountsOnSignUp: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
   },
@@ -156,7 +162,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableCollectorProfile: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable collector profile",
     showInAdminMenu: true,
   },
@@ -180,6 +186,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
   },
+  AREnableShowOnlySubmittedMyCollectionArtworkFilter: {
+    readyForRelease: false,
+    description: "Enable Show Only Submitted MyCollection Artwork Filter",
+    showInAdminMenu: true,
+  },
   AREnableAvalaraPhase2: {
     readyForRelease: false,
     description: "Enable Avalara Phase 2",
@@ -190,7 +201,7 @@ export const features = defineFeatures({
     description: "Support dark mode",
     showInAdminMenu: true,
   },
-  ARShowwRequestPriceEstimateBanner: {
+  ARShowRequestPriceEstimateBanner: {
     readyForRelease: false,
     description: "Show request price estimate banner",
     showInAdminMenu: true,
@@ -222,7 +233,7 @@ export type DevToggleName = keyof typeof devToggles
 
 export const devToggles = defineDevToggles({
   DTShowQuickAccessInfo: {
-    description: "Show quick access info",
+    description: "Quick Access Info",
   },
   DTDisableEchoRemoteFetch: {
     description: "Disable fetching remote echo",
@@ -237,19 +248,25 @@ export const devToggles = defineDevToggles({
     },
   },
   DTShowAnalyticsVisualiser: {
-    description: "Show analytics visualiser",
+    description: "Analytics visualiser",
   },
   DTEasyMyCollectionArtworkCreation: {
-    description: "Easily add my collection artworks",
+    description: "MyCollection artworks easy add",
   },
   DTShowWebviewIndicator: {
-    description: "Show webview indicator",
+    description: "Webview indicator",
   },
   DTShowInstagramShot: {
-    description: "Show Instagram viewshot",
+    description: "Instagram viewshot debug",
   },
   DTCaptureExceptionsInSentryOnDev: {
-    description: "Enable capturing exceptions in Sentry on DEV",
+    description: "Capture exceptions in Sentry on DEV",
+  },
+  DTFPSCounter: {
+    description: "FPS counter",
+  },
+  DTUseProductionUnleash: {
+    description: "Use Production Unleash",
   },
 })
 

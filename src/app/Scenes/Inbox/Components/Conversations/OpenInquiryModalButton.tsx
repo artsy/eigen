@@ -52,7 +52,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
           block
           width={100}
         >
-          Make Offer
+          Make an Offer
         </Button>
       </Flex>
     </>

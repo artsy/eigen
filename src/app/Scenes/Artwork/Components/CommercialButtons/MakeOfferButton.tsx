@@ -143,7 +143,7 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
         variant={this.props.variant}
         haptic
       >
-        {this.props.buttonText ? this.props.buttonText : "Make offer"}
+        {this.props.buttonText ? this.props.buttonText : "Make an Offer"}
       </Button>
     )
   }

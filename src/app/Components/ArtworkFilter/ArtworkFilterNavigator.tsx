@@ -308,7 +308,14 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               component={AdditionalGeneIDsOptionsScreen}
             />
             <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
-            <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
+            <Stack.Screen
+              name="PriceRangeOptionsScreen"
+              component={PriceRangeOptionsScreen}
+              options={{
+                // Avoid PanResponser conflicts between the slider and the slide back gesture
+                gestureEnabled: false,
+              }}
+            />
             <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
             <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
             <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
