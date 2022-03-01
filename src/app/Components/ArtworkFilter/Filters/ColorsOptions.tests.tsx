@@ -25,14 +25,14 @@ describe("Colors options screen", () => {
           value: "black-and-white",
         },
         {
-          name: "Dark Orange",
+          name: "Orange",
           count: 513,
-          value: "darkorange",
+          value: "orange",
         },
         {
-          name: "Light Blue",
+          name: "Blue",
           count: 277,
-          value: "lightblue",
+          value: "blue",
         },
         {
           name: "Yellow",
