@@ -1,19 +1,23 @@
 import { captureMessage } from "@sentry/react-native"
 import { LinkText } from "app/Components/Text/LinkText"
 import { navigate } from "app/navigation/navigate"
+import { artworkDetailsCompletedEvent } from "app/Scenes/Consignments/Utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { BulletedItem, CTAButton, Flex, Spacer } from "palette"
 import React, { useState } from "react"
+import { useTracking } from "react-tracking"
 import { ErrorView } from "../Components/ErrorView"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "./validation"
 
 export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
+  const { userID, userEmail } = GlobalStore.useAppState((state) => state.auth)
   const { submissionId, artworkDetails } = GlobalStore.useAppState(
     (state) => state.artworkSubmission.submission
   )
+  const { trackEvent } = useTracking()
   const [submissionError, setSubmissionError] = useState(false)
 
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
@@ -22,6 +26,9 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
       if (id) {
         GlobalStore.actions.artworkSubmission.submission.setSubmissionId(id)
         GlobalStore.actions.artworkSubmission.submission.setArtworkDetailsForm(values)
+
+        trackEvent(artworkDetailsCompletedEvent(id, userEmail, userID))
+
         handlePress()
       }
     } catch (error) {
@@ -35,7 +42,7 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
   }
 
   return (
-    <Flex flex={3} p={1} mt={1}>
+    <Flex flex={3} py={1} mt={1}>
       <BulletedItem>
         Currently, artists can not sell their own work on Artsy.{" "}
         <LinkText

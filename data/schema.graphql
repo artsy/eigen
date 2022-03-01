@@ -8894,6 +8894,15 @@ type Me implements Node {
     last: Int
   ): ArtworkInquiryConnection
 
+  # A connection of artwork recommendations for the current user.
+  artworkRecommendations(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+  ): ArtworkConnection
+
   # A list of the auction results by followed artists
   auctionResultsByFollowedArtists(
     after: String

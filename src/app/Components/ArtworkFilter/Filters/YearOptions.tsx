@@ -11,7 +11,6 @@ import {
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
-import { CircleWithBorder } from "app/Components/CircleWithBorder/CircleWithBorder"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
 import { useFeatureFlag } from "app/store/GlobalStore"
@@ -127,22 +126,23 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
             step={1}
             allowOverlap
             snapped
-            customMarker={() => (
-              <CircleWithBorder
-                borderWidth={2}
-                backgroundColor={color("black100")}
-                borderColor={color("white100")}
-                diameter={24}
-                top="2px"
-              />
-            )}
             selectedStyle={{
-              backgroundColor: "black",
-              height: 5,
+              backgroundColor: color("blue100"),
             }}
-            unselectedStyle={{
-              backgroundColor: color("black10"),
-              height: 5,
+            markerStyle={{
+              height: 32,
+              width: 32,
+              borderRadius: 16,
+              backgroundColor: color("white100"),
+              borderColor: color("black10"),
+              borderWidth: 1,
+              shadowRadius: 2,
+              elevation: 5,
+            }}
+            pressedMarkerStyle={{
+              height: 32,
+              width: 32,
+              borderRadius: 16,
             }}
             containerStyle={{
               height: 40,
