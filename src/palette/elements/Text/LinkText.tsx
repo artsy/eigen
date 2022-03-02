@@ -1,4 +1,5 @@
-import React from "react"
-import { Text, TextProps } from "./Text"
+import styled from "styled-components/native"
 
-export const LinkText = (props: TextProps) => <Text underline {...props} />
+export const LinkText = styled.Text`
+  text-decoration-line: underline;
+`
