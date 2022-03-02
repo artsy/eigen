@@ -85,13 +85,56 @@ describe("MyCollectionArtworkInsights", () => {
     expect(getByText("One-Year Trend")).toBeTruthy()
     expect(getByText("Trending up")).toBeTruthy()
 
+    // Artwork Comparable Works
+
+    expect(getByText("Comparable Works")).toBeTruthy()
+    expect(getByText("A Comparable Auction Result")).toBeTruthy()
+
     // Why Sell
 
     expect(getByText("Interested in selling this work?")).toBeTruthy()
   })
 })
 
-const mockArtwork = {}
+const mockArtwork = {
+  internalID: "some-artwork-id",
+  slug: "some-artwork-slug",
+  comparableAuctionResults: {
+    edges: [
+      {
+        cursor: "YXJyYXljb25uZWN0aW9uOjA=",
+        node: {
+          id: "QXVjdGlvblJlc3VsdDozMzM5NTI=",
+          artistID: "4d8b92bb4eb68a1b2c000452",
+          artist: {
+            name: "Takashi Murakami",
+          },
+          internalID: "333952",
+          title: "A Comparable Auction Result",
+          currency: "HKD",
+          dateText: "2015",
+          mediumText: "acrylic on canvas mounted on aluminum frame",
+          saleDate: "2021-06-01T03:00:00+03:00",
+          organization: "Phillips",
+          boughtIn: false,
+          priceRealized: {
+            cents: 315000000,
+            display: "HK$3,150,000",
+            displayUSD: "$30,000",
+          },
+          performance: {
+            mid: "70%",
+          },
+          images: {
+            thumbnail: {
+              url: "https://d2v80f5yrouhh2.cloudfront.net/OTJxNHuhGDnPi8wQcvXvxA/thumbnail.jpg",
+            },
+          },
+        },
+      },
+    ],
+  },
+}
 
 const mockMarketPriceInsights = {
   demandRank: 0.7,
