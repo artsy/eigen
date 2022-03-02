@@ -11,7 +11,7 @@ import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { EmptyMessage } from "./EmptyMessage"
 import { SavedSearchAlertsListPlaceholder } from "./SavedSearchAlertsListPlaceholder"
-import { SavedSearchListItem } from "./SavedSearchListItem"
+import { SavedSearchListItemFragmentContainer } from "./SavedSearchListItem"
 
 interface SavedSearchesListProps {
   me: SavedSearchesList_me
@@ -87,8 +87,8 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       onRefresh={onRefresh}
       renderItem={({ item }) => {
         return (
-          <SavedSearchListItem
-            title={item.userAlertSettings.name!}
+          <SavedSearchListItemFragmentContainer
+            item={item}
             onPress={() => {
               navigate(`my-profile/saved-search-alerts/${item.internalID}`)
             }}
@@ -136,9 +136,7 @@ export const SavedSearchesListContainer = createPaginationContainer(
           edges {
             node {
               internalID
-              userAlertSettings {
-                name
-              }
+              ...SavedSearchListItem_item
             }
           }
         }

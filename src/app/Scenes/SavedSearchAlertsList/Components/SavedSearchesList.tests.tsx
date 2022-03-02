@@ -66,6 +66,42 @@ describe("SavedSearches", () => {
     expect(getByText("two")).toBeTruthy()
   })
 
+  it("renders filter pills", () => {
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      SearchCriteriaConnection: () => ({
+        edges: [
+          {
+            node: {
+              labels: [
+                {
+                  value: "Filter pill 1",
+                },
+                {
+                  value: "Filter pill 2",
+                },
+              ],
+            },
+          },
+          {
+            node: {
+              labels: [
+                {
+                  value: "Filter pill 3",
+                },
+              ],
+            },
+          },
+        ],
+      }),
+    })
+
+    expect(getByText("Filter pill 1")).toBeTruthy()
+    expect(getByText("Filter pill 2")).toBeTruthy()
+    expect(getByText("Filter pill 3")).toBeTruthy()
+  })
+
   it("renders an empty message if there are no saved search alerts", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
