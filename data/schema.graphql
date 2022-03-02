@@ -11863,6 +11863,9 @@ type Sale implements Node {
   # Auction's buyer's premium policy.
   buyersPremium: [BuyersPremium]
   cached: Int
+
+  # Amount of seconds in between each lot closing.
+  cascadingEndTimeInterval: Int
   collectPayments: Boolean!
   coverImage: Image
   currency: String
