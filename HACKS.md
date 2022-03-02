@@ -263,3 +263,15 @@ React native is not able to convert js functions so this is passed as null to th
 See what can be converted: https://github.com/facebook/react-native/blob/main/React/Base/RCTConvert.h
 
 PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
+
+# `Map` manual prop update in `PageWrapper`
+
+#### When can we remove this:
+
+We should see if it is still necessary when we remove the old native navigation on iOS. To check: go into City Guide, leave, enter again and then try to change the city. If it works without this code it can be removed.
+If it is still an issue with old native navigation gone this can either be removed when we remove or rebuild City Guide or if we change how props are saved in PageWrapper.
+
+#### Explanation/Context:
+
+City Guide is a mixture of native components and react components, prop updates from the native side are not updating the component on the react native side without this manual check and update. See the PR here for the change in the AppRegistry:
+https://github.com/artsy/eigen/pull/6348
