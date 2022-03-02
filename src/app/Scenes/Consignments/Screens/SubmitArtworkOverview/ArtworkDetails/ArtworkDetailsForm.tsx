@@ -6,6 +6,7 @@ import {
   Flex,
   Input,
   InputTitle,
+  LinkButton,
   LinkText,
   RadioButton,
   Spacer,
@@ -146,13 +147,13 @@ export const ArtworkDetailsForm: React.FC = () => {
       <StandardSpace />
       <Flex flexDirection="row" justifyContent="space-between">
         <InputTitle>Provenance</InputTitle>
-        <LinkText
+        <LinkButton
           variant="xs"
           color="black60"
           onPress={() => setIsProvenanceInfoModalVisible(true)}
         >
           What is this?
-        </LinkText>
+        </LinkButton>
       </Flex>
       <Input
         placeholder="Describe How You Acquired the Artwork"
