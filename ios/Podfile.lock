@@ -253,7 +253,7 @@ PODS:
   - ISO8601DateFormatter (0.7.1)
   - JLRoutes (2.0.0)
   - JSDecoupledAppDelegate (1.2.0)
-  - JWTDecode (2.6.3)
+  - JWTDecode (2.0.0)
   - libevent (2.1.12)
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
@@ -673,7 +673,7 @@ PODS:
   - Sentry/Core (7.9.0)
   - Starscream (3.0.4)
   - Stripe (14.0.2)
-  - SwiftyJSON (5.0.1)
+  - SwiftyJSON (4.0.0)
   - Then (2.3.0)
   - tipsi-stripe (7.5.0):
     - React
@@ -742,7 +742,7 @@ DEPENDENCIES:
   - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/artsy/JLRoutes.git`)
   - JSDecoupledAppDelegate
-  - JWTDecode
+  - JWTDecode (= 2.0.0)
   - Mantle (= 1.5.6)
   - MARKRangeSlider
   - MMMarkdown (= 0.4)
@@ -818,7 +818,7 @@ DEPENDENCIES:
   - Segment-Adjust (= 3.1.4)
   - Segment-Appboy (= 4.2.0)
   - Starscream (= 3.0.4)
-  - SwiftyJSON
+  - SwiftyJSON (= 4.0.0)
   - Then (= 2.3.0)
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
   - UICKeyChainStore
@@ -1133,7 +1133,7 @@ SPEC CHECKSUMS:
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JLRoutes: 63d64c28b26bcdeb5f5b29e436f75b8358e8d6d1
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
-  JWTDecode: 33e5e26e5ddbd21b2065820894c08fef0cad9509
+  JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   Mapbox-iOS-SDK: f870f83cbdc7aa4a74afcee143aafb0dae390c82
@@ -1215,7 +1215,7 @@ SPEC CHECKSUMS:
   Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0
-  SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
+  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   Then: ee21c97b85ff6062b9b0080c9abb1eea46743345
   tipsi-stripe: 8aaaa6f5e4cfea5c35be3affbb616c4e6cfafa5f
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
@@ -1224,6 +1224,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: bd323bd6dc173d282084e985ebd83a4c89b65059
+PODFILE CHECKSUM: 1747c1ca15a234e6860d3b02a1f38119dbed7eb7
 
 COCOAPODS: 1.11.2
