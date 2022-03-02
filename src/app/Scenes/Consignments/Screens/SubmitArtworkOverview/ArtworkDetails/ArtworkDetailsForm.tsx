@@ -10,7 +10,6 @@ import {
   RadioButton,
   Spacer,
   Text,
-  Touchable,
 } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
@@ -61,7 +60,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.attributionClass}
         enableSearch={false}
         title="Rarity"
-        tooltipText={<LinkText>What is this?</LinkText>}
+        tooltipText={<LinkText variant="xs">What is this?</LinkText>}
         onTooltipPress={() => setIsRarityInfoModalVisible(true)}
         placeholder="Select a Classification"
         options={rarityOptions}
@@ -147,9 +146,13 @@ export const ArtworkDetailsForm: React.FC = () => {
       <StandardSpace />
       <Flex flexDirection="row" justifyContent="space-between">
         <InputTitle>Provenance</InputTitle>
-        <Touchable onPress={() => setIsProvenanceInfoModalVisible(true)}>
-          <LinkText color="black60">What is this?</LinkText>
-        </Touchable>
+        <LinkText
+          variant="xs"
+          color="black60"
+          onPress={() => setIsProvenanceInfoModalVisible(true)}
+        >
+          What is this?
+        </LinkText>
       </Flex>
       <Input
         placeholder="Describe How You Acquired the Artwork"
