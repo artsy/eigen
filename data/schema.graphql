@@ -1561,6 +1561,14 @@ type Artwork implements Node & Searchable & Sellable {
   # Returns the display label and detail when artwork has a certificate of authenticity
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
+
+  # Comparable auction results
+  comparableAuctionResults(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): AuctionResultConnection
   conditionDescription: ArtworkInfoRow
   consignmentSubmission: ArtworkConsignmentSubmission
   contactLabel: String
