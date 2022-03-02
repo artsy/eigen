@@ -10,6 +10,7 @@ import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkIns
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkDemandIndex } from "./Components/ArtworkInsights/MyCollectionArtworkDemandIndex"
 import { RequestForPriceEstimate } from "./Components/ArtworkInsights/RequestForPriceEstimate"
+import { STATUSES } from "./Components/MyCollectionArtworkSubmissionStatus"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 import { SubmitToSell } from "./Components/SubmitToSell"
 
@@ -37,6 +38,9 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
     false
 
   const showPriceEstimateBanner = useFeatureFlag("ARShowRequestPriceEstimateBanner") && isPOneArtist
+
+  const displayText = artwork.consignmentSubmission?.displayText
+  const isSold = STATUSES[displayText!.toLowerCase()]?.text === "Artwork Sold"
 
   return (
     <StickyTabPageScrollView>
@@ -67,7 +71,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 
-        {isPOneArtist ? <SubmitToSell /> : <MyCollectionWhySell artwork={artwork} />}
+        {isPOneArtist && isSold ? <SubmitToSell /> : <MyCollectionWhySell artwork={artwork} />}
       </Flex>
     </StickyTabPageScrollView>
   )
@@ -87,6 +91,9 @@ const artworkFragment = graphql`
       targetSupply {
         isTargetSupply
       }
+    }
+    consignmentSubmission {
+      displayText
     }
     ...RequestForPriceEstimate_artwork
     ...MyCollectionArtworkDemandIndex_artwork

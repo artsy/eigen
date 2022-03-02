@@ -5,7 +5,7 @@ import React from "react"
 
 // TODO:- We are using displayText for Statuses for now. Consider changing the logic when proper statuses are made available on Metaphysics.
 // See https://artsyproduct.atlassian.net/browse/SWA-217
-const STATUSES: { [key: string]: { color: string; text: string } } = {
+export const STATUSES: { [key: string]: { color: string; text: string } } = {
   "submission in progress": { color: "yellow150", text: "In Progress" },
   "submission evaluated": { color: "orange150", text: "Evaluation Complete" },
   sold: { color: "black100", text: "Artwork Sold" },
