@@ -92,7 +92,6 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable improved search pills",
     echoFlagKey: "AREnableImprovedSearchPills",
-    showInAdminMenu: true,
   },
   AREnableTrove: {
     readyForRelease: true,
