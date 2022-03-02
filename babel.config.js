@@ -1,7 +1,8 @@
 module.exports = (api) => {
-  api.cache.forever()
+  api.cache.forever() // don't call this babel config all the time if it hasn't changed.
 
   return {
+    presets: [["module:metro-react-native-babel-preset", { unstable_disableES6Transforms: true }]],
     plugins: [
       /**
        * Currently Flow generates non-spec compliant code and so we need to make sure to strip any Flow type annotations
@@ -19,11 +20,16 @@ module.exports = (api) => {
        */
       "@babel/plugin-transform-flow-strip-types",
       "@babel/plugin-transform-runtime",
-      ["@babel/plugin-proposal-decorators", { legacy: true }],
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          legacy: true, // this is only needed for `ProvideScreenTracking` that is deprecated. once we dont have that anymore, we can remove this. probably the whole plugin actually.
+        },
+      ],
       ["@babel/plugin-proposal-class-properties", { loose: true }],
+      ["@babel/plugin-proposal-private-methods", { loose: true }],
       "relay",
       "import-graphql",
     ],
-    presets: ["module:metro-react-native-babel-preset", "@babel/preset-typescript"],
   }
 }
