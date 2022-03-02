@@ -7,7 +7,6 @@ import {
   Input,
   InputTitle,
   LinkButton,
-  LinkText,
   RadioButton,
   Spacer,
   Text,
@@ -61,7 +60,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.attributionClass}
         enableSearch={false}
         title="Rarity"
-        tooltipText={<LinkText variant="xs">What is this?</LinkText>}
+        tooltipText={<LinkButton variant="xs">What is this?</LinkButton>}
         onTooltipPress={() => setIsRarityInfoModalVisible(true)}
         placeholder="Select a Classification"
         options={rarityOptions}
