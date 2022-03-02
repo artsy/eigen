@@ -10,10 +10,10 @@ import {
   RadioButton,
   Spacer,
   Text,
+  Touchable,
 } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
-import { TouchableOpacity } from "react-native-gesture-handler"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { InfoModal } from "./Components/InfoModal"
 import { LocationAutocomplete } from "./Components/LocationAutocomplete"
@@ -147,9 +147,9 @@ export const ArtworkDetailsForm: React.FC = () => {
       <StandardSpace />
       <Flex flexDirection="row" justifyContent="space-between">
         <InputTitle>Provenance</InputTitle>
-        <TouchableOpacity onPress={() => setIsProvenanceInfoModalVisible(true)}>
+        <Touchable onPress={() => setIsProvenanceInfoModalVisible(true)}>
           <LinkText color="black60">What is this?</LinkText>
-        </TouchableOpacity>
+        </Touchable>
       </Flex>
       <Input
         placeholder="Describe How You Acquired the Artwork"
