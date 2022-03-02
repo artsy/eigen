@@ -55,9 +55,9 @@ extension PublicFunctions: LiveAuctionStateReconcilerType {
 
     func updateState(_ state: AnyObject) {
         // TODO: how to handle changes to start/end times? Necessary at all?
-
-        guard let fullLotStateById = state["fullLotStateById"] as? [String: [String: AnyObject]] else { return }
-        let currentLotID = state["currentLotId"] as? String
+        guard let stateDict = state as? [String: AnyObject] else { return }
+        guard let fullLotStateById = stateDict["fullLotStateById"] as? [String: [String: AnyObject]] else { return }
+        let currentLotID = stateDict["currentLotId"] as? String
 
         for lot in saleArtworks {
             // TODO: How should we handle failed parsing? Not silently, that's for sure!
