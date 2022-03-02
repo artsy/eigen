@@ -88,7 +88,6 @@ describe("MyCollectionArtworkInsights", () => {
     // Artwork Comparable Works
 
     expect(getByText("Comparable Works")).toBeTruthy()
-    expect(getByText("A Comparable Auction Result")).toBeTruthy()
 
     // Why Sell
 
