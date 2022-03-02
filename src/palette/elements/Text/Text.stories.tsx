@@ -31,7 +31,7 @@ storiesOf("Theme/Text", module)
   .add("Basic props", () => (
     <List>
       <Text>regular ~~ This is a text.</Text>
-      <LinkText> LinkText.</LinkText>
+      <LinkText>LinkText.</LinkText>
       <Text caps>caps ~~ This is a text.</Text>
       <Text italic>italics ~~ This is a text.</Text>
       <Text caps italic>
