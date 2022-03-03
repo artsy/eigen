@@ -85,7 +85,7 @@ export const ContactInformation: React.FC<{
             onChangeText={handleChange("userEmail")}
             value={values.userEmail}
             onBlur={handleBlur("userEmail")}
-            error={touched.userEmail ? errors.userEmail : undefined}
+            error={touched.userEmail ? "This email address is invalid" : undefined}
           />
           <Spacer mt={4} />
           <PhoneInput
