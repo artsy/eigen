@@ -69,17 +69,14 @@ storiesOf("Button", module)
     <DataList
       data={variants}
       renderItem={({ item: variant }) => (
-        <Wrap
-          if={variant === "outlineLight" || variant === "fillLight"}
-          with={(c) => (
-            <Flex backgroundColor="black100" p={10}>
-              {c}
-            </Flex>
-          )}
-        >
-          <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
-            {variant}
-          </Button>
+        <Wrap if={variant === "outlineLight" || variant === "fillLight"}>
+          <Flex backgroundColor="black100" p={10}>
+            <Wrap.Content>
+              <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
+                {variant}
+              </Button>
+            </Wrap.Content>
+          </Flex>
         </Wrap>
       )}
     />
@@ -98,17 +95,14 @@ storiesOf("Button", module)
     <DataList
       data={variants}
       renderItem={({ item: variant }) => (
-        <Wrap
-          if={variant === "outlineLight"}
-          with={(c) => (
-            <Flex backgroundColor="black100" p={10}>
-              {c}
-            </Flex>
-          )}
-        >
-          <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
-            {variant}
-          </Button>
+        <Wrap if={variant === "outlineLight"}>
+          <Flex backgroundColor="black100" p={10}>
+            <Wrap.Content>
+              <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
+                {variant}
+              </Button>
+            </Wrap.Content>
+          </Flex>
         </Wrap>
       )}
     />
