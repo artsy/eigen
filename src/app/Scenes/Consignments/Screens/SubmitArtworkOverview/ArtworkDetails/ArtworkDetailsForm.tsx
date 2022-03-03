@@ -42,6 +42,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Input
         title="Year"
         placeholder="YYYY"
+        keyboardType="number-pad"
         testID="Submission_YearInput"
         value={values.year}
         onChangeText={(e) => setFieldValue("year", e)}
@@ -121,6 +122,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%" mr={1}>
           <Input
             title="Height"
+            keyboardType="number-pad"
             testID="Submission_HeightInput"
             value={values.height}
             onChangeText={(e) => setFieldValue("height", e)}
@@ -129,6 +131,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%" mr={1}>
           <Input
             title="Width"
+            keyboardType="number-pad"
             testID="Submission_WidthInput"
             value={values.width}
             onChangeText={(e) => setFieldValue("width", e)}
@@ -137,6 +140,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%">
           <Input
             title="Depth"
+            keyboardType="number-pad"
             testID="Submission_DepthInput"
             value={values.depth}
             onChangeText={(e) => setFieldValue("depth", e)}
