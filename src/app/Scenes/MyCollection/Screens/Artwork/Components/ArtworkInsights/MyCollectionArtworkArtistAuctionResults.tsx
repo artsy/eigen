@@ -46,6 +46,7 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
 
       <FlatList
         data={auctionResults}
+        listKey="artist-auction-results"
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <>

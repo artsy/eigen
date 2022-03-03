@@ -24,6 +24,7 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
     <Flex testID="comparableWorks">
       <FlatList
         data={auctionResults}
+        listKey="comparable-works"
         keyExtractor={(item, index) => String(item?.internalID || index)}
         initialNumToRender={3}
         ListHeaderComponent={
