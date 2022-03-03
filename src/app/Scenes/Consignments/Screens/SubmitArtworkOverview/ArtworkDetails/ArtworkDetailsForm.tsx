@@ -1,6 +1,16 @@
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { useFormikContext } from "formik"
-import { Box, BulletedItem, Flex, Input, InputTitle, RadioButton, Spacer, Text } from "palette"
+import {
+  Box,
+  BulletedItem,
+  Flex,
+  Input,
+  InputTitle,
+  LinkButton,
+  RadioButton,
+  Spacer,
+  Text,
+} from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
@@ -50,7 +60,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.attributionClass}
         enableSearch={false}
         title="Rarity"
-        tooltipText="What is this?"
+        tooltipText={<LinkButton variant="xs">What is this?</LinkButton>}
         onTooltipPress={() => setIsRarityInfoModalVisible(true)}
         placeholder="Select a Classification"
         options={rarityOptions}
@@ -136,9 +146,13 @@ export const ArtworkDetailsForm: React.FC = () => {
       <StandardSpace />
       <Flex flexDirection="row" justifyContent="space-between">
         <InputTitle>Provenance</InputTitle>
-        <Text variant="xs" color="black60" onPress={() => setIsProvenanceInfoModalVisible(true)}>
+        <LinkButton
+          variant="xs"
+          color="black60"
+          onPress={() => setIsProvenanceInfoModalVisible(true)}
+        >
           What is this?
-        </Text>
+        </LinkButton>
       </Flex>
       <Input
         placeholder="Describe How You Acquired the Artwork"

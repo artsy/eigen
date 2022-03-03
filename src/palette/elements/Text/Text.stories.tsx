@@ -4,7 +4,7 @@ import React from "react"
 import { Platform, Text as RNText, TextStyle, View } from "react-native"
 import { withTheme } from "storybook/decorators"
 import { DataList, List } from "storybook/helpers"
-import { Text, TextProps } from "."
+import { LinkText, Text, TextProps } from "."
 
 const variants: Array<TextProps["variant"]> = ["xs", "sm", "md", "lg", "xl", "xxl"]
 
@@ -31,6 +31,7 @@ storiesOf("Theme/Text", module)
   .add("Basic props", () => (
     <List>
       <Text>regular ~~ This is a text.</Text>
+      <LinkText>LinkText.</LinkText>
       <Text caps>caps ~~ This is a text.</Text>
       <Text italic>italics ~~ This is a text.</Text>
       <Text caps italic>

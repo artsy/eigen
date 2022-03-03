@@ -105,7 +105,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
           Add Files Here
         </Text>
         <Text variant="md" color="black60" marginBottom={1}>
-          Files Supported: JPG, PNG
+          Files Supported: JPG, PNG, HEIC
         </Text>
         <Text variant="md" color="black60" marginBottom={3}>
           Total Maximum Size: 30MB
