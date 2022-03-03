@@ -32,7 +32,7 @@ describe("UploadPhotosForm", () => {
   it("renders correct explanation messages", () => {
     const { getByText } = renderWithWrappersTL(<UploadPhotosForm />)
     expect(getByText("Add Files Here")).toBeTruthy()
-    expect(getByText("Files Supported: JPG, PNG")).toBeTruthy()
+    expect(getByText("Files Supported: JPG, PNG, HEIC")).toBeTruthy()
     expect(getByText("Total Maximum Size: 30MB")).toBeTruthy()
   })
 
