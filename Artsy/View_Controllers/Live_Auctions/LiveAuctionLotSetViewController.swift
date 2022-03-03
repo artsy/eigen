@@ -259,6 +259,8 @@ class LiveAuctionLotSetViewController: UIViewController {
     }
 
     @objc func dismissModal() {
+        AREmission.sharedInstance().notificationsManagerModule.requestModalDismiss()
+        // TODO: AppShell, don't need the below code once app shell is done
         guard let presentor = splitViewController?.presentingViewController else { return }
         presentor.dismiss(animated: true, completion: nil)
     }
