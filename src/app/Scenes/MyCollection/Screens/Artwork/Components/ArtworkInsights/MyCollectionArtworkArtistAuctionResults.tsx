@@ -1,5 +1,4 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { MyCollectionArtworkArtistAuctionResults_artwork$key } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -10,6 +9,7 @@ import React from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
+import { MyCollectionArtworkArtistAuctionResults_artwork$key } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 
 interface MyCollectionArtworkArtistAuctionResultsProps {
   artwork: MyCollectionArtworkArtistAuctionResults_artwork$key
@@ -46,6 +46,7 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
 
       <FlatList
         data={auctionResults}
+        listKey="artist-auction-results"
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <>
