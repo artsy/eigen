@@ -41,7 +41,6 @@ interface State extends ConsignmentSetup {
   hasSubmittedSuccessfully?: boolean
 }
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @screenTrack({
