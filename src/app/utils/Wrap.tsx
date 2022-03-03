@@ -11,15 +11,15 @@ export const Wrap = ({ if: condition, children }: WrapProps) => {
     return <>{children}</>
   }
 
-  const wrapContentChilden = getChildrenByTypeDeep(children, Wrap.Content)
-  if (wrapContentChilden.length === 0) {
+  const wrapContentChildren = getChildrenByTypeDeep(children, Wrap.Content)
+  if (wrapContentChildren.length === 0) {
     throw new Error("Wrap.Content is required")
   }
-  if (wrapContentChilden.length > 1) {
+  if (wrapContentChildren.length > 1) {
     throw new Error("You can't have more than one Wrap.Content")
   }
 
-  const actualWrapContent = wrapContentChilden[0]
+  const actualWrapContent = wrapContentChildren[0]
   return <>{actualWrapContent}</>
 }
 
