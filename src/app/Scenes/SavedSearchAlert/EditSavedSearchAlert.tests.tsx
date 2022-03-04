@@ -1,5 +1,4 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import * as savedSearchButton from "app/Components/Artist/ArtistArtworks/SavedSearchButton"
 import { goBack, navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -13,8 +12,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { EditSavedSearchAlertQueryRenderer } from "./EditSavedSearchAlert"
 
 jest.unmock("react-relay")
-
-const emitSavedSearchRefetchEventSpy = jest.spyOn(savedSearchButton, "emitSavedSearchRefetchEvent")
 
 describe("EditSavedSearchAlert", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
@@ -71,7 +68,6 @@ describe("EditSavedSearchAlert", () => {
     })
 
     expect(goBack).toHaveBeenCalled()
-    expect(emitSavedSearchRefetchEventSpy).toHaveBeenCalled()
   })
 
   it("should navigate to artworks grid when the view artworks is pressed", async () => {

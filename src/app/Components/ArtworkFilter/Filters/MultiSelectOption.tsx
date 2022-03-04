@@ -2,10 +2,8 @@ import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
-import { FancyModalHeader, FancyModalHeaderProps } from "app/Components/FancyModal/FancyModalHeader"
 import { SearchInput } from "app/Components/SearchInput"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Check, CHECK_SIZE, Flex, Text, useSpace } from "palette"
 import React, { useState } from "react"
@@ -15,18 +13,20 @@ import styled from "styled-components/native"
 const OPTIONS_MARGIN_LEFT = 0.5
 const OPTION_PADDING = 15
 
-interface MultiSelectOptionScreenProps extends FancyModalHeaderProps {
+interface MultiSelectOptionScreenProps {
   navigation: StackNavigationProp<ParamListBase>
   filterHeaderText: string
-  onSelect: (filterData: FilterData, updatedValue: boolean) => void
   filterOptions: FilterData[]
-  isSelected?: (item: FilterData) => boolean
-  isDisabled?: (item: FilterData) => boolean
   /** Utilize a search input to further filter results */
   searchable?: boolean
   noResultsLabel?: string
   footerComponent?: React.ComponentType<any> | React.ReactElement | null
   useScrollView?: boolean
+  rightButtonText?: string
+  isSelected?: (item: FilterData) => boolean
+  isDisabled?: (item: FilterData) => boolean
+  onSelect: (filterData: FilterData, updatedValue: boolean) => void
+  onRightButtonPress?: () => void
 }
 
 export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
@@ -36,16 +36,15 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   navigation,
   isSelected,
   isDisabled,
-  children,
   searchable,
   noResultsLabel = "No results",
   footerComponent,
   useScrollView = false,
-  ...rest
+  onRightButtonPress,
+  rightButtonText,
 }) => {
   const space = useSpace()
   const { width } = useScreenDimensions()
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const [query, setQuery] = useState("")
   const optionTextMaxWidth = width - OPTION_PADDING * 3 - space(OPTIONS_MARGIN_LEFT) - CHECK_SIZE
 
@@ -108,18 +107,12 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
 
   return (
     <Flex flexGrow={1}>
-      {isEnabledImprovedAlertsFlow ? (
-        <ArtworkFilterBackHeader
-          title={filterHeaderText}
-          onLeftButtonPress={handleBackNavigation}
-          onRightButtonPress={rest.onRightButtonPress}
-          rightButtonText={rest.rightButtonText}
-        />
-      ) : (
-        <FancyModalHeader onLeftButtonPress={handleBackNavigation} {...rest}>
-          {filterHeaderText}
-        </FancyModalHeader>
-      )}
+      <ArtworkFilterBackHeader
+        title={filterHeaderText}
+        onLeftButtonPress={handleBackNavigation}
+        onRightButtonPress={onRightButtonPress}
+        rightButtonText={rightButtonText}
+      />
 
       {!!searchable && (
         <>

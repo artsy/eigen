@@ -4,7 +4,6 @@ import { EditSavedSearchAlert_artworksConnection } from "__generated__/EditSaved
 import { EditSavedSearchAlert_user } from "__generated__/EditSavedSearchAlert_user.graphql"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { SavedSearchAlertQueryResponse } from "__generated__/SavedSearchAlertQuery.graphql"
-import { emitSavedSearchRefetchEvent } from "app/Components/Artist/ArtistArtworks/SavedSearchButton"
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -41,7 +40,6 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     goBack({
       previousScreen: "EditSavedSearchAlert",
     })
-    emitSavedSearchRefetchEvent()
   }
 
   const refetch = useCallback(
