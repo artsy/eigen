@@ -3,7 +3,7 @@ import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyColl
 import { MyCollectionArtworkDemandIndex_marketPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { TriangleDown } from "app/Icons/TriangleDown"
-import { Flex, Spacer, Text } from "palette"
+import { ArrowUpCircleIcon, Flex, Spacer, Text } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
@@ -68,8 +68,10 @@ const DemandRankDetails: React.FC<{ demandRank: number }> = ({ demandRank }) => 
 
   return (
     <Flex>
-      <Text textAlign="center">{title}</Text>
-
+      <Flex mx="auto" flexDirection="row" alignItems="center">
+        <DemandRankIcon demandRank={demandRank} />
+        <Text textAlign="center">{title}</Text>
+      </Flex>
       <Text variant="xs" color="black60" textAlign="center">
         {details}
       </Text>
@@ -144,6 +146,18 @@ const marketPriceInsightsFragment = graphql`
     demandRank
   }
 `
+
+const DemandRankIcon: React.FC<{ demandRank: number }> = ({ demandRank }) => {
+  if (demandRank >= 9) {
+    return (
+      <Flex style={{ marginRight: 3 }}>
+        <ArrowUpCircleIcon height={14} width={14} />
+      </Flex>
+    )
+  }
+
+  return null
+}
 
 const getDemandRankTitle = (demandRank: number) => {
   switch (true) {
