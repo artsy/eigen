@@ -53,7 +53,6 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
               maxWidth={540}
               onPress={() => {
                 trackEvent(submitAnotherArtworkEvent(submissionId, userEmail, userID))
-                GlobalStore.actions.artworkSubmission.submission.resetSessionStateAll()
                 navigation.replace("SubmitArtworkScreen")
               }}
             >
