@@ -151,7 +151,7 @@ export const LocationPredictions = ({
             <Flex key={index} mb={1} onTouchStart={() => onLocationSelect(item)}>
               <Flex flexDirection="row" alignItems="center">
                 <LocationIcon mr={1} />
-                <Text>{highlightedQuery(item.name)}123</Text>
+                <Text>{highlightedQuery(item.name)}</Text>
               </Flex>
             </Flex>
           )
