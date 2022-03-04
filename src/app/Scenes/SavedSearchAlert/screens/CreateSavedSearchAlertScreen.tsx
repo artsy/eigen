@@ -4,7 +4,7 @@ import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilter
 import { getSearchCriteriaFromFilters } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { Box } from "palette"
 import React from "react"
-import { CreateSavedSearchAlertContentQueryRenderer } from "../containers/CreateSavedSearchContentContainerV2"
+import { CreateSavedSearchAlertContentQueryRenderer } from "../containers/CreateSavedSearchContentContainer"
 import { CreateSavedSearchAlertNavigationStack } from "../SavedSearchAlertModel"
 import { SavedSearchStoreProvider } from "../SavedSearchStore"
 
