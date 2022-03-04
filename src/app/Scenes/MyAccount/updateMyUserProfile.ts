@@ -5,7 +5,7 @@ import {
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
-export const updateMyUserProfile = async (input: UpdateMyProfileInput) => {
+export const updateMyUserProfile = async (input: UpdateMyProfileInput = {}) => {
   await new Promise((resolve, reject) =>
     commitMutation<updateMyUserProfileMutation>(defaultEnvironment, {
       onCompleted: resolve,
@@ -40,7 +40,7 @@ export const updateMyUserProfile = async (input: UpdateMyProfileInput) => {
           }
         }
       `,
-      variables: { input: input ?? {} },
+      variables: { input },
       onError: (e) => {
         // try to get a user-facing error message
         try {

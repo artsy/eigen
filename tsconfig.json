@@ -17,7 +17,6 @@
         "name": "typescript-styled-plugin"
       }
     ],
-    "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
     "pretty": true,
     "resolveJsonModule": true,

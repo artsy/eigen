@@ -250,7 +250,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
           useRightCloseButton: true,
         })
       : addRoute("/orders/:orderID", "Checkout"),
-    __DEV__ && addRoute("/storybook", "Storybook"),
+    // __DEV__ && addRoute("/storybook", "Storybook"),
 
     // Every other route needs to go above
     addRoute("/:slug", "VanityURLEntity"),
