@@ -203,6 +203,11 @@ export const features = defineFeatures({
     description: "Enable My Collection Price Estimate Range",
     showInAdminMenu: true,
   },
+  AREnableNewOpaqueImageView: {
+    readyForRelease: false,
+    description: "Enable New Opaque Image View",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
