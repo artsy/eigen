@@ -2,8 +2,9 @@ import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/c
 import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
 import { MyCollectionArtworkDemandIndex_marketPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
+import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { TriangleDown } from "app/Icons/TriangleDown"
-import { ArrowUpCircleIcon, Flex, Spacer, Text } from "palette"
+import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
@@ -150,8 +151,8 @@ const marketPriceInsightsFragment = graphql`
 const DemandRankIcon: React.FC<{ demandRank: number }> = ({ demandRank }) => {
   if (demandRank >= 9) {
     return (
-      <Flex style={{ marginRight: 3 }}>
-        <ArrowUpCircleIcon height={14} width={14} />
+      <Flex style={{ marginRight: 2, marginTop: 1 }}>
+        <HighDemandIcon />
       </Flex>
     )
   }
