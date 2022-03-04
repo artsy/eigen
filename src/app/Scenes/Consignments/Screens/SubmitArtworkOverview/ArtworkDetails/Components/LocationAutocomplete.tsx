@@ -112,7 +112,6 @@ export const LocationPredictions = ({
   }
 
   const onLocationSelect = async (item: SimpleLocation) => {
-    console.log("whoop onLocationSelect")
     const { city, state, country } = await getLocationDetails(item)
     onSelect({
       city: city || "",
