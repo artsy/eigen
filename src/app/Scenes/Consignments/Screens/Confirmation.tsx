@@ -1,6 +1,6 @@
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import Spinner from "app/Components/Spinner"
-import { dismissModal, navigate } from "app/navigation/navigate"
+import { navigate, popToRoot } from "app/navigation/navigate"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack } from "app/utils/track"
 import { Box, Button, ClassTheme, Flex, Sans, Spacer } from "palette"
@@ -70,11 +70,11 @@ export default class Confirmation extends React.Component<Props, State> {
   handleDismiss = () => {
     if (this.state.submissionState === SubmissionTypes.Submitting) {
       Alert.alert("Leave this screen?", "Your consignment submission is still in progress", [
-        { text: "Leave Now", onPress: () => dismissModal() },
+        { text: "Leave Now", onPress: () => popToRoot() },
         { text: "Wait", style: "default" },
       ])
     } else {
-      dismissModal()
+      popToRoot()
     }
     return true
   }
@@ -91,12 +91,12 @@ export default class Confirmation extends React.Component<Props, State> {
       this.setState({ submissionState })
     }
   }
-
-  exitModal = () => dismissModal()
-  exitModalAndGoHome = () => {
-    dismissModal()
+  exit = () => popToRoot()
+  exitAndGoHome = () => {
+    popToRoot()
     navigate("/")
   }
+
   restart = () => this.props.navigator.popToTop()
 
   progressContent = () => (
@@ -125,11 +125,11 @@ export default class Confirmation extends React.Component<Props, State> {
             </Sans>
             <Spacer mb={3} />
             <Flex alignItems="stretch" flexDirection="column" width="100%">
-              <Button block width={100} onPress={this.exitModal}>
+              <Button block width={100} onPress={this.exit}>
                 Done
               </Button>
               <Spacer mb={2} />
-              <Button block width={100} onPress={this.exitModalAndGoHome} variant="outline">
+              <Button block width={100} onPress={this.exitAndGoHome} variant="outline">
                 Browse new works for sale
               </Button>
             </Flex>
@@ -159,7 +159,7 @@ export default class Confirmation extends React.Component<Props, State> {
             </Flex>
             <Spacer mb={2} />
             <Flex flexDirection="row" justifyContent="center">
-              <Button variant="outline" block width={100} onPress={this.exitModal}>
+              <Button variant="outline" block width={100} onPress={this.exit}>
                 Quit
               </Button>
             </Flex>

@@ -227,7 +227,21 @@ class PageWrapper extends React.Component<PageWrapperProps> {
 
   constructor(props: PageWrapperProps) {
     super(props)
-    this.pageProps = {
+    this.pageProps = this.savePageProps()
+  }
+
+  componentDidUpdate() {
+    if (this.props.moduleName === "Map") {
+      // workaround for City Guide. DO NOT USE FOR OTHER THINGS!
+      // basically, only for the city guide component, we recreate the pageprops fresh.
+      // thats because of the funky way the native and RN components in city guide are set up.
+      // if we dont refresh them, then the city guide does not change cities from the dropdown.
+      this.pageProps = this.savePageProps()
+    }
+  }
+
+  savePageProps() {
+    return {
       ...this.props,
       viewProps: {
         ...this.props.viewProps,

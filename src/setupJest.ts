@@ -279,6 +279,7 @@ jest.mock("app/navigation/navigate", () => ({
   navigate: jest.fn(),
   goBack: jest.fn(),
   dismissModal: jest.fn(),
+  popToRoot: jest.fn(),
   navigateToEntity: jest.fn(),
   navigateToPartner: jest.fn(),
   switchTab: jest.fn(),

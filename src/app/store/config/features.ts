@@ -147,12 +147,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   ARShowLinkedAccounts: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Show linked social accounts",
     showInAdminMenu: true,
   },
   ARAllowLinkSocialAccountsOnSignUp: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
   },
@@ -162,7 +162,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableCollectorProfile: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable collector profile",
     showInAdminMenu: true,
   },

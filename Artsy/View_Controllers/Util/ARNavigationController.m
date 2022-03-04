@@ -14,7 +14,6 @@
 #import "ARNavigationController.h"
 #import "ARMenuAwareViewController.h"
 #import "ARScrollNavigationChief.h"
-#import "AREigenMapContainerViewController.h"
 #import "ARBackButton.h"
 
 #import "ARMacros.h"

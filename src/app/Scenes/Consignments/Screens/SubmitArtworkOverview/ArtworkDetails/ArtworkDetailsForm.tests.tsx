@@ -1,12 +1,10 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import React from "react"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { mockFormValues } from "./utils/testUtils"
 
-jest.unmock("react-relay")
 jest.mock("formik")
 
 const useFormikContextMock = useFormikContext as jest.Mock
@@ -20,11 +18,6 @@ describe("ArtworkDetailsForm", () => {
       errors: {},
       values: mockFormValues,
     }))
-  })
-
-  afterEach(async () => {
-    jest.clearAllMocks()
-    await flushPromiseQueue()
   })
 
   it("correctly displays formik values in form", () => {
