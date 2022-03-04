@@ -77,15 +77,18 @@ export const ContactInformation: React.FC<{
             value={values.userName}
             onBlur={handleBlur("userName")}
             error={touched.userName ? errors.userName : undefined}
+            accessibilityLabel="Name"
           />
           <Spacer mt={4} />
           <Input
             title="Email"
             placeholder="Your Email Address"
+            keyboardType="email-address"
             onChangeText={handleChange("userEmail")}
             value={values.userEmail}
             onBlur={handleBlur("userEmail")}
             error={touched.userEmail ? errors.userEmail : undefined}
+            accessibilityLabel="Email address"
           />
           <Spacer mt={4} />
           <PhoneInput
@@ -98,6 +101,7 @@ export const ContactInformation: React.FC<{
               // do nothing
             }}
             onBlur={handleBlur("userPhone")}
+            accessibilityLabel="Phone number"
           />
           <Spacer mt={6} />
           <CTAButton onPress={handleSubmit} disabled={!isValid}>
