@@ -26,7 +26,6 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) =
   const tracking = useTracking()
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
     tracking.trackEvent(tappedConsign(tappedConsignArgs))
-    // GlobalStore.actions.artworkSubmission.submission.resetSessionState()
     const route = "/collections/my-collection/artworks/new/submissions/new"
     navigate(route)
   }
