@@ -1,10 +1,10 @@
+import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import _ from "lodash"
 import { useColor } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { useEffect } from "react"
 import { Animated, PixelRatio, StyleSheet, View } from "react-native"
 import FastImage, { ImageStyle } from "react-native-fast-image"
-import { createGeminiUrl } from "./createGeminiUrl"
 
 interface Props {
   /** The URL from where to fetch the image. */
