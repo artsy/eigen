@@ -45,7 +45,6 @@ const TestWrapper: typeof AutosuggestSearchResult = (props) => (
 
 describe(AutosuggestSearchResult, () => {
   beforeEach(() => {
-    require("@react-native-async-storage/async-storage").__resetState()
     recentSearchesArray = []
     jest.clearAllMocks()
   })
