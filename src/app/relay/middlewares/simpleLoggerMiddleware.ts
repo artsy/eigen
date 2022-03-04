@@ -1,5 +1,5 @@
 import { addBreadcrumb } from "@sentry/react-native"
-import { loggerRelay } from "app/utils/loggers"
+import { logRelay } from "app/utils/loggers"
 import { Middleware } from "react-relay-network-modern/node8"
 
 export function simpleLoggerMiddleware(): Middleware {
@@ -11,7 +11,7 @@ export function simpleLoggerMiddleware(): Middleware {
     })
     const response = await next(req)
     const duration = ((Date.now() - startTime) / 1000).toFixed(1) + "s"
-    if (__DEV__ && loggerRelay) {
+    if (__DEV__ && logRelay) {
       console.log(
         "RELAY",
         req.operation.name,

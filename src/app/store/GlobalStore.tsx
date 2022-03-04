@@ -3,6 +3,7 @@ import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterM
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { loadDevNavigationStateCache } from "app/navigation/useReloadedDevNavigationState"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { logAction } from "app/utils/loggers"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import React from "react"
 import { Platform } from "react-native"
@@ -31,7 +32,9 @@ function createGlobalStore() {
   // At dev time but not test time, let's log out each action that is dispatched
   if (__DEV__ && !__TEST__) {
     middleware.push((_api) => (next) => (_action) => {
-      console.log(`ACTION ${_action.type}`, _action)
+      if (logAction) {
+        console.log(`ACTION ${_action.type}`, _action)
+      }
       next(_action)
     })
   }

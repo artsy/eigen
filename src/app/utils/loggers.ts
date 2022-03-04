@@ -1,5 +1,14 @@
 let metaflags = {
-  loggerRelay: false,
+  logAction: false,
+  logAnalytics: false,
+  logDatadog: false,
+  logEventTracked: false,
+  logNotification: false,
+  logOperation: false,
+  logPrefetching: false,
+  logRelay: false,
+  logRoute: false,
+  logRunningRequest: false,
 }
 if (__DEV__) {
   try {
@@ -10,4 +19,13 @@ if (__DEV__) {
   } catch {}
 }
 
-export const loggerRelay = metaflags.loggerRelay
+export const logAction = metaflags.logAction
+export const logAnalytics = metaflags.logAnalytics
+export const logDatadog = metaflags.logRunningRequest
+export const logEventTracked = metaflags.logRunningRequest
+export const logNotification = metaflags.logRunningRequest
+export const logOperation = metaflags.logRunningRequest
+export const logPrefetching = metaflags.logRunningRequest
+export const logRelay = metaflags.logRunningRequest
+export const logRoute = metaflags.logRunningRequest
+export const logRunningRequest = metaflags.logRunningRequest

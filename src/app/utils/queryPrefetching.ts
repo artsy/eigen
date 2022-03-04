@@ -13,6 +13,7 @@ import {
   Variables,
 } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { logPrefetching } from "./loggers"
 import { useTreatment } from "./useExperiments"
 
 const DEFAULT_QUERIES_PER_INTERVAL = 60
@@ -87,7 +88,9 @@ const prefetchUrl = async (environment: Environment, url: string, variables: Var
 
   const options = { ...result.params, ...variables }
 
-  console.log(`Prefetching "${url}"`)
+  if (logPrefetching) {
+    console.log(`Prefetching "${url}"`)
+  }
 
   try {
     prefetchQuery(environment, query, options)
