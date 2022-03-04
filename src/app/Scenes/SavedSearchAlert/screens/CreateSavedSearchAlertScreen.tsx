@@ -12,7 +12,7 @@ type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "CreateSave
 
 export const CreateSavedSearchAlertScreen: React.FC<Props> = (props) => {
   const { route, navigation } = props
-  const { artistId, artistName, onClosePress, onComplete } = route.params
+  const { artistId } = route.params
   const filterState = ArtworksFiltersStore.useStoreState((state) => state)
   const unitedFilters = getUnitedSelectedAndAppliedFilters(filterState)
   const attributes = getSearchCriteriaFromFilters(artistId, unitedFilters)
@@ -20,13 +20,7 @@ export const CreateSavedSearchAlertScreen: React.FC<Props> = (props) => {
   return (
     <SavedSearchStoreProvider initialData={{ attributes, aggregations: filterState.aggregations }}>
       <Box flex={1}>
-        <CreateSavedSearchAlertContentQueryRenderer
-          navigation={navigation}
-          artistId={artistId}
-          artistName={artistName}
-          onClosePress={onClosePress}
-          onComplete={onComplete}
-        />
+        <CreateSavedSearchAlertContentQueryRenderer navigation={navigation} {...route.params} />
       </Box>
     </SavedSearchStoreProvider>
   )
