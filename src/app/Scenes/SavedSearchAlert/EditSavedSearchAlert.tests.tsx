@@ -1,7 +1,6 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { goBack, navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
@@ -93,83 +92,7 @@ describe("EditSavedSearchAlert", () => {
     })
   })
 
-  it("should render email and push toggles are enabled", async () => {
-    const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
-
-    mockEnvironmentPayload(mockEnvironment, {
-      SearchCriteria: () => searchCriteria,
-    })
-    mockEnvironmentPayload(mockEnvironment, {
-      FilterArtworksConnection: () => filterArtworks,
-      Me: () => meMocked,
-    })
-
-    expect(getAllByA11yState({ selected: true })).toHaveLength(2)
-  })
-
-  it("should render email and push toggles are disabled", async () => {
-    const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
-
-    mockEnvironmentPayload(mockEnvironment, {
-      SearchCriteria: () => ({
-        ...searchCriteria,
-        userAlertSettings: {
-          ...searchCriteria.userAlertSettings,
-          email: false,
-          push: false,
-        },
-      }),
-    })
-    mockEnvironmentPayload(mockEnvironment, {
-      FilterArtworksConnection: () => filterArtworks,
-      Me: () => meMocked,
-    })
-
-    expect(getAllByA11yState({ selected: false })).toHaveLength(2)
-  })
-
-  it("should render push toggle is enabled, email toggle is disabled", async () => {
-    const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
-
-    mockEnvironmentPayload(mockEnvironment, {
-      SearchCriteria: () => ({
-        ...searchCriteria,
-        userAlertSettings: {
-          ...searchCriteria.userAlertSettings,
-          push: false,
-        },
-      }),
-    })
-    mockEnvironmentPayload(mockEnvironment, {
-      FilterArtworksConnection: () => filterArtworks,
-      Me: () => meMocked,
-    })
-
-    expect(getAllByA11yState({ selected: false })).toHaveLength(1)
-  })
-
-  it("should render email toggle is enabled, push toggle is disabled", async () => {
-    const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
-
-    mockEnvironmentPayload(mockEnvironment, {
-      SearchCriteria: () => ({
-        ...searchCriteria,
-        userAlertSettings: {
-          ...searchCriteria.userAlertSettings,
-          email: false,
-        },
-      }),
-    })
-    mockEnvironmentPayload(mockEnvironment, {
-      FilterArtworksConnection: () => filterArtworks,
-      Me: () => meMocked,
-    })
-
-    expect(getAllByA11yState({ selected: false })).toHaveLength(1)
-  })
-
   it("should pass updated criteria to update mutation when pills are removed", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
     const { getByText, getAllByText } = renderWithWrappersTL(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {
@@ -211,6 +134,83 @@ describe("EditSavedSearchAlert", () => {
           email: true,
         },
       })
+    })
+  })
+
+  describe("Notificaton toggles", () => {
+    it("email and push toggles are enabled", async () => {
+      const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        SearchCriteria: () => searchCriteria,
+      })
+      mockEnvironmentPayload(mockEnvironment, {
+        FilterArtworksConnection: () => filterArtworks,
+        Me: () => meMocked,
+      })
+
+      expect(getAllByA11yState({ selected: true })).toHaveLength(2)
+    })
+
+    it("email and push toggles are disabled", async () => {
+      const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        SearchCriteria: () => ({
+          ...searchCriteria,
+          userAlertSettings: {
+            ...searchCriteria.userAlertSettings,
+            email: false,
+            push: false,
+          },
+        }),
+      })
+      mockEnvironmentPayload(mockEnvironment, {
+        FilterArtworksConnection: () => filterArtworks,
+        Me: () => meMocked,
+      })
+
+      expect(getAllByA11yState({ selected: false })).toHaveLength(2)
+    })
+
+    it("push toggle is enabled, email toggle is disabled", async () => {
+      const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        SearchCriteria: () => ({
+          ...searchCriteria,
+          userAlertSettings: {
+            ...searchCriteria.userAlertSettings,
+            push: false,
+          },
+        }),
+      })
+      mockEnvironmentPayload(mockEnvironment, {
+        FilterArtworksConnection: () => filterArtworks,
+        Me: () => meMocked,
+      })
+
+      expect(getAllByA11yState({ selected: false })).toHaveLength(1)
+    })
+
+    it("email toggle is enabled, push toggle is disabled", async () => {
+      const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        SearchCriteria: () => ({
+          ...searchCriteria,
+          userAlertSettings: {
+            ...searchCriteria.userAlertSettings,
+            email: false,
+          },
+        }),
+      })
+      mockEnvironmentPayload(mockEnvironment, {
+        FilterArtworksConnection: () => filterArtworks,
+        Me: () => meMocked,
+      })
+
+      expect(getAllByA11yState({ selected: false })).toHaveLength(1)
     })
   })
 })
