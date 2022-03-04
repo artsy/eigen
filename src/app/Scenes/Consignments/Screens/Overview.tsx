@@ -2,8 +2,8 @@ import { Schema, screenTrack, Track, track as _track } from "app/utils/track"
 import React from "react"
 import { Alert } from "react-native"
 
-import type NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import type NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Dimensions, ScrollView, View } from "react-native"
 
 import { ActionSheetOptions, connectActionSheet } from "@expo/react-native-action-sheet"
