@@ -401,7 +401,7 @@ jest.mock("react-native-safe-area-context", () => {
   }
 })
 
-jest.mock("@react-native-community/async-storage", () => {
+jest.mock("@react-native-async-storage/async-storage", () => {
   let state: any = {}
   return {
     __resetState() {
