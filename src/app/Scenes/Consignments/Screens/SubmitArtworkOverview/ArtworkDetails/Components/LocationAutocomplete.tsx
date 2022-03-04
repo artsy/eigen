@@ -1,6 +1,6 @@
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { getLocationDetails, getLocationPredictions, SimpleLocation } from "app/utils/googleMaps"
-import { Box, Flex, Input, LocationIcon, Separator, Text, Touchable, useSpace } from "palette"
+import { Box, Flex, Input, LocationIcon, Text, Touchable, useSpace } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList, Image } from "react-native"
 import { Location } from "../validation"
@@ -112,6 +112,7 @@ export const LocationPredictions = ({
   }
 
   const onLocationSelect = async (item: SimpleLocation) => {
+    console.log("whoop onLocationSelect")
     const { city, state, country } = await getLocationDetails(item)
     onSelect({
       city: city || "",
@@ -130,7 +131,7 @@ export const LocationPredictions = ({
         listRef={flatListRef}
         style={{
           flex: 1,
-          padding: space(2),
+          padding: space(1),
           borderStyle: "solid",
           borderColor: "#707070",
           borderWidth: 1,
@@ -152,10 +153,9 @@ export const LocationPredictions = ({
               <Touchable onPress={() => onLocationSelect(item)}>
                 <Flex flexDirection="row" alignItems="center">
                   <LocationIcon mr={1} />
-                  <Text variant="xs">{highlightedQuery(item.name)}</Text>
+                  <Text>{highlightedQuery(item.name)}</Text>
                 </Flex>
               </Touchable>
-              <Separator mt={1} />
             </Flex>
           )
         }}
