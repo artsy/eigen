@@ -86,7 +86,7 @@
     "react",
     "react-native"
   ],
-  "author": "Eloy Durán",
+  "contributors": "See docs/thanks.md",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/eigen/issues"
