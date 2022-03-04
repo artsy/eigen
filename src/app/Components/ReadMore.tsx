@@ -6,6 +6,7 @@ import {
   Color,
   emdash,
   Flex,
+  LinkText,
   nbsp,
   Sans,
   SansProps,
@@ -16,7 +17,6 @@ import React, { useState } from "react"
 import { Text } from "react-native"
 import { useTracking } from "react-tracking"
 import { ResponsiveValue } from "styled-system"
-import { LinkText } from "./Text/LinkText"
 
 interface Props {
   content: string

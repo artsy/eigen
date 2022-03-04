@@ -1,14 +1,13 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 
-import { Button } from "palette"
+import { Button, LinkText } from "palette"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 import { dismissModal, navigate } from "app/navigation/navigate"
 
 import { Linking } from "react-native"
 
-import { LinkText } from "app/Components/Text/LinkText"
 import { extractText } from "app/tests/extractText"
 import { Icon20 } from "../Components/Icon"
 

@@ -10,7 +10,7 @@ describe("Colors swatch", () => {
         width={30}
         backgroundColor="black"
         foregroundColor="#fff"
-        name="darkblue"
+        name="blue"
         selected
       />
     )
@@ -22,7 +22,7 @@ describe("Colors swatch", () => {
         width={30}
         backgroundColor="black"
         foregroundColor="#fff"
-        name="darkblue"
+        name="blue"
         selected={false}
       />
     )
@@ -31,16 +31,16 @@ describe("Colors swatch", () => {
   })
 
   it("has correct background color for passed in color", () => {
-    const darkblue = renderWithWrappers(
+    const blue = renderWithWrappers(
       <ColorsSwatch
         width={30}
         backgroundColor="#435EA9"
         foregroundColor="#fff"
-        name="darkblue"
+        name="blue"
         selected
       />
     )
-    const darkBlueView = darkblue.root.findAllByType(Box)[1]
+    const darkBlueView = blue.root.findAllByType(Box)[1]
     expect(darkBlueView.props.bg).toMatch("#435EA9")
 
     const blackAndWhite = renderWithWrappers(
@@ -61,7 +61,7 @@ describe("Colors swatch", () => {
         width={30}
         backgroundColor="#F1572C"
         foregroundColor="#fff"
-        name="darkorange"
+        name="orange"
         selected={false}
       />
     )

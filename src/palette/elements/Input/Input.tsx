@@ -41,6 +41,7 @@ export const emitInputClearEvent = () => {
 export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   containerStyle?: React.ComponentProps<typeof Flex>["style"]
   description?: string
+  descriptionColor?: Color
   error?: string
   icon?: JSX.Element
   loading?: boolean
@@ -88,6 +89,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     {
       containerStyle,
       description,
+      descriptionColor,
       disabled,
       error,
       icon,
@@ -255,7 +257,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         </Flex>
 
         {!!description && (
-          <Text color="black60" variant="xs" mb={0.5}>
+          <Text color={descriptionColor ?? "black60"} variant="xs" mb={0.5}>
             {description}
           </Text>
         )}
@@ -360,7 +362,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
           </View>
         </TouchableWithoutFeedback>
         {!!error && (
-          <Text color="red100" mt={1} variant="xs">
+          <Text color="red100" mt={1} variant="xs" testID="input-error">
             {error}
           </Text>
         )}

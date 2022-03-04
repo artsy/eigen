@@ -1561,6 +1561,14 @@ type Artwork implements Node & Searchable & Sellable {
   # Returns the display label and detail when artwork has a certificate of authenticity
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
+
+  # Comparable auction results
+  comparableAuctionResults(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): AuctionResultConnection
   conditionDescription: ArtworkInfoRow
   consignmentSubmission: ArtworkConsignmentSubmission
   contactLabel: String
@@ -8894,6 +8902,15 @@ type Me implements Node {
     last: Int
   ): ArtworkInquiryConnection
 
+  # A connection of artwork recommendations for the current user.
+  artworkRecommendations(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+  ): ArtworkConnection
+
   # A list of the auction results by followed artists
   auctionResultsByFollowedArtists(
     after: String
@@ -11846,6 +11863,9 @@ type Sale implements Node {
   # Auction's buyer's premium policy.
   buyersPremium: [BuyersPremium]
   cached: Int
+
+  # Amount of seconds in between each lot closing.
+  cascadingEndTimeInterval: Int
   collectPayments: Boolean!
   coverImage: Image
   currency: String
@@ -11982,6 +12002,14 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
   currency: String
   currentBid: SaleArtworkCurrentBid
   cursor: String
+  endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   estimate: String
 
   # Singular estimate field, if specified
@@ -12285,6 +12313,7 @@ enum SaleSorts {
   ELIGIBLE_SALE_ARTWORKS_COUNT_DESC
   END_AT_ASC
   END_AT_DESC
+  LICENSED_TIMELY_AT_NAME_DESC
   NAME_ASC
   NAME_DESC
   START_AT_ASC

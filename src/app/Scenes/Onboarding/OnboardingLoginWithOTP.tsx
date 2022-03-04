@@ -70,6 +70,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
             ref={otpInputRef}
             autoCapitalize="none"
             autoCorrect={false}
+            autoFocus
             keyboardType="numeric"
             onChangeText={(text) => {
               // Hide error when the user starts to type again

@@ -28,7 +28,6 @@
 #import <Emission/ARTemporaryAPIModule.h>
 #import <Emission/AREventsModule.h>
 #import <Emission/ARTakeCameraPhotoModule.h>
-#import "AREigenMapContainerViewController.h"
 #import <SDWebImage/SDImageCache.h>
 
 #import <React/RCTUtils.h>

@@ -185,8 +185,8 @@ describe("convertColorsToFilterParam", () => {
       colors: [
         {
           count: 11359,
-          name: "gold",
-          value: "gold",
+          name: "yellow",
+          value: "yellow",
         },
         {
           count: 406,
@@ -196,13 +196,13 @@ describe("convertColorsToFilterParam", () => {
       ],
     }
     const criteria: SearchCriteriaAttributes = {
-      colors: ["gold", "red"],
+      colors: ["yellow", "red"],
       additionalGeneIDs: ["prints"],
     }
 
     expect(convertColorsToFilterParam(criteria, aggregation)).toEqual({
-      displayText: "Gold, Red",
-      paramValue: ["gold", "red"],
+      displayText: "Yellow, Red",
+      paramValue: ["yellow", "red"],
       paramName: FilterParamName.colors,
     })
   })
@@ -212,8 +212,8 @@ describe("convertColorsToFilterParam", () => {
       colors: [
         {
           count: 13,
-          name: "violet",
-          value: "violet",
+          name: "purple",
+          value: "purple",
         },
         {
           count: 83,
@@ -223,12 +223,12 @@ describe("convertColorsToFilterParam", () => {
       ],
     }
     const criteria: SearchCriteriaAttributes = {
-      colors: ["pink", "violet", "deep-purple"],
+      colors: ["pink", "purple", "deep-purple"],
     }
 
     expect(convertColorsToFilterParam(criteria, aggregation)).toEqual({
-      displayText: "Pink, Violet",
-      paramValue: ["pink", "violet"],
+      displayText: "Pink, Purple",
+      paramValue: ["pink", "purple"],
       paramName: FilterParamName.colors,
     })
   })
@@ -470,13 +470,13 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
         counts: [
           {
             count: 11359,
-            name: "gold",
-            value: "gold",
+            name: "yellow",
+            value: "yellow",
           },
           {
             count: 7211,
-            name: "lightblue",
-            value: "lightblue",
+            name: "blue",
+            value: "blue",
           },
           {
             count: 406,
@@ -491,7 +491,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       additionalGeneIDs: ["prints"],
       atAuction: true,
       attributionClass: ["unknown edition", "open edition"],
-      colors: ["gold", "red"],
+      colors: ["yellow", "red"],
       sizes: ["MEDIUM"],
       inquireableOnly: null,
       locationCities: ["New York, NY, USA"],
@@ -514,8 +514,8 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       paramName: FilterParamName.sizes,
     })
     expect(result).toContainEqual({
-      displayText: "Gold, Red",
-      paramValue: ["gold", "red"],
+      displayText: "Yellow, Red",
+      paramValue: ["yellow", "red"],
       paramName: FilterParamName.colors,
     })
     expect(result).toContainEqual({

@@ -1,7 +1,6 @@
-import { LinkText } from "app/Components/Text/LinkText"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { navigate } from "app/navigation/navigate"
-import { Box, Button, Flex, Join, Sans, Separator, Spacer } from "palette"
+import { Box, Button, Flex, Join, LinkText, Sans, Separator, Spacer } from "palette"
 import React from "react"
 import { View } from "react-native"
 
