@@ -604,7 +604,7 @@ PODS:
     - React-Core
   - RNBootSplash (3.2.0):
     - React-Core
-  - RNCAsyncStorage (1.12.1):
+  - RNCAsyncStorage (1.15.17):
     - React-Core
   - RNCClipboard (1.5.1):
     - React-Core
@@ -793,7 +793,7 @@ DEPENDENCIES:
   - "RNAnalyticsIntegration-Appboy (from `node_modules/@segment/analytics-react-native-appboy`)"
   - "RNAppleAuthentication (from `node_modules/@invertase/react-native-apple-authentication`)"
   - RNBootSplash (from `node_modules/react-native-bootsplash`)
-  - "RNCAsyncStorage (from `node_modules/@react-native-community/async-storage`)"
+  - "RNCAsyncStorage (from `node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `node_modules/@react-native-community/masked-view`)"
   - RNDeviceInfo (from `node_modules/react-native-device-info`)
@@ -1017,7 +1017,7 @@ EXTERNAL SOURCES:
   RNBootSplash:
     :path: node_modules/react-native-bootsplash
   RNCAsyncStorage:
-    :path: "node_modules/@react-native-community/async-storage"
+    :path: "node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
     :path: "node_modules/@react-native-community/clipboard"
   RNCMaskedView:
@@ -1194,7 +1194,7 @@ SPEC CHECKSUMS:
   RNAnalyticsIntegration-Appboy: 6940f54ff28e6be80f1e3b78c996b1f0945b4113
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
-  RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
+  RNCAsyncStorage: 6bd5a7ba3dde1c3facba418aa273f449bdc5437a
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDeviceInfo: 3266783bcb6aa4b0c785d6080a407f8a5fc68326
