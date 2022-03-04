@@ -4,7 +4,6 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
@@ -22,8 +21,8 @@ const spyAlert = jest.spyOn(Alert, "alert")
 describe("Saved search alert form", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
+
   beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: false })
     spyAlert.mockClear()
     mockEnvironment.mockClear()
     notificationPermissions.mockImplementationOnce((cb) =>
@@ -39,6 +38,20 @@ describe("Saved search alert form", () => {
     )
   }
 
+  const withoutDuplicateAlert = async () => {
+    await waitFor(() => {
+      const mutation = mockEnvironment.mock.getMostRecentOperation()
+      expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+    })
+
+    // No duplicate alert
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        savedSearch: null,
+      }),
+    })
+  }
+
   it("renders without throwing an error", () => {
     renderWithWrappersTL(<TestRenderer />)
   })
@@ -51,30 +64,15 @@ describe("Saved search alert form", () => {
     )
   })
 
-  it("correctly extracts the values of pills", () => {
-    const { getAllByTestId } = renderWithWrappersTL(<TestRenderer />)
+  it("correctly extracts pills", () => {
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
-    expect(getAllByTestId("alert-pill").map(extractText)).toEqual([
-      "Limited Edition",
-      "Tate Ward Auctions",
-      "New York, NY, USA",
-      "Photography",
-      "Prints",
-    ])
-  })
-
-  it("should display the artist name as a pill if AREnableImprovedAlertsFlow is enabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-    const { getAllByTestId } = renderWithWrappersTL(<TestRenderer />)
-
-    expect(getAllByTestId("alert-pill").map(extractText)).toEqual([
-      "artistName",
-      "Limited Edition",
-      "Tate Ward Auctions",
-      "New York, NY, USA",
-      "Photography",
-      "Prints",
-    ])
+    expect(getByText("artistName")).toBeTruthy()
+    expect(getByText("Limited Edition")).toBeTruthy()
+    expect(getByText("Tate Ward Auctions")).toBeTruthy()
+    expect(getByText("New York, NY, USA")).toBeTruthy()
+    expect(getByText("Photography")).toBeTruthy()
+    expect(getByText("Prints")).toBeTruthy()
   })
 
   it(`should render "Delete Alert" button when the savedSearchAlertId is passed`, () => {
@@ -99,6 +97,7 @@ describe("Saved search alert form", () => {
       expect(mutation.request.node.operation.name).toBe("updateSavedSearchAlertMutation")
       expect(mutation.request.variables).toEqual({
         input: {
+          attributes,
           searchCriteriaID: "savedSearchAlertId",
           userAlertSettings: {
             name: "something new",
@@ -137,6 +136,7 @@ describe("Saved search alert form", () => {
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
     fireEvent.press(getByTestId("save-alert-button"))
 
+    await withoutDuplicateAlert()
     await waitFor(() => {
       const mutation = mockEnvironment.mock.getMostRecentOperation()
 
@@ -212,9 +212,11 @@ describe("Saved search alert form", () => {
 
     fireEvent.press(getByTestId("save-alert-button"))
 
+    await withoutDuplicateAlert()
     await waitFor(() => {
       expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
         input: {
+          attributes,
           userAlertSettings: {
             name: "artistName • 5 filters",
           },
@@ -264,18 +266,19 @@ describe("Saved search alert form", () => {
       })
     })
 
-    it("the notification toggles should be displayed", async () => {
+    it("toggles should be displayed", async () => {
       const { queryByText } = renderWithWrappersTL(<TestRenderer />)
 
       expect(queryByText("Email Alerts")).toBeTruthy()
       expect(queryByText("Mobile Alerts")).toBeTruthy()
     })
 
-    it("the notification settings should be passed in mutation", async () => {
+    it("state of toggles should be passed in mutation", async () => {
       const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
       fireEvent.press(getByTestId("save-alert-button"))
 
+      await withoutDuplicateAlert()
       await waitFor(() => {
         const mutation = mockEnvironment.mock.getMostRecentOperation()
         expect(mutation.request.variables).toEqual({
@@ -291,12 +294,13 @@ describe("Saved search alert form", () => {
       })
     })
 
-    it("the email notification setting should be passed in mutation", async () => {
+    it("state of email toggle should be passed to mutation", async () => {
       const { getByTestId, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
 
       fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
       fireEvent.press(getByTestId("save-alert-button"))
 
+      await withoutDuplicateAlert()
       await waitFor(() => {
         const mutation = mockEnvironment.mock.getMostRecentOperation()
         expect(mutation.request.variables).toEqual({
@@ -312,12 +316,13 @@ describe("Saved search alert form", () => {
       })
     })
 
-    it("the push notification setting should be passed in mutation", async () => {
+    it("state of push toggle should be passed to mutation", async () => {
       const { getByTestId, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
 
       fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", false)
       fireEvent.press(getByTestId("save-alert-button"))
 
+      await withoutDuplicateAlert()
       await waitFor(() => {
         const mutation = mockEnvironment.mock.getMostRecentOperation()
         expect(mutation.request.variables).toEqual({
@@ -333,7 +338,7 @@ describe("Saved search alert form", () => {
       })
     })
 
-    it("the push notification toggle keeps in the same state when push permissions are denied", async () => {
+    it("push toggle keeps in the same state when push permissions are denied", async () => {
       notificationPermissions.mockReset()
       notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Denied))
 
@@ -347,7 +352,7 @@ describe("Saved search alert form", () => {
       expect(queryAllByA11yState({ selected: true })).toHaveLength(0)
     })
 
-    it("the push notification toggle keeps in the same state when push permissions are not not determined", async () => {
+    it("push toggle keeps in the same state when push permissions are not not determined", async () => {
       notificationPermissions.mockReset()
       notificationPermissions.mockImplementation((cb) =>
         cb(null, PushAuthorizationStatus.NotDetermined)
@@ -363,7 +368,7 @@ describe("Saved search alert form", () => {
       expect(queryAllByA11yState({ selected: true })).toHaveLength(0)
     })
 
-    it("the push notification toggle turns on when push permissions are enabled", async () => {
+    it("push toggle turns on when push permissions are enabled", async () => {
       const { getByA11yLabel, queryAllByA11yState } = renderWithWrappersTL(
         <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
       )
@@ -564,7 +569,6 @@ describe("Saved search alert form", () => {
     })
 
     it("should be enabled if filters are changed in edit mode", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
       const { getByText, getAllByText } = renderWithWrappersTL(
         <TestRenderer savedSearchAlertId="savedSearchAlertId" />
       )
@@ -576,8 +580,7 @@ describe("Saved search alert form", () => {
   })
 
   describe("Create Alert Form", () => {
-    it("should have removable filter pills when in create mode and AREnableImprovedAlertsFlow enabled", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+    it("should have removable filter pills when in create mode", () => {
       const { getByText } = renderWithWrappersTL(<TestRenderer />)
       // artist pill should appear and not be removable
       expect(getByText("artistName")).toBeTruthy()
@@ -589,23 +592,9 @@ describe("Saved search alert form", () => {
       waitForElementToBeRemoved(() => getByText("Prints"))
       waitForElementToBeRemoved(() => getByText("Photography"))
     })
-
-    it("should not have removable filter pills when in create mode and AREnableImprovedAlertsFlow disabled", async () => {
-      const { getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
-
-      // artist pill should appear and not be removable
-      expect(queryByText("artistName")).toBeNull()
-
-      expect(getByText("Prints")).not.toHaveProp("onPress")
-      expect(getByText("Photography")).not.toHaveProp("onPress")
-    })
   })
 
-  describe("Сhecking for a duplicate alert", () => {
-    beforeEach(() => {
-      mockEnvironment.mockClear()
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-    })
+  describe("Checking for a duplicate alert", () => {
     describe("Create flow", () => {
       it("should call create mutation without a warning message", async () => {
         const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
