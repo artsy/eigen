@@ -1,5 +1,5 @@
 // keep this import of storybook first, otherwise it might produce errors when debugging
-import { StorybookUIRoot } from "../storybook/storybook-ui"
+// import { StorybookUIRoot } from "../storybook/storybook-ui"
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "app/types/SafeAreaInsets"
@@ -300,6 +300,7 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
+  // Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
   Admin: nativeModule({ alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
@@ -429,7 +430,6 @@ export const modules = defineModules({
     {},
     LotsByArtistsYouFollowScreenQuery
   ),
-  Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
 })

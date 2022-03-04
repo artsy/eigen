@@ -51,7 +51,7 @@
     "start-packager-after-relay": "yarn relay && yarn start-packager",
     "start-servers": "concurrently --kill-others 'yarn start-packager-after-relay' 'yarn relay --watch'",
     "prestart": "./scripts/set-storybook-environment.js",
-    "start": "yarn start-servers",
+    "start": "STORYBOOK=0 yarn start-servers",
     "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema v2 ../eigen/data/",
