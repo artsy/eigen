@@ -87,10 +87,11 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
           p.errorMessage = ""
         })
       }
-      setFieldValue("photos", filteredPhotos)
+
       GlobalStore.actions.artworkSubmission.submission.setPhotos({
-        photos: [...filteredPhotos],
+        photos: filteredPhotos,
       })
+      setFieldValue("photos", filteredPhotos)
     } catch (error) {
       photo.error = true
       photo.errorMessage = "Photo could not be deleted"
