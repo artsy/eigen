@@ -29,6 +29,8 @@ export const updateMyUserProfile = async (input: UpdateMyProfileInput = {}) => {
                 state
                 country
               }
+              lengthUnitPreference
+              currencyPreference
               receiveLotOpeningSoonNotification
               receiveNewSalesNotification
               receiveNewWorksNotification

@@ -43,8 +43,6 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
     } else {
       console.warn("Currency not supported")
     }
-
-    // TODO: update currency in gravity
   }),
   setMetric: action((state, metric) => {
     if (metrics.includes(metric)) {
@@ -52,8 +50,6 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
     } else {
       console.warn("Metric/Dimension Unit not supported")
     }
-
-    // TODO: update unit in gravity
   }),
   setArtworkViewOption: action((state, viewOption) => {
     state.artworkViewOption = viewOption
