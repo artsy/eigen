@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 689ceceba0573add1e7bd9a6a495ff23 */
+/* @relayHash ab8a19ae97df03e242e4d25fb8e343d3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -69,6 +69,15 @@ fragment MyCollectionArtworkGridItem_artwork on Artwork {
   internalID
   artist {
     internalID
+    targetSupply {
+      isTargetSupply
+    }
+    id
+  }
+  artists {
+    targetSupply {
+      isTargetSupply
+    }
     id
   }
   images {
@@ -99,6 +108,15 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   artist {
     internalID
     name
+    targetSupply {
+      isTargetSupply
+    }
+    id
+  }
+  artists {
+    targetSupply {
+      isTargetSupply
+    }
     id
   }
   pricePaid {
@@ -232,6 +250,24 @@ v4 = {
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "ArtistTargetSupply",
+  "kind": "LinkedField",
+  "name": "targetSupply",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "isTargetSupply",
+      "storageKey": null
+    }
+  ],
   "storageKey": null
 };
 return {
@@ -406,7 +442,8 @@ return {
                         "selections": [
                           (v4/*: any*/),
                           (v3/*: any*/),
-                          (v1/*: any*/)
+                          (v1/*: any*/),
+                          (v5/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -479,6 +516,19 @@ return {
                         "args": null,
                         "kind": "ScalarField",
                         "name": "artistNames",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artists",
+                        "plural": true,
+                        "selections": [
+                          (v5/*: any*/),
+                          (v1/*: any*/)
+                        ],
                         "storageKey": null
                       },
                       {
@@ -576,7 +626,7 @@ return {
     ]
   },
   "params": {
-    "id": "689ceceba0573add1e7bd9a6a495ff23",
+    "id": "ab8a19ae97df03e242e4d25fb8e343d3",
     "metadata": {},
     "name": "MyCollectionPaginationQuery",
     "operationKind": "query",
