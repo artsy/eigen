@@ -136,10 +136,17 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
       for (let row = 0; row < artworks.length; row++) {
         const artwork = artworks[row]
         const itemIndex = row * this.state.sectionCount + column
+
+        const aspectRatio = artwork.image?.aspectRatio ?? 1
+        const imgWidth = this.state.sectionDimension
+        const imgHeight = imgWidth / aspectRatio
+
         artworkComponents.push(
           <Artwork
             artwork={artwork}
             key={artwork.id + column + row}
+            height={imgHeight}
+            width={imgWidth}
             trackingFlow={trackingFlow}
             contextModule={contextModule}
             itemIndex={itemIndex}

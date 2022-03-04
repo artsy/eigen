@@ -3,15 +3,25 @@ import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.g
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+
 import { navigate } from "app/navigation/navigate"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
+import {
+  Box,
+  Flex,
+  OpaqueImageView as NewOpaqueImageView,
+  Sans,
+  Spacer,
+  Text,
+  TextProps,
+  Touchable,
+} from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -38,6 +48,8 @@ export interface ArtworkProps {
   hidePartner?: boolean
   /** Hide sale info */
   hideSaleInfo?: boolean
+  height?: number
+  width?: number
   /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
   /** styles for each field: allows for customization of each field */
@@ -56,6 +68,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   onPress,
   trackTap,
   itemIndex,
+  height,
+  width,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
@@ -75,6 +89,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageView")
 
   let filterParams: any
 
@@ -140,10 +155,19 @@ export const Artwork: React.FC<ArtworkProps> = ({
       <View ref={itemRef}>
         {!!artwork.image && (
           <View>
-            <OpaqueImageView
-              aspectRatio={artwork.image?.aspectRatio ?? 1}
-              imageURL={artwork.image?.url}
-            />
+            {enableNewOpaqueImageView ? (
+              <NewOpaqueImageView
+                aspectRatio={artwork.image?.aspectRatio ?? 1}
+                imageURL={artwork.image?.url}
+                height={height}
+                width={width}
+              />
+            ) : (
+              <OpaqueImageView
+                aspectRatio={artwork.image?.aspectRatio ?? 1}
+                imageURL={artwork.image?.url}
+              />
+            )}
             {Boolean(
               !hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed
             ) && (
