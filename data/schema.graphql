@@ -12002,6 +12002,14 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
   currency: String
   currentBid: SaleArtworkCurrentBid
   cursor: String
+  endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   estimate: String
 
   # Singular estimate field, if specified
@@ -12305,6 +12313,7 @@ enum SaleSorts {
   ELIGIBLE_SALE_ARTWORKS_COUNT_DESC
   END_AT_ASC
   END_AT_DESC
+  LICENSED_TIMELY_AT_NAME_DESC
   NAME_ASC
   NAME_DESC
   START_AT_ASC

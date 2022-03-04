@@ -8,6 +8,7 @@ import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
+import { MyCollectionArtworkComparableWorks } from "./Components/ArtworkInsights/MyCollectionArtworkComparableWorks"
 import { MyCollectionArtworkDemandIndex } from "./Components/ArtworkInsights/MyCollectionArtworkDemandIndex"
 import { RequestForPriceEstimate } from "./Components/ArtworkInsights/RequestForPriceEstimate"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
@@ -64,6 +65,8 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           />
         )}
 
+        <MyCollectionArtworkComparableWorks artwork={artwork} />
+
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 
         <MyCollectionWhySell artwork={artwork} />
@@ -90,6 +93,7 @@ const artworkFragment = graphql`
     ...RequestForPriceEstimate_artwork
     ...MyCollectionArtworkDemandIndex_artwork
     ...MyCollectionArtworkArtistMarket_artwork
+    ...MyCollectionArtworkComparableWorks_artwork
     ...MyCollectionArtworkArtistAuctionResults_artwork
     ...MyCollectionWhySell_artwork
   }
