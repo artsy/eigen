@@ -1,4 +1,4 @@
-import { tappedViewOffer } from "@artsy/cohesion"
+import { ActionType, OwnerType, TappedViewOffer } from "@artsy/cohesion"
 import { navigate } from "app/navigation/navigate"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
@@ -136,12 +136,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
   const { message, subMessage, backgroundColor, Icon, url, modalTitle } = ctaAttributes
 
   const navigateToConversation = (path: string, title: string) => {
-    trackEvent(
-      tappedViewOffer({
-        impulse_conversation_id: conversationID,
-        cta: message,
-      })
-    )
+    trackEvent(tracks.tappedViewOffer(conversationID, message))
     navigate(path, {
       modal: true,
       passProps: { orderID, title },
@@ -180,4 +175,13 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
       </Flex>
     </TouchableWithoutFeedback>
   )
+}
+
+const tracks = {
+  tappedViewOffer: (conversationID: string, message: string): TappedViewOffer => ({
+    action: ActionType.tappedViewOffer,
+    context_owner_type: OwnerType.conversation,
+    impulse_conversation_id: conversationID,
+    subject: message,
+  }),
 }
