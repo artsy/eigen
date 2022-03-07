@@ -10,6 +10,10 @@
 
 #import <MessageUI/MFMailComposeViewController.h>
 #import "ARDispatchManager.h"
+#import <Emission/ARMediaPreviewController.h>
+
+#import <React/RCTBridge.h>
+#import <React/RCTUIManager.h>
 
 @interface ARScreenPresenterModule () <MFMailComposeViewControllerDelegate>
 @end
@@ -86,6 +90,22 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
                 }];
         }];
 }
+
+/**
+   Preview media such as PDFs and Images
+ */
+RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag route:(nonnull NSURL *)route mimeType:(nonnull NSString *)mimeType cacheKey:(nullable NSString *)cacheKey)
+{
+    UIView *originatingView = [self.bridge.uiManager viewForReactTag:reactTag];
+    UIViewController *currentlyPresentedVC = [self.class currentlyPresentedVC];
+    ARMediaPreviewController *previewVC = [ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
+                                                          mimeType:mimeType
+                                                          cacheKey:cacheKey
+                                                hostViewController:currentlyPresentedVC
+                                                   originatingView:originatingView];
+   [previewVC presentPreview];
+}
+
 
 /**
    We want an optional body parameter but are getting errors in debug mode when not passing, to get around this instead have two

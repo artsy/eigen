@@ -81,6 +81,12 @@ interface LegacyNativeModules {
     ): void
     presentEmailComposerWithBody(body: string, subject: string, toAddress: string): void
     presentEmailComposerWithSubject(subject: string, toAddress: string): void
+    presentMediaPreviewController(
+      reactTag: number,
+      route: string,
+      mimeType: string,
+      cacheKey: string
+    ): void
   }
   ARScreenPresenterModule: {
     pushView(currentTabStackID: string, descriptor: ViewDescriptor): void
@@ -90,12 +96,6 @@ interface LegacyNativeModules {
     popStack(stackID: string): void
     popToRootOrScrollToTop(stackID: string): void
     popToRootAndScrollToTop(stackID: string): Promise<void>
-    presentMediaPreviewController(
-      reactTag: number,
-      route: string,
-      mimeType: string,
-      cacheKey: string
-    ): void
     updateShouldHideBackButton(shouldHideBackButton: boolean, currentTabStackID: string): void
   }
   ARTakeCameraPhotoModule: {
@@ -122,6 +122,9 @@ const LegacyNativeModulesAndroid = {
     },
     presentEmailComposerWithSubject: () => {
       noop("presentEmailComposer not yet supported on android")
+    },
+    presentMediaPreviewController: () => {
+      noop("presentMediaPreviewController not yet supported on android")
     },
   },
   ARTakeCameraPhotoModule: {

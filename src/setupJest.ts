@@ -203,6 +203,7 @@ function getNativeModules(): OurNativeModules {
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
+      presentMediaPreviewController: jest.fn(),
     },
     ARTakeCameraPhotoModule: {
       errorCodes: {
@@ -244,7 +245,6 @@ function getNativeModules(): OurNativeModules {
       requestPhotos: jest.fn(),
     },
     ARScreenPresenterModule: {
-      presentMediaPreviewController: jest.fn(),
       dismissModal: jest.fn(),
       pushView: jest.fn(),
       goBack: jest.fn(),

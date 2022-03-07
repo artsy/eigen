@@ -149,12 +149,6 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
       state.index -= 1
     })
   },
-  presentEmailComposer: () => {
-    console.warn("presentEmailComposer not yet supported")
-  },
-  presentMediaPreviewController: () => {
-    console.warn("presentMediaPreviewController not yet supported")
-  },
   updateShouldHideBackButton: () => {
     console.warn("updateShouldHideBackButton not yet supported")
   },

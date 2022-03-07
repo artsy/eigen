@@ -7,5 +7,18 @@ DX:
 Push Notifications:
 - on iOS these are handled via custom native modules and code on native side, we also have an extension for supporting rich push notifications, on Android we use an npm package, react-native-push-notification, and cofigure using a hook on login. Can we use the same library on iOS?
 
-ImageViews:
+
+UX:
+
+ImageViews (native on iOS, rn image view on Android):
 - on iOS we use a native component AROpaqueImageView which handles things like caching for us, on Android we just use Image from react-native, can we use react-native-fast-image on both platforms? 
+
+View In Room (iOS only):
+- we support viewing artworks on walls, this is all native iOS code that has not been ported to Android
+
+City Guide (iOS only):
+- we have a map driven feature for finding fairs, galleries and shows in supported cities, you get there through a tile in search tab, this feature is semi-deprecated so likely won't be ported to android
+
+Media Previews (iOS only):
+- in inquiries galleries can respond to messages with attachments, tapping on a message with a PDF or image attachment shows a new window with a preview,
+seems like there should be a library or this should be straightforward to do on Android as well
