@@ -59,6 +59,7 @@ describe("PhoneInput", () => {
         setValidation={() => {
           return false
         }}
+        error="This phone number is incomplete"
       />
     )
 

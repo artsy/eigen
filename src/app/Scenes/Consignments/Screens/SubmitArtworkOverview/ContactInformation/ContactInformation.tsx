@@ -91,7 +91,9 @@ export const ContactInformation: React.FC<{
             onBlur={() => setIsEmailInputFocused(false)}
             onFocus={() => setIsEmailInputFocused(true)}
             accessibilityLabel="Email address"
-            error={!isEmailInputFocused && errors.userEmail ? errors.userEmail : ""}
+            error={
+              !isEmailInputFocused && values.userEmail && errors.userEmail ? errors.userEmail : ""
+            }
           />
           <Spacer mt={4} />
           <PhoneInput
