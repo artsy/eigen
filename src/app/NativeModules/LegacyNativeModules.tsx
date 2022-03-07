@@ -71,6 +71,15 @@ interface LegacyNativeModules {
     UIApplicationOpenSettingsURLString: string
     LocalTimeZone: string
   }
+  ARTNativeScreenPresenterModule: {
+    presentAugmentedRealityVIR(
+      imgUrl: string,
+      widthInches: number,
+      heightInches: number,
+      artworkSlug: string,
+      artworkId: string
+    ): void
+  }
   ARScreenPresenterModule: {
     pushView(currentTabStackID: string, descriptor: ViewDescriptor): void
     presentModal(descriptor: ViewDescriptor): void
@@ -87,13 +96,6 @@ interface LegacyNativeModules {
     ): void
     presentEmailComposerWithBody(body: string, subject: string, toAddress: string): void
     presentEmailComposerWithSubject(subject: string, toAddress: string): void
-    presentAugmentedRealityVIR(
-      imgUrl: string,
-      widthInches: number,
-      heightInches: number,
-      artworkSlug: string,
-      artworkId: string
-    ): void
     updateShouldHideBackButton(shouldHideBackButton: boolean, currentTabStackID: string): void
   }
   ARTakeCameraPhotoModule: {
@@ -110,9 +112,12 @@ interface LegacyNativeModules {
   }
 }
 
-const LegacyNativeModulesIOS: LegacyNativeModules = AllNativeModules as any
-
 const LegacyNativeModulesAndroid = {
+  ARTNativeScreenPresenterModule: {
+    presentAugmentedRealityVIR: () => {
+      noop("View in room unsupported on android")
+    },
+  },
   ARTakeCameraPhotoModule: {
     errorCodes: {
       cameraNotAvailable: "cameraNotAvailable",
@@ -163,6 +168,7 @@ const LegacyNativeModulesAndroid = {
 
 const LegacyNativeModulesIOSNewAppShell: LegacyNativeModules = {
   ARScreenPresenterModule,
+  ARTNativeScreenPresenterModule: AllNativeModules.ARTNativeScreenPresenterModule,
   ARTakeCameraPhotoModule: AllNativeModules.ARTakeCameraPhotoModule,
   ARCocoaConstantsModule: AllNativeModules.ARCocoaConstantsModule,
   ArtsyNativeModule: AllNativeModules.ArtsyNativeModule,
@@ -175,10 +181,8 @@ const LegacyNativeModulesIOSNewAppShell: LegacyNativeModules = {
 const nativeModules = () => {
   if (Platform.OS === "android") {
     return LegacyNativeModulesAndroid
-  } else if (usingNewIOSAppShell()) {
-    return LegacyNativeModulesIOSNewAppShell
   } else {
-    return LegacyNativeModulesIOS
+    return LegacyNativeModulesIOSNewAppShell
   }
 }
 

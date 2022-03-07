@@ -199,6 +199,9 @@ type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof
 
 function getNativeModules(): OurNativeModules {
   return {
+    ARTNativeScreenPresenterModule: {
+      presentAugmentedRealityVIR: jest.fn(),
+    },
     ARTakeCameraPhotoModule: {
       errorCodes: {
         cameraNotAvailable: "cameraNotAvailable",
@@ -208,14 +211,12 @@ function getNativeModules(): OurNativeModules {
       },
       triggerCameraModal: jest.fn(),
     },
-
     ARCocoaConstantsModule: {
       UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
       AREnabled: true,
       CurrentLocale: "en_US",
       LocalTimeZone: "",
     },
-
     ARNotificationsManager: {
       nativeState: {
         userAgent: "Jest Unit Tests",
@@ -229,7 +230,6 @@ function getNativeModules(): OurNativeModules {
       didFinishBootstrapping: jest.fn(),
       reactStateUpdated: jest.fn(),
     },
-
     ARTemporaryAPIModule: {
       requestPrepromptNotificationPermissions: jest.fn(),
       requestDirectNotificationPermissions: jest.fn(),
@@ -247,7 +247,6 @@ function getNativeModules(): OurNativeModules {
       pushView: jest.fn(),
       goBack: jest.fn(),
       updateShouldHideBackButton: jest.fn(),
-      presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
       popStack: jest.fn(),

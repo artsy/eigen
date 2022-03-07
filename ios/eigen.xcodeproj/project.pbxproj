@@ -15,6 +15,7 @@
 		4BA54428740D364B54D4A17D /* libPods-eigen-eigenTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE0ED407FA44DD891F5B3246 /* libPods-eigen-eigenTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C11AFA11C74E7B66FF34011D /* libPods-eigen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB231E790C61B818E9DBE3 /* libPods-eigen.a */; };
+		CB1B8FCA27D1610B0076B9BB /* ARTNativeScreenPresenterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CB1B8FC927D1610B0076B9BB /* ARTNativeScreenPresenterModule.m */; };
 		CB61B72527B303710007922D /* StoryboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B51B27B3036F0007922D /* StoryboardConstants.swift */; };
 		CB61B72627B303710007922D /* StoryboardImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B51C27B3036F0007922D /* StoryboardImages.swift */; };
 		CB61B72727B303710007922D /* ARDispatchManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B51D27B3036F0007922D /* ARDispatchManager.m */; };
@@ -343,6 +344,8 @@
 		1A38C960279B03760031C1A2 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = eigen/fonts; sourceTree = "<group>"; };
 		236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.release.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = eigen/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CB1B8FC827D1610B0076B9BB /* ARTNativeScreenPresenterModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTNativeScreenPresenterModule.h; sourceTree = "<group>"; };
+		CB1B8FC927D1610B0076B9BB /* ARTNativeScreenPresenterModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTNativeScreenPresenterModule.m; sourceTree = "<group>"; };
 		CB61B51B27B3036F0007922D /* StoryboardConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardConstants.swift; sourceTree = "<group>"; };
 		CB61B51C27B3036F0007922D /* StoryboardImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardImages.swift; sourceTree = "<group>"; };
 		CB61B51D27B3036F0007922D /* ARDispatchManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDispatchManager.m; sourceTree = "<group>"; };
@@ -385,7 +388,7 @@
 		CB61B54327B3036F0007922D /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		CB61B54427B3036F0007922D /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
 		CB61B54527B3036F0007922D /* ARAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppDelegate.h; sourceTree = "<group>"; };
-		CB61B54627B3036F0007922D /* Eigen.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Eigen.playground; sourceTree = "<group>"; };
+		CB61B54627B3036F0007922D /* Eigen.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Eigen.playground; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		CB61B54727B3036F0007922D /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CB61B54A27B3036F0007922D /* MTLModel+Dictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MTLModel+Dictionary.m"; sourceTree = "<group>"; };
 		CB61B54B27B3036F0007922D /* MTLModel+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MTLModel+JSON.m"; sourceTree = "<group>"; };
@@ -1921,6 +1924,8 @@
 				CBB7352927C8216F001AC8C0 /* ARTLiveAuctionViewManager.h */,
 				CBB7352A27C8216F001AC8C0 /* ARTLiveAuctionViewManager.m */,
 				CBB7352C27C821C3001AC8C0 /* LiveAuctionView.swift */,
+				CB1B8FC827D1610B0076B9BB /* ARTNativeScreenPresenterModule.h */,
+				CB1B8FC927D1610B0076B9BB /* ARTNativeScreenPresenterModule.m */,
 			);
 			name = NativeModules;
 			path = eigen/NativeModules;
@@ -2477,6 +2482,7 @@
 				CB61B84F27B303730007922D /* Interstellar+Artsy.swift in Sources */,
 				CB61B82427B303720007922D /* ARSerifNavigationViewController.m in Sources */,
 				CB61B79F27B303720007922D /* ARNavigationTransition.m in Sources */,
+				CB1B8FCA27D1610B0076B9BB /* ARTNativeScreenPresenterModule.m in Sources */,
 				CB61B7B927B303720007922D /* BidderPosition.m in Sources */,
 				CB61B7D027B303720007922D /* LiveAuctionStaticDataFetcher+Stubs.swift in Sources */,
 				CB61B80127B303720007922D /* ARFeedImageLoader.m in Sources */,
@@ -2525,6 +2531,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -2554,6 +2561,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
 				INFOPLIST_FILE = eigenTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2579,6 +2587,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -2621,6 +2630,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
