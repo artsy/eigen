@@ -31,7 +31,7 @@ export const MyCollectionArtworkListItem: React.FC<{
     !!artwork.artist?.targetSupply?.isTargetSupply ??
     false
 
-  const AREnableNewMyCollectionArtwork = useFeatureFlag("AREnableNewMyCollectionArtwork")
+  const ARShowDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
 
   const fetchDemandRank = async (): Promise<number | null> => {
     if (artwork.artist?.internalID && artwork.medium) {
@@ -60,12 +60,12 @@ export const MyCollectionArtworkListItem: React.FC<{
   }
 
   useEffect(() => {
-    if (isPOneArtist && AREnableNewMyCollectionArtwork) {
+    if (isPOneArtist && ARShowDemandIndexHints) {
       fetchDemandRank()
     }
   }, [])
 
-  const showTrendingIcon = AREnableNewMyCollectionArtwork && trending
+  const showTrendingIcon = ARShowDemandIndexHints && trending
 
   return (
     <Touchable

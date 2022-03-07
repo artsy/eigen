@@ -43,7 +43,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
     !!artwork.artist?.targetSupply?.isTargetSupply ??
     false
 
-  const AREnableNewMyCollectionArtwork = useFeatureFlag("AREnableNewMyCollectionArtwork")
+  const ARShowDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
 
   const fetchDemandRank = async (): Promise<number | null> => {
     if (artist?.internalID && medium) {
@@ -72,12 +72,12 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   }
 
   useEffect(() => {
-    if (isPOneArtist && AREnableNewMyCollectionArtwork) {
+    if (isPOneArtist && ARShowDemandIndexHints) {
       fetchDemandRank()
     }
   }, [])
 
-  const showTrendingIcon = AREnableNewMyCollectionArtwork && trending
+  const showTrendingIcon = ARShowDemandIndexHints && trending
 
   return (
     <TouchElement
