@@ -4,6 +4,7 @@ import { MyCollectionArtworkDemandIndex_marketPriceInsights$key } from "__genera
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { TriangleDown } from "app/Icons/TriangleDown"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
@@ -61,6 +62,8 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 }
 
 const DemandRankDetails: React.FC<{ demandRank: number }> = ({ demandRank }) => {
+  const enableDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
+
   const title = getDemandRankTitle(demandRank)
 
   const details =
@@ -70,7 +73,7 @@ const DemandRankDetails: React.FC<{ demandRank: number }> = ({ demandRank }) => 
   return (
     <Flex>
       <Flex mx="auto" flexDirection="row" alignItems="center">
-        <DemandRankIcon demandRank={demandRank} />
+        {!!enableDemandIndexHints && <DemandRankIcon demandRank={demandRank} />}
         <Text textAlign="center">{title}</Text>
       </Flex>
       <Text variant="xs" color="black60" textAlign="center">
