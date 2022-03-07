@@ -1,5 +1,3 @@
-// @ts-ignore
-import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 import "@testing-library/jest-native/extend-expect"
 import "jest-extended"
 
@@ -102,6 +100,10 @@ jest.mock("react-native-screens/native-stack", () => ({
 import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
+// @ts-expect-error
+import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
+jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
+
 // tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
 
@@ -120,8 +122,6 @@ jest.mock("tipsi-stripe", () => ({
 
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
-
-jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
 jest.mock("react-native-share", () => ({
   open: jest.fn(),
