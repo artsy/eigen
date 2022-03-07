@@ -59,11 +59,16 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       }
     }
 
-    // let GlobalStore and Formik know about processed photos
-    GlobalStore.actions.artworkSubmission.submission.setPhotos({
-      photos: [...values.photos, ...processedPhotos],
+    const allPhotos = [...values.photos, ...processedPhotos]
+
+    // set photos for my collection, and submission flow state and Formik
+    GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+      photos: allPhotos,
     })
-    setFieldValue("photos", [...values.photos, ...processedPhotos])
+    GlobalStore.actions.artworkSubmission.submission.setPhotos({
+      photos: allPhotos,
+    })
+    setFieldValue("photos", allPhotos)
   }
 
   // show Native action sheet and get photos from user's phone
@@ -88,6 +93,10 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         })
       }
 
+      // set photos for my collection, and submission flow state and Formik
+      GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+        photos: filteredPhotos,
+      })
       GlobalStore.actions.artworkSubmission.submission.setPhotos({
         photos: filteredPhotos,
       })
