@@ -1,11 +1,10 @@
+import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Flex } from "palette"
-import React, { useRef, useState } from "react"
-import { AdminMenu } from "./AdminMenu"
+import React, { useRef } from "react"
 
 export const AdminMenuWrapper: React.FC = ({ children }) => {
   const userIsDev = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev.value)
-  const [isShowingAdminMenu, setIsShowingAdminMenu] = useState(false)
   const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
 
   if (!userIsDev) {
@@ -29,13 +28,12 @@ export const AdminMenuWrapper: React.FC = ({ children }) => {
 
         if (state.numTaps >= 5) {
           state.numTaps = 0
-          setIsShowingAdminMenu(true)
+          navigate("/admin2")
         }
         return false
       }}
     >
       {children}
-      {!!isShowingAdminMenu && <AdminMenu onClose={() => setIsShowingAdminMenu(false)} />}
     </Flex>
   )
 }
