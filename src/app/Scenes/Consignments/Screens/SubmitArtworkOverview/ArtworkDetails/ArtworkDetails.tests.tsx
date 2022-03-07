@@ -55,6 +55,24 @@ describe("ArtworkDetails", () => {
     expect(getByText("All fields are required to submit an artwork.")).toBeTruthy()
   })
 
+  it("renders numeric-pad for year and decimal-pad for dimension inputs", async () => {
+    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+    const inputs = {
+      year: getByTestId("Submission_YearInput"),
+      height: getByTestId("Submission_HeightInput"),
+      width: getByTestId("Submission_WidthInput"),
+      depth: getByTestId("Submission_DepthInput"),
+    }
+
+    await flushPromiseQueue()
+
+    expect(inputs.year.props.keyboardType).toBe("number-pad")
+    expect(inputs.height.props.keyboardType).toBe("decimal-pad")
+    expect(inputs.width.props.keyboardType).toBe("decimal-pad")
+    expect(inputs.depth.props.keyboardType).toBe("decimal-pad")
+  })
+
   describe("createOrUpdateSubmission", () => {
     it("creates new submission when no submission ID passed", async () => {
       await createOrUpdateSubmission(mockFormValues, "")
