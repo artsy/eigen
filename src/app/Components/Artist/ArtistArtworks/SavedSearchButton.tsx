@@ -105,7 +105,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   useEffect(() => {
     savedSearchEvents.addListener("refetch", refetch)
     return () => {
-      savedSearchEvents.remove()
+      savedSearchEvents.removeListener("refetch", refetch)
     }
   }, [refetch])
 

@@ -59,7 +59,7 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
   useEffect(() => {
     navigationEvents.addListener("goBack", util.onRefresh)
     return () => {
-      navigationEvents.remove()
+      navigationEvents.removeListener("goBack", util.onRefresh)
     }
   }, [])
 

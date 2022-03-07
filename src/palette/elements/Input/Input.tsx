@@ -139,7 +139,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       inputEvents.addListener("clear", localClear)
 
       return () => {
-        inputEvents.remove()
+        inputEvents.removeListener("clear", localClear)
       }
     }, [])
 
