@@ -23,6 +23,10 @@ export const ContactInformation: React.FC<{
   const [submissionError, setSubmissionError] = useState(false)
   const { trackEvent } = useTracking()
 
+  const [isEmailInputFocused, setIsEmailInputFocused] = useState(false)
+  const [isPhoneInputFocused, setIsPhoneInputFocused] = useState(false)
+  const [isValidNumber, setIsValidNumber] = useState(false)
+
   const handleFormSubmit = async (formValues: ContactInformationFormModel) => {
     try {
       const updatedSubmissionId = await updateConsignSubmission({
@@ -64,7 +68,7 @@ export const ContactInformation: React.FC<{
       validationSchema={contactInformationValidationSchema}
       validateOnMount
     >
-      {({ values, isValid, touched, errors, handleChange, handleBlur, handleSubmit }) => (
+      {({ values, isValid, errors, handleChange, handleBlur, handleSubmit }) => (
         <Flex py={1} mt={1}>
           <Text color="black60">
             We will only use these details to contact you regarding your submission.
@@ -85,11 +89,10 @@ export const ContactInformation: React.FC<{
             keyboardType="email-address"
             onChangeText={handleChange("userEmail")}
             value={values.userEmail}
-            onBlur={handleBlur("userEmail")}
+            onBlur={() => setIsEmailInputFocused(false)}
+            onFocus={() => setIsEmailInputFocused(true)}
             accessibilityLabel="Email address"
-            error={
-              touched.userEmail && errors.userEmail ? "This email address is invalid" : undefined
-            }
+            error={!isEmailInputFocused && errors.userEmail ? errors.userEmail : ""}
           />
           <Spacer mt={4} />
           <PhoneInput
@@ -98,14 +101,18 @@ export const ContactInformation: React.FC<{
             placeholder="(000) 000-0000"
             onChangeText={handleChange("userPhone")}
             value={values.userPhone}
-            setValidation={() => {
-              // do nothing
-            }}
-            onBlur={handleBlur("userPhone")}
+            onBlur={() => setIsPhoneInputFocused(false)}
+            setValidation={setIsValidNumber}
+            onFocus={() => setIsPhoneInputFocused(true)}
             accessibilityLabel="Phone number"
+            error={
+              !isPhoneInputFocused && values.userPhone && !isValidNumber && errors.userPhone
+                ? errors.userPhone
+                : ""
+            }
           />
           <Spacer mt={6} />
-          <CTAButton onPress={handleSubmit} disabled={!isValid}>
+          <CTAButton onPress={handleSubmit} disabled={!isValid || !isValidNumber}>
             Submit Artwork
           </CTAButton>
         </Flex>

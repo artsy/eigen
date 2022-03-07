@@ -9,8 +9,8 @@ export interface ContactInformationFormModel {
 
 export const contactInformationValidationSchema = Yup.object().shape({
   userName: Yup.string().required().min(2),
-  userEmail: Yup.string().required().email(),
+  userEmail: Yup.string().required("yoyoyo").email(),
   userPhone: Yup.string()
     .required()
-    .test("userPhone", "This field is required", isValidPhoneNumber),
+    .test("userPhone", "Please enter a valid phone number.", isValidPhoneNumber),
 })
