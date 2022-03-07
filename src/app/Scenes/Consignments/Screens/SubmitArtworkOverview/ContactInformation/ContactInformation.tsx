@@ -36,7 +36,7 @@ export const ContactInformation: React.FC<{
       if (updatedSubmissionId) {
         trackEvent(consignmentSubmittedEvent(updatedSubmissionId, formValues.userEmail, userID))
 
-        GlobalStore.actions.artworkSubmission.submission.resetSessionStateForSubmissionFlow()
+        GlobalStore.actions.artworkSubmission.submission.resetSessionState()
         handlePress(submissionId)
       }
     } catch (error) {
