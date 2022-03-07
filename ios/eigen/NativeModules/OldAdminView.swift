@@ -1,7 +1,7 @@
 import UIKit
 
 class OldAdminView: UIView {
-  weak var oldAdminViewController: UIViewController?
+  weak var oldAdminViewController: ARAdminSettingsViewController?
 
   override func layoutSubviews() {
       super.layoutSubviews()
@@ -20,7 +20,7 @@ class OldAdminView: UIView {
           return
       }
 
-      let vc = UIViewController()
+      let vc = ARAdminSettingsViewController(style: .grouped)!
       vc.view.backgroundColor = UIColor.purple
       parentVC.addChild(vc)
       addSubview(vc.view)

@@ -110,3 +110,6 @@
 
 // CityGuide
 #import "AREigenMapContainerViewController.h"
+
+// Admin
+#import "ARAdminSettingsViewController.h"
