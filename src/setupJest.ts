@@ -12,11 +12,87 @@ import { format } from "util"
 
 import "app/tests/renderUntil"
 
+// MARK: - General preparation
+
 Enzyme.configure({ adapter: new Adapter() })
+const originalConsoleError = console.error
+// TODO: Remove once we're no longer using JSDOM for enzyme static rendering.
+console.error = (message?: any) => {
+  if (
+    typeof message === "string" &&
+    (message.includes("is using uppercase HTML. Always use lowercase HTML tags in React.") ||
+      /Warning: React does not recognize the `\w+` prop on a DOM element\./.test(message) ||
+      /Warning: The tag <\w+> is unrecognized in this browser\./.test(message) ||
+      /Warning: Unknown event handler property `\w+`\./.test(message) ||
+      /Warning: An update to [\w\s]+ inside a test was not wrapped in act/.test(message) ||
+      /Warning: Received `\w+` for a non-boolean attribute `\w+`\./.test(message) ||
+      /Warning: [\w\s]+ has been extracted from react-native core/.test(message))
+  ) {
+    // NOOP
+  } else {
+    originalConsoleError(message)
+  }
+}
+
+// @ts-expect-error
+global.__TEST__ = true
+declare const process: any
+
+if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
+  const originalLoggers = {
+    error: console.error,
+    warn: console.warn,
+  }
+
+  function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
+    const explanation =
+      chalk.white(`Test failed due to \`console.${type}(…)\` call.\n`) +
+      chalk.gray("(Disable with ALLOW_CONSOLE_LOGS=true env variable.)\n\n")
+    if (args[0] instanceof Error) {
+      const msg = explanation + chalk.red(args[0].message)
+      const err = new Error(msg)
+      err.stack = args[0].stack!.replace(`Error: ${args[0].message}`, msg)
+      return err
+    } else if (
+      // Because we use react-dom in tests to render react-native components, a few warnings are being logged that we do
+      // not care for, so ignore these.
+      typeof args[0] === "string" &&
+      !args[0].includes("is using incorrect casing") &&
+      !args[0].includes("is unrecognized in this browser") &&
+      ![args[0].includes("React does not recognize the `testID` prop on a DOM element.")]
+    ) {
+      const err = new Error(explanation + chalk.red(format(args[0], ...args.slice(1))))
+      ;(Error as any).captureStackTrace(err, constructorOpt)
+      return err
+    }
+    return null
+  }
+
+  beforeEach((done) => {
+    mockTrackEvent.mockClear()
+    mockPostEventToProviders.mockClear()
+    const types: Array<"error" | "warn"> = ["error", "warn"]
+    types.forEach((type) => {
+      // Don't spy on loggers that have been modified by the current test.
+      if (console[type] === originalLoggers[type]) {
+        const handler = (...args: unknown[]) => {
+          const error = logToError(type, args, handler)
+          if (error) {
+            done.fail(error)
+          }
+        }
+        jest.spyOn(console, type).mockImplementation(handler)
+      }
+    })
+    done() // it is important to call this here or every test will timeout
+  })
+}
 
 // Waiting on https://github.com/thymikee/snapshot-diff/pull/17
 import diff from "snapshot-diff"
 expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
+
+// MARK: - External deps mocks
 
 jest.mock("react-native-screens/native-stack", () => ({
   createNativeStackNavigator: require("@react-navigation/stack").createStackNavigator,
@@ -36,18 +112,6 @@ import track, { useTracking } from "react-tracking"
 ;(track as jest.Mock).mockImplementation(() => (x: any) => x)
 ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent: mockTrackEvent }))
 
-jest.mock("app/utils/track/providers", () => ({
-  ...jest.requireActual("app/utils/track/providers"),
-  postEventToProviders: jest.fn(),
-}))
-
-jest.mock("app/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-  reset(this: { defaultEnvironment: any }) {
-    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
-  },
-}))
-
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
@@ -58,14 +122,6 @@ jest.mock("tipsi-stripe", () => ({
 jest.mock("react-tracking/build/dispatchTrackingEvent")
 
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
-
-jest.mock("./app/NativeModules/NotificationsManager.tsx", () => ({
-  NotificationsManager: new (require("events").EventEmitter)(),
-}))
-
-jest.mock("./app/utils/userHadMeaningfulInteraction.tsx", () => ({
-  userHadMeaningfulInteraction: jest.fn(),
-}))
 
 jest.mock("react-native-share", () => ({
   open: jest.fn(),
@@ -158,238 +214,7 @@ jest.mock("@react-native-mapbox-gl/maps", () => ({
   SymbolLayer: () => null,
 }))
 
-function mockedModule(path: string, mockModuleName: string) {
-  jest.mock(path, () => mockModuleName)
-}
-
-const originalConsoleError = console.error
-
-// TODO: Remove once we're no longer using JSDOM for enzyme static rendering.
-console.error = (message?: any) => {
-  if (
-    typeof message === "string" &&
-    (message.includes("is using uppercase HTML. Always use lowercase HTML tags in React.") ||
-      /Warning: React does not recognize the `\w+` prop on a DOM element\./.test(message) ||
-      /Warning: The tag <\w+> is unrecognized in this browser\./.test(message) ||
-      /Warning: Unknown event handler property `\w+`\./.test(message) ||
-      /Warning: An update to [\w\s]+ inside a test was not wrapped in act/.test(message) ||
-      /Warning: Received `\w+` for a non-boolean attribute `\w+`\./.test(message) ||
-      /Warning: [\w\s]+ has been extracted from react-native core/.test(message))
-  ) {
-    // NOOP
-  } else {
-    originalConsoleError(message)
-  }
-}
-
-mockedModule("./app/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
-// mockedModule("./app/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
-
-// Artist tests
-mockedModule("./app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
-
-// Gene tests
-mockedModule("./app/Components/Gene/Header.tsx", "Header")
-
-// Native modules
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
-import { NativeModules } from "react-native"
-
-type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
-
-function getNativeModules(): OurNativeModules {
-  return {
-    ARTakeCameraPhotoModule: {
-      errorCodes: {
-        cameraNotAvailable: "cameraNotAvailable",
-        imageMediaNotAvailable: "imageMediaNotAvailable",
-        cameraAccessDenied: "cameraAccessDenied",
-        saveFailed: "saveFailed",
-      },
-      triggerCameraModal: jest.fn(),
-    },
-
-    ARCocoaConstantsModule: {
-      UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
-      AREnabled: true,
-      CurrentLocale: "en_US",
-      LocalTimeZone: "",
-    },
-
-    ARNotificationsManager: {
-      nativeState: {
-        userAgent: "Jest Unit Tests",
-        authenticationToken: "authenticationToken",
-        launchCount: 1,
-        deviceId: "testDevice",
-        userID: "userID",
-        userEmail: "user@example.com",
-      },
-      postNotificationName: jest.fn(),
-      didFinishBootstrapping: jest.fn(),
-      reactStateUpdated: jest.fn(),
-    },
-
-    ARTemporaryAPIModule: {
-      requestPrepromptNotificationPermissions: jest.fn(),
-      requestDirectNotificationPermissions: jest.fn(),
-      fetchNotificationPermissions: jest.fn(),
-      markNotificationsRead: jest.fn(),
-      setApplicationIconBadgeNumber: jest.fn(),
-      getUserEmail: jest.fn(),
-    },
-    ARPHPhotoPickerModule: {
-      requestPhotos: jest.fn(),
-    },
-    ARScreenPresenterModule: {
-      presentMediaPreviewController: jest.fn(),
-      dismissModal: jest.fn(),
-      pushView: jest.fn(),
-      goBack: jest.fn(),
-      updateShouldHideBackButton: jest.fn(),
-      presentAugmentedRealityVIR: jest.fn(),
-      presentEmailComposerWithBody: jest.fn(),
-      presentEmailComposerWithSubject: jest.fn(),
-      popStack: jest.fn(),
-      popToRootAndScrollToTop: jest.fn(),
-      popToRootOrScrollToTop: jest.fn(),
-      presentModal: jest.fn(),
-    },
-    AREventsModule: {
-      requestAppStoreRating: jest.fn(),
-    },
-    ArtsyNativeModule: {
-      launchCount: 3,
-      setAppStyling: jest.fn(),
-      setNavigationBarColor: jest.fn(),
-      setAppLightContrast: jest.fn(),
-      navigationBarHeight: 11,
-      lockActivityScreenOrientation: jest.fn(),
-      gitCommitShortHash: "de4dc0de",
-      isBetaOrDev: true,
-      updateAuthState: jest.fn(),
-      clearUserData: jest.fn(),
-    },
-  }
-}
-
-jest.mock("app/navigation/navigate", () => ({
-  navigate: jest.fn(),
-  goBack: jest.fn(),
-  dismissModal: jest.fn(),
-  popToRoot: jest.fn(),
-  navigateToEntity: jest.fn(),
-  navigateToPartner: jest.fn(),
-  switchTab: jest.fn(),
-  navigationEvents: new (require("events").EventEmitter)(),
-  EntityType: { partner: "partner", fair: "fair" },
-  SlugType: { partner: "partner", fair: "fair" },
-}))
-
-Object.assign(NativeModules, getNativeModules())
-
 const _ = jest.requireActual("lodash")
-beforeEach(() => {
-  function reset(a: any, b: any) {
-    Object.keys(a).forEach((k) => {
-      if (_.isPlainObject(a[k])) {
-        reset(a[k], b[k])
-      } else {
-        if (a[k]?.mockReset) {
-          a[k].mockReset()
-        } else {
-          a[k] = b?.[k] ?? a[k]
-        }
-      }
-    })
-  }
-  reset(NativeModules, getNativeModules())
-  reset(require("app/navigation/navigate"), {})
-})
-
-declare const process: any
-
-// @ts-ignore
-global.__TEST__ = true
-
-if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
-  const originalLoggers = {
-    error: console.error,
-    warn: console.warn,
-  }
-
-  function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
-    const explanation =
-      chalk.white(`Test failed due to \`console.${type}(…)\` call.\n`) +
-      chalk.gray("(Disable with ALLOW_CONSOLE_LOGS=true env variable.)\n\n")
-    if (args[0] instanceof Error) {
-      const msg = explanation + chalk.red(args[0].message)
-      const err = new Error(msg)
-      err.stack = args[0].stack!.replace(`Error: ${args[0].message}`, msg)
-      return err
-    } else if (
-      // Because we use react-dom in tests to render react-native components, a few warnings are being logged that we do
-      // not care for, so ignore these.
-      typeof args[0] === "string" &&
-      !args[0].includes("is using incorrect casing") &&
-      !args[0].includes("is unrecognized in this browser") &&
-      ![args[0].includes("React does not recognize the `testID` prop on a DOM element.")]
-    ) {
-      const err = new Error(explanation + chalk.red(format(args[0], ...args.slice(1))))
-      ;(Error as any).captureStackTrace(err, constructorOpt)
-      return err
-    }
-    return null
-  }
-
-  beforeEach((done) => {
-    mockTrackEvent.mockClear()
-    mockPostEventToProviders.mockClear()
-    const types: Array<"error" | "warn"> = ["error", "warn"]
-    types.forEach((type) => {
-      // Don't spy on loggers that have been modified by the current test.
-      if (console[type] === originalLoggers[type]) {
-        const handler = (...args: unknown[]) => {
-          const error = logToError(type, args, handler)
-          if (error) {
-            done.fail(error)
-          }
-        }
-        jest.spyOn(console, type).mockImplementation(handler)
-      }
-    })
-    done() // it is important to call this here or every test will timeout
-  })
-}
-
-jest.mock("./app/utils/useScreenDimensions", () => {
-  const React = require("react")
-  const screenDimensions: ScreenDimensionsWithSafeAreas = {
-    width: 380,
-    height: 550,
-    orientation: "portrait",
-    size: "small",
-    isSmallScreen: true,
-    safeAreaInsets: {
-      top: 20,
-      left: 0,
-      right: 0,
-      bottom: 0,
-    },
-  }
-
-  return {
-    ScreenDimensionsContext: {
-      Consumer: ({ children }: any) => children(screenDimensions),
-    },
-    ProvideScreenDimensions: ({ children }: React.PropsWithChildren<{}>) => {
-      return React.createElement(React.Fragment, null, children)
-    },
-    useScreenDimensions: () => screenDimensions,
-  }
-})
 
 jest.mock("react-native-safe-area-context", () => {
   return {
@@ -492,7 +317,6 @@ jest.mock("react-native-config", () => {
 
 jest.mock("react-native-view-shot", () => ({}))
 
-// MOCKS FOR TRACKING
 jest.mock("@segment/analytics-react-native", () => ({
   setup: () => null,
   identify: () => null,
@@ -500,19 +324,6 @@ jest.mock("@segment/analytics-react-native", () => ({
 }))
 
 jest.mock("@segment/analytics-react-native-appboy", () => ({}))
-
-jest.mock("app/utils/track/SegmentTrackingProvider", () => ({
-  SegmentTrackingProvider: {
-    setup: () => null,
-    identify: jest.fn(),
-    postEvent: () => null,
-  },
-}))
-
-jest.mock("app/utils/track/providers.tsx", () => ({
-  postEventToProviders: jest.fn(),
-  _addTrackingProvider: jest.fn(),
-}))
 
 jest.mock("react-native-push-notification", () => ({
   configure: jest.fn(),
@@ -527,4 +338,188 @@ jest.mock("react-native-push-notification", () => ({
 
 jest.mock("react-native-keychain", () => ({
   setInternetCredentials: jest.fn().mockResolvedValue(true),
+}))
+
+// MARK: - Our mocks
+
+// Native modules
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
+import { NativeModules } from "react-native"
+
+type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
+
+function getNativeModules(): OurNativeModules {
+  return {
+    ARTakeCameraPhotoModule: {
+      errorCodes: {
+        cameraNotAvailable: "cameraNotAvailable",
+        imageMediaNotAvailable: "imageMediaNotAvailable",
+        cameraAccessDenied: "cameraAccessDenied",
+        saveFailed: "saveFailed",
+      },
+      triggerCameraModal: jest.fn(),
+    },
+
+    ARCocoaConstantsModule: {
+      UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+      AREnabled: true,
+      CurrentLocale: "en_US",
+      LocalTimeZone: "",
+    },
+
+    ARNotificationsManager: {
+      nativeState: {
+        userAgent: "Jest Unit Tests",
+        authenticationToken: "authenticationToken",
+        launchCount: 1,
+        deviceId: "testDevice",
+        userID: "userID",
+        userEmail: "user@example.com",
+      },
+      postNotificationName: jest.fn(),
+      didFinishBootstrapping: jest.fn(),
+      reactStateUpdated: jest.fn(),
+    },
+
+    ARTemporaryAPIModule: {
+      requestPrepromptNotificationPermissions: jest.fn(),
+      requestDirectNotificationPermissions: jest.fn(),
+      fetchNotificationPermissions: jest.fn(),
+      markNotificationsRead: jest.fn(),
+      setApplicationIconBadgeNumber: jest.fn(),
+      getUserEmail: jest.fn(),
+    },
+    ARPHPhotoPickerModule: {
+      requestPhotos: jest.fn(),
+    },
+    ARScreenPresenterModule: {
+      presentMediaPreviewController: jest.fn(),
+      dismissModal: jest.fn(),
+      pushView: jest.fn(),
+      goBack: jest.fn(),
+      updateShouldHideBackButton: jest.fn(),
+      presentAugmentedRealityVIR: jest.fn(),
+      presentEmailComposerWithBody: jest.fn(),
+      presentEmailComposerWithSubject: jest.fn(),
+      popStack: jest.fn(),
+      popToRootAndScrollToTop: jest.fn(),
+      popToRootOrScrollToTop: jest.fn(),
+      presentModal: jest.fn(),
+    },
+    AREventsModule: {
+      requestAppStoreRating: jest.fn(),
+    },
+    ArtsyNativeModule: {
+      launchCount: 3,
+      setAppStyling: jest.fn(),
+      setNavigationBarColor: jest.fn(),
+      setAppLightContrast: jest.fn(),
+      navigationBarHeight: 11,
+      lockActivityScreenOrientation: jest.fn(),
+      gitCommitShortHash: "de4dc0de",
+      isBetaOrDev: true,
+      updateAuthState: jest.fn(),
+      clearUserData: jest.fn(),
+    },
+  }
+}
+
+Object.assign(NativeModules, getNativeModules())
+
+beforeEach(() => {
+  function reset(a: any, b: any) {
+    Object.keys(a).forEach((k) => {
+      if (_.isPlainObject(a[k])) {
+        reset(a[k], b[k])
+      } else {
+        if (a[k]?.mockReset) {
+          a[k].mockReset()
+        } else {
+          a[k] = b?.[k] ?? a[k]
+        }
+      }
+    })
+  }
+  reset(NativeModules, getNativeModules())
+  reset(require("app/navigation/navigate"), {})
+})
+
+const mockedModule = (path: string, mockModuleName: string) => jest.mock(path, () => mockModuleName)
+mockedModule("./app/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
+mockedModule("./app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
+mockedModule("./app/Components/Gene/Header.tsx", "Header")
+
+jest.mock("app/utils/track/providers", () => ({
+  ...jest.requireActual("app/utils/track/providers"),
+  postEventToProviders: jest.fn(),
+}))
+
+jest.mock("app/relay/createEnvironment", () => ({
+  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+  reset(this: { defaultEnvironment: any }) {
+    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
+  },
+}))
+
+jest.mock("app/utils/useScreenDimensions", () => {
+  const React = require("react")
+  const screenDimensions: ScreenDimensionsWithSafeAreas = {
+    width: 380,
+    height: 550,
+    orientation: "portrait",
+    size: "small",
+    isSmallScreen: true,
+    safeAreaInsets: {
+      top: 20,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    },
+  }
+
+  return {
+    ScreenDimensionsContext: {
+      Consumer: ({ children }: any) => children(screenDimensions),
+    },
+    ProvideScreenDimensions: ({ children }: React.PropsWithChildren<{}>) => {
+      return React.createElement(React.Fragment, null, children)
+    },
+    useScreenDimensions: () => screenDimensions,
+  }
+})
+
+jest.mock("app/NativeModules/NotificationsManager.tsx", () => ({
+  NotificationsManager: new (require("events").EventEmitter)(),
+}))
+
+jest.mock("app/utils/userHadMeaningfulInteraction.tsx", () => ({
+  userHadMeaningfulInteraction: jest.fn(),
+}))
+
+jest.mock("app/navigation/navigate", () => ({
+  navigate: jest.fn(),
+  goBack: jest.fn(),
+  dismissModal: jest.fn(),
+  popToRoot: jest.fn(),
+  navigateToEntity: jest.fn(),
+  navigateToPartner: jest.fn(),
+  switchTab: jest.fn(),
+  navigationEvents: new (require("events").EventEmitter)(),
+  EntityType: { partner: "partner", fair: "fair" },
+  SlugType: { partner: "partner", fair: "fair" },
+}))
+
+jest.mock("app/utils/track/SegmentTrackingProvider", () => ({
+  SegmentTrackingProvider: {
+    setup: () => null,
+    identify: jest.fn(),
+    postEvent: () => null,
+  },
+}))
+
+jest.mock("app/utils/track/providers.tsx", () => ({
+  postEventToProviders: jest.fn(),
+  _addTrackingProvider: jest.fn(),
 }))
