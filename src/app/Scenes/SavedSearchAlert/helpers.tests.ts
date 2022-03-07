@@ -2,7 +2,6 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { clearDefaultAttributes, getNamePlaceholder } from "./helpers"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
@@ -22,8 +21,7 @@ describe("getNamePlaceholder", () => {
     expect(getNamePlaceholder("artistName", pills)).toBe("artistName • 2 filters")
   })
 
-  it("returns the correct number of filters when artist pill is shown", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+  it("returns the correct number of filters with artist pill", () => {
     const pills: SavedSearchPill[] = [
       { label: "Artist Name", paramName: SearchCriteria.artistID, value: "artistName" },
       { label: "One", paramName: SearchCriteria.materialsTerms, value: "one" },
@@ -33,7 +31,6 @@ describe("getNamePlaceholder", () => {
   })
 
   it("returns only artist name when pills are empty", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
     expect(getNamePlaceholder("artistName", [])).toBe("artistName")
   })
 })

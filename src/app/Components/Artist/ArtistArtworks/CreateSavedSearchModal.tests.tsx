@@ -45,10 +45,6 @@ const mockedMutationResult: SavedSearchAlertMutationResult = {
 }
 
 describe("CreateSavedSearchModal", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-  })
-
   const TestRenderer = (props?: Partial<CreateSavedSearchModalProps>) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>

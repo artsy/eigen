@@ -1,12 +1,19 @@
 import { useFocusEffect } from "@react-navigation/core"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
-import { CreateSavedSearchContentContainerV2_me } from "__generated__/CreateSavedSearchContentContainerV2_me.graphql"
-import { CreateSavedSearchContentContainerV2Query } from "__generated__/CreateSavedSearchContentContainerV2Query.graphql"
+import { CreateSavedSearchContentContainer_me } from "__generated__/CreateSavedSearchContentContainer_me.graphql"
+import { CreateSavedSearchContentContainerQuery } from "__generated__/CreateSavedSearchContentContainerQuery.graphql"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import React, { useCallback, useRef, useState } from "react"
+import {
+  getNotificationPermissionsStatus,
+  PushAuthorizationStatus,
+} from "app/utils/PushNotification"
+import useAppState from "app/utils/useAppState"
+import { Box } from "palette"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { CreateSavedSearchContent } from "../Components/CreateSavedSearchContent"
+import { SavedSearchAlertForm } from "../SavedSearchAlertForm"
 import {
   CreateSavedSearchAlertNavigationStack,
   SavedSearchAlertFormPropsBase,
@@ -25,18 +32,29 @@ interface CreateSavedSearchAlertContentProps
   extends CreateSavedSearchAlertContentQueryRendererProps,
     SavedSearchAlertFormPropsBase {
   relay: RelayRefetchProp
-  me?: CreateSavedSearchContentContainerV2_me | null
+  me?: CreateSavedSearchContentContainer_me | null
   loading: boolean
 }
 
-const Container: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
-  const { me, loading, relay, navigation, ...other } = props
+const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
+  const { me, loading, relay, navigation, onClosePress, ...other } = props
   const isPreviouslyFocused = useRef(false)
   const [refetching, setRefetching] = useState(false)
+  const [enablePushNotifications, setEnablePushNotifications] = useState(true)
+  const userAllowsEmails = me?.emailFrequency !== "none"
 
   const handleUpdateEmailPreferencesPress = () => {
     navigation.navigate("EmailPreferences")
   }
+
+  const getPermissionStatus = async () => {
+    const status = await getNotificationPermissionsStatus()
+    setEnablePushNotifications(status === PushAuthorizationStatus.Authorized)
+  }
+
+  const onForeground = useCallback(() => {
+    getPermissionStatus()
+  }, [])
 
   const refetch = () => {
     setRefetching(true)
@@ -60,29 +78,40 @@ const Container: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
     }, [])
   )
 
+  useAppState({ onForeground })
+
+  useEffect(() => {
+    getPermissionStatus()
+  }, [])
+
   return (
-    <CreateSavedSearchContent
-      userAllowsEmails={me?.emailFrequency !== "none"}
-      isLoading={loading || refetching}
-      onUpdateEmailPreferencesPress={handleUpdateEmailPreferencesPress}
-      {...other}
-    />
+    <Box flex={1}>
+      <FancyModalHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
+      <SavedSearchAlertForm
+        initialValues={{ name: "", email: userAllowsEmails, push: enablePushNotifications }}
+        contentContainerStyle={{ paddingTop: 0 }}
+        isLoading={loading || refetching}
+        onUpdateEmailPreferencesPress={handleUpdateEmailPreferencesPress}
+        userAllowsEmails={userAllowsEmails}
+        {...other}
+      />
+    </Box>
   )
 }
 
-const CreateSavedSearchContentContainerV2 = createRefetchContainer(
-  Container,
+const CreateSavedSearchContentContainer = createRefetchContainer(
+  CreateSavedSearchAlertContent,
   {
     me: graphql`
-      fragment CreateSavedSearchContentContainerV2_me on Me {
+      fragment CreateSavedSearchContentContainer_me on Me {
         emailFrequency
       }
     `,
   },
   graphql`
-    query CreateSavedSearchContentContainerV2RefetchQuery {
+    query CreateSavedSearchContentContainerRefetchQuery {
       me {
-        ...CreateSavedSearchContentContainerV2_me
+        ...CreateSavedSearchContentContainer_me
       }
     }
   `
@@ -92,12 +121,12 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
   CreateSavedSearchAlertContentQueryRendererProps
 > = (props) => {
   return (
-    <QueryRenderer<CreateSavedSearchContentContainerV2Query>
+    <QueryRenderer<CreateSavedSearchContentContainerQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query CreateSavedSearchContentContainerV2Query {
+        query CreateSavedSearchContentContainerQuery {
           me {
-            ...CreateSavedSearchContentContainerV2_me
+            ...CreateSavedSearchContentContainer_me
           }
         }
       `}
@@ -111,7 +140,7 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
         }
 
         return (
-          <CreateSavedSearchContentContainerV2
+          <CreateSavedSearchContentContainer
             {...props}
             me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}

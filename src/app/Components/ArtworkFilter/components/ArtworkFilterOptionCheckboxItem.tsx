@@ -1,7 +1,5 @@
-import { useFeatureFlag } from "app/store/GlobalStore"
-import { Check, Checkbox } from "palette"
+import { Checkbox } from "palette"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
 import { FilterParamName, getUnitedSelectedAndAppliedFilters } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "../ArtworkFilterStore"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
@@ -47,25 +45,13 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
     <ArtworkFilterOptionItem
       item={item}
       onPress={onPress}
-      RightAccessoryItem={<CheckboxItem onPress={onPress} checked={checked} />}
+      RightAccessoryItem={
+        <Checkbox
+          checked={checked}
+          onPress={onPress}
+          testID="ArtworkFilterOptionCheckboxItemCheckbox"
+        />
+      }
     />
-  )
-}
-
-const CheckboxItem = ({ checked, onPress }: { checked: boolean; onPress: () => void }) => {
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
-  if (isEnabledImprovedAlertsFlow) {
-    return (
-      <Checkbox
-        checked={checked}
-        onPress={onPress}
-        testID="ArtworkFilterOptionCheckboxItemCheckbox"
-      />
-    )
-  }
-  return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <Check selected={checked} />
-    </TouchableWithoutFeedback>
   )
 }

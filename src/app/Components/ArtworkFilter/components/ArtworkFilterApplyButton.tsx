@@ -1,4 +1,3 @@
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { BellIcon, Box, Button, Separator, Text, useColor } from "palette"
 import React, { ReactNode, useState } from "react"
 import { Pressable } from "react-native"
@@ -48,9 +47,8 @@ const InnerButton: React.FC<Button> = (props) => {
 export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> = (props) => {
   const { disabled, shouldShowCreateAlertButton, onCreateAlertPress, onPress } = props
   const color = useColor()
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
-  if (isEnabledImprovedAlertsFlow && onCreateAlertPress) {
+  if (onCreateAlertPress) {
     return (
       <SafeAreaView
         style={{

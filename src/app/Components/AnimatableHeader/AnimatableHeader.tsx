@@ -127,7 +127,7 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
           {title}
         </Text>
       </Animated.View>
-      {!!onRightButtonPress && (
+      {!!onRightButtonPress && !!rightButtonText && (
         <TouchableOpacity
           hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
           onPress={onRightButtonPress}
