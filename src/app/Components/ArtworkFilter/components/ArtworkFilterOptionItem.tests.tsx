@@ -1,5 +1,4 @@
 import { fireEvent, within } from "@testing-library/react-native"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Checkbox } from "palette"
 import React from "react"
@@ -16,10 +15,6 @@ const defaultProps: ArtworkFilterOptionItemProps = {
 }
 
 describe("ArtworkFilterOptionItem", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-  })
-
   const TestWrapper = (props?: Partial<ArtworkFilterOptionItemProps>) => {
     return <ArtworkFilterOptionItem {...defaultProps} {...props} />
   }

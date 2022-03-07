@@ -37,14 +37,17 @@ export const ArtworkDetailsForm: React.FC = () => {
         testID="Submission_TitleInput"
         value={values.title}
         onChangeText={(e) => setFieldValue("title", e)}
+        accessibilityLabel="Title"
       />
       <StandardSpace />
       <Input
         title="Year"
         placeholder="YYYY"
+        keyboardType="number-pad"
         testID="Submission_YearInput"
         value={values.year}
         onChangeText={(e) => setFieldValue("year", e)}
+        accessibilityLabel="Year"
       />
       <StandardSpace />
       <Input
@@ -53,6 +56,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         testID="Submission_MaterialsInput"
         value={values.medium}
         onChangeText={(e) => setFieldValue("medium", e)}
+        accessibilityLabel="Materials"
       />
       <StandardSpace />
       <Select
@@ -84,17 +88,21 @@ export const ArtworkDetailsForm: React.FC = () => {
             <Box width="48%" mr={1}>
               <Input
                 title="Edition Number"
+                keyboardType="decimal-pad"
                 testID="Submission_EditionNumberInput"
                 value={values.editionNumber}
                 onChangeText={(e) => setFieldValue("editionNumber", e)}
+                accessibilityLabel="Edition Number"
               />
             </Box>
             <Box width="48%">
               <Input
                 title="Edition Size"
+                keyboardType="decimal-pad"
                 testID="Submission_EditionSizeInput"
                 value={values.editionSizeFormatted}
                 onChangeText={(e) => setFieldValue("editionSizeFormatted", e)}
+                accessibilityLabel="Edition Size"
               />
             </Box>
           </Flex>
@@ -121,25 +129,31 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%" mr={1}>
           <Input
             title="Height"
+            keyboardType="decimal-pad"
             testID="Submission_HeightInput"
             value={values.height}
             onChangeText={(e) => setFieldValue("height", e)}
+            accessibilityLabel="Height"
           />
         </Box>
         <Box width="31%" mr={1}>
           <Input
             title="Width"
+            keyboardType="decimal-pad"
             testID="Submission_WidthInput"
             value={values.width}
             onChangeText={(e) => setFieldValue("width", e)}
+            accessibilityLabel="Width"
           />
         </Box>
         <Box width="31%">
           <Input
             title="Depth"
+            keyboardType="decimal-pad"
             testID="Submission_DepthInput"
             value={values.depth}
             onChangeText={(e) => setFieldValue("depth", e)}
+            accessibilityLabel="Depth"
           />
         </Box>
       </Flex>

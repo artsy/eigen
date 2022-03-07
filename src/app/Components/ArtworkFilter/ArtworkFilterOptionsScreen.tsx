@@ -19,13 +19,13 @@ import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { FilterConfigTypes } from "."
+import { AnimatableHeader } from "../AnimatableHeader/AnimatableHeader"
 import { AnimatableHeaderFlatList } from "../AnimatableHeader/AnimatableHeaderFlatList"
 import { AnimatableHeaderProvider } from "../AnimatableHeader/AnimatableHeaderProvider"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 import { ArtworkFilterOptionCheckboxItem } from "./components/ArtworkFilterOptionCheckboxItem"
 import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
-import { ArtworkFilterOptionsHeader } from "./components/ArtworkFilterOptionsHeader"
 import { FilterDisplayConfig, FilterScreen } from "./types"
 
 export enum FilterModalMode {
@@ -144,13 +144,12 @@ export const ArtworkFilterOptionsScreen: React.FC<
   return (
     <AnimatableHeaderProvider>
       <Flex flex={1}>
-        <ArtworkFilterOptionsHeader
+        <AnimatableHeader
           title={title}
           rightButtonDisabled={!isClearAllButtonEnabled}
           onLeftButtonPress={handleTappingCloseIcon}
           onRightButtonPress={handleClearAllPress}
           rightButtonText="Clear All"
-          useXButton
         />
         <AnimatableHeaderFlatList<FilterDisplayConfig>
           keyExtractor={(_item, index) => String(index)}

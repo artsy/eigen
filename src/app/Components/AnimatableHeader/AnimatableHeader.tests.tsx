@@ -2,21 +2,19 @@ import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
-import {
-  ArtworkFilterOptionsHeader,
-  ArtworkFilterOptionsHeaderProps,
-} from "./ArtworkFilterOptionsHeader"
+import { AnimatableHeader, AnimatableHeaderProps } from "./AnimatableHeader"
 
-const defaultProps: ArtworkFilterOptionsHeaderProps = {
+const defaultProps: AnimatableHeaderProps = {
   title: "Title",
   rightButtonDisabled: false,
+  rightButtonText: "Right button",
   onLeftButtonPress: jest.fn,
   onRightButtonPress: jest.fn,
 }
 
-describe("ArtworkFilterOptionsHeader", () => {
-  const TestWrapper = (props?: Partial<ArtworkFilterOptionsHeaderProps>) => {
-    return <ArtworkFilterOptionsHeader {...defaultProps} {...props} />
+describe("AnimatableHeader", () => {
+  const TestWrapper = (props?: Partial<AnimatableHeaderProps>) => {
+    return <AnimatableHeader {...defaultProps} {...props} />
   }
 
   it("should render title", () => {
@@ -41,10 +39,18 @@ describe("ArtworkFilterOptionsHeader", () => {
     expect(queryByText("Right Button")).toBeFalsy()
   })
 
+  it('should hide right button if "rightButtonText" is not passed', () => {
+    const { queryByText } = renderWithWrappersTL(
+      <TestWrapper onRightButtonPress={jest.fn} rightButtonText={undefined} />
+    )
+
+    expect(queryByText("Right button")).toBeFalsy()
+  })
+
   it("should disable right button when rightButtonDisabled prop is true", () => {
     const { getByText } = renderWithWrappersTL(<TestWrapper rightButtonDisabled />)
 
-    expect(getByText("Clear")).toBeDisabled()
+    expect(getByText("Right button")).toBeDisabled()
   })
 
   it('should call "onLeftButtonPress" handler when back button is pressed', () => {
@@ -58,13 +64,13 @@ describe("ArtworkFilterOptionsHeader", () => {
     expect(onLeftButtonPressMock).toBeCalled()
   })
 
-  it('should call "onRightButtonPress" handler when clear all is pressed', () => {
+  it('should call "onRightButtonPress" handler when right button is pressed', () => {
     const onRightButtonPressMock = jest.fn()
     const { getByText } = renderWithWrappersTL(
       <TestWrapper onRightButtonPress={onRightButtonPressMock} />
     )
 
-    fireEvent.press(getByText("Clear"))
+    fireEvent.press(getByText("Right button"))
 
     expect(onRightButtonPressMock).toBeCalled()
   })

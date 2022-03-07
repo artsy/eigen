@@ -4,7 +4,6 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { goBack, navigate } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { FormikProvider, useFormik } from "formik"
 import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
@@ -36,6 +35,7 @@ export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase
   savedSearchAlertId?: string
   userAllowsEmails: boolean
   contentContainerStyle?: StyleProp<ViewStyle>
+  isLoading?: boolean
   onUpdateEmailPreferencesPress?: () => void
   onComplete?: (result: SavedSearchAlertMutationResult) => void
   onDeleteComplete?: () => void
@@ -54,7 +54,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     ...other
   } = props
   const isUpdateForm = !!savedSearchAlertId
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const isFirstRender = useFirstMountState()
   const savedSearchPills = SavedSearchStore.useStoreState((state) => state.pills)
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
@@ -62,15 +61,12 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.removeValueFromAttributesByKeyAction
   )
-
   const artistPill: SavedSearchPill = {
     label: artistName,
     value: artistId,
     paramName: SearchCriteria.artistID,
   }
-
-  const pills = isEnabledImprovedAlertsFlow ? [artistPill, ...savedSearchPills] : savedSearchPills
-
+  const pills = [artistPill, ...savedSearchPills]
   const tracking = useTracking()
   const { space } = useTheme()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
@@ -113,11 +109,11 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
          * - this is create alert flow
          * - this is update alert flow AND there were changes in filters
          */
-        if (isEnabledImprovedAlertsFlow && (!isUpdateForm || (isUpdateForm && hasChangedFilters))) {
+        if (!isUpdateForm || (isUpdateForm && hasChangedFilters)) {
           duplicateSavedSearchId = await getSavedSearchIdByCriteria(clearedAttributes)
         }
 
-        if (isEnabledImprovedAlertsFlow && duplicateSavedSearchId) {
+        if (duplicateSavedSearchId) {
           showWarningMessageForDuplicateAlert({
             onReplacePress: () => {
               submitHandler(userAlertSettings, clearedAttributes)
@@ -143,12 +139,11 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   ) => {
     try {
       formik.setSubmitting(true)
-      const criteria = isEnabledImprovedAlertsFlow ? alertAttributes : undefined
 
       const response = await updateSavedSearchAlert(
         savedSearchAlertId!,
         userAlertSettings,
-        criteria
+        alertAttributes
       )
       tracking.trackEvent(
         tracks.editedSavedSearch(savedSearchAlertId!, initialValues, userAlertSettings)
