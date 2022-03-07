@@ -12,9 +12,11 @@ export interface ArtworkSubmissionModel {
   artworkDetails: ArtworkDetailsFormModel
   setArtworkDetailsForm: Action<ArtworkSubmissionModel, ArtworkDetailsFormModel>
   photos: PhotosFormModel
+  photosForMyCollection: PhotosFormModel
   setPhotos: Action<ArtworkSubmissionModel, PhotosFormModel>
+  setPhotosForMyCollection: Action<ArtworkSubmissionModel, PhotosFormModel>
   setUtmParams: Action<ArtworkSubmissionModel, ConsignmentsSubmissionUtmParams>
-  resetSessionState: Action<ArtworkSubmissionModel>
+  resetSessionStateForSubmissionFlow: Action<ArtworkSubmissionModel>
 }
 
 export interface SubmissionModel {
@@ -26,6 +28,10 @@ export const getSubmissionModel = (): SubmissionModel => ({
     submissionId: "",
     artworkDetails: artworkDetailsEmptyInitialValues,
     photos: photosEmptyInitialValues,
+    photosForMyCollection: photosEmptyInitialValues,
+    setPhotosForMyCollection: action((state, photos) => {
+      state.photosForMyCollection = photos
+    }),
     setPhotos: action((state, photos) => {
       state.photos = photos
     }),
@@ -43,7 +49,7 @@ export const getSubmissionModel = (): SubmissionModel => ({
         utmTerm: params.utm_term,
       }
     }),
-    resetSessionState: action((state) => {
+    resetSessionStateForSubmissionFlow: action((state) => {
       state.submissionId = ""
       state.artworkDetails = artworkDetailsEmptyInitialValues
       state.photos = photosEmptyInitialValues

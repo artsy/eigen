@@ -26,13 +26,16 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) =
   const tracking = useTracking()
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
     tracking.trackEvent(tappedConsign(tappedConsignArgs))
+    GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+      photos: [],
+    })
     const route = "/collections/my-collection/artworks/new/submissions/new"
     navigate(route)
   }
 
   useEffect(() => {
     return () => {
-      GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+      GlobalStore.actions.artworkSubmission.submission.resetSessionStateForSubmissionFlow()
     }
   }, [])
 
