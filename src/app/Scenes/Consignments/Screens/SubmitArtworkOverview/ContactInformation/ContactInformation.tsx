@@ -68,7 +68,7 @@ export const ContactInformation: React.FC<{
       validationSchema={contactInformationValidationSchema}
       validateOnMount
     >
-      {({ values, isValid, errors, handleChange, handleBlur, handleSubmit }) => (
+      {({ values, isValid, errors, handleChange, handleSubmit }) => (
         <Flex py={1} mt={1}>
           <Text color="black60">
             We will only use these details to contact you regarding your submission.
@@ -79,7 +79,6 @@ export const ContactInformation: React.FC<{
             placeholder="Your Full Name"
             onChangeText={handleChange("userName")}
             value={values.userName}
-            onBlur={handleBlur("userName")}
             accessibilityLabel="Name"
           />
           <Spacer mt={4} />
