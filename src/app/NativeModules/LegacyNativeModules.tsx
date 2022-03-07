@@ -79,6 +79,8 @@ interface LegacyNativeModules {
       artworkSlug: string,
       artworkId: string
     ): void
+    presentEmailComposerWithBody(body: string, subject: string, toAddress: string): void
+    presentEmailComposerWithSubject(subject: string, toAddress: string): void
   }
   ARScreenPresenterModule: {
     pushView(currentTabStackID: string, descriptor: ViewDescriptor): void
@@ -94,8 +96,6 @@ interface LegacyNativeModules {
       mimeType: string,
       cacheKey: string
     ): void
-    presentEmailComposerWithBody(body: string, subject: string, toAddress: string): void
-    presentEmailComposerWithSubject(subject: string, toAddress: string): void
     updateShouldHideBackButton(shouldHideBackButton: boolean, currentTabStackID: string): void
   }
   ARTakeCameraPhotoModule: {
@@ -115,7 +115,13 @@ interface LegacyNativeModules {
 const LegacyNativeModulesAndroid = {
   ARTNativeScreenPresenterModule: {
     presentAugmentedRealityVIR: () => {
-      noop("View in room unsupported on android")
+      noop("view in room not yet supported on android")
+    },
+    presentEmailComposerWithBody: () => {
+      noop("presentEmailComposer not yet supported on android")
+    },
+    presentEmailComposerWithSubject: () => {
+      noop("presentEmailComposer not yet supported on android")
     },
   },
   ARTakeCameraPhotoModule: {

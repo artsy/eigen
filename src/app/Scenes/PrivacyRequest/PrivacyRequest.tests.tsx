@@ -22,7 +22,7 @@ describe(PrivacyRequest, () => {
     tree.find(LinkText).at(1).simulate("press")
 
     expect(
-      LegacyNativeModules.ARScreenPresenterModule.presentEmailComposerWithSubject
+      LegacyNativeModules.ARTNativeScreenPresenterModule.presentEmailComposerWithSubject
     ).toHaveBeenCalledWith("Personal Data Request", "privacy@artsy.net")
   })
 
@@ -32,7 +32,7 @@ describe(PrivacyRequest, () => {
     tree.find(Button).simulate("press")
 
     expect(
-      LegacyNativeModules.ARScreenPresenterModule.presentEmailComposerWithBody
+      LegacyNativeModules.ARTNativeScreenPresenterModule.presentEmailComposerWithBody
     ).toHaveBeenCalledWith(
       "Hello, I'm contacting you to ask that...",
       "Personal Data Request",

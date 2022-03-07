@@ -8,6 +8,12 @@
 #import "ARAppDelegate+Echo.h"
 #import "eigen-Swift.h"
 
+#import <MessageUI/MFMailComposeViewController.h>
+#import "ARDispatchManager.h"
+
+@interface ARScreenPresenterModule () <MFMailComposeViewControllerDelegate>
+@end
+
 @implementation ARTNativeScreenPresenterModule
 
 RCT_EXPORT_MODULE()
@@ -80,6 +86,54 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
                 }];
         }];
 }
+
+/**
+   We want an optional body parameter but are getting errors in debug mode when not passing, to get around this instead have two
+   methods one with body param and one without and choose which to use based on params passed in js
+ */
+RCT_EXPORT_METHOD(presentEmailComposerWithBody:(NSString *)body subject:(NSString *)subject toAddress:(NSString *)toAddress)
+{
+  ar_dispatch_main_queue(^{
+    [self presentNativeEmailComposer:toAddress subject:subject body:body];
+  });
+}
+
+RCT_EXPORT_METHOD(presentEmailComposerWithSubject:(NSString *)subject toAddress:(NSString *)toAddress)
+{
+  ar_dispatch_main_queue(^{
+     [self presentNativeEmailComposer:toAddress subject:subject body:nil];
+  });
+}
+
+- (void)presentNativeEmailComposer:(nonnull NSString *)toAddress subject:(nonnull NSString *)subject body:(nullable NSString *)body {
+    UIViewController *fromViewController = [self.class currentlyPresentedVC];
+    if ([MFMailComposeViewController canSendMail]) {
+      MFMailComposeViewController *composer = [[MFMailComposeViewController alloc] init];
+      composer.mailComposeDelegate = self;
+      [composer setToRecipients:@[toAddress]];
+      [composer setSubject:subject];
+      if (body) {
+        [composer setMessageBody:body isHTML:NO];
+      }
+      [fromViewController presentViewController:composer animated:YES completion:nil];
+    } else {
+      UIAlertController *alert = [UIAlertController
+                                  alertControllerWithTitle:@"No email configured"
+                                  message:[NSString stringWithFormat:@"You don't appear to have any email configured on your device. Please email %@ from another device.", toAddress]
+                                  preferredStyle:UIAlertControllerStyleAlert];
+      [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil]];
+      [fromViewController presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(nullable NSError *)error
+{
+  [controller.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - HELPER
 
 + (UIViewController *)currentlyPresentedVC
 {

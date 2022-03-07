@@ -201,6 +201,8 @@ function getNativeModules(): OurNativeModules {
   return {
     ARTNativeScreenPresenterModule: {
       presentAugmentedRealityVIR: jest.fn(),
+      presentEmailComposerWithBody: jest.fn(),
+      presentEmailComposerWithSubject: jest.fn(),
     },
     ARTakeCameraPhotoModule: {
       errorCodes: {
@@ -247,8 +249,6 @@ function getNativeModules(): OurNativeModules {
       pushView: jest.fn(),
       goBack: jest.fn(),
       updateShouldHideBackButton: jest.fn(),
-      presentEmailComposerWithBody: jest.fn(),
-      presentEmailComposerWithSubject: jest.fn(),
       popStack: jest.fn(),
       popToRootAndScrollToTop: jest.fn(),
       popToRootOrScrollToTop: jest.fn(),
