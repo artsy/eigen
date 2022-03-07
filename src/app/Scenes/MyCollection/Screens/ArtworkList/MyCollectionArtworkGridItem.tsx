@@ -103,16 +103,20 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           artworkSlug={slug}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
-          <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
-            {artistNames}
+          <Flex flexDirection="row">
+            <Flex flexShrink={1}>
+              <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
+                {artistNames}
+              </Text>
+            </Flex>
             {!!showTrendingIcon && (
-              <Flex mt="-2px" pl="3px">
+              <Flex alignSelf="flex-end" mt="2px" pl="3px">
                 <FadeIn>
                   <TrendingIcon />
                 </FadeIn>
               </Flex>
             )}
-          </Text>
+          </Flex>
           {!!title ? (
             <Text lineHeight="18" variant="xs" weight="regular" numberOfLines={1} color="black60">
               <Text lineHeight="18" variant="xs" weight="regular" italic>
