@@ -39,7 +39,6 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
               HeaderComponent={<Spacer mt={2} />}
               shouldAddPadding
               showLoadingSpinner
-              useParentAwareScrollView={false}
             />
           ) : (
             <Message m={2}>Nothing yet. Please check back later.</Message>

@@ -39,7 +39,6 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
         loadMore={relay.loadMore}
         hasMore={relay.hasMore}
         contextScreenQuery={keyword}
-        useParentAwareScrollView={false}
         itemComponentProps={{ hideSaleInfo: true, hidePartner: true, onPress: handlePress }}
         FooterComponent={() => (
           <Flex alignItems="center">
