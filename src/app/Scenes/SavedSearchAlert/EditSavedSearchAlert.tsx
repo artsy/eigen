@@ -57,7 +57,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     navigationEvents.addListener("goBack", refetch)
 
     return () => {
-      navigationEvents.removeListener("goBack", refetch)
+      navigationEvents.remove()
     }
   }, [])
 

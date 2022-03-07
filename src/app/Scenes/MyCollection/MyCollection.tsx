@@ -75,7 +75,7 @@ const MyCollection: React.FC<{
   useEffect(() => {
     RefreshEvents.addListener(REFRESH_KEY, refetch)
     return () => {
-      RefreshEvents.removeListener(REFRESH_KEY, refetch)
+      RefreshEvents.remove()
     }
   }, [])
 

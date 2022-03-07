@@ -82,8 +82,8 @@ export class Conversation extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    navigationEvents.removeListener("modalDismissed", this.handleModalDismissed)
-    navigationEvents.removeListener("goBack", this.handleModalDismissed)
+    navigationEvents.remove()
+    navigationEvents.remove()
   }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

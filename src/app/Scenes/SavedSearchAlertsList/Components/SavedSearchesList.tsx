@@ -49,7 +49,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
     }
     navigationEvents.addListener("goBack", onDeleteRefresh)
     return () => {
-      navigationEvents.removeListener("goBack", onDeleteRefresh)
+      navigationEvents.remove()
     }
   }, [onRefresh])
 

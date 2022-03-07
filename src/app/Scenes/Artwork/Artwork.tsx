@@ -136,7 +136,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     navigationEvents.addListener("modalDismissed", handleModalDismissed)
 
     return () => {
-      navigationEvents.removeListener("modalDismissed", handleModalDismissed)
+      navigationEvents.remove()
     }
   }, [])
 
