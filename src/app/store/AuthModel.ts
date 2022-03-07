@@ -2,6 +2,7 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { OAuthProvider } from "app/auth/types"
 import * as RelayCache from "app/relay/RelayCache"
 import { isArtsyEmail } from "app/utils/general"
 import { postEventToProviders } from "app/utils/track/providers"
@@ -48,14 +49,12 @@ const showError = (
 
 type SignInStatus = "failure" | "success" | "otp_missing" | "on_demand_otp_missing" | "invalid_otp"
 
-type OAuthProviderT = "google" | "apple" | "email" | "facebook"
-
 const handleSignUpError = ({
   errorObject,
   oauthProvider,
 }: {
   errorObject: any
-  oauthProvider: OAuthProviderT
+  oauthProvider: OAuthProvider
 }) => {
   let message = ""
   let existingProviders: string[] = []
