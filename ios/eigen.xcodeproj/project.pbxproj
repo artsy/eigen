@@ -319,6 +319,8 @@
 		CBB7352627BEEB02001AC8C0 /* CityGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7352527BEEB02001AC8C0 /* CityGuideView.swift */; };
 		CBB7352B27C8216F001AC8C0 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB7352A27C8216F001AC8C0 /* ARTLiveAuctionViewManager.m */; };
 		CBB7352D27C821C3001AC8C0 /* LiveAuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB7352C27C821C3001AC8C0 /* LiveAuctionView.swift */; };
+		CBE3144327D68F0500395A93 /* ARTOldAdminViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3144227D68F0500395A93 /* ARTOldAdminViewManager.m */; };
+		CBE3144527D68FBA00395A93 /* OldAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3144427D68FBA00395A93 /* OldAdminView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -808,6 +810,9 @@
 		CBB7352927C8216F001AC8C0 /* ARTLiveAuctionViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTLiveAuctionViewManager.h; sourceTree = "<group>"; };
 		CBB7352A27C8216F001AC8C0 /* ARTLiveAuctionViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTLiveAuctionViewManager.m; sourceTree = "<group>"; };
 		CBB7352C27C821C3001AC8C0 /* LiveAuctionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionView.swift; sourceTree = "<group>"; };
+		CBE3144127D68F0500395A93 /* ARTOldAdminViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTOldAdminViewManager.h; sourceTree = "<group>"; };
+		CBE3144227D68F0500395A93 /* ARTOldAdminViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTOldAdminViewManager.m; sourceTree = "<group>"; };
+		CBE3144427D68FBA00395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE0ED407FA44DD891F5B3246 /* libPods-eigen-eigenTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen-eigenTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EB231E790C61B818E9DBE3 /* libPods-eigen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1924,6 +1929,9 @@
 				CBB7352927C8216F001AC8C0 /* ARTLiveAuctionViewManager.h */,
 				CBB7352A27C8216F001AC8C0 /* ARTLiveAuctionViewManager.m */,
 				CBB7352C27C821C3001AC8C0 /* LiveAuctionView.swift */,
+				CBE3144127D68F0500395A93 /* ARTOldAdminViewManager.h */,
+				CBE3144227D68F0500395A93 /* ARTOldAdminViewManager.m */,
+				CBE3144427D68FBA00395A93 /* OldAdminView.swift */,
 				CB1B8FC827D1610B0076B9BB /* ARTNativeScreenPresenterModule.h */,
 				CB1B8FC927D1610B0076B9BB /* ARTNativeScreenPresenterModule.m */,
 			);
@@ -2292,6 +2300,7 @@
 				CB61B81B27B303720007922D /* ARAdminTableViewController.m in Sources */,
 				CB61B7F027B303720007922D /* RefinementOptionsViewController.swift in Sources */,
 				CBB7352427BEDD48001AC8C0 /* ARTCityGuideViewManager.m in Sources */,
+				CBE3144327D68F0500395A93 /* ARTOldAdminViewManager.m in Sources */,
 				CB61B7EF27B303720007922D /* AuctionInformationViewController.swift in Sources */,
 				CB61B81927B303720007922D /* ARAdminSettingsViewController.m in Sources */,
 				CB61B81827B303720007922D /* AREchoContentsViewController.m in Sources */,
@@ -2499,6 +2508,7 @@
 				CB61B82327B303720007922D /* AREigenMapContainerViewController.m in Sources */,
 				CB61B7E627B303720007922D /* SaleOnHoldOverlayView.swift in Sources */,
 				CB61B74127B303710007922D /* ARAuthProviders.m in Sources */,
+				CBE3144527D68FBA00395A93 /* OldAdminView.swift in Sources */,
 				CB61B83B27B303720007922D /* UIDevice-Hardware.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

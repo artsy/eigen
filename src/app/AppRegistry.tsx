@@ -18,6 +18,7 @@ import { useErrorReporting } from "./errorReporting/hooks"
 import { CityGuideView } from "./NativeModules/CityGuideView"
 import { usingNewIOSAppShell } from "./NativeModules/LegacyNativeModules"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
+import { OldAdminView } from "./NativeModules/OldAdminView"
 import { About } from "./Scenes/About/About"
 import { ArticlesScreen, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
@@ -326,7 +327,7 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
-  Admin: nativeModule({ alwaysPresentModally: true }),
+  Admin: newNativeModule(OldAdminView, { alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
