@@ -1,5 +1,9 @@
-import { Action, action } from "easy-peasy"
+import { MyCollectionArtworkFormQuery } from "__generated__/MyCollectionArtworkFormQuery.graphql"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { GlobalStoreModel } from "app/store/GlobalStoreModel"
+import { Action, action, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { getCurrencies } from "react-native-localize"
+import { fetchQuery, graphql } from "relay-runtime"
 
 const currencies = ["USD", "EUR", "GBP"] as const
 const metrics = ["in", "cm"] as const
@@ -30,6 +34,8 @@ export interface UserPrefsModel {
   artworkViewOption: ViewOption
   setCurrency: Action<this, Currency>
   setMetric: Action<this, Metric>
+  fetchRemoteUserPrefs: Thunk<UserPrefsModel>
+  didRehydrate: ThunkOn<UserPrefsModel, {}, GlobalStoreModel>
   setArtworkViewOption: Action<this, ViewOption>
 }
 
@@ -51,7 +57,42 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
       console.warn("Metric/Dimension Unit not supported")
     }
   }),
+  fetchRemoteUserPrefs: thunk(async (actions) => {
+    const me = await fetchMe()
+
+    actions.setMetric(me?.lengthUnitPreference.toLowerCase() as Metric)
+    actions.setCurrency(me?.currencyPreference as Currency)
+  }),
+  didRehydrate: thunkOn(
+    (_, storeActions) => storeActions.rehydrate,
+    (actions, __, store) => {
+      const persistedCurrency = store.getState().currency
+      const persistedMetric = store.getState().metric
+
+      actions.setCurrency(persistedCurrency as Currency)
+      actions.setMetric(persistedMetric as Metric)
+
+      actions.fetchRemoteUserPrefs()
+    }
+  ),
   setArtworkViewOption: action((state, viewOption) => {
     state.artworkViewOption = viewOption
   }),
 })
+
+const fetchMe = async () => {
+  const result = await fetchQuery<MyCollectionArtworkFormQuery>(
+    defaultEnvironment,
+    graphql`
+      query MyCollectionArtworkFormQuery {
+        me {
+          lengthUnitPreference
+          currencyPreference
+        }
+      }
+    `,
+    {}
+  ).toPromise()
+
+  return result?.me
+}

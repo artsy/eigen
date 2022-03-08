@@ -3,27 +3,21 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
-import {
-  LengthUnitPreference,
-  MyCollectionArtworkFormQuery,
-} from "__generated__/MyCollectionArtworkFormQuery.graphql"
+import { LengthUnitPreference } from "__generated__/MyCollectionArtworkFormQuery.graphql"
 import { OldMyCollectionArtwork_sharedProps } from "__generated__/OldMyCollectionArtwork_sharedProps.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import {
   cleanArtworkPayload,
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
-import { Currency, Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
-import { fetchQuery, graphql } from "relay-runtime"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
@@ -119,24 +113,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     }
   }
 
-  const loadLengthUnitAndCurrency = async () => {
-    try {
-      const me = await fetchMe()
-
-      const metricUnitFromGravity = me?.lengthUnitPreference
-      const currencyFromGravity = me?.currencyPreference
-
-      if (metricUnitFromGravity && currencyFromGravity) {
-        GlobalStore.actions.userPrefs.setMetric(metricUnitFromGravity.toLowerCase() as Metric)
-        GlobalStore.actions.userPrefs.setCurrency(currencyFromGravity as Currency)
-      }
-    } catch (error) {
-      console.error("Couldn't load user details", error)
-    }
-  }
-
   useEffect(() => {
-    loadLengthUnitAndCurrency()
     return () => {
       GlobalStore.actions.myCollection.artwork.resetForm()
     }
@@ -329,21 +306,4 @@ const tracks = {
   deleteCollectedArtwork: (internalID: string, slug: string) => {
     return deleteCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
   },
-}
-
-const fetchMe = async () => {
-  const result = await fetchQuery<MyCollectionArtworkFormQuery>(
-    defaultEnvironment,
-    graphql`
-      query MyCollectionArtworkFormQuery {
-        me {
-          lengthUnitPreference
-          currencyPreference
-        }
-      }
-    `,
-    {}
-  ).toPromise()
-
-  return result?.me
 }
