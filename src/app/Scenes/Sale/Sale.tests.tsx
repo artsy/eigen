@@ -32,7 +32,7 @@ describe("Sale", () => {
     jest.clearAllMocks()
   })
 
-  it("switches to live auction view when sale goes live", () => {
+  it("switches to live auction view when sale goes live", async () => {
     renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -52,16 +52,15 @@ describe("Sale", () => {
     )
 
     expect(navigate).toHaveBeenCalledTimes(0)
-    waitFor(() => {
-      expect(navigate).toHaveBeenCalledTimes(1)
+    await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
+    await waitFor(() =>
       expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
-      expect(popParentViewController).toHaveBeenCalledTimes(1)
-    })
+    )
+    await waitFor(() => expect(popParentViewController).toHaveBeenCalledTimes(1))
   })
 
-  it("switches to live auction view when sale goes live with no endAt", () => {
+  it("switches to live auction view when sale goes live with no endAt", async () => {
     renderWithWrappers(<TestRenderer />)
-
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
@@ -80,15 +79,14 @@ describe("Sale", () => {
     )
 
     expect(navigate).toHaveBeenCalledTimes(0)
-
-    waitFor(() => {
-      expect(navigate).toHaveBeenCalledTimes(1)
+    await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
+    await waitFor(() =>
       expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
-      expect(popParentViewController).toHaveBeenCalledTimes(1)
-    })
+    )
+    await waitFor(() => expect(popParentViewController).toHaveBeenCalledTimes(1))
   })
 
-  it("doesn't switch to live auction view when sale is closed", () => {
+  it("doesn't switch to live auction view when sale is closed", async () => {
     renderWithWrappers(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -106,7 +104,7 @@ describe("Sale", () => {
 
     expect(navigate).toHaveBeenCalledTimes(0)
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(navigate).toHaveBeenCalledTimes(0)
       expect(popParentViewController).toHaveBeenCalledTimes(0)
     })

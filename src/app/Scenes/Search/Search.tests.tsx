@@ -683,7 +683,7 @@ describe("Search Screen", () => {
 
     await flushPromiseQueue()
 
-    waitFor(() => getByText("Banksy"))
+    await waitFor(() => getByText("Banksy"))
     act(() => fireEvent.press(getByText("Banksy")))
 
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
