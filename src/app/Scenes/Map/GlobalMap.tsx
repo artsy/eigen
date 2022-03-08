@@ -16,7 +16,7 @@ import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEqual, uniq } from "lodash"
 import { Box, ClassTheme, Flex, Sans } from "palette"
 import React from "react"
-import { Animated, Dimensions, Easing, Image, View } from "react-native"
+import { Animated, Dimensions, Image, View } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
@@ -117,15 +117,6 @@ export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfo
 const DefaultZoomLevel = 11
 const MinZoomLevel = 9
 const MaxZoomLevel = 17.5
-
-const ButtonAnimation = {
-  yDelta: -300,
-  duration: 350,
-  easing: {
-    moveOut: Easing.in(Easing.cubic),
-    moveIn: Easing.out(Easing.cubic),
-  },
-}
 
 enum DrawerPosition {
   open = "open",
@@ -232,24 +223,6 @@ export class GlobalMap extends React.Component<Props, State> {
     // If the relayErrorState changes, emit a new event.
     if (!!relayErrorState !== !!nextProps.relayErrorState) {
       EventEmitter.dispatch("map:error", { relayErrorState: nextProps.relayErrorState })
-    }
-
-    if (nextProps.hideMapButtons !== this.props.hideMapButtons) {
-      if (nextProps.hideMapButtons) {
-        Animated.timing(this.hideButtons, {
-          toValue: 1,
-          duration: ButtonAnimation.duration,
-          easing: ButtonAnimation.easing.moveOut,
-          useNativeDriver: true,
-        }).start()
-      } else {
-        Animated.timing(this.hideButtons, {
-          toValue: 0,
-          duration: ButtonAnimation.duration,
-          easing: ButtonAnimation.easing.moveIn,
-          useNativeDriver: true,
-        }).start()
-      }
     }
   }
 
