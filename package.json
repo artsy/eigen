@@ -53,7 +53,7 @@
     "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema v2 ../eigen/data/",
-    "test": "NODE_OPTIONS=--max_old_space_size=4096 jest",
+    "test": "NODE_OPTIONS=--max_old_space_size=4096 jest --runInBand",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "testing": "jest --watch",
     "type-check:offence-ranking": "yarn -s type-check:offence 'TS\\d+' -o | sort | uniq -c | sort -r",

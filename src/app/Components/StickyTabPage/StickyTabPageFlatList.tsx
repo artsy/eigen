@@ -1,5 +1,5 @@
 import { useSpace } from "palette"
-import React, { useContext, useRef, useState } from "react"
+import React, { createContext, useContext, useRef, useState } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
@@ -11,21 +11,12 @@ interface FlatListRequiredContext {
   setJSX(jsx: JSX.Element | null): void
 }
 
-const MOCK_CONTEXT: () => FlatListRequiredContext = () => ({
-  tabIsActive: new Animated.Value(1),
-  setJSX: null as any,
-  tabSpecificContentHeight: null,
-})
-
-export const StickyTabPageFlatListContext = React.createContext<FlatListRequiredContext>(
-  __TEST__ ? MOCK_CONTEXT() : (null as any)
-)
+export const StickyTabPageFlatListContext = createContext<FlatListRequiredContext>(null as any)
 
 const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
 
 export interface StickyTabSection {
-  /* key must be unique per-tab */
-  key: string
+  key: string // must be unique per-tab
   content: JSX.Element
 }
 export interface StickyTabFlatListProps

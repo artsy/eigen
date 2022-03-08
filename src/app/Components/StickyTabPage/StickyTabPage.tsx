@@ -69,10 +69,11 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
 
   const stickyRailRef = useRef<SnappyHorizontalRail>(null)
 
-  // This breaks the rules of hooks - you're not supposed to call them inside loops. We're doing it anyway because
-  // useAutoCollapsingMeasuredView is a pure function and all we're doing with tabSpecificStickyHeaderContentArray is
-  // rendering; it's not involved in any conditionals. We're reasonably confident it will be deterministic, and
-  // the alternative (making the hook take in an array of tabs) gets very complicated very quickly
+  // This breaks the rules of hooks - you're not supposed to call them inside loops.
+  // We're doing it anyway because useAutoCollapsingMeasuredView is a pure function and all we're
+  // doing with tabSpecificStickyHeaderContentArray is rendering.
+  // It's not involved in any conditionals. We're reasonably confident it will be deterministic, and
+  // the alternative (making the hook take in an array of tabs) gets very complicated very quickly.
   const tabSpecificStickyHeaderContentArray = tabs.map((_, i) => {
     return useAutoCollapsingMeasuredView(tabSpecificStickyHeaderContent[i])
   })
