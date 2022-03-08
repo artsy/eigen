@@ -394,7 +394,6 @@ export const modules = defineModules({
   LocalDiscovery: newNativeModule(CityGuideView, {
     fullBleed: true,
   }),
-  WebView: nativeModule(),
   ReactWebView: reactModule(ArtsyReactWebViewPage, {
     fullBleed: true,
     hasOwnModalCloseButton: true,

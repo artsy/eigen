@@ -1,6 +1,5 @@
 import { useToast } from "app/Components/Toast/toastHook"
 import { echoLaunchJson } from "app/utils/jsonFiles"
-import { Platform } from "react-native"
 import { GlobalStore } from "../GlobalStore"
 
 export interface FeatureDescriptor {
@@ -56,11 +55,6 @@ export const features = defineFeatures({
   AREnableNewPartnerView: {
     readyForRelease: true,
     echoFlagKey: "AREnableNewPartnerView",
-  },
-  AROptionsUseReactNativeWebView: {
-    readyForRelease: true,
-    echoFlagKey: Platform.OS === "ios" ? "AREnableReactNativeWebView" : undefined,
-    description: "Use react-native web views",
   },
   AROptionsLotConditionReport: {
     readyForRelease: true,

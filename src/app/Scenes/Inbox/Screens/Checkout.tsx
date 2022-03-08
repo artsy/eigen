@@ -21,7 +21,7 @@ export const Checkout: React.FC<{ orderID: string; title: string }> = ({ orderID
         >
           {title}
         </FancyModalHeader>
-        <ArtsyWebView url={webCheckoutUrl} showFullScreen={false} />
+        <ArtsyWebView url={webCheckoutUrl} />
       </View>
     </ArtsyKeyboardAvoidingView>
   )
