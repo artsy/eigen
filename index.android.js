@@ -1,2 +1,1 @@
-<<<<<<< HEAD
 require("./index-common")

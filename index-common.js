@@ -31,7 +31,8 @@ if (metaflags.startStorybook) {
   }
 
   if (Platform.OS === "android" || newIosAppShell) {
-    const appName = newIosAppShell ? require("./app.json").appName : "Artsy"
+
+    const appName = (newIosAppShell && !Platform.OS === "android") ? require("./app.json").appName : "Artsy"
     // polyfills are required for react-tracking to work properly
     require("core-js/actual")
     require("react-native-gesture-handler")
