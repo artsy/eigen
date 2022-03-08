@@ -167,11 +167,9 @@
 		CB61B7BC27B303720007922D /* Artsy-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B61C27B303700007922D /* Artsy-Info.plist */; };
 		CB61B7BD27B303720007922D /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB61B61D27B303700007922D /* Launch Screen.xib */; };
 		CB61B7BE27B303720007922D /* ARNavigationButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B62127B303700007922D /* ARNavigationButtonsViewController.m */; };
-		CB61B7BF27B303720007922D /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B62627B303700007922D /* ARInternalWebViewManager.m */; };
 		CB61B7C027B303720007922D /* ARExternalWebBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B62827B303700007922D /* ARExternalWebBrowserViewController.m */; };
 		CB61B7C127B303720007922D /* ARInternalMobileWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B62927B303700007922D /* ARInternalMobileWebViewController.m */; };
 		CB61B7C227B303720007922D /* ARInternalShareValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B62A27B303700007922D /* ARInternalShareValidator.m */; };
-		CB61B7C327B303720007922D /* ARInternalWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B62B27B303700007922D /* ARInternalWebView.m */; };
 		CB61B7C427B303720007922D /* LiveAuctionSaleLotsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B62E27B303700007922D /* LiveAuctionSaleLotsDataSource.swift */; };
 		CB61B7C527B303720007922D /* LiveAuctionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B63027B303700007922D /* LiveAuctionViewModel.swift */; };
 		CB61B7C627B303720007922D /* LiveAuctionEventViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B63127B303700007922D /* LiveAuctionEventViewModel.swift */; };
@@ -585,13 +583,9 @@
 		CB61B62327B303700007922D /* ARInternalMobileWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalMobileWebViewController.h; sourceTree = "<group>"; };
 		CB61B62427B303700007922D /* ARExternalWebBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARExternalWebBrowserViewController.h; sourceTree = "<group>"; };
 		CB61B62527B303700007922D /* ARInternalShareValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalShareValidator.h; sourceTree = "<group>"; };
-		CB61B62627B303700007922D /* ARInternalWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalWebViewManager.m; sourceTree = "<group>"; };
-		CB61B62727B303700007922D /* ARInternalWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebView.h; sourceTree = "<group>"; };
 		CB61B62827B303700007922D /* ARExternalWebBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExternalWebBrowserViewController.m; sourceTree = "<group>"; };
 		CB61B62927B303700007922D /* ARInternalMobileWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalMobileWebViewController.m; sourceTree = "<group>"; };
 		CB61B62A27B303700007922D /* ARInternalShareValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalShareValidator.m; sourceTree = "<group>"; };
-		CB61B62B27B303700007922D /* ARInternalWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalWebView.m; sourceTree = "<group>"; };
-		CB61B62C27B303700007922D /* ARInternalWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebViewManager.h; sourceTree = "<group>"; };
 		CB61B62E27B303700007922D /* LiveAuctionSaleLotsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionSaleLotsDataSource.swift; sourceTree = "<group>"; };
 		CB61B63027B303700007922D /* LiveAuctionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionViewModel.swift; sourceTree = "<group>"; };
 		CB61B63127B303700007922D /* LiveAuctionEventViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionEventViewModel.swift; sourceTree = "<group>"; };
@@ -1423,13 +1417,9 @@
 				CB61B62327B303700007922D /* ARInternalMobileWebViewController.h */,
 				CB61B62427B303700007922D /* ARExternalWebBrowserViewController.h */,
 				CB61B62527B303700007922D /* ARInternalShareValidator.h */,
-				CB61B62627B303700007922D /* ARInternalWebViewManager.m */,
-				CB61B62727B303700007922D /* ARInternalWebView.h */,
 				CB61B62827B303700007922D /* ARExternalWebBrowserViewController.m */,
 				CB61B62927B303700007922D /* ARInternalMobileWebViewController.m */,
 				CB61B62A27B303700007922D /* ARInternalShareValidator.m */,
-				CB61B62B27B303700007922D /* ARInternalWebView.m */,
-				CB61B62C27B303700007922D /* ARInternalWebViewManager.h */,
 			);
 			path = Web_Browsing;
 			sourceTree = "<group>";
@@ -2316,7 +2306,6 @@
 				CB61B7D727B303720007922D /* LiveActionStateReconciler.swift in Sources */,
 				CB61B7A627B303720007922D /* AuctionLot.m in Sources */,
 				CB61B7EE27B303720007922D /* AuctionBiddersNetworkModel.swift in Sources */,
-				CB61B7BF27B303720007922D /* ARInternalWebViewManager.m in Sources */,
 				CB61B82927B303720007922D /* SaleArtworkViewModel.swift in Sources */,
 				CB61B74927B303710007922D /* ArtsyAPI+Profiles.m in Sources */,
 				CB61B79E27B303720007922D /* ARNavigationTransitionController.m in Sources */,
@@ -2431,7 +2420,6 @@
 				CB61B7A427B303720007922D /* Artist.m in Sources */,
 				CBB7352B27C8216F001AC8C0 /* ARTLiveAuctionViewManager.m in Sources */,
 				CB61B74327B303710007922D /* ArtsyAPI+HEAD.m in Sources */,
-				CB61B7C327B303720007922D /* ARInternalWebView.m in Sources */,
 				CB61B73727B303710007922D /* ARTArtsyNativeModule.m in Sources */,
 				CB61B7CF27B303720007922D /* LotListCollectionViewCell.swift in Sources */,
 				CB61B83227B303720007922D /* ARNvagiationButton+Swift.swift in Sources */,
