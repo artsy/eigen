@@ -7,7 +7,6 @@
 #import "ARInternalMobileWebViewController.h"
 #import "Artsy-Swift.h"
 #import "AREigenMapContainerViewController.h"
-#import "ARAuctionWebViewController.h"
 #import "ArtsyEcho.h"
 #import "ARAppDelegate+Echo.h"
 #import "ARRouter.h"
@@ -150,8 +149,6 @@ RCT_EXPORT_METHOD(presentModal:(nonnull NSDictionary *)viewDescriptor           
         }
     } else if ([moduleName isEqualToString:@"Admin"]) {
         vc = [[ARAdminSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    } else if ([moduleName isEqualToString:@"Auction"]) {
-        vc = [self.class loadAuctionWithID:props[@"id"]];
     } else if ([moduleName isEqualToString:@"LiveAuction"]) {
         if ([AROptions boolForOption:AROptionsDisableNativeLiveAuctions] || [self.class requiresUpdateForWebSocketVersionUpdate]) {
             NSString *slug = props[@"slug"];
@@ -230,24 +227,6 @@ RCT_EXPORT_METHOD(popToRootAndScrollToTop:(nonnull NSString *)stackID
     [stack popToRootViewControllerAnimated:YES];
     [stack.viewControllers[0].view ar_scrollToTopAnimated:YES];
     resolve(nil);
-}
-
-+ (UIViewController *)loadAuctionWithID:(NSString *)saleID
-{
-    if ([[[ARAppDelegate sharedInstance] echo] isFeatureEnabled:@"DisableNativeAuctions"] == YES) {
-        NSString *path = [NSString stringWithFormat:@"/auction/%@", saleID];
-        NSURL *URL = [ARRouter resolveRelativeUrl:path];
-        return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:saleID artworkID:nil];
-    } else {
-        return [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Auction" initialProperties:@{ @"saleID": saleID }];
-    }
-}
-
-+ (UIViewController *)loadWebViewAuctionRegistrationWithID:(NSString *)auctionID
-{
-    NSString *path = [NSString stringWithFormat:@"/auction-registration/%@", auctionID];
-    NSURL *URL = [ARRouter resolveRelativeUrl:path];
-    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
 }
 
 /// To be kept in lock-step with the corresponding echo value, and updated when there is a breaking causality change.

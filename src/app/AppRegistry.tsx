@@ -327,7 +327,6 @@ export const modules = defineModules({
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkSubmissionStatusFAQ: reactModule(ArtworkSubmissionStatusFAQ),
-  Auction: nativeModule(),
   Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }, SaleScreenQuery),
   Auctions: reactModule(SalesQueryRenderer, {}, SalesScreenQuery),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
