@@ -1,4 +1,4 @@
-import { MyCollectionArtworkFormQuery } from "__generated__/MyCollectionArtworkFormQuery.graphql"
+import { UserPrefsModelQuery } from "__generated__/UserPrefsModelQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { Action, action, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
@@ -81,10 +81,10 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
 })
 
 const fetchMe = async () => {
-  const result = await fetchQuery<MyCollectionArtworkFormQuery>(
+  const result = await fetchQuery<UserPrefsModelQuery>(
     defaultEnvironment,
     graphql`
-      query MyCollectionArtworkFormQuery {
+      query UserPrefsModelQuery {
         me {
           lengthUnitPreference
           currencyPreference
