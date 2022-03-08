@@ -561,7 +561,7 @@ workflows:
               only:
                 - main
     jobs:
-      - check-flags
+      - check-if-app-has-been-approved-for-release
 
 
   update-changelog-workflow:

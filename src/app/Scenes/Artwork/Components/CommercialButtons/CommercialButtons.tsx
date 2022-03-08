@@ -2,12 +2,13 @@ import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwo
 import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { InquiryOptions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { Schema, Track, track as _track } from "app/utils/track"
+import { Schema } from "app/utils/track"
 import { Button, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { BidButtonFragmentContainer } from "./BidButton"
 import { BuyNowButtonFragmentContainer } from "./BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "./InquiryButtons"
@@ -21,119 +22,107 @@ export interface CommercialButtonProps {
   auctionState: AuctionTimerState
 }
 
-const track: Track<CommercialButtonProps> = _track
+export const CommercialButtons: React.FC<CommercialButtonProps> = ({
+  artwork,
+  me,
+  auctionState,
+  editionSetID,
+}) => {
+  const { trackEvent } = useTracking()
+  const newFirstInquiry = useFeatureFlag("AROptionsNewFirstInquiry")
 
-@track()
-export class CommercialButtons extends React.Component<CommercialButtonProps> {
-  @track({
-    action_name: Schema.ActionNames.ContactGallery,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.CommercialButtons,
-  })
-  handleInquiry() {
-    navigate(`/inquiry/${this.props.artwork.slug}`)
+  const handleInquiry = () => {
+    trackEvent({
+      action_name: Schema.ActionNames.ContactGallery,
+      action_type: Schema.ActionTypes.Tap,
+      context_module: Schema.ContextModules.CommercialButtons,
+    })
+    navigate(`/inquiry/${artwork.slug}`)
   }
 
-  render() {
-    const { artwork, me, auctionState } = this.props
-    const {
-      isBuyNowable,
-      isAcquireable,
-      isOfferable,
-      isInquireable,
-      isInAuction,
-      editionSets,
-      isForSale,
-    } = artwork
-    const noEditions = (editionSets && editionSets.length === 0) || !editionSets
-    // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
-    const newFirstInquiry = unsafe_getFeatureFlag("AROptionsNewFirstInquiry")
+  const {
+    isBuyNowable,
+    isAcquireable,
+    isOfferable,
+    isInquireable,
+    isInAuction,
+    editionSets,
+    isForSale,
+  } = artwork
+  const noEditions = !editionSets || editionSets.length === 0
 
-    if (isInAuction && artwork.sale && auctionState !== AuctionTimerState.CLOSED && isForSale) {
-      return (
-        <>
-          {isBuyNowable && noEditions ? (
-            <>
-              <BidButtonFragmentContainer artwork={artwork} me={me} auctionState={auctionState} />
-              <Spacer mb={1} />
-              <BuyNowButtonFragmentContainer
-                variant="outline"
-                artwork={artwork}
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                editionSetID={this.props.editionSetID}
-              />
-            </>
-          ) : (
+  if (isInAuction && artwork.sale && auctionState !== AuctionTimerState.CLOSED && isForSale) {
+    return (
+      <>
+        {isBuyNowable && noEditions ? (
+          <>
             <BidButtonFragmentContainer artwork={artwork} me={me} auctionState={auctionState} />
-          )}
-        </>
-      )
-    } else if (isOfferable && isAcquireable) {
-      return (
-        <>
-          <BuyNowButtonFragmentContainer
+            <Spacer mb={1} />
+            <BuyNowButtonFragmentContainer
+              variant="outline"
+              artwork={artwork}
+              editionSetID={editionSetID ?? null}
+            />
+          </>
+        ) : (
+          <BidButtonFragmentContainer artwork={artwork} me={me} auctionState={auctionState} />
+        )}
+      </>
+    )
+  }
+
+  if (isOfferable && isAcquireable) {
+    return (
+      <>
+        <BuyNowButtonFragmentContainer artwork={artwork} editionSetID={editionSetID ?? null} />
+        <Spacer mb={1} />
+        <MakeOfferButtonFragmentContainer
+          artwork={artwork}
+          editionSetID={editionSetID ?? null}
+          variant="outline"
+        />
+      </>
+    )
+  }
+
+  if (isAcquireable) {
+    return <BuyNowButtonFragmentContainer artwork={artwork} editionSetID={editionSetID ?? null} />
+  }
+
+  if (isOfferable) {
+    return (
+      <>
+        <MakeOfferButtonFragmentContainer artwork={artwork} editionSetID={editionSetID ?? null} />
+        {isInquireable && <Spacer my={0.5} />}
+        {isInquireable && !newFirstInquiry && (
+          <Button onPress={handleInquiry} size="large" variant="outline" block width={100} haptic>
+            {InquiryOptions.ContactGallery}
+          </Button>
+        )}
+        {isInquireable && newFirstInquiry && (
+          <InquiryButtonsFragmentContainer
             artwork={artwork}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            editionSetID={this.props.editionSetID}
-          />
-          <Spacer mb={1} />
-          <MakeOfferButtonFragmentContainer
-            artwork={artwork}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            editionSetID={this.props.editionSetID}
+            editionSetID={editionSetID}
             variant="outline"
           />
-        </>
-      )
-    } else if (isAcquireable) {
-      return (
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        <BuyNowButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
-      )
-    } else if (isOfferable) {
-      return (
-        <>
-          <MakeOfferButtonFragmentContainer
-            artwork={artwork}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            editionSetID={this.props.editionSetID}
-          />
-          {isInquireable && <Spacer my={0.5} />}
-          {isInquireable && !newFirstInquiry && (
-            <Button
-              onPress={() => this.handleInquiry()}
-              size="large"
-              variant="outline"
-              block
-              width={100}
-              haptic
-            >
-              {InquiryOptions.ContactGallery}
-            </Button>
-          )}
-          {isInquireable && newFirstInquiry && (
-            <InquiryButtonsFragmentContainer
-              artwork={artwork}
-              editionSetID={this.props.editionSetID}
-              variant="outline"
-            />
-          )}
-        </>
-      )
-    } else if (isInquireable && !newFirstInquiry) {
-      return (
-        <Button onPress={() => this.handleInquiry()} size="large" block width={100} haptic>
-          {InquiryOptions.ContactGallery}
-        </Button>
-      )
-    } else if (isInquireable && newFirstInquiry) {
-      return (
-        <InquiryButtonsFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
-      )
-    } else {
-      return <></>
-    }
+        )}
+      </>
+    )
   }
+
+  if (isInquireable && !newFirstInquiry) {
+    return (
+      <Button onPress={handleInquiry} size="large" block width={100} haptic>
+        {InquiryOptions.ContactGallery}
+      </Button>
+    )
+  }
+
+  if (isInquireable && newFirstInquiry) {
+    return <InquiryButtonsFragmentContainer artwork={artwork} editionSetID={editionSetID} />
+  }
+
+  return null
 }
 
 export const CommercialButtonsFragmentContainer = createFragmentContainer(CommercialButtons, {

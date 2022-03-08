@@ -1,4 +1,3 @@
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { Platform } from "react-native"
 
 export function createGeminiUrl({
@@ -16,7 +15,7 @@ export function createGeminiUrl({
   imageQuality?: number
   resizeMode?: "fit" | "fill"
 }) {
-  const enableWebPImages = unsafe_getFeatureFlag("AREnableWebPImages") && Platform.OS === "android"
+  const enableWebPImages = Platform.OS === "android"
   const src = encodeURIComponent(imageURL)
 
   const params = [

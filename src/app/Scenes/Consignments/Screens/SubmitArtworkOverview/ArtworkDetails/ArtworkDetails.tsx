@@ -1,17 +1,22 @@
 import { captureMessage } from "@sentry/react-native"
+import { navigate } from "app/navigation/navigate"
+import { artworkDetailsCompletedEvent } from "app/Scenes/Consignments/Utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
-import { BulletedItem, CTAButton, Flex, Spacer, Text } from "palette"
+import { BulletedItem, CTAButton, Flex, LinkText, Spacer } from "palette"
 import React, { useState } from "react"
+import { useTracking } from "react-tracking"
 import { ErrorView } from "../Components/ErrorView"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "./validation"
 
 export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
+  const { userID, userEmail } = GlobalStore.useAppState((state) => state.auth)
   const { submissionId, artworkDetails } = GlobalStore.useAppState(
     (state) => state.artworkSubmission.submission
   )
+  const { trackEvent } = useTracking()
   const [submissionError, setSubmissionError] = useState(false)
 
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
@@ -20,6 +25,9 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
       if (id) {
         GlobalStore.actions.artworkSubmission.submission.setSubmissionId(id)
         GlobalStore.actions.artworkSubmission.submission.setArtworkDetailsForm(values)
+
+        trackEvent(artworkDetailsCompletedEvent(id, userEmail, userID))
+
         handlePress()
       }
     } catch (error) {
@@ -33,13 +41,21 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
   }
 
   return (
-    <Flex flex={3} p={1} mt={1}>
-      <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
+    <Flex flex={3} py={1} mt={1}>
       <BulletedItem>
-        Unfortunately, we do not allow{" "}
-        <Text style={{ textDecorationLine: "underline" }}>artists to sell their own work</Text> on
-        Artsy.
+        Currently, artists can not sell their own work on Artsy.{" "}
+        <LinkText
+          onPress={() =>
+            navigate(
+              "https://support.artsy.net/hc/en-us/articles/360046646374-I-m-an-artist-Can-I-submit-my-own-work-to-sell-"
+            )
+          }
+        >
+          Learn more.
+        </LinkText>
       </BulletedItem>
+      <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
+
       <Spacer mt={4} />
       <Formik<ArtworkDetailsFormModel>
         initialValues={artworkDetails}

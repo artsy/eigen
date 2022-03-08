@@ -4,6 +4,7 @@ import React from "react"
 export * from "./helpers"
 
 export * from "./Text"
+export * from "./LinkText"
 
 import { Text, TextProps } from "./Text"
 

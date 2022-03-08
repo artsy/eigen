@@ -138,12 +138,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
     addRoute("/:profile_id_ignored/artist/:artistID", "Artist"),
     addRoute("/auction-registration/:saleID", "AuctionRegistration"),
-    unsafe_getFeatureFlag("AROptionsNewSalePage")
-      ? addRoute("/auction/:saleID", "Auction2")
-      : addRoute("/auction/:id", "Auction"),
-    unsafe_getFeatureFlag("AROptionsNewSalePage")
-      ? addRoute("/auction/:saleID/info", "AuctionInfo")
-      : null,
+    addRoute("/auction/:saleID", "Auction2"),
+    addRoute("/auction/:saleID/info", "AuctionInfo"),
     addRoute("/auction-faq", "AuctionFAQ"),
     addRoute("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
     addRoute("/gene/:geneID", "Gene"),

@@ -10,9 +10,12 @@ import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInqu
 import { Button, Theme } from "palette"
 import React from "react"
 import { FragmentRef, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { CommercialButtonsFragmentContainer } from "./CommercialButtons"
 
 jest.unmock("react-relay")
+
+const trackEvent = useTracking().trackEvent
 
 const componentWithQuery = async ({
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -93,7 +96,9 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.text()).toContain("Contact gallery")
+    commercialButtons.find(Button).at(0).props().onPress()
+    expect(commercialButtons.text()).toContain("Contact Gallery")
+    expect(navigate).toHaveBeenCalledWith(`/inquiry/${ArtworkFixture.slug}`)
   })
 
   it("renders Make Offer button if isOfferable", async () => {
@@ -108,7 +113,7 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.text()).toContain("Make offer")
+    expect(commercialButtons.text()).toContain("Make an Offer")
   })
 
   it("renders Buy Now button if isAcquireable", async () => {
@@ -123,7 +128,7 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.text()).toContain("Buy now")
+    expect(commercialButtons.text()).toContain("Purchase")
   })
 
   it("renders Bid button if isInAuction & isBiddable", async () => {
@@ -174,8 +179,8 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Buy now")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Make offer")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Purchase")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Make an Offer")
   })
 
   it("commits the Buy Now mutation", async () => {
@@ -271,7 +276,7 @@ describe("CommercialButtons", () => {
       artwork,
     })
     expect(commercialButtons.find(Button).at(0).text()).toContain("Bid")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Buy now $8000")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Purchase $8000")
   })
 
   it("doesn't render the Buy Now or Bid buttons when isInAuction and isBuyNowable but has sold via buy now", async () => {
@@ -304,7 +309,7 @@ describe("CommercialButtons", () => {
     expect(commercialButtons.find(Button).length).toEqual(0)
   })
 
-  it("renders both Make Offer and Contact Gallery buttons when isOfferable and isInquiriable", async () => {
+  it("renders both Make an Offer and Contact Gallery buttons when isOfferable and isInquiriable", async () => {
     const artwork = {
       ...ArtworkFixture,
       isOfferable: true,
@@ -315,7 +320,51 @@ describe("CommercialButtons", () => {
     const commercialButtons = await relayComponent({
       artwork,
     })
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Make offer")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact gallery")
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Make an Offer")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact Gallery")
+  })
+
+  describe("tracking", () => {
+    it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", async () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isOfferable: true,
+        isForSale: false,
+        isInquireable: true,
+        isPriceHidden: false,
+      }
+      const commercialButtons = await relayComponent({
+        artwork,
+      })
+      commercialButtons.find(Button).at(1).props().onPress()
+
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedContactGallery",
+        context_owner_id: artwork.internalID,
+        context_owner_slug: artwork.slug,
+        context_owner_type: "artwork",
+      })
+    })
+
+    it("trackEvent called when Contact Gallery pressed given Inquireable artwork", async () => {
+      const artwork = {
+        ...ArtworkFixture,
+        isOfferable: true,
+        isForSale: false,
+        isInquireable: true,
+        isPriceHidden: false,
+      }
+      const commercialButtons = await relayComponent({
+        artwork,
+      })
+      commercialButtons.find(Button).at(1).props().onPress()
+
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedContactGallery",
+        context_owner_id: artwork.internalID,
+        context_owner_slug: artwork.slug,
+        context_owner_type: "artwork",
+      })
+    })
   })
 })

@@ -49,7 +49,7 @@ describe("selectInquiryType", () => {
 
     expect(r).toEqual({
       shippingLocation: null,
-      inquiryType: "Contact gallery",
+      inquiryType: "Contact Gallery",
       inquiryQuestions: [],
       message: null,
     })

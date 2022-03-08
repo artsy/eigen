@@ -1,4 +1,6 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
+import { GlobalStore } from "app/store/GlobalStore"
 import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
 import { Flex, NoImageIcon, useColor } from "palette"
 import React, { useEffect, useState } from "react"
@@ -21,6 +23,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
 }) => {
   const color = useColor()
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
+  const [localImageConsignments, setLocalImageConsignments] = useState<Photo | null>(null)
 
   useEffect(() => {
     retrieveLocalImages(artworkSlug).then((images) => {
@@ -28,6 +31,14 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         setLocalImage(images[0])
       }
     })
+  }, [])
+  const { photos } = GlobalStore.useAppState(
+    (state) => state.artworkSubmission.submission.photosForMyCollection
+  )
+  useEffect(() => {
+    if (photos !== null && photos.length > 0) {
+      setLocalImageConsignments(photos[0])
+    }
   }, [])
 
   const renderImage = () => {
@@ -53,6 +64,22 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
           }}
           resizeMode="contain"
           source={{ uri: localImage.path }}
+        />
+      )
+    } else if (localImageConsignments) {
+      return (
+        <RNImage
+          testID="Image-Local"
+          style={{
+            width: imageWidth,
+            height:
+              (imageWidth / (localImageConsignments.width || 120)) *
+              (localImageConsignments.height || 120),
+          }}
+          resizeMode="contain"
+          source={{
+            uri: localImageConsignments.path,
+          }}
         />
       )
     } else {

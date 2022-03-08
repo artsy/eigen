@@ -25,14 +25,14 @@ describe("Colors options screen", () => {
           value: "black-and-white",
         },
         {
-          name: "Dark Orange",
+          name: "Orange",
           count: 513,
-          value: "darkorange",
+          value: "orange",
         },
         {
-          name: "Light Blue",
+          name: "Blue",
           count: 277,
-          value: "lightblue",
+          value: "blue",
         },
         {
           name: "Yellow",
@@ -157,9 +157,9 @@ describe("Colors options screen", () => {
       const selectedOptions = selectedColorOptions(tree)
       expect(selectedOptions).toHaveLength(3)
       expect(selectedOptions.map((option) => option.props.name)).toEqual([
-        aggregation!.counts[0].name,
+        aggregation!.counts[1].name,
         aggregation!.counts[3].name,
-        aggregation!.counts[4].name,
+        aggregation!.counts[2].name,
       ])
     })
 

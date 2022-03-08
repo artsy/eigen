@@ -1,11 +1,13 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
 import { ArtworkDetails } from "./ArtworkDetails"
@@ -48,7 +50,27 @@ describe("ArtworkDetails", () => {
 
   it("renders correct explanation for form fields", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    expect(getByText("Currently, artists can not sell their own work on Artsy.")).toBeTruthy()
+    expect(getByText("Learn more.")).toBeTruthy()
     expect(getByText("All fields are required to submit an artwork.")).toBeTruthy()
+  })
+
+  it("renders numeric-pad for year and decimal-pad for dimension inputs", async () => {
+    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+    const inputs = {
+      year: getByTestId("Submission_YearInput"),
+      height: getByTestId("Submission_HeightInput"),
+      width: getByTestId("Submission_WidthInput"),
+      depth: getByTestId("Submission_DepthInput"),
+    }
+
+    await flushPromiseQueue()
+
+    expect(inputs.year.props.keyboardType).toBe("number-pad")
+    expect(inputs.height.props.keyboardType).toBe("decimal-pad")
+    expect(inputs.width.props.keyboardType).toBe("decimal-pad")
+    expect(inputs.depth.props.keyboardType).toBe("decimal-pad")
   })
 
   describe("createOrUpdateSubmission", () => {
@@ -133,6 +155,68 @@ describe("ArtworkDetails", () => {
 
       act(() => {
         fireEvent.changeText(inputs.provenance, "found it")
+      })
+    })
+  })
+
+  describe("analytics", () => {
+    let trackEvent: (data: Partial<{}>) => void
+    beforeEach(() => {
+      trackEvent = useTracking().trackEvent
+
+      GlobalStore.actions.artworkSubmission.submission.setArtworkDetailsForm(mockFormValues)
+      GlobalStore.actions.auth.setState({
+        userID: "1",
+        userEmail: "user@mail.com",
+      })
+    })
+
+    afterEach(() => {
+      GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+      GlobalStore.actions.auth.setState({
+        userID: null,
+        userEmail: null,
+      })
+    })
+
+    it("tracks artworkDetailsCompleted event on submission create", async () => {
+      const { UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const SaveButton = UNSAFE_getByProps({
+        testID: "Submission_ArtworkDetails_Button",
+      })
+
+      SaveButton.props.onPress()
+      await flushPromiseQueue()
+
+      expect(trackEvent).toHaveBeenCalled()
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: ActionType.artworkDetailsCompleted,
+        context_owner_type: OwnerType.consignmentFlow,
+        context_module: ContextModule.artworkDetails,
+        submission_id: "12345",
+        user_email: "user@mail.com",
+        user_id: "1",
+      })
+    })
+
+    it("tracks artworkDetailsCompleted event on submission update", async () => {
+      GlobalStore.actions.artworkSubmission.submission.setSubmissionId("54321")
+      const { UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const SaveButton = UNSAFE_getByProps({
+        testID: "Submission_ArtworkDetails_Button",
+      })
+
+      SaveButton.props.onPress()
+      await flushPromiseQueue()
+
+      expect(trackEvent).toHaveBeenCalled()
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: ActionType.artworkDetailsCompleted,
+        context_owner_type: OwnerType.consignmentFlow,
+        context_module: ContextModule.artworkDetails,
+        submission_id: "54321",
+        user_email: "user@mail.com",
+        user_id: "1",
       })
     })
   })

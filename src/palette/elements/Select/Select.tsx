@@ -34,7 +34,7 @@ export interface SelectProps<ValueType> {
   enableSearch?: boolean
   maxModalHeight?: number
   hasError?: boolean
-  tooltipText?: string
+  tooltipText?: string | JSX.Element
   testID?: string
   onSelectValue(value: ValueType, index: number): void
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
@@ -130,7 +130,7 @@ const SelectButton: React.FC<{
   required?: boolean
   placeholder?: string
   hasError?: boolean
-  tooltipText?: string
+  tooltipText?: string | JSX.Element
   testID?: string
   onPress(): void
   onTooltipPress?(): void

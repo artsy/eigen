@@ -1,14 +1,16 @@
+// keep this import of storybook first, otherwise it might produce errors when debugging
+import { StorybookUIRoot } from "../storybook/storybook-ui"
+
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import React, { useEffect } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
-// keep this import of storybook last, otherwise it produces an error when debugging
-import { StorybookUIRoot } from "../storybook/storybook-ui"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { FadeIn } from "./Components/FadeIn"
+import { FPSCounter } from "./Components/FPSCounter"
 import { BidFlow } from "./Containers/BidFlow"
 import { InboxQueryRenderer, InboxScreenQuery } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
@@ -113,7 +115,7 @@ import {
   ViewingRoomsListScreen,
   ViewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore, useDevToggle, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
@@ -123,7 +125,8 @@ import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
-import { useExperiments } from "./utils/useExperiments"
+import { useDebugging } from "./utils/useDebugging"
+import { useSplitExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useIdentifyUser } from "./utils/useIdentifyUser"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
@@ -154,14 +157,14 @@ interface ArtworkProps {
   isVisible: boolean
 }
 
-const Artwork: React.FC<ArtworkProps> = (props) => <ArtworkQueryRenderer {...props} />
+const Artwork = (props: ArtworkProps) => <ArtworkQueryRenderer {...props} />
 
 interface PartnerLocationsProps {
   partnerID: string
   safeAreaInsets: SafeAreaInsets
   isVisible: boolean
 }
-const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => (
+const PartnerLocations = (props: PartnerLocationsProps) => (
   <PartnerLocationsQueryRenderer {...props} />
 )
 
@@ -239,7 +242,21 @@ class PageWrapper extends React.Component<PageWrapperProps> {
 
   constructor(props: PageWrapperProps) {
     super(props)
-    this.pageProps = {
+    this.pageProps = this.savePageProps()
+  }
+
+  componentDidUpdate() {
+    if (this.props.moduleName === "Map") {
+      // workaround for City Guide. DO NOT USE FOR OTHER THINGS!
+      // basically, only for the city guide component, we recreate the pageprops fresh.
+      // thats because of the funky way the native and RN components in city guide are set up.
+      // if we dont refresh them, then the city guide does not change cities from the dropdown.
+      this.pageProps = this.savePageProps()
+    }
+  }
+
+  savePageProps() {
+    return {
       ...this.props,
       viewProps: {
         ...this.props.viewProps,
@@ -340,7 +357,6 @@ export const modules = defineModules({
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkSubmissionStatusFAQ: reactModule(ArtworkSubmissionStatusFAQ),
-  Auction: nativeModule(),
   Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }, SaleScreenQuery),
   Auctions: reactModule(SalesQueryRenderer, {}, SalesScreenQuery),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
@@ -477,6 +493,7 @@ for (const moduleName of Object.keys(modules)) {
 }
 
 const Main: React.FC = () => {
+  useDebugging()
   usePreferredThemeTracking()
   useScreenReaderTracking()
   useFreshInstallTracking()
@@ -494,10 +511,11 @@ const Main: React.FC = () => {
     (state) => state.artsyPrefs.echo.forceUpdateMessage
   )
 
+  const fpsCounter = useDevToggle("DTFPSCounter")
   useErrorReporting()
   useStripeConfig()
   useWebViewCookies()
-  useExperiments()
+  useSplitExperiments()
   useInitializeQueryPrefetching()
   useIdentifyUser()
 
@@ -513,7 +531,12 @@ const Main: React.FC = () => {
     return <Onboarding />
   }
 
-  return <BottomTabsNavigator />
+  return (
+    <>
+      <BottomTabsNavigator />
+      {!!fpsCounter && <FPSCounter style={{ bottom: 94 }} />}
+    </>
+  )
 }
 
 if (Platform.OS === "ios" && !usingNewIOSAppShell()) {

@@ -26,6 +26,9 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) =
   const tracking = useTracking()
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
     tracking.trackEvent(tappedConsign(tappedConsignArgs))
+    GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+      photos: [],
+    })
     const route = "/collections/my-collection/artworks/new/submissions/new"
     navigate(route)
   }
@@ -33,21 +36,22 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) =
   useEffect(() => {
     return () => {
       GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+      GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+        photos: [],
+      })
     }
   }, [])
 
   return (
-    <>
-      <ScrollView>
-        <Join separator={<Separator my={3} />}>
-          <Header onConsignPress={handleConsignPress} />
-          <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
-          <HowItWorks />
-          <ArtistList targetSupply={targetSupply} isLoading={isLoading} />
-          <Footer onConsignPress={handleConsignPress} />
-        </Join>
-      </ScrollView>
-    </>
+    <ScrollView>
+      <Join separator={<Separator my={3} />}>
+        <Header onConsignPress={handleConsignPress} />
+        <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
+        <HowItWorks />
+        <ArtistList targetSupply={targetSupply} isLoading={isLoading} />
+        <Footer onConsignPress={handleConsignPress} />
+      </Join>
+    </ScrollView>
   )
 }
 

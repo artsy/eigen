@@ -59,11 +59,16 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       }
     }
 
-    // let GlobalStore and Formik know about processed photos
-    GlobalStore.actions.artworkSubmission.submission.setPhotos({
-      photos: [...values.photos, ...processedPhotos],
+    const allPhotos = [...values.photos, ...processedPhotos]
+
+    // set photos for my collection, and submission flow state and Formik
+    GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+      photos: allPhotos,
     })
-    setFieldValue("photos", [...values.photos, ...processedPhotos])
+    GlobalStore.actions.artworkSubmission.submission.setPhotos({
+      photos: allPhotos,
+    })
+    setFieldValue("photos", allPhotos)
   }
 
   // show Native action sheet and get photos from user's phone
@@ -87,10 +92,15 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
           p.errorMessage = ""
         })
       }
-      setFieldValue("photos", filteredPhotos)
-      GlobalStore.actions.artworkSubmission.submission.setPhotos({
-        photos: [...filteredPhotos],
+
+      // set photos for my collection, and submission flow state and Formik
+      GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+        photos: filteredPhotos,
       })
+      GlobalStore.actions.artworkSubmission.submission.setPhotos({
+        photos: filteredPhotos,
+      })
+      setFieldValue("photos", filteredPhotos)
     } catch (error) {
       photo.error = true
       photo.errorMessage = "Photo could not be deleted"
@@ -105,7 +115,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
           Add Files Here
         </Text>
         <Text variant="md" color="black60" marginBottom={1}>
-          Files Supported: JPG, PNG
+          Files Supported: JPG, PNG, HEIC
         </Text>
         <Text variant="md" color="black60" marginBottom={3}>
           Total Maximum Size: 30MB

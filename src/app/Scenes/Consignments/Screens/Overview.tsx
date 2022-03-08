@@ -9,7 +9,7 @@ import { Dimensions, ScrollView, View } from "react-native"
 import { ActionSheetOptions, connectActionSheet } from "@expo/react-native-action-sheet"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { AddEditPhotos } from "app/Components/Photos/AddEditPhotos"
-import { dismissModal } from "app/navigation/navigate"
+import { goBack } from "app/navigation/navigate"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { Box, Button, Flex, Spacer, Text } from "palette"
 import { Image as RNCImage } from "react-native-image-crop-picker"
@@ -41,7 +41,6 @@ interface State extends ConsignmentSetup {
   hasSubmittedSuccessfully?: boolean
 }
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @screenTrack({
@@ -236,8 +235,6 @@ export class Overview extends React.Component<Props, State> {
     })
   }
 
-  exitModal = () => dismissModal()
-
   uploadPhotosIfNeeded = async () => {
     const uploading = this.state.photos && this.state.photos.some((f) => f.uploading)
     const toUpload =
@@ -297,7 +294,7 @@ export class Overview extends React.Component<Props, State> {
         <FancyModalHeader
           useXButton
           onLeftButtonPress={() => {
-            dismissModal()
+            goBack()
           }}
         >
           Submit a work

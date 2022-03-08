@@ -30,6 +30,7 @@ const MyCollectionArtworkScreenQuery = graphql`
     }
     marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
       ...MyCollectionArtworkInsights_marketPriceInsights
+      ...MyCollectionArtworkAbout_marketPriceInsights
     }
   }
 `
@@ -84,7 +85,12 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     },
     {
       title: Tab.about,
-      content: <MyCollectionArtworkAbout artwork={data.artwork} />,
+      content: (
+        <MyCollectionArtworkAbout
+          artwork={data.artwork}
+          marketPriceInsights={data.marketPriceInsights}
+        />
+      ),
     },
   ])
 

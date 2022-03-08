@@ -109,7 +109,7 @@
     "cheerio": "0.22.0"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.31.0",
+    "@artsy/cohesion": "4.33.0",
     "@artsy/palette-tokens": "2.6.0",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
@@ -153,8 +153,10 @@
     "prop-types": "15.7.2",
     "query-string": "4.3.4",
     "react": "17.0.2",
+    "react-fps": "1.0.6",
     "react-instantsearch-core": "6.16.0",
     "react-instantsearch-native": "6.16.0",
+    "react-nanny": "2.12.0",
     "react-native": "0.66.4",
     "react-native-appboy-sdk": "1.30.0",
     "react-native-bootsplash": "3.2.0",
@@ -185,6 +187,7 @@
     "react-use": "17.1.0",
     "redux-logger": "3.0.6",
     "remove-markdown": "0.1.0",
+    "rn-async-storage-flipper": "0.0.10",
     "rn-fetch-blob": "0.12.0",
     "search-insights": "2.0.3",
     "semver": "7.3.5",
@@ -193,6 +196,7 @@
     "styled-system": "5.1.5",
     "supercluster": "6.0.2",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
+    "unleash-proxy-client": "1.11.0",
     "url": "0.11.0",
     "yup": "0.31.1",
     "zustand": "3.6.9"
@@ -309,7 +313,7 @@
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-relay": "0.0.3",
     "tslint-react": "5.0.0",
-    "typescript": "4.5.5",
+    "typescript": "4.6.2",
     "typescript-styled-plugin": "0.18.2",
     "vscode-apollo-relay": "1.5.2"
   },

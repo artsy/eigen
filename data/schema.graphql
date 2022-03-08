@@ -759,6 +759,7 @@ type ArticleFeatureSection {
   embed(autoPlay: Boolean = false): String
   image: Image
   layout: ArticleFeatureSectionType!
+  media: String
   title: String
 }
 
@@ -1560,6 +1561,14 @@ type Artwork implements Node & Searchable & Sellable {
   # Returns the display label and detail when artwork has a certificate of authenticity
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
+
+  # Comparable auction results
+  comparableAuctionResults(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): AuctionResultConnection
   conditionDescription: ArtworkInfoRow
   consignmentSubmission: ArtworkConsignmentSubmission
   contactLabel: String
@@ -2657,6 +2666,7 @@ type BidderPositionResult {
   messageDescriptionMD: String
   messageHeader: String
   position: BidderPosition
+  rawError: String
   status: String!
 }
 
@@ -2980,6 +2990,8 @@ type CommerceBuyerRejectOfferPayload {
 }
 
 type CommerceBuyOrder implements CommerceOrder {
+  # Whether Artsy collects taxes (e.g., sales tax or VAT) on this order.
+  artsyCollectsTaxes: Boolean
   artsyRemitsTaxes: Boolean
   artsyTotal(
     decimal: String = "."
@@ -3630,6 +3642,8 @@ type CommerceOfferEdge {
 }
 
 type CommerceOfferOrder implements CommerceOrder {
+  # Whether Artsy collects taxes (e.g., sales tax or VAT) on this order.
+  artsyCollectsTaxes: Boolean
   artsyRemitsTaxes: Boolean
   artsyTotal(
     decimal: String = "."
@@ -3857,6 +3871,8 @@ type CommerceOfferSubmittedEvent implements CommerceEventInterface {
 
 # Order
 interface CommerceOrder {
+  # Whether Artsy collects taxes (e.g., sales tax or VAT) on this order.
+  artsyCollectsTaxes: Boolean
   artsyRemitsTaxes: Boolean
   artsyTotal(
     decimal: String = "."
@@ -8886,6 +8902,15 @@ type Me implements Node {
     last: Int
   ): ArtworkInquiryConnection
 
+  # A connection of artwork recommendations for the current user.
+  artworkRecommendations(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+  ): ArtworkConnection
+
   # A list of the auction results by followed artists
   auctionResultsByFollowedArtists(
     after: String
@@ -9056,6 +9081,9 @@ type Me implements Node {
     liveSale: Boolean
     page: Int
     saleID: ID
+
+    # Same as saleID argument, but matches the argument type of `sale(id: 'foo')` root field
+    saleSlug: String
     size: Int
     sort: String
   ): SaleArtworksConnection
@@ -10877,6 +10905,7 @@ type Query {
   # A list of Articles
   articles(
     auctionID: String
+    channelID: String
     featured: Boolean
 
     #
@@ -10884,10 +10913,14 @@ type Query {
     #         Accepts list of ids.
     #
     ids: [String]
+    layout: ArticleLayout
+    limit: Int
+    offset: Int
+    omit: [String!]
     published: Boolean = true
     showID: String
     sort: ArticleSorts
-  ): [Article]
+  ): [Article!]!
 
   # A connection of articles
   articlesConnection(
@@ -10900,6 +10933,8 @@ type Query {
     # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
+    layout: ArticleLayout
+    omit: [String!]
     page: Int
     sort: ArticleSorts
   ): ArticleConnection
@@ -11511,6 +11546,9 @@ type Query {
     liveSale: Boolean
     page: Int
     saleID: ID
+
+    # Same as saleID argument, but matches the argument type of `sale(id: 'foo')` root field
+    saleSlug: String
     size: Int
     sort: String
   ): SaleArtworksConnection
@@ -11825,6 +11863,9 @@ type Sale implements Node {
   # Auction's buyer's premium policy.
   buyersPremium: [BuyersPremium]
   cached: Int
+
+  # Amount of seconds in between each lot closing.
+  cascadingEndTimeInterval: Int
   collectPayments: Boolean!
   coverImage: Image
   currency: String
@@ -11961,6 +12002,22 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
   currency: String
   currentBid: SaleArtworkCurrentBid
   cursor: String
+  endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  endedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   estimate: String
 
   # Singular estimate field, if specified
@@ -12264,6 +12321,7 @@ enum SaleSorts {
   ELIGIBLE_SALE_ARTWORKS_COUNT_DESC
   END_AT_ASC
   END_AT_DESC
+  LICENSED_TIMELY_AT_NAME_DESC
   NAME_ASC
   NAME_DESC
   START_AT_ASC
@@ -13491,6 +13549,9 @@ input updateNotificationPreferencesMutationInput {
 
 type updateNotificationPreferencesMutationPayload {
   clientMutationId: String
+
+  # User's notification preferences
+  notificationPreferences(authenticationToken: String): [NotificationPreference!]!
 }
 
 # Autogenerated input type of UpdateSavedSearch
@@ -13897,6 +13958,7 @@ type Viewer {
   # A list of Articles
   articles(
     auctionID: String
+    channelID: String
     featured: Boolean
 
     #
@@ -13904,10 +13966,14 @@ type Viewer {
     #         Accepts list of ids.
     #
     ids: [String]
+    layout: ArticleLayout
+    limit: Int
+    offset: Int
+    omit: [String!]
     published: Boolean = true
     showID: String
     sort: ArticleSorts
-  ): [Article]
+  ): [Article!]!
 
   # A connection of articles
   articlesConnection(
@@ -13920,6 +13986,8 @@ type Viewer {
     # Get only articles with 'standard', 'feature', 'series' or 'video' layouts.
     inEditorialFeed: Boolean
     last: Int
+    layout: ArticleLayout
+    omit: [String!]
     page: Int
     sort: ArticleSorts
   ): ArticleConnection
@@ -14335,6 +14403,9 @@ type Viewer {
     liveSale: Boolean
     page: Int
     saleID: ID
+
+    # Same as saleID argument, but matches the argument type of `sale(id: 'foo')` root field
+    saleSlug: String
     size: Int
     sort: String
   ): SaleArtworksConnection

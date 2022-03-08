@@ -147,9 +147,9 @@ const CGFloat MARGIN = 10;
     [[NSNotificationCenter defaultCenter] addObserverForName:@"ARLocalDiscoveryCityGotScrollView" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         if (!wself.scrollableTabView) {
             UIScrollView *foundScrollView = FindCityScrollView(wself.cityVC.view);
-            self.scrollableTabView = FindParentScrollView(foundScrollView);
+            wself.scrollableTabView = FindParentScrollView(foundScrollView);
         }
-        BOOL isDrawerOpen = [self.bottomSheetVC.drawerPosition isEqualToPosition:PulleyPosition.open];
+        BOOL isDrawerOpen = [wself.bottomSheetVC.drawerPosition isEqualToPosition:PulleyPosition.open];
         RecurseThroughScrollViewsSettingScrollEnabled(wself.scrollableTabView.superview, isDrawerOpen);
     }];
 
