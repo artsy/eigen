@@ -1289,12 +1289,6 @@ describe(addWebViewRoute, () => {
     expect(matcher.match(["conditions-of-sale"])).toEqual({ url: "/conditions-of-sale" })
   })
 
-  it("returns react web view when the feature flag is on", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsUseReactNativeWebView: true })
-    const matcher = addWebViewRoute("/conditions-of-sale")
-    expect(matcher.module).toBe("ReactWebView")
-  })
-
   it("inlines params and wildcards in the original route", () => {
     const matcher = addWebViewRoute("/artist/:artistID/*")
     expect(matcher.match(["artist", "banksy", "auction-results", "8907"])).toEqual({

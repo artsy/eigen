@@ -26,9 +26,6 @@ describe(ArtsyReactWebViewPage, () => {
     renderWithWrappers(<ArtsyReactWebViewPage url="https://staging.artsy.net/hello" {...props} />)
   const webViewProps = (tree: ReturnType<typeof render>) =>
     tree.root.findByType(WebView).props as WebViewProps
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsUseReactNativeWebView: true })
-  })
   it(`renders a WebView`, () => {
     const tree = render()
     expect((webViewProps(tree).source as any).uri).toEqual("https://staging.artsy.net/hello")

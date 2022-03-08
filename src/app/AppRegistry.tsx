@@ -378,7 +378,6 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   LocalDiscovery: nativeModule(),
-  WebView: nativeModule(),
   ReactWebView: reactModule(ArtsyReactWebViewPage, {
     fullBleed: true,
     hasOwnModalCloseButton: true,
