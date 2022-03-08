@@ -65,13 +65,7 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   }),
   didRehydrate: thunkOn(
     (_, storeActions) => storeActions.rehydrate,
-    (actions, __, store) => {
-      const persistedCurrency = store.getState().currency
-      const persistedMetric = store.getState().metric
-
-      actions.setCurrency(persistedCurrency as Currency)
-      actions.setMetric(persistedMetric as Metric)
-
+    (actions) => {
       actions.fetchRemoteUserPrefs()
     }
   ),
