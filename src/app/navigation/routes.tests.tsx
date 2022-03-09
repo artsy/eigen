@@ -304,7 +304,7 @@ describe("artsy.net routes", () => {
   it("routes to the new Auction view", () => {
     expect(matchRoute("/auction/special-auction")).toMatchInlineSnapshot(`
       Object {
-        "module": "Auction2",
+        "module": "Auction",
         "params": Object {
           "saleID": "special-auction",
         },
