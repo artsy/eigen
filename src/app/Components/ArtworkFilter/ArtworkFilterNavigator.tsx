@@ -25,7 +25,6 @@ import { TimePeriodOptionsScreen } from "app/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import _ from "lodash"
 import React, { useState } from "react"
@@ -113,7 +112,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const resetFiltersAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.resetFiltersAction
   )
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   const handleClosingModal = () => {
     resetFiltersAction()
@@ -269,8 +267,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
       <FancyModal
         visible={props.visible}
         onBackgroundPressed={handleClosingModal}
-        fullScreen={isEnabledImprovedAlertsFlow}
-        animationPosition={isEnabledImprovedAlertsFlow ? "right" : "bottom"}
+        fullScreen
+        animationPosition="right"
       >
         <View style={{ flex: 1 }}>
           <Stack.Navigator
@@ -351,16 +349,14 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             shouldShowCreateAlertButton={shouldShowCreateAlertButton}
           />
 
-          {!!isEnabledImprovedAlertsFlow && (
-            <CreateSavedSearchModal
-              visible={isCreateAlertModalVisible}
-              artistId={id!}
-              artistName={name!}
-              artistSlug={slug!}
-              closeModal={() => setIsCreateAlertModalVisible(false)}
-              onComplete={exitModal}
-            />
-          )}
+          <CreateSavedSearchModal
+            visible={isCreateAlertModalVisible}
+            artistId={id!}
+            artistName={name!}
+            artistSlug={slug!}
+            closeModal={() => setIsCreateAlertModalVisible(false)}
+            onComplete={exitModal}
+          />
         </View>
       </FancyModal>
     </NavigationContainer>

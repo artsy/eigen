@@ -11,6 +11,7 @@ import {
   GraphQLTaggedNode,
   Variables,
 } from "relay-runtime"
+import { logPrefetching } from "./loggers"
 import { useTreatment } from "./useExperiments"
 
 const DEFAULT_QUERIES_PER_INTERVAL = 60
@@ -82,7 +83,9 @@ const prefetchUrl = async (url: string, variables?: Variables) => {
 
   const options = { ...result.params, ...variables }
 
-  console.log(`Prefetching "${url}"`)
+  if (logPrefetching) {
+    console.log(`Prefetching "${url}"`)
+  }
 
   try {
     prefetchQuery(query, options)

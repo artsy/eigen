@@ -159,6 +159,9 @@ export const artsyAppMigrations: Migrations = {
         photos: {
           photos: [],
         },
+        photosForMyCollection: {
+          photos: [],
+        },
       },
     }
   },

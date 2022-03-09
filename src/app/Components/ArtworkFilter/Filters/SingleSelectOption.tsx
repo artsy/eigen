@@ -2,9 +2,8 @@ import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
-import { FancyModalHeader, FancyModalHeaderProps } from "app/Components/FancyModal/FancyModalHeader"
+import { FancyModalHeaderProps } from "app/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, RadioDot, Text } from "palette"
 import React, { Fragment } from "react"
 import { FlatList, ScrollView } from "react-native"
@@ -13,12 +12,14 @@ import styled from "styled-components/native"
 interface SingleSelectOptionScreenProps extends FancyModalHeaderProps {
   navigation: StackNavigationProp<ParamListBase>
   filterHeaderText: string
-  onSelect: (any: any) => void
   selectedOption: FilterData
   filterOptions: Array<FilterData | JSX.Element>
   ListHeaderComponent?: JSX.Element
   withExtraPadding?: boolean
   useScrollView?: boolean
+  rightButtonText?: string
+  onSelect: (any: any) => void
+  onRightButtonPress?: () => void
 }
 
 const isFilterData = (item: any): item is FilterData => {
@@ -28,15 +29,15 @@ const isFilterData = (item: any): item is FilterData => {
 export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> = ({
   filterHeaderText,
   selectedOption,
-  onSelect,
   filterOptions,
   navigation,
   ListHeaderComponent,
   withExtraPadding = false,
   useScrollView = false,
-  ...rest
+  rightButtonText,
+  onSelect,
+  onRightButtonPress,
 }) => {
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const handleBackNavigation = () => {
     navigation.goBack()
   }
@@ -59,18 +60,12 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
 
   return (
     <Flex flexGrow={1}>
-      {isEnabledImprovedAlertsFlow ? (
-        <ArtworkFilterBackHeader
-          title={filterHeaderText}
-          onLeftButtonPress={handleBackNavigation}
-          onRightButtonPress={rest.onRightButtonPress}
-          rightButtonText={rest.rightButtonText}
-        />
-      ) : (
-        <FancyModalHeader onLeftButtonPress={handleBackNavigation} {...rest}>
-          {filterHeaderText}
-        </FancyModalHeader>
-      )}
+      <ArtworkFilterBackHeader
+        title={filterHeaderText}
+        onLeftButtonPress={handleBackNavigation}
+        onRightButtonPress={onRightButtonPress}
+        rightButtonText={rightButtonText}
+      />
 
       <Flex flexGrow={1}>
         {useScrollView ? (

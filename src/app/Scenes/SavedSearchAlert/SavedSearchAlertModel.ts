@@ -1,5 +1,3 @@
-import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
-import { Aggregations, FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
 
 export interface SavedSearchAlertFormValues {
@@ -11,7 +9,6 @@ export interface SavedSearchAlertFormValues {
 export interface SavedSearchAlertFormPropsBase {
   artistId: string
   artistName: string
-  isLoading?: boolean
 }
 
 export interface SavedSearchAlertMutationResult {
@@ -20,9 +17,6 @@ export interface SavedSearchAlertMutationResult {
 
 // Navigation
 export interface CreateSavedSearchAlertParams extends SavedSearchAlertFormPropsBase {
-  me?: SavedSearchButton_me | null
-  filters?: FilterData[]
-  aggregations?: Aggregations
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
 }

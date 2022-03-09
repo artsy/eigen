@@ -66,10 +66,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     echoFlagKey: "AROptionsLotConditionReport",
   },
-  AROptionsNewSalePage: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsNewSalePage",
-  },
   AREnableViewingRooms: {
     readyForRelease: true,
     echoFlagKey: "AREnableViewingRooms",
