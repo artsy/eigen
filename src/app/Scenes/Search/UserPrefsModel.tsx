@@ -82,7 +82,7 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   }),
 })
 
-const fetchMe = async () => {
+export const fetchMe = async () => {
   const result = await fetchQuery<UserPrefsModelQuery>(
     defaultEnvironment,
     graphql`

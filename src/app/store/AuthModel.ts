@@ -3,6 +3,7 @@ import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as RelayCache from "app/relay/RelayCache"
+import { Currency, fetchMe, Metric } from "app/Scenes/Search/UserPrefsModel"
 import { isArtsyEmail } from "app/utils/general"
 import { postEventToProviders } from "app/utils/track/providers"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
@@ -379,6 +380,12 @@ export const getAuthModel = (): AuthModel => ({
 
       onSignIn?.()
 
+      // Setting up user prefs from gravity after successsfull login.
+      const me = await fetchMe()
+
+      store.getStoreActions().userPrefs.setMetric(me?.lengthUnitPreference.toLowerCase() as Metric)
+      store.getStoreActions().userPrefs.setCurrency(me?.currencyPreference as Currency)
+
       return "success"
     }
 
@@ -396,7 +403,7 @@ export const getAuthModel = (): AuthModel => ({
         return "failure"
     }
   }),
-  signUp: thunk(async (actions, args) => {
+  signUp: thunk(async (actions, args, store) => {
     const { oauthProvider, email, name, agreedToReceiveEmails } = args
     const result = await actions.gravityUnauthenticatedRequest({
       path: `/api/v1/user`,
@@ -454,6 +461,14 @@ export const getAuthModel = (): AuthModel => ({
         default:
           assertNever(oauthProvider)
       }
+
+      // TODO
+
+      // Setting up user prefs from gravity after successsfull registration.
+      const me = await fetchMe()
+
+      store.getStoreActions().userPrefs.setMetric(me?.lengthUnitPreference.toLowerCase() as Metric)
+      store.getStoreActions().userPrefs.setCurrency(me?.currencyPreference as Currency)
 
       return { success: true, message: "" }
     }
