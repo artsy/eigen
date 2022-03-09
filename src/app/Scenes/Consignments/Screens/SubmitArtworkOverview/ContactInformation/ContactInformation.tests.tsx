@@ -115,7 +115,7 @@ describe("ContactInformationForm", () => {
   })
 
   describe("validation", () => {
-    it("displays error message for email address", async () => {
+    it("displays error message for name", async () => {
       const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
