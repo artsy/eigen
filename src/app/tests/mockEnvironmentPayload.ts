@@ -47,10 +47,10 @@ export const DefaultMockResolvers: MockResolvers = {
   String: (ctx) => goodMockResolver(ctx),
 }
 
-export const mockEnvironmentPayload = (
+export function mockEnvironmentPayload(
   mockEnvironment: ReturnType<typeof createMockEnvironment>,
   mockResolvers?: MockResolvers
-) => {
+) {
   reset()
   mockEnvironment.mock.resolveMostRecentOperation((operation) =>
     MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })

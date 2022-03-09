@@ -23,7 +23,7 @@ export interface TabProps {
 
 interface StickyTabPageProps {
   tabs: TabProps[]
-  staticHeaderContent: JSX.Element
+  staticHeaderContent?: JSX.Element
   stickyHeaderContent?: JSX.Element
   bottomContent?: JSX.Element
   // disableBackButtonUpdate allows the original BackButton visibility state. Useful when using StickyTabPage
@@ -42,7 +42,7 @@ interface StickyTabPageProps {
  */
 export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   tabs,
-  staticHeaderContent,
+  staticHeaderContent = <></>,
   stickyHeaderContent = <StickyTabPageTabBar />,
   bottomContent,
   disableBackButtonUpdate,

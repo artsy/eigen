@@ -2,6 +2,7 @@ import {
   PartnerShowsTestsQuery,
   PartnerShowsTestsQueryRawResponse,
 } from "__generated__/PartnerShowsTestsQuery.graphql"
+import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
@@ -31,9 +32,19 @@ describe("PartnerShows", () => {
           }
         `}
         render={({ props }) => {
-          if (props?.partner) {
-            return <PartnerShows partner={props.partner} />
+          if (!props?.partner) {
+            return null
           }
+          return (
+            <StickyTabPage
+              tabs={[
+                {
+                  title: "wow-tab",
+                  content: <PartnerShows partner={props.partner} />,
+                },
+              ]}
+            />
+          )
         }}
         variables={{}}
       />

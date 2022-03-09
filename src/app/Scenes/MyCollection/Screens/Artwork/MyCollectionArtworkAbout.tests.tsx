@@ -1,8 +1,10 @@
 import { MyCollectionArtworkAboutTestsQuery } from "__generated__/MyCollectionArtworkAboutTestsQuery.graphql"
+import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
 
 jest.unmock("react-relay")
@@ -26,9 +28,18 @@ describe("MyCollectionArtworkAbout", () => {
       render={({ props }) => {
         if (props?.artwork && props?.marketPriceInsights) {
           return (
-            <MyCollectionArtworkAbout
-              marketPriceInsights={props.marketPriceInsights}
-              artwork={props?.artwork}
+            <StickyTabPage
+              tabs={[
+                {
+                  title: "wow-tab",
+                  content: (
+                    <MyCollectionArtworkAbout
+                      marketPriceInsights={props.marketPriceInsights}
+                      artwork={props?.artwork}
+                    />
+                  ),
+                },
+              ]}
             />
           )
         }
@@ -41,16 +52,10 @@ describe("MyCollectionArtworkAbout", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  const resolveData = (resolvers = {}) => {
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, resolvers)
-    )
-  }
-
   it("renders about the work section", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
-    resolveData({
+    mockEnvironmentPayload(mockEnvironment, {
       Query: () => ({
         artwork: {
           category: "Oil on Canvas",
@@ -86,7 +91,7 @@ describe("MyCollectionArtworkAbout", () => {
   it("renders purchase details section", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
-    resolveData({
+    mockEnvironmentPayload(mockEnvironment, {
       Query: () => ({
         artwork: {
           pricePaid: { display: "€224,000" },
@@ -104,7 +109,7 @@ describe("MyCollectionArtworkAbout", () => {
   it("renders articles section", () => {
     const { getByText, getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
-    resolveData({
+    mockEnvironmentPayload(mockEnvironment, {
       Query: () => ({
         artwork: {
           artistNames: "Banksy",

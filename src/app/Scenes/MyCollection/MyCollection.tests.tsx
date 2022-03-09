@@ -41,7 +41,6 @@ describe("MyCollection", () => {
           if (props?.me) {
             return (
               <StickyTabPage
-                staticHeaderContent={<></>}
                 tabs={[
                   {
                     title: "My Collection",

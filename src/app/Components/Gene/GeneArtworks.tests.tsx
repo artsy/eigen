@@ -34,7 +34,6 @@ describe("GeneArtworks", () => {
           if (props?.gene) {
             return (
               <StickyTabPage
-                staticHeaderContent={<></>}
                 tabs={[
                   {
                     title: "GeneArtworks",

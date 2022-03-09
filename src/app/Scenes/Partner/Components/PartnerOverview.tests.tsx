@@ -3,6 +3,7 @@ import {
   PartnerOverviewTestsQueryRawResponse,
 } from "__generated__/PartnerOverviewTestsQuery.graphql"
 import { ArtistListItem } from "app/Components/ArtistListItem"
+import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
@@ -43,12 +44,20 @@ describe("PartnerOverview", () => {
         }
       `}
       variables={{}}
-      render={({ props, error }) => {
-        if (props?.partner) {
-          return <PartnerOverview partner={props.partner} />
-        } else if (error) {
-          console.log(error)
+      render={({ props }) => {
+        if (!props?.partner) {
+          return null
         }
+        return (
+          <StickyTabPage
+            tabs={[
+              {
+                title: "wow-tab",
+                content: <PartnerOverview partner={props.partner} />,
+              },
+            ]}
+          />
+        )
       }}
     />
   )

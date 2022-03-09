@@ -34,7 +34,6 @@ describe("TagArtworks", () => {
           if (props?.tag) {
             return (
               <StickyTabPage
-                staticHeaderContent={<></>}
                 tabs={[
                   {
                     title: "TagArtworks",
