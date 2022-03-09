@@ -177,7 +177,7 @@ export const artsyAppMigrations: Migrations = {
     delete state.userPreferences
   },
   [Versions.AddUserPrefsMetricsUnit]: (state) => {
-    state.userPrefs.metric = "cm"
+    state.userPrefs.metric = "in"
   },
 }
 

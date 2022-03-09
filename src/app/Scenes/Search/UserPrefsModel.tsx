@@ -1,5 +1,6 @@
 import { UserPrefsModelQuery } from "__generated__/UserPrefsModelQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { GlobalStore } from "app/store/GlobalStore"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { Action, action, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { getCurrencies } from "react-native-localize"
@@ -19,7 +20,7 @@ const DEFAULT_CURRENCY =
   (userCurrencies.find((userCurrency) =>
     (currencies as unknown as string[]).includes(userCurrency)
   ) as Currency) ?? "USD"
-const DEFAULT_METRIC = "cm"
+const DEFAULT_METRIC = "in"
 const DEFAULT_VIEW_OPTION = "grid"
 // please update this when adding new user preferences
 export interface UserPrefs {
@@ -57,15 +58,8 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
       console.warn("Metric/Dimension Unit not supported")
     }
   }),
-  fetchRemoteUserPrefs: thunk(async (actions) => {
-    const me = await fetchMe()
-
-    if (!me) {
-      return
-    }
-
-    actions.setMetric(me?.lengthUnitPreference.toLowerCase() as Metric)
-    actions.setCurrency(me?.currencyPreference as Currency)
+  fetchRemoteUserPrefs: thunk(async () => {
+    await setUserPrefsFromGravity()
   }),
   didRehydrate: thunkOn(
     (_, storeActions) => storeActions.rehydrate,
@@ -82,7 +76,7 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   }),
 })
 
-export const fetchMe = async () => {
+const fetchMe = async () => {
   const result = await fetchQuery<UserPrefsModelQuery>(
     defaultEnvironment,
     graphql`
@@ -97,4 +91,14 @@ export const fetchMe = async () => {
   ).toPromise()
 
   return result?.me
+}
+
+export const setUserPrefsFromGravity = async () => {
+  const me = await fetchMe()
+
+  if (!me) {
+    return
+  }
+  GlobalStore.actions.userPrefs.setMetric(me?.lengthUnitPreference.toLowerCase() as Metric)
+  GlobalStore.actions.userPrefs.setCurrency(me?.currencyPreference as Currency)
 }

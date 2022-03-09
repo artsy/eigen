@@ -560,6 +560,6 @@ describe("App version Versions.AddUserPrefsMetricsUnit", () => {
       toVersion: migrationToTest,
     }) as any
 
-    expect(migratedState.userPrefs.metric).toEqual("cm")
+    expect(migratedState.userPrefs.metric).toEqual("in")
   })
 })
