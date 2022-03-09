@@ -130,16 +130,38 @@ describe("ContactInformationForm", () => {
       const inputs = {
         nameInput: getByPlaceholderText("Your Full Name"),
         emailInput: getByPlaceholderText("Your Email Address"),
-        phoneInput: getByPlaceholderText("(000) 000-0000"),
       }
 
       fireEvent.changeText(inputs.nameInput, "a")
+      fireEvent.changeText(inputs.emailInput, "aa")
+
+      await flushPromiseQueue()
+
+      expect(getByText("Please enter your full name.")).toBeTruthy()
+    })
+
+    it("displays error message for email address", async () => {
+      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Me: () => ({
+            ...mockQueryData,
+          }),
+        })
+      )
+
+      await flushPromiseQueue()
+
+      const inputs = {
+        emailInput: getByPlaceholderText("Your Email Address"),
+        phoneInput: getByPlaceholderText("(000) 000-0000"),
+      }
+
       fireEvent.changeText(inputs.emailInput, "aa")
       fireEvent.changeText(inputs.phoneInput, "12")
 
       await flushPromiseQueue()
 
-      expect(getByText("Name must be at least 2 characters.")).toBeTruthy()
       expect(getByText("Please enter a valid email address.")).toBeTruthy()
     })
 

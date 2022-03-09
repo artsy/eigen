@@ -83,11 +83,7 @@ export const ContactInformation: React.FC<{
             accessibilityLabel="Name"
             onBlur={() => setIsNameInputFocused(false)}
             onFocus={() => setIsNameInputFocused(true)}
-            error={
-              !isNameInputFocused && values.userName && errors.userName
-                ? "Name must be at least 2 characters."
-                : ""
-            }
+            error={!isNameInputFocused && values.userName && errors.userName ? errors.userName : ""}
           />
           <Spacer mt={4} />
           <Input
