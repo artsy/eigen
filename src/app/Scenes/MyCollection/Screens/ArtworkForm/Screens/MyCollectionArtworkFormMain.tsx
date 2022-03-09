@@ -187,7 +187,7 @@ export const MyCollectionArtworkFormMain: React.FC<
         <ScreenMargin>
           {modalType === "edit" && (
             <Button
-              mt={1}
+              my={1}
               variant="outline"
               block
               onPress={() => {
