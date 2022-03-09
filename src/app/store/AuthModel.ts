@@ -462,8 +462,6 @@ export const getAuthModel = (): AuthModel => ({
           assertNever(oauthProvider)
       }
 
-      // TODO
-
       // Setting up user prefs from gravity after successsfull registration.
       const me = await fetchMe()
 
