@@ -128,15 +128,18 @@ describe("ContactInformationForm", () => {
       await flushPromiseQueue()
 
       const inputs = {
+        nameInput: getByPlaceholderText("Your Full Name"),
         emailInput: getByPlaceholderText("Your Email Address"),
         phoneInput: getByPlaceholderText("(000) 000-0000"),
       }
 
+      fireEvent.changeText(inputs.nameInput, "a")
       fireEvent.changeText(inputs.emailInput, "aa")
       fireEvent.changeText(inputs.phoneInput, "12")
 
       await flushPromiseQueue()
 
+      expect(getByText("Name must be at least 2 characters.")).toBeTruthy()
       expect(getByText("Please enter a valid email address.")).toBeTruthy()
     })
 
