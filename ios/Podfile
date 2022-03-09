@@ -22,7 +22,7 @@ pre_install do |installer|
 end
 
 
-target 'eigen' do
+target 'Artsy' do
   config = use_native_modules!
 
   use_react_native!(
@@ -31,7 +31,7 @@ target 'eigen' do
     :hermes_enabled => false
   )
 
-  target 'eigenTests' do
+  target 'ArtsyTests' do
     inherit! :complete
     # Pods for testing
   end

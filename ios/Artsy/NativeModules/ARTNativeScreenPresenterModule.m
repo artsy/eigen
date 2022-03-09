@@ -6,7 +6,7 @@
 #import "AROptions.h"
 #import "ARModalViewController.h"
 #import "ARAppDelegate+Echo.h"
-#import "eigen-Swift.h"
+#import "Artsy-Swift.h"
 
 #import <MessageUI/MFMailComposeViewController.h>
 #import "ARDispatchManager.h"

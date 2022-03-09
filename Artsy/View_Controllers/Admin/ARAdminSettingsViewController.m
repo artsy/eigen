@@ -12,12 +12,8 @@
 #import "ARFileUtils.h"
 #import "ARRouter.h"
 #import "AROptions.h"
-
-#ifdef APP_SHELL
-#import "eigen-Swift.h"
-#else
 #import "Artsy-Swift.h"
-#endif
+
 #import "UIDevice-Hardware.h"
 #import "ARAdminNetworkModel.h"
 #import "ARAppNotificationsDelegate.h"

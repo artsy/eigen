@@ -1,10 +1,6 @@
 #import "ARSerifNavigationViewController.h"
 #import "ARFonts.h"
-#ifdef APP_SHELL
-#import "eigen-Swift.h"
-#else
 #import "Artsy-Swift.h"
-#endif
 #import "UIDevice-Hardware.h"
 #import "UIImage+ImageFromColor.h"
 #import <Artsy-UIButtons/ARButtonSubclasses.h>

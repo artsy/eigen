@@ -30,13 +30,7 @@
 #import "ARFileUtils.h"
 #import "ARWebViewCacheHost.h"
 #import "ARAppStatus.h"
-
-#ifdef APP_SHELL
-#import "eigen-Swift.h"
-#else
 #import "Artsy-Swift.h"
-#endif
-
 #import "ARSystemTime.h"
 #import "ARDispatchManager.h"
 #import "ARLogger.h"

@@ -1,5 +1,5 @@
 #import "ARTLiveAuctionViewManager.h"
-#import "eigen-Swift.h"
+#import "Artsy-Swift.h"
 
 @implementation ARTLiveAuctionViewManager
 

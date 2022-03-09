@@ -1,6 +1,6 @@
 #import "ARTOldAdminViewManager.h"
 #import <React/RCTViewManager.h>
-#import "eigen-Swift.h"
+#import "Artsy-Swift.h"
 
 @implementation ARTOldAdminViewManager
 
