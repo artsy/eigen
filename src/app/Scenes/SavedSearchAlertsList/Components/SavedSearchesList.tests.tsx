@@ -2,7 +2,6 @@ import { fireEvent } from "@testing-library/react-native"
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { times } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -68,7 +67,34 @@ describe("SavedSearches", () => {
     expect(getByText("two")).toBeTruthy()
   })
 
-  it("renders filter pills", () => {
+  it("hides all filters by default", () => {
+    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      SearchCriteriaConnection: () => ({
+        edges: [
+          {
+            node: {
+              labels: [
+                {
+                  value: "Filter pill 1",
+                },
+                {
+                  value: "Filter pill 2",
+                },
+              ],
+            },
+          },
+        ],
+      }),
+    })
+
+    expect(queryByText("Show all filters")).toBeTruthy()
+    expect(queryByText("Filter pill 1")).toBeFalsy()
+    expect(queryByText("Filter pill 2")).toBeFalsy()
+  })
+
+  it("renders all filters when `Show all filters` button is pressed", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {
@@ -86,85 +112,14 @@ describe("SavedSearches", () => {
               ],
             },
           },
-          {
-            node: {
-              labels: [
-                {
-                  value: "Filter pill 3",
-                },
-              ],
-            },
-          },
-        ],
-      }),
-    })
-
-    expect(getByText("Filter pill 1")).toBeTruthy()
-    expect(getByText("Filter pill 2")).toBeTruthy()
-    expect(getByText("Filter pill 3")).toBeTruthy()
-  })
-
-  it("renders only first 8 filter pills", () => {
-    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
-
-    mockEnvironmentPayload(mockEnvironment, {
-      SearchCriteriaConnection: () => ({
-        edges: [
-          {
-            node: {
-              labels: times(10).map((label) => ({
-                value: `Filter pill ${label + 1}`,
-              })),
-            },
-          },
-        ],
-      }),
-    })
-
-    expect(queryByText("Filter pill 8")).toBeTruthy()
-    expect(queryByText("Filter pill 9")).toBeFalsy()
-  })
-
-  it("renders `Show all filters` button if there are more than 8 filters", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    mockEnvironmentPayload(mockEnvironment, {
-      SearchCriteriaConnection: () => ({
-        edges: [
-          {
-            node: {
-              labels: times(10).map((label) => ({
-                value: `Filter pill ${label + 1}`,
-              })),
-            },
-          },
-        ],
-      }),
-    })
-
-    expect(getByText("Show all filters")).toBeTruthy()
-  })
-
-  it("renders `Close all filters` button when all filters are displayed", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    mockEnvironmentPayload(mockEnvironment, {
-      SearchCriteriaConnection: () => ({
-        edges: [
-          {
-            node: {
-              labels: times(10).map((label) => ({
-                value: `Filter pill ${label + 1}`,
-              })),
-            },
-          },
         ],
       }),
     })
 
     fireEvent.press(getByText("Show all filters"))
 
-    expect(getByText("Filter pill 9")).toBeTruthy()
+    expect(getByText("Filter pill 1")).toBeTruthy()
+    expect(getByText("Filter pill 2")).toBeTruthy()
     expect(getByText("Close all filters")).toBeTruthy()
   })
 

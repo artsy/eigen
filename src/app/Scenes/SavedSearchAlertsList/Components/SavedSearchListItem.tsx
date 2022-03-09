@@ -9,17 +9,14 @@ interface SavedSearchListItemProps {
 }
 
 const FALLBACK_TITLE = "Untitled Alert"
-const DISPLAY_PILLS_COUNT = 8
 
 export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) => {
   const { item, onPress } = props
-  const [displayAllFilters, setDisplayAllFilters] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
   const color = useColor()
-  const slicedLabels = item.labels.slice(0, DISPLAY_PILLS_COUNT)
-  const labels = displayAllFilters ? item.labels : slicedLabels
 
-  const toggleDisplayAllFiltersState = () => {
-    setDisplayAllFilters(!displayAllFilters)
+  const toggleExpandFilters = () => {
+    setIsExpanded(!isExpanded)
   }
 
   return (
@@ -31,36 +28,25 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
           </Flex>
           <ChevronIcon direction="right" fill="black60" />
         </Flex>
-        <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
-          {labels.map((entity) => (
-            <Pill m={0.5} key={entity.value}>
-              {entity.value}
-            </Pill>
-          ))}
 
-          {item.labels.length > DISPLAY_PILLS_COUNT && (
-            <Touchable onPress={toggleDisplayAllFiltersState}>
-              <Flex
-                flexDirection="row"
-                m={0.5}
-                height={30}
-                alignItems="center"
-                justifyContent="center"
-                px={1}
-              >
-                <Text variant="xs" underline>
-                  {displayAllFilters ? "Close all filters" : "Show all filters"}
-                </Text>
-                <ChevronIcon
-                  direction={displayAllFilters ? "up" : "down"}
-                  height={15}
-                  mt="2px"
-                  ml={0.5}
-                />
-              </Flex>
-            </Touchable>
-          )}
-        </Flex>
+        <Touchable style={{ alignSelf: "flex-start" }} onPress={toggleExpandFilters}>
+          <Box flexDirection="row" mt={2}>
+            <Text variant="xs" underline>
+              {isExpanded ? "Close all filters" : "Show all filters"}
+            </Text>
+            <ChevronIcon direction={isExpanded ? "up" : "down"} height={16} mt="2px" ml={0.5} />
+          </Box>
+        </Touchable>
+
+        {isExpanded ? (
+          <Flex flexDirection="row" flexWrap="wrap" mt={2} mx={-0.5}>
+            {item.labels.map((entity) => (
+              <Pill m={0.5} key={entity.value}>
+                {entity.value}
+              </Pill>
+            ))}
+          </Flex>
+        ) : null}
       </Box>
     </Touchable>
   )
