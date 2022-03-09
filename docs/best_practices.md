@@ -100,9 +100,8 @@ When developing new components you are strongly encouraged to add them to [Story
 
 #### Styling
 
-We use [Styled system](https://styled-system.com/getting-started/) as a basis of our UI components.
 
-We use [palette](src/palette) as our reusable component toolkit, which uses `styled-system` under the hood. 
+[palette](src/palette) is our reusable component toolkit, which uses [styled-system](https://styled-system.com/getting-started/) under the hood. 
 [Here](palette.artsy.net) you can see palette in action. 
 Some of our most used elements are `Flex`, `Box`, `Text`. `Separator` and `Spacer`.
 
