@@ -105,7 +105,7 @@ When developing new components you are strongly encouraged to add them to [Story
 [Here](palette.artsy.net) you can see palette in action. 
 Some of our most used elements are `Flex`, `Box`, `Text`. `Separator` and `Spacer`.
 
-We want to move towards an [atomic design](https://bradfrost.com/blog/post/atomic-web-design/) and have all our UI elements in palette. Please do not add components there without consulting with @pvinis first.
+We want to move towards an [atomic design](https://bradfrost.com/blog/post/atomic-web-design/) and have all our UI elements in palette. Please do not add components there without consulting with **@pvinis** first.
 
 ### TypeScript
 
