@@ -12,10 +12,11 @@
 
 ## Documentation about different work flows
 
-- [pull request template](pull_request_template.md)
+- [Pull Request template](pull_request_template.md)
 - [Storybook](storybook.md)
 - [FeatureFlags](developing_a_feature.md)
 - [Metaflags](metaflags.md)
+- [Hide loggers](metaflags.md/#hide-loggers)
 - [Debugging](debugging.md)
 - [Visual Clues](add_a_visual_clue.md)
 - [Unleash - Experiments](add_an_experiment.md)
@@ -30,11 +31,13 @@
 - [Test on a real device: create a beta](deploy_to_beta.md)
 
 ### Beta
+
 - [Welcome to eigen beta](welcome_to_eigen_beta.md)
 - [Using the beta](using_the_beta.md)
 - [Beta Deployment](deploy_to_beta.md)
 
 ### Deployment
+
 - [App Store Deployment](deploy_to_app_store.md)
 - [Play Store Deployment](deploy_to_play_store.md)
 - [Deploy a hot fix](deploy_a_hot_fix.md)
@@ -43,12 +46,13 @@
 - [release candidate code freeze](release_candidate_code_freeze.md)
 
 ### Palette
+
 - [palette v3 migration guide](palette_v3_migration_guide.md)
 
 #### Thanks to our (contributors)[thanks.md] 🎉
 
 ### Can these be removed?
+
 - [Ancient_changelog.md](Ancient_changelog.md)
 - [ANCIENT_EMISSION_CHANGELOG.md](ANCIENT_EMISSION_CHANGELOG.md)
 - [overview.md](overview.md)
-
