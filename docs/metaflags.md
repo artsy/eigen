@@ -23,7 +23,6 @@ You can turn off various loggers by setting the according values to false on `me
 ```
 {
   "logAction": false,
-  "logAnalytics": false,
   "logDatadog": false,
   "logEventTracked": false,
   "logNotification": false,
