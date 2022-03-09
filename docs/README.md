@@ -12,7 +12,7 @@
 
 ## Documentation about different work flows
 
-- [pull request template](pull_request_template.md)
+- [Pull Request template](pull_request_template.md)
 - [Storybook](storybook.md)
 - [FeatureFlags](developing_a_feature.md)
 - [Metaflags](metaflags.md)
