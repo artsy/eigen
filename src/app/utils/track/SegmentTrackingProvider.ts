@@ -5,7 +5,6 @@ import { Toast } from "app/Components/Toast/Toast"
 import { unsafe_getDevToggle } from "app/store/GlobalStore"
 import { Platform } from "react-native"
 import Config from "react-native-config"
-import { logAnalytics } from "../loggers"
 import { isCohesionScreen, TrackingProvider } from "./providers"
 
 export const SEGMENT_TRACKING_PROVIDER = "SEGMENT_TRACKING_PROVIDER"
@@ -32,11 +31,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
           using: [Braze, Adjust],
         }
       )
-      .then(() => {
-        if (logAnalytics) {
-          console.log("Analytics is ready")
-        }
-      })
+      .then(() => console.log("Analytics is ready"))
       .catch((err) => console.error("Something went wrong", err))
   },
 

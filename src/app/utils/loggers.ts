@@ -1,6 +1,5 @@
 let metaflags = {
   logAction: false,
-  logAnalytics: false,
   logDatadog: false,
   logEventTracked: false,
   logNotification: false,
@@ -20,7 +19,6 @@ if (__DEV__) {
 }
 
 export const logAction = metaflags.logAction
-export const logAnalytics = metaflags.logAnalytics
 export const logDatadog = metaflags.logRunningRequest
 export const logEventTracked = metaflags.logRunningRequest
 export const logNotification = metaflags.logRunningRequest
