@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-community/async-storage"
 import { Home_articlesConnection } from "__generated__/Home_articlesConnection.graphql"
 import { Home_featured } from "__generated__/Home_featured.graphql"
 import { Home_homePageAbove } from "__generated__/Home_homePageAbove.graphql"
@@ -40,7 +39,6 @@ import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
-import { SHOW_CONSIGNMENTS_BANNER } from "../MyCollection/MyCollection"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
@@ -80,8 +78,6 @@ const Home = (props: Props) => {
     prefetchUrl("search")
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
-
-    AsyncStorage.setItem(SHOW_CONSIGNMENTS_BANNER, "false")
   }, [])
 
   const {

@@ -13,7 +13,13 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { useToast } from "app/Components/Toast/toastHook"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { GlobalStore, useDevToggle, useFeatureFlag } from "app/store/GlobalStore"
+import {
+  GlobalStore,
+  removeClue,
+  useDevToggle,
+  useFeatureFlag,
+  useSessionVisualClue,
+} from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -46,22 +52,13 @@ export function refreshMyCollection() {
 }
 
 export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
-export const SHOW_CONSIGNMENTS_BANNER = "SHOW_CONSIGNMENTS_BANNER"
-
-const hasBeenShownBanner = async () => {
-  const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-  const shouldShowConsignments = await AsyncStorage.getItem(SHOW_CONSIGNMENTS_BANNER)
-  return {
-    hasSeenBanner: hasSeen === "true",
-    shouldShowConsignments: shouldShowConsignments === "true",
-  }
-}
 
 const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me
 }> = ({ relay, me }) => {
   const { trackEvent } = useTracking()
+  const { showSessionVisualClue } = useSessionVisualClue()
 
   const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
   const enableConsignmentsInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
@@ -104,6 +101,15 @@ const MyCollection: React.FC<{
 
   const space = useSpace()
   const toast = useToast()
+
+  const hasBeenShownBanner = async () => {
+    const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
+    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionBanner")
+    return {
+      hasSeenBanner: hasSeen === "true",
+      shouldShowConsignments: shouldShowConsignments === true,
+    }
+  }
 
   useEffect(() => {
     if (artworks.length) {
@@ -153,7 +159,7 @@ const MyCollection: React.FC<{
                 title="Artwork added to My Collection"
                 text="The artwork you submitted for sale has been automatically added."
                 showCloseButton
-                onClose={() => AsyncStorage.setItem(SHOW_CONSIGNMENTS_BANNER, "false")}
+                onClose={() => removeClue("ArtworkSubmissionBanner")}
               />
             )}
           </Flex>
