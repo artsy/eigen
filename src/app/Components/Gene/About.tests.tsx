@@ -4,6 +4,7 @@ import "react-native"
 // Note: test renderer must be required after react-native.
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 
+import { StickyTabPage } from "../StickyTabPage/StickyTabPage"
 import About from "./About"
 
 it("renders without throwing a error", () => {
@@ -42,5 +43,14 @@ it("renders without throwing a error", () => {
     ],
   }
 
-  renderWithWrappers(<About gene={gene as any} />)
+  renderWithWrappers(
+    <StickyTabPage
+      tabs={[
+        {
+          title: "TagArtworks",
+          content: <About gene={gene as any} />,
+        },
+      ]}
+    />
+  )
 })

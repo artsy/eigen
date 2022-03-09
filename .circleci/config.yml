@@ -356,6 +356,8 @@ jobs:
           command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^emission/Pod/Assets/'
       - store_artifacts:
           path: .manifests
+      - store_test_results:
+          path: ./reports/junit/
       - persist_to_workspace:
           root: .
           paths:
@@ -422,9 +424,6 @@ jobs:
       - store_artifacts:
           path: xcode_test_raw.log
           prefix: tests
-
-      - store_test_results:
-          path: ./reports/junit/
 
       - run:
           name: Danger
