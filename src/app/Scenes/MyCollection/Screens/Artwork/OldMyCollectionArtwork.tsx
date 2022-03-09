@@ -28,7 +28,9 @@ import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
+import { STATUSES } from "./Components/MyCollectionArtworkSubmissionStatus"
 import { OldWhySell } from "./Components/OldWhySell"
+import { SubmitToSell } from "./Components/SubmitToSell"
 import { MyCollectionArtworkScreenProps } from "./MyCollectionArtwork"
 
 export interface MyCollectionArtworkProps {
@@ -42,6 +44,14 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const displayEditButton = !artwork.consignmentSubmission?.inProgress
+
+  const isPOneArtist =
+    !!artwork.artists?.find((artist) => Boolean(artist?.targetSupply?.isTargetSupply)) ??
+    !!artwork.artist?.targetSupply?.isTargetSupply ??
+    false
+
+  const displayText = artwork.consignmentSubmission?.displayText
+  const isSold = !!displayText && STATUSES[displayText!.toLowerCase()]?.text === "Artwork Sold"
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -86,26 +96,34 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
           />
           <ScreenMargin>
             <Separator />
-
-            <OldWhySell />
-
             <Spacer mb={3} />
+            {isPOneArtist && isSold ? (
+              <SubmitToSell />
+            ) : (
+              <>
+                <OldWhySell />
 
-            <Button
-              size="large"
-              variant="fillGray"
-              block
-              onPress={() => {
-                trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
-                navigate("/sales")
-              }}
-              testID="LearnMoreButton"
-            >
-              Learn more
-            </Button>
+                <Spacer mb={3} />
+
+                <Button
+                  size="large"
+                  variant="fillGray"
+                  block
+                  onPress={() => {
+                    trackEvent(
+                      tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More")
+                    )
+                    navigate("/sales")
+                  }}
+                  testID="LearnMoreButton"
+                >
+                  Learn more
+                </Button>
+              </>
+            )}
           </ScreenMargin>
 
-          <Spacer my={2} />
+          <Spacer my={1} />
         </Join>
       </ScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
@@ -125,6 +143,14 @@ export const ArtworkMetaProps = graphql`
     artist {
       internalID
       formattedNationalityAndBirthday
+      targetSupply {
+        isTargetSupply
+      }
+    }
+    artists {
+      targetSupply {
+        isTargetSupply
+      }
     }
     artistNames
     category
@@ -160,6 +186,7 @@ export const ArtworkMetaProps = graphql`
     width
     consignmentSubmission {
       inProgress
+      displayText
     }
   }
 `
