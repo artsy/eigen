@@ -13,7 +13,7 @@ export const contactInformationValidationSchema = Yup.object().shape({
     .test(
       "userName",
       "Please enter your full name.",
-      (name) => typeof name === "string" && name.length > 2
+      (name) => typeof name === "string" && name.length > 1
     ),
   userEmail: Yup.string().required().email("Please enter a valid email address."),
   userPhone: Yup.string()
