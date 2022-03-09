@@ -1,6 +1,6 @@
 # :world_map: Our Best Practices
 
-**Last update: February 2022**
+**Last update: March 2022**
 
 This is a living document, expected to be updated regularly, with a broad overview of the history and how we prefere to do things on eigen.
 Here you can find links to the tools we use, examples, pull requests with interesting discussions & blog posts.
