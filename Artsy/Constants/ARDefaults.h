@@ -1,3 +1,5 @@
+#import <Foundation/Foundation.h>
+
 extern NSString *const ARUserIdentifierDefault;
 
 extern NSString *const AROAuthTokenDefault;
