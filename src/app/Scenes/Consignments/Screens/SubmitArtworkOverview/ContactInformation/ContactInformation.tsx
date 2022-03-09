@@ -23,6 +23,7 @@ export const ContactInformation: React.FC<{
   const [submissionError, setSubmissionError] = useState(false)
   const { trackEvent } = useTracking()
 
+  const [isNameInputFocused, setIsNameInputFocused] = useState(false)
   const [isEmailInputFocused, setIsEmailInputFocused] = useState(false)
   const [isPhoneInputFocused, setIsPhoneInputFocused] = useState(false)
   const [isValidNumber, setIsValidNumber] = useState(false)
@@ -80,6 +81,13 @@ export const ContactInformation: React.FC<{
             onChangeText={handleChange("userName")}
             value={values.userName}
             accessibilityLabel="Name"
+            onBlur={() => setIsNameInputFocused(false)}
+            onFocus={() => setIsNameInputFocused(true)}
+            error={
+              !isNameInputFocused && values.userName && errors.userName
+                ? "Name must be at least 2 characters."
+                : ""
+            }
           />
           <Spacer mt={4} />
           <Input
