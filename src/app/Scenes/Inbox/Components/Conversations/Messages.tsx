@@ -8,7 +8,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 
-import { dropWhile, sortBy } from "lodash"
+import { sortBy } from "lodash"
 import { DateTime } from "luxon"
 import { MessageGroup } from "./MessageGroup"
 import { ConversationItem, groupConversationItems } from "./utils/groupConversationItems"
@@ -81,11 +81,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     const sortedMessages = sortBy([...orderEventsWithoutFailedPayment, ...allMessages], (message) =>
       DateTime.fromISO(message.createdAt!)
     )
-
-    // Drop all order events until the first message appears (this assumes the conversation begins with a message)
-    const sortedWithCutoff = dropWhile(sortedMessages, (item) => item.__typename !== "Message")
-
-    const groupedMessages = groupConversationItems(sortedWithCutoff)
+    const groupedMessages = groupConversationItems(sortedMessages)
 
     setMessages(groupedMessages)
   }, [allOrderEvents.length, allMessages.length])
@@ -151,13 +147,16 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
       key={conversation.internalID!}
       data={messages}
       initialNumToRender={messages?.length}
-      renderItem={({ item }) => {
+      renderItem={({ item, index }) => {
         return (
-          <MessageGroup
-            group={item}
-            conversationId={conversation.internalID!}
-            subjectItem={conversation.items?.[0]?.item!}
-          />
+          <>
+            <MessageGroup
+              isLastMessage={index === messages.length - 1}
+              group={item}
+              conversationId={conversation.internalID!}
+              subjectItem={conversation.items?.[0]?.item!}
+            />
+          </>
         )
       }}
       inverted
@@ -251,6 +250,7 @@ export default createPaginationContainer(
             }
             ... on Show {
               href
+              createdAt
               ...ShowPreview_show
             }
           }
