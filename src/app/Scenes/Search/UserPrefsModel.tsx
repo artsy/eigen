@@ -60,13 +60,21 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   fetchRemoteUserPrefs: thunk(async (actions) => {
     const me = await fetchMe()
 
+    if (!me) {
+      return
+    }
+
     actions.setMetric(me?.lengthUnitPreference.toLowerCase() as Metric)
     actions.setCurrency(me?.currencyPreference as Currency)
   }),
   didRehydrate: thunkOn(
     (_, storeActions) => storeActions.rehydrate,
-    (actions) => {
-      actions.fetchRemoteUserPrefs()
+    (actions, __, store) => {
+      const isLoggedIn = store.getStoreState().auth.userAccessToken
+
+      if (!!isLoggedIn) {
+        actions.fetchRemoteUserPrefs()
+      }
     }
   ),
   setArtworkViewOption: action((state, viewOption) => {
