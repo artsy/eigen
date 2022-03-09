@@ -3,7 +3,6 @@ import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as RelayCache from "app/relay/RelayCache"
-import { setUserPrefsFromGravity } from "app/Scenes/Search/UserPrefsModel"
 import { isArtsyEmail } from "app/utils/general"
 import { postEventToProviders } from "app/utils/track/providers"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk } from "easy-peasy"
@@ -21,7 +20,7 @@ import Keychain from "react-native-keychain"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
 import { requestPushNotificationsPermission } from "../utils/PushNotification"
 import { AuthError } from "./AuthError"
-import { getCurrentEmissionState } from "./GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
@@ -381,7 +380,7 @@ export const getAuthModel = (): AuthModel => ({
       onSignIn?.()
 
       // Setting up user prefs from gravity after successsfull login.
-      setUserPrefsFromGravity()
+      GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()
 
       return "success"
     }
@@ -460,7 +459,7 @@ export const getAuthModel = (): AuthModel => ({
       }
 
       // Setting up user prefs from gravity after successsfull registration.
-      setUserPrefsFromGravity()
+      GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()
 
       return { success: true, message: "" }
     }

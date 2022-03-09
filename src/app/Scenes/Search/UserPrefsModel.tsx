@@ -59,7 +59,13 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
     }
   }),
   fetchRemoteUserPrefs: thunk(async () => {
-    await setUserPrefsFromGravity()
+    const me = await fetchMe()
+
+    if (!me) {
+      return
+    }
+    GlobalStore.actions.userPrefs.setMetric(me?.lengthUnitPreference.toLowerCase() as Metric)
+    GlobalStore.actions.userPrefs.setCurrency(me?.currencyPreference as Currency)
   }),
   didRehydrate: thunkOn(
     (_, storeActions) => storeActions.rehydrate,
@@ -91,14 +97,4 @@ const fetchMe = async () => {
   ).toPromise()
 
   return result?.me
-}
-
-export const setUserPrefsFromGravity = async () => {
-  const me = await fetchMe()
-
-  if (!me) {
-    return
-  }
-  GlobalStore.actions.userPrefs.setMetric(me?.lengthUnitPreference.toLowerCase() as Metric)
-  GlobalStore.actions.userPrefs.setCurrency(me?.currencyPreference as Currency)
 }
