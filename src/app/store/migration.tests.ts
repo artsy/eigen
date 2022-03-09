@@ -545,3 +545,21 @@ describe("App version Versions.RenameModelsAndAddDarkModeSupport", () => {
     expect(migratedState.userPrefs).toEqual(prevUserPreferences)
   })
 })
+
+describe("App version Versions.AddUserPrefsMetricsUnit", () => {
+  const migrationToTest = Versions.AddUserPrefsMetricsUnit
+
+  it("adds default value for UserPrefs Metric unit to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.userPrefs.metric).toEqual("in")
+  })
+})

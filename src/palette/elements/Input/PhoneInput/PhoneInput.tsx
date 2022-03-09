@@ -5,7 +5,7 @@ import { Flex, Input, InputProps, Sans, Spacer, Touchable, useColor } from "pale
 import { useEffect, useRef, useState } from "react"
 import React from "react"
 import { Platform } from "react-native"
-import { Select, SelectOption } from "../../../palette/elements/Select"
+import { Select, SelectOption } from "../../Select"
 import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 import { countries, countryIndex } from "./countries"
 import { formatPhoneNumber } from "./formatPhoneNumber"

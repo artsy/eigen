@@ -4,6 +4,7 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
+  require("../app/Components/ArtsyKeyboardAvoidingView.stories")
   require("../app/Components/ArtworkGrids/ArtworksFilterHeader.stories")
   require("../app/Components/PopoverMessage/PopoverMessage.stories")
   require("../app/Components/ReadMore.stories")
@@ -28,6 +29,7 @@ function loadStories() {
 }
 
 const stories = [
+  "../app/Components/ArtsyKeyboardAvoidingView.stories",
   "../app/Components/ArtworkGrids/ArtworksFilterHeader.stories",
   "../app/Components/PopoverMessage/PopoverMessage.stories",
   "../app/Components/ReadMore.stories",

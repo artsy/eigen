@@ -21,7 +21,7 @@ import Keychain from "react-native-keychain"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
 import { requestPushNotificationsPermission } from "../utils/PushNotification"
 import { AuthError } from "./AuthError"
-import { getCurrentEmissionState } from "./GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
@@ -378,6 +378,9 @@ export const getAuthModel = (): AuthModel => ({
 
       onSignIn?.()
 
+      // Setting up user prefs from gravity after successsfull login.
+      GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()
+
       return "success"
     }
 
@@ -453,6 +456,9 @@ export const getAuthModel = (): AuthModel => ({
         default:
           assertNever(oauthProvider)
       }
+
+      // Setting up user prefs from gravity after successsfull registration.
+      GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()
 
       return { success: true, message: "" }
     }
