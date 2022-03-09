@@ -11,9 +11,7 @@ import {
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, CheckIcon, Flex, Separator, Text, useColor } from "palette"
 import React, { useState } from "react"
@@ -32,7 +30,6 @@ export const ALLOW_EMPTY_CREATED_DATES_FILTER: FilterData = {
 export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation }) => {
   const color = useColor()
   const screenWidth = useScreenDimensions().width
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
@@ -103,11 +100,7 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
 
   return (
     <Flex flexGrow={1}>
-      {isEnabledImprovedAlertsFlow ? (
-        <ArtworkFilterBackHeader title="Year created" onLeftButtonPress={navigation.goBack} />
-      ) : (
-        <FancyModalHeader onLeftButtonPress={navigation.goBack}>Year created</FancyModalHeader>
-      )}
+      <ArtworkFilterBackHeader title="Year created" onLeftButtonPress={navigation.goBack} />
       <Flex flexGrow={1} py={2}>
         <YearText variant="xs" mb={15} mx={2}>
           {sliderValues[0]} – {sliderValues[1]}
