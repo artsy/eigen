@@ -8,7 +8,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ErrorView } from "../Components/ErrorView"
@@ -67,45 +66,47 @@ export const ContactInformation: React.FC<{
     >
       {({ values, isValid, touched, errors, handleChange, handleBlur, handleSubmit }) => (
         <Flex py={1} mt={1}>
-          <ScrollView>
-            <Text color="black60">
-              We will only use these details to contact you regarding your submission.!
-            </Text>
-            <Spacer mt={4} />
-            <Input
-              title="Name"
-              placeholder="Your Full Name"
-              onChangeText={handleChange("userName")}
-              value={values.userName}
-              onBlur={handleBlur("userName")}
-              error={touched.userName ? errors.userName : undefined}
-            />
-            <Spacer mt={4} />
-            <Input
-              title="Email"
-              placeholder="Your Email Address"
-              onChangeText={handleChange("userEmail")}
-              value={values.userEmail}
-              onBlur={handleBlur("userEmail")}
-              error={touched.userEmail ? "This email address is invalid" : undefined}
-            />
-            <Spacer mt={4} />
-            <PhoneInput
-              style={{ flex: 1 }}
-              title="Phone number"
-              placeholder="(000) 000-0000"
-              onChangeText={handleChange("userPhone")}
-              value={values.userPhone}
-              setValidation={() => {
-                // do nothing
-              }}
-              onBlur={handleBlur("userPhone")}
-            />
-            <Spacer mt={6} />
-            <CTAButton onPress={handleSubmit} disabled={!isValid}>
-              Submit Artwork1
-            </CTAButton>
-          </ScrollView>
+          <Text color="black60">
+            We will only use these details to contact you regarding your submission.
+          </Text>
+          <Spacer mt={4} />
+          <Input
+            title="Name"
+            placeholder="Your Full Name"
+            onChangeText={handleChange("userName")}
+            value={values.userName}
+            onBlur={handleBlur("userName")}
+            error={touched.userName ? errors.userName : undefined}
+            accessibilityLabel="Name"
+          />
+          <Spacer mt={4} />
+          <Input
+            title="Email"
+            placeholder="Your Email Address"
+            keyboardType="email-address"
+            onChangeText={handleChange("userEmail")}
+            value={values.userEmail}
+            onBlur={handleBlur("userEmail")}
+            accessibilityLabel="Email address"
+            error={touched.userEmail ? "This email address is invalid" : undefined}
+          />
+          <Spacer mt={4} />
+          <PhoneInput
+            style={{ flex: 1 }}
+            title="Phone number"
+            placeholder="(000) 000-0000"
+            onChangeText={handleChange("userPhone")}
+            value={values.userPhone}
+            setValidation={() => {
+              // do nothing
+            }}
+            onBlur={handleBlur("userPhone")}
+            accessibilityLabel="Phone number"
+          />
+          <Spacer mt={6} />
+          <CTAButton onPress={handleSubmit} disabled={!isValid}>
+            Submit Artwork
+          </CTAButton>
         </Flex>
       )}
     </Formik>
