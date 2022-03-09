@@ -7,4 +7,3 @@ aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.ci
 
 cp metaflags.example.json metaflags.json
 
-./scripts/download-assets
