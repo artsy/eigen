@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { TagArtworksTestsQuery } from "__generated__/TagArtworksTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
@@ -31,20 +31,19 @@ describe("TagArtworks", () => {
           }
         `}
         render={({ props }) => {
-          if (props?.tag) {
-            return (
-              <StickyTabPage
-                tabs={[
-                  {
-                    title: "TagArtworks",
-                    content: <TagArtworksPaginationContainer tag={props.tag} />,
-                  },
-                ]}
-              />
-            )
+          if (!props?.tag) {
+            return null
           }
-
-          return null
+          return (
+            <StickyTabPage
+              tabs={[
+                {
+                  title: "test",
+                  content: <TagArtworksPaginationContainer tag={props.tag} />,
+                },
+              ]}
+            />
+          )
         }}
         variables={{
           tagID,
@@ -58,11 +57,11 @@ describe("TagArtworks", () => {
     mockEnvironmentPayload(environment)
   })
 
-  it("renders filter header", () => {
+  it("renders filter header", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment)
 
-    expect(getByText("Sort & Filter")).toBeTruthy()
+    await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
   })
 
   it("renders artworks grid", () => {
@@ -81,7 +80,7 @@ describe("TagArtworks", () => {
     expect(getByText("title-1")).toBeTruthy()
   })
 
-  it("renders empty artworks grid view", () => {
+  it("renders empty artworks grid view", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment, {
       FilterArtworksConnection() {
@@ -94,6 +93,7 @@ describe("TagArtworks", () => {
     })
 
     // Change sort filter
+    await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
     fireEvent.press(getByText("Sort & Filter"))
     fireEvent.press(getByText("Sort By"))
     fireEvent.press(getByText("Recently Added"))

@@ -43,7 +43,7 @@ describe("MyCollection", () => {
               <StickyTabPage
                 tabs={[
                   {
-                    title: "My Collection",
+                    title: "test",
                     content: <MyCollectionContainer me={props.me} />,
                   },
                 ]}

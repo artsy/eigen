@@ -36,7 +36,7 @@ describe("GeneArtworks", () => {
               <StickyTabPage
                 tabs={[
                   {
-                    title: "GeneArtworks",
+                    title: "test",
                     content: <GeneArtworksPaginationContainer gene={props.gene} />,
                   },
                 ]}

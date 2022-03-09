@@ -39,7 +39,7 @@ describe("PartnerShows", () => {
             <StickyTabPage
               tabs={[
                 {
-                  title: "wow-tab",
+                  title: "test",
                   content: <PartnerShows partner={props.partner} />,
                 },
               ]}

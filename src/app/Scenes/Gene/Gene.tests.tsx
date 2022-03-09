@@ -2,6 +2,7 @@ import { GeneTestsQuery } from "__generated__/GeneTestsQuery.graphql"
 import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
 import About from "app/Components/Gene/About"
 import { GeneArtworks } from "app/Components/Gene/GeneArtworks"
+import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { TouchableHighlightColor } from "palette"
@@ -37,11 +38,19 @@ describe("Gene", () => {
           }
         `}
         render={({ props }) => {
-          if (props?.gene) {
-            return <Gene geneID={geneID} gene={props.gene} />
+          if (!props?.gene) {
+            return null
           }
-
-          return null
+          return (
+            <StickyTabPage
+              tabs={[
+                {
+                  title: "test",
+                  content: <Gene geneID={geneID} gene={props.gene} />,
+                },
+              ]}
+            />
+          )
         }}
         variables={{
           geneID,

@@ -31,7 +31,7 @@ describe("MyCollectionArtworkAbout", () => {
             <StickyTabPage
               tabs={[
                 {
-                  title: "wow-tab",
+                  title: "test",
                   content: (
                     <MyCollectionArtworkAbout
                       marketPriceInsights={props.marketPriceInsights}

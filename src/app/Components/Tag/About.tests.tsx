@@ -14,7 +14,7 @@ it("renders without throwing a error", () => {
     <StickyTabPage
       tabs={[
         {
-          title: "TagArtworks",
+          title: "test",
           content: <About tag={tag as any} />,
         },
       ]}
