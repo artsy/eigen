@@ -2,7 +2,7 @@
 
 **Last update: March 2022**
 
-This is a living document, expected to be updated regularly, with a broad overview of the history and how we prefere to do things on eigen.
+This is a living document, expected to be updated regularly, with a broad overview of the history and how we prefer to do things on eigen.
 Here you can find links to the tools we use, examples, pull requests with interesting discussions & blog posts.
 
 _Please note: Links should point to specific commits, and not a branch (in case the branch or file is deleted, these links should always work). But it's possible that a file is outdated, that our understanding has moved on since it was linked to; in that case, please update this document._
