@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { ContextModule } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
+import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { BackButton } from "app/navigation/BackButton"
 import { goBack } from "app/navigation/navigate"
 import { refreshMyCollection } from "app/Scenes/MyCollection/MyCollection"
@@ -115,47 +116,49 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
         context_screen_owner_type: OwnerType.consignmentFlow,
       })}
     >
-      <Flex>
-        <ScrollView
-          ref={scrollViewRef}
-          contentContainerStyle={{
-            paddingVertical: 20,
-            paddingHorizontal: 20,
-            justifyContent: "center",
-          }}
-        >
-          <BackButton onPress={() => goBack()} style={{ top: 10 }} />
-          <Spacer mb={3} />
-          <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
-            {items.map(({ overtitle, title, Content, contextModule }, index) => {
-              const disabled = !validSteps[index]
-              return (
-                <CollapsibleMenuItem
-                  key={index}
-                  overtitle={overtitle}
-                  title={title}
-                  onExpand={() => {
-                    trackEvent(toggledAccordionEvent(submissionID, contextModule, title, true))
-                    expandCollapsibleMenuContent(index)
-                  }}
-                  onCollapse={() => {
-                    trackEvent(toggledAccordionEvent(submissionID, contextModule, title, false))
-                  }}
-                  isExpanded={index === 0}
-                  disabled={disabled}
-                  ref={(ref) => {
-                    if (ref) {
-                      stepsRefs[index] = ref
-                    }
-                  }}
-                >
-                  {Content}
-                </CollapsibleMenuItem>
-              )
-            })}
-          </Join>
-        </ScrollView>
-      </Flex>
+      <ArtsyKeyboardAvoidingView>
+        <Flex>
+          <ScrollView
+            ref={scrollViewRef}
+            contentContainerStyle={{
+              paddingVertical: 20,
+              paddingHorizontal: 20,
+              justifyContent: "center",
+            }}
+          >
+            <BackButton onPress={() => goBack()} style={{ top: 10 }} />
+            <Spacer mb={3} />
+            <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
+              {items.map(({ overtitle, title, Content, contextModule }, index) => {
+                const disabled = !validSteps[index]
+                return (
+                  <CollapsibleMenuItem
+                    key={index}
+                    overtitle={overtitle}
+                    title={title}
+                    onExpand={() => {
+                      trackEvent(toggledAccordionEvent(submissionID, contextModule, title, true))
+                      expandCollapsibleMenuContent(index)
+                    }}
+                    onCollapse={() => {
+                      trackEvent(toggledAccordionEvent(submissionID, contextModule, title, false))
+                    }}
+                    isExpanded={index === 0}
+                    disabled={disabled}
+                    ref={(ref) => {
+                      if (ref) {
+                        stepsRefs[index] = ref
+                      }
+                    }}
+                  >
+                    {Content}
+                  </CollapsibleMenuItem>
+                )
+              })}
+            </Join>
+          </ScrollView>
+        </Flex>
+      </ArtsyKeyboardAvoidingView>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

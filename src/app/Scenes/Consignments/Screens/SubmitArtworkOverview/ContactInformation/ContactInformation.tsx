@@ -69,7 +69,7 @@ export const ContactInformation: React.FC<{
         <Flex py={1} mt={1}>
           <ScrollView>
             <Text color="black60">
-              We will only use these details to contact you regarding your submission.
+              We will only use these details to contact you regarding your submission.!
             </Text>
             <Spacer mt={4} />
             <Input
@@ -103,12 +103,8 @@ export const ContactInformation: React.FC<{
             />
             <Spacer mt={6} />
             <CTAButton onPress={handleSubmit} disabled={!isValid}>
-              Submit Artwork
+              Submit Artwork1
             </CTAButton>
-            <Spacer mt={6} />
-            <Spacer mt={6} />
-            <Spacer mt={6} />
-            <Spacer mt={6} />
           </ScrollView>
         </Flex>
       )}
