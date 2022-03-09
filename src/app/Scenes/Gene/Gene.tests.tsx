@@ -9,7 +9,6 @@ import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWr
 import { TouchableHighlightColor } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { Gene } from "./Gene"
 
