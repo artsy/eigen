@@ -8,6 +8,11 @@ They are called "meta" flags because they are not the usual app feature flags, t
 
 Other uses that might come or will come in the future could be things like switching between app shells, using tslint or eslint etc. Basically any dev-related flag.
 
+### Reset metaflags
+
+You can reset the local metaflags by running `yarn setup:artsy`, which will copy the `metaflags.example.json` over to `metaflags.json`.
+In `metaflags.example.json` we should always have the values of the flags that the CI and production environments should have.
+
 ## Available metaflags
 
 ### Storybook
@@ -34,8 +39,3 @@ You can turn off various loggers by setting the according values to false on `me
 }
 
 ```
-
-### Reset metaflags
-
-You can reset the local metaflags by running `yarn setup:artsy`, which will copy the `metaflags.example.json` over to `metaflags.json`.
-In `metaflags.example.json` we should always have the values of the flags that the CI and production environments should have.
