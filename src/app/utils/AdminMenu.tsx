@@ -94,6 +94,11 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         <Text variant="xs" color="grey" mx="2">
           eigen v{getVersion()}, build {getBuildNumber()} ({ArtsyNativeModule.gitCommitShortHash})
         </Text>
+        {!!HermesInternal && (
+          <Text variant="xs" color="grey" mx="2">
+            engine: Hermes
+          </Text>
+        )}
         {Platform.OS === "ios" && (
           <FeatureFlagMenuItem
             title="Go to old Admin menu"

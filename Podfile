@@ -65,6 +65,7 @@ target 'Artsy' do
   use_react_native!(
     :path => './node_modules/react-native',
     :production => ENV['CIRCLE_BUILD_NUM'],
+    :hermes_enabled => true,
   )
 
   # Networking
