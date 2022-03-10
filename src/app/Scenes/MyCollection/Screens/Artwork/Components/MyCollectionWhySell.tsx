@@ -21,7 +21,7 @@ export const MyCollectionWhySell: React.FC = () => {
         variant="fillDark"
         block
         onPress={() => {
-          // navigate to Modal
+          navigate("/sales")
         }}
         testID="LearnMoreButton"
       >

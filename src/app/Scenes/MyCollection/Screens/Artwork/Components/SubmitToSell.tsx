@@ -35,7 +35,7 @@ export const SubmitToSell: React.FC = () => {
           variant="xs"
           underline
           onPress={() => {
-            // navigate("/sales")
+            navigate("/selling-with-artsy")
           }}
         >
           selling with Artsy.

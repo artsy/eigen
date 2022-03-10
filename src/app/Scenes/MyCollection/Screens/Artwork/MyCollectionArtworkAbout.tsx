@@ -2,7 +2,7 @@ import { MyCollectionArtworkAbout_artwork$key } from "__generated__/MyCollection
 import { MyCollectionArtworkAbout_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAbout_marketPriceInsights.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Separator, Spacer } from "palette/elements"
+import { Flex, Spacer } from "palette/elements"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
