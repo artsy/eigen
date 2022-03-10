@@ -1503,6 +1503,9 @@ type ArtistTargetSupply {
   # True if an artist is in the microfunnel list.
   isInMicrofunnel: Boolean
 
+  # True if an artist is a P1 artist.
+  isP1: Boolean
+
   # True if artist is in target supply list.
   isTargetSupply: Boolean
   microfunnel: ArtistTargetSupplyMicrofunnel
