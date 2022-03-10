@@ -40,7 +40,6 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
   const showPriceEstimateBanner = useFeatureFlag("ARShowRequestPriceEstimateBanner") && isPOneArtist
   const displayText = artwork.consignmentSubmission?.displayText
-  console.warn("displayText = ", displayText)
 
   const isSold = !!displayText && STATUSES[displayText!.toLowerCase()]?.text === "Artwork Sold"
 

@@ -35,7 +35,6 @@ export const SubmitToSell: React.FC = () => {
           variant="xs"
           style={{ textDecorationLine: "underline" }}
           onPress={() => {
-            return // to remove
             // navigate("/sales")
           }}
         >
