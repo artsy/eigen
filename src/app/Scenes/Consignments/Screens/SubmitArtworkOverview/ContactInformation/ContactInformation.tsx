@@ -110,6 +110,7 @@ export const ContactInformation: React.FC<{
             setValidation={setIsValidNumber}
             onFocus={() => setIsPhoneInputFocused(true)}
             accessibilityLabel="Phone number"
+            shouldDisplayLocalError={false}
             error={
               !isPhoneInputFocused && values.userPhone && !isValidNumber && errors.userPhone
                 ? errors.userPhone

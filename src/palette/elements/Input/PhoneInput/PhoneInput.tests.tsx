@@ -50,7 +50,7 @@ describe("PhoneInput", () => {
     expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+447825 577664")
   })
 
-  it("shows a validation message when a phone number is invalid", () => {
+  it("shows custom error message, when error is controlled and phone number is invalid", () => {
     const tree = renderWithWrappers(
       <PhoneInput
         value="447825577664"
@@ -59,7 +59,8 @@ describe("PhoneInput", () => {
         setValidation={() => {
           return false
         }}
-        error="This phone number is incomplete"
+        shouldDisplayLocalError={false}
+        error="custom error message"
       />
     )
 
@@ -67,7 +68,28 @@ describe("PhoneInput", () => {
       tree.root.findByType(Input).props.onChangeText("")
     })
 
-    expect(tree.root.findAllByType(Text)[2].props.children).toBe("This phone number is incomplete")
+    expect(tree.root.findAllByType(Text)[2].props.children).toBe("custom error message")
+  })
+
+  it("shows local error message when parent does not control error and phone number is invalid", () => {
+    const tree = renderWithWrappers(
+      <PhoneInput
+        value="447825577664"
+        onChange={onChange}
+        onChangeText={onChangeText}
+        setValidation={() => {
+          return false
+        }}
+      />
+    )
+
+    act(() => {
+      tree.root.findByType(Input).props.onChangeText("")
+    })
+
+    expect(tree.root.findAllByType(Text)[2].props.children).toBe(
+      "Please enter a valid phone number."
+    )
   })
 
   it("does not show a validation message when phone number valid", () => {
