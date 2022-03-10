@@ -23,6 +23,11 @@ export const ContactInformation: React.FC<{
   const [submissionError, setSubmissionError] = useState(false)
   const { trackEvent } = useTracking()
 
+  const [isNameInputFocused, setIsNameInputFocused] = useState(false)
+  const [isEmailInputFocused, setIsEmailInputFocused] = useState(false)
+  const [isPhoneInputFocused, setIsPhoneInputFocused] = useState(false)
+  const [isValidNumber, setIsValidNumber] = useState(false)
+
   const handleFormSubmit = async (formValues: ContactInformationFormModel) => {
     try {
       const updatedSubmissionId = await updateConsignSubmission({
@@ -49,22 +54,18 @@ export const ContactInformation: React.FC<{
     return <ErrorView />
   }
 
-  const userName = me?.name || ""
-  const userEmail = me?.email || ""
-  const userPhone = me?.phoneNumber?.isValid ? me?.phoneNumber?.originalNumber || "" : ""
-
   return (
     <Formik<ContactInformationFormModel>
       initialValues={{
-        userName,
-        userEmail,
-        userPhone,
+        userName: me?.name || "",
+        userEmail: me?.email || "",
+        userPhone: me?.phoneNumber?.isValid ? me?.phoneNumber?.originalNumber || "" : "",
       }}
       onSubmit={handleFormSubmit}
       validationSchema={contactInformationValidationSchema}
       validateOnMount
     >
-      {({ values, isValid, touched, errors, handleChange, handleBlur, handleSubmit }) => (
+      {({ values, isValid, errors, handleChange, handleSubmit }) => (
         <Flex py={1} mt={1}>
           <Text color="black60">
             We will only use these details to contact you regarding your submission.
@@ -75,9 +76,10 @@ export const ContactInformation: React.FC<{
             placeholder="Your Full Name"
             onChangeText={handleChange("userName")}
             value={values.userName}
-            onBlur={handleBlur("userName")}
-            error={touched.userName ? errors.userName : undefined}
             accessibilityLabel="Name"
+            onBlur={() => setIsNameInputFocused(false)}
+            onFocus={() => setIsNameInputFocused(true)}
+            error={!isNameInputFocused && values.userName && errors.userName ? errors.userName : ""}
           />
           <Spacer mt={4} />
           <Input
@@ -86,9 +88,12 @@ export const ContactInformation: React.FC<{
             keyboardType="email-address"
             onChangeText={handleChange("userEmail")}
             value={values.userEmail}
-            onBlur={handleBlur("userEmail")}
+            onBlur={() => setIsEmailInputFocused(false)}
+            onFocus={() => setIsEmailInputFocused(true)}
             accessibilityLabel="Email address"
-            error={touched.userEmail ? "This email address is invalid" : undefined}
+            error={
+              !isEmailInputFocused && values.userEmail && errors.userEmail ? errors.userEmail : ""
+            }
           />
           <Spacer mt={4} />
           <PhoneInput
@@ -97,14 +102,19 @@ export const ContactInformation: React.FC<{
             placeholder="(000) 000-0000"
             onChangeText={handleChange("userPhone")}
             value={values.userPhone}
-            setValidation={() => {
-              // do nothing
-            }}
-            onBlur={handleBlur("userPhone")}
+            onBlur={() => setIsPhoneInputFocused(false)}
+            setValidation={setIsValidNumber}
+            onFocus={() => setIsPhoneInputFocused(true)}
             accessibilityLabel="Phone number"
+            shouldDisplayLocalError={false}
+            error={
+              !isPhoneInputFocused && values.userPhone && !isValidNumber && errors.userPhone
+                ? errors.userPhone
+                : ""
+            }
           />
           <Spacer mt={6} />
-          <CTAButton onPress={handleSubmit} disabled={!isValid}>
+          <CTAButton onPress={handleSubmit} disabled={!isValid || !isValidNumber}>
             Submit Artwork
           </CTAButton>
         </Flex>
