@@ -9,7 +9,7 @@ For bigger features that will take longer than a sprint, we put development behi
 ## Contents
 
 - [Echo](#echo)
-- How to Develop a Feature in [Eigen](#how-to-develop-a-feature-in-eigen)
+- How to Develop a Feature in Eigen [link](#how-to-develop-a-feature-in-eigen)
 - Add a feature flag [link](#add-a-feature-flag)
   - Step 1: Configure the feature flag on features.ts and echo [link](#step-1-configure-the-feature-flag-on-featurests)
   - Step 2: Place the feature flag in the part of code where it will be used [link](#step-2-place-the-feature-flag-in-the-part-of-code-where-it-will-be-used)
