@@ -37,9 +37,9 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
           showInTabName: "profile",
         }
 
-        await navigate("/my-profile/settings", options)
+        await navigate("/collector-profile/settings", options)
         setTimeout(() => {
-          navigate("/my-profile/saved-search-alerts")
+          navigate("/collector-profile/saved-search-alerts")
         }, 100)
       },
     })

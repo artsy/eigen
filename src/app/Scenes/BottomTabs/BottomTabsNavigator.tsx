@@ -53,7 +53,7 @@ export const BottomTabsNavigator = () => {
             />,
             <TabContent
               key="profile"
-              route={{ params: { tabName: "profile", rootModuleName: "MyProfile" } }}
+              route={{ params: { tabName: "profile", rootModuleName: "CollectorProfile" } }}
             />,
           ]}
           activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
@@ -88,7 +88,7 @@ export const BottomTabsNavigator = () => {
       <Tab.Screen
         name="profile"
         component={TabContent}
-        initialParams={{ tabName: "profile", rootModuleName: "MyProfile" }}
+        initialParams={{ tabName: "profile", rootModuleName: "CollectorProfile" }}
       />
     </Tab.Navigator>
   )

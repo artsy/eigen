@@ -44,6 +44,12 @@ import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import { CollectorProfile } from "./Scenes/CollectorProfile/CollectorProfile"
+import { CollectorProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/CollectorProfile/CollectorProfileHeaderMyCollectionAndSavedWorks"
+import { CollectorProfilePaymentQueryRenderer } from "./Scenes/CollectorProfile/CollectorProfilePayment"
+import { CollectorProfilePaymentNewCreditCard } from "./Scenes/CollectorProfile/CollectorProfilePaymentNewCreditCard"
+import { CollectorProfilePushNotificationsQueryRenderer } from "./Scenes/CollectorProfile/CollectorProfilePushNotifications"
+import { CollectorProfileSettings } from "./Scenes/CollectorProfile/CollectorProfileSettings"
+import { DarkModeSettings } from "./Scenes/CollectorProfile/DarkModeSettings"
 import { Consignments } from "./Scenes/Consignments"
 import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
@@ -75,12 +81,6 @@ import { ArtworkSubmissionStatusFAQ } from "./Scenes/MyCollection/Screens/Artwor
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
-import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
-import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
-import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
-import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
-import { MyProfileSettings } from "./Scenes/MyProfile/MyProfileSettings"
 import {
   NewWorksForYouQueryRenderer,
   NewWorksForYouScreenQuery,
@@ -359,7 +359,7 @@ export const modules = defineModules({
     {
       isRootViewForTabName: "profile",
     },
-    MyProfileHeaderMyCollectionAndSavedWorksScreenQuery
+    CollectorProfileHeaderMyCollectionAndSavedWorksScreenQuery
   ),
   ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, { hidesBackButton: true }),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
@@ -402,14 +402,14 @@ export const modules = defineModules({
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer, { hidesBackButton: true }),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
-  MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
-  MyProfileSettings: reactModule(MyProfileSettings),
+  CollectorProfilePayment: reactModule(CollectorProfilePaymentQueryRenderer),
+  CollectorProfileSettings: reactModule(CollectorProfileSettings),
   OrderHistory: reactModule(OrderHistoryQueryRender),
   OrderDetails: reactModule(OrderDetailsQueryRender),
-  MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, {
+  CollectorProfilePaymentNewCreditCard: reactModule(CollectorProfilePaymentNewCreditCard, {
     hidesBackButton: true,
   }),
-  MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
+  CollectorProfilePushNotifications: reactModule(CollectorProfilePushNotificationsQueryRenderer),
   DarkModeSettings: reactModule(DarkModeSettings),
   MySellingProfile: reactModule(View),
   Partner: reactModule(PartnerQueryRenderer),

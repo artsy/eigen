@@ -63,7 +63,7 @@ describe("CreateSavedSearchModal", () => {
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
     fireEvent.press(getByText("Your alert has been created."))
 
-    expect(navigate).toHaveBeenCalledWith("/my-profile/settings", {
+    expect(navigate).toHaveBeenCalledWith("/collector-profile/settings", {
       popToRootTabView: true,
       showInTabName: "profile",
     })
@@ -77,11 +77,11 @@ describe("CreateSavedSearchModal", () => {
 
     await delay(200)
 
-    expect(navigate).toHaveBeenCalledWith("/my-profile/settings", {
+    expect(navigate).toHaveBeenCalledWith("/collector-profile/settings", {
       popToRootTabView: true,
       showInTabName: "profile",
     })
-    expect(navigate).toHaveBeenCalledWith("/my-profile/saved-search-alerts")
+    expect(navigate).toHaveBeenCalledWith("/collector-profile/saved-search-alerts")
   })
 
   it("tracks clicks when the create alert button is pressed", async () => {

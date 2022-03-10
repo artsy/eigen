@@ -46,10 +46,10 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to MyProfile", () => {
-    expect(matchRoute("/my-profile")).toMatchInlineSnapshot(`
+  it("routes to CollectorProfile", () => {
+    expect(matchRoute("/collector-profile")).toMatchInlineSnapshot(`
       Object {
-        "module": "MyProfile",
+        "module": "CollectorProfile",
         "params": Object {},
         "type": "match",
       }
@@ -752,10 +752,10 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to MyProfilePayment", () => {
-    expect(matchRoute("/my-profile/payment")).toMatchInlineSnapshot(`
+  it("routes to CollectorProfilePayment", () => {
+    expect(matchRoute("/collector-profile/payment")).toMatchInlineSnapshot(`
       Object {
-        "module": "MyProfilePayment",
+        "module": "CollectorProfilePayment",
         "params": Object {},
         "type": "match",
       }
@@ -772,20 +772,20 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to MyProfilePaymentNewCreditCard", () => {
-    expect(matchRoute("/my-profile/payment/new-card")).toMatchInlineSnapshot(`
+  it("routes to CollectorProfilePaymentNewCreditCard", () => {
+    expect(matchRoute("/collector-profile/payment/new-card")).toMatchInlineSnapshot(`
       Object {
-        "module": "MyProfilePaymentNewCreditCard",
+        "module": "CollectorProfilePaymentNewCreditCard",
         "params": Object {},
         "type": "match",
       }
     `)
   })
 
-  it("routes to MyProfilePushNotifications", () => {
-    expect(matchRoute("/my-profile/push-notifications")).toMatchInlineSnapshot(`
+  it("routes to CollectorProfilePushNotifications", () => {
+    expect(matchRoute("/collector-profile/push-notifications")).toMatchInlineSnapshot(`
       Object {
-        "module": "MyProfilePushNotifications",
+        "module": "CollectorProfilePushNotifications",
         "params": Object {},
         "type": "match",
       }

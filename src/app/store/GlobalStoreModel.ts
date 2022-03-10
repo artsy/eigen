@@ -1,5 +1,12 @@
+<<<<<<< HEAD:src/app/store/GlobalStoreModel.ts
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabsModel, getBottomTabsModel } from "app/Scenes/BottomTabs/BottomTabsModel"
+=======
+import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { BottomTabsModel, getBottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
+import { DevicePrefsModel, getDevicePrefsModel } from "lib/Scenes/CollectorProfile/DevicePrefsModel"
+>>>>>>> 7abc6c353 (Rename everywhere):src/lib/store/GlobalStoreModel.ts
 import {
   getSubmissionModel,
   SubmissionModel,
@@ -7,11 +14,17 @@ import {
 import {
   getMyCollectionModel,
   MyCollectionModel,
+<<<<<<< HEAD:src/app/store/GlobalStoreModel.ts
 } from "app/Scenes/MyCollection/State/MyCollectionModel"
 import { DevicePrefsModel, getDevicePrefsModel } from "app/Scenes/MyProfile/DevicePrefsModel"
 import { getSearchModel, SearchModel } from "app/Scenes/Search/SearchModel"
 import { getUserPrefsModel, UserPrefsModel } from "app/Scenes/Search/UserPrefsModel"
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
+=======
+} from "lib/Scenes/MyCollection/State/MyCollectionModel"
+import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
+import { getUserPrefsModel, UserPrefsModel } from "lib/Scenes/Search/UserPrefsModel"
+>>>>>>> 7abc6c353 (Rename everywhere):src/lib/store/GlobalStoreModel.ts
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { unsafe__getEnvironment } from "./GlobalStore"

@@ -1,4 +1,4 @@
-import { MyProfileEditForm_me } from "__generated__/MyProfileEditForm_me.graphql"
+import { CollectorProfileEditForm_me } from "__generated__/CollectorProfileEditForm_me.graphql"
 import { LocationResult } from "app/Scenes/Consignments"
 import {
   getLocationDetails,
@@ -119,5 +119,5 @@ export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocomplete
   )
 }
 
-export const buildLocationDisplay = (location: MyProfileEditForm_me["location"]): string =>
+export const buildLocationDisplay = (location: CollectorProfileEditForm_me["location"]): string =>
   [location?.city, location?.state, location?.country].filter((x) => x).join(", ")

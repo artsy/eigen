@@ -120,7 +120,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
             },
             onViewDuplicatePress: () => {
               goBack()
-              navigate(`/my-profile/saved-search-alerts/${duplicateSavedSearchId}`)
+              navigate(`/collector-profile/saved-search-alerts/${duplicateSavedSearchId}`)
             },
           })
           return

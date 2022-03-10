@@ -123,7 +123,7 @@ describe(SavedAddressesQueryRenderer, () => {
     })
 
     fireEvent.press(getAllByText("Add New Address")[0])
-    expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/new-address", {
+    expect(navigate).toHaveBeenCalledWith("/collector-profile/saved-addresses/new-address", {
       modal: true,
     })
   })
@@ -174,7 +174,7 @@ describe(SavedAddressesQueryRenderer, () => {
     const EditButton = getByTestId("EditAddress-5861")
 
     fireEvent.press(EditButton)
-    expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/edit-address", {
+    expect(navigate).toHaveBeenCalledWith("/collector-profile/saved-addresses/edit-address", {
       modal: true,
       passProps: { addressId: "5861" },
     })

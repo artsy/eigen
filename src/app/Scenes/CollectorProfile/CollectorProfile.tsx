@@ -2,15 +2,15 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import React from "react"
 import { MyCollectionArtworkForm } from "../MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { MyProfileEditFormScreen } from "../MyProfile/MyProfileEditForm"
-import { MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { MyProfileProvider } from "../MyProfile/MyProfileProvider"
+import { CollectorProfileEditFormScreen } from "./CollectorProfileEditForm"
+import { CollectorProfileHeaderMyCollectionAndSavedWorksQueryRenderer } from "./CollectorProfileHeaderMyCollectionAndSavedWorks"
+import { CollectorProfileProvider } from "./CollectorProfileProvider"
 
 const Stack = createStackNavigator()
 
 export const CollectorProfile = () => {
   return (
-    <MyProfileProvider>
+    <CollectorProfileProvider>
       <NavigationContainer independent>
         <Stack.Navigator
           // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
@@ -22,13 +22,16 @@ export const CollectorProfile = () => {
           }}
         >
           <Stack.Screen
-            name="MyProfileHeaderMyCollectionAndSavedWorks"
-            component={MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer}
+            name="CollectorProfileHeaderMyCollectionAndSavedWorks"
+            component={CollectorProfileHeaderMyCollectionAndSavedWorksQueryRenderer}
           />
           <Stack.Screen name="MyCollectionArtworkForm" component={MyCollectionArtworkForm} />
-          <Stack.Screen name="MyProfileEditForm" component={MyProfileEditFormScreen} />
+          <Stack.Screen
+            name="CollectorProfileEditForm"
+            component={CollectorProfileEditFormScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
-    </MyProfileProvider>
+    </CollectorProfileProvider>
   )
 }
