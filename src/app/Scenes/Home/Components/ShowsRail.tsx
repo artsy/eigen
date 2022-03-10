@@ -15,7 +15,7 @@ interface ShowsRailProps {
   mb?: number
 }
 
-// Because we never show more than 2 shows per gallerie we need to overfetch, filter out and then limit the number of shows.
+// Because we never show more than 2 shows per gallery we need to overfetch, filter out, and then limit the number of shows.
 const NUMBER_OF_SHOWS = 10
 
 export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, mb }) => {
