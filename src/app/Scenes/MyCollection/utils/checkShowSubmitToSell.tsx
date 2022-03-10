@@ -18,5 +18,5 @@ export const showSubmitToSell = (
 
   const isSold = !!displayText && STATUSES[displayText!.toLowerCase()]?.text === "Artwork Sold"
 
-  return isPOneArtist && !isSold
+  return isPOneArtist && isSold
 }
