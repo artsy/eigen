@@ -1,5 +1,7 @@
 # Feature flags
 
+**Last edited: March 2022**
+
 Artsy releases the app on a [2-week cadence 🔐](https://www.notion.so/artsy/2-week-Release-Cadence-f3427549d9cb4d8b809ad16c57338c2d), submitting the Monday after a sprint starts.
 
 For very small features (like adding a single new label to a view) we simply open a pull request.
