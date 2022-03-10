@@ -12140,6 +12140,9 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
 
   # Singular estimate field, if specified
   estimateCents: Int
+
+  # A formatted description of when the lot starts or ends or if it has ended
+  formattedStartDateTime: String
   highestBid: SaleArtworkHighestBid
   highEstimate: SaleArtworkHighEstimate
 
