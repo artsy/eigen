@@ -126,8 +126,107 @@ type AnalyticsArtist {
   entityId: String!
 }
 
+# Artist Affinity
+type AnalyticsArtistAffinity {
+  # Artist ID
+  artistId: ID!
+
+  # Calculated affinity Score
+  score: Float!
+}
+
+# The connection type for ArtistAffinity.
+type AnalyticsArtistAffinityConnection {
+  # A list of edges.
+  edges: [AnalyticsArtistAffinityEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsArtistAffinity]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AnalyticsArtistAffinityEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsArtistAffinity
+}
+
+# Artist Recommendation
+type AnalyticsArtistRecommendation {
+  # Artist ID
+  artistId: ID!
+
+  # Calculated score
+  score: Float!
+}
+
+# The connection type for ArtistRecommendation.
+type AnalyticsArtistRecommendationConnection {
+  # A list of edges.
+  edges: [AnalyticsArtistRecommendationEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsArtistRecommendation]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AnalyticsArtistRecommendationEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsArtistRecommendation
+}
+
 type AnalyticsArtwork {
   entityId: String!
+}
+
+# Artwork Recommendation
+type AnalyticsArtworkRecommendation {
+  # Artwork ID
+  artworkId: ID!
+
+  # Calculated score
+  score: Float!
+}
+
+# The connection type for ArtworkRecommendation.
+type AnalyticsArtworkRecommendationConnection {
+  # A list of edges.
+  edges: [AnalyticsArtworkRecommendationEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsArtworkRecommendation]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AnalyticsArtworkRecommendationEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsArtworkRecommendation
 }
 
 # Publish artwork Series Stats
@@ -138,8 +237,7 @@ type AnalyticsArtworksPublishedStats {
   totalCount: Int!
 }
 
-# An ISO 8601 datetime -- second one is because of moving price insights
-# from Diffusion to Vortex.
+# An ISO 8601 datetime
 scalar AnalyticsDateTime
 
 # Visitor countries, device, referals and session page
@@ -8520,6 +8618,7 @@ enum InvoiceState {
   VOID
 }
 
+# An ISO 8601-encoded datetime
 scalar ISO8601DateTime
 
 # Represents untyped JSON
@@ -10889,6 +10988,22 @@ type Query {
 
   # Find an agreement by ID
   agreement(id: ID!): Agreement
+
+  # Get all recommended artworks for the current user.
+  analyticsArtworkRecommendations(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    userId: String
+  ): AnalyticsArtworkRecommendationConnection
 
   # Last updated timestamp
   analyticsLastUpdatedAt: AnalyticsDateTime
