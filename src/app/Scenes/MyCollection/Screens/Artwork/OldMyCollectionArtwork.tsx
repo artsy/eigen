@@ -29,6 +29,7 @@ import { useTracking } from "react-tracking"
 import { showSubmitToSell } from "../../utils/checkShowSubmitToSell"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
+import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 import { OldWhySell } from "./Components/OldWhySell"
 import { SubmitToSell } from "./Components/SubmitToSell"
 import { MyCollectionArtworkScreenProps } from "./MyCollectionArtwork"
@@ -89,30 +90,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
           <ScreenMargin>
             <Separator />
             <Spacer mb={3} />
-            {showSubmitToSell(artwork) ? (
-              <SubmitToSell />
-            ) : (
-              <>
-                <OldWhySell />
-
-                <Spacer mb={3} />
-
-                <Button
-                  size="large"
-                  variant="fillGray"
-                  block
-                  onPress={() => {
-                    trackEvent(
-                      tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More")
-                    )
-                    navigate("/sales")
-                  }}
-                  testID="LearnMoreButton"
-                >
-                  Learn more
-                </Button>
-              </>
-            )}
+            {showSubmitToSell(artwork) ? <SubmitToSell /> : <MyCollectionWhySell />}
           </ScreenMargin>
 
           <Spacer my={1} />

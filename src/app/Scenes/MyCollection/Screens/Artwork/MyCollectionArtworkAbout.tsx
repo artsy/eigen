@@ -2,7 +2,7 @@ import { MyCollectionArtworkAbout_artwork$key } from "__generated__/MyCollection
 import { MyCollectionArtworkAbout_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAbout_marketPriceInsights.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Separator } from "palette/elements"
+import { Flex, Separator, Spacer } from "palette/elements"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -10,6 +10,7 @@ import { showSubmitToSell } from "../../utils/checkShowSubmitToSell"
 import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollectionArtworkAboutWork"
 import { MyCollectionArtworkArticles } from "./Components/ArtworkAbout/MyCollectionArtworkArticles"
 import { MyCollectionArtworkPurchaseDetails } from "./Components/ArtworkAbout/MyCollectionArtworkPurchaseDetails"
+import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 import { SubmitToSell } from "./Components/SubmitToSell"
 
 interface MyCollectionArtworkAboutProps {
@@ -38,13 +39,8 @@ export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> =
           articles={articles}
           totalCount={artwork.artist?.articles?.totalCount}
         />
-
-        {!!showSubmitToSell(artwork) && (
-          <>
-            <Separator mb={3} mt={3} />
-            <SubmitToSell />
-          </>
-        )}
+        <Spacer mb={3} mt={3} />
+        {showSubmitToSell(artwork) ? <SubmitToSell /> : <MyCollectionWhySell />}
       </Flex>
     </StickyTabPageScrollView>
   )

@@ -33,7 +33,7 @@ export const SubmitToSell: React.FC = () => {
         Learn more about{" "}
         <Text
           variant="xs"
-          style={{ textDecorationLine: "underline" }}
+          underline
           onPress={() => {
             // navigate("/sales")
           }}
