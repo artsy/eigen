@@ -193,7 +193,9 @@ export const PhoneInput = React.forwardRef<
               }}
             />
           )}
-          error={validationErrorMessage || rest.error}
+          error={
+            shouldDisplayLocalError && validationErrorMessage ? validationErrorMessage : rest.error
+          }
         />
       </Flex>
     )

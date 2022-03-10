@@ -54,16 +54,12 @@ export const ContactInformation: React.FC<{
     return <ErrorView />
   }
 
-  const userName = me?.name || ""
-  const userEmail = me?.email || ""
-  const userPhone = me?.phoneNumber?.isValid ? me?.phoneNumber?.originalNumber || "" : ""
-
   return (
     <Formik<ContactInformationFormModel>
       initialValues={{
-        userName,
-        userEmail,
-        userPhone,
+        userName: me?.name || "",
+        userEmail: me?.email || "",
+        userPhone: me?.phoneNumber?.isValid ? me?.phoneNumber?.originalNumber || "" : "",
       }}
       onSubmit={handleFormSubmit}
       validationSchema={contactInformationValidationSchema}
