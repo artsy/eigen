@@ -128,6 +128,7 @@ import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import { useStripeConfig } from "./utils/useStripeConfig"
+import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -481,6 +482,7 @@ const Main: React.FC = () => {
   useSplitExperiments()
   useInitializeQueryPrefetching()
   useIdentifyUser()
+  useSyncNativeAuthState()
 
   if (!isHydrated) {
     return <View />
