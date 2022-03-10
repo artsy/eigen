@@ -15,7 +15,7 @@ For bigger features that will take longer than a sprint, we put development behi
   - **Step 2**: Place the feature flag in the part of code where it will be used [link](#step-2-place-the-feature-flag-in-the-part-of-code-where-it-will-be-used)
   - **Step 3**: Enable the feature flag [link](#step-3-enable-the-feature-flag)
 - Test a feature flag [link](#test-a-feature-flag)
-- [QA](#qa)
+- QA [link](#qa)
 - Release a feature [link](#release-a-feature)
 - Remove a Feature Flag [link](#remove-a-feature-flag)
 
