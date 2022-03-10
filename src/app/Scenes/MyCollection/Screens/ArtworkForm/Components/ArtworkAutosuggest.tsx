@@ -1,5 +1,5 @@
 import SearchIcon from "app/Icons/SearchIcon"
-import { Flex, Input } from "palette"
+import { Flex, Input, LinkButton, Text } from "palette"
 import React, { useState } from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkAutosuggestResultsQueryRenderer } from "./ArtworkAutosuggestResults"
@@ -36,6 +36,16 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
         enableClearButton
         autoFocus={typeof jest === "undefined"}
       />
+
+      <Flex flexDirection="row" my={1}>
+        <Text variant="xs" color="black60">
+          Or skip ahead to{" "}
+        </Text>
+
+        <LinkButton variant="xs" color="black60" underline onPress={onSkipPress}>
+          add artwork details
+        </LinkButton>
+      </Flex>
 
       {!!keyword.length && (
         <Flex height="100%" mb={2}>
