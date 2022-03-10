@@ -185,19 +185,9 @@ export const MyCollectionArtworkFormMain: React.FC<
         <Spacer mt={2} mb={1} />
 
         <ScreenMargin>
-          <Button
-            disabled={!formik.isValid || !isFormDirty()}
-            block
-            onPress={formik.handleSubmit}
-            testID="CompleteButton"
-            haptic
-          >
-            {modalType === "edit" ? "Save changes" : "Complete"}
-          </Button>
-
           {modalType === "edit" && (
             <Button
-              mt={1}
+              my={1}
               variant="outline"
               block
               onPress={() => {
@@ -221,7 +211,6 @@ export const MyCollectionArtworkFormMain: React.FC<
               Delete artwork
             </Button>
           )}
-          <Spacer mt={4} />
         </ScreenMargin>
 
         {/* Show validation errors during development */}
@@ -233,6 +222,17 @@ export const MyCollectionArtworkFormMain: React.FC<
           </ScreenMargin>
         )}
       </ScrollView>
+      <Flex p={2}>
+        <Button
+          disabled={!formik.isValid || !isFormDirty()}
+          block
+          onPress={formik.handleSubmit}
+          testID="CompleteButton"
+          haptic
+        >
+          {modalType === "edit" ? "Save changes" : "Complete"}
+        </Button>
+      </Flex>
     </ArtsyKeyboardAvoidingView>
   )
 }
