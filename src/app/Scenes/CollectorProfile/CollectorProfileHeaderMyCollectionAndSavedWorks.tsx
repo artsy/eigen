@@ -1,8 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
-<<<<<<< HEAD:src/app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks.tsx
-import { MyProfileHeaderMyCollectionAndSavedWorks_me } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
-import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
+import { CollectorProfileHeaderMyCollectionAndSavedWorks_me } from "__generated__/CollectorProfileHeaderMyCollectionAndSavedWorks_me.graphql"
+import { CollectorProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/CollectorProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { Image } from "app/Components/Bidding/Elements/Image"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
@@ -12,19 +11,6 @@ import { useFeatureFlag } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-=======
-import { CollectorProfileHeaderMyCollectionAndSavedWorks_me } from "__generated__/CollectorProfileHeaderMyCollectionAndSavedWorks_me.graphql"
-import { CollectorProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/CollectorProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
-import { Image } from "lib/Components/Bidding/Elements/Image"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
-import { navigate } from "lib/navigation/navigate"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useFeatureFlag } from "lib/store/GlobalStore"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
-import { screen } from "lib/utils/track/helpers"
->>>>>>> 7abc6c353 (Rename everywhere):src/app/Scenes/CollectorProfile/CollectorProfileHeaderMyCollectionAndSavedWorks.tsx
 import {
   Avatar,
   Box,
@@ -78,16 +64,9 @@ export const CollectorProfileHeaderMyCollectionAndSavedWorks: React.FC<{
 
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
 
-<<<<<<< HEAD:src/app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks.tsx
-export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSavedWorks_me }> = ({
-  me,
-}) => {
-=======
 export const CollectorProfileHeader: React.FC<{
   me: CollectorProfileHeaderMyCollectionAndSavedWorks_me
 }> = ({ me }) => {
-  const iconSize = ICON_SIZE * PixelRatio.getFontScale()
->>>>>>> 7abc6c353 (Rename everywhere):src/app/Scenes/CollectorProfile/CollectorProfileHeaderMyCollectionAndSavedWorks.tsx
   const color = useColor()
   const navigation = useNavigation()
 

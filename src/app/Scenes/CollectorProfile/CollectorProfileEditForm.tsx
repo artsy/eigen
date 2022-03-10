@@ -1,19 +1,10 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
-<<<<<<< HEAD:src/app/Scenes/MyProfile/MyProfileEditForm.tsx
-import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
-import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
-import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
-import { Image } from "app/Components/Bidding/Elements/Image"
-=======
-import { captureException } from "@sentry/react-native"
 import { CollectorProfileEditForm_me$key } from "__generated__/CollectorProfileEditForm_me.graphql"
 import { CollectorProfileEditFormQuery } from "__generated__/CollectorProfileEditFormQuery.graphql"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
-import { useFormik } from "formik"
-import { Image } from "lib/Components/Bidding/Elements/Image"
->>>>>>> 7abc6c353 (Rename everywhere):src/app/Scenes/CollectorProfile/CollectorProfileEditForm.tsx
+import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
+import { Image } from "app/Components/Bidding/Elements/Image"
 import {
   buildLocationDisplay,
   DetailedLocationAutocomplete,
@@ -49,12 +40,8 @@ import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import * as Yup from "yup"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
-<<<<<<< HEAD:src/app/Scenes/MyProfile/MyProfileEditForm.tsx
-import { MyProfileContext } from "./MyProfileProvider"
-import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
-=======
 import { CollectorProfileContext } from "./CollectorProfileProvider"
->>>>>>> 7abc6c353 (Rename everywhere):src/app/Scenes/CollectorProfile/CollectorProfileEditForm.tsx
+import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
 
 const PRIMARY_LOCATION_OFFSET = 240
 const ICON_SIZE = 22
@@ -394,17 +381,11 @@ const CollectorProfileEditFormScreenQuery = graphql`
 
 export const CollectorProfileEditFormScreen: React.FC = () => {
   return (
-<<<<<<< HEAD:src/app/Scenes/MyProfile/MyProfileEditForm.tsx
     <ArtsyKeyboardAvoidingView>
       <Suspense fallback={<LoadingSkeleton />}>
-        <MyProfileEditForm />
+        <CollectorProfileEditForm />
       </Suspense>
     </ArtsyKeyboardAvoidingView>
-=======
-    <Suspense fallback={<LoadingSkeleton />}>
-      <CollectorProfileEditForm />
-    </Suspense>
->>>>>>> 7abc6c353 (Rename everywhere):src/app/Scenes/CollectorProfile/CollectorProfileEditForm.tsx
   )
 }
 

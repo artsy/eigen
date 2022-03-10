@@ -1,19 +1,10 @@
-<<<<<<< HEAD:src/app/Scenes/MyProfile/__tests__/MyProfileEditForm.tests.tsx
 import { fireEvent } from "@testing-library/react-native"
-import { MyProfileEditFormTestsQuery } from "__generated__/MyProfileEditFormTestsQuery.graphql"
+import { CollectorProfileEditFormTestsQuery } from "__generated__/CollectorProfileEditFormTestsQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-=======
-import { fireEvent, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { CollectorProfileEditFormTestsQuery } from "__generated__/CollectorProfileEditFormTestsQuery.graphql"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
->>>>>>> 7abc6c353 (Rename everywhere):src/app/Scenes/CollectorProfile/CollectorProfileEditForm.tests.tsx
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
