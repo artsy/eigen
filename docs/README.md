@@ -14,7 +14,7 @@
 
 - [Pull Request template](pull_request_template.md)
 - [Storybook](storybook.md)
-- [FeatureFlags](developing_a_feature.md)
+- [Feature Flags](developing_a_feature.md)
 - [Metaflags](metaflags.md)
 - [Hide loggers](metaflags.md/#hide-loggers)
 - [Debugging](debugging.md)
