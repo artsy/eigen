@@ -54,12 +54,12 @@ const PhotoRowContent: React.FC<Props> = ({ photo, onPhotoDelete }) => (
 const PhotoRowPlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex flexDirection="row">
-      <Flex width="52%" justifyContent="center">
-        <PlaceholderBox testID="Submission_Photo_Placeholder" width={48} height={48} />
+      <Flex width="60%" justifyContent="center">
+        <PlaceholderBox testID="Submission_Photo_Placeholder" width={50} height={50} />
       </Flex>
-      <Flex flexDirection="row" width="47%" alignItems="center" justifyContent="space-around">
-        <PlaceholderText width={50} height={18} marginBottom={0} />
-        <PlaceholderText width={50} height={18} marginBottom={0} />
+      <Flex flexDirection="row" width="40%" alignItems="center" justifyContent="space-between">
+        <PlaceholderText width={60} height={18} marginBottom={0} />
+        <PlaceholderText width={60} height={18} marginBottom={0} />
       </Flex>
     </Flex>
   </ProvidePlaceholderContext>
