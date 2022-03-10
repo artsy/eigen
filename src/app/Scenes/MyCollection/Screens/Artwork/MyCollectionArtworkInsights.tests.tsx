@@ -49,7 +49,7 @@ describe("MyCollectionArtworkInsights", () => {
   }
 
   it("renders without throwing an error", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByTestId } = renderWithWrappersTL(<TestRenderer />)
     resolveData({
       Query: () => ({
         artwork: mockArtwork,
@@ -89,9 +89,9 @@ describe("MyCollectionArtworkInsights", () => {
 
     expect(getByText("Comparable Works")).toBeTruthy()
 
-    // Why Sell
+    // Why Sell or Submit To Sell
 
-    expect(getByText("Interested in selling this work?")).toBeTruthy()
+    expect(getByTestId("SWA-banner-in-MC")).toBeTruthy()
   })
 })
 

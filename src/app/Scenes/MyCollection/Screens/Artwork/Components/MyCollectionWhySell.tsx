@@ -6,7 +6,7 @@ export const MyCollectionWhySell: React.FC = () => {
   return (
     <Flex>
       <Join separator={<Spacer my={3} />}>
-        <Text variant="lg" textAlign="center">
+        <Text variant="lg" textAlign="center" testID="SWA-banner-in-MC">
           Sell Art From Your Collection
         </Text>
       </Join>

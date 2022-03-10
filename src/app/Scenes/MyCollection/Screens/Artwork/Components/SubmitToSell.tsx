@@ -6,7 +6,7 @@ export const SubmitToSell: React.FC = () => {
   return (
     <Flex>
       <Join separator={<Spacer my={3} />}>
-        <Text variant="lg" textAlign="center">
+        <Text variant="lg" textAlign="center" testID="SWA-banner-in-MC">
           Interested in Selling This Work?
         </Text>
       </Join>

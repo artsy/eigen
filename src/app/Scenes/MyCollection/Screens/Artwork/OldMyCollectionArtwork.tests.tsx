@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, editCollectedArtwork, OwnerType } from "@artsy/cohesion"
+import { editCollectedArtwork } from "@artsy/cohesion"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -70,8 +70,8 @@ describe("MyCollectionArtworkDetail", () => {
         editCollectedArtwork({ contextOwnerId: "someInternalId", contextOwnerSlug: "someSlug" })
       )
     })
-
-    it("tracks an analytics event learn more button is pressed", () => {
+    // TODO: uncomment and change in the folow up task
+    /*   it("tracks an analytics event learn more button is pressed", () => {
       const artworkProps = { artwork: { internalID: "someInternalId", slug: "someSlug" } }
       GlobalStore.actions.myCollection.artwork.startEditingArtwork = jest.fn() as any
 
@@ -87,6 +87,6 @@ describe("MyCollectionArtworkDetail", () => {
         context_screen_owner_slug: "someSlug",
         subject: "Learn More",
       })
-    })
+    }) */
   })
 })
