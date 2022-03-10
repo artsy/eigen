@@ -26,9 +26,9 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
+import { showSubmitToSell } from "../../utils/checkIfSHouldShowSell"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
-import { STATUSES } from "./Components/MyCollectionArtworkSubmissionStatus"
 import { OldWhySell } from "./Components/OldWhySell"
 import { SubmitToSell } from "./Components/SubmitToSell"
 import { MyCollectionArtworkScreenProps } from "./MyCollectionArtwork"
@@ -44,14 +44,6 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const displayEditButton = !artwork.consignmentSubmission?.inProgress
-
-  const isPOneArtist =
-    !!artwork.artists?.find((artist) => Boolean(artist?.targetSupply?.isTargetSupply)) ??
-    !!artwork.artist?.targetSupply?.isTargetSupply ??
-    false
-
-  const displayText = artwork.consignmentSubmission?.displayText
-  const isSold = !!displayText && STATUSES[displayText!.toLowerCase()]?.text === "Artwork Sold"
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -97,7 +89,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
           <ScreenMargin>
             <Separator />
             <Spacer mb={3} />
-            {isPOneArtist && isSold ? (
+            {showSubmitToSell(artwork) ? (
               <SubmitToSell />
             ) : (
               <>

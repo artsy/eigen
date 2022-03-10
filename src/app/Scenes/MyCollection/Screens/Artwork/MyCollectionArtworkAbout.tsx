@@ -6,10 +6,10 @@ import { Flex, Separator } from "palette/elements"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
+import { showSubmitToSell } from "../../utils/checkIfSHouldShowSell"
 import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollectionArtworkAboutWork"
 import { MyCollectionArtworkArticles } from "./Components/ArtworkAbout/MyCollectionArtworkArticles"
 import { MyCollectionArtworkPurchaseDetails } from "./Components/ArtworkAbout/MyCollectionArtworkPurchaseDetails"
-import { STATUSES } from "./Components/MyCollectionArtworkSubmissionStatus"
 import { SubmitToSell } from "./Components/SubmitToSell"
 
 interface MyCollectionArtworkAboutProps {
@@ -23,13 +23,6 @@ export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> =
     marketPriceInsightsFragment,
     props.marketPriceInsights
   )
-  const isPOneArtist =
-    !!artwork.artists?.find((artist) => Boolean(artist?.targetSupply?.isTargetSupply)) ??
-    !!artwork.artist?.targetSupply?.isTargetSupply ??
-    false
-
-  const displayText = artwork.consignmentSubmission?.displayText
-  const isSold = !!displayText && STATUSES[displayText!.toLowerCase()]?.text === "Artwork Sold"
 
   const articles = extractNodes(artwork.artist?.articles)
   return (
@@ -46,9 +39,10 @@ export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> =
           totalCount={artwork.artist?.articles?.totalCount}
         />
 
-        {!!isPOneArtist && !!isSold && (
+        {!!showSubmitToSell(artwork) && (
           <>
-            <Separator mb={3} mt={3} /> <SubmitToSell />
+            <Separator mb={3} mt={3} />
+            <SubmitToSell />
           </>
         )}
       </Flex>

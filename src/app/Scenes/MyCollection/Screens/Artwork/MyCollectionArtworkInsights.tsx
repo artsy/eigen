@@ -6,12 +6,12 @@ import { Flex, Spacer, Text } from "palette/elements"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
+import { showSubmitToSell } from "../../utils/checkIfSHouldShowSell"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkComparableWorks } from "./Components/ArtworkInsights/MyCollectionArtworkComparableWorks"
 import { MyCollectionArtworkDemandIndex } from "./Components/ArtworkInsights/MyCollectionArtworkDemandIndex"
 import { RequestForPriceEstimate } from "./Components/ArtworkInsights/RequestForPriceEstimate"
-import { STATUSES } from "./Components/MyCollectionArtworkSubmissionStatus"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 import { SubmitToSell } from "./Components/SubmitToSell"
 
@@ -39,9 +39,6 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
     false
 
   const showPriceEstimateBanner = useFeatureFlag("ARShowRequestPriceEstimateBanner") && isPOneArtist
-  const displayText = artwork.consignmentSubmission?.displayText
-
-  const isSold = !!displayText && STATUSES[displayText!.toLowerCase()]?.text === "Artwork Sold"
 
   return (
     <StickyTabPageScrollView>
@@ -74,7 +71,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 
-        {isPOneArtist && isSold ? <SubmitToSell /> : <MyCollectionWhySell artwork={artwork} />}
+        {showSubmitToSell(artwork) ? <SubmitToSell /> : <MyCollectionWhySell artwork={artwork} />}
       </Flex>
     </StickyTabPageScrollView>
   )
