@@ -260,6 +260,7 @@ PODS:
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.5.0)
+  - hermes-engine (0.9.0)
   - Interstellar/Core (2.0.0)
   - INTUAnimationEngine (1.4.2):
     - INTUAnimationEngine/SpringSolver (= 1.4.2)
@@ -311,6 +312,12 @@ PODS:
     - DoubleConversion
     - fmt (~> 6.2.1)
     - glog
+  - RCT-Folly/Futures (2021.06.28.00-v2):
+    - boost
+    - DoubleConversion
+    - fmt (~> 6.2.1)
+    - glog
+    - libevent
   - RCTRequired (0.66.4)
   - RCTTypeSafety (0.66.4):
     - FBLazyVector (= 0.66.4)
@@ -477,6 +484,17 @@ PODS:
     - React-logger (= 0.66.4)
     - React-perflogger (= 0.66.4)
     - React-runtimeexecutor (= 0.66.4)
+  - React-hermes (0.66.4):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2021.06.28.00-v2)
+    - RCT-Folly/Futures (= 2021.06.28.00-v2)
+    - React-cxxreact (= 0.66.4)
+    - React-jsi (= 0.66.4)
+    - React-jsiexecutor (= 0.66.4)
+    - React-jsinspector (= 0.66.4)
+    - React-perflogger (= 0.66.4)
   - React-jsi (0.66.4):
     - boost (= 1.76.0)
     - DoubleConversion
@@ -767,11 +785,13 @@ DEPENDENCIES:
   - FXBlurView (= 1.6.4)
   - glog (from `./node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleSignIn (= 5.0.2)
+  - hermes-engine (~> 0.9.0)
   - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
   - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/artsy/JLRoutes.git`)
   - JSDecoupledAppDelegate
   - JWTDecode (= 2.0.0)
+  - libevent (~> 2.1.12)
   - Mantle (= 1.5.6)
   - MARKRangeSlider
   - MMMarkdown (= 0.4)
@@ -796,6 +816,7 @@ DEPENDENCIES:
   - React-Core/RCTWebSocket (from `./node_modules/react-native/`)
   - React-CoreModules (from `./node_modules/react-native/React/CoreModules`)
   - React-cxxreact (from `./node_modules/react-native/ReactCommon/cxxreact`)
+  - React-hermes (from `./node_modules/react-native/ReactCommon/hermes`)
   - React-jsi (from `./node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `./node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `./node_modules/react-native/ReactCommon/jsinspector`)
@@ -908,6 +929,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - hermes-engine
     - INTUAnimationEngine
     - JSDecoupledAppDelegate
     - JWTDecode
@@ -994,6 +1016,8 @@ EXTERNAL SOURCES:
     :path: "./node_modules/react-native/React/CoreModules"
   React-cxxreact:
     :path: "./node_modules/react-native/ReactCommon/cxxreact"
+  React-hermes:
+    :path: "./node_modules/react-native/ReactCommon/hermes"
   React-jsi:
     :path: "./node_modules/react-native/ReactCommon/jsi"
   React-jsiexecutor:
@@ -1181,6 +1205,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: f8a43108b38a68eebe8b3540e1f4f2d28843ce20
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  hermes-engine: bf7577d12ac6ccf53ab8b5af3c6ccf0dd8458c5c
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -1215,6 +1240,7 @@ SPEC CHECKSUMS:
   React-Core: 3eb7432bad96ff1d25aebc1defbae013fee2fd0e
   React-CoreModules: ad9e1fd5650e16666c57a08328df86fd7e480cb9
   React-cxxreact: 02633ff398cf7e91a2c1e12590d323c4a4b8668a
+  React-hermes: 7b4c6617b4d4c880d0f44e629651810bf3417440
   React-jsi: 805c41a927d6499fb811772acb971467d9204633
   React-jsiexecutor: 94ce921e1d8ce7023366873ec371f3441383b396
   React-jsinspector: d0374f7509d407d2264168b6d0fad0b54e300b85
@@ -1284,6 +1310,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 75f4115ff5a52ec23f348d9e56bae8c180897dda
+PODFILE CHECKSUM: 4f0c528d3507d607a32d8ddca2a90a269fcfb0d5
 
 COCOAPODS: 1.11.2
