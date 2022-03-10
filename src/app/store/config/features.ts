@@ -132,9 +132,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableQueriesPrefetching",
   },
   AREnableAccordionNavigationOnSubmitArtwork: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable New Artwork Submission Flow with Accordion",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableAccordionNavigationOnSubmitArtwork",
   },
   ARShowLinkedAccounts: {
     readyForRelease: true,
