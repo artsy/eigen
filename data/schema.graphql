@@ -793,6 +793,9 @@ type Article implements Node {
   internalID: ID!
   keywords: [String!]!
   layout: ArticleLayout!
+
+  # Classic layout articles may have a lead paragraph. Returns HTML.
+  leadParagraph: String
   media: ArticleMedia
   newsSource: ArticleNewsSource
   postscript: String
