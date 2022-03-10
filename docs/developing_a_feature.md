@@ -12,7 +12,7 @@ For bigger features that will take longer than a sprint, we put development behi
 - How to Develop a Feature in [Eigen](#how-to-develop-a-feature-in-eigen)
 - Add a feature flag [link](#add-a-feature-flag)
   - Step 1: Configure the feature flag on features.ts and echo [link](#step-1-configure-the-feature-flag-on-featurests)
-  - Step 2: Add the feature flag in the part of code where it will be used [link](#step-2-add-the-feature-flag-in-the-part-of-code-where-it-will-be-used)
+  - Step 2: Place the feature flag in the part of code where it will be used [link](#step-2-place-the-feature-flag-in-the-part-of-code-where-it-will-be-used)
   - Step 3: Enable the feature flag [link](#step-3-enable-the-feature-flag)
 - Test a feature flag [link](#test-a-feature-flag)
 - [QA](#qa)
@@ -21,7 +21,11 @@ For bigger features that will take longer than a sprint, we put development behi
 
 ## Echo
 
-Echo is our remote feature configuration service [echo](https://github.com/artsy/echo). Through that we can independently of eigen turn features on and off.
+We want the ability to turn a feature off remotely if something goes wrong.
+
+We do that by adding flag in our remote feature configuration service, [Echo](https://github.com/artsy/echo)
+
+This way we can independently of eigen turn features on and off, which can come in handy in case of bad case scenarios for example.
 
 ## How to Develop a Feature in Eigen
 
@@ -42,19 +46,7 @@ We'll add a new feature flag called `ARShowMarketingBanner` (this naming is a co
 
 ### Step 1: Configure the feature flag on features.ts
 
-In the file `src/app/store/config/features.ts`
-
-First you need to add the new feature block
-
-```
-+  ARShowMarketingBanner: {
-+    readyForRelease: false,
-+    description: "Show new marketing banners",
-+    showInAdminMenu: true,
-+  },
-```
-
-in features.js
+First you need to add the new feature block in `src/app/store/config/features.ts`
 
 ```diff
    AROptionsNewFirstInquiry: {
@@ -75,21 +67,14 @@ in features.js
 
 The `description` property is what makes it possible to override the feature flag from the [admin menu](/admin_menu.md).
 
----
-
-We want the ability to turn a feature off remotely if something goes wrong.
-
-We do that by adding flag with the same name in **echo**.
-
+We also need to add a flag in Echo, our remote feature flags configuration service.
 [Here](https://github.com/artsy/echo/commit/978a103e2c67a8010fabb2184f84aaef31d16f93) is an example PR for how to do that.
 
-After adding the echo key, update you local copy of echo by running `./scripts/update-echo`.
+After adding the echo key, and the PR is merged, update you local copy of echo by running `./scripts/update-echo`.
 
 With this setup, the echo flag will be the source of truth for whether or not to enable the feature.
 
-You can turn the echo flag off or on to control the feature for all users.
-
-### Step 2: Add the feature flag in the part of code where it will be used
+### Step 2: Place the feature flag in the part of code where it will be used
 
 you can to call it by using the `useFeatureFlag` hook.
 
@@ -181,7 +166,26 @@ Then when you mark the feature as being ready for release you can link the featu
 Once the feature flag is no longer needed:
 
 - Removed it from the `src/app/store/config/features.ts` file
-- Create a PR on [echo](https://github.com/artsy/echo) to remove the `echoFlagKey`: [example](https://github.com/artsy/echo/pull/86). This is needed so we can remove that flag from echo as well, after giving it a few months buffer, for all users to get the new version of the app with the flag removed.
+
+```diff
+   AROptionsNewFirstInquiry: {
+     readyForRelease: true,
+     echoFlagKey: "AROptionsNewFirstInquiry",
+   },
+-  ARShowMarketingBanner: {
+-    readyForRelease: false,
+-    description: "Show new marketing banners",
+-   showInAdminMenu: true,
+-  },
+   AROptionsInquiryCheckout: {
+     readyForRelease: false,
+     description: "Enable inquiry checkout",
+     showInAdminMenu: true,
+   }
+```
+
+- Remove the `echoFlagKey` from echo: [example](https://github.com/artsy/echo/pull/86).
+  It is adviced to give it a few months buffer before doing that, so that all users can get the new version of the app with the flag removed.
 
 ## Need some Help?
 
