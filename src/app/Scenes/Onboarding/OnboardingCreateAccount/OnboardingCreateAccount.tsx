@@ -1,5 +1,6 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
+import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import {
   ArtsyWebViewConditionsOfSale,
   ArtsyWebViewPrivacy,
@@ -11,7 +12,7 @@ import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
-import { Alert, Animated, ScrollView } from "react-native"
+import { Alert, Animated, ScrollView, View } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingSocialPick } from "../OnboardingSocialPick"
@@ -153,42 +154,49 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
   })
 
   return (
-    <FormikProvider value={formik}>
-      <NavigationContainer ref={__unsafe__createAccountNavigationRef} independent>
-        <StackNavigator.Navigator
-          headerMode="screen"
-          screenOptions={{
-            ...TransitionPresets.SlideFromRightIOS,
-            headerShown: false,
-          }}
-        >
-          <StackNavigator.Screen
-            name="OnboardingCreateAccountEmail"
-            component={OnboardingCreateAccountEmail}
-            initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
-          />
-          <StackNavigator.Screen
-            name="OnboardingCreateAccountPassword"
-            component={OnboardingCreateAccountPassword}
-          />
-          <StackNavigator.Screen
-            name="OnboardingCreateAccountName"
-            component={OnboardingCreateAccountName}
-          />
-          <StackNavigator.Screen name="Terms" component={ArtsyWebViewTerms} />
-          <StackNavigator.Screen name="Privacy" component={ArtsyWebViewPrivacy} />
-          <StackNavigator.Screen name="ConditionsOfSale" component={ArtsyWebViewConditionsOfSale} />
-        </StackNavigator.Navigator>
-        <OnboardingCreateAccountButton
-          navigateToLoginWithEmail={() => {
-            navigation.replace("OnboardingLoginWithEmail", {
-              withFadeAnimation: true,
-              email: formik.values.email,
-            })
-          }}
-        />
-      </NavigationContainer>
-    </FormikProvider>
+    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 10 }}>
+      <ArtsyKeyboardAvoidingView>
+        <FormikProvider value={formik}>
+          <NavigationContainer ref={__unsafe__createAccountNavigationRef} independent>
+            <StackNavigator.Navigator
+              headerMode="screen"
+              screenOptions={{
+                ...TransitionPresets.SlideFromRightIOS,
+                headerShown: false,
+              }}
+            >
+              <StackNavigator.Screen
+                name="OnboardingCreateAccountEmail"
+                component={OnboardingCreateAccountEmail}
+                initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
+              />
+              <StackNavigator.Screen
+                name="OnboardingCreateAccountPassword"
+                component={OnboardingCreateAccountPassword}
+              />
+              <StackNavigator.Screen
+                name="OnboardingCreateAccountName"
+                component={OnboardingCreateAccountName}
+              />
+              <StackNavigator.Screen name="Terms" component={ArtsyWebViewTerms} />
+              <StackNavigator.Screen name="Privacy" component={ArtsyWebViewPrivacy} />
+              <StackNavigator.Screen
+                name="ConditionsOfSale"
+                component={ArtsyWebViewConditionsOfSale}
+              />
+            </StackNavigator.Navigator>
+            <OnboardingCreateAccountButton
+              navigateToLoginWithEmail={() => {
+                navigation.replace("OnboardingLoginWithEmail", {
+                  withFadeAnimation: true,
+                  email: formik.values.email,
+                })
+              }}
+            />
+          </NavigationContainer>
+        </FormikProvider>
+      </ArtsyKeyboardAvoidingView>
+    </View>
   )
 }
 
