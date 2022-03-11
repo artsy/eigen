@@ -55,7 +55,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
   const otpInputRef = useRef<Input>(null)
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 20 }}>
+    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 10 }}>
       <ArtsyKeyboardAvoidingView>
         <ScrollView
           contentContainerStyle={{

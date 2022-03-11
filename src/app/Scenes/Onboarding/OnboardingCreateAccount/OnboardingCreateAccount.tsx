@@ -154,7 +154,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
   })
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 20 }}>
+    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 10 }}>
       <ArtsyKeyboardAvoidingView>
         <FormikProvider value={formik}>
           <NavigationContainer ref={__unsafe__createAccountNavigationRef} independent>

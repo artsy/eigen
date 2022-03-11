@@ -71,7 +71,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
   }, [])
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 20 }}>
+    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 10 }}>
       <ArtsyKeyboardAvoidingView>
         <ScrollView
           contentContainerStyle={{

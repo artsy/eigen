@@ -34,7 +34,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   const color = useColor()
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 20 }}>
+    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 10 }}>
       <ArtsyKeyboardAvoidingView>
         <ScrollView
           contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top }}
