@@ -5320,6 +5320,8 @@ type ConsignmentSubmission {
   primaryImage: ConsignmentSubmissionCategoryAsset
   provenance: String
   publishedAt: ISO8601DateTime
+  rejectionReason: String
+  saleState: String
   signature: Boolean
 
   # If this artwork exists in Gravity, its ID
@@ -5711,6 +5713,12 @@ enum ConsignmentSubmissionSort {
   # sort by source_artwork_id in descending order
   SOURCE_ARTWORK_ID_DESC
 
+  # sort by source in ascending order
+  SOURCE_ASC
+
+  # sort by source in descending order
+  SOURCE_DESC
+
   # sort by state in ascending order
   STATE_ASC
 
@@ -5794,6 +5802,14 @@ enum ConsignmentSubmissionSort {
 
   # sort by year in descending order
   YEAR_DESC
+}
+
+enum ConsignmentSubmissionSource {
+  ADMIN
+  APP_INBOUND
+  MY_COLLECTION
+  PARTNER
+  WEB_INBOUND
 }
 
 enum ConsignmentSubmissionStateAggregation {
@@ -6270,6 +6286,7 @@ input CreateSubmissionMutationInput {
   provenance: String
   sessionID: String
   signature: Boolean
+  source: ConsignmentSubmissionSource
 
   # If this artwork exists in Gravity, its ID
   sourceArtworkID: String
