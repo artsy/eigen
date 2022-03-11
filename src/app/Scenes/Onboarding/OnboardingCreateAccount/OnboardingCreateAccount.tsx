@@ -12,7 +12,7 @@ import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
-import { Alert, Animated, ScrollView, View } from "react-native"
+import { Alert, Animated, ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingSocialPick } from "../OnboardingSocialPick"
@@ -154,7 +154,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
   })
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 10 }}>
+    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
       <ArtsyKeyboardAvoidingView>
         <FormikProvider value={formik}>
           <NavigationContainer ref={__unsafe__createAccountNavigationRef} independent>
@@ -196,7 +196,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
           </NavigationContainer>
         </FormikProvider>
       </ArtsyKeyboardAvoidingView>
-    </View>
+    </Flex>
   )
 }
 

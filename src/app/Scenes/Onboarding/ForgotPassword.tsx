@@ -6,7 +6,7 @@ import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Button, Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useRef, useState } from "react"
-import { ScrollView, View } from "react-native"
+import { ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 
@@ -34,7 +34,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   const color = useColor()
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 10 }}>
+    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
       <ArtsyKeyboardAvoidingView>
         <ScrollView
           contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top }}
@@ -117,7 +117,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
           )}
         </Flex>
       </ArtsyKeyboardAvoidingView>
-    </View>
+    </Flex>
   )
 }
 
