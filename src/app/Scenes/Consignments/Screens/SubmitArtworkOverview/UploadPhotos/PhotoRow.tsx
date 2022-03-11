@@ -30,9 +30,9 @@ const PhotoRowContent: React.FC<Props> = ({ photo, onPhotoDelete }) => (
   <Flex flexDirection="row">
     <Flex width="53%" justifyContent="center">
       <Image
-        resizeMode="contain"
+        style={{ height: 48, width: 48 }}
+        resizeMode="cover"
         source={{ uri: photo.path }}
-        style={{ height: 58, width: 58 }}
         testID="Submission_Image"
       />
     </Flex>
