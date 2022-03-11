@@ -39,17 +39,17 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
   return (
     <StickyTabPageScrollView>
       <Flex my={3}>
-        {!!marketPriceInsights && (
-          <>
-            <Text variant="lg">Price & Market Insights</Text>
+        <Text variant="lg">Price & Market Insights</Text>
 
-            <Spacer mb={2} />
-            <MyCollectionArtworkDemandIndex
-              artwork={artwork}
-              marketPriceInsights={marketPriceInsights}
-            />
-          </>
+        <Spacer mb={2} />
+
+        {!!marketPriceInsights && (
+          <MyCollectionArtworkDemandIndex
+            artwork={artwork}
+            marketPriceInsights={marketPriceInsights}
+          />
         )}
+
         {!!showPriceEstimateBanner && (
           <>
             <RequestForPriceEstimate artwork={artwork} marketPriceInsights={marketPriceInsights} />
