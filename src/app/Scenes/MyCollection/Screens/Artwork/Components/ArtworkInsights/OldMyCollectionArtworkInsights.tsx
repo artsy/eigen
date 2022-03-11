@@ -53,12 +53,8 @@ export const OldMyCollectionArtworkInsights: React.FC<OldMyCollectionArtworkInsi
           />
         </>
       )}
-      <ScreenMargin mt={2} mb={3}>
-        <Spacer my={1} />
-        <Separator />
-        <Spacer my={2} />
-        <OldMyCollectionArtworkArtistAuctionResultsFragmentContainer artwork={artwork} />
-      </ScreenMargin>
+
+      <OldMyCollectionArtworkArtistAuctionResultsFragmentContainer artwork={artwork} />
 
       <MyCollectionArtworkArtistArticlesFragmentContainer artwork={artwork} />
     </>
