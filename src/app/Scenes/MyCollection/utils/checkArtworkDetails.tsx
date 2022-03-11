@@ -21,7 +21,8 @@ export const showSubmitToSell = (
 ) => {
   const displayText = artwork.consignmentSubmission?.displayText
 
-  const isSold = !!displayText && STATUSES[displayText!.toLowerCase()]?.text === "Artwork Sold"
+  const isSubmissionEvaluated =
+    !!displayText && STATUSES[displayText!.toLowerCase()]?.text === "Evaluation Complete"
 
-  return isPOneArtist(artwork) && isSold
+  return isPOneArtist(artwork) && isSubmissionEvaluated
 }
