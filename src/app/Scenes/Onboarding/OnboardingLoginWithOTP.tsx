@@ -6,7 +6,7 @@ import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Input, Message, Spacer, Text, useColor } from "palette"
 import React, { useRef } from "react"
-import { ScrollView, View } from "react-native"
+import { ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 
@@ -55,7 +55,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
   const otpInputRef = useRef<Input>(null)
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1, paddingBottom: 10 }}>
+    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
       <ArtsyKeyboardAvoidingView>
         <ScrollView
           contentContainerStyle={{
@@ -119,7 +119,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
           </Button>
         </Flex>
       </ArtsyKeyboardAvoidingView>
-    </View>
+    </Flex>
   )
 }
 
