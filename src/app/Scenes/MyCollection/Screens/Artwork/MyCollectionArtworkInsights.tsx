@@ -6,7 +6,7 @@ import { Flex, Spacer, Text } from "palette/elements"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { showSubmitToSell } from "../../utils/checkShowSubmitToSell"
+import { isPOneArtist, showSubmitToSell } from "../../utils/checkArtworkDetails"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkComparableWorks } from "./Components/ArtworkInsights/MyCollectionArtworkComparableWorks"
@@ -33,12 +33,8 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
     restProps.marketPriceInsights
   )
 
-  const isPOneArtist =
-    !!artwork.artists?.find((artist) => Boolean(artist?.targetSupply?.isTargetSupply)) ??
-    !!artwork.artist?.targetSupply?.isTargetSupply ??
-    false
-
-  const showPriceEstimateBanner = useFeatureFlag("ARShowRequestPriceEstimateBanner") && isPOneArtist
+  const showPriceEstimateBanner =
+    useFeatureFlag("ARShowRequestPriceEstimateBanner") && isPOneArtist(artwork)
 
   return (
     <StickyTabPageScrollView>
