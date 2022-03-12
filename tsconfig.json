@@ -25,7 +25,7 @@
     "noFallthroughCasesInSwitch": true,
     "strictFunctionTypes": true,
     "target": "es6",
-    "types": ["jest", "react", "react-native"],
+    "types": ["react-native", "react", "jest"],
     "noEmit": true
   },
   "include": [
