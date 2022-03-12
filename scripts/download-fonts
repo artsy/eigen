@@ -1,21 +1,20 @@
-#!/usr/bin/env bash
-set -euxo pipefail
+#!/usr/bin/env yarn zx
 
 
-# Get fonts from eigen s3 bucket
-aws s3 cp s3://artsy-citadel/eigen/fonts.tar.gz ./fonts.tar.gz
+// Get fonts from eigen s3 bucket
+await $`aws s3 cp s3://artsy-citadel/eigen/fonts.tar.gz ./fonts.tar.gz`
 
-# Extract fonts
-mkdir -p ./fonts
-tar -xvzf fonts.tar.gz -C ./fonts
+// Extract fonts
+await $`mkdir -p ./fonts`
+await $`tar -xvzf fonts.tar.gz -C ./fonts`
 
-# Android
-cp ./fonts/android/* android/app/src/main/assets/fonts
+// Android
+await $`cp ./fonts/android/* android/app/src/main/assets/fonts`
 
-# iOS
-mkdir -p ./Pods/Artsy+UIFonts/Pod/Assets
-cp ./fonts/ios/* Pods/Artsy+UIFonts/Pod/Assets
+// iOS
+await $`mkdir -p ./Pods/Artsy+UIFonts/Pod/Assets`
+await $`cp ./fonts/ios/* Pods/Artsy+UIFonts/Pod/Assets`
 
-# Cleanup
-rm -rf ./fonts.tar.gz
-rm -rf ./fonts
+// Cleanup
+await $`rm -rf ./fonts.tar.gz`
+await $`rm -rf ./fonts`

@@ -26,8 +26,8 @@ commands:
             echo "HOMEBREW_NO_AUTO_UPDATE=1" >> $BASH_ENV
             echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
             echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            echo 'nvm install v14.17.1' >> $BASH_ENV
-            echo 'nvm alias default v14.17.1' >> $BASH_ENV
+            echo 'nvm install v16.14.0' >> $BASH_ENV
+            echo 'nvm alias default v16.14.0' >> $BASH_ENV
             sudo mkdir ~/.config
             sudo chown -R $USER:$GROUP ~/.config
   generate-checksums:
@@ -71,11 +71,11 @@ commands:
       - run:
           name: Run Relay compiler
           command: yarn relay
-  update-echo:
+  fetch-echo:
     steps:
       - run:
-          name: Update echo
-          command: ./scripts/update-echo
+          name: Fetch latest echo
+          command: ./scripts/fetch-echo
   generate-query-map:
     steps:
       - run:
@@ -151,8 +151,8 @@ commands:
           name: Install Pods
           command: bundle exec pod check --ignore-dev-pods || bundle exec pod install
       - run:
-          name: Update echo
-          command: ls Artsy/App/EchoNew.json || ./scripts/update-echo
+          name: Fetch latest echo
+          command: ls Artsy/App/EchoNew.json || ./scripts/fetch-echo
       - save_cache:
           key: v9-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
@@ -199,7 +199,7 @@ commands:
             fi
       - install-node-modules
       - run-relay-compiler
-      - update-echo
+      - fetch-echo
       - install-gems
   build-app-android:
     steps:
@@ -246,7 +246,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.14.0"
     steps:
       - checkout
       - generate-checksums
@@ -260,7 +260,7 @@ jobs:
   check-pr:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.14.0"
     steps:
       - checkout
       - generate-checksums
@@ -307,7 +307,7 @@ jobs:
   check-metaphysics-freshness:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.14.0"
     steps:
       - checkout
       - run:
@@ -336,7 +336,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.14.0"
     resource_class: large
     steps:
       - checkout
@@ -345,7 +345,7 @@ jobs:
       - setup-env-file
       - install-node-modules
       - run-relay-compiler
-      - update-echo
+      - fetch-echo
       - generate-query-map
       - run:
           name: Check generated folder
@@ -409,7 +409,7 @@ jobs:
       - setup-env-file
       - install-node-modules
       - run-relay-compiler
-      - update-echo
+      - fetch-echo
       - install-gems
       - install-cocoapods
       - build-app-ios
@@ -506,7 +506,7 @@ jobs:
   update-changelog:
     executor:
       name: node/default
-      tag: "14.17.1"
+      tag: "16.14.0"
 
     steps:
       - checkout

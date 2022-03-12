@@ -12,7 +12,7 @@ Object.entries(features).forEach(([key, val]) => {
             `No echo flag found for key ${val.echoFlagKey}. ` +
               (env.CI === "true"
                 ? "Make sure you added it to the echo repo"
-                : "Make sure you added it to the echo repo and updated your local copy of echo with ./scripts/update-echo")
+                : "Make sure you added it to the echo repo and updated your local copy of echo with ./scripts/fetch-echo")
           )
         }
       })

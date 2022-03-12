@@ -4,7 +4,7 @@
   "native-code-version": 44,
   "description": "Artsy mobile app.",
   "engines": {
-    "node": "14.x",
+    "node": "16.x",
     "npm": "6.1.x",
     "yarn": "1.x"
   },
@@ -39,7 +39,7 @@
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "open-sim": "open -a Simulator",
     "open-url": "npx uri-scheme open",
-    "postinstall": "prettier --write package.json; ./scripts/update-echo",
+    "postinstall": "prettier --write package.json; ./scripts/fetch-echo",
     "prepare": "patch-package && husky install",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "prettier-write": "prettier --write",
@@ -50,7 +50,7 @@
     "start-packager": "./scripts/start_packager.sh",
     "start-packager-after-relay": "yarn relay && yarn start-packager",
     "start-servers": "concurrently --kill-others 'yarn start-packager-after-relay' 'yarn relay --watch'",
-    "prestart": "./scripts/set-storybook-environment.js",
+    "prestart": "./scripts/set-storybook-environment",
     "start": "yarn start-servers",
     "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
@@ -222,7 +222,7 @@
     "@types/lodash": "4.14.178",
     "@types/luxon": "2.0.9",
     "@types/moment-timezone": "0.5.30",
-    "@types/node": "12.7.5",
+    "@types/node": "16.11.26",
     "@types/qs": "6.9.7",
     "@types/query-string": "5.0.1",
     "@types/react": "16.9.25",
@@ -304,7 +304,8 @@
     "tslint-react": "5.0.0",
     "typescript": "4.6.2",
     "typescript-styled-plugin": "0.18.2",
-    "vscode-apollo-relay": "1.5.2"
+    "vscode-apollo-relay": "1.5.2",
+    "zx": "5.2.0"
   },
   "config": {
     "react-native-storybook-loader": {

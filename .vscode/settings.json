@@ -10,10 +10,6 @@
   "eslint.enable": false,
   "editor.formatOnSave": true,
   "files.trimTrailingWhitespace": true,
-  "prettier.singleQuote": false,
-  "prettier.trailingComma": "es5",
-  "prettier.semi": false,
-  "prettier.printWidth": 100,
   "editor.rulers": [100],
   "editor.tabSize": 2,
   "files.exclude": {
@@ -25,7 +21,6 @@
   },
   "search.exclude": {
     "**/node_modules": true,
-    "externals/**": true,
     "Pod/Assets/Emission.*": true,
     ".vscode/.react/*": true
   },
@@ -52,11 +47,17 @@
   ],
   "cSpell.diagnosticLevel": "Hint",
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "todohighlight.exclude": ["node_modules/**", ".vscode/**", "externals/**"],
+  "todohighlight.exclude": ["node_modules/**", ".vscode/**"],
   "tslint.autoFixOnSave": true,
   "typescript.format.enable": false,
   "[json]": {
     "editor.formatOnSave": false
   },
-  "javascript.validate.enable": true
+  "javascript.validate.enable": true,
+  "shebang.associations": [
+    {
+      "pattern": "^#!/usr/bin/env yarn zx$",
+      "language": "javascript"
+    }
+  ]
 }

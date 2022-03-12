@@ -1,0 +1,7 @@
+#!/usr/bin/env yarn zx
+
+
+await $`curl https://echo.artsy.net/Echo.json`.pipe(fs.createWriteStream("Artsy/App/EchoNew.json"))
+await $`yarn prettier -w Artsy/App/EchoNew.json`
+
+

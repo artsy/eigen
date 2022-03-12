@@ -11,7 +11,7 @@ export interface FeatureDescriptor {
   readonly readyForRelease: boolean
   /**
    * Provide an echo feature flag key to allow this feature to be toggled globally via echo.
-   * Make sure to add the flag to echo before setting this value. Then run ./scripts/update-echo
+   * Make sure to add the flag to echo before setting this value. Then run ./scripts/fetch-echo
    */
   readonly echoFlagKey?: string
   /**

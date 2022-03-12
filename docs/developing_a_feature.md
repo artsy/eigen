@@ -81,7 +81,7 @@ Alternatively, or at some point in the future, you can simply delete the feature
 
 However, often for complex features we want the ability to turn the feature off if something goes horribly wrong. To provide that ability, you should add an echo flag with the same name. [Here's an example PR for how to do that](https://github.com/artsy/echo/pull/70/files).
 
-After adding the echo key, update you local copy of echo by running `./scripts/update-echo`.
+After adding the echo key, update you local copy of echo by running `./scripts/fetch-echo`.
 
 Then when you mark the feature as being ready for release you can link the feature to the echo flag by specifying the key.
 

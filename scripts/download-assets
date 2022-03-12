@@ -1,13 +1,11 @@
-#!/usr/bin/env bash
-set -euxo pipefail
+#!/usr/bin/env yarn zx
 
 
-if test ${CI:-false} = true
-then
-  ./scripts/setup-distribute
-fi
+if (process.env === true) {
+  await   $`./scripts/setup-distribute`
+}
 
-aws s3 cp s3://artsy-citadel/eigen/google-services.json android/app/google-services.json
-aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist GoogleService-Info.plist
+await $`aws s3 cp s3://artsy-citadel/eigen/google-services.json android/app/google-services.json`
+await $`aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist GoogleService-Info.plist`
 
-./scripts/download-fonts
+await $`./scripts/download-fonts`

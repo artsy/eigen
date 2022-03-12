@@ -36,6 +36,6 @@ rm -rf emission/Pod/Assets/assets
 echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 yarn install:all
 
-./scripts/update-echo
+./scripts/fetch-echo
 
 yarn pod-install-repo-update

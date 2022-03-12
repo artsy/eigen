@@ -1,11 +1,7 @@
-#!/usr/bin/env bash
-set -euxo pipefail
+#!/usr/bin/env yarn zx
 
 
-aws s3 cp .env.shared s3://artsy-citadel/dev/.env.eigen
+await $`aws s3 cp .env.shared s3://artsy-citadel/dev/.env.eigen`
 
-RED='\033[0;31m'
-RST='\033[0m'
-
-printf "${RED}Don't forget to update on 1Password and CircleCI too!${RST}\n"
+console.log(chalk.red("⚠️  Don't forget to update on 1Password and CircleCI too!  ⚠️"))
 
