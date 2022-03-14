@@ -47,7 +47,7 @@
     "setup:artsy:update!": "scripts/update-env-for-artsy",
     "start-packager": "./scripts/start_packager.sh",
     "start-packager-after-relay": "yarn relay && yarn start-packager",
-    "start-servers": "concurrently --kill-others 'yarn start-packager-after-relay' 'yarn relay --watch'",
+    "start-servers": "concurrently --kill-others -n metro,relay 'yarn start-packager-after-relay' 'yarn relay --watch'",
     "prestart": "./scripts/set-storybook-environment.js",
     "start": "STORYBOOK=0 yarn start-servers",
     "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
