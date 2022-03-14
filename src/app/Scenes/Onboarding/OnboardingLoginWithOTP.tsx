@@ -1,11 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Input, Message, Spacer, Text, useColor } from "palette"
 import React, { useRef } from "react"
-import { ScrollView, View } from "react-native"
+import { ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 
@@ -54,69 +55,71 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
   const otpInputRef = useRef<Input>(null)
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
-      <ScrollView
-        contentContainerStyle={{
-          paddingTop: useScreenDimensions().safeAreaInsets.top,
-          paddingHorizontal: 20,
-        }}
-        keyboardShouldPersistTaps="always"
-      >
-        <Spacer mt={60} />
-        <Text variant="lg">Authentication Code</Text>
-        <Box>
-          <Spacer mt={50} />
-          <Input
-            ref={otpInputRef}
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoFocus
-            keyboardType="numeric"
-            onChangeText={(text) => {
-              // Hide error when the user starts to type again
-              if (errors.otp) {
-                setErrors({
-                  otp: undefined,
-                })
-                validateForm()
-              }
-              handleChange("otp")(text)
-            }}
-            onBlur={() => validateForm()}
-            placeholder="Enter an authentication code"
-            placeholderTextColor={color("black30")}
-            title="Authentication Code"
-            returnKeyType="done"
-            value={values.otp}
-            error={errors.otp}
-          />
-          {otpMode === "on_demand" ? (
-            <>
-              <Spacer mb={20} />
-              <Message testID="on_demand_message">
-                Your safety and security are important to us. Please check your email for a one-time
-                authentication code to complete your login.
-              </Message>
-            </>
-          ) : null}
-        </Box>
-        <Spacer mt={4} />
-      </ScrollView>
-      <BackButton onPress={() => navigation.goBack()} />
-      <Flex px={2} paddingBottom={2}>
-        <Button
-          onPress={handleSubmit}
-          block
-          haptic="impactMedium"
-          disabled={!(isValid && dirty) || isSubmitting}
-          loading={isSubmitting}
-          testID="loginButton"
-          variant="fillDark"
+    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
+      <ArtsyKeyboardAvoidingView>
+        <ScrollView
+          contentContainerStyle={{
+            paddingTop: useScreenDimensions().safeAreaInsets.top,
+            paddingHorizontal: 20,
+          }}
+          keyboardShouldPersistTaps="always"
         >
-          Log in
-        </Button>
-      </Flex>
-    </View>
+          <Spacer mt={60} />
+          <Text variant="lg">Authentication Code</Text>
+          <Box>
+            <Spacer mt={50} />
+            <Input
+              ref={otpInputRef}
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoFocus
+              keyboardType="numeric"
+              onChangeText={(text) => {
+                // Hide error when the user starts to type again
+                if (errors.otp) {
+                  setErrors({
+                    otp: undefined,
+                  })
+                  validateForm()
+                }
+                handleChange("otp")(text)
+              }}
+              onBlur={() => validateForm()}
+              placeholder="Enter an authentication code"
+              placeholderTextColor={color("black30")}
+              title="Authentication Code"
+              returnKeyType="done"
+              value={values.otp}
+              error={errors.otp}
+            />
+            {otpMode === "on_demand" ? (
+              <>
+                <Spacer mb={20} />
+                <Message testID="on_demand_message">
+                  Your safety and security are important to us. Please check your email for a
+                  one-time authentication code to complete your login.
+                </Message>
+              </>
+            ) : null}
+          </Box>
+          <Spacer mt={4} />
+        </ScrollView>
+        <BackButton onPress={() => navigation.goBack()} />
+        <Flex px={2} paddingBottom={2}>
+          <Button
+            onPress={handleSubmit}
+            block
+            haptic="impactMedium"
+            disabled={!(isValid && dirty) || isSubmitting}
+            loading={isSubmitting}
+            testID="loginButton"
+            variant="fillDark"
+          >
+            Log in
+          </Button>
+        </Flex>
+      </ArtsyKeyboardAvoidingView>
+    </Flex>
   )
 }
 

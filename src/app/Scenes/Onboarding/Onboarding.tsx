@@ -4,10 +4,7 @@ import {
   createStackNavigator,
   TransitionPresets,
 } from "@react-navigation/stack"
-import {
-  ArtsyKeyboardAvoidingView,
-  ArtsyKeyboardAvoidingViewContext,
-} from "app/Components/ArtsyKeyboardAvoidingView"
+import { ArtsyKeyboardAvoidingViewContext } from "app/Components/ArtsyKeyboardAvoidingView"
 import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "app/Components/ArtsyReactWebViewPolicy"
 import { FPSCounter } from "app/Components/FPSCounter"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
@@ -119,14 +116,12 @@ export const Onboarding = () => {
       <ArtsyKeyboardAvoidingViewContext.Provider
         value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
       >
-        <ArtsyKeyboardAvoidingView>
-          {onboardingState === "incomplete" ? (
-            <OnboardingPersonalization />
-          ) : (
-            <OnboardingWelcomeScreens />
-          )}
-          {!!showNetworkUnavailableModal && <NetworkAwareProvider />}
-        </ArtsyKeyboardAvoidingView>
+        {onboardingState === "incomplete" ? (
+          <OnboardingPersonalization />
+        ) : (
+          <OnboardingWelcomeScreens />
+        )}
+        {!!showNetworkUnavailableModal && <NetworkAwareProvider />}
       </ArtsyKeyboardAvoidingViewContext.Provider>
       {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}
     </View>

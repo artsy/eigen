@@ -30,14 +30,14 @@ const PhotoRowContent: React.FC<Props> = ({ photo, onPhotoDelete }) => (
   <Flex flexDirection="row">
     <Flex width="53%" justifyContent="center">
       <Image
-        resizeMode="contain"
+        style={{ height: 48, width: 48 }}
+        resizeMode="cover"
         source={{ uri: photo.path }}
-        style={{ height: 58, width: 58 }}
         testID="Submission_Image"
       />
     </Flex>
     <Flex flexDirection="row" justifyContent="space-around" alignItems="center" width="47%">
-      <Text>{photo.sizeDisplayValue}</Text>
+      <Text style={{ width: 58 }}>{photo.sizeDisplayValue}</Text>
       <Button
         ml={1}
         variant="text"
@@ -54,13 +54,13 @@ const PhotoRowContent: React.FC<Props> = ({ photo, onPhotoDelete }) => (
 const PhotoRowPlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex flexDirection="row">
-      <Flex width="51%" justifyContent="center" pt={1} pb={1}>
-        <PlaceholderBox testID="Submission_Photo_Placeholder" width={58} height={58} />
+      <Flex width="52%" justifyContent="center">
+        <PlaceholderBox testID="Submission_Photo_Placeholder" width={48} height={48} />
       </Flex>
-    </Flex>
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" width="47%">
-      <PlaceholderText width={57} height={18} />
-      <PlaceholderText width={57} height={18} />
+      <Flex flexDirection="row" width="47%" alignItems="center" justifyContent="space-around">
+        <PlaceholderText width={50} height={18} marginBottom={0} />
+        <PlaceholderText width={50} height={18} marginBottom={0} />
+      </Flex>
     </Flex>
   </ProvidePlaceholderContext>
 )

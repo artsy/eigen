@@ -24,7 +24,6 @@ export const groupConversationItems = <T extends ConversationItem>(items: T[]): 
     const lastCreatedAt = moment(lastItem?.createdAt as string)
     const currentCreatedAt = moment(currentItem?.createdAt as string)
     const sameDay = lastCreatedAt.isSame(currentCreatedAt, "day")
-
     const today = currentCreatedAt.isSame(moment(), "day")
 
     const isMessage = (message: ConversationItem) => message.__typename === "Message"

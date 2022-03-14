@@ -244,7 +244,7 @@ describe("messages with order updates", () => {
   })
 
   // We fetch all order updates but only paginated messages, so this is to avoid a smooshed list of updates at the top.
-  it("does not show order updates before the currently-available messages", () => {
+  it("shows order updates before the currently-available messages", () => {
     const beforeLastMessageTime = "2020-03-18T02:58:37.699Z"
     const beforeLastMessageTime2 = "2020-03-18T02:59:37.699Z"
     const lastMessageTime = "2020-03-19T01:58:37.699Z"
@@ -257,6 +257,7 @@ describe("messages with order updates", () => {
           __typename: "CommerceOfferSubmittedEvent",
           offer: {
             respondsTo: null,
+            amount: 10,
           },
           createdAt: beforeLastMessageTime,
         },
@@ -265,6 +266,8 @@ describe("messages with order updates", () => {
           offer: {
             respondsTo: {},
             fromParticipant: "SELLER",
+            offerAmountChanged: true,
+            amount: 11,
           },
           createdAt: beforeLastMessageTime2,
         },
@@ -272,14 +275,15 @@ describe("messages with order updates", () => {
           __typename: "CommerceOfferSubmittedEvent",
           offer: {
             respondsTo: {},
-            fromParticipant: "Buyer",
+            fromParticipant: "BUYER",
+            amount: 12,
           },
           createdAt: afterLastMessageTime,
         },
       ],
     })
-    expect(extractText(tree.root)).toContain("You sent a counteroffer for")
-    expect(extractText(tree.root)).not.toContain("You sent an offer for")
-    expect(extractText(tree.root)).not.toContain("You received a counteroffer for")
+    expect(extractText(tree.root)).toContain("You sent an offer for 10")
+    expect(extractText(tree.root)).toContain("You received a counteroffer for 11")
+    expect(extractText(tree.root)).toContain("You sent a counteroffer for 12")
   })
 })

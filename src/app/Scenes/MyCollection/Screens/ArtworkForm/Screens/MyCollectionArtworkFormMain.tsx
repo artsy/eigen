@@ -76,152 +76,154 @@ export const MyCollectionArtworkFormMain: React.FC<
   }
 
   return (
-    <ArtsyKeyboardAvoidingView>
-      <FancyModalHeader
-        onLeftButtonPress={route.params.onHeaderBackButtonPress}
-        rightButtonText={isFormDirty() ? "Clear" : undefined}
-        onRightButtonPress={isFormDirty() ? () => route.params.clearForm() : undefined}
-        hideBottomDivider
-      >
-        {addOrEditLabel} Details
-      </FancyModalHeader>
-      <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-        <Flex p={2}>
-          <Join separator={<Spacer my={1} />}>
-            {!!formik.values.artistSearchResult && (
-              <ArtistSearchResult result={formik.values.artistSearchResult} />
-            )}
-            <Input
-              title="TITLE"
-              placeholder="Title"
-              onChangeText={formik.handleChange("title")}
-              onBlur={formik.handleBlur("title")}
-              testID="TitleInput"
-              required
-              accessibilityLabel="Title"
-              value={formikValues.title}
-            />
-            <Input
-              title="YEAR"
-              keyboardType="number-pad"
-              placeholder="Year created"
-              onChangeText={formik.handleChange("date")}
-              onBlur={formik.handleBlur("date")}
-              testID="DateInput"
-              accessibilityLabel="Year"
-              value={formikValues.date}
-            />
-            <MediumPicker />
-            <Input
-              title="MATERIALS"
-              placeholder="Materials"
-              onChangeText={formik.handleChange("category")}
-              onBlur={formik.handleBlur("category")}
-              testID="MaterialsInput"
-              accessibilityLabel="Materials"
-              value={formikValues.category}
-            />
-            <Rarity />
-            <Dimensions />
-            <Input
-              title="PRICE PAID"
-              placeholder="Price paid"
-              keyboardType="decimal-pad"
-              accessibilityLabel="Price paid"
-              onChangeText={formik.handleChange("pricePaidDollars")}
-              onBlur={formik.handleBlur("pricePaidDollars")}
-              testID="PricePaidInput"
-              value={formikValues.pricePaidDollars}
-            />
-            <Select
-              title="Currency"
-              placeholder="Currency"
-              options={pricePaidCurrencySelectOptions}
-              value={formikValues.pricePaidCurrency}
-              enableSearch={false}
-              showTitleLabel={false}
-              onSelectValue={(value) => {
-                formik.handleChange("pricePaidCurrency")(value)
-                GlobalStore.actions.userPrefs.setCurrency(value as Currency)
-              }}
-              testID="CurrencyPicker"
-            />
-            <Input
-              title="LOCATION"
-              placeholder="Enter City Where Artwork is Located"
-              onChangeText={formik.handleChange("artworkLocation")}
-              onBlur={formik.handleBlur("artworkLocation")}
-              testID="LocationInput"
-              accessibilityLabel="Enter City Where the Artwork is Located"
-              value={formikValues.artworkLocation}
-            />
-            <Input
-              multiline
-              title="PROVENANCE"
-              placeholder="Describe How You Acquired the Artwork"
-              value={formikValues.provenance}
-              accessibilityLabel="Describe How You Acquired the Artwork"
-              onChangeText={formik.handleChange("provenance")}
-              testID="ProvenanceInput"
-            />
-          </Join>
-        </Flex>
+    <>
+      <ArtsyKeyboardAvoidingView>
+        <FancyModalHeader
+          onLeftButtonPress={route.params.onHeaderBackButtonPress}
+          rightButtonText={isFormDirty() ? "Clear" : undefined}
+          onRightButtonPress={isFormDirty() ? () => route.params.clearForm() : undefined}
+          hideBottomDivider
+        >
+          {addOrEditLabel} Details
+        </FancyModalHeader>
+        <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
+          <Flex p={2}>
+            <Join separator={<Spacer my={1} />}>
+              {!!formik.values.artistSearchResult && (
+                <ArtistSearchResult result={formik.values.artistSearchResult} />
+              )}
+              <Input
+                title="TITLE"
+                placeholder="Title"
+                onChangeText={formik.handleChange("title")}
+                onBlur={formik.handleBlur("title")}
+                testID="TitleInput"
+                required
+                accessibilityLabel="Title"
+                value={formikValues.title}
+              />
+              <Input
+                title="YEAR"
+                keyboardType="number-pad"
+                placeholder="Year created"
+                onChangeText={formik.handleChange("date")}
+                onBlur={formik.handleBlur("date")}
+                testID="DateInput"
+                accessibilityLabel="Year"
+                value={formikValues.date}
+              />
+              <MediumPicker />
+              <Input
+                title="MATERIALS"
+                placeholder="Materials"
+                onChangeText={formik.handleChange("category")}
+                onBlur={formik.handleBlur("category")}
+                testID="MaterialsInput"
+                accessibilityLabel="Materials"
+                value={formikValues.category}
+              />
+              <Rarity />
+              <Dimensions />
+              <Input
+                title="PRICE PAID"
+                placeholder="Price paid"
+                keyboardType="decimal-pad"
+                accessibilityLabel="Price paid"
+                onChangeText={formik.handleChange("pricePaidDollars")}
+                onBlur={formik.handleBlur("pricePaidDollars")}
+                testID="PricePaidInput"
+                value={formikValues.pricePaidDollars}
+              />
+              <Select
+                title="Currency"
+                placeholder="Currency"
+                options={pricePaidCurrencySelectOptions}
+                value={formikValues.pricePaidCurrency}
+                enableSearch={false}
+                showTitleLabel={false}
+                onSelectValue={(value) => {
+                  formik.handleChange("pricePaidCurrency")(value)
+                  GlobalStore.actions.userPrefs.setCurrency(value as Currency)
+                }}
+                testID="CurrencyPicker"
+              />
+              <Input
+                title="LOCATION"
+                placeholder="Enter City Where Artwork is Located"
+                onChangeText={formik.handleChange("artworkLocation")}
+                onBlur={formik.handleBlur("artworkLocation")}
+                testID="LocationInput"
+                accessibilityLabel="Enter City Where the Artwork is Located"
+                value={formikValues.artworkLocation}
+              />
+              <Input
+                multiline
+                title="PROVENANCE"
+                placeholder="Describe How You Acquired the Artwork"
+                value={formikValues.provenance}
+                accessibilityLabel="Describe How You Acquired the Artwork"
+                onChangeText={formik.handleChange("provenance")}
+                testID="ProvenanceInput"
+              />
+            </Join>
+          </Flex>
 
-        <Spacer mt={1} />
+          <Spacer mt={1} />
 
-        <PhotosButton
-          testID="PhotosButton"
-          onPress={() => {
-            if (isEmpty(artworkState.sessionState.formValues.photos)) {
-              showPhotoActionSheet(showActionSheetWithOptions, true).then((photos) => {
-                artworkActions.addPhotos(photos)
-              })
-            } else {
-              navigation.navigate("AddPhotos")
-            }
-          }}
-        />
+          <PhotosButton
+            testID="PhotosButton"
+            onPress={() => {
+              if (isEmpty(artworkState.sessionState.formValues.photos)) {
+                showPhotoActionSheet(showActionSheetWithOptions, true).then((photos) => {
+                  artworkActions.addPhotos(photos)
+                })
+              } else {
+                navigation.navigate("AddPhotos")
+              }
+            }}
+          />
 
-        <Spacer mt={2} mb={1} />
+          <Spacer mt={2} mb={1} />
 
-        <ScreenMargin>
-          {modalType === "edit" && (
-            <Button
-              my={1}
-              variant="outline"
-              block
-              onPress={() => {
-                showActionSheetWithOptions(
-                  {
-                    title: "Delete artwork?",
-                    options: ["Delete", "Cancel"],
-                    destructiveButtonIndex: 0,
-                    cancelButtonIndex: 1,
-                    useModal: true,
-                  },
-                  (buttonIndex) => {
-                    if (buttonIndex === 0) {
-                      route.params.onDelete?.()
-                    }
-                  }
-                )
-              }}
-              testID="DeleteButton"
-            >
-              Delete artwork
-            </Button>
-          )}
-        </ScreenMargin>
-
-        {/* Show validation errors during development */}
-        {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
           <ScreenMargin>
-            <Box my={2}>
-              <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
-            </Box>
+            {modalType === "edit" && (
+              <Button
+                my={1}
+                variant="outline"
+                block
+                onPress={() => {
+                  showActionSheetWithOptions(
+                    {
+                      title: "Delete artwork?",
+                      options: ["Delete", "Cancel"],
+                      destructiveButtonIndex: 0,
+                      cancelButtonIndex: 1,
+                      useModal: true,
+                    },
+                    (buttonIndex) => {
+                      if (buttonIndex === 0) {
+                        route.params.onDelete?.()
+                      }
+                    }
+                  )
+                }}
+                testID="DeleteButton"
+              >
+                Delete artwork
+              </Button>
+            )}
           </ScreenMargin>
-        )}
-      </ScrollView>
+
+          {/* Show validation errors during development */}
+          {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
+            <ScreenMargin>
+              <Box my={2}>
+                <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
+              </Box>
+            </ScreenMargin>
+          )}
+        </ScrollView>
+      </ArtsyKeyboardAvoidingView>
       <Flex p={2}>
         <Button
           disabled={!formik.isValid || !isFormDirty()}
@@ -233,7 +235,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           {modalType === "edit" ? "Save changes" : "Complete"}
         </Button>
       </Flex>
-    </ArtsyKeyboardAvoidingView>
+    </>
   )
 }
 
