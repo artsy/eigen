@@ -4549,6 +4549,9 @@ type CommerceShipArta {
 type CommerceShipment {
   bookedAt: String
   carrierName: String
+  contactEmail: String
+  contactName: String
+  contactPhone: String
   createdAt(
     format: String
 
