@@ -105,7 +105,7 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
       return (
         <>
           <View>
-            {!!!isLastMessage && (
+            {!isLastMessage && (
               <TimeSince style={{ alignSelf: "center" }} time={firstItem.createdAt} exact mb={1} />
             )}
             {[...group].reverse().map((message: Message_message, messageIndex: number) => {
