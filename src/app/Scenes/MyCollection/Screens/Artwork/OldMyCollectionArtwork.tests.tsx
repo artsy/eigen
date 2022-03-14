@@ -49,13 +49,6 @@ describe("MyCollectionArtworkDetail", () => {
       expect(spy).toHaveBeenCalledWith(artworkProps.artwork)
     })
 
-    it("navigates to sales page when learn more button is pressed", () => {
-      const artworkProps = { artwork: { internalID: "someInternalId" } }
-      const wrapper = getWrapper(artworkProps)
-      wrapper.root.findByProps({ testID: "LearnMoreButton" }).props.onPress()
-      expect(navigate).toHaveBeenCalledWith("/sales")
-    })
-
     // Analytics
 
     it("tracks an analytics event when edit button is pressed", () => {
@@ -70,23 +63,5 @@ describe("MyCollectionArtworkDetail", () => {
         editCollectedArtwork({ contextOwnerId: "someInternalId", contextOwnerSlug: "someSlug" })
       )
     })
-    // TODO: uncomment and change in the folow up task
-    /*   it("tracks an analytics event learn more button is pressed", () => {
-      const artworkProps = { artwork: { internalID: "someInternalId", slug: "someSlug" } }
-      GlobalStore.actions.myCollection.artwork.startEditingArtwork = jest.fn() as any
-
-      const wrapper = getWrapper(artworkProps)
-      wrapper.root.findByProps({ testID: "LearnMoreButton" }).props.onPress()
-
-      expect(mockTrackEvent).toHaveBeenCalledTimes(1)
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        action: ActionType.tappedShowMore,
-        context_module: ContextModule.sellFooter,
-        context_screen_owner_type: OwnerType.myCollectionArtwork,
-        context_screen_owner_id: "someInternalId",
-        context_screen_owner_slug: "someSlug",
-        subject: "Learn More",
-      })
-    }) */
   })
 })
