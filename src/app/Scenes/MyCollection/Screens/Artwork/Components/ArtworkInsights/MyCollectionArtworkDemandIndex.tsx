@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/c
 import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
 import { MyCollectionArtworkDemandIndex_marketPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { TrendingIcon } from "app/Icons/TrendingIcon"
+import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { TriangleDown } from "app/Icons/TriangleDown"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
@@ -74,7 +74,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
         </Text>
         {!!trending && (
           <Flex flexDirection="row" alignItems="center" mb={1}>
-            <TrendingIcon style={{ marginTop: 2, marginRight: 2 }} />
+            <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />
             <Text color="blue100">High Demand</Text>
           </Flex>
         )}
