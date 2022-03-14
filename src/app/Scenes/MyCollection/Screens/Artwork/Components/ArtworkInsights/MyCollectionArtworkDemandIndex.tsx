@@ -4,6 +4,7 @@ import { MyCollectionArtworkDemandIndex_marketPriceInsights$key } from "__genera
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { TriangleDown } from "app/Icons/TriangleDown"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
@@ -59,6 +60,8 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 }
 
 const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
+  const enableDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
+
   let width = demandRank * 10
   if (width > 100) {
     width = 100
@@ -72,7 +75,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
         <Text color="blue100" variant="xl">
           {adjustedDemandRank}
         </Text>
-        {!!trending && (
+        {!!trending && !!enableDemandIndexHints && (
           <Flex flexDirection="row" alignItems="center" mb={1}>
             <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />
             <Text color="blue100">High Demand</Text>
