@@ -1,12 +1,9 @@
 import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwork.graphql"
 import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { navigate } from "app/navigation/navigate"
-import { Schema } from "app/utils/track"
 import { Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { useTracking } from "react-tracking"
 import { BidButtonFragmentContainer } from "./BidButton"
 import { BuyNowButtonFragmentContainer } from "./BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "./InquiryButtons"
@@ -26,17 +23,6 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
   auctionState,
   editionSetID,
 }) => {
-  const { trackEvent } = useTracking()
-
-  const handleInquiry = () => {
-    trackEvent({
-      action_name: Schema.ActionNames.ContactGallery,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.CommercialButtons,
-    })
-    navigate(`/inquiry/${artwork.slug}`)
-  }
-
   const {
     isBuyNowable,
     isAcquireable,
