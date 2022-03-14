@@ -275,6 +275,7 @@ describe("MyCollectionArtworkForm", () => {
 
         const artworkSlug = "some-slug"
         const artworkResponse: myCollectionAddArtworkMutationResponse = {
+          " $fragmentRefs": null,
           myCollectionCreateArtwork: {
             artworkOrError: {
               artworkEdge: {
