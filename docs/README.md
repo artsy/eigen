@@ -29,6 +29,7 @@
 - [Analytics and Tracking](analytics_and_tracking.md)
 - [Certificates](certs.md)
 - [Test on a real device: create a beta](deploy_to_beta.md)
+- [Generating a Release build for local testing](generating_a_release_build_for_local_testing.md)
 
 ### Beta
 
