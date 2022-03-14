@@ -275,7 +275,6 @@ describe("MyCollectionArtworkForm", () => {
 
         const artworkSlug = "some-slug"
         const artworkResponse: myCollectionAddArtworkMutationResponse = {
-          " $fragmentRefs": null,
           myCollectionCreateArtwork: {
             artworkOrError: {
               artworkEdge: {
@@ -308,6 +307,7 @@ describe("MyCollectionArtworkForm", () => {
                   title: null,
                   attributionClass: null,
                   consignmentSubmission: null,
+                  " $fragmentRefs": null as any,
                 },
               },
             },
