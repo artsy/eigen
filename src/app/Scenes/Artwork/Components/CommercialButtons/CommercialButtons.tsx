@@ -2,10 +2,8 @@ import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwo
 import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
-import { InquiryOptions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Schema } from "app/utils/track"
-import { Button, Spacer } from "palette"
+import { Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -29,7 +27,6 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
   editionSetID,
 }) => {
   const { trackEvent } = useTracking()
-  const newFirstInquiry = useFeatureFlag("AROptionsNewFirstInquiry")
 
   const handleInquiry = () => {
     trackEvent({
@@ -94,12 +91,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
       <>
         <MakeOfferButtonFragmentContainer artwork={artwork} editionSetID={editionSetID ?? null} />
         {isInquireable && <Spacer my={0.5} />}
-        {isInquireable && !newFirstInquiry && (
-          <Button onPress={handleInquiry} size="large" variant="outline" block width={100} haptic>
-            {InquiryOptions.ContactGallery}
-          </Button>
-        )}
-        {isInquireable && newFirstInquiry && (
+        {isInquireable && (
           <InquiryButtonsFragmentContainer
             artwork={artwork}
             editionSetID={editionSetID}
@@ -110,15 +102,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
     )
   }
 
-  if (isInquireable && !newFirstInquiry) {
-    return (
-      <Button onPress={handleInquiry} size="large" block width={100} haptic>
-        {InquiryOptions.ContactGallery}
-      </Button>
-    )
-  }
-
-  if (isInquireable && newFirstInquiry) {
+  if (isInquireable) {
     return <InquiryButtonsFragmentContainer artwork={artwork} editionSetID={editionSetID} />
   }
 

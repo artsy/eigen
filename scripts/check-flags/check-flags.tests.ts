@@ -12,13 +12,9 @@ describe("check flags script", () => {
           readyForRelease: true,
           echoFlagKey: "AROptionsArtistSeries",
         },
-        AROptionsNewFirstInquiry: {
-          readyForRelease: true,
-          echoFlagKey: "AROptionsNewFirstInquiry",
-        },
       `
       const releasedFlags = parseAllFlags(flagContent)[1]
-      expect(releasedFlags).toEqual(["AROptionsBidManagement", "AROptionsArtistSeries", "AROptionsNewFirstInquiry"])
+      expect(releasedFlags).toEqual(["AROptionsBidManagement", "AROptionsArtistSeries"])
     })
 
     it("excludes flags not marked readyForRelease", () => {
@@ -31,13 +27,9 @@ describe("check flags script", () => {
           readyForRelease: false,
           echoFlagKey: "AROptionsArtistSeries",
         },
-        AROptionsNewFirstInquiry: {
-          readyForRelease: true,
-          echoFlagKey: "AROptionsNewFirstInquiry",
-        },
       `
       const releasedFlags = parseAllFlags(flagContent)[1]
-      expect(releasedFlags).toEqual(["AROptionsBidManagement", "AROptionsNewFirstInquiry"])
+      expect(releasedFlags).toEqual(["AROptionsBidManagement"])
     })
 
     it("excludes flags not including readyForRelease key", () => {
@@ -49,13 +41,9 @@ describe("check flags script", () => {
           readyForRelease: true,
           echoFlagKey: "AROptionsArtistSeries",
         },
-        AROptionsNewFirstInquiry: {
-          readyForRelease: true,
-          echoFlagKey: "AROptionsNewFirstInquiry",
-        },
       `
       const releasedFlags = parseAllFlags(flagContent)[1]
-      expect(releasedFlags).toEqual(["AROptionsArtistSeries", "AROptionsNewFirstInquiry"])
+      expect(releasedFlags).toEqual(["AROptionsArtistSeries"])
     })
 
     it("doesn't care what order readyForRelease key appears", () => {
@@ -68,13 +56,9 @@ describe("check flags script", () => {
         AROptionsBidManagement: {
           echoFlagKey: "AROptionsBidManagement",
         },
-        AROptionsNewFirstInquiry: {
-          readyForRelease: true,
-          echoFlagKey: "AROptionsNewFirstInquiry",
-        },
       `
       const releasedFlags = parseAllFlags(flagContent)[1]
-      expect(releasedFlags).toEqual(["AROptionsArtistSeries", "AROptionsNewFirstInquiry"])
+      expect(releasedFlags).toEqual(["AROptionsArtistSeries"])
     })
   })
   describe("hidden flags parsing", () => {
@@ -88,10 +72,6 @@ describe("check flags script", () => {
         AROptionsBidManagement: {
           readyForRelease: false,
           echoFlagKey: "AROptionsBidManagement",
-        },
-        AROptionsNewFirstInquiry: {
-          readyForRelease: true,
-          echoFlagKey: "AROptionsNewFirstInquiry",
         },
       `
       const hiddenFlags = parseAllFlags(flagContent)[0]

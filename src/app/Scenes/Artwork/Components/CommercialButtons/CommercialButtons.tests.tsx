@@ -82,25 +82,6 @@ const relayComponent = async ({ artwork }) => {
 }
 
 describe("CommercialButtons", () => {
-  it("renders button for Contact Gallery button if isInquireable and not newFirstInquiry", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewFirstInquiry: false })
-    const artwork = {
-      ...ArtworkFixture,
-      isAcquireable: false,
-      isOfferable: false,
-      isInquireable: true,
-      isForSale: true,
-      isPriceHidden: false,
-    }
-
-    const commercialButtons = await relayComponent({
-      artwork,
-    })
-    commercialButtons.find(Button).at(0).props().onPress()
-    expect(commercialButtons.text()).toContain("Contact Gallery")
-    expect(navigate).toHaveBeenCalledWith(`/inquiry/${ArtworkFixture.slug}`)
-  })
-
   it("renders Make Offer button if isOfferable", async () => {
     const artwork = {
       ...ArtworkFixture,
