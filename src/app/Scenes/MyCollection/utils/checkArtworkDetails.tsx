@@ -24,5 +24,5 @@ export const showSubmitToSell = (
   const isSubmissionEvaluated =
     !!displayText && STATUSES[displayText!.toLowerCase()]?.text === "Evaluation Complete"
 
-  return isPOneArtist(artwork) && isSubmissionEvaluated
+  return isSubmissionEvaluated
 }

@@ -11,7 +11,6 @@ import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollec
 import { MyCollectionArtworkArticles } from "./Components/ArtworkAbout/MyCollectionArtworkArticles"
 import { MyCollectionArtworkPurchaseDetails } from "./Components/ArtworkAbout/MyCollectionArtworkPurchaseDetails"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
-import { SubmitToSell } from "./Components/SubmitToSell"
 
 interface MyCollectionArtworkAboutProps {
   artwork: MyCollectionArtworkAbout_artwork$key
@@ -40,7 +39,7 @@ export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> =
           totalCount={artwork.artist?.articles?.totalCount}
         />
         <Spacer mb={3} mt={3} />
-        {showSubmitToSell(artwork) ? <SubmitToSell /> : <MyCollectionWhySell />}
+        {!!showSubmitToSell(artwork) && <MyCollectionWhySell />}
       </Flex>
     </StickyTabPageScrollView>
   )

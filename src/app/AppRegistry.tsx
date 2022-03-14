@@ -72,7 +72,6 @@ import { MyBidsQueryRenderer } from "./Scenes/MyBids"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { ArtworkSubmissionStatusFAQ } from "./Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
-import { SellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/SellingWithArtsyFAQ"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
@@ -327,7 +326,6 @@ export const modules = defineModules({
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkSubmissionStatusFAQ: reactModule(ArtworkSubmissionStatusFAQ),
-  SellingWithartsyFAQ: reactModule(SellingWithartsyFAQ),
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, SaleScreenQuery),
   Auctions: reactModule(SalesQueryRenderer, {}, SalesScreenQuery),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),

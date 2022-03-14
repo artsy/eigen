@@ -30,7 +30,6 @@ import { showSubmitToSell } from "../../utils/checkArtworkDetails"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
-import { SubmitToSell } from "./Components/SubmitToSell"
 import { MyCollectionArtworkScreenProps } from "./MyCollectionArtwork"
 
 export interface MyCollectionArtworkProps {
@@ -86,11 +85,14 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
-          <ScreenMargin>
-            <Separator />
-            <Spacer mb={3} />
-            {showSubmitToSell(artwork) ? <SubmitToSell /> : <MyCollectionWhySell />}
-          </ScreenMargin>
+
+          {!!showSubmitToSell(artwork) && (
+            <ScreenMargin>
+              <Separator />
+              <Spacer mb={3} />
+              <MyCollectionWhySell />
+            </ScreenMargin>
+          )}
 
           <Spacer my={1} />
         </Join>

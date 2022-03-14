@@ -13,7 +13,6 @@ import { MyCollectionArtworkComparableWorks } from "./Components/ArtworkInsights
 import { MyCollectionArtworkDemandIndex } from "./Components/ArtworkInsights/MyCollectionArtworkDemandIndex"
 import { RequestForPriceEstimate } from "./Components/ArtworkInsights/RequestForPriceEstimate"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
-import { SubmitToSell } from "./Components/SubmitToSell"
 
 interface MyCollectionArtworkInsightsProps {
   artwork: MyCollectionArtworkInsights_artwork$key
@@ -68,7 +67,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 
-        {showSubmitToSell(artwork) ? <SubmitToSell /> : <MyCollectionWhySell />}
+        {!!showSubmitToSell(artwork) && <MyCollectionWhySell />}
       </Flex>
     </StickyTabPageScrollView>
   )
