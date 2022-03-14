@@ -21,7 +21,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
       <ShadowSeparator />
       <Flex p={1}>
         <Flex flexDirection="row">
-          <ShieldIcon mr={1} mt="3px" variant="color" />
+          <ShieldIcon mr={1} mt="3px" />
           <Flex flexShrink={1}>
             <Text color="black60" variant="md" mb={1}>
               Always complete purchases with our secure checkout in order to be covered by{" "}

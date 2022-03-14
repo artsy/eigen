@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 import { Message_message } from "__generated__/Message_message.graphql"
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
 import moment from "moment"
-import { Flex, Spacer, Text } from "palette"
+import { Flex, Spacer } from "palette"
 
 import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
 import { navigate } from "app/navigation/navigate"

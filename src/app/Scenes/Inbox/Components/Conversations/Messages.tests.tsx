@@ -1,5 +1,4 @@
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
-import { ToastComponent } from "app/Components/Toast/ToastComponent"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Flex, Text } from "palette"
