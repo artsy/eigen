@@ -9,8 +9,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, Flex } from "palette"
 import React from "react"
-import { QueryRenderer } from "react-relay"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 export interface ArtworkAutosuggestResultsProps {
   viewer: ArtworkAutosuggestResults_viewer
@@ -46,7 +45,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
             {/* Using `FadeIn` prevents the button from being displayed too early. */}
             <FadeIn delay={100} slide={false}>
               <Button variant="outline" onPress={onSkipPress} mt={3}>
-                Don't see your artwork? Skip ahead
+                Go to Add Artwork Details
               </Button>
             </FadeIn>
           </Flex>
