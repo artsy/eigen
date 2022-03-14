@@ -1645,6 +1645,7 @@ type Artwork implements Node & Searchable & Sellable {
     first: Int
     last: Int
   ): ArtistSeriesConnection
+  artsyShippingInternational: Boolean
 
   # Represents the location of the artwork for "My Collection" artworks
   artworkLocation: String
