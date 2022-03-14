@@ -110,6 +110,10 @@ describe(MyAccountQueryRenderer, () => {
     })
 
     describe("Link Accounts Menu Items", () => {
+      afterEach(() => {
+        jest.clearAllMocks()
+      })
+
       it("links when **not** previously linked and unlinks when previously linked", () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
         Platform.OS = "ios"
@@ -160,8 +164,10 @@ describe(MyAccountQueryRenderer, () => {
           })
           return result
         })
-        // Facebook Link Button should not be available
-        expect(extractText(tree.root)).not.toContain("Facebook")
+        const fblinkItem = tree.root.findAllByType(MenuItem)[4]
+        expect(fblinkItem.props.title).toEqual("Facebook")
+        fblinkItem.props.onPress()
+        expect(mockUnlinkFB).not.toHaveBeenCalled()
       })
     })
   })
