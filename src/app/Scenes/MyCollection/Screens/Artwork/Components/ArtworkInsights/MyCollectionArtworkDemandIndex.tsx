@@ -2,9 +2,8 @@ import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/c
 import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
 import { MyCollectionArtworkDemandIndex_marketPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
-import HighDemandIcon from "app/Icons/HighDemandIcon"
+import { TrendingIcon } from "app/Icons/TrendingIcon"
 import { TriangleDown } from "app/Icons/TriangleDown"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
@@ -38,7 +37,7 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
   const demandRank = Number((marketPriceInsights.demandRank * 10).toFixed(2))
 
   return (
-    <Flex mb={6}>
+    <Flex mb={2}>
       <InfoButton
         title="Demand index"
         modalContent={
@@ -55,30 +54,6 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 
       <Spacer my={1} />
       <DemandRankScale demandRank={demandRank} />
-      <Spacer my={1} />
-      <DemandRankDetails demandRank={demandRank} />
-    </Flex>
-  )
-}
-
-const DemandRankDetails: React.FC<{ demandRank: number }> = ({ demandRank }) => {
-  const enableDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
-
-  const title = getDemandRankTitle(demandRank)
-
-  const details =
-    demandRank >= 7 &&
-    "Demand is higher than the supply available in the market and sale price exceeds estimates."
-
-  return (
-    <Flex>
-      <Flex mx="auto" flexDirection="row" alignItems="center">
-        {!!enableDemandIndexHints && <DemandRankIcon demandRank={demandRank} />}
-        <Text textAlign="center">{title}</Text>
-      </Flex>
-      <Text variant="xs" color="black60" textAlign="center">
-        {details}
-      </Text>
     </Flex>
   )
 }
@@ -88,24 +63,30 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
   if (width > 100) {
     width = 100
   }
-
   const adjustedDemandRank = demandRank.toFixed(1) === "10.0" ? "9.9" : demandRank.toFixed(1)
+  const trending = Number(demandRank * 10) >= 9
 
   return (
     <>
       <Flex>
-        <Text variant="lg" color="blue100">
+        <Text color="blue100" variant="xl">
           {adjustedDemandRank}
         </Text>
+        {!!trending && (
+          <Flex flexDirection="row" alignItems="center" mb={1}>
+            <TrendingIcon style={{ marginTop: 2, marginRight: 2 }} />
+            <Text color="blue100">High Demand</Text>
+          </Flex>
+        )}
       </Flex>
       <ProgressBar width={width} />
       <Spacer />
       <Flex flexDirection="row" justifyContent="space-between">
         <Text variant="xs" color="black60">
-          0
+          0.0
         </Text>
         <Text variant="xs" color="black60">
-          10
+          10.0
         </Text>
       </Flex>
     </>
@@ -125,7 +106,7 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
       </Flex>
       <Flex height={24} width="100%" bg="black5">
         <LinearGradient
-          colors={["rgba(243, 240, 248, 2.6)", `rgba(110, 30, 255, ${opacity})`]}
+          colors={["rgba(16, 35, 215, 0.5)", `rgba(16, 35, 215, ${opacity})`]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={{
@@ -150,35 +131,6 @@ const marketPriceInsightsFragment = graphql`
     demandRank
   }
 `
-
-const DemandRankIcon: React.FC<{ demandRank: number }> = ({ demandRank }) => {
-  if (demandRank >= 9) {
-    return (
-      <Flex style={{ marginRight: 2, marginTop: 1 }}>
-        <HighDemandIcon />
-      </Flex>
-    )
-  }
-
-  return null
-}
-
-const getDemandRankTitle = (demandRank: number) => {
-  switch (true) {
-    case demandRank >= 9: {
-      return "Very Strong Demand (> 9.0)"
-    }
-    case demandRank >= 7 && demandRank < 9: {
-      return "Strong Demand (7.0 – 9.0)"
-    }
-    case demandRank >= 4 && demandRank < 7: {
-      return "Stable Market (4.0 – 7.0)"
-    }
-    case demandRank < 4: {
-      return "Less Active Market  (< 4.0)"
-    }
-  }
-}
 
 const tracks = {
   tappedInfoBubble: (internalID: string, slug: string): TappedInfoBubble => ({
