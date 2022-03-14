@@ -75,7 +75,6 @@ export const useGoogleLink = (relayEnvironment: RelayModernEnvironment) => {
           break
         default:
           Toast.show(`Error Linking account: ${err.message}`, "top")
-          break
       }
     }
   }
