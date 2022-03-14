@@ -1,10 +1,8 @@
 ## Betas
 
-TLDR
-
 To test your new features on a real device you can create a beta version.
 
-To create a beta version, you need to checkout the branch that has the changes (or `main` branch if the changes are already merged) and run
+We prefer creating beta version from the main branch.
 
 ```
 ./scripts/deploy-both
@@ -14,7 +12,7 @@ and soon you will have betas on testflight and firebase
 
 Ask `eigen beta?` on the #practice-mobile channel to get the links if you are not in the betas yet.
 
----
+--
 
 Deployment to TestFlight and Play Store is handled by Circle CI. Nightly betas are release automatically, but if you need to deploy something right away, run `./scripts/deploy-both` (or `./scripts/deploy-ios` or `./scripts/deploy-android` for individual releases) locally to trigger a beta build on CI. It takes about 45 minutes. There is a blog post on the process [here](http://artsy.github.io/blog/2015/12/15/Automating-Testflight-Deploys/).
 
