@@ -67,7 +67,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 
-        {!!showSubmitToSell(artwork) && <MyCollectionWhySell />}
+        {!!showSubmitToSell(artwork) && <MyCollectionWhySell artwork={artwork} />}
       </Flex>
     </StickyTabPageScrollView>
   )
@@ -96,6 +96,7 @@ const artworkFragment = graphql`
     ...MyCollectionArtworkArtistMarket_artwork
     ...MyCollectionArtworkComparableWorks_artwork
     ...MyCollectionArtworkArtistAuctionResults_artwork
+    ...MyCollectionWhySell_artwork
   }
 `
 

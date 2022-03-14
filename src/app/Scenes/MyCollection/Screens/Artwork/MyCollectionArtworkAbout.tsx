@@ -39,7 +39,7 @@ export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> =
           totalCount={artwork.artist?.articles?.totalCount}
         />
         <Spacer mb={3} mt={3} />
-        {!!showSubmitToSell(artwork) && <MyCollectionWhySell />}
+        {!!showSubmitToSell(artwork) && <MyCollectionWhySell artwork={artwork} />}
       </Flex>
     </StickyTabPageScrollView>
   )
@@ -72,6 +72,7 @@ const artworkFragment = graphql`
         isTargetSupply
       }
     }
+    ...MyCollectionWhySell_artwork
   }
 `
 

@@ -90,7 +90,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
             <ScreenMargin>
               <Separator />
               <Spacer mb={3} />
-              <MyCollectionWhySell />
+              <MyCollectionWhySell artwork={artwork} />
             </ScreenMargin>
           )}
 
@@ -159,6 +159,7 @@ export const ArtworkMetaProps = graphql`
       inProgress
       displayText
     }
+    ...MyCollectionWhySell_artwork
   }
 `
 
