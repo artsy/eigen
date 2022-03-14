@@ -80,6 +80,7 @@ export const useFacebookLink = (relayEnvironment: RelayModernEnvironment) => {
       linkUsingOauthToken(fbAccessToken.accessToken)
     } catch (error) {
       // Every other error
+      setLoading(false)
       Toast.show(`Error: Failed to link accounts.`, "top")
     }
   }
