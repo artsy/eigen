@@ -1,6 +1,5 @@
 import { editCollectedArtwork } from "@artsy/cohesion"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
