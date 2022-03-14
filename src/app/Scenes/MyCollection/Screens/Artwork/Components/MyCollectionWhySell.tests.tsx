@@ -20,7 +20,7 @@ describe("MyCollectionWhySell", () => {
       environment={mockEnvironment}
       query={graphql`
         query MyCollectionWhySellTestsQuery @relay_test_operation {
-          artwork(internalID: "someInternalId", slug: "someSlug") {
+          artwork(id: "some-id") {
             ...MyCollectionWhySell_artwork
           }
         }
