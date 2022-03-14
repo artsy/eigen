@@ -14,6 +14,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
   onSkipPress,
 }) => {
   const { formik } = useArtworkForm()
+  const [showSkipAheadToAddArtworkLink, setShowSkipAheadToAddArtworkLink] = useState(false)
 
   const { artistSearchResult } = formik.values
   const artistSlug = artistSearchResult?.slug || ""
@@ -37,15 +38,17 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
         autoFocus={typeof jest === "undefined"}
       />
 
-      <Flex flexDirection="row" my={1}>
-        <Text variant="xs" color="black60">
-          Or skip ahead to{" "}
-        </Text>
+      {showSkipAheadToAddArtworkLink && (
+        <Flex flexDirection="row" my={1}>
+          <Text variant="xs" color="black60">
+            Or skip ahead to{" "}
+          </Text>
 
-        <LinkButton variant="xs" color="black60" underline onPress={onSkipPress}>
-          add artwork details
-        </LinkButton>
-      </Flex>
+          <LinkButton variant="xs" color="black60" underline onPress={onSkipPress}>
+            add artwork details
+          </LinkButton>
+        </Flex>
+      )}
 
       {!!keyword.length && (
         <Flex height="100%" mb={2}>
@@ -54,6 +57,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
             artistSlug={artistSlug}
             onPress={onResultPress}
             onSkipPress={onSkipPress}
+            setShowSkipAheadToAddArtworkLink={() => setShowSkipAheadToAddArtworkLink(true)}
           />
         </Flex>
       )}

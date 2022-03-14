@@ -8,7 +8,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, Flex } from "palette"
-import React from "react"
+import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 export interface ArtworkAutosuggestResultsProps {
@@ -17,6 +17,7 @@ export interface ArtworkAutosuggestResultsProps {
   keyword: string
   onPress?: (artworkID: string) => void
   onSkipPress?: () => void
+  setShowSkipAheadToAddArtworkLink: () => void
 }
 
 const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
@@ -25,11 +26,18 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
   keyword,
   onPress,
   onSkipPress,
+  setShowSkipAheadToAddArtworkLink,
 }) => {
   const handlePress = (artworkId: string) => {
     // TODO: Tracking
     onPress?.(artworkId)
   }
+
+  useEffect(() => {
+    if (viewer.artworks?.edges?.length) {
+      setShowSkipAheadToAddArtworkLink()
+    }
+  }, [viewer.artworks?.edges?.length])
 
   return (
     <Flex py="2">
@@ -119,7 +127,8 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
   artistSlug: string
   onPress?: (artworkId: string) => void
   onSkipPress?: () => void
-}> = ({ keyword, artistSlug, onPress, onSkipPress }) => {
+  setShowSkipAheadToAddArtworkLink: () => void
+}> = ({ keyword, artistSlug, onPress, onSkipPress, setShowSkipAheadToAddArtworkLink }) => {
   return (
     <QueryRenderer<ArtworkAutosuggestResultsContainerQuery>
       environment={defaultEnvironment}
@@ -139,7 +148,13 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
       render={renderWithPlaceholder({
         Container: ArtworkAutosuggestResultsPaginationContainer,
         renderPlaceholder: () => <ArtworkAutosuggestResultsPlaceholder />,
-        initialProps: { keyword, artistSlug, onPress, onSkipPress },
+        initialProps: {
+          keyword,
+          artistSlug,
+          onPress,
+          onSkipPress,
+          setShowSkipAheadToAddArtworkLink,
+        },
         renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} />,
       })}
       variables={{ count: 20, keyword, input: { artistIDs: [artistSlug] } }}
