@@ -15,7 +15,7 @@ describe("OpenInquiryModalButtonQueryRenderer", () => {
       )
 
       expect(extractText(tree.root)).toContain(
-        "Only purchases completed with our secure checkout are protected"
+        "Always complete purchases with our secure checkout in order to be covered by The Artsy Guarantee"
       )
       expect(tree.root.findAllByType(OpenInquiryModalButton)).toHaveLength(1)
     })
