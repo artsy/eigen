@@ -280,7 +280,7 @@ https://github.com/artsy/eigen/pull/6348
 
 #### When can we remove this:
 
-When we fix the actual issue.
+When we fix the actual issue. https://artsyproduct.atlassian.net/browse/MOPLAT-196
 
 #### Explanation/Context:
 
