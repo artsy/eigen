@@ -20,6 +20,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   const isSold = artwork.consignmentSubmission?.inProgress
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
+  debugger
 
   if (isInProgress || isSold) {
     return null
@@ -51,7 +52,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
               // TODO: Populate form with artwork values
               navigate("/collections/my-collection/artworks/new/submissions/new")
             }}
-            testID="SubmitArtworkToSellButton"
+            testID="submitArtworkToSellButton"
           >
             Submit This Artwork to Sell
           </Button>
@@ -63,6 +64,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
             onPress={() => {
               navigate("/selling-with-artsy")
             }}
+            testID="learnMoreLink"
           >
             Learn more about{" "}
             <Text variant="xs" underline>
@@ -79,7 +81,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
             trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
             navigate("/sales")
           }}
-          testID="LearnMoreButton"
+          testID="learnMoreButton"
         >
           Learn More
         </Button>
