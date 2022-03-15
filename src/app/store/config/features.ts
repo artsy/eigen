@@ -1,6 +1,5 @@
 import { useToast } from "app/Components/Toast/toastHook"
 import { echoLaunchJson } from "app/utils/jsonFiles"
-import { Platform } from "react-native"
 import { GlobalStore } from "../GlobalStore"
 
 export interface FeatureDescriptor {
@@ -35,10 +34,6 @@ function defineFeatures<T extends string>(featureMap: {
 export type FeatureName = keyof typeof features
 
 export const features = defineFeatures({
-  AROptionsNewFirstInquiry: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsNewFirstInquiry",
-  },
   AROptionsInquiryCheckout: {
     readyForRelease: true,
     echoFlagKey: "AROptionsInquiryCheckout",
@@ -56,11 +51,6 @@ export const features = defineFeatures({
   AREnableNewPartnerView: {
     readyForRelease: true,
     echoFlagKey: "AREnableNewPartnerView",
-  },
-  AROptionsUseReactNativeWebView: {
-    readyForRelease: true,
-    echoFlagKey: Platform.OS === "ios" ? "AREnableReactNativeWebView" : undefined,
-    description: "Use react-native web views",
   },
   AROptionsLotConditionReport: {
     readyForRelease: true,
@@ -138,9 +128,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableQueriesPrefetching",
   },
   AREnableAccordionNavigationOnSubmitArtwork: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable New Artwork Submission Flow with Accordion",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableAccordionNavigationOnSubmitArtwork",
   },
   ARShowLinkedAccounts: {
     readyForRelease: true,

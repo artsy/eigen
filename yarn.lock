@@ -215,10 +215,10 @@
     "@algolia/logger-common" "4.10.4"
     "@algolia/requester-common" "4.10.4"
 
-"@artsy/cohesion@4.33.0":
-  version "4.33.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.33.0.tgz#b1bbd47651a210d001d7f00744ce11a7ce21a28a"
-  integrity sha512-jZXppVlRaIILxlvWAI75LXYFRizzxGGUus0hHBg4a0Xi3gin+7lg1n9MqKL0Cu7GrSFn30GPZhvJfHm1G29O7g==
+"@artsy/cohesion@4.38.0":
+  version "4.38.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.38.0.tgz#5ad234ff7cbe9a4a0bf2aba774a6c4d2b4bede80"
+  integrity sha512-AcsNwdPdc3gG5wkm9T4nh7XpJ2upziYx7Df90Uj1jxNsrNH9AbGG4H08TSljuz6K5mD3OQBZcI+0MqZ5LIwwJQ==
   dependencies:
     core-js "3"
 
@@ -13193,12 +13193,7 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-lodash-es@^4.17.11:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
-  integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
-
-lodash-es@^4.17.21:
+lodash-es@^4.17.11, lodash-es@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==

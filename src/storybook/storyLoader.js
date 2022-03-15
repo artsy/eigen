@@ -25,6 +25,7 @@ function loadStories() {
   require("../app/Components/ArtworkGrids/ArtworksFilterHeader.stories")
   require("../app/Components/PopoverMessage/PopoverMessage.stories")
   require("../app/Components/ReadMore.stories")
+  require("../app/Components/ArtsyKeyboardAvoidingView.stories")
 }
 
 const stories = [
@@ -49,6 +50,7 @@ const stories = [
   "../app/Components/ArtworkGrids/ArtworksFilterHeader.stories",
   "../app/Components/PopoverMessage/PopoverMessage.stories",
   "../app/Components/ReadMore.stories",
+  "../app/Components/ArtsyKeyboardAvoidingView.stories",
 ]
 
 module.exports = {

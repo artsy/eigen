@@ -672,7 +672,7 @@ export const HomeQueryRenderer: React.FC = () => {
               ...Home_meBelow
               ...RecommendedArtistsRail_me
               ...AuctionResultsRail_me
-              showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
+              showsByFollowedArtists(first: 20, status: RUNNING_AND_UPCOMING) @optionalField {
                 ...Home_showsByFollowedArtists
               }
             }

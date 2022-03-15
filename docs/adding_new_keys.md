@@ -1,6 +1,13 @@
 # Adding a New Key
 
-Keys are stored in a `.env` file, accessed through [`react-native-config`](https://github.com/luggit/react-native-config). You need to rebuild in Xcode for changes to the file to take effect.
+Keys are stored in `.env.shared` file, accessed through [`react-native-config`](https://github.com/luggit/react-native-config). You need to rebuild in Xcode for changes to the file to take effect.
+
+.env.shared is for artsy people to be able to work and compile.
+Is in .gitignore, and is downloaded by developers using the yarn setup:artsy script.
+It is also the main file that the app gets all the real env vars, keys etc.
+
+.env.example is for open source people to be able to work and compile and see what env vars need/use.
+It is committed in git, and we try to keep the exact layout copied over from .env.shared, but without any actual keys, we replace them with "-" or similar.
 
 On the React Native side:
 

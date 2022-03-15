@@ -26,14 +26,10 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
     )
   }
 
-  const showLinkGoogle = useFeatureFlag("ARGoogleAuth") && !onlyExistingAuthFor("GOOGLE")
-  const showLinkApple = Platform.OS === "ios" && !onlyExistingAuthFor("APPLE")
-  const showLinkFacebook = !onlyExistingAuthFor("FACEBOOK")
+  const showLinkGoogle = useFeatureFlag("ARGoogleAuth")
+  const showLinkApple = Platform.OS === "ios"
 
-  const showLinkedAccounts =
-    useFeatureFlag("ARShowLinkedAccounts") &&
-    !me.secondFactors?.length &&
-    (showLinkGoogle || showLinkApple || showLinkFacebook)
+  const showLinkedAccounts = useFeatureFlag("ARShowLinkedAccounts") && !me.secondFactors?.length
 
   const {
     link: linkFB,
@@ -67,6 +63,8 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
         return
     }
   }
+
+  const loading = fbLoading || googleLoading || appleLoading
 
   return (
     <PageWithSimpleHeader title="Account">
@@ -103,42 +101,38 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
               <SectionTitle title="LINKED ACCOUNTS" />
             </Box>
 
-            {!!showLinkFacebook && (
-              <MenuItem
-                title="Facebook"
-                disabled={
-                  hasOnlyOneAuth &&
-                  me.authentications.length > 0 &&
-                  me.authentications[0].provider === "FACEBOOK"
-                }
-                rightView={
-                  fbLoading ? (
-                    <ActivityIndicator size="small" color="black" />
-                  ) : (
-                    <Flex flexDirection="row" alignItems="center">
-                      <Image
-                        source={require(`@images/facebook.webp`)}
-                        resizeMode="contain"
-                        style={{ marginRight: 10 }}
-                      />
-                      <Text variant="md" color="black60" lineHeight={18}>
-                        {facebookLinked ? "Unlink" : "Link"}
-                      </Text>
-                    </Flex>
-                  )
-                }
-                onPress={fbLoading ? () => null : () => linkOrUnlink("facebook")}
-              />
-            )}
+            <MenuItem
+              title="Facebook"
+              disabled={loading || onlyExistingAuthFor("FACEBOOK")}
+              allowDisabledVisualClue
+              rightView={
+                fbLoading ? (
+                  <ActivityIndicator size="small" color="black" />
+                ) : (
+                  <Flex flexDirection="row" alignItems="center">
+                    <Image
+                      source={require(`@images/facebook.webp`)}
+                      resizeMode="contain"
+                      style={{ marginRight: 10 }}
+                    />
+                    <Text variant="md" color="black60" lineHeight={18}>
+                      {facebookLinked ? "Unlink" : "Link"}
+                    </Text>
+                  </Flex>
+                )
+              }
+              onPress={
+                fbLoading || onlyExistingAuthFor("FACEBOOK")
+                  ? () => null
+                  : () => linkOrUnlink("facebook")
+              }
+            />
 
             {!!showLinkGoogle && (
               <MenuItem
                 title="Google"
-                disabled={
-                  hasOnlyOneAuth &&
-                  me.authentications.length > 0 &&
-                  me.authentications[0].provider === "GOOGLE"
-                }
+                disabled={loading || onlyExistingAuthFor("GOOGLE")}
+                allowDisabledVisualClue
                 rightView={
                   googleLoading ? (
                     <ActivityIndicator size="small" color="black" />
@@ -155,17 +149,18 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                     </Flex>
                   )
                 }
-                onPress={googleLoading ? () => null : () => linkOrUnlink("google")}
+                onPress={
+                  googleLoading || onlyExistingAuthFor("GOOGLE")
+                    ? () => null
+                    : () => linkOrUnlink("google")
+                }
               />
             )}
             {!!showLinkApple && (
               <MenuItem
                 title="Apple"
-                disabled={
-                  hasOnlyOneAuth &&
-                  me.authentications.length > 0 &&
-                  me.authentications[0].provider === "APPLE"
-                }
+                disabled={loading || onlyExistingAuthFor("APPLE")}
+                allowDisabledVisualClue
                 rightView={
                   appleLoading ? (
                     <ActivityIndicator size="small" color="black" />
@@ -182,7 +177,11 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                     </Flex>
                   )
                 }
-                onPress={appleLoading ? () => null : () => linkOrUnlink("apple")}
+                onPress={
+                  appleLoading || onlyExistingAuthFor("APPLE")
+                    ? () => null
+                    : () => linkOrUnlink("apple")
+                }
               />
             )}
           </Flex>

@@ -1,7 +1,7 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Flex, Text, Touchable, useColor } from "palette"
+import { Color, Flex, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
@@ -14,7 +14,10 @@ const EDGE_TOAST_HEIGHT = 60
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
 
-type ToastProps = ToastDetails
+type ToastProps = ToastDetails & {
+  backgroundColor?: Color
+  duration?: number
+}
 
 export const ToastComponent: React.FC<ToastProps> = ({
   id,
@@ -23,6 +26,8 @@ export const ToastComponent: React.FC<ToastProps> = ({
   message,
   onPress,
   Icon,
+  backgroundColor = "black100",
+  duration = 2500,
 }) => {
   const color = useColor()
   const { width, height } = useScreenDimensions()
@@ -45,7 +50,7 @@ export const ToastComponent: React.FC<ToastProps> = ({
       useNativeDriver: true,
       duration: 450,
     }).start(() => GlobalStore.actions.toast.remove(id))
-  }, 2500)
+  }, duration)
 
   if (placement === "middle") {
     const innerMiddle = (
@@ -64,10 +69,11 @@ export const ToastComponent: React.FC<ToastProps> = ({
         position="absolute"
         top={(height - MIDDLE_TOAST_SIZE) / 2}
         left={(width - MIDDLE_TOAST_SIZE) / 2}
-        backgroundColor={color("black100")}
+        backgroundColor={color(backgroundColor)}
         opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
-        borderRadius={5}
         overflow="hidden"
+        paddingRight={2}
+        zIndex={999}
       >
         {onPress !== undefined ? (
           <Touchable
@@ -112,10 +118,11 @@ export const ToastComponent: React.FC<ToastProps> = ({
             positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
           : undefined
       }
-      backgroundColor={color("black100")}
-      opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
-      borderRadius={5}
+      backgroundColor={color(backgroundColor)}
+      opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })}
       overflow="hidden"
+      paddingRight={2}
+      zIndex={999}
     >
       {onPress !== undefined ? (
         <Touchable

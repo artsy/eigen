@@ -1,6 +1,6 @@
 import { AppModule } from "app/AppRegistry"
 import { ArtsyWebViewConfig } from "app/Components/ArtsyReactWebView"
-import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { Platform } from "react-native"
@@ -53,7 +53,7 @@ export function matchRoute(
   console.error("Unhandled route", url)
   return {
     type: "match",
-    module: unsafe_getFeatureFlag("AROptionsUseReactNativeWebView") ? "ReactWebView" : "WebView",
+    module: "ReactWebView",
     params: { url },
   }
 }
@@ -63,14 +63,10 @@ export const addRoute = (route: string, module: AppModule, paramsMapper?: (val: 
 }
 
 export function addWebViewRoute(url: string, config?: ArtsyWebViewConfig) {
-  return addRoute(
-    url,
-    unsafe_getFeatureFlag("AROptionsUseReactNativeWebView") ? "ReactWebView" : "WebView",
-    (params) => ({
-      url: replaceParams(url, params),
-      ...config,
-    })
-  )
+  return addRoute(url, "ReactWebView", (params) => ({
+    url: replaceParams(url, params),
+    ...config,
+  }))
 }
 
 export function replaceParams(url: string, params: any) {
@@ -205,6 +201,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addWebViewRoute("/conditions-of-sale"),
     addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
     addRoute("/artwork-submission-status", "ArtworkSubmissionStatusFAQ"),
+    addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
 
     addRoute("/partner/:partnerID", "Partner"),
     addRoute("/partner/:partnerID/works", "Partner"),
@@ -240,12 +237,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/user/purchases/:orderID", "OrderDetails"),
     addRoute("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
     addRoute("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
-    unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
-      ? addWebViewRoute("/orders/:orderID", {
-          mimicBrowserBackButton: true,
-          useRightCloseButton: true,
-        })
-      : addRoute("/orders/:orderID", "Checkout"),
+    addWebViewRoute("/orders/:orderID", {
+      mimicBrowserBackButton: true,
+      useRightCloseButton: true,
+    }),
     __DEV__ && addRoute("/storybook", "Storybook"),
 
     // Every other route needs to go above

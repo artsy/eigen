@@ -194,8 +194,5 @@ export const ArtworkMetaProps = graphql`
     slug
     title
     width
-    consignmentSubmission {
-      inProgress
-    }
   }
 `

@@ -8,9 +8,8 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, Flex } from "palette"
-import React from "react"
-import { QueryRenderer } from "react-relay"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import React, { useEffect } from "react"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 export interface ArtworkAutosuggestResultsProps {
   viewer: ArtworkAutosuggestResults_viewer
@@ -18,6 +17,7 @@ export interface ArtworkAutosuggestResultsProps {
   keyword: string
   onPress?: (artworkID: string) => void
   onSkipPress?: () => void
+  setShowSkipAheadToAddArtworkLink: (showSkipAheadLink: boolean) => void
 }
 
 const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
@@ -26,11 +26,16 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
   keyword,
   onPress,
   onSkipPress,
+  setShowSkipAheadToAddArtworkLink,
 }) => {
   const handlePress = (artworkId: string) => {
     // TODO: Tracking
     onPress?.(artworkId)
   }
+
+  useEffect(() => {
+    setShowSkipAheadToAddArtworkLink(!!viewer.artworks?.edges?.length)
+  }, [viewer.artworks?.edges?.length])
 
   return (
     <Flex py="2">
@@ -46,7 +51,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
             {/* Using `FadeIn` prevents the button from being displayed too early. */}
             <FadeIn delay={100} slide={false}>
               <Button variant="outline" onPress={onSkipPress} mt={3}>
-                Don't see your artwork? Skip ahead
+                Go to Add Artwork Details
               </Button>
             </FadeIn>
           </Flex>
@@ -120,7 +125,8 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
   artistSlug: string
   onPress?: (artworkId: string) => void
   onSkipPress?: () => void
-}> = ({ keyword, artistSlug, onPress, onSkipPress }) => {
+  setShowSkipAheadToAddArtworkLink: (showSkipAheadLink: boolean) => void
+}> = ({ keyword, artistSlug, onPress, onSkipPress, setShowSkipAheadToAddArtworkLink }) => {
   return (
     <QueryRenderer<ArtworkAutosuggestResultsContainerQuery>
       environment={defaultEnvironment}
@@ -140,7 +146,13 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
       render={renderWithPlaceholder({
         Container: ArtworkAutosuggestResultsPaginationContainer,
         renderPlaceholder: () => <ArtworkAutosuggestResultsPlaceholder />,
-        initialProps: { keyword, artistSlug, onPress, onSkipPress },
+        initialProps: {
+          keyword,
+          artistSlug,
+          onPress,
+          onSkipPress,
+          setShowSkipAheadToAddArtworkLink,
+        },
         renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} />,
       })}
       variables={{ count: 20, keyword, input: { artistIDs: [artistSlug] } }}
