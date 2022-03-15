@@ -1,12 +1,9 @@
-import { editCollectedArtwork } from "@artsy/cohesion"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { GlobalStore } from "app/store/GlobalStore"
-import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { OldMyCollectionArtworkInsightsFragmentContainer } from "./Components/ArtworkInsights/OldMyCollectionArtworkInsights"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
+import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 import { tests } from "./OldMyCollectionArtwork"
 
 jest.mock("./Components/MyCollectionArtworkHeader", () => ({
@@ -19,6 +16,10 @@ jest.mock("./Components/MyCollectionArtworkMeta", () => ({
 
 jest.mock("./Components/ArtworkInsights/OldMyCollectionArtworkInsights", () => ({
   OldMyCollectionArtworkInsightsFragmentContainer: () => null,
+}))
+
+jest.mock("./Components/MyCollectionWhySell", () => ({
+  MyCollectionWhySell: () => null,
 }))
 
 describe("MyCollectionArtworkDetail", () => {
@@ -37,30 +38,7 @@ describe("MyCollectionArtworkDetail", () => {
       expect(wrapper.root.findByType(MyCollectionArtworkHeaderFragmentContainer)).toBeDefined()
       expect(wrapper.root.findByType(MyCollectionArtworkMetaFragmentContainer)).toBeDefined()
       expect(wrapper.root.findByType(OldMyCollectionArtworkInsightsFragmentContainer)).toBeDefined()
-    })
-
-    it("calls startEditingArtworkAction when header edit button is pressed", () => {
-      const artworkProps = { artwork: { internalID: "someInternalId" } }
-      const spy = jest.fn()
-      GlobalStore.actions.myCollection.artwork.startEditingArtwork = spy as any
-      const wrapper = getWrapper(artworkProps)
-      wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
-      expect(spy).toHaveBeenCalledWith(artworkProps.artwork)
-    })
-
-    // Analytics
-
-    it("tracks an analytics event when edit button is pressed", () => {
-      const artworkProps = { artwork: { internalID: "someInternalId", slug: "someSlug" } }
-      GlobalStore.actions.myCollection.artwork.startEditingArtwork = jest.fn() as any
-
-      const wrapper = getWrapper(artworkProps)
-      wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
-
-      expect(mockTrackEvent).toHaveBeenCalledTimes(1)
-      expect(mockTrackEvent).toHaveBeenCalledWith(
-        editCollectedArtwork({ contextOwnerId: "someInternalId", contextOwnerSlug: "someSlug" })
-      )
+      expect(wrapper.root.findByType(MyCollectionWhySell)).toBeDefined()
     })
   })
 })
