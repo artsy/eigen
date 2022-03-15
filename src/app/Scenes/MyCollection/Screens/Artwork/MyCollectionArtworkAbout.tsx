@@ -63,12 +63,7 @@ const artworkFragment = graphql`
         }
       }
       targetSupply {
-        isTargetSupply
-      }
-    }
-    artists {
-      targetSupply {
-        isTargetSupply
+        isP1
       }
     }
     ...MyCollectionWhySell_artwork

@@ -284,6 +284,9 @@ describe("MyCollectionArtworkForm", () => {
                   artist: {
                     internalID: "some-internal-id",
                     formattedNationalityAndBirthday: "British",
+                    targetSupply: {
+                      isP1: false,
+                    },
                   },
                   artistNames: "some-artist-name",
                   category: null,

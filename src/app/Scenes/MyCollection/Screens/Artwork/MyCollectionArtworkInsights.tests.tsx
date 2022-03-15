@@ -109,6 +109,9 @@ const mockArtwork = {
           artistID: "4d8b92bb4eb68a1b2c000452",
           artist: {
             name: "Takashi Murakami",
+            targetSupply: {
+              isP1: false,
+            },
           },
           internalID: "333952",
           title: "A Comparable Auction Result",

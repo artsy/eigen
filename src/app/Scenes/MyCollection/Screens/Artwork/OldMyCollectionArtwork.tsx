@@ -118,16 +118,11 @@ export const ArtworkMetaProps = graphql`
       internalID
       formattedNationalityAndBirthday
       targetSupply {
-        isTargetSupply
+        isP1
       }
     }
     consignmentSubmission {
       inProgress
-    }
-    artists {
-      targetSupply {
-        isTargetSupply
-      }
     }
     artistNames
     category
