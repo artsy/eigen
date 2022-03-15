@@ -57,15 +57,6 @@ describe("MyCollectionArtworkInsights", () => {
       }),
     })
 
-    // Demand Index
-
-    expect(getByText("Strong Demand (7.0 – 9.0)")).toBeTruthy()
-    expect(
-      getByText(
-        "Demand is higher than the supply available in the market and sale price exceeds estimates."
-      )
-    ).toBeTruthy()
-
     // Artwork Artist Market
 
     expect(getByText("Artist Market")).toBeTruthy()
