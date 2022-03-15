@@ -16,8 +16,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   const artwork = useFragment<MyCollectionWhySell_artwork$key>(artworkFragment, props.artwork)
 
   const isInProgress = artwork.consignmentSubmission?.inProgress
-  // TODO: use isSold
-  const isSold = artwork.consignmentSubmission?.inProgress
+  const isSold = artwork.consignmentSubmission?.isSold
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
 
@@ -99,6 +98,7 @@ const artworkFragment = graphql`
     internalID
     consignmentSubmission {
       inProgress
+      isSold
     }
     artist {
       targetSupply {

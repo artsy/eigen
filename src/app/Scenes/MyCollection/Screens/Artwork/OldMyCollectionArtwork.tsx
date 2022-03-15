@@ -41,11 +41,11 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
   marketPriceInsights,
 }) => {
   const { trackEvent } = useTracking()
-  const displayEditButton = !artwork.consignmentSubmission?.inProgress
 
   const isInProgress = artwork.consignmentSubmission?.inProgress
-  // TODO: use isSold
-  const isSold = artwork.consignmentSubmission?.inProgress
+  const isSold = artwork.consignmentSubmission?.isSold
+
+  const displayEditButton = !isInProgress
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -123,6 +123,8 @@ export const ArtworkMetaProps = graphql`
     }
     consignmentSubmission {
       inProgress
+      isSold
+      displayText
     }
     artistNames
     category
@@ -156,10 +158,6 @@ export const ArtworkMetaProps = graphql`
     slug
     title
     width
-    consignmentSubmission {
-      inProgress
-      displayText
-    }
     ...MyCollectionWhySell_artwork
   }
 `
