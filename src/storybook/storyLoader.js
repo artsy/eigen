@@ -19,6 +19,7 @@ function loadStories() {
   require("../palette/elements/Text/Text.stories")
   require("../palette/elements/List/List.stories")
   require("../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories")
+  require("../palette/elements/ProgressBar/ProgressBar.stories")
   require("../palette/icons.stories")
   require("../palette/space.stories")
   require("../palette/elements/VisualClue/VisualClue.stories")
@@ -43,6 +44,7 @@ const stories = [
   "../palette/elements/Header/Header.stories",
   "../palette/elements/Text/Text.stories",
   "../palette/elements/List/List.stories",
+  "../palette/elements/ProgressBar/ProgressBar.stories",
   "../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories",
   "../palette/icons.stories",
   "../palette/space.stories",
