@@ -6,7 +6,6 @@ import { Flex, Spacer } from "palette/elements"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { showSubmitToSell } from "../../utils/checkArtworkDetails"
 import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollectionArtworkAboutWork"
 import { MyCollectionArtworkArticles } from "./Components/ArtworkAbout/MyCollectionArtworkArticles"
 import { MyCollectionArtworkPurchaseDetails } from "./Components/ArtworkAbout/MyCollectionArtworkPurchaseDetails"
@@ -39,7 +38,7 @@ export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> =
           totalCount={artwork.artist?.articles?.totalCount}
         />
         <Spacer mb={3} mt={3} />
-        {!!showSubmitToSell(artwork) && <MyCollectionWhySell artwork={artwork} />}
+        <MyCollectionWhySell artwork={artwork} />
       </Flex>
     </StickyTabPageScrollView>
   )

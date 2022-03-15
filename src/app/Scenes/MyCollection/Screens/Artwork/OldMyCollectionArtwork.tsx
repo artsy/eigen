@@ -26,7 +26,6 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { showSubmitToSell } from "../../utils/checkArtworkDetails"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
@@ -43,6 +42,10 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const displayEditButton = !artwork.consignmentSubmission?.inProgress
+
+  const isInProgress = artwork.consignmentSubmission?.inProgress
+  // TODO: use isSold
+  const isSold = artwork.consignmentSubmission?.inProgress
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -86,7 +89,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
             marketPriceInsights={marketPriceInsights}
           />
 
-          {!!showSubmitToSell(artwork) && (
+          {!isInProgress && !isSold && (
             <ScreenMargin>
               <Separator />
               <Spacer mb={3} />
@@ -117,6 +120,9 @@ export const ArtworkMetaProps = graphql`
       targetSupply {
         isTargetSupply
       }
+    }
+    consignmentSubmission {
+      inProgress
     }
     artists {
       targetSupply {

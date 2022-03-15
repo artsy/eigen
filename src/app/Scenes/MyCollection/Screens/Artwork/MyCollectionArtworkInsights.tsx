@@ -6,7 +6,6 @@ import { Flex, Spacer, Text } from "palette/elements"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { isPOneArtist, showSubmitToSell } from "../../utils/checkArtworkDetails"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkComparableWorks } from "./Components/ArtworkInsights/MyCollectionArtworkComparableWorks"
@@ -32,8 +31,9 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
     restProps.marketPriceInsights
   )
 
-  const showPriceEstimateBanner =
-    useFeatureFlag("ARShowRequestPriceEstimateBanner") && isPOneArtist(artwork)
+  const isP1Artist = artwork.artist?.targetSupply?.isP1
+
+  const showPriceEstimateBanner = useFeatureFlag("ARShowRequestPriceEstimateBanner") && isP1Artist
 
   return (
     <StickyTabPageScrollView>
@@ -67,7 +67,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 
-        {!!showSubmitToSell(artwork) && <MyCollectionWhySell artwork={artwork} />}
+        <MyCollectionWhySell artwork={artwork} />
       </Flex>
     </StickyTabPageScrollView>
   )
@@ -80,12 +80,7 @@ const artworkFragment = graphql`
     internalID
     artist {
       targetSupply {
-        isTargetSupply
-      }
-    }
-    artists {
-      targetSupply {
-        isTargetSupply
+        isP1
       }
     }
     consignmentSubmission {
