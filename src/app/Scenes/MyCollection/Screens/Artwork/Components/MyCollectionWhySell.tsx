@@ -20,7 +20,6 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   const isSold = artwork.consignmentSubmission?.inProgress
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
-  debugger
 
   if (isInProgress || isSold) {
     return null
