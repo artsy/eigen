@@ -17,7 +17,7 @@ export interface ArtworkAutosuggestResultsProps {
   keyword: string
   onPress?: (artworkID: string) => void
   onSkipPress?: () => void
-  showSkipAheadToAddArtworkLinkHandler: (showSkipAheadLink: boolean) => void
+  setShowSkipAheadToAddArtworkLink: (showSkipAheadLink: boolean) => void
 }
 
 const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
@@ -26,7 +26,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
   keyword,
   onPress,
   onSkipPress,
-  showSkipAheadToAddArtworkLinkHandler,
+  setShowSkipAheadToAddArtworkLink,
 }) => {
   const handlePress = (artworkId: string) => {
     // TODO: Tracking
@@ -34,7 +34,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
   }
 
   useEffect(() => {
-    showSkipAheadToAddArtworkLinkHandler(!!viewer.artworks?.edges?.length)
+    setShowSkipAheadToAddArtworkLink(!!viewer.artworks?.edges?.length)
   }, [viewer.artworks?.edges?.length])
 
   return (
@@ -125,8 +125,8 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
   artistSlug: string
   onPress?: (artworkId: string) => void
   onSkipPress?: () => void
-  showSkipAheadToAddArtworkLinkHandler: (showSkipAheadLink: boolean) => void
-}> = ({ keyword, artistSlug, onPress, onSkipPress, showSkipAheadToAddArtworkLinkHandler }) => {
+  setShowSkipAheadToAddArtworkLink: (showSkipAheadLink: boolean) => void
+}> = ({ keyword, artistSlug, onPress, onSkipPress, setShowSkipAheadToAddArtworkLink }) => {
   return (
     <QueryRenderer<ArtworkAutosuggestResultsContainerQuery>
       environment={defaultEnvironment}
@@ -151,7 +151,7 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
           artistSlug,
           onPress,
           onSkipPress,
-          showSkipAheadToAddArtworkLinkHandler,
+          setShowSkipAheadToAddArtworkLink,
         },
         renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} />,
       })}

@@ -24,10 +24,6 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
   // In order to get results even before the user types anything, we need to add the artist slug to the query.
   const keyword = artworkQuery.length < 2 ? `${artistSlug} ${artworkQuery}` : artworkQuery
 
-  const showSkipAheadToAddArtworkLinkHandler = (showSkipAheadLink: boolean) => {
-    setShowSkipAheadToAddArtworkLink(showSkipAheadLink)
-  }
-
   return (
     <>
       <Input
@@ -63,7 +59,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
             artistSlug={artistSlug}
             onPress={onResultPress}
             onSkipPress={onSkipPress}
-            showSkipAheadToAddArtworkLinkHandler={showSkipAheadToAddArtworkLinkHandler}
+            setShowSkipAheadToAddArtworkLink={setShowSkipAheadToAddArtworkLink}
           />
         </Flex>
       )}
