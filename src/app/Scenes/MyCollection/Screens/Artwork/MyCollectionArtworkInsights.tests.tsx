@@ -57,8 +57,6 @@ describe("MyCollectionArtworkInsights", () => {
       }),
     })
 
-    expect(getByText("Price & Market Insights")).toBeTruthy()
-
     // Demand Index
 
     expect(getByText("Strong Demand (7.0 – 9.0)")).toBeTruthy()
