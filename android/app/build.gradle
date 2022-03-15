@@ -223,6 +223,8 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics:19.0.0" // so we can see push notification reports on firebase
     implementation 'com.google.firebase:firebase-messaging:21.1.0'
 
+    implementation 'commons-io:commons-io:2.8.0'
+
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }
