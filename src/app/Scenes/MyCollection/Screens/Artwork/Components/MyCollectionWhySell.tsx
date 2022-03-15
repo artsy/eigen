@@ -61,7 +61,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
             color="black60"
             textAlign="center"
             onPress={() => {
-              navigate("/sales")
+              navigate("/selling-with-artsy")
             }}
           >
             Learn more about{" "}
