@@ -1,5 +1,5 @@
 import SearchIcon from "app/Icons/SearchIcon"
-import { Flex, Input, LinkButton, Text } from "palette"
+import { Flex, Input, LinkButton, Text, Touchable } from "palette"
 import React, { useState } from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkAutosuggestResultsQueryRenderer } from "./ArtworkAutosuggestResults"
@@ -24,6 +24,10 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
   // In order to get results even before the user types anything, we need to add the artist slug to the query.
   const keyword = artworkQuery.length < 2 ? `${artistSlug} ${artworkQuery}` : artworkQuery
 
+  const showSkipAheadToAddArtworkLinkHandler = (showSkipAheadLink: boolean) => {
+    setShowSkipAheadToAddArtworkLink(showSkipAheadLink)
+  }
+
   return (
     <>
       <Input
@@ -39,15 +43,17 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
       />
 
       {showSkipAheadToAddArtworkLink && (
-        <Flex flexDirection="row" my={1}>
-          <Text variant="xs" color="black60">
-            Or skip ahead to{" "}
-          </Text>
+        <Touchable onPress={onSkipPress}>
+          <Flex flexDirection="row" my={1}>
+            <Text variant="xs" color="black60">
+              Or skip ahead to{" "}
+            </Text>
 
-          <LinkButton variant="xs" color="black60" underline onPress={onSkipPress}>
-            add artwork details
-          </LinkButton>
-        </Flex>
+            <LinkButton variant="xs" color="black60" underline>
+              add artwork details
+            </LinkButton>
+          </Flex>
+        </Touchable>
       )}
 
       {!!keyword.length && (
@@ -57,7 +63,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
             artistSlug={artistSlug}
             onPress={onResultPress}
             onSkipPress={onSkipPress}
-            setShowSkipAheadToAddArtworkLink={() => setShowSkipAheadToAddArtworkLink(true)}
+            showSkipAheadToAddArtworkLinkHandler={showSkipAheadToAddArtworkLinkHandler}
           />
         </Flex>
       )}
