@@ -10,6 +10,7 @@ import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { navigate } from "app/navigation/navigate"
+import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Flex, Separator, Spacer, Text } from "palette"
@@ -34,63 +35,68 @@ const OldMyCollectionArtworkArtistAuctionResults: React.FC<
 
   return (
     <View>
-      <InfoButton
-        title={`Auction Results for ${props?.artwork?.artist?.name}`}
-        modalContent={
-          <>
-            <Spacer my={1} />
-            <Text>
-              This data set includes the latest lots from auction sales at top commercial auction
-              houses. Lots are updated daily.
-            </Text>
-          </>
-        }
-        onPress={() =>
-          trackEvent(tracks.tappedInfoBubble(props?.artwork?.internalID, props?.artwork?.slug))
-        }
-      />
-
-      <Spacer my={0.5} />
-
-      <FlatList
-        data={auctionResults}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <>
-            <AuctionResultListItemFragmentContainer
-              auctionResult={item}
-              onPress={() =>
-                navigate(
-                  `/artist/${props?.artwork?.artist?.slug!}/auction-result/${item.internalID}`
-                )
-              }
-            />
-          </>
-        )}
-        ItemSeparatorComponent={() => (
-          <Flex px={2}>
-            <Separator />
-          </Flex>
-        )}
-        style={{ width: useScreenDimensions().width, left: -20 }}
-      />
-      <Separator />
-      <Box pt={2}>
-        <CaretButton
-          testID="AuctionsResultsButton"
-          onPress={() => {
-            trackEvent(
-              tracks.tappedShowMore(
-                props.artwork?.internalID,
-                props.artwork?.slug,
-                "Explore auction results"
-              )
-            )
-            navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)
-          }}
-          text="Explore auction results"
+      <ScreenMargin mt={2} mb={3}>
+        <Spacer my={1} />
+        <Separator />
+        <Spacer my={2} />
+        <InfoButton
+          title={`Auction Results for ${props?.artwork?.artist?.name}`}
+          modalContent={
+            <>
+              <Spacer my={1} />
+              <Text>
+                This data set includes the latest lots from auction sales at top commercial auction
+                houses. Lots are updated daily.
+              </Text>
+            </>
+          }
+          onPress={() =>
+            trackEvent(tracks.tappedInfoBubble(props?.artwork?.internalID, props?.artwork?.slug))
+          }
         />
-      </Box>
+
+        <Spacer my={0.5} />
+
+        <FlatList
+          data={auctionResults}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <>
+              <AuctionResultListItemFragmentContainer
+                auctionResult={item}
+                onPress={() =>
+                  navigate(
+                    `/artist/${props?.artwork?.artist?.slug!}/auction-result/${item.internalID}`
+                  )
+                }
+              />
+            </>
+          )}
+          ItemSeparatorComponent={() => (
+            <Flex px={2}>
+              <Separator />
+            </Flex>
+          )}
+          style={{ width: useScreenDimensions().width, left: -20 }}
+        />
+        <Separator />
+        <Box pt={2}>
+          <CaretButton
+            testID="AuctionsResultsButton"
+            onPress={() => {
+              trackEvent(
+                tracks.tappedShowMore(
+                  props.artwork?.internalID,
+                  props.artwork?.slug,
+                  "Explore auction results"
+                )
+              )
+              navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)
+            }}
+            text="Explore auction results"
+          />
+        </Box>
+      </ScreenMargin>
     </View>
   )
 }

@@ -31,12 +31,9 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
     restProps.marketPriceInsights
   )
 
-  const isPOneArtist =
-    !!artwork.artists?.find((artist) => Boolean(artist?.targetSupply?.isTargetSupply)) ??
-    !!artwork.artist?.targetSupply?.isTargetSupply ??
-    false
+  const isP1Artist = artwork.artist?.targetSupply?.isP1
 
-  const showPriceEstimateBanner = useFeatureFlag("ARShowRequestPriceEstimateBanner") && isPOneArtist
+  const showPriceEstimateBanner = useFeatureFlag("ARShowRequestPriceEstimateBanner") && isP1Artist
 
   return (
     <StickyTabPageScrollView>
@@ -50,6 +47,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
             {!showPriceEstimateBanner && <Spacer p={1} />}
           </>
         )}
+
         {!!showPriceEstimateBanner && (
           <>
             <RequestForPriceEstimate artwork={artwork} marketPriceInsights={marketPriceInsights} />
@@ -81,13 +79,11 @@ const artworkFragment = graphql`
     internalID
     artist {
       targetSupply {
-        isTargetSupply
+        isP1
       }
     }
-    artists {
-      targetSupply {
-        isTargetSupply
-      }
+    consignmentSubmission {
+      displayText
     }
     ...RequestForPriceEstimate_artwork
     ...MyCollectionArtworkDemandIndex_artwork

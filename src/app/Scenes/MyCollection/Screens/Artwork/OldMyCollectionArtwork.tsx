@@ -21,14 +21,14 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Button, Flex, Join, Separator, Spacer, Text } from "palette"
+import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
-import { OldWhySell } from "./Components/OldWhySell"
+import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 import { MyCollectionArtworkScreenProps } from "./MyCollectionArtwork"
 
 export interface MyCollectionArtworkProps {
@@ -42,6 +42,10 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const displayEditButton = !artwork.consignmentSubmission?.inProgress
+
+  const isInProgress = artwork.consignmentSubmission?.inProgress
+  // TODO: use isSold
+  const isSold = artwork.consignmentSubmission?.inProgress
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -84,28 +88,16 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
-          <ScreenMargin>
-            <Separator />
 
-            <OldWhySell />
+          {!isInProgress && !isSold && (
+            <ScreenMargin>
+              <Separator />
+              <Spacer mb={3} />
+              <MyCollectionWhySell artwork={artwork} />
+            </ScreenMargin>
+          )}
 
-            <Spacer mb={3} />
-
-            <Button
-              size="large"
-              variant="fillGray"
-              block
-              onPress={() => {
-                trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
-                navigate("/sales")
-              }}
-              testID="LearnMoreButton"
-            >
-              Learn more
-            </Button>
-          </ScreenMargin>
-
-          <Spacer my={2} />
+          <Spacer my={1} />
         </Join>
       </ScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
@@ -125,6 +117,12 @@ export const ArtworkMetaProps = graphql`
     artist {
       internalID
       formattedNationalityAndBirthday
+      targetSupply {
+        isP1
+      }
+    }
+    consignmentSubmission {
+      inProgress
     }
     artistNames
     category
@@ -160,7 +158,9 @@ export const ArtworkMetaProps = graphql`
     width
     consignmentSubmission {
       inProgress
+      displayText
     }
+    ...MyCollectionWhySell_artwork
   }
 `
 
