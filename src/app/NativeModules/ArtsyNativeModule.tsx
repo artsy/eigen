@@ -45,7 +45,7 @@ export const ArtsyNativeModule = {
   clearCache:
     Platform.OS === "ios"
       ? () => {
-          console.error("clearCache is not yet supported on iOS")
+          console.error("clearCache is not needed on iOS. See HACKS.md.")
         }
       : NativeModules.ArtsyNativeModule.clearCache,
   gitCommitShortHash: NativeModules.ArtsyNativeModule.gitCommitShortHash,
