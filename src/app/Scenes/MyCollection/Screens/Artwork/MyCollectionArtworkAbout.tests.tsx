@@ -1,4 +1,5 @@
 import { MyCollectionArtworkAboutTestsQuery } from "__generated__/MyCollectionArtworkAboutTestsQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -48,6 +49,10 @@ describe("MyCollectionArtworkAbout", () => {
   }
 
   it("renders about the work section", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnablePriceEstimateRange: true,
+    })
+
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
     resolveData({
@@ -81,6 +86,36 @@ describe("MyCollectionArtworkAbout", () => {
     expect(getByText("2007")).toBeTruthy()
     expect(getByText("Provenance")).toBeTruthy()
     expect(getByText("Signed, Sealed, Delivered!")).toBeTruthy()
+  })
+
+  it("renders no estimate range when feature flag is disabled", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnablePriceEstimateRange: false,
+    })
+
+    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+
+    resolveData({
+      Query: () => ({
+        artwork: {
+          category: "Oil on Canvas",
+          medium: "Painting",
+          date: "2007",
+          provenance: "Signed, Sealed, Delivered!",
+          dimensions: {
+            in: "39 2/5 × 40 9/10 in",
+            cm: "100 × 104 cm",
+          },
+        },
+        marketPriceInsights: {
+          lowRangeCents: 1780000,
+          highRangeCents: 4200000,
+        },
+      }),
+    })
+
+    expect(await queryByText("Estimate Range")).toBeFalsy()
+    expect(await queryByText("$17,800 - $42,000")).toBeFalsy()
   })
 
   it("renders purchase details section", () => {

@@ -198,6 +198,11 @@ export const features = defineFeatures({
     description: "Show demand index hints",
     showInAdminMenu: true,
   },
+  AREnablePriceEstimateRange: {
+    readyForRelease: false,
+    description: "Enable My Collection Price Estimate Range",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
