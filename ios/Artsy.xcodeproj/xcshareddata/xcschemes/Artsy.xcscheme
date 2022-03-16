@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "cd $PROJECT_DIR/..&#10;./scripts/set_packager_host.sh&#10;">
+               scriptText = "$PROJECT_DIR/../scripts/set_packager_host.sh&#10;&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
