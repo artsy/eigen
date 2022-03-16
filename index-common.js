@@ -7,13 +7,11 @@ let metaflags = {
   startStorybook: false
 }
 
-if (__DEV__) {
-  try {
-    const fileContent = require("./metaflags.json")
-    newIosAppShell = fileContent.newIosAppShell
-    startStorybook = fileContent.startStorybook
-  } catch {}
-}
+try {
+  const fileContent = require("./metaflags.json")
+  newIosAppShell = fileContent.newIosAppShell
+  startStorybook = fileContent.startStorybook
+} catch {}
 
 require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
 
