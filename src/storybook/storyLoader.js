@@ -19,6 +19,7 @@ function loadStories() {
   require("../palette/elements/Input/Input.stories")
   require("../palette/elements/List/List.stories")
   require("../palette/elements/Pill/Pill.stories")
+  require("../palette/elements/ProgressBar/ProgressBar.stories")
   require("../palette/elements/Radio/RadioButton.stories")
   require("../palette/elements/Select/Select.stories")
   require("../palette/elements/Tabs/Tabs.stories")
@@ -44,6 +45,7 @@ const stories = [
   "../palette/elements/Input/Input.stories",
   "../palette/elements/List/List.stories",
   "../palette/elements/Pill/Pill.stories",
+  "../palette/elements/ProgressBar/ProgressBar.stories",
   "../palette/elements/Radio/RadioButton.stories",
   "../palette/elements/Select/Select.stories",
   "../palette/elements/Tabs/Tabs.stories",
