@@ -275,3 +275,36 @@ If it is still an issue with old native navigation gone this can either be remov
 
 City Guide is a mixture of native components and react components, prop updates from the native side are not updating the component on the react native side without this manual check and update. See the PR here for the change in the AppRegistry:
 https://github.com/artsy/eigen/pull/6348
+
+## @react-native-async-storage/async-storage patch
+
+#### When can we remove this:
+
+When https://github.com/react-native-async-storage/async-storage/issues/746 is solved.
+
+#### Explanation/Context:
+
+The types in this package are not correct, and there is a type error that comes up when we try to use it.
+It's a type error on the mock declaration, so we don't really care for it, so we just add a ts-ignore instruction to that declaration.
+
+## @wojtekmaj/enzyme-adapter-react-17 patch
+
+#### When can we remove this:
+
+When we remove enzyme from eigen.
+
+#### Explanation/Context:
+
+Enzyme is missing types and this package is importing enzyme, so typescript is sad.
+We ignore enzyme types in our tests in eigen too. Once we remove enzyme, we can get rid of this and everything connected to enzyme.
+
+## rn-async-storage-flipper patch
+
+#### When can we remove this:
+
+Unsure.
+
+#### Explanation/Context:
+
+The types in this package are not correct, and there is a type error that comes up when we try to use it.
+It is a helper package only used for developing, so we are not afraid of wrong types causing issues to users.
