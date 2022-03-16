@@ -26,6 +26,7 @@ export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ 
             connection={me.lotsByFollowedArtistsConnection}
             shouldAddPadding
             HeaderComponent={<Spacer mt={2} />}
+            useParentAwareScrollView={false}
             showLoadingSpinner
           />
         ) : (
