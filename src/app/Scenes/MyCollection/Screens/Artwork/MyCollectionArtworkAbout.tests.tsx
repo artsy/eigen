@@ -100,7 +100,7 @@ describe("MyCollectionArtworkAbout", () => {
 
     const { queryByText } = renderWithWrappersTL(<TestRenderer />)
 
-    resolveData({
+    mockEnvironmentPayload(mockEnvironment, {
       Query: () => ({
         artwork: {
           category: "Oil on Canvas",
