@@ -1,12 +1,13 @@
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
-import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
+import {
+  artworkRarityClassifications,
+  AttributionClassType,
+} from "app/utils/artworkRarityClassifications"
 import { Flex, Input, INPUT_HEIGHT, InputTitle, Separator, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
-
-export type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
 
 export const Rarity: React.FC = () => {
   const { formik } = useArtworkForm()

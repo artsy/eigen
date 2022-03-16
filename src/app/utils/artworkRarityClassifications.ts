@@ -1,4 +1,13 @@
-export const artworkRarityClassifications = [
+export type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
+
+interface ArtworkRarityClassification {
+  name: string
+  label: string
+  value: AttributionClassType
+  description: string
+}
+
+export const artworkRarityClassifications: ArtworkRarityClassification[] = [
   {
     name: "Unique",
     label: "Unique",
@@ -28,6 +37,11 @@ export const artworkRarityClassifications = [
   },
 ]
 
-export const getAttributionClassValueByName = (name?: string | null): string | undefined => {
-  return artworkRarityClassifications.find((classification) => classification.name === name)?.value
+export const getAttributionClassValueByName = (
+  name?: string | null
+): AttributionClassType | null => {
+  return (
+    artworkRarityClassifications.find((classification) => classification.name === name)?.value ??
+    null
+  )
 }

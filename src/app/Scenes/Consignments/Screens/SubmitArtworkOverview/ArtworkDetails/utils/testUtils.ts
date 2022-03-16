@@ -24,4 +24,7 @@ export const mockFormValues: ArtworkDetailsFormModel = {
     state: "England",
     country: "UK",
   },
+  source: null,
+  // TODO: Add My Collection Artwork ID
+  // myCollectionArtworkID: "",
 }

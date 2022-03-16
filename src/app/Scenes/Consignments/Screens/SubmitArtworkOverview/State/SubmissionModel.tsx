@@ -11,6 +11,7 @@ export interface ArtworkSubmissionModel {
   setSubmissionId: Action<ArtworkSubmissionModel, string>
   artworkDetails: ArtworkDetailsFormModel
   setArtworkDetailsForm: Action<ArtworkSubmissionModel, ArtworkDetailsFormModel>
+  updateArtworkDetailsForm: Action<ArtworkSubmissionModel, Partial<ArtworkDetailsFormModel>>
   photos: PhotosFormModel
   photosForMyCollection: PhotosFormModel
   setPhotos: Action<ArtworkSubmissionModel, PhotosFormModel>
@@ -40,6 +41,9 @@ export const getSubmissionModel = (): SubmissionModel => ({
     }),
     setArtworkDetailsForm: action((state, form) => {
       state.artworkDetails = form
+    }),
+    updateArtworkDetailsForm: action((state, form) => {
+      state.artworkDetails = { ...state.artworkDetails, ...form }
     }),
     setUtmParams: action((state, params) => {
       state.artworkDetails = {

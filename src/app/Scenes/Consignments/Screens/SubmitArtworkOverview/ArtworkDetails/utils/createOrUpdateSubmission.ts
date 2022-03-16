@@ -47,5 +47,10 @@ export const createOrUpdateSubmission = async (
     } as UpdateSubmissionMutationInput)
   }
 
-  return await createConsignSubmission(submissionValues as CreateSubmissionMutationInput)
+  return await createConsignSubmission({
+    // TODO: Add My Collection Artwork ID
+    // myCollectionArtworkID: values.myCollectionArtworkID,
+    source: values.source,
+    ...submissionValues,
+  } as CreateSubmissionMutationInput)
 }

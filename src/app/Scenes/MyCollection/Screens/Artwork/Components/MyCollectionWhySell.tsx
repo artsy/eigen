@@ -1,6 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
+import {
+  MyCollectionWhySell_artwork,
+  MyCollectionWhySell_artwork$key,
+} from "__generated__/MyCollectionWhySell_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
+import { GlobalStore } from "app/store/GlobalStore"
+import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
 import { useFragment } from "react-relay"
@@ -47,7 +52,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
               trackEvent(
                 tracks.tappedSubmit(artwork.internalID, artwork.slug, "Submit This Artwork to Sell")
               )
-              // TODO: Populate form with artwork values
+              populateSubmissionArtworkForm(artwork)
               navigate("/collections/my-collection/artworks/new/submissions/new")
             }}
             testID="submitArtworkToSellButton"
@@ -88,14 +93,49 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   )
 }
 
-export const tests = {
-  MyCollectionWhySell,
+const populateSubmissionArtworkForm = (artwork: MyCollectionWhySell_artwork) => {
+  GlobalStore.actions.artworkSubmission.submission.updateArtworkDetailsForm({
+    artist: artwork.artist?.name ?? "",
+    artistId: artwork.artist?.internalID ?? "",
+    title: artwork.title ?? "",
+    year: artwork.date ?? "",
+    medium: artwork.medium ?? "",
+    attributionClass: getAttributionClassValueByName(artwork.attributionClass?.name),
+    editionNumber: artwork.editionNumber ?? "",
+    editionSizeFormatted: artwork.editionSize ?? "",
+    dimensionsMetric: artwork.metric ?? "",
+    height: artwork.height ?? "",
+    width: artwork.width ?? "",
+    depth: artwork.depth ?? "",
+    provenance: artwork.provenance ?? "",
+    source: "MY_COLLECTION",
+    // TODO: Add My Collection Artwork ID
+    // myCollectionArtworkID: artwork.internalID,
+  })
 }
 
 const artworkFragment = graphql`
   fragment MyCollectionWhySell_artwork on Artwork {
-    slug
     internalID
+    slug
+    title
+    date
+    medium
+    artist {
+      internalID
+      name
+    }
+    attributionClass {
+      name
+    }
+    editionNumber
+    editionSize
+    metric
+    height
+    width
+    depth
+    provenance
+    artworkLocation
     consignmentSubmission {
       inProgress
       isSold
