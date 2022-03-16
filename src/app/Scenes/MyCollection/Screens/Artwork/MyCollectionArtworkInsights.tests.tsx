@@ -1,8 +1,10 @@
 import { MyCollectionArtworkInsightsTestsQuery } from "__generated__/MyCollectionArtworkInsightsTestsQuery.graphql"
+import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 
 jest.unmock("react-relay")
@@ -25,15 +27,24 @@ describe("MyCollectionArtworkInsights", () => {
       `}
       variables={{}}
       render={({ props }) => {
-        if (props?.artwork && props?.marketPriceInsights) {
-          return (
-            <MyCollectionArtworkInsights
-              marketPriceInsights={props.marketPriceInsights}
-              artwork={props?.artwork}
-            />
-          )
+        if (!props?.artwork || !props?.marketPriceInsights) {
+          return null
         }
-        return null
+        return (
+          <StickyTabPage
+            tabs={[
+              {
+                title: "test",
+                content: (
+                  <MyCollectionArtworkInsights
+                    marketPriceInsights={props.marketPriceInsights}
+                    artwork={props?.artwork}
+                  />
+                ),
+              },
+            ]}
+          />
+        )
       }}
     />
   )
@@ -42,15 +53,9 @@ describe("MyCollectionArtworkInsights", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  const resolveData = (resolvers = {}) => {
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, resolvers)
-    )
-  }
-
   it("renders without throwing an error", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    resolveData({
+    mockEnvironmentPayload(mockEnvironment, {
       Query: () => ({
         artwork: mockArtwork,
         marketPriceInsights: mockMarketPriceInsights,

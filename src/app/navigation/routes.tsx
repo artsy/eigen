@@ -241,7 +241,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       mimicBrowserBackButton: true,
       useRightCloseButton: true,
     }),
-    __DEV__ && addRoute("/storybook", "Storybook"),
+    // __DEV__ && addRoute("/storybook", "Storybook"),
 
     // Every other route needs to go above
     addRoute("/:slug", "VanityURLEntity"),

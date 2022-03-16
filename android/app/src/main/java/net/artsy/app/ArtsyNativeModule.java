@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class ArtsyNativeModule extends ReactContextBaseJavaModule {
     // this is called on application launch by MainApplication#onCreate
-    private static String LAUNCH_COUNT = "launchCount";
+    private static final String LAUNCH_COUNT = "launchCount";
     public static void didLaunch(SharedPreferences prefs) {
         launchCount = prefs.getInt(LAUNCH_COUNT, 0) + 1;
         prefs.edit().putInt(LAUNCH_COUNT, launchCount).commit();
