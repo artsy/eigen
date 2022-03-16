@@ -48,7 +48,7 @@ describe("MyCollectionArtworkInsights", () => {
     )
   }
 
-  it("renders without throwing an error", () => {
+  it("renders without throwing an error", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     resolveData({
       Query: () => ({
@@ -59,30 +59,30 @@ describe("MyCollectionArtworkInsights", () => {
 
     // Artwork Artist Market
 
-    expect(getByText("Artist Market")).toBeTruthy()
-    expect(getByText("Based on the last 36 months of auction data")).toBeTruthy()
-    expect(getByText("Annual Value Sold")).toBeTruthy()
-    expect(getByText("$1,000")).toBeTruthy()
-    expect(getByText("Annual Lots Sold")).toBeTruthy()
-    expect(getByText("100")).toBeTruthy()
-    expect(getByText("Sell-through Rate")).toBeTruthy()
-    expect(getByText("20%")).toBeTruthy()
-    expect(getByText("Sale Price to Estimate")).toBeTruthy()
-    expect(getByText("1x")).toBeTruthy()
-    expect(getByText("Liquidity")).toBeTruthy()
-    expect(getByText("High")).toBeTruthy()
-    expect(getByText("One-Year Trend")).toBeTruthy()
-    expect(getByText("Trending up")).toBeTruthy()
+    expect(await getByText("Artist Market")).toBeTruthy()
+    expect(await getByText("Based on the last 36 months of auction data")).toBeTruthy()
+    expect(await getByText("Annual Value Sold")).toBeTruthy()
+    expect(await getByText("$1,000")).toBeTruthy()
+    expect(await getByText("Annual Lots Sold")).toBeTruthy()
+    expect(await getByText("100")).toBeTruthy()
+    expect(await getByText("Sell-through Rate")).toBeTruthy()
+    expect(await getByText("20%")).toBeTruthy()
+    expect(await getByText("Sale Price to Estimate")).toBeTruthy()
+    expect(await getByText("1x")).toBeTruthy()
+    expect(await getByText("Liquidity")).toBeTruthy()
+    expect(await getByText("High")).toBeTruthy()
+    expect(await getByText("One-Year Trend")).toBeTruthy()
+    expect(await getByText("Trending up")).toBeTruthy()
 
     // Artwork Comparable Works
 
-    expect(getByText("Comparable Works")).toBeTruthy()
+    expect(await getByText("Comparable Works")).toBeTruthy()
 
     // Why Sell or Submit To Sell
 
     // TODO: fix this test
     // jest won, i don't get how to mock the showSubmitToSell function ><'
-    // expect(getByTestId("SWA-banner-in-MC")).toBeTruthy()
+    expect(await getByText("Sell Art From Your Collection")).toBeTruthy()
   })
 })
 
