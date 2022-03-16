@@ -308,3 +308,15 @@ Unsure.
 
 The types in this package are not correct, and there is a type error that comes up when we try to use it.
 It is a helper package only used for developing, so we are not afraid of wrong types causing issues to users.
+
+## ParentAwareScrollView
+
+#### When can we remove this:
+
+To remove this, we need to change our InfiniteScrollArtworksGrid to use a FlatList or any VirtualizedList. We haven't done that yet, because we need the masonry layout.
+We either need to find a library that gives us masonry layout using a VirtualizedList, or we need to make our own version of this.
+
+#### Explanation/Context:
+
+Currently our masonry layout (in InfiniteScrollArtworksGrid `render()`) is using a ScrollView, which is not a VirtualizedList.
+Also, currently, the parent that is the FlatList, comes from StickyTabPageFlatList.

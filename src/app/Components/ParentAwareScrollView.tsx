@@ -12,7 +12,7 @@ type ScrollContext = {
   horizontal: boolean
 }
 
-// @ts-ignore
+// @ts-expect-error
 const ScrollViewContext: React.Context<ScrollContext> = ScrollView.Context
 
 interface State {
@@ -21,9 +21,20 @@ interface State {
 }
 
 /**
- * A Component that registers self a VirtualizedList child when nested in
- * a VirtualizedList with the same orientation, thus allowing parent List
- * to forward it onScroll events
+ * A ScrollView that pretends to be a VirtualizedList.
+ * It registers itself as a nested child of a parent VirtualizedList (or FlatList basically).
+ * Registering as a nested child causes the parent VirtualizedList to call functions on our
+ * component (like `_onScroll` and `_onMomentumScrollBegin`). This allows us to hook into the scroll
+ * events and trigger our own custom logic.
+ *
+ * Example:
+ * <Flatlist
+ *   data={[
+ *     <ParentAwareScrollView onScroll={(e) => console.log("woop, this will be called")} />
+ *   ]}
+ *   renderItem={({ item }) => item}
+ * />
+ *
  * @returns ScrollView
  */
 class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> {
@@ -90,35 +101,18 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
     return false
   }
 
-  _onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (this.props.onScroll) {
-      this.props.onScroll(e)
-    }
-  }
+  _onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => this.props.onScroll?.(e)
 
-  _onScrollBeginDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (this.props.onScrollBeginDrag) {
-      this.props.onScrollBeginDrag(e)
-    }
-  }
+  _onScrollBeginDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) =>
+    this.props.onScrollBeginDrag?.(e)
 
-  _onScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (this.props.onScrollEndDrag) {
-      this.props.onScrollEndDrag(e)
-    }
-  }
+  _onScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => this.props.onScrollEndDrag?.(e)
 
-  _onMomentumScrollBegin = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (this.props.onMomentumScrollBegin) {
-      this.props.onMomentumScrollBegin(e)
-    }
-  }
+  _onMomentumScrollBegin = (e: NativeSyntheticEvent<NativeScrollEvent>) =>
+    this.props.onMomentumScrollBegin?.(e)
 
-  _onMomentumScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (this.props.onMomentumScrollEnd) {
-      this.props.onMomentumScrollEnd(e)
-    }
-  }
+  _onMomentumScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) =>
+    this.props.onMomentumScrollEnd?.(e)
 
   render(): React.ReactNode {
     const { children, onScroll, ...otherProps } = this.props
