@@ -19,6 +19,7 @@ export const MediumPicker: React.FC = () => {
       title="Medium"
       placeholder="Select"
       testID="MediumSelect"
+      required
       options={artworkMediumCategories}
     />
   )

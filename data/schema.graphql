@@ -126,8 +126,107 @@ type AnalyticsArtist {
   entityId: String!
 }
 
+# Artist Affinity
+type AnalyticsArtistAffinity {
+  # Artist ID
+  artistId: ID!
+
+  # Calculated affinity Score
+  score: Float!
+}
+
+# The connection type for ArtistAffinity.
+type AnalyticsArtistAffinityConnection {
+  # A list of edges.
+  edges: [AnalyticsArtistAffinityEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsArtistAffinity]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AnalyticsArtistAffinityEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsArtistAffinity
+}
+
+# Artist Recommendation
+type AnalyticsArtistRecommendation {
+  # Artist ID
+  artistId: ID!
+
+  # Calculated score
+  score: Float!
+}
+
+# The connection type for ArtistRecommendation.
+type AnalyticsArtistRecommendationConnection {
+  # A list of edges.
+  edges: [AnalyticsArtistRecommendationEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsArtistRecommendation]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AnalyticsArtistRecommendationEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsArtistRecommendation
+}
+
 type AnalyticsArtwork {
   entityId: String!
+}
+
+# Artwork Recommendation
+type AnalyticsArtworkRecommendation {
+  # Artwork ID
+  artworkId: ID!
+
+  # Calculated score
+  score: Float!
+}
+
+# The connection type for ArtworkRecommendation.
+type AnalyticsArtworkRecommendationConnection {
+  # A list of edges.
+  edges: [AnalyticsArtworkRecommendationEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsArtworkRecommendation]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AnalyticsArtworkRecommendationEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsArtworkRecommendation
 }
 
 # Publish artwork Series Stats
@@ -138,8 +237,7 @@ type AnalyticsArtworksPublishedStats {
   totalCount: Int!
 }
 
-# An ISO 8601 datetime -- second one is because of moving price insights
-# from Diffusion to Vortex.
+# An ISO 8601 datetime
 scalar AnalyticsDateTime
 
 # Visitor countries, device, referals and session page
@@ -695,6 +793,9 @@ type Article implements Node {
   internalID: ID!
   keywords: [String!]!
   layout: ArticleLayout!
+
+  # Classic layout articles may have a lead paragraph. Returns HTML.
+  leadParagraph: String
   media: ArticleMedia
   newsSource: ArticleNewsSource
   postscript: String
@@ -1503,6 +1604,9 @@ type ArtistTargetSupply {
   # True if an artist is in the microfunnel list.
   isInMicrofunnel: Boolean
 
+  # True if an artist is a P1 artist.
+  isP1: Boolean
+
   # True if artist is in target supply list.
   isTargetSupply: Boolean
   microfunnel: ArtistTargetSupplyMicrofunnel
@@ -1541,6 +1645,7 @@ type Artwork implements Node & Searchable & Sellable {
     first: Int
     last: Int
   ): ArtistSeriesConnection
+  artsyShippingInternational: Boolean
 
   # Represents the location of the artwork for "My Collection" artworks
   artworkLocation: String
@@ -1837,6 +1942,7 @@ interface ArtworkConnectionInterface {
 type ArtworkConsignmentSubmission {
   displayText: String
   inProgress: Boolean
+  isSold: Boolean
 }
 
 union ArtworkContext = Fair | Sale | Show
@@ -4444,6 +4550,9 @@ type CommerceShipArta {
 type CommerceShipment {
   bookedAt: String
   carrierName: String
+  contactEmail: String
+  contactName: String
+  contactPhone: String
   createdAt(
     format: String
 
@@ -5216,6 +5325,8 @@ type ConsignmentSubmission {
   primaryImage: ConsignmentSubmissionCategoryAsset
   provenance: String
   publishedAt: ISO8601DateTime
+  rejectionReason: String
+  saleState: String
   signature: Boolean
 
   # If this artwork exists in Gravity, its ID
@@ -5607,6 +5718,12 @@ enum ConsignmentSubmissionSort {
   # sort by source_artwork_id in descending order
   SOURCE_ARTWORK_ID_DESC
 
+  # sort by source in ascending order
+  SOURCE_ASC
+
+  # sort by source in descending order
+  SOURCE_DESC
+
   # sort by state in ascending order
   STATE_ASC
 
@@ -5690,6 +5807,14 @@ enum ConsignmentSubmissionSort {
 
   # sort by year in descending order
   YEAR_DESC
+}
+
+enum ConsignmentSubmissionSource {
+  ADMIN
+  APP_INBOUND
+  MY_COLLECTION
+  PARTNER
+  WEB_INBOUND
 }
 
 enum ConsignmentSubmissionStateAggregation {
@@ -6166,6 +6291,7 @@ input CreateSubmissionMutationInput {
   provenance: String
   sessionID: String
   signature: Boolean
+  source: ConsignmentSubmissionSource
 
   # If this artwork exists in Gravity, its ID
   sourceArtworkID: String
@@ -8517,6 +8643,7 @@ enum InvoiceState {
   VOID
 }
 
+# An ISO 8601-encoded datetime
 scalar ISO8601DateTime
 
 # Represents untyped JSON
@@ -10535,6 +10662,32 @@ type PhoneNumberType {
   regionCode: String
 }
 
+type PreviewSavedSearch {
+  # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
+  labels: [SearchCriteriaLabel]!
+}
+
+input PreviewSavedSearchAttributes {
+  acquireable: Boolean
+  additionalGeneIDs: [String]
+  artistIDs: [String]
+  atAuction: Boolean
+  attributionClass: [String]
+  colors: [String]
+  height: String
+  inquireableOnly: Boolean
+  locationCities: [String]
+  majorPeriods: [String]
+  materialsTerms: [String]
+  offerable: Boolean
+  partnerIDs: [String]
+  priceRange: String
+
+  # Filter results by Artwork sizes
+  sizes: [ArtworkSizes]
+  width: String
+}
+
 # The connection type for MarketPriceInsights.
 type PriceInsightConnection {
   # A list of edges.
@@ -10886,6 +11039,22 @@ type Query {
 
   # Find an agreement by ID
   agreement(id: ID!): Agreement
+
+  # Get all recommended artworks for the current user.
+  analyticsArtworkRecommendations(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+    userId: String
+  ): AnalyticsArtworkRecommendationConnection
 
   # Last updated timestamp
   analyticsLastUpdatedAt: AnalyticsDateTime
@@ -11492,6 +11661,9 @@ type Query {
   # Phone number information
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
 
+  # A previewed saved search
+  previewSavedSearch(attributes: PreviewSavedSearchAttributes): PreviewSavedSearch
+
   # Get all price insights for an artist.
   priceInsights(
     # Returns the elements in the list that come after the specified cursor.
@@ -11855,6 +12027,12 @@ type Sale implements Node {
     last: Int
   ): ArtworkConnection
   associatedSale: Sale
+
+  # A label indicating the interval in minutes in which lots close
+  auctionsDetailCascadingIntervalLabel: String
+
+  # A more granular formatted description of when the auction starts or ends or if it has ended
+  auctionsDetailFormattedStartDateTime: String
   bidder: Bidder
 
   # A bid increment policy that explains minimum bids in ranges.
@@ -11873,6 +12051,14 @@ type Sale implements Node {
   displayTimelyAt: String
   eligibleSaleArtworksCount: Int
   endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  endedAt(
     format: String
 
     # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
@@ -12022,6 +12208,9 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
 
   # Singular estimate field, if specified
   estimateCents: Int
+
+  # A formatted description of when the lot starts or ends or if it has ended
+  formattedStartDateTime: String
   highestBid: SaleArtworkHighestBid
   highEstimate: SaleArtworkHighEstimate
 
@@ -14367,6 +14556,9 @@ type Viewer {
 
   # Phone number information
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
+
+  # A previewed saved search
+  previewSavedSearch(attributes: PreviewSavedSearchAttributes): PreviewSavedSearch
 
   # A requested location
   requestLocation(ip: String!): RequestLocation

@@ -65,11 +65,14 @@ export const ArtworkDetailsForm: React.FC = () => {
         enableSearch={false}
         title="Rarity"
         tooltipText={
-          <LinkButton variant="xs" color="black60">
+          <LinkButton
+            variant="xs"
+            color="black60"
+            onPress={() => setIsRarityInfoModalVisible(true)}
+          >
             What is this?
           </LinkButton>
         }
-        onTooltipPress={() => setIsRarityInfoModalVisible(true)}
         placeholder="Select a Classification"
         options={rarityOptions}
       />

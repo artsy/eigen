@@ -34,10 +34,6 @@ function defineFeatures<T extends string>(featureMap: {
 export type FeatureName = keyof typeof features
 
 export const features = defineFeatures({
-  AROptionsNewFirstInquiry: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsNewFirstInquiry",
-  },
   AROptionsInquiryCheckout: {
     readyForRelease: true,
     echoFlagKey: "AROptionsInquiryCheckout",
@@ -132,9 +128,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableQueriesPrefetching",
   },
   AREnableAccordionNavigationOnSubmitArtwork: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable New Artwork Submission Flow with Accordion",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableAccordionNavigationOnSubmitArtwork",
   },
   ARShowLinkedAccounts: {
     readyForRelease: true,

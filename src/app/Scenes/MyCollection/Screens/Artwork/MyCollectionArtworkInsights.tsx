@@ -2,7 +2,7 @@ import { MyCollectionArtworkInsights_artwork$key } from "__generated__/MyCollect
 import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, Spacer, Text } from "palette/elements"
+import { Flex, Spacer } from "palette/elements"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -31,26 +31,23 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
     restProps.marketPriceInsights
   )
 
-  const isPOneArtist =
-    !!artwork.artists?.find((artist) => Boolean(artist?.targetSupply?.isTargetSupply)) ??
-    !!artwork.artist?.targetSupply?.isTargetSupply ??
-    false
+  const isP1Artist = artwork.artist?.targetSupply?.isP1
 
-  const showPriceEstimateBanner = useFeatureFlag("ARShowRequestPriceEstimateBanner") && isPOneArtist
+  const showPriceEstimateBanner = useFeatureFlag("ARShowRequestPriceEstimateBanner") && isP1Artist
 
   return (
     <StickyTabPageScrollView>
       <Flex my={3}>
-        <Text variant="lg">Price & Market Insights</Text>
-
-        <Spacer mb={2} />
-
         {!!marketPriceInsights && (
-          <MyCollectionArtworkDemandIndex
-            artwork={artwork}
-            marketPriceInsights={marketPriceInsights}
-          />
+          <>
+            <MyCollectionArtworkDemandIndex
+              artwork={artwork}
+              marketPriceInsights={marketPriceInsights}
+            />
+            {!showPriceEstimateBanner && <Spacer p={1} />}
+          </>
         )}
+
         {!!showPriceEstimateBanner && (
           <>
             <RequestForPriceEstimate artwork={artwork} marketPriceInsights={marketPriceInsights} />
@@ -82,13 +79,11 @@ const artworkFragment = graphql`
     internalID
     artist {
       targetSupply {
-        isTargetSupply
+        isP1
       }
     }
-    artists {
-      targetSupply {
-        isTargetSupply
-      }
+    consignmentSubmission {
+      displayText
     }
     ...RequestForPriceEstimate_artwork
     ...MyCollectionArtworkDemandIndex_artwork

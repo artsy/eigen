@@ -19,17 +19,17 @@ export const PhoneInput = React.forwardRef<
     setValidation: (value: boolean) => void
     onChange?: (value: string) => void
     maxModalHeight?: number
-    errorMessage?: string
+    shouldDisplayLocalError?: boolean
   } & Omit<InputProps, "onChange">
 >(
   (
     {
       value,
-      errorMessage = "This phone number is incomplete",
       setValidation,
       onChange,
       onChangeText,
       maxModalHeight,
+      shouldDisplayLocalError = true,
       ...rest
     },
     outerRef
@@ -45,7 +45,7 @@ export const PhoneInput = React.forwardRef<
         countryCode,
       })
     )
-    const [validationMessage, setValidationMessage] = useState<string | undefined>(undefined)
+    const [validationErrorMessage, setValidationErrorMessage] = useState("")
     const dialCode = countryIndex[countryCode].dialCode
     const countryISO2Code = countryIndex[countryCode].iso2
     const phoneUtil = glibphone.PhoneNumberUtil.getInstance()
@@ -79,7 +79,10 @@ export const PhoneInput = React.forwardRef<
     const handleValidation = () => {
       const isValid = isValidNumber(phoneNumber, countryISO2Code)
       setValidation(isValid)
-      setValidationMessage(isValid ? "" : errorMessage)
+
+      if (shouldDisplayLocalError) {
+        setValidationErrorMessage(isValid ? "" : "Please enter a valid phone number.")
+      }
     }
 
     const isFirstRun = useRef(true)
@@ -189,7 +192,9 @@ export const PhoneInput = React.forwardRef<
               }}
             />
           )}
-          error={validationMessage}
+          error={
+            shouldDisplayLocalError && validationErrorMessage ? validationErrorMessage : rest.error
+          }
         />
       </Flex>
     )

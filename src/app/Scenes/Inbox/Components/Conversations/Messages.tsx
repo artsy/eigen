@@ -8,8 +8,10 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 
-import { dropWhile, sortBy } from "lodash"
+import { ToastComponent } from "app/Components/Toast/ToastComponent"
+import { sortBy } from "lodash"
 import { DateTime } from "luxon"
+import { ShieldIcon } from "palette"
 import { MessageGroup } from "./MessageGroup"
 import { ConversationItem, groupConversationItems } from "./utils/groupConversationItems"
 
@@ -81,11 +83,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     const sortedMessages = sortBy([...orderEventsWithoutFailedPayment, ...allMessages], (message) =>
       DateTime.fromISO(message.createdAt!)
     )
-
-    // Drop all order events until the first message appears (this assumes the conversation begins with a message)
-    const sortedWithCutoff = dropWhile(sortedMessages, (item) => item.__typename !== "Message")
-
-    const groupedMessages = groupConversationItems(sortedWithCutoff)
+    const groupedMessages = groupConversationItems(sortedMessages)
 
     setMessages(groupedMessages)
   }, [allOrderEvents.length, allMessages.length])
@@ -147,31 +145,43 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     : {}
 
   return (
-    <FlatList
-      key={conversation.internalID!}
-      data={messages}
-      initialNumToRender={messages?.length}
-      renderItem={({ item }) => {
-        return (
-          <MessageGroup
-            group={item}
-            conversationId={conversation.internalID!}
-            subjectItem={conversation.items?.[0]?.item!}
-          />
-        )
-      }}
-      inverted
-      ref={flatList}
-      keyExtractor={(group) => {
-        return group[0].id
-      }}
-      onEndReached={loadMore}
-      onEndReachedThreshold={0.2}
-      refreshControl={refreshControl}
-      style={{ ...messagesStyles, paddingHorizontal: 10, flex: 0 }}
-      contentContainerStyle={{ justifyContent: "flex-end", flexGrow: 1 }}
-      ListFooterComponent={<LoadingIndicator animating={fetchingMoreData} hidesWhenStopped />}
-    />
+    <>
+      <ToastComponent
+        id={1}
+        positionIndex={-0.3}
+        message="To protect your payment, always communicate and pay through the Artsy platform."
+        placement="top"
+        backgroundColor="blue100"
+        duration={5000}
+        Icon={() => <ShieldIcon shieldColor="white100" checkColor="white100" mr={1} />}
+      />
+      <FlatList
+        key={conversation.internalID!}
+        data={messages}
+        initialNumToRender={messages?.length}
+        renderItem={({ item, index }) => {
+          return (
+            <MessageGroup
+              isLastMessage={index === messages.length - 1}
+              group={item}
+              conversationId={conversation.internalID!}
+              subjectItem={conversation.items?.[0]?.item!}
+            />
+          )
+        }}
+        inverted
+        ref={flatList}
+        keyExtractor={(group) => {
+          return group[0].id
+        }}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.2}
+        refreshControl={refreshControl}
+        style={{ ...messagesStyles, paddingHorizontal: 10, flex: 0 }}
+        contentContainerStyle={{ justifyContent: "flex-end", flexGrow: 1 }}
+        ListFooterComponent={<LoadingIndicator animating={fetchingMoreData} hidesWhenStopped />}
+      />
+    </>
   )
 })
 
@@ -251,6 +261,7 @@ export default createPaginationContainer(
             }
             ... on Show {
               href
+              createdAt
               ...ShowPreview_show
             }
           }
