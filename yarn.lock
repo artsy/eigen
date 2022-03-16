@@ -16671,7 +16671,7 @@ react-native-screens@3.4.0:
   dependencies:
     warn-once "^0.1.0"
 
-react-native-scrollable-tab-view@ptomasroos/react-native-scrollable-tab-view#master:
+react-native-scrollable-tab-view@ptomasroos/react-native-scrollable-tab-view#a7f46de184123be9703c57b0a7618ae0557c8a87:
   version "1.0.0"
   resolved "https://codeload.github.com/ptomasroos/react-native-scrollable-tab-view/tar.gz/a7f46de184123be9703c57b0a7618ae0557c8a87"
   dependencies:
