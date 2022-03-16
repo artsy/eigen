@@ -579,7 +579,8 @@ describe("App version Versions.AddSourceAndMyCollectionArtworkIDToSubmission", (
     }) as any
 
     expect(migratedState.artworkSubmission.submission.artworkDetails.source).toEqual(null)
-    // expect(migratedState.artworkSubmission.submission.artworkDetails.myCollectionArtworkID).toEqual(null)
-    // TODO: Add My Collection Artwork ID
+    expect(migratedState.artworkSubmission.submission.artworkDetails.myCollectionArtworkID).toEqual(
+      null
+    )
   })
 })

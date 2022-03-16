@@ -140,8 +140,7 @@ describe("MyCollectionWhySell", () => {
           width: "13",
           year: "2019",
           source: "MY_COLLECTION",
-          // TODO: Add My Collection Artwork ID
-          // myCollectionArtworkID: "someInternalId",
+          myCollectionArtworkID: "someInternalId",
         })
 
         expect(navigate).toHaveBeenCalledWith(

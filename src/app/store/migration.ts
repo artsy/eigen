@@ -185,8 +185,7 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddSourceAndMyCollectionArtworkIDToSubmission]: (state) => {
     state.artworkSubmission.submission.artworkDetails.source = null
-    // state.artworkSubmission.submission.artworkDetails.myCollectionArtworkID = null
-    // TODO: Add My Collection Artwork ID
+    state.artworkSubmission.submission.artworkDetails.myCollectionArtworkID = null
   },
 }
 

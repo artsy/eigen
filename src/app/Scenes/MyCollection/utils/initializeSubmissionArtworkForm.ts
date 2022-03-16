@@ -18,7 +18,6 @@ export const initializeSubmissionArtworkForm = (artwork: MyCollectionWhySell_art
     depth: artwork.depth ?? "",
     provenance: artwork.provenance ?? "",
     source: "MY_COLLECTION",
-    // TODO: Add My Collection Artwork ID
-    // myCollectionArtworkID: artwork.internalID,
+    myCollectionArtworkID: artwork.internalID,
   })
 }

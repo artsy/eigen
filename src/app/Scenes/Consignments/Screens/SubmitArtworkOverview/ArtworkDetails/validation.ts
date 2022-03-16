@@ -32,6 +32,7 @@ export interface ArtworkDetailsFormModel {
   utmTerm: string | undefined
   location: Location
   source: ConsignmentSubmissionSource | null
+  myCollectionArtworkID: string | null
 }
 
 export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
@@ -58,6 +59,7 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
     country: "",
   },
   source: null,
+  myCollectionArtworkID: null,
 }
 
 export const artworkDetailsValidationSchema = Yup.object().shape({
