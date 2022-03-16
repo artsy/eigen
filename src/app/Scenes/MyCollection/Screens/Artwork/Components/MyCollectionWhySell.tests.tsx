@@ -39,8 +39,7 @@ describe("MyCollectionWhySell", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    mockEnvironment = createMockEnvironment()
-    GlobalStore.actions.artworkSubmission.submission.updateArtworkDetailsForm = jest.fn() as any
+    GlobalStore.actions.artworkSubmission.submission.initializeArtworkDetailsForm = jest.fn() as any
   })
 
   const resolveData = (resolvers = {}) => {
@@ -125,7 +124,7 @@ describe("MyCollectionWhySell", () => {
         })
 
         expect(
-          GlobalStore.actions.artworkSubmission.submission.updateArtworkDetailsForm
+          GlobalStore.actions.artworkSubmission.submission.initializeArtworkDetailsForm
         ).toHaveBeenCalledWith({
           artist: "Banksy",
           artistId: "4dd1584de0091e000100207c",

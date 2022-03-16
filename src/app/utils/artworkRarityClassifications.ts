@@ -1,9 +1,9 @@
-export type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
+import { ArtworkAttributionClassType } from "__generated__/myCollectionAddArtworkMutation.graphql"
 
 interface ArtworkRarityClassification {
   name: string
   label: string
-  value: AttributionClassType
+  value: ArtworkAttributionClassType
   description: string
 }
 
@@ -39,7 +39,7 @@ export const artworkRarityClassifications: ArtworkRarityClassification[] = [
 
 export const getAttributionClassValueByName = (
   name?: string | null
-): AttributionClassType | null => {
+): ArtworkAttributionClassType | null => {
   return (
     artworkRarityClassifications.find((classification) => classification.name === name)?.value ??
     null

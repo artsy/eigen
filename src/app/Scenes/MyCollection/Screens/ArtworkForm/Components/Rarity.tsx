@@ -1,10 +1,8 @@
+import { ArtworkAttributionClassType } from "__generated__/myCollectionAddArtworkMutation.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
-import {
-  artworkRarityClassifications,
-  AttributionClassType,
-} from "app/utils/artworkRarityClassifications"
+import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { Flex, Input, INPUT_HEIGHT, InputTitle, Separator, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
@@ -13,7 +11,7 @@ export const Rarity: React.FC = () => {
   const { formik } = useArtworkForm()
   const [isRarityInfoModalVisible, setRarityInfoModalVisible] = useState(false)
 
-  const handleValueChange = (value: AttributionClassType) => {
+  const handleValueChange = (value: ArtworkAttributionClassType) => {
     formik.handleChange("attributionClass")(value)
   }
 

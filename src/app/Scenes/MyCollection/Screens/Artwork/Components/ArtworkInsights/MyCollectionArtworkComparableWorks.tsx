@@ -66,7 +66,7 @@ const artworkFragment = graphql`
     artist {
       slug
     }
-    comparableAuctionResults(first: 6) @optionalField {
+    comparableAuctionResults(first: 6) {
       edges {
         node {
           internalID
