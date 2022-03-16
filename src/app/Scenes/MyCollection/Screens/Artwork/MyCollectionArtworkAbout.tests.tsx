@@ -88,12 +88,12 @@ describe("MyCollectionArtworkAbout", () => {
     expect(getByText("Signed, Sealed, Delivered!")).toBeTruthy()
   })
 
-  it("renders no estimate range when feature flag is disabled", () => {
+  it("renders no estimate range when feature flag is disabled", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({
       AREnablePriceEstimateRange: false,
     })
 
-    const { findByText } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
 
     resolveData({
       Query: () => ({
@@ -114,8 +114,8 @@ describe("MyCollectionArtworkAbout", () => {
       }),
     })
 
-    expect(findByText("Estimate Range")).toBeFalse()
-    expect(findByText("$17,800 - $42,000")).toBeFalse()
+    expect(await queryByText("Estimate Range")).toBeFalsy()
+    expect(await queryByText("$17,800 - $42,000")).toBeFalsy()
   })
 
   it("renders purchase details section", () => {
