@@ -4,6 +4,7 @@ import {
   createStackNavigator,
   TransitionPresets,
 } from "@react-navigation/stack"
+import { OAuthProvider } from "app/auth/types"
 import { ArtsyKeyboardAvoidingViewContext } from "app/Components/ArtsyKeyboardAvoidingView"
 import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "app/Components/ArtsyReactWebViewPolicy"
 import { FPSCounter } from "app/Components/FPSCounter"
@@ -39,8 +40,8 @@ export type OnboardingNavigationStack = {
   OnboardingSocialLink: {
     email: string
     name: string
-    providers: string[]
-    providerToBeLinked: string
+    providers: OAuthProvider[]
+    providerToBeLinked: OAuthProvider
     tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
   }
   ForgotPassword: undefined

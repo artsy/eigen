@@ -1,4 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
+import { OAuthProvider } from "app/auth/types"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
@@ -25,8 +26,8 @@ describe("OnboardingSocialLink", () => {
     email: "email@mail.com",
     name: "my Name",
     tokenForProviderToBeLinked: "oauthtoken",
-    providers: ["email", "google", "apple"],
-    providerToBeLinked: "facebook",
+    providers: ["email", "google", "apple"] as OAuthProvider[],
+    providerToBeLinked: "facebook" as OAuthProvider,
   }
 
   const getWrapper = (routeParams?: OnboardingNavigationStack["OnboardingSocialLink"]) => {
@@ -59,7 +60,7 @@ describe("OnboardingSocialLink", () => {
     // apple auth is not allowed
     Platform.OS = "android"
     // providers we can display LinkAccountButtons for
-    const providers = ["email", "google", "apple"]
+    const providers: OAuthProvider[] = ["email", "google", "apple"]
     const params = { ...defaultParams, providers }
     const tree = getWrapper(params)
 
@@ -73,7 +74,7 @@ describe("OnboardingSocialLink", () => {
     it("Google Link Account Button logs in With Google and passes onSignIn callback", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
       const spy = jest.spyOn(GlobalStore.actions.auth, "authGoogle")
-      const params = { ...defaultParams, providers: ["email", "google"] }
+      const params = { ...defaultParams, providers: ["email", "google"] as OAuthProvider[] }
       const tree = getWrapper(params)
 
       const linkWithGoogle = tree.getByTestId("linkWithGoogle")
@@ -91,7 +92,7 @@ describe("OnboardingSocialLink", () => {
       const spy = jest.spyOn(GlobalStore.actions.auth, "authApple")
       const params = {
         ...defaultParams,
-        providers: ["email", "apple"],
+        providers: ["email", "apple"] as OAuthProvider[],
         tokenforProviderToBeLinked: {
           idToken: "idToken",
           appleUid: "appleUid",
@@ -110,8 +111,8 @@ describe("OnboardingSocialLink", () => {
       const spy = jest.spyOn(GlobalStore.actions.auth, "authFacebook")
       const params = {
         ...defaultParams,
-        providers: ["email", "facebook"],
-        providerToBeLinked: "google",
+        providers: ["email", "facebook"] as OAuthProvider[],
+        providerToBeLinked: "google" as OAuthProvider,
       }
       const tree = getWrapper(params)
 

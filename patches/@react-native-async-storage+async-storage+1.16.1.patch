@@ -1,0 +1,12 @@
+diff --git a/node_modules/@react-native-async-storage/async-storage/lib/typescript/index.d.ts b/node_modules/@react-native-async-storage/async-storage/lib/typescript/index.d.ts
+index 82f4649..c8276be 100644
+--- a/node_modules/@react-native-async-storage/async-storage/lib/typescript/index.d.ts
++++ b/node_modules/@react-native-async-storage/async-storage/lib/typescript/index.d.ts
+@@ -3,6 +3,7 @@ import type { AsyncStorageHook, AsyncStorageStatic } from './types';
+ export { useAsyncStorage } from './hooks';
+ export type { AsyncStorageStatic } from './types';
+ export default AsyncStorage;
++// @ts-ignore
+ declare module '@react-native-async-storage/async-storage/jest/async-storage-mock' {
+     export function useAsyncStorage(key: string): AsyncStorageHook;
+     const AsyncStorageLib: AsyncStorageStatic;

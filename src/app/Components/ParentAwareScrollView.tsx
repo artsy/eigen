@@ -1,13 +1,18 @@
-import PropTypes from "prop-types"
 import React from "react"
-import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, ScrollViewProps } from "react-native"
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  ScrollViewProps,
+  VirtualizedList,
+} from "react-native"
 
 // tslint:disable-next-line:interface-over-type-literal
 type ScrollContext = {
   horizontal: boolean
 }
 
-// @ts-ignore
+// @ts-expect-error
 const ScrollViewContext: React.Context<ScrollContext> = ScrollView.Context
 
 interface State {
@@ -16,26 +21,24 @@ interface State {
 }
 
 /**
- * A Component that registers self a VirtualizedList child when nested in
- * a VirtualizedList with the same orientation, thus allowing parent List
- * to forward it onScroll events
+ * A ScrollView that pretends to be a VirtualizedList.
+ * It registers itself as a nested child of a parent VirtualizedList (or FlatList basically).
+ * Registering as a nested child causes the parent VirtualizedList to call functions on our
+ * component (like `_onScroll` and `_onMomentumScrollBegin`). This allows us to hook into the scroll
+ * events and trigger our own custom logic.
+ *
+ * Example:
+ * <Flatlist
+ *   data={[
+ *     <ParentAwareScrollView onScroll={(e) => console.log("woop, this will be called")} />
+ *   ]}
+ *   renderItem={({ item }) => item}
+ * />
+ *
  * @returns ScrollView
  */
 class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> {
-  static contextTypes = {
-    virtualizedList: PropTypes.shape({
-      getScrollMetrics: PropTypes.func,
-      horizontal: PropTypes.bool,
-      getOutermostParentListRef: PropTypes.func,
-      getNestedChildState: PropTypes.func,
-      registerAsNestedChild: PropTypes.func,
-      unregisterAsNestedChild: PropTypes.func,
-      debugInfo: PropTypes.shape({
-        listKey: PropTypes.string,
-        cellKey: PropTypes.string,
-      }),
-    }),
-  }
+  static contextType = VirtualizedList.contextType
 
   state = {
     cellKey: "defaultScrollListCellKey",
@@ -47,11 +50,11 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
       // register as a child of the parent virtualized list
       const cellKey = this.randomString()
       const key = this.randomString()
-      this.context.virtualizedList.registerAsNestedChild({
+      this.context.registerAsNestedChild({
         cellKey,
         key,
         ref: this,
-        parentDebugInfo: this.context.virtualizedList.debugInfo,
+        parentDebugInfo: this.context.debugInfo,
       })
       this.setState({ cellKey, key })
     }
@@ -59,7 +62,7 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
 
   componentWillUnmount() {
     if (this.isNestedInAVirtualizedListWithSameOrientation()) {
-      this.context.virtualizedList.unregisterAsNestedChild({
+      this.context.unregisterAsNestedChild({
         key: this.state.key,
         state: null,
       })
@@ -69,7 +72,7 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
   randomString = (): string => [...Array(10)].map(() => Math.random().toString(36)[2]).join("")
 
   isNestedInAVirtualizedListWithSameOrientation = (): boolean => {
-    const virtualizedListContext = this.context?.virtualizedList
+    const virtualizedListContext = this.context
     return !!(
       virtualizedListContext &&
       virtualizedListContext.horizontal === (this.props.horizontal ?? false)
@@ -98,17 +101,18 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
     return false
   }
 
-  _onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (this.props.onScroll) {
-      this.props.onScroll(e)
-    }
-  }
+  _onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => this.props.onScroll?.(e)
 
-  _onScrollBeginDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (this.props.onScrollBeginDrag) {
-      this.props.onScrollBeginDrag(e)
-    }
-  }
+  _onScrollBeginDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) =>
+    this.props.onScrollBeginDrag?.(e)
+
+  _onScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => this.props.onScrollEndDrag?.(e)
+
+  _onMomentumScrollBegin = (e: NativeSyntheticEvent<NativeScrollEvent>) =>
+    this.props.onMomentumScrollBegin?.(e)
+
+  _onMomentumScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) =>
+    this.props.onMomentumScrollEnd?.(e)
 
   render(): React.ReactNode {
     const { children, onScroll, ...otherProps } = this.props

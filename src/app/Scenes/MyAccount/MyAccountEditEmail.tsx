@@ -46,7 +46,7 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
         autoFocus
         autoCapitalize="none"
         autoCorrect={false}
-        autoCompleteType="off"
+        autoComplete="off"
         onSubmitEditing={() => {
           if (isEmailValid) {
             editScreenRef.current?.save()

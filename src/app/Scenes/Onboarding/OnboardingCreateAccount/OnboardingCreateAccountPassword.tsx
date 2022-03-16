@@ -29,7 +29,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
     >
       <Input
         autoCapitalize="none"
-        autoCompleteType="password"
+        autoComplete="password"
         autoCorrect={false}
         autoFocus
         onChangeText={(text) => {
