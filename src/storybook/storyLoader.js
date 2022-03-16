@@ -3,6 +3,11 @@
 //
 // https://github.com/elderfo/react-native-storybook-loader.git
 
+// Auto-generated file created by react-native-storybook-loader
+// Do not edit.
+//
+// https://github.com/elderfo/react-native-storybook-loader.git
+
 function loadStories() {
   require("../app/Components/ArtsyKeyboardAvoidingView.stories")
   require("../app/Components/ArtworkGrids/ArtworksFilterHeader.stories")
@@ -19,13 +24,11 @@ function loadStories() {
   require("../palette/elements/Input/Input.stories")
   require("../palette/elements/List/List.stories")
   require("../palette/elements/Pill/Pill.stories")
+  require("../palette/elements/ProgressBar/ProgressBar.stories")
   require("../palette/elements/Radio/RadioButton.stories")
   require("../palette/elements/Select/Select.stories")
   require("../palette/elements/Tabs/Tabs.stories")
   require("../palette/elements/Text/Text.stories")
-  require("../palette/elements/List/List.stories")
-  require("../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories")
-  require("../palette/elements/ProgressBar/ProgressBar.stories")
   require("../palette/elements/VisualClue/VisualClue.stories")
   require("../palette/icons.stories")
   require("../palette/space.stories")
@@ -47,13 +50,11 @@ const stories = [
   "../palette/elements/Input/Input.stories",
   "../palette/elements/List/List.stories",
   "../palette/elements/Pill/Pill.stories",
+  "../palette/elements/ProgressBar/ProgressBar.stories",
   "../palette/elements/Radio/RadioButton.stories",
   "../palette/elements/Select/Select.stories",
   "../palette/elements/Tabs/Tabs.stories",
   "../palette/elements/Text/Text.stories",
-  "../palette/elements/List/List.stories",
-  "../palette/elements/ProgressBar/ProgressBar.stories",
-  "../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories",
   "../palette/elements/VisualClue/VisualClue.stories",
   "../palette/icons.stories",
   "../palette/space.stories",
