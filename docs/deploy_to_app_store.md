@@ -1,6 +1,6 @@
 # Deploy to App Store
 
-App Store builds have to go through the beta process first. 
+App Store builds have to go through the beta process first.
 [Check out the beta docs](./deploy_to_beta.md) for more info.
 
 ## Test the Beta
@@ -9,12 +9,13 @@ Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion
 
 ## Ship a Final Version
 
+1. Make sure you're on the release branch (eg release/7.3.1)
 1. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/main/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version.
    - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/en-US/release_notes.txt) of release notes.
    - Share the notes with the #practice-mobile channel in Slack for feedback.
    - Commit, push the changes, make a PR from your branch to main.
    - You don't have to wait for the PR to be merged to continue.
-1. Make sure you're on the release branch and run `./scripts/promote-beta-to-submission-ios`. This will submit the **most recent beta** for App Store review.
+1. Run `./scripts/promote-beta-to-submission-ios`. This will submit the **most recent beta** for App Store review.
 
 ## Release to App Store
 
@@ -39,5 +40,6 @@ Our App Store releases are done manually.
 4. PR your changes back into the `main` branch.
 
 ### IDFA
-The Identifier for Advertisers ([IDFA](https://www.adjust.com/glossary/idfa/)) is a random device identifier assigned by Apple to a user's device. 
+
+The Identifier for Advertisers ([IDFA](https://www.adjust.com/glossary/idfa/)) is a random device identifier assigned by Apple to a user's device.
 We _do_ use the IDFA to attribute app installations to previously service advertisements. This should be handled for you.
