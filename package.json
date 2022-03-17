@@ -37,7 +37,7 @@
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "open-sim": "open -a Simulator",
     "open-url": "npx uri-scheme open",
-    "postinstall": "prettier --write package.json; ./scripts/update-echo; yarn relay",
+    "postinstall": "prettier --write package.json; ./scripts/update-echo",
     "prepare": "patch-package && husky install",
     "prettier-project": "yarn run prettier-write 'src/**/*.{ts,tsx}'",
     "prettier-write": "prettier --write",
