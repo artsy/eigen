@@ -14,7 +14,7 @@ import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
 import { Box, Flex, Spacer, Text } from "palette"
-import React, { Suspense, useMemo, useRef, useState } from "react"
+import { Suspense, useMemo, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
@@ -76,7 +76,7 @@ const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
   [ContextModule.artistsTab]: "Artworks",
 }
 
-export const Search: React.FC = () => {
+export function Search() {
   const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {})
 
   const [{ system }, refetch] = useRefetchableFragment<SearchQuery, Search_system$key>(
@@ -316,13 +316,11 @@ export const SearchScreenQuery = graphql`
   }
 `
 
-export const SearchScreen: React.FC<{}> = ({}) => {
-  return (
-    <Suspense fallback={<SearchPlaceholder />}>
-      <Search />
-    </Suspense>
-  )
-}
+export const SearchScreen = () => (
+  <Suspense fallback={<SearchPlaceholder />}>
+    <Search />
+  </Suspense>
+)
 
 const Scrollable = styled(ScrollView).attrs(() => ({
   keyboardDismissMode: "on-drag",
