@@ -1,5 +1,6 @@
 This update includes a number of improvements and bug fixes including:
 
-- A new improved alerts flow to get first access to works by your favorite artists
+- A new Artwork Submission Flow
+- Improved Artwork Filtering
 
 Have feedback? Email us at support@artsy.net
