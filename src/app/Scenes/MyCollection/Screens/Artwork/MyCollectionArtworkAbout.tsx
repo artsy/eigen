@@ -2,7 +2,7 @@ import { MyCollectionArtworkAbout_artwork$key } from "__generated__/MyCollection
 import { MyCollectionArtworkAbout_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAbout_marketPriceInsights.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Spacer } from "palette/elements"
+import { Flex, Spacer, Text } from "palette/elements"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -27,6 +27,9 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
   return (
     <StickyTabPageScrollView>
       <Flex my={3}>
+        <Text variant="lg" mb={2}>
+          Price & Market Insights
+        </Text>
         <MyCollectionArtworkAboutWork artwork={artwork} marketPriceInsights={marketPriceInsights} />
 
         <MyCollectionArtworkPurchaseDetails artwork={artwork} />

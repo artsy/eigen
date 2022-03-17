@@ -47,8 +47,8 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
   })
 
   return (
-    <Flex mb={4}>
-      <Text variant="lg" my={1}>
+    <Flex mb={4} mt={3}>
+      <Text variant="lg" mb={2}>
         About the work
       </Text>
 
