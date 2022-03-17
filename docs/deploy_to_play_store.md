@@ -17,10 +17,10 @@ Our Play Store releases are done manually and are available to users **immediate
 
 1. Go to [Google Play Console](https://play.google.com/console/u/1/developers/6449739225222972501/app/4975007939329818983/tracks/production).
 1. Select the right version of the app from the list. To make sure check the `Last updated` date.
-![image](https://user-images.githubusercontent.com/17421923/158804276-6be13ef1-1713-4b1f-9a2f-1be4d24d6d15.png)
-1. Check the update status of the app. It should initially be `In Review` 
-![image](https://user-images.githubusercontent.com/17421923/158804488-1df28736-b9cc-481a-b027-f4cd941f25d8.png)
-1. Hit "Release this Version" button. It might take several hours for the new version to propagate through the Play Store to users. // TODO: is that step right?
+   ![image](https://user-images.githubusercontent.com/17421923/158804276-6be13ef1-1713-4b1f-9a2f-1be4d24d6d15.png)
+1. Check the update status of the app. It should initially be `In Review`
+   ![image](https://user-images.githubusercontent.com/17421923/158804488-1df28736-b9cc-481a-b027-f4cd941f25d8.png)
+1. It might take several hours for the new version to propagate through the Play Store to users.
 1. Monitor [Sentry](https://sentry.io/artsynet/eigen/) in the #practice-mobile channel on Slack for any errors (all production errors are sent to Slack when they first occur).
 1. Make sure to tell all your dev friends over at [#dev](https://artsy.slack.com/archives/C02BC3HEJ)!
 
