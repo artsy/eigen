@@ -10,20 +10,14 @@ Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion
 ## Ship a Final Version
 
 1. Make sure you're on the release branch (eg release/7.3.1)
-1. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/main/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version.
-   - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/en-US/release_notes.txt) of release notes.
-   - Share the notes with the #practice-mobile channel in Slack for feedback.
-   - Commit, push the changes, make a PR from your branch to main.
-   - You don't have to wait for the PR to be merged to continue.
-1. Run `./scripts/promote-beta-to-submission-ios`. This will submit the **most recent beta** for App Store review.
 
-## Release to App Store
+1. Run `./scripts/promote-beta-to-submission-ios`. This will submit the **most recent beta** for App Store review.
 
 Our App Store releases are done manually instead of automatically once Apple approves the app, so you'll have to wait for the beta submission to before you're able to release the app.
 
 Grab some coffee... ☕️
-
-Don't release unless you are available over the next few hours to monitor Sentry for errors.
+## Release to App Store
+Only start this process if you know you'll be available over the next few hours to monitor Sentry for errors.
 Our App Store releases are done manually.
 
 > _When the app is approved for release, a slack message is sent to notify the #practice-mobile channel and an email from Apple Store Connect is sent to mobile [at] artsymail [dot] com_
