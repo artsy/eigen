@@ -41,7 +41,7 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
           <Text mx="2" color="black60">
             We will email you within 1-3 days to confirm if your artwork has been accepted or not.
             {!!enableMyCollectionIntegration &&
-              "In the meantime your submission will appear in the feature, My Collection."}
+              "In the meantime your submission will appear in the feature, My Collection, on the Artsy app."}
           </Text>
           <Spacer mb={2} />
           <Text mx="2" color="black60">
