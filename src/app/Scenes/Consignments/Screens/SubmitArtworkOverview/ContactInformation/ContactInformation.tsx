@@ -3,7 +3,7 @@ import { ContactInformation_me } from "__generated__/ContactInformation_me.graph
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { consignmentSubmittedEvent } from "app/Scenes/Consignments/Utils/TrackingEvent"
-import { GlobalStore } from "app/store/GlobalStore"
+import { addClue, GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
@@ -42,6 +42,7 @@ export const ContactInformation: React.FC<{
         trackEvent(consignmentSubmittedEvent(updatedSubmissionId, formValues.userEmail, userID))
 
         GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+        addClue("ArtworkSubmissionBanner")
         handlePress(submissionId)
       }
     } catch (error) {
