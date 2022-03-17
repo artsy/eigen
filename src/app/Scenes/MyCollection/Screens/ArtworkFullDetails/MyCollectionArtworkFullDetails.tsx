@@ -17,25 +17,36 @@ const MyCollectionArtworkFullDetails: React.FC<{
   artwork: MyCollectionArtworkFullDetails_artwork
 }> = (props) => {
   const { trackEvent } = useTracking()
+
+  const MyCollectionArtworkFullDetailsHeader = () => {
+    if (!props.artwork.consignmentSubmission) {
+      return (
+        <FancyModalHeader
+          rightButtonText="Edit"
+          onRightButtonPress={() => {
+            trackEvent(tracks.editCollectedArtwork(props.artwork.internalID, props.artwork.slug))
+            GlobalStore.actions.myCollection.artwork.startEditingArtwork(props.artwork as any)
+            navigate(`my-collection/artworks/${props.artwork.internalID}/edit`, {
+              passProps: {
+                mode: "edit",
+                artwork: props.artwork,
+                onSuccess: popParentViewController,
+                onDelete: popToRoot,
+              },
+            })
+          }}
+        >
+          Artwork Details
+        </FancyModalHeader>
+      )
+    } else {
+      return <FancyModalHeader>Artwork Details</FancyModalHeader>
+    }
+  }
+
   return (
     <Flex>
-      <FancyModalHeader
-        rightButtonText="Edit"
-        onRightButtonPress={() => {
-          trackEvent(tracks.editCollectedArtwork(props.artwork.internalID, props.artwork.slug))
-          GlobalStore.actions.myCollection.artwork.startEditingArtwork(props.artwork as any)
-          navigate(`my-collection/artworks/${props.artwork.internalID}/edit`, {
-            passProps: {
-              mode: "edit",
-              artwork: props.artwork,
-              onSuccess: popParentViewController,
-              onDelete: popToRoot,
-            },
-          })
-        }}
-      >
-        Artwork Details
-      </FancyModalHeader>
+      <MyCollectionArtworkFullDetailsHeader />
       <Spacer my={0.5} />
       <MyCollectionArtworkMetaFragmentContainer artwork={props.artwork} viewAll />
     </Flex>

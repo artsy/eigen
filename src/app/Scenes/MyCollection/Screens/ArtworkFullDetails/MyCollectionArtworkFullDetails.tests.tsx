@@ -48,12 +48,23 @@ describe("MyCollectionArtworkFullDetails", () => {
     jest.clearAllMocks()
   })
 
-  describe("edit button pressed", () => {
-    it("tracks an analytics event", () => {
+  describe("edit button", () => {
+    it("hide edit button if the artwork has consignmentSubmission prop", () => {
+      const wrapper = getWrapper({
+        Artwork: () => ({
+          consignmentSubmission: "someConsignmentSubmission",
+        }),
+      })
+
+      expect(wrapper.root.findByType(FancyModalHeader).props.rightButtonText).toBeUndefined()
+    })
+
+    it("tracks an analytics event on edit button presed", () => {
       const wrapper = getWrapper({
         Artwork: () => ({
           internalID: "someInternalId",
           slug: "someSlug",
+          consignmentSubmission: null,
         }),
       })
       GlobalStore.actions.myCollection.artwork.startEditingArtwork = jest.fn() as any
