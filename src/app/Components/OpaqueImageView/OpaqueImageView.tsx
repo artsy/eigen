@@ -7,7 +7,9 @@ import {
   PixelRatio,
   Platform,
   processColor,
+  requireNativeComponent,
   StyleSheet,
+  View,
   ViewProps,
 } from "react-native"
 import { createGeminiUrl } from "./createGeminiUrl"
@@ -173,6 +175,10 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       console.error("Please don't add children to a OpaqueImageView. Doesn't work on android.")
     }
 
+    if (Platform.OS === "ios") {
+      return <NativeOpaqueImageView style={[style, backgroundColorStyle]} {...remainderProps} />
+    }
+
     return (
       <Image
         style={[style, backgroundColorStyle] as any}
@@ -182,3 +188,5 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     )
   }
 }
+
+const NativeOpaqueImageView = requireNativeComponent("AROpaqueImageView") as typeof View
