@@ -1,9 +1,7 @@
-import { danger, fail, markdown, warn } from "danger"
+import { danger, fail, warn } from "danger"
 // TypeScript thinks we're in React Native,
 // so the node API gives us errors:
 import * as fs from "fs"
-import { pickBy } from "lodash"
-import { ParseResult } from "./scripts/changelog/changelog-types"
 
 /**
  * Helpers
