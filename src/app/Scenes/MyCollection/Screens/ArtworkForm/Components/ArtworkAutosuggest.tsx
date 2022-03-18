@@ -1,5 +1,5 @@
 import SearchIcon from "app/Icons/SearchIcon"
-import { Flex, Input, LinkButton, Text, Touchable } from "palette"
+import { Flex, Input, Text, Touchable } from "palette"
 import React, { useState } from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkAutosuggestResultsQueryRenderer } from "./ArtworkAutosuggestResults"
@@ -45,9 +45,9 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
               Or skip ahead to{" "}
             </Text>
 
-            <LinkButton variant="xs" color="black60" underline>
+            <Text variant="xs" color="black60" underline>
               add artwork details
-            </LinkButton>
+            </Text>
           </Flex>
         </Touchable>
       )}
