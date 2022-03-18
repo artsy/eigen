@@ -12057,12 +12057,6 @@ type Sale implements Node {
     last: Int
   ): ArtworkConnection
   associatedSale: Sale
-
-  # A label indicating the interval in minutes in which lots close
-  auctionsDetailCascadingIntervalLabel: String
-
-  # A more granular formatted description of when the auction starts or ends or if it has ended
-  auctionsDetailFormattedStartDateTime: String
   bidder: Bidder
 
   # A bid increment policy that explains minimum bids in ranges.
@@ -12071,6 +12065,7 @@ type Sale implements Node {
   # Auction's buyer's premium policy.
   buyersPremium: [BuyersPremium]
   cached: Int
+  cascadingEndTime: SaleCascadingEndTime
 
   # Amount of seconds in between each lot closing.
   cascadingEndTimeInterval: Int
@@ -12485,6 +12480,14 @@ type SaleArtworksConnection implements ArtworkConnectionInterface {
   # Information to aid in pagination.
   pageInfo: PageInfo!
   totalCount: Int
+}
+
+type SaleCascadingEndTime {
+  # A more granular formatted description of when the auction starts or ends if it has ended
+  formattedStartDateTime: String
+
+  # A label indicating the interval in minutes in which lots close
+  intervalLabel: String
 }
 
 # A connection to a list of items.
