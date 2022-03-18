@@ -1,5 +1,5 @@
 import { transformBytesToSize } from "app/utils/transformBytesToSize"
-import { Photo } from "../validation"
+import { Photo } from "palette/elements/PhotoRow/validation"
 
 const totalSizeLimitInBytes = 30000000
 

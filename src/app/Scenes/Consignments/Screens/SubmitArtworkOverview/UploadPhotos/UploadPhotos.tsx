@@ -2,11 +2,15 @@ import { uploadPhotosCompletedEvent } from "app/Scenes/Consignments/Utils/Tracki
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { BulletedItem, CTAButton, Flex, Spacer } from "palette"
+import {
+  Photo,
+  PhotosFormModel,
+  photosValidationSchema,
+} from "palette/elements/PhotoRow/validation"
 import React from "react"
 import { useTracking } from "react-tracking"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"
-import { Photo, PhotosFormModel, photosValidationSchema } from "./validation"
 
 export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   const { userID, userEmail } = GlobalStore.useAppState((state) => state.auth)

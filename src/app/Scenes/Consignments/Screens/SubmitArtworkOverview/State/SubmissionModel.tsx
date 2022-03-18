@@ -1,10 +1,10 @@
 import { Action, action } from "easy-peasy"
+import { photosEmptyInitialValues, PhotosFormModel } from "palette/elements/PhotoRow/validation"
 import { ConsignmentsSubmissionUtmParams } from "../../../ConsignmentsHome/ConsignmentsSubmissionForm"
 import {
   artworkDetailsEmptyInitialValues,
   ArtworkDetailsFormModel,
 } from "../ArtworkDetails/validation"
-import { photosEmptyInitialValues, PhotosFormModel } from "../UploadPhotos/validation"
 
 export interface ArtworkSubmissionModel {
   submissionId: string
