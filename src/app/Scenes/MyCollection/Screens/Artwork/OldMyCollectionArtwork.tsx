@@ -45,8 +45,6 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
   const isInProgress = artwork.consignmentSubmission?.inProgress
   const isSold = artwork.consignmentSubmission?.isSold
 
-  const displayEditButton = !isInProgress
-
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
@@ -58,7 +56,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
       <ScrollView>
         <FancyModalHeader
           onRightButtonPress={
-            displayEditButton
+            !artwork.consignmentSubmission
               ? () => {
                   trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
                   GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)

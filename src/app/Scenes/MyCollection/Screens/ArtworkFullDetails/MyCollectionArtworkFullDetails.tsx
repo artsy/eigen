@@ -7,7 +7,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Flex, Spacer } from "palette"
-import React from "react"
+import React, { useCallback } from "react"
 import { ActivityIndicator } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -18,35 +18,27 @@ const MyCollectionArtworkFullDetails: React.FC<{
 }> = (props) => {
   const { trackEvent } = useTracking()
 
-  const MyCollectionArtworkFullDetailsHeader = () => {
-    if (!props.artwork.consignmentSubmission) {
-      return (
-        <FancyModalHeader
-          rightButtonText="Edit"
-          onRightButtonPress={() => {
-            trackEvent(tracks.editCollectedArtwork(props.artwork.internalID, props.artwork.slug))
-            GlobalStore.actions.myCollection.artwork.startEditingArtwork(props.artwork as any)
-            navigate(`my-collection/artworks/${props.artwork.internalID}/edit`, {
-              passProps: {
-                mode: "edit",
-                artwork: props.artwork,
-                onSuccess: popParentViewController,
-                onDelete: popToRoot,
-              },
-            })
-          }}
-        >
-          Artwork Details
-        </FancyModalHeader>
-      )
-    } else {
-      return <FancyModalHeader>Artwork Details</FancyModalHeader>
-    }
-  }
+  const handleEdit = useCallback(() => {
+    trackEvent(tracks.editCollectedArtwork(props.artwork.internalID, props.artwork.slug))
+    GlobalStore.actions.myCollection.artwork.startEditingArtwork(props.artwork as any)
+    navigate(`my-collection/artworks/${props.artwork.internalID}/edit`, {
+      passProps: {
+        mode: "edit",
+        artwork: props.artwork,
+        onSuccess: popParentViewController,
+        onDelete: popToRoot,
+      },
+    })
+  }, [props.artwork])
 
   return (
     <Flex>
-      <MyCollectionArtworkFullDetailsHeader />
+      <FancyModalHeader
+        rightButtonText="Edit"
+        onRightButtonPress={!props.artwork.consignmentSubmission ? handleEdit : undefined}
+      >
+        Artwork Details
+      </FancyModalHeader>
       <Spacer my={0.5} />
       <MyCollectionArtworkMetaFragmentContainer artwork={props.artwork} viewAll />
     </Flex>

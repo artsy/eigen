@@ -66,29 +66,6 @@ describe("My Collection Artwork", () => {
       mockEnvironment = createMockEnvironment()
     })
 
-    describe("when submission is not in progress", () => {
-      it("shows the edit button", async () => {
-        const { findByText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkQueryRenderer
-            artworkSlug="random-slug"
-            artistInternalID="internal-id"
-            medium="medium"
-          />,
-          mockEnvironment
-        )
-
-        mockEnvironmentPayload(mockEnvironment, {
-          Artwork: () => ({
-            consignmentSubmission: {
-              inProgress: false,
-            },
-          }),
-        })
-
-        expect(await findByText("Edit")).toBeTruthy()
-      })
-    })
-
     describe("when there is no submission", () => {
       it("shows the edit button", async () => {
         const { findByText } = renderWithHookWrappersTL(
@@ -111,7 +88,7 @@ describe("My Collection Artwork", () => {
     })
 
     describe("when submission is in progress", () => {
-      it("hides the edit button", async () => {
+      it("hides the edit button when the artwork has consignmentSubmission prop", async () => {
         const { findByText } = renderWithHookWrappersTL(
           <MyCollectionArtworkQueryRenderer
             artworkSlug="random-slug"
@@ -123,9 +100,7 @@ describe("My Collection Artwork", () => {
 
         mockEnvironmentPayload(mockEnvironment, {
           Artwork: () => ({
-            consignmentSubmission: {
-              inProgress: true,
-            },
+            consignmentSubmission: "some-consignmentSubmission",
           }),
         })
 

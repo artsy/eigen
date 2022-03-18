@@ -56,7 +56,7 @@ describe("MyCollectionArtworkFullDetails", () => {
         }),
       })
 
-      expect(wrapper.root.findByType(FancyModalHeader).props.rightButtonText).toBeUndefined()
+      expect(wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress).toBeUndefined()
     })
 
     it("tracks an analytics event on edit button presed", () => {
