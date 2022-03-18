@@ -1,6 +1,7 @@
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
+import { useIsStaging } from "app/store/GlobalStore"
 import _ from "lodash"
-import { useColor } from "palette"
+import { Text, useColor } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { useEffect } from "react"
 import { Animated, PixelRatio, StyleSheet, View } from "react-native"
@@ -174,10 +175,20 @@ export const OpaqueImageView: React.FC<Props> = ({
     }
   }
 
+  const isStaging = useIsStaging()
+
   const fastImageStyle = [{ height: fIHeight, width: fIWidth }, props.style]
-  console.warn({ __DEV__ })
+  const debugBorderStyles = isStaging ? { borderTopWidth: 2, borderColor: color("devpurple") } : {}
+
   return (
-    <View onLayout={onLayout} style={fastImageStyle}>
+    <View onLayout={onLayout} style={[fastImageStyle, debugBorderStyles]}>
+      {!!isStaging && (
+        <View style={{ position: "absolute", zIndex: 1000, top: "50%" }}>
+          <Text weight="medium" italic variant="xl" color="devpurple">
+            NewImageView
+          </Text>
+        </View>
+      )}
       <FastImage
         {...props}
         style={[
