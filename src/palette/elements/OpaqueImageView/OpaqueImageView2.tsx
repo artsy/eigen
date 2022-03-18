@@ -103,11 +103,6 @@ export const OpaqueImageView: React.FC<Props> = ({
     }
   }
 
-  // props.height / width
-  // style.width/height
-  // ! apo ta panw + aspectRatio
-  // ! apo ta panw use layoutHeight/layoutWidth
-
   const getActualDimensions: () => Array<string | number> = () => {
     if (props.height && props.width) {
       return [props.width, props.height]
@@ -134,7 +129,6 @@ export const OpaqueImageView: React.FC<Props> = ({
 
   useEffect(() => {
     const [fw, fh] = getActualDimensions()
-    // maybe we need to remove these two as number
     setFIHeight(fh as number)
     setFIWidth(fw as number)
   }, [props.height, props.width, style.width, style.height, aspectRatio, layoutHeight, layoutWidth])
@@ -181,7 +175,7 @@ export const OpaqueImageView: React.FC<Props> = ({
   }
 
   const fastImageStyle = [{ height: fIHeight, width: fIWidth }, props.style]
-
+  console.warn({ __DEV__ })
   return (
     <View onLayout={onLayout} style={fastImageStyle}>
       <FastImage
