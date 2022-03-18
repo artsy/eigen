@@ -90,3 +90,18 @@ index c498ba6..d5793ed 100755
 +  # shellcheck source=/dev/null
 +  . "$(brew --prefix asdf)/asdf.sh"
 +fi
+diff --git a/node_modules/react-native/scripts/generate-specs.sh b/node_modules/react-native/scripts/generate-specs.sh
+index 4456557..5c6c1ee 100755
+--- a/node_modules/react-native/scripts/generate-specs.sh
++++ b/node_modules/react-native/scripts/generate-specs.sh
+@@ -28,10 +28,6 @@ THIS_DIR=$(cd -P "$(dirname "$(readlink "${BASH_SOURCE[0]}" || echo "${BASH_SOUR
+ TEMP_DIR=$(mktemp -d /tmp/react-native-codegen-XXXXXXXX)
+ RN_DIR=$(cd "$THIS_DIR/.." && pwd)
+
+-# Find path to Node
+-# shellcheck source=/dev/null
+-source "$RN_DIR/scripts/find-node.sh"
+-
+ NODE_BINARY="${NODE_BINARY:-$(command -v node || true)}"
+
+ cleanup () {
