@@ -68,6 +68,23 @@ describe("MyCollectionArtworkForm", () => {
   describe("Adding a new artwork", () => {
     describe("when selecting an already existing artwork", () => {
       it("populates the form with the data from the artwork", async () => {
+        const assetCredentials = {
+          signature: "some-signature",
+          credentials: "some-credentials",
+          policyEncoded: "some-policy-encoded",
+          policyDocument: {
+            expiration: "some-expiration",
+            conditions: {
+              acl: "some-acl",
+              bucket: "some-bucket",
+              geminiKey: "some-gemini-key",
+              successActionStatus: "some-success-action-status",
+            },
+          },
+        }
+        getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
+        uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
+
         const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappersTL(
           <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
         )
@@ -190,6 +207,7 @@ describe("MyCollectionArtworkForm", () => {
   describe("images", () => {
     describe("uploading images", () => {
       it("uploads photos to s3", async () => {
+        uploadFileToS3Mock.mockReset()
         const somePhoto = fakePhoto("some-path")
         const someOtherPhoto = fakePhoto("some-other-path")
         getConvectionGeminiKeyMock.mockReturnValueOnce(Promise.resolve("some-key"))

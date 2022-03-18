@@ -16,7 +16,7 @@ interface MyCollectionArtworkAboutProps {
   marketPriceInsights: MyCollectionArtworkAbout_marketPriceInsights$key | null
 }
 
-export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> = (props) => {
+export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
   const artwork = useFragment<MyCollectionArtworkAbout_artwork$key>(artworkFragment, props.artwork)
   const marketPriceInsights = useFragment<MyCollectionArtworkAbout_marketPriceInsights$key>(
     marketPriceInsightsFragment,

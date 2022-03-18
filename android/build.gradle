@@ -10,13 +10,15 @@ buildscript {
         targetSdkVersion = 30
         firebaseIidVersion = "21.1.0" // Needed for react-native-device-info
         googlePlayServicesAuthVersion = "16.0.1"
+        ndkVersion = "21.4.7075529"
     }
     repositories {
         google()
+        mavenCentral()
         jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.0.1")
+        classpath("com.android.tools.build:gradle:4.2.2")
         classpath('com.google.gms:google-services:4.3.8')
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -25,6 +27,7 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         mavenLocal()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
@@ -36,8 +39,8 @@ allprojects {
         }
 
         google()
-        jcenter()
         maven { url 'https://www.jitpack.io' }
-        maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
+        maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
+        jcenter()
     }
 }

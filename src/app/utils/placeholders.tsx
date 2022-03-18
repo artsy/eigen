@@ -53,7 +53,7 @@ const useLayoutAnimation = () => {
   }, [])
 }
 
-export const ProvidePlaceholderContext: React.FC<{}> = ({ children }) => {
+export const ProvidePlaceholderContext: React.FC = ({ children }) => {
   useLayoutAnimation()
 
   const clock = useCurrentTime()

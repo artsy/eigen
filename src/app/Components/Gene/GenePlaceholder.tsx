@@ -2,7 +2,7 @@ import { PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { Flex, Separator, Spacer } from "palette"
 import React from "react"
 
-export const GenePlaceholder: React.FC = () => (
+export const GenePlaceholder = () => (
   <Flex>
     <Flex px={2}>
       <Spacer mb={75} />

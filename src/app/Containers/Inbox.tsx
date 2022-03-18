@@ -22,9 +22,9 @@ interface TabWrapperProps extends ViewProps {
   tabLabel: string
 }
 
-const TabWrapper: React.FC<TabWrapperProps> = (props) => <View {...props} />
+const TabWrapper = (props: TabWrapperProps) => <View {...props} />
 
-const InboxTabs: React.FC<TabBarProps> = (props) => (
+const InboxTabs = (props: TabBarProps) => (
   <>
     <Flex flexDirection="row" px={1.5} mb={2}>
       {props.tabs?.map((name: JSX.Element, page: number) => {
@@ -41,8 +41,8 @@ const InboxTabs: React.FC<TabBarProps> = (props) => (
               color="black100"
               variant="lg"
               onPress={() => {
-                if (!!props.goToPage) {
-                  props.goToPage(page)
+                if (!__TEST__) {
+                  props.goToPage?.(page)
                 }
               }}
             >
@@ -100,7 +100,7 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.listener?.remove()
+    this.listener?.remove?.()
   }
 
   @track((_props, _state, args) => {

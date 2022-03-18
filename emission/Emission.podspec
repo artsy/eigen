@@ -49,14 +49,13 @@ podspec = Pod::Spec.new do |s|
   s.dependency 'React-RCTLinking', react_native_version
   s.dependency 'React-RCTNetwork', react_native_version
   s.dependency 'React-RCTText', react_native_version
-  # s.dependency 'React-RCTGeolocation', react_native_version
   s.dependency 'React-RCTActionSheet', react_native_version
 
   # React's Dependencies
-  # s.dependency 'Yoga', "#{react_native_version}.React"
   react_podspecs = [
+    '../node_modules/react-native/third-party-podspecs/boost.podspec',
     '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec',
-    '../node_modules/react-native/third-party-podspecs/Folly.podspec',
+    '../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec',
     '../node_modules/react-native/third-party-podspecs/glog.podspec'
   ]
 

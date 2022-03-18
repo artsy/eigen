@@ -6,6 +6,7 @@ import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { isPad } from "app/utils/hardware"
+import { Pill } from "palette"
 import React from "react"
 import { Keyboard } from "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -280,7 +281,7 @@ describe("Search Screen", () => {
 
       it("are enabled when they have results", async () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
-        const { getByPlaceholderText, getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+        const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithWrappersTL(<TestRenderer />)
         mockEnvironmentPayload(mockEnvironment, {
           Query: () => ({
             system: {
@@ -301,7 +302,9 @@ describe("Search Screen", () => {
 
         const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
         fireEvent(searchInput, "changeText", "Ba")
-        const enabledPills = getAllByA11yState({ disabled: false })
+        const enabledPills = UNSAFE_getAllByType(Pill).filter(
+          (pill) => pill.props.disabled === false
+        )
         expect(enabledPills).toHaveLength(3)
         expect(enabledPills[0]).toHaveTextContent("Artworks")
         expect(enabledPills[1]).toHaveTextContent("Artist")
@@ -680,7 +683,7 @@ describe("Search Screen", () => {
 
     await flushPromiseQueue()
 
-    waitFor(() => getByText("Banksy"))
+    await waitFor(() => getByText("Banksy"))
     act(() => fireEvent.press(getByText("Banksy")))
 
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
