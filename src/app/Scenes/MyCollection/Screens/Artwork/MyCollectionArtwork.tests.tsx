@@ -88,7 +88,7 @@ describe("My Collection Artwork", () => {
     })
 
     describe("when submission is in progress", () => {
-      it("hides the edit button when the artwork has consignmentSubmission prop", async () => {
+      it("hides the edit button when the artwork is coming from a submission", async () => {
         const { findByText } = renderWithHookWrappersTL(
           <MyCollectionArtworkQueryRenderer
             artworkSlug="random-slug"

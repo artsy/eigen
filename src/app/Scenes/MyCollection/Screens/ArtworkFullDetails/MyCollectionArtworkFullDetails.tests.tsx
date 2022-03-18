@@ -49,7 +49,7 @@ describe("MyCollectionArtworkFullDetails", () => {
   })
 
   describe("edit button", () => {
-    it("hide edit button if the artwork has consignmentSubmission prop", () => {
+    it("hide edit button if the artwork is coming from a submission", () => {
       const wrapper = getWrapper({
         Artwork: () => ({
           consignmentSubmission: "someConsignmentSubmission",
