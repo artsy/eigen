@@ -1,6 +1,8 @@
 import { ActionType, ContextModule, OwnerType, TappedRequestPriceEstimate } from "@artsy/cohesion"
 import { RequestForPriceEstimate_artwork$key } from "__generated__/RequestForPriceEstimate_artwork.graphql"
 import { RequestForPriceEstimate_marketPriceInsights$key } from "__generated__/RequestForPriceEstimate_marketPriceInsights.graphql"
+import { RequestForPriceEstimate_me$key } from "__generated__/RequestForPriceEstimate_me.graphql"
+import { navigate } from "app/navigation/navigate"
 import { Box, Button, Text } from "palette"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
@@ -9,6 +11,7 @@ import { useTracking } from "react-tracking"
 interface RequestForPriceEstimateProps {
   artwork: RequestForPriceEstimate_artwork$key
   marketPriceInsights: RequestForPriceEstimate_marketPriceInsights$key | null
+  me: RequestForPriceEstimate_me$key | null
 }
 export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = ({
   ...otherProps
@@ -24,12 +27,13 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
     otherProps.marketPriceInsights
   )
 
+  const me = useFragment<RequestForPriceEstimate_me$key>(meFragment, otherProps.me)
+
   return (
     <Box>
       <Button
         testID="request-price-estimate-button"
         onPress={() => {
-          // TODO:- CX-2355: Implement the actual email sending feature
           trackEvent(
             tracks.trackTappedRequestPriceEstimate(
               artwork.internalID,
@@ -37,6 +41,16 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
               marketPriceInsights?.demandRank ?? undefined
             )
           )
+          if (!me) {
+            return
+          }
+          navigate("/request-for-price-estimate", {
+            passProps: {
+              name: me.name,
+              email: me.email,
+              phone: me.phone,
+            },
+          })
         }}
         block
       >
@@ -74,6 +88,14 @@ const artworkFragment = graphql`
 const marketPriceInsightsFragment = graphql`
   fragment RequestForPriceEstimate_marketPriceInsights on MarketPriceInsights {
     demandRank
+  }
+`
+
+const meFragment = graphql`
+  fragment RequestForPriceEstimate_me on Me {
+    name
+    email
+    phone
   }
 `
 

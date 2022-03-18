@@ -1,5 +1,6 @@
 import { MyCollectionArtworkInsights_artwork$key } from "__generated__/MyCollectionArtworkInsights_artwork.graphql"
 import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
+import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, Spacer } from "palette/elements"
@@ -16,6 +17,7 @@ import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 interface MyCollectionArtworkInsightsProps {
   artwork: MyCollectionArtworkInsights_artwork$key
   marketPriceInsights: MyCollectionArtworkInsights_marketPriceInsights$key | null
+  me: MyCollectionArtworkInsights_me$key | null
 }
 
 export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = ({
@@ -30,6 +32,8 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
     marketPriceInsightsFragment,
     restProps.marketPriceInsights
   )
+
+  const me = useFragment<MyCollectionArtworkInsights_me$key>(meFragment, restProps.me)
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
 
@@ -50,7 +54,11 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         {!!showPriceEstimateBanner && (
           <>
-            <RequestForPriceEstimate artwork={artwork} marketPriceInsights={marketPriceInsights} />
+            <RequestForPriceEstimate
+              me={me}
+              artwork={artwork}
+              marketPriceInsights={marketPriceInsights}
+            />
             <Spacer p={2} />
           </>
         )}
@@ -99,5 +107,11 @@ const marketPriceInsightsFragment = graphql`
     ...MyCollectionArtworkDemandIndex_marketPriceInsights
     ...MyCollectionArtworkArtistMarket_marketPriceInsights
     ...RequestForPriceEstimate_marketPriceInsights
+  }
+`
+
+const meFragment = graphql`
+  fragment MyCollectionArtworkInsights_me on Me {
+    ...RequestForPriceEstimate_me
   }
 `
