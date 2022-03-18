@@ -40,7 +40,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
       return {
         key: `${index}`,
         content: (
-          <Box backgroundColor="green">
+          <Box>
             <Touchable
               onPress={() => {
                 tracking.trackEvent({
