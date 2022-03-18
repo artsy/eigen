@@ -5,7 +5,16 @@ import styled from "styled-components/native"
 
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
-import { CloseIcon, Flex, FollowButton, Text, Touchable, useColor } from "palette"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import {
+  CloseIcon,
+  Flex,
+  FollowButton,
+  OpaqueImageView as NewOpaqueImageView,
+  Text,
+  Touchable,
+  useColor,
+} from "palette"
 
 const ARTIST_CARD_WIDTH = 295
 
@@ -27,11 +36,21 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
     }
   }
 
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageView")
+
   return (
     <ArtistCardWrapper onPress={handlePress}>
       <Flex>
         <Flex>
-          <ImageView imageURL={artist?.image?.url} width={ARTIST_CARD_WIDTH} height={180} />
+          {enableNewOpaqueImageView ? (
+            <NewOpaqueImageView
+              imageURL={artist?.image?.url}
+              width={ARTIST_CARD_WIDTH}
+              height={180}
+            />
+          ) : (
+            <ImageView imageURL={artist?.image?.url} width={ARTIST_CARD_WIDTH} height={180} />
+          )}
         </Flex>
         <Flex flexDirection="row" mt={1}>
           <Flex flex={1} flexDirection="column" justifyContent="center">
