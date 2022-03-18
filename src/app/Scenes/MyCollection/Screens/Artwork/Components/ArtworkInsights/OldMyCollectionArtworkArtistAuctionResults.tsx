@@ -12,10 +12,9 @@ import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/Auc
 import { navigate } from "app/navigation/navigate"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { extractNodes } from "app/utils/extractNodes"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Box, Flex, Separator, Spacer, Text } from "palette"
+import { Box, Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
-import { FlatList, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -57,28 +56,28 @@ const OldMyCollectionArtworkArtistAuctionResults: React.FC<
 
         <Spacer my={0.5} />
 
-        <FlatList
-          data={auctionResults}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <>
-              <AuctionResultListItemFragmentContainer
-                auctionResult={item}
-                onPress={() =>
-                  navigate(
-                    `/artist/${props?.artwork?.artist?.slug!}/auction-result/${item.internalID}`
-                  )
-                }
-              />
-            </>
-          )}
-          ItemSeparatorComponent={() => (
+        <Join
+          separator={
             <Flex px={2}>
               <Separator />
             </Flex>
-          )}
-          style={{ width: useScreenDimensions().width, left: -20 }}
-        />
+          }
+        >
+          {auctionResults.map((auctionResult) => (
+            <AuctionResultListItemFragmentContainer
+              auctionResult={auctionResult}
+              key={auctionResult.internalID}
+              onPress={() =>
+                navigate(
+                  `/artist/${props?.artwork?.artist?.slug!}/auction-result/${
+                    auctionResult.internalID
+                  }`
+                )
+              }
+            />
+          ))}
+        </Join>
+
         <Separator />
         <Box pt={2}>
           <CaretButton
