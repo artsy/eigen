@@ -7,7 +7,7 @@ import { AnimatableHeaderShadow } from "./AnimatableHeaderShadow"
 
 const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
 
-export const AnimatableHeaderFlatList = <T extends any>(props: FlatListProps<T>) => {
+export const AnimatableHeaderFlatList = <T,>(props: FlatListProps<T>) => {
   const { ListHeaderComponent, ...other } = props
   const { scrollOffsetY } = useAnimatableHeaderContext()
 

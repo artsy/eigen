@@ -81,9 +81,6 @@ yarn-error.log
 # on every PR
 .jest/cache
 
-# Danger artifacts
-tslint-errors.json
-
 # TypeScript Logs
 tsc_raw.log
 

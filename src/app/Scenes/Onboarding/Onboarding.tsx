@@ -24,7 +24,7 @@ import { OnboardingPersonalization } from "./OnboardingPersonalization/Onboardin
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
-// tslint:disable-next-line:interface-over-type-literal
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
   OnboardingLogin: { withFadeAnimation: boolean } | undefined

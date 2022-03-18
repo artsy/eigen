@@ -5,16 +5,16 @@
     "*.h": "objective-c",
     "*.js": "javascriptreact",
     "yarn.lock": "text",
-    "tslint.json": "jsonc"
   },
-  "eslint.enable": false,
   "editor.formatOnSave": true,
   "files.trimTrailingWhitespace": true,
   "prettier.singleQuote": false,
   "prettier.trailingComma": "es5",
   "prettier.semi": false,
   "prettier.printWidth": 100,
-  "editor.rulers": [100],
+  "editor.rulers": [
+    100
+  ],
   "editor.tabSize": 2,
   "files.exclude": {
     "**/.git": true,
@@ -52,8 +52,11 @@
   ],
   "cSpell.diagnosticLevel": "Hint",
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "todohighlight.exclude": ["node_modules/**", ".vscode/**", "externals/**"],
-  "tslint.autoFixOnSave": true,
+  "todohighlight.exclude": [
+    "node_modules/**",
+    ".vscode/**",
+    "externals/**"
+  ],
   "typescript.format.enable": false,
   "[json]": {
     "editor.formatOnSave": false

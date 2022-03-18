@@ -11,8 +11,8 @@ export interface S3UploadResponse {
 // These are in RN, but not declared in the RN types:
 // https://github.com/facebook/react-native/blob/master/Libraries/Network/FormData.js
 // https://github.com/facebook/react-native/blob/master/Libraries/Network/XMLHttpRequest.js
-declare var FormData: any
-declare var XMLHttpRequest: any
+declare let FormData: any
+declare let XMLHttpRequest: any
 
 export const uploadFileToS3 = (
   file: string,

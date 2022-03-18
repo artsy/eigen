@@ -104,7 +104,7 @@ Example of situations where we should use an independent navigation container
 Inside the route that you would like to add the screens to, create a stack navigate as follows:
 
 ```typescript
-// tslint:disable-next-line:interface-over-type-literal
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type MyScreenNavigationStackProps = {
   MyScreenFirstPage: undefined // You can as well specify navigation params here. Check react-navigation docs
   MyScreenSecondPage: undefined
