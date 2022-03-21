@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */; };
+		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
+		CB43266A27E8F39B00B29DD6 /* Artsy Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B85327B585F00007922D /* GoogleService-Info.plist */; };
 		CBE3211B27D9615000395A93 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBE3210627D9615000395A93 /* LaunchScreen.storyboard */; };
 		CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210827D9615000395A93 /* OldAdminView.swift */; };
@@ -313,6 +315,30 @@
 		CBE327A227E275A400395A93 /* SystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266927E275A300395A93 /* SystemTime.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CB43266827E8F39B00B29DD6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB43266227E8F39900B29DD6;
+			remoteInfo = "Artsy Stickers";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CB43266B27E8F39B00B29DD6 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CB43266A27E8F39B00B29DD6 /* Artsy Stickers.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		02F2C90B06AD6C83572BCE60 /* Pods-eigen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.debug.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Artsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -322,6 +348,9 @@
 		41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		775AB16F96387B70AABE4731 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		BE681C4A642B6359D3C2A4AF /* Pods-Artsy-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-Artsy-ArtsyTests/Pods-Artsy-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Artsy Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB43266527E8F39B00B29DD6 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
+		CB43266727E8F39B00B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB61B85327B585F00007922D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CBE3210627D9615000395A93 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CBE3210827D9615000395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
@@ -857,6 +886,7 @@
 				CBE3210527D9615000395A93 /* Artsy */,
 				676C72DD1D291306F09E9C48 /* Pods */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
+				CB43266427E8F39900B29DD6 /* Artsy Stickers */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 			);
@@ -869,8 +899,18 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* Artsy.app */,
+				CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CB43266427E8F39900B29DD6 /* Artsy Stickers */ = {
+			isa = PBXGroup;
+			children = (
+				CB43266527E8F39B00B29DD6 /* Stickers.xcassets */,
+				CB43266727E8F39B00B29DD6 /* Info.plist */,
+			);
+			path = "Artsy Stickers";
 			sourceTree = "<group>";
 		};
 		CBE3210527D9615000395A93 /* Artsy */ = {
@@ -1918,15 +1958,32 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				54EE436FC81664CC0C6F0A54 /* [CP] Embed Pods Frameworks */,
 				E4875BC980DDBF81A3B3418A /* [CP] Copy Pods Resources */,
+				CB43266B27E8F39B00B29DD6 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CB43266927E8F39B00B29DD6 /* PBXTargetDependency */,
 			);
 			name = Artsy;
 			productName = eigen;
 			productReference = 13B07F961A680F5B00A75B9A /* Artsy.app */;
 			productType = "com.apple.product-type.application";
+		};
+		CB43266227E8F39900B29DD6 /* Artsy Stickers */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB43266E27E8F39B00B29DD6 /* Build configuration list for PBXNativeTarget "Artsy Stickers" */;
+			buildPhases = (
+				CB43266127E8F39900B29DD6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Artsy Stickers";
+			productName = "Artsy Stickers";
+			productReference = CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */;
+			productType = "com.apple.product-type.app-extension.messages-sticker-pack";
 		};
 /* End PBXNativeTarget section */
 
@@ -1938,6 +1995,9 @@
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
+					};
+					CB43266227E8F39900B29DD6 = {
+						CreatedOnToolsVersion = 13.2.1;
 					};
 				};
 			};
@@ -1955,6 +2015,7 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* Artsy */,
+				CB43266227E8F39900B29DD6 /* Artsy Stickers */,
 			);
 		};
 /* End PBXProject section */
@@ -2052,6 +2113,14 @@
 				CBE3275027E275A400395A93 /* Artsy_Logo.png in Resources */,
 				CBE3276327E275A400395A93 /* BackArrow_Highlighted@2x.png in Resources */,
 				CBE326F227E275A300395A93 /* ARVIRTick.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB43266127E8F39900B29DD6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2375,6 +2444,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		CB43266927E8F39B00B29DD6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB43266227E8F39900B29DD6 /* Artsy Stickers */;
+			targetProxy = CB43266827E8F39B00B29DD6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		CBE3262127E275A200395A93 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -2595,6 +2672,64 @@
 			};
 			name = Release;
 		};
+		CB43266C27E8F39B00B29DD6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Artsy Stickers/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CB43266D27E8F39B00B29DD6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Artsy Stickers/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2612,6 +2747,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB43266E27E8F39B00B29DD6 /* Build configuration list for PBXNativeTarget "Artsy Stickers" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB43266C27E8F39B00B29DD6 /* Debug */,
+				CB43266D27E8F39B00B29DD6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
