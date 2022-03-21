@@ -1912,6 +1912,7 @@ enum ArtworkAggregation {
   PARTNER_CITY
   PERIOD
   PRICE_RANGE
+  SIMPLE_PRICE_HISTOGRAM
   TOTAL
 }
 
@@ -9701,6 +9702,9 @@ type Mutation {
     input: RequestCredentialsForAssetUploadInput!
   ): RequestCredentialsForAssetUploadPayload
 
+  # Request price estimate of an artwork
+  requestPriceEstimate(input: RequestPriceEstimateInput!): RequestPriceEstimatePayload
+
   # Save (or remove) an artwork to (from) a users default collection.
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 
@@ -11978,6 +11982,31 @@ type RequestLocation {
   countryCode: String
 }
 
+type RequestPriceEstimatedMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type RequestPriceEstimatedMutationSuccess {
+  submittedPriceEstimateParams: SubmittedPriceEstimateParams
+}
+
+input RequestPriceEstimateInput {
+  artworkId: String!
+  clientMutationId: String
+  requesterEmail: String
+  requesterName: String
+  requesterPhoneNumber: String
+}
+
+union RequestPriceEstimateMutationType =
+    RequestPriceEstimatedMutationFailure
+  | RequestPriceEstimatedMutationSuccess
+
+type RequestPriceEstimatePayload {
+  clientMutationId: String
+  priceEstimateParamsOrError: RequestPriceEstimateMutationType
+}
+
 type ResizedImageUrl {
   factor: Float!
   height: Int
@@ -12028,12 +12057,6 @@ type Sale implements Node {
     last: Int
   ): ArtworkConnection
   associatedSale: Sale
-
-  # A label indicating the interval in minutes in which lots close
-  auctionsDetailCascadingIntervalLabel: String
-
-  # A more granular formatted description of when the auction starts or ends or if it has ended
-  auctionsDetailFormattedStartDateTime: String
   bidder: Bidder
 
   # A bid increment policy that explains minimum bids in ranges.
@@ -12042,6 +12065,7 @@ type Sale implements Node {
   # Auction's buyer's premium policy.
   buyersPremium: [BuyersPremium]
   cached: Int
+  cascadingEndTime: SaleCascadingEndTime
 
   # Amount of seconds in between each lot closing.
   cascadingEndTimeInterval: Int
@@ -12209,6 +12233,9 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
 
   # Singular estimate field, if specified
   estimateCents: Int
+
+  # A formatted description of the lot end date and time
+  formattedEndDateTime: String
 
   # A formatted description of when the lot starts or ends or if it has ended
   formattedStartDateTime: String
@@ -12453,6 +12480,14 @@ type SaleArtworksConnection implements ArtworkConnectionInterface {
   # Information to aid in pagination.
   pageInfo: PageInfo!
   totalCount: Int
+}
+
+type SaleCascadingEndTime {
+  # A more granular formatted description of when the auction starts or ends if it has ended
+  formattedStartDateTime: String
+
+  # A label indicating the interval in minutes in which lots close
+  intervalLabel: String
 }
 
 # A connection to a list of items.
@@ -13335,6 +13370,20 @@ type SubmitInquiryRequestMutationPayload {
 
   # Artwork Inquiry request
   inquiryRequest: InquiryRequest
+}
+
+type SubmittedPriceEstimateParams {
+  # Artwork ID submitted for estimate
+  artworkId: String!
+
+  # Email of the requester
+  requesterEmail: String
+
+  # Name of the requester
+  requesterName: String
+
+  # Phone number of the requester
+  requesterPhoneNumber: String
 }
 
 type System {

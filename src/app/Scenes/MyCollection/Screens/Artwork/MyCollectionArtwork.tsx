@@ -70,8 +70,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     })
   }, [data.artwork])
 
-  const displayEditButton = !data.artwork.consignmentSubmission?.inProgress
-
   const tabs = compact([
     {
       title: Tab.insights,
@@ -99,7 +97,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       <FancyModalHeader
         onLeftButtonPress={goBack}
         rightButtonText="Edit"
-        onRightButtonPress={displayEditButton ? handleEdit : undefined}
+        onRightButtonPress={!data.artwork.consignmentSubmission ? handleEdit : undefined}
         hideBottomDivider
       />
       <StickyTabPage

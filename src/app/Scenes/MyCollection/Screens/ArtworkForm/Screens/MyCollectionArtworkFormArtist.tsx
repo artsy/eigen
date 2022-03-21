@@ -4,7 +4,6 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { GlobalStore } from "app/store/GlobalStore"
 import React from "react"
-import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
@@ -26,11 +25,9 @@ export const MyCollectionArtworkFormArtist: React.FC<
       <FancyModalHeader hideBottomDivider onLeftButtonPress={route.params.onHeaderBackButtonPress}>
         Select an Artist
       </FancyModalHeader>
-      <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-        <ScreenMargin>
-          <ArtistAutosuggest onResultPress={handleResultPress} />
-        </ScreenMargin>
-      </ScrollView>
+      <ScreenMargin>
+        <ArtistAutosuggest onResultPress={handleResultPress} />
+      </ScreenMargin>
     </>
   )
 }

@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
+import { initializeSubmissionArtworkForm } from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
 import { useFragment } from "react-relay"
@@ -47,7 +48,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
               trackEvent(
                 tracks.tappedSubmit(artwork.internalID, artwork.slug, "Submit This Artwork to Sell")
               )
-              // TODO: Populate form with artwork values
+              initializeSubmissionArtworkForm(artwork)
               navigate("/collections/my-collection/artworks/new/submissions/new")
             }}
             testID="submitArtworkToSellButton"
@@ -88,14 +89,28 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   )
 }
 
-export const tests = {
-  MyCollectionWhySell,
-}
-
 const artworkFragment = graphql`
   fragment MyCollectionWhySell_artwork on Artwork {
-    slug
     internalID
+    slug
+    title
+    date
+    medium
+    artist {
+      internalID
+      name
+    }
+    attributionClass {
+      name
+    }
+    editionNumber
+    editionSize
+    metric
+    height
+    width
+    depth
+    provenance
+    artworkLocation
     consignmentSubmission {
       inProgress
       isSold

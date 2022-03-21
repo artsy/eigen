@@ -320,3 +320,13 @@ We either need to find a library that gives us masonry layout using a Virtualize
 
 Currently our masonry layout (in InfiniteScrollArtworksGrid `render()`) is using a ScrollView, which is not a VirtualizedList.
 Also, currently, the parent that is the FlatList, comes from StickyTabPageFlatList.
+
+## react-native-scrollable-tab-view pointing to a commit hash
+
+#### When we can remove this:
+
+When the fix is in a release in the library or when we stop using this library.
+
+#### Explanation/Context
+
+With updated react native version (66) this library causes an error calling the now non-existent getNode() function, it is fixed on the main branch in the library but has not yet been released on npm.
