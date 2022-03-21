@@ -7,7 +7,7 @@ const totalSizeLimitInBytes = 30000000
 export const calculateSinglePhotoSize = (photo: Photo): Photo => {
   if (!photo.size) {
     photo.error = true
-    photo.sizeDisplayValue = "Size not found"
+    photo.sizeDisplayValue = ""
     return photo
   }
 

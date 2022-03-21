@@ -2,6 +2,7 @@ import * as Yup from "yup"
 
 export interface PhotosFormModel {
   photos: Photo[]
+  initialPhotos?: Photo[]
 }
 
 export interface Photo {
@@ -23,6 +24,7 @@ export interface Photo {
 
 export const photosEmptyInitialValues: PhotosFormModel = {
   photos: [],
+  initialPhotos: [],
 }
 
 export const photosValidationSchema = Yup.object().shape({

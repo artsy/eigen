@@ -9,11 +9,10 @@ import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
 import { Button, Flex, Spacer, Text } from "palette"
 import { PhotoRow } from "palette/elements/PhotoRow/PhotoRow"
-import React from "react"
+import React, { useEffect } from "react"
 import { removeAssetFromSubmission } from "../Mutations/removeAssetFromConsignmentSubmissionMutation"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
-import { calculateSinglePhotoSize } from "./utils/calculatePhotoSize"
-import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"
+import { calculateSinglePhotoSize, isSizeLimitExceeded } from "./utils/calculatePhotoSize"
 
 export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   isAnyPhotoLoading,
@@ -21,6 +20,13 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
+
+  useEffect(() => addInitialPhotos, [])
+
+  // add initial photos when a My Collection artwork gets submitted
+  const addInitialPhotos = () => {
+    addPhotoToSubmission(values.initialPhotos || [])
+  }
 
   // add selected photos to gemini and submission
   const addPhotoToSubmission = async (photos: Photo[]) => {

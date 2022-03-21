@@ -20,4 +20,10 @@ export const initializeSubmissionArtworkForm = (artwork: MyCollectionWhySell_art
     source: "MY_COLLECTION",
     myCollectionArtworkID: artwork.internalID,
   })
+
+  const photos = artwork.images?.map((image) => ({
+    path: image?.url?.replace(":version", "large"),
+  }))
+
+  GlobalStore.actions.artworkSubmission.submission.initializePhotos(photos ?? [])
 }
