@@ -15,9 +15,6 @@
 		CBE3211E27D9615000395A93 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210C27D9615000395A93 /* ARTLiveAuctionViewManager.m */; };
 		CBE3211F27D9615000395A93 /* LiveAuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210D27D9615000395A93 /* LiveAuctionView.swift */; };
 		CBE3212027D9615000395A93 /* ARTOldAdminViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210E27D9615000395A93 /* ARTOldAdminViewManager.m */; };
-		CBE3212127D9615000395A93 /* ARTNativeScreenPresenterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3211027D9615000395A93 /* ARTNativeScreenPresenterModule.m */; };
-		CBE3212227D9615000395A93 /* CityGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3211127D9615000395A93 /* CityGuideView.swift */; };
-		CBE3212427D9615000395A93 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBE3211427D9615000395A93 /* Images.xcassets */; };
 		CBE3266F27E275A300395A93 /* ARAppConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3245D27E275A100395A93 /* ARAppConstants.m */; };
 		CBE3267027E275A300395A93 /* ARDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3245E27E275A100395A93 /* ARDefaults.m */; };
 		CBE3267127E275A300395A93 /* UITableViewController+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3246127E275A100395A93 /* UITableViewController+Animations.swift */; };
@@ -189,11 +186,6 @@
 		CBE3271D27E275A300395A93 /* ARNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259127E275A100395A93 /* ARNotificationView.m */; };
 		CBE3271E27E275A300395A93 /* AuctionCircularButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259327E275A100395A93 /* AuctionCircularButtons.swift */; };
 		CBE3271F27E275A300395A93 /* Stringify.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259427E275A200395A93 /* Stringify.swift */; };
-		CBE3272027E275A300395A93 /* OldAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259627E275A200395A93 /* OldAdminView.swift */; };
-		CBE3272127E275A300395A93 /* ARTCityGuideViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259727E275A200395A93 /* ARTCityGuideViewManager.m */; };
-		CBE3272227E275A300395A93 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259A27E275A200395A93 /* ARTLiveAuctionViewManager.m */; };
-		CBE3272327E275A400395A93 /* LiveAuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259B27E275A200395A93 /* LiveAuctionView.swift */; };
-		CBE3272427E275A400395A93 /* ARTOldAdminViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259C27E275A200395A93 /* ARTOldAdminViewManager.m */; };
 		CBE3272527E275A400395A93 /* ARTNativeScreenPresenterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259E27E275A200395A93 /* ARTNativeScreenPresenterModule.m */; };
 		CBE3272627E275A400395A93 /* CityGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259F27E275A200395A93 /* CityGuideView.swift */; };
 		CBE3272727E275A400395A93 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBE325A227E275A200395A93 /* Images.xcassets */; };
@@ -291,7 +283,6 @@
 		CBE3278327E275A400395A93 /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3261C27E275A200395A93 /* ARReactPackagerHost.m */; };
 		CBE3278427E275A400395A93 /* ARSystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3261F27E275A200395A93 /* ARSystemTime.m */; };
 		CBE3278527E275A400395A93 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBE3262127E275A200395A93 /* InfoPlist.strings */; };
-		CBE3278627E275A400395A93 /* Artsy-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBE3262527E275A200395A93 /* Artsy-Info.plist */; };
 		CBE3278727E275A400395A93 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBE3262627E275A200395A93 /* Launch Screen.xib */; };
 		CBE3278827E275A400395A93 /* Artwork.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3262E27E275A300395A93 /* Artwork.m */; };
 		CBE3278927E275A400395A93 /* PartnerShow.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3263027E275A300395A93 /* PartnerShow.m */; };
@@ -1984,11 +1975,9 @@
 				CBE3275227E275A400395A93 /* RefreshIcon@2x.png in Resources */,
 				CBE3274F27E275A400395A93 /* CircleXRed.png in Resources */,
 				CBE3276427E275A400395A93 /* followButtonChecked.png in Resources */,
-				CBE3278627E275A400395A93 /* Artsy-Info.plist in Resources */,
 				CBE326F427E275A300395A93 /* ARVIRTick@2x.png in Resources */,
 				CBE3277F27E275A400395A93 /* static_sale_data.graphql in Resources */,
 				CBE3273D27E275A400395A93 /* FooterBackground@2x.png in Resources */,
-				CBE3212427D9615000395A93 /* Images.xcassets in Resources */,
 				CBE3275427E275A400395A93 /* Chevron_White_Left@2x.png in Resources */,
 				CBE3276227E275A400395A93 /* full_logo_black_large@2x.png in Resources */,
 				CBE3275827E275A400395A93 /* paddle@2x.png in Resources */,
@@ -2075,6 +2064,7 @@
 			files = (
 			);
 			inputPaths = (
+				"",
 			);
 			name = "Bundle React Native code and images";
 			outputPaths = (
@@ -2187,7 +2177,6 @@
 				CBE326CA27E275A300395A93 /* SaleOnHoldOverlayView.swift in Sources */,
 				CBE3267127E275A300395A93 /* UITableViewController+Animations.swift in Sources */,
 				CBE3270627E275A300395A93 /* AREigenMapContainerViewController.m in Sources */,
-				CBE3272127E275A300395A93 /* ARTCityGuideViewManager.m in Sources */,
 				CBE3279B27E275A400395A93 /* LiveBidder.m in Sources */,
 				CBE3278827E275A400395A93 /* Artwork.m in Sources */,
 				CBE3268827E275A300395A93 /* Interstellar+Artsy.swift in Sources */,
@@ -2258,7 +2247,6 @@
 				CBE3271D27E275A300395A93 /* ARNotificationView.m in Sources */,
 				CBE3276C27E275A400395A93 /* MTLModel+Dictionary.m in Sources */,
 				CBE326E427E275A300395A93 /* ARNetworkErrorManager.m in Sources */,
-				CBE3212127D9615000395A93 /* ARTNativeScreenPresenterModule.m in Sources */,
 				CBE326A027E275A300395A93 /* ARUserActivity.m in Sources */,
 				CBE326F927E275A300395A93 /* ARAugmentedRealityConfig.m in Sources */,
 				CBE3279527E275A400395A93 /* Follow.m in Sources */,
@@ -2315,13 +2303,11 @@
 				CBE326AD27E275A300395A93 /* LiveAuctionLotViewController.swift in Sources */,
 				CBE326C227E275A300395A93 /* LiveAuctionLotCollectionViewDataSource.swift in Sources */,
 				CBE3279A27E275A400395A93 /* BidIncrementStrategy.m in Sources */,
-				CBE3272227E275A300395A93 /* ARTLiveAuctionViewManager.m in Sources */,
 				CBE3270827E275A300395A93 /* StoryboardConstants.swift in Sources */,
 				CBE326BC27E275A300395A93 /* LotListCollectionViewCell+Private.swift in Sources */,
 				CBE3271A27E275A300395A93 /* ARNavigationButton.m in Sources */,
 				CBE3211F27D9615000395A93 /* LiveAuctionView.swift in Sources */,
 				CBE3277727E275A400395A93 /* ArtsyAPI+SystemTime.m in Sources */,
-				CBE3212227D9615000395A93 /* CityGuideView.swift in Sources */,
 				CBE3268527E275A300395A93 /* UIViewController+FullScreenLoading.m in Sources */,
 				CBE326EF27E275A300395A93 /* ARAugmentedVIRSetupViewController.m in Sources */,
 				CBE3267F27E275A300395A93 /* UIViewController+Traits.swift in Sources */,
@@ -2329,7 +2315,6 @@
 				CBE326A527E275A300395A93 /* ARExternalWebBrowserViewController.m in Sources */,
 				CBE326DC27E275A300395A93 /* ARImageItemProvider.m in Sources */,
 				CBE3267427E275A300395A93 /* UIDevice-Hardware.m in Sources */,
-				CBE3272027E275A300395A93 /* OldAdminView.swift in Sources */,
 				CBE3279327E275A400395A93 /* Profile.m in Sources */,
 				CBE326EA27E275A300395A93 /* ARTwoWayDictionaryTransformer.m in Sources */,
 				CBE3278027E275A400395A93 /* ARNetworkConstants.m in Sources */,
@@ -2339,7 +2324,6 @@
 				CBE3278B27E275A400395A93 /* Location.m in Sources */,
 				CBE326BA27E275A300395A93 /* LiveAuctionBidViewModel.swift in Sources */,
 				CBE3268F27E275A300395A93 /* ARScreenPresenterModule.m in Sources */,
-				CBE3272427E275A400395A93 /* ARTOldAdminViewManager.m in Sources */,
 				CBE3268927E275A300395A93 /* AFHTTPRequestOperation+JSON.m in Sources */,
 				CBE3279C27E275A400395A93 /* Sale.m in Sources */,
 				CBE3279727E275A400395A93 /* LiveEvent.m in Sources */,
@@ -2349,7 +2333,6 @@
 				CBE3277D27E275A400395A93 /* ARUserManager.m in Sources */,
 				CBE3269127E275A300395A93 /* ARAppActivityContinuationDelegate.m in Sources */,
 				CBE326BE27E275A300395A93 /* LiveAuctionLotBidHistoryGestureController.swift in Sources */,
-				CBE3272327E275A400395A93 /* LiveAuctionView.swift in Sources */,
 				CBE3271627E275A300395A93 /* ARWhitespaceGobbler.m in Sources */,
 				CBE3268127E275A300395A93 /* UIViewController+SimpleChildren.m in Sources */,
 				CBE326EC27E275A300395A93 /* ARSCNWallNode.m in Sources */,
