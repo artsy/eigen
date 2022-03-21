@@ -33,3 +33,15 @@ module.exports = (api) => {
     ],
   }
 }
+
+// enable https://eslint.org/docs/rules/require-await too
+
+// https://github.com/sindresorhus/eslint-plugin-unicorn
+// https://github.com/import-js/eslint-plugin-import
+// custom tslint rule
+// https://github.com/artsy/force/blob/main/.eslintrc.js#L5
+
+// prettier config
+// resolver?
+// react plugin
+//relay plugin
