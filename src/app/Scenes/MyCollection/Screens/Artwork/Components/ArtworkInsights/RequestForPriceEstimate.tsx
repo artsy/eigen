@@ -49,8 +49,7 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
         variant="xs"
         testID="request-price-estimate-banner-text"
       >
-        An Artsy specialist will evaluate your artwork and contact you with a current price
-        estimate.
+        An Artsy specialist will evaluate your artwork and contact you with a free price estimate.
       </Text>
     </Box>
   )
