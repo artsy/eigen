@@ -32,9 +32,11 @@ export const Versions = {
   AddArtworkSubmissionModel: 20,
   AddArtworkViewOption: 21,
   RenameModelsAndAddDarkModeSupport: 22,
+  AddUserPrefsMetricsUnit: 23,
+  AddSourceAndMyCollectionArtworkIDToSubmission: 24,
 }
 
-export const CURRENT_APP_VERSION = Versions.RenameModelsAndAddDarkModeSupport
+export const CURRENT_APP_VERSION = Versions.AddSourceAndMyCollectionArtworkIDToSubmission
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -177,6 +179,13 @@ export const artsyAppMigrations: Migrations = {
     }
     delete state.config
     delete state.userPreferences
+  },
+  [Versions.AddUserPrefsMetricsUnit]: (state) => {
+    state.userPrefs.metric = "in"
+  },
+  [Versions.AddSourceAndMyCollectionArtworkIDToSubmission]: (state) => {
+    state.artworkSubmission.submission.artworkDetails.source = null
+    state.artworkSubmission.submission.artworkDetails.myCollectionArtworkID = null
   },
 }
 

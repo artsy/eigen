@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
 import { navigate } from "app/navigation/navigate"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -19,6 +20,7 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
   navigation,
   route,
 }) => {
+  const enableMyCollectionIntegration = useFeatureFlag("ARShowConsignmentsInMyCollection")
   const submissionId = route.params.submissionId
   const { trackEvent } = useTracking()
   const { userID, userEmail } = GlobalStore.useAppState((store) => store.auth)
@@ -38,7 +40,8 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
           <Spacer mb={2} />
           <Text mx="2" color="black60">
             We will email you within 1-3 days to confirm if your artwork has been accepted or not.
-            In the meantime your submission will appear in the feature, My Collection.
+            {!!enableMyCollectionIntegration &&
+              "In the meantime your submission will appear in the feature, My Collection."}
           </Text>
           <Spacer mb={2} />
           <Text mx="2" color="black60">
@@ -59,19 +62,23 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
               Submit another Artwork
             </Button>
             <Spacer mb={2} />
-            <Button
-              block
-              haptic
-              maxWidth={540}
-              variant="outline"
-              onPress={() => {
-                trackEvent(viewArtworkMyCollectionEvent(submissionId, userEmail, userID))
-                navigate(`/my-profile`)
-              }}
-            >
-              View Artwork in My Collection
-            </Button>
-            <Spacer mb={2} />
+            {!!enableMyCollectionIntegration && (
+              <>
+                <Button
+                  block
+                  haptic
+                  maxWidth={540}
+                  variant="outline"
+                  onPress={() => {
+                    trackEvent(viewArtworkMyCollectionEvent(submissionId, userEmail, userID))
+                    navigate(`/my-profile`)
+                  }}
+                >
+                  View Artwork in My Collection
+                </Button>
+                <Spacer mb={2} />
+              </>
+            )}
           </Flex>
         </Box>
       </ScrollView>

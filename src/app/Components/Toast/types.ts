@@ -19,4 +19,4 @@ export interface ToastDetails {
   Icon?: React.FC<IconProps>
 }
 
-export type ToastOptions = Omit<ToastDetails, "id" | "positionIndex" | "placement" | "message">
+export type ToastOptions = Pick<ToastDetails, "onPress" | "Icon">

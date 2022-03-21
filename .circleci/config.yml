@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.0
+  node: circleci/node@5.0.1
   queue: eddiewebb/queue@1.6.4
   horizon: artsy/release@0.0.1
 
@@ -39,7 +39,6 @@ commands:
             scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/' '^package\.json$'
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
-            scripts/generate-manifest.js .manifests/js_test_results '^\.manifests/js_transform' '^data/' '^src/'
             ls -lR emission > .manifests/emission_pod_file_list
             scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile' '^\.manifests/emission_pod_file_list'
             scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native' '^\.env\.example'
@@ -86,22 +85,17 @@ commands:
       - restore_cache:
           keys:
             - v6-jest-{{ .Branch }}
-      - restore_cache:
-          keys:
-            - v5-js_test_results-{{ checksum ".manifests/js_test_results" }}
       - run:
           name: Run TypeScript check
-          command: ls test-results.json || yarn type-check
+          command: yarn type-check
       - run:
           name: Run TSLint check
-          command: ls test-results.json || yarn lint
+          command: yarn lint
       - run:
           name: Run jest tests
-          command: ls test-results.json || yarn jest --outputFile test-results.json --json --ci --forceExit --runInBand
-      - save_cache:
-          key: v5-js_test_results-{{ checksum ".manifests/js_test_results" }}
-          paths:
-            - test-results.json
+          command: yarn jest --ci --forceExit --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
       - save_cache:
           key: v6-jest-{{ .Branch }}
           paths:
@@ -141,7 +135,7 @@ commands:
       - save_cache:
           key: v4-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
-            - vendor/bundle
+            - .vendor
   install-cocoapods:
     steps:
       - restore_cache:
@@ -231,7 +225,7 @@ jobs:
 
   deploy-nightly-beta:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -275,7 +269,7 @@ jobs:
 
   check-flags:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -291,7 +285,7 @@ jobs:
 
   check-if-app-has-been-approved-for-release:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -362,6 +356,8 @@ jobs:
           command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^emission/Pod/Assets/'
       - store_artifacts:
           path: .manifests
+      - store_test_results:
+          path: ./reports/junit/
       - persist_to_workspace:
           root: .
           paths:
@@ -370,7 +366,7 @@ jobs:
 
   build-test-app-ios:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -429,9 +425,6 @@ jobs:
           path: xcode_test_raw.log
           prefix: tests
 
-      - store_test_results:
-          path: test-results.xml
-
       - run:
           name: Danger
           command: bundle exec danger --danger_id=circle --dangerfile=Dangerfile.circle.rb --verbose
@@ -445,7 +438,7 @@ jobs:
 
   build-test-app-android:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
     docker:
       - image: circleci/android:api-29-node
     resource_class: large
@@ -472,7 +465,7 @@ jobs:
 
   promote-beta-to-app-store:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
       xcode: 13.2.1
     steps:
@@ -486,7 +479,7 @@ jobs:
 
   promote-beta-to-play-store:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     docker:
       - image: circleci/android:api-29-node
@@ -519,7 +512,7 @@ jobs:
           path: .manifests
   release-ios-app:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
       xcode: 13.2.1
     steps:

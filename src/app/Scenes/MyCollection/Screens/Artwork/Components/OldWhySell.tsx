@@ -4,8 +4,6 @@ import React from "react"
 export const OldWhySell: React.FC = () => {
   return (
     <>
-      <Spacer mt={2} mb={1} />
-
       <Join separator={<Spacer my={1} />}>
         <Text variant="md">Interested in selling this work?</Text>
         <WhySellStep

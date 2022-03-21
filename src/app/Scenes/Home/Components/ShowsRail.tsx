@@ -15,6 +15,9 @@ interface ShowsRailProps {
   mb?: number
 }
 
+// Because we never show more than 2 shows per gallery we need to overfetch, filter out, and then limit the number of shows.
+const NUMBER_OF_SHOWS = 10
+
 export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, mb }) => {
   const tracking = useTracking()
 
@@ -39,7 +42,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, mb
           ListHeaderComponent={() => <Spacer ml="2" />}
           ListFooterComponent={() => <Spacer ml="2" />}
           ItemSeparatorComponent={() => <Spacer ml="2" />}
-          data={shows}
+          data={shows.slice(0, NUMBER_OF_SHOWS)}
           keyExtractor={(item) => `${item.internalID}`}
           renderItem={({ item, index }) => (
             <ShowCardContainer

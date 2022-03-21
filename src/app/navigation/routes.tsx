@@ -1,6 +1,6 @@
 import { AppModule } from "app/AppRegistry"
 import { ArtsyWebViewConfig } from "app/Components/ArtsyReactWebView"
-import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { Platform } from "react-native"
@@ -138,7 +138,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
     addRoute("/:profile_id_ignored/artist/:artistID", "Artist"),
     addRoute("/auction-registration/:saleID", "AuctionRegistration"),
-    addRoute("/auction/:saleID", "Auction2"),
+    addRoute("/auction/:saleID", "Auction"),
     addRoute("/auction/:saleID/info", "AuctionInfo"),
     addRoute("/auction-faq", "AuctionFAQ"),
     addRoute("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
@@ -201,6 +201,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addWebViewRoute("/conditions-of-sale"),
     addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
     addRoute("/artwork-submission-status", "ArtworkSubmissionStatusFAQ"),
+    addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
 
     addRoute("/partner/:partnerID", "Partner"),
     addRoute("/partner/:partnerID/works", "Partner"),
@@ -240,7 +241,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       mimicBrowserBackButton: true,
       useRightCloseButton: true,
     }),
-    __DEV__ && addRoute("/storybook", "Storybook"),
+    // __DEV__ && addRoute("/storybook", "Storybook"),
 
     // Every other route needs to go above
     addRoute("/:slug", "VanityURLEntity"),

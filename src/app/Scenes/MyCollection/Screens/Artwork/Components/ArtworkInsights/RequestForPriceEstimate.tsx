@@ -65,13 +65,7 @@ const artworkFragment = graphql`
     artist {
       name
       targetSupply {
-        isTargetSupply
-      }
-    }
-    artists {
-      name
-      targetSupply {
-        isTargetSupply
+        isP1
       }
     }
   }

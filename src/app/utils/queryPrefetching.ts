@@ -6,20 +6,19 @@ import { RateLimiter } from "limiter"
 import { useEffect } from "react"
 import {
   createOperationDescriptor,
-  Environment,
   fetchQuery,
   getRequest,
   GraphQLTaggedNode,
   Variables,
 } from "relay-runtime"
-import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { logPrefetching } from "./loggers"
 import { useTreatment } from "./useExperiments"
 
 const DEFAULT_QUERIES_PER_INTERVAL = 60
 
 let limiter: RateLimiter
 
-// Inintializes the rate limiter because we load parameters from Echo.
+// Initializes the rate limiter because we load parameters from Echo.
 export const useInitializeQueryPrefetching = () => {
   const echoMessages = GlobalStore.useAppState((state) => state.artsyPrefs.echo.state.messages)
 
@@ -38,20 +37,17 @@ export const useInitializeQueryPrefetching = () => {
 }
 
 // Limit requests and don't execute when rate limit is reached.
-const isRateLimited = async () => {
+async function isRateLimited() {
   const remainingRequests = await limiter.removeTokens(1)
 
   return remainingRequests < 0
 }
 
-const prefetchQuery = async (
-  environment: Environment,
-  query: GraphQLTaggedNode,
-  variables: Variables = {}
-) => {
-  const operation = createOperationDescriptor(getRequest(query), variables)
+const prefetchQuery = async (query: GraphQLTaggedNode, variables?: Variables) => {
+  const environment = defaultEnvironment
+  const operation = createOperationDescriptor(getRequest(query), variables ?? {})
 
-  await fetchQuery(environment, query, variables, {
+  await fetchQuery(environment, query, variables ?? {}, {
     networkCacheConfig: { force: false },
   }).toPromise()
 
@@ -59,7 +55,7 @@ const prefetchQuery = async (
   environment.retain(operation)
 }
 
-const prefetchUrl = async (environment: Environment, url: string, variables: Variables = {}) => {
+const prefetchUrl = async (url: string, variables?: Variables) => {
   if (await isRateLimited()) {
     console.log("Reached prefetching rate limit.")
     return
@@ -87,10 +83,12 @@ const prefetchUrl = async (environment: Environment, url: string, variables: Var
 
   const options = { ...result.params, ...variables }
 
-  console.log(`Prefetching "${url}"`)
+  if (logPrefetching) {
+    console.log(`Prefetching "${url}"`)
+  }
 
   try {
-    prefetchQuery(environment, query, options)
+    prefetchQuery(query, options)
   } catch (error) {
     console.error(`Prefetching "${url}" failed.`, error)
   }
@@ -104,7 +102,5 @@ export const usePrefetch = () => {
     return () => null
   }
 
-  return prefetchUrl.bind(this, defaultEnvironment as RelayModernEnvironment)
+  return prefetchUrl
 }
-
-export const ˆ = (attribute: string) => (item?: any) => item && item[attribute]

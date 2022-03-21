@@ -115,7 +115,7 @@ target 'Artsy' do
   pod 'FBSDKShareKit', '9.3.0'
 
   # Google & Firebase
-  pod 'GoogleSignIn', '~> 5.0.2'
+  pod 'GoogleSignIn', '5.0.2'
   pod 'Firebase/Auth', '8.1.1'
 
   # Analytics

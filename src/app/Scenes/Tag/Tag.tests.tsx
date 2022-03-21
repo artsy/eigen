@@ -1,13 +1,13 @@
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { TagTestsQuery } from "__generated__/TagTestsQuery.graphql"
 import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
 import About from "app/Components/Tag/About"
 import { TagArtworks } from "app/Components/Tag/TagArtworks"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { TouchableHighlightColor } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Tag } from "./Tag"
@@ -85,12 +85,13 @@ describe("Tag", () => {
     expect(tree.root.findAllByType(About)).toHaveLength(0)
   })
 
-  it("renders filter modal", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+  it("renders filter modal", async () => {
+    const { UNSAFE_getByType, UNSAFE_getAllByType } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment)
 
-    act(() => tree.root.findByType(TouchableHighlightColor).props.onPress())
+    await waitFor(() => expect(UNSAFE_getByType(TouchableHighlightColor)).toBeTruthy())
+    fireEvent.press(UNSAFE_getByType(TouchableHighlightColor))
 
-    expect(tree.root.findAllByType(ArtworkFilterOptionsScreen)).toHaveLength(1)
+    expect(UNSAFE_getAllByType(ArtworkFilterOptionsScreen)).toHaveLength(1)
   })
 })

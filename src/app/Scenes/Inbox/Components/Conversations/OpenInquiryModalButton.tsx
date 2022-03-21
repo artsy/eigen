@@ -1,6 +1,6 @@
 import { ActionType, OwnerType, TappedMakeOffer } from "@artsy/cohesion"
 import { navigate } from "app/navigation/navigate"
-import { Button, CheckCircleIcon, Flex, Text } from "palette"
+import { Button, Flex, ShieldIcon, Text } from "palette"
 import React from "react"
 import { useTracking } from "react-tracking"
 import { ShadowSeparator } from "../ShadowSeparator"
@@ -21,14 +21,14 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
       <ShadowSeparator />
       <Flex p={1}>
         <Flex flexDirection="row">
-          <CheckCircleIcon mr={1} mt="3px" />
+          <ShieldIcon mr={1} mt="3px" />
           <Flex flexShrink={1}>
-            <Text color="black60" variant="xs" mb={1}>
-              Only purchases completed with our secure checkout are protected by{" "}
+            <Text color="black60" variant="md" mb={1}>
+              Always complete purchases with our secure checkout in order to be covered by{" "}
               <Text
                 style={{ textDecorationLine: "underline" }}
                 color="black100"
-                variant="xs"
+                variant="md"
                 onPress={() => {
                   navigate(`/buyer-guarantee`)
                 }}

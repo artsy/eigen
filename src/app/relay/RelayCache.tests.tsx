@@ -46,7 +46,7 @@ describe("the cache", () => {
     jest.useRealTimers()
   })
   beforeEach(() => {
-    ;(AsyncStorage as any).__resetState()
+    AsyncStorage.clear()
   })
   it("saves queries in async storage", async () => {
     set("myQueryID", { foo: "bar" }, "response!")
