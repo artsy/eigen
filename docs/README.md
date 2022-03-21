@@ -8,7 +8,7 @@
 
 ## Meandering Around
 
-- [Best_practices](best_practices.md)
+- [Best Practices](best_practices.md)
 
 ## Documentation about different work flows
 
@@ -29,7 +29,7 @@
 - [Analytics and Tracking](analytics_and_tracking.md)
 - [Certificates](certs.md)
 - [Test on a real device: create a beta](deploy_to_beta.md)
-- [Generating a Release build for local testing](generating_a_release_build_for_local_testing.md)
+- [Generate a Release build for local testing](generate_a_release_build_for_local_testing.md)
 
 ### Beta
 

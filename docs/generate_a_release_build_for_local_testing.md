@@ -1,4 +1,4 @@
-# Generating a release build for local testing
+# Generate a release build for local testing
 
 ## Why?
 
@@ -19,11 +19,7 @@ Sometimes we need to test a release build on the emulator or our local device, w
 - Start the packager with `yarn start`.
 - You will need the `ANDROID_KEYSTORE_PASSWORD` from 1Password, so have it handy. It will be in the item named `Eigen release keystore password and secret json (google play store)`.
 - First place you will need it is right now. In your terminal, run `export ANDROID_KEYSTORE_PASSWORD=<the password>`, replacing `<the password>` with the password from 1Password. The final command will look something like `export ANDROID_KEYSTORE_PASSWORD=some-password-wow-123`, no math signs `<>`.
-- In the same terminal, build the release app using `cd android; ./gradlew bundleRelease`.
-- Verify that the built app is in `eigen/android/app/build/outputs/bundle/release/app-release.aab`.
-- You need a tool called bundletool, that you can get by running `brew install bundletool`.
-- After installing the tool, run `bundletool build-apks --bundle=./app/build/outputs/bundle/release/app-release.aab --output=./release-build.apks --mode=universal --ks=./app/release.keystore --ks-key-alias=release`. This will ask for the keystore password. It's the one from a few steps above. Paste it in here when it is asked.
-- Once that is finished, you will have a `eigen/android/release-build.apks` file. Rename this to `release-build.zip`.
-- Unzip that file.
-- In the unzipped folder, you will find a `release-build.apk` file.
-- Install the app by dragging it on the emulator.
+- Uninstall the app from the emulator if it's already installed. This is needed because it's differently signed for debug and for release, and the emulator can't replace them automatically.
+- In the same terminal, build the release app using `cd android; ./gradlew installRelease`.
+- Verify that the built app is in `eigen/android/app/build/outputs/apk/release/app-release.apk`.
+- The app should already be installed on the emulator now. If not, install it by dragging it on the emulator.
