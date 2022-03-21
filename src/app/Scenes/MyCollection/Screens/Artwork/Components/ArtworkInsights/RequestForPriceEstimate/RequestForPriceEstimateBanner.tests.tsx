@@ -1,34 +1,38 @@
 import { act, fireEvent } from "@testing-library/react-native"
-import { RequestForPriceEstimateTestsQuery } from "__generated__/RequestForPriceEstimateTestsQuery.graphql"
+import { RequestForPriceEstimateBannerTestsQuery } from "__generated__/RequestForPriceEstimateBannerTestsQuery.graphql"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { RequestForPriceEstimate } from "./RequestForPriceEstimate"
+import { RequestForPriceEstimateBanner } from "./RequestForPriceEstimateBanner"
 
 jest.unmock("react-relay")
 
-describe("RequestForPriceEstimate", () => {
+describe("RequestForPriceEstimateBanner", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<RequestForPriceEstimateTestsQuery>
+    <QueryRenderer<RequestForPriceEstimateBannerTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query RequestForPriceEstimateTestsQuery @relay_test_operation {
+        query RequestForPriceEstimateBannerTestsQuery @relay_test_operation {
           artwork(id: "foo") {
-            ...RequestForPriceEstimate_artwork
+            ...RequestForPriceEstimateBanner_artwork
           }
           marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
-            ...RequestForPriceEstimate_marketPriceInsights
+            ...RequestForPriceEstimateBanner_marketPriceInsights
+          }
+          me {
+            ...RequestForPriceEstimateBanner_me
           }
         }
       `}
       variables={{}}
       render={({ props }) => {
-        if (props?.artwork && props?.marketPriceInsights) {
+        if (props?.artwork && props?.marketPriceInsights && props?.me) {
           return (
-            <RequestForPriceEstimate
+            <RequestForPriceEstimateBanner
+              me={props.me}
               artwork={props.artwork}
               marketPriceInsights={props.marketPriceInsights}
             />

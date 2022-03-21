@@ -24,7 +24,6 @@ export const RequestForPriceEstimateForm = () => {
             <Input
               title="Name"
               autoCapitalize="words"
-              autoCompleteType="name"
               autoCorrect={false}
               onChangeText={(text) => {
                 if (errors.requesterName) {
@@ -46,7 +45,6 @@ export const RequestForPriceEstimateForm = () => {
             <Input
               title="Email"
               autoCapitalize="none"
-              autoCompleteType="email"
               enableClearButton
               keyboardType="email-address"
               onChangeText={(text) => {

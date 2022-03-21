@@ -6,7 +6,7 @@ extension FullBleed {
     struct View: SwiftUI.View {
         static var supportedFamilies: [WidgetFamily] {
             if #available(iOSApplicationExtension 15.0, *) {
-                return [.systemLarge, .systemExtraLarge]
+                return [.systemLarge]
             } else {
                 return [.systemLarge]
             }

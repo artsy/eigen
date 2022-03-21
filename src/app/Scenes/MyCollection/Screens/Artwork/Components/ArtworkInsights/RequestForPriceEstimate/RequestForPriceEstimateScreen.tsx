@@ -1,14 +1,10 @@
 import { RequestForPriceEstimateScreenMutation } from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { Toast } from "app/Components/Toast/Toast"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Box, BulletedItem, Flex, Input, Join, PhoneInput, Spacer, Text } from "palette"
-import React, { useState } from "react"
-import { Alert, Platform, ScrollView } from "react-native"
+import { FormikProvider, useFormik } from "formik"
+import React from "react"
 import { commitMutation, graphql } from "relay-runtime"
 import * as Yup from "yup"
 import { RequestForPriceEstimateForm } from "./RequestForPriceEstimateForm"
@@ -57,8 +53,6 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
                 ... on RequestPriceEstimatedMutationSuccess {
                   submittedPriceEstimateParams {
                     artworkId
-                    requesterName
-                    requesterEmail
                   }
                 }
                 ... on RequestPriceEstimatedMutationFailure {

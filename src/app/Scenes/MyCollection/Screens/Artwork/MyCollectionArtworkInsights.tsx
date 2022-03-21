@@ -11,7 +11,7 @@ import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkIns
 import { MyCollectionArtworkArtistMarket } from "./Components/ArtworkInsights/MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkComparableWorks } from "./Components/ArtworkInsights/MyCollectionArtworkComparableWorks"
 import { MyCollectionArtworkDemandIndex } from "./Components/ArtworkInsights/MyCollectionArtworkDemandIndex"
-import { RequestForPriceEstimate } from "./Components/ArtworkInsights/RequestForPriceEstimate"
+import { RequestForPriceEstimateBanner } from "./Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateBanner"
 import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 
 interface MyCollectionArtworkInsightsProps {
@@ -54,7 +54,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         {!!showPriceEstimateBanner && (
           <>
-            <RequestForPriceEstimate
+            <RequestForPriceEstimateBanner
               me={me}
               artwork={artwork}
               marketPriceInsights={marketPriceInsights}
@@ -93,7 +93,7 @@ const artworkFragment = graphql`
     consignmentSubmission {
       displayText
     }
-    ...RequestForPriceEstimate_artwork
+    ...RequestForPriceEstimateBanner_artwork
     ...MyCollectionArtworkDemandIndex_artwork
     ...MyCollectionArtworkArtistMarket_artwork
     ...MyCollectionArtworkComparableWorks_artwork
@@ -106,12 +106,12 @@ const marketPriceInsightsFragment = graphql`
   fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
     ...MyCollectionArtworkDemandIndex_marketPriceInsights
     ...MyCollectionArtworkArtistMarket_marketPriceInsights
-    ...RequestForPriceEstimate_marketPriceInsights
+    ...RequestForPriceEstimateBanner_marketPriceInsights
   }
 `
 
 const meFragment = graphql`
   fragment MyCollectionArtworkInsights_me on Me {
-    ...RequestForPriceEstimate_me
+    ...RequestForPriceEstimateBanner_me
   }
 `

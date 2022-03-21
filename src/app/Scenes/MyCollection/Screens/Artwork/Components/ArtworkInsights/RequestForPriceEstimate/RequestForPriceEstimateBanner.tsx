@@ -1,34 +1,34 @@
 import { ActionType, ContextModule, OwnerType, TappedRequestPriceEstimate } from "@artsy/cohesion"
-import { RequestForPriceEstimate_artwork$key } from "__generated__/RequestForPriceEstimate_artwork.graphql"
-import { RequestForPriceEstimate_marketPriceInsights$key } from "__generated__/RequestForPriceEstimate_marketPriceInsights.graphql"
-import { RequestForPriceEstimate_me$key } from "__generated__/RequestForPriceEstimate_me.graphql"
+import { RequestForPriceEstimateBanner_artwork$key } from "__generated__/RequestForPriceEstimateBanner_artwork.graphql"
+import { RequestForPriceEstimateBanner_marketPriceInsights$key } from "__generated__/RequestForPriceEstimateBanner_marketPriceInsights.graphql"
+import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPriceEstimateBanner_me.graphql"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Box, Button, CheckIcon, Text } from "palette"
-import React, { useEffect } from "react"
+import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface RequestForPriceEstimateProps {
-  artwork: RequestForPriceEstimate_artwork$key
-  marketPriceInsights: RequestForPriceEstimate_marketPriceInsights$key | null
-  me: RequestForPriceEstimate_me$key | null
+  artwork: RequestForPriceEstimateBanner_artwork$key
+  marketPriceInsights: RequestForPriceEstimateBanner_marketPriceInsights$key | null
+  me: RequestForPriceEstimateBanner_me$key | null
 }
-export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = ({
+export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProps> = ({
   ...otherProps
 }) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<RequestForPriceEstimate_artwork$key>(
+  const artwork = useFragment<RequestForPriceEstimateBanner_artwork$key>(
     artworkFragment,
     otherProps.artwork
   )
-  const marketPriceInsights = useFragment<RequestForPriceEstimate_marketPriceInsights$key>(
+  const marketPriceInsights = useFragment<RequestForPriceEstimateBanner_marketPriceInsights$key>(
     marketPriceInsightsFragment,
     otherProps.marketPriceInsights
   )
 
-  const me = useFragment<RequestForPriceEstimate_me$key>(meFragment, otherProps.me)
+  const me = useFragment<RequestForPriceEstimateBanner_me$key>(meFragment, otherProps.me)
 
   const requestedPriceEstimates = GlobalStore.useAppState(
     (state) => state.requestedPriceEstimates.requestedPriceEstimates
@@ -84,28 +84,20 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
 }
 
 const artworkFragment = graphql`
-  fragment RequestForPriceEstimate_artwork on Artwork {
+  fragment RequestForPriceEstimateBanner_artwork on Artwork {
     internalID
     slug
-    title
-    medium
-    artist {
-      name
-      targetSupply {
-        isP1
-      }
-    }
   }
 `
 
 const marketPriceInsightsFragment = graphql`
-  fragment RequestForPriceEstimate_marketPriceInsights on MarketPriceInsights {
+  fragment RequestForPriceEstimateBanner_marketPriceInsights on MarketPriceInsights {
     demandRank
   }
 `
 
 const meFragment = graphql`
-  fragment RequestForPriceEstimate_me on Me {
+  fragment RequestForPriceEstimateBanner_me on Me {
     name
     email
     phone

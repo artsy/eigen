@@ -6,7 +6,7 @@ export interface RequestedPriceEstimate {
 }
 
 export interface RequestedPriceEstimatesModel {
-  requestedPriceEstimates: Record<RequestedPriceEstimate["artworkId"], RequestedPriceEstimate> | {}
+  requestedPriceEstimates: Record<RequestedPriceEstimate["artworkId"], RequestedPriceEstimate>
   addRequestedPriceEstimate: Action<this, RequestedPriceEstimate>
 }
 
@@ -14,6 +14,9 @@ export const getRequestedPriceEstimatesModel = (): RequestedPriceEstimatesModel 
   requestedPriceEstimates: {},
   addRequestedPriceEstimate: action((state, request) => {
     const { artworkId } = request
-    state.requestedPriceEstimates[artworkId] = request
+    const temp: RequestedPriceEstimatesModel["requestedPriceEstimates"] = {}
+    temp[artworkId] = request
+    const requests = { ...state.requestedPriceEstimates, ...temp }
+    state.requestedPriceEstimates = requests
   }),
 })
