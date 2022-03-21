@@ -18,8 +18,6 @@ if (metaflags.startStorybook) {
   global.__STORYBOOK__ = true
   require("./src/storybook")
 } else {
-  // polyfills are required for react-tracking to work properly
-  require("core-js/actual")
   require("react-native-gesture-handler")
   require("react-native-screens").enableScreens()
   require("./src/app/utils/PushNotification").configure()

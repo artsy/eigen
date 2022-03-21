@@ -1,3 +1,5 @@
+import { MyProfilePushNotifications_me } from "__generated__/MyProfilePushNotifications_me.graphql"
+import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -21,8 +23,6 @@ import {
   View,
 } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
-import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
 const INSTRUCTIONS = Platform.select({

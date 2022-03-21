@@ -201,6 +201,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addWebViewRoute("/conditions-of-sale"),
     addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
     addRoute("/artwork-submission-status", "ArtworkSubmissionStatusFAQ"),
+    addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
 
     addRoute("/partner/:partnerID", "Partner"),
     addRoute("/partner/:partnerID/works", "Partner"),
@@ -240,7 +241,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       mimicBrowserBackButton: true,
       useRightCloseButton: true,
     }),
-    __DEV__ && addRoute("/storybook", "Storybook"),
+    // __DEV__ && addRoute("/storybook", "Storybook"),
 
     // Every other route needs to go above
     addRoute("/:slug", "VanityURLEntity"),

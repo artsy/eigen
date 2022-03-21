@@ -148,7 +148,7 @@ describe("inquiry offer enabled", () => {
     expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0)
   })
 
-  it("does not render a CTA when the keyboard is visible", () => {
+  it("does not render a CTA when the keyboard is visible", async () => {
     const tree = getWrapper({
       Conversation: () => ({
         items: [
@@ -165,7 +165,7 @@ describe("inquiry offer enabled", () => {
 
     input.props.onFocus()
 
-    waitFor(() => expect(tree.root.findAllByType(CTAPopUp)[0]).not.toBeDefined())
+    await waitFor(() => expect(tree.root.findAllByType(CTAPopUp)[0]).not.toBeDefined())
   })
 
   describe("with associated orders (OrderCTAs)", () => {

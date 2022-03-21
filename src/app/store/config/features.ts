@@ -34,10 +34,6 @@ function defineFeatures<T extends string>(featureMap: {
 export type FeatureName = keyof typeof features
 
 export const features = defineFeatures({
-  AROptionsNewFirstInquiry: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsNewFirstInquiry",
-  },
   AROptionsInquiryCheckout: {
     readyForRelease: true,
     echoFlagKey: "AROptionsInquiryCheckout",
@@ -200,6 +196,11 @@ export const features = defineFeatures({
   ARShowDemandIndexHints: {
     readyForRelease: false,
     description: "Show demand index hints",
+    showInAdminMenu: true,
+  },
+  AREnablePriceEstimateRange: {
+    readyForRelease: false,
+    description: "Enable My Collection Price Estimate Range",
     showInAdminMenu: true,
   },
 })

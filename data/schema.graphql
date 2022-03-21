@@ -1645,6 +1645,7 @@ type Artwork implements Node & Searchable & Sellable {
     first: Int
     last: Int
   ): ArtistSeriesConnection
+  artsyShippingInternational: Boolean
 
   # Represents the location of the artwork for "My Collection" artworks
   artworkLocation: String
@@ -1911,6 +1912,7 @@ enum ArtworkAggregation {
   PARTNER_CITY
   PERIOD
   PRICE_RANGE
+  SIMPLE_PRICE_HISTOGRAM
   TOTAL
 }
 
@@ -1941,6 +1943,7 @@ interface ArtworkConnectionInterface {
 type ArtworkConsignmentSubmission {
   displayText: String
   inProgress: Boolean
+  isSold: Boolean
 }
 
 union ArtworkContext = Fair | Sale | Show
@@ -4548,6 +4551,9 @@ type CommerceShipArta {
 type CommerceShipment {
   bookedAt: String
   carrierName: String
+  contactEmail: String
+  contactName: String
+  contactPhone: String
   createdAt(
     format: String
 
@@ -6283,6 +6289,7 @@ input CreateSubmissionMutationInput {
   locationState: String
   medium: String
   minimumPriceDollars: Int
+  myCollectionArtworkID: String
   provenance: String
   sessionID: String
   signature: Boolean
@@ -9695,6 +9702,9 @@ type Mutation {
     input: RequestCredentialsForAssetUploadInput!
   ): RequestCredentialsForAssetUploadPayload
 
+  # Request price estimate of an artwork
+  requestPriceEstimate(input: RequestPriceEstimateInput!): RequestPriceEstimatePayload
+
   # Save (or remove) an artwork to (from) a users default collection.
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 
@@ -10655,6 +10665,32 @@ type PhoneNumberType {
   isValid: Boolean
   originalNumber: String
   regionCode: String
+}
+
+type PreviewSavedSearch {
+  # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
+  labels: [SearchCriteriaLabel]!
+}
+
+input PreviewSavedSearchAttributes {
+  acquireable: Boolean
+  additionalGeneIDs: [String]
+  artistIDs: [String]
+  atAuction: Boolean
+  attributionClass: [String]
+  colors: [String]
+  height: String
+  inquireableOnly: Boolean
+  locationCities: [String]
+  majorPeriods: [String]
+  materialsTerms: [String]
+  offerable: Boolean
+  partnerIDs: [String]
+  priceRange: String
+
+  # Filter results by Artwork sizes
+  sizes: [ArtworkSizes]
+  width: String
 }
 
 # The connection type for MarketPriceInsights.
@@ -11630,6 +11666,9 @@ type Query {
   # Phone number information
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
 
+  # A previewed saved search
+  previewSavedSearch(attributes: PreviewSavedSearchAttributes): PreviewSavedSearch
+
   # Get all price insights for an artist.
   priceInsights(
     # Returns the elements in the list that come after the specified cursor.
@@ -11943,6 +11982,31 @@ type RequestLocation {
   countryCode: String
 }
 
+type RequestPriceEstimatedMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type RequestPriceEstimatedMutationSuccess {
+  submittedPriceEstimateParams: SubmittedPriceEstimateParams
+}
+
+input RequestPriceEstimateInput {
+  artworkId: String!
+  clientMutationId: String
+  requesterEmail: String
+  requesterName: String
+  requesterPhoneNumber: String
+}
+
+union RequestPriceEstimateMutationType =
+    RequestPriceEstimatedMutationFailure
+  | RequestPriceEstimatedMutationSuccess
+
+type RequestPriceEstimatePayload {
+  clientMutationId: String
+  priceEstimateParamsOrError: RequestPriceEstimateMutationType
+}
+
 type ResizedImageUrl {
   factor: Float!
   height: Int
@@ -12001,6 +12065,7 @@ type Sale implements Node {
   # Auction's buyer's premium policy.
   buyersPremium: [BuyersPremium]
   cached: Int
+  cascadingEndTime: SaleCascadingEndTime
 
   # Amount of seconds in between each lot closing.
   cascadingEndTimeInterval: Int
@@ -12011,6 +12076,14 @@ type Sale implements Node {
   displayTimelyAt: String
   eligibleSaleArtworksCount: Int
   endAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  endedAt(
     format: String
 
     # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
@@ -12160,6 +12233,9 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
 
   # Singular estimate field, if specified
   estimateCents: Int
+
+  # A formatted description of the lot end date and time
+  formattedEndDateTime: String
 
   # A formatted description of when the lot starts or ends or if it has ended
   formattedStartDateTime: String
@@ -12404,6 +12480,14 @@ type SaleArtworksConnection implements ArtworkConnectionInterface {
   # Information to aid in pagination.
   pageInfo: PageInfo!
   totalCount: Int
+}
+
+type SaleCascadingEndTime {
+  # A more granular formatted description of when the auction starts or ends if it has ended
+  formattedStartDateTime: String
+
+  # A label indicating the interval in minutes in which lots close
+  intervalLabel: String
 }
 
 # A connection to a list of items.
@@ -13286,6 +13370,20 @@ type SubmitInquiryRequestMutationPayload {
 
   # Artwork Inquiry request
   inquiryRequest: InquiryRequest
+}
+
+type SubmittedPriceEstimateParams {
+  # Artwork ID submitted for estimate
+  artworkId: String!
+
+  # Email of the requester
+  requesterEmail: String
+
+  # Name of the requester
+  requesterName: String
+
+  # Phone number of the requester
+  requesterPhoneNumber: String
 }
 
 type System {
@@ -14508,6 +14606,9 @@ type Viewer {
 
   # Phone number information
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
+
+  # A previewed saved search
+  previewSavedSearch(attributes: PreviewSavedSearchAttributes): PreviewSavedSearch
 
   # A requested location
   requestLocation(ip: String!): RequestLocation

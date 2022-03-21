@@ -1,29 +1,27 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
-import { Image } from "react-native-image-crop-picker"
-import {
-  MyCollectionArtworkForm,
-  MyCollectionArtworkFormProps,
-  updateArtwork,
-} from "./MyCollectionArtworkForm"
-
 import { fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionAddArtworkMutationResponse } from "__generated__/myCollectionAddArtworkMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-
 import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "app/Scenes/Consignments/Submission/geminiUploadToS3"
-import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import React from "react"
+import { Image } from "react-native-image-crop-picker"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import * as artworkMutations from "../../mutations/myCollectionAddArtwork"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
+import {
+  MyCollectionArtworkForm,
+  MyCollectionArtworkFormProps,
+  updateArtwork,
+} from "./MyCollectionArtworkForm"
 import * as photoUtil from "./MyCollectionImageUtil"
 
 jest.mock("app/Scenes/Consignments/Submission/geminiUploadToS3", () => ({
@@ -70,6 +68,23 @@ describe("MyCollectionArtworkForm", () => {
   describe("Adding a new artwork", () => {
     describe("when selecting an already existing artwork", () => {
       it("populates the form with the data from the artwork", async () => {
+        const assetCredentials = {
+          signature: "some-signature",
+          credentials: "some-credentials",
+          policyEncoded: "some-policy-encoded",
+          policyDocument: {
+            expiration: "some-expiration",
+            conditions: {
+              acl: "some-acl",
+              bucket: "some-bucket",
+              geminiKey: "some-gemini-key",
+              successActionStatus: "some-success-action-status",
+            },
+          },
+        }
+        getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
+        uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
+
         const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappersTL(
           <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
         )
@@ -192,6 +207,7 @@ describe("MyCollectionArtworkForm", () => {
   describe("images", () => {
     describe("uploading images", () => {
       it("uploads photos to s3", async () => {
+        uploadFileToS3Mock.mockReset()
         const somePhoto = fakePhoto("some-path")
         const someOtherPhoto = fakePhoto("some-other-path")
         getConvectionGeminiKeyMock.mockReturnValueOnce(Promise.resolve("some-key"))
@@ -286,6 +302,9 @@ describe("MyCollectionArtworkForm", () => {
                   artist: {
                     internalID: "some-internal-id",
                     formattedNationalityAndBirthday: "British",
+                    targetSupply: {
+                      isP1: false,
+                    },
                   },
                   artistNames: "some-artist-name",
                   category: null,
@@ -305,6 +324,7 @@ describe("MyCollectionArtworkForm", () => {
                   title: null,
                   attributionClass: null,
                   consignmentSubmission: null,
+                  " $fragmentRefs": null as any,
                 },
               },
             },

@@ -16,8 +16,7 @@ import React, { useState } from "react"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { InfoModal } from "./Components/InfoModal"
 import { LocationAutocomplete } from "./Components/LocationAutocomplete"
-import { rarityOptions } from "./utils/rarityOptions"
-import { limitedEditionValue } from "./utils/rarityOptions"
+import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
 import { ArtworkDetailsFormModel, Location } from "./validation"
 
 const StandardSpace = () => <Spacer mt={4} />

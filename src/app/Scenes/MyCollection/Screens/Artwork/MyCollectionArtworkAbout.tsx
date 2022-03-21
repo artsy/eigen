@@ -2,27 +2,28 @@ import { MyCollectionArtworkAbout_artwork$key } from "__generated__/MyCollection
 import { MyCollectionArtworkAbout_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAbout_marketPriceInsights.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex } from "palette/elements"
+import { Flex, Spacer } from "palette/elements"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollectionArtworkAboutWork"
 import { MyCollectionArtworkArticles } from "./Components/ArtworkAbout/MyCollectionArtworkArticles"
 import { MyCollectionArtworkPurchaseDetails } from "./Components/ArtworkAbout/MyCollectionArtworkPurchaseDetails"
+import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 
 interface MyCollectionArtworkAboutProps {
   artwork: MyCollectionArtworkAbout_artwork$key
   marketPriceInsights: MyCollectionArtworkAbout_marketPriceInsights$key | null
 }
 
-export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> = (props) => {
+export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
   const artwork = useFragment<MyCollectionArtworkAbout_artwork$key>(artworkFragment, props.artwork)
   const marketPriceInsights = useFragment<MyCollectionArtworkAbout_marketPriceInsights$key>(
     marketPriceInsightsFragment,
     props.marketPriceInsights
   )
-  const articles = extractNodes(artwork.artist?.articles)
 
+  const articles = extractNodes(artwork.artist?.articles)
   return (
     <StickyTabPageScrollView>
       <Flex my={3}>
@@ -36,6 +37,8 @@ export const MyCollectionArtworkAbout: React.FC<MyCollectionArtworkAboutProps> =
           articles={articles}
           totalCount={artwork.artist?.articles?.totalCount}
         />
+        <Spacer mb={3} mt={3} />
+        <MyCollectionWhySell artwork={artwork} />
       </Flex>
     </StickyTabPageScrollView>
   )
@@ -46,6 +49,9 @@ const artworkFragment = graphql`
     ...MyCollectionArtworkAboutWork_artwork
     ...MyCollectionArtworkPurchaseDetails_artwork
     artistNames
+    consignmentSubmission {
+      displayText
+    }
     artist {
       slug
       articles: articlesConnection(first: 10, inEditorialFeed: true, sort: PUBLISHED_AT_DESC) {
@@ -56,7 +62,11 @@ const artworkFragment = graphql`
           }
         }
       }
+      targetSupply {
+        isP1
+      }
     }
+    ...MyCollectionWhySell_artwork
   }
 `
 

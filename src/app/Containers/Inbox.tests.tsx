@@ -1,9 +1,7 @@
 import { InboxTestsQuery } from "__generated__/InboxTestsQuery.graphql"
-import { press } from "app/Scenes/Artwork/Components/CommercialButtons/helpers"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Text } from "palette"
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -63,18 +61,11 @@ const getWrapper = (mockResolvers: MockResolvers = {}) => {
 }
 
 it("renders without throwing an error", () => {
-  getWrapper({})
+  getWrapper()
 })
 
 it("renders bids tab by default when bids are enabled", () => {
   const tree = getWrapper()
   expect(tree.root.findAllByType(MyBidsContainer).length).toEqual(1)
   expect(tree.root.findAllByType(ConversationsContainer).length).toEqual(0)
-})
-
-it("renders inquiries tab when inquiries tab is selected", async () => {
-  const tree = getWrapper()
-
-  await press(tree.root, { text: "Inquiries", componentType: Text })
-  expect(tree.root.findAllByType(ConversationsContainer).length).toEqual(1)
 })

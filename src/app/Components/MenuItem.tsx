@@ -4,6 +4,7 @@ import { StyleProp, ViewStyle } from "react-native"
 
 export const MenuItem: React.FC<{
   disabled?: boolean
+  allowDisabledVisualClue?: boolean // grays out with reduced opacity when disabled
   title: React.ReactNode
   value?: React.ReactNode
   text?: string
@@ -20,7 +21,13 @@ export const MenuItem: React.FC<{
   isBeta,
   onPress,
   disabled = false,
-  chevron = <ChevronIcon direction="right" fill="black60" />,
+  allowDisabledVisualClue = false,
+  chevron = (
+    <ChevronIcon
+      direction="right"
+      fill={disabled && allowDisabledVisualClue ? "black30" : "black60"}
+    />
+  ),
   ellipsizeMode,
   style,
   rightView,
@@ -28,12 +35,22 @@ export const MenuItem: React.FC<{
   const color = useColor()
   return (
     <Touchable onPress={onPress} underlayColor="black5" disabled={disabled}>
-      <Flex flexDirection="row" alignItems="center" py={7.5} px="2" style={style}>
+      <Flex
+        flexDirection="row"
+        alignItems="center"
+        py={7.5}
+        px="2"
+        style={style}
+        opacity={disabled && allowDisabledVisualClue ? 0.5 : 1}
+      >
         <Flex>
           <Text variant="md">{title}</Text>
           {!!isBeta && (
             <Flex px={0.5} mx={1} backgroundColor={color("black10")}>
-              <Text variant="sm" color="black60">
+              <Text
+                variant="sm"
+                color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
+              >
                 Beta
               </Text>
             </Flex>
@@ -47,7 +64,7 @@ export const MenuItem: React.FC<{
             <Flex flex={1}>
               <Text
                 variant="md"
-                color="black60"
+                color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
                 numberOfLines={1}
                 ellipsizeMode={ellipsizeMode}
                 textAlign="right"
@@ -58,7 +75,7 @@ export const MenuItem: React.FC<{
           )}
 
           {!!text && (
-            <Text variant="md" color="black60">
+            <Text variant="md" color={disabled && allowDisabledVisualClue ? "black30" : "black60"}>
               {text}
             </Text>
           )}

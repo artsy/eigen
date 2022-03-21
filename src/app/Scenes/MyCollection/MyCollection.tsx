@@ -1,5 +1,5 @@
 import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
@@ -13,7 +13,13 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { useToast } from "app/Components/Toast/toastHook"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { GlobalStore, useDevToggle, useFeatureFlag } from "app/store/GlobalStore"
+import {
+  GlobalStore,
+  removeClue,
+  useDevToggle,
+  useFeatureFlag,
+  useSessionVisualClue,
+} from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -47,18 +53,15 @@ export function refreshMyCollection() {
 
 export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
 
-const hasBeenShownBanner = async () => {
-  const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-  return hasSeen === "true"
-}
-
 const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me
 }> = ({ relay, me }) => {
   const { trackEvent } = useTracking()
+  const { showSessionVisualClue } = useSessionVisualClue()
 
   const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
+  const enableConsignmentsInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
   const [keywordFilter, setKeywordFilter] = useState("")
@@ -99,10 +102,20 @@ const MyCollection: React.FC<{
   const space = useSpace()
   const toast = useToast()
 
+  const hasBeenShownBanner = async () => {
+    const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
+    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionBanner")
+    return {
+      hasSeenBanner: hasSeen === "true",
+      shouldShowConsignments: shouldShowConsignments === true,
+    }
+  }
+
   useEffect(() => {
     if (artworks.length) {
-      hasBeenShownBanner().then((hasSeenBanner) => {
+      hasBeenShownBanner().then(({ hasSeenBanner, shouldShowConsignments }) => {
         const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
+        const showConsignmentsBanner = shouldShowConsignments && enableConsignmentsInMyCollection
 
         setJSX(
           <Flex>
@@ -139,6 +152,14 @@ const MyCollection: React.FC<{
                 onClose={() =>
                   AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
                 }
+              />
+            )}
+            {!!showConsignmentsBanner && (
+              <Banner
+                title="Artwork added to My Collection"
+                text="The artwork you submitted for sale has been automatically added."
+                showCloseButton
+                onClose={() => removeClue("ArtworkSubmissionBanner")}
               />
             )}
           </Flex>

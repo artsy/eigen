@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { GeneArtworksTestsQuery } from "__generated__/GeneArtworksTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
@@ -34,10 +34,9 @@ describe("GeneArtworks", () => {
           if (props?.gene) {
             return (
               <StickyTabPage
-                staticHeaderContent={<></>}
                 tabs={[
                   {
-                    title: "GeneArtworks",
+                    title: "test",
                     content: <GeneArtworksPaginationContainer gene={props.gene} />,
                   },
                 ]}
@@ -63,11 +62,11 @@ describe("GeneArtworks", () => {
     mockEnvironmentPayload(environment)
   })
 
-  it("renders filter header", () => {
+  it("renders filter header", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment)
 
-    expect(getByText("Sort & Filter")).toBeTruthy()
+    await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
   })
 
   it("renders artworks grid", () => {
@@ -86,7 +85,7 @@ describe("GeneArtworks", () => {
     expect(getByText("title-1")).toBeTruthy()
   })
 
-  it("renders empty artworks grid view", () => {
+  it("renders empty artworks grid view", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment, {
       FilterArtworksConnection() {
@@ -99,6 +98,7 @@ describe("GeneArtworks", () => {
     })
 
     // Change sort filter
+    await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
     fireEvent.press(getByText("Sort & Filter"))
     fireEvent.press(getByText("Sort By"))
     fireEvent.press(getByText("Recently Added"))
