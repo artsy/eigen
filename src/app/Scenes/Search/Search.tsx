@@ -115,7 +115,6 @@ export const Search: FC = () => {
     updateIndicesInfo,
   } = useAlgoliaIndices(searchClient, indices)
   const { trackEvent } = useTracking()
-  const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
   const exampleExperiments = useFeatureFlag("AREnableExampleExperiments")
   const smudgeValue = useExperimentVariant("test-search-smudge")
@@ -139,7 +138,7 @@ export const Search: FC = () => {
         return {
           ...other,
           type: "algolia",
-          disabled: enableImprovedPills && !indicesInfo[name]?.hasResults,
+          disabled: !indicesInfo[name]?.hasResults,
           indexName: name,
         }
       })
@@ -249,7 +248,7 @@ export const Search: FC = () => {
               onTextChange={(value) => {
                 handleResetSearchInput()
 
-                if (enableImprovedPills && value.length >= 2) {
+                if (value.length >= 2) {
                   updateIndicesInfo(value)
                 }
               }}

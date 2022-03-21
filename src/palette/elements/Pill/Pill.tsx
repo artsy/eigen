@@ -2,7 +2,6 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, FlexProps } from "../Flex"
 import { Text, useTextStyleForPalette } from "../Text"
 
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { IconProps, Spacer, useColor } from "palette"
 import React, { ReactNode, useEffect, useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
@@ -28,10 +27,8 @@ export interface PillProps extends FlexProps {
 
 enum DisplayState {
   Enabled = "enabled",
-  EnabledImprovedFlag = "enabled2",
   Pressed = "pressed",
   Selected = "selected",
-  SelectedImprovedFlag = "selected2",
   Disabled = "disabled",
 }
 
@@ -71,17 +68,9 @@ export const Pill: React.FC<PillProps> = ({
   highlightEnabled = false,
   ...rest
 }) => {
-  const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
-
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
-  const enabledDisplayState = enableImprovedPills
-    ? DisplayState.EnabledImprovedFlag
-    : DisplayState.Enabled
-  const selectedDisplayState = enableImprovedPills
-    ? DisplayState.SelectedImprovedFlag
-    : DisplayState.Selected
-  const standartDisplayState = disabled ? DisplayState.Disabled : enabledDisplayState
-  const initialDisplayState = selected ? selectedDisplayState : standartDisplayState
+  const standartDisplayState = disabled ? DisplayState.Disabled : DisplayState.Enabled
+  const initialDisplayState = selected ? DisplayState.Selected : standartDisplayState
   const [innerDisplayState, setInnerDisplayState] = useState(initialDisplayState)
   const { height, paddingLeft, paddingRight } = getSize(size)
 
@@ -164,21 +153,11 @@ const useStyleForState = (
       retval.backgroundColor = color("white100")
       break
     case DisplayState.Selected:
-      retval.textColor = color("black100")
-      retval.borderColor = color("black60")
-      retval.backgroundColor = color("white100")
-      break
-    case DisplayState.SelectedImprovedFlag:
       retval.textColor = color("white100")
       retval.borderColor = color("blue100")
       retval.backgroundColor = color("blue100")
       break
     case DisplayState.Enabled:
-      retval.textColor = color("black100")
-      retval.borderColor = color("black15")
-      retval.backgroundColor = color("white100")
-      break
-    case DisplayState.EnabledImprovedFlag:
       retval.textColor = color("black100")
       retval.borderColor = color("black60")
       retval.backgroundColor = color("white100")
