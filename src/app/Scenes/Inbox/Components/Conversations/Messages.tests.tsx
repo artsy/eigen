@@ -1,7 +1,7 @@
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Text } from "palette"
+import { Flex, Text } from "palette"
 import React from "react"
 import "react-native"
 import { RefreshControl } from "react-native"
@@ -31,6 +31,7 @@ let env: ReturnType<typeof createMockEnvironment>
 
 beforeEach(() => {
   env = createMockEnvironment()
+  jest.useFakeTimers()
 })
 
 const onRefresh = jest.fn()
@@ -130,6 +131,29 @@ describe("messages with order updates", () => {
     expect(extractText(tree.root)).toMatch("You sent an offer for")
   })
 
+  it("shows the toast message and fades out after 5 seconds", () => {
+    const tree = withConversationItems(getWrapper, {
+      events: [
+        {
+          __typename: "CommerceOfferSubmittedEvent",
+          offer: {
+            respondsTo: null,
+          },
+          createdAt: new Date().toISOString(),
+        },
+      ],
+    })
+
+    expect(extractText(tree.root)).toMatch(
+      "To protect your payment, always communicate and pay through the Artsy platform."
+    )
+    const toast = tree.root.findAllByType(Flex)[0]
+    jest.advanceTimersByTime(150)
+    expect(toast.props.opacity).toBe(1)
+    jest.advanceTimersByTime(5000)
+    expect(toast.props.opacity).toBe(0)
+  })
+
   it("sorts interleaved items by date", () => {
     const day1Time1 = "2020-03-18T02:58:37.699Z"
     const day1Time2 = "2020-03-18T02:59:37.699Z"
@@ -173,10 +197,10 @@ describe("messages with order updates", () => {
       .map((element) => extractText(element))
 
     // messages print in reverse order because FlatList is inverted
-    expect(messagesAndUpdates[3]).toContain("Day 1 message")
-    expect(messagesAndUpdates[2]).toContain("You sent an offer")
-    expect(messagesAndUpdates[1]).toContain("Day 2 message")
-    expect(messagesAndUpdates[0]).toContain("You received a counteroffer")
+    expect(messagesAndUpdates[4]).toContain("Day 1 message")
+    expect(messagesAndUpdates[3]).toContain("You sent an offer")
+    expect(messagesAndUpdates[2]).toContain("Day 2 message")
+    expect(messagesAndUpdates[1]).toContain("You received a counteroffer")
   })
 
   it("removes 'Offer accepted' events when payment fails", () => {
@@ -244,7 +268,7 @@ describe("messages with order updates", () => {
   })
 
   // We fetch all order updates but only paginated messages, so this is to avoid a smooshed list of updates at the top.
-  it("does not show order updates before the currently-available messages", () => {
+  it("shows order updates before the currently-available messages", () => {
     const beforeLastMessageTime = "2020-03-18T02:58:37.699Z"
     const beforeLastMessageTime2 = "2020-03-18T02:59:37.699Z"
     const lastMessageTime = "2020-03-19T01:58:37.699Z"
@@ -257,6 +281,7 @@ describe("messages with order updates", () => {
           __typename: "CommerceOfferSubmittedEvent",
           offer: {
             respondsTo: null,
+            amount: 10,
           },
           createdAt: beforeLastMessageTime,
         },
@@ -265,6 +290,8 @@ describe("messages with order updates", () => {
           offer: {
             respondsTo: {},
             fromParticipant: "SELLER",
+            offerAmountChanged: true,
+            amount: 11,
           },
           createdAt: beforeLastMessageTime2,
         },
@@ -272,14 +299,15 @@ describe("messages with order updates", () => {
           __typename: "CommerceOfferSubmittedEvent",
           offer: {
             respondsTo: {},
-            fromParticipant: "Buyer",
+            fromParticipant: "BUYER",
+            amount: 12,
           },
           createdAt: afterLastMessageTime,
         },
       ],
     })
-    expect(extractText(tree.root)).toContain("You sent a counteroffer for")
-    expect(extractText(tree.root)).not.toContain("You sent an offer for")
-    expect(extractText(tree.root)).not.toContain("You received a counteroffer for")
+    expect(extractText(tree.root)).toContain("You sent an offer for 10")
+    expect(extractText(tree.root)).toContain("You received a counteroffer for 11")
+    expect(extractText(tree.root)).toContain("You sent a counteroffer for 12")
   })
 })

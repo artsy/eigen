@@ -22,7 +22,6 @@ tmtags
 tmtagsHistory
 config/releasenotes.txt
 Podfile.local
-chairs/
 ios/Artsy.xcodeproj/project.xcworkspace/xcshareddata/
 ios/Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 .vendor/
@@ -97,7 +96,6 @@ data/complete.queryMap.json
 native-code-checksum.hash
 
 .manifests
-test-results.json
 
 # metro cache
 .metro
@@ -113,7 +111,6 @@ test-results.json
 !.env.example
 
 # Ignore test artefacts
-test-results.xml
 xcode_test_raw.log
 
 .recordingSnapshots
@@ -149,6 +146,9 @@ metaflags.json
 
 # Relay
 src/__generated__/*
+
+# jest circleci reports
+reports
 
 # Keep this rule last.
 # Keep these, so we can keep the folders these appear in.

@@ -8,14 +8,15 @@
 
 ## Meandering Around
 
-- [Best_practices](best_practices.md)
+- [Best Practices](best_practices.md)
 
 ## Documentation about different work flows
 
-- [pull request template](pull_request_template.md)
+- [Pull Request template](pull_request_template.md)
 - [Storybook](storybook.md)
 - [FeatureFlags](developing_a_feature.md)
 - [Metaflags](metaflags.md)
+- [Hide loggers](metaflags.md/#hide-loggers)
 - [Debugging](debugging.md)
 - [Visual Clues](add_a_visual_clue.md)
 - [Unleash - Experiments](add_an_experiment.md)
@@ -28,6 +29,7 @@
 - [Analytics and Tracking](analytics_and_tracking.md)
 - [Certificates](certs.md)
 - [Test on a real device: create a beta](deploy_to_beta.md)
+- [Generate a Release build for local testing](generate_a_release_build_for_local_testing.md)
 
 ### Beta
 

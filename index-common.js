@@ -4,7 +4,7 @@ global.__STORYBOOK__ = false
 // for more info about metaflags, look [here](/docs/metaflags.md)
 let metaflags = {
   newIosAppShell: false,
-  startStorybook: false
+  startStorybook: false,
 }
 
 try {
@@ -29,9 +29,8 @@ if (metaflags.startStorybook) {
   }
 
   if (Platform.OS === "android" || newIosAppShell) {
-    const appName = (newIosAppShell && !(Platform.OS === "android")) ? require("./app.json").appName : "Artsy"
-    // polyfills are required for react-tracking to work properly
-    require("core-js/actual")
+    const appName =
+      newIosAppShell && !(Platform.OS === "android") ? require("./app.json").appName : "Artsy"
     require("react-native-gesture-handler")
     require("react-native-screens").enableScreens()
     if (!newIosAppShell) {
@@ -42,5 +41,3 @@ if (metaflags.startStorybook) {
     AppRegistry.registerComponent(appName, () => App)
   }
 }
-
-

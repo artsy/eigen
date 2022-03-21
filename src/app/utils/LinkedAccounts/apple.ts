@@ -8,7 +8,6 @@ import { Toast } from "app/Components/Toast/Toast"
 import { AppleToken } from "app/Scenes/Onboarding/OnboardingSocialLink"
 import { unsafe_getUserEmail } from "app/store/GlobalStore"
 import { useEffect, useRef, useState } from "react"
-import { Alert } from "react-native"
 import { commitMutation, graphql } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -73,39 +72,50 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
   const link = async () => {
     setLoading(true)
 
-    const userInfo = await appleAuth.performRequest({
-      requestedOperation: appleAuth.Operation.LOGIN,
-      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-    })
+    try {
+      const userInfo = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      })
 
-    const idToken = userInfo.identityToken
-    if (!idToken) {
-      Alert.alert("Error", "Failed to authenticate using apple sign in")
+      const idToken = userInfo.identityToken
+      if (!idToken) {
+        Toast.show("Error: Failed to authenticate using apple sign in.", "top")
+        setLoading(false)
+        return
+      }
+
+      const currentUserEmail = unsafe_getUserEmail()
+
+      // Because Apple Auth only ever returns user email and names once (i.e during the first login),
+      // fallback to current user's email when Apple auth does not return email
+      const email = userInfo.email ?? currentUserEmail
+
+      if (!email) {
+        Toast.show("Error: There is no email associated with your Apple account.", "top")
+        setLoading(false)
+        return
+      }
+      const appleUid = userInfo.user
+
+      const computeString = (str?: string | null) => (str ? str : "")
+
+      const computeName = ({ givenName, familyName }: AppleRequestResponseFullName) =>
+        (computeString(givenName) + " " + computeString(familyName)).trim()
+
+      const name = userInfo?.fullName ? computeName(userInfo.fullName) : ""
+
+      linkUsingOauthToken(email, name, { idToken, appleUid })
+    } catch (error) {
       setLoading(false)
-      return
+      // Note: ErrorCodes for apple auth might be different on android. Verify when implementing on android
+      const err = error as any
+      if (err?.code === appleAuth.Error.CANCELED) {
+        Toast.show("Error: Linking cancelled.", "top")
+      } else {
+        Toast.show(`Error: Failed to link accounts.`, "top")
+      }
     }
-
-    const currentUserEmail = unsafe_getUserEmail()
-
-    // Because Apple Auth only ever returns user email and names once (i.e during the first login),
-    // fallback to current user's email when Apple auth does not return email
-    const email = userInfo.email ?? currentUserEmail
-
-    if (!email) {
-      Alert.alert("Error", "There is no email associated with your Apple account.")
-      setLoading(false)
-      return
-    }
-    const appleUid = userInfo.user
-
-    const computeString = (str?: string | null) => (str ? str : "")
-
-    const computeName = ({ givenName, familyName }: AppleRequestResponseFullName) =>
-      (computeString(givenName) + " " + computeString(familyName)).trim()
-
-    const name = userInfo?.fullName ? computeName(userInfo.fullName) : ""
-
-    linkUsingOauthToken(email, name, { idToken, appleUid })
   }
 
   const unlink = () => {

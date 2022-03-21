@@ -1,28 +1,108 @@
-// @ts-ignore
-import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 import "@testing-library/jest-native/extend-expect"
 import "jest-extended"
 
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
 import chalk from "chalk"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
-// @ts-ignore
-import Adapter from "enzyme-adapter-react-16"
 import expect from "expect"
 import { format } from "util"
 
 import "app/tests/renderUntil"
+
+// MARK: - General preparation
+
 Enzyme.configure({ adapter: new Adapter() })
+const originalConsoleError = console.error
+// TODO: Remove once we're no longer using JSDOM for enzyme static rendering.
+console.error = (message?: any) => {
+  if (
+    typeof message === "string" &&
+    (message.includes("is using uppercase HTML. Always use lowercase HTML tags in React.") ||
+      /Warning: React does not recognize the `\w+` prop on a DOM element\./.test(message) ||
+      /Warning: The tag <\w+> is unrecognized in this browser\./.test(message) ||
+      /Warning: Unknown event handler property `\w+`\./.test(message) ||
+      /Warning: An update to [\w\s]+ inside a test was not wrapped in act/.test(message) ||
+      /Warning: Received `\w+` for a non-boolean attribute `\w+`\./.test(message) ||
+      /Warning: [\w\s]+ has been extracted from react-native core/.test(message))
+  ) {
+    // NOOP
+  } else {
+    originalConsoleError(message)
+  }
+}
+
+// @ts-expect-error
+global.__TEST__ = true
+declare const process: any
+
+if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
+  const originalLoggers = {
+    error: console.error,
+    warn: console.warn,
+  }
+
+  function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
+    const explanation =
+      chalk.white(`Test failed due to \`console.${type}(…)\` call.\n`) +
+      chalk.gray("(Disable with ALLOW_CONSOLE_LOGS=true env variable.)\n\n")
+    if (args[0] instanceof Error) {
+      const msg = explanation + chalk.red(args[0].message)
+      const err = new Error(msg)
+      err.stack = args[0].stack!.replace(`Error: ${args[0].message}`, msg)
+      return err
+    } else if (
+      // Because we use react-dom in tests to render react-native components, a few warnings are being logged that we do
+      // not care for, so ignore these.
+      typeof args[0] === "string" &&
+      !args[0].includes("is using incorrect casing") &&
+      !args[0].includes("is unrecognized in this browser") &&
+      ![args[0].includes("React does not recognize the `testID` prop on a DOM element.")]
+    ) {
+      const err = new Error(explanation + chalk.red(format(args[0], ...args.slice(1))))
+      ;(Error as any).captureStackTrace(err, constructorOpt)
+      return err
+    }
+    return null
+  }
+
+  beforeEach((done) => {
+    mockTrackEvent.mockClear()
+    mockPostEventToProviders.mockClear()
+    const types: Array<"error" | "warn"> = ["error", "warn"]
+    types.forEach((type) => {
+      // Don't spy on loggers that have been modified by the current test.
+      if (console[type] === originalLoggers[type]) {
+        const handler = (...args: unknown[]) => {
+          const error = logToError(type, args, handler)
+          if (error) {
+            done.fail(error)
+          }
+        }
+        jest.spyOn(console, type).mockImplementation(handler)
+      }
+    })
+    done() // it is important to call this here or every test will timeout
+  })
+}
 
 // Waiting on https://github.com/thymikee/snapshot-diff/pull/17
 import diff from "snapshot-diff"
 expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
-jest.mock("react-native-screens/native-stack", () => {
-  return {
-    createNativeStackNavigator: require("@react-navigation/stack").createStackNavigator,
-  }
-})
+// MARK: - External deps mocks
+
+jest.mock("react-native-screens/native-stack", () => ({
+  createNativeStackNavigator: require("@react-navigation/stack").createStackNavigator,
+}))
+
+// @ts-expect-error typescript doesn't see this for some reason
+import mockAsyncStorage from "@react-native-async-storage/async-storage/jest/async-storage-mock"
+jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
+
+// @ts-expect-error
+import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
+jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
 // tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
@@ -34,18 +114,6 @@ import track, { useTracking } from "react-tracking"
 ;(track as jest.Mock).mockImplementation(() => (x: any) => x)
 ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent: mockTrackEvent }))
 
-jest.mock("app/utils/track/providers", () => ({
-  ...jest.requireActual("app/utils/track/providers"),
-  postEventToProviders: jest.fn(),
-}))
-
-jest.mock("app/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-  reset(this: { defaultEnvironment: any }) {
-    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
-  },
-}))
-
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
@@ -54,16 +122,6 @@ jest.mock("tipsi-stripe", () => ({
 
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
-
-jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
-
-jest.mock("./app/NativeModules/NotificationsManager.tsx", () => ({
-  NotificationsManager: new (require("events").EventEmitter)(),
-}))
-
-jest.mock("./app/utils/userHadMeaningfulInteraction.tsx", () => ({
-  userHadMeaningfulInteraction: jest.fn(),
-}))
 
 jest.mock("react-native-share", () => ({
   open: jest.fn(),
@@ -156,38 +214,133 @@ jest.mock("@react-native-mapbox-gl/maps", () => ({
   SymbolLayer: () => null,
 }))
 
-function mockedModule(path: string, mockModuleName: string) {
-  jest.mock(path, () => mockModuleName)
-}
+const _ = jest.requireActual("lodash")
 
-const originalConsoleError = console.error
-
-// TODO: Remove once we're no longer using JSDOM for enzyme static rendering.
-console.error = (message?: any) => {
-  if (
-    typeof message === "string" &&
-    (message.includes("is using uppercase HTML. Always use lowercase HTML tags in React.") ||
-      /Warning: React does not recognize the `\w+` prop on a DOM element\./.test(message) ||
-      /Warning: The tag <\w+> is unrecognized in this browser\./.test(message) ||
-      /Warning: Unknown event handler property `\w+`\./.test(message) ||
-      /Warning: An update to [\w\s]+ inside a test was not wrapped in act/.test(message) ||
-      /Warning: Received `\w+` for a non-boolean attribute `\w+`\./.test(message) ||
-      /Warning: [\w\s]+ has been extracted from react-native core/.test(message))
-  ) {
-    // NOOP
-  } else {
-    originalConsoleError(message)
+jest.mock("react-native-safe-area-context", () => {
+  return {
+    ...jest.requireActual("react-native-safe-area-context"),
+    useSafeAreaFrame: () => ({
+      width: 380,
+      height: 550,
+      x: 0,
+      y: 0,
+    }),
   }
-}
+})
 
-mockedModule("./app/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
-// mockedModule("./app/Components/ArtworkGrids/InfiniteScrollGrid.tsx", "ArtworksGrid")
+jest.mock("react-native-localize", () => ({
+  getCountry: jest.fn(() => "US"),
+  getLocales() {
+    return [
+      { countryCode: "US", languageTag: "en-US", languageCode: "en", isRTL: false },
+      { countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false },
+    ]
+  },
+  getCurrencies() {
+    return ["USD", "EUR"]
+  },
+  getTimeZone() {
+    return "America/New_York"
+  },
+}))
 
-// Artist tests
-mockedModule("./app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
+jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
 
-// Gene tests
-mockedModule("./app/Components/Gene/Header.tsx", "Header")
+jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
+  ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
+  configureNext: jest.fn((_config, callback) => callback?.()),
+  create: jest.fn(),
+  easeInEaseOut: jest.fn(),
+  linear: jest.fn(),
+  spring: jest.fn(),
+}))
+
+jest.mock("react-native-gesture-handler", () => {
+  const View = require("react-native/Libraries/Components/View/View")
+  const TouchableWithoutFeedback = require("react-native/Libraries/Components/Touchable/TouchableWithoutFeedback")
+  const TouchableHighlight = require("react-native/Libraries/Components/Touchable/TouchableHighlight")
+  return {
+    Swipeable: View,
+    DrawerLayout: View,
+    State: {},
+    ScrollView: View,
+    Slider: View,
+    Switch: View,
+    TextInput: View,
+    ViewPagerAndroid: View,
+    DrawerLayoutAndroid: View,
+    WebView: View,
+    NativeViewGestureHandler: View,
+    TapGestureHandler: View,
+    FlingGestureHandler: View,
+    ForceTouchGestureHandler: View,
+    LongPressGestureHandler: View,
+    PanGestureHandler: View,
+    PinchGestureHandler: View,
+    RotationGestureHandler: View,
+    /* Buttons */
+    RawButton: View,
+    BaseButton: View,
+    RectButton: View,
+    BorderlessButton: View,
+    /* Other */
+    FlatList: View,
+    gestureHandlerRootHOC: jest.fn(),
+    Directions: {},
+    TouchableHighlight,
+    TouchableWithoutFeedback,
+  }
+})
+
+jest.mock("react-native-config", () => {
+  const mockConfig = {
+    ARTSY_DEV_API_CLIENT_SECRET: "artsy_api_client_secret", // pragma: allowlist secret
+    ARTSY_DEV_API_CLIENT_KEY: "artsy_api_client_key", // pragma: allowlist secret
+    ARTSY_PROD_API_CLIENT_SECRET: "artsy_api_client_secret", // pragma: allowlist secret
+    ARTSY_PROD_API_CLIENT_KEY: "artsy_api_client_key", // pragma: allowlist secret
+    ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id", // pragma: allowlist secret
+    SEGMENT_PRODUCTION_WRITE_KEY_IOS: "segment_production_write_key_ios", // pragma: allowlist secret
+    SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: "segment_production_write_key_android", // pragma: allowlist secret
+    SEGMENT_STAGING_WRITE_KEY_IOS: "segment_staging_write_key_ios", // pragma: allowlist secret
+    SEGMENT_STAGING_WRITE_KEY_ANDROID: "segment_staging_write_key_android", // pragma: allowlist secret
+    SENTRY_DSN: "sentry_dsn", // pragma: allowlist secret
+    GOOGLE_MAPS_API_KEY: "google_maps_api_key", // pragma: allowlist secret
+    MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key", // pragma: allowlist secret
+    UNLEASH_PROXY_CLIENT_KEY_PRODUCTION: "unleash_proxy_client_key_production", // pragma: allowlist secret
+    UNLEASH_PROXY_CLIENT_KEY_STAGING: "unleash_proxy_client_key_staging", // pragma: allowlist secret
+    UNLEASH_PROXY_URL_PRODUCTION: "https://unleash_proxy_url_production", // pragma: allowlist secret
+    UNLEASH_PROXY_URL_STAGING: "https://unleash_proxy_url_staging", // pragma: allowlist secret
+  }
+  // support both default and named export
+  return { ...mockConfig, Config: mockConfig }
+})
+
+jest.mock("react-native-view-shot", () => ({}))
+
+jest.mock("@segment/analytics-react-native", () => ({
+  setup: () => null,
+  identify: () => null,
+  reset: () => null,
+}))
+
+jest.mock("@segment/analytics-react-native-appboy", () => ({}))
+
+jest.mock("react-native-push-notification", () => ({
+  configure: jest.fn(),
+  onRegister: jest.fn(),
+  onNotification: jest.fn(),
+  addEventListener: jest.fn(),
+  requestPermissions: jest.fn(),
+  checkPermissions: jest.fn(),
+  createChannel: jest.fn(),
+  localNotification: jest.fn(),
+}))
+
+jest.mock("react-native-keychain", () => ({
+  setInternetCredentials: jest.fn().mockResolvedValue(true),
+}))
+
+// MARK: - Our mocks
 
 // Native modules
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
@@ -272,22 +425,8 @@ function getNativeModules(): OurNativeModules {
   }
 }
 
-jest.mock("app/navigation/navigate", () => ({
-  navigate: jest.fn(),
-  goBack: jest.fn(),
-  dismissModal: jest.fn(),
-  popToRoot: jest.fn(),
-  navigateToEntity: jest.fn(),
-  navigateToPartner: jest.fn(),
-  switchTab: jest.fn(),
-  navigationEvents: new (require("events").EventEmitter)(),
-  EntityType: { partner: "partner", fair: "fair" },
-  SlugType: { partner: "partner", fair: "fair" },
-}))
-
 Object.assign(NativeModules, getNativeModules())
 
-const _ = jest.requireActual("lodash")
 beforeEach(() => {
   function reset(a: any, b: any) {
     Object.keys(a).forEach((k) => {
@@ -306,62 +445,24 @@ beforeEach(() => {
   reset(require("app/navigation/navigate"), {})
 })
 
-declare const process: any
+const mockedModule = (path: string, mockModuleName: string) => jest.mock(path, () => mockModuleName)
+mockedModule("./app/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
+mockedModule("./app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
+mockedModule("./app/Components/Gene/Header.tsx", "Header")
 
-// @ts-ignore
-global.__TEST__ = true
+jest.mock("app/utils/track/providers", () => ({
+  ...jest.requireActual("app/utils/track/providers"),
+  postEventToProviders: jest.fn(),
+}))
 
-if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
-  const originalLoggers = {
-    error: console.error,
-    warn: console.warn,
-  }
+jest.mock("app/relay/createEnvironment", () => ({
+  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+  reset(this: { defaultEnvironment: any }) {
+    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
+  },
+}))
 
-  function logToError(type: keyof typeof console, args: unknown[], constructorOpt: () => void) {
-    const explanation =
-      chalk.white(`Test failed due to \`console.${type}(…)\` call.\n`) +
-      chalk.gray("(Disable with ALLOW_CONSOLE_LOGS=true env variable.)\n\n")
-    if (args[0] instanceof Error) {
-      const msg = explanation + chalk.red(args[0].message)
-      const err = new Error(msg)
-      err.stack = args[0].stack!.replace(`Error: ${args[0].message}`, msg)
-      return err
-    } else if (
-      // Because we use react-dom in tests to render react-native components, a few warnings are being logged that we do
-      // not care for, so ignore these.
-      typeof args[0] === "string" &&
-      !args[0].includes("is using incorrect casing") &&
-      !args[0].includes("is unrecognized in this browser") &&
-      ![args[0].includes("React does not recognize the `testID` prop on a DOM element.")]
-    ) {
-      const err = new Error(explanation + chalk.red(format(args[0], ...args.slice(1))))
-      ;(Error as any).captureStackTrace(err, constructorOpt)
-      return err
-    }
-    return null
-  }
-
-  beforeEach((done) => {
-    mockTrackEvent.mockClear()
-    mockPostEventToProviders.mockClear()
-    const types: Array<"error" | "warn"> = ["error", "warn"]
-    types.forEach((type) => {
-      // Don't spy on loggers that have been modified by the current test.
-      if (console[type] === originalLoggers[type]) {
-        const handler = (...args: unknown[]) => {
-          const error = logToError(type, args, handler)
-          if (error) {
-            done.fail(error)
-          }
-        }
-        jest.spyOn(console, type).mockImplementation(handler)
-      }
-    })
-    done() // it is important to call this here or every test will timeout
-  })
-}
-
-jest.mock("./app/utils/useScreenDimensions", () => {
+jest.mock("app/utils/useScreenDimensions", () => {
   const React = require("react")
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,
@@ -388,243 +489,26 @@ jest.mock("./app/utils/useScreenDimensions", () => {
   }
 })
 
-jest.mock("react-native-safe-area-context", () => {
-  return {
-    ...jest.requireActual("react-native-safe-area-context"),
-    useSafeAreaFrame: () => ({
-      width: 380,
-      height: 550,
-      x: 0,
-      y: 0,
-    }),
-  }
-})
-
-jest.mock("@react-native-async-storage/async-storage", () => {
-  let state: any = {}
-  return {
-    __resetState() {
-      state = {}
-    },
-    async setItem(key: string, val: any) {
-      state[key] = val
-    },
-    async getItem(key: string) {
-      return state[key]
-    },
-    async removeItem(key: string) {
-      delete state[key]
-    },
-    async clear() {
-      state = {}
-    },
-    async getAllKeys() {
-      return Object.keys(state)
-    },
-    mergeItem() {
-      throw new Error("mock version of mergeItem not yet implemented")
-    },
-    multiGet(
-      keys: string[],
-      callback?: (
-        errors?: string[] | undefined,
-        result?: Array<[string, string | null]> | undefined
-      ) => void | undefined
-    ) {
-      return new Promise((resolve) => {
-        const res = []
-        for (const key of keys) {
-          const val = [key, state[key]]
-          res.push(val)
-        }
-        callback?.(undefined, undefined) // TODO: Do a proper callback
-        resolve(res)
-      })
-    },
-    multiMerge() {
-      throw new Error("mock version of multiMerge not yet implemented")
-    },
-    async multiRemove(keys: string[]) {
-      keys.forEach((k) => {
-        delete state[k]
-      })
-    },
-    multiSet(
-      keyValuePairs: string[][],
-      callback?: ((errors?: string[] | undefined) => void) | undefined
-    ) {
-      return new Promise((resolve) => {
-        for (const keyValue of keyValuePairs) {
-          state[keyValue[0]] = keyValue[1]
-        }
-        callback?.()
-        resolve(true)
-      })
-    },
-  }
-})
-
-jest.mock("@react-native-async-storage/async-storage", () => {
-  let state: any = {}
-  return {
-    __resetState() {
-      state = {}
-    },
-    async setItem(key: string, val: any) {
-      state[key] = val
-    },
-    async getItem(key: string) {
-      return state[key]
-    },
-    async removeItem(key: string) {
-      delete state[key]
-    },
-    async clear() {
-      state = {}
-    },
-    async getAllKeys() {
-      return Object.keys(state)
-    },
-    mergeItem() {
-      throw new Error("mock version of mergeItem not yet implemented")
-    },
-    multiGet(
-      keys: string[],
-      callback?: (
-        errors?: string[] | undefined,
-        result?: Array<[string, string | null]> | undefined
-      ) => void | undefined
-    ) {
-      return new Promise((resolve) => {
-        const res = []
-        for (const key of keys) {
-          const val = [key, state[key]]
-          res.push(val)
-        }
-        callback?.(undefined, undefined) // TODO: Do a proper callback
-        resolve(res)
-      })
-    },
-    multiMerge() {
-      throw new Error("mock version of multiMerge not yet implemented")
-    },
-    async multiRemove(keys: string[]) {
-      keys.forEach((k) => {
-        delete state[k]
-      })
-    },
-    multiSet(
-      keyValuePairs: string[][],
-      callback?: ((errors?: string[] | undefined) => void) | undefined
-    ) {
-      return new Promise((resolve) => {
-        for (const keyValue of keyValuePairs) {
-          state[keyValue[0]] = keyValue[1]
-        }
-        callback?.()
-        resolve(true)
-      })
-    },
-  }
-})
-
-jest.mock("react-native-localize", () => ({
-  getCountry: jest.fn(() => "US"),
-  getLocales() {
-    return [
-      { countryCode: "US", languageTag: "en-US", languageCode: "en", isRTL: false },
-      { countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false },
-    ]
-  },
-  getCurrencies() {
-    return ["USD", "EUR"]
-  },
-  getTimeZone() {
-    return "America/New_York"
-  },
+jest.mock("app/NativeModules/NotificationsManager.tsx", () => ({
+  NotificationsManager: new (require("events").EventEmitter)(),
 }))
 
-jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
-
-jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
-  ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
-  configureNext: jest.fn((_config, callback) => callback?.()),
-  create: jest.fn(),
-  easeInEaseOut: jest.fn(),
-  linear: jest.fn(),
-  spring: jest.fn(),
+jest.mock("app/utils/userHadMeaningfulInteraction.tsx", () => ({
+  userHadMeaningfulInteraction: jest.fn(),
 }))
 
-jest.mock("react-native-gesture-handler", () => {
-  const View = require("react-native/Libraries/Components/View/View")
-  const TouchableWithoutFeedback = require("react-native/Libraries/Components/Touchable/TouchableWithoutFeedback")
-  const TouchableHighlight = require("react-native/Libraries/Components/Touchable/TouchableHighlight")
-  return {
-    Swipeable: View,
-    DrawerLayout: View,
-    State: {},
-    ScrollView: View,
-    Slider: View,
-    Switch: View,
-    TextInput: View,
-    ViewPagerAndroid: View,
-    DrawerLayoutAndroid: View,
-    WebView: View,
-    NativeViewGestureHandler: View,
-    TapGestureHandler: View,
-    FlingGestureHandler: View,
-    ForceTouchGestureHandler: View,
-    LongPressGestureHandler: View,
-    PanGestureHandler: View,
-    PinchGestureHandler: View,
-    RotationGestureHandler: View,
-    /* Buttons */
-    RawButton: View,
-    BaseButton: View,
-    RectButton: View,
-    BorderlessButton: View,
-    /* Other */
-    FlatList: View,
-    gestureHandlerRootHOC: jest.fn(),
-    Directions: {},
-    TouchableHighlight,
-    TouchableWithoutFeedback,
-  }
-})
-
-jest.mock("react-native-config", () => {
-  const mockConfig = {
-    ARTSY_DEV_API_CLIENT_SECRET: "artsy_api_client_secret",
-    ARTSY_DEV_API_CLIENT_KEY: "artsy_api_client_key",
-    ARTSY_PROD_API_CLIENT_SECRET: "artsy_api_client_secret",
-    ARTSY_PROD_API_CLIENT_KEY: "artsy_api_client_key",
-    ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
-    SEGMENT_PRODUCTION_WRITE_KEY_IOS: "segment_production_write_key_ios",
-    SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: "segment_production_write_key_android",
-    SEGMENT_STAGING_WRITE_KEY_IOS: "segment_staging_write_key_ios",
-    SEGMENT_STAGING_WRITE_KEY_ANDROID: "segment_staging_write_key_android",
-    SENTRY_DSN: "sentry_dsn",
-    GOOGLE_MAPS_API_KEY: "google_maps_api_key",
-    MAPBOX_API_CLIENT_KEY: "mapbox_api_client_key",
-    UNLEASH_PROXY_CLIENT_KEY_PRODUCTION: "unleash_proxy_client_key_production", // pragma: allowlist secret
-    UNLEASH_PROXY_CLIENT_KEY_STAGING: "unleash_proxy_client_key_staging", // pragma: allowlist secret
-    UNLEASH_PROXY_URL_PRODUCTION: "https://unleash_proxy_url_production", // pragma: allowlist secret
-    UNLEASH_PROXY_URL_STAGING: "https://unleash_proxy_url_staging", // pragma: allowlist secret
-  }
-  // support both default and named export
-  return { ...mockConfig, Config: mockConfig }
-})
-
-jest.mock("react-native-view-shot", () => ({}))
-
-// MOCKS FOR TRACKING
-jest.mock("@segment/analytics-react-native", () => ({
-  setup: () => null,
-  identify: () => null,
-  reset: () => null,
+jest.mock("app/navigation/navigate", () => ({
+  navigate: jest.fn(),
+  goBack: jest.fn(),
+  dismissModal: jest.fn(),
+  popToRoot: jest.fn(),
+  navigateToEntity: jest.fn(),
+  navigateToPartner: jest.fn(),
+  switchTab: jest.fn(),
+  navigationEvents: new (require("events").EventEmitter)(),
+  EntityType: { partner: "partner", fair: "fair" },
+  SlugType: { partner: "partner", fair: "fair" },
 }))
-
-jest.mock("@segment/analytics-react-native-appboy", () => ({}))
 
 jest.mock("app/utils/track/SegmentTrackingProvider", () => ({
   SegmentTrackingProvider: {
@@ -637,19 +521,4 @@ jest.mock("app/utils/track/SegmentTrackingProvider", () => ({
 jest.mock("app/utils/track/providers.tsx", () => ({
   postEventToProviders: jest.fn(),
   _addTrackingProvider: jest.fn(),
-}))
-
-jest.mock("react-native-push-notification", () => ({
-  configure: jest.fn(),
-  onRegister: jest.fn(),
-  onNotification: jest.fn(),
-  addEventListener: jest.fn(),
-  requestPermissions: jest.fn(),
-  checkPermissions: jest.fn(),
-  createChannel: jest.fn(),
-  localNotification: jest.fn(),
-}))
-
-jest.mock("react-native-keychain", () => ({
-  setInternetCredentials: jest.fn().mockResolvedValue(true),
 }))

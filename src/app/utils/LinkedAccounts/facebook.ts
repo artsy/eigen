@@ -53,24 +53,36 @@ export const useFacebookLink = (relayEnvironment: RelayModernEnvironment) => {
 
   const link = async () => {
     setLoading(true)
-    const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
-      "email",
-      "public_profile",
-    ])
+    try {
+      const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
+        "email",
+        "public_profile",
+      ])
 
-    if (declinedPermissions?.includes("email")) {
-      Alert.alert("Error", "Please allow the use of email to continue.")
-      setLoading(false)
-      return
-    }
+      if (isCancelled) {
+        Toast.show("Error: Linking cancelled.", "top")
+        setLoading(false)
+        return
+      }
 
-    const fbAccessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
-    if (!fbAccessToken) {
-      Alert.alert("Error", "Failed to retrieve access token.")
+      if (declinedPermissions?.includes("email")) {
+        Alert.alert("Error", "Please allow the use of email to continue.")
+        setLoading(false)
+        return
+      }
+
+      const fbAccessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
+      if (!fbAccessToken) {
+        Toast.show("Error: Failed to retrieve access token.", "top")
+        setLoading(false)
+        return
+      }
+      linkUsingOauthToken(fbAccessToken.accessToken)
+    } catch (error) {
+      // Every other error
       setLoading(false)
-      return
+      Toast.show(`Error: Failed to link accounts.`, "top")
     }
-    linkUsingOauthToken(fbAccessToken.accessToken)
   }
 
   const unlink = () => {

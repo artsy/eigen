@@ -1,6 +1,7 @@
 import NetInfo from "@react-native-community/netinfo"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { throttle } from "lodash"
+import { logDatadog } from "./loggers"
 
 const URLS = {
   production: "https://volley.artsy.net/report",
@@ -73,7 +74,7 @@ class VolleyClient {
       const metrics = this.queue
       this.queue = []
 
-      if (__DEV__ && !__TEST__) {
+      if (__DEV__ && !__TEST__ && logDatadog) {
         console.log("DATADOG", metrics)
       }
 

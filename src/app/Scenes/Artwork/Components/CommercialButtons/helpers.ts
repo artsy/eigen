@@ -4,7 +4,9 @@ import { Input } from "palette"
 import { TouchableOpacity } from "react-native"
 import { act, ReactTestInstance } from "react-test-renderer"
 
-/** Press on a component of some type, matching some text, and wait for any side effects to complete. */
+/** Press on a component of some type, matching some text, and wait for any side effects to complete.
+ * @deprecated Use `fireEvent.press` instead.
+ */
 export const press = (
   ti: ReactTestInstance,
   {
@@ -31,7 +33,9 @@ export const press = (
   }
 }
 
-/** Find a single input within the test instance and type into it. */
+/** Find a single input within the test instance and type into it.
+ * @deprecated Use `fireEvent.changeText` instead
+ */
 export const typeInInput = async (ti: ReactTestInstance, text: string) => {
   ti.findByType(Input).props.onChangeText(text)
   await flushPromiseQueue()

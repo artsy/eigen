@@ -1,0 +1,18 @@
+diff --git a/node_modules/rn-async-storage-flipper/index.d.ts b/node_modules/rn-async-storage-flipper/index.d.ts
+index 704da6a..08d7117 100644
+--- a/node_modules/rn-async-storage-flipper/index.d.ts
++++ b/node_modules/rn-async-storage-flipper/index.d.ts
+@@ -1,10 +1,10 @@
+ interface Storage {
+-    getAllKeys(callback?: (error?: Error, keys?: string[]) => void): Promise<string[]>;
++    getAllKeys(callback?: (error?: Error | null, keys?: readonly string[] | null) => void): Promise<readonly string[]>;
+
+     multiGet(
+         keys: string[],
+-        callback?: (errors?: Error[], result?: [string, string | null][]) => void
+-    ): Promise<[string, string | null][]>;
++        callback?: (errors: readonly (Error | null)[] | null | undefined, result?: readonly [string, string | null][]) => void
++    ): Promise<void | readonly [string, string | null][]>;
+ }
+
+ export default function RNAsyncStorageFlipper(_storage: Storage): void;

@@ -1,6 +1,7 @@
 import { MyCollectionArtworkAboutWork_artwork$key } from "__generated__/MyCollectionArtworkAboutWork_artwork.graphql"
 import { MyCollectionArtworkAboutWork_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAboutWork_marketPriceInsights.graphql"
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { capitalize } from "lodash"
 import { Flex, Text } from "palette"
 import React from "react"
@@ -34,6 +35,8 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
     props.marketPriceInsights
   )
 
+  const enablePriceEstimateRange = useFeatureFlag("AREnablePriceEstimateRange")
+
   const { category, medium, dimensions, date, provenance } = artwork
 
   const dimensionsText = getDimensionsText(dimensions)
@@ -49,7 +52,7 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
         About the work
       </Text>
 
-      <Field label="Estimate Range" value={estimatePrice} />
+      {!!enablePriceEstimateRange && <Field label="Estimate Range" value={estimatePrice} />}
       <Field label="Medium" value={capitalize(category!)} />
       <Field label="Materials" value={capitalize(medium!)} />
       <Field label="Dimensions" value={dimensionsText} />

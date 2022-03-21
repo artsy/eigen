@@ -1,5 +1,5 @@
 // keep this import of storybook first, otherwise it might produce errors when debugging
-import { StorybookUIRoot } from "../storybook/storybook-ui"
+// import { StorybookUIRoot } from "../storybook/storybook-ui"
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "app/types/SafeAreaInsets"
@@ -61,7 +61,6 @@ import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
-import { Checkout } from "./Scenes/Inbox/Screens/Checkout"
 import { ConversationDetailsQueryRenderer } from "./Scenes/Inbox/Screens/ConversationDetails"
 import {
   LotsByArtistsYouFollowQueryRenderer,
@@ -77,6 +76,7 @@ import { MyBidsQueryRenderer } from "./Scenes/MyBids"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { ArtworkSubmissionStatusFAQ } from "./Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
+import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
@@ -136,17 +136,10 @@ import { useStripeConfig } from "./utils/useStripeConfig"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
-  "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
-  "RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.",
-
-  // RN 0.59.0 ships with this bug, see: https://github.com/facebook/react-native/issues/16376
-  "RCTBridge required dispatch_sync to load RCTDevLoadingView. This may lead to deadlocks",
 
   "Require cycle:",
 
-  // This is for the Artist page, which will likely get redone soon anyway.
-  "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
-  "Picker has been extracted",
+  ".removeListener(", // this is coming from https://github.com/facebook/react-native/blob/v0.68.0-rc.2/Libraries/AppState/AppState.js and other libs.
 ])
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
@@ -344,7 +337,8 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
-  Admin: newNativeModule(OldAdminView, { alwaysPresentModally: true }),
+  // Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
+  Admin: nativeModule({ alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
@@ -357,7 +351,7 @@ export const modules = defineModules({
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkSubmissionStatusFAQ: reactModule(ArtworkSubmissionStatusFAQ),
-  Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }, SaleScreenQuery),
+  Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, SaleScreenQuery),
   Auctions: reactModule(SalesQueryRenderer, {}, SalesScreenQuery),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
@@ -428,6 +422,7 @@ export const modules = defineModules({
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer, { hidesBackButton: true }),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
+  MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithartsyFAQ),
   MyProfile: reactModule(
     MyProfile,
     {
@@ -463,9 +458,6 @@ export const modules = defineModules({
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
   ViewingRooms: reactModule(ViewingRoomsListScreen, {}, ViewingRoomsListScreenQuery),
-  Checkout: reactModule(Checkout, {
-    hasOwnModalCloseButton: true,
-  }),
   WorksForYou: reactModule(WorksForYouQueryRenderer, {}, WorksForYouScreenQuery),
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {}, NewWorksForYouScreenQuery),
   LotsByArtistsYouFollow: reactModule(
@@ -473,7 +465,6 @@ export const modules = defineModules({
     {},
     LotsByArtistsYouFollowScreenQuery
   ),
-  Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
 })
