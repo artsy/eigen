@@ -1,3 +1,4 @@
+import { RenderAPI } from "@testing-library/react-native"
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import {
@@ -7,11 +8,12 @@ import {
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { mockTimezone } from "app/tests/mockTimezone"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Button, Checkbox, LinkText, Sans, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
+import { ReactTestRenderer } from "react-test-renderer"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { BidInfoRow } from "../Components/BidInfoRow"
@@ -19,7 +21,6 @@ import { Address } from "../types"
 import { BillingAddress } from "./BillingAddress"
 import { CreditCardForm } from "./CreditCardForm"
 import { Registration } from "./Registration"
-import { ReactTestRenderer } from "react-test-renderer"
 
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
@@ -54,44 +55,45 @@ it("renders properly for a user without a credit card", () => {
 })
 
 describe("User does not have a valid phone number", () => {
-  let component: ReactTestRenderer
+  let rendered: RenderAPI
+
   beforeEach(() => {
-    component = renderWithWrappers(<Registration {...initialPropsForUserWithoutPhone} />)
+    rendered = renderWithWrappersTL(<Registration {...initialPropsForUserWithoutPhone} />)
   })
+
   it("renders properly for a user without a phone number", () => {
-    const texts = component.root.findAllByType(Text)
-    console.log(texts.map((t) => t.props.children))
-    expect(component.root.findAllByType(Text)[1].props.children).toEqual(
-      "A valid phone number is required."
-    )
+    rendered.getByText("A valid phone number is required.")
   })
 })
 
 it("renders properly for a user with a credit card", () => {
-  const component = renderWithWrappers(
+  const rendered = renderWithWrappersTL(
     <Registration {...initialPropsForUserWithCreditCardAndPhone} />
   )
 
-  expect(component.root.findAllByType(Text)[1].props.children).toEqual(
+  rendered.getByText(
     "To complete your registration, please confirm that you agree to the Conditions of Sale."
   )
 })
 
-it("renders properly for a verified user with a credit card", () => {
-  const component = renderWithWrappers(
+it("renders properly for a verified user with a credit card and phone", () => {
+  const rendered = renderWithWrappersTL(
     <Registration
       {...initialProps}
       sale={{ ...sale, requireIdentityVerification: true }}
       me={{
         hasCreditCards: true,
         identityVerified: true,
+        phoneNumber: { isValid: true },
       }}
     />
   )
 
-  expect(component.root.findAllByType(Text)[1].props.children).toEqual(
+  rendered.getByText(
     "To complete your registration, please confirm that you agree to the Conditions of Sale."
   )
+  expect(rendered.queryByText("valid phone number")).toBeNull()
+  expect(rendered.queryByText("valid credit card")).toBeNull()
 })
 
 it("shows the billing address that the user typed in the billing address form", () => {
@@ -697,14 +699,6 @@ const stripeToken = {
   extra: null,
 }
 
-const me: Partial<Registration_me> = {
-  hasCreditCards: false,
-  identityVerified: false,
-  phoneNumber: {
-    isValid: false,
-  },
-}
-
 const sale: Partial<Registration_sale> = {
   slug: "sale-id",
   liveStartAt: "2029-06-11T01:00:00+00:00",
@@ -757,6 +751,14 @@ const initialProps = {
   relay: { environment: null },
   navigator: mockNavigator,
 } as any
+
+const me: Partial<Registration_me> = {
+  hasCreditCards: false,
+  identityVerified: false,
+  phoneNumber: {
+    isValid: false,
+  },
+}
 
 const initialPropsForUserWithCreditCardAndPhone = {
   ...initialProps,

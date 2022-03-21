@@ -14,7 +14,7 @@ import { bidderNeedsIdentityVerification } from "app/utils/auction"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { saleTime } from "app/utils/saleTime"
 import { Schema, screenTrack } from "app/utils/track"
-import { get, isEmpty } from "lodash"
+import { get, isEmpty, mean } from "lodash"
 import { Box, Button, Flex, LinkText, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
@@ -31,6 +31,7 @@ import stripe from "tipsi-stripe"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
+import { PhoneInfo } from "../Components/PhoneInfo"
 
 export interface RegistrationProps extends ViewProps {
   sale: Registration_sale
@@ -66,11 +67,15 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   constructor(props) {
     super(props)
 
-    const { hasCreditCards, phoneNumber } = this.props.me
+    const { me } = this.props
 
-    const missingInformation = !hasCreditCards ? "payment" : !phoneNumber?.isValid ? "phone" : null
+    let missingInformation: RegistrationState["missingInformation"] = null
+    if (!me.hasCreditCards) {
+      missingInformation = "payment"
+    } else if (!me.phoneNumber?.isValid) {
+      missingInformation = "phone"
+    }
 
-    console.log({ missingInformation })
     this.state = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       billingAddress: null,
@@ -83,6 +88,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       isLoading: false,
       errorModalVisible: false,
       errorModalDetailText: "",
+      phoneNumber: me.phoneNumber?.display || "",
     }
   }
 
@@ -116,6 +122,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   onBillingAddressAdded(values: Address) {
     this.setState({ billingAddress: values })
+  }
+
+  onPhoneAdded(phoneNumber: string) {
+    this.setState({ phoneNumber })
   }
 
   conditionsOfSalePressed() {
@@ -352,6 +362,32 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
     const saleTimeDetails = saleTime(sale)
 
+    let missingRequiredInfoHint: JSX.Element | null = null
+    let requiredInfoForm: JSX.Element | null = null
+
+    if (missingInformation === "payment") {
+      missingRequiredInfoHint = <Hint>A valid credit card is required.</Hint>
+      requiredInfoForm = (
+        <PaymentInfo
+          navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+          onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+          onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+          billingAddress={this.state.billingAddress}
+          creditCardFormParams={this.state.creditCardFormParams}
+          creditCardToken={this.state.creditCardToken}
+        />
+      )
+    } else if (missingInformation === "phone") {
+      missingRequiredInfoHint = <Hint>A valid phone number is required.</Hint>
+      requiredInfoForm = (
+        <PhoneInfo
+          navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+          onPhoneAdded={this.onPhoneAdded.bind(this)}
+          phoneNumber={this.state.phoneNumber}
+        />
+      )
+    }
+
     return (
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}
@@ -369,26 +405,14 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           )}
         </Box>
 
-        {missingInformation === "payment" && (
+        {requiredInfoForm && (
           <Flex flex={1} py={20}>
-            <PaymentInfo
-              navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-              onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-              onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-              billingAddress={this.state.billingAddress}
-              creditCardFormParams={this.state.creditCardFormParams}
-              creditCardToken={this.state.creditCardToken}
-            />
+            {requiredInfoForm}
           </Flex>
         )}
-        {missingInformation === "phone" && <Flex flex={1} py={20}></Flex>}
+
         <Flex px={20} flex={1}>
-          {missingInformation === "payment" && <Hint>A valid credit card is required.</Hint>}
-          {
-            //
-            missingInformation === "phone" && <Hint>A valid phone number is required.</Hint>
-            //
-          }
+          {missingRequiredInfoHint}
           {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             !!bidderNeedsIdentityVerification({ sale, user: me }) && (
@@ -403,7 +427,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           }
           {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            !!missingInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
+            !missingInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
               <Hint>
                 To complete your registration, please confirm that you agree to the Conditions of
                 Sale.
@@ -461,6 +485,7 @@ const RegistrationContainer = createFragmentContainer(Registration, {
       identityVerified
       phoneNumber {
         isValid
+        display(format: E164)
       }
     }
   `,
