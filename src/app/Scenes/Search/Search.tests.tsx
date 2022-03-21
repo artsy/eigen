@@ -209,106 +209,84 @@ describe("Search Screen", () => {
   })
 
   describe("search pills", () => {
-    describe("with AREnableImprovedSearchPills enabled", () => {
-      it("are displayed when the user has typed the minimum allowed number of characters", async () => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
-        const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+    it("are displayed when the user has typed the minimum allowed number of characters", async () => {
+      const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 
-        mockEnvironmentPayload(mockEnvironment, {
-          Query: () => ({
-            system: {
-              algolia: {
-                appID: "",
-                apiKey: "",
-                indices: [
-                  { name: "Artist_staging", displayName: "Artist", key: "artist" },
-                  { name: "Sale_staging", displayName: "Auction", key: "sale" },
-                  { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
-                  { name: "Fair_staging", displayName: "Fair", key: "fair" },
-                ],
-              },
+      mockEnvironmentPayload(mockEnvironment, {
+        Query: () => ({
+          system: {
+            algolia: {
+              appID: "",
+              apiKey: "",
+              indices: INDICES,
             },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        expect(queryByText("Top")).toBeFalsy()
-        expect(queryByText("Artist")).toBeFalsy()
-        expect(queryByText("Auction")).toBeFalsy()
-        expect(queryByText("Gallery")).toBeFalsy()
-        expect(queryByText("Fair")).toBeFalsy()
-
-        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
-        fireEvent(searchInput, "changeText", "Ba")
-
-        expect(queryByText("Top")).toBeTruthy()
-        expect(queryByText("Artist")).toBeTruthy()
-        expect(queryByText("Auction")).toBeTruthy()
-        expect(queryByText("Gallery")).toBeTruthy()
-        expect(queryByText("Fair")).toBeTruthy()
+          },
+        }),
       })
 
-      it("have top pill selected and disabled at the same time", async () => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
-        const { getByPlaceholderText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      await flushPromiseQueue()
 
-        mockEnvironmentPayload(mockEnvironment, {
-          Query: () => ({
-            system: {
-              algolia: {
-                appID: "",
-                apiKey: "",
-                indices: [
-                  { name: "Artist_staging", displayName: "Artist", key: "artist" },
-                  { name: "Sale_staging", displayName: "Auction", key: "sale" },
-                  { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
-                  { name: "Fair_staging", displayName: "Fair", key: "fair" },
-                ],
-              },
+      expect(queryByText("Top")).toBeFalsy()
+      expect(queryByText("Artist")).toBeFalsy()
+      expect(queryByText("Auction")).toBeFalsy()
+      expect(queryByText("Gallery")).toBeFalsy()
+      expect(queryByText("Fair")).toBeFalsy()
+
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      fireEvent(searchInput, "changeText", "Ba")
+
+      expect(queryByText("Top")).toBeTruthy()
+      expect(queryByText("Artist")).toBeTruthy()
+      expect(queryByText("Auction")).toBeTruthy()
+      expect(queryByText("Gallery")).toBeTruthy()
+      expect(queryByText("Fair")).toBeTruthy()
+    })
+
+    it("have top pill selected and disabled at the same time", async () => {
+      const { getByPlaceholderText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Query: () => ({
+          system: {
+            algolia: {
+              appID: "",
+              apiKey: "",
+              indices: INDICES,
             },
-          }),
-        })
-
-        await flushPromiseQueue()
-
-        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
-        fireEvent(searchInput, "changeText", "Ba")
-        const topPill = getByA11yState({ selected: true, disabled: true })
-        expect(topPill).toHaveTextContent("Top")
+          },
+        }),
       })
 
-      it("are enabled when they have results", async () => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
-        const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithWrappersTL(<TestRenderer />)
-        mockEnvironmentPayload(mockEnvironment, {
-          Query: () => ({
-            system: {
-              algolia: {
-                appID: "",
-                apiKey: "",
-                indices: [
-                  { name: "Artist_staging", displayName: "Artist", key: "artist" },
-                  { name: "Sale_staging", displayName: "Auction", key: "sale" },
-                  { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
-                  { name: "Fair_staging", displayName: "Fair", key: "fair" },
-                ],
-              },
-            },
-          }),
-        })
-        await flushPromiseQueue()
+      await flushPromiseQueue()
 
-        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
-        fireEvent(searchInput, "changeText", "Ba")
-        const enabledPills = UNSAFE_getAllByType(Pill).filter(
-          (pill) => pill.props.disabled === false
-        )
-        expect(enabledPills).toHaveLength(3)
-        expect(enabledPills[0]).toHaveTextContent("Artworks")
-        expect(enabledPills[1]).toHaveTextContent("Artist")
-        expect(enabledPills[2]).toHaveTextContent("Gallery")
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      fireEvent(searchInput, "changeText", "Ba")
+      const topPill = getByA11yState({ selected: true, disabled: true })
+      expect(topPill).toHaveTextContent("Top")
+    })
+
+    it("are enabled when they have results", async () => {
+      const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithWrappersTL(<TestRenderer />)
+      mockEnvironmentPayload(mockEnvironment, {
+        Query: () => ({
+          system: {
+            algolia: {
+              appID: "",
+              apiKey: "",
+              indices: INDICES,
+            },
+          },
+        }),
       })
+      await flushPromiseQueue()
+
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      fireEvent(searchInput, "changeText", "Ba")
+      const enabledPills = UNSAFE_getAllByType(Pill).filter((pill) => pill.props.disabled === false)
+      expect(enabledPills).toHaveLength(3)
+      expect(enabledPills[0]).toHaveTextContent("Artworks")
+      expect(enabledPills[1]).toHaveTextContent("Artist")
+      expect(enabledPills[2]).toHaveTextContent("Gallery")
     })
 
     it("are displayed when the user has typed the minimum allowed number of characters", async () => {
@@ -319,12 +297,7 @@ describe("Search Screen", () => {
             algolia: {
               appID: "",
               apiKey: "",
-              indices: [
-                { name: "Artist_staging", displayName: "Artist", key: "artist" },
-                { name: "Sale_staging", displayName: "Auction", key: "sale" },
-                { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
-                { name: "Fair_staging", displayName: "Fair", key: "fair" },
-              ],
+              indices: INDICES,
             },
           },
         }),
@@ -701,3 +674,10 @@ describe("Search Screen", () => {
     `)
   })
 })
+
+const INDICES = [
+  { name: "Artist_staging", displayName: "Artist", key: "artist" },
+  { name: "Sale_staging", displayName: "Auction", key: "sale" },
+  { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
+  { name: "Fair_staging", displayName: "Fair", key: "fair" },
+]
