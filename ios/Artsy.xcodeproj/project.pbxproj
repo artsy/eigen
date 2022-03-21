@@ -10,6 +10,8 @@
 		91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */; };
 		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
 		CB43266A27E8F39B00B29DD6 /* Artsy Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CB43267627E8F6F900B29DD6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43267527E8F6F900B29DD6 /* NotificationService.swift */; };
+		CB43267A27E8F6F900B29DD6 /* BrazePushServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43267327E8F6F900B29DD6 /* BrazePushServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B85327B585F00007922D /* GoogleService-Info.plist */; };
 		CBE3211B27D9615000395A93 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBE3210627D9615000395A93 /* LaunchScreen.storyboard */; };
 		CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210827D9615000395A93 /* OldAdminView.swift */; };
@@ -323,6 +325,13 @@
 			remoteGlobalIDString = CB43266227E8F39900B29DD6;
 			remoteInfo = "Artsy Stickers";
 		};
+		CB43267827E8F6F900B29DD6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB43267227E8F6F900B29DD6;
+			remoteInfo = BrazePushServiceExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -333,6 +342,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				CB43266A27E8F39B00B29DD6 /* Artsy Stickers.appex in Embed App Extensions */,
+				CB43267A27E8F6F900B29DD6 /* BrazePushServiceExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -351,6 +361,9 @@
 		CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Artsy Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB43266527E8F39B00B29DD6 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
 		CB43266727E8F39B00B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB43267327E8F6F900B29DD6 /* BrazePushServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BrazePushServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB43267527E8F6F900B29DD6 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		CB43267727E8F6F900B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB61B85327B585F00007922D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CBE3210627D9615000395A93 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CBE3210827D9615000395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
@@ -845,6 +858,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB43267027E8F6F900B29DD6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -887,6 +907,7 @@
 				676C72DD1D291306F09E9C48 /* Pods */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				CB43266427E8F39900B29DD6 /* Artsy Stickers */,
+				CB43267427E8F6F900B29DD6 /* BrazePushServiceExtension */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 			);
@@ -900,6 +921,7 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* Artsy.app */,
 				CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */,
+				CB43267327E8F6F900B29DD6 /* BrazePushServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -911,6 +933,15 @@
 				CB43266727E8F39B00B29DD6 /* Info.plist */,
 			);
 			path = "Artsy Stickers";
+			sourceTree = "<group>";
+		};
+		CB43267427E8F6F900B29DD6 /* BrazePushServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				CB43267527E8F6F900B29DD6 /* NotificationService.swift */,
+				CB43267727E8F6F900B29DD6 /* Info.plist */,
+			);
+			path = BrazePushServiceExtension;
 			sourceTree = "<group>";
 		};
 		CBE3210527D9615000395A93 /* Artsy */ = {
@@ -1964,6 +1995,7 @@
 			);
 			dependencies = (
 				CB43266927E8F39B00B29DD6 /* PBXTargetDependency */,
+				CB43267927E8F6F900B29DD6 /* PBXTargetDependency */,
 			);
 			name = Artsy;
 			productName = eigen;
@@ -1985,18 +2017,39 @@
 			productReference = CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */;
 			productType = "com.apple.product-type.app-extension.messages-sticker-pack";
 		};
+		CB43267227E8F6F900B29DD6 /* BrazePushServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB43267D27E8F6F900B29DD6 /* Build configuration list for PBXNativeTarget "BrazePushServiceExtension" */;
+			buildPhases = (
+				CB43266F27E8F6F900B29DD6 /* Sources */,
+				CB43267027E8F6F900B29DD6 /* Frameworks */,
+				CB43267127E8F6F900B29DD6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BrazePushServiceExtension;
+			productName = BrazePushServiceExtension;
+			productReference = CB43267327E8F6F900B29DD6 /* BrazePushServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1210;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1120;
 					};
 					CB43266227E8F39900B29DD6 = {
+						CreatedOnToolsVersion = 13.2.1;
+					};
+					CB43267227E8F6F900B29DD6 = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
 				};
@@ -2016,6 +2069,7 @@
 			targets = (
 				13B07F861A680F5B00A75B9A /* Artsy */,
 				CB43266227E8F39900B29DD6 /* Artsy Stickers */,
+				CB43267227E8F6F900B29DD6 /* BrazePushServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -2121,6 +2175,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB43267127E8F6F900B29DD6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2442,6 +2503,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB43266F27E8F6F900B29DD6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB43267627E8F6F900B29DD6 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2449,6 +2518,11 @@
 			isa = PBXTargetDependency;
 			target = CB43266227E8F39900B29DD6 /* Artsy Stickers */;
 			targetProxy = CB43266827E8F39B00B29DD6 /* PBXContainerItemProxy */;
+		};
+		CB43267927E8F6F900B29DD6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB43267227E8F6F900B29DD6 /* BrazePushServiceExtension */;
+			targetProxy = CB43267827E8F6F900B29DD6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2468,6 +2542,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 775AB16F96387B70AABE4731 /* Pods-Artsy.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
@@ -2511,6 +2586,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DDA9792067E817001B8803BA /* Pods-Artsy.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
@@ -2730,6 +2806,82 @@
 			};
 			name = Release;
 		};
+		CB43267B27E8F6F900B29DD6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CB43267C27E8F6F900B29DD6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2756,6 +2908,15 @@
 			buildConfigurations = (
 				CB43266C27E8F39B00B29DD6 /* Debug */,
 				CB43266D27E8F39B00B29DD6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB43267D27E8F6F900B29DD6 /* Build configuration list for PBXNativeTarget "BrazePushServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB43267B27E8F6F900B29DD6 /* Debug */,
+				CB43267C27E8F6F900B29DD6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
