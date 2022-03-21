@@ -1,9 +1,10 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { Color } from "palette/Theme"
 import { Flex, FlexProps } from "../Flex"
 import { Text, useTextStyleForPalette } from "../Text"
 
 import { IconProps, Spacer, useColor } from "palette"
-import React, { ReactNode, useEffect, useState } from "react"
+import React, { ReactNode, useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"
 // @ts-ignore
@@ -69,22 +70,27 @@ export const Pill: React.FC<PillProps> = ({
   ...rest
 }) => {
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
-  const standartDisplayState = disabled ? DisplayState.Disabled : DisplayState.Enabled
-  const initialDisplayState = selected ? DisplayState.Selected : standartDisplayState
-  const [innerDisplayState, setInnerDisplayState] = useState(initialDisplayState)
+  const [isPressed, setIsPressed] = useState(false)
   const { height, paddingLeft, paddingRight } = getSize(size)
+
+  let displayState = DisplayState.Enabled
+
+  if (isPressed) {
+    displayState = DisplayState.Pressed
+  } else if (selected) {
+    displayState = DisplayState.Selected
+  } else if (disabled) {
+    displayState = DisplayState.Disabled
+  }
 
   const handlePress = (event: GestureResponderEvent) => {
     onPress?.(event)
   }
 
-  useEffect(() => {
-    setInnerDisplayState(initialDisplayState)
-  }, [disabled, selected])
-
   const iconSpacerMargin = size === "xxs" ? 0.5 : 1
-  const iconColor = innerDisplayState === "pressed" ? "blue100" : "black100"
-  const to = useStyleForState(innerDisplayState)
+  const to = useStyleForState(displayState)
+  const iconColor = to.textColor as Color
+
   return (
     <Spring native to={to} config={config.stiff}>
       {(springProps: typeof to) => (
@@ -93,12 +99,12 @@ export const Pill: React.FC<PillProps> = ({
           onPress={handlePress}
           onPressIn={() => {
             if (highlightEnabled) {
-              setInnerDisplayState(DisplayState.Pressed)
+              setIsPressed(true)
             }
           }}
           onPressOut={() => {
             if (highlightEnabled) {
-              setInnerDisplayState(initialDisplayState)
+              setIsPressed(false)
             }
           }}
         >
