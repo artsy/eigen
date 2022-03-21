@@ -3,8 +3,9 @@ import { RequestForPriceEstimate_artwork$key } from "__generated__/RequestForPri
 import { RequestForPriceEstimate_marketPriceInsights$key } from "__generated__/RequestForPriceEstimate_marketPriceInsights.graphql"
 import { RequestForPriceEstimate_me$key } from "__generated__/RequestForPriceEstimate_me.graphql"
 import { navigate } from "app/navigation/navigate"
-import { Box, Button, Text } from "palette"
-import React from "react"
+import { GlobalStore } from "app/store/GlobalStore"
+import { Box, Button, CheckIcon, Text } from "palette"
+import React, { useEffect } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -29,6 +30,12 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
 
   const me = useFragment<RequestForPriceEstimate_me$key>(meFragment, otherProps.me)
 
+  const requestedPriceEstimates = GlobalStore.useAppState(
+    (state) => state.requestedPriceEstimates.requests
+  )
+
+  const priceEstimateRequested = !!requestedPriceEstimates[artwork.internalID]
+
   return (
     <Box>
       <Button
@@ -46,6 +53,7 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
           }
           navigate("/request-for-price-estimate", {
             passProps: {
+              artworkId: artwork.internalID,
               name: me.name,
               email: me.email,
               phone: me.phone,
@@ -53,8 +61,13 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
           })
         }}
         block
+        disabled={priceEstimateRequested}
+        variant={priceEstimateRequested ? "fillSuccess" : "fillDark"}
+        icon={
+          priceEstimateRequested ? <CheckIcon fill="white100" width={25} height={25} /> : undefined
+        }
       >
-        Request a Price Estimate
+        {priceEstimateRequested ? "Price Estimate Request Sent" : "Request a Price Estimate"}
       </Button>
       <Text
         color="black60"

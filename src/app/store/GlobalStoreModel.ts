@@ -22,6 +22,10 @@ import {
   PendingPushNotificationModel,
 } from "./PendingPushNotificationModel"
 import { assignDeep, sanitize } from "./persistence"
+import {
+  getRequestedPriceEstimatesModel,
+  RequestedPriceEstimatesModel,
+} from "./RequestedPriceEstimatesModel"
 import { getToastModel, ToastModel } from "./ToastModel"
 import { getVisualClueModel, VisualClueModel } from "./VisualClueModel"
 
@@ -43,6 +47,7 @@ interface GlobalStoreStateModel {
   devicePrefs: DevicePrefsModel
   visualClue: VisualClueModel
   artworkSubmission: SubmissionModel
+  requestedPriceEstimates: RequestedPriceEstimatesModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -116,6 +121,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   userPrefs: getUserPrefsModel(),
   visualClue: getVisualClueModel(),
   artworkSubmission: getSubmissionModel(),
+  requestedPriceEstimates: getRequestedPriceEstimatesModel(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {
