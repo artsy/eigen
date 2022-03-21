@@ -76,7 +76,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
             response.requestPriceEstimate?.priceEstimateParamsOrError?.submittedPriceEstimateParams
               ?.artworkId
           if (myCollectionArtworkId) {
-            GlobalStore.actions.requestedPriceEstimates.addRequest({
+            GlobalStore.actions.requestedPriceEstimates.addRequestedPriceEstimate({
               artworkId: myCollectionArtworkId,
               requestedAt: new Date().getTime(),
             })

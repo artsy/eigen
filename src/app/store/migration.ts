@@ -33,9 +33,10 @@ export const Versions = {
   AddArtworkViewOption: 21,
   RenameModelsAndAddDarkModeSupport: 22,
   AddUserPrefsMetricsUnit: 23,
+  RequestedPriceEstimates: 24,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddUserPrefsMetricsUnit
+export const CURRENT_APP_VERSION = Versions.RequestedPriceEstimates
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -181,6 +182,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddUserPrefsMetricsUnit]: (state) => {
     state.userPrefs.metric = "in"
+  },
+  [Versions.RequestedPriceEstimates]: (state) => {
+    state.requestedPriceEstimates = { requestedPriceEstimates: {} }
   },
 }
 

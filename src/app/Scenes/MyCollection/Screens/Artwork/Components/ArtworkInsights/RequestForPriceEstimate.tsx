@@ -31,7 +31,7 @@ export const RequestForPriceEstimate: React.FC<RequestForPriceEstimateProps> = (
   const me = useFragment<RequestForPriceEstimate_me$key>(meFragment, otherProps.me)
 
   const requestedPriceEstimates = GlobalStore.useAppState(
-    (state) => state.requestedPriceEstimates.requests
+    (state) => state.requestedPriceEstimates.requestedPriceEstimates
   )
 
   const priceEstimateRequested = !!requestedPriceEstimates[artwork.internalID]

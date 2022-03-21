@@ -14,10 +14,10 @@ export interface ToastDetails {
 
   placement: ToastPlacement
   message: string
-  backgroundColor: Color
 
   onPress?: (helpers: ToastOnPressHelpers) => void
   Icon?: React.FC<IconProps>
+  backgroundColor?: Color
 }
 
 export type ToastOptions = Pick<ToastDetails, "onPress" | "Icon" | "backgroundColor">
