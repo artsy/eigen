@@ -14,6 +14,7 @@ import { MyCollectionWhySell } from "./Components/MyCollectionWhySell"
 interface MyCollectionArtworkAboutProps {
   artwork: MyCollectionArtworkAbout_artwork$key
   marketPriceInsights: MyCollectionArtworkAbout_marketPriceInsights$key | null
+  renderWithoutScrollView?: boolean
 }
 
 export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
@@ -24,9 +25,10 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
   )
 
   const articles = extractNodes(artwork.artist?.articles)
+  const Wrapper = props.renderWithoutScrollView ? Flex : StickyTabPageScrollView
   return (
-    <StickyTabPageScrollView>
-      <Flex my={3}>
+    <Wrapper px={props.renderWithoutScrollView ? 20 : 0}>
+      <Flex mt={props.renderWithoutScrollView ? 1 : 3} mb={3}>
         <MyCollectionArtworkAboutWork artwork={artwork} marketPriceInsights={marketPriceInsights} />
 
         <MyCollectionArtworkPurchaseDetails artwork={artwork} />
@@ -37,10 +39,9 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
           articles={articles}
           totalCount={artwork.artist?.articles?.totalCount}
         />
-        <Spacer mb={3} mt={3} />
         <MyCollectionWhySell artwork={artwork} />
       </Flex>
-    </StickyTabPageScrollView>
+    </Wrapper>
   )
 }
 

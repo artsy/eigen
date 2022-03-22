@@ -8,6 +8,7 @@ import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholder
 import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
 import React, { Suspense, useCallback } from "react"
+import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
@@ -32,9 +33,11 @@ const MyCollectionArtworkScreenQuery = graphql`
       ...MyCollectionArtworkInsights_marketPriceInsights
       ...MyCollectionArtworkAbout_marketPriceInsights
     }
+    marketPriceInsights2: marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
+      annualLotsSold
+    }
   }
 `
-
 const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   artworkSlug,
   artistInternalID,
@@ -71,7 +74,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   }, [data.artwork])
 
   const tabs = compact([
-    {
+    !!data?.marketPriceInsights2 && {
       title: Tab.insights,
       content: (
         <MyCollectionArtworkInsights
@@ -100,10 +103,21 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
         onRightButtonPress={!data.artwork.consignmentSubmission ? handleEdit : undefined}
         hideBottomDivider
       />
-      <StickyTabPage
-        tabs={tabs}
-        staticHeaderContent={<MyCollectionArtworkHeader artwork={data.artwork} />}
-      />
+      {!!data?.marketPriceInsights2 ? (
+        <StickyTabPage
+          tabs={tabs}
+          staticHeaderContent={<MyCollectionArtworkHeader artwork={data.artwork} />}
+        />
+      ) : (
+        <ScrollView>
+          <MyCollectionArtworkHeader artwork={data.artwork} />
+          <MyCollectionArtworkAbout
+            renderWithoutScrollView
+            artwork={data.artwork}
+            marketPriceInsights={data.marketPriceInsights}
+          />
+        </ScrollView>
+      )}
     </>
   )
 }
