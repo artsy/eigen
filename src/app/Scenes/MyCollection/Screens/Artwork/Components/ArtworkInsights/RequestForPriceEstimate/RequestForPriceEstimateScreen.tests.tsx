@@ -9,7 +9,7 @@ import {
 
 describe("RequestForPriceEstimateScreen", () => {
   const props = {
-    artworkId: "artworkId",
+    artworkID: "artworkId",
     name: "Tester HQ",
     email: "tester@hq.com",
     phone: "+49123456898",

@@ -15,7 +15,7 @@ import * as Yup from "yup"
 import { RequestForPriceEstimateForm } from "./RequestForPriceEstimateForm"
 
 interface RequestForPriceEstimateScreenProps {
-  artworkId: string
+  artworkID: string
   email: string
   name: string
   phone: string
@@ -38,7 +38,7 @@ export const requestForPriceEstimateMutation = (
   environment: Environment,
   onCompleted: (response: RequestForPriceEstimateScreenMutationResponse) => void,
   onError: () => void,
-  input: Pick<RequestForPriceEstimateScreenProps, "artworkId"> & RequestForPriceEstimateFormikSchema
+  input: RequestForPriceEstimateFormikSchema & { artworkId: string }
 ) => {
   commitMutation<RequestForPriceEstimateScreenMutation>(environment, {
     mutation: graphql`
@@ -66,7 +66,7 @@ export const requestForPriceEstimateMutation = (
 }
 
 export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScreenProps> = ({
-  artworkId,
+  artworkID,
   email,
   name,
   phone,
@@ -79,7 +79,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
       requesterPhoneNumber: phone,
     },
     onSubmit: async ({ requesterEmail, requesterName, requesterPhoneNumber }) => {
-      const input = { artworkId, requesterEmail, requesterName, requesterPhoneNumber }
+      const input = { artworkId: artworkID, requesterEmail, requesterName, requesterPhoneNumber }
       const onCompleted = (response: RequestForPriceEstimateScreenMutationResponse) => {
         const myCollectionArtworkId =
           response.requestPriceEstimate?.priceEstimateParamsOrError?.submittedPriceEstimateParams

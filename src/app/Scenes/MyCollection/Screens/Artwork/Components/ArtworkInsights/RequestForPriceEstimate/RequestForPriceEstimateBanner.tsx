@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType, TappedRequestPriceEstimate } from
 import { RequestForPriceEstimateBanner_artwork$key } from "__generated__/RequestForPriceEstimateBanner_artwork.graphql"
 import { RequestForPriceEstimateBanner_marketPriceInsights$key } from "__generated__/RequestForPriceEstimateBanner_marketPriceInsights.graphql"
 import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPriceEstimateBanner_me.graphql"
+import { Toast } from "app/Components/Toast/Toast"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Box, Button, CheckIcon, Text } from "palette"
@@ -49,11 +50,17 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
             )
           )
           if (!me) {
+            Toast.show(
+              "Error: Unable to retrieve your basic info. Please try again later.",
+              "top",
+              {
+                backgroundColor: "red100",
+              }
+            )
             return
           }
-          navigate("/request-for-price-estimate", {
+          navigate(`/my-collection/artwork/${artwork.internalID}/request-for-price-estimate`, {
             passProps: {
-              artworkId: artwork.internalID,
               name: me.name,
               email: me.email,
               phone: me.phone,
