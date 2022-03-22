@@ -11,10 +11,10 @@ import {
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
-import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
+import { IndicesInfoOptions, useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
 import { Box, Flex, Spacer, Text } from "palette"
-import { FC, Suspense, useMemo, useRef, useState } from "react"
+import { FC, Suspense, useEffect, useMemo, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
@@ -32,7 +32,7 @@ import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
 import { ALLOWED_ALGOLIA_KEYS } from "./constants"
-import { getContextModuleByPillName } from "./helpers"
+import { getContextModuleByPillName, isAlgoliaApiKeyExpiredError } from "./helpers"
 import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
@@ -102,18 +102,14 @@ export const Search: FC = () => {
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
-  const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
+  const searchQuery = searchState?.query ?? ""
+  const searchProviderValues = useSearchProviderValues(searchQuery)
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(
     system?.algolia?.appID,
     system?.algolia?.apiKey
   )
   const indices = system?.algolia?.indices
-  const {
-    loading: indicesInfoLoading,
-    indicesInfo,
-    updateIndicesInfo,
-  } = useAlgoliaIndices(searchClient, indices)
   const { trackEvent } = useTracking()
 
   const exampleExperiments = useFeatureFlag("AREnableExampleExperiments")
@@ -126,6 +122,25 @@ export const Search: FC = () => {
   )
   const smudge2Value = useExperimentFlag("test-eigen-smudge2")
   nonCohesionTracks.experimentFlag("test-eigen-smudge2", smudge2Value)
+
+  const onRefetch = () => {
+    refetch({}, { fetchPolicy: "network-only" })
+  }
+
+  const options: IndicesInfoOptions = {
+    searchClient,
+    indices,
+    onError: (error: Error) => {
+      console.log("[debug] handleGetIndicesInfoError", error)
+
+      if (isAlgoliaApiKeyExpiredError(error)) {
+        console.log("[debug] call onRefetch")
+        onRefetch()
+      }
+    },
+  }
+
+  const { loading: indicesInfoLoading, indicesInfo, updateIndicesInfo } = useAlgoliaIndices(options)
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
@@ -148,6 +163,19 @@ export const Search: FC = () => {
 
     return pills
   }, [indices, indicesInfo])
+
+  useEffect(() => {
+    console.log("[debug] searchQuery", searchQuery)
+
+    /**
+     * Refetch up-to-date info about Algolia indices for specified search query
+     * when Algolia API key expired and request failed (we get a fresh Algolia API key and send request again)
+     */
+    if (!!searchClient && shouldStartSearching(searchQuery)) {
+      console.log("[debug] refetch")
+      updateIndicesInfo(searchQuery)
+    }
+  }, [searchClient])
 
   if (!searchClient || !searchInsightsConfigured) {
     return <SearchPlaceholder />
@@ -180,8 +208,6 @@ export const Search: FC = () => {
     }
     return <SearchArtworksQueryRenderer keyword={searchState.query!} />
   }
-
-  const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
 
   const handlePillPress = (pill: PillType) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
@@ -241,21 +267,21 @@ export const Search: FC = () => {
           onSearchStateChange={setSearchState}
         >
           <Configure clickAnalytics />
-          <RefetchWhenApiKeyExpiredContainer refetch={refetch} />
+          <RefetchWhenApiKeyExpiredContainer refetch={onRefetch} />
           <Flex p={2} pb={1}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
               onTextChange={(value) => {
                 handleResetSearchInput()
 
-                if (value.length >= 2) {
+                if (shouldStartSearching(value)) {
                   updateIndicesInfo(value)
                 }
               }}
             />
           </Flex>
           <Flex flex={1} collapsable={false}>
-            {!!shouldStartQuering ? (
+            {shouldStartSearching(searchQuery) ? (
               <>
                 <Box pt={2} pb={1}>
                   <SearchPills
@@ -368,4 +394,8 @@ const nonCohesionTracks = {
       context_screen_owner_type: OwnerType.search,
       context_screen: Schema.PageNames.Search,
     }),
+}
+
+const shouldStartSearching = (value: string) => {
+  return value.length >= 2
 }
