@@ -1,10 +1,13 @@
+import {
+  photosEmptyInitialValues,
+  PhotosFormModel,
+} from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
 import { Action, action } from "easy-peasy"
 import { ConsignmentsSubmissionUtmParams } from "../../../ConsignmentsHome/ConsignmentsSubmissionForm"
 import {
   artworkDetailsEmptyInitialValues,
   ArtworkDetailsFormModel,
 } from "../ArtworkDetails/validation"
-import { photosEmptyInitialValues, PhotosFormModel } from "../UploadPhotos/validation"
 
 export interface ArtworkSubmissionModel {
   submissionId: string

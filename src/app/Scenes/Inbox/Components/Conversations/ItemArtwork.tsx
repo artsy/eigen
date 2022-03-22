@@ -42,7 +42,7 @@ export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
               )}
               <Text variant="sm" numberOfLines={1}>
                 {artwork.saleMessage === "Contact For Price"
-                  ? "Price on Request"
+                  ? "Price on request"
                   : artwork.saleMessage}
               </Text>
             </Flex>
