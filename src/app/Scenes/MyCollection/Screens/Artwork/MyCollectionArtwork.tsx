@@ -4,6 +4,7 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { goBack, navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
@@ -28,6 +29,27 @@ const MyCollectionArtworkScreenQuery = graphql`
       ...NewMyCollectionArtworkHeader_artwork
       ...MyCollectionArtworkInsights_artwork
       ...MyCollectionArtworkAbout_artwork
+      comparableAuctionResults(first: 6) {
+        edges {
+          node {
+            internalID
+            ...AuctionResultListItem_auctionResult
+          }
+        }
+      }
+      artist {
+        internalID
+        formattedNationalityAndBirthday
+        auctionResultsConnection(first: 3, sort: DATE_DESC) {
+          edges {
+            node {
+              id
+              internalID
+              ...AuctionResultListItem_auctionResult
+            }
+          }
+        }
+      }
     }
     marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
       ...MyCollectionArtworkInsights_marketPriceInsights
@@ -38,6 +60,7 @@ const MyCollectionArtworkScreenQuery = graphql`
     }
   }
 `
+
 const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   artworkSlug,
   artistInternalID,
@@ -50,6 +73,9 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     artistInternalID,
     medium,
   })
+
+  const comparableWorks = extractNodes(data?.artwork?.comparableAuctionResults)
+  const auctionResults = extractNodes(data?.artwork?.artist?.auctionResultsConnection)
 
   if (!data.artwork) {
     return (
@@ -73,8 +99,11 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     })
   }, [data.artwork])
 
+  const shouldShowInsightsTab =
+    !!data?.marketPriceInsights2 || comparableWorks.length > 0 || auctionResults.length > 0
+
   const tabs = compact([
-    !!data?.marketPriceInsights2 && {
+    !!shouldShowInsightsTab && {
       title: Tab.insights,
       content: (
         <MyCollectionArtworkInsights
@@ -103,7 +132,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
         onRightButtonPress={!data.artwork.consignmentSubmission ? handleEdit : undefined}
         hideBottomDivider
       />
-      {!!data?.marketPriceInsights2 ? (
+      {!!shouldShowInsightsTab ? (
         <StickyTabPage
           tabs={tabs}
           staticHeaderContent={<MyCollectionArtworkHeader artwork={data.artwork} />}
