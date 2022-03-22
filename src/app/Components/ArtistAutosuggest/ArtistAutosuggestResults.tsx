@@ -1,18 +1,16 @@
 import { captureMessage } from "@sentry/react-native"
 import { ArtistAutosuggestResults_results } from "__generated__/ArtistAutosuggestResults_results.graphql"
 import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
-import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ErrorView } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/Components/ErrorView"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Flex, quoteLeft, quoteRight, Separator, Spacer, Text, useSpace } from "palette"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
-import { FlatList } from "react-native"
+import { ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import usePrevious from "react-use/lib/usePrevious"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
 
 export type ArtistAutosuggestResult = NonNullable<
@@ -21,32 +19,18 @@ export type ArtistAutosuggestResult = NonNullable<
   >["node"]
 >
 
-const INITIAL_BATCH_SIZE = 32
-const SUBSEQUENT_BATCH_SIZE = 64
+const INITIAL_BATCH_SIZE = 64
 
 const ArtistAutosuggestResultsFlatList: React.FC<{
   query: string
   results: ArtistAutosuggestResults_results | null
   onResultPress: (result: ArtistAutosuggestResult) => void
   relay: RelayPaginationProp
-}> = ({ query, results: latestResults, onResultPress, relay }) => {
+}> = ({ query, results: latestResults, onResultPress }) => {
   const space = useSpace()
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
-  const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
 
   const userHasStartedScrolling = useRef(false)
-  const onScrollBeginDrag = useCallback(() => {
-    if (!userHasStartedScrolling.current) {
-      userHasStartedScrolling.current = true
-      loadMore()
-    }
-  }, [])
-
-  const onEndReached = useCallback(() => {
-    if (userHasStartedScrolling.current) {
-      loadMore()
-    }
-  }, [])
 
   useEffect(() => {
     if (query) {
@@ -60,14 +44,6 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
     }
   }, [latestResults])
 
-  const lastResults = usePrevious(latestResults)
-  const flatListRef = useRef<FlatList<any>>(null)
-  useEffect(() => {
-    if (lastResults === null && latestResults !== null) {
-      flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
-    }
-  }, [lastResults])
-
   const results = useRef(latestResults)
   results.current = latestResults || results.current
 
@@ -78,8 +54,6 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
     [results.current]
   )
 
-  const noResults = results.current && results.current.results?.edges?.length === 0
-
   if (shouldShowLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
@@ -88,51 +62,52 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
     )
   }
 
-  return (
-    <AboveTheFoldFlatList<ArtistAutosuggestResult>
-      listRef={flatListRef}
-      style={{
-        flex: 1,
-        padding: space(2),
-        borderStyle: "solid",
-        borderColor: "#707070",
-        borderWidth: 1,
-        marginTop: 3,
-      }}
-      data={nodes}
-      showsVerticalScrollIndicator
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={
-        noResults
-          ? () => {
-              return (
-                <>
-                  <Spacer mt={3} />
-                  <Text variant="md" textAlign="center">
-                    Sorry, we couldn’t find anything for {quoteLeft}
-                    {query}.{quoteRight}
-                  </Text>
-                  <Text variant="md" color="black60" textAlign="center">
-                    Please try searching again with a different spelling.
-                  </Text>
-                </>
-              )
-            }
-          : null
-      }
-      renderItem={({ item, index }) => {
-        return (
-          <Flex key={index} mb={1}>
-            <ArtistAutosuggestRow highlight={query} result={item} onResultPress={onResultPress} />
+  if (nodes.length > 0) {
+    return (
+      <ScrollView
+        style={{
+          flex: 1,
+          padding: space(2),
+          borderStyle: "solid",
+          borderColor: "#707070",
+          borderWidth: 1,
+          marginTop: 3,
+        }}
+      >
+        {nodes.map((node) => (
+          <Flex key={node.displayLabel} mb={1}>
+            <ArtistAutosuggestRow highlight={query} result={node} onResultPress={onResultPress} />
             <Separator mt={1} />
           </Flex>
-        )
-      }}
-      onScrollBeginDrag={onScrollBeginDrag}
-      onEndReached={onEndReached}
-    />
-  )
+        ))}
+        <Text variant="md" color="black60" textAlign="center">
+          Please try searching again with a different spelling...
+        </Text>
+      </ScrollView>
+    )
+  } else {
+    return (
+      <Flex
+        style={{
+          flex: 1,
+          padding: space(2),
+          borderStyle: "solid",
+          borderColor: "#707070",
+          borderWidth: 1,
+          marginTop: 3,
+        }}
+      >
+        <Spacer mt={3} />
+        <Text variant="md" textAlign="center">
+          Sorry, we couldn’t find anything for {quoteLeft}
+          {query}.{quoteRight}
+        </Text>
+        <Text variant="md" color="black60" textAlign="center">
+          Please try searching again with a different spelling.
+        </Text>
+      </Flex>
+    )
+  }
 }
 
 const ArtistAutosuggestResultsContainer = createPaginationContainer(
