@@ -1,10 +1,14 @@
-import { RequestForPriceEstimateScreenMutation } from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
+import {
+  RequestForPriceEstimateScreenMutation,
+  RequestForPriceEstimateScreenMutationResponse,
+} from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik } from "formik"
 import React from "react"
+import { Environment } from "react-relay"
 import { commitMutation, graphql } from "relay-runtime"
 import * as Yup from "yup"
 import { RequestForPriceEstimateForm } from "./RequestForPriceEstimateForm"
@@ -29,6 +33,37 @@ const ValidationSchema = Yup.object().shape({
     .email("Please provide a valid email address"),
 })
 
+export const requestForPriceEstimateMutation = (
+  environment: Environment,
+  onCompleted: (response: RequestForPriceEstimateScreenMutationResponse) => void,
+  onError: () => void,
+  input: Pick<RequestForPriceEstimateScreenProps, "artworkId"> & RequestForPriceEstimateFormikSchema
+) => {
+  commitMutation<RequestForPriceEstimateScreenMutation>(environment, {
+    mutation: graphql`
+      mutation RequestForPriceEstimateScreenMutation($input: RequestPriceEstimateInput!) {
+        requestPriceEstimate(input: $input) {
+          priceEstimateParamsOrError {
+            ... on RequestPriceEstimatedMutationSuccess {
+              submittedPriceEstimateParams {
+                artworkId
+              }
+            }
+            ... on RequestPriceEstimatedMutationFailure {
+              mutationError {
+                error
+              }
+            }
+          }
+        }
+      }
+    `,
+    variables: { input },
+    onCompleted,
+    onError,
+  })
+}
+
 export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScreenProps> = ({
   artworkId,
   email,
@@ -43,51 +78,32 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
       requesterPhoneNumber: phone,
     },
     onSubmit: async ({ requesterEmail, requesterName, requesterPhoneNumber }) => {
-      // submit
       const input = { artworkId, requesterEmail, requesterName, requesterPhoneNumber }
-      commitMutation<RequestForPriceEstimateScreenMutation>(defaultEnvironment, {
-        mutation: graphql`
-          mutation RequestForPriceEstimateScreenMutation($input: RequestPriceEstimateInput!) {
-            requestPriceEstimate(input: $input) {
-              priceEstimateParamsOrError {
-                ... on RequestPriceEstimatedMutationSuccess {
-                  submittedPriceEstimateParams {
-                    artworkId
-                  }
-                }
-                ... on RequestPriceEstimatedMutationFailure {
-                  mutationError {
-                    error
-                  }
-                }
-              }
-            }
-          }
-        `,
-        variables: { input },
-        onCompleted: (response) => {
-          const myCollectionArtworkId =
-            response.requestPriceEstimate?.priceEstimateParamsOrError?.submittedPriceEstimateParams
-              ?.artworkId
-          if (myCollectionArtworkId) {
-            GlobalStore.actions.requestedPriceEstimates.addRequestedPriceEstimate({
-              artworkId: myCollectionArtworkId,
-              requestedAt: new Date().getTime(),
-            })
-            Toast.show(
-              "Request Sent. \nAn Artsy Specialist will contact you with a response",
-              "top",
-              { backgroundColor: "blue100" }
-            )
-            goBack()
-          }
-        },
-        onError: () => {
-          Toast.show("Error: Failed to send a price estimate request.", "top", {
-            backgroundColor: "red100",
+      const onCompleted = (response: RequestForPriceEstimateScreenMutationResponse) => {
+        const myCollectionArtworkId =
+          response.requestPriceEstimate?.priceEstimateParamsOrError?.submittedPriceEstimateParams
+            ?.artworkId
+        if (myCollectionArtworkId) {
+          GlobalStore.actions.requestedPriceEstimates.addRequestedPriceEstimate({
+            artworkId: myCollectionArtworkId,
+            requestedAt: new Date().getTime(),
           })
-        },
-      })
+          Toast.show(
+            "Request Sent. \nAn Artsy Specialist will contact you with a response",
+            "top",
+            {
+              backgroundColor: "blue100",
+            }
+          )
+          goBack()
+        }
+      }
+      const onError = () => {
+        Toast.show("Error: Failed to send a price estimate request.", "top", {
+          backgroundColor: "red100",
+        })
+      }
+      requestForPriceEstimateMutation(defaultEnvironment, onCompleted, onError, input)
     },
     validationSchema: ValidationSchema,
   })

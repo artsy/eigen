@@ -22,6 +22,7 @@ export const RequestForPriceEstimateForm = () => {
             </Text>
             <Spacer p={1} />
             <Input
+              testID="request-price-estimate-name-input"
               title="Name"
               autoCapitalize="words"
               autoCorrect={false}
@@ -39,10 +40,10 @@ export const RequestForPriceEstimateForm = () => {
               maxLength={128}
               value={values.requesterName}
               error={errors.requesterName}
-              testID="nameInput"
             />
             <Spacer p={1} />
             <Input
+              testID="request-price-estimate-email-input"
               title="Email"
               autoCapitalize="none"
               enableClearButton
@@ -63,10 +64,10 @@ export const RequestForPriceEstimateForm = () => {
               autoCorrect={false}
               textContentType={Platform.OS === "ios" ? "username" : "emailAddress"}
               error={errors.requesterEmail}
-              testID="requesterEmailInput"
             />
             <Spacer p={1} />
             <PhoneInput
+              testID="request-price-estimate-phone-input"
               style={{ flex: 1 }}
               title="Phone number"
               autoFocus={!values.requesterPhoneNumber}
@@ -78,7 +79,12 @@ export const RequestForPriceEstimateForm = () => {
               shouldDisplayLocalError={false}
             />
             <Spacer p={1} />
-            <Button block onPress={handleSubmit} disabled={!isValid}>
+            <Button
+              block
+              onPress={handleSubmit}
+              disabled={!isValid}
+              testID="request-price-estimate-submit-button"
+            >
               Request a Price Estimate
             </Button>
           </Box>
