@@ -2,6 +2,7 @@ import {
   RequestForPriceEstimateScreenMutation,
   RequestForPriceEstimateScreenMutationResponse,
 } from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
+import { ArtsyKeyboardAvoidingViewContext } from "app/Components/ArtsyKeyboardAvoidingView"
 import { Toast } from "app/Components/Toast/Toast"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -110,7 +111,11 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
 
   return (
     <FormikProvider value={formik}>
-      <RequestForPriceEstimateForm />
+      <ArtsyKeyboardAvoidingViewContext.Provider
+        value={{ isVisible: true, isPresentedModally: false, bottomOffset: 10 }}
+      >
+        <RequestForPriceEstimateForm />
+      </ArtsyKeyboardAvoidingViewContext.Provider>
     </FormikProvider>
   )
 }
