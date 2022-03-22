@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
-import { myCollectionAddArtworkMutationResponse } from "__generated__/myCollectionAddArtworkMutation.graphql"
+import { myCollectionCreateArtworkMutationResponse } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import {
   getConvectionGeminiKey,
@@ -15,7 +15,7 @@ import { Image } from "react-native-image-crop-picker"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import * as artworkMutations from "../../mutations/myCollectionAddArtwork"
+import * as artworkMutations from "../../mutations/myCollectionCreateArtwork"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import {
   MyCollectionArtworkForm,
@@ -139,6 +139,49 @@ describe("MyCollectionArtworkForm", () => {
         // Complete Form
 
         act(() => fireEvent.press(getByTestId("CompleteButton")))
+
+        await flushPromiseQueue()
+
+        const updatePreferencesOperation = mockEnvironment.mock.getMostRecentOperation()
+        expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
+          Object {
+            "input": Object {
+              "currencyPreference": "USD",
+              "lengthUnitPreference": "IN",
+            },
+          }
+        `)
+
+        mockEnvironment.mock.resolveMostRecentOperation(() => ({
+          data: {},
+        }))
+        await flushPromiseQueue()
+
+        const createArtworkOperation = mockEnvironment.mock.getMostRecentOperation()
+        expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
+          Object {
+            "input": Object {
+              "artistIds": Array [
+                "",
+              ],
+              "category": "Screen print",
+              "date": "2007",
+              "depth": 40,
+              "externalImageUrls": Array [
+                "https://some-bucket.s3.amazonaws.com/undefined",
+              ],
+              "height": 20,
+              "importSource": "MY_COLLECTION",
+              "isEdition": true,
+              "medium": "Print",
+              "metric": "in",
+              "pricePaidCents": undefined,
+              "pricePaidCurrency": "USD",
+              "title": "Morons",
+              "width": 30,
+            },
+          }
+        `)
       })
     })
 
@@ -290,7 +333,7 @@ describe("MyCollectionArtworkForm", () => {
         )
 
         const artworkSlug = "some-slug"
-        const artworkResponse: myCollectionAddArtworkMutationResponse = {
+        const artworkResponse: myCollectionCreateArtworkMutationResponse = {
           myCollectionCreateArtwork: {
             artworkOrError: {
               artworkEdge: {
@@ -331,7 +374,7 @@ describe("MyCollectionArtworkForm", () => {
           },
         }
 
-        const addArtworkMock = jest.spyOn(artworkMutations, "myCollectionAddArtwork")
+        const addArtworkMock = jest.spyOn(artworkMutations, "myCollectionCreateArtwork")
         addArtworkMock.mockImplementation(() => Promise.resolve(artworkResponse))
 
         const storeLocalPhotosMock = jest.spyOn(photoUtil, "storeLocalPhotos")

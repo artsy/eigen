@@ -19,7 +19,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
-import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
+import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
 import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
 import { refreshMyCollection } from "../../MyCollection"
@@ -265,7 +265,7 @@ export const updateArtwork = async (
   }
 
   if (props.mode === "add") {
-    const response = await myCollectionAddArtwork({
+    const response = await myCollectionCreateArtwork({
       artistIds: [artistSearchResult!.internalID as string],
       externalImageUrls,
       pricePaidCents,
