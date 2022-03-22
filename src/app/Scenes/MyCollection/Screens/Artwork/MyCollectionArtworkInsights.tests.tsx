@@ -1,5 +1,6 @@
 import { MyCollectionArtworkInsightsTestsQuery } from "__generated__/MyCollectionArtworkInsightsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
@@ -93,6 +94,50 @@ describe("MyCollectionArtworkInsights", () => {
     // jest won, i don't get how to mock the showSubmitToSell function ><'
     expect(await getByText("Sell Art From Your Collection")).toBeTruthy()
   })
+
+  describe("Conditional Display of RequestForPriceEstimateBanner", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARShowRequestPriceEstimateBanner: true })
+    })
+
+    it("does not display RequestForPriceEstimateBanner when Artist is not P1", () => {
+      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+      mockEnvironmentPayload(mockEnvironment, {
+        Query: () => ({
+          artwork: mockArtwork,
+          marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
+        }),
+      })
+      expect(queryByTestId("request-price-estimate-button")).toBeNull()
+      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
+    })
+
+    it("does not display RequestForPriceEstimateBanner when DemandIndex < 9", () => {
+      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+      mockEnvironmentPayload(mockEnvironment, {
+        Query: () => ({
+          artwork: mockArtworkForP1Artist,
+          marketPriceInsights: mockMarketPriceInsights,
+        }),
+      })
+
+      expect(queryByTestId("request-price-estimate-button")).toBeNull()
+      expect(queryByTestId("request-price-estimate-banner-text")).toBeNull()
+    })
+
+    it("displays RequestForPriceEstimateBanner when Artist is P1 AND DemandIndex >= 9", () => {
+      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+      mockEnvironmentPayload(mockEnvironment, {
+        Query: () => ({
+          artwork: mockArtworkForP1Artist,
+          marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
+        }),
+      })
+
+      expect(queryByTestId("request-price-estimate-button")).toBeDefined()
+      expect(queryByTestId("request-price-estimate-banner-text")).toBeDefined()
+    })
+  })
 })
 
 const mockArtwork = {
@@ -146,4 +191,33 @@ const mockMarketPriceInsights = {
   annualValueSoldCents: 100000,
   medianSaleToEstimateRatio: 1,
   liquidityRank: 0.7,
+}
+
+const mockMarketPriceInsightsForHighDemandIndex = {
+  ...mockMarketPriceInsights,
+  demandRank: 0.95,
+}
+
+const mockArtworkForP1Artist = {
+  ...mockArtwork,
+  ...{
+    comparableAuctionResults: {
+      edges: [
+        {
+          ...mockArtwork.comparableAuctionResults.edges[0],
+          ...{
+            node: {
+              ...mockArtwork.comparableAuctionResults.edges[0].node,
+              artist: {
+                name: "Takashi Murakami",
+                targetSupply: {
+                  isP1: true,
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+  },
 }
