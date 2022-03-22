@@ -1742,6 +1742,9 @@ type Artwork implements Node & Searchable & Sellable {
   imageTitle: String
   imageUrl: String
 
+  # Represents the import source of the artwork
+  importSource: ArtworkImportSource
+
   # Structured questions a collector can inquire on about this work
   inquiryQuestions: [InquiryQuestion]
 
@@ -1973,6 +1976,11 @@ interface ArtworkEdgeInterface {
 union ArtworkFilterFacet = Gene | Tag
 
 union ArtworkHighlight = Article | Show
+
+enum ArtworkImportSource {
+  CONVECTION
+  MY_COLLECTION
+}
 
 type ArtworkInfoRow {
   # Additional details about given attribute
@@ -9847,6 +9855,7 @@ input MyCollectionCreateArtworkInput {
   editionSize: String
   externalImageUrls: [String]
   height: String
+  importSource: ArtworkImportSource
   isEdition: Boolean
   medium: String
   metric: String
