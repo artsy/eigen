@@ -13,8 +13,8 @@ import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { IndicesInfoOptions, useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
-import { Box, Flex, Spacer, Text } from "palette"
-import { FC, Suspense, useEffect, useMemo, useRef, useState } from "react"
+import { Box, Button, Flex, Spacer, Text } from "palette"
+import { FC, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
@@ -112,6 +112,8 @@ export const Search: FC = () => {
   const indices = system?.algolia?.indices
   const { trackEvent } = useTracking()
 
+  console.log("[debug] API KEY", system?.algolia?.apiKey)
+
   const exampleExperiments = useFeatureFlag("AREnableExampleExperiments")
   const smudgeValue = useExperimentVariant("test-search-smudge")
   nonCohesionTracks.experimentVariant(
@@ -131,7 +133,7 @@ export const Search: FC = () => {
     searchClient,
     indices,
     onError: (error: Error) => {
-      console.log("[debug] handleGetIndicesInfoError", error)
+      console.log("[debug] onError", error)
 
       if (isAlgoliaApiKeyExpiredError(error)) {
         console.log("[debug] call onRefetch")
@@ -165,20 +167,33 @@ export const Search: FC = () => {
   }, [indices, indicesInfo])
 
   useEffect(() => {
-    console.log("[debug] searchQuery", searchQuery)
+    console.log("[debug] search client updated", searchQuery, searchQuery.length)
 
     /**
      * Refetch up-to-date info about Algolia indices for specified search query
      * when Algolia API key expired and request failed (we get a fresh Algolia API key and send request again)
      */
-    if (!!searchClient && shouldStartSearching(searchQuery)) {
-      console.log("[debug] refetch")
+    if (searchClient && shouldStartSearching(searchQuery)) {
+      console.log("[debug] call updateIndicesInfo")
       updateIndicesInfo(searchQuery)
     }
   }, [searchClient])
 
+  const onTextChange = useCallback(
+    (value) => {
+      handleResetSearchInput()
+
+      if (shouldStartSearching(value)) {
+        updateIndicesInfo(value)
+      }
+    },
+    [searchClient]
+  )
+
   if (!searchClient || !searchInsightsConfigured) {
-    return <SearchPlaceholder />
+    console.log("[debug] init", system?.algolia?.appID, system?.algolia?.apiKey)
+
+    return <Box width={300} height={300} bg="red" />
   }
 
   const handleRetry = () => {
@@ -271,15 +286,12 @@ export const Search: FC = () => {
           <Flex p={2} pb={1}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
-              onTextChange={(value) => {
-                handleResetSearchInput()
-
-                if (shouldStartSearching(value)) {
-                  updateIndicesInfo(value)
-                }
-              }}
+              onTextChange={onTextChange}
             />
           </Flex>
+
+          <Button onPress={onRefetch}>Refetch</Button>
+
           <Flex flex={1} collapsable={false}>
             {shouldStartSearching(searchQuery) ? (
               <>

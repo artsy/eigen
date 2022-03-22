@@ -20,11 +20,7 @@ export const useAlgoliaIndices = (options: IndicesInfoOptions) => {
   const { searchClient, indices = [], onError } = options
   const [indicesInfo, setIndicesInfo] = useState<IndicesInfo>({})
   const [loading, setLoading] = useState(false)
-  const lastQuery = useRef<string | null>(null)
-
-  const isCurrentQuery = (query: string) => {
-    return lastQuery.current === query
-  }
+  const queryId = useRef(0)
 
   const getIndicesInfo = (response: MultipleQueriesResponse<SearchResponse<{}>>) => {
     return response.results.reduce((acc: IndicesInfo, { index, nbHits }) => {
@@ -55,7 +51,7 @@ export const useAlgoliaIndices = (options: IndicesInfoOptions) => {
       return
     }
 
-    lastQuery.current = query
+    const currentQueryId = ++queryId.current
 
     try {
       setLoading(true)
@@ -63,17 +59,16 @@ export const useAlgoliaIndices = (options: IndicesInfoOptions) => {
       const queries = getQueriesFromIndices(query)
       const response = await searchClient.multipleQueries<SearchResponse>(queries)
 
-      if (isCurrentQuery(query)) {
+      if (currentQueryId === queryId.current) {
+        console.log("[debug] response", new Date().toLocaleTimeString(), query, currentQueryId)
+
         const updatedIndicesInfo = getIndicesInfo(response)
         setIndicesInfo(updatedIndicesInfo)
+        setLoading(false)
       }
     } catch (error) {
-      if (isCurrentQuery(query)) {
-        console.log("[debug] error", error, query)
+      if (currentQueryId === queryId.current) {
         onError?.(error as Error)
-      }
-    } finally {
-      if (isCurrentQuery(query)) {
         setLoading(false)
       }
     }

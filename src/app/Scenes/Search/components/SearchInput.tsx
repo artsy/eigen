@@ -28,14 +28,14 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")
   const isAndroid = Platform.OS === "android"
   const navigation = isAndroid ? useNavigation() : null
-  const handleChangeText = useMemo(
-    () =>
-      throttle((value) => {
-        refine(value)
-        onTextChange(value)
-      }, SEARCH_THROTTLE_INTERVAL),
-    []
-  )
+  const handleChangeText = useMemo(() => {
+    console.log("[debug] throttle")
+
+    return throttle((value) => {
+      refine(value)
+      onTextChange(value)
+    }, SEARCH_THROTTLE_INTERVAL)
+  }, [onTextChange])
 
   useEffect(() => {
     if (searchProviderValues.inputRef?.current && isAndroid) {
