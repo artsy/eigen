@@ -153,7 +153,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
   }
 }
 
-export const RequestConditionReportQueryRenderer: FC<{
+export const RequestConditionReportQueryRenderer: React.FC<{
   artworkID: string
 }> = ({ artworkID }) => {
   return (

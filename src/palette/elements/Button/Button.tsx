@@ -1,7 +1,7 @@
 import { MeasuredView, ViewMeasurements } from "app/utils/MeasuredView"
 import { Spacer } from "palette"
 import { useColor } from "palette/hooks"
-import { FC, ReactNode, useState } from "react"
+import { useState } from "react"
 import { PressableProps, TextStyle } from "react-native"
 import { GestureResponderEvent, Pressable } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
@@ -15,7 +15,7 @@ import { Spinner } from "../Spinner"
 import { Text, useTextStyleForPalette } from "../Text"
 
 export interface ButtonProps extends BoxProps {
-  children: ReactNode
+  children: React.ReactNode
 
   size?: "small" | "large"
   variant?:
@@ -28,7 +28,7 @@ export interface ButtonProps extends BoxProps {
     | "text"
   onPress?: PressableProps["onPress"]
 
-  icon?: ReactNode
+  icon?: React.ReactNode
   iconPosition?: "left" | "left-start" | "right"
 
   /**
@@ -63,7 +63,7 @@ enum DisplayState {
   Pressed = "pressed",
 }
 
-export const Button: FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
   children,
   disabled,
   haptic,

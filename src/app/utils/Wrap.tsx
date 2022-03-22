@@ -1,9 +1,8 @@
-import React, { ReactNode } from "react"
 import { getChildrenByTypeDeep } from "react-nanny"
 
 interface WrapProps {
   if: boolean
-  children?: ReactNode
+  children?: React.ReactNode
 }
 
 export const Wrap = ({ if: condition, children }: WrapProps) => {
@@ -23,4 +22,4 @@ export const Wrap = ({ if: condition, children }: WrapProps) => {
   return <>{actualWrapContent}</>
 }
 
-Wrap.Content = ({ children }: { children?: ReactNode }) => <>{children}</>
+Wrap.Content = ({ children }: { children?: React.ReactNode }) => <>{children}</>
