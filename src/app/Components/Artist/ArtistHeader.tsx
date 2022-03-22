@@ -4,7 +4,7 @@ import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFoll
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { Box, bullet, Flex, FollowButton, Sans, Spacer } from "palette"
-import React, { useState } from "react"
+import { FC, useState } from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -18,7 +18,7 @@ interface Props {
   relay: RelayProp
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
+export const ArtistHeader: FC<Props> = ({ artist, relay }) => {
   const { trackEvent } = useTracking()
 
   const [isFollowedChanging, setIsFollowedChanging] = useState(false)
