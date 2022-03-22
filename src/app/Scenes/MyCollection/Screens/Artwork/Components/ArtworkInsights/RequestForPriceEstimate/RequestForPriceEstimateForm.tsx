@@ -10,6 +10,7 @@ export const RequestForPriceEstimateForm = () => {
   const { safeAreaInsets } = useScreenDimensions()
   const { values, handleChange, errors, setErrors, handleSubmit, isValid } =
     useFormikContext<RequestForPriceEstimateFormikSchema>()
+
   return (
     <ArtsyKeyboardAvoidingView>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
