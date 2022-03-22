@@ -1,3 +1,4 @@
+import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { useFormikContext } from "formik"
 import {
@@ -11,7 +12,6 @@ import {
   Spacer,
   Text,
 } from "palette"
-import { ArtistAutosuggest } from "palette/elements/ArtistAutosuggest/ArtistAutosuggest"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
 import { InfoModal } from "./Components/InfoModal"
