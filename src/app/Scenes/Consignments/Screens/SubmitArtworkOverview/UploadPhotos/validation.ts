@@ -20,6 +20,7 @@ export interface Photo {
   errorMessage?: string
   size?: number
   sizeDisplayValue?: string
+  automaticallyAdded?: boolean
 }
 
 export const photosEmptyInitialValues: PhotosFormModel = {

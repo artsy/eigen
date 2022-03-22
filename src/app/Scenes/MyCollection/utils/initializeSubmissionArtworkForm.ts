@@ -3,6 +3,8 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 
 export const initializeSubmissionArtworkForm = (artwork: MyCollectionWhySell_artwork) => {
+  GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+
   GlobalStore.actions.artworkSubmission.submission.initializeArtworkDetailsForm({
     artist: artwork.artist?.name ?? "",
     artistId: artwork.artist?.internalID ?? "",
@@ -23,6 +25,7 @@ export const initializeSubmissionArtworkForm = (artwork: MyCollectionWhySell_art
 
   const photos = artwork.images?.map((image) => ({
     path: image?.url?.replace(":version", "large"),
+    automaticallyAdded: true,
   }))
 
   GlobalStore.actions.artworkSubmission.submission.initializePhotos(photos ?? [])
