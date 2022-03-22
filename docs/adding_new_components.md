@@ -7,13 +7,14 @@ Adding a new component involves a few pieces of work! But don't worry, it's not 
 Create a new file in the `src/app/Components` directory. You'll likely need to create a subdirectory with a good name, too. Create a basic component.
 
 ```tsx
+import { FC } from "react"
 import { Text } from "palette"
 
 interface OurProps {
   whatever: string
 }
 
-export function MyNewComponent(props: OurProps) {
+export const MyNewComponent: FC<OurProps> = (props) => {
   const someFunStuff = useACoolHook()
   return <Text variant="lg">Hello world!</Text>
 }

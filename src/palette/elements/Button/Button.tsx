@@ -1,7 +1,7 @@
 import { MeasuredView, ViewMeasurements } from "app/utils/MeasuredView"
 import { Spacer } from "palette"
 import { useColor } from "palette/hooks"
-import { ReactNode, useState } from "react"
+import { FC, ReactNode, useState } from "react"
 import { PressableProps, TextStyle } from "react-native"
 import { GestureResponderEvent, Pressable } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
@@ -63,7 +63,7 @@ enum DisplayState {
   Pressed = "pressed",
 }
 
-export function Button({
+export const Button: FC<ButtonProps> = ({
   children,
   disabled,
   haptic,
@@ -78,7 +78,7 @@ export function Button({
   testOnly_state,
   testID,
   ...rest
-}: ButtonProps) {
+}) => {
   const textStyle = useTextStyleForPalette(size === "small" ? "xs" : "sm")
 
   const [innerDisplayState, setInnerDisplayState] = useState(DisplayState.Enabled)

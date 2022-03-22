@@ -34,7 +34,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useTreatment } from "app/utils/useExperiments"
 import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
-import { createRef, RefObject, useEffect, useRef, useState } from "react"
+import { createRef, FC, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
@@ -347,7 +347,7 @@ const Home = (props: Props) => {
   )
 }
 
-const HomeHeader = ({ homePageAbove }: { homePageAbove: Home_homePageAbove | null }) => (
+const HomeHeader: FC<{ homePageAbove: Home_homePageAbove | null }> = ({ homePageAbove }) => (
   <Box mb={1} mt={2}>
     <Flex alignItems="center">
       <ArtsyLogoIcon scale={0.75} />
@@ -495,7 +495,7 @@ export const HomeFragmentContainer = createRefetchContainer(
 
 const ModuleSeparator = () => <Spacer mb={MODULE_SEPARATOR_HEIGHT} />
 
-function BelowTheFoldPlaceholder() {
+const BelowTheFoldPlaceholder: FC = () => {
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
 
   return (
@@ -532,7 +532,7 @@ function BelowTheFoldPlaceholder() {
   )
 }
 
-function HomePlaceholder() {
+const HomePlaceholder: FC = () => {
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
 
   return (
@@ -613,7 +613,7 @@ const messages = {
   },
 }
 
-export function HomeQueryRenderer() {
+export const HomeQueryRenderer: FC = () => {
   const { flash_message } = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.tabProps.home ?? {}
   ) as {
