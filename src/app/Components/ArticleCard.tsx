@@ -2,7 +2,7 @@ import { ArticleCard_article } from "__generated__/ArticleCard_article.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Spacer, Text } from "palette"
-import React from "react"
+import { FC } from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -15,7 +15,7 @@ interface ArticleCardProps extends ViewProps {
   onPress?(event: GestureResponderEvent): void
 }
 
-export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFluid }) => {
+export const ArticleCard: FC<ArticleCardProps> = ({ article, onPress, isFluid }) => {
   const imageURL = article.thumbnailImage?.url
 
   const onTap = (event: GestureResponderEvent) => {

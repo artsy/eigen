@@ -2,7 +2,15 @@ module.exports = (api) => {
   api.cache.forever() // don't call this babel config all the time if it hasn't changed.
 
   return {
-    presets: [["module:metro-react-native-babel-preset", { unstable_disableES6Transforms: true }]],
+    presets: [
+      [
+        "module:metro-react-native-babel-preset",
+        {
+          unstable_disableES6Transforms: true,
+          useTransformReactJSXExperimental: true, // this is so `import React from "react"` is not needed.
+        },
+      ],
+    ],
     plugins: [
       /**
        * Currently Flow generates non-spec compliant code and so we need to make sure to strip any Flow type annotations
@@ -28,6 +36,7 @@ module.exports = (api) => {
       ],
       ["@babel/plugin-proposal-class-properties", { loose: true }],
       ["@babel/plugin-proposal-private-methods", { loose: true }],
+      ["@babel/plugin-transform-react-jsx", { runtime: "automatic" }], // this is so `import React from "react"` is not needed.
       "relay",
       "import-graphql",
     ],

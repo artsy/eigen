@@ -58,6 +58,9 @@ const MyCollectionArtworkScreenQuery = graphql`
     marketPriceInsights2: marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
       annualLotsSold
     }
+    me {
+      ...MyCollectionArtworkInsights_me
+    }
   }
 `
 
@@ -109,6 +112,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
         <MyCollectionArtworkInsights
           artwork={data.artwork}
           marketPriceInsights={data.marketPriceInsights}
+          me={data.me}
         />
       ),
       initial: true,

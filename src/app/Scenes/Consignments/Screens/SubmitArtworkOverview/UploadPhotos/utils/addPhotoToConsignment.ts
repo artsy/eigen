@@ -1,3 +1,4 @@
+import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
 import { addAssetToConsignment } from "../../../../Submission/addAssetToConsignment"
 import {
   createGeminiAssetWithS3Credentials,
@@ -5,7 +6,6 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "../../../../Submission/geminiUploadToS3"
-import { Photo } from "../validation"
 
 export const addPhotoToConsignment = async (asset: Photo, submissionID: string) => {
   const acl = "private"

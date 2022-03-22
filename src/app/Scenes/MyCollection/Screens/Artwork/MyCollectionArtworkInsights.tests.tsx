@@ -23,6 +23,9 @@ describe("MyCollectionArtworkInsights", () => {
           marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
             ...MyCollectionArtworkInsights_marketPriceInsights
           }
+          me {
+            ...MyCollectionArtworkInsights_me
+          }
         }
       `}
       variables={{}}
@@ -37,6 +40,7 @@ describe("MyCollectionArtworkInsights", () => {
                 title: "test",
                 content: (
                   <MyCollectionArtworkInsights
+                    me={props.me}
                     marketPriceInsights={props.marketPriceInsights}
                     artwork={props?.artwork}
                   />

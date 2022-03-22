@@ -10,7 +10,7 @@ module.exports = {
   transformer: {
     getTransformOptions: async () => ({
       transform: {
-        experimentalImportSupport: false,
+        experimentalImportSupport: true, // this is so `import React from "react"` is not needed.
         inlineRequires: true,
       },
     }),

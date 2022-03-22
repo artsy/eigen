@@ -34,9 +34,10 @@ export const Versions = {
   RenameModelsAndAddDarkModeSupport: 22,
   AddUserPrefsMetricsUnit: 23,
   AddSourceAndMyCollectionArtworkIDToSubmission: 24,
+  RequestedPriceEstimates: 25,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddSourceAndMyCollectionArtworkIDToSubmission
+export const CURRENT_APP_VERSION = Versions.RequestedPriceEstimates
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -186,6 +187,9 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddSourceAndMyCollectionArtworkIDToSubmission]: (state) => {
     state.artworkSubmission.submission.artworkDetails.source = null
     state.artworkSubmission.submission.artworkDetails.myCollectionArtworkID = null
+  },
+  [Versions.RequestedPriceEstimates]: (state) => {
+    state.requestedPriceEstimates = { requestedPriceEstimates: {} }
   },
 }
 

@@ -34,7 +34,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useTreatment } from "app/utils/useExperiments"
 import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
-import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
+import { createRef, FC, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
@@ -347,18 +347,16 @@ const Home = (props: Props) => {
   )
 }
 
-const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove | null }> = ({ homePageAbove }) => {
-  return (
-    <Box mb={1} mt={2}>
-      <Flex alignItems="center">
-        <ArtsyLogoIcon scale={0.75} />
-      </Flex>
-      <Spacer mb="15px" />
-      {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
-      <Spacer mb="2" />
-    </Box>
-  )
-}
+const HomeHeader: FC<{ homePageAbove: Home_homePageAbove | null }> = ({ homePageAbove }) => (
+  <Box mb={1} mt={2}>
+    <Flex alignItems="center">
+      <ArtsyLogoIcon scale={0.75} />
+    </Flex>
+    <Spacer mb="15px" />
+    {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
+    <Spacer mb="2" />
+  </Box>
+)
 
 const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
   const scrollRefs = useRef<Array<RefObject<RailScrollRef>>>(modules.map((_) => createRef()))
@@ -497,7 +495,7 @@ export const HomeFragmentContainer = createRefetchContainer(
 
 const ModuleSeparator = () => <Spacer mb={MODULE_SEPARATOR_HEIGHT} />
 
-const BelowTheFoldPlaceholder: React.FC = () => {
+const BelowTheFoldPlaceholder: FC = () => {
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
 
   return (
@@ -534,7 +532,7 @@ const BelowTheFoldPlaceholder: React.FC = () => {
   )
 }
 
-const HomePlaceholder: React.FC<{}> = () => {
+const HomePlaceholder: FC = () => {
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
 
   return (
@@ -615,7 +613,7 @@ const messages = {
   },
 }
 
-export const HomeQueryRenderer: React.FC = () => {
+export const HomeQueryRenderer: FC = () => {
   const { flash_message } = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.tabProps.home ?? {}
   ) as {
