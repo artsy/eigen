@@ -1,5 +1,3 @@
-import React from "react"
-
 /**
  * Convert a fragment or nested fragment into an array of elements
  */

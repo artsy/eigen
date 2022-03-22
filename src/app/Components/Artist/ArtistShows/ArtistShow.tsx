@@ -1,4 +1,3 @@
-import React from "react"
 import { View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

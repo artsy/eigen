@@ -1,5 +1,4 @@
 import { isALocalImage } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
-import React from "react"
 import {
   Image,
   ImageResizeMode,

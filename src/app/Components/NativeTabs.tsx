@@ -1,6 +1,5 @@
 import type { AppModule } from "app/AppRegistry"
 import type { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import React from "react"
 import { requireNativeComponent } from "react-native"
 
 const ARNativeTabs = requireNativeComponent("ARNativeTabs") as any

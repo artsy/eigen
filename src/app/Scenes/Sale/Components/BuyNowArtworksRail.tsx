@@ -5,7 +5,6 @@ import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import { Flex } from "palette"
-import React from "react"
 import { createFragmentContainer } from "react-relay"
 import { graphql } from "react-relay"
 

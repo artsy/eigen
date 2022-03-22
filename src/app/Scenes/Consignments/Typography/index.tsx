@@ -1,5 +1,4 @@
 import { useTheme } from "palette"
-import React from "react"
 import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
 const LargeHeadline: React.FC<TextProps> = (props) => {

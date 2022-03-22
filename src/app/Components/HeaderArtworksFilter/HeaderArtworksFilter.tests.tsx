@@ -2,7 +2,6 @@ import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/us
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text, TouchableHighlightColor } from "palette"
-import React from "react"
 import { act } from "react-test-renderer"
 import {
   FilterProps,

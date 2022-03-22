@@ -1,5 +1,4 @@
 import { AuctionIcon, Box, EditIcon, Flex, PaymentIcon, Sans, Spacer } from "palette"
-import React from "react"
 import { TextContainer } from "./TextContainer"
 
 export const HowItWorks: React.FC = () => {

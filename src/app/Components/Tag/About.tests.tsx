@@ -1,4 +1,3 @@
-import React from "react"
 import "react-native"
 
 import { renderWithWrappers } from "app/tests/renderWithWrappers"

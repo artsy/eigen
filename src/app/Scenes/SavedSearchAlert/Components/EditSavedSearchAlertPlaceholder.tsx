@@ -1,7 +1,6 @@
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PlaceholderText } from "app/utils/placeholders"
 import { Box, Flex, Spacer } from "palette"
-import React from "react"
 
 export const EditSavedSearchFormPlaceholder = () => {
   return (

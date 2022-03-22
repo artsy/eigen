@@ -1,6 +1,5 @@
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { Box, Button, Separator, Spacer } from "palette"
-import React from "react"
 import { View } from "react-native"
 
 export interface BottomAlignedProps extends React.Props<JSX.Element> {

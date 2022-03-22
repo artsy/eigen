@@ -9,7 +9,6 @@ import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { chunk } from "lodash"
 import { AddIcon, BorderBox, Box, Flex, useColor, XCircleIcon } from "palette"
-import React from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 

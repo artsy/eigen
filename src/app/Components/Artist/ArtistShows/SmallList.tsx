@@ -1,4 +1,3 @@
-import React from "react"
 import { FlatList, StyleSheet, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

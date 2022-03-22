@@ -5,7 +5,6 @@ import {
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { Flex, Sans, Text, useColor } from "palette"
-import React from "react"
 import { GestureResponderEvent } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import styled from "styled-components/native"

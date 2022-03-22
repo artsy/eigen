@@ -11,7 +11,6 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { chunk, flattenDeep } from "lodash"
 import { Flex, Sans, Separator, Spacer } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
 import {

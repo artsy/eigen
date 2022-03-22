@@ -1,5 +1,4 @@
 import { Box, Flex, Input, Join, Spacer, Text, useColor } from "palette"
-import React from "react"
 import { TextStyle } from "react-native"
 import { LOCALIZED_UNIT, Numeric, Range } from "./helpers"
 

@@ -1,7 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Touchable, useColor } from "palette"
-import React from "react"
 import { Dimensions, FlatList, Image, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
 

@@ -4,7 +4,6 @@ import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutati
 import { navigate } from "app/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
 import { Button, ButtonProps } from "palette"
-import React from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 

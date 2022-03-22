@@ -7,7 +7,6 @@ import {
 } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Flex, Join, Spacer } from "palette"
-import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkRail, ArtworkRailProps } from "./ArtworkRail"

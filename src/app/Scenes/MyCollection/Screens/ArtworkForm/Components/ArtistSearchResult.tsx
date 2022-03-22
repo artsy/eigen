@@ -1,6 +1,5 @@
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { Avatar, Flex, Spacer, Text } from "palette"
-import React from "react"
 
 export const ArtistSearchResult: React.FC<{ result: AutosuggestResult }> = ({ result }) => {
   return (

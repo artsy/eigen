@@ -1,4 +1,3 @@
-import React from "react"
 import { Circle, G, Icon, IconProps, Path, Rect } from "./Icon"
 
 /** https://stripe.com/docs/api#card_object-brand */

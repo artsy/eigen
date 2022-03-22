@@ -1,4 +1,3 @@
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { LayoutChangeEvent, View } from "react-native"

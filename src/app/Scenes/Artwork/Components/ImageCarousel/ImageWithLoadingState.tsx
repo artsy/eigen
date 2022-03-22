@@ -1,5 +1,4 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import React from "react"
 import { TouchableWithoutFeedback, View, ViewProps } from "react-native"
 
 interface ImageWithLoadingStateProps {

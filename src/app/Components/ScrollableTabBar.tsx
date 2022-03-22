@@ -1,6 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Sans } from "palette"
-import React from "react"
 import { Animated, Dimensions, LayoutRectangle, ScrollView, View } from "react-native"
 import styled from "styled-components/native"
 

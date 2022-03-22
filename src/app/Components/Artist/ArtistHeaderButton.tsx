@@ -1,5 +1,4 @@
 import { Touchable } from "palette"
-import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
 

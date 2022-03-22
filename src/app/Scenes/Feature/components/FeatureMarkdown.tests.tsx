@@ -1,6 +1,5 @@
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { FeatureMarkdown } from "./FeatureMarkdown"
 
 describe(FeatureMarkdown, () => {

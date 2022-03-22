@@ -1,7 +1,6 @@
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { navigate } from "app/navigation/navigate"
 import { Box, Button, Flex, Join, LinkText, Sans, Separator, Spacer } from "palette"
-import React from "react"
 import { View } from "react-native"
 
 export class PrivacyRequest extends React.Component {

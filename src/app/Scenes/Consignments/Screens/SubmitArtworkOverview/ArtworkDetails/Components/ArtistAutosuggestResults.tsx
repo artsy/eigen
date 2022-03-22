@@ -8,7 +8,6 @@ import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholde
 import { times } from "lodash"
 import { Flex, quoteLeft, quoteRight, Separator, Spacer, Text, useSpace } from "palette"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"

@@ -3,7 +3,6 @@ import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalS
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 import { BottomTabsButton } from "./BottomTabsButton"

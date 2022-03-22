@@ -1,7 +1,6 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import React from "react"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 const imageURL = "https://image.com/image.jpg"

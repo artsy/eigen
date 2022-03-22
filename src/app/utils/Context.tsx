@@ -1,4 +1,3 @@
-import React from "react"
 import { Environment } from "relay-runtime"
 import { defaultEnvironment } from "../relay/createEnvironment"
 

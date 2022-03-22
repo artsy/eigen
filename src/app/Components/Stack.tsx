@@ -1,5 +1,4 @@
 import { Flex, Join, Spacer, SpacingUnit } from "palette"
-import React from "react"
 
 export const Stack: React.FC<
   { spacing?: SpacingUnit; horizontal?: boolean } & React.ComponentPropsWithoutRef<typeof Flex>

@@ -1,6 +1,5 @@
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Flex, Join, Spacer, Text } from "palette"
-import React from "react"
 import { ScrollView } from "react-native"
 
 export const MyCollectionSellingWithartsyFAQ: React.FC = () => {

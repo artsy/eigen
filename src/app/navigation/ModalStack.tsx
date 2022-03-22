@@ -2,7 +2,6 @@ import { NavigationContainer, Route } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { AppModule } from "app/AppRegistry"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
-import React from "react"
 import { NavStack } from "./NavStack"
 import { useReloadedDevNavigationState } from "./useReloadedDevNavigationState"
 

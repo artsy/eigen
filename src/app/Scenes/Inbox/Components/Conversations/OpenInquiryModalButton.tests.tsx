@@ -2,7 +2,6 @@ import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
-import React from "react"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
 
 jest.unmock("react-relay")

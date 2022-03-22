@@ -1,5 +1,4 @@
 import { themeGet } from "@styled-system/theme-get"
-import React from "react"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 

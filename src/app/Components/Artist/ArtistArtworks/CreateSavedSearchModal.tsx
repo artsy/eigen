@@ -6,7 +6,6 @@ import {
   CreateSavedSearchAlertParams,
   SavedSearchAlertMutationResult,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import React from "react"
 import { useTracking } from "react-tracking"
 
 export interface CreateSavedSearchModalProps {

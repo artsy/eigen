@@ -5,7 +5,6 @@ import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListIt
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
-import React from "react"
 import { act } from "react-test-renderer"
 
 jest.unmock("react-relay")

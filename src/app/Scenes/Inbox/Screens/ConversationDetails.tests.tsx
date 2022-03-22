@@ -1,6 +1,5 @@
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
-import React from "react"
 import "react-native"
 import { graphql } from "react-relay"
 import { ConversationDetailsFragmentContainer } from "./ConversationDetails"

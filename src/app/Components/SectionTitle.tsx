@@ -1,6 +1,5 @@
 import { toTitleCase } from "@artsy/to-title-case"
 import { ArrowRightIcon, Flex, Text, useTheme } from "palette"
-import React from "react"
 import { TouchableOpacity, View } from "react-native"
 
 const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {

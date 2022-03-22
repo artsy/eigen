@@ -1,7 +1,6 @@
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 import { RecentSearches } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"

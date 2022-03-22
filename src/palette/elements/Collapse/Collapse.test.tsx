@@ -1,5 +1,4 @@
 import { mount } from "enzyme"
-import React from "react"
 import { Collapse } from "./Collapse"
 
 describe("Collapse", () => {

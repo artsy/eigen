@@ -1,4 +1,3 @@
-import React from "react"
 import { QueryRenderer } from "react-relay"
 
 import { LoadFailureView } from "app/Components/LoadFailureView"

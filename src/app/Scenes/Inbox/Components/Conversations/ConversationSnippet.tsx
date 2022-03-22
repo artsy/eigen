@@ -1,6 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
 import moment from "moment"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { Schema, Track, track as _track } from "app/utils/track"

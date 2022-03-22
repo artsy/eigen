@@ -1,5 +1,4 @@
 import { Flex, Sans } from "palette"
-import React from "react"
 
 export const Field: React.FC<{ label: string; value: string | null }> = ({ label, value }) => {
   if (!value) {

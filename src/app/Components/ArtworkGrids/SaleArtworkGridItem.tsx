@@ -9,7 +9,6 @@ import {
   RandomNumberGenerator,
 } from "app/utils/placeholders"
 import { Box, Flex, Sans, Spacer, Touchable } from "palette"
-import React from "react"
 import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

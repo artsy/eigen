@@ -1,5 +1,4 @@
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { InfoModal } from "./InfoModal"
 
 describe("InfoModal", () => {

@@ -1,5 +1,4 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { View } from "react-native"
 import { useSpace } from "../hooks"
 import { SpacingUnit } from "../Theme"

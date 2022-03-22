@@ -1,5 +1,4 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { PlaceholderBox, PlaceholderRaggedText, ProvidePlaceholderContext } from "./placeholders"
 
 describe(PlaceholderBox, () => {

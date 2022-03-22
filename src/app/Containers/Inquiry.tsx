@@ -8,7 +8,6 @@ import ArtworkPreview from "app/Scenes/Inbox/Components/Conversations/Preview/Ar
 import { MetadataText, SmallHeadline } from "app/Scenes/Inbox/Components/Typography"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import React from "react"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"

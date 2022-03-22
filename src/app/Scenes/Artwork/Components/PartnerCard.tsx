@@ -5,7 +5,6 @@ import { get } from "app/utils/get"
 import { limitWithCount } from "app/utils/limitWithCount"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { EntityHeader, Flex, FollowButton, Sans, Spacer } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 

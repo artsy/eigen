@@ -1,5 +1,4 @@
 import { GlobalState } from "app/utils/useGlobalState"
-import React from "react"
 import Animated from "react-native-reanimated"
 
 export const StickyTabPageContext = React.createContext<{

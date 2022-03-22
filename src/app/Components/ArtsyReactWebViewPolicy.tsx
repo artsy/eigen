@@ -1,4 +1,3 @@
-import React from "react"
 import { ArtsyReactWebView } from "./ArtsyReactWebView"
 
 export const ArtsyWebViewTerms: React.FC = () => {

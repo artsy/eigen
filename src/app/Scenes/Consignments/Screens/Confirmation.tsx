@@ -4,7 +4,6 @@ import { navigate, popToRoot } from "app/navigation/navigate"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack } from "app/utils/track"
 import { Box, Button, ClassTheme, Flex, Sans, Spacer } from "palette"
-import React from "react"
 import { Alert, BackHandler, NativeEventSubscription, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
 

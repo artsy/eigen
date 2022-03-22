@@ -6,7 +6,6 @@ import {
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { Sans, Separator } from "palette"
-import React from "react"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps

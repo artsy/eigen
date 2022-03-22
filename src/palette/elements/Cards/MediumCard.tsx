@@ -1,6 +1,5 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useTheme } from "palette/Theme"
-import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"

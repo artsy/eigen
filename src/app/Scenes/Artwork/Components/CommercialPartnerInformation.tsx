@@ -2,7 +2,6 @@ import { CommercialPartnerInformation_artwork } from "__generated__/CommercialPa
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { LinkText, Sans, Spacer } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {

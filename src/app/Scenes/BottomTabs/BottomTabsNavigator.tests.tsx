@@ -1,7 +1,6 @@
 import { NativeTabs } from "app/Components/NativeTabs"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { act } from "react-test-renderer"
 import { BottomTabsNavigator } from "./BottomTabsNavigator"
 

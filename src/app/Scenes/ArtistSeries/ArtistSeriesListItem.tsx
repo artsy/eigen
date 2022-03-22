@@ -9,7 +9,6 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArrowRightIcon, Flex, Sans, Touchable, useColor } from "palette"
-import React from "react"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesListItemProps {

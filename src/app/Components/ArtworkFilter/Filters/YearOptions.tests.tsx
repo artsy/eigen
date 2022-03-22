@@ -7,7 +7,6 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { act } from "react-test-renderer"
 import { getEssentialProps } from "./helper"
 import {

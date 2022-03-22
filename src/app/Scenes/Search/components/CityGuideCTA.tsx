@@ -2,7 +2,6 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
 import { ClassTheme, Flex, Sans, Spacer } from "palette"
-import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 
 export class CityGuideCTA extends React.Component {

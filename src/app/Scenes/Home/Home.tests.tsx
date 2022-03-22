@@ -1,5 +1,4 @@
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import React from "react"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 

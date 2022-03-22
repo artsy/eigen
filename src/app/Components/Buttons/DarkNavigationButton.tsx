@@ -1,6 +1,5 @@
 import { navigate } from "app/navigation/navigate"
 import { Box, ClassTheme, Flex, Serif } from "palette"
-import React from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
 
 interface Props extends React.Props<DarkNavigationButton> {

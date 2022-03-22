@@ -1,7 +1,6 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { Select } from "palette/elements/Select"
-import React from "react"
 import { MediumPicker } from "./MediumPicker"
 
 jest.mock("formik")

@@ -1,5 +1,4 @@
 import { Flex, Text, useColor } from "palette"
-import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import { PopIn } from "../../../app/Components/PopIn"
 

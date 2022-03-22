@@ -1,6 +1,5 @@
 import { Photo } from "app/Scenes/Consignments"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Image } from "react-native"
 import { AddEditPhotos } from "./AddEditPhotos"
 

@@ -6,7 +6,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "app/utils/track"
-import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { EventList } from "./Components/EventList"
 

@@ -17,7 +17,6 @@ import { Schema, screenTrack } from "app/utils/track"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Flex, LinkText, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
-import React from "react"
 import { ScrollView, View, ViewProps } from "react-native"
 import {
   commitMutation,

@@ -9,7 +9,6 @@ import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids
 import { extractText } from "app/tests/extractText"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SaleArtworkListContainer } from "./Components/SaleArtworkList"

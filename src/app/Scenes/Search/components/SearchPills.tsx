@@ -1,5 +1,4 @@
 import { Pill, useSpace } from "palette"
-import React from "react"
 import { ScrollView } from "react-native"
 import { PillType } from "../types"
 

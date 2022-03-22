@@ -1,6 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
 import { ClassTheme } from "palette"
-import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
 

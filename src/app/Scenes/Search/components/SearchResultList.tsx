@@ -1,6 +1,5 @@
 import { FadeIn } from "app/Components/FadeIn"
 import { Join, Spacer } from "palette"
-import React from "react"
 import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
 
 export const SearchResultList: React.FC<{ results: React.ReactElement[] }> = ({ results }) => {

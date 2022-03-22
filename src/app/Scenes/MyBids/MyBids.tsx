@@ -1,5 +1,4 @@
 import { Flex, Join, Separator, Spacer, Text } from "palette"
-import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 

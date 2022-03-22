@@ -1,5 +1,4 @@
 import { Button, ButtonProps } from "palette"
-import React from "react"
 
 interface Props {
   title: string

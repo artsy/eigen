@@ -1,7 +1,6 @@
 import { getDefaultNormalizer, render } from "@testing-library/react-native"
 import moment from "moment"
 import { Theme } from "palette"
-import React from "react"
 import { Text } from "react-native"
 import { LabeledTicker, SimpleTicker } from "./Ticker"
 

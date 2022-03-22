@@ -1,7 +1,6 @@
 import { TimeOffsetProviderQuery } from "__generated__/TimeOffsetProviderQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import PropTypes from "prop-types"
-import React from "react"
 import { fetchQuery, graphql } from "relay-runtime"
 
 const getLocalTimestampInMilliSeconds = () => {

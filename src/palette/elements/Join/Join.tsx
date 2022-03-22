@@ -1,5 +1,4 @@
 import { flattenChildren } from "app/utils/flattenChildren"
-import React from "react"
 
 interface JoinProps {
   separator: React.ReactElement

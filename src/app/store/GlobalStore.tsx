@@ -5,7 +5,6 @@ import { loadDevNavigationStateCache } from "app/navigation/useReloadedDevNaviga
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { logAction } from "app/utils/loggers"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
-import React from "react"
 import { Platform } from "react-native"
 // @ts-ignore
 import { getBuildNumber, getModel, getUserAgentSync } from "react-native-device-info"

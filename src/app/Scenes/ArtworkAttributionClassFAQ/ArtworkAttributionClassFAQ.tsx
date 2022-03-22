@@ -5,7 +5,6 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Button, Join, Separator, Spacer, Text } from "palette"
-import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 

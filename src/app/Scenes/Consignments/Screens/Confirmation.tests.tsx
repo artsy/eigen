@@ -1,6 +1,5 @@
 import { popToRoot } from "app/navigation/navigate"
 import { getTextTree } from "app/utils/getTestWrapper"
-import React from "react"
 import "react-native"
 import Confirmation, { SubmissionTypes } from "./Confirmation"
 

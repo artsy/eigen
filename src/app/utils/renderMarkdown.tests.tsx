@@ -5,7 +5,6 @@ import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { readFileSync } from "fs"
 import { Flex, Serif } from "palette"
 import { join } from "path"
-import React from "react"
 import { defaultRules, renderMarkdown } from "./renderMarkdown"
 
 describe("renderMarkdown", () => {

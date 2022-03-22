@@ -1,7 +1,6 @@
 import { within } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
 import { MockFilterScreen } from "../FilterTestHelper"
 import { getEssentialProps } from "./helper"

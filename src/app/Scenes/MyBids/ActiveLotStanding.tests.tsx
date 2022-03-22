@@ -1,5 +1,3 @@
-import React from "react"
-
 import { ActiveLotStanding_saleArtwork } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"

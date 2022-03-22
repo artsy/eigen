@@ -3,7 +3,6 @@ import { navigate } from "app/navigation/navigate"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
 import { Button, LinkText } from "palette"
-import React from "react"
 import { PrivacyRequest } from "./PrivacyRequest"
 
 describe(PrivacyRequest, () => {

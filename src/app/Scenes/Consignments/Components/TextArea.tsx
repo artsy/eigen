@@ -1,6 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
 import { useTheme } from "palette"
-import React from "react"
 import { Platform, TextInputProps, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
 

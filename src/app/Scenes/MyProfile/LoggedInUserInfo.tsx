@@ -3,7 +3,6 @@ import { LoggedInUserInfoQuery } from "__generated__/LoggedInUserInfoQuery.graph
 import Spinner from "app/Components/Spinner"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Box, Serif } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface UserProfileProps {

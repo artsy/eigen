@@ -1,5 +1,4 @@
 import { bullet, FilterIcon, Flex, Separator, Text, TouchableHighlightColor } from "palette"
-import React from "react"
 
 interface FilterHeaderProps {
   children?: React.ReactNode

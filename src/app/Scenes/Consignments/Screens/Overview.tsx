@@ -1,5 +1,4 @@
 import { Schema, screenTrack, Track, track as _track } from "app/utils/track"
-import React from "react"
 import { Alert } from "react-native"
 
 import AsyncStorage from "@react-native-async-storage/async-storage"

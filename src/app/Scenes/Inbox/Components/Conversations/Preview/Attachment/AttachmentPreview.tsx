@@ -1,4 +1,3 @@
-import React from "react"
 import { findNodeHandle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"

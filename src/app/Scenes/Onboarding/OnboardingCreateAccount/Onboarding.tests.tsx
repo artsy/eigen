@@ -1,7 +1,6 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
-import React from "react"
 import { Onboarding, OnboardingWelcomeScreens } from "../Onboarding"
 import { OnboardingPersonalization } from "../OnboardingPersonalization/OnboardingPersonalization"
 

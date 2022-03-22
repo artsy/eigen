@@ -5,7 +5,6 @@ import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
 import { bullet, Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { AuctionResultsMidEstimate } from "../AuctionResult/AuctionResultMidEstimate"
 

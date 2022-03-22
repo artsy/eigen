@@ -1,5 +1,3 @@
-import React from "react"
-
 export function plainTextFromTree(root: React.ReactNode): string | any {
   function traverse(node: React.ReactNode): string {
     if (Array.isArray(node)) {

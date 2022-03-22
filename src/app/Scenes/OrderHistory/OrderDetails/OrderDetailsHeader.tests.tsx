@@ -2,7 +2,6 @@ import { OrderDetailsHeaderTestsQuery } from "__generated__/OrderDetailsHeaderTe
 import { extractText } from "app/tests/extractText"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"

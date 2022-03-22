@@ -1,7 +1,6 @@
 import { ShowsRailTestsQuery } from "__generated__/ShowsRailTestsQuery.graphql"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
-import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

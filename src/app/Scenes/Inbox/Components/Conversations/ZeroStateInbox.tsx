@@ -1,5 +1,4 @@
 import { Box, Flex, Sans, Serif } from "palette"
-import React from "react"
 import { Dimensions, FlatList, Image, View } from "react-native"
 import styled from "styled-components/native"
 

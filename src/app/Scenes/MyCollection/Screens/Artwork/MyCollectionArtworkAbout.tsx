@@ -3,7 +3,6 @@ import { MyCollectionArtworkAbout_marketPriceInsights$key } from "__generated__/
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Spacer } from "palette/elements"
-import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollectionArtworkAboutWork"

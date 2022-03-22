@@ -5,7 +5,6 @@ import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, FlexProps, Sans } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { FeatureMarkdown } from "./FeatureMarkdown"
 

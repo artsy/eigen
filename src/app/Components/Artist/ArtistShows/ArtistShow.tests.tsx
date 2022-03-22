@@ -1,7 +1,6 @@
 import "react-native"
 
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 
 import { ArtistShowFragmentContainer } from "./ArtistShow"
 

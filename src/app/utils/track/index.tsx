@@ -1,5 +1,4 @@
 import { Screen } from "@artsy/cohesion"
-import React from "react"
 import _track, { Track as _Track, TrackingInfo } from "react-tracking"
 import { _addTrackingProvider, postEventToProviders, TrackingProvider } from "./providers"
 // The schema definition for analytics tracking lives inside `./schema`, not here.
@@ -191,8 +190,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *       ```ts
  *      import { shallow } from "enzyme"
  *      import Event from "app/NativeModules/Events"
- *      import React from "react"
- *
+ *       *
  *      // Unmock react-tracking so that it will wrap our code
  *      jest.unmock("react-tracking")
  *      import Overview from "../Overview"

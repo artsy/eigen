@@ -1,5 +1,4 @@
 import { Flex } from "palette"
-import React from "react"
 
 export const ProgressBar: React.FC<{ progress: number }> = ({ progress }) => {
   const progressPercentage = Math.max(progress * 100, 2)

@@ -2,7 +2,6 @@ import { ArtistListItemTestsQuery } from "__generated__/ArtistListItemTestsQuery
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtistListItemContainer, formatTombstoneText } from "./ArtistListItem"

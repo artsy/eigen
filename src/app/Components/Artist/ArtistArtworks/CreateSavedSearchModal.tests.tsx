@@ -10,7 +10,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { delay } from "app/utils/delay"
-import React from "react"
 import {
   CreateSavedSearchModal,
   CreateSavedSearchModalProps,

@@ -2,7 +2,6 @@ import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSec
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { renderRelayTree } from "app/tests/renderRelayTree"
 import { Theme } from "palette"
-import React from "react"
 import { graphql } from "react-relay"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
 

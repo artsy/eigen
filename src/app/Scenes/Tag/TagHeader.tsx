@@ -1,6 +1,5 @@
 import { TagHeader_tag } from "__generated__/TagHeader_tag.graphql"
 import { Box, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface HeaderProps {

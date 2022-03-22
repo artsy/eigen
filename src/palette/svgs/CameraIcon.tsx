@@ -1,5 +1,4 @@
 import { useColor } from "palette/hooks"
-import React from "react"
 import Svg from "react-native-svg"
 import { IconProps, Path } from "./Icon"
 

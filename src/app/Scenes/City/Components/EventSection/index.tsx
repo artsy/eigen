@@ -2,7 +2,6 @@ import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { navigate } from "app/navigation/navigate"
 import { Event } from "app/Scenes/City/Components/Event"
 import { Box, Serif } from "palette"
-import React from "react"
 import { RelayProp } from "react-relay"
 
 export interface Props {

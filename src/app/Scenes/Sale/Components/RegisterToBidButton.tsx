@@ -7,7 +7,6 @@ import {
 import { RegisterToBidButton_me } from "__generated__/RegisterToBidButton_me.graphql"
 import { RegisterToBidButton_sale } from "__generated__/RegisterToBidButton_sale.graphql"
 import { Box, Button, CheckIcon, Flex, Spacer, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { navigate } from "../../../navigation/navigate"

@@ -1,4 +1,3 @@
-import React from "react"
 import "react-native"
 
 import { getTestWrapper } from "app/utils/getTestWrapper"

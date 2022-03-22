@@ -1,5 +1,4 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Route } from "react-native"
 
 export class FakeNavigator {

@@ -6,7 +6,6 @@ import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
-import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { EditSavedSearchAlertQueryRenderer } from "./EditSavedSearchAlert"
 

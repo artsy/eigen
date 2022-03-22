@@ -3,7 +3,6 @@ import { TagArtworksTestsQuery } from "__generated__/TagArtworksTestsQuery.graph
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { TagArtworksPaginationContainer } from "./TagArtworks"

@@ -4,7 +4,6 @@ import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { Box, Flex, Join, Sans, Spacer } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AboutArtistProps {

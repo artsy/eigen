@@ -3,7 +3,6 @@ import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { emdash, LinkText, nbsp } from "palette"
-import React from "react"
 import { Text as RNText } from "react-native"
 import { ReadMore } from "./ReadMore"
 

@@ -1,6 +1,5 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { TabV3 } from "palette/elements/Tabs/Tab"
-import React from "react"
 import { LayoutRectangle } from "react-native"
 import { TouchableOpacity } from "react-native"
 import { Pressable } from "react-native"

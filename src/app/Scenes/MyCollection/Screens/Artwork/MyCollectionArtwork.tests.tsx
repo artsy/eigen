@@ -1,7 +1,6 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithHookWrappersTL, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkQueryRenderer } from "./MyCollectionArtwork"
 

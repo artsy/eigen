@@ -1,6 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
 import { Text } from "palette"
-import React from "react"
 import { View } from "react-native"
 import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"

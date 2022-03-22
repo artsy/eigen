@@ -1,7 +1,6 @@
 import { SaleActiveBids_me } from "__generated__/SaleActiveBids_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { Flex, Separator } from "palette"
-import React from "react"
 import { FlatList, LayoutAnimation } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import useInterval from "react-use/lib/useInterval"

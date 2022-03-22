@@ -1,7 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import { BorderBox, Flex, Text, Touchable } from "palette"
 import { RadioButton } from "palette/elements/Radio"
-import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
 

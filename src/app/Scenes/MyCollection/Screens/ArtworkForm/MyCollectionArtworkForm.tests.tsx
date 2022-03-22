@@ -10,7 +10,6 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Image } from "react-native-image-crop-picker"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"

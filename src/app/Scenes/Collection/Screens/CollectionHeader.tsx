@@ -3,7 +3,6 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { Schema } from "app/utils/track"
 import { Box, Sans } from "palette"
-import React from "react"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

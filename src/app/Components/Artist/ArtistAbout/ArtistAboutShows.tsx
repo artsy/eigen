@@ -2,7 +2,6 @@ import { ArtistAboutShows_artist } from "__generated__/ArtistAboutShows_artist.g
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Button, Flex, Spacer, Text } from "palette"
-import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"

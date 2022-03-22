@@ -3,7 +3,6 @@ import { SavedSearchAlertsListQuery } from "__generated__/SavedSearchAlertsListQ
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { SavedSearchAlertsListPlaceholder } from "./Components/SavedSearchAlertsListPlaceholder"
 import { SavedSearchesListContainer as SavedSearchesList } from "./Components/SavedSearchesList"

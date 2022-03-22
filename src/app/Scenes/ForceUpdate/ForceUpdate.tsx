@@ -1,5 +1,4 @@
 import { ArtsyLogoIcon, Button, Flex, Text, useColor } from "palette"
-import React from "react"
 import { Linking, Platform } from "react-native"
 
 interface ForceUpdateProps {

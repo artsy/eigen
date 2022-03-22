@@ -2,7 +2,6 @@ import { FollowArtistLink_artist } from "__generated__/FollowArtistLink_artist.g
 import { FollowArtistLinkMutation } from "__generated__/FollowArtistLinkMutation.graphql"
 import { Schema, track } from "app/utils/track"
 import { Sans, Touchable } from "palette"
-import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {

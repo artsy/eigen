@@ -1,6 +1,5 @@
 import { Schema, Track, track as _track } from "app/utils/track"
 import { ClassTheme, Flex, Text, Touchable } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"

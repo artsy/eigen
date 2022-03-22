@@ -5,7 +5,6 @@ import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { renderRelayTree } from "app/tests/renderRelayTree"
 import { Theme } from "palette"
-import React from "react"
 import { graphql } from "react-relay"
 
 jest.unmock("react-relay")

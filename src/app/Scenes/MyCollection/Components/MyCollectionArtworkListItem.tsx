@@ -3,7 +3,6 @@ import { MyCollectionArtworkListItem_artwork$key } from "__generated__/MyCollect
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
-import React from "react"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"

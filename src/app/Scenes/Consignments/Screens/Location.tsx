@@ -1,4 +1,3 @@
-import React from "react"
 import { SearchResults } from "../Components/SearchResults"
 
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"

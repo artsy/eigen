@@ -1,6 +1,5 @@
 import { ShowArtworksEmptyState_show } from "__generated__/ShowArtworksEmptyState_show.graphql"
 import { Box, BoxProps, Message } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface ShowArtworksEmptyStateProps extends BoxProps {

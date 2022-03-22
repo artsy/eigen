@@ -1,5 +1,4 @@
 import { Flex, Separator, Text } from "palette"
-import React from "react"
 import { Image, StyleProp, TouchableOpacity, ViewStyle } from "react-native"
 import styled from "styled-components/native"
 import { ConsignmentSetup } from "../index"

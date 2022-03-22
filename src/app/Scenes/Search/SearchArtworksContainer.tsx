@@ -3,7 +3,6 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { SearchArtworksGridPlaceholder } from "./components/placeholders/SearchArtworksGridPlaceholder"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"

@@ -4,7 +4,6 @@ import { Event } from "app/Scenes/City/Components/Event"
 import { Show } from "app/Scenes/Map/types"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { Box, ClassTheme, Sans, Serif } from "palette"
-import React from "react"
 import { RelayProp } from "react-relay"
 
 export interface Props {

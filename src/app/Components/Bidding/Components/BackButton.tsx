@@ -1,6 +1,5 @@
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { isPad } from "app/utils/hardware"
-import React from "react"
 import { TouchableWithoutFeedback, ViewProps } from "react-native"
 import { Image } from "../Elements/Image"
 

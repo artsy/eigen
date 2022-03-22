@@ -1,5 +1,4 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { BidFlow } from "./BidFlow"

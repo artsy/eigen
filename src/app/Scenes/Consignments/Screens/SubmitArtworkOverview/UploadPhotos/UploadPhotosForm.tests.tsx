@@ -2,7 +2,6 @@ import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
-import React from "react"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 
 jest.mock("formik")

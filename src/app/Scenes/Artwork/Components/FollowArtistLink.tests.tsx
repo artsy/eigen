@@ -6,7 +6,6 @@ import { renderRelayTree } from "app/tests/renderRelayTree"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Theme } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, RelayProp } from "react-relay"
 import { FollowArtistLink, FollowArtistLinkFragmentContainer } from "./FollowArtistLink"

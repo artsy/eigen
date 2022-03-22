@@ -10,7 +10,6 @@ import {
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { EntityHeader } from "palette"
-import React from "react"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

@@ -5,7 +5,6 @@ import {
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { navigate } from "app/navigation/navigate"
 import { ArrowRightIcon, Flex, Spacer, Text } from "palette"
-import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"

@@ -1,7 +1,6 @@
 import { Lot_saleArtwork } from "__generated__/Lot_saleArtwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Box, Flex, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {

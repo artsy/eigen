@@ -1,6 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { ArtworkFilterBackHeader, ArtworkFilterBackHeaderProps } from "./ArtworkFilterBackHeader"
 
 const defaultProps: ArtworkFilterBackHeaderProps = {

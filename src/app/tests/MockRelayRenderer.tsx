@@ -1,7 +1,6 @@
 import { ContextConsumer, ContextProvider } from "app/utils/Context"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { IMocks } from "graphql-tools/dist/Interfaces"
-import React from "react"
 import { QueryRenderer } from "react-relay"
 import {
   Environment,

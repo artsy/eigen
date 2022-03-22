@@ -1,7 +1,6 @@
 import { ActionType, OwnerType, TappedMakeOffer } from "@artsy/cohesion"
 import { navigate } from "app/navigation/navigate"
 import { Button, Flex, ShieldIcon, Text } from "palette"
-import React from "react"
 import { useTracking } from "react-tracking"
 import { ShadowSeparator } from "../ShadowSeparator"
 

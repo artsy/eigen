@@ -9,7 +9,6 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { mockTimezone } from "app/tests/mockTimezone"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Button, Checkbox, LinkText, Sans, Text } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

@@ -1,6 +1,5 @@
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import React from "react"
 import { KeyboardAvoidingView, View, ViewProps } from "react-native"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { TextArea } from "../Components/TextArea"

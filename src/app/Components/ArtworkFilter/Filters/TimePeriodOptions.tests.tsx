@@ -5,7 +5,6 @@ import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterS
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { getEssentialProps } from "./helper"
 import { TimePeriodOptionsScreen } from "./TimePeriodOptions"
 

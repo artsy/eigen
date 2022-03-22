@@ -1,5 +1,4 @@
 import { Box, Flex, Join, Spacer, Text } from "palette"
-import React from "react"
 
 export const OldWhySell: React.FC = () => {
   return (

@@ -3,7 +3,6 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { get } from "app/utils/get"
 import { CheckCircleIcon, CloseCircleIcon, Flex, Sans, Spacer } from "palette"
-import React from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

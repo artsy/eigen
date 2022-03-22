@@ -2,7 +2,6 @@ import { navigate } from "app/navigation/navigate"
 import { CollectionHubRailsOtherCollectionsRailFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Sans } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import { CollectionGroupMemberPill, OtherCollectionsRail } from "./OtherCollectionsRail"
 

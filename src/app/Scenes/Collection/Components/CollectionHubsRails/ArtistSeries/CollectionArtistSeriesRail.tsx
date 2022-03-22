@@ -3,7 +3,6 @@ import { CollectionArtistSeriesRail_collectionGroup } from "__generated__/Collec
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { Schema } from "app/utils/track"
 import { Flex, Sans } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 // @ts-ignore
 import styled from "styled-components/native"

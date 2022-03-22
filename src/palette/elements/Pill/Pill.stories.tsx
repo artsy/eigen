@@ -1,7 +1,6 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { ArtworkIcon, AuctionIcon, CheckIcon, CloseIcon } from "palette"
-import React from "react"
 import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { Pill } from "./Pill"

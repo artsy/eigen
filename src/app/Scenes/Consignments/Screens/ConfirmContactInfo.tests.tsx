@@ -6,7 +6,6 @@ import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWr
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Button } from "palette"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
-import React from "react"
 import { Alert } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

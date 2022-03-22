@@ -4,7 +4,6 @@ import { CountdownProps, CountdownTimer } from "app/Components/Countdown/Countdo
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Box, Flex, Text } from "palette"
-import React from "react"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"

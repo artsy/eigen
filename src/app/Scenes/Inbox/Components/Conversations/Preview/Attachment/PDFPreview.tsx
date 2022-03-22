@@ -1,5 +1,4 @@
 import { Flex, Text } from "palette"
-import React from "react"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"

@@ -1,7 +1,6 @@
 import { fireEvent, within } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Checkbox } from "palette"
-import React from "react"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
 const defaultProps: ArtworkFilterOptionItemProps = {

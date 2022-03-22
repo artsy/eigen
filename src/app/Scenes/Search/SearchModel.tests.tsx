@@ -1,7 +1,6 @@
 import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { times } from "lodash"
-import React from "react"
 import {
   MAX_SAVED_RECENT_SEARCHES,
   RecentSearch,

@@ -5,7 +5,6 @@ import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
 import moment from "moment"
 import { Box, Button, Flex, Text } from "palette"
-import React from "react"
 import { Image, Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

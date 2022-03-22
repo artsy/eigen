@@ -6,7 +6,6 @@ import { cityAndPostalCode, tappedOnMap } from "app/Components/LocationMap/Locat
 import { Pin } from "app/Icons/Pin"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
 import { Box, Flex, Sans, Serif, Spacer } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"

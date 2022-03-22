@@ -3,7 +3,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
 import { DateTime } from "luxon"
 import { Flex, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {

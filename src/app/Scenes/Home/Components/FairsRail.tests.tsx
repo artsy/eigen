@@ -1,6 +1,5 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
-import React from "react"
 import "react-native"
 
 import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"

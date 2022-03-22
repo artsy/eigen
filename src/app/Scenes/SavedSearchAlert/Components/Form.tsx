@@ -13,7 +13,6 @@ import {
   Text,
   Touchable,
 } from "palette"
-import React from "react"
 import { LayoutAnimation } from "react-native"
 import { getNamePlaceholder } from "../helpers"
 import { SavedSearchAlertFormValues, SavedSearchPill } from "../SavedSearchAlertModel"

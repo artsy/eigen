@@ -2,7 +2,6 @@ import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { Text } from "palette"
-import React from "react"
 
 interface Tracking {
   flow: Schema.Flow

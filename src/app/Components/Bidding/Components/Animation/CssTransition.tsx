@@ -1,4 +1,3 @@
-import React from "react"
 import { Animated, StyleProp, ViewProps, ViewStyle } from "react-native"
 
 interface CssTransitionProps extends ViewProps {

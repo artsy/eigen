@@ -2,7 +2,6 @@ import { OrderDetailsTestsQuery } from "__generated__/OrderDetailsTestsQuery.gra
 import { extractText } from "app/tests/extractText"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

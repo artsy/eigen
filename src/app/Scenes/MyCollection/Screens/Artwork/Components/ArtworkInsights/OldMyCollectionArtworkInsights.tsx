@@ -3,7 +3,6 @@ import { OldMyCollectionArtworkInsights_marketPriceInsights } from "__generated_
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { capitalize } from "lodash"
 import { Separator, Spacer, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { pluralizeMedium } from "../../../../utils/pluralizeArtworkMedium"
 import { MyCollectionArtworkArtistArticlesFragmentContainer } from "./MyCollectionArtworkArtistArticles"

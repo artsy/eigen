@@ -1,5 +1,4 @@
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

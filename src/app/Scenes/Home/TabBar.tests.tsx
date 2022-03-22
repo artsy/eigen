@@ -1,5 +1,4 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Animated } from "react-native"
 
 import TabBar from "app/Components/TabBar"

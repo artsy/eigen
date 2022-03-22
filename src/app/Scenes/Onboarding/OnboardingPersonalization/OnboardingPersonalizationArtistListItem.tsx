@@ -7,7 +7,6 @@ import { followArtistMutation } from "app/Components/ArtistListItem"
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
 import { ClassTheme, EntityHeader, Flex, FollowButton, Touchable } from "palette"
-import React from "react"
 import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import { RelayPaginationProp } from "react-relay"
 

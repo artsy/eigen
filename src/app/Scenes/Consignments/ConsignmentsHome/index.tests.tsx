@@ -1,7 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistList } from "./Components/ArtistList"
 import { RecentlySold } from "./Components/RecentlySold"

@@ -1,4 +1,3 @@
-import React from "react"
 import { HeightProps, SpaceProps, WidthProps } from "styled-system"
 import { Box } from "../../elements/Box"
 

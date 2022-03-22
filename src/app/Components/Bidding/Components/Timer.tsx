@@ -3,7 +3,6 @@ import { CountdownProps } from "app/Components/Countdown/CountdownTimer"
 import moment from "moment-timezone"
 import { Flex, Sans } from "palette"
 import PropTypes from "prop-types"
-import React from "react"
 
 // Possible states for an auction:
 // - PREVIEW: Auction is open for registration but artworks cannot be bid on. This occurs when the current time is before any auction's startAt.

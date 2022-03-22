@@ -2,7 +2,6 @@ import { OrderInformation_artwork } from "__generated__/OrderInformation_artwork
 import { OrderInformation_order } from "__generated__/OrderInformation_order.graphql"
 import { track as _track } from "app/utils/track"
 import { Flex, Join, Separator, Spacer, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface OrderInformationProps {

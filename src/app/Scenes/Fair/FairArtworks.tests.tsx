@@ -5,7 +5,6 @@ import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids
 import { FairArtworksFragmentContainer } from "app/Scenes/Fair/Components/FairArtworks"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 

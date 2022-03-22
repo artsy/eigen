@@ -1,5 +1,4 @@
 import { render } from "@testing-library/react-native"
-import React from "react"
 import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"

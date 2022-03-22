@@ -1,7 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { SearchInput, SearchInputProps } from "./SearchInput"
 
 describe("SearchInput", () => {

@@ -3,7 +3,6 @@ import { WatchedLot_saleArtwork } from "__generated__/WatchedLot_saleArtwork.gra
 import { navigate } from "app/navigation/navigate"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Text } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

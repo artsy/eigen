@@ -1,7 +1,6 @@
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArrowRightIcon } from "palette"
-import React from "react"
 import { SectionTitle } from "./SectionTitle"
 
 describe("SectionTitle", () => {

@@ -1,5 +1,4 @@
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import React from "react"
 import { ActivityIndicator, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 

@@ -1,5 +1,4 @@
 import { themeGet } from "@styled-system/theme-get"
-import React from "react"
 import styled from "styled-components/native"
 
 // @ts-ignore

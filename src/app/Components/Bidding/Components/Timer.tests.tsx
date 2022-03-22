@@ -3,7 +3,6 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { mount } from "enzyme"
 import moment from "moment"
 import { Sans, Theme } from "palette"
-import React from "react"
 import "react-native"
 
 import { mockTimezone } from "app/tests/mockTimezone"

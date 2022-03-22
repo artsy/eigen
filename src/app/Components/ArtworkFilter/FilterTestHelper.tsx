@@ -8,7 +8,6 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { Theme } from "palette"
-import React from "react"
 
 export const closeModalMock = jest.fn()
 export const navigateMock = jest.fn()

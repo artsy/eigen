@@ -2,7 +2,6 @@ import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSec
 import { navigate } from "app/navigation/navigate"
 import { get } from "app/utils/get"
 import { Button, Sans, Spacer } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {

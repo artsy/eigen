@@ -20,7 +20,6 @@ import {
   ShareIcon,
   Touchable,
 } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"

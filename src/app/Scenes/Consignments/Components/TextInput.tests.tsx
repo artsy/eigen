@@ -1,5 +1,4 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { ActivityIndicator } from "react-native"
 import Text from "./TextInput"
 

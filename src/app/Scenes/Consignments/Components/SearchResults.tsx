@@ -1,5 +1,4 @@
 import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
-import React from "react"
 import { ScrollView, TouchableOpacity, View } from "react-native"
 import styled from "styled-components/native"
 import TextInput, { TextInputProps } from "./TextInput"

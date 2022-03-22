@@ -1,5 +1,4 @@
 import { NavigationContainer, NavigationContainerRef, StackActions } from "@react-navigation/native"
-import React from "react"
 import { View } from "react-native"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 

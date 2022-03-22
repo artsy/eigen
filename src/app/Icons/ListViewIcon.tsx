@@ -1,4 +1,3 @@
-import React from "react"
 import Svg, { Rect } from "react-native-svg"
 
 export const ListViewIcon = (props: React.ComponentProps<typeof Svg>) => (

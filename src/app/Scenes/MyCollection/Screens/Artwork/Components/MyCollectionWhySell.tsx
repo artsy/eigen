@@ -3,7 +3,6 @@ import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySe
 import { navigate } from "app/navigation/navigate"
 import { initializeSubmissionArtworkForm } from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
 import { Button, Flex, Join, Spacer, Text } from "palette"
-import React from "react"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"

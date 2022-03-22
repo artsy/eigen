@@ -1,4 +1,3 @@
-import React from "react"
 import { ContentTabs } from "./ContentTabs"
 import { NavigationalTabs } from "./NavigationalTabs"
 import { StepTabs } from "./StepTabs"

@@ -3,7 +3,6 @@ import { ContextCardFollowMutation } from "__generated__/ContextCardFollowMutati
 import { navigate } from "app/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { Box, EntityHeader, Flex, FollowButton, Sans } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 

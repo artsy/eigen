@@ -1,5 +1,4 @@
 import { Text } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 
 import { FlexProps } from "../Elements/Flex"

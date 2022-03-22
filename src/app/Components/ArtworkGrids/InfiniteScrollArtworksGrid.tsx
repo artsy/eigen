@@ -14,7 +14,6 @@ import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyColle
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import { Box, Button, Flex, Spinner } from "palette"
-import React from "react"
 import {
   ActivityIndicator,
   Dimensions,

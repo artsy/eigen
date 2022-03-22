@@ -3,7 +3,6 @@ import { getUnitedSelectedAndAppliedFilters } from "app/Components/ArtworkFilter
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { getSearchCriteriaFromFilters } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { Box } from "palette"
-import React from "react"
 import { CreateSavedSearchAlertContentQueryRenderer } from "../containers/CreateSavedSearchContentContainer"
 import { CreateSavedSearchAlertNavigationStack } from "../SavedSearchAlertModel"
 import { SavedSearchStoreProvider } from "../SavedSearchStore"

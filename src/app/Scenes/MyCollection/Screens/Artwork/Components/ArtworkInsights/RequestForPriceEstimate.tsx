@@ -2,7 +2,6 @@ import { ActionType, ContextModule, OwnerType, TappedRequestPriceEstimate } from
 import { RequestForPriceEstimate_artwork$key } from "__generated__/RequestForPriceEstimate_artwork.graphql"
 import { RequestForPriceEstimate_marketPriceInsights$key } from "__generated__/RequestForPriceEstimate_marketPriceInsights.graphql"
 import { Box, Button, Text } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 

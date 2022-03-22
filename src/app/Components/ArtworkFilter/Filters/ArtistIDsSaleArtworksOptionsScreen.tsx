@@ -10,7 +10,6 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import React from "react"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 import { useMultiSelect } from "./useMultiSelect"
 

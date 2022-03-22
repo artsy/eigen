@@ -4,7 +4,6 @@ import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterS
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RadioDot } from "palette"
-import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
 import { getEssentialProps } from "./helper"
 import { InnerOptionListItem, OptionListItem } from "./SingleSelectOption"

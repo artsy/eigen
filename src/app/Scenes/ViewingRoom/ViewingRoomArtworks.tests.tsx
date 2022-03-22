@@ -5,7 +5,6 @@ import { mockEdges, mockEnvironmentPayload } from "app/tests/mockEnvironmentPayl
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Touchable } from "palette"
-import React from "react"
 import { FlatList, TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"

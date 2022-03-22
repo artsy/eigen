@@ -15,7 +15,6 @@ import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
-import React from "react"
 import { TextInput } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

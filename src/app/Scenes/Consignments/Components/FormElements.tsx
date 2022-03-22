@@ -1,4 +1,3 @@
-import React from "react"
 import { ScrollView, View, ViewProps } from "react-native"
 import { LargeHeadline } from "../Typography/index"
 

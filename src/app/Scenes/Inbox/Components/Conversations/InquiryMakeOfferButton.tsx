@@ -2,7 +2,6 @@ import { InquiryMakeOfferButton_artwork } from "__generated__/InquiryMakeOfferBu
 import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOfferButtonOrderMutation.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Button, ButtonProps } from "palette"
-import React from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 

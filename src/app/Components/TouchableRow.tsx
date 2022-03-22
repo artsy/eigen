@@ -1,5 +1,4 @@
 import { Touchable, TouchableProps, useColor } from "palette"
-import React from "react"
 
 export type TouchableRowProps = TouchableProps
 

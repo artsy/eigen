@@ -3,7 +3,6 @@ import { Composer_conversation } from "__generated__/Composer_conversation.graph
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { Button, ClassTheme, Flex, themeProps } from "palette"
-import React from "react"
 import { Keyboard, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"

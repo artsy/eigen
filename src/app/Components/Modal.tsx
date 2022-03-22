@@ -1,5 +1,4 @@
 import { Button, ClassTheme, Sans, SansProps } from "palette"
-import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
 

@@ -1,5 +1,4 @@
 import { Button, Flex, Spacer, Text } from "palette"
-import React from "react"
 import { ActivityIndicator, Modal } from "react-native"
 
 interface ImageSearchModalProps {

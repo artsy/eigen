@@ -10,7 +10,6 @@ import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "app/Components/ArtsyReac
 import { FPSCounter } from "app/Components/FPSCounter"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
-import React from "react"
 import { Platform, View } from "react-native"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { ForgotPassword } from "./ForgotPassword"

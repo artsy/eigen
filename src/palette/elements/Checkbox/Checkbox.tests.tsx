@@ -1,6 +1,5 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { Checkbox } from "./Checkbox"
 

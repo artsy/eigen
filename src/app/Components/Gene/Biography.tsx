@@ -1,4 +1,3 @@
-import React from "react"
 import { Dimensions, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import removeMarkdown from "remove-markdown"

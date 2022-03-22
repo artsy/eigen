@@ -1,5 +1,4 @@
 import { ArtistHeaderTestsQuery } from "__generated__/ArtistHeaderTestsQuery.graphql"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 

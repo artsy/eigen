@@ -5,7 +5,6 @@ import { mockTracking } from "app/tests/mockTracking"
 import { renderRelayTree } from "app/tests/renderRelayTree"
 import { postEventToProviders } from "app/utils/track/providers"
 import { Theme } from "palette"
-import React from "react"
 import { graphql } from "react-relay"
 import { CollectionFeaturedArtistsContainer as FeaturedArtists, ViewAll } from "./FeaturedArtists"
 jest.unmock("react-relay")

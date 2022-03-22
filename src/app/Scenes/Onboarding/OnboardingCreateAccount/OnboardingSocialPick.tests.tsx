@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Platform } from "react-native"
 import { OnboardingSocialPick } from "../OnboardingSocialPick"
 

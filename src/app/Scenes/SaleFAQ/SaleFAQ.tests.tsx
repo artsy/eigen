@@ -1,5 +1,4 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import WebView from "react-native-webview"
 import { SaleFAQ } from "./SaleFAQ"
 

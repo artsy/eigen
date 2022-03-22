@@ -8,7 +8,6 @@ import {
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ColorsOptionsScreen } from "./ColorsOptions"
 import { ColorsSwatch } from "./ColorsSwatch"

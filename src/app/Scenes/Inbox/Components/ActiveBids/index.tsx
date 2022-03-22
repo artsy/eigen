@@ -1,4 +1,3 @@
-import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 

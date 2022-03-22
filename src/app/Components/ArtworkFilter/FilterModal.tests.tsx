@@ -17,7 +17,6 @@ import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalS
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Theme } from "palette"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"

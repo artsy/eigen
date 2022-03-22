@@ -1,6 +1,5 @@
 import { Duration } from "moment"
 import { Flex, Sans } from "palette"
-import React from "react"
 
 interface TimeSectionProps {
   textProps: ExtractProps<typeof Sans>

@@ -5,7 +5,6 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box } from "palette"
-import React from "react"
 import { Dimensions, FlatList, ViewProps } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
