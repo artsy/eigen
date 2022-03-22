@@ -132,11 +132,6 @@ def enableHermes = project.ext.react.get("enableHermes", false)
  */
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
 
-/**
- * Architectures to build native code for in debug.
- */
-def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
-
 def password = System.getenv('ANDROID_KEYSTORE_PASSWORD')
 
 android {

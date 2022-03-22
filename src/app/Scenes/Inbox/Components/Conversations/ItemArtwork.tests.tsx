@@ -44,7 +44,7 @@ describe("ItemArtworkFragmentContainer", () => {
     expect(getByText("Test Artwork, December, 2021")).toBeDefined()
     expect(getByText("Test Artists")).toBeDefined()
     expect(getByText("Test Partner")).toBeDefined()
-    expect(getByText("Price on Request")).toBeDefined()
+    expect(getByText("Price on request")).toBeDefined()
     expect(getByTestId("artworkImage")).toBeDefined()
   })
 

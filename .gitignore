@@ -24,6 +24,7 @@ config/releasenotes.txt
 Podfile.local
 ios/Artsy.xcodeproj/project.xcworkspace/xcshareddata/
 ios/Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+
 .vendor/
 compiler_commands.json
 .swiftpm
