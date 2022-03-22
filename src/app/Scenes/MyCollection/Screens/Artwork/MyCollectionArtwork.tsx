@@ -32,6 +32,9 @@ const MyCollectionArtworkScreenQuery = graphql`
       ...MyCollectionArtworkInsights_marketPriceInsights
       ...MyCollectionArtworkAbout_marketPriceInsights
     }
+    me {
+      ...MyCollectionArtworkInsights_me
+    }
   }
 `
 
@@ -77,6 +80,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
         <MyCollectionArtworkInsights
           artwork={data.artwork}
           marketPriceInsights={data.marketPriceInsights}
+          me={data.me}
         />
       ),
       initial: true,
