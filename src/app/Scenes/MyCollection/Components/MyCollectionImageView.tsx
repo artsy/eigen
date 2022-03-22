@@ -1,8 +1,8 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
 import { Flex, NoImageIcon, useColor } from "palette"
-import { Photo } from "palette/elements/PhotoRow/validation"
 import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
 

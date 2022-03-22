@@ -1,5 +1,8 @@
+import {
+  photosEmptyInitialValues,
+  PhotosFormModel,
+} from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
 import { Action, action } from "easy-peasy"
-import { photosEmptyInitialValues, PhotosFormModel } from "palette/elements/PhotoRow/validation"
 import { ConsignmentsSubmissionUtmParams } from "../../../ConsignmentsHome/ConsignmentsSubmissionForm"
 import {
   artworkDetailsEmptyInitialValues,

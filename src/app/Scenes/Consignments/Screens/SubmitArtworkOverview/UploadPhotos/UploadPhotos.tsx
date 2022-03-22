@@ -1,12 +1,12 @@
-import { uploadPhotosCompletedEvent } from "app/Scenes/Consignments/Utils/TrackingEvent"
-import { GlobalStore } from "app/store/GlobalStore"
-import { Formik } from "formik"
-import { BulletedItem, CTAButton, Flex, Spacer } from "palette"
 import {
   Photo,
   PhotosFormModel,
   photosValidationSchema,
-} from "palette/elements/PhotoRow/validation"
+} from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
+import { uploadPhotosCompletedEvent } from "app/Scenes/Consignments/Utils/TrackingEvent"
+import { GlobalStore } from "app/store/GlobalStore"
+import { Formik } from "formik"
+import { BulletedItem, CTAButton, Flex, Spacer } from "palette"
 import React from "react"
 import { useTracking } from "react-tracking"
 import { UploadPhotosForm } from "./UploadPhotosForm"

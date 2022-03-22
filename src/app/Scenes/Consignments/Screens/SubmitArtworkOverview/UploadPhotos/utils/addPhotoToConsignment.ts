@@ -1,4 +1,4 @@
-import { Photo } from "palette/elements/PhotoRow/validation"
+import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
 import { addAssetToConsignment } from "../../../../Submission/addAssetToConsignment"
 import {
   createGeminiAssetWithS3Credentials,

@@ -1,9 +1,9 @@
+import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { Button, Flex, ProgressBar, Spacer, Text } from "palette"
 import React from "react"
 import { Image } from "react-native"
-import { Photo } from "./validation"
 
 interface PhotoRowContainerProps {
   error?: boolean
