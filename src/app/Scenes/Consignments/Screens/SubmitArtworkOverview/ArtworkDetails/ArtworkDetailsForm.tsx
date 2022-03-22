@@ -11,9 +11,9 @@ import {
   Spacer,
   Text,
 } from "palette"
+import { ArtistAutosuggest } from "palette/elements/ArtistAutosuggest/ArtistAutosuggest"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
-import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { InfoModal } from "./Components/InfoModal"
 import { LocationAutocomplete } from "./Components/LocationAutocomplete"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"

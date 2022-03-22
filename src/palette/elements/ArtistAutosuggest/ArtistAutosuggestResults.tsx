@@ -3,6 +3,7 @@ import { ArtistAutosuggestResults_results } from "__generated__/ArtistAutosugges
 import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { ErrorView } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/Components/ErrorView"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -12,7 +13,6 @@ import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
-import { ErrorView } from "../../Components/ErrorView"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
 
 export type ArtistAutosuggestResult = NonNullable<

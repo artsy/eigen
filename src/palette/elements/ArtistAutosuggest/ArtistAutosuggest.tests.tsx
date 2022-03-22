@@ -1,12 +1,12 @@
 import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { ArtworkDetails } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/ArtworkDetails/ArtworkDetails"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtworkDetails } from "../ArtworkDetails"
 
 jest.unmock("react-relay")
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>

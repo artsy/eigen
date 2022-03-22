@@ -1,9 +1,9 @@
 import SearchIcon from "app/Icons/SearchIcon"
+import { ArtworkDetailsFormModel } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/ArtworkDetails/validation"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFormikContext } from "formik"
 import { Box, Input } from "palette"
 import React, { useEffect, useState } from "react"
-import { ArtworkDetailsFormModel } from "../validation"
 import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
 
 export const ArtistAutosuggest: React.FC = () => {
