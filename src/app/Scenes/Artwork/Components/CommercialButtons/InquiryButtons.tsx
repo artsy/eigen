@@ -8,7 +8,7 @@ import {
 import { InquiryTypes } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { InquiryOptions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Button, ButtonProps } from "palette"
-import React, { useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { InquiryModalFragmentContainer } from "./InquiryModal"

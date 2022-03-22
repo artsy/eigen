@@ -8,7 +8,7 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { ArtworkIcon, AuctionIcon, CloseIcon, Flex, Pill, Spacer, Text, Touchable } from "palette"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { useTracking } from "react-tracking"
 import { AutosuggestResult } from "../AutosuggestResults"
 import { SearchContext } from "../SearchContext"

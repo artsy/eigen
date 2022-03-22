@@ -7,7 +7,7 @@ import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
 import { Flex } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export const PAGE_SIZE = 6

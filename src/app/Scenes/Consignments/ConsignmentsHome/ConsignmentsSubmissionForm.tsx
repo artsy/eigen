@@ -1,7 +1,7 @@
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { GlobalStore } from "app/store/GlobalStore"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { View } from "react-native"
 import { ConnectedOverview as Overview } from "../Screens/Overview"
 import { SubmitArtworkOverview } from "../Screens/SubmitArtworkOverview/SubmitArtworkOverview"

@@ -1,6 +1,6 @@
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { CloseIcon } from "palette"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { ImageCarouselContext } from "../ImageCarouselContext"
 import { boxShadow } from "./boxShadow"

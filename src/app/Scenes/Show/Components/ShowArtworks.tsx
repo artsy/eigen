@@ -9,7 +9,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { SHOW2_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
 import { Box } from "palette"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 interface Props {

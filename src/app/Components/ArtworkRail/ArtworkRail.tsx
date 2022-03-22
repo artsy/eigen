@@ -3,7 +3,7 @@ import { SmallArtworkRail_artworks } from "__generated__/SmallArtworkRail_artwor
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { Spacer } from "palette"
-import React, { ReactElement } from "react"
+import { ReactElement } from "react"
 import { FlatList } from "react-native"
 
 const MAX_NUMBER_OF_ARTWORKS = 30

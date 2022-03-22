@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useMemo, useState } from "react"
+import { useImperativeHandle, useMemo, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./StickyTabPage/reanimatedHelpers"

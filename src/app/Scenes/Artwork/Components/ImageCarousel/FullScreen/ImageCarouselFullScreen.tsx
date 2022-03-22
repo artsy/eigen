@@ -1,5 +1,5 @@
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
+import { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import {
   Animated,
   Easing,

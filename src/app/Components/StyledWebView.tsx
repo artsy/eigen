@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { LayoutAnimation, Linking } from "react-native"
 import WebView from "react-native-webview"
 import SimpleMarkdown from "simple-markdown"

@@ -1,5 +1,5 @@
 import { Input } from "palette"
-import React, { RefObject, useRef } from "react"
+import { RefObject, useRef } from "react"
 
 export const SearchContext = React.createContext<{
   inputRef: RefObject<Input>

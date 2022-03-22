@@ -18,7 +18,7 @@ import {
   useColor,
   XCircleIcon,
 } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
 

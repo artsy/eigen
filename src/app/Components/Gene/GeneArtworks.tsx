@@ -8,7 +8,7 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "app/utils/track"
 import { Box, Message, Text } from "palette"
-import React, { useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { useEffect } from "react"
 import { useRef } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"

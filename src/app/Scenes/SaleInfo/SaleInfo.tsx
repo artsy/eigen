@@ -7,7 +7,7 @@ import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import moment from "moment-timezone"
 import { Flex, Join, Sans, Separator, Text } from "palette"
-import React, { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { PanResponder, Platform, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 

@@ -7,7 +7,7 @@ import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids
 import { ARTIST_SERIES_PAGE_SIZE } from "app/Components/constants"
 import { Schema } from "app/utils/track"
 import { Box, Spacer } from "palette"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 

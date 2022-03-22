@@ -11,7 +11,7 @@ import {
 } from "app/utils/PushNotification"
 import useAppState from "app/utils/useAppState"
 import { Box } from "palette"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SavedSearchAlertForm } from "../SavedSearchAlertForm"
 import {

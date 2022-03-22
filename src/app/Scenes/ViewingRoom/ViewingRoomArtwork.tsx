@@ -17,7 +17,7 @@ import {
   Text,
   Touchable,
 } from "palette"
-import React, { Suspense, useEffect } from "react"
+import { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 

@@ -4,7 +4,7 @@ import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { Flex, Input, INPUT_HEIGHT, InputTitle, Separator, Text } from "palette"
 import { Select } from "palette/elements/Select"
-import React, { useState } from "react"
+import { useState } from "react"
 
 type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
 

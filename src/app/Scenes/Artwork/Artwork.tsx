@@ -22,7 +22,7 @@ import { findRelayRecord, findRelayRecordByDataID } from "app/utils/relayHelpers
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { ScreenDimensionsWithSafeAreas, useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Flex, Separator, Spacer, useSpace } from "palette"
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"

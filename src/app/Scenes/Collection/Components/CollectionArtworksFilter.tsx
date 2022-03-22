@@ -2,7 +2,7 @@ import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { Schema } from "app/utils/track"
-import React, { useState } from "react"
+import { useState } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

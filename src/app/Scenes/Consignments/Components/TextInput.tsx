@@ -1,6 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Box, ClassTheme, useColor, useTheme } from "palette"
-import React, { FunctionComponent } from "react"
+import { FunctionComponent } from "react"
 import {
   ActivityIndicator,
   Image,

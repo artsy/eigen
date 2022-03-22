@@ -2,7 +2,7 @@ import { PartnerShowsRail_partner } from "__generated__/PartnerShowsRail_partner
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
 import { Sans, Spacer } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerShowRailItemContainer as RailItem } from "./PartnerShowRailItem"

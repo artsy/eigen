@@ -9,7 +9,7 @@ import {
   SpacingUnitV3,
   useSpace,
 } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import { useImperativeHandle, useRef } from "react"
 import { TextInput, TouchableOpacity, useWindowDimensions } from "react-native"
 import Animated, { Easing } from "react-native-reanimated"
 import { useAnimatedValue } from "./StickyTabPage/reanimatedHelpers"

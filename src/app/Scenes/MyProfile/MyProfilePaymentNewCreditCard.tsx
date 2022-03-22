@@ -5,7 +5,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
 import { Input, InputTitle } from "palette"
 import { Select } from "palette/elements/Select/SelectV2"
-import React, { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { commitMutation, graphql } from "react-relay"
 // @ts-ignore
 import stripe from "tipsi-stripe"

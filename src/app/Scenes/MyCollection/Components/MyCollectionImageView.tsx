@@ -3,7 +3,7 @@ import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/Upl
 import { GlobalStore } from "app/store/GlobalStore"
 import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
 import { Flex, NoImageIcon, useColor } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
 
 export interface MyCollectionImageViewProps {

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Animated, ViewStyle } from "react-native"
 
 export const FadeIn: React.FC<{ delay?: number; style?: ViewStyle; slide?: boolean }> = ({

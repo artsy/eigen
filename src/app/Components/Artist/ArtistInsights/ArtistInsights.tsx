@@ -11,7 +11,7 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { SCROLL_UP_TO_SHOW_THRESHOLD } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React, { useCallback, useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"

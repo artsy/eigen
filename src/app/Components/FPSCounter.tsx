@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { useFps } from "react-fps"
 import { Text, TouchableOpacity, View, ViewStyle } from "react-native"
 

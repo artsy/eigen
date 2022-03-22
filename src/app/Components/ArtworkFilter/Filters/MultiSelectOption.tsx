@@ -6,7 +6,7 @@ import { SearchInput } from "app/Components/SearchInput"
 import { TouchableRow } from "app/Components/TouchableRow"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Check, CHECK_SIZE, Flex, Text, useSpace } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { FlatList, ScrollView } from "react-native"
 import styled from "styled-components/native"
 

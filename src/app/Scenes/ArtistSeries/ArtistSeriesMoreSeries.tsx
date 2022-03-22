@@ -3,7 +3,7 @@ import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSer
 import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { Flex, FlexProps, Sans } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

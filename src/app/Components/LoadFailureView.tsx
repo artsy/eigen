@@ -1,6 +1,6 @@
 import { debounce } from "lodash"
 import { Flex, Text, Touchable, useColor } from "palette"
-import React, { useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
 import { ReloadIcon } from "../../palette/svgs/ReloadIcon"
 

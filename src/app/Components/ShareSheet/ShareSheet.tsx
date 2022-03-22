@@ -4,7 +4,7 @@ import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramS
 import { Schema } from "app/utils/track"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import { InstagramAppIcon, LinkIcon, MoreIcon, ShareIcon, WhatsAppAppIcon } from "palette"
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { ScrollView } from "react-native"
 import RNShare, { ShareOptions } from "react-native-share"
 import ViewShot from "react-native-view-shot"

@@ -11,7 +11,7 @@ import {
   Touchable,
   useColor,
 } from "palette"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "../../../app/Components/FancyModal/FancyModal"
 import { PopIn } from "../../../app/Components/PopIn"

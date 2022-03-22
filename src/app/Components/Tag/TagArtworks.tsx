@@ -4,7 +4,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "app/utils/track"
 import { Box, Message, Separator, Spacer, Text } from "palette"
-import React, { useContext, useRef, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"

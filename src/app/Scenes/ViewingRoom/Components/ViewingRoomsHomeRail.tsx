@@ -7,7 +7,7 @@ import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholder
 import { Schema } from "app/utils/track"
 import _ from "lodash"
 import { Flex, MediumCard, Spacer, Text, Touchable } from "palette"
-import React, { Suspense } from "react"
+import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"

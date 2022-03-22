@@ -1,5 +1,5 @@
 import { Box, Flex, Text, useColor } from "palette"
-import React, { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction } from "react"
 import { TouchableOpacity, View } from "react-native"
 
 export type TabsType = Array<{

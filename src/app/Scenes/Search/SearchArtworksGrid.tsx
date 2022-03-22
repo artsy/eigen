@@ -12,7 +12,7 @@ import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilter
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { Box, quoteLeft, quoteRight, Text, useTheme } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"

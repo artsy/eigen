@@ -34,7 +34,7 @@ import {
   Touchable,
   useColor,
 } from "palette"
-import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
+import { Suspense, useContext, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { graphql } from "relay-runtime"

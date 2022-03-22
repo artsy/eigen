@@ -4,7 +4,7 @@ import { useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
-import React, { useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Platform } from "react-native"
 import { useTracking } from "react-tracking"
 

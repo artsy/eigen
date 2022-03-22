@@ -8,7 +8,7 @@ import {
 } from "app/utils/googleMaps"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Input, InputProps, Touchable } from "palette"
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Text } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 

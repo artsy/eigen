@@ -4,7 +4,7 @@ import TabBar from "app/Components/TabBar"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { Box, Button, Flex, Sans } from "palette"
-import React, { Component } from "react"
+import { Component } from "react"
 import { View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import ScrollableTabView from "react-native-scrollable-tab-view"

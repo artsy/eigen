@@ -2,7 +2,7 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
-import React, { ReactElement } from "react"
+import { ReactElement } from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { MyCollectionAddPhotos, tests } from "./MyCollectionArtworkFormAddPhotos"
 

@@ -1,7 +1,7 @@
 import { Stack } from "app/Components/Stack"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { Flex, Input, Separator } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import {
   MyAccountFieldEditScreen,
   MyAccountFieldEditScreenProps,

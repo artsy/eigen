@@ -3,7 +3,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box, Spacer } from "palette"
-import React, { Component, createRef } from "react"
+import { Component, createRef } from "react"
 import { Animated, Dimensions, FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"

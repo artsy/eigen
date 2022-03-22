@@ -11,7 +11,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { debounce } from "lodash"
 import { Flex, Input, Spacer, Text, useColor } from "palette"
-import React, { useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
 import { Numeric, parsePriceRangeLabel } from "./helpers"

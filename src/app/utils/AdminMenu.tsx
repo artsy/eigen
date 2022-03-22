@@ -23,7 +23,7 @@ import {
   Touchable,
   useColor,
 } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Button as RNButton, NativeModules } from "react-native"
 import {
   Alert,

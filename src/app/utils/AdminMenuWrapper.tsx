@@ -1,6 +1,6 @@
 import { GlobalStore } from "app/store/GlobalStore"
 import { Flex } from "palette"
-import React, { useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { AdminMenu } from "./AdminMenu"
 
 export const AdminMenuWrapper: React.FC = ({ children }) => {

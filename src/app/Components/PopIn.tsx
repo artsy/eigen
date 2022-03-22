@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Animated } from "react-native"
 
 export const PopIn: React.FC<{ xOffset?: number; yOffset?: number }> = ({

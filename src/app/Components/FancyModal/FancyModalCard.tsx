@@ -1,6 +1,6 @@
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { compact } from "lodash"
-import React, { RefObject, useImperativeHandle, useRef } from "react"
+import { RefObject, useImperativeHandle, useRef } from "react"
 import { Animated, TouchableWithoutFeedback, View } from "react-native"
 
 // The width of the black gutters either side of the first-from-the-front card

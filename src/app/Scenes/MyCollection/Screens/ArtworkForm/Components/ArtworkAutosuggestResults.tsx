@@ -8,7 +8,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, Flex } from "palette"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 export interface ArtworkAutosuggestResultsProps {

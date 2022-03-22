@@ -1,5 +1,5 @@
 import { Flex } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ArtworkModuleRail_rail } from "__generated__/ArtworkModuleRail_rail.graphql"

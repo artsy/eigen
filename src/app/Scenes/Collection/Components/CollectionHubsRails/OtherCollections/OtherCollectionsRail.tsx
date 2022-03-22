@@ -2,7 +2,7 @@ import { OtherCollectionsRail_collectionGroup } from "__generated__/OtherCollect
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/navigation/navigate"
 import { Sans, SansProps, Spacer } from "palette"
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

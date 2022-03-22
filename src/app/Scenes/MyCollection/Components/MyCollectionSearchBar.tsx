@@ -6,7 +6,7 @@ import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { debounce } from "lodash"
 import { Flex, Input, Text } from "palette"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import {
   LayoutAnimation,
   NativeSyntheticEvent,

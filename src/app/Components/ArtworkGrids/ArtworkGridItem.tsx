@@ -12,7 +12,7 @@ import {
   RandomNumberGenerator,
 } from "app/utils/placeholders"
 import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

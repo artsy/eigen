@@ -4,7 +4,7 @@ import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasur
 import { useGlobalState } from "app/utils/useGlobalState"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box } from "palette"
-import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
+import { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
 import { LayoutAnimation, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"

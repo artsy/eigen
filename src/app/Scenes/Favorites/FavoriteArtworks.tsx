@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import { Component } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 

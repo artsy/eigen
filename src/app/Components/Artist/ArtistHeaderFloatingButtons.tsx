@@ -5,7 +5,7 @@ import { ShareSheet } from "app/Components/ShareSheet/ShareSheet"
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { goBack } from "app/navigation/navigate"
 import { ChevronIcon, ShareIcon } from "palette"
-import React, { Fragment, useRef, useState } from "react"
+import { Fragment, useRef, useState } from "react"
 import Animated, {
   and,
   block,

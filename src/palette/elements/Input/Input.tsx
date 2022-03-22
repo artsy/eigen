@@ -14,7 +14,7 @@ import {
   useTheme,
   XCircleIcon,
 } from "palette"
-import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
+import { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
   Platform,

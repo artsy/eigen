@@ -1,5 +1,5 @@
 import { usePrefetch } from "app/utils/queryPrefetching"
-import React, { Ref, useCallback, useReducer, useRef } from "react"
+import { Ref, useCallback, useReducer, useRef } from "react"
 import { FlatList, FlatListProps, ViewToken } from "react-native"
 
 export type PrefetchFlatListProps<ItemType> = {

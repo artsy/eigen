@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { Box, Spacer } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { ArtworkFilterNavigationStack } from ".."
 import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"

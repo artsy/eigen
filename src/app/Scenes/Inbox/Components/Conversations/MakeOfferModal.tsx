@@ -11,7 +11,7 @@ import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { BorderBox, Button, Flex, Text } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "./InquiryMakeOfferButton"

@@ -1,6 +1,6 @@
 import { goBack, switchTab } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
-import React, { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { BackHandler } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
 import { BottomTabType } from "../../Scenes/BottomTabs/BottomTabType"

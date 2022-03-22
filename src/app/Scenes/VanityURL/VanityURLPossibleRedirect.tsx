@@ -4,7 +4,7 @@ import { goBack, navigate } from "app/navigation/navigate"
 import { matchRoute } from "app/navigation/routes"
 import { GlobalStore, useEnvironment } from "app/store/GlobalStore"
 import { Button, Flex, Spinner, Text } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Linking } from "react-native"
 
 function join(...parts: string[]) {

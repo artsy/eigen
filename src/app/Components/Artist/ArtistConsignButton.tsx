@@ -1,5 +1,5 @@
 import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "palette"
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

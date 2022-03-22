@@ -1,5 +1,5 @@
 import { useSpace } from "palette"
-import React, { useMemo, useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import Animated from "react-native-reanimated"
 import { AnimatableHeaderContext } from "./AnimatableHeaderContext"
 

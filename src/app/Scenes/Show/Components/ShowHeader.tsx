@@ -2,7 +2,7 @@ import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import { Box, BoxProps, Text } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface ShowHeaderProps extends BoxProps {

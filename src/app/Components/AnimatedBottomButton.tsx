@@ -1,6 +1,6 @@
 import _ from "lodash"
 import { Touchable } from "palette"
-import React, { useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Animated, StyleProp, ViewStyle } from "react-native"
 import styled from "styled-components/native"
 

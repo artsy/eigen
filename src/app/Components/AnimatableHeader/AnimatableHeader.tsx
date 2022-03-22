@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, Text, useTheme } from "palette"
-import React, { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import Animated, {
   and,

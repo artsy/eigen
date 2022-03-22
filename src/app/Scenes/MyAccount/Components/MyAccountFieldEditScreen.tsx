@@ -3,7 +3,7 @@ import LoadingModal from "app/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { goBack } from "app/navigation/navigate"
 import { Text } from "palette"
-import React, { useImperativeHandle, useRef, useState } from "react"
+import { useImperativeHandle, useRef, useState } from "react"
 import {
   Alert,
   AlertButton,

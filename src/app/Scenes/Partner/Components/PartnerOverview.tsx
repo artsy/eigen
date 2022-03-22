@@ -6,7 +6,7 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { TabEmptyState } from "app/Components/TabEmptyState"
 import { extractNodes } from "app/utils/extractNodes"
 import { Box, Flex, Sans, Spacer } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { Text } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"

@@ -11,7 +11,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Sans } from "palette"
 import { Touchable } from "palette"
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

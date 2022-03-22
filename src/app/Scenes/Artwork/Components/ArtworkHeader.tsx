@@ -17,7 +17,7 @@ import {
   Spacer,
   WhatsAppAppIcon,
 } from "palette"
-import React, { useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { Button, Modal } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import Share from "react-native-share"

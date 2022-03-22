@@ -2,7 +2,7 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { Flex, InfoCircleIcon, Text } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 
 interface InfoButtonProps {

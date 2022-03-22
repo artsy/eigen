@@ -6,7 +6,7 @@ import {
 import { goBack, navigate } from "app/navigation/navigate"
 import { FormikProvider, useFormik } from "formik"
 import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Alert, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { useFirstMountState } from "react-use/lib/useFirstMountState"

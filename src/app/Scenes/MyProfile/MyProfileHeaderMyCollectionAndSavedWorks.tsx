@@ -24,7 +24,7 @@ import {
   Text,
   useColor,
 } from "palette"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"

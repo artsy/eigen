@@ -15,7 +15,7 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"

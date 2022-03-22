@@ -7,7 +7,7 @@ import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/pl
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Box, Flex, Sans, Separator, useTheme } from "palette"
-import React, { useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"

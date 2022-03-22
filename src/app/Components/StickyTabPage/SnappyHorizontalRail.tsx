@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useRef } from "react"
+import { useImperativeHandle, useRef } from "react"
 import { ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"

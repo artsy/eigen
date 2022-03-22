@@ -8,7 +8,7 @@ import SearchIcon from "app/Icons/SearchIcon"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { debounce, throttle } from "lodash"
 import { Input } from "palette"
-import React, { useEffect, useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { Platform } from "react-native"
 import { useTracking } from "react-tracking"
 

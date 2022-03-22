@@ -3,7 +3,7 @@ import { useAnimatedValue } from "app/Components/StickyTabPage/reanimatedHelpers
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { ArtsyLogoWhiteIcon, Button, Flex, Spacer, Text, useTheme } from "palette"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, { Easing } from "react-native-reanimated"

@@ -10,7 +10,7 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { TabEmptyState } from "app/Components/TabEmptyState"
 import { get } from "app/utils/get"
 import { Spacer } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export const PartnerArtwork: React.FC<{

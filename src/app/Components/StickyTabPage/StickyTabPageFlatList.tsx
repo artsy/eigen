@@ -1,5 +1,5 @@
 import { useSpace } from "palette"
-import React, { createContext, useContext, useRef, useState } from "react"
+import { createContext, useContext, useRef, useState } from "react"
 import { FlatList, FlatListProps } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"

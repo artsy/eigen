@@ -1,7 +1,7 @@
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Sans } from "palette"
 import { NavigationalTabs } from "palette/elements/Tabs"
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {
   Animated,
   LayoutRectangle,

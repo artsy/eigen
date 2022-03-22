@@ -13,7 +13,7 @@ import {
   Text as PaletteText,
   TextProps as PaletteTextProps,
 } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { Text } from "react-native"
 import { useTracking } from "react-tracking"
 import { ResponsiveValue } from "styled-system"

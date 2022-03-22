@@ -27,7 +27,7 @@ import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/Way
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import _ from "lodash"
-import React, { useState } from "react"
+import { useState } from "react"
 import { View, ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
 import { CreateSavedSearchModal } from "../Artist/ArtistArtworks/CreateSavedSearchModal"

@@ -3,7 +3,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import ChevronIcon from "app/Icons/ChevronIcon"
 import { ArtworkDetailsRow } from "app/Scenes/Artwork/Components/ArtworkDetailsRow"
 import { Box, Collapse, Flex, Join, Separator, Spacer, Text } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 
 import { createFragmentContainer, graphql } from "react-relay"

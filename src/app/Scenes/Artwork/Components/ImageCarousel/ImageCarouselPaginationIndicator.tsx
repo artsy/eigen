@@ -1,6 +1,6 @@
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Spacer, useColor } from "palette"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { Animated, View } from "react-native"
 import { ImageCarouselContext } from "./ImageCarouselContext"
 import { useSpringValue } from "./useSpringValue"

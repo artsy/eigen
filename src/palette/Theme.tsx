@@ -1,6 +1,6 @@
 import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
 import _ from "lodash"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
 
 /**

@@ -1,5 +1,5 @@
 import { Flex, useColor } from "palette"
-import React, { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Animated } from "react-native"
 
 const DOT_DIAMETER = 6

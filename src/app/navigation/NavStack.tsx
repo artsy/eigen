@@ -2,7 +2,7 @@ import { Route, useIsFocused, useNavigationState } from "@react-navigation/nativ
 import { AppModule, modules } from "app/AppRegistry"
 import { ArtsyKeyboardAvoidingViewContext } from "app/Components/ArtsyKeyboardAvoidingView"
 import { ProvideScreenDimensions, useScreenDimensions } from "app/utils/useScreenDimensions"
-import React, { useState } from "react"
+import { useState } from "react"
 import { View } from "react-native"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { BackButton } from "./BackButton"

@@ -9,7 +9,7 @@ import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Spacer, Spinner } from "palette"
-import React, { useImperativeHandle, useRef, useState } from "react"
+import { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, ViewProps } from "react-native"
 import {
   commitMutation,

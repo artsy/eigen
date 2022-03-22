@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
-import React, { useState } from "react"
+import { useState } from "react"
 import { View } from "react-native"
 import { withTheme } from "storybook/decorators"
 import { TabsProps, TabsType } from "."

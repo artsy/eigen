@@ -7,7 +7,7 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { get } from "app/utils/get"
 import { Schema } from "app/utils/track"
 import { Box, Spacer } from "palette"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"

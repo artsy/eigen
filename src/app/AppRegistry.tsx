@@ -3,7 +3,7 @@
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "app/types/SafeAreaInsets"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { AppProviders } from "./AppProviders"

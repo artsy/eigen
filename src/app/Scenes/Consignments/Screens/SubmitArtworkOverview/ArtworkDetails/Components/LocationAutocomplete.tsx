@@ -1,6 +1,6 @@
 import { getLocationDetails, getLocationPredictions, SimpleLocation } from "app/utils/googleMaps"
 import { Box, Flex, Input, LocationIcon, Text, useSpace } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Image } from "react-native"
 import { Location } from "../validation"
 

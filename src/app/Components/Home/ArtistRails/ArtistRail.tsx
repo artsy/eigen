@@ -2,7 +2,7 @@
 //       version. In reality it should be updated to never render the React component but instead update the store and
 //       let Relay re-render the cards.
 
-import React, { useImperativeHandle, useRef, useState } from "react"
+import { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View, ViewProps } from "react-native"
 import {
   commitMutation,

@@ -12,7 +12,7 @@ import {
   Text,
 } from "palette"
 import { Select } from "palette/elements/Select"
-import React, { useState } from "react"
+import { useState } from "react"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { InfoModal } from "./Components/InfoModal"
 import { LocationAutocomplete } from "./Components/LocationAutocomplete"

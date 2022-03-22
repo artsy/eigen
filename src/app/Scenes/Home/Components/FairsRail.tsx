@@ -2,7 +2,7 @@ import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graph
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { bullet, Flex, Text } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

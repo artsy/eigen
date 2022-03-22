@@ -1,6 +1,6 @@
 import SearchIcon from "app/Icons/SearchIcon"
 import { Flex, Input, Text, Touchable } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkAutosuggestResultsQueryRenderer } from "./ArtworkAutosuggestResults"
 

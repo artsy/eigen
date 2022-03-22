@@ -1,5 +1,5 @@
 import { Tab, TabsProps } from "palette/elements/Tabs"
-import React, { useState } from "react"
+import { useState } from "react"
 import { LayoutRectangle } from "react-native"
 import { TabBarContainer } from "./TabBarContainer"
 

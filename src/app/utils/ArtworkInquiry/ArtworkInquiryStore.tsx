@@ -6,7 +6,7 @@ import {
   InquiryOptions,
   InquiryQuestionIDs,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import React, { createContext, Reducer, useReducer } from "react"
+import { createContext, Reducer, useReducer } from "react"
 
 const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,

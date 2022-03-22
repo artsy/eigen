@@ -1,6 +1,6 @@
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { Schema } from "app/utils/track"
-import React, { useMemo, useRef } from "react"
+import { useMemo, useRef } from "react"
 import { Animated, FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { GlobalState, useGlobalState } from "../../../../utils/useGlobalState"

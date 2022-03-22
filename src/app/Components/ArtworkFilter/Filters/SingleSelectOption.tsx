@@ -5,7 +5,7 @@ import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components
 import { FancyModalHeaderProps } from "app/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
 import { Flex, RadioDot, Text } from "palette"
-import React, { Fragment } from "react"
+import { Fragment } from "react"
 import { FlatList, ScrollView } from "react-native"
 import styled from "styled-components/native"
 

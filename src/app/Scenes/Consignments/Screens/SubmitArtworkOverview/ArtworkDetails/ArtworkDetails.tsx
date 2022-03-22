@@ -4,7 +4,7 @@ import { artworkDetailsCompletedEvent } from "app/Scenes/Consignments/Utils/Trac
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { BulletedItem, CTAButton, Flex, LinkText, Spacer } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { useTracking } from "react-tracking"
 import { ErrorView } from "../Components/ErrorView"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"

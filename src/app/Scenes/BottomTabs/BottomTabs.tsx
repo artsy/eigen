@@ -1,6 +1,6 @@
 import { GlobalStore, useIsStaging } from "app/store/GlobalStore"
 import { Flex, Separator, useTheme } from "palette"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import useInterval from "react-use/lib/useInterval"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"

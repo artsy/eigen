@@ -8,7 +8,7 @@ import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { once } from "lodash"
 import { Box, Button, Flex, Sans, ShareIcon, Spacer, Text } from "palette"
 import { _maxWidth as maxWidth } from "palette"
-import React, { useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 import {
   FlatList,
   LayoutAnimation,

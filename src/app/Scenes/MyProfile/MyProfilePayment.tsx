@@ -11,7 +11,7 @@ import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex, Sans, Spacer } from "palette"
-import React, { useCallback, useEffect, useReducer, useState } from "react"
+import { useCallback, useEffect, useReducer, useState } from "react"
 import {
   ActivityIndicator,
   Alert,

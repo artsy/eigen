@@ -2,7 +2,7 @@ import { useDevToggle } from "app/store/GlobalStore"
 import { useOffscreenStyle } from "app/utils/useOffscreenStyle"
 import { useSizeToFitScreen } from "app/utils/useSizeToFit"
 import { ArtsyLogoBlackIcon, Flex, Text } from "palette"
-import React, { RefObject } from "react"
+import { RefObject } from "react"
 import { Image } from "react-native"
 import ViewShot from "react-native-view-shot"
 

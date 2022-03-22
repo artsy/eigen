@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import { Flex, Input } from "palette"
 import { useColor } from "palette/hooks"
-import React, { useState } from "react"
+import { useState } from "react"
 import { Keyboard } from "react-native"
 import { EmailSubscriptionCheckbox } from "./EmailSubscriptionCheckbox"
 import {
