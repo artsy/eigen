@@ -21,7 +21,7 @@ import { useTracking } from "react-tracking"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
-import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
+import { myCollectionUpdateArtwork } from "../../mutations/myCollectionUpdateArtwork"
 import { refreshMyCollection } from "../../MyCollection"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
@@ -278,7 +278,7 @@ export const updateArtwork = async (
       storeLocalPhotos(slug, photos)
     }
   } else {
-    const response = await myCollectionEditArtwork({
+    const response = await myCollectionUpdateArtwork({
       artistIds: [artistSearchResult!.internalID as string],
       artworkId: props.artwork.internalID,
       externalImageUrls,
