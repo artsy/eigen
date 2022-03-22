@@ -33,7 +33,8 @@ export const Versions = {
   AddArtworkViewOption: 21,
   RenameModelsAndAddDarkModeSupport: 22,
   AddUserPrefsMetricsUnit: 23,
-  RequestedPriceEstimates: 24,
+  AddSourceAndMyCollectionArtworkIDToSubmission: 24,
+  RequestedPriceEstimates: 25,
 }
 
 export const CURRENT_APP_VERSION = Versions.RequestedPriceEstimates
@@ -182,6 +183,10 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddUserPrefsMetricsUnit]: (state) => {
     state.userPrefs.metric = "in"
+  },
+  [Versions.AddSourceAndMyCollectionArtworkIDToSubmission]: (state) => {
+    state.artworkSubmission.submission.artworkDetails.source = null
+    state.artworkSubmission.submission.artworkDetails.myCollectionArtworkID = null
   },
   [Versions.RequestedPriceEstimates]: (state) => {
     state.requestedPriceEstimates = { requestedPriceEstimates: {} }

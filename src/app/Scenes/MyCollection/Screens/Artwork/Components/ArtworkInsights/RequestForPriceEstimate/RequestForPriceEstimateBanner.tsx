@@ -72,12 +72,11 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
       <Text
         color="black60"
         textAlign="center"
-        m={1}
+        my={2}
         variant="xs"
         testID="request-price-estimate-banner-text"
       >
-        An Artsy specialist will evaluate your artwork and contact you with a current price
-        estimate.
+        An Artsy specialist will evaluate your artwork and contact you with a free price estimate.
       </Text>
     </Box>
   )
