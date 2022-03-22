@@ -105,11 +105,36 @@ target 'Artsy' do
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode', '2.0.0'
 
+  target 'Artsy_Tests' do
+    inherit! :search_paths
+
+    pod 'OHHTTPStubs', '3.1.2'
+    pod 'XCTest+OHHTTPStubSuiteCleanUp'
+    pod 'Specta'
+    pod 'Expecta', '1.0.6'
+    pod 'Expecta+Snapshots', '3.1.1'
+    pod 'OCMock'
+    pod 'Forgeries/Mocks'
+
+    # Swift pods 🎉
+    pod 'Quick', '2.0.0'
+    pod 'Nimble', '7.3.4'
+    pod 'Nimble-Snapshots', '6.3.0'
+  end
+
   post_install do |installer|
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
 
     $RNMBGL.post_install(installer)
+
+    # For now Nimble Snapshots needs to stay at Swift 4.0
+    swift4 = ['Nimble-Snapshots']
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['SWIFT_VERSION'] = '4.0' if swift4.include?(target.name)
+      end
+    end
 
 
     # TODO:
@@ -127,6 +152,18 @@ target 'Artsy' do
         file.puts addition
         file.puts contents
       end
+    end
+
+    # TODO: Might be nice to have a `cocoapods-patch` plugin that applies patches like `patch-package` does for npm.
+    %w[
+      Pods/Nimble/Sources/NimbleObjectiveC
+      Pods/Nimble-Snapshots
+      Pods/Quick/Sources/QuickObjectiveC
+    ].flat_map { |x| Dir.glob(File.join(x, '**/*.{h,m}')) }.each do |header|
+      system("chmod +w #{header}")
+      contents = File.read(header)
+      patched = contents.sub(%r{["<]\w+/(\w+-Swift\.h)[">]}, '"\1"')
+      File.write(header, patched) if Regexp.last_match
     end
   end
 end
