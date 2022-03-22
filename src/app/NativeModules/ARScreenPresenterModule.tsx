@@ -9,7 +9,6 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import immer from "immer-peasy"
 import { last } from "lodash"
 import { NativeModules } from "react-native"
-
 /**
  * Here we maintain references to all the navigators in the main app navigation hierarchy, which are:
  * - tab nav stacks
@@ -149,15 +148,6 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
       state.routes.pop()
       state.index -= 1
     })
-  },
-  presentAugmentedRealityVIR: () => {
-    console.warn("presentAugmentedRealityVIR not yet supported")
-  },
-  presentEmailComposer: () => {
-    console.warn("presentEmailComposer not yet supported")
-  },
-  presentMediaPreviewController: () => {
-    console.warn("presentMediaPreviewController not yet supported")
   },
   updateShouldHideBackButton: () => {
     console.warn("updateShouldHideBackButton not yet supported")

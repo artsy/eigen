@@ -41,6 +41,7 @@
 
 - (void)requestNavigation:(NSString *)route;
 - (void)requestNavigation:(NSString *)route withProps:(NSDictionary *)props;
+- (void)requestModalDismiss;
 - (void)afterBootstrap:(void (^)(void))completion;
 
 @end

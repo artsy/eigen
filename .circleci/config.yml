@@ -135,7 +135,7 @@ commands:
       - save_cache:
           key: v4-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
-            - vendor/bundle
+            - .vendor
   install-cocoapods:
     steps:
       - restore_cache:
@@ -225,7 +225,7 @@ jobs:
 
   deploy-nightly-beta:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -269,7 +269,7 @@ jobs:
 
   check-flags:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -285,7 +285,7 @@ jobs:
 
   check-if-app-has-been-approved-for-release:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -366,7 +366,7 @@ jobs:
 
   build-test-app-ios:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -438,7 +438,7 @@ jobs:
 
   build-test-app-android:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
     docker:
       - image: circleci/android:api-29-node
     resource_class: large
@@ -465,7 +465,7 @@ jobs:
 
   promote-beta-to-app-store:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
       xcode: 13.2.1
     steps:
@@ -479,7 +479,7 @@ jobs:
 
   promote-beta-to-play-store:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     docker:
       - image: circleci/android:api-29-node
@@ -512,7 +512,7 @@ jobs:
           path: .manifests
   release-ios-app:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
       xcode: 13.2.1
     steps:

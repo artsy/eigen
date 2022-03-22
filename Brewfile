@@ -1,0 +1,1 @@
+brew "detect_secrets"

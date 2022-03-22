@@ -106,7 +106,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const heightIn = cm2in(heightCm!)
     const widthIn = cm2in(widthCm!)
 
-    LegacyNativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(
+    LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
       image?.url!,
       widthIn,
       heightIn,

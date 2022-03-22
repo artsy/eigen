@@ -1,4 +1,5 @@
 import { GlobalStore, useIsStaging } from "app/store/GlobalStore"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Separator, useTheme } from "palette"
 import React, { useEffect } from "react"
 import useInterval from "react-use/lib/useInterval"
@@ -23,8 +24,9 @@ export const BottomTabs: React.FC = () => {
 
   const isStaging = useIsStaging()
 
+  const { bottom } = useScreenDimensions().safeAreaInsets
   return (
-    <Flex>
+    <Flex style={{ paddingBottom: bottom }}>
       <Separator
         style={{
           borderColor: isStaging ? color("devpurple") : color("black10"),

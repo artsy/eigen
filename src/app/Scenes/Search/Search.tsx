@@ -133,8 +133,12 @@ export const Search: React.FC = () => {
       const allowedIndices = indices.filter((indice) =>
         ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
       )
+
       const formattedIndices: PillType[] = allowedIndices.map((index) => {
         const { name, ...other } = index
+
+        const FAKE_SECRET_KEY = "ghp_testDasQGy347gsNkA3ADQTKpkQS544eoyvU" // pragma: allowlist secret
+        console.log(FAKE_SECRET_KEY)
 
         return {
           ...other,

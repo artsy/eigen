@@ -264,6 +264,16 @@ See what can be converted: https://github.com/facebook/react-native/blob/main/Re
 
 PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
 
+# `ORStackView` pod postinstall modification (add UIKit import)
+
+#### When can we remove this:
+
+Once we remove ORStackView or the upstream repo adds the import. May want to proactively open a PR for this.
+
+#### Explanation/Context:
+
+The Pod does not compile when imported as is without hack due to missing symbols from UIKit.
+
 # `Map` manual prop update in `PageWrapper`
 
 #### When can we remove this:

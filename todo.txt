@@ -1,0 +1,63 @@
+- we have `new-start` and `new-android` in package.json. we should merge. same for ios.
+- for some reason, `tasks.whenTaskAdded` in `node_modules/react-native-config/android/dotenv.gradle` is not working.
+  in upstream this function is deleted. in our fork we still have it. can we delete it? can we make it work?
+- warn people that they should run `yarn cache clean` before running `yarn install:all`. we had some issues with master -> main for react-native-config
+- for the old app, to install pods, we rename the new `ios` folder to `new-ios` temporarily.
+- we have the metaflag `newIosAppShell` to know if we should start the new or old app
+- we added yarn go-old and yarn go-new to control which app to run.
+- updated react-native-config patch to get source directory correct in ios folder, should be able to remove when we have just one dir
+- returning same modules for native for ios as android, many are broken and will need to be fixed, may want to distinguish Android and iOS still here
+- we use a hook in main App for configuring push notifications that fails on iOS, need to figure out how to use our native module instead for iOS
+- pointing to the old plist in the new app, it is fine to use but will have to update path once we actually move all the code 
+- added a preprocessor macro APP_SHELL in new project, remove when ready and just use one set of logic
+- commit where we moved old files over - https://github.com/artsy/eigen/pull/6086/commits/783dc3ada16f1f0604805d41d63d8b711d56a27d
+- added a boolean in app registry for ignoring tabs for rn modules embedded in native bc they don't have access, probably a better way to handle or give access?
+- pointing to main branch for react-native-scrollable-tab-view in package.json, bc of this issue for which fix is in main but has not been released: https://github.com/ptomasroos/react-native-scrollable-tab-view/issues/1138 
+- why is the guard necessary in LiveAuctionStateReconciler but not in old app version? version mismatch somewhere? check WebSocket and network related native dependencies, change in this same commit
+
+
+
+possibly need to set up:
+BVLinearGradient,
+RNAnalytics,
+RNAnalyticsIntegration-Adjust,
+RNAnalyticsIntegration-Appboy,
+RNAppleAuthentication,
+RNBootSplash,
+RNCAsyncStorage,
+RNCClipboard,
+RNCMaskedView,
+RNDeviceInfo,
+RNGestureHandler,
+RNGoogleSignin,
+RNImageCropPicker,
+RNKeychain,
+RNLocalize,
+RNReactNativeHapticFeedback,
+RNReanimated,
+RNSVG,
+RNScreens,
+RNSentry,
+RNShare,
+RNSplit,
+react-native-appboy-sdk,
+react-native-cameraroll,
+react-native-config,
+react-native-cookies,
+react-native-fbsdk-next,
+react-native-flipper,
+react-native-geolocation,
+react-native-in-app-review,
+react-native-netinfo,
+react-native-safe-area-context,
+react-native-view-shot,
+react-native-viewpager,
+react-native-webview,
+rn-fetch-blob,
+tipsi-stripe
+
+
+
+
+todo:
+- bring xcode projects to a similar state

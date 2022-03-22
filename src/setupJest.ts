@@ -352,6 +352,12 @@ type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof
 
 function getNativeModules(): OurNativeModules {
   return {
+    ARTNativeScreenPresenterModule: {
+      presentAugmentedRealityVIR: jest.fn(),
+      presentEmailComposerWithBody: jest.fn(),
+      presentEmailComposerWithSubject: jest.fn(),
+      presentMediaPreviewController: jest.fn(),
+    },
     ARTakeCameraPhotoModule: {
       errorCodes: {
         cameraNotAvailable: "cameraNotAvailable",

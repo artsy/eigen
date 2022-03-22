@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { AppModule } from "app/AppRegistry"
 import { NativeTabs } from "app/Components/NativeTabs"
+import { usingNewIOSAppShell } from "app/NativeModules/LegacyNativeModules"
 import { NavStack } from "app/navigation/NavStack"
 import { useSelectedTab } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
@@ -18,7 +19,7 @@ const TabContent = ({
 }: {
   route: { params: { tabName: BottomTabType; rootModuleName: AppModule } }
 }) => {
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "ios" && !usingNewIOSAppShell()) {
     return <NativeTabs viewProps={route.params} />
   }
 
@@ -30,7 +31,7 @@ export const BottomTabsNavigator = () => {
   const { bottom } = useScreenDimensions().safeAreaInsets
   const color = useColor()
 
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "ios" && !usingNewIOSAppShell()) {
     return (
       <View style={{ flex: 1, paddingBottom: bottom, backgroundColor: color("appBackground") }}>
         <FadeBetween
