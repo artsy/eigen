@@ -27,7 +27,7 @@ export const ArtsyKeyboardAvoidingViewContext = React.createContext({
   bottomOffset: 0,
 })
 
-export const ArtsyKeyboardAvoidingView: React.FC<{}> = ({ children }) => {
+export const ArtsyKeyboardAvoidingView: React.FC = ({ children }) => {
   const { isPresentedModally, isVisible, bottomOffset } = useContext(
     ArtsyKeyboardAvoidingViewContext
   )

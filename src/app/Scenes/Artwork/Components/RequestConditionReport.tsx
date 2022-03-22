@@ -9,7 +9,7 @@ import { Modal } from "app/Components/Modal"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Schema, track } from "app/utils/track"
 import { Button, Flex } from "palette"
-import { Component, FC } from "react"
+import { Component } from "react"
 import { View } from "react-native"
 import {
   commitMutation,

@@ -52,7 +52,7 @@ interface RetryErrorBoundaryState {
   error: Error | null
 }
 
-export class RetryErrorBoundary extends React.Component<
+export class RetryErrorBoundary extends Component<
   RetryErrorBoundaryProps,
   RetryErrorBoundaryState
 > {
