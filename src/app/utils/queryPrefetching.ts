@@ -12,7 +12,6 @@ import {
   Variables,
 } from "relay-runtime"
 import { logPrefetching } from "./loggers"
-import { useTreatment } from "./useExperiments"
 
 const DEFAULT_QUERIES_PER_INTERVAL = 60
 
@@ -96,9 +95,8 @@ const prefetchUrl = async (url: string, variables?: Variables) => {
 
 export const usePrefetch = () => {
   const enablePrefetching = useFeatureFlag("AREnableQueriesPrefetching")
-  const queryPrefetchingTreatment = useTreatment("QueryPrefetching")
 
-  if (!enablePrefetching || queryPrefetchingTreatment === "disabled" || __TEST__) {
+  if (!enablePrefetching || __TEST__) {
     return () => null
   }
 
