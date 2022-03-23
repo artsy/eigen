@@ -12,12 +12,12 @@ interface IndicesInfo {
 
 interface IndicesInfoOptions {
   searchClient: SearchClient | null
-  indices?: ReadonlyArray<{ name: string }>
+  indiceNames: string[]
   onError?: (error: Error) => void
 }
 
 export const useAlgoliaIndices = (options: IndicesInfoOptions) => {
-  const { searchClient, indices = [], onError } = options
+  const { searchClient, indiceNames, onError } = options
   const [indicesInfo, setIndicesInfo] = useState<IndicesInfo>({})
   const [loading, setLoading] = useState(false)
   const queryId = useRef(0)
@@ -32,8 +32,8 @@ export const useAlgoliaIndices = (options: IndicesInfoOptions) => {
   }
 
   const getQueriesFromIndices = (query: string) => {
-    return indices.map((index) => ({
-      indexName: index.name,
+    return indiceNames.map((indiceName) => ({
+      indexName: indiceName,
       query,
       params: {
         hitsPerPage: 0,
@@ -47,7 +47,7 @@ export const useAlgoliaIndices = (options: IndicesInfoOptions) => {
       throw new Error("SearchClient is not specified")
     }
 
-    if (indices.length === 0) {
+    if (indiceNames.length === 0) {
       return
     }
 

@@ -92,6 +92,8 @@ export const Search: FC = () => {
   const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {}, refreshedQueryOptions)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const { system } = queryData
+  const indices = system?.algolia?.indices ?? []
+  const indiceNames = indices.map((indice) => indice.name)
 
   const onRefetch = () => {
     if (isRefreshing) {
@@ -125,14 +127,13 @@ export const Search: FC = () => {
     system?.algolia?.appID,
     system?.algolia?.apiKey
   )
-  const indices = system?.algolia?.indices
   const {
     loading: indicesInfoLoading,
     indicesInfo,
     updateIndicesInfo,
   } = useAlgoliaIndices({
     searchClient,
-    indices,
+    indiceNames,
     onError: (error: Error) => {
       if (isAlgoliaApiKeyExpiredError(error)) {
         onRefetch()
@@ -153,25 +154,21 @@ export const Search: FC = () => {
   nonCohesionTracks.experimentFlag("test-eigen-smudge2", smudge2Value)
 
   const pillsArray = useMemo<PillType[]>(() => {
-    if (Array.isArray(indices) && indices.length > 0) {
-      const allowedIndices = indices.filter((indice) =>
-        ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
-      )
-      const formattedIndices: PillType[] = allowedIndices.map((index) => {
-        const { name, ...other } = index
+    const allowedIndices = indices.filter((indice) =>
+      ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
+    )
+    const formattedIndices: PillType[] = allowedIndices.map((index) => {
+      const { name, ...other } = index
 
-        return {
-          ...other,
-          type: "algolia",
-          disabled: !indicesInfo[name]?.hasResults,
-          indexName: name,
-        }
-      })
+      return {
+        ...other,
+        type: "algolia",
+        disabled: !indicesInfo[name]?.hasResults,
+        indexName: name,
+      }
+    })
 
-      return [...pills, ...formattedIndices]
-    }
-
-    return pills
+    return [...pills, ...formattedIndices]
   }, [indices, indicesInfo])
 
   useEffect(() => {
