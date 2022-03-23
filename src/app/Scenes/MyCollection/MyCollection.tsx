@@ -72,7 +72,7 @@ const MyCollection: React.FC<{
 
   const artworks = extractNodes(me?.myCollectionConnection)
 
-  useLocalArtworkFilter(artworks)
+  const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
   useEffect(() => {
@@ -170,6 +170,10 @@ const MyCollection: React.FC<{
       setJSX(null)
     }
   }, [artworks.length, filtersCount, isSearchBarVisible])
+
+  useEffect(() => {
+    reInitializeLocalArtworkFilter(artworks)
+  }, [artworks.length])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
