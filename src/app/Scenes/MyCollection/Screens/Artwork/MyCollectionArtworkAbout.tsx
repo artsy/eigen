@@ -38,7 +38,7 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
           totalCount={artwork.artist?.articles?.totalCount}
         />
         <Spacer mb={3} mt={3} />
-        <MyCollectionWhySell artwork={artwork} />
+        <MyCollectionWhySell artwork={artwork} contextModule="about" />
       </Flex>
     </StickyTabPageScrollView>
   )

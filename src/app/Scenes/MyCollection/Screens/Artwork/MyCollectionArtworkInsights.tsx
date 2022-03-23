@@ -74,7 +74,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 
-        <MyCollectionWhySell artwork={artwork} />
+        <MyCollectionWhySell artwork={artwork} contextModule="insights" />
       </Flex>
     </StickyTabPageScrollView>
   )

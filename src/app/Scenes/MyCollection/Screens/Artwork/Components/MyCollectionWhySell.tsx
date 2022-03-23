@@ -10,9 +10,11 @@ import { graphql } from "relay-runtime"
 
 interface MyCollectionWhySellProps {
   artwork: MyCollectionWhySell_artwork$key
+  contextModule: "insights" | "about" | "oldAbout"
 }
 
 export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) => {
+  const { contextModule } = props
   const { trackEvent } = useTracking()
   const artwork = useFragment<MyCollectionWhySell_artwork$key>(artworkFragment, props.artwork)
 
@@ -24,6 +26,12 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   if (isInProgress || isSold) {
     return null
   }
+  const setContextModule =
+    contextModule === "insights"
+      ? ContextModule.myCollectionArtworkInsights
+      : contextModule === "about"
+      ? ContextModule.myCollectionArtworkAbout
+      : ContextModule.sellFooter
 
   return (
     <Flex>
@@ -46,7 +54,12 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
             block
             onPress={() => {
               trackEvent(
-                tracks.tappedSubmit(artwork.internalID, artwork.slug, "Submit This Artwork to Sell")
+                tracks.tappedSellArtwork(
+                  artwork.internalID,
+                  artwork.slug,
+                  setContextModule,
+                  "Submit This Artwork to Sell"
+                )
               )
               initializeSubmissionArtworkForm(artwork)
               navigate("/collections/my-collection/artworks/new/submissions/new")
@@ -77,7 +90,18 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
           variant="fillDark"
           block
           onPress={() => {
-            trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
+            if (contextModule === "oldAbout") {
+              trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
+            } else {
+              trackEvent(
+                tracks.tappedLearnMore(
+                  artwork.internalID,
+                  artwork.slug,
+                  setContextModule,
+                  "Learn More"
+                )
+              )
+            }
             navigate("/sales")
           }}
           testID="learnMoreButton"
@@ -123,9 +147,14 @@ const artworkFragment = graphql`
   }
 `
 const tracks = {
-  tappedSubmit: (internalID: string, slug: string, subject: string) => ({
-    action: ActionType.tappedSell,
-    context_module: ContextModule.sellFooter,
+  tappedSellArtwork: (
+    internalID: string,
+    slug: string,
+    module: ContextModule,
+    subject: string
+  ) => ({
+    action: ActionType.tappedSellArtwork,
+    context_module: module,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
@@ -134,6 +163,14 @@ const tracks = {
   tappedShowMore: (internalID: string, slug: string, subject: string) => ({
     action: ActionType.tappedShowMore,
     context_module: ContextModule.sellFooter,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+    subject,
+  }),
+  tappedLearnMore: (internalID: string, slug: string, module: ContextModule, subject: string) => ({
+    action: ActionType.tappedLearnMore,
+    context_module: module,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
