@@ -35,7 +35,12 @@ export const addPhotoToConsignment = async ({
   const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
 
   // upload file to S3
-  const s3 = await uploadFileToS3(asset.path, acl, assetCredentials, updateProgress)
+  const s3 = await uploadFileToS3({
+    file: asset.path,
+    acl,
+    asset: assetCredentials,
+    updateProgress,
+  })
 
   // let Gemini know that this file exists and should be processed
   const geminiToken = await createGeminiAssetWithS3Credentials({
