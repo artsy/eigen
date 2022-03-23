@@ -25,10 +25,6 @@ export const splitExperiments: Record<string, SplitExperimentDescriptor> = {
     splitName: "HomeScreenArtistRecommendations",
     fallbackTreatment: "oldArtistRecommendations",
   },
-  QueryPrefetching: {
-    splitName: "QueryPrefetching",
-    fallbackTreatment: "disabled",
-  },
 }
 export type SPLIT_EXPERIMENT_NAME = keyof typeof splitExperiments
 
