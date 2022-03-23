@@ -78,7 +78,13 @@ export const uploadFileToS3 = ({
         updateProgress(loaded / total)
       }
     }
+
     request.open("POST", uploadURL, true)
+    request.onerror = () => {
+      reject(new Error("Network error: Something went wrong"))
+      return
+    }
+
     request.setRequestHeader("Content-type", "multipart/form-data")
     request.send(formData)
   })
