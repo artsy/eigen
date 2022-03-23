@@ -45,6 +45,8 @@ export const getBarsFromAggregations = (aggregations?: Aggregations) => {
 const DEBOUNCE_DELAY = 500
 const DEFAULT_PRICE_RANGE = DEFAULT_PRICE_OPTION.paramValue
 const DEFAULT_RANGE = [0, 50000]
+const RANGE_DOT_SIZE = 32
+const SLIDER_STEP_VALUE = 100
 
 type CustomRange = Numeric[]
 
@@ -182,21 +184,21 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
             descriptionColor="black100"
           />
         </Flex>
-        <Spacer mx={2} my={2} />
-        {!!shouldDisplayHistogram && (
-          <Flex mx={2}>
-            <Histogram bars={histogramBars} selectedRange={[sliderRange[0], sliderRange[1]]} />
-          </Flex>
-        )}
-        <Flex mx={2}>
+        <Spacer m={2} />
+        <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
+          {!!shouldDisplayHistogram && (
+            <Flex my={2}>
+              <Histogram bars={histogramBars} selectedRange={[sliderRange[0], sliderRange[1]]} />
+            </Flex>
+          )}
           <Flex alignItems="center" testID="slider">
             <MultiSlider
               min={defaultMinValue}
               max={defaultMaxValue}
-              step={5}
+              step={SLIDER_STEP_VALUE}
               snapped
               // 40 here is the horizontal padding of the slider container
-              sliderLength={width - 40}
+              sliderLength={width - 40 - RANGE_DOT_SIZE}
               onValuesChange={handleSliderValueChange}
               allowOverlap={false}
               values={sliderRange}
@@ -207,9 +209,9 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
                 backgroundColor: color("blue100"),
               }}
               markerStyle={{
-                height: 32,
-                width: 32,
-                borderRadius: 16,
+                height: RANGE_DOT_SIZE,
+                width: RANGE_DOT_SIZE,
+                borderRadius: RANGE_DOT_SIZE / 2,
                 backgroundColor: color("white100"),
                 borderColor: color("black10"),
                 borderWidth: 1,
@@ -217,8 +219,8 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
                 elevation: 5,
               }}
               pressedMarkerStyle={{
-                height: 32,
-                width: 32,
+                height: RANGE_DOT_SIZE,
+                width: RANGE_DOT_SIZE,
                 borderRadius: 16,
               }}
             />
