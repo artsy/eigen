@@ -11,9 +11,9 @@ import {
 import { isPad } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
-import { IndicesInfoOptions, useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
+import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
-import { Box, Button, Flex, Spacer, Text } from "palette"
+import { Box, Flex, Spacer, Text } from "palette"
 import { FC, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   Configure,
@@ -99,6 +99,10 @@ export const Search: FC = () => {
     queryData
   )
 
+  const onRefetch = () => {
+    refetch({}, { fetchPolicy: "network-only" })
+  }
+
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
@@ -110,9 +114,20 @@ export const Search: FC = () => {
     system?.algolia?.apiKey
   )
   const indices = system?.algolia?.indices
+  const {
+    loading: indicesInfoLoading,
+    indicesInfo,
+    updateIndicesInfo,
+  } = useAlgoliaIndices({
+    searchClient,
+    indices,
+    onError: (error: Error) => {
+      if (isAlgoliaApiKeyExpiredError(error)) {
+        onRefetch()
+      }
+    },
+  })
   const { trackEvent } = useTracking()
-
-  console.log("[debug] API KEY", system?.algolia?.apiKey)
 
   const exampleExperiments = useFeatureFlag("AREnableExampleExperiments")
   const smudgeValue = useExperimentVariant("test-search-smudge")
@@ -124,25 +139,6 @@ export const Search: FC = () => {
   )
   const smudge2Value = useExperimentFlag("test-eigen-smudge2")
   nonCohesionTracks.experimentFlag("test-eigen-smudge2", smudge2Value)
-
-  const onRefetch = () => {
-    refetch({}, { fetchPolicy: "network-only" })
-  }
-
-  const options: IndicesInfoOptions = {
-    searchClient,
-    indices,
-    onError: (error: Error) => {
-      console.log("[debug] onError", error)
-
-      if (isAlgoliaApiKeyExpiredError(error)) {
-        console.log("[debug] call onRefetch")
-        onRefetch()
-      }
-    },
-  }
-
-  const { loading: indicesInfoLoading, indicesInfo, updateIndicesInfo } = useAlgoliaIndices(options)
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
@@ -167,14 +163,11 @@ export const Search: FC = () => {
   }, [indices, indicesInfo])
 
   useEffect(() => {
-    console.log("[debug] search client updated", searchQuery, searchQuery.length)
-
     /**
      * Refetch up-to-date info about Algolia indices for specified search query
      * when Algolia API key expired and request failed (we get a fresh Algolia API key and send request again)
      */
     if (searchClient && shouldStartSearching(searchQuery)) {
-      console.log("[debug] call updateIndicesInfo")
       updateIndicesInfo(searchQuery)
     }
   }, [searchClient])
@@ -191,9 +184,7 @@ export const Search: FC = () => {
   )
 
   if (!searchClient || !searchInsightsConfigured) {
-    console.log("[debug] init", system?.algolia?.appID, system?.algolia?.apiKey)
-
-    return <Box width={300} height={300} bg="red" />
+    return <SearchPlaceholder />
   }
 
   const handleRetry = () => {
@@ -289,8 +280,6 @@ export const Search: FC = () => {
               onTextChange={onTextChange}
             />
           </Flex>
-
-          <Button onPress={onRefetch}>Refetch</Button>
 
           <Flex flex={1} collapsable={false}>
             {shouldStartSearching(searchQuery) ? (

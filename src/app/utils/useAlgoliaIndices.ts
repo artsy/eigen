@@ -10,7 +10,7 @@ interface IndicesInfo {
   [key: string]: IndexInfo
 }
 
-export interface IndicesInfoOptions {
+interface IndicesInfoOptions {
   searchClient: SearchClient | null
   indices?: ReadonlyArray<{ name: string }>
   onError?: (error: Error) => void
@@ -60,8 +60,6 @@ export const useAlgoliaIndices = (options: IndicesInfoOptions) => {
       const response = await searchClient.multipleQueries<SearchResponse>(queries)
 
       if (currentQueryId === queryId.current) {
-        console.log("[debug] response", new Date().toLocaleTimeString(), query, currentQueryId)
-
         const updatedIndicesInfo = getIndicesInfo(response)
         setIndicesInfo(updatedIndicesInfo)
         setLoading(false)
