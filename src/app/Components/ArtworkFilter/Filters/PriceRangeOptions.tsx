@@ -2,6 +2,7 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
+  Aggregations,
   FilterDisplayName,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -9,8 +10,8 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { debounce } from "lodash"
-import { Flex, Input, Spacer, Text, useColor } from "palette"
+import { debounce, sortBy } from "lodash"
+import { Flex, Histogram, HistogramBarEntity, Input, Spacer, Text, useColor } from "palette"
 import React, { useMemo, useState } from "react"
 import { useWindowDimensions } from "react-native"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
@@ -25,6 +26,20 @@ const DEFAULT_PRICE_OPTION = {
   displayText: "Choose Your Price",
   paramValue: "*-*",
   paramName: PARAM_NAME,
+}
+
+export const getBarsFromAggregations = (aggregations?: Aggregations) => {
+  const histogramAggregation = aggregations?.find(
+    (aggregation) => aggregation.slice === "SIMPLE_PRICE_HISTOGRAM"
+  )
+  const counts = histogramAggregation?.counts ?? []
+  const bars: HistogramBarEntity[] = counts.map((entity) => ({
+    count: entity.count,
+    value: Number(entity.value),
+  }))
+  const sortedBars = sortBy(bars, "value")
+
+  return sortedBars
 }
 
 const DEBOUNCE_DELAY = 500
@@ -129,6 +144,10 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     })
   }
 
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const histogramBars = getBarsFromAggregations(aggregations)
+  const shouldDisplayHistogram = histogramBars.length > 0
+
   return (
     <Flex flexGrow={1}>
       <ArtworkFilterBackHeader
@@ -164,6 +183,11 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
           />
         </Flex>
         <Spacer mx={2} my={2} />
+        {!!shouldDisplayHistogram && (
+          <Flex mx={2}>
+            <Histogram bars={histogramBars} selectedRange={[sliderRange[0], sliderRange[1]]} />
+          </Flex>
+        )}
         <Flex mx={2}>
           <Flex alignItems="center" testID="slider">
             <MultiSlider

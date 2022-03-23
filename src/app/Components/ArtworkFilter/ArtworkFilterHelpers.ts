@@ -145,7 +145,7 @@ export const defaultCommonFilterOptions = {
 }
 
 export type Aggregations = Array<{
-  slice: AggregationName
+  slice: AggregationName | "SIMPLE_PRICE_HISTOGRAM"
   counts: Aggregation[]
 }>
 
