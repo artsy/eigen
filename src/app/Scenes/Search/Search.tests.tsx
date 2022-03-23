@@ -5,6 +5,7 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { isPad } from "app/utils/hardware"
 import { Pill } from "palette"
 import { Keyboard } from "react-native"
@@ -48,6 +49,11 @@ jest.mock("lodash", () => ({
 
     return fn
   },
+}))
+
+jest.mock("app/utils/experiments/hooks", () => ({
+  ...jest.requireActual("app/utils/experiments/hooks"),
+  useExperimentFlag: jest.fn(),
 }))
 
 describe("Search Screen", () => {
@@ -209,84 +215,94 @@ describe("Search Screen", () => {
   })
 
   describe("search pills", () => {
-    it("are displayed when the user has typed the minimum allowed number of characters", async () => {
-      const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+    describe("when improved search pills are enabled", () => {
+      const mockUseExperimentFlag = useExperimentFlag as jest.Mock
 
-      mockEnvironmentPayload(mockEnvironment, {
-        Query: () => ({
-          system: {
-            algolia: {
-              appID: "",
-              apiKey: "",
-              indices: INDICES,
-            },
-          },
-        }),
+      beforeEach(() => {
+        mockUseExperimentFlag.mockImplementation(() => true)
       })
 
-      await flushPromiseQueue()
+      it("are displayed when the user has typed the minimum allowed number of characters", async () => {
+        const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 
-      expect(queryByText("Top")).toBeFalsy()
-      expect(queryByText("Artist")).toBeFalsy()
-      expect(queryByText("Auction")).toBeFalsy()
-      expect(queryByText("Gallery")).toBeFalsy()
-      expect(queryByText("Fair")).toBeFalsy()
-
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
-      fireEvent(searchInput, "changeText", "Ba")
-
-      expect(queryByText("Top")).toBeTruthy()
-      expect(queryByText("Artist")).toBeTruthy()
-      expect(queryByText("Auction")).toBeTruthy()
-      expect(queryByText("Gallery")).toBeTruthy()
-      expect(queryByText("Fair")).toBeTruthy()
-    })
-
-    it("have top pill selected and disabled at the same time", async () => {
-      const { getByPlaceholderText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
-
-      mockEnvironmentPayload(mockEnvironment, {
-        Query: () => ({
-          system: {
-            algolia: {
-              appID: "",
-              apiKey: "",
-              indices: INDICES,
+        mockEnvironmentPayload(mockEnvironment, {
+          Query: () => ({
+            system: {
+              algolia: {
+                appID: "",
+                apiKey: "",
+                indices: INDICES,
+              },
             },
-          },
-        }),
+          }),
+        })
+
+        await flushPromiseQueue()
+
+        expect(queryByText("Top")).toBeFalsy()
+        expect(queryByText("Artist")).toBeFalsy()
+        expect(queryByText("Auction")).toBeFalsy()
+        expect(queryByText("Gallery")).toBeFalsy()
+        expect(queryByText("Fair")).toBeFalsy()
+
+        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+        fireEvent(searchInput, "changeText", "Ba")
+
+        expect(queryByText("Top")).toBeTruthy()
+        expect(queryByText("Artist")).toBeTruthy()
+        expect(queryByText("Auction")).toBeTruthy()
+        expect(queryByText("Gallery")).toBeTruthy()
+        expect(queryByText("Fair")).toBeTruthy()
       })
 
-      await flushPromiseQueue()
+      it("have top pill selected and disabled at the same time", async () => {
+        const { getByPlaceholderText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
-      fireEvent(searchInput, "changeText", "Ba")
-      const topPill = getByA11yState({ selected: true, disabled: true })
-      expect(topPill).toHaveTextContent("Top")
-    })
-
-    it("are enabled when they have results", async () => {
-      const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithWrappersTL(<TestRenderer />)
-      mockEnvironmentPayload(mockEnvironment, {
-        Query: () => ({
-          system: {
-            algolia: {
-              appID: "",
-              apiKey: "",
-              indices: INDICES,
+        mockEnvironmentPayload(mockEnvironment, {
+          Query: () => ({
+            system: {
+              algolia: {
+                appID: "",
+                apiKey: "",
+                indices: INDICES,
+              },
             },
-          },
-        }),
-      })
-      await flushPromiseQueue()
+          }),
+        })
 
-      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
-      fireEvent(searchInput, "changeText", "Ba")
-      const enabledPills = UNSAFE_getAllByType(Pill).filter((pill) => pill.props.disabled === false)
-      expect(enabledPills).toHaveLength(3)
-      expect(enabledPills[0]).toHaveTextContent("Artworks")
-      expect(enabledPills[1]).toHaveTextContent("Artist")
-      expect(enabledPills[2]).toHaveTextContent("Gallery")
+        await flushPromiseQueue()
+
+        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+        fireEvent(searchInput, "changeText", "Ba")
+        const topPill = getByA11yState({ selected: true, disabled: true })
+        expect(topPill).toHaveTextContent("Top")
+      })
+
+      it("are enabled when they have results", async () => {
+        const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithWrappersTL(<TestRenderer />)
+        mockEnvironmentPayload(mockEnvironment, {
+          Query: () => ({
+            system: {
+              algolia: {
+                appID: "",
+                apiKey: "",
+                indices: INDICES,
+              },
+            },
+          }),
+        })
+        await flushPromiseQueue()
+
+        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+        fireEvent(searchInput, "changeText", "Ba")
+        const enabledPills = UNSAFE_getAllByType(Pill).filter(
+          (pill) => pill.props.disabled === false
+        )
+        expect(enabledPills).toHaveLength(3)
+        expect(enabledPills[0]).toHaveTextContent("Artworks")
+        expect(enabledPills[1]).toHaveTextContent("Artist")
+        expect(enabledPills[2]).toHaveTextContent("Gallery")
+      })
     })
 
     it("are displayed when the user has typed the minimum allowed number of characters", async () => {
