@@ -2,7 +2,7 @@ import { bullet } from "palette/helpers"
 import React from "react"
 import { Avatar } from "../Avatar"
 import { Flex } from "../Flex"
-import { SpacerProps } from "../Spacer"
+import { SpacerProps } from "../../atoms/Spacer"
 import { Sans } from "../Text"
 
 interface EntityHeaderProps extends SpacerProps {

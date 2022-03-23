@@ -8,7 +8,9 @@ function loadStories() {
   require("../app/Components/ArtworkGrids/ArtworksFilterHeader.stories")
   require("../app/Components/PopoverMessage/PopoverMessage.stories")
   require("../app/Components/ReadMore.stories")
-  require("../palette/colors.stories")
+  require("../palette/atoms/colors.stories")
+  require("../palette/atoms/space.stories")
+  require("../palette/atoms/Spacer/Spacer.stories")
   require("../palette/elements/Avatar/Avatar.stories")
   require("../palette/elements/Banner/Banner.stories")
   require("../palette/elements/Button/Button.stories")
@@ -27,7 +29,6 @@ function loadStories() {
   require("../palette/elements/Text/Text.stories")
   require("../palette/elements/VisualClue/VisualClue.stories")
   require("../palette/icons.stories")
-  require("../palette/space.stories")
 }
 
 const stories = [
@@ -35,7 +36,9 @@ const stories = [
   "../app/Components/ArtworkGrids/ArtworksFilterHeader.stories",
   "../app/Components/PopoverMessage/PopoverMessage.stories",
   "../app/Components/ReadMore.stories",
-  "../palette/colors.stories",
+  "../palette/atoms/colors.stories",
+  "../palette/atoms/space.stories",
+  "../palette/atoms/Spacer/Spacer.stories",
   "../palette/elements/Avatar/Avatar.stories",
   "../palette/elements/Banner/Banner.stories",
   "../palette/elements/Button/Button.stories",
@@ -54,7 +57,6 @@ const stories = [
   "../palette/elements/Text/Text.stories",
   "../palette/elements/VisualClue/VisualClue.stories",
   "../palette/icons.stories",
-  "../palette/space.stories",
 ]
 
 module.exports = {

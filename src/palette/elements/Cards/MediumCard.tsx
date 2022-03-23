@@ -1,10 +1,10 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { Spacer } from "../../atoms"
 import { useTheme } from "palette/Theme"
 import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
-import { Spacer } from "../Spacer"
 import { Text } from "../Text"
 import { CardTag, CardTagProps } from "./CardTag"
 

@@ -1,11 +1,10 @@
 import { storiesOf } from "@storybook/react-native"
-import React from "react"
 import { View } from "react-native"
 import { withTheme } from "storybook/decorators"
 import { List, Row } from "storybook/helpers"
-import { Text } from "./elements/Text"
-import { useColor } from "./hooks"
-import { Color } from "./Theme"
+import { Text } from "../elements/Text"
+import { useColor } from "../hooks"
+import { Color } from "../Theme"
 
 const ColorSquare = ({ color: theColor, bright }: { color: Color; bright?: boolean }) => {
   const color = useColor()
@@ -32,7 +31,7 @@ const ColorSquare = ({ color: theColor, bright }: { color: Color; bright?: boole
   )
 }
 
-storiesOf("Theme/Color", module)
+storiesOf("Theme/color", module)
   .addDecorator(withTheme)
   .add("colors", () => (
     <List>

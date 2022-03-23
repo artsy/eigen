@@ -5,7 +5,7 @@ import LinearGradient from "react-native-linear-gradient"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useTheme } from "palette/Theme"
 import { Flex } from "../Flex"
-import { Spacer } from "../Spacer"
+import { Spacer } from "../../atoms/Spacer"
 import { Sans } from "../Text"
 import { CardTag, CardTagProps } from "./CardTag"
 
