@@ -1,5 +1,4 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Search_system$key } from "__generated__/Search_system.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { useFeatureFlag } from "app/store/GlobalStore"
@@ -23,7 +22,13 @@ import {
   InstantSearch,
 } from "react-instantsearch-native"
 import { Keyboard, Platform, ScrollView } from "react-native"
-import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
+import {
+  FetchPolicy,
+  fetchQuery,
+  graphql,
+  useLazyLoadQuery,
+  useRelayEnvironment,
+} from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
@@ -76,31 +81,38 @@ const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
   [ContextModule.artistsTab]: "Artworks",
 }
 
-export const Search: FC = () => {
-  const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {})
+interface RefreshQueryOptions {
+  fetchKey?: number
+  fetchPolicy?: FetchPolicy
+}
 
-  const [{ system }, refetch] = useRefetchableFragment<SearchQuery, Search_system$key>(
-    graphql`
-      fragment Search_system on Query @refetchable(queryName: "SearchRefetchQuery") {
-        system {
-          __typename
-          algolia {
-            appID
-            apiKey
-            indices {
-              name
-              displayName
-              key
-            }
-          }
-        }
-      }
-    `,
-    queryData
-  )
+export const Search: FC = () => {
+  const environment = useRelayEnvironment()
+  const [refreshedQueryOptions, setRefreshedQueryOptions] = useState<RefreshQueryOptions>({})
+  const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {}, refreshedQueryOptions)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const { system } = queryData
 
   const onRefetch = () => {
-    refetch({}, { fetchPolicy: "network-only" })
+    if (isRefreshing) {
+      return
+    }
+
+    setIsRefreshing(true)
+
+    fetchQuery(environment, SearchScreenQuery, {}).subscribe({
+      complete: () => {
+        setIsRefreshing(false)
+
+        setRefreshedQueryOptions((prev) => ({
+          fetchKey: (prev?.fetchKey ?? 0) + 1,
+          fetchPolicy: "store-only",
+        }))
+      },
+      error: () => {
+        setIsRefreshing(false)
+      },
+    })
   }
 
   const searchPillsRef = useRef<ScrollView>(null)
@@ -338,7 +350,18 @@ export const Search: FC = () => {
 
 export const SearchScreenQuery = graphql`
   query SearchQuery {
-    ...Search_system
+    system {
+      __typename
+      algolia {
+        appID
+        apiKey
+        indices {
+          name
+          displayName
+          key
+        }
+      }
+    }
   }
 `
 
