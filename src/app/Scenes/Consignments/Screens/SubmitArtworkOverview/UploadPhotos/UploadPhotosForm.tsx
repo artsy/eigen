@@ -20,7 +20,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
-  const [progress, updateProgress] = useState(0)
+  const [progress, setProgress] = useState<Record<string, number | undefined>>({})
 
   useEffect(() => {
     // add initial photos when a My Collection artwork gets submitted
@@ -41,7 +41,12 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
         const uploadedPhoto = await addPhotoToConsignment({
           asset: photo,
           submissionID: submission.submissionId,
-          updateProgress,
+          updateProgress: (newProgress) => {
+            setProgress((prevState) => {
+              const newState = { ...prevState, [photo.path]: newProgress }
+              return newState
+            })
+          },
         })
         if (uploadedPhoto?.id) {
           const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
@@ -146,7 +151,12 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       </Flex>
 
       {values.photos.map((photo: Photo, idx: number) => (
-        <PhotoRow key={idx} photo={photo} onPhotoDelete={handlePhotoDelete} progress={progress} />
+        <PhotoRow
+          key={idx}
+          photo={photo}
+          onPhotoDelete={handlePhotoDelete}
+          progress={progress[photo.path] ?? 0}
+        />
       ))}
     </>
   )

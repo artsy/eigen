@@ -34,7 +34,7 @@ const PhotoRowContainer: React.FC<PhotoRowContainerProps> = ({ error, errorMsg, 
   </>
 )
 
-const PhotoRowPlaceholder = ({ progress = 0.6 }: { progress?: number }) => (
+const PhotoRowPlaceholder = ({ progress }: { progress: number }) => (
   <PhotoRowContainer>
     <ProvidePlaceholderContext>
       <Flex flexDirection="row">
