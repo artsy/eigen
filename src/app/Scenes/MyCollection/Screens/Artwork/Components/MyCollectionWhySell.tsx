@@ -26,12 +26,12 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   if (isInProgress || isSold) {
     return null
   }
-  const setContextModule =
-    contextModule === "insights"
-      ? ContextModule.myCollectionArtworkInsights
-      : contextModule === "about"
-      ? ContextModule.myCollectionArtworkAbout
-      : ContextModule.sellFooter
+  let setContextModule = ContextModule.sellFooter
+  if (contextModule === "insights") {
+    setContextModule = ContextModule.myCollectionArtworkInsights
+  } else if (contextModule === "about") {
+    setContextModule = ContextModule.myCollectionArtworkAbout
+  }
 
   return (
     <Flex>

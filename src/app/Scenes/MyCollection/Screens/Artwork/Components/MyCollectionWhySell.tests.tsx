@@ -52,42 +52,121 @@ describe("MyCollectionWhySell", () => {
     )
   }
 
-  describe("P1 artwork", () => {
-    it("navigates to the sale form when submit is press", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+  describe("P1", () => {
+    // P1 related tests
+    describe("Navigation", () => {
+      it("navigates to the sale form when Submit This Artwork to Sell is pressed", () => {
+        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
 
-      resolveData({
-        Artwork: () => ({
-          slug: "someSlug",
-          internalID: "someInternalId",
-          artist: {
-            targetSupply: { isP1: true },
-          },
-        }),
+        resolveData({
+          Artwork: () => ({
+            slug: "someSlug",
+            internalID: "someInternalId",
+            artist: {
+              targetSupply: { isP1: true },
+            },
+          }),
+        })
+        const button = getByTestId("submitArtworkToSellButton")
+        act(() => fireEvent.press(button))
+        expect(navigate).toBeCalledWith("/collections/my-collection/artworks/new/submissions/new")
       })
-      const button = getByTestId("submitArtworkToSellButton")
-      act(() => fireEvent.press(button))
-      expect(navigate).toBeCalledWith("/collections/my-collection/artworks/new/submissions/new")
+      it("navigates to the explanatory page when learn more is press", () => {
+        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+
+        resolveData({
+          Artwork: () => ({
+            slug: "someSlug",
+            internalID: "someInternalId",
+            artist: {
+              targetSupply: { isP1: true },
+            },
+          }),
+        })
+        const button = getByTestId("learnMoreLink")
+        act(() => fireEvent.press(button))
+        expect(navigate).toBeCalledWith("/selling-with-artsy")
+      })
     })
 
-    it("navigates to the explanatory page when learn more is press", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
-
-      resolveData({
-        Artwork: () => ({
-          slug: "someSlug",
-          internalID: "someInternalId",
-          artist: {
-            targetSupply: { isP1: true },
-          },
-        }),
+    describe("Analytics", () => {
+      it("tracks events, oldAbout section", async () => {
+        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="oldAbout" />)
+        resolveData({
+          Artwork: () => ({
+            slug: "someSlug",
+            internalID: "someInternalId",
+            artist: {
+              targetSupply: { isP1: true },
+            },
+          }),
+        })
+        const button = getByTestId("submitArtworkToSellButton")
+        act(() => fireEvent.press(button))
+        await flushPromiseQueue()
+        expect(trackEvent).toHaveBeenCalled()
+        expect(trackEvent).toHaveBeenCalledWith({
+          action: "tappedSellArtwork",
+          context_module: "sellFooter",
+          context_screen_owner_type: "myCollectionArtwork",
+          context_screen_owner_id: "someInternalId",
+          context_screen_owner_slug: "someSlug",
+          subject: "Submit This Artwork to Sell",
+        })
       })
-      const button = getByTestId("learnMoreLink")
-      act(() => fireEvent.press(button))
-      expect(navigate).toBeCalledWith("/selling-with-artsy")
-    })
+      it("tracks events, about tab", async () => {
+        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="about" />)
+        resolveData({
+          Artwork: () => ({
+            slug: "someSlug",
+            internalID: "someInternalId",
+            artist: {
+              targetSupply: { isP1: true },
+            },
+          }),
+        })
+        const button = getByTestId("submitArtworkToSellButton")
+        act(() => fireEvent.press(button))
+        await flushPromiseQueue()
+        expect(trackEvent).toHaveBeenCalled()
 
-    describe("when submit button is pressed", () => {
+        expect(trackEvent).toHaveBeenCalledWith({
+          action: "tappedSellArtwork",
+          context_module: "myCollectionArtworkAbout",
+          context_screen_owner_type: "myCollectionArtwork",
+          context_screen_owner_id: "someInternalId",
+          context_screen_owner_slug: "someSlug",
+          subject: "Submit This Artwork to Sell",
+        })
+      })
+
+      it("tracks events, insights tab", async () => {
+        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+        resolveData({
+          Artwork: () => ({
+            slug: "someSlug",
+            internalID: "someInternalId",
+            artist: {
+              targetSupply: { isP1: true },
+            },
+          }),
+        })
+        const button = getByTestId("submitArtworkToSellButton")
+        act(() => fireEvent.press(button))
+        await flushPromiseQueue()
+        expect(trackEvent).toHaveBeenCalled()
+
+        expect(trackEvent).toHaveBeenCalledWith({
+          action: "tappedSellArtwork",
+          context_module: "myCollectionArtworkInsights",
+          context_screen_owner_type: "myCollectionArtwork",
+          context_screen_owner_id: "someInternalId",
+          context_screen_owner_slug: "someSlug",
+          subject: "Submit This Artwork to Sell",
+        })
+      })
+    })
+    describe("Behavior", () => {
       it("initializes the submission form", async () => {
         const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="oldAbout" />)
         resolveData({
@@ -145,178 +224,101 @@ describe("MyCollectionWhySell", () => {
     })
   })
 
-  describe("not P1", () => {
-    it("navigates to the sales page when learn more is press", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
-      resolveData({
-        Artwork: () => ({
-          slug: "someSlug",
-          internalID: "someInternalId",
-          artist: {
-            targetSupply: { isP1: false },
-          },
-        }),
-      })
-      const button = getByTestId("learnMoreButton")
-      act(() => fireEvent.press(button))
+  describe("NOT P1", () => {
+    describe("Navigation", () => {
+      it("navigates to the sales page when learn more is press", () => {
+        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+        resolveData({
+          Artwork: () => ({
+            slug: "someSlug",
+            internalID: "someInternalId",
+            artist: {
+              targetSupply: { isP1: false },
+            },
+          }),
+        })
+        const button = getByTestId("learnMoreButton")
+        act(() => fireEvent.press(button))
 
-      expect(navigate).toBeCalledWith("/sales")
-    })
-  })
-
-  // Analytics
-  describe("Analytics", () => {
-    it("oldAbout section, NOT P1", async () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="oldAbout" />)
-      resolveData({
-        Artwork: () => ({
-          slug: "someSlug",
-          internalID: "someInternalId",
-          artist: {
-            targetSupply: { isP1: false },
-          },
-        }),
-      })
-      const button = getByTestId("learnMoreButton")
-      act(() => fireEvent.press(button))
-      await flushPromiseQueue()
-      expect(trackEvent).toHaveBeenCalled()
-      expect(trackEvent).toHaveBeenCalledWith({
-        action: "tappedShowMore",
-        context_module: "sellFooter",
-        context_screen_owner_type: "myCollectionArtwork",
-        context_screen_owner_id: "someInternalId",
-        context_screen_owner_slug: "someSlug",
-        subject: "Learn More",
+        expect(navigate).toBeCalledWith("/sales")
       })
     })
-
-    it("oldAbout section, P1", async () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="oldAbout" />)
-      resolveData({
-        Artwork: () => ({
-          slug: "someSlug",
-          internalID: "someInternalId",
-          artist: {
-            targetSupply: { isP1: true },
-          },
-        }),
+    describe("Analytics", () => {
+      it("tracks events, oldAbout section", async () => {
+        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="oldAbout" />)
+        resolveData({
+          Artwork: () => ({
+            slug: "someSlug",
+            internalID: "someInternalId",
+            artist: {
+              targetSupply: { isP1: false },
+            },
+          }),
+        })
+        const button = getByTestId("learnMoreButton")
+        act(() => fireEvent.press(button))
+        await flushPromiseQueue()
+        expect(trackEvent).toHaveBeenCalled()
+        expect(trackEvent).toHaveBeenCalledWith({
+          action: "tappedShowMore",
+          context_module: "sellFooter",
+          context_screen_owner_type: "myCollectionArtwork",
+          context_screen_owner_id: "someInternalId",
+          context_screen_owner_slug: "someSlug",
+          subject: "Learn More",
+        })
       })
-      const button = getByTestId("submitArtworkToSellButton")
-      act(() => fireEvent.press(button))
-      await flushPromiseQueue()
-      expect(trackEvent).toHaveBeenCalled()
-      expect(trackEvent).toHaveBeenCalledWith({
-        action: "tappedSellArtwork",
-        context_module: "sellFooter",
-        context_screen_owner_type: "myCollectionArtwork",
-        context_screen_owner_id: "someInternalId",
-        context_screen_owner_slug: "someSlug",
-        subject: "Submit This Artwork to Sell",
-      })
-    })
 
-    it("about tab, P1", async () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="about" />)
-      resolveData({
-        Artwork: () => ({
-          slug: "someSlug",
-          internalID: "someInternalId",
-          artist: {
-            targetSupply: { isP1: true },
-          },
-        }),
-      })
-      const button = getByTestId("submitArtworkToSellButton")
-      act(() => fireEvent.press(button))
-      await flushPromiseQueue()
-      expect(trackEvent).toHaveBeenCalled()
+      it("tracks events, about tab", async () => {
+        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="about" />)
+        resolveData({
+          Artwork: () => ({
+            slug: "someSlug",
+            internalID: "someInternalId",
+            artist: {
+              targetSupply: { isP1: false },
+            },
+          }),
+        })
+        const button = getByTestId("learnMoreButton")
+        act(() => fireEvent.press(button))
+        await flushPromiseQueue()
+        expect(trackEvent).toHaveBeenCalled()
 
-      expect(trackEvent).toHaveBeenCalledWith({
-        action: "tappedSellArtwork",
-        context_module: "myCollectionArtworkAbout",
-        context_screen_owner_type: "myCollectionArtwork",
-        context_screen_owner_id: "someInternalId",
-        context_screen_owner_slug: "someSlug",
-        subject: "Submit This Artwork to Sell",
+        expect(trackEvent).toHaveBeenCalledWith({
+          action: "tappedLearnMore",
+          context_module: "myCollectionArtworkAbout",
+          context_screen_owner_type: "myCollectionArtwork",
+          context_screen_owner_id: "someInternalId",
+          context_screen_owner_slug: "someSlug",
+          subject: "Learn More",
+        })
       })
-    })
 
-    it("about tab, NOT P1", async () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="about" />)
-      resolveData({
-        Artwork: () => ({
-          slug: "someSlug",
-          internalID: "someInternalId",
-          artist: {
-            targetSupply: { isP1: false },
-          },
-        }),
-      })
-      const button = getByTestId("learnMoreButton")
-      act(() => fireEvent.press(button))
-      await flushPromiseQueue()
-      expect(trackEvent).toHaveBeenCalled()
+      it("tracks events, insights tab", async () => {
+        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+        resolveData({
+          Artwork: () => ({
+            slug: "someSlug",
+            internalID: "someInternalId",
+            artist: {
+              targetSupply: { isP1: false },
+            },
+          }),
+        })
+        const button = getByTestId("learnMoreButton")
+        act(() => fireEvent.press(button))
+        await flushPromiseQueue()
+        expect(trackEvent).toHaveBeenCalled()
 
-      expect(trackEvent).toHaveBeenCalledWith({
-        action: "tappedLearnMore",
-        context_module: "myCollectionArtworkAbout",
-        context_screen_owner_type: "myCollectionArtwork",
-        context_screen_owner_id: "someInternalId",
-        context_screen_owner_slug: "someSlug",
-        subject: "Learn More",
-      })
-    })
-
-    it("insights tab, P1", async () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
-      resolveData({
-        Artwork: () => ({
-          slug: "someSlug",
-          internalID: "someInternalId",
-          artist: {
-            targetSupply: { isP1: true },
-          },
-        }),
-      })
-      const button = getByTestId("submitArtworkToSellButton")
-      act(() => fireEvent.press(button))
-      await flushPromiseQueue()
-      expect(trackEvent).toHaveBeenCalled()
-
-      expect(trackEvent).toHaveBeenCalledWith({
-        action: "tappedSellArtwork",
-        context_module: "myCollectionArtworkInsights",
-        context_screen_owner_type: "myCollectionArtwork",
-        context_screen_owner_id: "someInternalId",
-        context_screen_owner_slug: "someSlug",
-        subject: "Submit This Artwork to Sell",
-      })
-    })
-
-    it("insights tab, NOT P1", async () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
-      resolveData({
-        Artwork: () => ({
-          slug: "someSlug",
-          internalID: "someInternalId",
-          artist: {
-            targetSupply: { isP1: false },
-          },
-        }),
-      })
-      const button = getByTestId("learnMoreButton")
-      act(() => fireEvent.press(button))
-      await flushPromiseQueue()
-      expect(trackEvent).toHaveBeenCalled()
-
-      expect(trackEvent).toHaveBeenCalledWith({
-        action: "tappedLearnMore",
-        context_module: "myCollectionArtworkInsights",
-        context_screen_owner_type: "myCollectionArtwork",
-        context_screen_owner_id: "someInternalId",
-        context_screen_owner_slug: "someSlug",
-        subject: "Learn More",
+        expect(trackEvent).toHaveBeenCalledWith({
+          action: "tappedLearnMore",
+          context_module: "myCollectionArtworkInsights",
+          context_screen_owner_type: "myCollectionArtwork",
+          context_screen_owner_id: "someInternalId",
+          context_screen_owner_slug: "someSlug",
+          subject: "Learn More",
+        })
       })
     })
   })
