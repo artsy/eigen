@@ -38,11 +38,11 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     for (const photo of photos) {
       try {
         // upload & size the photo, and add it to processed photos
-        const uploadedPhoto = await addPhotoToConsignment(
-          photo,
-          submission.submissionId,
-          updateProgress
-        )
+        const uploadedPhoto = await addPhotoToConsignment({
+          asset: photo,
+          submissionID: submission.submissionId,
+          updateProgress,
+        })
         if (uploadedPhoto?.id) {
           const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
           const isTotalSizeLimitExceeded = isSizeLimitExceeded([
