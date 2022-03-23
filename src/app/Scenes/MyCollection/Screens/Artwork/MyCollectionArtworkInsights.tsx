@@ -37,7 +37,10 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
 
-  const showPriceEstimateBanner = useFeatureFlag("ARShowRequestPriceEstimateBanner") && isP1Artist
+  const showPriceEstimateBanner =
+    useFeatureFlag("ARShowRequestPriceEstimateBanner") &&
+    isP1Artist &&
+    Number((marketPriceInsights?.demandRank ?? 0) * 10) >= 9
 
   return (
     <StickyTabPageScrollView>
@@ -104,6 +107,7 @@ const artworkFragment = graphql`
 
 const marketPriceInsightsFragment = graphql`
   fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
+    demandRank
     ...MyCollectionArtworkDemandIndex_marketPriceInsights
     ...MyCollectionArtworkArtistMarket_marketPriceInsights
     ...RequestForPriceEstimateBanner_marketPriceInsights
