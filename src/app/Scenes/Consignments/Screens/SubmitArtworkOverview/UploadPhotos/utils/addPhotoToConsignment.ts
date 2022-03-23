@@ -7,15 +7,13 @@ import {
   uploadFileToS3,
 } from "../../../../Submission/geminiUploadToS3"
 
-export const addPhotoToConsignment = async ({
-  asset,
-  submissionID,
-  updateProgress,
-}: {
+interface Props {
   asset: Photo
   submissionID: string
   updateProgress?: (progress: number) => void
-}) => {
+}
+
+export const addPhotoToConsignment = async ({ asset, submissionID, updateProgress }: Props) => {
   const acl = "private"
 
   // return if no path is found
