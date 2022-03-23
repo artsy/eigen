@@ -4,7 +4,6 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { goBack, navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
-import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
@@ -30,24 +29,13 @@ const MyCollectionArtworkScreenQuery = graphql`
       ...MyCollectionArtworkInsights_artwork
       ...MyCollectionArtworkAbout_artwork
       comparableAuctionResults(first: 6) {
-        edges {
-          node {
-            internalID
-            ...AuctionResultListItem_auctionResult
-          }
-        }
+        totalCount
       }
       artist {
         internalID
         formattedNationalityAndBirthday
         auctionResultsConnection(first: 3, sort: DATE_DESC) {
-          edges {
-            node {
-              id
-              internalID
-              ...AuctionResultListItem_auctionResult
-            }
-          }
+          totalCount
         }
       }
     }
@@ -55,7 +43,7 @@ const MyCollectionArtworkScreenQuery = graphql`
       ...MyCollectionArtworkInsights_marketPriceInsights
       ...MyCollectionArtworkAbout_marketPriceInsights
     }
-    marketPriceInsights2: marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
+    _marketPriceInsights: marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
       annualLotsSold
     }
     me {
@@ -77,8 +65,8 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     medium,
   })
 
-  const comparableWorks = extractNodes(data?.artwork?.comparableAuctionResults)
-  const auctionResults = extractNodes(data?.artwork?.artist?.auctionResultsConnection)
+  const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
+  const auctionResultsCount = data?.artwork?.artist?.auctionResultsConnection?.totalCount
 
   if (!data.artwork) {
     return (
@@ -103,7 +91,9 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   }, [data.artwork])
 
   const shouldShowInsightsTab =
-    !!data?.marketPriceInsights2 || comparableWorks.length > 0 || auctionResults.length > 0
+    !!data?._marketPriceInsights ||
+    (comparableWorksCount ?? 0) > 0 ||
+    (auctionResultsCount ?? 0) > 0
 
   const tabs = compact([
     !!shouldShowInsightsTab && {
