@@ -17,7 +17,11 @@ const trackEvent = useTracking().trackEvent
 describe("MyCollectionWhySell", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-  const TestRenderer = () => (
+  const TestRenderer = ({
+    contextModule = "insights",
+  }: {
+    contextModule: "insights" | "about" | "oldAbout"
+  }) => (
     <QueryRenderer<MyCollectionWhySellTestsQuery>
       environment={mockEnvironment}
       query={graphql`
@@ -30,7 +34,7 @@ describe("MyCollectionWhySell", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.artwork) {
-          return <MyCollectionWhySell artwork={props.artwork} />
+          return <MyCollectionWhySell artwork={props.artwork} contextModule={contextModule} />
         }
         return null
       }}
@@ -50,7 +54,7 @@ describe("MyCollectionWhySell", () => {
 
   describe("P1 artwork", () => {
     it("navigates to the sale form when submit is press", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
 
       resolveData({
         Artwork: () => ({
@@ -67,7 +71,7 @@ describe("MyCollectionWhySell", () => {
     })
 
     it("navigates to the explanatory page when learn more is press", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
 
       resolveData({
         Artwork: () => ({
@@ -84,8 +88,8 @@ describe("MyCollectionWhySell", () => {
     })
 
     describe("when submit button is pressed", () => {
-      it("tracks analytics and initializes the submission form", async () => {
-        const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      it("initializes the submission form", async () => {
+        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="oldAbout" />)
         resolveData({
           Artwork: () => ({
             slug: "someSlug",
@@ -113,15 +117,6 @@ describe("MyCollectionWhySell", () => {
         act(() => fireEvent.press(button))
 
         await flushPromiseQueue()
-
-        expect(trackEvent).toHaveBeenCalledWith({
-          action: "tappedSell",
-          context_module: "sellFooter",
-          context_screen_owner_type: "myCollectionArtwork",
-          context_screen_owner_id: "someInternalId",
-          context_screen_owner_slug: "someSlug",
-          subject: "Submit This Artwork to Sell",
-        })
 
         expect(
           GlobalStore.actions.artworkSubmission.submission.initializeArtworkDetailsForm
@@ -152,8 +147,7 @@ describe("MyCollectionWhySell", () => {
 
   describe("not P1", () => {
     it("navigates to the sales page when learn more is press", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
-
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
       resolveData({
         Artwork: () => ({
           slug: "someSlug",
@@ -168,10 +162,12 @@ describe("MyCollectionWhySell", () => {
 
       expect(navigate).toBeCalledWith("/sales")
     })
+  })
 
-    // Analytics
-    it("tracks an analytics event when learn more is press is pressed", async () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+  // Analytics
+  describe("Analytics", () => {
+    it("oldAbout section, NOT P1", async () => {
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="oldAbout" />)
       resolveData({
         Artwork: () => ({
           slug: "someSlug",
@@ -188,6 +184,135 @@ describe("MyCollectionWhySell", () => {
       expect(trackEvent).toHaveBeenCalledWith({
         action: "tappedShowMore",
         context_module: "sellFooter",
+        context_screen_owner_type: "myCollectionArtwork",
+        context_screen_owner_id: "someInternalId",
+        context_screen_owner_slug: "someSlug",
+        subject: "Learn More",
+      })
+    })
+
+    it("oldAbout section, P1", async () => {
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="oldAbout" />)
+      resolveData({
+        Artwork: () => ({
+          slug: "someSlug",
+          internalID: "someInternalId",
+          artist: {
+            targetSupply: { isP1: true },
+          },
+        }),
+      })
+      const button = getByTestId("submitArtworkToSellButton")
+      act(() => fireEvent.press(button))
+      await flushPromiseQueue()
+      expect(trackEvent).toHaveBeenCalled()
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedSellArtwork",
+        context_module: "sellFooter",
+        context_screen_owner_type: "myCollectionArtwork",
+        context_screen_owner_id: "someInternalId",
+        context_screen_owner_slug: "someSlug",
+        subject: "Submit This Artwork to Sell",
+      })
+    })
+
+    it("about tab, P1", async () => {
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="about" />)
+      resolveData({
+        Artwork: () => ({
+          slug: "someSlug",
+          internalID: "someInternalId",
+          artist: {
+            targetSupply: { isP1: true },
+          },
+        }),
+      })
+      const button = getByTestId("submitArtworkToSellButton")
+      act(() => fireEvent.press(button))
+      await flushPromiseQueue()
+      expect(trackEvent).toHaveBeenCalled()
+
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedSellArtwork",
+        context_module: "myCollectionArtworkAbout",
+        context_screen_owner_type: "myCollectionArtwork",
+        context_screen_owner_id: "someInternalId",
+        context_screen_owner_slug: "someSlug",
+        subject: "Submit This Artwork to Sell",
+      })
+    })
+
+    it("about tab, NOT P1", async () => {
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="about" />)
+      resolveData({
+        Artwork: () => ({
+          slug: "someSlug",
+          internalID: "someInternalId",
+          artist: {
+            targetSupply: { isP1: false },
+          },
+        }),
+      })
+      const button = getByTestId("learnMoreButton")
+      act(() => fireEvent.press(button))
+      await flushPromiseQueue()
+      expect(trackEvent).toHaveBeenCalled()
+
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedLearnMore",
+        context_module: "myCollectionArtworkAbout",
+        context_screen_owner_type: "myCollectionArtwork",
+        context_screen_owner_id: "someInternalId",
+        context_screen_owner_slug: "someSlug",
+        subject: "Learn More",
+      })
+    })
+
+    it("insights tab, P1", async () => {
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+      resolveData({
+        Artwork: () => ({
+          slug: "someSlug",
+          internalID: "someInternalId",
+          artist: {
+            targetSupply: { isP1: true },
+          },
+        }),
+      })
+      const button = getByTestId("submitArtworkToSellButton")
+      act(() => fireEvent.press(button))
+      await flushPromiseQueue()
+      expect(trackEvent).toHaveBeenCalled()
+
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedSellArtwork",
+        context_module: "myCollectionArtworkInsights",
+        context_screen_owner_type: "myCollectionArtwork",
+        context_screen_owner_id: "someInternalId",
+        context_screen_owner_slug: "someSlug",
+        subject: "Submit This Artwork to Sell",
+      })
+    })
+
+    it("insights tab, NOT P1", async () => {
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+      resolveData({
+        Artwork: () => ({
+          slug: "someSlug",
+          internalID: "someInternalId",
+          artist: {
+            targetSupply: { isP1: false },
+          },
+        }),
+      })
+      const button = getByTestId("learnMoreButton")
+      act(() => fireEvent.press(button))
+      await flushPromiseQueue()
+      expect(trackEvent).toHaveBeenCalled()
+
+      expect(trackEvent).toHaveBeenCalledWith({
+        action: "tappedLearnMore",
+        context_module: "myCollectionArtworkInsights",
         context_screen_owner_type: "myCollectionArtwork",
         context_screen_owner_id: "someInternalId",
         context_screen_owner_slug: "someSlug",
