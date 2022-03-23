@@ -9,7 +9,7 @@ import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
 import { Button, Flex, Spacer, Text } from "palette"
 import { PhotoRow } from "palette/elements/PhotoRow/PhotoRow"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { removeAssetFromSubmission } from "../Mutations/removeAssetFromConsignmentSubmissionMutation"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
 import { calculateSinglePhotoSize, isSizeLimitExceeded } from "./utils/calculatePhotoSize"
@@ -20,6 +20,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
+  const [progress, updateProgress] = useState(0)
 
   useEffect(() => {
     // add initial photos when a My Collection artwork gets submitted
@@ -37,7 +38,11 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     for (const photo of photos) {
       try {
         // upload & size the photo, and add it to processed photos
-        const uploadedPhoto = await addPhotoToConsignment(photo, submission.submissionId)
+        const uploadedPhoto = await addPhotoToConsignment(
+          photo,
+          submission.submissionId,
+          updateProgress
+        )
         if (uploadedPhoto?.id) {
           const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
           const isTotalSizeLimitExceeded = isSizeLimitExceeded([
@@ -141,7 +146,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       </Flex>
 
       {values.photos.map((photo: Photo, idx: number) => (
-        <PhotoRow key={idx} photo={photo} onPhotoDelete={handlePhotoDelete} />
+        <PhotoRow key={idx} photo={photo} onPhotoDelete={handlePhotoDelete} progress={progress} />
       ))}
     </>
   )

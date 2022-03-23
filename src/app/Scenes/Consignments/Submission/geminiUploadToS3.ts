@@ -18,6 +18,7 @@ export const uploadFileToS3 = (
   file: string,
   acl: string,
   asset: AssetCredentials,
+  updateProgress: (progress: number) => void,
   filename?: string
 ) =>
   new Promise<S3UploadResponse>((resolve, reject) => {
@@ -66,7 +67,9 @@ export const uploadFileToS3 = (
         reject(new Error("S3 upload failed"))
       }
     }
-
+    request.upload.onprogress = ({ loaded, total }: { loaded: number; total: number }) => {
+      updateProgress(loaded / total)
+    }
     request.open("POST", uploadURL, true)
     request.setRequestHeader("Content-type", "multipart/form-data")
     request.send(formData)
