@@ -143,6 +143,7 @@ export const Search: FC = () => {
   const { trackEvent } = useTracking()
 
   const exampleExperiments = useFeatureFlag("AREnableExampleExperiments")
+  const enableImprovedSearchPills = useExperimentFlag("eigen-enable-improved-search-pills")
   const smudgeValue = useExperimentVariant("test-search-smudge")
   nonCohesionTracks.experimentVariant(
     "test-search-smudge",
@@ -163,33 +164,33 @@ export const Search: FC = () => {
       return {
         ...other,
         type: "algolia",
-        disabled: !indicesInfo[name]?.hasResults,
+        disabled: enableImprovedSearchPills && !indicesInfo[name]?.hasResults,
         indexName: name,
       }
     })
 
     return [...pills, ...formattedIndices]
-  }, [indices, indicesInfo])
+  }, [indices, indicesInfo, enableImprovedSearchPills])
 
   useEffect(() => {
     /**
      * Refetch up-to-date info about Algolia indices for specified search query
      * when Algolia API key expired and request failed (we get a fresh Algolia API key and send request again)
      */
-    if (searchClient && shouldStartSearching(searchQuery)) {
+    if (enableImprovedSearchPills && searchClient && shouldStartSearching(searchQuery)) {
       updateIndicesInfo(searchQuery)
     }
-  }, [searchClient])
+  }, [searchClient, enableImprovedSearchPills])
 
   const onTextChange = useCallback(
     (value) => {
       handleResetSearchInput()
 
-      if (shouldStartSearching(value)) {
+      if (enableImprovedSearchPills && shouldStartSearching(value)) {
         updateIndicesInfo(value)
       }
     },
-    [searchClient]
+    [searchClient, enableImprovedSearchPills]
   )
 
   if (!searchClient || !searchInsightsConfigured) {
