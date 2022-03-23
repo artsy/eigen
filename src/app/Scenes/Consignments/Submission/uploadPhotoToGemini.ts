@@ -22,7 +22,11 @@ export const uploadImageAndPassToGemini = async (
   const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
 
   // Upload our file to the place Gemini recommended
-  const s3 = await uploadFileToS3(file, acl, assetCredentials)
+  const s3 = await uploadFileToS3({
+    file,
+    acl,
+    asset: assetCredentials,
+  })
 
   // Let Gemini know that this file exists and should be processed
   const geminiToken = await createGeminiAssetWithS3Credentials({

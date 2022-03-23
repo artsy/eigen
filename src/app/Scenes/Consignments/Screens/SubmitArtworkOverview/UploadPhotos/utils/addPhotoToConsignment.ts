@@ -14,7 +14,7 @@ export const addPhotoToConsignment = async ({
 }: {
   asset: Photo
   submissionID: string
-  updateProgress: (progress: number) => void
+  updateProgress?: (progress: number) => void
 }) => {
   const acl = "private"
 

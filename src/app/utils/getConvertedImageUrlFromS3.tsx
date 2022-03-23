@@ -13,6 +13,10 @@ export async function getConvertedImageUrlFromS3(imagePath: string) {
     name: convectionKey || "",
   })
   const bucket = assetCredentials.policyDocument.conditions.bucket
-  const s3 = await uploadFileToS3(imagePath, acl, assetCredentials)
+  const s3 = await uploadFileToS3({
+    file: imagePath,
+    acl,
+    asset: assetCredentials,
+  })
   return `https://${bucket}.s3.amazonaws.com/${s3.key}`
 }
