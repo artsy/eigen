@@ -91,7 +91,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
             <ScreenMargin>
               <Separator />
               <Spacer mb={3} />
-              <MyCollectionWhySell artwork={artwork} />
+              <MyCollectionWhySell artwork={artwork} contextModule="oldAbout" />
             </ScreenMargin>
           )}
 

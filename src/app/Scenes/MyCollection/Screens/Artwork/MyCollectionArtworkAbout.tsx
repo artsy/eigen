@@ -40,7 +40,7 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
           articles={articles}
           totalCount={artwork.artist?.articles?.totalCount}
         />
-        <MyCollectionWhySell artwork={artwork} />
+        <MyCollectionWhySell artwork={artwork} contextModule="about" />
       </Flex>
     </Wrapper>
   )
