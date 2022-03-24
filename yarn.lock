@@ -4188,6 +4188,21 @@
     object.fromentries "^2.0.0"
     prop-types "^15.7.0"
 
+"@wora/cache-persist@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@wora/cache-persist/-/cache-persist-2.2.1.tgz#8f2587875b6aad343a202f933d1ce825fc5a0f3a"
+  integrity sha512-X9MHiML5F8z3mabnl6J8hAwjn9g6Sria6+wUGwo97UDLMOWpZtJ+Jp/DQ7GjI1JirVXMQUDXBftVDgpvjhpNcw==
+  dependencies:
+    idb "^4.0.0"
+
+"@wora/relay-store@6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@wora/relay-store/-/relay-store-6.0.0.tgz#c2fb88f92e6db1ccde85cc6c6c25573c8f50d028"
+  integrity sha512-51YnF8ZoaGNbTPDaOS+a4+7Hw4rc3O/5oUwc3DwEL88lErTm5CZqSzx/DWbV5XKWS5J5T6Z4Iv8n5VZbmlhNKA==
+  dependencies:
+    "@wora/cache-persist" "^2.2.1"
+    tslib "^1.11.1"
+
 "@xmldom/xmldom@~0.7.0":
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.5.tgz#09fa51e356d07d0be200642b0e4f91d8e6dd408d"
@@ -9130,6 +9145,11 @@ icss-utils@^4.0.0, icss-utils@^4.1.1:
   integrity sha512-4aFq7wvWyMHKgxsH8QQtGpvbASCf+eM3wPRLI6R+MgAnTCZ6STYsRvttLvRWK0Nfif5piF394St3HeJDaljGPA==
   dependencies:
     postcss "^7.0.14"
+
+idb@^4.0.0:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/idb/-/idb-4.0.5.tgz#23b930fbb0abce391e939c35b7b31a669e74041f"
+  integrity sha512-P+Fk9HT2h1DhXoE1YNK183SY+CRh2GHNh28de94sGwhe0bUA75JJeVJWt3SenE5p0BXK7maflIq29dl6UZHrFw==
 
 ieee754@^1.1.13, ieee754@^1.1.4:
   version "1.2.1"

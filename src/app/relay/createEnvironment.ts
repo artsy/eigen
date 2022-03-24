@@ -1,10 +1,12 @@
+import { RecordSource as PersistRecordSource, Store as PersistStore } from "@wora/relay-store"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { useEffect } from "react"
 import {
+  cacheMiddleware,
   errorMiddleware as relayErrorMiddleware,
   RelayNetworkLayer,
 } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
-
-import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
 import { errorMiddleware } from "./middlewares/errorMiddleware"
 import {
@@ -15,6 +17,25 @@ import {
 import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
 import { simpleLoggerMiddleware } from "./middlewares/simpleLoggerMiddleware"
 import { timingMiddleware } from "./middlewares/timingMiddleware"
+import { RelayCache } from "./RelayCache"
+
+const DEFAULT_CACHE_TTL = 60 * 60 * 1000 // 1 hour
+
+// ** Creates persistant Relay store */
+const createPersistantStore = () => {
+  const source = new PersistRecordSource()
+  const persistStore = new PersistStore(source, {}, { queryCacheExpirationTime: DEFAULT_CACHE_TTL })
+
+  persistStore.hydrate()
+
+  return persistStore
+}
+
+// ** Creates standard Relay store */
+const createStore = () => {
+  const source = new RecordSource()
+  return new Store(source)
+}
 
 /// WARNING: Creates a whole new, separate Relay environment. Useful for testing.
 /// Use `defaultEnvironment` for production code.
@@ -22,7 +43,6 @@ export function createEnvironment(
   networkConfig: ConstructorParameters<typeof RelayNetworkLayer> = [
     [
       // The top middlewares run first, i.e. they are the furtherst from the fetch
-      // @ts-ignore
       cacheMiddleware(),
       persistedQueryMiddleware(),
       metaphysicsURLMiddleware(),
@@ -43,12 +63,34 @@ export function createEnvironment(
   ]
 ) {
   const network = new RelayNetworkLayer(...networkConfig)
-  const source = new RecordSource()
-  const store = new Store(source)
-  return new Environment({
+
+  const enablePersistantCaching = unsafe_getFeatureFlag("AREnablePersistantCaching")
+
+  const store = enablePersistantCaching ? createPersistantStore() : createStore()
+
+  // tslint:disable-next-line:no-shadowed-variable
+  const environment = new Environment({
     network,
     store,
   })
+
+  // tslint:disable-next-line:no-shadowed-variable
+  const clearRelayCaches = () => {
+    RelayCache.clearAll()
+    ;(store as PersistStore).purge?.()
+  }
+
+  return { environment, clearRelayCaches }
 }
 
-export const defaultEnvironment = createEnvironment()
+export let defaultEnvironment: Environment
+export let clearRelayCache: () => void
+
+export const useInitializeRelayEnvironment = () => {
+  useEffect(() => {
+    const { environment, clearRelayCaches } = createEnvironment()
+
+    defaultEnvironment = environment
+    clearRelayCache = clearRelayCaches
+  }, [])
+}

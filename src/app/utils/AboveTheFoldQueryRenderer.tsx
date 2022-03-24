@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react"
-import { QueryRenderer } from "react-relay"
-import { CacheConfig, GraphQLTaggedNode, OperationType } from "relay-runtime"
+import { CacheConfig, FetchPolicy, GraphQLTaggedNode, OperationType } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { ArtsyQueryRenderer } from "./ArtsyQueryRenderer"
 import { renderWithPlaceholder } from "./renderWithPlaceholder"
 
 interface AboveTheFoldQueryRendererProps<
@@ -30,6 +30,7 @@ interface AboveTheFoldQueryRendererProps<
         renderPlaceholder: () => React.ReactChild
       }
   cacheConfig?: CacheConfig | null
+  fetchPolicy?: FetchPolicy
   /** Fire below-the-fold query after the given timeout or when the above-the-fold query returns. */
   /** If 'belowTheFoldTimeout' is not set, the below-the-fold query will be fired when the above-the-fold query returns */
   belowTheFoldTimeout?: number
@@ -98,7 +99,7 @@ export function AboveTheFoldQueryRenderer<
 
   return (
     <>
-      <QueryRenderer
+      <ArtsyQueryRenderer
         environment={props.environment}
         query={props.above.query}
         variables={props.above.variables}
@@ -123,9 +124,10 @@ export function AboveTheFoldQueryRenderer<
             : null
         }}
         cacheConfig={props.cacheConfig || null}
+        fetchPolicy={props.fetchPolicy}
       />
       {(renderBelowTheFold || aboveArgs?.props) && (
-        <QueryRenderer
+        <ArtsyQueryRenderer
           environment={props.environment}
           query={props.below.query}
           variables={props.below.variables}
@@ -140,6 +142,7 @@ export function AboveTheFoldQueryRenderer<
             return null
           }}
           cacheConfig={props.cacheConfig || null}
+          fetchPolicy={props.fetchPolicy}
         />
       )}
     </>

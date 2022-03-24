@@ -183,6 +183,11 @@ export const features = defineFeatures({
     description: "Enable Crossplatform Map Screen",
     showInAdminMenu: true,
   },
+  AREnablePersistantCaching: {
+    readyForRelease: false,
+    description: "Enable new caching",
+    showInAdminMenu: false,
+  },
 })
 
 export interface DevToggleDescriptor {

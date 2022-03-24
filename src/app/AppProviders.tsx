@@ -40,7 +40,11 @@ export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
 
 // relay needs the default environment
 const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => (
-  <RelayEnvironmentProvider environment={defaultEnvironment} {...props} />
+  <RelayEnvironmentProvider
+    environment={defaultEnvironment}
+    {...props}
+    children={props.children!}
+  />
 )
 
 const SuspenseProvider = (props: { children?: React.ReactNode }) => (

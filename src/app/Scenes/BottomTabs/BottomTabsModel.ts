@@ -39,7 +39,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
         createEnvironment([
           [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
-        ]),
+        ]).environment,
         graphql`
           query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
             me @principalField {

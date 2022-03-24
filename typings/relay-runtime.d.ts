@@ -1,4 +1,5 @@
 import { Environment, GraphQLTaggedNode } from "react-relay"
+import "relay-runtime"
 
 interface Variables {
   [name: string]: any
@@ -222,4 +223,13 @@ declare module "relay-runtime" {
       fetchPolicy?: FetchQueryFetchPolicy | null | undefined
     } | null
   ): RelayObservable<T["response"]>
+
+  interface CacheConfig {
+    force?: boolean | null | undefined
+    poll?: number | null | undefined
+    liveConfigId?: string | null | undefined
+    metadata?: { [key: string]: unknown } | undefined
+    transactionId?: string | null | undefined
+    ttl?: number | null | undefined
+  }
 }

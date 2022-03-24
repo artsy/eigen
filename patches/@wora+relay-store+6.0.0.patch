@@ -1,0 +1,21 @@
+diff --git a/node_modules/@wora/relay-store/lib/RecordSource.d.ts b/node_modules/@wora/relay-store/lib/RecordSource.d.ts
+index 422b7bf..edba0e0 100644
+--- a/node_modules/@wora/relay-store/lib/RecordSource.d.ts
++++ b/node_modules/@wora/relay-store/lib/RecordSource.d.ts
+@@ -1,6 +1,6 @@
++import { CacheOptions, DataCache } from '@wora/cache-persist';
+ import { RecordState } from 'relay-runtime';
+ import { MutableRecordSource, Record, RecordMap } from 'relay-runtime/lib/store/RelayStoreTypes';
+-import { DataCache, CacheOptions } from '@wora/cache-persist';
+ export interface IMutableRecordSourceOffline extends MutableRecordSource {
+     restore(): Promise<DataCache>;
+ }
+@@ -19,6 +19,7 @@ export declare class RecordSource implements IMutableRecordSourceOffline {
+     remove(dataID: string): void;
+     set(dataID: string, record: Record): void;
+     size(): number;
++    // @ts-expect-error
+     toJSON(): RecordMap;
+ }
+ //# sourceMappingURL=RecordSource.d.ts.map
+\ No newline at end of file

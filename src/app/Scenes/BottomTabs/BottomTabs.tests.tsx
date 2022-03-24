@@ -15,7 +15,7 @@ jest.unmock("react-relay")
 jest.mock("app/relay/createEnvironment", () => {
   let env = require("relay-test-utils").createMockEnvironment()
   const mock = {
-    createEnvironment: () => env,
+    createEnvironment: () => ({ environment: env }),
     __reset() {
       env = require("relay-test-utils").createMockEnvironment()
     },
@@ -25,7 +25,7 @@ jest.mock("app/relay/createEnvironment", () => {
 let mockRelayEnvironment = {} as ReturnType<typeof createMockEnvironment>
 beforeEach(() => {
   require("app/relay/createEnvironment").__reset()
-  mockRelayEnvironment = createEnvironment() as any
+  mockRelayEnvironment = createEnvironment().environment as any
 })
 
 function resolveUnreadConversationCountQuery(unreadConversationCount: number) {
