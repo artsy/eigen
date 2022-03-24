@@ -5826,9 +5826,13 @@ enum ConsignmentSubmissionSource {
   WEB_INBOUND
 }
 
+# Enum with all available submission states
 enum ConsignmentSubmissionStateAggregation {
   APPROVED
+  CLOSED
   DRAFT
+  HOLD
+  PUBLISHED
   REJECTED
   SUBMITTED
 }
