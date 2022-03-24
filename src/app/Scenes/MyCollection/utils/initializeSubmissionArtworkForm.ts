@@ -24,7 +24,7 @@ export const initializeSubmissionArtworkForm = (artwork: MyCollectionWhySell_art
   })
 
   const photos = artwork.images?.map((image) => ({
-    path: image?.url?.replace(":version", "large"),
+    path: image?.url?.replace(":version", "large") || "",
     automaticallyAdded: true,
   }))
 
