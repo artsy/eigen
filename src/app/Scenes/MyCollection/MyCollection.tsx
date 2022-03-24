@@ -173,7 +173,7 @@ const MyCollection: React.FC<{
 
   useEffect(() => {
     reInitializeLocalArtworkFilter(artworks)
-  }, [artworks.length])
+  }, [artworks])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
