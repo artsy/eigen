@@ -12,6 +12,12 @@ describe("calculateSinglePhotoSize", () => {
     expect(photo.sizeDisplayValue).toBe("Size not found")
     expect(photo.error).toBeTrue()
   })
+  it("sets correct text when photo was automatically added", () => {
+    const photo = calculateSinglePhotoSize({
+      automaticallyAdded: true,
+    })
+    expect(photo.sizeDisplayValue).toBe("Automatically added")
+  })
 })
 
 describe("isSizeLimitExceeded", () => {

@@ -34,7 +34,8 @@ export const Versions = {
   RenameModelsAndAddDarkModeSupport: 22,
   AddUserPrefsMetricsUnit: 23,
   AddSourceAndMyCollectionArtworkIDToSubmission: 24,
-  RequestedPriceEstimates: 25,
+  AddSourceInitialPhotosToSubmission: 25,
+  RequestedPriceEstimates: 26,
 }
 
 export const CURRENT_APP_VERSION = Versions.RequestedPriceEstimates
@@ -187,6 +188,10 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddSourceAndMyCollectionArtworkIDToSubmission]: (state) => {
     state.artworkSubmission.submission.artworkDetails.source = null
     state.artworkSubmission.submission.artworkDetails.myCollectionArtworkID = null
+  },
+  [Versions.AddSourceInitialPhotosToSubmission]: (state) => {
+    state.artworkSubmission.submission.photos.initialPhotos = []
+    state.artworkSubmission.submission.photosForMyCollection.initialPhotos = []
   },
   [Versions.RequestedPriceEstimates]: (state) => {
     state.requestedPriceEstimates = { requestedPriceEstimates: {} }

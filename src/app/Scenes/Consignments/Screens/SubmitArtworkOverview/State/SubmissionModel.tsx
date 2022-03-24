@@ -1,4 +1,5 @@
 import {
+  Photo,
   photosEmptyInitialValues,
   PhotosFormModel,
 } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
@@ -15,6 +16,7 @@ export interface ArtworkSubmissionModel {
   artworkDetails: ArtworkDetailsFormModel
   setArtworkDetailsForm: Action<ArtworkSubmissionModel, ArtworkDetailsFormModel>
   initializeArtworkDetailsForm: Action<ArtworkSubmissionModel, Partial<ArtworkDetailsFormModel>>
+  initializePhotos: Action<ArtworkSubmissionModel, Photo[]>
   photos: PhotosFormModel
   photosForMyCollection: PhotosFormModel
   setPhotos: Action<ArtworkSubmissionModel, PhotosFormModel>
@@ -38,6 +40,9 @@ export const getSubmissionModel = (): SubmissionModel => ({
     }),
     setPhotos: action((state, photos) => {
       state.photos = photos
+    }),
+    initializePhotos: action((state, photos) => {
+      state.photos.initialPhotos = photos
     }),
     setSubmissionId: action((state, id) => {
       state.submissionId = id
