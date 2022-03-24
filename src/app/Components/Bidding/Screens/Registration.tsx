@@ -14,7 +14,7 @@ import { bidderNeedsIdentityVerification } from "app/utils/auction"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { saleTime } from "app/utils/saleTime"
 import { Schema, screenTrack } from "app/utils/track"
-import { get, isEmpty, mean } from "lodash"
+import { get, isEmpty } from "lodash"
 import { Box, Button, Flex, LinkText, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
@@ -29,9 +29,9 @@ import {
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { PaymentInfo } from "../Components/PaymentInfo"
+import { PhoneInfo } from "../Components/PhoneInfo"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
-import { PhoneInfo } from "../Components/PhoneInfo"
 
 export interface RegistrationProps extends ViewProps {
   sale: Registration_sale
@@ -362,31 +362,49 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
     const saleTimeDetails = saleTime(sale)
 
-    let missingRequiredInfoHint: JSX.Element | null = null
+    let requiredInfoHint: JSX.Element | null = null
     let requiredInfoForm: JSX.Element | null = null
 
     if (missingInformation === "payment") {
-      missingRequiredInfoHint = <Hint>A valid credit card is required.</Hint>
+      requiredInfoHint = <Hint>A valid credit card is required.</Hint>
       requiredInfoForm = (
-        <PaymentInfo
-          navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-          onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-          onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-          billingAddress={this.state.billingAddress}
-          creditCardFormParams={this.state.creditCardFormParams}
-          creditCardToken={this.state.creditCardToken}
-        />
+        <Flex flex={1} py={20}>
+          <PaymentInfo
+            navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+            onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+            onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+            billingAddress={this.state.billingAddress}
+            creditCardFormParams={this.state.creditCardFormParams}
+            creditCardToken={this.state.creditCardToken}
+          />
+        </Flex>
       )
     } else if (missingInformation === "phone") {
-      missingRequiredInfoHint = <Hint>A valid phone number is required.</Hint>
+      requiredInfoHint = <Hint>A valid phone number is required.</Hint>
       requiredInfoForm = (
-        <PhoneInfo
-          navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-          onPhoneAdded={this.onPhoneAdded.bind(this)}
-          phoneNumber={this.state.phoneNumber}
-        />
+        <Flex justifyContent="center" py={20}>
+          <PhoneInfo
+            navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+            onPhoneAdded={this.onPhoneAdded.bind(this)}
+            phoneNumber={this.state.phoneNumber}
+          />
+        </Flex>
       )
     }
+    // REMOVE - For manually triggering credit card version
+    // requiredInfoHint = <Hint>A valid credit card is required.</Hint>
+    // requiredInfoForm = (
+    //   <Flex flex={1} py={20}>
+    //     <PaymentInfo
+    //       navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+    //       onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+    //       onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+    //       billingAddress={this.state.billingAddress}
+    //       creditCardFormParams={this.state.creditCardFormParams}
+    //       creditCardToken={this.state.creditCardToken}
+    //     />
+    //   </Flex>
+    // )
 
     return (
       <ScrollView
@@ -405,14 +423,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           )}
         </Box>
 
-        {requiredInfoForm && (
-          <Flex flex={1} py={20}>
-            {requiredInfoForm}
-          </Flex>
-        )}
-
         <Flex px={20} flex={1}>
-          {missingRequiredInfoHint}
+          {requiredInfoForm}
+          {requiredInfoHint}
           {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             !!bidderNeedsIdentityVerification({ sale, user: me }) && (

@@ -6,7 +6,7 @@ import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
 
 import { FlexProps } from "../Elements/Flex"
-import { PhoneNumber } from "../Screens/PhoneNumber"
+import { PhoneNumberForm } from "../Screens/PhoneNumberForm"
 
 interface PhoneInfoProps extends FlexProps {
   navigator?: NavigatorIOS
@@ -23,7 +23,7 @@ export class PhoneInfo extends React.Component<PhoneInfoProps> {
   presentPhoneForm() {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.props.navigator.push({
-      component: PhoneNumber,
+      component: PhoneNumberForm,
       title: "",
       passProps: {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

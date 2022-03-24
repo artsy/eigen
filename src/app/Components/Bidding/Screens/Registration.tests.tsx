@@ -1,4 +1,4 @@
-import { RenderAPI } from "@testing-library/react-native"
+import { fireEvent, RenderAPI, waitFor } from "@testing-library/react-native"
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import {
@@ -13,7 +13,6 @@ import { Button, Checkbox, LinkText, Sans, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
-import { ReactTestRenderer } from "react-test-renderer"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { BidInfoRow } from "../Components/BidInfoRow"
@@ -108,6 +107,41 @@ it("shows the billing address that the user typed in the billing address form", 
   expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual(
     "401 Broadway 25th floor New York NY"
   )
+})
+
+it("[TODO: Adapted from above, modal is not being detected] shows the billing address that the user typed in the billing address form", async () => {
+  const container = renderWithWrappersTL(
+    <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
+  )
+  const { getByTestId, getByText } = container
+
+  fireEvent.press(getByText("Billing address"))
+
+  container.debug()
+
+  await waitFor(() => {
+    getByText("Add billing address")
+  })
+
+  const nameInput = getByTestId("input-full-name")
+  const address1Input = getByTestId("input-address-1")
+  const address2Input = getByTestId("input-address-2")
+  const cityInput = getByTestId("input-city")
+  const stateInput = getByTestId("input-state-province-region")
+  const postcodeInput = getByTestId("input-post-code")
+  const phoneInput = getByTestId("input-phone")
+
+  fireEvent.changeText(nameInput, "mockName")
+  fireEvent.changeText(address1Input, "401 Broadway")
+  fireEvent.changeText(address2Input, "25th floor")
+  fireEvent.changeText(cityInput, "New York")
+  fireEvent.changeText(stateInput, "NY")
+  fireEvent.changeText(postcodeInput, "mockPostcode")
+  fireEvent.changeText(phoneInput, "mockPhone")
+
+  fireEvent.press(container.getByTestId("button-add"))
+
+  getByText("401 Broadway 25th floor New York NY")
 })
 
 it("shows the credit card form when the user tap the edit text in the credit card row", () => {
@@ -757,6 +791,7 @@ const me: Partial<Registration_me> = {
   identityVerified: false,
   phoneNumber: {
     isValid: false,
+    display: null,
   },
 }
 
