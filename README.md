@@ -1,6 +1,6 @@
 <a href="http://iphone.artsy.net"><img src ="docs/screenshots/overview.png"></a>
 
-### Meta
+
 
 Don't know what Artsy is? Check out [this overview](https://github.com/artsy/README/blob/main/culture/what-is-artsy.md#artsy-in-a-nutshell) and [more](https://github.com/artsy/meta/blob/master/README.md), or read our objc.io on [team culture](https://www.objc.io/issues/22-scale/artsy).
 
@@ -13,6 +13,7 @@ Want to know more about Eigen? Read the [mobile](http://artsy.github.io/blog/cat
 
 Other mobile projects are [Energy](https://github.com/artsy/energy) and [Eidolon](https://github.com/artsy/eidolon), with the retired [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
 
+### Meta
 
 - **State:** Production
 - **[Point People](https://www.notion.so/artsy/17c4b550458a4cb8bcbf1b68060d63e6?v=3604e2682d024b64bde705abb2facebd):** [Brian Beckerle](https://github.com/brainbicycle), [Mounir Dhahri](https://github.com/MounirDhahri), [Pavlos Vinieratos](https://github.com/pvinis)
