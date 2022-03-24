@@ -276,13 +276,16 @@ describe("MyCollectionArtworkForm", () => {
         await photoUtil.uploadPhotos([somePhoto, someOtherPhoto])
 
         expect(uploadFileToS3).toHaveBeenCalledTimes(2)
-        expect(uploadFileToS3).toHaveBeenNthCalledWith(1, "some-path", "private", assetCredentials)
-        expect(uploadFileToS3).toHaveBeenNthCalledWith(
-          2,
-          "some-other-path",
-          "private",
-          assetCredentials
-        )
+        expect(uploadFileToS3).toHaveBeenNthCalledWith(1, {
+          file: "some-path",
+          acl: "private",
+          asset: assetCredentials,
+        })
+        expect(uploadFileToS3).toHaveBeenNthCalledWith(2, {
+          file: "some-other-path",
+          acl: "private",
+          asset: assetCredentials,
+        })
       })
     })
 
