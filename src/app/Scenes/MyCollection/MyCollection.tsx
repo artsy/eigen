@@ -273,18 +273,20 @@ export const MyCollectionContainer = createPaginationContainer(
   }
 )
 
+export const MyCollectionScreenQuery = graphql`
+  query MyCollectionQuery {
+    me {
+      ...MyCollection_me
+    }
+  }
+`
+
 export const MyCollectionQueryRenderer: React.FC = () => {
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionQuery>
         environment={defaultEnvironment}
-        query={graphql`
-          query MyCollectionQuery {
-            me {
-              ...MyCollection_me
-            }
-          }
-        `}
+        query={MyCollectionScreenQuery}
         variables={{}}
         cacheConfig={{ force: true }}
         render={renderWithPlaceholder({

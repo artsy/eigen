@@ -78,6 +78,7 @@ const Home = (props: Props) => {
     prefetchUrl("search")
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
+    prefetchUrl("sales")
   }, [])
 
   const {
