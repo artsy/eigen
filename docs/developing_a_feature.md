@@ -116,8 +116,6 @@ To enable your feature on a physical or virtual device
 
 ## Test a feature flag
 
-// add a nice example here and elaborate more - eg where should we add this lines of code?
-
 There is a utility method that can be used by tests that need to override a feature flag.
 
 ```ts
