@@ -2,7 +2,8 @@
 
 
 
-Don't know what Artsy is? Check out [this overview](https://github.com/artsy/README/blob/main/culture/what-is-artsy.md#artsy-in-a-nutshell) and [more](https://github.com/artsy/meta/blob/master/README.md), or read our objc.io on [team culture](https://www.objc.io/issues/22-scale/artsy).
+Don't know what Artsy is? 
+Check out [this overview](https://github.com/artsy/README/blob/main/culture/what-is-artsy.md#artsy-in-a-nutshell) or read our objc.io on [team culture](https://www.objc.io/issues/22-scale/artsy).
 
 
 [Artsy](https://github.com/artsy) is an Open Source project. Feel free to check the [Artsy readme](https://github.com/artsy/README) for an overview as well as [Practices](https://github.com/artsy/README/tree/main/practices) and [Playbooks](https://github.com/artsy/README/tree/main/playbooks).
