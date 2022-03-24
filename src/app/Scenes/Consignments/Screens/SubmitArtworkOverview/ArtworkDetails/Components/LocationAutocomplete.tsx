@@ -122,7 +122,7 @@ export const LocationPredictions = ({
     })
   }
 
-  if (selectedLocation || !predictions.length) {
+  if (selectedLocation || !query || query.length < MIN_LENGTH) {
     return null
   }
 
