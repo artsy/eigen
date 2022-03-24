@@ -22,6 +22,9 @@ describe("calculateSinglePhotoSize", () => {
   it("sets correct text when photo was automatically added", () => {
     const photo = calculateSinglePhotoSize({
       automaticallyAdded: true,
+      width: 40,
+      height: 40,
+      path: "/123",
     })
     expect(photo.sizeDisplayValue).toBe("Automatically added")
   })

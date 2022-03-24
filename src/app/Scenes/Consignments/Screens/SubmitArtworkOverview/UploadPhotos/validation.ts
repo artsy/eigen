@@ -8,12 +8,12 @@ export interface PhotosFormModel {
 export interface Photo {
   id?: string
   geminiToken?: string
-  height: number
+  height?: number
   isDefault?: boolean
   imageURL?: string
   internalID?: string
   path: string
-  width: number
+  width?: number
   imageVersions?: string[]
   loading?: boolean
   error?: boolean
