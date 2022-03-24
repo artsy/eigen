@@ -30,8 +30,6 @@ Other mobile projects are [Energy](https://github.com/artsy/energy) and [Eidolon
 
 - Further documentation can be found in the [documentation folder](docs#readme).
 
-- Do you want to suggest an improvement? [Open an RFC](https://github.com/artsy/README#request-for-comments)
-
 ### Deployment
 
 For how we deploy, check out the dedicated documentation:
