@@ -54,9 +54,9 @@ export const Text = forwardRef(
         ref={ref}
         style={[
           ...nativeTextStyle,
-          style,
           { textAlignVertical: "center" }, // android renders text higher by default, so we bring it down to be consistent with ios
           { textDecorationLine: !!underline ? "underline" : "none" },
+          style, // keep last so we can override
         ]}
         fontFamily={fontFamily}
         {...theme.textTreatments[variant]}
