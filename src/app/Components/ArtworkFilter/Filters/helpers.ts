@@ -17,25 +17,12 @@ export const LOCALIZED_UNIT: Metric = IS_USA ? "in" : "cm"
 /**
  * Accepts a value and it's input unit type and returns a localized conversion (or leaves it alone)
  */
-export const localizeDimension = (
-  value: Numeric,
-  unit: Metric
-): { value: Numeric; unit: Metric } => {
-  // Localize for US (return inches)
-  if (IS_USA && unit === "in") {
-    return { value, unit: "in" }
+export const localizeDimension = (value: Numeric, unit: Metric) => {
+  if (unit === "cm") {
+    return inToCm(value)
   }
 
-  if (IS_USA && unit === "cm") {
-    return { value: cmToIn(value), unit: "in" }
-  }
-
-  // Localize for rest of world (return centimeters)
-  if (unit === "in") {
-    return { value: inToCm(value), unit: "cm" }
-  }
-
-  return { value, unit: "cm" }
+  return value
 }
 
 export const cmToIn = (centimeters: Numeric) => {

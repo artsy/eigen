@@ -26,7 +26,7 @@ interface CustomSizeInputsContainerProps {
   metric: Metric
 }
 
-const EUROPE_SIZE_OPTIONS: FilterData[] = [
+export const EUROPE_SIZE_OPTIONS: FilterData[] = [
   {
     displayText: "Small (under 40cm)",
     paramName: FilterParamName.sizes,
@@ -44,7 +44,7 @@ const EUROPE_SIZE_OPTIONS: FilterData[] = [
   },
 ]
 
-const USA_SIZE_OPTIONS: FilterData[] = [
+export const USA_SIZE_OPTIONS: FilterData[] = [
   {
     displayText: "Small (under 16in)",
     paramName: FilterParamName.sizes,
@@ -92,8 +92,8 @@ export const getCustomValues = (options: FilterData[], unit: Metric) => {
     return {
       ...acc,
       [option.paramName]: {
-        min: localizeDimension(min, unit).value,
-        max: localizeDimension(max, unit).value,
+        min: localizeDimension(min, unit),
+        max: localizeDimension(max, unit),
       },
     }
   }, DEFAULT_CUSTOM_SIZE)
