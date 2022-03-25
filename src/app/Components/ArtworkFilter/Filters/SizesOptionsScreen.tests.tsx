@@ -1,4 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
@@ -320,6 +321,41 @@ describe("SizesOptionsScreen", () => {
     })
   })
 
+  describe("Metric Radio Buttons", () => {
+    it("should convert successfully the predefined sizes and placeholders on metric change", () => {
+      __globalStoreTestUtils__?.injectState({
+        userPrefs: { metric: "in" },
+      })
+      const { queryByText, queryAllByText, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+      expect(getByA11yLabel("in")).toBeTruthy()
+      expect(getByA11yLabel("in")).toHaveProp("accessibilityState", { checked: true })
+
+      expect(queryByText("Small (under 16in)")).toBeTruthy()
+      expect(queryByText("Medium (16in – 40in)")).toBeTruthy()
+      expect(queryByText("Large (over 40in)")).toBeTruthy()
+
+      // makes sure that "cm" appears in the screen only once for the radio button
+      expect(queryAllByText("cm")).toHaveLength(1)
+
+      fireEvent.press(getByA11yLabel("cm"))
+
+      expect(getByA11yLabel("in")).toHaveProp("accessibilityState", { checked: false })
+      expect(getByA11yLabel("cm")).toHaveProp("accessibilityState", { checked: true })
+
+      expect(queryByText("Small (under 16in)")).toBeFalsy()
+      expect(queryByText("Medium (16in – 40in)")).toBeFalsy()
+      expect(queryByText("Large (over 40in)")).toBeFalsy()
+
+      expect(queryByText("Small (under 40cm)")).toBeTruthy()
+      expect(queryByText("Medium (40cm – 100cm)")).toBeTruthy()
+      expect(queryByText("Large (over 100cm)")).toBeTruthy()
+
+      // makes sure that "in" appears in the screen only once for the radio button
+      expect(queryAllByText("in")).toHaveLength(1)
+    })
+  })
+
   describe("Clear button", () => {
     it('should not display "Clear" if nothing is selected', () => {
       const { queryByText } = renderWithWrappersTL(<TestRenderer />)
@@ -426,7 +462,7 @@ describe("getCustomValues", () => {
       },
     ]
 
-    expect(getCustomValues(filters)).toEqual({
+    expect(getCustomValues(filters, "in")).toEqual({
       width: {
         min: 5,
         max: 10,
@@ -452,7 +488,7 @@ describe("getCustomValues", () => {
       },
     ]
 
-    expect(getCustomValues(filters)).toEqual({
+    expect(getCustomValues(filters, "in")).toEqual({
       width: {
         min: "*",
         max: 10,
