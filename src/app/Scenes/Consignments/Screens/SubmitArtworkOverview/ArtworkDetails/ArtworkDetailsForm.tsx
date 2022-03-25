@@ -1,4 +1,5 @@
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
+import { LocationAutocomplete } from "app/Components/LocationAutocomplete/LocationAutocomplete"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { useFormikContext } from "formik"
 import {
@@ -15,7 +16,6 @@ import {
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
 import { InfoModal } from "./Components/InfoModal"
-import { LocationAutocomplete } from "./Components/LocationAutocomplete"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
 import { ArtworkDetailsFormModel, Location } from "./validation"
 
