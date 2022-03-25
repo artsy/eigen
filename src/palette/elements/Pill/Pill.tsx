@@ -4,7 +4,7 @@ import { Flex, FlexProps } from "../Flex"
 import { Text, useTextStyleForPalette } from "../Text"
 
 import { IconProps, Spacer, useColor } from "palette"
-import React, { ReactNode, useState } from "react"
+import { useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"
 // @ts-ignore
@@ -14,7 +14,7 @@ import styled from "styled-components/native"
 type PillSize = "xxs" | "xs" | "sm"
 
 export interface PillProps extends FlexProps {
-  children: ReactNode
+  children: React.ReactNode
   size?: PillSize
   onPress?: PressableProps["onPress"]
   rounded?: boolean

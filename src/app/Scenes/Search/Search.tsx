@@ -13,7 +13,7 @@ import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
 import { Box, Flex, Spacer, Text } from "palette"
-import { FC, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
@@ -86,7 +86,7 @@ interface RefreshQueryOptions {
   fetchPolicy?: FetchPolicy
 }
 
-export const Search: FC = () => {
+export const Search: React.FC = () => {
   const environment = useRelayEnvironment()
   const [refreshedQueryOptions, setRefreshedQueryOptions] = useState<RefreshQueryOptions>({})
   const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {}, refreshedQueryOptions)
@@ -363,7 +363,7 @@ export const SearchScreenQuery = graphql`
   }
 `
 
-export const SearchScreen: FC = () => (
+export const SearchScreen: React.FC = () => (
   <Suspense fallback={<SearchPlaceholder />}>
     <Search />
   </Suspense>
