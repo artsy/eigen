@@ -9,7 +9,6 @@ import { times } from "lodash"
 import { Flex, quoteLeft, quoteRight, Separator, Spacer, Text, useSpace } from "palette"
 import { useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
-import { ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
 
@@ -19,9 +18,9 @@ export type ArtistAutosuggestResult = NonNullable<
   >["node"]
 >
 
-const INITIAL_BATCH_SIZE = 64
+const BATCH_SIZE = 3
 
-const ArtistAutosuggestResultsFlatList: React.FC<{
+const ArtistAutosuggestResultsList: React.FC<{
   query: string
   results: ArtistAutosuggestResults_results | null
   onResultPress: (result: ArtistAutosuggestResult) => void
@@ -61,32 +60,7 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
       </ProvidePlaceholderContext>
     )
   }
-
   if (nodes.length > 0) {
-    return (
-      <ScrollView
-        style={{
-          flex: 1,
-          padding: space(2),
-          borderStyle: "solid",
-          borderColor: "#707070",
-          borderWidth: 1,
-          marginTop: 3,
-          height: 200,
-        }}
-      >
-        {nodes.map((node) => (
-          <Flex key={node.displayLabel} mb={1}>
-            <ArtistAutosuggestRow highlight={query} result={node} onResultPress={onResultPress} />
-            <Separator mt={1} />
-          </Flex>
-        ))}
-        <Text variant="md" color="black60" textAlign="center">
-          Please try searching again with a different spelling...
-        </Text>
-      </ScrollView>
-    )
-  } else {
     return (
       <Flex
         style={{
@@ -96,7 +70,29 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
           borderColor: "#707070",
           borderWidth: 1,
           marginTop: 3,
-          height: 200,
+          height: 175,
+          overflow: "hidden",
+        }}
+      >
+        {nodes.map((node) => (
+          <Flex key={node.displayLabel} mb={1}>
+            <ArtistAutosuggestRow highlight={query} result={node} onResultPress={onResultPress} />
+            <Separator mt={1} />
+          </Flex>
+        ))}
+      </Flex>
+    )
+  } else {
+    return (
+      <Flex
+        style={{
+          flex: 1,
+          padding: space(1),
+          borderStyle: "solid",
+          borderColor: "#707070",
+          borderWidth: 1,
+          marginTop: 3,
+          height: 175,
         }}
       >
         <Spacer mt={3} />
@@ -113,7 +109,7 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
 }
 
 const ArtistAutosuggestResultsContainer = createPaginationContainer(
-  ArtistAutosuggestResultsFlatList,
+  ArtistAutosuggestResultsList,
   {
     results: graphql`
       fragment ArtistAutosuggestResults_results on Query
@@ -213,7 +209,7 @@ export const ArtistAutosuggestResults: React.FC<{
         }}
         variables={{
           query,
-          count: INITIAL_BATCH_SIZE,
+          count: BATCH_SIZE,
           entities: ["ARTIST"],
         }}
         query={graphql`
@@ -247,7 +243,7 @@ const ArtistAutosuggestResultsPlaceholder: React.FC = () => {
         borderStyle: "solid",
         borderColor: "#707070",
         borderWidth: 1,
-        height: 200,
+        height: 175,
       }}
     >
       {times(3).map((index) => (
