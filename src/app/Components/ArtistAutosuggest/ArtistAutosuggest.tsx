@@ -52,9 +52,7 @@ export const ArtistAutosuggest: React.FC = () => {
       />
 
       {!!focused && !isArtistSelected && artist?.length > 2 && (
-        <Box height={200}>
-          <ArtistAutosuggestResults query={artist} onResultPress={onArtistSelect} />
-        </Box>
+        <ArtistAutosuggestResults query={artist} onResultPress={onArtistSelect} />
       )}
     </SearchContext.Provider>
   )

@@ -72,6 +72,7 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
           borderColor: "#707070",
           borderWidth: 1,
           marginTop: 3,
+          height: 200,
         }}
       >
         {nodes.map((node) => (
@@ -95,6 +96,7 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
           borderColor: "#707070",
           borderWidth: 1,
           marginTop: 3,
+          height: 200,
         }}
       >
         <Spacer mt={3} />
@@ -245,6 +247,7 @@ const ArtistAutosuggestResultsPlaceholder: React.FC = () => {
         borderStyle: "solid",
         borderColor: "#707070",
         borderWidth: 1,
+        height: 200,
       }}
     >
       {times(3).map((index) => (
