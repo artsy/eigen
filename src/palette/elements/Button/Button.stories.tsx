@@ -14,6 +14,7 @@ const variants: Array<ButtonProps["variant"]> = [
   "fillDark",
   "fillLight",
   "fillGray",
+  "fillSuccess",
   "outline",
   "outlineGray",
   "outlineLight",

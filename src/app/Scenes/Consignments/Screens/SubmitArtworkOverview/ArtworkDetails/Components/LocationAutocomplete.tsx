@@ -70,7 +70,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ initialLocation, onChang
         value={locationValue}
       />
       <LocationPredictions
-        locationValue={locationValue}
+        selectedLocation={selectedLocation}
         predictions={predictions}
         query={query}
         onSelect={setSelectedLocation}
@@ -84,9 +84,9 @@ export const LocationPredictions = ({
   predictions,
   query,
   onSelect,
-  locationValue,
+  selectedLocation,
 }: {
-  locationValue: string
+  selectedLocation: Location | null
   predictions: SimpleLocation[]
   query?: string
   onSelect: (loc: Location) => void
@@ -122,7 +122,7 @@ export const LocationPredictions = ({
     })
   }
 
-  if (locationValue.length < MIN_LENGTH) {
+  if (selectedLocation || !query || query.length < MIN_LENGTH) {
     return null
   }
 

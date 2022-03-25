@@ -584,3 +584,39 @@ describe("App version Versions.AddSourceAndMyCollectionArtworkIDToSubmission", (
     )
   })
 })
+
+describe("RequestedPriceEstimates migration", () => {
+  const migrationToTest = Versions.RequestedPriceEstimates
+
+  it("adds RequestedPriceEstimates to the store", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.requestedPriceEstimates.requestedPriceEstimates).toEqual({})
+  })
+})
+
+describe("App version Versions.AddSourceInitialPhotosToSubmission", () => {
+  const migrationToTest = Versions.AddSourceInitialPhotosToSubmission
+
+  it("adds source and initial photos to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artworkSubmission.submission.photos.initialPhotos).toEqual([])
+  })
+})

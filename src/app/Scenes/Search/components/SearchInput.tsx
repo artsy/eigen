@@ -34,7 +34,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         refine(value)
         onTextChange(value)
       }, SEARCH_THROTTLE_INTERVAL),
-    []
+    [onTextChange]
   )
 
   useEffect(() => {

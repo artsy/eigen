@@ -1742,6 +1742,9 @@ type Artwork implements Node & Searchable & Sellable {
   imageTitle: String
   imageUrl: String
 
+  # Represents the import source of the artwork
+  importSource: ArtworkImportSource
+
   # Structured questions a collector can inquire on about this work
   inquiryQuestions: [InquiryQuestion]
 
@@ -1973,6 +1976,11 @@ interface ArtworkEdgeInterface {
 union ArtworkFilterFacet = Gene | Tag
 
 union ArtworkHighlight = Article | Show
+
+enum ArtworkImportSource {
+  CONVECTION
+  MY_COLLECTION
+}
 
 type ArtworkInfoRow {
   # Additional details about given attribute
@@ -5818,9 +5826,13 @@ enum ConsignmentSubmissionSource {
   WEB_INBOUND
 }
 
+# Enum with all available submission states
 enum ConsignmentSubmissionStateAggregation {
   APPROVED
+  CLOSED
   DRAFT
+  HOLD
+  PUBLISHED
   REJECTED
   SUBMITTED
 }
@@ -9847,6 +9859,7 @@ input MyCollectionCreateArtworkInput {
   editionSize: String
   externalImageUrls: [String]
   height: String
+  importSource: ArtworkImportSource
   isEdition: Boolean
   medium: String
   metric: String
@@ -9911,6 +9924,7 @@ input MyCollectionUpdateArtworkInput {
   pricePaidCents: Int
   pricePaidCurrency: String
   provenance: String
+  submissionId: String
   title: String!
   width: String
 }

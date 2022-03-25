@@ -74,11 +74,6 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable Saved Addresses",
   },
-  AREnableImprovedSearchPills: {
-    readyForRelease: false,
-    description: "Enable improved search pills",
-    echoFlagKey: "AREnableImprovedSearchPills",
-  },
   AREnableTrove: {
     readyForRelease: true,
     description: "Enable Trove in homepage",
