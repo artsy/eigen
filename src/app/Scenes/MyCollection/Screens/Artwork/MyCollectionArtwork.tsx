@@ -206,6 +206,10 @@ export const ArtworkMetaProps = graphql`
     }
     date
     depth
+    dimensions {
+      in
+      cm
+    }
     editionSize
     editionNumber
     height
