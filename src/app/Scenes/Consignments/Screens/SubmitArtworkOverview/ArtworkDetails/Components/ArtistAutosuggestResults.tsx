@@ -1,13 +1,12 @@
 import { captureMessage } from "@sentry/react-native"
 import { ArtistAutosuggestResults_results } from "__generated__/ArtistAutosuggestResults_results.graphql"
 import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
-import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Flex, quoteLeft, quoteRight, Separator, Spacer, Text, useSpace } from "palette"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -22,31 +21,15 @@ export type ArtistAutosuggestResult = NonNullable<
 >
 
 const INITIAL_BATCH_SIZE = 32
-const SUBSEQUENT_BATCH_SIZE = 64
 
 const ArtistAutosuggestResultsFlatList: React.FC<{
   query: string
   results: ArtistAutosuggestResults_results | null
   onResultPress: (result: ArtistAutosuggestResult) => void
   relay: RelayPaginationProp
-}> = ({ query, results: latestResults, onResultPress, relay }) => {
-  const space = useSpace()
+}> = ({ query, results: latestResults, onResultPress }) => {
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
-  const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
-
   const userHasStartedScrolling = useRef(false)
-  const onScrollBeginDrag = useCallback(() => {
-    if (!userHasStartedScrolling.current) {
-      userHasStartedScrolling.current = true
-      loadMore()
-    }
-  }, [])
-
-  const onEndReached = useCallback(() => {
-    if (userHasStartedScrolling.current) {
-      loadMore()
-    }
-  }, [])
 
   useEffect(() => {
     if (query) {
@@ -88,9 +71,37 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
     )
   }
 
+  if (noResults) {
+    return (
+      <AutoSuggestBoxContainer>
+        <Spacer mt={3} />
+        <Text variant="md" textAlign="center">
+          Sorry, we couldn’t find anything for {quoteLeft}
+          {query}.{quoteRight}
+        </Text>
+        <Text variant="md" color="black60" textAlign="center">
+          Please try searching again with a different spelling.
+        </Text>
+      </AutoSuggestBoxContainer>
+    )
+  }
+
   return (
-    <AboveTheFoldFlatList<ArtistAutosuggestResult>
-      listRef={flatListRef}
+    <AutoSuggestBoxContainer>
+      {nodes.map((node, index) => (
+        <Flex key={index} mb={1}>
+          <ArtistAutosuggestRow highlight={query} result={node} onResultPress={onResultPress} />
+          <Separator mt={1} />
+        </Flex>
+      ))}
+    </AutoSuggestBoxContainer>
+  )
+}
+
+const AutoSuggestBoxContainer: React.FC = ({ children }) => {
+  const space = useSpace()
+  return (
+    <Flex
       style={{
         flex: 1,
         padding: space(2),
@@ -98,40 +109,12 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
         borderColor: "#707070",
         borderWidth: 1,
         marginTop: 3,
+        height: 175,
+        overflow: "hidden",
       }}
-      data={nodes}
-      showsVerticalScrollIndicator
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={
-        noResults
-          ? () => {
-              return (
-                <>
-                  <Spacer mt={3} />
-                  <Text variant="md" textAlign="center">
-                    Sorry, we couldn’t find anything for {quoteLeft}
-                    {query}.{quoteRight}
-                  </Text>
-                  <Text variant="md" color="black60" textAlign="center">
-                    Please try searching again with a different spelling.
-                  </Text>
-                </>
-              )
-            }
-          : null
-      }
-      renderItem={({ item, index }) => {
-        return (
-          <Flex key={index} mb={1}>
-            <ArtistAutosuggestRow highlight={query} result={item} onResultPress={onResultPress} />
-            <Separator mt={1} />
-          </Flex>
-        )
-      }}
-      onScrollBeginDrag={onScrollBeginDrag}
-      onEndReached={onEndReached}
-    />
+    >
+      {children}
+    </Flex>
   )
 }
 
