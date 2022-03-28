@@ -28,7 +28,7 @@ const MyCollectionArtworkScreenQuery = graphql`
       ...NewMyCollectionArtworkHeader_artwork
       ...MyCollectionArtworkInsights_artwork
       ...MyCollectionArtworkAbout_artwork
-      comparableAuctionResults(first: 6) {
+      comparableAuctionResults(first: 6) @optionalField {
         totalCount
       }
       artist {
