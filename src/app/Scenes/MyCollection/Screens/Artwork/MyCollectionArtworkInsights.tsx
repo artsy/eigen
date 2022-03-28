@@ -1,10 +1,11 @@
 import { MyCollectionArtworkInsights_artwork$key } from "__generated__/MyCollectionArtworkInsights_artwork.graphql"
 import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated__/MyCollectionArtworkInsights_marketPriceInsights.graphql"
 import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
+import { StickyTabPageGestureContainerContext } from "app/Components/StickyTabPage/StickyTabPageGestureContainer"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, Spacer } from "palette/elements"
-import React from "react"
+import React, { useContext, useRef } from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
@@ -42,8 +43,19 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
     isP1Artist &&
     Number((marketPriceInsights?.demandRank ?? 0) * 10) >= 9
 
+  const innerRef = useRef(null)
+
+  const { registerListRef } = useContext(StickyTabPageGestureContainerContext)
+
   return (
-    <StickyTabPageScrollView>
+    <StickyTabPageScrollView
+      innerRef={innerRef}
+      onLayout={() => {
+        if (registerListRef && typeof registerListRef === "function") {
+          registerListRef(0, innerRef)
+        }
+      }}
+    >
       <Flex my={3}>
         {!!marketPriceInsights && (
           <>

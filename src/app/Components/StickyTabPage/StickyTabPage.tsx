@@ -12,6 +12,7 @@ import { useAnimatedValue } from "./reanimatedHelpers"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabPageContext, useStickyTabPageContext } from "./StickyTabPageContext"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
+import { StickyTabPageGestureContainer } from "./StickyTabPageGestureContainer"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 
 export interface TabProps {
@@ -110,95 +111,97 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   )
 
   return (
-    <StickyTabPageContext.Provider
-      value={{
-        activeTabIndex,
-        staticHeaderHeight,
-        stickyHeaderHeight,
-        headerOffsetY,
-        tabLabels: tabs.map((tab) => tab.title),
-        tabSuperscripts: tabs.map((tab) => tab.superscript),
-        hideStaticHeader() {
-          LayoutAnimation.spring()
-          setIsStaticHeaderVisible(false)
-        },
-        showStaticHeader() {
-          LayoutAnimation.spring()
-          setIsStaticHeaderVisible(true)
-        },
-        setActiveTabIndex(index) {
-          setActiveTabIndex(index)
-          activeTabIndexNative.setValue(index)
-          railRef.current?.setOffset(index * width)
-          stickyRailRef.current?.setOffset(index * width)
-          tracking.trackEvent({
-            action_name: tabs[index].title,
-            action_type: Schema.ActionTypes.Tap,
-          })
-        },
-      }}
-    >
-      <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
-        {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
+    <StickyTabPageGestureContainer>
+      <StickyTabPageContext.Provider
+        value={{
+          activeTabIndex,
+          staticHeaderHeight,
+          stickyHeaderHeight,
+          headerOffsetY,
+          tabLabels: tabs.map((tab) => tab.title),
+          tabSuperscripts: tabs.map((tab) => tab.superscript),
+          hideStaticHeader() {
+            LayoutAnimation.spring()
+            setIsStaticHeaderVisible(false)
+          },
+          showStaticHeader() {
+            LayoutAnimation.spring()
+            setIsStaticHeaderVisible(true)
+          },
+          setActiveTabIndex(index) {
+            setActiveTabIndex(index)
+            activeTabIndexNative.setValue(index)
+            railRef.current?.setOffset(index * width)
+            stickyRailRef.current?.setOffset(index * width)
+            tracking.trackEvent({
+              action_name: tabs[index].title,
+              action_type: Schema.ActionTypes.Tap,
+            })
+          },
+        }}
+      >
+        <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+          {/* put tab content first because we want the header to be absolutely positioned _above_ it */}
 
-        {!!Animated.neq(stickyHeaderHeight, new Animated.Value(-1)) &&
-          !!Animated.neq(staticHeaderHeight, new Animated.Value(-1)) && (
-            <SnappyHorizontalRail
-              ref={railRef}
-              initialOffset={initialTabIndex * width}
-              width={width * tabs.length}
-            >
-              {tabs.map(({ content }, index) => {
-                return (
-                  <View style={{ flex: 1, width }} key={index}>
-                    <StickyTabPageFlatListContext.Provider
-                      value={{
-                        tabIsActive: Animated.eq(index, activeTabIndexNative),
-                        tabSpecificContentHeight:
-                          tabSpecificStickyHeaderContentArray[index].nativeHeight!,
-                        setJSX: (jsx) =>
-                          setTabSpecificStickyHeaderContent((prev) => {
-                            const newArray = prev.slice(0)
-                            newArray[index] = jsx
-                            return newArray
-                          }),
-                      }}
-                    >
-                      {typeof content === "function" ? content(index) : content}
-                    </StickyTabPageFlatListContext.Provider>
-                  </View>
-                )
-              })}
-            </SnappyHorizontalRail>
-          )}
-        <Animated.View
-          style={{
-            width,
-            position: "absolute",
-            transform: [{ translateY: headerOffsetY as any }],
-          }}
-          pointerEvents="box-none"
-        >
-          <Box backgroundColor="white">
-            {staticHeader}
-            {stickyHeader}
-          </Box>
-          <SnappyHorizontalRail
-            width={width * tabs.length}
-            ref={stickyRailRef}
-            initialOffset={initialTabIndex * width}
-            style={{ flex: undefined, alignItems: "flex-start" }}
+          {!!Animated.neq(stickyHeaderHeight, new Animated.Value(-1)) &&
+            !!Animated.neq(staticHeaderHeight, new Animated.Value(-1)) && (
+              <SnappyHorizontalRail
+                ref={railRef}
+                initialOffset={initialTabIndex * width}
+                width={width * tabs.length}
+              >
+                {tabs.map(({ content }, index) => {
+                  return (
+                    <View style={{ flex: 1, width }} key={index}>
+                      <StickyTabPageFlatListContext.Provider
+                        value={{
+                          tabIsActive: Animated.eq(index, activeTabIndexNative),
+                          tabSpecificContentHeight:
+                            tabSpecificStickyHeaderContentArray[index].nativeHeight!,
+                          setJSX: (jsx) =>
+                            setTabSpecificStickyHeaderContent((prev) => {
+                              const newArray = prev.slice(0)
+                              newArray[index] = jsx
+                              return newArray
+                            }),
+                        }}
+                      >
+                        {typeof content === "function" ? content(index) : content}
+                      </StickyTabPageFlatListContext.Provider>
+                    </View>
+                  )
+                })}
+              </SnappyHorizontalRail>
+            )}
+          <Animated.View
+            style={{
+              width,
+              position: "absolute",
+              transform: [{ translateY: headerOffsetY as any }],
+            }}
+            pointerEvents="box-none"
           >
-            {tabSpecificStickyHeaderContentArray.map((t, i) => (
-              <Box key={i} width={width} backgroundColor="white">
-                {t.jsx}
-              </Box>
-            ))}
-          </SnappyHorizontalRail>
-        </Animated.View>
-        {bottomContent}
-      </View>
-    </StickyTabPageContext.Provider>
+            <Box backgroundColor="white">
+              {staticHeader}
+              {stickyHeader}
+            </Box>
+            <SnappyHorizontalRail
+              width={width * tabs.length}
+              ref={stickyRailRef}
+              initialOffset={initialTabIndex * width}
+              style={{ flex: undefined, alignItems: "flex-start" }}
+            >
+              {tabSpecificStickyHeaderContentArray.map((t, i) => (
+                <Box key={i} width={width} backgroundColor="white">
+                  {t.jsx}
+                </Box>
+              ))}
+            </SnappyHorizontalRail>
+          </Animated.View>
+          {bottomContent}
+        </View>
+      </StickyTabPageContext.Provider>
+    </StickyTabPageGestureContainer>
   )
 }
 

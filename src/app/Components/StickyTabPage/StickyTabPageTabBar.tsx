@@ -1,7 +1,7 @@
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Sans } from "palette"
 import { NavigationalTabs } from "palette/elements/Tabs"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import {
   Animated,
   LayoutRectangle,
@@ -11,6 +11,7 @@ import {
   ViewProps,
 } from "react-native"
 import { useStickyTabPageContext } from "./StickyTabPageContext"
+import { StickyTabPageGestureContainerContext } from "./StickyTabPageGestureContainer"
 
 export const TAB_BAR_HEIGHT = 48
 
@@ -47,12 +48,14 @@ export const StickyTabPageTabBar: React.FC<{
   }, [activeTabIndex.current])
 
   const v3Tabs = tabLabels.map((label, index) => ({ label, superscript: tabSuperscripts[index] }))
+  const gestureContainerContext = useContext(StickyTabPageGestureContainerContext)
   return (
     <NavigationalTabs
       tabs={v3Tabs}
       onTabPress={(label, index) => {
         setActiveTabIndex(index)
         onTabPress?.({ label, index })
+        gestureContainerContext?.setCurrentContentIndex?.(index)
       }}
       activeTab={activeTabIndex.current}
     />

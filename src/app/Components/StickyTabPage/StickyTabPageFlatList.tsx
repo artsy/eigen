@@ -1,9 +1,11 @@
 import { useSpace } from "palette"
 import React, { createContext, useContext, useRef, useState } from "react"
-import { FlatList, FlatListProps } from "react-native"
-import Animated from "react-native-reanimated"
+import { FlatListProps } from "react-native"
+import { FlatList as RNGHFlatList } from "react-native-gesture-handler"
+import Animated, { call } from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { useStickyTabPageContext } from "./StickyTabPageContext"
+import { StickyTabPageGestureContainerContext } from "./StickyTabPageGestureContainer"
 
 interface FlatListRequiredContext {
   tabIsActive: Animated.Node<number>
@@ -13,7 +15,7 @@ interface FlatListRequiredContext {
 
 export const StickyTabPageFlatListContext = createContext<FlatListRequiredContext>(null as any)
 
-const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
+const AnimatedFlatList: typeof RNGHFlatList = Animated.createAnimatedComponent(RNGHFlatList)
 
 export interface StickyTabSection {
   key: string // must be unique per-tab
@@ -26,7 +28,7 @@ export interface StickyTabFlatListProps
   > {
   data: StickyTabSection[]
   paddingHorizontal?: number
-  innerRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
+  innerRef?: React.MutableRefObject<{ getNode(): RNGHFlatList<any> } | null>
 }
 
 export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) => {
@@ -54,7 +56,7 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
     scrollOffsetY,
   })
 
-  const flatListRef = useRef<{ getNode(): FlatList<any> }>()
+  const flatListRef = useRef<{ getNode(): RNGHFlatList<any> }>()
 
   const lastIsActive = useAnimatedValue(-1)
 
@@ -95,8 +97,19 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
   const [headerDidMount, setHeaderDidMount] = useState(__TEST__)
   const { data, style, ...otherProps } = props
 
+  const { setHeaderHeight: setStickyTabPageGestureContainerContextHeaderHeight } = useContext(
+    StickyTabPageGestureContainerContext
+  )
+
   return (
     <Animated.View style={{ flex: 1, paddingTop: totalStickyHeaderHeight }}>
+      <Animated.Code>
+        {() =>
+          call([staticHeaderHeight], (val) => {
+            setStickyTabPageGestureContainerContextHeaderHeight(val[0])
+          })
+        }
+      </Animated.Code>
       <AnimatedFlatList
         style={[
           {

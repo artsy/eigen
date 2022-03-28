@@ -1,9 +1,10 @@
 import { MyCollectionArtworkAbout_artwork$key } from "__generated__/MyCollectionArtworkAbout_artwork.graphql"
 import { MyCollectionArtworkAbout_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAbout_marketPriceInsights.graphql"
+import { StickyTabPageGestureContainerContext } from "app/Components/StickyTabPage/StickyTabPageGestureContainer"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, useTheme } from "palette"
-import React from "react"
+import React, { useContext, useRef } from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollectionArtworkAboutWork"
@@ -26,10 +27,29 @@ export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
   )
 
   const articles = extractNodes(artwork.artist?.articles)
+
   const Wrapper = props.renderWithoutScrollView ? Flex : StickyTabPageScrollView
+
+  const innerRef = useRef(null)
+
+  const { registerListRef } = useContext(StickyTabPageGestureContainerContext)
+
   return (
-    <Wrapper style={{ paddingHorizontal: space(2) }}>
-      <Flex mt={props.renderWithoutScrollView ? 1 : 2} mb={3}>
+    <Wrapper
+      style={{ paddingHorizontal: space(2) }}
+      showsVerticalScrollIndicator={false}
+      innerRef={props.renderWithoutScrollView ? undefined : innerRef}
+      onLayout={() => {
+        if (
+          registerListRef &&
+          typeof registerListRef === "function" &&
+          !props.renderWithoutScrollView
+        ) {
+          registerListRef(1, innerRef)
+        }
+      }}
+    >
+      <Flex mt={2} mb={3}>
         <MyCollectionArtworkAboutWork artwork={artwork} marketPriceInsights={marketPriceInsights} />
 
         <MyCollectionArtworkPurchaseDetails artwork={artwork} />
