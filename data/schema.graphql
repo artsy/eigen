@@ -8383,7 +8383,16 @@ union IdentityVerificationEmailMutationType =
 type Image {
   aspectRatio: Float!
   caption: String
-  cropped(height: Int!, version: [String], width: Int!): CroppedImageUrl
+  cropped(
+    height: Int!
+
+    # Value from 0-100; [1x, 2x]
+    quality: [Int!]
+
+    # Version to utilize in order of preference
+    version: [String]
+    width: Int!
+  ): CroppedImageUrl
   deepZoom: DeepZoom
   height: Int
   href: String
@@ -8403,7 +8412,16 @@ type Image {
   # Value to use when `padding-bottom` for fluid image placeholders
   placeholder: String
   position: Int
-  resized(height: Int, version: [String], width: Int): ResizedImageUrl
+  resized(
+    height: Int
+
+    # Value from 0-100; [1x, 2x]
+    quality: [Int!]
+
+    # Version to utilize in order of preference
+    version: [String]
+    width: Int
+  ): ResizedImageUrl
   tileBaseURL: String
   tileFormat: String
   tileSize: Int
