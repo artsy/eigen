@@ -65,6 +65,8 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     medium,
   })
 
+  const enableMyCollectionComparableWorks = useFeatureFlag("AREnableMyCollectionComparableWorks")
+
   const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
   const auctionResultsCount = data?.artwork?.artist?.auctionResultsConnection?.totalCount
 
@@ -92,7 +94,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const shouldShowInsightsTab =
     !!data?._marketPriceInsights ||
-    (comparableWorksCount ?? 0) > 0 ||
+    (!!enableMyCollectionComparableWorks && (comparableWorksCount ?? 0) > 0) ||
     (auctionResultsCount ?? 0) > 0
 
   const tabs = compact([
