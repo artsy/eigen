@@ -106,6 +106,8 @@ export const checkIsEmptyCustomValues = (values: CustomSize) => {
   })
 }
 
+const metrics: Metric[] = ["cm", "in"]
+
 const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
   values,
   active,
@@ -117,26 +119,24 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
     onChange({ ...values, [paramName]: range })
   }
 
-  const isCm = metric === "cm"
-  const isIn = metric === "in"
-
   return (
     <Box mx={15} my={2}>
       <Flex flexDirection="row">
-        <RadioButton
-          accessibilityLabel="cm"
-          accessibilityState={{ checked: isCm }}
-          selected={isCm}
-          onPress={() => handleMetricChange("cm")}
-        />
-        <Text marginRight="3">cm</Text>
-        <RadioButton
-          accessibilityLabel="in"
-          accessibilityState={{ checked: isIn }}
-          selected={isIn}
-          onPress={() => handleMetricChange("in")}
-        />
-        <Text>in</Text>
+        {metrics.map((currentMetric) => {
+          const isSelected = metric === currentMetric
+          return (
+            <>
+              <RadioButton
+                accessibilityState={{ checked: isSelected }}
+                key={currentMetric}
+                accessibilityLabel={currentMetric}
+                selected={isSelected}
+                onPress={() => handleMetricChange(currentMetric)}
+              />
+              <Text marginRight="3">{currentMetric}</Text>
+            </>
+          )
+        })}
       </Flex>
       <Spacer mt={2} />
       <CustomSizeInputs
