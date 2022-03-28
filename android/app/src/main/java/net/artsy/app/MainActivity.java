@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowManager;
+import android.content.Intent;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
