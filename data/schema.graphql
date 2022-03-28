@@ -1946,6 +1946,7 @@ interface ArtworkConnectionInterface {
 type ArtworkConsignmentSubmission {
   displayText: String
   inProgress: Boolean
+  internalID: String
   isSold: Boolean
 }
 
@@ -12745,13 +12746,16 @@ type SearchCriteriaEdge {
 
 # Human-friendly representation of a single SearchCriteria filter
 type SearchCriteriaLabel {
+  # The human-friendly label of the filter facet
+  displayValue: String!
+
   # The GraphQL field name of the filter facet
   field: String!
 
   # The human-friendly name of the filter facet
   name: String!
 
-  # The human-friendly value of the filter facet
+  # The value of the filter facet
   value: String!
 }
 
