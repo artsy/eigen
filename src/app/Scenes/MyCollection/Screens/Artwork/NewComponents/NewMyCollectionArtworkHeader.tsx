@@ -67,7 +67,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       {!!imagesToDisplay ? (
         <ImagesToDisplayCarousel
           images={imagesToDisplay as any}
-          cardHeight={dimensions.height / 2.5}
+          cardHeight={dimensions.height / 3.5}
           paginationIndicatorType="scrollBar"
           onImagePressed={() => trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
         />
@@ -75,7 +75,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         <Flex
           testID="Fallback-image-mycollection-header"
           bg={color("black5")}
-          height={dimensions.height / 2.5}
+          height={dimensions.height / 3.5}
           justifyContent="center"
           mx={20}
         >
@@ -86,13 +86,13 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       {/* Image Meta */}
       <Flex px={2}>
         <Text variant="lg">{artistNames}</Text>
-        <Text variant="lg" color="black60" italic mb={2}>
+        <Text variant="lg" color="black60" italic>
           {formattedTitleAndYear}
         </Text>
       </Flex>
 
       {!!consignmentSubmission?.displayText && !!allowSubmissionStatusInMyCollection && (
-        <Flex px={2}>
+        <Flex px={2} mt={2}>
           <MyCollectionArtworkSubmissionStatus displayText={consignmentSubmission?.displayText} />
         </Flex>
       )}

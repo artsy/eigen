@@ -68,6 +68,14 @@ interface ConsignmentsHomeQueryRendererProps {
   environment?: RelayModernEnvironment
 }
 
+export const ConsignmentsHomeScreenQuery = graphql`
+  query ConsignmentsHomeQuery {
+    targetSupply {
+      ...ConsignmentsHome_targetSupply
+    }
+  }
+`
+
 export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({
   environment,
 }) => {
@@ -75,13 +83,7 @@ export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRender
     <QueryRenderer<ConsignmentsHomeQuery>
       environment={environment || defaultEnvironment}
       variables={{}}
-      query={graphql`
-        query ConsignmentsHomeQuery {
-          targetSupply {
-            ...ConsignmentsHome_targetSupply
-          }
-        }
-      `}
+      query={ConsignmentsHomeScreenQuery}
       render={renderWithPlaceholder({
         Container: ConsignmentsHomeContainer,
         renderPlaceholder: () => <ConsignmentsHome isLoading targetSupply={null as any} />,

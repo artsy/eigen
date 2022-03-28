@@ -1,8 +1,7 @@
 import { useColor } from "palette/hooks"
-import React, { FC } from "react"
 import { Icon, IconProps, Path } from "./Icon"
 
-export const IncreaseIcon: FC<IconProps> = (props) => {
+export const IncreaseIcon: React.FC<IconProps> = (props) => {
   const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 10 10">

@@ -10,7 +10,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import _ from "lodash"
 import { Flex, Spacer, useSpace } from "palette"
-import React, { FC, Suspense, useRef, useState } from "react"
+import React, { Suspense, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { graphql, useFragment } from "react-relay"
@@ -56,7 +56,7 @@ const useNumColumns = () => {
   return orientation === "portrait" ? 2 : 3
 }
 
-export const ViewingRoomsList: FC = () => {
+export const ViewingRoomsList: React.FC = () => {
   const queryData = useLazyLoadQuery<ViewingRoomsListQuery>(
     ViewingRoomsListScreenQuery,
     viewingRoomsDefaultVariables

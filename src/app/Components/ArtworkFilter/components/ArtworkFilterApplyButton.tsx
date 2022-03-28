@@ -1,5 +1,5 @@
 import { BellIcon, Box, Button, Separator, Text, useColor } from "palette"
-import React, { ReactNode, useState } from "react"
+import { useState } from "react"
 import { Pressable } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
@@ -13,7 +13,7 @@ export interface ArtworkFilterApplyButtonProps {
 interface Button {
   label: string
   disabled?: boolean
-  icon?: ReactNode
+  icon?: React.ReactNode
   onPress: () => void
 }
 

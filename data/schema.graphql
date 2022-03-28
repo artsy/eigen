@@ -5826,9 +5826,13 @@ enum ConsignmentSubmissionSource {
   WEB_INBOUND
 }
 
+# Enum with all available submission states
 enum ConsignmentSubmissionStateAggregation {
   APPROVED
+  CLOSED
   DRAFT
+  HOLD
+  PUBLISHED
   REJECTED
   SUBMITTED
 }
@@ -9921,7 +9925,7 @@ input MyCollectionUpdateArtworkInput {
   pricePaidCurrency: String
   provenance: String
   submissionId: String
-  title: String!
+  title: String
   width: String
 }
 
@@ -9970,10 +9974,8 @@ type NotificationPreference {
 }
 
 input NotificationPreferenceInput {
-  channel: String!
-  id: String!
   name: String!
-  status: SubGroupStatus!
+  status: SubGroupInputStatus!
 }
 
 # Consignment Offer Response
@@ -13340,6 +13342,11 @@ type StaticContent {
 
   # A slug ID.
   slug: ID!
+}
+
+enum SubGroupInputStatus {
+  SUBSCRIBED
+  UNSUBSCRIBED
 }
 
 enum SubGroupStatus {
