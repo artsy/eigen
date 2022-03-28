@@ -1,5 +1,5 @@
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
+import { unsafe_getLocalizedUnit } from "app/store/GlobalStore"
 import { isNull, isUndefined, round as __round__ } from "lodash"
 
 export type Numeric = "*" | number
@@ -10,8 +10,8 @@ export interface Range {
 }
 
 const ONE_IN_TO_CM = 2.54
-// to be removed in favor of userPrefs.metric
-export const IS_USA = LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
+
+export const IS_USA = unsafe_getLocalizedUnit() === "in"
 export const LOCALIZED_UNIT: Metric = IS_USA ? "in" : "cm"
 
 /**
