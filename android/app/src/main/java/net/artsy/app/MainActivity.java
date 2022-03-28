@@ -15,11 +15,11 @@ import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.zoontek.rnbootsplash.RNBootSplash;
 
-
 public class MainActivity extends ReactActivity {
 
   /**
-   * Returns the name of the main component registered from JavaScript. This is used to schedule
+   * Returns the name of the main component registered from JavaScript. This is
+   * used to schedule
    * rendering of the component.
    */
   @Override
@@ -32,15 +32,14 @@ public class MainActivity extends ReactActivity {
     return new ReactActivityDelegate(this, getMainComponentName()) {
       @Override
       protected ReactRootView createRootView() {
-       return new RNGestureHandlerEnabledRootView(MainActivity.this);
+        return new RNGestureHandlerEnabledRootView(MainActivity.this);
       }
     };
   }
 
   private boolean isTablet() {
     return (this.getResources().getConfiguration().screenLayout
-      & Configuration.SCREENLAYOUT_SIZE_MASK)
-      >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+        & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
   }
 
   @Override
@@ -55,5 +54,13 @@ public class MainActivity extends ReactActivity {
       setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     RNBootSplash.init(R.drawable.bootsplash, MainActivity.this);
+  }
+
+  // required for braze integration:
+  // https://www.braze.com/docs/developer_guide/platform_integration_guides/react_native/react_sdk_setup/#step-2-complete-native-setup
+  @Override
+  public void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
+    setIntent(intent);
   }
 }
