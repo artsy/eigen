@@ -14,26 +14,34 @@ export interface S3UploadResponse {
 declare var FormData: any
 declare var XMLHttpRequest: any
 
-export const uploadFileToS3 = (
-  file: string,
-  acl: string,
-  asset: AssetCredentials,
+interface Props {
+  filePath: string
+  acl: string
+  assetCredentials: AssetCredentials
+  updateProgress?: (progress: number) => void
   filename?: string
-) =>
+}
+export const uploadFileToS3 = ({
+  filePath,
+  acl,
+  assetCredentials,
+  updateProgress,
+  filename,
+}: Props) =>
   new Promise<S3UploadResponse>((resolve, reject) => {
     const formData = new FormData()
-    const geminiKey = asset.policyDocument.conditions.geminiKey
-    const bucket = asset.policyDocument.conditions.bucket
+    const geminiKey = assetCredentials.policyDocument.conditions.geminiKey
+    const bucket = assetCredentials.policyDocument.conditions.bucket
     const uploadURL = `https://${bucket}.s3.amazonaws.com`
 
     const data = {
       acl,
       "Content-Type": "image/jpg",
       key: geminiKey + "/${filename}", // NOTE: This form (which _looks_ like ES6 interpolation) is required by AWS
-      AWSAccessKeyId: asset.credentials,
-      success_action_status: asset.policyDocument.conditions.successActionStatus,
-      policy: asset.policyEncoded,
-      signature: asset.signature,
+      AWSAccessKeyId: assetCredentials.credentials,
+      success_action_status: assetCredentials.policyDocument.conditions.successActionStatus,
+      policy: assetCredentials.policyEncoded,
+      signature: assetCredentials.signature,
     }
 
     for (const key in data) {
@@ -44,7 +52,7 @@ export const uploadFileToS3 = (
     }
 
     formData.append("file", {
-      uri: file,
+      uri: filePath,
       type: "image/jpeg",
       name: filename ?? "photo.jpg",
     })
@@ -56,7 +64,10 @@ export const uploadFileToS3 = (
     const request = new XMLHttpRequest()
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     request.onload = (e) => {
-      if (e.target.status.toString() === asset.policyDocument.conditions.successActionStatus) {
+      if (
+        e.target.status.toString() ===
+        assetCredentials.policyDocument.conditions.successActionStatus
+      ) {
         // e.g. https://artsy-media-uploads.s3.amazonaws.com/A3tfuXp0t5OuUKv07XaBOw%2F%24%7Bfilename%7D
         const url = e.target.responseHeaders.Location
         resolve({
@@ -66,8 +77,18 @@ export const uploadFileToS3 = (
         reject(new Error("S3 upload failed"))
       }
     }
+    request.upload.onprogress = ({ loaded, total }: { loaded: number; total: number }) => {
+      if (updateProgress) {
+        updateProgress(loaded / total)
+      }
+    }
 
     request.open("POST", uploadURL, true)
+    request.onerror = () => {
+      reject(new Error("Network error: Something went wrong"))
+      return
+    }
+
     request.setRequestHeader("Content-type", "multipart/form-data")
     request.send(formData)
   })

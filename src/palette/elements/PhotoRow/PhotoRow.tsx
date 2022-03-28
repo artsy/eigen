@@ -34,7 +34,7 @@ const PhotoRowContainer: React.FC<PhotoRowContainerProps> = ({ error, errorMsg, 
   </>
 )
 
-const PhotoRowPlaceholder = ({ progress = 0.6 }: { progress?: number }) => (
+const PhotoRowPlaceholder = ({ progress }: { progress: number }) => (
   <PhotoRowContainer>
     <ProvidePlaceholderContext>
       <Flex flexDirection="row">
@@ -57,11 +57,12 @@ const PhotoRowPlaceholder = ({ progress = 0.6 }: { progress?: number }) => (
 interface PhotoRowProps {
   photo: Photo
   onPhotoDelete: (arg: Photo) => void
+  progress: number
 }
 
-export const PhotoRow = ({ photo, onPhotoDelete }: PhotoRowProps) => {
+export const PhotoRow = ({ photo, onPhotoDelete, progress }: PhotoRowProps) => {
   if (photo.loading) {
-    return <PhotoRowPlaceholder />
+    return <PhotoRowPlaceholder progress={progress} />
   }
 
   return (

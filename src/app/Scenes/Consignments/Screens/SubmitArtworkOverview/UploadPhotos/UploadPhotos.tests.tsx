@@ -52,6 +52,8 @@ describe("UploadPhotos", () => {
             id: "1",
             geminiToken: "geminiToken",
             path: "./img.png",
+            width: 40,
+            height: 40,
           },
         ],
       })

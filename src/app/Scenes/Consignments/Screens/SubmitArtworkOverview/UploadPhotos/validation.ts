@@ -12,7 +12,7 @@ export interface Photo {
   isDefault?: boolean
   imageURL?: string
   internalID?: string
-  path?: string
+  path: string
   width?: number
   imageVersions?: string[]
   loading?: boolean
