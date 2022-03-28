@@ -3,7 +3,7 @@ import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "app/Scenes/Consignments/Submission/geminiUploadToS3"
+} from "app/Scenes/Consignments/Submission/uploadFileToS3"
 import { isEmpty } from "lodash"
 import { useState } from "react"
 import ImagePicker from "react-native-image-crop-picker"

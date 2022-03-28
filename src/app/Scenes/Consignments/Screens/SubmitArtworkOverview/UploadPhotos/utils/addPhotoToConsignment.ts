@@ -5,7 +5,7 @@ import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "../../../../Submission/geminiUploadToS3"
+} from "../../../../Submission/uploadFileToS3"
 
 interface Props {
   asset: Photo

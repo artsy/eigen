@@ -4,7 +4,7 @@ import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "./geminiUploadToS3"
+} from "./uploadFileToS3"
 
 export const uploadImageAndPassToGemini = async (
   file: string,
