@@ -9925,7 +9925,7 @@ input MyCollectionUpdateArtworkInput {
   pricePaidCurrency: String
   provenance: String
   submissionId: String
-  title: String!
+  title: String
   width: String
 }
 
