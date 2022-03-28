@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { Box, Flex, RadioButton, Spacer, Text } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ArtworkFilterNavigationStack } from ".."
 import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
@@ -209,6 +209,12 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
       },
     ]
   }
+
+  useEffect(() => {
+    if (customSizeSelected) {
+      handleCustomInputsChange(customValues)
+    }
+  }, [localizedUnit, selectedMetric])
 
   const selectCustomFiltersAction = (values: CustomSize) => {
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {

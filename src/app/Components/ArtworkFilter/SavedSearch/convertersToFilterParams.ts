@@ -10,7 +10,7 @@ import {
 } from "../ArtworkFilterHelpers"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
-import { localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
+import { parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { EUROPE_SIZE_OPTIONS, USA_SIZE_OPTIONS } from "../Filters/SizesOptionsScreen"
 
 import { WAYS_TO_BUY_OPTIONS } from "../Filters/WaysToBuyOptions"
@@ -41,11 +41,9 @@ export const convertPriceToFilterParam = (
 
 export const convertCustomSizeToFilterParamByName = (paramName: FilterParamName, range: string) => {
   const { min, max } = parseRange(range)
-  const widthMinLocalized = localizeDimension(min, "in")
-  const widthMaxLocalized = localizeDimension(max, "in")
 
   return {
-    displayText: `${widthMinLocalized}-${widthMaxLocalized}`,
+    displayText: `${min}-${max}`,
     paramValue: `${min}-${max}`,
     paramName,
   }
