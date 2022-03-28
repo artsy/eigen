@@ -123,16 +123,15 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
         {metrics.map((currentMetric) => {
           const isSelected = metric === currentMetric
           return (
-            <>
+            <React.Fragment key={currentMetric}>
               <RadioButton
                 accessibilityState={{ checked: isSelected }}
-                key={currentMetric}
                 accessibilityLabel={currentMetric}
                 selected={isSelected}
                 onPress={() => handleMetricChange(currentMetric)}
               />
               <Text marginRight="3">{currentMetric}</Text>
-            </>
+            </React.Fragment>
           )
         })}
       </Flex>
