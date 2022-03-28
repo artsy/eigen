@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { Box, Flex, RadioButton, Spacer, Text } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { ArtworkFilterNavigationStack } from ".."
 import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
@@ -188,10 +188,6 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   const [key, setKey] = useState(0)
   const shouldShowCustomInputs = filterType !== "auctionResult"
   const isActive = isActivePredefinedValues || !checkIsEmptyCustomValues(customValues)
-
-  useEffect(() => {
-    handleCustomInputsChange(customValues)
-  }, [localizedUnit, selectedMetric])
 
   const handleMetricChange = (newMetric: Metric) => {
     setSelectedMetric(newMetric)
