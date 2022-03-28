@@ -7,7 +7,7 @@ import {
 } from "./uploadFileToS3"
 
 export const uploadImageAndPassToGemini = async (
-  file: string,
+  filePath: string,
   acl: string,
   submissionID: string
 ) => {
@@ -23,9 +23,9 @@ export const uploadImageAndPassToGemini = async (
 
   // Upload our file to the place Gemini recommended
   const s3 = await uploadFileToS3({
-    file,
+    filePath,
     acl,
-    asset: assetCredentials,
+    assetCredentials,
   })
 
   // Let Gemini know that this file exists and should be processed

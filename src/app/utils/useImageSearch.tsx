@@ -22,9 +22,9 @@ export const useImageSearch = () => {
       name: convectionKey || "",
     })
     const s3 = await uploadFileToS3({
-      file: imgPath,
+      filePath: imgPath,
       acl,
-      asset: assetCredentials,
+      assetCredentials,
     })
 
     return `https://artsy-hack9.imgix.net/${s3.key}?trim=auto&trim-sd=25&q=1`

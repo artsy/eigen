@@ -34,9 +34,9 @@ export const addPhotoToConsignment = async ({ asset, submissionID, updateProgres
 
   // upload file to S3
   const s3 = await uploadFileToS3({
-    file: asset.path,
+    filePath: asset.path,
     acl,
-    asset: assetCredentials,
+    assetCredentials,
     updateProgress,
   })
 

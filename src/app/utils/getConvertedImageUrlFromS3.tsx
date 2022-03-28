@@ -14,9 +14,9 @@ export async function getConvertedImageUrlFromS3(imagePath: string) {
   })
   const bucket = assetCredentials.policyDocument.conditions.bucket
   const s3 = await uploadFileToS3({
-    file: imagePath,
+    filePath: imagePath,
     acl,
-    asset: assetCredentials,
+    assetCredentials,
   })
   return `https://${bucket}.s3.amazonaws.com/${s3.key}`
 }

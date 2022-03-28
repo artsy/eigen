@@ -277,14 +277,14 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(uploadFileToS3).toHaveBeenCalledTimes(2)
         expect(uploadFileToS3).toHaveBeenNthCalledWith(1, {
-          file: "some-path",
+          filePath: "some-path",
           acl: "private",
-          asset: assetCredentials,
+          assetCredentials,
         })
         expect(uploadFileToS3).toHaveBeenNthCalledWith(2, {
-          file: "some-other-path",
+          filePath: "some-other-path",
           acl: "private",
-          asset: assetCredentials,
+          assetCredentials,
         })
       })
     })
