@@ -198,6 +198,11 @@ export const features = defineFeatures({
     description: "Enable My Collection Price Estimate Range",
     showInAdminMenu: true,
   },
+  AREnableMyCollectionComparableWorks: {
+    readyForRelease: false,
+    description: "Enable My Collection Comparable Works",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
