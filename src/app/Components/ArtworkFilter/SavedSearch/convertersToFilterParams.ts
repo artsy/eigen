@@ -1,3 +1,4 @@
+import { unsafe_getLocalizedUnit } from "app/store/GlobalStore"
 import { compact, Dictionary, isNil, keyBy, mapValues } from "lodash"
 import {
   Aggregation,
@@ -9,7 +10,7 @@ import {
 } from "../ArtworkFilterHelpers"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
-import { IS_USA, localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
+import { localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { EUROPE_SIZE_OPTIONS, USA_SIZE_OPTIONS } from "../Filters/SizesOptionsScreen"
 
 import { WAYS_TO_BUY_OPTIONS } from "../Filters/WaysToBuyOptions"
@@ -76,7 +77,8 @@ export const convertSizeToFilterParams = (
 
   if (Array.isArray(sizesValues)) {
     const sizeOptions = sizesValues.map((sizeValue) => {
-      const SIZES_OPTIONS = IS_USA ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS
+      const SIZES_OPTIONS =
+        unsafe_getLocalizedUnit() === "in" ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS
       return SIZES_OPTIONS.find((sizeOption) => sizeOption.paramValue === sizeValue)
     })
     const filledSizeOptions = compact(sizeOptions)

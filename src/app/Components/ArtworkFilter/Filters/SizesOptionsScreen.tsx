@@ -7,7 +7,7 @@ import { ArtworkFilterNavigationStack } from ".."
 import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
 import { CustomSizeInputs } from "./CustomSizeInputs"
-import { IS_USA, localizeDimension, parseRange, Range, toIn } from "./helpers"
+import { localizeDimension, parseRange, Range, toIn } from "./helpers"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
@@ -61,8 +61,6 @@ export const USA_SIZE_OPTIONS: FilterData[] = [
     paramValue: "LARGE",
   },
 ]
-
-export const SIZES_OPTIONS = IS_USA ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS
 
 export const getSizeOptions = (unit: Metric) => {
   return unit === "in" ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS
