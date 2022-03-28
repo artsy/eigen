@@ -349,6 +349,10 @@ describe("MyCollectionArtworkForm", () => {
                       isP1: false,
                     },
                   },
+                  dimensions: {
+                    in: "23",
+                    cm: "26",
+                  },
                   artistNames: "some-artist-name",
                   category: null,
                   pricePaid: null,
