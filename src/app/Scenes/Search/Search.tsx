@@ -1,5 +1,4 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Search_system$key } from "__generated__/Search_system.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { useFeatureFlag } from "app/store/GlobalStore"
@@ -14,7 +13,7 @@ import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
 import { Box, Flex, Spacer, Text } from "palette"
-import { FC, Suspense, useMemo, useRef, useState } from "react"
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
@@ -23,7 +22,13 @@ import {
   InstantSearch,
 } from "react-instantsearch-native"
 import { Keyboard, Platform, ScrollView } from "react-native"
-import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
+import {
+  FetchPolicy,
+  fetchQuery,
+  graphql,
+  useLazyLoadQuery,
+  useRelayEnvironment,
+} from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
@@ -32,7 +37,7 @@ import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
 import { ALLOWED_ALGOLIA_KEYS } from "./constants"
-import { getContextModuleByPillName } from "./helpers"
+import { getContextModuleByPillName, isAlgoliaApiKeyExpiredError } from "./helpers"
 import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
@@ -76,48 +81,69 @@ const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
   [ContextModule.artistsTab]: "Artworks",
 }
 
-export const Search: FC = () => {
-  const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {})
+interface RefreshQueryOptions {
+  fetchKey?: number
+  fetchPolicy?: FetchPolicy
+}
 
-  const [{ system }, refetch] = useRefetchableFragment<SearchQuery, Search_system$key>(
-    graphql`
-      fragment Search_system on Query @refetchable(queryName: "SearchRefetchQuery") {
-        system {
-          __typename
-          algolia {
-            appID
-            apiKey
-            indices {
-              name
-              displayName
-              key
-            }
-          }
-        }
-      }
-    `,
-    queryData
-  )
+export const Search: React.FC = () => {
+  const environment = useRelayEnvironment()
+  const [refreshedQueryOptions, setRefreshedQueryOptions] = useState<RefreshQueryOptions>({})
+  const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {}, refreshedQueryOptions)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const { system } = queryData
+  const indices = system?.algolia?.indices ?? []
+  const indiceNames = indices.map((indice) => indice.name)
+
+  const onRefetch = () => {
+    if (isRefreshing) {
+      return
+    }
+
+    setIsRefreshing(true)
+
+    fetchQuery(environment, SearchScreenQuery, {}).subscribe({
+      complete: () => {
+        setIsRefreshing(false)
+
+        setRefreshedQueryOptions((prev) => ({
+          fetchKey: (prev?.fetchKey ?? 0) + 1,
+          fetchPolicy: "store-only",
+        }))
+      },
+      error: () => {
+        setIsRefreshing(false)
+      },
+    })
+  }
 
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
-  const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
+  const searchQuery = searchState?.query ?? ""
+  const searchProviderValues = useSearchProviderValues(searchQuery)
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(
     system?.algolia?.appID,
     system?.algolia?.apiKey
   )
-  const indices = system?.algolia?.indices
   const {
     loading: indicesInfoLoading,
     indicesInfo,
     updateIndicesInfo,
-  } = useAlgoliaIndices(searchClient, indices)
+  } = useAlgoliaIndices({
+    searchClient,
+    indiceNames,
+    onError: (error: Error) => {
+      if (isAlgoliaApiKeyExpiredError(error)) {
+        onRefetch()
+      }
+    },
+  })
   const { trackEvent } = useTracking()
-  const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
   const exampleExperiments = useFeatureFlag("AREnableExampleExperiments")
+  const enableImprovedSearchPills = useExperimentFlag("eigen-enable-improved-search-pills")
   const smudgeValue = useExperimentVariant("test-search-smudge")
   nonCohesionTracks.experimentVariant(
     "test-search-smudge",
@@ -129,26 +155,43 @@ export const Search: FC = () => {
   nonCohesionTracks.experimentFlag("test-eigen-smudge2", smudge2Value)
 
   const pillsArray = useMemo<PillType[]>(() => {
-    if (Array.isArray(indices) && indices.length > 0) {
-      const allowedIndices = indices.filter((indice) =>
-        ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
-      )
-      const formattedIndices: PillType[] = allowedIndices.map((index) => {
-        const { name, ...other } = index
+    const allowedIndices = indices.filter((indice) =>
+      ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
+    )
+    const formattedIndices: PillType[] = allowedIndices.map((index) => {
+      const { name, ...other } = index
 
-        return {
-          ...other,
-          type: "algolia",
-          disabled: enableImprovedPills && !indicesInfo[name]?.hasResults,
-          indexName: name,
-        }
-      })
+      return {
+        ...other,
+        type: "algolia",
+        disabled: enableImprovedSearchPills && !indicesInfo[name]?.hasResults,
+        indexName: name,
+      }
+    })
 
-      return [...pills, ...formattedIndices]
+    return [...pills, ...formattedIndices]
+  }, [indices, indicesInfo, enableImprovedSearchPills])
+
+  useEffect(() => {
+    /**
+     * Refetch up-to-date info about Algolia indices for specified search query
+     * when Algolia API key expired and request failed (we get a fresh Algolia API key and send request again)
+     */
+    if (enableImprovedSearchPills && searchClient && shouldStartSearching(searchQuery)) {
+      updateIndicesInfo(searchQuery)
     }
+  }, [searchClient, enableImprovedSearchPills])
 
-    return pills
-  }, [indices, indicesInfo])
+  const onTextChange = useCallback(
+    (value) => {
+      handleResetSearchInput()
+
+      if (enableImprovedSearchPills && shouldStartSearching(value)) {
+        updateIndicesInfo(value)
+      }
+    },
+    [searchClient, enableImprovedSearchPills]
+  )
 
   if (!searchClient || !searchInsightsConfigured) {
     return <SearchPlaceholder />
@@ -181,8 +224,6 @@ export const Search: FC = () => {
     }
     return <SearchArtworksQueryRenderer keyword={searchState.query!} />
   }
-
-  const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
 
   const handlePillPress = (pill: PillType) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
@@ -242,21 +283,16 @@ export const Search: FC = () => {
           onSearchStateChange={setSearchState}
         >
           <Configure clickAnalytics />
-          <RefetchWhenApiKeyExpiredContainer refetch={refetch} />
+          <RefetchWhenApiKeyExpiredContainer refetch={onRefetch} />
           <Flex p={2} pb={1}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
-              onTextChange={(value) => {
-                handleResetSearchInput()
-
-                if (enableImprovedPills && value.length >= 2) {
-                  updateIndicesInfo(value)
-                }
-              }}
+              onTextChange={onTextChange}
             />
           </Flex>
+
           <Flex flex={1} collapsable={false}>
-            {!!shouldStartQuering ? (
+            {shouldStartSearching(searchQuery) ? (
               <>
                 <Box pt={2} pb={1}>
                   <SearchPills
@@ -312,11 +348,22 @@ export const Search: FC = () => {
 
 export const SearchScreenQuery = graphql`
   query SearchQuery {
-    ...Search_system
+    system {
+      __typename
+      algolia {
+        appID
+        apiKey
+        indices {
+          name
+          displayName
+          key
+        }
+      }
+    }
   }
 `
 
-export const SearchScreen: FC = () => (
+export const SearchScreen: React.FC = () => (
   <Suspense fallback={<SearchPlaceholder />}>
     <Search />
   </Suspense>
@@ -369,4 +416,8 @@ const nonCohesionTracks = {
       context_screen_owner_type: OwnerType.search,
       context_screen: Schema.PageNames.Search,
     }),
+}
+
+const shouldStartSearching = (value: string) => {
+  return value.length >= 2
 }

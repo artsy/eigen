@@ -74,11 +74,6 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable Saved Addresses",
   },
-  AREnableImprovedSearchPills: {
-    readyForRelease: false,
-    description: "Enable improved search pills",
-    echoFlagKey: "AREnableImprovedSearchPills",
-  },
   AREnableTrove: {
     readyForRelease: true,
     description: "Enable Trove in homepage",
@@ -159,7 +154,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   ARShowConsignmentsInMyCollection: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Show consignments in My Collection",
     showInAdminMenu: true,
   },
@@ -168,13 +163,13 @@ export const features = defineFeatures({
     description: "Enable placeholder layout animation",
   },
   AREnableNewMyCollectionArtwork: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable new my collection artwork page",
     showInAdminMenu: true,
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
   },
   AREnableShowOnlySubmittedMyCollectionArtworkFilter: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Show Only Submitted MyCollection Artwork Filter",
     showInAdminMenu: true,
   },
@@ -189,18 +184,23 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   ARShowRequestPriceEstimateBanner: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Show request price estimate banner",
     showInAdminMenu: true,
   },
   ARShowDemandIndexHints: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Show demand index hints",
     showInAdminMenu: true,
   },
   AREnablePriceEstimateRange: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable My Collection Price Estimate Range",
+    showInAdminMenu: true,
+  },
+  AREnableMyCollectionComparableWorks: {
+    readyForRelease: true,
+    description: "Enable My Collection Comparable Works",
     showInAdminMenu: true,
   },
 })

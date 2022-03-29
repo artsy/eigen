@@ -14,7 +14,7 @@ import { DateTime } from "luxon"
 import { useEffect } from "react"
 import { MyCollectionArtworkEdge } from "../MyCollection"
 
-export const useLocalArtworkFilter = (artworks: any[]) => {
+export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
   const setFilterType = ArtworksFiltersStore.useStoreActions((s) => s.setFilterTypeAction)
   const setSortOptions = ArtworksFiltersStore.useStoreActions((s) => s.setSortOptions)
   const setFilterOptions = ArtworksFiltersStore.useStoreActions((s) => s.setFilterOptions)
@@ -22,7 +22,7 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
     "AREnableShowOnlySubmittedMyCollectionArtworkFilter"
   )
 
-  useEffect(() => {
+  const initLocalArtworkFilter = (artworks: any[]) => {
     setFilterType("local")
     setSortOptions([
       {
@@ -250,7 +250,14 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
         },
       ])
     )
+  }
+  useEffect(() => {
+    if (artworksList) {
+      initLocalArtworkFilter(artworksList)
+    }
   }, [])
+
+  return { reInitializeLocalArtworkFilter: initLocalArtworkFilter }
 }
 
 export const localSortAndFilterArtworks = (

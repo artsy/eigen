@@ -139,6 +139,9 @@ export const MyCollectionFilterPropsFragment = graphql`
     pricePaid {
       minor
     }
+    consignmentSubmission {
+      displayText
+    }
     sizeBucket
     width
     height

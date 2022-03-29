@@ -35,6 +35,8 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
 
   const me = useFragment<MyCollectionArtworkInsights_me$key>(meFragment, restProps.me)
 
+  const enableMyCollectionComparableWorks = useFeatureFlag("AREnableMyCollectionComparableWorks")
+
   const isP1Artist = artwork.artist?.targetSupply?.isP1
 
   const showPriceEstimateBanner =
@@ -73,7 +75,9 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           />
         )}
 
-        <MyCollectionArtworkComparableWorks artwork={artwork} />
+        {!!enableMyCollectionComparableWorks && (
+          <MyCollectionArtworkComparableWorks artwork={artwork} />
+        )}
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 

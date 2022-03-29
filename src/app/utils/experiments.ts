@@ -16,16 +16,8 @@ interface ExperimentDescriptor {
   readonly fallbackPayload?: boolean
 }
 
-export const splitExperiments: Record<string, SplitExperimentDescriptor> = {
-  HomeScreenWorksForYouVsWorksByArtistsYouFollow: {
-    splitName: "HomeScreenWorksForYouVsWorksByArtistsYouFollow",
-    fallbackTreatment: "worksByArtistsYouFolow",
-  },
-  HomeScreenArtistRecommendations: {
-    splitName: "HomeScreenArtistRecommendations",
-    fallbackTreatment: "oldArtistRecommendations",
-  },
-}
+export const splitExperiments: Record<string, SplitExperimentDescriptor> = {}
+
 export type SPLIT_EXPERIMENT_NAME = keyof typeof splitExperiments
 
 export const experiments: Record<string, ExperimentDescriptor> = {

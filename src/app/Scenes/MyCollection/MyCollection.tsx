@@ -72,7 +72,7 @@ const MyCollection: React.FC<{
 
   const artworks = extractNodes(me?.myCollectionConnection)
 
-  useLocalArtworkFilter(artworks)
+  const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
   useEffect(() => {
@@ -170,6 +170,10 @@ const MyCollection: React.FC<{
       setJSX(null)
     }
   }, [artworks.length, filtersCount, isSearchBarVisible])
+
+  useEffect(() => {
+    reInitializeLocalArtworkFilter(artworks)
+  }, [artworks])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -273,18 +277,20 @@ export const MyCollectionContainer = createPaginationContainer(
   }
 )
 
+export const MyCollectionScreenQuery = graphql`
+  query MyCollectionQuery {
+    me {
+      ...MyCollection_me
+    }
+  }
+`
+
 export const MyCollectionQueryRenderer: React.FC = () => {
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionQuery>
         environment={defaultEnvironment}
-        query={graphql`
-          query MyCollectionQuery {
-            me {
-              ...MyCollection_me
-            }
-          }
-        `}
+        query={MyCollectionScreenQuery}
         variables={{}}
         cacheConfig={{ force: true }}
         render={renderWithPlaceholder({

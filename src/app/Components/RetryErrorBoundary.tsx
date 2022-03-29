@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import React, { FC, ReactNode } from "react"
+import { Component } from "react"
 import { LoadFailureView } from "./LoadFailureView"
 
 enum ErrorState {
@@ -18,7 +18,7 @@ interface State {
 
 /// Catches any errors and shows a failure screen. The user can tap a button to retry the render, which is indicated to
 /// the render prop with a parameter value of `true`.
-export class RetryErrorBoundaryLegacy extends React.Component<Props, State> {
+export class RetryErrorBoundaryLegacy extends Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   static getDerivedStateFromError(error) {
     console.error(error)
@@ -45,14 +45,14 @@ export class RetryErrorBoundaryLegacy extends React.Component<Props, State> {
 
 // Taken from https://relay.dev/docs/guided-tour/rendering/error-states/#when-using-uselazyloadquery
 interface RetryErrorBoundaryProps {
-  failureView?: FC<{ error: Error; retry: () => void }>
-  children: ReactNode
+  failureView?: React.FC<{ error: Error; retry: () => void }>
+  children: React.ReactNode
 }
 interface RetryErrorBoundaryState {
   error: Error | null
 }
 
-export class RetryErrorBoundary extends React.Component<
+export class RetryErrorBoundary extends Component<
   RetryErrorBoundaryProps,
   RetryErrorBoundaryState
 > {

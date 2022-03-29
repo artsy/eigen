@@ -31,10 +31,9 @@ import {
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useTreatment } from "app/utils/useExperiments"
 import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
-import { createRef, FC, RefObject, useEffect, useRef, useState } from "react"
+import { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
@@ -78,6 +77,7 @@ const Home = (props: Props) => {
     prefetchUrl("search")
     prefetchUrl("my-profile")
     prefetchUrl("inbox")
+    prefetchUrl("sales")
   }, [])
 
   const {
@@ -97,43 +97,21 @@ const Home = (props: Props) => {
   )
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
 
-  const newWorksTreatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
-  const artistRecommendationsTreatment = useTreatment("HomeScreenArtistRecommendations")
-
-  const newWorks =
-    newWorksTreatment === "worksForYou"
-      ? {
-          title: "New Works for You",
-          type: "newWorksForYou",
-          data: meAbove,
-          prefetchUrl: "/new-works-for-you",
-        }
-      : {
-          title: "New Works by Artists You Follow",
-          type: "artwork",
-          data: homePageAbove?.followedArtistsArtworkModule,
-          prefetchUrl: "/works-for-you",
-        }
-
-  const artistRecommendations =
-    artistRecommendationsTreatment === "newArtistRecommendations"
-      ? {
-          title: "Recommended Artists",
-          type: "recommended-artists",
-          data: meAbove,
-        }
-      : {
-          title: "Recommended Artists",
-          type: "artist",
-          data: homePageAbove?.recommendedArtistsArtistModule,
-        }
-
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
-    newWorks,
+    {
+      title: "New Works for You",
+      type: "newWorksForYou",
+      data: meAbove,
+      prefetchUrl: "/new-works-for-you",
+    },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
-    artistRecommendations,
+    {
+      title: "Recommended Artists",
+      type: "recommended-artists",
+      data: meAbove,
+    },
     {
       title: "Auction Lots for You Ending Soon",
       type: "lotsByFollowedArtists",
@@ -215,6 +193,7 @@ const Home = (props: Props) => {
     >
       <View style={{ flex: 1 }}>
         <AboveTheFoldFlatList<HomeModule>
+          testID="home-flat-list"
           data={modules}
           initialNumToRender={5}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
@@ -347,7 +326,7 @@ const Home = (props: Props) => {
   )
 }
 
-const HomeHeader: FC<{ homePageAbove: Home_homePageAbove | null }> = ({ homePageAbove }) => (
+const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove | null }> = ({ homePageAbove }) => (
   <Box mb={1} mt={2}>
     <Flex alignItems="center">
       <ArtsyLogoIcon scale={0.75} />
@@ -495,7 +474,7 @@ export const HomeFragmentContainer = createRefetchContainer(
 
 const ModuleSeparator = () => <Spacer mb={MODULE_SEPARATOR_HEIGHT} />
 
-const BelowTheFoldPlaceholder: FC = () => {
+const BelowTheFoldPlaceholder: React.FC = () => {
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
 
   return (
@@ -532,7 +511,7 @@ const BelowTheFoldPlaceholder: FC = () => {
   )
 }
 
-const HomePlaceholder: FC = () => {
+const HomePlaceholder: React.FC = () => {
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
 
   return (
@@ -613,7 +592,7 @@ const messages = {
   },
 }
 
-export const HomeQueryRenderer: FC = () => {
+export const HomeQueryRenderer: React.FC = () => {
   const { flash_message } = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.tabProps.home ?? {}
   ) as {

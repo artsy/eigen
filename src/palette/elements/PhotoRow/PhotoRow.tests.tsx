@@ -17,7 +17,7 @@ describe("PhotoRow", () => {
   describe("when passed an uploaded photo", () => {
     const TestRenderer = () => (
       <RelayEnvironmentProvider environment={mockEnvironment}>
-        <PhotoRow photo={mockUploadedPhoto} onPhotoDelete={mockHandlePhotoDelete} />
+        <PhotoRow photo={mockUploadedPhoto} onPhotoDelete={mockHandlePhotoDelete} progress={0.4} />
       </RelayEnvironmentProvider>
     )
 
@@ -52,7 +52,7 @@ describe("PhotoRow", () => {
   describe("when passed a photo with error", () => {
     const TestRenderer = () => (
       <RelayEnvironmentProvider environment={mockEnvironment}>
-        <PhotoRow photo={mockPhotoWithError} onPhotoDelete={mockHandlePhotoDelete} />
+        <PhotoRow photo={mockPhotoWithError} onPhotoDelete={mockHandlePhotoDelete} progress={0.4} />
       </RelayEnvironmentProvider>
     )
 

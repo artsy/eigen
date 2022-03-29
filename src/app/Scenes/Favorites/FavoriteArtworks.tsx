@@ -1,13 +1,8 @@
-import React, { Component } from "react"
-import { RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-
+import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
+import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { PAGE_SIZE } from "app/Components/constants"
 import { ZeroState } from "app/Components/States/ZeroState"
-
-import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
-import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -15,6 +10,9 @@ import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, ClassTheme } from "palette"
+import React, { Component } from "react"
+import { RefreshControl } from "react-native"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
   me: FavoriteArtworks_me
@@ -185,18 +183,20 @@ const FavoriteArtworksContainer = createPaginationContainer(
   }
 )
 
+export const FavoriteArtworksScreenQuery = graphql`
+  query FavoriteArtworksQuery {
+    me {
+      ...FavoriteArtworks_me
+    }
+  }
+`
+
 export const FavoriteArtworksQueryRenderer = () => {
   const screen = useScreenDimensions()
   return (
     <QueryRenderer<FavoriteArtworksQuery>
       environment={defaultEnvironment}
-      query={graphql`
-        query FavoriteArtworksQuery {
-          me {
-            ...FavoriteArtworks_me
-          }
-        }
-      `}
+      query={FavoriteArtworksScreenQuery}
       variables={{
         count: 10,
       }}

@@ -1946,6 +1946,7 @@ interface ArtworkConnectionInterface {
 type ArtworkConsignmentSubmission {
   displayText: String
   inProgress: Boolean
+  internalID: String
   isSold: Boolean
 }
 
@@ -5826,9 +5827,13 @@ enum ConsignmentSubmissionSource {
   WEB_INBOUND
 }
 
+# Enum with all available submission states
 enum ConsignmentSubmissionStateAggregation {
   APPROVED
+  CLOSED
   DRAFT
+  HOLD
+  PUBLISHED
   REJECTED
   SUBMITTED
 }
@@ -8378,7 +8383,16 @@ union IdentityVerificationEmailMutationType =
 type Image {
   aspectRatio: Float!
   caption: String
-  cropped(height: Int!, version: [String], width: Int!): CroppedImageUrl
+  cropped(
+    height: Int!
+
+    # Value from 0-100; [1x, 2x]
+    quality: [Int!]
+
+    # Version to utilize in order of preference
+    version: [String]
+    width: Int!
+  ): CroppedImageUrl
   deepZoom: DeepZoom
   height: Int
   href: String
@@ -8398,7 +8412,16 @@ type Image {
   # Value to use when `padding-bottom` for fluid image placeholders
   placeholder: String
   position: Int
-  resized(height: Int, version: [String], width: Int): ResizedImageUrl
+  resized(
+    height: Int
+
+    # Value from 0-100; [1x, 2x]
+    quality: [Int!]
+
+    # Version to utilize in order of preference
+    version: [String]
+    width: Int
+  ): ResizedImageUrl
   tileBaseURL: String
   tileFormat: String
   tileSize: Int
@@ -9921,7 +9944,7 @@ input MyCollectionUpdateArtworkInput {
   pricePaidCurrency: String
   provenance: String
   submissionId: String
-  title: String!
+  title: String
   width: String
 }
 
@@ -9970,10 +9993,8 @@ type NotificationPreference {
 }
 
 input NotificationPreferenceInput {
-  channel: String!
-  id: String!
   name: String!
-  status: SubGroupStatus!
+  status: SubGroupInputStatus!
 }
 
 # Consignment Offer Response
@@ -12743,13 +12764,16 @@ type SearchCriteriaEdge {
 
 # Human-friendly representation of a single SearchCriteria filter
 type SearchCriteriaLabel {
+  # The human-friendly label of the filter facet
+  displayValue: String!
+
   # The GraphQL field name of the filter facet
   field: String!
 
   # The human-friendly name of the filter facet
   name: String!
 
-  # The human-friendly value of the filter facet
+  # The value of the filter facet
   value: String!
 }
 
@@ -13340,6 +13364,11 @@ type StaticContent {
 
   # A slug ID.
   slug: ID!
+}
+
+enum SubGroupInputStatus {
+  SUBSCRIBED
+  UNSUBSCRIBED
 }
 
 enum SubGroupStatus {

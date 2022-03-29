@@ -6,7 +6,7 @@ import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "app/Scenes/Consignments/Submission/geminiUploadToS3"
+} from "app/Scenes/Consignments/Submission/uploadFileToS3"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
@@ -24,7 +24,7 @@ import {
 } from "./MyCollectionArtworkForm"
 import * as photoUtil from "./MyCollectionImageUtil"
 
-jest.mock("app/Scenes/Consignments/Submission/geminiUploadToS3", () => ({
+jest.mock("app/Scenes/Consignments/Submission/uploadFileToS3", () => ({
   getConvectionGeminiKey: jest.fn(),
   getGeminiCredentialsForEnvironment: jest.fn(),
   uploadFileToS3: jest.fn(),
@@ -276,13 +276,16 @@ describe("MyCollectionArtworkForm", () => {
         await photoUtil.uploadPhotos([somePhoto, someOtherPhoto])
 
         expect(uploadFileToS3).toHaveBeenCalledTimes(2)
-        expect(uploadFileToS3).toHaveBeenNthCalledWith(1, "some-path", "private", assetCredentials)
-        expect(uploadFileToS3).toHaveBeenNthCalledWith(
-          2,
-          "some-other-path",
-          "private",
-          assetCredentials
-        )
+        expect(uploadFileToS3).toHaveBeenNthCalledWith(1, {
+          filePath: "some-path",
+          acl: "private",
+          assetCredentials,
+        })
+        expect(uploadFileToS3).toHaveBeenNthCalledWith(2, {
+          filePath: "some-other-path",
+          acl: "private",
+          assetCredentials,
+        })
       })
     })
 
@@ -348,6 +351,10 @@ describe("MyCollectionArtworkForm", () => {
                     targetSupply: {
                       isP1: false,
                     },
+                  },
+                  dimensions: {
+                    in: "23",
+                    cm: "26",
                   },
                   artistNames: "some-artist-name",
                   category: null,
