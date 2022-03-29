@@ -193,6 +193,7 @@ const Home = (props: Props) => {
     >
       <View style={{ flex: 1 }}>
         <AboveTheFoldFlatList<HomeModule>
+          testID="home-flat-list"
           data={modules}
           initialNumToRender={5}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
