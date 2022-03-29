@@ -108,11 +108,6 @@ const Home = (props: Props) => {
     },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
     {
-      title: "Recommended Artists",
-      type: "recommended-artists",
-      data: meAbove,
-    },
-    {
       title: "Auction Lots for You Ending Soon",
       type: "lotsByFollowedArtists",
       data: meAbove,
@@ -141,6 +136,11 @@ const Home = (props: Props) => {
       hidden: !articlesConnection,
       prefetchUrl: "/articles",
       prefetchVariables: articlesQueryVariables,
+    },
+    {
+      title: "Recommended Artists",
+      type: "recommended-artists",
+      data: meBelow,
     },
     {
       title: "Shows for You",
@@ -418,12 +418,12 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
         ...NewWorksForYouRail_me
-        ...RecommendedArtistsRail_me
       }
     `,
     meBelow: graphql`
       fragment Home_meBelow on Me {
         ...AuctionResultsRail_me
+        ...RecommendedArtistsRail_me
       }
     `,
     articlesConnection: graphql`
