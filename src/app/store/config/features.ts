@@ -203,6 +203,11 @@ export const features = defineFeatures({
     description: "Enable My Collection Comparable Works",
     showInAdminMenu: true,
   },
+  AREnableHomeScreenArtworkRecommendations: {
+    readyForRelease: false,
+    description: "Enable Home Screen Artwork Recommendations",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
