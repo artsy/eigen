@@ -5,7 +5,7 @@ import {
   ImageCarousel,
   ImageCarouselFragmentContainer,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { retrieveLocalImages } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Join, NoImageIcon, Spacer, Text, useColor } from "palette"
@@ -24,7 +24,16 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     myCollectionArtworkHeaderFragment,
     props.artwork
   )
-  const { artistNames, date, images, internalID, title, slug, consignmentSubmission } = artwork
+  const {
+    artistNames,
+    date,
+    images,
+    internalID,
+    title,
+    slug,
+    consignmentSubmission,
+    submissionId,
+  } = artwork
   const allowSubmissionStatusInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
 
   const [imagesToDisplay, setImagesToDisplay] = useState<
@@ -39,9 +48,29 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
   const { trackEvent } = useTracking()
 
+  const photos = GlobalStore.useAppState((state) => {
+    return state.submissionForMyCollection.submissionDetailsForMyCollection
+  })
   useEffect(() => {
     const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
-    if (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized")) {
+    if (
+      !!submissionId &&
+      (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized"))
+    ) {
+      photos.map((artworkData) => {
+        if (artworkData.submissionId === submissionId) {
+          const mappedLocalImages =
+            artworkData.photos?.map((localImage) => ({
+              url: localImage.path,
+              width: localImage.width,
+              height: localImage.height,
+              deepZoom: null,
+            })) ?? null
+          setImagesToDisplay(mappedLocalImages as any)
+          setIsDisplayingLocalImages(!!artworkData.photos?.length)
+        }
+      })
+    } else if (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized")) {
       // fallback to local images for this collection artwork
       retrieveLocalImages(slug).then((localImages) => {
         const mappedLocalImages =
@@ -118,6 +147,7 @@ const myCollectionArtworkHeaderFragment = graphql`
     consignmentSubmission {
       displayText
     }
+    submissionId
   }
 `
 

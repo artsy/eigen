@@ -5,6 +5,10 @@ import {
   SubmissionModel,
 } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/State/SubmissionModel"
 import {
+  getSubmissionForMyCollectionModel,
+  SubmissionForMyCollectionModel,
+} from "app/Scenes/MyCollection/State/MyCollectionArtworkFromSubmissionModel"
+import {
   getMyCollectionModel,
   MyCollectionModel,
 } from "app/Scenes/MyCollection/State/MyCollectionModel"
@@ -47,6 +51,7 @@ interface GlobalStoreStateModel {
   devicePrefs: DevicePrefsModel
   visualClue: VisualClueModel
   artworkSubmission: SubmissionModel
+  submissionForMyCollection: SubmissionForMyCollectionModel
   requestedPriceEstimates: RequestedPriceEstimatesModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
@@ -121,6 +126,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   userPrefs: getUserPrefsModel(),
   visualClue: getVisualClueModel(),
   artworkSubmission: getSubmissionModel(),
+  submissionForMyCollection: getSubmissionForMyCollectionModel(),
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
 
   // for dev only.

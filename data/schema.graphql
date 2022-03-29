@@ -1876,6 +1876,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # A slug ID.
   slug: ID!
+  submissionId: String
   title: String
 
   # Whether this artwork is unlisted or not

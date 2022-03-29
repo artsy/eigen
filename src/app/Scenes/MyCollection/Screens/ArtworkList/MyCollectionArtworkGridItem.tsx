@@ -24,7 +24,8 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
     (artwork.images && artwork.images[0]?.url)
   const { width } = useScreenDimensions()
 
-  const { artist, artistNames, internalID, medium, slug, title, image, date } = artwork
+  const { artist, artistNames, internalID, medium, slug, title, image, date, submissionId } =
+    artwork
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
   const screen = useScreenDimensions()
@@ -54,6 +55,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           imageURL={imageURL ?? undefined}
           aspectRatio={image?.aspectRatio}
           artworkSlug={slug}
+          artworkSubmissionId={submissionId ?? "noId"}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={1}>
@@ -94,6 +96,7 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         slug
         title
         date
+        submissionId
       }
     `,
   }

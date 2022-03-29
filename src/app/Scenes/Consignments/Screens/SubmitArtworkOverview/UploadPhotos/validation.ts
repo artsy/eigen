@@ -5,6 +5,12 @@ export interface PhotosFormModel {
   initialPhotos?: Photo[]
 }
 
+export interface SubmissionDetailsForMyCollectionFormModel {
+  submissionId: string
+  photos: Photo[]
+  initialPhotos?: Photo[]
+}
+
 export interface Photo {
   id?: string
   geminiToken?: string
@@ -27,6 +33,9 @@ export const photosEmptyInitialValues: PhotosFormModel = {
   photos: [],
   initialPhotos: [],
 }
+
+export const submissionDetailsForMyCollectionEmptyInitialValues: SubmissionDetailsForMyCollectionFormModel[] =
+  []
 
 export const photosValidationSchema = Yup.object().shape({
   photos: Yup.array()

@@ -18,9 +18,7 @@ export interface ArtworkSubmissionModel {
   initializeArtworkDetailsForm: Action<ArtworkSubmissionModel, Partial<ArtworkDetailsFormModel>>
   initializePhotos: Action<ArtworkSubmissionModel, Photo[]>
   photos: PhotosFormModel
-  photosForMyCollection: PhotosFormModel
   setPhotos: Action<ArtworkSubmissionModel, PhotosFormModel>
-  setPhotosForMyCollection: Action<ArtworkSubmissionModel, PhotosFormModel>
   setUtmParams: Action<ArtworkSubmissionModel, ConsignmentsSubmissionUtmParams>
   resetSessionState: Action<ArtworkSubmissionModel>
 }
@@ -34,10 +32,6 @@ export const getSubmissionModel = (): SubmissionModel => ({
     submissionId: "",
     artworkDetails: artworkDetailsEmptyInitialValues,
     photos: photosEmptyInitialValues,
-    photosForMyCollection: photosEmptyInitialValues,
-    setPhotosForMyCollection: action((state, photos) => {
-      state.photosForMyCollection = photos
-    }),
     setPhotos: action((state, photos) => {
       state.photos = photos
     }),

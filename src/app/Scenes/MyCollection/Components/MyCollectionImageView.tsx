@@ -12,6 +12,7 @@ export interface MyCollectionImageViewProps {
   imageHeight?: number
   aspectRatio?: number
   artworkSlug: string
+  artworkSubmissionId: string
 }
 
 export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
@@ -20,10 +21,15 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   imageHeight,
   aspectRatio,
   artworkSlug,
+  artworkSubmissionId,
 }) => {
   const color = useColor()
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
   const [localImageConsignments, setLocalImageConsignments] = useState<Photo | null>(null)
+
+  const photos = GlobalStore.useAppState((state) => {
+    return state.submissionForMyCollection.submissionDetailsForMyCollection
+  })
 
   useEffect(() => {
     retrieveLocalImages(artworkSlug).then((images) => {
@@ -32,12 +38,14 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
       }
     })
   }, [])
-  const { photos } = GlobalStore.useAppState(
-    (state) => state.artworkSubmission.submission.photosForMyCollection
-  )
+
   useEffect(() => {
-    if (photos !== null && photos.length > 0) {
-      setLocalImageConsignments(photos[0])
+    if (artworkSubmissionId && !imageURL) {
+      photos.map((artworkData) => {
+        if (artworkData.submissionId === artworkSubmissionId) {
+          setLocalImageConsignments(artworkData.photos[0])
+        }
+      })
     }
   }, [])
 

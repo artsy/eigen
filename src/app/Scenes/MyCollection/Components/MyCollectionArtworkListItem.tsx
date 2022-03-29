@@ -2,8 +2,10 @@ import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionArtworkListItem_artwork$key } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
+import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
@@ -20,6 +22,75 @@ export const MyCollectionArtworkListItem: React.FC<{
     restProps.artwork
   )
 
+  const [localImageConsignments, setLocalImageConsignments] = useState<Photo | null>(null)
+
+  const photos = GlobalStore.useAppState((state) => {
+    return state.submissionForMyCollection.submissionDetailsForMyCollection
+  })
+  useEffect(() => {
+    if (artwork.submissionId && !artwork.image?.url) {
+      photos.map((artworkData) => {
+        if (artworkData.submissionId === artwork.submissionId) {
+          setLocalImageConsignments(artworkData.photos[0])
+        }
+      })
+    }
+  }, [])
+
+  const renderImage = () => {
+    if (!!artwork.image?.url) {
+      return (
+        <Flex
+          width={ARTWORK_LIST_IMAGE_SIZE}
+          height={ARTWORK_LIST_IMAGE_SIZE}
+          borderRadius={2}
+          alignItems="center"
+          justifyContent="center"
+          overflow="hidden"
+          // To align the image with the text we have to add top margin to compensate the line height.
+          style={{ marginTop: 3 }}
+        >
+          <OpaqueImageView
+            width={ARTWORK_LIST_IMAGE_SIZE}
+            height={ARTWORK_LIST_IMAGE_SIZE}
+            imageURL={artwork.image.url}
+            aspectRatio={artwork.image.aspectRatio}
+          />
+        </Flex>
+      )
+    } else if (!!localImageConsignments) {
+      return (
+        <Flex
+          width={ARTWORK_LIST_IMAGE_SIZE}
+          height={ARTWORK_LIST_IMAGE_SIZE}
+          borderRadius={2}
+          alignItems="center"
+          justifyContent="center"
+          overflow="hidden"
+          // To align the image with the text we have to add top margin to compensate the line height.
+          style={{ marginTop: 3 }}
+        >
+          <OpaqueImageView
+            width={ARTWORK_LIST_IMAGE_SIZE}
+            height={ARTWORK_LIST_IMAGE_SIZE}
+            imageURL={localImageConsignments.path}
+          />
+        </Flex>
+      )
+    } else {
+      return (
+        <Flex
+          width={ARTWORK_LIST_IMAGE_SIZE}
+          height={ARTWORK_LIST_IMAGE_SIZE}
+          borderRadius={2}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <NoArtworkIcon width={20} height={20} opacity={0.3} />
+        </Flex>
+      )
+    }
+  }
   return (
     <Touchable
       underlayColor="black5"
@@ -35,35 +106,7 @@ export const MyCollectionArtworkListItem: React.FC<{
       }}
     >
       <Flex pb={1} flexDirection="row">
-        {!artwork.image?.url ? (
-          <Flex
-            width={ARTWORK_LIST_IMAGE_SIZE}
-            height={ARTWORK_LIST_IMAGE_SIZE}
-            borderRadius={2}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <NoArtworkIcon width={20} height={20} opacity={0.3} />
-          </Flex>
-        ) : (
-          <Flex
-            width={ARTWORK_LIST_IMAGE_SIZE}
-            height={ARTWORK_LIST_IMAGE_SIZE}
-            borderRadius={2}
-            alignItems="center"
-            justifyContent="center"
-            overflow="hidden"
-            // To align the image with the text we have to add top margin to compensate the line height.
-            style={{ marginTop: 3 }}
-          >
-            <OpaqueImageView
-              width={ARTWORK_LIST_IMAGE_SIZE}
-              height={ARTWORK_LIST_IMAGE_SIZE}
-              imageURL={artwork.image.url}
-              aspectRatio={artwork.image.aspectRatio}
-            />
-          </Flex>
-        )}
+        {renderImage()}
 
         <Flex pl={15} flex={1} style={{ marginTop: 3 }}>
           {!!artwork.artist?.name && (
@@ -111,6 +154,7 @@ const artworkFragment = graphql`
     width
     height
     date
+    submissionId
   }
 `
 

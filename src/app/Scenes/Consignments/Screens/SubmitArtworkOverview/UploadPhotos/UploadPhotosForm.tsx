@@ -79,9 +79,14 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     const allPhotos = [...values.photos, ...processedPhotos]
 
     // set photos for my collection, and submission flow state and Formik
-    GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
-      photos: allPhotos,
-    })
+    // add new model here
+
+    if (allPhotos.length > 0) {
+      GlobalStore.actions.submissionForMyCollection.setSubmissionDetailsForMyCollection({
+        submissionId: submission.submissionId,
+        photos: allPhotos,
+      })
+    }
     GlobalStore.actions.artworkSubmission.submission.setPhotos({
       photos: allPhotos,
     })
@@ -111,7 +116,8 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       }
 
       // set photos for my collection, and submission flow state and Formik
-      GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+      GlobalStore.actions.submissionForMyCollection.setSubmissionDetailsForMyCollection({
+        submissionId: submission.submissionId,
         photos: filteredPhotos,
       })
       GlobalStore.actions.artworkSubmission.submission.setPhotos({
