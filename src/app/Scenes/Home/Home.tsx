@@ -33,13 +33,14 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
-import { createRef, RefObject, useEffect, useRef, useState } from "react"
+import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
+import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
@@ -96,6 +97,7 @@ const Home = (props: Props) => {
     "ARHomeAuctionResultsByFollowedArtists"
   )
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
+  const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
@@ -160,6 +162,12 @@ const Home = (props: Props) => {
       subtitle: "The newest works curated by Artsy",
       type: "collections",
       data: homePageBelow?.marketingCollectionsModule,
+    },
+    {
+      title: "Artwork Recommendations",
+      type: "artworkRecommendations",
+      data: meBelow,
+      hidden: !enableArtworkRecommendations,
     },
     {
       title: "Featured Fairs",
@@ -227,6 +235,15 @@ const Home = (props: Props) => {
                   <ArtworkModuleRailFragmentContainer
                     title={item.title}
                     rail={item.data || null}
+                    scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT - 2}
+                  />
+                )
+              case "artworkRecommendations":
+                return (
+                  <ArtworkRecommendationsRail
+                    title={item.title}
+                    me={item.data || null}
                     scrollRef={scrollRefs.current[index]}
                     mb={MODULE_SEPARATOR_HEIGHT - 2}
                   />
@@ -424,6 +441,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       fragment Home_meBelow on Me {
         ...AuctionResultsRail_me
         ...RecommendedArtistsRail_me
+        ...ArtworkRecommendationsRail_me
       }
     `,
     articlesConnection: graphql`
