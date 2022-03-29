@@ -28,7 +28,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   const [localImageConsignments, setLocalImageConsignments] = useState<Photo | null>(null)
 
   const photos = GlobalStore.useAppState((state) => {
-    return state.submissionForMyCollection.submissionDetailsForMyCollection
+    return state.submissionForMyCollection.sessionState.submissionDetailsForMyCollection
   })
 
   useEffect(() => {

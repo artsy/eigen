@@ -25,7 +25,7 @@ export const MyCollectionArtworkListItem: React.FC<{
   const [localImageConsignments, setLocalImageConsignments] = useState<Photo | null>(null)
 
   const photos = GlobalStore.useAppState((state) => {
-    return state.submissionForMyCollection.submissionDetailsForMyCollection
+    return state.submissionForMyCollection.sessionState.submissionDetailsForMyCollection
   })
   useEffect(() => {
     if (artwork.submissionId && !artwork.image?.url) {

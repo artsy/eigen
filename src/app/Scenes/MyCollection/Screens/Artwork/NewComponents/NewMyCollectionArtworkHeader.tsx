@@ -49,7 +49,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const { trackEvent } = useTracking()
 
   const photos = GlobalStore.useAppState((state) => {
-    return state.submissionForMyCollection.submissionDetailsForMyCollection
+    return state.submissionForMyCollection.sessionState.submissionDetailsForMyCollection
   })
   useEffect(() => {
     const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])

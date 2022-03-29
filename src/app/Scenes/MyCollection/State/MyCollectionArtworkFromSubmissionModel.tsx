@@ -10,11 +10,10 @@ export interface SubmissionDetails {
 }
 
 export interface SubmissionForMyCollectionModel {
-  /*  sessionState: {
+  sessionState: {
     nextId: number
-    submissionsInSession: Array<Omit<SubmissionDetails, "positionIndex">>
-  } */
-  submissionDetailsForMyCollection: SubmissionDetailsForMyCollectionFormModel[]
+    submissionDetailsForMyCollection: SubmissionDetailsForMyCollectionFormModel[]
+  }
   setSubmissionDetailsForMyCollection: Action<
     SubmissionForMyCollectionModel,
     SubmissionDetailsForMyCollectionFormModel
@@ -33,15 +32,16 @@ export interface SubmissionDetailsForMyCollectionFormModel {
 // export const photosForMyCollectionEmptyInitialValues: PhotosForMyCollectionFormModel[] = []
 
 export const getSubmissionForMyCollectionModel = (): SubmissionForMyCollectionModel => ({
-  /*  sessionState: {
+  sessionState: {
     nextId: 0,
-    submissionsInSession: [],
-  }, */
-  submissionDetailsForMyCollection: [],
+    submissionDetailsForMyCollection: [],
+  },
   setSubmissionDetailsForMyCollection: action((state, data) => {
-    state.submissionDetailsForMyCollection.push(data)
+    state.sessionState.submissionDetailsForMyCollection.push(data)
+    state.sessionState.nextId += 1
+    return
   }),
   resetSubmissionDetailsForMyCollection: action((state) => {
-    state.submissionDetailsForMyCollection = []
+    state.sessionState.submissionDetailsForMyCollection = []
   }),
 })
