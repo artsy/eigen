@@ -48,16 +48,17 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
   const { trackEvent } = useTracking()
 
-  const photos = GlobalStore.useAppState((state) => {
+  const submissionDetails = GlobalStore.useAppState((state) => {
     return state.submissionForMyCollection.sessionState.submissionDetailsForMyCollection
   })
+
   useEffect(() => {
     const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
     if (
       !!submissionId &&
       (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized"))
     ) {
-      photos.map((artworkData) => {
+      submissionDetails.map((artworkData) => {
         if (artworkData.submissionId === submissionId) {
           const mappedLocalImages =
             artworkData.photos?.map((localImage) => ({

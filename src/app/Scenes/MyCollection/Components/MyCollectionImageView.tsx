@@ -27,7 +27,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
   const [localImageConsignments, setLocalImageConsignments] = useState<Photo | null>(null)
 
-  const photos = GlobalStore.useAppState((state) => {
+  const submissionDetails = GlobalStore.useAppState((state) => {
     return state.submissionForMyCollection.sessionState.submissionDetailsForMyCollection
   })
 
@@ -41,7 +41,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
 
   useEffect(() => {
     if (artworkSubmissionId && !imageURL) {
-      photos.map((artworkData) => {
+      submissionDetails.map((artworkData) => {
         if (artworkData.submissionId === artworkSubmissionId) {
           setLocalImageConsignments(artworkData.photos[0])
         }

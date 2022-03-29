@@ -24,12 +24,12 @@ export const MyCollectionArtworkListItem: React.FC<{
 
   const [localImageConsignments, setLocalImageConsignments] = useState<Photo | null>(null)
 
-  const photos = GlobalStore.useAppState((state) => {
+  const submissionDetails = GlobalStore.useAppState((state) => {
     return state.submissionForMyCollection.sessionState.submissionDetailsForMyCollection
   })
   useEffect(() => {
     if (artwork.submissionId && !artwork.image?.url) {
-      photos.map((artworkData) => {
+      submissionDetails.map((artworkData) => {
         if (artworkData.submissionId === artwork.submissionId) {
           setLocalImageConsignments(artworkData.photos[0])
         }
