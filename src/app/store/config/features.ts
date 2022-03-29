@@ -204,9 +204,10 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableHomeScreenArtworkRecommendations: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Home Screen Artwork Recommendations",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableHomeScreenArtworkRecommendations",
   },
 })
 

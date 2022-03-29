@@ -1,7 +1,8 @@
 import { ArtworkRecommendationsRailTestsQuery } from "__generated__/ArtworkRecommendationsRailTestsQuery.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
-import { graphql, QueryRenderer } from "react-relay"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkRecommendationsRail } from "./ArtworkRecommendationsRail"
@@ -15,35 +16,29 @@ describe("ArtworkRecommendationsRail", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  const TestRenderer = () => (
-    <QueryRenderer<ArtworkRecommendationsRailTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
+  const TestRenderer: React.FC = () => {
+    const queryData = useLazyLoadQuery<ArtworkRecommendationsRailTestsQuery>(
+      graphql`
         query ArtworkRecommendationsRailTestsQuery @raw_response_type {
           me {
             ...ArtworkRecommendationsRail_me
           }
         }
-      `}
-      variables={{}}
-      render={({ props, error }) => {
-        if (props?.me) {
-          return (
-            <ArtworkRecommendationsRail
-              scrollRef={null}
-              title="Recommended Artworks"
-              me={props.me}
-            />
-          )
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
-  )
+      `,
+      {}
+    )
 
-  const getWrapper = () => {
-    const tree = renderWithWrappersTL(<TestRenderer />)
+    return (
+      <ArtworkRecommendationsRail
+        scrollRef={null}
+        title="Recommended Artworks"
+        me={queryData.me!}
+      />
+    )
+  }
+
+  const getWrapper = async () => {
+    const tree = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation({
@@ -52,11 +47,13 @@ describe("ArtworkRecommendationsRail", () => {
       })
     })
 
+    await flushPromiseQueue()
+
     return tree
   }
 
   it("Renders list of recommended artworks without throwing an error", async () => {
-    const { queryByText } = getWrapper()
+    const { queryByText } = await getWrapper()
 
     expect(queryByText("Nicolas Party")).toBeTruthy()
     expect(queryByText("Andy Warhol")).toBeTruthy()
