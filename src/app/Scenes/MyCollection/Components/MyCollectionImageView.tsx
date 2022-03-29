@@ -12,7 +12,7 @@ export interface MyCollectionImageViewProps {
   imageHeight?: number
   aspectRatio?: number
   artworkSlug: string
-  artworkSubmissionId: string
+  artworkSubmissionId?: string
 }
 
 export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
