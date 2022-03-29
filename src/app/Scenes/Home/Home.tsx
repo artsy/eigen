@@ -31,7 +31,6 @@ import {
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useTreatment } from "app/utils/useExperiments"
 import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import { createRef, RefObject, useEffect, useRef, useState } from "react"
@@ -98,43 +97,21 @@ const Home = (props: Props) => {
   )
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
 
-  const newWorksTreatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
-  const artistRecommendationsTreatment = useTreatment("HomeScreenArtistRecommendations")
-
-  const newWorks =
-    newWorksTreatment === "worksForYou"
-      ? {
-          title: "New Works for You",
-          type: "newWorksForYou",
-          data: meAbove,
-          prefetchUrl: "/new-works-for-you",
-        }
-      : {
-          title: "New Works by Artists You Follow",
-          type: "artwork",
-          data: homePageAbove?.followedArtistsArtworkModule,
-          prefetchUrl: "/works-for-you",
-        }
-
-  const artistRecommendations =
-    artistRecommendationsTreatment === "newArtistRecommendations"
-      ? {
-          title: "Recommended Artists",
-          type: "recommended-artists",
-          data: meAbove,
-        }
-      : {
-          title: "Recommended Artists",
-          type: "artist",
-          data: homePageAbove?.recommendedArtistsArtistModule,
-        }
-
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
-    newWorks,
+    {
+      title: "New Works for You",
+      type: "newWorksForYou",
+      data: meAbove,
+      prefetchUrl: "/new-works-for-you",
+    },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
-    artistRecommendations,
+    {
+      title: "Recommended Artists",
+      type: "recommended-artists",
+      data: meAbove,
+    },
     {
       title: "Auction Lots for You Ending Soon",
       type: "lotsByFollowedArtists",
