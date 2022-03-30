@@ -8,6 +8,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { PAGE_SIZE } from "app/Components/constants"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -296,6 +297,9 @@ export const MyCollectionQueryRenderer: React.FC = () => {
         render={renderWithPlaceholder({
           Container: MyCollectionContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,
+          renderFallback: ({ retry }) => (
+            <LoadFailureView onRetry={retry!} justifyContent="flex-end" />
+          ),
         })}
       />
     </ArtworkFiltersStoreProvider>
