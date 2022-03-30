@@ -286,6 +286,9 @@ export const Search: React.FC = () => {
           <Configure clickAnalytics />
           <RefetchWhenApiKeyExpiredContainer refetch={onRefetch} />
           <Flex p={2} pb={1}>
+            <Text variant="lg">Explore</Text>
+          </Flex>
+          <Flex p={2} pb={1}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
               onTextChange={onTextChange}
