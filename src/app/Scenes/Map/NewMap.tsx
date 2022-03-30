@@ -1,4 +1,5 @@
 import MapboxGL from "@react-native-mapbox-gl/maps"
+import { themeGet } from "@styled-system/theme-get"
 import { Dimensions, StyleSheet, View } from "react-native"
 import Config from "react-native-config"
 import { ArtsyMapStyleURL } from "./GlobalMap"
@@ -10,7 +11,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F5FCFF",
+    backgroundColor: `${themeGet("colors.white100")}`,
   },
   container: {
     width: "100%",
