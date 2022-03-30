@@ -6,7 +6,7 @@ This update includes a number of improvements and bug fixes including:
 - Request price estimates for artworks in your collection
 - An improved collector profile screen
 - An improved search experience
-- New improved price filters with histograms to understand the artist's work range across different price points
+- New improved price filters with histograms
 
 
 Have feedback? Email us at support@artsy.net
