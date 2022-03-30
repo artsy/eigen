@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
+import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useExperimentFlag, useExperimentVariant } from "app/utils/experiments/hooks"
 import {
@@ -12,7 +13,7 @@ import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
-import { Box, Flex, Spacer, Text } from "palette"
+import { Box, Button, Flex, Spacer, Text } from "palette"
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   Configure,
@@ -94,7 +95,7 @@ export const Search: React.FC = () => {
   const { system } = queryData
   const indices = system?.algolia?.indices ?? []
   const indiceNames = indices.map((indice) => indice.name)
-
+  const enableMaps = useFeatureFlag("AREnableMapScreen")
   const onRefetch = () => {
     if (isRefreshing) {
       return
@@ -310,6 +311,12 @@ export const Search: React.FC = () => {
                 <RecentSearches />
                 <Spacer mb={3} />
                 {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
+                <Spacer mb="40px" />
+                {!!enableMaps && (
+                  <Flex m="0 auto" pb={1}>
+                    <Button onPress={() => navigate("/map")}>Near Me</Button>
+                  </Flex>
+                )}
                 <Spacer mb="40px" />
               </Scrollable>
             )}

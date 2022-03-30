@@ -209,6 +209,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableHomeScreenArtworkRecommendations",
   },
+  AREnableMapScreen: {
+    readyForRelease: false,
+    description: "Enable Crossplatform Map Screen",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
