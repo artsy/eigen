@@ -36,9 +36,11 @@ export const Versions = {
   AddSourceAndMyCollectionArtworkIDToSubmission: 24,
   AddSourceInitialPhotosToSubmission: 25,
   RequestedPriceEstimates: 26,
+  RemovePhotosForMyCollectionFromSubmissions: 27,
+  AddSubmissionForMyCollection: 28,
 }
 
-export const CURRENT_APP_VERSION = Versions.RequestedPriceEstimates
+export const CURRENT_APP_VERSION = Versions.AddSubmissionForMyCollection
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -163,9 +165,6 @@ export const artsyAppMigrations: Migrations = {
         photos: {
           photos: [],
         },
-        photosForMyCollection: {
-          photos: [],
-        },
       },
     }
   },
@@ -191,10 +190,15 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddSourceInitialPhotosToSubmission]: (state) => {
     state.artworkSubmission.submission.photos.initialPhotos = []
-    state.artworkSubmission.submission.photosForMyCollection.initialPhotos = []
   },
   [Versions.RequestedPriceEstimates]: (state) => {
     state.requestedPriceEstimates = { requestedPriceEstimates: {} }
+  },
+  [Versions.RemovePhotosForMyCollectionFromSubmissions]: (state) => {
+    delete state.artworkSubmission.submission.photosForMyCollection
+  },
+  [Versions.AddSubmissionForMyCollection]: (state) => {
+    state.submissionForMyCollection = {}
   },
 }
 

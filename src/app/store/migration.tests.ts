@@ -620,3 +620,39 @@ describe("App version Versions.AddSourceInitialPhotosToSubmission", () => {
     expect(migratedState.artworkSubmission.submission.photos.initialPhotos).toEqual([])
   })
 })
+
+describe("App version Versions.RemovePhotosForMyCollectionFromSubmissions", () => {
+  const migrationToTest = Versions.RemovePhotosForMyCollectionFromSubmissions
+
+  it("removes photosForMyCollection from state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artworkSubmission.submission.photosForMyCollection).toEqual(undefined)
+  })
+})
+
+describe("App version Versions.AddSubmissionForMyCollection", () => {
+  const migrationToTest = Versions.AddSubmissionForMyCollection
+
+  it("adds submissionDetailsForMyCollection to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.submissionForMyCollection).toEqual({})
+  })
+})
