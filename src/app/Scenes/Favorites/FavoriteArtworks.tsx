@@ -210,7 +210,9 @@ export const FavoriteArtworksQueryRenderer = () => {
             </StickyTabPageScrollView>
           )
         },
-        renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} displayInBottom />,
+        renderFallback: ({ retry }) => (
+          <LoadFailureView onRetry={retry!} justifyContent="flex-end" />
+        ),
       })}
     />
   )

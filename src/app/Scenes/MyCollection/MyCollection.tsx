@@ -297,7 +297,9 @@ export const MyCollectionQueryRenderer: React.FC = () => {
         render={renderWithPlaceholder({
           Container: MyCollectionContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,
-          renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} displayInBottom />,
+          renderFallback: ({ retry }) => (
+            <LoadFailureView onRetry={retry!} justifyContent="flex-end" />
+          ),
         })}
       />
     </ArtworkFiltersStoreProvider>
