@@ -11,6 +11,7 @@ import { defaultEnvironment } from "./relay/createEnvironment"
 import { GlobalStore, GlobalStoreProvider, useFeatureFlag } from "./store/GlobalStore"
 import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"
+import { EigenIntlProvider } from "./utils/internationalization/EigenIntlProvider"
 import { track } from "./utils/track"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 
@@ -32,6 +33,7 @@ export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
       PopoverMessageProvider,
       _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
+      EigenIntlProvider,
     ],
     children
   )

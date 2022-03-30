@@ -39,6 +39,13 @@ module.exports = (api) => {
       ["@babel/plugin-transform-react-jsx", { runtime: "automatic" }], // this is so `import React from "react"` is not needed.
       "relay",
       "import-graphql",
+      [
+        "formatjs",
+        {
+          "idInterpolationPattern": "[sha512:contenthash:base64:6]",
+          "ast": true
+        }
+      ]
     ],
   }
 }
