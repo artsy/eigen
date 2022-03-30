@@ -343,7 +343,7 @@ export const Search: React.FC = () => {
           )}
           {!!enableMaps && (
             <Flex m="0 auto">
-              <Button onPress={() => navigate("/map")}>Open Maps</Button>
+              <Button onPress={() => navigate("/map")}>Near Me</Button>
             </Flex>
           )}
         </InstantSearch>
