@@ -1,8 +1,7 @@
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { Dimensions, StyleSheet, View } from "react-native"
 import Config from "react-native-config"
-// import { ArtsyMapStyleURL } from "./GlobalMap"
-// TODO: this is where we can get the custom map style that we use in city guide
+import { ArtsyMapStyleURL } from "./GlobalMap"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
@@ -26,7 +25,7 @@ export const NewMapScreen = () => {
   return (
     <View style={styles.page}>
       <View style={styles.container}>
-        <MapboxGL.MapView style={styles.map} />
+        <MapboxGL.MapView styleURL={ArtsyMapStyleURL} style={styles.map} compassEnabled={false} />
       </View>
     </View>
   )
