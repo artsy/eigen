@@ -312,6 +312,12 @@ export const Search: React.FC = () => {
                 <Spacer mb={3} />
                 {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
                 <Spacer mb="40px" />
+                {!!enableMaps && (
+                  <Flex m="0 auto" pb={1}>
+                    <Button onPress={() => navigate("/map")}>Near Me</Button>
+                  </Flex>
+                )}
+                <Spacer mb="40px" />
               </Scrollable>
             )}
           </Flex>
@@ -340,11 +346,6 @@ export const Search: React.FC = () => {
               top={0}
               right={0}
             />
-          )}
-          {!!enableMaps && (
-            <Flex m="0 auto">
-              <Button onPress={() => navigate("/map")}>Near Me</Button>
-            </Flex>
           )}
         </InstantSearch>
       </ArtsyKeyboardAvoidingView>
