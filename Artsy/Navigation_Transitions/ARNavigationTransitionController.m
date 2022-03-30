@@ -1,9 +1,5 @@
 #import "ARNavigationTransitionController.h"
-
 #import "ARDefaultNavigationTransition.h"
-
-#import "ARViewInRoomViewController.h"
-
 
 @implementation ARNavigationTransitionController
 
