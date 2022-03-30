@@ -26,7 +26,7 @@ interface CustomSizeInputsContainerProps {
   metric: Metric
 }
 
-export const EUROPE_SIZE_OPTIONS: FilterData[] = [
+const EUROPE_SIZE_OPTIONS: FilterData[] = [
   {
     displayText: "Small (under 40cm)",
     paramName: FilterParamName.sizes,
@@ -44,7 +44,7 @@ export const EUROPE_SIZE_OPTIONS: FilterData[] = [
   },
 ]
 
-export const USA_SIZE_OPTIONS: FilterData[] = [
+const USA_SIZE_OPTIONS: FilterData[] = [
   {
     displayText: "Small (under 16in)",
     paramName: FilterParamName.sizes,

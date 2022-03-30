@@ -11,7 +11,7 @@ import {
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
 import { parsePriceRangeLabel, parseRange } from "../Filters/helpers"
-import { EUROPE_SIZE_OPTIONS, USA_SIZE_OPTIONS } from "../Filters/SizesOptionsScreen"
+import { getSizeOptions } from "../Filters/SizesOptionsScreen"
 
 import { WAYS_TO_BUY_OPTIONS } from "../Filters/WaysToBuyOptions"
 import { FALLBACK_SIZE_OPTIONS, shouldExtractValueNamesFromAggregation } from "./constants"
@@ -75,8 +75,9 @@ export const convertSizeToFilterParams = (
 
   if (Array.isArray(sizesValues)) {
     const sizeOptions = sizesValues.map((sizeValue) => {
-      const SIZES_OPTIONS =
-        unsafe_getLocalizedUnit() === "in" ? USA_SIZE_OPTIONS : EUROPE_SIZE_OPTIONS
+      const unit = unsafe_getLocalizedUnit() || "in"
+      const SIZES_OPTIONS = getSizeOptions(unit)
+
       return SIZES_OPTIONS.find((sizeOption) => sizeOption.paramValue === sizeValue)
     })
     const filledSizeOptions = compact(sizeOptions)

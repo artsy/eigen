@@ -162,7 +162,7 @@ export function unsafe_getFeatureFlag(key: FeatureName): boolean {
  * It is safe to use in contexts that don't require reactivity.
  */
 export function unsafe_getLocalizedUnit() {
-  const state = globalStoreInstance().getState() ?? null
+  const state = globalStoreInstance().getState()
   if (state) {
     return state.userPrefs.metric
   }
