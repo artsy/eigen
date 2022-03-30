@@ -2,7 +2,9 @@ package net.artsy.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
+import com.braze.Braze;
 import com.appboy.AppboyLifecycleCallbackListener;
 import com.segment.analytics.android.integrations.adjust.AdjustIntegration;
 import com.segment.analytics.Analytics;
@@ -15,8 +17,10 @@ import com.facebook.soloader.SoLoader;
 import io.sentry.react.RNSentryPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainApplication extends Application implements ReactApplication {
+  private static final String TAG = MainApplication.class.getName();
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
@@ -48,6 +52,9 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+
+    Log.i(TAG, "TOKEN onCreate called");
+
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     ArtsyNativeModule.didLaunch(
@@ -61,6 +68,26 @@ public class MainApplication extends Application implements ReactApplication {
         .use(AdjustIntegration.FACTORY)
         .build();
     Analytics.setSingletonInstance(analytics);
+
+    // Example of how to register for Firebase Cloud Messaging manually.
+    final Context applicationContext = this;
+    FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+      if (!task.isSuccessful()) {
+        Log.i(TAG, "TOKEN failed to fetch registration token");
+        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+        return;
+      }
+
+      final String token = task.getResult();
+      Log.i(TAG, "================");
+      Log.i(TAG, "================");
+      Log.i(TAG, "TOKEN registering firebase token " + token);
+      Log.i(TAG, "Registering firebase token in Application class: " + token);
+      Log.i(TAG, "================");
+      Log.i(TAG, "================");
+      Braze.getInstance(applicationContext).registerAppboyPushMessages(token);
+    });
+
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
   }
 
