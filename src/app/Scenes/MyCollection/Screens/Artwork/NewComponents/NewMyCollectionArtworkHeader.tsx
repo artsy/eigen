@@ -24,7 +24,16 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     myCollectionArtworkHeaderFragment,
     props.artwork
   )
-  const { artistNames, date, images, internalID, title, slug, consignmentSubmission } = artwork
+  const {
+    artistNames,
+    date,
+    images,
+    internalID,
+    title,
+    slug,
+    consignmentSubmission,
+    submissionId,
+  } = artwork
   const allowSubmissionStatusInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
 
   const [imagesToDisplay, setImagesToDisplay] = useState<
@@ -43,19 +52,26 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
     if (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized")) {
       // fallback to local images for this collection artwork
-      retrieveLocalImages(slug).then((localImages) => {
+      ;(async () => {
+        const [localVanillaArtworkImages, localSubmissionArtworkImages] = await Promise.all([
+          retrieveLocalImages(slug),
+          submissionId ? retrieveLocalImages(submissionId) : undefined,
+        ])
+
         const mappedLocalImages =
-          localImages?.map((localImage) => ({
+          (localVanillaArtworkImages || localSubmissionArtworkImages)?.map((localImage) => ({
             url: localImage.path,
             width: localImage.width,
             height: localImage.height,
             deepZoom: null,
           })) ?? null
         setImagesToDisplay(mappedLocalImages)
-        setIsDisplayingLocalImages(!!localImages?.length)
-      })
+        setIsDisplayingLocalImages(
+          !!localVanillaArtworkImages?.length || !!localSubmissionArtworkImages?.length
+        )
+      })()
     }
-  }, [])
+  }, [submissionId])
 
   const ImagesToDisplayCarousel = isDisplayingLocalImages
     ? ImageCarousel
@@ -118,6 +134,7 @@ const myCollectionArtworkHeaderFragment = graphql`
     consignmentSubmission {
       displayText
     }
+    submissionId
   }
 `
 

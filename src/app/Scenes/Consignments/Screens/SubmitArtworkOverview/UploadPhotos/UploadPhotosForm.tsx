@@ -4,6 +4,7 @@ import {
   Photo,
   PhotosFormModel,
 } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
+import { storeLocalPhotos } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
@@ -85,7 +86,11 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     GlobalStore.actions.artworkSubmission.submission.setPhotos({
       photos: allPhotos,
     })
-    setFieldValue("photos", allPhotos)
+
+    // store photos in asynstorage to be retrieved later when the user goes to My Collection
+    storeLocalPhotos(submission.submissionId, photos)
+
+    setFieldValue("photos", photos)
   }
 
   // show Native action sheet and get photos from user's phone
