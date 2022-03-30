@@ -1,12 +1,12 @@
 import { Spacer } from "palette"
 import React from "react"
 import { View } from "react-native"
-import { AboveTheFoldFlatList, AboveTheFoldFlatListProps } from "../AboveTheFoldFlatList"
+import { PrefetchFlatList, PrefetchFlatListProps } from "../PrefetchFlatList"
 import Spinner from "../Spinner"
 
 export const INTER_CARD_PADDING = 15
 
-type CardRailFlatList<ItemType> = AboveTheFoldFlatListProps<ItemType>
+type CardRailFlatList<ItemType> = PrefetchFlatListProps<ItemType>
 
 export function CardRailFlatList<ItemType>({
   initialNumToRender: initialNumToRenderProp,
@@ -15,7 +15,7 @@ export function CardRailFlatList<ItemType>({
   const initialNumToRender = initialNumToRenderProp || 2
 
   return (
-    <AboveTheFoldFlatList<ItemType>
+    <PrefetchFlatList<ItemType>
       ListHeaderComponent={() => <Spacer mr={2} />}
       ListFooterComponent={() => <Spacer mr={2} />}
       ItemSeparatorComponent={() => <View style={{ width: INTER_CARD_PADDING }} />}

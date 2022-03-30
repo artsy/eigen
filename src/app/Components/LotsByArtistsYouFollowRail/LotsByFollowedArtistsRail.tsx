@@ -54,6 +54,7 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay, m
       <CardRailFlatList
         data={artworks}
         initialNumToRender={PAGE_SIZE}
+        prefetchUrlExtractor={(artwork) => artwork?.href!}
         windowSize={3}
         renderItem={({ item: artwork }) => (
           <SaleArtworkTileRailCardContainer
