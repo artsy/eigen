@@ -28,11 +28,12 @@ const styles = StyleSheet.create({
 
 const TopButtonsContainer = styled(Box)`
   position: absolute;
-  left: 0;
+  left: -25;
   right: 0;
   z-index: 1;
   width: 100%;
   height: 100;
+  bottom: 10;
 `
 
 const DEFAULT_ZOOM_LEVEL = 11
@@ -66,7 +67,7 @@ export const NewMapScreen = () => {
     <View style={styles.page}>
       <View style={styles.container}>
         <MapboxGL.MapView styleURL={ArtsyMapStyleURL} style={styles.map} compassEnabled={false}>
-          <TopButtonsContainer style={{ bottom: 10, left: -25 }}>
+          <TopButtonsContainer>
             <UserPositionButton onPress={onPressUserPositionButton} />
           </TopButtonsContainer>
           <MapboxGL.UserLocation
