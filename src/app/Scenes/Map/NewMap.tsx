@@ -43,6 +43,8 @@ export const NewMapScreen: FC = () => {
   const { ALGOLIA_API_KEY, ALGOLIA_APP_ID } = process.env
   const client = algoliasearch(ALGOLIA_APP_ID!, ALGOLIA_API_KEY!)
 
+  const galleryIndex = client.initIndex("PartnerLocation_development")
+
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const mapRef = useRef<MapboxGL.MapView>(null)
   const [userLocation, setUserLocation] = useState<GeoJSON.Position>()
@@ -73,7 +75,7 @@ export const NewMapScreen: FC = () => {
           ref={mapRef}
           onRegionDidChange={async () => {
             const newBounds = await mapRef.current?.getVisibleBounds()
-            console.warn("mapRef.current?.getVisibleBounds", visibleBounds)
+            // @ts-expect-error
             setVisibleBounds(newBounds)
           }}
           styleURL={ArtsyMapStyleURL}
