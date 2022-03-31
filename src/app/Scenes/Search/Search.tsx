@@ -39,7 +39,7 @@ import { CityGuideCTANew } from "./components/CityGuideCTANew"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
-import { ALLOWED_ALGOLIA_KEYS } from "./constants"
+import { ALLOWED_ALGOLIA_KEYS, DEFAULT_PILLS, TOP_PILL } from "./constants"
 import { getContextModuleByPillName, isAlgoliaApiKeyExpiredError } from "./helpers"
 import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
@@ -65,18 +65,6 @@ interface SearchState {
   query?: string
   page?: number
 }
-
-const TOP_PILL: PillType = {
-  displayName: "Top",
-  type: "elastic",
-  key: "top",
-}
-const ARTWORKS_PILL: PillType = {
-  displayName: "Artworks",
-  type: "elastic",
-  key: "artworks",
-}
-const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
 
 const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
   [ContextModule.auctionTab]: "Auction Results",
@@ -171,7 +159,7 @@ export const Search: React.FC = () => {
       }
     })
 
-    return [...pills, ...formattedIndices]
+    return [...DEFAULT_PILLS, ...formattedIndices]
   }, [indices, indicesInfo, enableImprovedSearchPills])
 
   useEffect(() => {
