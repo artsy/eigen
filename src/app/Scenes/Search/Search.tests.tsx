@@ -152,7 +152,7 @@ describe("Search Screen", () => {
     })
 
     await flushPromiseQueue()
-    expect(getByText("Explore Art on View")).toBeTruthy()
+    expect(getByText("City Guide")).toBeTruthy()
   })
 
   it('the "Top" pill should be selected by default', async () => {
