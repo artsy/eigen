@@ -2,7 +2,7 @@ import MapboxGL from "@react-native-mapbox-gl/maps"
 import algoliasearch from "algoliasearch"
 import { Box, Button, Flex, Text } from "palette"
 import { FC, useEffect, useRef, useState } from "react"
-import { Dimensions, StyleSheet, View } from "react-native"
+import { Dimensions, ScrollView, StyleSheet, View } from "react-native"
 import Config from "react-native-config"
 import styled from "styled-components/native"
 import cityData from "../../../../data/cityDataSortedByDisplayPreference.json"
@@ -40,6 +40,7 @@ const BERLIN_DATA = cityData.find((city) => city.name === "Berlin")
 const BERLIN_COORDS = [BERLIN_DATA!.coordinates.lng, BERLIN_DATA!.coordinates.lat]
 
 interface GalleryHit {
+  id: string
   partner: {
     name: string
     href: string
@@ -57,15 +58,13 @@ const algoliaAppId = process.env.ALGOLIA_APP_ID
 const client = algoliasearch(algoliaAppId!, algoliaApiKey!)
 const galleryIndex = client.initIndex("PartnerLocation_staging")
 
-type PartnerLocation = any
-
 export const NewMapScreen: FC = () => {
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const mapRef = useRef<MapboxGL.MapView>(null)
   const [userLocation, setUserLocation] = useState<GeoJSON.Position>()
   const [showUserLocation, setShowUserLocation] = useState(false)
   const [visibleBounds, setVisibleBounds] = useState<GeoJSON.Position[] | undefined>()
-  const [locations, setLocations] = useState<PartnerLocation[] | undefined>()
+  const [locations, setLocations] = useState<GalleryHit[] | undefined>()
   const [showReloadButton, setShowReloadButton] = useState<boolean>(false)
   const didInitialFetch = useRef(false)
   // fly user to their location in the map
@@ -109,7 +108,7 @@ export const NewMapScreen: FC = () => {
     }
     try {
       const results = await galleryIndex.search<GalleryHit>("", options)
-      console.log(results)
+      console.log(JSON.stringify(results.hits, null, 2))
       console.warn("Hits: " + results.hits.length)
       setLocations(results.hits ?? undefined)
       return results.hits
@@ -128,51 +127,69 @@ export const NewMapScreen: FC = () => {
   }
 
   return (
-    <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="white100">
-      <View style={mapContainerStyles.container}>
-        <MapboxGL.MapView
-          ref={mapRef}
-          onRegionDidChange={async () => {
-            const newBounds = await mapRef.current?.getVisibleBounds()
-
-            setVisibleBounds(newBounds)
-          }}
-          styleURL={ArtsyMapStyleURL}
-          style={mapContainerStyles.map}
-          compassEnabled={false}
-        >
-          <TopButtonsContainer>
-            <UserPositionButton onPress={onPressUserPositionButton} />
-            {!!showReloadButton && (
-              <Button ml={30} onPress={onPressReloadButton}>
-                Reload{" "}
-              </Button>
-            )}
-          </TopButtonsContainer>
-          <MapboxGL.UserLocation
-            // dynamically pass this onUpdate when user presses the CrossHair Icon
-            // to avoid starting the location manager before that
-            {...(!!showUserLocation && { onUpdate: onUpdateUserLocation })}
-            visible={showUserLocation}
-            androidRenderMode="normal"
-            minDisplacement={MINIMUM__METERS_BEFORE_UPDATING_POSITION}
-          />
-          <MapboxGL.Camera
-            ref={cameraRef}
-            animationMode="flyTo"
-            centerCoordinate={BERLIN_COORDS}
-            zoomLevel={DEFAULT_ZOOM_LEVEL}
-            minZoomLevel={MIN_ZOOM_LVL}
-            maxZoomLevel={MAX_ZOOM_LVL}
-          />
-          <MapboxGL.MarkerView id="1" coordinate={BERLIN_COORDS} />
-        </MapboxGL.MapView>
-      </View>
-      <View>
-        <Box backgroundColor="gray60">
-          <Text fontFamily="sans">{JSON.stringify(locations, null, 2)}</Text>
-        </Box>
-      </View>
-    </Flex>
+    <ScrollView>
+      <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="white100">
+        <View style={mapContainerStyles.container}>
+          <MapboxGL.MapView
+            ref={mapRef}
+            onRegionDidChange={async () => {
+              // TODO: I think this fires several times on the initial flyTo render
+              const newBounds = await mapRef.current?.getVisibleBounds()
+              setVisibleBounds(newBounds)
+            }}
+            styleURL={ArtsyMapStyleURL}
+            style={mapContainerStyles.map}
+            compassEnabled={false}
+          >
+            <TopButtonsContainer>
+              <UserPositionButton onPress={onPressUserPositionButton} />
+              {!!showReloadButton && (
+                <Button ml={30} onPress={onPressReloadButton}>
+                  Reload{" "}
+                </Button>
+              )}
+            </TopButtonsContainer>
+            <MapboxGL.UserLocation
+              // dynamically pass this onUpdate when user presses the CrossHair Icon
+              // to avoid starting the location manager before that
+              {...(!!showUserLocation && { onUpdate: onUpdateUserLocation })}
+              visible={showUserLocation}
+              androidRenderMode="normal"
+              minDisplacement={MINIMUM__METERS_BEFORE_UPDATING_POSITION}
+            />
+            <MapboxGL.Camera
+              ref={cameraRef}
+              animationMode="flyTo"
+              centerCoordinate={BERLIN_COORDS}
+              zoomLevel={DEFAULT_ZOOM_LEVEL}
+              minZoomLevel={MIN_ZOOM_LVL}
+              maxZoomLevel={MAX_ZOOM_LVL}
+            />
+            <MapboxGL.MarkerView id="1" coordinate={BERLIN_COORDS} />
+            {!!locations &&
+              locations.map((location) => {
+                const {
+                  id,
+                  partner: { name },
+                  _geoloc: { lng, lat },
+                } = location
+                return <MapboxGL.MarkerView key={id} id={name} coordinate={[lng, lat]} />
+              })}
+          </MapboxGL.MapView>
+        </View>
+        <View>
+          <Box backgroundColor="gray60">
+            {!!locations &&
+              locations.map((location) => {
+                const {
+                  id,
+                  partner: { name },
+                } = location
+                return <Text key={id}>{name}</Text>
+              })}
+          </Box>
+        </View>
+      </Flex>
+    </ScrollView>
   )
 }
