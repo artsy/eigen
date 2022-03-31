@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/featuredArtworkWidget"
     style="@style/Widget.Artsy.AppWidget.Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,7 +29,7 @@
         app:srcCompat="@mipmap/ic_notification" />
 
     <TextView
-        android:id="@+id/artworkTitle"
+        android:id="@+id/artistName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

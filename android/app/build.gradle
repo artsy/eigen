@@ -253,6 +253,9 @@ dependencies {
     implementation 'com.facebook.fresco:webpsupport:2.6.0'
     implementation 'com.android.support:support-core-utils:24.2.1'
 
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.android.volley:volley:1.2.1'
+
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/"
