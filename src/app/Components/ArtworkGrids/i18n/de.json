@@ -1,0 +1,27 @@
+{
+  "component": {
+    "artworkGrids": {
+      "artworkGridItem": {
+        "lotText": "Haufen {lotLabel}",
+        "soldForText": "Verkauft für {realizedPrize}",
+        "biddingClosedText": "Ausschreibung geschlossen",
+        "bidderPosition": {
+          "smallTileText": "{currentBid} (Gebot)",
+          "defaultText:": "{currentBid} (Startgebot)",
+          "bidSingular": "1 Gebot",
+          "bidPlural": "{bidderPositions} Gebote"
+        },
+        "saleMessage": "Preis auf Anfrage"
+      },
+
+      "artworksFilterHeader": {
+        "title": "Sortieren & Filtern"
+      },
+
+      "filteredArtworkGridZeroState": {
+        "zeroStateMessage": "Keine Ergebnisse gefunden\nBitte versuchen Sie es mit einer anderen Suche.",
+        "clearButton": "Filter löschen"
+      }
+    }
+  }
+}

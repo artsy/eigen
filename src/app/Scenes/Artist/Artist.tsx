@@ -24,6 +24,7 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Flex, Message } from "palette"
 import React, { useEffect } from "react"
+import { useIntl } from "react-intl"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -49,7 +50,9 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     searchCriteria,
     fetchCriteriaError,
   } = props
+
   const popoverMessage = usePopoverMessage()
+  const intl = useIntl()
 
   const tabs: TabProps[] = []
   const displayAboutSection =
@@ -60,8 +63,14 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   useEffect(() => {
     if (!!fetchCriteriaError) {
       popoverMessage.show({
-        title: "Sorry, an error occured",
-        message: "Failed to get saved search criteria",
+        title: intl.formatMessage({
+          id: "scene.artist.popover.title",
+          defaultMessage: "Sorry, an error occured",
+        }),
+        message: intl.formatMessage({
+          id: "scene.artist.popover.message",
+          defaultMessage: "Failed to get saved search criteria",
+        }),
         placement: "top",
         type: "error",
       })
@@ -70,7 +79,10 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 
   if (displayAboutSection) {
     tabs.push({
-      title: "Overview",
+      title: intl.formatMessage({
+        id: "scene.artist.tabs.overview",
+        defaultMessage: "Overview",
+      }),
       content: artistBelowTheFold ? (
         <ArtistAboutContainer artist={artistBelowTheFold} />
       ) : (
@@ -81,14 +93,20 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 
   if (!!artistAboveTheFold.statuses?.artworks) {
     tabs.push({
-      title: "Artworks",
+      title: intl.formatMessage({
+        id: "scene.artist.tabs.artworks",
+        defaultMessage: "Artworks",
+      }),
       content: <ArtistArtworks artist={artistAboveTheFold} searchCriteria={searchCriteria} />,
     })
   }
 
   if (!!artistAboveTheFold?.statuses?.auctionLots) {
     tabs.push({
-      title: "Insights",
+      title: intl.formatMessage({
+        id: "scene.artist.tabs.insights",
+        defaultMessage: "Insights",
+      }),
       content: artistBelowTheFold ? (
         (tabIndex: number) => (
           <ArtistInsightsFragmentContainer tabIndex={tabIndex} artist={artistBelowTheFold} />
@@ -101,12 +119,18 @@ export const Artist: React.FC<ArtistProps> = (props) => {
 
   if (tabs.length === 0) {
     tabs.push({
-      title: "Artworks",
+      title: intl.formatMessage({
+        id: "scene.artist.tabs.artworks",
+        defaultMessage: "Artworks",
+      }),
       content: (
         <StickyTabPageScrollView>
           <Message>
-            There aren’t any works available by the artist at this time. Follow to receive
-            notifications when new works are added.
+            {intl.formatMessage({
+              id: "scene.artist.tabs.noArtworks",
+              defaultMessage:
+                "There aren’t any works available by the artist at this time. Follow to receive notifications when new works are added.",
+            })}
           </Message>
         </StickyTabPageScrollView>
       ),

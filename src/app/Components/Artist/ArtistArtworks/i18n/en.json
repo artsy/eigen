@@ -1,0 +1,27 @@
+{
+  "component": {
+    "artist": {
+      "artistartworks": {
+        "artistcollectionsrails": {
+          "section": {
+            "title": "Iconic Collections"
+          }
+        },
+        "artistnotableworksrails": {
+          "section": {
+            "title": "Notable Works"
+          }
+        },
+        "createsavedsearchmodal": {
+          "popover": {
+            "title": "Your alert has been created.",
+            "message": "Edit your alerts in your profile, in Settings."
+          }
+        },
+        "savedsearchbuttonv2": {
+          "title": "Create Alert"
+        }
+      }
+    }
+  }
+}

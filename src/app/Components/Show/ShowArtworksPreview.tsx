@@ -4,6 +4,7 @@ import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { extractNodes } from "app/utils/extractNodes"
 import { Box, Sans } from "palette"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
   show: ShowArtworksPreview_show
   title?: string
   relay: RelayProp
+  intl: IntlShape
 }
 
 export class ShowArtworksPreview extends React.Component<Props> {
@@ -32,10 +34,12 @@ export class ShowArtworksPreview extends React.Component<Props> {
         {counts! /*STRICTNESS_MIGRATION*/.artworks! /*STRICTNESS_MIGRATION*/ > artworks.length && (
           <Box mt={1}>
             <CaretButton
-              text={`View all ${
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                counts.artworks
-              } works`}
+              text={this.props.intl.formatMessage(
+                {
+                  id: "component.show.showArtworksPreview.caretButton",
+                },
+                { length: counts?.artworks ?? 0 }
+              )}
               onPress={() => onViewAllArtworksPressed()}
             />
           </Box>
@@ -45,20 +49,23 @@ export class ShowArtworksPreview extends React.Component<Props> {
   }
 }
 
-export const ShowArtworksPreviewContainer = createFragmentContainer(ShowArtworksPreview, {
-  show: graphql`
-    fragment ShowArtworksPreview_show on Show {
-      id
-      counts {
-        artworks
-      }
-      artworks: artworksConnection(first: 6) {
-        edges {
-          node {
-            ...GenericGrid_artworks
+export const ShowArtworksPreviewContainer = createFragmentContainer(
+  injectIntl(ShowArtworksPreview),
+  {
+    show: graphql`
+      fragment ShowArtworksPreview_show on Show {
+        id
+        counts {
+          artworks
+        }
+        artworks: artworksConnection(first: 6) {
+          edges {
+            node {
+              ...GenericGrid_artworks
+            }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  }
+)

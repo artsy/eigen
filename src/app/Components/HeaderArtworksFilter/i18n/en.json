@@ -1,0 +1,10 @@
+{
+  "component": {
+    "headerArtworksFilter": {
+      "headerArtworksFilter": {
+        "title": "Sort & Filter",
+        "totalWorksShown": "Showing {total} works"
+      }
+    }
+  }
+}

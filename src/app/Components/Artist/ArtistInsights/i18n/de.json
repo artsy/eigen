@@ -1,0 +1,53 @@
+{
+  "component": {
+    "artist": {
+      "artistinsights": {
+        "artistinsights": {
+          "section": {
+            "title": "Auktionsergebnisse filtern"
+          }
+        },
+        "artistinsightsauctionresults": {
+          "renderauctionresultsmodal": {
+            "text1": "Diese Auktionsergebnisse führen Verkaufsdaten von Top-Auktionshäusern auf der ganzen Welt zusammen, darunter Christie’s, Sotheby’s, Phillips und Bonhams. Die Ergebnisse werden täglich aktualisiert.",
+            "text2": "Bitte beachten Sie, dass der Verkaufspreis den Zuschlagspreis und das Käuferaufgeld sowie alle anderen zusätzlichen Gebühren (z. B. Folgerechte des Künstlers) enthält."
+          },
+          "infobutton": {
+            "title": "Auktionsergebnisse"
+          },
+          "sortmode": {
+            "sortdescription": "Sortiert nach {sortDescription}"
+          },
+          "resultsText": "Ergebnis",
+          "resultsTextPlural": "Ergebnisse"
+        },
+        "marketstats": {
+          "renderinfomodal": {
+            "text1": "Die folgenden Datenpunkte geben einen Überblick über den Auktionsmarkt eines Künstlers für ein bestimmtes Objekt (z. B. Fotografie, Gemälde) in den letzten 36 Monaten.",
+            "text2": "Diese Marktsignale führen Daten von Top-Auktionshäusern auf der ganzen Welt zusammen, darunter Christie’s, Sotheby’s, Phillips und Bonhams.",
+            "text3": "Bitte beachten Sie, dass in diesem Datensatz der Verkaufspreis den Zuschlagspreis und das Käuferaufgeld sowie alle anderen zusätzlichen Gebühren (z. B. Folgerechte des Künstlers) enthält. Der Datensatz enthält nur Werke im Wert von über 1.000 US-Dollar.",
+            "text4": "Durchschnittliche jährliche verkaufte Lose",
+            "text5": "Die durchschnittliche Anzahl der Lose, die in den letzten 36 Monaten pro Jahr bei einer Auktion verkauft wurden.",
+            "text6": "Durchverkaufsrate",
+            "text7": "Der Prozentsatz der Lose in Auktionen, die in den letzten 36 Monaten verkauft wurden.",
+            "text8": "Durchschnittlicher Verkaufspreis",
+            "text9": "Der durchschnittliche Verkaufspreis der Lose, die in den letzten 36 Monaten bei einer Auktion verkauft wurden.",
+            "text10": "Verkaufspreis über Schätzung",
+            "text11": "Die durchschnittliche prozentuale Differenz des Verkaufspreises gegenüber dem mittleren Schätzpreis (dem Mittelpunkt des vom Auktionshaus vor der Auktion festgelegten unteren und oberen Schätzpreises) für Lose, die in den letzten 36 Monaten auf einer Auktion verkauft wurden."
+          },
+          "infobutton": {
+            "title": "Marktsignale"
+          },
+          "averagetext": "Durchschnittswerte der letzten 36 Monate",
+          "select": {
+            "title": "Mittel auswählen"
+          },
+          "annuallotssold": "Jährlich verkaufte Lose",
+          "sellthroughrate": "Durchverkaufsrate",
+          "saleprice": "Verkaufspreis",
+          "salepriceoverestimate": "Verkaufspreis über Schätzung"
+        }
+      }
+    }
+  }
+}

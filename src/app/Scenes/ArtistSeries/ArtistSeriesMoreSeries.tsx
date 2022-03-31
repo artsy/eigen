@@ -4,6 +4,7 @@ import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { Flex, FlexProps, Sans } from "palette"
 import React, { useEffect, useState } from "react"
+import { useIntl } from "react-intl"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -50,6 +51,8 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
 
   const { trackEvent } = useTracking()
 
+  const intl = useIntl()
+
   return (
     <Flex {...rest}>
       <Flex mb="15px" flexDirection="row" justifyContent="space-between">
@@ -63,7 +66,12 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
               navigate(`/artist/${artist?.internalID!}/artist-series`)
             }}
           >
-            <Sans testID="viewAll" size="4t">{`View All (${totalCount})`}</Sans>
+            <Sans testID="viewAll" size="4t">
+              {intl.formatMessage(
+                { id: "scene.artistSeries.artistSeriesMoreSeries.viewAll" },
+                { totalCount }
+              )}
+            </Sans>
           </TouchableOpacity>
         )}
       </Flex>

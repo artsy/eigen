@@ -18,7 +18,7 @@ const EigenIntlProviderContext = React.createContext<EigenIntlProviderContextTyp
 const PREFERRED_LANGUAGE_KEY = "EIGENINTLPROVIDER_PREFFERED_LANGUAGE_KEY"
 
 export const EigenIntlProvider: React.FC = ({ children }) => {
-  const [preferredLanguage, setPreferredLanguage] = useState<Language>("en")
+  const [preferredLanguage, setPreferredLanguage] = useState<Language>("de")
 
   useEffect(() => {
     AsyncStorage.getItem(PREFERRED_LANGUAGE_KEY).then((value) => {

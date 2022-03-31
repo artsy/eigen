@@ -13,6 +13,7 @@ import {
 } from "app/utils/placeholders"
 import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
 import React, { useRef } from "react"
+import { IntlShape, useIntl } from "react-intl"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -131,7 +132,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
-  const saleInfo = saleMessageOrBidInfo({ artwork })
+  const intl = useIntl()
+
+  const saleInfo = saleMessageOrBidInfo({ artwork, intl })
 
   const urgencyTag = getUrgencyTag(artwork?.sale?.endAt)
 
@@ -167,7 +170,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
             <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
-              Lot {artwork.saleArtwork.lotLabel}
+              {intl.formatMessage(
+                { id: "component.artworkGrids.artworkGridItem.lotText", defaultMessage: "" },
+                { lotLabel: artwork.saleArtwork.lotLabel }
+              )}
             </Text>
           )}
           {!!artwork.artistNames && (
@@ -236,6 +242,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 export const saleMessageOrBidInfo = ({
   artwork,
   isSmallTile = false,
+  intl,
 }: {
   artwork: Readonly<{
     sale: { isAuction: boolean | null; isClosed: boolean | null } | null
@@ -247,19 +254,28 @@ export const saleMessageOrBidInfo = ({
     realizedPrice: string | null
   }>
   isSmallTile?: boolean
+  intl?: IntlShape
 }): string | null | undefined => {
   const { sale, saleArtwork, realizedPrice } = artwork
 
   // Price which an artwork was sold for.
   if (realizedPrice) {
-    return `Sold for ${realizedPrice}`
+    return (
+      intl?.formatMessage(
+        { id: "component.artworkGrids.artworkGridItem.soldForText" },
+        { realizedPrice }
+      ) ?? `Sold for ${realizedPrice}`
+    )
   }
 
   // Auction specs are available at https://artsyproduct.atlassian.net/browse/MX-482
   if (sale?.isAuction) {
     // The auction is closed
     if (sale.isClosed) {
-      return "Bidding closed"
+      return (
+        intl?.formatMessage({ id: "component.artworkGrids.artworkGridItem.biddingClosedText" }) ??
+        "Bidding closed"
+      )
     }
 
     // The auction is open
@@ -268,18 +284,49 @@ export const saleMessageOrBidInfo = ({
     // If there are no current bids we show the starting price with an indication that it's a new bid
     if (!bidderPositions) {
       if (isSmallTile) {
-        return `${currentBid} (Bid)`
+        return (
+          intl?.formatMessage(
+            {
+              id: "component.artworkGrids.artworkGridItem.bidderPosition.smallTileText",
+            },
+            { currentBid }
+          ) ?? `${currentBid} (Bid)`
+        )
       }
-      return `${currentBid} (Starting bid)`
+      return (
+        intl?.formatMessage(
+          {
+            id: "component.artworkGrids.artworkGridItem.bidderPosition.defaultText",
+          },
+          { currentBid }
+        ) ?? `${currentBid} (Starting bid)`
+      )
     }
 
     // If there are bids we show the current bid price and the number of bids
-    const numberOfBidsString = bidderPositions === 1 ? "1 bid" : `${bidderPositions} bids`
+    const numberOfBidsString =
+      bidderPositions === 1
+        ? intl?.formatMessage({
+            id: "component.artworkGrids.artworkGridItem.bidderPosition.bidSingular",
+            defaultMessage: "1 Bid",
+          }) ?? "1 bid"
+        : intl?.formatMessage(
+            {
+              id: "component.artworkGrids.artworkGridItem.bidderPosition.bidPlural",
+              defaultMessage: "",
+            },
+            { bidderPositions }
+          ) ?? `${bidderPositions} bids`
     return `${currentBid} (${numberOfBidsString})`
   }
 
   if (artwork.saleMessage === "Contact For Price") {
-    return "Price on request"
+    return (
+      intl?.formatMessage({
+        id: "component.artworkGrids.artworkGridItem.saleMessage",
+        defaultMessage: "Price on request",
+      }) ?? "Price on request"
+    )
   }
 
   return artwork.saleMessage

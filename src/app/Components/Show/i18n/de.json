@@ -1,0 +1,13 @@
+{
+  "component": {
+    "show": {
+      "showArtistsPreview": {
+        "artists": "Künstler",
+        "caretButton": "Alle Künstler von {length} anzeigen"
+      },
+      "showArtworksPreview": {
+        "caretButton": "Alle Werke von {length} anzeigen"
+      }
+    }
+  }
+}

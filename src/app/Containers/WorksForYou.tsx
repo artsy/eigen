@@ -13,12 +13,14 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { track } from "app/utils/track"
 import { Box, Flex, Separator } from "palette"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
   relay: RelayPaginationProp
   me: WorksForYou_me
+  intl: IntlShape
 }
 
 interface State {
@@ -120,8 +122,15 @@ export class WorksForYou extends React.Component<Props, State> {
               ? null
               : () => (
                   <ZeroState
-                    title="You haven’t followed any artists yet"
-                    subtitle="Follow artists to see new works that have been added to Artsy."
+                    title={this.props.intl.formatMessage({
+                      id: "container.worksForYou.zeroState.title",
+                      defaultMessage: "You haven’t followed any artists yet",
+                    })}
+                    subtitle={this.props.intl.formatMessage({
+                      id: "container.worksForYou.zeroState.subtitle",
+                      defaultMessage:
+                        "Follow artists to see new works that have been added to Artsy.",
+                    })}
                   />
                 )
           }
@@ -132,7 +141,7 @@ export class WorksForYou extends React.Component<Props, State> {
 }
 
 export const WorksForYouContainer = createPaginationContainer(
-  WorksForYou,
+  injectIntl(WorksForYou),
   {
     me: graphql`
       fragment WorksForYou_me on Me

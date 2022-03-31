@@ -1,0 +1,27 @@
+{
+  "component": {
+    "artworkGrids": {
+      "artworkGridItem": {
+        "lotText": "Lot {lotLabel}",
+        "soldForText": "Vendu pour {realizedPrize}",
+        "biddingClosedText": "Enchères fermées",
+        "bidderPosition": {
+          "smallTileText": "{currentBid} (Offre d'achat)",
+          "defaultText:": "{currentBid} (Enchère de départ",
+          "bidSingular": "Une offre",
+          "bidPlural": "{bidderPositions} enchères"
+        },
+        "saleMessage": "Prix sur demande"
+      },
+
+      "artworksFilterHeader": {
+        "title": "Trier et filtrer"
+      },
+
+      "filteredArtworkGridZeroState": {
+        "zeroStateMessage": "Aucun résultat trouvé\nVeuillez essayer une autre recherche.",
+        "clearButton": "Effacer les filtres"
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "component": {
+    "headerArtworksFilter": {
+      "headerArtworksFilter": {
+        "title": "Sortieren & Filtern",
+        "totalWorksShown": "{total} Kunstwerke werden angezeigt"
+      }
+    }
+  }
+}

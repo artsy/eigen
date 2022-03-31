@@ -2,6 +2,7 @@ import { Articles_articlesConnection$key } from "__generated__/Articles_articles
 import { ArticleSorts, ArticlesQuery } from "__generated__/ArticlesQuery.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import React, { Suspense, useState } from "react"
+import { useIntl } from "react-intl"
 import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArticlesList, ArticlesPlaceholder } from "./ArticlesList"
@@ -32,12 +33,17 @@ export const Articles: React.FC = () => {
 
   const articles = extractNodes(data.articlesConnection)
 
+  const intl = useIntl()
+
   return (
     <ArticlesList
       articles={articles as any}
       isLoading={() => isLoadingNext}
       hasMore={() => hasNext}
-      title="Market News"
+      title={intl.formatMessage({
+        id: "scene.articles.articlesList.title",
+        defaultMessage: "Market News",
+      })}
       refreshing={refreshing}
       handleLoadMore={handleLoadMore}
       handleRefresh={handleRefresh}

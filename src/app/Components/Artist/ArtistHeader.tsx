@@ -5,6 +5,7 @@ import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { Box, bullet, Flex, FollowButton, Sans, Spacer } from "palette"
 import { useState } from "react"
+import { useIntl } from "react-intl"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -20,6 +21,7 @@ interface Props {
 
 export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const { trackEvent } = useTracking()
+  const intl = useIntl()
 
   const [isFollowedChanging, setIsFollowedChanging] = useState(false)
 
@@ -127,6 +129,23 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
 
   const bylineRequired = artist.nationality || artist.birthday
 
+  const workSingular = intl.formatMessage({
+    id: "component.artist.artistHeader.workText",
+    defaultMessage: "work",
+  })
+  const workPlural = intl.formatMessage({
+    id: "component.artist.artistHeader.workTextPlural",
+    defaultMessage: "works",
+  })
+  const followerSingular = intl.formatMessage({
+    id: "component.artist.artistHeader.followerText",
+    defaultMessage: "follower",
+  })
+  const followerPlural = intl.formatMessage({
+    id: "component.artist.artistHeader.followerTextPlural",
+    defaultMessage: "followers",
+  })
+
   return (
     <Box px={2} pt={6} pb={1}>
       <Sans size="8">{artist.name}</Sans>
@@ -140,11 +159,11 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
             </Sans>
           )}
           <Sans size="3t">
-            {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
+            {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, workSingular, workPlural)}
             {!!artist?.counts?.follows && artist.counts.follows > 1 && (
               <>
                 {` ${bullet} `}
-                {formatLargeNumberOfItems(artist.counts.follows, "follower")}
+                {formatLargeNumberOfItems(artist.counts.follows, followerSingular, followerPlural)}
               </>
             )}
           </Sans>

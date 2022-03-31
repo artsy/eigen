@@ -1,0 +1,23 @@
+{
+  "container": {
+    "inbox": {
+      "inquiries": "Anfragen",
+      "bids": "Gebote"
+    },
+
+    "inquiry": {
+      "sendButton": {
+        "sending": "Senden...",
+        "send": "Schicken"
+      },
+      "cancel": "Abbrechen"
+    },
+
+    "worksForYou": {
+      "zeroState": {
+        "title": "Du folgst noch keinem Künstler",
+        "subtitle": "Folgen Sie Künstlern, um neue Werke zu sehen, die zu Artsy hinzugefügt wurden."
+      }
+    }
+  }
+}

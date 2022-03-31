@@ -5,6 +5,7 @@ import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useTheme } from "palette"
 import React, { useEffect, useState } from "react"
+import { useIntl } from "react-intl"
 import { ScrollView } from "react-native"
 import { getVersion } from "react-native-device-info"
 import useDebounce from "react-use/lib/useDebounce"
@@ -17,6 +18,7 @@ export const About: React.FC = () => {
   const { value: userIsDev, flipValue: userIsDevFlipValue } = GlobalStore.useAppState(
     (store) => store.artsyPrefs.userIsDev
   )
+  const intl = useIntl()
 
   useEffect(() => {
     const flip = (userIsDev && tapCount >= 3) || (!userIsDev && tapCount >= 7)
@@ -43,12 +45,29 @@ export const About: React.FC = () => {
   )
 
   return (
-    <PageWithSimpleHeader title="About">
+    <PageWithSimpleHeader
+      title={intl.formatMessage({ id: "scene.about.about", defaultMessage: "About" })}
+    >
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
-        <MenuItem title="Terms of Use" onPress={() => navigate("/terms", { modal: true })} />
-        <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy", { modal: true })} />
         <MenuItem
-          title="Conditions of Sale"
+          title={intl.formatMessage({
+            id: "scene.about.termsOfUse",
+            defaultMessage: "Terms of Use",
+          })}
+          onPress={() => navigate("/terms", { modal: true })}
+        />
+        <MenuItem
+          title={intl.formatMessage({
+            id: "scene.about.privacyPolicy",
+            defaultMessage: "Privacy Policy",
+          })}
+          onPress={() => navigate("/privacy", { modal: true })}
+        />
+        <MenuItem
+          title={intl.formatMessage({
+            id: "scene.about.conditionsOfSale",
+            defaultMessage: "Conditions of Sale",
+          })}
           onPress={() => navigate("/conditions-of-sale", { modal: true })}
         />
         <MenuItem

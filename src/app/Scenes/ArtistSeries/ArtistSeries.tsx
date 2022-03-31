@@ -20,6 +20,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"
+import { useIntl } from "react-intl"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -29,6 +30,7 @@ interface ArtistSeriesProps {
 
 export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
   const { artistSeries } = props
+  const intl = useIntl()
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const selectedFiltersCount = useSelectedFiltersCount()
@@ -95,7 +97,10 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
                   contextScreenOwnerSlug={artistSeries.slug}
                   contextScreenOwnerType={OwnerType.artistSeries}
                   artist={artist}
-                  artistSeriesHeader="More series by this artist"
+                  artistSeriesHeader={intl.formatMessage({
+                    id: "scene.artistSeries.artistSeries.moreSeries",
+                    defaultMessage: "More series by this artist",
+                  })}
                   currentArtistSeriesExcluded
                 />
               </Box>
@@ -113,7 +118,10 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
       >
         <Flex px={2} mt={2}>
           <Text variant="md" color="black60" mb={2}>
-            Showing {artworksTotal} works
+            {intl.formatMessage(
+              { id: "scene.artistSeries.artistSeries.totalWorksShown" },
+              { total: artworksTotal }
+            )}
           </Text>
           <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
           <ArtworkFilterNavigator

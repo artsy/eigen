@@ -12,6 +12,7 @@ import { track } from "app/utils/track"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
 import { Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { EmitterSubscription, View, ViewProps } from "react-native"
 // @ts-expect-error @types file generates duplicate declaration problems
 import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view"
@@ -70,6 +71,7 @@ interface Props {
   me: Inbox_me
   relay: RelayRefetchProp
   isVisible: boolean
+  intl: IntlShape
 }
 
 @track()
@@ -128,14 +130,24 @@ export class Inbox extends React.Component<Props, State> {
         renderTabBar={() => <InboxTabs />}
         onChangeTab={({ i }: { i: number }) => this.handleNavigationTab(i)}
       >
-        <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
+        <TabWrapper
+          tabLabel={this.props.intl.formatMessage({
+            id: "container.inbox.bids",
+            defaultMessage: "Bids",
+          })}
+          key="bids"
+          style={{ flexGrow: 1, justifyContent: "center" }}
+        >
           <MyBidsContainer
             isActiveTab={this.props.isVisible && this.state.activeTab === Tab.bids}
             me={this.props.me}
           />
         </TabWrapper>
         <TabWrapper
-          tabLabel="Inquiries"
+          tabLabel={this.props.intl.formatMessage({
+            id: "container.inbox.inquiries",
+            defaultMessage: "Inquiries",
+          })}
           key="inquiries"
           style={{ flexGrow: 1, justifyContent: "flex-start" }}
         >
@@ -150,7 +162,7 @@ export class Inbox extends React.Component<Props, State> {
 }
 
 export const InboxContainer = createRefetchContainer(
-  Inbox,
+  injectIntl(Inbox),
   {
     me: graphql`
       fragment Inbox_me on Me {

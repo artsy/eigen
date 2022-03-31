@@ -19,6 +19,7 @@ import {
   XCircleIcon,
 } from "palette"
 import React, { useState } from "react"
+import { useIntl } from "react-intl"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
 
@@ -35,6 +36,8 @@ export const AddEditPhotos: React.FC<AddEditPhotosProps> = ({
   photosUpdated,
   navigator,
 }) => {
+  const intl = useIntl()
+
   const [photos, setPhotos] = useState(initialPhotos)
 
   const { width: screenWidth } = useScreenDimensions()
@@ -90,7 +93,7 @@ export const AddEditPhotos: React.FC<AddEditPhotosProps> = ({
       <Spacer mb={1} />
       <Box px={2}>
         <Button block width="100%" onPress={doneTapped}>
-          Done
+          {intl.formatMessage({ id: "component.photos.doneText", defaultMessage: "DOne" })}
         </Button>
       </Box>
       <Spacer mb={1} />

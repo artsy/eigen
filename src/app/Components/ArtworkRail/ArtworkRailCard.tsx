@@ -6,6 +6,7 @@ import {
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import { Flex, Sans, Text, useColor } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { GestureResponderEvent } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import styled from "styled-components/native"
@@ -43,7 +44,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   const { artistNames, date, partner, title, image } = artwork
 
-  const saleMessage = saleMessageOrBidInfo({ artwork, isSmallTile: true })
+  const intl = useIntl()
+
+  const saleMessage = saleMessageOrBidInfo({ artwork, isSmallTile: true, intl })
   const urgencyTag =
     artwork?.sale?.isAuction && !artwork?.sale?.isClosed
       ? getUrgencyTag(artwork?.sale?.endAt)
@@ -60,7 +63,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         >
           {!!lotLabel && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
-              Lot {lotLabel}
+              {intl.formatMessage(
+                { id: "component.artworkRail.artworkRailCard.lotText" },
+                { lotLabel }
+              )}
             </Text>
           )}
           {!hideArtistName && !!artistNames && (

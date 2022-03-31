@@ -1,0 +1,8 @@
+{
+  "component": {
+    "entityList": {
+      "andText": " und ",
+      "othersText": "weitere"
+    }
+  }
+}

@@ -12,6 +12,7 @@ import { SCROLL_UP_TO_SHOW_THRESHOLD } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useCallback, useRef, useState } from "react"
+import { useIntl } from "react-intl"
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, View } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -50,6 +51,8 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
   const auctionResultsYCoordinate = useRef<number>(0)
   const contentYScrollOffset = useRef<number>(0)
 
+  const intl = useIntl()
+
   const openFilterModal = () => {
     tracking.trackEvent(tracks.openFilter(artist.internalID, artist.slug))
     setIsFilterModalVisible(true)
@@ -86,6 +89,11 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
     tracking.trackEvent(tracks.screen(artist.internalID, artist.slug))
   }, tabIndex)
 
+  const filterTitle = intl.formatMessage({
+    id: "component.artist.artistinsights.artistinsights.section.title",
+    defaultMessage: "Filter auction results",
+  })
+
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView
@@ -119,12 +127,12 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         mode={FilterModalMode.AuctionResults}
         exitModal={closeFilterModal}
         closeModal={closeFilterModal}
-        title="Filter auction results"
+        title={filterTitle}
       />
       <AnimatedArtworkFilterButton
         isVisible={isFilterButtonVisible}
         onPress={openFilterModal}
-        text="Filter auction results"
+        text={filterTitle}
       />
     </ArtworkFiltersStoreProvider>
   )

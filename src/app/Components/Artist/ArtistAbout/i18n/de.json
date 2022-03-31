@@ -1,0 +1,15 @@
+{
+  "component": {
+    "artist": {
+      "artistabout": {
+        "artistseries": {
+          "header": "Top-Künstler-Reihe"
+        }
+      },
+      "artistaboutshows": {
+        "featuring": "Shows mit {artistName}",
+        "button": "Alle vergangenen Sendungen ansehen"
+      }
+    }
+  }
+}

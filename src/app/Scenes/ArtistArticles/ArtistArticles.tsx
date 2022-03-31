@@ -5,6 +5,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import _ from "lodash"
 import React, { useState } from "react"
+import { useIntl } from "react-intl"
 import { createPaginationContainer, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { graphql } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -38,11 +39,16 @@ export const ArtistArticles: React.FC<ArticlesProps> = ({ artist, relay }) => {
     setRefreshing(false)
   }
 
+  const intl = useIntl()
+
   return (
     <ArticlesList
       articles={articles as any}
       isLoading={relay.isLoading}
-      title={artist.name + " articles"}
+      title={intl.formatMessage(
+        { id: "scene.artistArticles.artistArticles.title" },
+        { name: artist.name }
+      )}
       hasMore={relay.hasMore}
       refreshing={refreshing}
       handleLoadMore={handleLoadMore}

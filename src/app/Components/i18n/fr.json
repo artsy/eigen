@@ -1,0 +1,15 @@
+{
+  "component": {
+    "customShareSheet": {
+      "share": "Partager"
+    },
+
+    "menuItem": {
+      "beta": "Bêta"
+    },
+
+    "searchInput": {
+      "cancel": "Annuler"
+    }
+  }
+}

@@ -9,6 +9,7 @@ import { MetadataText, SmallHeadline } from "app/Scenes/Inbox/Components/Typogra
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
@@ -85,6 +86,7 @@ const ResponseRateLine = styled.View`
 
 interface Props {
   artwork: Inquiry_artwork
+  intl: IntlShape
 }
 
 interface State {
@@ -175,11 +177,18 @@ export class Inquiry extends React.Component<Props, State> {
   }
 
   render() {
+    const { intl } = this.props
     const message = this.state.text
     const partnerResponseRate = " " // currently hardcoded for alignment
     const artwork = this.props.artwork
     const partnerName = this.props.artwork.partner?.name
-    const buttonText = this.state.sending ? "Sending..." : "Send"
+
+    const buttonText = this.state.sending
+      ? intl.formatMessage({
+          id: "container.inquiry.sendButton.sending",
+          defaultMessage: "Sending...",
+        })
+      : intl.formatMessage({ id: "container.inquiry.sendButton.send", defaultMessage: "Send" })
 
     return (
       <Container>
@@ -191,7 +200,9 @@ export class Inquiry extends React.Component<Props, State> {
           <Header>
             <HeaderTextContainer>
               <CancelButton onPress={this.cancelModal.bind(this)}>
-                <MetadataText>Cancel</MetadataText>
+                <MetadataText>
+                  {intl.formatMessage({ id: "container.inquiry.cancel", defaultMessage: "Cancel" })}
+                </MetadataText>
               </CancelButton>
               <TitleView>
                 <PartnerName>{partnerName}</PartnerName>
@@ -200,7 +211,9 @@ export class Inquiry extends React.Component<Props, State> {
                   <ResponseRate>{partnerResponseRate}</ResponseRate>
                 </ResponseRateLine>
               </TitleView>
-              <PlaceholderView>Cancel</PlaceholderView>
+              <PlaceholderView>
+                {intl.formatMessage({ id: "container.inquiry.cancel", defaultMessage: "Cancel" })}
+              </PlaceholderView>
             </HeaderTextContainer>
           </Header>
           <Content>
@@ -224,7 +237,7 @@ export class Inquiry extends React.Component<Props, State> {
   }
 }
 
-export const InquiryFragmentContainer = createFragmentContainer(Inquiry, {
+export const InquiryFragmentContainer = createFragmentContainer(injectIntl(Inquiry), {
   artwork: graphql`
     fragment Inquiry_artwork on Artwork {
       slug

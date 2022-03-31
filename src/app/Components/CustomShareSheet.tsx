@@ -1,6 +1,7 @@
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { ChevronIcon, Flex, Text, Touchable } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { FancyModal } from "./FancyModal/FancyModal"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
@@ -15,6 +16,7 @@ export const CustomShareSheet: React.FC<CustomShareSheetProps> = ({
   setVisible,
 }) => {
   const { height: screenHeight } = useScreenDimensions()
+  const intl = useIntl()
 
   return (
     <FancyModal
@@ -23,7 +25,7 @@ export const CustomShareSheet: React.FC<CustomShareSheetProps> = ({
       onBackgroundPressed={() => setVisible(false)}
     >
       <FancyModalHeader useXButton onLeftButtonPress={() => setVisible(false)}>
-        Share
+        {intl.formatMessage({ id: "component.customShareSheet.share", defaultMessage: "Share" })}
       </FancyModalHeader>
       {children}
     </FancyModal>

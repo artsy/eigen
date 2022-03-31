@@ -1,0 +1,53 @@
+{
+  "component": {
+    "artist": {
+      "artistinsights": {
+        "artistinsights": {
+          "section": {
+            "title": "Filter auction results"
+          }
+        },
+        "artistinsightsauctionresults": {
+          "renderauctionresultsmodal": {
+            "text1": "These auction results bring together sale data from top auction houses around the world, including Christie’s, Sotheby’s, Phillips and Bonhams. Results are updated daily.",
+            "text2": "Please note that the sale price includes the hammer price and buyer’s premium, as well as any other additional fees (e.g., Artist’s Resale Rights)."
+          },
+          "infobutton": {
+            "title": "Auction Results"
+          },
+          "sortmode": {
+            "sortdescription": "Sorted by {sortDescription}"
+          },
+          "resultsText": "result",
+          "resultsTextPlural": "results"
+        },
+        "marketstats": {
+          "renderinfomodal": {
+            "text1": "The following data points provide an overview of an artist’s auction market for a specific (e.g., photography, painting) over the past 36 months..",
+            "text2": "These market signals bring together data from top auction houses around the world, including Christie’s, Sotheby’s, Phillips and Bonhams.",
+            "text3": "In this data set, please note that the sale price includes the hammer price and buyer’s premium, as well as any other additional fees (e.g., Artist’s Resale Rights). The data set only includes works valued over $1,000.",
+            "text4": "Average yearly lots sold",
+            "text5": "The average number of lots sold per year at auction over the past 36 months.",
+            "text6": "Sell-through rate",
+            "text7": "The percentage of lots in auctions that sold over the past 36 months.",
+            "text8": "Average sale price",
+            "text9": "The average sale price of lots sold at auction over the past 36 months.",
+            "text10": "Sale price over estimate",
+            "text11": "The average percentage difference of the sale price over the mid-estimate (the midpoint of the low and high estimates set by the auction house before the auction takes place) for lots sold at auction over the past 36 months."
+          },
+          "infobutton": {
+            "title": "Market Signals"
+          },
+          "averagetext": "Averages over last 36 months",
+          "select": {
+            "title": "Select medium"
+          },
+          "annuallotssold": "Yearly lots sold",
+          "sellthroughrate": "Sell-through rate",
+          "saleprice": "Sale price",
+          "salepriceoverestimate": "Sale price over estimate"
+        }
+      }
+    }
+  }
+}

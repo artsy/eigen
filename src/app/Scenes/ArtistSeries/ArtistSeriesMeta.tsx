@@ -12,6 +12,7 @@ import { navigate } from "app/navigation/navigate"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { EntityHeader, Sans, Spacer, Touchable } from "palette"
 import React, { useRef } from "react"
+import { useIntl } from "react-intl"
 import { TouchableOpacity, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -77,6 +78,8 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
     })
   }
 
+  const intl = useIntl()
+
   return (
     <View ref={metaRef}>
       <Sans size="8" testID="title">
@@ -102,7 +105,15 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
                 noFeedback
               >
                 <Sans style={{ textDecorationLine: "underline" }} size="3">
-                  {artist.isFollowed ? "Following" : "Follow"}
+                  {artist.isFollowed
+                    ? intl.formatMessage({
+                        id: "scene.artistSeries.artistSeriesMeta.following",
+                        defaultMessage: "Following",
+                      })
+                    : intl.formatMessage({
+                        id: "scene.artistSeries.artistSeriesMeta.follow",
+                        defaultMessage: "Follow",
+                      })}
                 </Sans>
               </Touchable>
             }

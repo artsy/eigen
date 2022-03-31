@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { BellIcon, Box, Flex, Text, TouchableHighlightColor } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { useTracking } from "react-tracking"
 
 export interface SavedSearchButtonV2Props {
@@ -12,6 +13,7 @@ export interface SavedSearchButtonV2Props {
 export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) => {
   const { artistId, artistSlug, onPress } = props
   const tracking = useTracking()
+  const intl = useIntl()
 
   const handlePress = () => {
     onPress()
@@ -29,7 +31,10 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
               <BellIcon fill={color} width="16px" height="16px" />
             </Box>
             <Text variant="xs" color={color} ml={0.5} numberOfLines={1} lineHeight={16}>
-              Create Alert
+              {intl.formatMessage({
+                id: "component.artist.artistartworks.savedsearchbuttonv2.title",
+                defaultMessage: "Create Alert",
+              })}
             </Text>
           </Flex>
         )}

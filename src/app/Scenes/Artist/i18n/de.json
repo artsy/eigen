@@ -1,0 +1,16 @@
+{
+  "scene": {
+    "artist": {
+      "tabs": {
+        "overview": "Überblick",
+        "artworks": "Kunstwerke",
+        "insights": "Einblicke",
+        "noArtworks": "TDerzeit sind keine Werke des Künstlers verfügbar. Folgen Sie, um Benachrichtigungen zu erhalten, wenn neue Werke hinzugefügt werden."
+      },
+      "popover": {
+        "title": "Entschuldigung, ein Fehler ist aufgetreten",
+        "message": "Gespeicherte Suchkriterien konnten nicht abgerufen werden"
+      }
+    }
+  }
+}

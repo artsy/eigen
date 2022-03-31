@@ -1,4 +1,5 @@
 import { ActionType, OwnerType, ToggledSavedSearch } from "@artsy/cohesion"
+import { defineMessages } from "@formatjs/intl"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { navigate, NavigateOptions } from "app/navigation/navigate"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
@@ -7,6 +8,7 @@ import {
   SavedSearchAlertMutationResult,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import React from "react"
+import { useIntl } from "react-intl"
 import { useTracking } from "react-tracking"
 
 export interface CreateSavedSearchModalProps {
@@ -22,6 +24,18 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   const { visible, artistId, artistName, artistSlug, closeModal, onComplete } = props
   const tracking = useTracking()
   const popover = usePopoverMessage()
+  const intl = useIntl()
+
+  const popoverMessages = defineMessages({
+    title: {
+      id: "component.artist.artistartworks.createsavedsearchmodal.popover.title",
+      defaultMessage: "Your alert has been created.",
+    },
+    message: {
+      id: "component.artist.artistartworks.createsavedsearchmodal.popover.message",
+      defaultMessage: "Edit your alerts in your profile, in Settings.",
+    },
+  })
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
     tracking.trackEvent(tracks.toggleSavedSearch(true, artistId, artistSlug, result.id))
@@ -29,8 +43,8 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
     onComplete?.()
 
     popover.show({
-      title: "Your alert has been created.",
-      message: "Edit your alerts in your profile, in Settings.",
+      title: intl.formatMessage(popoverMessages.title),
+      message: intl.formatMessage(popoverMessages.message),
       onPress: async () => {
         const options: NavigateOptions = {
           popToRootTabView: true,

@@ -1,5 +1,6 @@
 import { bullet, FilterIcon, Flex, Separator, Text, TouchableHighlightColor } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 
 interface FilterHeaderProps {
   children?: React.ReactNode
@@ -18,6 +19,8 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
   title,
   childrenPosition = "right",
 }) => {
+  const intl = useIntl()
+
   return (
     <Flex>
       <Flex
@@ -36,7 +39,11 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
             <Flex flexDirection="row" alignItems="center">
               <FilterIcon fill={color} width="20px" height="20px" />
               <Text variant="xs" numberOfLines={1} color={color} ml={0.5}>
-                {title ?? "Sort & Filter"}
+                {title ??
+                  intl.formatMessage({
+                    id: "component.artworkGrids.artworksFilterHeader.title",
+                    defaultMessage: "Sort & Filter",
+                  })}
               </Text>
               {selectedFiltersCount > 0 && (
                 <Text variant="xs" color="blue100">

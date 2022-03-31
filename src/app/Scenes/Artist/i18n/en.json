@@ -1,0 +1,16 @@
+{
+  "scene": {
+    "artist": {
+      "tabs": {
+        "overview": "Overview",
+        "artworks": "Artworks",
+        "insights": "Insights",
+        "noArtworks": "There aren’t any works available by the artist at this time. Follow to receive notifications when new works are added."
+      },
+      "popover": {
+        "title": "Sorry, an error occured",
+        "message": "Failed to get saved search criteria"
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "component": {
+    "artworkRail": {
+      "artworkRailCard": {
+        "lotText": "Lot {lotLabel}"
+      }
+    }
+  }
+}

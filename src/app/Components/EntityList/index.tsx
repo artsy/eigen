@@ -1,5 +1,6 @@
 import { Flex, Sans } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { TouchableOpacity } from "react-native"
 import { EntityItem, EntityItemProps, Item } from "./Components/EntityItem"
 
@@ -24,6 +25,8 @@ export const EntityList: React.FC<EntityListProps> = ({
     return null
   }
 
+  const intl = useIntl()
+
   const filteredList = list.slice(0, displayedItems)
   const shouldShowMore = count > displayedItems
 
@@ -45,11 +48,14 @@ export const EntityList: React.FC<EntityListProps> = ({
       {!!shouldShowMore && (
         <>
           <Sans size="3" lineHeight="19">
-            {" and "}
+            {intl.formatMessage({ id: "component.entityList.andText" })}
           </Sans>
           <TouchableOpacity onPress={() => onViewAllPressed && onViewAllPressed()}>
             <Sans weight="medium" size="3" lineHeight="19">
-              {count - displayedItems + " others"}
+              {count -
+                displayedItems +
+                " " +
+                intl.formatMessage({ id: "component.entityList.othersText" })}
             </Sans>
           </TouchableOpacity>
         </>

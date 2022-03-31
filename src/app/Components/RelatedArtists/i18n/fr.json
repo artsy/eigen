@@ -1,0 +1,17 @@
+{
+  "component": {
+    "relatedArtists": {
+      "relatedArtists": {
+        "section": {
+          "title": "Artistes associés"
+        }
+      },
+
+      "relatedArtist": {
+        "workText": "oeuvre",
+        "workTextPlural": "oeuvres",
+        "forSaleText": "à vendre"
+      }
+    }
+  }
+}

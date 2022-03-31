@@ -7,12 +7,14 @@ import { Schema, Track, track as _track } from "app/utils/track"
 import { compact, take } from "lodash"
 import { Sans, Spacer } from "palette"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   show: ShowArtistsPreview_show
   onViewAllArtistsPressed: () => void
   Component?: any
+  intl: IntlShape
 }
 
 const track: Track<Props> = _track
@@ -45,7 +47,12 @@ export class ShowArtistsPreview extends React.Component<Props> {
 
     return (
       <>
-        <Sans size="4t">Artists</Sans>
+        <Sans size="4t">
+          {this.props.intl.formatMessage({
+            id: "component.show.showArtistsPreview.artists",
+            defaultMessage: "Artists",
+          })}
+        </Sans>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
           const { id } = artist
@@ -60,7 +67,12 @@ export class ShowArtistsPreview extends React.Component<Props> {
           <>
             <Spacer m={1} />
             <CaretButton
-              text={`View all ${artists.length} artists`}
+              text={this.props.intl.formatMessage(
+                {
+                  id: "component.show.showArtistsPreview.caretButton",
+                },
+                { length: artists.length }
+              )}
               onPress={() => onViewAllArtistsPressed()}
             />
           </>
@@ -70,7 +82,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
   }
 }
 
-export const ShowArtistsPreviewContainer = createFragmentContainer(ShowArtistsPreview, {
+export const ShowArtistsPreviewContainer = createFragmentContainer(injectIntl(ShowArtistsPreview), {
   show: graphql`
     fragment ShowArtistsPreview_show on Show {
       internalID

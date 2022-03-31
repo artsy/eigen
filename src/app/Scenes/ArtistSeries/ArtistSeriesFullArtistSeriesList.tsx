@@ -8,6 +8,7 @@ import { ProvideScreenTracking } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { Box, Flex, Sans } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
@@ -22,6 +23,8 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
     return null
   }
 
+  const intl = useIntl()
+
   return (
     <ProvideScreenTracking
       info={{
@@ -32,7 +35,10 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
       <ScrollView>
         <Box px="2" py="2">
           <Sans size="4" weight="medium" textAlign="center">
-            Artist Series
+            {intl.formatMessage({
+              id: "scene.artistSeries.artistSeriesFullArtistSeries.header",
+              defaultMessage: "Artist Series",
+            })}
           </Sans>
         </Box>
         {seriesList.map((series, index) => (

@@ -7,11 +7,13 @@ import RelatedArtist from "./RelatedArtist"
 
 import { RelatedArtists_artists } from "__generated__/RelatedArtists_artists.graphql"
 import { chunk } from "lodash"
+import { injectIntl, IntlShape } from "react-intl"
 import { SectionTitle } from "../SectionTitle"
 import { Stack } from "../Stack"
 
 interface Props {
   artists: RelatedArtists_artists
+  intl: IntlShape
 }
 
 interface State {
@@ -63,7 +65,12 @@ class RelatedArtists extends React.Component<Props, State> {
     const rows = chunk(this.props.artists, this.state.columns)
     return (
       <View onLayout={this.onLayout.bind(this)}>
-        <SectionTitle title="Related artists" />
+        <SectionTitle
+          title={this.props.intl.formatMessage({
+            id: "component.relatedArtists.relatedArtists.section.title",
+            defaultMessage: "Related artists",
+          })}
+        />
         <Stack>
           {rows.map((row, index) => (
             <Stack horizontal key={index}>
@@ -78,7 +85,7 @@ class RelatedArtists extends React.Component<Props, State> {
   }
 }
 
-export default createFragmentContainer(RelatedArtists, {
+export default createFragmentContainer(injectIntl(RelatedArtists), {
   artists: graphql`
     fragment RelatedArtists_artists on Artist @relay(plural: true) {
       id

@@ -9,6 +9,7 @@ import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_ar
 import { navigate } from "app/navigation/navigate"
 import { useSelectedTab } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
+import { useIntl } from "react-intl"
 
 export interface ArtistConsignButtonProps {
   artist: ArtistConsignButton_artist
@@ -18,6 +19,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) =
   const tracking = useTracking()
   const buttonRef = useRef(null)
   const isSalesTab = useSelectedTab() === "sell"
+  const intl = useIntl()
 
   const {
     artist: { name, image },
@@ -26,7 +28,12 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) =
   const isTargetSupply = props.artist.targetSupply?.isTargetSupply
   const imageURL = image?.cropped?.url
   const showImage = imageURL && (isInMicrofunnel || isTargetSupply)
-  const headline = isInMicrofunnel ? `Sell your ${name}` : "Sell art from your collection"
+  const headline = isInMicrofunnel
+    ? intl.formatMessage(
+        { id: "component.artist.artistConsignButton.headline.inMicrofunnel" },
+        { name }
+      )
+    : intl.formatMessage({ id: "component.artist.artistConsignButton.headline.default" })
 
   return (
     <TouchableOpacity
@@ -70,7 +77,10 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) =
               </Sans>
               <Box position="relative">
                 <Sans size="3t" color="black60">
-                  Consign with Artsy
+                  {intl.formatMessage({
+                    id: "component.artist.artistConsignButton.consignText",
+                    defaultMessage: "Consign with Artsy",
+                  })}
                 </Sans>
               </Box>
             </Flex>

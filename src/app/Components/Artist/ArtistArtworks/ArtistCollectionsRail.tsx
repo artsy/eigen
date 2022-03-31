@@ -5,6 +5,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { Schema } from "app/utils/track"
 import { Box } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
@@ -15,11 +16,17 @@ interface ArtistCollectionsRailProps {
 
 export const ArtistCollectionsRail: React.FC<ArtistCollectionsRailProps> = (props) => {
   const { artist, collections } = props
+  const intl = useIntl()
 
   if (collections && collections.length > 1) {
     return (
       <Box>
-        <SectionTitle title="Iconic Collections" />
+        <SectionTitle
+          title={intl.formatMessage({
+            id: "component.artist.artistartworks.artistcollectionsrails.section.title",
+            defaultMessage: "Iconic Collections",
+          })}
+        />
         <ArtistSeriesRailWrapper>
           <GenericArtistSeriesRail
             collections={collections}

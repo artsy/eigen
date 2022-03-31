@@ -1,0 +1,10 @@
+{
+  "scene": {
+    "about": {
+      "about": "Über",
+      "termsOfUse": "Nutzungsbedingungen",
+      "privacyPolicy": "Datenschutz-Bestimmungen",
+      "conditionsOfSale": "Verkaufsbedingungen"
+    }
+  }
+}

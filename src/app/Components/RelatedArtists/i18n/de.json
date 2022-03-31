@@ -1,0 +1,17 @@
+{
+  "component": {
+    "relatedArtists": {
+      "relatedArtists": {
+        "section": {
+          "title": "Verwandte Künstler"
+        }
+      },
+
+      "relatedArtist": {
+        "workText": "Kunstwerk",
+        "workTextPlural": "Kunstwerke",
+        "forSaleText": "zu verkaufen"
+      }
+    }
+  }
+}

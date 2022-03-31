@@ -1,5 +1,6 @@
 import { ChevronIcon, Flex, Spacer, Text, TextProps, Touchable, useColor } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { StyleProp, ViewStyle } from "react-native"
 
 export const MenuItem: React.FC<{
@@ -33,6 +34,8 @@ export const MenuItem: React.FC<{
   rightView,
 }) => {
   const color = useColor()
+  const intl = useIntl()
+
   return (
     <Touchable onPress={onPress} underlayColor="black5" disabled={disabled}>
       <Flex
@@ -51,7 +54,7 @@ export const MenuItem: React.FC<{
                 variant="sm"
                 color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
               >
-                Beta
+                {intl.formatMessage({ id: "component.menuItem.beta", defaultMessage: "Beta" })}
               </Text>
             </Flex>
           )}

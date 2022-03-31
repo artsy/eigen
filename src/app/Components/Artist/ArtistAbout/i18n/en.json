@@ -1,0 +1,15 @@
+{
+  "component": {
+    "artist": {
+      "artistabout": {
+        "artistseries": {
+          "header": "Top Artist Series"
+        }
+      },
+      "artistaboutshows": {
+        "featuring": "Shows Featuring {artistName}",
+        "button": "See all past shows"
+      }
+    }
+  }
+}

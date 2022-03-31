@@ -6,6 +6,7 @@ import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Box } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -23,10 +24,17 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
 
   const { trackEvent } = useTracking()
 
+  const intl = useIntl()
+
   return (
     <Box>
       <Box mt={1}>
-        <SectionTitle title="Notable Works" />
+        <SectionTitle
+          title={intl.formatMessage({
+            id: "component.artist.artistartworks.artistnotableworksrails.section.title",
+            defaultMessage: "Notable Works",
+          })}
+        />
       </Box>
       <ArtistNotableWorksRailWrapper>
         <SmallArtworkRail

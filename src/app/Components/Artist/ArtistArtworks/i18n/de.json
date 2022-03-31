@@ -1,0 +1,27 @@
+{
+  "component": {
+    "artist": {
+      "artistartworks": {
+        "artistcollectionsrails": {
+          "section": {
+            "title": "Ikonische Sammlungen"
+          }
+        },
+        "artistnotableworksrails": {
+          "section": {
+            "title": "Nennenswerte Werke"
+          }
+        },
+        "createsavedsearchmodal": {
+          "popover": {
+            "title": "Ihre Benachrichtigung wurde erstellt.",
+            "message": "Bearbeiten Sie Ihre Benachrichtigungen in Ihrem Profil in den Einstellungen."
+          }
+        },
+        "savedsearchbuttonv2": {
+          "title": "Benachrichtigung erstellen"
+        }
+      }
+    }
+  }
+}

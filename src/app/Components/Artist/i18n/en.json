@@ -1,0 +1,24 @@
+{
+  "component": {
+    "artist": {
+      "artistConsignButton": {
+        "headline": {
+          "default": "Sell art from your collection",
+          "inMicrofunnel": "Sell your {name}"
+        },
+        "consignText": "Consign with Artsy"
+      },
+      "artistHeader": {
+        "workText": "work",
+        "workTextPlural": "works",
+        "followerText": "follower",
+        "followerTextPlural": "followers"
+      },
+      "biography": {
+        "section": {
+          "title": "Biography"
+        }
+      }
+    }
+  }
+}

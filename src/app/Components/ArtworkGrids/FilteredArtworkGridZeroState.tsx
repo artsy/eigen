@@ -2,6 +2,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { Button, Flex, Sans } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import styled from "styled-components/native"
 
 export interface ZeroStateProps {
@@ -17,9 +18,15 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
     (state) => state.clearFiltersZeroStateAction
   )
 
+  const intl = useIntl()
+
   return (
     <Flex flexDirection="column" px={4}>
-      <ZeroStateMessage size="3">No results found{"\n"}Please try another search.</ZeroStateMessage>
+      <ZeroStateMessage size="3">
+        {intl.formatMessage({
+          id: "component.artworkGrids.filteredArtworkGridZeroState.zeroStateMessage",
+        })}
+      </ZeroStateMessage>
       <Flex m="0 auto" pt={2}>
         {!hideClearButton && (
           <Button
@@ -32,7 +39,10 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
               clearFiltersZeroStateAction()
             }}
           >
-            Clear filters
+            {intl.formatMessage({
+              id: "component.artworkGrids.filteredArtworkGridZeroState.clearButton",
+              defaultMessage: "Clear filters",
+            })}
           </Button>
         )}
       </Flex>

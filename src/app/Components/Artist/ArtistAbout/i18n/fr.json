@@ -1,0 +1,15 @@
+{
+  "component": {
+    "artist": {
+      "artistabout": {
+        "artistseries": {
+          "header": "Meilleure série d'artistes"
+        }
+      },
+      "artistaboutshows": {
+        "featuring": "Spectacles mettant en vedette {artistName}",
+        "button": "Voir tous les spectacles passés"
+      }
+    }
+  }
+}

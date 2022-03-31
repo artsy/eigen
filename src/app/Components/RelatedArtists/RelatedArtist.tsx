@@ -2,6 +2,7 @@ import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql
 import { navigate } from "app/navigation/navigate"
 import { ClassTheme, Sans, Spacer } from "palette"
 import React, { Component } from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import ImageView from "../OpaqueImageView/OpaqueImageView"
@@ -11,6 +12,7 @@ interface Props {
   imageSize: {
     width: number
   }
+  intl: IntlShape
 }
 
 class RelatedArtist extends Component<Props> {
@@ -50,15 +52,36 @@ class RelatedArtist extends Component<Props> {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const totalWorks = counts.artworks
       ? // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        counts.artworks + (counts.artworks > 1 ? " works" : " work")
+        counts.artworks +
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        (counts.artworks > 1
+          ? " " +
+            this.props.intl.formatMessage({ id: "component.relatedArtists.relatedArtist.workText" })
+          : " " +
+            this.props.intl.formatMessage({
+              id: "component.relatedArtists.relatedArtist.workTextPlural",
+            }))
       : null
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     if (totalWorks && counts.forSaleArtworks === counts.artworks) {
-      return totalWorks + " for sale"
+      return (
+        totalWorks +
+        " " +
+        this.props.intl.formatMessage({
+          id: "component.relatedArtists.relatedArtist.forSaleText",
+        })
+      )
     }
 
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const forSale = counts.forSaleArtworks ? counts.forSaleArtworks + " for sale" : null
+    const forSale = counts.forSaleArtworks
+      ? // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        counts.forSaleArtworks +
+        " " +
+        this.props.intl.formatMessage({
+          id: "component.relatedArtists.relatedArtist.forSaleText",
+        })
+      : null
     if (forSale && totalWorks) {
       return totalWorks + ", " + forSale
     }
@@ -66,7 +89,7 @@ class RelatedArtist extends Component<Props> {
   }
 }
 
-export default createFragmentContainer(RelatedArtist, {
+export default createFragmentContainer(injectIntl(RelatedArtist), {
   artist: graphql`
     fragment RelatedArtist_artist on Artist {
       href

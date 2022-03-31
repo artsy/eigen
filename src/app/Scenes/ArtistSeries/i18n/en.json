@@ -1,0 +1,23 @@
+{
+  "scene": {
+    "artistSeries": {
+      "artistSeries": {
+        "moreSeries": "More series by this artist",
+        "totalWorksShown": "Showing {total} works"
+      },
+
+      "artistSeriesFullArtistSeries": {
+        "header": "Artist Series"
+      },
+
+      "artistSeriesMeta": {
+        "follow": "Follow",
+        "following": "Following"
+      },
+
+      "artistSeriesMoreSeries": {
+        "viewAll": "View All {totalCount}"
+      }
+    }
+  }
+}

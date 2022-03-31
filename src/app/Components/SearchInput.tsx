@@ -10,6 +10,7 @@ import {
   useSpace,
 } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
+import { useIntl } from "react-intl"
 import { TextInput, TouchableOpacity, useWindowDimensions } from "react-native"
 import Animated, { Easing } from "react-native-reanimated"
 import { useAnimatedValue } from "./StickyTabPage/reanimatedHelpers"
@@ -33,6 +34,7 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
     const width = useWindowDimensions().width - space(mx) * 2
     const inputWidth = Animated.sub(width, cancelWidth)
     const inputRef = useRef<TextInput>(null)
+    const intl = useIntl()
 
     const animateTo = (toValue: 1 | 0) => {
       Animated.timing(animationValue, {
@@ -113,7 +115,10 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
                 ]}
               >
                 <Sans size="2" color="black60">
-                  Cancel
+                  {intl.formatMessage({
+                    id: "component.searchInput.cancel",
+                    defaultMessage: "Cancel",
+                  })}
                 </Sans>
               </Animated.Text>
             </TouchableOpacity>

@@ -2,6 +2,7 @@ import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, FilterIcon, Flex, Separator, Text, TouchableHighlightColor } from "palette"
 import React, { useEffect, useState } from "react"
+import { useIntl } from "react-intl"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"
 
 export interface FilterProps {
@@ -57,6 +58,8 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
 
   const [onLayoutCalled, setOnLayoutCalled] = useState(false)
   const [filterPageY, setPageY] = useState(0)
+
+  const intl = useIntl()
 
   useEffect(() => {
     // orientation changed, allow for recalculation of pageY
@@ -140,7 +143,12 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
                 }}
               >
                 <Text variant="md" color="black60">
-                  Showing {total} works
+                  {intl.formatMessage(
+                    {
+                      id: "component.headerArtworksFilter.headerArtworksFilter.totalWorksShown",
+                    },
+                    { total }
+                  )}
                 </Text>
               </Animated.View>
               <TouchableHighlightColor
@@ -150,7 +158,10 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
                   <Flex flexDirection="row" alignItems="center">
                     <FilterIcon fill={color} width="20px" height="20px" />
                     <Text variant="md" color={color}>
-                      Sort & Filter
+                      {intl.formatMessage({
+                        id: "component.headerArtworksFilter.headerArtworksFilter.title",
+                        defaultMessage: "Sort & Filter",
+                      })}
                     </Text>
                   </Flex>
                 )}

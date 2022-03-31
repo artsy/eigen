@@ -6,11 +6,13 @@ import removeMarkdown from "remove-markdown"
 
 import { Biography_artist } from "__generated__/Biography_artist.graphql"
 import { Sans } from "palette"
+import { injectIntl, IntlShape } from "react-intl"
 import { SectionTitle } from "../SectionTitle"
 import { Stack } from "../Stack"
 
 interface Props {
   artist: Biography_artist
+  intl: IntlShape
 }
 
 class Biography extends React.Component<Props> {
@@ -24,7 +26,12 @@ class Biography extends React.Component<Props> {
 
     return (
       <View>
-        <SectionTitle title="Biography" />
+        <SectionTitle
+          title={this.props.intl.formatMessage({
+            id: "component.artist.biography.section.title",
+            defaultMessage: "Biography",
+          })}
+        />
         <Stack>
           {!!artist.blurb && (
             <Sans size="3" style={{ maxWidth: 650 }}>
@@ -38,7 +45,7 @@ class Biography extends React.Component<Props> {
   }
 }
 
-export default createFragmentContainer(Biography, {
+export default createFragmentContainer(injectIntl(Biography), {
   artist: graphql`
     fragment Biography_artist on Artist {
       bio

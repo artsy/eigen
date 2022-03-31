@@ -3,6 +3,7 @@ import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
 import React from "react"
+import { useIntl } from "react-intl"
 import { createFragmentContainer, graphql } from "react-relay"
 import RelatedArtists from "../../RelatedArtists/RelatedArtists"
 import { Stack } from "../../Stack"
@@ -21,6 +22,7 @@ interface Props {
 export const ArtistAbout: React.FC<Props> = ({ artist }) => {
   const articles = extractNodes(artist.articles)
   const relatedArtists = extractNodes(artist.related?.artists)
+  const intl = useIntl()
 
   return (
     <StickyTabPageScrollView>
@@ -32,7 +34,10 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
           contextScreenOwnerType={OwnerType.artist}
           contextModule={ContextModule.artistSeriesRail}
           artist={artist}
-          artistSeriesHeader="Top Artist Series"
+          artistSeriesHeader={intl.formatMessage({
+            id: "component.artist.artistabout.artistseries.header",
+            defaultMessage: "Top Artist Series",
+          })}
           mt={2}
         />
         {artist.notableWorks?.edges?.length === 3 && (

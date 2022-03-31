@@ -8,6 +8,7 @@ import { useElasticOverscroll } from "app/utils/useElasticOverscroll"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { Flex, Spacer, Spinner, Text } from "palette"
 import React, { useState } from "react"
+import { useIntl } from "react-intl"
 import { Animated, StyleSheet, View, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { ArtistShows2Query } from "../../../__generated__/ArtistShows2Query.graphql"
@@ -22,9 +23,15 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
   const top = 60
   const [isFetchingMoreData, setIsFetchingMoreData] = useState(false)
   const pastShows = extractNodes(artist.pastShows)
+  const intl = useIntl()
 
   const { headerElement, scrollProps, scrollAnim } = useStickyScrollHeader({
-    headerText: `${artist.name} – Past Shows`,
+    headerText:
+      `${artist.name} – ` +
+      intl.formatMessage({
+        id: "scene.artistShows.artistShows2.pastShows",
+        defaultMessage: "Past Shows",
+      }),
     fadeInStart: 50,
   })
   const view = (
@@ -33,7 +40,10 @@ const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
         {artist.name}
       </Text>
       <Text variant="lg" mb={2}>
-        Past Shows
+        {intl.formatMessage({
+          id: "scene.artistShows.artistShows2.pastShows",
+          defaultMessage: "Past Shows",
+        })}
       </Text>
     </View>
   )

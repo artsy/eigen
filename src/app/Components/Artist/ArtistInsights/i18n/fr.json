@@ -1,0 +1,53 @@
+{
+  "component": {
+    "artist": {
+      "artistinsights": {
+        "artistinsights": {
+          "section": {
+            "title": "Filtrer les résultats des enchères"
+          }
+        },
+        "artistinsightsauctionresults": {
+          "renderauctionresultsmodal": {
+            "text1": "Ces résultats d'enchères rassemblent les données de vente des meilleures maisons d'enchères du monde entier, notamment Christie's, Sotheby's, Phillips et Bonhams. Les résultats sont mis à jour quotidiennement.",
+            "text2": "Veuillez noter que le prix de vente comprend le prix d'adjudication et la commission de l'acheteur, ainsi que tout autre frais supplémentaire (par exemple, le droit de suite de l'artiste)."
+          },
+          "infobutton": {
+            "title": "Résultats des enchères"
+          },
+          "sortmode": {
+            "sortdescription": "Trié par {sortDescription}"
+          },
+          "resultsText": "résultat",
+          "resultsTextPlural": "résultats"
+        },
+        "marketstats": {
+          "renderinfomodal": {
+            "text1": "Les points de données suivants donnent un aperçu du marché des enchères d'un artiste pour un objet spécifique (par exemple, photographie, peinture) au cours des 36 derniers mois.",
+            "text2": "Ces signaux de marché rassemblent les données des meilleures maisons de vente aux enchères du monde, notamment Christie's, Sotheby's, Phillips et Bonhams.",
+            "text3": "Dans cet ensemble de données, veuillez noter que le prix de vente comprend le prix d'adjudication et la prime de l'acheteur, ainsi que tout autre frais supplémentaire (par exemple, le droit de suite de l'artiste). L'ensemble de données ne comprend que les œuvres d'une valeur supérieure à 1 000 $.",
+            "text4": "Nombre moyen annuel de lots vendus",
+            "text5": "Le nombre moyen de lots vendus par an aux enchères au cours des 36 derniers mois.",
+            "text6": "Taux de vente",
+            "text7": "Le pourcentage de lots mis aux enchères qui se sont vendus au cours des 36 derniers mois.",
+            "text8": "Prix de vente moyen",
+            "text9": "Le prix de vente moyen des lots vendus aux enchères au cours des 36 derniers mois.",
+            "text10": "Prix de vente supérieur à l'estimation",
+            "text11": "Différence moyenne en pourcentage du prix de vente par rapport à l'estimation médiane (le point médian des estimations basse et haute fixées par la maison de vente aux enchères avant la vente aux enchères) pour les lots vendus aux enchères au cours des 36 derniers mois."
+          },
+          "infobutton": {
+            "title": "Signaux du marché"
+          },
+          "averagetext": "Moyennes sur les 36 derniers mois",
+          "select": {
+            "title": "Sélectionnez le support"
+          },
+          "annuallotssold": "Lots vendus à l'année",
+          "sellthroughrate": "Taux de vente",
+          "saleprice": "Prix de vente",
+          "salepriceoverestimate": "Prix de vente supérieur à l'estimation"
+        }
+      }
+    }
+  }
+}

@@ -3,6 +3,7 @@ import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Button, Flex, Spacer, Text } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
@@ -26,11 +27,16 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
 
   const userHasShows = currentAndUpcomingShows.length + pastShows.length
 
+  const intl = useIntl()
+
   if (userHasShows) {
     return (
       <Flex>
         <Text variant="md" mb={1}>
-          Shows featuring {artist.name}
+          {intl.formatMessage(
+            { id: "component.artist.artistaboutshows.featuring", defaultMessage: "" },
+            { artistName: artist.name }
+          )}
         </Text>
         <FlatList
           data={shownShows}
@@ -64,7 +70,10 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
             size="small"
             block
           >
-            See all past shows
+            {intl.formatMessage({
+              id: "component.artist.artistaboutshows.button",
+              defaultMessage: "See all past shows",
+            })}
           </Button>
         )}
       </Flex>

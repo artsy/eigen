@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { defineMessages } from "@formatjs/intl"
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import {
   filterArtworksParams,
@@ -16,6 +17,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { debounce } from "lodash"
 import { Box, bullet, Flex, Separator, Spacer, Text, useColor } from "palette"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { useIntl } from "react-intl"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -33,6 +35,7 @@ interface Props {
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
   const color = useColor()
   const tracking = useTracking()
+  const intl = useIntl()
 
   const auctionResults = extractNodes(artist.auctionResultsConnection)
 
@@ -114,24 +117,51 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     })
   }
 
+  const intlMessages = defineMessages({
+    textOne: {
+      id: "component.artist.artistinsights.artistinsightsauctionresults.renderauctionresultsmodal.text1",
+      defaultMessage:
+        "These auction results bring together sale data from top auction houses around the world, including Christie’s, Sotheby’s, Phillips and Bonhams. Results are updated daily.",
+    },
+    textTwo: {
+      id: "component.artist.artistinsights.artistinsightsauctionresults.renderauctionresultsmodal.text2",
+      defaultMessage:
+        "Please note that the sale price includes the hammer price and buyer’s premium, as well as any other additional fees (e.g., Artist’s Resale Rights).",
+    },
+    infoButtonTitle: {
+      id: "component.artist.artistinsights.artistinsightsauctionresults.infobutton.title",
+      defaultMessage: "Auction Results",
+    },
+    sortDescription: {
+      id: "component.artist.artistinsights.artistinsightsauctionresults.sortmode.sortdescription",
+      defaultMessage: "",
+    },
+    resultText: {
+      id: "component.artist.artistinsights.artistinsightsauctionresults.resultsText",
+      defaultMessage: "result",
+    },
+    resultTextPlural: {
+      id: "component.artist.artistinsights.artistinsightsauctionresults.resultsTextPlural",
+      defaultMessage: "results",
+    },
+  })
+
   const renderAuctionResultsModal = () => (
     <>
       <Spacer my={1} />
-      <Text>
-        These auction results bring together sale data from top auction houses around the world,
-        including Christie’s, Sotheby’s, Phillips and Bonhams. Results are updated daily.
-      </Text>
+      <Text>{intl.formatMessage(intlMessages.textOne)}</Text>
       <Spacer mb={2} />
-      <Text>
-        Please note that the sale price includes the hammer price and buyer’s premium, as well as
-        any other additional fees (e.g., Artist’s Resale Rights).
-      </Text>
+      <Text>{intl.formatMessage(intlMessages.textTwo)}</Text>
       <Spacer mb={2} />
     </>
   )
 
-  const resultsString =
-    Number(artist.auctionResultsConnection?.totalCount) === 1 ? "result" : "results"
+  const plurarizeResult = (num: number) =>
+    intl.formatMessage(num === 1 ? intlMessages.resultText : intlMessages.resultTextPlural)
+
+  const resultsString = plurarizeResult(Number(artist.auctionResultsConnection?.totalCount))
+
+  const infoButtonTitle = intl.formatMessage(intlMessages.infoButtonTitle)
 
   return (
     <View
@@ -143,13 +173,13 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
           <InfoButton
             titleElement={
               <Text variant="md" mr={0.5}>
-                Auction Results
+                {infoButtonTitle}
               </Text>
             }
             trackEvent={() => {
               tracking.trackEvent(tracks.tapAuctionResultsInfo())
             }}
-            modalTitle="Auction Results"
+            modalTitle={infoButtonTitle}
             maxModalHeight={310}
             modalContent={renderAuctionResultsModal()}
           />
@@ -158,7 +188,10 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
           {!!artist.auctionResultsConnection?.totalCount
             ? new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)
             : 0}{" "}
-          {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
+          {resultsString} {bullet}{" "}
+          {intl.formatMessage(intlMessages.sortDescription, {
+            sortDescription: getSortDescription()?.toLowerCase(),
+          })}
         </SortMode>
         <Separator mt="2" />
         <KeywordFilter
