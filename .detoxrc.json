@@ -1,0 +1,42 @@
+{
+  "testRunner": "jest",
+  "runnerConfig": "e2e/config.json",
+  "skipLegacyWorkersInjection": true,
+  "apps": {
+    "ios.release": {
+      "type": "ios.app",
+      "binaryPath": "builds/Build/Products/Store-iphonesimulator/Artsy.app",
+      "build": "xcodebuild -workspace Artsy.xcworkspace -scheme Artsy -configuration Store -sdk iphonesimulator -derivedDataPath builds"
+    },
+    "android.release": {
+      "type": "android.apk",
+      "binaryPath": "SPECIFY_PATH_TO_YOUR_APP_BINARY",
+      "build": "cd android && ./gradlew assembleBetaRelease assembleBetaReleaseAndroidTest -DtestBuildType=release && cd .."
+    }
+  },
+  "devices": {
+    "simulator": {
+      "type": "ios.simulator",
+      "device": {
+        "type": "iPhone 12",
+        "os": "iOS 14.3"
+      }
+    },
+    "emulator": {
+      "type": "android.emulator",
+      "device": {
+        "avdName": "Pixel_3a_API_30_x86"
+      }
+    }
+  },
+  "configurations": {
+    "ios.simulator.release": {
+      "device": "simulator",
+      "app": "ios.release"
+    },
+    "android.emulator.release": {
+      "device": "emulator",
+      "app": "android.release"
+    }
+  }
+}

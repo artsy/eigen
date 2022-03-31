@@ -4,6 +4,7 @@ set -euxo pipefail
 
 touch .env.ci
 aws s3 cp s3://artsy-citadel/dev/.env.eigen .env.shared
+aws s3 cp s3://artsy-citadel/dev/.env.eigen.e2e .env.e2e
 
 cp metaflags.example.json metaflags.json
 
