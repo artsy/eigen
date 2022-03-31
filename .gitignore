@@ -54,6 +54,8 @@ Pods
 # build artefacts
 derived_data
 Artsy/Networking/ARReactPackagerHost.m
+builds
+artifacts
 
 # COPIED FROM EMISSION
 
