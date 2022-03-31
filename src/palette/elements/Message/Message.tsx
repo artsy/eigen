@@ -3,7 +3,7 @@ import { Text } from "palette"
 import React from "react"
 import styled from "styled-components/native"
 import { Flex, FlexProps } from "../Flex"
-import { Sans, SansV1Props } from "../Text"
+import { SansV1Props } from "../Text"
 
 interface MessageProps extends FlexProps {
   children: React.ReactNode | null

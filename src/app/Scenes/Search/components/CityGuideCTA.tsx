@@ -1,6 +1,6 @@
 import { navigate } from "app/navigation/navigate"
 import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
-import { ClassTheme, Flex, Sans, Spacer, Text } from "palette"
+import { ClassTheme, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 
@@ -11,7 +11,7 @@ export class CityGuideCTA extends React.Component {
       <ClassTheme>
         {({ color }) => (
           <Flex>
-            <Text variant="lg">City Guide</Text>
+            <Text variant="md">City Guide</Text>
             <Text color="black60">Discover Galleries, Fairs and Shows around you</Text>
             <Spacer m={1} />
             <TouchableOpacity onPress={() => navigate("/local-discovery")}>
