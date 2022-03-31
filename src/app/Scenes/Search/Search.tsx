@@ -33,6 +33,7 @@ import {
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
+import { AlgoliaSearchResults } from "./components/AlgoliaSearchResults"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { CityGuideCTANew } from "./components/CityGuideCTANew"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
@@ -44,7 +45,6 @@ import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
-import { SearchResults } from "./SearchResults"
 import { AlgoliaIndexKey } from "./types"
 import { AlgoliaSearchResult, PillType } from "./types"
 
@@ -58,7 +58,7 @@ interface TappedSearchResultData {
 }
 
 const SearchInputContainer = connectSearchBox(SearchInput)
-const SearchResultsContainerWithState = connectStateResults(SearchResults)
+const SearchResultsContainerWithState = connectStateResults(AlgoliaSearchResults)
 const SearchResultsContainer = connectInfiniteHits(SearchResultsContainerWithState)
 
 interface SearchState {

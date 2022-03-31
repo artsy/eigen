@@ -6,13 +6,13 @@ import { Box, Flex, Spacer, Spinner, Text, useSpace } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
 import { FlatList } from "react-native"
-import { AlgoliaSearchPlaceholder } from "./components/placeholders/AlgoliaSearchPlaceholder"
-import { SearchResult } from "./components/SearchResult"
-import { ALGOLIA_INDICES_WITH_AN_ARTICLE } from "./constants"
-import { isAlgoliaApiKeyExpiredError } from "./helpers"
-import { AlgoliaIndexKey, AlgoliaSearchResult, PillType } from "./types"
+import { ALGOLIA_INDICES_WITH_AN_ARTICLE } from "../constants"
+import { isAlgoliaApiKeyExpiredError } from "../helpers"
+import { AlgoliaIndexKey, AlgoliaSearchResult, PillType } from "../types"
+import { AlgoliaSearchPlaceholder } from "./placeholders/AlgoliaSearchPlaceholder"
+import { SearchResult } from "./SearchResult"
 
-interface SearchResultsProps
+interface AlgoliaSearchResultsProps
   extends StateResultsProvided<AlgoliaSearchResult>,
     InfiniteHitsProvided<AlgoliaSearchResult> {
   selectedPill: PillType
@@ -20,7 +20,7 @@ interface SearchResultsProps
   trackResultPress?: (result: AlgoliaSearchResult) => void
 }
 
-export const SearchResults: React.FC<SearchResultsProps> = ({
+export const AlgoliaSearchResults: React.FC<AlgoliaSearchResultsProps> = ({
   hits,
   hasMore,
   searching,
