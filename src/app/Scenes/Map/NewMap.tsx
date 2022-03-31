@@ -1,6 +1,6 @@
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import algoliasearch from "algoliasearch"
-import { Box, Flex } from "palette"
+import { Box, Button, Flex, Text } from "palette"
 import { FC, useEffect, useRef, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import Config from "react-native-config"
@@ -11,10 +11,10 @@ import { ArtsyMapStyleURL } from "./GlobalMap"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
-const styles = StyleSheet.create({
+const mapContainerStyles = StyleSheet.create({
   container: {
     width: "100%",
-    height: Dimensions.get("window").height,
+    height: Dimensions.get("window").height - 220,
   },
   map: {
     flex: 1,
@@ -50,16 +50,24 @@ interface GalleryHit {
   }
 }
 
-const { ALGOLIA_API_KEY, ALGOLIA_APP_ID } = process.env
-const client = algoliasearch(ALGOLIA_APP_ID!, ALGOLIA_API_KEY!)
+// note: there is no process.env - hardcode these and then dont commit them.
+const algoliaApiKey = process.env.ALGOLIA_API_KEY
+const algoliaAppId = process.env.ALGOLIA_APP_ID
+
+const client = algoliasearch(algoliaAppId!, algoliaApiKey!)
 const galleryIndex = client.initIndex("PartnerLocation_staging")
+
+type PartnerLocation = any
 
 export const NewMapScreen: FC = () => {
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const mapRef = useRef<MapboxGL.MapView>(null)
   const [userLocation, setUserLocation] = useState<GeoJSON.Position>()
   const [showUserLocation, setShowUserLocation] = useState(false)
-  const [visibleBounds, setVisibleBounds] = useState<GeoJSON.Position[] | null>(null)
+  const [visibleBounds, setVisibleBounds] = useState<GeoJSON.Position[] | undefined>()
+  const [locations, setLocations] = useState<PartnerLocation[] | undefined>()
+  const [showReloadButton, setShowReloadButton] = useState<boolean>(false)
+  const didInitialFetch = useRef(false)
   // fly user to their location in the map
   const onPressUserPositionButton = () => {
     setShowUserLocation(true)
@@ -69,31 +77,41 @@ export const NewMapScreen: FC = () => {
       animationDuration: 500,
     })
   }
-  console.warn({ galleryIndex })
+  // console.warn({ galleryIndex })
 
+  // fetch galleries once on load (hopefully visibleBounds are defined?)
   useEffect(() => {
-    console.warn({ visibleBounds })
+    if (!!visibleBounds) {
+      if (!didInitialFetch.current) {
+        console.warn({ algoliaApiKey, algoliaAppId })
+
+        didInitialFetch.current = true
+        fetchGalleryLocations()
+      } else {
+        setShowReloadButton(true)
+      }
+    }
   }, [visibleBounds])
 
-  const convertBoundsToAlgoliaBounds = (
-    bounds: GeoJSON.Position[]
-  ): [number, number, number, number] => {
-    const [[north, east] = [], [south, west] = []] = bounds
+  const algoliaBounds = (bounds: GeoJSON.Position[]): [number, number, number, number] => {
+    const [[east, north] = [], [west, south] = []] = bounds
+    console.log([north, east, south, west])
     return [north, east, south, west]
   }
 
-  const fetchGalleryLocations = async (bounds?: GeoJSON.Position[]) => {
-    if (!bounds) {
+  const fetchGalleryLocations = async () => {
+    if (!visibleBounds) {
       return null
     }
-
     const options = {
-      insideBoundingBox: [convertBoundsToAlgoliaBounds(bounds)],
+      insideBoundingBox: [algoliaBounds(visibleBounds)],
       aroundLatLngViaIP: true,
     }
     try {
       const results = await galleryIndex.search<GalleryHit>("", options)
-      console.warn(results.hits)
+      console.log(results)
+      console.warn("Hits: " + results.hits.length)
+      setLocations(results.hits ?? undefined)
       return results.hits
     } catch (error) {
       console.warn(error)
@@ -104,22 +122,32 @@ export const NewMapScreen: FC = () => {
     setUserLocation([location.coords.longitude, location.coords.latitude])
   }
 
+  const onPressReloadButton = () => {
+    setShowReloadButton(false)
+    fetchGalleryLocations()
+  }
+
   return (
     <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="white100">
-      <View style={styles.container}>
+      <View style={mapContainerStyles.container}>
         <MapboxGL.MapView
           ref={mapRef}
           onRegionDidChange={async () => {
             const newBounds = await mapRef.current?.getVisibleBounds()
-            // @ts-expect-error pffffffff
+
             setVisibleBounds(newBounds)
           }}
           styleURL={ArtsyMapStyleURL}
-          style={styles.map}
+          style={mapContainerStyles.map}
           compassEnabled={false}
         >
           <TopButtonsContainer>
             <UserPositionButton onPress={onPressUserPositionButton} />
+            {!!showReloadButton && (
+              <Button ml={30} onPress={onPressReloadButton}>
+                Reload{" "}
+              </Button>
+            )}
           </TopButtonsContainer>
           <MapboxGL.UserLocation
             // dynamically pass this onUpdate when user presses the CrossHair Icon
@@ -139,6 +167,11 @@ export const NewMapScreen: FC = () => {
           />
           <MapboxGL.MarkerView id="1" coordinate={BERLIN_COORDS} />
         </MapboxGL.MapView>
+      </View>
+      <View>
+        <Box backgroundColor="gray60">
+          <Text fontFamily="sans">{JSON.stringify(locations, null, 2)}</Text>
+        </Box>
       </View>
     </Flex>
   )

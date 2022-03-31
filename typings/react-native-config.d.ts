@@ -18,5 +18,7 @@ declare module "react-native-config" {
     UNLEASH_PROXY_CLIENT_KEY_STAGING: string
     UNLEASH_PROXY_URL_PRODUCTION: string
     UNLEASH_PROXY_URL_STAGING: string
+    ALGOLIA_API_KEY: string
+    ALGOLIA_APP_ID: string
   }
 }

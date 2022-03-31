@@ -28,6 +28,9 @@ import algoliasearch from "algoliasearch"
 import fetch from "node-fetch"
 import cities from "../data/cityDataSortedByDisplayPreference.json"
 
+// a box in the berlin area
+// const mapBounds = [52.593682137388384, 13.478471068593848, 52.446194078722385, 13.331528931356047]
+
 const main = async () => {
   const { ALGOLIA_API_KEY, ALGOLIA_APP_ID } = process.env
   const client = algoliasearch(ALGOLIA_APP_ID!, ALGOLIA_API_KEY!)
