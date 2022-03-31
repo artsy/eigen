@@ -13,6 +13,7 @@ MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    backgroundColor: "pink",
     height: Dimensions.get("window").height,
   },
   map: {
