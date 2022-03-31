@@ -13,7 +13,7 @@ import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
-import { Box, Button, Flex, Spacer, Text } from "palette"
+import { Box, Flex, Spacer, Text, Touchable } from "palette"
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   Configure,
@@ -34,6 +34,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./components/CityGuideCTA"
+import { CityGuideCTANew } from "./components/CityGuideCTANew"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
@@ -285,7 +286,12 @@ export const Search: React.FC = () => {
         >
           <Configure clickAnalytics />
           <RefetchWhenApiKeyExpiredContainer refetch={onRefetch} />
-          <Flex p={2} pb={1}>
+          {!!enableMaps && (
+            <Flex p={2} pb={1}>
+              <Text variant="xl">Explore</Text>
+            </Flex>
+          )}
+          <Flex p={2} pb={0}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
               onTextChange={onTextChange}
@@ -310,12 +316,12 @@ export const Search: React.FC = () => {
               <Scrollable>
                 <RecentSearches />
                 <Spacer mb={3} />
-                {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
-                <Spacer mb="40px" />
-                {!!enableMaps && (
-                  <Flex m="0 auto" pb={1}>
-                    <Button onPress={() => navigate("/map")}>Near Me</Button>
-                  </Flex>
+                {!!enableMaps ? (
+                  <Touchable onPress={() => navigate("/map")}>
+                    <CityGuideCTANew />
+                  </Touchable>
+                ) : (
+                  !isPad() && Platform.OS === "ios" && <CityGuideCTA />
                 )}
                 <Spacer mb="40px" />
               </Scrollable>
