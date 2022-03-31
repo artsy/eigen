@@ -1,6 +1,6 @@
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { Box, Flex } from "palette"
-import React, { useRef, useState } from "react"
+import { FC, useRef, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import Config from "react-native-config"
 import styled from "styled-components/native"
@@ -35,11 +35,10 @@ const MINIMUM__METERS_BEFORE_UPDATING_POSITION = 300
 const MIN_ZOOM_LVL = 9
 const MAX_ZOOM_LVL = 25
 
-const BERLIN_DATA = cityData.filter((city) => city.name === "Berlin")[0]
-const BERLIN_COORDS = [BERLIN_DATA.coordinates.lng, BERLIN_DATA.coordinates.lat]
+const BERLIN_DATA = cityData.find((city) => city.name === "Berlin")
+const BERLIN_COORDS = [BERLIN_DATA!.coordinates.lng, BERLIN_DATA!.coordinates.lat]
 
-export const NewMapScreen = () => {
-  console.warn({ BERLIN_COORDS })
+export const NewMapScreen: FC = () => {
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const [userLocation, setUserLocation] = useState<GeoJSON.Position>()
   const [showUserLocation, setShowUserLocation] = useState(false)
