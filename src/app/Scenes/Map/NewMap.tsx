@@ -1,22 +1,16 @@
 import MapboxGL from "@react-native-mapbox-gl/maps"
-import { themeGet } from "@styled-system/theme-get"
-import { Box } from "palette"
+import { Box, Flex } from "palette"
 import React, { useRef, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import Config from "react-native-config"
-import styled from "styled-components"
+import styled from "styled-components/native"
+import cityData from "../../../../data/cityDataSortedByDisplayPreference.json"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { ArtsyMapStyleURL } from "./GlobalMap"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
 const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: `${themeGet("colors.white100")}`,
-  },
   container: {
     width: "100%",
     height: Dimensions.get("window").height,
@@ -39,12 +33,13 @@ const TopButtonsContainer = styled(Box)`
 const DEFAULT_ZOOM_LEVEL = 11
 const MINIMUM__METERS_BEFORE_UPDATING_POSITION = 300
 const MIN_ZOOM_LVL = 9
-const MAX_ZOOM_LVL = 50
+const MAX_ZOOM_LVL = 25
 
-// this is the center of Berlin for now until we decide otherwise
-const INITIAL_LOCATION = [13.413141, 52.523509]
+const BERLIN_DATA = cityData.filter((city) => city.name === "Berlin")[0]
+const BERLIN_COORDS = [BERLIN_DATA.coordinates.lng, BERLIN_DATA.coordinates.lat]
 
 export const NewMapScreen = () => {
+  console.warn({ BERLIN_COORDS })
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const [userLocation, setUserLocation] = useState<GeoJSON.Position>()
   const [showUserLocation, setShowUserLocation] = useState(false)
@@ -64,7 +59,7 @@ export const NewMapScreen = () => {
   }
 
   return (
-    <View style={styles.page}>
+    <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="white100">
       <View style={styles.container}>
         <MapboxGL.MapView styleURL={ArtsyMapStyleURL} style={styles.map} compassEnabled={false}>
           <TopButtonsContainer>
@@ -81,13 +76,13 @@ export const NewMapScreen = () => {
           <MapboxGL.Camera
             ref={cameraRef}
             animationMode="flyTo"
-            centerCoordinate={INITIAL_LOCATION}
+            centerCoordinate={BERLIN_COORDS}
             zoomLevel={DEFAULT_ZOOM_LEVEL}
             minZoomLevel={MIN_ZOOM_LVL}
             maxZoomLevel={MAX_ZOOM_LVL}
           />
         </MapboxGL.MapView>
       </View>
-    </View>
+    </Flex>
   )
 }
