@@ -13972,8 +13972,11 @@ type UpdateUserDefaultAddressPayload {
 
 input UpdateUserMutationInput {
   clientMutationId: String
+  dataTransferOptOut: Boolean
   email: String!
   id: String!
+  name: String!
+  phone: String
 }
 
 type UpdateUserMutationPayload {
@@ -14032,6 +14035,9 @@ type UpdateViewingRoomSubsectionsPayload {
 type User {
   analytics: AnalyticsUserStats
   cached: Int
+
+  # Has the user opted out of data transfer.
+  dataTransferOptOut: Boolean
   devices: [Device!]!
 
   # The given email of the user.
