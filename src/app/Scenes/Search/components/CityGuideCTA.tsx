@@ -12,7 +12,7 @@ export class CityGuideCTA extends React.Component {
       <ClassTheme>
         {({ color }) => (
           <Flex>
-            <SectionTitle title="Explore art on view" />
+            <SectionTitle title="Explore Art on View" />
             <TouchableOpacity onPress={() => navigate("/local-discovery")}>
               <Flex
                 style={{
