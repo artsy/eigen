@@ -1,18 +1,19 @@
-import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
-import { ClassTheme, Flex, Sans, Spacer } from "palette"
+import { ClassTheme, Flex, Sans, Spacer, Text } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 
 export class CityGuideCTA extends React.Component {
   render() {
-    const cityGuideMapImage = require("../../../../../images/city-guide-bg.webp")
+    const cityGuideMapImage = require("../../../../../images/city-guide.webp")
     return (
       <ClassTheme>
         {({ color }) => (
           <Flex>
-            <SectionTitle title="Explore art on view" />
+            <Text variant="lg">City Guide</Text>
+            <Text color="black60">Discover Galleries, Fairs and Shows around you</Text>
+            <Spacer m={1} />
             <TouchableOpacity onPress={() => navigate("/local-discovery")}>
               <Flex
                 style={{
@@ -22,16 +23,10 @@ export class CityGuideCTA extends React.Component {
                   overflow: "hidden",
                 }}
               >
-                <Image source={cityGuideMapImage} style={{ width: "100%" }} />
-                <Flex m={15}>
-                  <Sans size="3t" weight="medium">
-                    City Guide
-                  </Sans>
-                  <Sans size="3t" style={{ color: color("black60") }}>
-                    Browse fairs and shows in different cities
-                  </Sans>
-                  <Spacer mb={1} />
-                  <BMWSponsorship logoText="Presented in partnership with BMW" pressable={false} />
+                <Image source={cityGuideMapImage} style={{ width: "100%", height: 200 }} />
+                <Spacer mb={1} />
+                <Flex mx={15} mt={10}>
+                  <BMWSponsorship pressable={false} />
                 </Flex>
               </Flex>
             </TouchableOpacity>
