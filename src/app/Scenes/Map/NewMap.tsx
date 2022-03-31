@@ -39,17 +39,27 @@ const MAX_ZOOM_LVL = 25
 const BERLIN_DATA = cityData.find((city) => city.name === "Berlin")
 const BERLIN_COORDS = [BERLIN_DATA!.coordinates.lng, BERLIN_DATA!.coordinates.lat]
 
+interface GalleryHit {
+  partner: {
+    name: string
+    href: string
+  }
+  _geoloc: {
+    lat: number
+    lng: number
+  }
+}
+
+const { ALGOLIA_API_KEY, ALGOLIA_APP_ID } = process.env
+const client = algoliasearch(ALGOLIA_APP_ID!, ALGOLIA_API_KEY!)
+const galleryIndex = client.initIndex("PartnerLocation_staging")
+
 export const NewMapScreen: FC = () => {
-  const { ALGOLIA_API_KEY, ALGOLIA_APP_ID } = process.env
-  const client = algoliasearch(ALGOLIA_APP_ID!, ALGOLIA_API_KEY!)
-
-  const galleryIndex = client.initIndex("PartnerLocation_development")
-
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const mapRef = useRef<MapboxGL.MapView>(null)
   const [userLocation, setUserLocation] = useState<GeoJSON.Position>()
   const [showUserLocation, setShowUserLocation] = useState(false)
-  const [visibleBounds, setVisibleBounds] = useState(null)
+  const [visibleBounds, setVisibleBounds] = useState<GeoJSON.Position[] | null>(null)
   // fly user to their location in the map
   const onPressUserPositionButton = () => {
     setShowUserLocation(true)
@@ -59,10 +69,36 @@ export const NewMapScreen: FC = () => {
       animationDuration: 500,
     })
   }
+  console.warn({ galleryIndex })
 
   useEffect(() => {
     console.warn({ visibleBounds })
   }, [visibleBounds])
+
+  const convertBoundsToAlgoliaBounds = (
+    bounds: GeoJSON.Position[]
+  ): [number, number, number, number] => {
+    const [[north, east] = [], [south, west] = []] = bounds
+    return [north, east, south, west]
+  }
+
+  const fetchGalleryLocations = async (bounds?: GeoJSON.Position[]) => {
+    if (!bounds) {
+      return null
+    }
+
+    const options = {
+      insideBoundingBox: [convertBoundsToAlgoliaBounds(bounds)],
+      aroundLatLngViaIP: true,
+    }
+    try {
+      const results = await galleryIndex.search<GalleryHit>("", options)
+      console.warn(results.hits)
+      return results.hits
+    } catch (error) {
+      console.warn(error)
+    }
+  }
 
   const onUpdateUserLocation = (location: MapboxGL.Location) => {
     setUserLocation([location.coords.longitude, location.coords.latitude])
@@ -75,7 +111,7 @@ export const NewMapScreen: FC = () => {
           ref={mapRef}
           onRegionDidChange={async () => {
             const newBounds = await mapRef.current?.getVisibleBounds()
-            // @ts-expect-error
+            // @ts-expect-error pffffffff
             setVisibleBounds(newBounds)
           }}
           styleURL={ArtsyMapStyleURL}
