@@ -8,7 +8,7 @@ import { CityGuideCTA } from "./CityGuideCTA"
 describe("Search page empty state", () => {
   it(`renders correctly`, async () => {
     const tree = renderWithWrappers(<CityGuideCTA />)
-    expect(extractText(tree.root)).toContain("Explore Art on View")
+    expect(extractText(tree.root)).toContain("Explore art on view")
     expect(tree.root.findAllByType(Image)).toHaveLength(2)
   })
 
