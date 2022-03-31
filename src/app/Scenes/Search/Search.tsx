@@ -287,10 +287,10 @@ export const Search: React.FC = () => {
           <RefetchWhenApiKeyExpiredContainer refetch={onRefetch} />
           {!!enableMaps && (
             <Flex p={2} pb={1}>
-              <Text variant="lg">Explore</Text>
+              <Text variant="xl">Explore</Text>
             </Flex>
           )}
-          <Flex p={2} pb={1}>
+          <Flex p={2} pb={0}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
               onTextChange={onTextChange}

@@ -13,7 +13,7 @@ export const CityGuideCTA = () => {
     <ClassTheme>
       {({ color }) => (
         <Flex>
-          <Text variant="md">City Guide</Text>
+          <Text variant="lg">City Guide</Text>
           <Text color="black60">Discover Galleries, Fairs and Shows around you</Text>
           <Spacer m={1} />
           <Touchable onPress={() => navigate(enableMaps ? "/map" : "local-discovery")}>
@@ -25,11 +25,10 @@ export const CityGuideCTA = () => {
                 overflow: "hidden",
               }}
             >
-              <Image source={mapImage} style={{ width: "100%", height: 200 }} />
-              <Spacer mb={1} />
-              <Flex mx={15} mt={10}>
-                <BMWSponsorship pressable={false} />
-              </Flex>
+              <Image source={mapImage} style={{ width: "100%", height: 360 }} />
+            </Flex>
+            <Flex mt={15}>
+              <BMWSponsorship pressable={false} />
             </Flex>
           </Touchable>
         </Flex>
