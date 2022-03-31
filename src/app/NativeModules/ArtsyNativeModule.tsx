@@ -47,4 +47,10 @@ export const ArtsyNativeModule = {
     Platform.OS === "ios"
       ? NativeModules.ArtsyNativeModule.isBetaOrDev
       : appJson().isAndroidBeta || __DEV__,
+  sharedStorage:
+    Platform.OS === "ios"
+      ? () => {
+          console.error("sharedStorage is unsupported on iOS")
+        }
+      : NativeModules.SharedStorage,
 }

@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Artsy</string>
+    <string name="artsy_logo">Artsy Logo</string>
+    <string name="featured_image">Featured Image</string>
     <string name="facebook_app_id">308278682573501</string>
     <string name="fb_login_protocol_scheme">fb308278682573501</string>
+    <string name="add_widget">Add widget</string>
+    <string name="featured_artwork_widget_description">Artsy Featured Artworks Widget</string>
 </resources>

@@ -80,6 +80,9 @@ const Main: React.FC = () => {
           })
         })
         ArtsyNativeModule.setAppStyling()
+        ArtsyNativeModule.sharedStorage.set(
+          JSON.stringify({ artworkTitle: "Some Artwork title from the React Native app" })
+        )
         if (isLoggedIn) {
           ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
           ArtsyNativeModule.setAppLightContrast(false)

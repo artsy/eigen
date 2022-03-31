@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Artsy.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/featured_artwork_title_padding"
+    android:theme="@style/AppTheme.AppWidgetContainer">
+
+    <ImageView
+        android:id="@+id/featuredImage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/featured_image"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/com_appboy_content_cards_unread_bar_background" />
+
+    <ImageView
+        android:id="@+id/artsyLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:contentDescription="@string/artsy_logo"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:translationX="@dimen/artsy_logo_paddingX"
+        android:translationY="@dimen/artsy_logo_paddingY"
+        app:srcCompat="@mipmap/ic_notification" />
+
+    <TextView
+        android:id="@+id/artworkTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#000000"
+        android:padding="40dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>
