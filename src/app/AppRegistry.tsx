@@ -64,7 +64,7 @@ import {
   LotsByArtistsYouFollowScreenQuery,
 } from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { MapContainer } from "./Scenes/Map"
-import { NewMapScreen } from "./Scenes/Map/NewMap"
+import { NewMapScreenQueryRenderer } from "./Scenes/Map/NewMap"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
@@ -388,7 +388,7 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
   }),
   Map: reactModule(MapContainer, { fullBleed: true }),
-  NewMap: reactModule(NewMapScreen, { fullBleed: true }),
+  NewMap: reactModule(NewMapScreenQueryRenderer, { fullBleed: true }),
   MyAccount: reactModule(MyAccountQueryRenderer),
   MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
   MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),

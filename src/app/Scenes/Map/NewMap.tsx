@@ -1,9 +1,14 @@
 import MapboxGL from "@react-native-mapbox-gl/maps"
+import { NewMap_system } from "__generated__/NewMap_system.graphql"
+import { NewMapQuery } from "__generated__/NewMapQuery.graphql"
 import algoliasearch from "algoliasearch"
-import { Box, Button, Flex, Text } from "palette"
-import { FC, useEffect, useRef, useState } from "react"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { Box, Button, Flex, Spinner, Text } from "palette"
+import React, { FC, useEffect, useRef, useState } from "react"
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native"
 import Config from "react-native-config"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 import cityData from "../../../../data/cityDataSortedByDisplayPreference.json"
 import { UserPositionButton } from "./Components/UserPositionButton"
@@ -51,14 +56,7 @@ interface GalleryHit {
   }
 }
 
-// note: there is no process.env - hardcode these and then dont commit them.
-const algoliaApiKey = process.env.ALGOLIA_API_KEY
-const algoliaAppId = process.env.ALGOLIA_APP_ID
-
-const client = algoliasearch(algoliaAppId!, algoliaApiKey!)
-const galleryIndex = client.initIndex("PartnerLocation_staging")
-
-export const NewMapScreen: FC = () => {
+export const NewMapScreen: FC<{ system: NewMap_system }> = ({ system: { algolia } }) => {
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const mapRef = useRef<MapboxGL.MapView>(null)
   const [userLocation, setUserLocation] = useState<GeoJSON.Position>()
@@ -67,6 +65,10 @@ export const NewMapScreen: FC = () => {
   const [locations, setLocations] = useState<GalleryHit[] | undefined>()
   const [showReloadButton, setShowReloadButton] = useState<boolean>(false)
   const didInitialFetch = useRef(false)
+
+  const client = algoliasearch(algolia?.appID!, algolia?.apiKey!)
+  const galleryIndex = client.initIndex("PartnerLocation_staging")
+
   // fly user to their location in the map
   const onPressUserPositionButton = () => {
     setShowUserLocation(true)
@@ -82,8 +84,6 @@ export const NewMapScreen: FC = () => {
   useEffect(() => {
     if (!!visibleBounds) {
       if (!didInitialFetch.current) {
-        console.warn({ algoliaApiKey, algoliaAppId })
-
         didInitialFetch.current = true
         fetchGalleryLocations()
       } else {
@@ -108,8 +108,8 @@ export const NewMapScreen: FC = () => {
     }
     try {
       const results = await galleryIndex.search<GalleryHit>("", options)
-      console.log(JSON.stringify(results.hits, null, 2))
-      console.warn("Hits: " + results.hits.length)
+      // console.log(JSON.stringify(results.hits, null, 2))
+      // console.warn("Hits: " + results.hits.length)
       setLocations(results.hits ?? undefined)
       return results.hits
     } catch (error) {
@@ -165,7 +165,6 @@ export const NewMapScreen: FC = () => {
               minZoomLevel={MIN_ZOOM_LVL}
               maxZoomLevel={MAX_ZOOM_LVL}
             />
-            <MapboxGL.MarkerView id="1" coordinate={BERLIN_COORDS} />
             {!!locations &&
               locations.map((location) => {
                 const {
@@ -191,5 +190,42 @@ export const NewMapScreen: FC = () => {
         </View>
       </Flex>
     </ScrollView>
+  )
+}
+
+export const NewMapContainer = createFragmentContainer(NewMapScreen, {
+  system: graphql`
+    fragment NewMap_system on System {
+      algolia {
+        appID
+        apiKey
+      }
+    }
+  `,
+})
+
+export const NewMapScreenQueryRenderer: React.FC<{}> = () => {
+  return (
+    <QueryRenderer<NewMapQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query NewMapQuery {
+          system {
+            ...NewMap_system
+          }
+        }
+      `}
+      render={renderWithPlaceholder({
+        Container: NewMapContainer,
+        renderPlaceholder: () => {
+          return (
+            <Flex>
+              <Spinner />
+            </Flex>
+          )
+        },
+      })}
+      variables={{}}
+    />
   )
 }
