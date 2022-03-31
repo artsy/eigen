@@ -19,7 +19,7 @@ import {
 } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
-import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
+import { updateNotificationPreferences } from "./mutations/updateNotificationPreferences"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
 import { getSavedSearchIdByCriteria } from "./queries/getSavedSearchIdByCriteria"
 import {
@@ -102,7 +102,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
          *  - the user previously opted out of all marketing emails
          */
         if (!userAllowsEmails && !initialValues.email && values.email) {
-          await updateEmailFrequency("alerts_only")
+          await updateNotificationPreferences([{ name: "custom_alerts", status: "SUBSCRIBED" }])
         }
 
         /**

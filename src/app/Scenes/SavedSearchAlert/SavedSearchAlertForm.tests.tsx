@@ -438,11 +438,9 @@ describe("Allow to send emails modal", () => {
 
     await waitFor(() => {
       const mutation = mockEnvironment.mock.getMostRecentOperation()
-      expect(mutation.request.node.operation.name).toEqual("updateEmailFrequencyMutation")
+      expect(mutation.request.node.operation.name).toEqual("updateNotificationPreferencesMutation")
       expect(mutation.request.variables).toEqual({
-        input: {
-          emailFrequency: "alerts_only",
-        },
+        input: { subscriptionGroups: [{ name: "custom_alerts", status: "SUBSCRIBED" }] },
       })
     })
   })
