@@ -369,7 +369,7 @@ export const SaleQueryRenderer: React.FC<{
 
   return (
     <RetryErrorBoundaryLegacy
-      render={({ isRetry }) => {
+      render={() => {
         return (
           <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
             environment={environment || defaultEnvironment}
@@ -412,8 +412,7 @@ export const SaleQueryRenderer: React.FC<{
               )
             }}
             cacheConfig={{
-              // Bypass Relay cache on retries.
-              ...(isRetry && { force: true }),
+              force: true,
             }}
           />
         )
