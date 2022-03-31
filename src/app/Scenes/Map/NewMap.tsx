@@ -1,6 +1,7 @@
 import MapboxGL from "@react-native-mapbox-gl/maps"
+import algoliasearch from "algoliasearch"
 import { Box, Flex } from "palette"
-import { FC, useRef, useState } from "react"
+import { FC, useEffect, useRef, useState } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
 import Config from "react-native-config"
 import styled from "styled-components/native"
@@ -39,10 +40,14 @@ const BERLIN_DATA = cityData.find((city) => city.name === "Berlin")
 const BERLIN_COORDS = [BERLIN_DATA!.coordinates.lng, BERLIN_DATA!.coordinates.lat]
 
 export const NewMapScreen: FC = () => {
+  const { ALGOLIA_API_KEY, ALGOLIA_APP_ID } = process.env
+  const client = algoliasearch(ALGOLIA_APP_ID!, ALGOLIA_API_KEY!)
+
   const cameraRef = useRef<MapboxGL.Camera>(null)
+  const mapRef = useRef<MapboxGL.MapView>(null)
   const [userLocation, setUserLocation] = useState<GeoJSON.Position>()
   const [showUserLocation, setShowUserLocation] = useState(false)
-
+  const [visibleBounds, setVisibleBounds] = useState(null)
   // fly user to their location in the map
   const onPressUserPositionButton = () => {
     setShowUserLocation(true)
@@ -53,6 +58,10 @@ export const NewMapScreen: FC = () => {
     })
   }
 
+  useEffect(() => {
+    console.warn({ visibleBounds })
+  }, [visibleBounds])
+
   const onUpdateUserLocation = (location: MapboxGL.Location) => {
     setUserLocation([location.coords.longitude, location.coords.latitude])
   }
@@ -60,7 +69,17 @@ export const NewMapScreen: FC = () => {
   return (
     <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="white100">
       <View style={styles.container}>
-        <MapboxGL.MapView styleURL={ArtsyMapStyleURL} style={styles.map} compassEnabled={false}>
+        <MapboxGL.MapView
+          ref={mapRef}
+          onRegionDidChange={async () => {
+            const newBounds = await mapRef.current?.getVisibleBounds()
+            console.warn("mapRef.current?.getVisibleBounds", visibleBounds)
+            setVisibleBounds(newBounds)
+          }}
+          styleURL={ArtsyMapStyleURL}
+          style={styles.map}
+          compassEnabled={false}
+        >
           <TopButtonsContainer>
             <UserPositionButton onPress={onPressUserPositionButton} />
           </TopButtonsContainer>
@@ -80,6 +99,7 @@ export const NewMapScreen: FC = () => {
             minZoomLevel={MIN_ZOOM_LVL}
             maxZoomLevel={MAX_ZOOM_LVL}
           />
+          <MapboxGL.MarkerView id="1" coordinate={BERLIN_COORDS} />
         </MapboxGL.MapView>
       </View>
     </Flex>
