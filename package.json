@@ -221,6 +221,7 @@
     "@types/luxon": "2.0.9",
     "@types/moment-timezone": "0.5.30",
     "@types/node": "14.17.34",
+    "@types/node-fetch": "2.6.1",
     "@types/qs": "6.9.7",
     "@types/query-string": "5.0.1",
     "@types/react": "17.0.39",
