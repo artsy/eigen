@@ -34,6 +34,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./components/CityGuideCTA"
+import { CityGuideCTANew } from "./components/CityGuideCTANew"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
@@ -317,7 +318,7 @@ export const Search: React.FC = () => {
                 <Spacer mb={3} />
                 {!!enableMaps ? (
                   <Touchable onPress={() => navigate("/map")}>
-                    <CityGuideCTA />
+                    <CityGuideCTANew />
                   </Touchable>
                 ) : (
                   !isPad() && Platform.OS === "ios" && <CityGuideCTA />
