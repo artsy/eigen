@@ -14,13 +14,12 @@ import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
 import { Box, Button, Flex, Spacer, Text } from "palette"
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Suspense, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
   connectSearchBox,
   connectStateResults,
-  InstantSearch,
 } from "react-instantsearch-native"
 import { Keyboard, Platform, ScrollView } from "react-native"
 import {
@@ -32,6 +31,7 @@ import {
 } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
+import { AlgoliaClientContext, AlgoliaProvider } from "./AlgoliaProvider"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
@@ -124,10 +124,19 @@ export const Search: React.FC = () => {
   const searchQuery = searchState?.query ?? ""
   const searchProviderValues = useSearchProviderValues(searchQuery)
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
+  const { setSearchClient } = useContext(AlgoliaClientContext)
   const searchInsightsConfigured = useSearchInsightsConfig(
     system?.algolia?.appID,
     system?.algolia?.apiKey
   )
+
+  useEffect(() => {
+    if (!searchClient || !searchInsightsConfigured) {
+      // here is where I want to update the client in the context 😬 but it doesn't work
+      setSearchClient(searchClient)
+    }
+  }, [searchClient, searchInsightsConfigured])
+
   const {
     loading: indicesInfoLoading,
     indicesInfo,
@@ -194,9 +203,9 @@ export const Search: React.FC = () => {
     [searchClient, enableImprovedSearchPills]
   )
 
-  if (!searchClient || !searchInsightsConfigured) {
-    return <SearchPlaceholder />
-  }
+  // if (!searchClient || !searchInsightsConfigured) {
+  //   return <SearchPlaceholder />
+  // }
 
   const handleRetry = () => {
     setSearchState((prevState) => ({ ...prevState }))
@@ -277,8 +286,7 @@ export const Search: React.FC = () => {
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
-        <InstantSearch
-          searchClient={searchClient}
+        <AlgoliaProvider
           indexName={selectedPill.type === "algolia" ? selectedPill.indexName! : ""}
           searchState={searchState}
           onSearchStateChange={setSearchState}
@@ -347,7 +355,7 @@ export const Search: React.FC = () => {
               right={0}
             />
           )}
-        </InstantSearch>
+        </AlgoliaProvider>
       </ArtsyKeyboardAvoidingView>
     </SearchContext.Provider>
   )
