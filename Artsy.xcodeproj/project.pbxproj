@@ -377,6 +377,8 @@
 		CB43297827F72BED00B29DD6 /* RealityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43297727F72BED00B29DD6 /* RealityKit.framework */; };
 		CB43297B27F734AA00B29DD6 /* FocusEntity in Frameworks */ = {isa = PBXBuildFile; productRef = CB43297A27F734AA00B29DD6 /* FocusEntity */; };
 		CB43298027F73AFE00B29DD6 /* candle.usdz in Resources */ = {isa = PBXBuildFile; fileRef = CB43297F27F73AFE00B29DD6 /* candle.usdz */; };
+		CB43298327F7441000B29DD6 /* elephant.usdz in Resources */ = {isa = PBXBuildFile; fileRef = CB43298127F7441000B29DD6 /* elephant.usdz */; };
+		CB43298427F7441000B29DD6 /* face.usdz in Resources */ = {isa = PBXBuildFile; fileRef = CB43298227F7441000B29DD6 /* face.usdz */; };
 		CB6AFF2E2793654E00D7DC82 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFF2D2793654E00D7DC82 /* NotificationService.swift */; };
 		CB6AFF322793654E00D7DC82 /* BrazePushServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB6AFF2B2793654E00D7DC82 /* BrazePushServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */; };
@@ -1086,6 +1088,8 @@
 		CB43297327F727D400B29DD6 /* ARSculptureVIRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSculptureVIRViewController.swift; sourceTree = "<group>"; };
 		CB43297727F72BED00B29DD6 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = System/Library/Frameworks/RealityKit.framework; sourceTree = SDKROOT; };
 		CB43297F27F73AFE00B29DD6 /* candle.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = candle.usdz; sourceTree = "<group>"; };
+		CB43298127F7441000B29DD6 /* elephant.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = elephant.usdz; sourceTree = "<group>"; };
+		CB43298227F7441000B29DD6 /* face.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = face.usdz; sourceTree = "<group>"; };
 		CB6AFF2B2793654E00D7DC82 /* BrazePushServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BrazePushServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB6AFF2D2793654E00D7DC82 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		CB6AFF2F2793654E00D7DC82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -2729,6 +2733,8 @@
 		CB43297C27F738EA00B29DD6 /* ARModels */ = {
 			isa = PBXGroup;
 			children = (
+				CB43298127F7441000B29DD6 /* elephant.usdz */,
+				CB43298227F7441000B29DD6 /* face.usdz */,
 				CB43297F27F73AFE00B29DD6 /* candle.usdz */,
 			);
 			path = ARModels;
@@ -3122,6 +3128,7 @@
 				1AC79210251A42D000F50228 /* EchoNew.json in Resources */,
 				6082C5B52044A90C00F00635 /* Chevron_White_Left@3x.png in Resources */,
 				601E31AB1C80A55F00D09F73 /* live_auctions_static.json in Resources */,
+				CB43298427F7441000B29DD6 /* face.usdz in Resources */,
 				FC9DDAF5274D63ED005DEE85 /* Assets.xcassets in Resources */,
 				5E4E32AE1E53884E00C7F724 /* paddle@2x.png in Resources */,
 				CB43298027F73AFE00B29DD6 /* candle.usdz in Resources */,
@@ -3170,6 +3177,7 @@
 				605002E917D9F5DC00C090B8 /* SmallMoreVerticalArrow.png in Resources */,
 				605002EA17D9F5DC00C090B8 /* SmallMoreVerticalArrow@2x.png in Resources */,
 				1C02A20A1CADA80D008B4F6C /* full_logo_white_medium@2x.png in Resources */,
+				CB43298327F7441000B29DD6 /* elephant.usdz in Resources */,
 				5EFB45741F22831000328A6B /* static_sale_data.graphql in Resources */,
 				1CC9EBA51CC76CDD00A74E3C /* followButtonChecked@2x.png in Resources */,
 				CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */,

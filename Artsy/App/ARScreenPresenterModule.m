@@ -287,7 +287,7 @@ RCT_EXPORT_METHOD(presentEmailComposerWithSubject:(NSString *)subject toAddress:
 RCT_EXPORT_METHOD(presentSculptureVIR:(NSString *)artworkSlug modelSlug:(NSString *)modelSlug)
 {
     ARSculptureVIRViewController *sculptureVIRVC = [[ARSculptureVIRViewController alloc] init];
-    sculptureVIRVC.view.backgroundColor = [UIColor purpleColor];
+    [sculptureVIRVC setModelNameWithName:modelSlug];
     sculptureVIRVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [[self.class currentlyPresentedVC] presentViewController:sculptureVIRVC animated:YES completion:nil];
 }

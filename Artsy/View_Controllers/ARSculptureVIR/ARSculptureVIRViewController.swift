@@ -6,6 +6,9 @@ import FocusEntity
 class ARSculptureVIRViewController: UIViewController, ARSessionDelegate {
 
     weak var arView : ARView?
+
+    var modelName : String!
+
     var focusEntity : FocusEntity?
     var displayedModel : ModelEntity?
     var previousAnchor : AnchorEntity?
@@ -19,6 +22,10 @@ class ARSculptureVIRViewController: UIViewController, ARSessionDelegate {
             self.view.addSubview(arView)
             self.arView = arView
         }
+    }
+
+    @objc public func setModelName(name: String) {
+        self.modelName = name
     }
 
     func createARView() -> ARView {
@@ -82,7 +89,7 @@ class ARSculptureVIRViewController: UIViewController, ARSessionDelegate {
         arView.scene.anchors.append(anchor)
 
         // Add a model entity
-        let modelEntity = try! ModelEntity.loadModel(named: "candle")
+        let modelEntity = try! ModelEntity.loadModel(named: modelName)
         modelEntity.scale = [1.0, 1.0, 1.0]
         modelEntity.position = focusEntity.position
         self.displayedModel = modelEntity
