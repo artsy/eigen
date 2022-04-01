@@ -373,6 +373,8 @@
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
 		CB43296E27F4E5D900B29DD6 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60A22B241FF308C000443BC3 /* ARKit.framework */; };
 		CB43297127F4EAA200B29DD6 /* UIImageView+AsyncImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43296F27F4EAA200B29DD6 /* UIImageView+AsyncImageLoading.m */; };
+		CB43297427F727D400B29DD6 /* ARSculptureVIRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43297327F727D400B29DD6 /* ARSculptureVIRViewController.swift */; };
+		CB43297827F72BED00B29DD6 /* RealityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43297727F72BED00B29DD6 /* RealityKit.framework */; };
 		CB6AFF2E2793654E00D7DC82 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFF2D2793654E00D7DC82 /* NotificationService.swift */; };
 		CB6AFF322793654E00D7DC82 /* BrazePushServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB6AFF2B2793654E00D7DC82 /* BrazePushServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */; };
@@ -1079,6 +1081,8 @@
 		CB42B64E181092480069A801 /* ARCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCountdownView.m; sourceTree = "<group>"; };
 		CB43296F27F4EAA200B29DD6 /* UIImageView+AsyncImageLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AsyncImageLoading.m"; sourceTree = "<group>"; };
 		CB43297027F4EAA200B29DD6 /* UIImageView+AsyncImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AsyncImageLoading.h"; sourceTree = "<group>"; };
+		CB43297327F727D400B29DD6 /* ARSculptureVIRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSculptureVIRViewController.swift; sourceTree = "<group>"; };
+		CB43297727F72BED00B29DD6 /* RealityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealityKit.framework; path = System/Library/Frameworks/RealityKit.framework; sourceTree = SDKROOT; };
 		CB6AFF2B2793654E00D7DC82 /* BrazePushServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BrazePushServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB6AFF2D2793654E00D7DC82 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		CB6AFF2F2793654E00D7DC82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1202,6 +1206,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB43297827F72BED00B29DD6 /* RealityKit.framework in Frameworks */,
 				60A22B251FF308C300443BC3 /* ARKit.framework in Frameworks */,
 				CB8FF7C526C45D0B00022DA3 /* iAd.framework in Frameworks */,
 				CB8FF7C226C45CFC00022DA3 /* AdSupport.framework in Frameworks */,
@@ -1679,6 +1684,7 @@
 		49BA7E021655ABE600C06572 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB43297727F72BED00B29DD6 /* RealityKit.framework */,
 				1A0517C32746D93000248353 /* CoreServices.framework */,
 				CB8FF7C826C45D3400022DA3 /* AppTrackingTransparency.framework */,
 				CB8FF7C626C45D2100022DA3 /* StoreKit.framework */,
@@ -2177,6 +2183,7 @@
 		608B2F5A1657CED10046956C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CB43297227F727B400B29DD6 /* ARSculptureVIR */,
 				7F9C7EEF2221FE0700F6967E /* Map */,
 				60BCE10A1FF2B24800071AA6 /* ARViewInRoom */,
 				83FF73BA1CB87D64002B53FA /* RefinementOptions */,
@@ -2704,6 +2711,14 @@
 			);
 			name = "Supporting Files";
 			path = Supporting_Files;
+			sourceTree = "<group>";
+		};
+		CB43297227F727B400B29DD6 /* ARSculptureVIR */ = {
+			isa = PBXGroup;
+			children = (
+				CB43297327F727D400B29DD6 /* ARSculptureVIRViewController.swift */,
+			);
+			path = ARSculptureVIR;
 			sourceTree = "<group>";
 		};
 		CB6AFF2C2793654E00D7DC82 /* BrazePushServiceExtension */ = {
@@ -3357,6 +3372,7 @@
 				5E88414E1CB3445A00A33BCE /* LiveAuctionStaticDataFetcher.swift in Sources */,
 				51F2C5F41CEE8A7700B881BE /* ARAppDelegate+Emission.m in Sources */,
 				B3EFC6391815B41C00F23540 /* BidderPosition.m in Sources */,
+				CB43297427F727D400B29DD6 /* ARSculptureVIRViewController.swift in Sources */,
 				49BA7E141655ABE600C06572 /* ARAppDelegate.m in Sources */,
 				1A0517C72746DC9100248353 /* ARNativeTabsManager.m in Sources */,
 				B375E5F418121EEA005FC680 /* Sale.m in Sources */,
@@ -3975,7 +3991,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-DAR_SHOW_ALL_DEBUG=1",
@@ -4025,7 +4041,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = Artsy;
@@ -4084,7 +4100,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
@@ -4131,7 +4147,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = Artsy;
@@ -4233,7 +4249,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
@@ -4280,7 +4296,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = Artsy;
