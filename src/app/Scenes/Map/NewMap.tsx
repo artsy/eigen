@@ -2,6 +2,7 @@ import MapboxGL from "@react-native-mapbox-gl/maps"
 import { NewMap_system } from "__generated__/NewMap_system.graphql"
 import { NewMapQuery } from "__generated__/NewMapQuery.graphql"
 import algoliasearch from "algoliasearch"
+import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Box, Button, Flex, Spinner, Text } from "palette"
@@ -169,10 +170,17 @@ export const NewMapScreen: FC<{ system: NewMap_system }> = ({ system: { algolia 
               locations.map((location) => {
                 const {
                   id,
-                  partner: { name },
+                  partner: { href, name },
                   _geoloc: { lng, lat },
                 } = location
-                return <MapboxGL.MarkerView key={id} id={name} coordinate={[lng, lat]} />
+                return (
+                  <MapboxGL.MarkerView
+                    onSelected={() => navigate(href)}
+                    key={id}
+                    id={name}
+                    coordinate={[lng, lat]}
+                  />
+                )
               })}
           </MapboxGL.MapView>
         </View>
