@@ -234,6 +234,7 @@ export const NewMapScreenQueryRenderer: React.FC<{}> = () => {
         },
       })}
       variables={{}}
+      cacheConfig={{ force: true }}
     />
   )
 }
