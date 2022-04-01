@@ -286,7 +286,10 @@ RCT_EXPORT_METHOD(presentEmailComposerWithSubject:(NSString *)subject toAddress:
 
 RCT_EXPORT_METHOD(presentSculptureVIR:(NSString *)artworkSlug modelSlug:(NSString *)modelSlug)
 {
-    NSLog(@"Here is where I should present the new experience");
+    ARSculptureVIRViewController *sculptureVIRVC = [[ARSculptureVIRViewController alloc] init];
+    sculptureVIRVC.view.backgroundColor = [UIColor purpleColor];
+    sculptureVIRVC.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [[self.class currentlyPresentedVC] presentViewController:sculptureVIRVC animated:YES completion:nil];
 }
 
 RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
