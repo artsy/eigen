@@ -1,4 +1,5 @@
 import MapboxGL from "@react-native-mapbox-gl/maps"
+import themeGet from "@styled-system/theme-get"
 import { NewMap_system } from "__generated__/NewMap_system.graphql"
 import { NewMapQuery } from "__generated__/NewMapQuery.graphql"
 import { NewMapShowsRailQuery } from "__generated__/NewMapShowsRailQuery.graphql"
@@ -6,9 +7,11 @@ import algoliasearch from "algoliasearch"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Box, Button, Flex, Spinner, Text } from "palette"
+import _ from "lodash"
+import { debounce, throttle } from "lodash"
+import { Box, Button, CloseIcon, Flex, Pill, Spinner, Text } from "palette"
 import React, { FC, useEffect, useRef, useState } from "react"
-import { Dimensions, ScrollView, StyleSheet, View } from "react-native"
+import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native"
 import Config from "react-native-config"
 import {
   createFragmentContainer,
@@ -25,15 +28,26 @@ import { ArtsyMapStyleURL } from "./GlobalMap"
 
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
+const FilterPills = ["Open Now", "Available Works", "Open Exhibitions"]
+
 const mapContainerStyles = StyleSheet.create({
   container: {
     width: "100%",
-    height: Dimensions.get("window").height - 220,
+    height: Dimensions.get("window").height,
   },
   map: {
     flex: 1,
   },
 })
+
+const PillsContainer = styled(Box)`
+  position: absolute;
+  top: 160;
+  left: 25;
+  z-index: 1;
+  width: 100%;
+  height: 100;
+`
 
 const TopButtonsContainer = styled(Box)`
   position: absolute;
@@ -48,13 +62,17 @@ const TopButtonsContainer = styled(Box)`
 const DEFAULT_ZOOM_LEVEL = 11
 const MINIMUM__METERS_BEFORE_UPDATING_POSITION = 300
 const MIN_ZOOM_LVL = 9
-const MAX_ZOOM_LVL = 25
+const MAX_ZOOM_LVL = 250
 
 const BERLIN_DATA = cityData.find((city) => city.name === "Berlin")
 const BERLIN_COORDS = [BERLIN_DATA!.coordinates.lng, BERLIN_DATA!.coordinates.lat]
-
+const BERLIN_BOUNDING_BOX = [
+  [52.500176, 13.318375],
+  [52.55983, 13.442026],
+]
 export interface GalleryHit {
   id: string
+  address: string
   partner: {
     name: string
     href: string
@@ -64,19 +82,20 @@ export interface GalleryHit {
     lng: number
   }
 }
+export const DEBOUNCE_DELAY = 400
 
 export const NewMapScreen: FC<{ system: NewMap_system }> = ({ system: { algolia } }) => {
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const mapRef = useRef<MapboxGL.MapView>(null)
   const [userLocation, setUserLocation] = useState<GeoJSON.Position>()
   const [showUserLocation, setShowUserLocation] = useState(false)
-  const [visibleBounds, setVisibleBounds] = useState<GeoJSON.Position[] | undefined>()
+  const [visibleBounds, setVisibleBounds] = useState<GeoJSON.Position[]>(BERLIN_BOUNDING_BOX)
   const [locations, setLocations] = useState<GalleryHit[] | undefined>()
   const [showReloadButton, setShowReloadButton] = useState<boolean>(false)
   const didInitialFetch = useRef(false)
-
   const client = algoliasearch(algolia?.appID!, algolia?.apiKey!)
   const galleryIndex = client.initIndex("PartnerLocation_staging")
+  const [selectedPin, setSelectedPin] = useState({ name: "", href: "" })
 
   // fly user to their location in the map
   const onPressUserPositionButton = () => {
@@ -92,12 +111,7 @@ export const NewMapScreen: FC<{ system: NewMap_system }> = ({ system: { algolia 
   // fetch galleries once on load (hopefully visibleBounds are defined?)
   useEffect(() => {
     if (!!visibleBounds) {
-      if (!didInitialFetch.current) {
-        didInitialFetch.current = true
-        fetchGalleryLocations()
-      } else {
-        setShowReloadButton(true)
-      }
+      fetchGalleryLocations()
     }
   }, [visibleBounds])
 
@@ -117,8 +131,7 @@ export const NewMapScreen: FC<{ system: NewMap_system }> = ({ system: { algolia 
     }
     try {
       const results = await galleryIndex.search<GalleryHit>("", options)
-      // console.log(JSON.stringify(results.hits, null, 2))
-      // console.warn("Hits: " + results.hits.length)
+      // console.warn(JSON.stringify(results.hits, null, 2))
       setLocations(results.hits ?? undefined)
       return results.hits
     } catch (error) {
@@ -136,65 +149,105 @@ export const NewMapScreen: FC<{ system: NewMap_system }> = ({ system: { algolia 
   }
 
   return (
-    <ScrollView>
-      <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="white100">
-        <View style={mapContainerStyles.container}>
-          <MapboxGL.MapView
-            ref={mapRef}
-            onRegionDidChange={async () => {
-              // TODO: I think this fires several times on the initial flyTo render
-              const newBounds = await mapRef.current?.getVisibleBounds()
-              setVisibleBounds(newBounds)
+    <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="white100">
+      <View style={mapContainerStyles.container}>
+        <MapboxGL.MapView
+          onPress={() => setSelectedPin({})}
+          ref={mapRef}
+          regionDidChangeDebounceTime={1000}
+          onRegionDidChange={async () => {
+            // TODO: I think this fires several times on the initial flyTo render
+            const newBounds = await mapRef.current?.getVisibleBounds()
+            setVisibleBounds(newBounds)
+          }}
+          styleURL={ArtsyMapStyleURL}
+          style={mapContainerStyles.map}
+          compassEnabled={false}
+        >
+          <PillsContainer>
+            <Flex flexDirection="row">
+              {FilterPills.map((pill, index) => (
+                <Pill mr={1} key={index} rounded>
+                  {pill}
+                </Pill>
+              ))}
+            </Flex>
+          </PillsContainer>
+          <TopButtonsContainer>
+            <UserPositionButton onPress={onPressUserPositionButton} />
+            {/* {!!showReloadButton && (
+              <Button ml={30} onPress={onPressReloadButton}>
+                Reload{" "}
+              </Button>
+            )} */}
+          </TopButtonsContainer>
+          <MapboxGL.UserLocation
+            // dynamically pass this onUpdate when user presses the CrossHair Icon
+            // to avoid starting the location manager before that
+            {...(!!showUserLocation && { onUpdate: onUpdateUserLocation })}
+            visible={showUserLocation}
+            androidRenderMode="normal"
+            minDisplacement={MINIMUM__METERS_BEFORE_UPDATING_POSITION}
+          />
+          <MapboxGL.Camera
+            ref={cameraRef}
+            animationMode="flyTo"
+            centerCoordinate={BERLIN_COORDS}
+            zoomLevel={DEFAULT_ZOOM_LEVEL}
+            minZoomLevel={MIN_ZOOM_LVL}
+            // maxZoomLevel={MAX_ZOOM_LVL}
+          />
+          {!!locations &&
+            locations.map((location) => {
+              // console.warn({ location })
+              const {
+                id,
+                partner: { href, name, type },
+                address,
+                _geoloc: { lng, lat },
+              } = location
+              return (
+                <MapboxGL.MarkerView
+                  onSelected={() => {
+                    setSelectedPin({ name, href, address, type, id })
+                  }}
+                  key={id}
+                  id={id}
+                  css={{
+                    color: !!selectedPin?.id ? "white" : "red",
+                  }}
+                  coordinate={[lng, lat]}
+                >
+                  <MapboxGL.Callout title={name} />
+                </MapboxGL.MarkerView>
+              )
+            })}
+        </MapboxGL.MapView>
+        {!!selectedPin.name && (
+          <TouchableOpacity
+            style={{
+              position: "absolute",
+              bottom: "5%",
+              alignSelf: "center",
             }}
-            styleURL={ArtsyMapStyleURL}
-            style={mapContainerStyles.map}
-            compassEnabled={false}
+            onPress={() => navigate(selectedPin.href)}
           >
-            <TopButtonsContainer>
-              <UserPositionButton onPress={onPressUserPositionButton} />
-              {!!showReloadButton && (
-                <Button ml={30} onPress={onPressReloadButton}>
-                  Reload{" "}
-                </Button>
-              )}
-            </TopButtonsContainer>
-            <MapboxGL.UserLocation
-              // dynamically pass this onUpdate when user presses the CrossHair Icon
-              // to avoid starting the location manager before that
-              {...(!!showUserLocation && { onUpdate: onUpdateUserLocation })}
-              visible={showUserLocation}
-              androidRenderMode="normal"
-              minDisplacement={MINIMUM__METERS_BEFORE_UPDATING_POSITION}
-            />
-            <MapboxGL.Camera
-              ref={cameraRef}
-              animationMode="flyTo"
-              centerCoordinate={BERLIN_COORDS}
-              zoomLevel={DEFAULT_ZOOM_LEVEL}
-              minZoomLevel={MIN_ZOOM_LVL}
-              maxZoomLevel={MAX_ZOOM_LVL}
-            />
-            {!!locations &&
-              locations.map((location) => {
-                const {
-                  id,
-                  partner: { href, name },
-                  _geoloc: { lng, lat },
-                } = location
-                return (
-                  <MapboxGL.MarkerView
-                    onSelected={() => navigate(href)}
-                    key={id}
-                    id={id}
-                    coordinate={[lng, lat]}
-                  >
-                    <MapboxGL.Callout title={name} />
-                  </MapboxGL.MarkerView>
-                )
-              })}
-          </MapboxGL.MapView>
-        </View>
-        <View>
+            <Box
+              p={1}
+              backgroundColor="white100"
+              style={{
+                // height: 100,
+                width: 250,
+              }}
+            >
+              <Text variant="lg">{selectedPin.name}</Text>
+              <Text>{selectedPin.type}</Text>
+              <Text>{selectedPin.address}</Text>
+            </Box>
+          </TouchableOpacity>
+        )}
+      </View>
+      {/* <View>
           <Box backgroundColor="gray60">
             {!!locations &&
               locations.map((location) => {
@@ -204,11 +257,10 @@ export const NewMapScreen: FC<{ system: NewMap_system }> = ({ system: { algolia 
                 } = location
                 return <Text key={id}>{name}</Text>
               })}
-          </Box>
-          {/* <ShowsRailQueryRenderer /> */}
-        </View>
-      </Flex>
-    </ScrollView>
+          </Box> */}
+      {/* <ShowsRailQueryRenderer /> */}
+      {/* </View> */}
+    </Flex>
   )
 }
 
