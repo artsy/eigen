@@ -1,6 +1,7 @@
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { NewMap_system } from "__generated__/NewMap_system.graphql"
 import { NewMapQuery } from "__generated__/NewMapQuery.graphql"
+import { NewMapShowsRailQuery } from "__generated__/NewMapShowsRailQuery.graphql"
 import algoliasearch from "algoliasearch"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -9,9 +10,16 @@ import { Box, Button, Flex, Spinner, Text } from "palette"
 import React, { FC, useEffect, useRef, useState } from "react"
 import { Dimensions, ScrollView, StyleSheet, View } from "react-native"
 import Config from "react-native-config"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import {
+  createFragmentContainer,
+  createRefetchContainer,
+  FragmentRef,
+  graphql,
+  QueryRenderer,
+} from "react-relay"
 import styled from "styled-components/native"
 import cityData from "../../../../data/cityDataSortedByDisplayPreference.json"
+import { ShowsRail } from "../Home/Components/ShowsRail"
 import { UserPositionButton } from "./Components/UserPositionButton"
 import { ArtsyMapStyleURL } from "./GlobalMap"
 
@@ -177,9 +185,11 @@ export const NewMapScreen: FC<{ system: NewMap_system }> = ({ system: { algolia 
                   <MapboxGL.MarkerView
                     onSelected={() => navigate(href)}
                     key={id}
-                    id={name}
+                    id={id}
                     coordinate={[lng, lat]}
-                  />
+                  >
+                    <MapboxGL.Callout title={name} />
+                  </MapboxGL.MarkerView>
                 )
               })}
           </MapboxGL.MapView>
@@ -195,6 +205,7 @@ export const NewMapScreen: FC<{ system: NewMap_system }> = ({ system: { algolia 
                 return <Text key={id}>{name}</Text>
               })}
           </Box>
+          {/* <ShowsRailQueryRenderer /> */}
         </View>
       </Flex>
     </ScrollView>
@@ -211,6 +222,56 @@ export const NewMapContainer = createFragmentContainer(NewMapScreen, {
     }
   `,
 })
+
+export const ShowsRailContainer = createRefetchContainer(
+  ShowsRail,
+  {
+    showsConnection: graphql`
+      fragment NewMap_showsConnection on ShowConnection {
+        ...ShowsRail_showsConnection @relay(mask: false)
+      }
+    `,
+  },
+  graphql`
+    query NewMapRefetchQuery($partnerID: String!) {
+      partner(id: $partnerID) {
+        showsConnection(first: 10) {
+          ...ShowsRail_showsConnection
+        }
+      }
+    }
+  `
+)
+
+export const ShowsRailQueryRenderer: React.FC<{}> = () => {
+  return (
+    <QueryRenderer<NewMapShowsRailQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query NewMapShowsRailQuery($partnerID: String!) {
+          partner(id: $partnerID) {
+            showsConnection(first: 10) {
+              ...NewMap_showsConnection
+            }
+          }
+        }
+      `}
+      render={({ props }) => {
+        if (props?.partner) {
+          return (
+            <ShowsRailContainer
+              title=""
+              showsConnection={
+                props!.partner!.showsConnection! as FragmentRef<"ShowsRail_showsConnection">
+              }
+            />
+          )
+        }
+      }}
+      variables={{ partnerID: "gagosian" }}
+    />
+  )
+}
 
 export const NewMapScreenQueryRenderer: React.FC<{}> = () => {
   return (
