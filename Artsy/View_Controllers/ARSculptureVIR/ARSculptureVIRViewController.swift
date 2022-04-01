@@ -1,10 +1,12 @@
 import UIKit
 import ARKit
 import RealityKit
+import FocusEntity
 
-class ARSculptureVIRViewController: UIViewController {
+class ARSculptureVIRViewController: UIViewController, ARSessionDelegate {
 
-    var arView : ARView?
+    weak var arView : ARView?
+    var focusEntity: FocusEntity?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +36,9 @@ class ARSculptureVIRViewController: UIViewController {
       config.planeDetection = [.horizontal]
       session.run(config)
 
+      // Handle ARSession events via delegate
+      session.delegate = self
+
       // Add coaching overlay
       let coachingOverlay = ARCoachingOverlayView()
       coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -49,6 +54,12 @@ class ARSculptureVIRViewController: UIViewController {
     }
 
 
+    // MARK: ARSessionDelegate
 
+    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+         guard let arView = self.arView else { return }
+         debugPrint("Anchors added to the scene: ", anchors)
+         self.focusEntity = FocusEntity(on: arView, style: .classic(color: .purple))
+     }
 
 }

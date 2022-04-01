@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -375,6 +375,7 @@
 		CB43297127F4EAA200B29DD6 /* UIImageView+AsyncImageLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43296F27F4EAA200B29DD6 /* UIImageView+AsyncImageLoading.m */; };
 		CB43297427F727D400B29DD6 /* ARSculptureVIRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43297327F727D400B29DD6 /* ARSculptureVIRViewController.swift */; };
 		CB43297827F72BED00B29DD6 /* RealityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43297727F72BED00B29DD6 /* RealityKit.framework */; };
+		CB43297B27F734AA00B29DD6 /* FocusEntity in Frameworks */ = {isa = PBXBuildFile; productRef = CB43297A27F734AA00B29DD6 /* FocusEntity */; };
 		CB6AFF2E2793654E00D7DC82 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFF2D2793654E00D7DC82 /* NotificationService.swift */; };
 		CB6AFF322793654E00D7DC82 /* BrazePushServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB6AFF2B2793654E00D7DC82 /* BrazePushServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */; };
@@ -1206,6 +1207,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB43297B27F734AA00B29DD6 /* FocusEntity in Frameworks */,
 				CB43297827F72BED00B29DD6 /* RealityKit.framework in Frameworks */,
 				60A22B251FF308C300443BC3 /* ARKit.framework in Frameworks */,
 				CB8FF7C526C45D0B00022DA3 /* iAd.framework in Frameworks */,
@@ -2935,6 +2937,9 @@
 				CB6AFF312793654E00D7DC82 /* PBXTargetDependency */,
 			);
 			name = Artsy;
+			packageProductDependencies = (
+				CB43297A27F734AA00B29DD6 /* FocusEntity */,
+			);
 			productName = Artsy;
 			productReference = 49BA7DFF1655ABE600C06572 /* Artsy.app */;
 			productType = "com.apple.product-type.application";
@@ -3059,6 +3064,9 @@
 				Base,
 			);
 			mainGroup = 49BA7DF41655ABE600C06572;
+			packageReferences = (
+				CB43297927F734AA00B29DD6 /* XCRemoteSwiftPackageReference "FocusEntity" */,
+			);
 			productRefGroup = 49BA7E001655ABE600C06572 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -4042,7 +4050,10 @@
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = Artsy;
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -4148,7 +4159,10 @@
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = Artsy;
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -4195,7 +4209,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -4297,7 +4315,10 @@
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = Artsy;
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -4342,7 +4363,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -4384,7 +4409,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -4425,7 +4454,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -4493,7 +4526,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -4501,8 +4538,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4562,7 +4600,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -4570,8 +4612,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4607,7 +4650,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = ArtsyWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -4677,7 +4724,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = ArtsyWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -4685,8 +4736,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4748,7 +4800,11 @@
 				INFOPLIST_KEY_CFBundleDisplayName = ArtsyWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -4756,8 +4812,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4828,6 +4885,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CB43297927F734AA00B29DD6 /* XCRemoteSwiftPackageReference "FocusEntity" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/maxxfrazer/FocusEntity";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CB43297A27F734AA00B29DD6 /* FocusEntity */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB43297927F734AA00B29DD6 /* XCRemoteSwiftPackageReference "FocusEntity" */;
+			productName = FocusEntity;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 49BA7DF61655ABE600C06572 /* Project object */;
 }
