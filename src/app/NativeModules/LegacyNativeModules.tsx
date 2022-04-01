@@ -80,6 +80,7 @@ interface LegacyNativeModules {
       artworkSlug: string,
       artworkId: string
     ): void
+    presentSculptureVIR(artworkSlug: string, modelSlug: string): void
     updateShouldHideBackButton(shouldHideBackButton: boolean, currentTabStackID: string): void
   }
   ARTakeCameraPhotoModule: {

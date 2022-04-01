@@ -284,6 +284,11 @@ RCT_EXPORT_METHOD(presentEmailComposerWithSubject:(NSString *)subject toAddress:
     }
 }
 
+RCT_EXPORT_METHOD(presentSculptureVIR:(NSString *)artworkSlug modelSlug:(NSString *)modelSlug)
+{
+    NSLog(@"Here is where I should present the new experience");
+}
+
 RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
 {
     BOOL supportsARVIR = [ARAugmentedVIRSetupViewController canOpenARView];

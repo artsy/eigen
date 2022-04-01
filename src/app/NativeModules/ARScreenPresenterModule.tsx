@@ -153,6 +153,9 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
   presentAugmentedRealityVIR: () => {
     console.warn("presentAugmentedRealityVIR not yet supported")
   },
+  presentSculptureVIR: () => {
+    console.warn("presentSculptureVIR not yet supported")
+  },
   presentEmailComposer: () => {
     console.warn("presentEmailComposer not yet supported")
   },

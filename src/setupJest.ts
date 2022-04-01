@@ -401,6 +401,7 @@ function getNativeModules(): OurNativeModules {
       goBack: jest.fn(),
       updateShouldHideBackButton: jest.fn(),
       presentAugmentedRealityVIR: jest.fn(),
+      presentSculptureVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
       popStack: jest.fn(),
