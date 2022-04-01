@@ -5,6 +5,8 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 
 import java.text.SimpleDateFormat;
+
+import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.content.SharedPreferences;
@@ -31,6 +33,9 @@ public class FeaturedArtworksWidget extends AppWidgetProvider {
             // Construct the RemoteViews object
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.featured_artworks);
             views.setTextViewText(R.id.artistName, artworks[0].artist.name);
+
+            Log.e("FeaturedArtworksWidget", "URL: " + artworks[0].images[0].imageURLs.squareImageURL);
+//            views.setImageViewUri(R.id.featuredImage,  Uri.parse(artworks[0].images[0].imageURLs.squareImageURL));
 
             // Instruct the widget manager to update the widget
             appWidgetManager.updateAppWidget(appWidgetId, views);

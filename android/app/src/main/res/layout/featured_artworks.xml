@@ -14,7 +14,7 @@
         android:layout_height="fill_parent"
         android:contentDescription="@string/featured_image"
         android:scaleType="centerInside"
-        app:srcCompat="@drawable/com_appboy_content_cards_unread_bar_background" />
+        app:srcCompat="@mipmap/bootsplash_logo" />
 
     <ImageView
         android:id="@+id/artsyLogo"

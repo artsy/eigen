@@ -3,8 +3,6 @@ package net.artsy.app;
 import com.google.gson.annotations.SerializedName;
 import android.widget.ImageView;
 
-import java.util.List;
-
 public class Artwork {
     @SerializedName("id")
     public String id;
@@ -15,8 +13,8 @@ public class Artwork {
     @SerializedName("artist")
     public Artist artist;
 
-    @SerializedName("artworkImages")
-    public List<ArtworkImage> artworkImages;
+    @SerializedName("images")
+    public Images[] images;
 
     public ImageView image;
 
