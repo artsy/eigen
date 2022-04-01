@@ -53,7 +53,7 @@ const MAX_ZOOM_LVL = 25
 const BERLIN_DATA = cityData.find((city) => city.name === "Berlin")
 const BERLIN_COORDS = [BERLIN_DATA!.coordinates.lng, BERLIN_DATA!.coordinates.lat]
 
-interface GalleryHit {
+export interface GalleryHit {
   id: string
   partner: {
     name: string
