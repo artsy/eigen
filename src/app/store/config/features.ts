@@ -44,26 +44,9 @@ export const features = defineFeatures({
     echoFlagKey: "AROptionsPriceTransparency",
     description: "Price Transparency",
   },
-  ARDisableReactNativeBidFlow: {
-    readyForRelease: true,
-    echoFlagKey: "ARDisableReactNativeBidFlow",
-  },
-  AREnableNewPartnerView: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableNewPartnerView",
-  },
   AROptionsLotConditionReport: {
     readyForRelease: true,
     echoFlagKey: "AROptionsLotConditionReport",
-  },
-  AREnableViewingRooms: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableViewingRooms",
-  },
-  ARHomeAuctionResultsByFollowedArtists: {
-    readyForRelease: true,
-    echoFlagKey: "ARHomeAuctionResultsByFollowedArtists",
-    description: "Enable home auction results",
   },
   AREnableOrderHistoryOption: {
     readyForRelease: true,
@@ -105,10 +88,6 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Show example Unleash experiments",
     showInAdminMenu: true,
-  },
-  AREnableArtistRecommendations: {
-    readyForRelease: false,
-    description: "Enable new artist recommendations",
   },
   AREnableQueriesPrefetching: {
     readyForRelease: true,
