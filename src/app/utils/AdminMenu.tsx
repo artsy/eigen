@@ -24,12 +24,13 @@ import {
   useColor,
 } from "palette"
 import React, { useEffect, useState } from "react"
-import { Button as RNButton, NativeModules } from "react-native"
 import {
   Alert,
   AlertButton,
   BackHandler,
+  Button as RNButton,
   DevSettings,
+  NativeModules,
   Platform,
   ScrollView,
   TouchableHighlight,
@@ -124,6 +125,12 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         {configurableFeatureFlagKeys.map((flagKey) => {
           return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
         })}
+        <FeatureFlagMenuItem
+          title="Revert all feature flags to default"
+          onPress={() => {
+            GlobalStore.actions.artsyPrefs.features.clearAdminOverrides()
+          }}
+        />
         <Flex mx="2">
           <Separator my="1" />
         </Flex>

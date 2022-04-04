@@ -11,6 +11,7 @@ export interface FeaturesModel {
     FeaturesModel,
     { key: FeatureName | DevToggleName; value: boolean | null }
   >
+  clearAdminOverrides: Action<FeaturesModel>
 
   // user features
   flags: Computed<FeaturesModel, FeatureMap, GlobalStoreModel>
@@ -27,6 +28,9 @@ export const getFeaturesModel = (): FeaturesModel => ({
     } else {
       state.adminOverrides[key] = value
     }
+  }),
+  clearAdminOverrides: action((state) => {
+    state.adminOverrides = {}
   }),
 
   flags: computed([(state) => state, (_, store) => store.artsyPrefs.echo], (state, echo) => {
