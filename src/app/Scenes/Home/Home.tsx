@@ -93,10 +93,6 @@ const Home = (props: Props) => {
     relay,
   } = props
 
-  const enableAuctionResultsByFollowedArtists = useFeatureFlag(
-    "ARHomeAuctionResultsByFollowedArtists"
-  )
-  const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
@@ -128,7 +124,6 @@ const Home = (props: Props) => {
       title: "Auction Results for Artists You Follow",
       type: "auction-results",
       data: meBelow,
-      hidden: !enableAuctionResultsByFollowedArtists,
       prefetchUrl: "/auction-results-for-artists-you-follow",
     },
     {
@@ -154,7 +149,6 @@ const Home = (props: Props) => {
       title: "Viewing Rooms",
       type: "viewing-rooms",
       data: featured,
-      hidden: !enableViewingRooms,
       prefetchUrl: "/viewing-rooms",
     },
     {
@@ -493,21 +487,18 @@ export const HomeFragmentContainer = createRefetchContainer(
 const ModuleSeparator = () => <Spacer mb={MODULE_SEPARATOR_HEIGHT} />
 
 const BelowTheFoldPlaceholder: React.FC = () => {
-  const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
-
   return (
     <ProvidePlaceholderContext>
       <Flex>
-        {!!enableViewingRooms && (
-          <Flex ml="2" mt="3">
-            <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
-            <Flex flexDirection="row">
-              {times(4).map((i) => (
-                <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
-              ))}
-            </Flex>
+        <Flex ml="2" mt="3">
+          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
+          <Flex flexDirection="row">
+            {times(4).map((i) => (
+              <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+            ))}
           </Flex>
-        )}
+        </Flex>
+
         {times(2).map((r) => (
           <Box key={r}>
             <ModuleSeparator />
@@ -530,8 +521,6 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 }
 
 const HomePlaceholder: React.FC = () => {
-  const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
-
   return (
     <Flex>
       <Box mb={1} mt={2}>
@@ -573,16 +562,14 @@ const HomePlaceholder: React.FC = () => {
         </Flex>
       </Box>
 
-      {!!enableViewingRooms && (
-        <Flex ml="2" mt="3">
-          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
-          <Flex flexDirection="row">
-            {times(4).map((i) => (
-              <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
-            ))}
-          </Flex>
+      <Flex ml="2" mt="3">
+        <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
+        <Flex flexDirection="row">
+          {times(4).map((i) => (
+            <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+          ))}
         </Flex>
-      )}
+      </Flex>
     </Flex>
   )
 }
