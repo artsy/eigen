@@ -196,6 +196,7 @@ export const features = defineFeatures({
     readyForRelease: true,
     description: "Enable My Collection Comparable Works",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionComparableWorks",
   },
   AREnableHomeScreenArtworkRecommendations: {
     readyForRelease: true,
