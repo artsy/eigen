@@ -2,21 +2,7 @@
      `type(thing): what changed`
 like:
      `feat(profile): allow editing of profile photo`.
-Here are some types:
-     hotfix: If an urgent fix is required
-     feat:   A new feature
-     fix:    A bug fix
-     docs:   Documentation only changes
-     perf:   A change that improves performance
-     test:   Adding missing tests or correcting existing tests
-     format: Changes that do not affect the meaning of the code (white-space, formatting, linting, etc)
-     revert: Revert something
-     update/upgrade: Update dependencies or pods or other related things
-     refactor: A change that keeps functionality mostly the same
-     build:    Changes that affect the build system or external dependencies (example scopes: pods, fastlane, yarn, etc)
-     uxui:     Changes that affect how something looks or how the user experiences it
-     cleanup:  When the main change is removing code, old or unused
-     other/chore: Catch-all, and once we have had a bunch of those, we can possibly make a new category
+Find some examples in the "conventional commits" summary.
 -->
 
 <!-- Jira ticket in square brackets like [PROJECT-XXXX] -->
