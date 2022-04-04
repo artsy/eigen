@@ -1,24 +1,8 @@
-interface SplitExperimentDescriptor {
-  /**
-   * Provide a split name to allow this feature to be toggled via split.io.
-   */
-  readonly splitName?: string
-  /**
-   * This refers to the value we show to the user in case something goes wrong with the client
-   * initiation or when we no longer use split.io
-   */
-  readonly fallbackTreatment: string
-}
-
 interface ExperimentDescriptor {
   readonly fallbackEnabled: boolean
   readonly fallbackVariant?: string
   readonly fallbackPayload?: boolean
 }
-
-export const splitExperiments: Record<string, SplitExperimentDescriptor> = {}
-
-export type SPLIT_EXPERIMENT_NAME = keyof typeof splitExperiments
 
 export const experiments: Record<string, ExperimentDescriptor> = {
   // this can go away whenever

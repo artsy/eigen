@@ -128,7 +128,6 @@ import {
   SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
 import { useDebugging } from "./utils/useDebugging"
-import { useSplitExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useIdentifyUser } from "./utils/useIdentifyUser"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
@@ -480,7 +479,6 @@ const Main: React.FC = () => {
   useErrorReporting()
   useStripeConfig()
   useWebViewCookies()
-  useSplitExperiments()
   useInitializeQueryPrefetching()
   useIdentifyUser()
   useSyncNativeAuthState()
