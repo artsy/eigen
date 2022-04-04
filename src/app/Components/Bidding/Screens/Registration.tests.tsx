@@ -1,4 +1,4 @@
-import { fireEvent, RenderAPI, waitFor } from "@testing-library/react-native"
+import { RenderAPI } from "@testing-library/react-native"
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import {
@@ -65,7 +65,7 @@ describe("User does not have a valid phone number", () => {
   })
 })
 
-it("renders properly for a user with a credit card", () => {
+it("renders properly for a user with a credit card and phone", () => {
   const rendered = renderWithWrappersTL(
     <Registration {...initialPropsForUserWithCreditCardAndPhone} />
   )
@@ -107,41 +107,6 @@ it("shows the billing address that the user typed in the billing address form", 
   expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual(
     "401 Broadway 25th floor New York NY"
   )
-})
-
-it("[TODO: Adapted from above, modal is not being detected] shows the billing address that the user typed in the billing address form", async () => {
-  const container = renderWithWrappersTL(
-    <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
-  )
-  const { getByTestId, getByText } = container
-
-  fireEvent.press(getByText("Billing address"))
-
-  container.debug()
-
-  await waitFor(() => {
-    getByText("Add billing address")
-  })
-
-  const nameInput = getByTestId("input-full-name")
-  const address1Input = getByTestId("input-address-1")
-  const address2Input = getByTestId("input-address-2")
-  const cityInput = getByTestId("input-city")
-  const stateInput = getByTestId("input-state-province-region")
-  const postcodeInput = getByTestId("input-post-code")
-  const phoneInput = getByTestId("input-phone")
-
-  fireEvent.changeText(nameInput, "mockName")
-  fireEvent.changeText(address1Input, "401 Broadway")
-  fireEvent.changeText(address2Input, "25th floor")
-  fireEvent.changeText(cityInput, "New York")
-  fireEvent.changeText(stateInput, "NY")
-  fireEvent.changeText(postcodeInput, "mockPostcode")
-  fireEvent.changeText(phoneInput, "mockPhone")
-
-  fireEvent.press(container.getByTestId("button-add"))
-
-  getByText("401 Broadway 25th floor New York NY")
 })
 
 it("shows the credit card form when the user tap the edit text in the credit card row", () => {

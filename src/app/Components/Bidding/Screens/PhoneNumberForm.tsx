@@ -65,6 +65,7 @@ export const PhoneNumberForm: React.FC<PhoneNumberFormProps> = (props) => {
         <Container m={0}>
           <Box m="1" mt="3">
             <PhoneInput
+              testID="phone-input"
               ref={phoneRef}
               value={enteredPhone}
               onChangeText={setEnteredPhone}
