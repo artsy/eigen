@@ -223,7 +223,7 @@ export const Search: React.FC = () => {
                 <SearchResults
                   selectedPill={selectedPill}
                   query={searchQuery}
-                  onRentry={handleRetry}
+                  onRetry={handleRetry}
                 />
               </>
             ) : (

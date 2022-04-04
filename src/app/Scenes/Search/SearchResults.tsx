@@ -13,7 +13,7 @@ import { AlgoliaSearchResult, PillType } from "./types"
 interface SearchResultsProps {
   selectedPill: PillType
   query: string
-  onRentry: () => void
+  onRetry: () => void
 }
 
 interface TappedSearchResultData {
@@ -25,7 +25,7 @@ interface TappedSearchResultData {
   objectTab?: string
 }
 
-export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onRentry }) => {
+export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onRetry }) => {
   const { trackEvent } = useTracking()
 
   const handleTrackAlgoliaResultPress = (result: AlgoliaSearchResult) => {
@@ -62,7 +62,7 @@ export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onR
     return (
       <AlgoliaSearchResultsContainer
         selectedPill={selectedPill}
-        onRetry={onRentry}
+        onRetry={onRetry}
         trackResultPress={handleTrackAlgoliaResultPress}
       />
     )
