@@ -1,31 +1,43 @@
-The type of this PR is: **TYPE**
+<!-- Use a PR title in the form of 
+     `type(thing): what changed`
+like:
+     `feat(profile): allow editing of profile photo`.
+Here are some types:
+     hotfix: If an urgent fix is required
+     feat:   A new feature
+     fix:    A bug fix
+     docs:   Documentation only changes
+     perf:   A change that improves performance
+     test:   Adding missing tests or correcting existing tests
+     format: Changes that do not affect the meaning of the code (white-space, formatting, linting, etc)
+     revert: Revert something
+     update/upgrade: Update dependencies or pods or other related things
+     refactor: A change that keeps functionality mostly the same
+     build:    Changes that affect the build system or external dependencies (example scopes: pods, fastlane, yarn, etc)
+     uxui:     Changes that affect how something looks or how the user experiences it
+     cleanup:  When the main change is removing code, old or unused
+     other/chore: Catch-all, and once we have had a bunch of those, we can possibly make a new category
+-->
 
-<!-- Bugfix/Feature/Enhancement/Documentation -->
-
-<!-- If applicable, write the Jira ticket number in square brackets e.g. [PROJECT-XXXX]
-     The Jira integration will turn it into a clickable link for you. -->
-
+<!-- Jira ticket in square brackets like [PROJECT-XXXX] -->
 This PR resolves []
 
 ### Description
 
-<!-- Implementation description -->
+<!-- Some info, Implementation, Before/After shots, follow-up work, etc -->
 
 ### PR Checklist (tick all before merging)
 
-<!-- 💡 This checklist is experimental. CX warmly welcomes any feedback about the list or how it impacts your workflow -->
-
-- [ ] I have included screenshots or videos to illustrate my changes, or I have not changed anything that impacts the UI.
-- [ ] I have tested my changes on **iOS** and **Android**.
-- [ ] I have added tests/stories for my changes, or my changes don't require testing/stories, or I have included a link to a separate Jira ticket covering the tests.
-- [ ] I have added a feature flag, or my changes don't require a feature flag. ([How do I add one?](https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md))
-- [ ] I have documented any follow-up work that this PR will require, or it does not require any.
-- [ ] I have added an app state migration, or my changes do not require one. ([What are migrations?](https://github.com/artsy/eigen/blob/main/docs/adding_state_migrations.md))
-- [ ] I have added a changelog entry below or my changes do not require one.
+<!-- 💡 This checklist is experimental. MOPLAT warmly welcomes any feedback about the list or how it impacts your workflow. -->
+- [ ] Feature flag around my changes.
+- [ ] App state migration.
+- [ ] Screenshots/videos of my changes.
+- [ ] Tested on **iOS** and **Android**.
+- [ ] Tests/stories for my changes.
 
 ### To the reviewers 👀
 
-- [ ] I would like at least one of the reviewers to run this PR on the simulator or device.
+- [ ] I would like **at least one** of the reviewers to run this PR on the simulator or device.
 
 <details><summary>Changelog updates</summary>
 
