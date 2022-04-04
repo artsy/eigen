@@ -9399,6 +9399,7 @@ type Me implements Node {
     before: String
     first: Int
     last: Int
+    sort: SavedSearchesSortEnum
   ): SearchCriteriaConnection
   secondFactors(kinds: [SecondFactorKind]): [SecondFactor]
   shareFollows: Boolean!
@@ -11055,6 +11056,9 @@ type Query {
 
     # Returns the last _n_ elements from the list.
     last: Int
+
+    # Returns saved searches sorted by input (default: by created date in descending order)
+    sort: SavedSearchesSortEnum
   ): SearchCriteriaConnection
 
   # List enabled Two-Factor Authentication factors
@@ -12644,6 +12648,14 @@ type SavedArtworksEdge {
 
   # The item at the end of the edge
   node: Artwork
+}
+
+enum SavedSearchesSortEnum {
+  # Sort by created date in descending order
+  CREATED_AT_DESC
+
+  # Sort by name in ascending order
+  NAME_ASC
 }
 
 # Saved Search User Alert Settings
