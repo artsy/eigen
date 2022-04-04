@@ -100,12 +100,6 @@ export const features = defineFeatures({
     description: "Enable Improved Alerts flow",
     echoFlagKey: "AREnableImprovedAlertsFlow",
   },
-  AREnableSplitIOABTesting: {
-    readyForRelease: true,
-    description: "Enable Split.io A/B testing",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableSplitIOABTesting",
-  },
   AREnableExampleExperiments: {
     // we can remove this as soon as we have a real experiment on Unleash
     readyForRelease: false,
