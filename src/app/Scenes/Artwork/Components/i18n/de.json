@@ -1,0 +1,128 @@
+{
+  "scene": {
+    "artwork": {
+      "components": {
+        "aboutArtist": {
+          "aboutTheArtist": "Über den Künstler",
+          "aboutTheArtists": "Über die Künstler"
+        },
+
+        "aboutWork": {
+          "aboutTheWork": "Über das Kunstwerk",
+          "fromArtsySpecialist": "Vom Artsy-Spezialisten:"
+        },
+
+        "artworkActions": {
+          "computedTitleWithNames": "{title} von {names} auf Artsy",
+          "computedTitle": "{title} auf Artsy",
+          "watchLot": "Los ansehen",
+          "save": "Speichern",
+          "saved": "Gerettet",
+          "viewInRoom": "Blick ins Zimmer",
+          "share": "Teilen"
+        },
+
+        "artworkDetails": {
+          "listItems": {
+            "medium": "Medium",
+            "condition": "Zustand",
+            "signature": "Unterschrift",
+            "certificateOfAuthenticity": "Echtheitsbescheinigung",
+            "frame": "Rahmen",
+            "series": "Serie",
+            "publisher": "Herausgeber",
+            "manufacturer": "Hersteller",
+            "imageRights": "Bildrechte"
+          },
+          "artworkDetails": "Kunstwerkdetails"
+        },
+
+        "artworkHistory": {
+          "sections": {
+            "provenance": "Herkunft",
+            "exhibitionHistory": "Ausstellungsgeschichte",
+            "literature": "Literaturverzeichnis"
+          }
+        },
+
+        "artworkSeriesRails": {
+          "section": {
+            "title": "Mehr aus dieser Serie"
+          }
+        },
+
+        "artworkTombstone": {
+          "more": "mehr",
+          "lot": "Partie {lotLabel}",
+          "estimatedValue": "Geschätzter Wert: {estimate}"
+        },
+
+        "auctionPrice": {
+          "bidsCountSingular": "1 Gebot",
+          "bidsCountPlural": "{bidsCount} Gebote",
+          "biddingClosed": "Ausschreibung geschlossen",
+          "currentBid": "Aktuelles Gebot",
+          "startingBid": "Startgebot",
+          "yourMaxBid": "Ihr Maximum: {myMaxBid}",
+          "auctionHas": "Diese Auktion hat eine ",
+          "buyersPremium": "Käuferprovision",
+          "shipping": "Versand, Steuern und zusätzliche Gebühren können anfallen."
+        },
+
+        "commercialEditionSetInformation": {
+          "editionSize": "Auflagengröße"
+        },
+
+        "commercialInformation": {
+          "saleMessage": "Preis auf Anfrage",
+          "newSaleMessage": {
+            "biddingClosed": "Ausschreibung geschlossen",
+            "forSale": "Zu verkaufen"
+          }
+        },
+
+        "CommercialPartnerInformation": {
+          "taxes": "An der Kasse können Steuern anfallen. ",
+          "learnMore": "Mehr erfahren.",
+          "shipsFrom": "Versand aus {shippingOrigin}"
+        },
+
+        "contextCard": {
+          "header": {
+            "inAuction": "Bei Auktion",
+            "inFair": "Im Fair",
+            "inShow": "Im Schaufenster"
+          }
+        },
+
+        "followArtistLink": {
+          "followButtonText": {
+            "following": "Folgend",
+            "follow": "Folgen"
+          }
+        },
+
+        "partnerCard": {
+          "partnerTypeDisplayText": {
+            "gallery": "Galerie",
+            "institution": "Institution"
+          }
+        },
+
+        "requestConditionReport": {
+          "presentErrorModal": {
+            "message": "Bei der Verarbeitung Ihrer Anfrage ist ein Problem aufgetreten. Bitte versuche es erneut."
+          },
+          "requestReport": "Zustandsbericht anfordern",
+          "modal": {
+            "error": {
+              "headerText": "Ein Fehler ist aufgetreten"
+            },
+            "headerText": "Zustandsbericht angefordert",
+            "detailText": "Wir haben ihre Anfrage erhalten.\nDer Zustandsbericht wird an gesendet {email}.\nBei Fragen kontaktieren Sie Specialist@artsy.net."
+          }
+        }
+      }
+    }
+  }
+}

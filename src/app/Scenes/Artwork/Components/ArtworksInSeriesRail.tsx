@@ -9,6 +9,7 @@ import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -28,10 +29,15 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
     return null
   }
 
+  const intl = useIntl()
+
   return (
     <Flex>
       <SectionTitle
-        title="More from this series"
+        title={intl.formatMessage({
+          id: "scene.artwork.components.artworkSeriesRails.section.title",
+          defaultMessage: "More from this series",
+        })}
         onPress={() => {
           trackEvent(tracks.tappedHeader(artwork, firstArtistSeries))
           navigate(`/artist-series/${firstArtistSeries?.slug}`)

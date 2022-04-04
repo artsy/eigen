@@ -1,0 +1,54 @@
+{
+  "scene": {
+    "artwork": {
+      "components": {
+        "commercialButtons": {
+          "bidButton": {
+            "registration": {
+              "toBid": "Register to bid",
+              "pending": "Registration pending",
+              "complete": "Registration complete",
+              "closed": "Registration closed"
+            },
+            "increaseMaxBid": "Increase max bid",
+            "bid": "Bid",
+            "watchLive": "Watch live bidding",
+            "enterLive": "Enter live bidding",
+            "identityVerificationRequiredMessage": {
+              "message": "Identity verification required to bid.",
+              "faq": "FAQ"
+            }
+          },
+
+          "buyNowButton": {
+            "error": {
+              "title": "Sorry, we couldn't process the request.",
+              "message": "Please try again or contact orders@artsy.net for help.",
+              "retry": "Retry",
+              "Cancel": "Cancel"
+            },
+            "buyNow": "Buy Now",
+            "purchase": "Purchase",
+            "purchaseWithSaleMessage": "purchase {saleMessage}"
+          },
+
+          "collapsibleArtworkDetails": {
+            "artworkDetailItems": {
+              "price": "Price",
+              "medium": "Medium",
+              "manufacturer": "Manufacturer",
+              "publisher": "Publisher",
+              "materials": "Materials",
+              "classification": "Classification",
+              "dimensions": "Dimensions",
+              "signature": "Signature",
+              "frame": "Frame",
+              "certificate": "Certificate of Authenticity",
+              "condition": "Condition"
+            }
+          }
+        }
+      }
+    }
+  }
+}

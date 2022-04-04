@@ -10,6 +10,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Schema, track } from "app/utils/track"
 import { Button, Flex } from "palette"
 import { Component } from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { View } from "react-native"
 import {
   commitMutation,
@@ -24,6 +25,7 @@ interface RequestConditionReportProps {
   artwork: RequestConditionReport_artwork
   me: RequestConditionReport_me
   relay: RelayProp
+  intl: IntlShape
 }
 
 interface State {
@@ -73,7 +75,10 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
   })
   presentErrorModal(errors: Error | ReadonlyArray<PayloadError>) {
     console.error("RequestConditionReport.tsx", errors)
-    const errorMessage = "There was a problem processing your request. Please try again."
+    const errorMessage = this.props.intl.formatMessage({
+      id: "scene.artwork.components.requestConditionReport.presentErrorModal.message",
+      defaultMessage: "There was a problem processing your request. Please try again.",
+    })
     this.setState({ showErrorModal: true, errorModalText: errorMessage })
   }
 
@@ -128,23 +133,32 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
           loading={requestingConditionReport}
           onPress={this.handleRequestConditionReportTap.bind(this)}
         >
-          Request condition report
+          {this.props.intl.formatMessage({
+            id: "scene.artwork.components.requestConditionReport.requestReport",
+            defaultMessage: "Request Condition Report",
+          })}
         </Button>
         <Flex height={0}>
           <Modal
             textAlign="center"
             visible={showErrorModal}
-            headerText="An error occurred"
+            headerText={this.props.intl.formatMessage({
+              id: "scene.artwork.components.requestConditionReport.modal.error.headerText",
+              defaultMessage: "An error occurred",
+            })}
             detailText={errorModalText}
             closeModal={this.closeModals.bind(this)}
           />
           <Modal
             textAlign="center"
             visible={showConditionReportRequestedModal}
-            headerText="Condition Report Requested"
-            detailText={`We have received your request.\nThe condition report will be sent to ${
-              me && me.email
-            }.\nFor questions contact specialist@artsy.net.`}
+            headerText={this.props.intl.formatMessage({
+              id: "scene.artwork.components.requestConditionReport.modal.headerText",
+            })}
+            detailText={this.props.intl.formatMessage(
+              { id: "scene.artwork.components.requestConditionReport.modal.detailText" },
+              { email: me?.email ?? "" }
+            )}
             closeModal={this.closeModals.bind(this)}
           />
         </Flex>
@@ -184,7 +198,7 @@ export const RequestConditionReportQueryRenderer: React.FC<{
 }
 
 export const RequestConditionReportFragmentContainer = createFragmentContainer(
-  RequestConditionReport,
+  injectIntl(RequestConditionReport),
   {
     me: graphql`
       fragment RequestConditionReport_me on Me {

@@ -10,6 +10,12 @@
 
     "searchInput": {
       "cancel": "Annuler"
+    },
+
+    "sectionTitle": {
+      "rightButton": {
+        "viewAll": "Voir tout"
+      }
     }
   }
 }

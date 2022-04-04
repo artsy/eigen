@@ -1,0 +1,18 @@
+{
+  "scene": {
+    "myProfile": {
+      "myProfileHeaderMyCollectionAndSavedWorks": {
+        "tabs": {
+          "collection": "Meine Sammlung",
+          "savedWorks": "Gespeicherte Kunstwerke"
+        },
+
+        "myProfileHeader": {
+          "memberSince": "Mitglied seit {year}",
+          "settings": "Einstellungen",
+          "editProfile": "Profil bearbeiten"
+        }
+      }
+    }
+  }
+}

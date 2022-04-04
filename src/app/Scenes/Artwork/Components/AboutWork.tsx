@@ -4,6 +4,7 @@ import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { Flex, Join, Sans, Spacer } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AboutWorkProps {
@@ -19,9 +20,16 @@ export const AboutWork: React.FC<AboutWorkProps> = ({ artwork }) => {
     return null
   }
 
+  const intl = useIntl()
+
   return (
     <Join separator={<Spacer mb={2} />}>
-      <Sans size="4t">About the work</Sans>
+      <Sans size="4t">
+        {intl.formatMessage({
+          id: "scene.artwork.components.aboutWork.aboutTheWork",
+          defaultMessage: "About the work",
+        })}
+      </Sans>
       {!!additionalInformation && (
         <ReadMore
           content={additionalInformation}
@@ -35,7 +43,10 @@ export const AboutWork: React.FC<AboutWorkProps> = ({ artwork }) => {
         <Flex>
           {!isInAuction && (
             <Sans size="2" color="black60" mb="3px">
-              From Artsy Specialist:
+              {intl.formatMessage({
+                id: "scene.artwork.components.aboutWork.fromArtsySpecialist",
+                defaultMessage: "From Artsy Specialist:",
+              })}
             </Sans>
           )}
           <ReadMore

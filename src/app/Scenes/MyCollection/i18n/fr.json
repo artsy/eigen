@@ -1,0 +1,19 @@
+{
+  "scene": {
+    "myCollection": {
+      "myCollection": {
+        "button": {
+          "addWorks": "Ajouter des oeuvres"
+        }
+      },
+
+      "myCollectionArtwork": {
+        "zeroState": {
+          "title": "Votre collection d'art dans votre poche.",
+          "subtitle": "Gardez une trace de votre collection en un seul endroit et obtenez des informations sur le marché",
+          "button": "Ajouter des oeuvres"
+        }
+      }
+    }
+  }
+}

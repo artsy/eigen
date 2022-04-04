@@ -1,0 +1,57 @@
+{
+  "scene": {
+    "home": {
+      "newWorksForYou": {
+        "title": "Neue Kunstwerke für Sie"
+      },
+      "yourActiveBids": {
+        "title": "Ihre aktiven Gebote"
+      },
+      "auctionLotsForYouEndingSoon": {
+        "title": "Auktionslose für Sie, die bald enden"
+      },
+      "auctions": {
+        "title": "Auktionen",
+        "subtitle": "Entdecken und bieten Sie auf Werke für Sie"
+      },
+      "auctionResultsForArtistsYouFollow": {
+        "title": "Auktionsergebnisse für Künstler, denen Sie folgen"
+      },
+      "marketNews": {
+        "title": "Marktnachrichten"
+      },
+      "recommendedArtists": {
+        "title": "Empfohlene Künstler"
+      },
+      "showsForYou": {
+        "title": "Shows für Sie"
+      },
+      "trove": {
+        "title": "Trove"
+      },
+      "viewingRooms": {
+        "title": "Besichtigungsräume"
+      },
+      "collections": {
+        "title": "Sammlungen",
+        "subtitle": "Die neuesten Werke, kuratiert von Artsy"
+      },
+      "artworkRecommendations": {
+        "title": "Artwork-Empfehlungen"
+      },
+      "featuredFairs": {
+        "title": "Ausgewählte Stände",
+        "subtitle": "Sehen Sie Kunstwerke auf Top-Kunstmessen"
+      },
+      "popularArtists": {
+        "title": "Beliebte Künstler"
+      },
+      "recentlyViewed": {
+        "title": "zuletzt angesehen"
+      },
+      "similarToWorks": {
+        "title": "Ähnlich wie Kunstwerke, die Sie angesehen haben"
+      }
+    }
+  }
+}

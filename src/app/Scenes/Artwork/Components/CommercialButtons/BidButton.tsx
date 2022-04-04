@@ -7,6 +7,7 @@ import { bidderNeedsIdentityVerification } from "app/utils/auction"
 import { Schema } from "app/utils/track"
 import { Button, ClassTheme, Sans } from "palette"
 import React from "react"
+import { injectIntl, IntlShape, useIntl } from "react-intl"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import track from "react-tracking"
@@ -18,6 +19,7 @@ export interface BidButtonProps {
   me: BidButton_me
   auctionState: AuctionTimerState
   relay: RelayProp
+  intl: IntlShape
 }
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -30,14 +32,21 @@ const getMyLotStanding = (artwork) =>
 const getHasBid = (myLotStanding) => !!(myLotStanding && myLotStanding.mostRecentBid)
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const IdentityVerificationRequiredMessage = ({ onPress, ...remainderProps }) => (
-  <Sans mt="1" size="3" color="black60" pb="1" textAlign="center" {...remainderProps}>
-    Identity verification required to bid.{" "}
-    <Text style={{ textDecorationLine: "underline" }} onPress={onPress}>
-      FAQ
-    </Text>
-  </Sans>
-)
+const IdentityVerificationRequiredMessage = ({ onPress, ...remainderProps }) => {
+  const intl = useIntl()
+  return (
+    <Sans mt="1" size="3" color="black60" pb="1" textAlign="center" {...remainderProps}>
+      {intl.formatMessage({
+        id: "scene.artwork.components.commercialButtons.bidButton.identityVerificationRequiredMessage.message",
+      })}
+      <Text style={{ textDecorationLine: "underline" }} onPress={onPress}>
+        {intl.formatMessage({
+          id: "scene.artwork.components.commercialButtons.bidButton.identityVerificationRequiredMessage.faq",
+        })}
+      </Text>
+    </Sans>
+  )
+}
 
 @track()
 export class BidButton extends React.Component<BidButtonProps> {
@@ -255,7 +264,7 @@ export class BidButton extends React.Component<BidButtonProps> {
   }
 }
 
-export const BidButtonFragmentContainer = createFragmentContainer(BidButton, {
+export const BidButtonFragmentContainer = createFragmentContainer(injectIntl(BidButton), {
   artwork: graphql`
     fragment BidButton_artwork on Artwork {
       slug

@@ -4,12 +4,14 @@ import { navigate } from "app/navigation/navigate"
 import { get } from "app/utils/get"
 import { CheckCircleIcon, CloseCircleIcon, Flex, Sans, Spacer } from "palette"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AuctionPriceProps {
   artwork: AuctionPrice_artwork
   auctionState: AuctionTimerState
+  intl: IntlShape
 }
 
 export class AuctionPrice extends React.Component<AuctionPriceProps> {
@@ -29,7 +31,19 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     let reserveMessage = artwork.saleArtwork.reserveMessage
 
     if (bidsPresent) {
-      bidTextParts.push(bidsCount === 1 ? "1 bid" : bidsCount + " bids")
+      bidTextParts.push(
+        bidsCount === 1
+          ? this.props.intl.formatMessage({
+              id: "scene.artwork.components.auctionPrice.bidsCountSingular",
+              defaultMessage: "1 bid",
+            })
+          : this.props.intl.formatMessage(
+              {
+                id: "scene.artwork.components.auctionPrice.bidsCountPlural",
+              },
+              { bidsCount }
+            )
+      )
       if (reserveMessage) {
         reserveMessage = reserveMessage.toLocaleLowerCase()
       }
@@ -41,7 +55,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
   }
 
   render() {
-    const { artwork, auctionState } = this.props
+    const { artwork, auctionState, intl } = this.props
     const { sale, saleArtwork } = artwork
 
     if (auctionState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
@@ -50,7 +64,10 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     } else if (auctionState === AuctionTimerState.CLOSED) {
       return (
         <Sans size="4t" weight="medium" color="black100">
-          Bidding closed
+          {intl.formatMessage({
+            id: "scene.artwork.components.auctionPrice.biddingClosed",
+            defaultMessage: "Bidding closed",
+          })}
         </Sans>
       )
     } else if (!saleArtwork || !saleArtwork.currentBid) {
@@ -73,11 +90,19 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
       ? this.bidText(bidsPresent, bidsCount)
       : null
 
+    const currentBidText = intl.formatMessage({
+      id: "scene.artwork.components.auctionPrice.currentBid",
+      defaultMessage: "Current bid",
+    })
+    const startingBidText = intl.formatMessage({
+      id: "scene.artwork.components.auctionPrice.startingBid",
+      defaultMessage: "Starting bid",
+    })
     return (
       <>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
           <Sans size="4t" weight="medium">
-            {bidsPresent ? "Current bid" : "Starting bid"}
+            {bidsPresent ? currentBidText : startingBidText}
           </Sans>
           <Sans size="4t" weight="medium">
             {!!myBidPresent && (
@@ -101,7 +126,10 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
 
           {!!myMaxBid && (
             <Sans size="2" color="black60" pl={1}>
-              Your max: {myMaxBid}
+              {this.props.intl.formatMessage(
+                { id: "scene.artwork.components.auctionPrice.yourMaxBid" },
+                { myMaxBid }
+              )}
             </Sans>
           )}
         </Flex>
@@ -109,15 +137,24 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
           <>
             <Spacer mb={1} />
             <Sans size="3t" color="black60">
-              This auction has a{" "}
+              {this.props.intl.formatMessage({
+                id: "scene.artwork.components.auctionPrice.auctionHas",
+                defaultMessage: "This auction has a ",
+              })}
               <Text
                 style={{ textDecorationLine: "underline" }}
                 onPress={() => this.handleBuyersPremiumTap()}
               >
-                buyer's premium
+                {this.props.intl.formatMessage({
+                  id: "scene.artwork.components.auctionPrice.buyersPremium",
+                  defaultMessage: "buyer's premium",
+                })}
               </Text>
               .{"\n"}
-              Shipping, taxes, and additional fees may apply.
+              {this.props.intl.formatMessage({
+                id: "scene.artwork.components.auctionPrice.shipping",
+                defaultMessage: "Shipping, taxes, and additional fees may apply.",
+              })}
             </Sans>
           </>
         )}
@@ -126,7 +163,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
   }
 }
 
-export const AuctionPriceFragmentContainer = createFragmentContainer(AuctionPrice, {
+export const AuctionPriceFragmentContainer = createFragmentContainer(injectIntl(AuctionPrice), {
   artwork: graphql`
     fragment AuctionPrice_artwork on Artwork {
       sale {

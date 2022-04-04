@@ -6,6 +6,7 @@ import { Box, Collapse, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 
+import { IntlShape, useIntl } from "react-intl"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface CollapsibleArtworkDetailsProps {
@@ -13,7 +14,7 @@ export interface CollapsibleArtworkDetailsProps {
   hasSeparator?: boolean
 }
 
-const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork) => {
+const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork, intl: IntlShape) => {
   const items = [
     { title: "Price", value: artwork.saleMessage },
     { title: "Medium", value: artwork.category },
@@ -46,7 +47,8 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
     })
     setExpanded(!isExpanded)
   }
-  const detailItems = artworkDetailItems(artwork)
+  const intl = useIntl()
+  const detailItems = artworkDetailItems(artwork, intl)
 
   return artwork ? (
     <>

@@ -2,6 +2,7 @@ import { CommercialEditionSetInformation_artwork } from "__generated__/Commercia
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { Box, Flex, RadioButton, Sans, Spacer } from "palette"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
@@ -12,6 +13,7 @@ type EditionSet = CommercialEditionSetInformation_artwork["editionSets"][0]
 interface Props {
   artwork: CommercialEditionSetInformation_artwork
   setEditionSetId: (editionSetID: string) => void
+  intl: IntlShape
 }
 
 interface State {
@@ -60,7 +62,10 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
     return (
       <Box>
         <Sans size="3" weight="medium">
-          Edition size
+          {this.props.intl.formatMessage({
+            id: "scene.artwork.components.commercialEditionSetInformation.editionSize",
+            defaultMessage: "Edition size",
+          })}
         </Sans>
         <Flex flexDirection="row" alignContent="center" flexWrap="wrap">
           {editionSets.map((edition) => {
@@ -112,7 +117,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
 }
 
 export const CommercialEditionSetInformationFragmentContainer = createFragmentContainer(
-  CommercialEditionSetInformation,
+  injectIntl(CommercialEditionSetInformation),
   {
     artwork: graphql`
       fragment CommercialEditionSetInformation_artwork on Artwork {

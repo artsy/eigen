@@ -1,0 +1,128 @@
+{
+  "scene": {
+    "artwork": {
+      "components": {
+        "aboutArtist": {
+          "aboutTheArtist": "About the artist",
+          "aboutTheArtists": "About the artists"
+        },
+
+        "aboutWork": {
+          "aboutTheWork": "About the work",
+          "fromArtsySpecialist": "From Artsy Specialist:"
+        },
+
+        "artworkActions": {
+          "computedTitleWithNames": "{title} by {names} on Artsy",
+          "computedTitle": "{title} on Artsy",
+          "watchLot": "Watch lot",
+          "save": "Save",
+          "saved": "Saved",
+          "viewInRoom": "View in Room",
+          "share": "Share"
+        },
+
+        "artworkDetails": {
+          "listItems": {
+            "medium": "Medium",
+            "condition": "Condition",
+            "signature": "Signature",
+            "certificateOfAuthenticity": "Certificate of Authenticity",
+            "frame": "Frame",
+            "series": "Series",
+            "publisher": "Publisher",
+            "manufacturer": "Manufacturer",
+            "imageRights": "Image rights"
+          },
+          "artworkDetails": "Artwork details"
+        },
+
+        "artworkHistory": {
+          "sections": {
+            "provenance": "Provenance",
+            "exhibitionHistory": "Exhibition History",
+            "literature": "Bibliography"
+          }
+        },
+
+        "artworkSeriesRails": {
+          "section": {
+            "title": "More from this series"
+          }
+        },
+
+        "artworkTombstone": {
+          "more": "more",
+          "lot": "Lot {lotLabel}",
+          "estimatedValue": "Estimated value: {estimate}"
+        },
+
+        "auctionPrice": {
+          "bidsCountSingular": "1 bid",
+          "bidsCountPlural": "{bidsCount} bids",
+          "biddingClosed": "Bidding closed",
+          "currentBid": "Current bid",
+          "startingBid": "Starting bid",
+          "yourMaxBid": "Your max: {myMaxBid}",
+          "auctionHas": "This auction has a ",
+          "buyersPremium": "buyer's premium",
+          "shipping": "Shipping, taxes, and additional fees may apply."
+        },
+
+        "commercialEditionSetInformation": {
+          "editionSize": "Edition size"
+        },
+
+        "commercialInformation": {
+          "saleMessage": "Price on request",
+          "newSaleMessage": {
+            "biddingClosed": "Bidding closed",
+            "forSale": "For sale"
+          }
+        },
+
+        "CommercialPartnerInformation": {
+          "taxes": "Taxes may apply at checkout. ",
+          "learnMore": "Learn more.",
+          "shipsFrom": "Ships from {shippingOrigin}"
+        },
+
+        "contextCard": {
+          "header": {
+            "inAuction": "In auction",
+            "inFair": "In Fair",
+            "inShow": "In Show"
+          }
+        },
+
+        "followArtistLink": {
+          "followButtonText": {
+            "following": "Following",
+            "follow": "Follow"
+          }
+        },
+
+        "partnerCard": {
+          "partnerTypeDisplayText": {
+            "gallery": "gallery",
+            "institution": "institution"
+          }
+        },
+
+        "requestConditionReport": {
+          "presentErrorModal": {
+            "message": "There was a problem processing your request. Please try again."
+          },
+          "requestReport": "Request condition report",
+          "modal": {
+            "error": {
+              "headerText": "An error occurred"
+            },
+            "headerText": "Condition Report Requested",
+            "detailText": "We have received your request.\nThe condition report will be sent to {email}.\nFor questions contact specialist@artsy.net."
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,6 +5,7 @@ import { navigate } from "app/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
 import { Button, ButtonProps } from "palette"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
@@ -14,6 +15,7 @@ export interface BuyNowButtonProps {
   variant?: ButtonProps["variant"]
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
+  intl: IntlShape
 }
 
 export interface State {
@@ -143,7 +145,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
   }
 }
 
-export const BuyNowButtonFragmentContainer = createFragmentContainer(BuyNowButton, {
+export const BuyNowButtonFragmentContainer = createFragmentContainer(injectIntl(BuyNowButton), {
   artwork: graphql`
     fragment BuyNowButton_artwork on Artwork {
       internalID

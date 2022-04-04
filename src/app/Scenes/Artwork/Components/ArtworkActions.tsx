@@ -21,6 +21,7 @@ import {
   Touchable,
 } from "palette"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
@@ -28,6 +29,7 @@ import styled from "styled-components/native"
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork
   relay?: RelayProp
+  intl: IntlShape
 
   shareOnPress: () => void
 }
@@ -35,20 +37,25 @@ interface ArtworkActionsProps {
 export const shareContent = (
   title: string,
   href: string,
-  artists: ArtworkActions_artwork["artists"]
+  artists: ArtworkActions_artwork["artists"],
+  intl: IntlShape
 ) => {
-  let computedTitle: string | null
+  let computedTitle: string = title
   if (artists && artists.length) {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const names = take(artists, 3).map((artist) => artist.name)
-    computedTitle = `${title} by ${names.join(", ")} on Artsy`
+    computedTitle = intl.formatMessage(
+      { id: "scene.artwork.components.artworkActions.computedTitleWithNames" },
+      { title, names: intl.formatList(names, { type: "conjunction" }) }
+    ) as string
   } else if (title) {
-    computedTitle = `${title} on Artsy`
+    computedTitle = intl.formatMessage(
+      { id: "scene.artwork.components.artworkActions.computedTitle" },
+      { title }
+    )
   }
   return {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     title: computedTitle,
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     message: computedTitle,
     url: `${unsafe__getEnvironment().webURL}${href}?utm_content=artwork-share`,
   }
@@ -118,6 +125,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   render() {
     const {
       artwork: { is_saved, is_hangable, sale },
+      intl,
     } = this.props
 
     const isOpenSale = sale && sale.isAuction && !sale.isClosed
@@ -132,7 +140,10 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
                 <ClassTheme>
                   {({ color }) => (
                     <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
-                      Watch lot
+                      {intl.formatMessage({
+                        id: "scene.artwork.components.artworkActions.watchLot",
+                        defaultMessage: "Watch lot",
+                      })}
                     </Sans>
                   )}
                 </ClassTheme>
@@ -145,7 +156,15 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
                 <ClassTheme>
                   {({ color }) => (
                     <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
-                      {is_saved ? "Saved" : "Save"}
+                      {is_saved
+                        ? intl.formatMessage({
+                            id: "scene.artwork.components.artworkActions.saved",
+                            defaultMessage: "Saved",
+                          })
+                        : intl.formatMessage({
+                            id: "scene.artwork.components.artworkActions.save",
+                            defaultMessage: "Save",
+                          })}
                     </Sans>
                   )}
                 </ClassTheme>
@@ -159,7 +178,12 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
                 <Box mr={0.5}>
                   <EyeOpenedIcon />
                 </Box>
-                <Sans size="3">View in Room</Sans>
+                <Sans size="3">
+                  {intl.formatMessage({
+                    id: "scene.artwork.components.artworkActions.viewInRoom",
+                    defaultMessage: "View in room",
+                  })}
+                </Sans>
               </UtilButton>
             </TouchableWithoutFeedback>
           )}
@@ -168,7 +192,12 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
               <Box mr={0.5}>
                 <ShareIcon />
               </Box>
-              <Sans size="3">Share</Sans>
+              <Sans size="3">
+                {intl.formatMessage({
+                  id: "scene.artwork.components.artworkActions.share",
+                  defaultMessage: "Share",
+                })}
+              </Sans>
             </UtilButton>
           </Touchable>
         </Flex>
@@ -183,7 +212,7 @@ const UtilButton = styled(Flex)`
   align-items: center;
 `
 
-export const ArtworkActionsFragmentContainer = createFragmentContainer(ArtworkActions, {
+export const ArtworkActionsFragmentContainer = createFragmentContainer(injectIntl(ArtworkActions), {
   artwork: graphql`
     fragment ArtworkActions_artwork on Artwork {
       id

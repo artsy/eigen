@@ -14,6 +14,7 @@ import { capitalize } from "lodash"
 import { Duration } from "moment"
 import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React, { useEffect, useState } from "react"
+import { useIntl } from "react-intl"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -115,6 +116,8 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
 
   const { trackEvent } = useTracking()
 
+  const intl = useIntl()
+
   useEffect(() => {
     const artworkIsInActiveAuction = artwork.isInAuction && timerState !== AuctionTimerState.CLOSED
 
@@ -133,7 +136,10 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     const artworkIsInClosedAuction = artwork.isInAuction && timerState === AuctionTimerState.CLOSED
     const saleMessage = artwork.saleMessage
       ? artwork.saleMessage === "Contact For Price"
-        ? "Price on request"
+        ? intl.formatMessage({
+            id: "scene.artwork.components.commercialInformation.saleMessage",
+            defaultMessage: "Price on request",
+          })
         : artwork.saleMessage
       : capitalize(artwork.availability || undefined)
 
@@ -154,12 +160,18 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
           ) {
             indicatorColor = color("red100")
           } else if (artworkIsInClosedAuction) {
-            newSaleMessage = "Bidding closed"
+            newSaleMessage = intl.formatMessage({
+              id: "scene.artwork.components.commercialInformation.newSaleMessage.biddingClosed",
+              defaultMessage: "Bidding closed",
+            })
           } else if (
             artwork.saleMessage?.toLowerCase() === "contact for price" &&
             artwork.isForSale
           ) {
-            newSaleMessage = "For sale"
+            newSaleMessage = intl.formatMessage({
+              id: "scene.artwork.components.commercialInformation.newSaleMessage.forSale",
+              defaultMessage: "For sale",
+            })
             indicatorColor = color("green100")
           }
 

@@ -1,0 +1,19 @@
+{
+  "scene": {
+    "myCollection": {
+      "myCollection": {
+        "button": {
+          "addWorks": "Add Works"
+        }
+      },
+
+      "myCollectionArtwork": {
+        "zeroState": {
+          "title": "Your art collection in your pocket.",
+          "subtitle": "Keep track of your collection all in one place and get market insights",
+          "button": "Add Artwork"
+        }
+      }
+    }
+  }
+}

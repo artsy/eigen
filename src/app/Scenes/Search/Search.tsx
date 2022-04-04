@@ -21,6 +21,7 @@ import {
   connectStateResults,
   InstantSearch,
 } from "react-instantsearch-native"
+import { useIntl } from "react-intl"
 import { Keyboard, Platform, ScrollView } from "react-native"
 import {
   FetchPolicy,
@@ -141,6 +142,8 @@ export const Search: React.FC = () => {
     },
   })
   const { trackEvent } = useTracking()
+
+  const intl = useIntl()
 
   const exampleExperiments = useFeatureFlag("AREnableExampleExperiments")
   const enableImprovedSearchPills = useExperimentFlag("eigen-enable-improved-search-pills")
@@ -286,7 +289,10 @@ export const Search: React.FC = () => {
           <RefetchWhenApiKeyExpiredContainer refetch={onRefetch} />
           <Flex p={2} pb={1}>
             <SearchInputContainer
-              placeholder="Search artists, artworks, galleries, etc"
+              placeholder={intl.formatMessage({
+                id: "scene.search.search.searchInputContainer.placeholder",
+                defaultMessage: "Search artists, artworks, galleries, etc",
+              })}
               onTextChange={onTextChange}
             />
           </Flex>

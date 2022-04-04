@@ -6,12 +6,14 @@ import { limitWithCount } from "app/utils/limitWithCount"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { EntityHeader, Flex, FollowButton, Sans, Spacer } from "palette"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
   artwork: PartnerCard_artwork
   relay: RelayProp
+  intl: IntlShape
 }
 
 interface State {
@@ -101,7 +103,17 @@ export class PartnerCard extends React.Component<Props, State> {
       partner.type === "Institution" ||
       partner.type === "Gallery" ||
       partner.type === "Institutional Seller"
-    const partnerTypeDisplayText = partner.type === "Gallery" ? "gallery" : "institution"
+    const gallery = this.props.intl.formatMessage({
+      id: "scene.artwork.components.partnerCard.partnerTypeDisplayText.institution",
+      defaultMessage: "gallery",
+    })
+
+    const institution = this.props.intl.formatMessage({
+      id: "scene.artwork.components.partnerCard.partnerTypeDisplayText.institution",
+      defaultMessage: "institution",
+    })
+
+    const partnerTypeDisplayText = partner.type === "Gallery" ? gallery : institution
     return (
       <Flex>
         {!!showPartnerType && (
@@ -134,7 +146,7 @@ export class PartnerCard extends React.Component<Props, State> {
   }
 }
 
-export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard, {
+export const PartnerCardFragmentContainer = createFragmentContainer(injectIntl(PartnerCard), {
   artwork: graphql`
     fragment PartnerCard_artwork on Artwork {
       sale {

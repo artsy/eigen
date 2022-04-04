@@ -5,6 +5,7 @@ import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
 import { Box, Flex, Join, Sans, Spacer } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AboutArtistProps {
@@ -20,11 +21,22 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
     hasSingleArtist && artists[0]?.biographyBlurb?.text ? artists[0]?.biographyBlurb?.text : null
   const textLimit = truncatedTextLimit()
 
+  const intl = useIntl()
+  const aboutTheArtist = intl.formatMessage({
+    id: "scene.artwork.components.aboutArtist.aboutTheArtist",
+    defaultMessage: "About the artist",
+  })
+
+  const aboutTheArtists = intl.formatMessage({
+    id: "scene.artwork.components.aboutArtist.aboutTheArtists",
+    defaultMessage: "About the artists",
+  })
+
   return (
     <>
       <Flex alignItems="flex-start">
         <Sans size="4t" mb={2}>
-          {hasSingleArtist ? "About the artist" : "About the artists"}
+          {hasSingleArtist ? aboutTheArtist : aboutTheArtists}
         </Sans>
         <Join separator={<Spacer my={1} />}>
           {artists.map(

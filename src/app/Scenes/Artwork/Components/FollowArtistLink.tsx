@@ -3,12 +3,14 @@ import { FollowArtistLinkMutation } from "__generated__/FollowArtistLinkMutation
 import { Schema, track } from "app/utils/track"
 import { Sans, Touchable } from "palette"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
   artist: FollowArtistLink_artist
   relay: RelayProp
   contextModule?: string
+  intl: IntlShape
 }
 
 @track()
@@ -58,7 +60,15 @@ export class FollowArtistLink extends React.Component<Props> {
   }
 
   render() {
-    const followButtonText = this.props.artist.is_followed ? "Following" : "Follow"
+    const followingText = this.props.intl.formatMessage({
+      id: "scene.artwork.components.followArtistLink.followButtonText.following",
+      defaultMessage: "Following",
+    })
+    const followText = this.props.intl.formatMessage({
+      id: "scene.artwork.components.followArtistLink.followButtonText.follow",
+      defaultMessage: "Follow",
+    })
+    const followButtonText = this.props.artist.is_followed ? followingText : followText
     return (
       <Touchable onPress={() => this.handleFollowArtist()} haptic noFeedback>
         <Sans color="black60" weight="medium" size="3t" py="5px">
@@ -69,13 +79,16 @@ export class FollowArtistLink extends React.Component<Props> {
   }
 }
 
-export const FollowArtistLinkFragmentContainer = createFragmentContainer(FollowArtistLink, {
-  artist: graphql`
-    fragment FollowArtistLink_artist on Artist {
-      id
-      slug
-      internalID
-      is_followed: isFollowed
-    }
-  `,
-})
+export const FollowArtistLinkFragmentContainer = createFragmentContainer(
+  injectIntl(FollowArtistLink),
+  {
+    artist: graphql`
+      fragment FollowArtistLink_artist on Artist {
+        id
+        slug
+        internalID
+        is_followed: isFollowed
+      }
+    `,
+  }
+)

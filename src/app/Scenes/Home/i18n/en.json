@@ -1,0 +1,57 @@
+{
+  "scene": {
+    "home": {
+      "newWorksForYou": {
+        "title": "New Works for You"
+      },
+      "yourActiveBids": {
+        "title": "Your Active Bids"
+      },
+      "auctionLotsForYouEndingSoon": {
+        "title": "Auction Lots for You Ending Soon"
+      },
+      "auctions": {
+        "title": "Auctions",
+        "subtitle": "Discover and bid on works for you"
+      },
+      "auctionResultsForArtistsYouFollow": {
+        "title": "Auction Results for Artists You Follow"
+      },
+      "marketNews": {
+        "title": "Market News"
+      },
+      "recommendedArtists": {
+        "title": "Recommended Artists"
+      },
+      "showsForYou": {
+        "title": "Shows for You"
+      },
+      "trove": {
+        "title": "Trove"
+      },
+      "viewingRooms": {
+        "title": "Viewing Rooms"
+      },
+      "collections": {
+        "title": "Collections",
+        "subtitle": "The newest works curated by Artsy"
+      },
+      "artworkRecommendations": {
+        "title": "Artwork Recommendations"
+      },
+      "featuredFairs": {
+        "title": "Featured Fairs",
+        "subtitle": "See works in top art fairs"
+      },
+      "popularArtists": {
+        "title": "Popular Artists"
+      },
+      "recentlyViewed": {
+        "title": "Recently Viewed"
+      },
+      "similarToWorks": {
+        "title": "Similar to Works You've Viewed"
+      }
+    }
+  }
+}

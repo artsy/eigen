@@ -1,0 +1,18 @@
+{
+  "scene": {
+    "search": {
+      "search": {
+        "searchInputContainer": {
+          "placeholder": "Search artists, artworks, galleries, etc"
+        }
+      },
+
+      "recentSearches": {
+        "section": {
+          "title": "Recent Searches"
+        },
+        "noRecentSearches": "We’ll save your recent searches here"
+      }
+    }
+  }
+}

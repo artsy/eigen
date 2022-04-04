@@ -1,0 +1,18 @@
+{
+  "scene": {
+    "myProfile": {
+      "myProfileHeaderMyCollectionAndSavedWorks": {
+        "tabs": {
+          "collection": "Ma Collection",
+          "savedWorks": "Oeuvres enregistrées"
+        },
+
+        "myProfileHeader": {
+          "memberSince": "Membre depuis {year}",
+          "settings": "Réglages",
+          "editProfile": "Editer le profil"
+        }
+      }
+    }
+  }
+}

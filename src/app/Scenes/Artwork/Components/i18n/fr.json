@@ -1,0 +1,128 @@
+{
+  "scene": {
+    "artwork": {
+      "components": {
+        "aboutArtist": {
+          "aboutTheArtist": "À propos de l'artiste",
+          "aboutTheArtists": "A propos des artistes"
+        },
+
+        "aboutWork": {
+          "aboutTheWork": "À propos de l'oeuvre",
+          "fromArtsySpecialist": "Du spécialiste Artsy:"
+        },
+
+        "artworkActions": {
+          "computedTitleWithNames": "{title} par {names} sur Artsy",
+          "computedTitle": "{title} sur Artsy",
+          "watchLot": "Regardez lot",
+          "save": "Enregistrer",
+          "saved": "Enregistré",
+          "viewInRoom": "Voir dans la chambre",
+          "share": "Partager"
+        },
+
+        "artworkDetails": {
+          "listItems": {
+            "medium": "Moyen",
+            "condition": "État",
+            "signature": "Signature",
+            "certificateOfAuthenticity": "Certificat d'authenticité",
+            "frame": "Cadre",
+            "series": "Séries",
+            "publisher": "Éditeur",
+            "manufacturer": "Fabricant",
+            "imageRights": "Droits d'image"
+          },
+          "artworkDetails": "Détails de l'œuvre"
+        },
+
+        "artworkHistory": {
+          "sections": {
+            "provenance": "Provenance",
+            "exhibitionHistory": "Historique de l'exposition",
+            "literature": "Bibliographie"
+          }
+        },
+
+        "artworkSeriesRails": {
+          "section": {
+            "title": "Plus de cette série"
+          }
+        },
+
+        "artworkTombstone": {
+          "more": "plus",
+          "lot": "Lot {lotLabel}",
+          "estimatedValue": "Valeur estimée: {estimate}"
+        },
+
+        "auctionPrice": {
+          "bidsCountSingular": "Une offre",
+          "bidsCountPlural": "{bidsCount} enchères",
+          "biddingClosed": "Enchères fermées",
+          "currentBid": "Enchère actuelle",
+          "startingBid": "Enchère de départ",
+          "yourMaxBid": "Votre maximum: {myMaxBid}",
+          "auctionHas": "Cette enchère a un ",
+          "buyersPremium": "prime de l'acheteur",
+          "shipping": "Des frais d'expédition, des taxes et des frais supplémentaires peuvent s'appliquer."
+        },
+
+        "commercialEditionSetInformation": {
+          "editionSize": "Taille de l'édition"
+        },
+
+        "commercialInformation": {
+          "saleMessage": "Prix sur demande",
+          "newSaleMessage": {
+            "biddingClosed": "Enchères fermées",
+            "forSale": "À vendre"
+          }
+        },
+
+        "CommercialPartnerInformation": {
+          "taxes": "Des taxes peuvent s'appliquer au moment du paiement. ",
+          "learnMore": "Apprendre encore plus.",
+          "shipsFrom": "Expédié depuis {shippingOrigin}"
+        },
+
+        "contextCard": {
+          "header": {
+            "inAuction": "Aux enchères",
+            "inFair": "En Fair",
+            "inShow": "En spectacle"
+          }
+        },
+
+        "followArtistLink": {
+          "followButtonText": {
+            "following": "Suivant",
+            "follow": "Suivre"
+          }
+        },
+
+        "partnerCard": {
+          "partnerTypeDisplayText": {
+            "gallery": "Galerie",
+            "institution": "institution"
+          }
+        },
+
+        "requestConditionReport": {
+          "presentErrorModal": {
+            "message": "Il y avait un problème lors du traitement de votre demande. Veuillez réessayer."
+          },
+          "requestReport": "Demander un rapport d'état",
+          "modal": {
+            "error": {
+              "headerText": "Une erreur s'est produite"
+            },
+            "headerText": "Rapport d'état demandé",
+            "detailText": "Nous avons reçu votre demande.\nLe rapport d'état sera envoyé à {email}.\nPour toute question, contactez specialist@artsy.net."
+          }
+        }
+      }
+    }
+  }
+}

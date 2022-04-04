@@ -3,6 +3,7 @@ import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { LinkText, Sans, Spacer } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -16,6 +17,8 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
   const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "From" : "At"
   const avalaraPhase2 = useFeatureFlag("AREnableAvalaraPhase2")
 
+  const intl = useIntl()
+
   return (
     <>
       {showsSellerInfo && (
@@ -26,7 +29,10 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
           </Sans>
           {avalaraPhase2 && (
             <Sans size="3t" color="black60">
-              Taxes may apply at checkout.{" "}
+              {intl.formatMessage({
+                id: "scene.artwork.components.CommercialPartnerInformation.taxes",
+                defaultMessage: "Taxes may apply at checkout. ",
+              })}
               <LinkText
                 onPress={() => {
                   navigate(
@@ -34,13 +40,19 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
                   )
                 }}
               >
-                Learn more.
+                {intl.formatMessage({
+                  id: "scene.artwork.components.CommercialPartnerInformation.learnMore",
+                  defaultMessage: "Learn more.",
+                })}
               </LinkText>
             </Sans>
           )}
           {artworkEcommerceAvailable && !!artwork.shippingOrigin && (
             <Sans size="3t" color="black60">
-              Ships from {artwork.shippingOrigin}
+              {intl.formatMessage(
+                { id: "scene.artwork.components.CommercialPartnerInformation.shipsFrom" },
+                { shippingOrigin: artwork.shippingOrigin }
+              )}
             </Sans>
           )}
           {artworkEcommerceAvailable && !!artwork.shippingInfo && (

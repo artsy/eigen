@@ -18,6 +18,7 @@ import {
   WhatsAppAppIcon,
 } from "palette"
 import React, { useRef, useState } from "react"
+import { useIntl } from "react-intl"
 import { Button, Modal } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import Share from "react-native-share"
@@ -50,6 +51,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const currentImage = (artwork.images ?? [])[currentImageIndex]
   const currentImageUrl = (currentImage?.url ?? "").replace(":version", "large")
 
+  const intl = useIntl()
+
   const shareArtwork = async () => {
     trackEvent({
       action_name: Schema.ActionNames.Share,
@@ -58,7 +61,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
     })
 
     const { title, href, artists } = artwork
-    const details = shareContent(title!, href!, artists)
+    const details = shareContent(title!, href!, artists, intl)
 
     const base64RawData = await shotRef.current!.capture!()
     const base64Data = `data:image/png;base64,${base64RawData}`
@@ -79,7 +82,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
   const shareArtworkOnWhatsApp = async () => {
     const { title, href, artists } = artwork
-    const details = shareContent(title!, href!, artists)
+    const details = shareContent(title!, href!, artists, intl)
 
     await Share.shareSingle({
       social: Share.Social.WHATSAPP,

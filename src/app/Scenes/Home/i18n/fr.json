@@ -1,0 +1,57 @@
+{
+  "scene": {
+    "home": {
+      "newWorksForYou": {
+        "title": "De nouvelles oeuvres pour vous"
+      },
+      "yourActiveBids": {
+        "title": "Vos enchères actives"
+      },
+      "auctionLotsForYouEndingSoon": {
+        "title": "Lots d'enchères pour vous se terminant bientôt"
+      },
+      "auctions": {
+        "title": "Les enchères",
+        "subtitle": "Découvrez et enchérissez sur des œuvres pour vous"
+      },
+      "auctionResultsForArtistsYouFollow": {
+        "title": "Résultats des enchères pour les artistes que vous suivez"
+      },
+      "marketNews": {
+        "title": "Nouvelles du marché"
+      },
+      "recommendedArtists": {
+        "title": "Artistes recommandés"
+      },
+      "showsForYou": {
+        "title": "Spectacles pour Vous"
+      },
+      "trove": {
+        "title": "Trove"
+      },
+      "viewingRooms": {
+        "title": "Salles de visualisation"
+      },
+      "collections": {
+        "title": "Collections",
+        "subtitle": "Les dernières œuvres organisées par Artsy"
+      },
+      "artworkRecommendations": {
+        "title": "Recommandations d'illustrations"
+      },
+      "featuredFairs": {
+        "title": "Stands en vedette",
+        "subtitle": "Voir les œuvres dans les meilleures foires d'art"
+      },
+      "popularArtists": {
+        "title": "Artistes populaires"
+      },
+      "recentlyViewed": {
+        "title": "vu récemment"
+      },
+      "similarToWorks": {
+        "title": "Similaire aux œuvres que vous avez vues"
+      }
+    }
+  }
+}

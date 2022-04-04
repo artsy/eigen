@@ -34,6 +34,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
+import { useIntl } from "react-intl"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
@@ -99,40 +100,64 @@ const Home = (props: Props) => {
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
   const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
 
+  const intl = useIntl()
+
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
     {
-      title: "New Works for You",
+      title: intl.formatMessage({
+        id: "scene.home.newWorksForYou.title",
+        defaultMessage: "New Works for You",
+      }),
       type: "newWorksForYou",
       data: meAbove,
       prefetchUrl: "/new-works-for-you",
     },
-    { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
     {
-      title: "Auction Lots for You Ending Soon",
+      title: intl.formatMessage({
+        id: "scene.home.yourActiveBids.title",
+        defaultMessage: "Your Active Bids",
+      }),
+      type: "artwork",
+      data: homePageAbove?.activeBidsArtworkModule,
+    },
+    {
+      title: intl.formatMessage({
+        id: "scene.home.auctionLotsForYouEndingSoon.title",
+        defaultMessage: "Auction Lots for You Ending Soon",
+      }),
       type: "lotsByFollowedArtists",
       data: meAbove,
       prefetchUrl: "/lots-by-artists-you-follow",
       prefetchVariables: lotsByArtistsYouFollowDefaultVariables(),
     },
     {
-      title: "Auctions",
-      subtitle: "Discover and bid on works for you",
+      title: intl.formatMessage({ id: "scene.home.auctions.title", defaultMessage: "Auctions" }),
+      subtitle: intl.formatMessage({
+        id: "scene.home.auctions.subtitle",
+        defaultMessage: "Discover and bid on works for you",
+      }),
       type: "sales",
       data: homePageAbove?.salesModule,
       prefetchUrl: "/auctions",
     },
     // Below-The-Fold Modules
     {
-      title: "Auction Results for Artists You Follow",
+      title: intl.formatMessage({
+        id: "scene.home.auctionResultsForArtistsYouFollow.title",
+        defaultMessage: "Auction Results for Artists You Follow",
+      }),
       type: "auction-results",
       data: meBelow,
       hidden: !enableAuctionResultsByFollowedArtists,
       prefetchUrl: "/auction-results-for-artists-you-follow",
     },
     {
-      title: "Market News",
+      title: intl.formatMessage({
+        id: "scene.home.marketNews.title",
+        defaultMessage: "Market News",
+      }),
       type: "articles",
       data: articlesConnection,
       hidden: !articlesConnection,
@@ -140,49 +165,90 @@ const Home = (props: Props) => {
       prefetchVariables: articlesQueryVariables,
     },
     {
-      title: "Recommended Artists",
+      title: intl.formatMessage({
+        id: "scene.home.recommendedArtists.title",
+        defaultMessage: "Recommended Artists",
+      }),
       type: "recommended-artists",
       data: meBelow,
     },
     {
-      title: "Shows for You",
+      title: intl.formatMessage({
+        id: "scene.home.showsForYou.title",
+        defaultMessage: "Shows for You",
+      }),
       type: "shows",
       data: showsByFollowedArtists,
     },
-    { title: "Trove", type: "trove", data: homePageBelow },
     {
-      title: "Viewing Rooms",
+      title: intl.formatMessage({ id: "scene.home.trove.title", defaultMessage: "Trove" }),
+      type: "trove",
+      data: homePageBelow,
+    },
+    {
+      title: intl.formatMessage({
+        id: "scene.home.viewingRooms.title",
+        defaultMessage: "Viewing Rooms",
+      }),
       type: "viewing-rooms",
       data: featured,
       hidden: !enableViewingRooms,
       prefetchUrl: "/viewing-rooms",
     },
     {
-      title: "Collections",
-      subtitle: "The newest works curated by Artsy",
+      title: intl.formatMessage({
+        id: "scene.home.collections.title",
+        defaultMessage: "Collections",
+      }),
+      subtitle: intl.formatMessage({
+        id: "scene.home.collections.subtitle",
+        defaultMessage: "The newest works curated by Artsy",
+      }),
       type: "collections",
       data: homePageBelow?.marketingCollectionsModule,
     },
     {
-      title: "Artwork Recommendations",
+      title: intl.formatMessage({
+        id: "scene.home.artworkRecommendations.title",
+        defaultMessage: "Artwork Recommendations",
+      }),
       type: "artworkRecommendations",
       data: meBelow,
       hidden: !enableArtworkRecommendations,
     },
     {
-      title: "Featured Fairs",
-      subtitle: "See works in top art fairs",
+      title: intl.formatMessage({
+        id: "scene.home.featuredFairs.title",
+        defaultMessage: "Featured Fairs",
+      }),
+      subtitle: intl.formatMessage({
+        id: "scene.home.featuredFairs.subtitle",
+        defaultMessage: "See works in top art fairs",
+      }),
       type: "fairs",
       data: homePageBelow?.fairsModule,
     },
-    { title: "Popular Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
     {
-      title: "Recently Viewed",
+      title: intl.formatMessage({
+        id: "scene.home.popularArtists.title",
+        defaultMessage: "Popular Artists",
+      }),
+      type: "artist",
+      data: homePageBelow?.popularArtistsArtistModule,
+    },
+    {
+      title: intl.formatMessage({
+        id: "scene.home.recentlyViewed.title",
+        defaultMessage: "Recently Viewed",
+      }),
       type: "artwork",
       data: homePageBelow?.recentlyViewedWorksArtworkModule,
     },
     {
-      title: "Similar to Works You've Viewed",
+      title: intl.formatMessage({
+        id: "scene.home.similarToWorks.title",
+        defaultMessage: "Similar to Works You've Viewed",
+      }),
       type: "artwork",
       data: homePageBelow?.similarToRecentlyViewedArtworkModule,
     },

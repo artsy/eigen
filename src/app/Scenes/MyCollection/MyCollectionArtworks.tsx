@@ -10,6 +10,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, Flex } from "palette"
 import React from "react"
+import { useIntl } from "react-intl"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
@@ -92,11 +93,18 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
 
 const MyCollectionZeroState: React.FC = () => {
   const { trackEvent } = useTracking()
+  const intl = useIntl()
 
   return (
     <ZeroState
-      title="Your art collection in your pocket."
-      subtitle="Keep track of your collection all in one place and get market insights"
+      title={intl.formatMessage({
+        id: "scene.myCollection.myCollectionArtwork.zeroState.title",
+        defaultMessage: "Your art collection in your pocket.",
+      })}
+      subtitle={intl.formatMessage({
+        id: "scene.myCollection.myCollectionArtwork.zeroState.subtitle",
+        defaultMessage: "Keep track of your collection all in one place and get market insights",
+      })}
       callToAction={
         <Button
           testID="add-artwork-button-zero-state"
@@ -111,7 +119,10 @@ const MyCollectionZeroState: React.FC = () => {
           }}
           block
         >
-          Add artwork
+          {intl.formatMessage({
+            id: "scene.myCollection.myCollectionArtwork.zeroState.button",
+            defaultMessage: "Add Artwork",
+          })}
         </Button>
       }
     />

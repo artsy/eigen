@@ -4,12 +4,14 @@ import { navigate } from "app/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { Box, EntityHeader, Flex, FollowButton, Sans } from "palette"
 import React from "react"
+import { defineMessages, injectIntl, IntlShape } from "react-intl"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface ContextCardProps {
   artwork: ContextCard_artwork
   relay: RelayProp
+  intl: IntlShape
 }
 
 interface ContextCardState {
@@ -124,20 +126,34 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
       return null
     }
 
+    const headerMessages = defineMessages({
+      inAuction: {
+        id: "scene.artwork.components.contextCard.header.inAuction",
+        defaultMessage: "In auction",
+      },
+      inFair: {
+        id: "scene.artwork.components.contextCard.header.inFair",
+        defaultMessage: "In fair",
+      },
+      inShow: {
+        id: "scene.artwork.components.contextCard.header.inShow",
+        defaultMessage: "In show",
+      },
+    })
+
     if (context) {
       switch (context.__typename) {
         case "Sale":
-          header = "In auction"
-          meta = context.formattedStartDateTime
+          header = this.props.intl.formatMessage(headerMessages.inAuction)
           imageUrl = context.coverImage && context.coverImage.url ? context.coverImage.url : ""
           break
         case "Fair":
-          header = "In fair"
+          header = this.props.intl.formatMessage(headerMessages.inFair)
           meta = context.exhibitionPeriod
           imageUrl = context.image && context.image.url ? context.image.url : ""
           break
         case "Show":
-          header = "In show"
+          header = this.props.intl.formatMessage(headerMessages.inShow)
           meta = context.exhibitionPeriod
           imageUrl = context.coverImage && context.coverImage.url ? context.coverImage.url : ""
           followButton = this.followButton(context)
@@ -172,7 +188,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
   }
 }
 
-export const ContextCardFragmentContainer = createFragmentContainer(ContextCard, {
+export const ContextCardFragmentContainer = createFragmentContainer(injectIntl(ContextCard), {
   artwork: graphql`
     fragment ContextCard_artwork on Artwork {
       id

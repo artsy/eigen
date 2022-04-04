@@ -7,10 +7,10 @@ import { Language } from "./types"
 
 interface EigenIntlProviderContextType {
   setPreferredLanguage: (language: Language) => void
-  preferredLanguage: string
+  preferredLanguage: Language
 }
 
-const EigenIntlProviderContext = React.createContext<EigenIntlProviderContextType>({
+export const EigenIntlProviderContext = React.createContext<EigenIntlProviderContextType>({
   setPreferredLanguage: () => null,
   preferredLanguage: "en",
 })
@@ -18,7 +18,7 @@ const EigenIntlProviderContext = React.createContext<EigenIntlProviderContextTyp
 const PREFERRED_LANGUAGE_KEY = "EIGENINTLPROVIDER_PREFFERED_LANGUAGE_KEY"
 
 export const EigenIntlProvider: React.FC = ({ children }) => {
-  const [preferredLanguage, setPreferredLanguage] = useState<Language>("de")
+  const [preferredLanguage, setPreferredLanguage] = useState<Language>("en")
 
   useEffect(() => {
     AsyncStorage.getItem(PREFERRED_LANGUAGE_KEY).then((value) => {

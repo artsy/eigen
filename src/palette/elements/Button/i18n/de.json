@@ -1,0 +1,12 @@
+{
+  "palette": {
+    "elements": {
+      "button": {
+        "followButton": {
+          "follow": "Folgen",
+          "following": "Folgend"
+        }
+      }
+    }
+  }
+}

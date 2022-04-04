@@ -4,6 +4,7 @@ import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
 import { Box, Flex, Sans, Spacer } from "palette"
 import React from "react"
+import { injectIntl, IntlShape } from "react-intl"
 import { Text, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { FollowArtistLinkFragmentContainer as FollowArtistLink } from "./FollowArtistLink"
@@ -12,6 +13,7 @@ type Artist = NonNullable<NonNullable<ArtworkTombstone_artwork["artists"]>[0]>
 
 export interface ArtworkTombstoneProps {
   artwork: ArtworkTombstone_artwork
+  intl: IntlShape
 }
 
 export interface ArtworkTombstoneState {
@@ -112,7 +114,11 @@ export class ArtworkTombstone extends React.Component<
           {!this.state.showingMoreArtists && artists! /* STRICTNESS_MIGRATION */.length > 3 && (
             <TouchableWithoutFeedback onPress={this.showMoreArtists}>
               <Sans size="4t" weight="medium">
-                {artists! /* STRICTNESS_MIGRATION */.length - 3} more
+                {artists! /* STRICTNESS_MIGRATION */.length - 3}{" "}
+                {this.props.intl.formatMessage({
+                  id: "scene.artwork.components.artworkTombstone.more",
+                  defaultMessage: "more",
+                })}
               </Sans>
             </TouchableWithoutFeedback>
           )}
@@ -147,7 +153,10 @@ export class ArtworkTombstone extends React.Component<
         <Spacer mb={1} />
         {!!displayAuctionLotLabel && (
           <Sans color="black100" size="3" weight="medium">
-            Lot {artwork.saleArtwork.lotLabel}
+            {this.props.intl.formatMessage(
+              { id: "scene.artwork.components.artworkTombstone.lot" },
+              { lotLabel: artwork.saleArtwork.lotLabel }
+            )}
           </Sans>
         )}
         <Flex flexDirection="row" flexWrap="wrap">
@@ -202,7 +211,10 @@ export class ArtworkTombstone extends React.Component<
             )}
             {!!artwork.saleArtwork && !!artwork.saleArtwork.estimate && (
               <Sans size="3" color="black60">
-                Estimated value: {artwork.saleArtwork.estimate}
+                {this.props.intl.formatMessage(
+                  { id: "scene.artwork.components.artworkTombstone.estimatedValue" },
+                  { estimate: artwork.saleArtwork.estimate }
+                )}
               </Sans>
             )}
           </>
@@ -212,37 +224,40 @@ export class ArtworkTombstone extends React.Component<
   }
 }
 
-export const ArtworkTombstoneFragmentContainer = createFragmentContainer(ArtworkTombstone, {
-  artwork: graphql`
-    fragment ArtworkTombstone_artwork on Artwork {
-      title
-      isInAuction
-      medium
-      date
-      cultural_maker: culturalMaker
-      saleArtwork {
-        lotLabel
-        estimate
+export const ArtworkTombstoneFragmentContainer = createFragmentContainer(
+  injectIntl(ArtworkTombstone),
+  {
+    artwork: graphql`
+      fragment ArtworkTombstone_artwork on Artwork {
+        title
+        isInAuction
+        medium
+        date
+        cultural_maker: culturalMaker
+        saleArtwork {
+          lotLabel
+          estimate
+        }
+        partner {
+          name
+        }
+        sale {
+          isClosed
+        }
+        artists {
+          name
+          href
+          ...FollowArtistLink_artist
+        }
+        dimensions {
+          in
+          cm
+        }
+        edition_of: editionOf
+        attribution_class: attributionClass {
+          shortDescription
+        }
       }
-      partner {
-        name
-      }
-      sale {
-        isClosed
-      }
-      artists {
-        name
-        href
-        ...FollowArtistLink_artist
-      }
-      dimensions {
-        in
-        cm
-      }
-      edition_of: editionOf
-      attribution_class: attributionClass {
-        shortDescription
-      }
-    }
-  `,
-})
+    `,
+  }
+)

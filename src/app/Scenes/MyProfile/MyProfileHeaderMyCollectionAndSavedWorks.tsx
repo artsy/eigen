@@ -25,6 +25,7 @@ import {
   useColor,
 } from "palette"
 import React, { useContext } from "react"
+import { useIntl } from "react-intl"
 import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
@@ -42,17 +43,23 @@ export enum Tab {
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   me: MyProfileHeaderMyCollectionAndSavedWorks_me
 }> = ({ me }) => {
+  const intl = useIntl()
+
   return (
     <StickyTabPage
       disableBackButtonUpdate
       tabs={[
         {
-          title: Tab.collection,
+          title: intl.formatMessage({
+            id: "scene.myProfile.myProfileHeaderMyCollectionAndSavedWorks.tabs.collection",
+          }),
           content: <MyCollectionQueryRenderer />,
           initial: true,
         },
         {
-          title: Tab.savedWorks,
+          title: intl.formatMessage({
+            id: "scene.myProfile.myProfileHeaderMyCollectionAndSavedWorks.tabs.savedWorks",
+          }),
           content: <FavoriteArtworksQueryRenderer />,
           initial: false,
         },
@@ -76,10 +83,15 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
 
   const userProfileImagePath = localImage || me?.icon?.url
 
+  const intl = useIntl()
+
   return (
     <>
       <FancyModalHeader
-        rightButtonText="Settings"
+        rightButtonText={intl.formatMessage({
+          id: "scene.myProfile.myProfileHeaderMyCollectionAndSavedWorks.myProfileHeader.settings",
+          defaultMessage: "Settings",
+        })}
         hideBottomDivider
         onRightButtonPress={() => {
           navigate("/my-profile/settings")
@@ -105,9 +117,14 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
             {me?.name}
           </Text>
           {!!me?.createdAt && (
-            <Text variant="xs" color={color("black60")}>{`Member since ${new Date(
-              me?.createdAt
-            ).getFullYear()}`}</Text>
+            <Text variant="xs" color={color("black60")}>
+              {intl.formatMessage(
+                {
+                  id: "scene.myProfile.myProfileHeaderMyCollectionAndSavedWorks.myProfileHeader.memberSince",
+                },
+                { year: new Date(me?.createdAt).getFullYear() }
+              )}
+            </Text>
           )}
         </Box>
       </Flex>
@@ -158,7 +175,10 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
             navigation.navigate("MyProfileEditForm")
           }}
         >
-          Edit Profile
+          {intl.formatMessage({
+            id: "scene.myProfile.myProfileHeaderMyCollectionAndSavedWorks.myProfileHeader.editProfile",
+            defaultMessage: "Edit Profile",
+          })}
         </Button>
       </Flex>
     </>

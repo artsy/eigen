@@ -2,10 +2,11 @@ import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
-import { Button, Flex, Sans, Separator, Spacer, useColor } from "palette"
+import { Box, Button, Flex, Sans, Separator, Spacer, useColor } from "palette"
 import React from "react"
 import { Alert, ScrollView } from "react-native"
 import { Tab } from "../Favorites/Favorites"
+import { SelectLanguage } from "./SelectLanguage"
 
 export const MyProfileSettings: React.FC<{}> = () => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
@@ -20,6 +21,10 @@ export const MyProfileSettings: React.FC<{}> = () => {
       <Sans size="8" mx="2" mt="6">
         {"Settings"}
       </Sans>
+      <Spacer mt={3} mb={2} />
+      <Box mx={2}>
+        <SelectLanguage />
+      </Box>
       <Spacer mt={3} mb={2} />
       <SectionHeading title="FAVORITES" />
       <Spacer my={1} />
