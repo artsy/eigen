@@ -128,7 +128,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         <FeatureFlagMenuItem
           title="Revert all feature flags to default"
           onPress={() => {
-            GlobalStore.actions.artsyPrefs.environment.clearAdminOverrides()
+            GlobalStore.actions.artsyPrefs.features.clearAdminOverrides()
           }}
         />
         <Flex mx="2">
