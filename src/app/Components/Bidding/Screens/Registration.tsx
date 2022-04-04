@@ -391,20 +391,6 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         </Flex>
       )
     }
-    // REMOVE - For manually triggering credit card version
-    // requiredInfoHint = <Hint>A valid credit card is required.</Hint>
-    // requiredInfoForm = (
-    //   <Flex flex={1} py={20}>
-    //     <PaymentInfo
-    //       navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-    //       onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-    //       onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-    //       billingAddress={this.state.billingAddress}
-    //       creditCardFormParams={this.state.creditCardFormParams}
-    //       creditCardToken={this.state.creditCardToken}
-    //     />
-    //   </Flex>
-    // )
 
     return (
       <ScrollView
