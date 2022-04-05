@@ -45,8 +45,8 @@ export const useArtworkFilters = ({
     setAggregationsAction(aggregations)
   }, [])
 
-  useEffect(() => {
-    if (relay !== undefined && applyFilters) {
+  const refetch = () => {
+    if (relay !== undefined) {
       const filterParams = filterArtworksParams(appliedFilters, filterType)
 
       relay.refetchConnection(
@@ -64,6 +64,13 @@ export const useArtworkFilters = ({
         },
         refetchVariables ?? { input: prepareFilterArtworksParamsForInput(filterParams) }
       )
+    }
+  }
+
+  useEffect(() => {
+    if (applyFilters) {
+      refetch()
+
       if (onApply) {
         onApply()
       }
