@@ -180,8 +180,6 @@ const MyCollection: React.FC<{
   }, [artworks])
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (__TEST__) { return }
-
     setYScrollOffset(event.nativeEvent.contentOffset.y)
   }
 
