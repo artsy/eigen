@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Input, Touchable } from "palette"
 import React from "react"
-import { OnboardingLoginWithEmailForm } from "./OnboardingLogin"
+import { OnboardingLoginWithEmail } from "./OnboardingLogin"
 
 const navigateMock = jest.fn()
 
@@ -31,7 +31,7 @@ jest.mock("formik", () => ({
 describe("OnboardingLogin", () => {
   const TestProvider = ({ email = "" }) => {
     return (
-      <OnboardingLoginWithEmailForm
+      <OnboardingLoginWithEmail
         navigation={navigationPropsMock as any}
         route={{ params: { email } } as any}
       />
