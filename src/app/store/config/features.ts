@@ -167,9 +167,9 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnablePriceEstimateRange: {
-    readyForRelease: true,
+    readyForRelease: false,
     description: "Enable My Collection Price Estimate Range",
-    showInAdminMenu: true,
+    showInAdminMenu: false,
   },
   AREnableMyCollectionComparableWorks: {
     readyForRelease: true,
