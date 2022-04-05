@@ -409,8 +409,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           )}
         </Box>
 
+        {requiredInfoForm}
         <Flex px={20} flex={1}>
-          {requiredInfoForm}
           {requiredInfoHint}
           {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
