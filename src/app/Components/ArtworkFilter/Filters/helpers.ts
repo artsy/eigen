@@ -22,7 +22,7 @@ export const localizeDimension = (value: Numeric, unit: Metric) => {
     return inToCm(value)
   }
 
-  return value
+  return round(value)
 }
 
 export const cmToIn = (centimeters: Numeric) => {
