@@ -39,6 +39,7 @@ import {
 import Config from "react-native-config"
 import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
 import Keychain from "react-native-keychain"
+import { useUnleashEnvironment } from "./experiments/hooks"
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = Object.entries(features)
@@ -67,6 +68,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
     onClose()
     return true
   }
+  const { unleashEnv } = useUnleashEnvironment()
 
   return (
     <Flex
@@ -184,6 +186,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             RelayCache.clearAll()
           }}
         />
+        <FeatureFlagMenuItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
         <FeatureFlagMenuItem
           title="Log out"
           onPress={() => {
