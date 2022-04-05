@@ -84,9 +84,15 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
-    relay.refetch(() => {
-      setIsRefreshing(false)
-    })
+
+    relay.refetch(
+      {},
+      null,
+      () => {
+        setIsRefreshing(false)
+      },
+      { force: true }
+    )
   }, [])
 
   // poll every .5 seconds to check if sale has gone live
