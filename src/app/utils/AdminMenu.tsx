@@ -8,7 +8,7 @@ import { dismissModal, navigate } from "app/navigation/navigate"
 import { RelayCache } from "app/relay/RelayCache"
 import { environment, EnvironmentKey } from "app/store/config/EnvironmentModel"
 import { DevToggleName, devToggles, FeatureName, features } from "app/store/config/features"
-import { GlobalStore, useDevToggle, useIsStaging } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Versions } from "app/store/migration"
 import { capitalize, compact, sortBy } from "lodash"
 import {
@@ -38,6 +38,7 @@ import {
 import Config from "react-native-config"
 import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
 import Keychain from "react-native-keychain"
+import { useUnleashEnvironment } from "./experiments/hooks"
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = Object.entries(features)
@@ -66,15 +67,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
     onClose()
     return true
   }
-  const isStaging = useIsStaging()
-
-  const unleashEnv = __DEV__
-    ? useDevToggle("DTUseProductionUnleash")
-      ? "production"
-      : "staging"
-    : isStaging
-    ? "staging"
-    : "production"
+  const { unleashEnv } = useUnleashEnvironment()
 
   return (
     <Flex
