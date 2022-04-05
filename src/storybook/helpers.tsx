@@ -1,6 +1,6 @@
 import { Flex, Spacer } from "palette"
 import React from "react"
-import { FlatList, FlatListProps, Insets, PointPropType, StyleProp, ViewStyle } from "react-native"
+import { FlatList, StyleProp, ViewStyle } from "react-native"
 
 export const DataList = <ItemT,>({
   data,
