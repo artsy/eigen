@@ -1,12 +1,13 @@
 import { useNavigation } from "@react-navigation/native"
-import { BackButton } from "app/navigation/BackButton"
 import { navigate } from "app/navigation/navigate"
 import { AuthPromiseRejectType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Wrap } from "app/utils/Wrap"
 import { capitalize } from "lodash"
-import { Button, Flex, Join, Spacer, Text } from "palette"
-import React, { useEffect } from "react"
-import { Alert, Image, Platform } from "react-native"
+import { Button, EmptyHeader, Flex, Join, Spacer, Text, Screen } from "palette"
+import { useEffect } from "react"
+import { Alert, Image, Platform, ScrollView } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { AppleToken, GoogleOrFacebookToken } from "./OnboardingSocialLink"
@@ -17,16 +18,13 @@ interface OnboardingSocialPickProps {
 
 export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode }) => {
   const navigation = useNavigation()
-
   const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
-
   const allowLinkingOnSignUp = useFeatureFlag("ARAllowLinkSocialAccountsOnSignUp")
+  const isIOS = Platform.OS === "ios"
 
-  /**
-   * When we land on OnboardingSocialPick coming from OnboardingCreateAccount or OnboardingLogin
-   * withFadeAnimation is set to true which overrwites the default horizontal slide animation when
-   * navigating back. To avoid that we need to reset withFadeAnimation to false
-   */
+  // When we land on OnboardingSocialPick coming from OnboardingCreateAccount or OnboardingLogin
+  // withFadeAnimation is set to true which overwrites the default horizontal slide animation when
+  // navigating back. To avoid that we need to reset withFadeAnimation to false
   useEffect(() => {
     const timeout = setTimeout(() => {
       navigation.setParams({ withFadeAnimation: false })
@@ -89,96 +87,97 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     Alert.alert("Try again", error.message)
   }
 
-  const continueWithFacebook = () => {
-    if (mode === "login") {
-      GlobalStore.actions.auth
-        .authFacebook({ signInOrUp: "signIn" })
-        .catch((error: AuthPromiseRejectType) => {
-          handleError(error)
-        })
-    } else {
-      GlobalStore.actions.auth
-        .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
-        .catch((error: AuthPromiseRejectType) => {
-          handleError(error)
-        })
-    }
-  }
-
-  const continueWithGoogle = () => {
-    if (mode === "login") {
-      GlobalStore.actions.auth
-        .authGoogle({ signInOrUp: "signIn" })
-        .catch((error: AuthPromiseRejectType) => {
-          handleError(error)
-        })
-    } else {
-      GlobalStore.actions.auth
-        .authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
-        .catch((error: AuthPromiseRejectType) => {
-          handleError(error)
-        })
-    }
-  }
-
-  const continueWithApple = () => {
+  const continueWithApple = () =>
     GlobalStore.actions.auth
       .authApple({ agreedToReceiveEmails: true })
-      .catch((error: AuthPromiseRejectType) => {
-        handleError(error)
+      .catch((error: AuthPromiseRejectType) => handleError(error))
+
+  const continueWithGoogle = () =>
+    GlobalStore.actions.auth
+      .authGoogle({
+        signInOrUp: mode === "login" ? "signIn" : "signUp",
+        agreedToReceiveEmails: mode === "signup",
       })
-  }
+      .catch((error: AuthPromiseRejectType) => handleError(error))
 
-  const isiOS = Platform.OS === "ios"
+  const continueWithFacebook = () =>
+    GlobalStore.actions.auth
+      .authFacebook({
+        signInOrUp: mode === "login" ? "signIn" : "signUp",
+        agreedToReceiveEmails: mode === "signup",
+      })
+      .catch((error: AuthPromiseRejectType) => handleError(error))
+
   return (
-    <Flex justifyContent="center" flex={1} backgroundColor="white">
-      <BackButton onPress={() => navigation.goBack()} />
-      <Flex px={1.5}>
-        <Join separator={<Spacer height={60} />}>
-          <Text variant="xxl">{mode === "login" ? "Log in" : "Sign Up"}</Text>
+    <Screen>
+      <Screen.Header onBack={() => navigation.goBack()} />
+      <Screen.Body>
+        <Flex justifyContent="center" flex={1}>
+          <Join separator={<Spacer y={60} />}>
+            <Text variant="xxl">{mode === "login" ? "Log in" : "Sign Up"}</Text>
 
-          <>
-            <Button
-              onPress={() => {
-                if (mode === "login") {
-                  navigation.navigate("OnboardingLoginWithEmail")
-                } else {
-                  navigation.navigate("OnboardingCreateAccountWithEmail")
-                }
-              }}
-              block
-              haptic="impactMedium"
-              mb={1}
-              variant="outline"
-              iconPosition="left-start"
-              icon={<EnvelopeIcon mr={1} />}
-              testID="continueWithEmail"
-            >
-              Continue with Email
-            </Button>
-            {Platform.OS === "ios" && (
+            <>
               <Button
-                onPress={continueWithApple}
+                onPress={() =>
+                  mode === "login"
+                    ? navigation.navigate("OnboardingLoginWithEmail")
+                    : navigation.navigate("OnboardingCreateAccountWithEmail")
+                }
                 block
                 haptic="impactMedium"
                 mb={1}
-                variant="fillDark"
+                variant="outline"
                 iconPosition="left-start"
-                icon={
-                  <Image
-                    source={require("@images/apple.webp")}
-                    resizeMode="contain"
-                    style={{ marginRight: 10 }}
-                  />
-                }
-                testID="continueWithApple"
+                icon={<EnvelopeIcon mr={1} />}
+                testID="continueWithEmail"
               >
-                Continue with Apple
+                Continue with Email
               </Button>
-            )}
-            {!!enableGoogleAuth && (
+
+              {Platform.OS === "ios" && (
+                <Button
+                  onPress={continueWithApple}
+                  block
+                  haptic="impactMedium"
+                  mb={1}
+                  variant="fillDark"
+                  iconPosition="left-start"
+                  icon={
+                    <Image
+                      source={require("@images/apple.webp")}
+                      resizeMode="contain"
+                      style={{ marginRight: 10 }}
+                    />
+                  }
+                  testID="continueWithApple"
+                >
+                  Continue with Apple
+                </Button>
+              )}
+
+              {!!enableGoogleAuth && (
+                <Button
+                  onPress={continueWithGoogle}
+                  block
+                  haptic="impactMedium"
+                  mb={1}
+                  variant="outline"
+                  iconPosition="left-start"
+                  icon={
+                    <Image
+                      source={require("@images/google.webp")}
+                      resizeMode="contain"
+                      style={{ marginRight: 10 }}
+                    />
+                  }
+                  testID="continueWithGoogle"
+                >
+                  Continue with Google
+                </Button>
+              )}
+
               <Button
-                onPress={continueWithGoogle}
+                onPress={continueWithFacebook}
                 block
                 haptic="impactMedium"
                 mb={1}
@@ -186,96 +185,67 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 iconPosition="left-start"
                 icon={
                   <Image
-                    source={require("@images/google.webp")}
+                    source={require("@images/facebook.webp")}
                     resizeMode="contain"
                     style={{ marginRight: 10 }}
                   />
                 }
-                testID="continueWithGoogle"
+                testID="continueWithFacebook"
               >
-                Continue with Google
+                Continue with Facebook
               </Button>
-            )}
+            </>
 
-            <Button
-              onPress={continueWithFacebook}
-              block
-              haptic="impactMedium"
-              mb={1}
-              variant="outline"
-              iconPosition="left-start"
-              icon={
-                <Image
-                  source={require("@images/facebook.webp")}
-                  resizeMode="contain"
-                  style={{ marginRight: 10 }}
-                />
-              }
-              testID="continueWithFacebook"
-            >
-              Continue with Facebook
-            </Button>
-          </>
+            <Text variant="xs" color="black60" textAlign="center">
+              By tapping Continue with Facebook
+              {!!enableGoogleAuth ? ", Google" : ""}
+              {isIOS ? " or Apple" : ""}, you agree to Artsy's{" "}
+              <Text
+                onPress={() =>
+                  isIOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms")
+                }
+                variant="xs"
+                underline
+                testID="openTerms"
+              >
+                Terms of Use
+              </Text>{" "}
+              and{" "}
+              <Text
+                onPress={() =>
+                  isIOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy")
+                }
+                variant="xs"
+                underline
+                testID="openPrivacy"
+              >
+                Privacy Policy
+              </Text>
+            </Text>
 
-          <Text variant="xs" color="black60" textAlign="center">
-            By tapping Continue with Facebook
-            {!!enableGoogleAuth ? ", Google" : ""}
-            {isiOS ? " or Apple" : ""}, you agree to Artsy's{" "}
-            <Text
-              onPress={() =>
-                isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms")
-              }
-              variant="xs"
-              style={{ textDecorationLine: "underline" }}
-              testID="openTerms"
-            >
-              Terms of Use
-            </Text>{" "}
-            and{" "}
-            <Text
-              onPress={() =>
-                isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy")
-              }
-              variant="xs"
-              style={{ textDecorationLine: "underline" }}
-              testID="openPrivacy"
-            >
-              Privacy Policy
-            </Text>
-          </Text>
-        </Join>
-      </Flex>
-      <Flex position="absolute" bottom={40} width="100%">
-        {mode === "login" ? (
-          <Text variant="lg" textAlign="center">
-            Don’t have an account?{"\n"}
-            <Text
-              onPress={() => {
-                // @ts-ignore
-                navigation.replace("OnboardingCreateAccount", { withFadeAnimation: true })
-              }}
-              style={{ textDecorationLine: "underline" }}
-              variant="lg"
-            >
-              Sign up
-            </Text>
-          </Text>
-        ) : (
-          <Text variant="lg" textAlign="center">
-            Already have an account?{"\n"}
-            <Text
-              onPress={() => {
-                // @ts-ignore
-                navigation.replace("OnboardingLogin", { withFadeAnimation: true })
-              }}
-              style={{ textDecorationLine: "underline" }}
-              variant="lg"
-            >
-              Log in
-            </Text>
-          </Text>
-        )}
-      </Flex>
-    </Flex>
+            <Flex position="absolute" bottom={0} left={0} right={0} alignItems="center">
+              <Text variant="lg">
+                {mode === "login" ? "Don’t have an account?" : "Already have an account?"}
+              </Text>
+              <Text
+                variant="lg"
+                underline
+                onPress={() =>
+                  // @ts-expect-error
+                  navigation.replace(
+                    mode === "login" ? "OnboardingCreateAccount" : "OnboardingLogin",
+                    {
+                      withFadeAnimation: true,
+                    }
+                  )
+                }
+              >
+                {mode === "login" ? "Sign up" : "Log in"}
+              </Text>
+            </Flex>
+          </Join>
+        </Flex>
+      </Screen.Body>
+    </Screen>
   )
 }

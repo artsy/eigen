@@ -6,17 +6,13 @@
     "experimentalDecorators": true,
     "incremental": true,
     "lib": ["es2017"],
-    "jsx": "react-native",
+    "jsx": "react-jsx",
     "module": "commonjs",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "build",
-    "plugins": [
-      {
-        "name": "typescript-styled-plugin"
-      }
-    ],
+    "plugins": [{ "name": "typescript-styled-plugin" }],
     "allowSyntheticDefaultImports": true,
     "pretty": true,
     "resolveJsonModule": true,

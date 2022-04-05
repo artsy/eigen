@@ -40,8 +40,6 @@ export const List = ({
   contentContainerStyle?: StyleProp<ViewStyle>
   style?: StyleProp<ViewStyle>
   horizontal?: boolean
-  contentInset?: Insets
-  contentOffset?: PointPropType
 }) => (
   <FlatList
     horizontal={horizontal}
