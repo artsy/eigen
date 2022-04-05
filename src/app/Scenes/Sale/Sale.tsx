@@ -10,6 +10,7 @@ import {
   FilterModalMode,
 } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { refreshArtworks } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import Spinner from "app/Components/Spinner"
@@ -85,6 +86,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
 
+    refreshArtworks()
     relay.refetch(
       {},
       null,

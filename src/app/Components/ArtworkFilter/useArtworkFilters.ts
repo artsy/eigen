@@ -1,5 +1,6 @@
 import { PAGE_SIZE } from "app/Components/constants"
-import { useEffect, useMemo } from "react"
+import { EventEmitter } from "events"
+import { useEffect, useMemo, useRef } from "react"
 import { RelayPaginationProp, Variables } from "react-relay"
 import {
   aggregationForFilter,
@@ -9,6 +10,13 @@ import {
   prepareFilterArtworksParamsForInput,
 } from "./ArtworkFilterHelpers"
 import { ArtworksFiltersStore, selectedOptionsUnion } from "./ArtworkFilterStore"
+
+const ArtworksFiltersEvents = new EventEmitter()
+const REFRESH_KEY = "refresh"
+
+export function refreshArtworks() {
+  ArtworksFiltersEvents.emit(REFRESH_KEY)
+}
 
 interface UseArtworkFiltersOptions {
   relay?: RelayPaginationProp
@@ -67,6 +75,9 @@ export const useArtworkFilters = ({
     }
   }
 
+  const refetchRef = useRef(refetch)
+  refetchRef.current = refetch
+
   useEffect(() => {
     if (applyFilters) {
       refetch()
@@ -75,7 +86,19 @@ export const useArtworkFilters = ({
         onApply()
       }
     }
-  }, [relay, appliedFilters])
+  }, [appliedFilters])
+
+  useEffect(() => {
+    const callback = () => {
+      refetchRef.current()
+    }
+
+    ArtworksFiltersEvents.addListener(REFRESH_KEY, callback)
+
+    return () => {
+      ArtworksFiltersEvents.removeListener(REFRESH_KEY, callback)
+    }
+  }, [])
 }
 
 export const useArtworkFiltersAggregation = ({ paramName }: { paramName: FilterParamName }) => {
