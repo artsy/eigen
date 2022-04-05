@@ -11,8 +11,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Flex, quoteLeft, quoteRight, Spacer, Text, useSpace } from "palette"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import React from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
@@ -39,6 +38,7 @@ const AutosuggestResultsFlatList: React.FC<{
   showQuickNavigationButtons?: boolean
   onResultPress?: OnResultPress
   trackResultPress?: TrackResultPress
+  ListEmptyComponent?: React.ComponentType<any>
 }> = ({
   query,
   results: latestResults,
@@ -47,6 +47,7 @@ const AutosuggestResultsFlatList: React.FC<{
   showQuickNavigationButtons,
   onResultPress,
   trackResultPress,
+  ListEmptyComponent = EmptyList,
 }) => {
   const space = useSpace()
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
@@ -146,25 +147,7 @@ const AutosuggestResultsFlatList: React.FC<{
       ListFooterComponent={ListFooterComponent}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={
-        noResults
-          ? () => {
-              return (
-                <>
-                  <Spacer mt={1} />
-                  <Spacer mt={2} />
-                  <Text variant="md" textAlign="center">
-                    Sorry, we couldn’t find anything for {quoteLeft}
-                    {query}.{quoteRight}
-                  </Text>
-                  <Text variant="md" color="black60" textAlign="center">
-                    Please try searching again with a different spelling.
-                  </Text>
-                </>
-              )
-            }
-          : null
-      }
+      ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
       renderItem={({ item, index }) => {
         return (
           <Flex mb={2}>
@@ -183,6 +166,22 @@ const AutosuggestResultsFlatList: React.FC<{
       onScrollBeginDrag={onScrollBeginDrag}
       onEndReached={onEndReached}
     />
+  )
+}
+
+const EmptyList: React.FC<{ query: string }> = ({ query }) => {
+  return (
+    <>
+      <Spacer mt={1} />
+      <Spacer mt={2} />
+      <Text variant="md" textAlign="center">
+        Sorry, we couldn’t find anything for {quoteLeft}
+        {query}.{quoteRight}
+      </Text>
+      <Text variant="md" color="black60" textAlign="center">
+        Please try searching again with a different spelling.
+      </Text>
+    </>
   )
 }
 
@@ -266,6 +265,7 @@ export const AutosuggestResults: React.FC<{
   showOnRetryErrorMessage?: boolean
   onResultPress?: OnResultPress
   trackResultPress?: TrackResultPress
+  ListEmptyComponent?: React.ComponentType<any>
 }> = React.memo(
   ({
     query,
@@ -275,6 +275,7 @@ export const AutosuggestResults: React.FC<{
     showOnRetryErrorMessage,
     onResultPress,
     trackResultPress,
+    ListEmptyComponent,
   }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
@@ -308,6 +309,7 @@ export const AutosuggestResults: React.FC<{
               showQuickNavigationButtons={showQuickNavigationButtons}
               onResultPress={onResultPress}
               trackResultPress={trackResultPress}
+              ListEmptyComponent={ListEmptyComponent}
             />
           )
         }}

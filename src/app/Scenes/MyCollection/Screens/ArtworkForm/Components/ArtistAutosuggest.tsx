@@ -1,15 +1,20 @@
+import { FadeIn } from "app/Components/FadeIn"
 import SearchIcon from "app/Icons/SearchIcon"
 import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
-import { Box, Input } from "palette"
+import { Box, Button, Flex, Input } from "palette"
 import React from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 
 interface ArtistAutosuggestProps {
   onResultPress: (result: AutosuggestResult) => void
+  onSkipPress?: () => void
 }
 
-export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({ onResultPress }) => {
+export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
+  onResultPress,
+  onSkipPress,
+}) => {
   const { formik } = useArtworkForm()
   const { artist: artistQuery } = formik.values
   const searchProviderValues = useSearchProviderValues(artistQuery)
@@ -36,6 +41,16 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({ onResultPr
                 showResultType={false}
                 showQuickNavigationButtons={false}
                 onResultPress={onResultPress}
+                ListEmptyComponent={() => (
+                  <Flex alignItems="center">
+                    {/* Using `FadeIn` prevents the button from being displayed too early. */}
+                    <FadeIn delay={100} slide={false}>
+                      <Button variant="outline" onPress={onSkipPress} mt={3}>
+                        Can't find the Artist? Skip ahead
+                      </Button>
+                    </FadeIn>
+                  </Flex>
+                )}
               />
             </Box>
           </>
