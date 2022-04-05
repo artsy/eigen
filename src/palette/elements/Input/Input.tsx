@@ -29,6 +29,7 @@ import styled from "styled-components/native"
 import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
 
+const DEFAULT_FONT_SIZE = 16
 export const INPUT_HEIGHT = 50
 export const INPUT_HEIGHT_MULTILINE = 100
 
@@ -50,6 +51,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   required?: boolean
   title?: string
   showLimit?: boolean
+  fontSize?: number
   /**
    * The placeholder can be an array of string, specifically for android, because of a bug.
    * On ios, the longest string will always be picked, as ios can add ellipsis.
@@ -109,6 +111,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       showLimit,
       showCamera,
       addClearListener = false,
+      fontSize = DEFAULT_FONT_SIZE,
       ...rest
     },
     ref
@@ -298,7 +301,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 }}
                 ref={input}
                 placeholderTextColor={color("black60")}
-                style={{ flex: 1, fontSize: 16, ...inputTextStyle }}
+                style={{ flex: 1, fontSize, ...inputTextStyle }}
                 numberOfLines={multiline ? undefined : 1}
                 secureTextEntry={!showPassword}
                 textAlignVertical={multiline ? "top" : "center"}
