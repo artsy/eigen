@@ -167,6 +167,7 @@ export const SaleLotsList: React.FC<Props> = ({
             contextScreenOwnerSlug={saleSlug}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
+            isLoading={relay.isLoading}
             showLotLabel
             hidePartner
             hideUrgencyTags
