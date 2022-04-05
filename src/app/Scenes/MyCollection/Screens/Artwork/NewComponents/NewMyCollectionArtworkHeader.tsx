@@ -84,7 +84,6 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         <ImagesToDisplayCarousel
           images={imagesToDisplay as any}
           cardHeight={dimensions.height / 3.5}
-          paginationIndicatorType="scrollBar"
           onImagePressed={() => trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
         />
       ) : (
