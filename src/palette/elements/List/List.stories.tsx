@@ -1,9 +1,10 @@
 import { storiesOf } from "@storybook/react-native"
+import { Spacer } from "palette"
 import React from "react"
 import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { BulletedItem } from "."
-import { Flex, Spacer, Text } from ".."
+import { Flex, Text } from ".."
 
 storiesOf("List", module)
   .addDecorator(withTheme)
