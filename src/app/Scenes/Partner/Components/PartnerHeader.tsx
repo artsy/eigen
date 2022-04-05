@@ -1,4 +1,5 @@
 import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
+import { PartnerBanner } from "app/Components/PartnerBanner"
 import { Stack } from "app/Components/Stack"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
 import { Box, Flex, Sans } from "palette"
@@ -10,27 +11,31 @@ const PartnerHeader: React.FC<{
   partner: PartnerHeader_partner
 }> = ({ partner }) => {
   const eligibleArtworks = partner.counts?.eligibleArtworks ?? 0
+  const isBlackOwned = partner.categories!.filter((c) => c && c.name === "Black Owned").length > 0
 
   return (
-    <Box px={2} pb={1} pt={6}>
-      <Sans mb={1} size="8">
-        {partner.name}
-      </Sans>
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Stack spacing={0.5}>
-          {!!eligibleArtworks && (
-            <Sans size="3t">
-              {!!eligibleArtworks && formatLargeNumberOfItems(eligibleArtworks, "work", "works")}
-            </Sans>
+    <>
+      <Box px={2} pb={1} pt={6}>
+        <Sans mb={1} size="8">
+          {partner.name}
+        </Sans>
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Stack spacing={0.5}>
+            {!!eligibleArtworks && (
+              <Sans size="3t">
+                {!!eligibleArtworks && formatLargeNumberOfItems(eligibleArtworks, "work", "works")}
+              </Sans>
+            )}
+          </Stack>
+          {!!partner.profile && (
+            <Flex flexGrow={0} flexShrink={0}>
+              <FollowButton partner={partner} />
+            </Flex>
           )}
-        </Stack>
-        {!!partner.profile && (
-          <Flex flexGrow={0} flexShrink={0}>
-            <FollowButton partner={partner} />
-          </Flex>
-        )}
-      </Flex>
-    </Box>
+        </Flex>
+      </Box>
+      {isBlackOwned && <PartnerBanner bannerText="Black Owned" />}
+    </>
   )
 }
 
@@ -40,6 +45,9 @@ export const PartnerHeaderContainer = createFragmentContainer(PartnerHeader, {
       name
       profile {
         # Only fetch something so we can see if the profile exists.
+        name
+      }
+      categories {
         name
       }
       counts {
