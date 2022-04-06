@@ -2968,21 +2968,6 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@splitsoftware/splitio-commons@0.1.1-canary.12":
-  version "0.1.1-canary.12"
-  resolved "https://registry.yarnpkg.com/@splitsoftware/splitio-commons/-/splitio-commons-0.1.1-canary.12.tgz#e050e308fbbdd7dc573668f32730525f566f9a66"
-  integrity sha512-BvrRilTTMzF2kDzq3u9JrnzgQaSoVDKp6es8NCiIHgR3rBbP/tetfZPzuKRqDNpncI28JgCBJZOGs/GSRuVobQ==
-  dependencies:
-    object-assign "^4.1.1"
-    tslib "^2.1.0"
-
-"@splitsoftware/splitio-react-native@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@splitsoftware/splitio-react-native/-/splitio-react-native-0.0.1.tgz#f6b3eab6134bf48488c6ad421519c060f30ea280"
-  integrity sha512-BEXF/WgXSNhVRGYwwvstjnxLwK28mRDl4c/v0aR+Hq5m+B0daNTgJ88pZRWxDtx9su430M4KJG7wYuDm7YTqOA==
-  dependencies:
-    "@splitsoftware/splitio-commons" "0.1.1-canary.12"
-
 "@storybook/addon-actions@5.3.21":
   version "5.3.21"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-5.3.21.tgz#16eed3eb24996adfcbf70bd476a261324d6de593"
