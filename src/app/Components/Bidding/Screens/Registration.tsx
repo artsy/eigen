@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/react-native"
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
@@ -154,9 +155,14 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       const { phoneNumber } = this.state
       await this.updatePhoneNumber(phoneNumber!)
       await this.createBidder()
-    } catch (error) {
+    } catch (e) {
+      if (__DEV__) {
+        console.error(e)
+      } else {
+        captureException(e)
+      }
       if (!this.state.errorModalVisible) {
-        this.presentErrorModal(error, null)
+        this.presentErrorModal(e, null)
       }
     }
   }
@@ -172,9 +178,14 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       await this.createCreditCard(token)
 
       await this.createBidder()
-    } catch (error) {
+    } catch (e) {
+      if (__DEV__) {
+        console.error(e)
+      } else {
+        captureException(e)
+      }
       if (!this.state.errorModalVisible) {
-        this.presentErrorModal(error, null)
+        this.presentErrorModal(e, null)
       }
     }
   }
@@ -216,22 +227,16 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   async createTokenFromAddress() {
     const { billingAddress, creditCardFormParams } = this.state
+
     return stripe.createTokenWithCard({
       ...creditCardFormParams,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      name: billingAddress.fullName,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressLine1: billingAddress.addressLine1,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressLine2: billingAddress.addressLine2,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressCity: billingAddress.city,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressState: billingAddress.state,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressZip: billingAddress.postalCode,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressCountry: billingAddress.country.shortName,
+      name: billingAddress!.fullName,
+      addressLine1: billingAddress!.addressLine1,
+      addressLine2: billingAddress!.addressLine2,
+      addressCity: billingAddress!.city,
+      addressState: billingAddress!.state,
+      addressZip: billingAddress!.postalCode,
+      addressCountry: billingAddress!.country.shortName,
     })
   }
 
@@ -356,18 +361,11 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     this.setState({ errorModalVisible: false })
   }
 
-  render() {
-    const { sale, me } = this.props
-    const { isLoading, missingInformation: missingInformation } = this.state
-
-    const saleTimeDetails = saleTime(sale)
-
-    let requiredInfoHint: JSX.Element | null = null
-    let requiredInfoForm: JSX.Element | null = null
+  renderRequiredInfoForm(): JSX.Element | undefined {
+    const { missingInformation, isLoading } = this.state
 
     if (missingInformation === "payment") {
-      requiredInfoHint = <Hint>A valid credit card is required.</Hint>
-      requiredInfoForm = (
+      return (
         <Flex flex={1} py={20}>
           <PaymentInfo
             navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
@@ -380,8 +378,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         </Flex>
       )
     } else if (missingInformation === "phone") {
-      requiredInfoHint = <Hint>A valid phone number is required.</Hint>
-      requiredInfoForm = (
+      return (
         <Flex justifyContent="center" py={20}>
           <PhoneInfo
             navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
@@ -391,6 +388,22 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         </Flex>
       )
     }
+  }
+
+  renderRequiredInfoHint(): JSX.Element | undefined {
+    const { missingInformation } = this.state
+    if (missingInformation === "payment") {
+      return <Hint>A valid credit card is required.</Hint>
+    } else if (missingInformation === "phone") {
+      return <Hint>A valid phone number is required.</Hint>
+    }
+  }
+
+  render() {
+    const { sale, me } = this.props
+    const { isLoading, missingInformation: missingInformation } = this.state
+
+    const saleTimeDetails = saleTime(sale)
 
     return (
       <ScrollView
@@ -409,9 +422,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           )}
         </Box>
 
-        {requiredInfoForm}
+        {this.renderRequiredInfoForm()}
         <Flex px={20} flex={1}>
-          {requiredInfoHint}
+          {this.renderRequiredInfoHint()}
           {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             !!bidderNeedsIdentityVerification({ sale, user: me }) && (
@@ -464,6 +477,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     )
   }
 }
+
+// const RequiredInfoForm: React.FC<{}> = ({navigator, onCreditrCardAdded, onBillingAddressAdded, billingAddress, creditCardFormParams, creditCardToken})
 
 const RegistrationContainer = createFragmentContainer(Registration, {
   sale: graphql`

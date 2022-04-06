@@ -14,36 +14,30 @@ interface PhoneInfoProps extends FlexProps {
   phoneNumber?: string
 }
 
-export class PhoneInfo extends React.Component<PhoneInfoProps> {
-  constructor(props: PhoneInfoProps) {
-    super(props)
-  }
-
-  presentPhoneForm() {
-    this.props.navigator.push({
+export const PhoneInfo: React.FC<PhoneInfoProps> = (props) => {
+  const presentPhoneForm = (): void => {
+    props.navigator.push({
       component: PhoneNumberForm,
       title: "",
       passProps: {
-        onSubmit: (phone: string) => this.props.onPhoneAdded(phone),
-        billingAddress: this.props.phoneNumber,
-        navigator: this.props.navigator,
+        onSubmit: (phone: string) => props.onPhoneAdded(phone),
+        billingAddress: props.phoneNumber,
+        navigator: props.navigator,
       },
     })
   }
 
-  render() {
-    return (
-      <View>
-        <Divider />
+  return (
+    <View>
+      <Divider />
 
-        <BidInfoRow
-          label="Phone number"
-          value={this.props.phoneNumber || ""}
-          onPress={() => this.presentPhoneForm()}
-        />
+      <BidInfoRow
+        label="Phone number"
+        value={props.phoneNumber || ""}
+        onPress={() => presentPhoneForm()}
+      />
 
-        <Divider />
-      </View>
-    )
-  }
+      <Divider />
+    </View>
+  )
 }

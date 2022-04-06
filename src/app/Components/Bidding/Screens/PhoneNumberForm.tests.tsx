@@ -5,7 +5,7 @@ import { FakeNavigator } from "../Helpers/FakeNavigator"
 
 import { PhoneNumberForm } from "./PhoneNumberForm"
 
-describe("BillingAddress component", () => {
+describe("PhoneNumberForm component", () => {
   const onSubmitMock = jest.fn()
   const fakeNavigator = new FakeNavigator()
 
@@ -28,7 +28,7 @@ describe("BillingAddress component", () => {
     const phoneInput = getByTestId("phone-input")
     fireEvent.changeText(phoneInput, phoneNumber)
 
-    fireEvent.press(container.getByTestId("button-add"))
+    fireEvent.press(container.queryAllByText("Add phone number")[1])
 
     expect(onSubmitMock).toHaveBeenLastCalledWith(formattedPhoneNumber)
   })
