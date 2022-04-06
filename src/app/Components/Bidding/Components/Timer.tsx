@@ -118,6 +118,7 @@ export const Countdown: React.FC<CountdownProps> = ({
   hasStarted,
   cascadingEndTimeInterval,
 }) => {
+  console.log("CASACDINGENDTIMINTERVL", cascadingEndTimeInterval)
   return (
     <Flex alignItems="center">
       {cascadingEndTimeInterval ? (
@@ -127,7 +128,6 @@ export const Countdown: React.FC<CountdownProps> = ({
           size="4t"
           weight="medium"
           hasStarted={hasStarted}
-          cascadingEndTimeInterval={cascadingEndTimeInterval}
         />
       ) : (
         <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />

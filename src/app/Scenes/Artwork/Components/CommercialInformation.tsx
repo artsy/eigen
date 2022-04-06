@@ -241,6 +241,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
             <Countdown
               label={label}
               hasStarted={hasStarted}
+              cascadingEndTimeInterval={sale.cascadingEndTimeInterval}
               // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               duration={duration}
             />

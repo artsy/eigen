@@ -66,10 +66,10 @@ it("formats the remaining time in '00d  00h  00m  00s'", () => {
   expect(getTimerText(timer)).toEqual("00d  00h  00m  10s")
 })
 
-it("shows 'Ends' when it's an online-only sale with an ending time", () => {
+it("shows 'Closes' when it's an online-only sale with an ending time", () => {
   const timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
 
-  expect(getTimerLabel(timer)).toContain("Ends")
+  expect(getTimerLabel(timer)).toContain("Closes")
 })
 
 it("shows 'Live' when the liveStartsAt prop is given", () => {
@@ -140,7 +140,7 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
   // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
   const timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
 
-  expect(getTimerLabel(timer)).toEqual("Ends May 14, 1 PM PDT")
+  expect(getTimerLabel(timer)).toEqual("Closes May 14, 1 PM PDT")
 })
 
 it("displays the minutes when the sale does not end on the hour", () => {
@@ -148,11 +148,11 @@ it("displays the minutes when the sale does not end on the hour", () => {
 
   let timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:01:00+00:00" />)
 
-  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:01 PM EDT")
+  expect(getTimerLabel(timer)).toEqual("Closes May 14, 4:01 PM EDT")
 
   timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:30:00+00:00" />)
 
-  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:30 PM EDT")
+  expect(getTimerLabel(timer)).toEqual("Closes May 14, 4:30 PM EDT")
 })
 
 it("omits the minutes when the sale ends on the hour", () => {
@@ -160,7 +160,7 @@ it("omits the minutes when the sale ends on the hour", () => {
 
   const timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
 
-  expect(getTimerLabel(timer)).toEqual("Ends May 14, 4 PM EDT")
+  expect(getTimerLabel(timer)).toEqual("Closes May 14, 4 PM EDT")
 })
 
 describe("timer transitions", () => {
@@ -177,7 +177,7 @@ describe("timer transitions", () => {
 
     jest.advanceTimersByTime(1 * SECONDS)
 
-    expect(getMountedTimerLabel(timer)).toContain("Ends")
+    expect(getMountedTimerLabel(timer)).toContain("Closes")
     expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
   })
 
@@ -223,7 +223,7 @@ describe("timer transitions", () => {
       </Theme>
     )
 
-    expect(getMountedTimerLabel(timer)).toContain("Ends")
+    expect(getMountedTimerLabel(timer)).toContain("Closes")
     expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
 
     jest.advanceTimersByTime(1 * SECONDS)
