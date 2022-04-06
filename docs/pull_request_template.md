@@ -2,6 +2,7 @@
 `type(PROJECT-XXXX): what changed` 
 -->
 
+<!-- Jira ticket in square brackets like [PROJECT-XXXX] -->
 This PR resolves [] 
 
 ### Description
