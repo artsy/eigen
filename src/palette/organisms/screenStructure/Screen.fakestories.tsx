@@ -63,6 +63,7 @@ const FullBackgroundDifferentColorsManual = () => (
 
 const RegularHeader = () => (
   <Screen>
+    {/* tslint:disable-next-line:no-empty */}
     <Screen.Header onBack={() => {}} />
     <Screen.Body>
       <Text>Hello</Text>
@@ -80,6 +81,7 @@ const NoHeader = () => (
 
 const FloatingHeader = () => (
   <Screen>
+    {/* tslint:disable-next-line:no-empty */}
     <Screen.FloatingHeader onBack={() => {}} />
     <Screen.Body>
       <Text>Hello</Text>
@@ -97,6 +99,7 @@ const ScrollScreen = () => (
 
 const ScrollScreenWithRegularHeader = () => (
   <Screen>
+    {/* tslint:disable-next-line:no-empty */}
     <Screen.Header onBack={() => {}} />
     <Screen.Body scroll>
       <Text>Hello</Text>
@@ -106,6 +109,7 @@ const ScrollScreenWithRegularHeader = () => (
 
 const ScrollScreenWithFloatingHeader = () => (
   <Screen>
+    {/* tslint:disable-next-line:no-empty */}
     <Screen.FloatingHeader onBack={() => {}} />
     <Screen.Body scroll nosafe>
       <Text>Hello</Text>
@@ -153,6 +157,7 @@ const ScrollScreenWithBottomView = () => (
       <Text>Hello</Text>
       <Input />
       <Screen.BottomView>
+        {/* tslint:disable-next-line:no-empty */}
         <Button onPress={() => {}} block>
           Bottom Action
         </Button>

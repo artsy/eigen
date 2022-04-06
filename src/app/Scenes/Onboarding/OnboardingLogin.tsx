@@ -52,7 +52,7 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ route
 
       if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
         // For security purposes, we are returning a generic error message
-        setErrors({ password: "Incorrect email or password" })
+        setErrors({ password: "Incorrect email or password" }) // pragma: allowlist secret
       }
     },
     validationSchema: loginSchema,
