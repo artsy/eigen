@@ -1,5 +1,6 @@
 import React from "react"
-import { CountdownProps } from "./CountdownTimer"
+import { CountdownProps } from "../Bidding/Components/Timer"
+
 import { DurationProvider } from "./DurationProvider"
 
 export interface TickerState {

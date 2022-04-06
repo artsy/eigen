@@ -1,5 +1,6 @@
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { Countdown } from "app/Components/Bidding/Components/Timer"
+import { ModernTicker } from "app/Components/Countdown/Ticker"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
@@ -121,6 +122,9 @@ describe("CommercialInformation", () => {
         isAuction: true,
         isClosed: true,
       },
+      saleArtwork: {
+        endAt: "2019-08-16T20:20:00+00:00",
+      },
     }
     const component = mount(
       <Wrapper>
@@ -142,6 +146,9 @@ describe("CommercialInformation", () => {
       sale: {
         isAuction: true,
         isClosed: true,
+      },
+      saleArtwork: {
+        endAt: "2019-08-16T20:20:00+00:00",
       },
     }
 
@@ -305,6 +312,13 @@ describe("CommercialInformation", () => {
 })
 
 describe("CommercialInformation buttons and coundtown timer", () => {
+  beforeEach(() => {
+    const dateNow = 1565871720000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
+
+    // Thursday, May 10, 2018 8:22:32.000 PM UTC
+    Date.now = () => dateNow
+  })
+
   it("renders CountDownTimer and BidButton when Artwork is in an auction", () => {
     const component = mount(
       <Wrapper>
@@ -315,6 +329,24 @@ describe("CommercialInformation buttons and coundtown timer", () => {
         />
       </Wrapper>
     )
+    expect(component.find(Countdown).length).toEqual(1)
+    expect(component.find(BidButton).length).toEqual(1)
+  })
+
+  it("renders CountDownTimer with the sale artwork's end time when Artwork is in a cascading end time auction", () => {
+    const component = mount(
+      <Wrapper>
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
+          me={{ identityVerified: false } as any}
+          tracking={{ trackEvent: jest.fn() } as any}
+          hasStarted
+        />
+      </Wrapper>
+    )
+    // This would say 1d 7h if the countdown timer was looking at the sale's end at time (instead of the sale artwork's end at time)
+    expect(component.html()).toInclude("3d 7h")
+    expect(component.find(ModernTicker).length).toEqual(1)
     expect(component.find(Countdown).length).toEqual(1)
     expect(component.find(BidButton).length).toEqual(1)
   })
@@ -508,6 +540,39 @@ const CommercialInformationArtworkInAuction = {
     formattedStartDateTime: "Ends Aug 16 at 8:20pm UTC",
   },
   saleArtwork: {
+    increments: [
+      {
+        cents: 11000000,
+        display: "CHF110,000",
+      },
+      {
+        cents: 12000000,
+        display: "CHF120,000",
+      },
+    ],
+  },
+}
+
+const CommercialInformationArtworkInCascadingEndTimeAuction = {
+  ...CommercialInformationArtwork,
+  availability: "for sale",
+  isAcquireable: false,
+  isInAuction: true,
+  sale: {
+    internalId: "internal-id",
+    slug: "my-sale",
+    isClosed: false,
+    isAuction: true,
+    isLiveOpen: false,
+    isPreview: false,
+    startAt: "2019-08-14T19:22:00+00:00",
+    endAt: "2019-08-16T20:20:00+00:00",
+    liveStartAt: null,
+    formattedStartDateTime: "Ends Aug 16 at 8:20pm UTC",
+    cascadingEndTimeInterval: 60,
+  },
+  saleArtwork: {
+    endAt: "2019-08-18T20:20:00+00:00",
     increments: [
       {
         cents: 11000000,

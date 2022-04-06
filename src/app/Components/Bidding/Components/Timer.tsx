@@ -1,5 +1,5 @@
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
-import { CountdownProps } from "app/Components/Countdown/CountdownTimer"
+import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import moment from "moment-timezone"
 import { Flex, Sans } from "palette"
@@ -105,6 +105,11 @@ export function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) 
   } else {
     return AuctionTimerState.CLOSING
   }
+}
+
+export interface CountdownProps extends CountdownTimerProps {
+  hasStarted?: boolean
+  cascadingEndTimeInterval?: number | null
 }
 
 export const Countdown: React.FC<CountdownProps> = ({
