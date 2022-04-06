@@ -4487,7 +4487,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4526,7 +4526,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
