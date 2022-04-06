@@ -62,7 +62,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ initialLocation, onChang
   return (
     <>
       <Input
-        title="Location"
+        title="City"
         placeholder="Enter City Where Artwork Is Located"
         onChangeText={setQuery}
         onFocus={reset}

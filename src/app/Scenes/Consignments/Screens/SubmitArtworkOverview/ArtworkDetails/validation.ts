@@ -31,6 +31,7 @@ export interface ArtworkDetailsFormModel {
   utmSource: string | undefined
   utmTerm: string | undefined
   location: Location
+  zipCode: string
   source: ConsignmentSubmissionSource | null
   myCollectionArtworkID: string | null
 }
@@ -53,6 +54,7 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   utmMedium: "",
   utmSource: "",
   utmTerm: "",
+  zipCode: "",
   location: {
     city: "",
     state: "",
@@ -93,4 +95,5 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
     state: Yup.string(),
     country: Yup.string(),
   }),
+  zipCode: Yup.string().required("Please enter a 5-digit US zip code."),
 })

@@ -204,6 +204,14 @@ export const ArtworkDetailsForm: React.FC = () => {
         initialLocation={values.location}
         onChange={(e: Location) => setFieldValue("location", e)}
       />
+      <Spacer m={2} />
+      <Input
+        title="Zip/Postal code"
+        placeholder="Zip/Postal Code Where Artwork Is Located"
+        testID="Submission_ZipInput"
+        value={values.zipCode}
+        onChangeText={(e) => setFieldValue("zipCode", e)}
+      />
       <StandardSpace />
     </>
   )
