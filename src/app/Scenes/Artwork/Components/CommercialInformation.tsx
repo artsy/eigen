@@ -34,7 +34,7 @@ interface CommercialInformationProps {
 }
 
 export const CommercialInformationTimerWrapper: React.FC<CommercialInformationProps> = (props) => {
-  if (props.artwork.isInAuction) {
+  if (props.artwork.isInAuction && props.artwork.saleArtwork) {
     const {
       isPreview,
       isClosed,
