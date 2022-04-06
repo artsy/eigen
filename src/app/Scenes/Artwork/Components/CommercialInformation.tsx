@@ -29,6 +29,7 @@ interface CommercialInformationProps {
   timerState?: AuctionTimerState
   label?: string
   duration?: Duration
+  hasStarted?: boolean
   tracking?: TrackingProp
 }
 
@@ -37,10 +38,13 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
     const {
       isPreview,
       isClosed,
+      cascadingEndTimeInterval,
       liveStartAt: liveStartsAt,
       startAt: startsAt,
-      endAt: endsAt,
+      endAt: saleEndAt,
     } = props.artwork.sale || {}
+
+    const { endAt: lotEndAt } = props.artwork.saleArtwork
 
     return (
       <TimeOffsetProvider>
@@ -52,23 +56,23 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               isClosed: isClosed || undefined,
               liveStartsAt: liveStartsAt || undefined,
             })
-            const { label, date } = relevantStateData(state, {
+            const { label, date, hasStarted } = relevantStateData(state, {
               liveStartsAt: liveStartsAt || undefined,
               startsAt: startsAt || undefined,
-              endsAt: endsAt || undefined,
+              endsAt: cascadingEndTimeInterval ? lotEndAt || undefined : saleEndAt || undefined,
             })
-            return { label, date, state }
+            return { label, date, state, hasStarted, cascadingEndTimeInterval }
           }}
           onNextTickerState={({ state }) => {
             const nextState = nextTimerState(state as AuctionTimerState, {
               liveStartsAt: liveStartsAt || undefined,
             })
-            const { label, date } = relevantStateData(nextState, {
+            const { label, date, hasStarted } = relevantStateData(nextState, {
               liveStartsAt: liveStartsAt || undefined,
               startsAt: startsAt || undefined,
-              endsAt: endsAt || undefined,
+              endsAt: cascadingEndTimeInterval ? lotEndAt || undefined : saleEndAt || undefined,
             })
-            return { state: nextState, date, label }
+            return { state: nextState, date, label, hasStarted }
           }}
           {...(props as any)}
         />
@@ -110,6 +114,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   me,
   duration,
   label,
+  hasStarted,
 }) => {
   const [editionSetID, setEditionSetID] = useState<string | null>(null)
 
@@ -235,6 +240,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
             <Spacer mb={2} />
             <Countdown
               label={label}
+              hasStarted={hasStarted}
               // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               duration={duration}
             />
@@ -278,7 +284,12 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
           id
         }
 
+        saleArtwork {
+          endAt
+        }
+
         sale {
+          cascadingEndTimeInterval
           internalID
           isClosed
           isAuction

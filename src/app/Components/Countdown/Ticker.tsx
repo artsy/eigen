@@ -84,3 +84,81 @@ export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator,
     </Sans>
   )
 }
+
+interface ModernTickerProps extends SimpleTickerProps {
+  hasStarted?: boolean
+  cascadingEndTimeInterval?: number
+}
+
+export const ModernTicker: React.FC<ModernTickerProps> = ({
+  duration,
+  separator,
+  cascadingEndTimeInterval,
+  hasStarted,
+  ...rest
+}) => {
+  const timerCopy = getTimerCopy(duration, cascadingEndTimeInterval, hasStarted)
+  return (
+    <Sans {...rest} color={timerCopy.color}>
+      {timerCopy.copy}
+    </Sans>
+  )
+}
+
+export const getTimerCopy = (
+  duration: Duration,
+  cascadingEndTimeInterval?: number,
+  hasStarted?: boolean
+) => {
+  // const { days, hours, minutes, seconds } = time
+
+  const days = duration.asDays()
+  const hours = duration.hours()
+  const minutes = duration.minutes()
+  const seconds = duration.seconds()
+
+  const parsedDays = parseInt(days.toString(), 10)
+  const parsedHours = parseInt(hours.toString(), 10)
+  const parsedMinutes = parseInt(minutes.toString(), 10)
+  const parsedSeconds = parseInt(seconds.toString(), 10)
+
+  let copy = ""
+  let color = "blue100"
+
+  const intervalValue = cascadingEndTimeInterval || 60
+
+  // // Sale has not yet started
+  if (!hasStarted) {
+    if (parsedDays < 1) {
+      copy = "Bidding Starts Today"
+    } else {
+      copy = `${parsedDays} Day${parsedDays > 1 ? "s" : ""} Until Bidding Starts`
+    }
+  } else {
+    // 2mins or fewer until close
+    if (
+      parsedDays < 1 &&
+      parsedHours < 1 &&
+      ((parsedMinutes === intervalValue / 60 && parsedSeconds === 0) || parsedMinutes < 1)
+    ) {
+      copy = `${parsedMinutes}m ${parsedSeconds}s`
+      color = "red100"
+    }
+
+    // More than 24 hours until close
+    else if (parsedDays >= 1) {
+      copy = `${parsedDays}d ${parsedHours}h`
+    }
+
+    // 1-24 hours until close
+    else if (parsedDays < 1 && parsedHours >= 1) {
+      copy = `${parsedHours}h ${parsedMinutes}m`
+    }
+
+    // 2-60 mins until close
+    else if (parsedDays < 1 && parsedHours < 1 && parsedMinutes >= 2) {
+      copy = `${parsedMinutes}m ${parsedSeconds}s`
+    }
+  }
+  return { copy, color }
+}

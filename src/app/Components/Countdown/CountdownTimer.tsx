@@ -11,7 +11,9 @@ interface Props {
 
 export interface CountdownProps {
   duration: Duration
+  hasStarted?: boolean
   label?: string
+  cascadingEndTimeInterval?: number
 }
 
 enum TimerState {
@@ -55,8 +57,8 @@ export const CountdownTimer: React.FC<Props> = (props: Props) => {
   const onState = () => {
     const state = currentState(props)
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { label, date } = relevantStateData(state, props)
-    return { state, label, date }
+    const { label, date, hasStarted } = relevantStateData(state, props)
+    return { state, label, date, hasStarted }
   }
   return (
     <CountdownStateManager
