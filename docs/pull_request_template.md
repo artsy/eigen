@@ -13,11 +13,11 @@ This PR resolves []
 
 <!-- 💡 MOPLAT warmly welcomes any feedback about the list or how it impacts your workflow. -->
 
-- [ ] Tested on **iOS** and **Android**.
-- [ ] Screenshots/videos of my changes.
-- [ ] Tests/stories for my changes.
-- [ ] App state migration.
-- [ ] Feature flag around my changes.
+- [ ] Tested on **iOS** and **Android**
+- [ ] Screenshots and videos 
+- [ ] Added Tests and Stories
+- [ ] App state migration
+- [ ] Feature flag
 
 ### To the reviewers 👀
 
