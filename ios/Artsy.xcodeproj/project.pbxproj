@@ -4238,6 +4238,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
@@ -4269,6 +4270,11 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-DAR_SHOW_ALL_DEBUG=1",
+					"-Werror=nonnull",
+					"-Werror=return-type",
+				);
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -4327,6 +4333,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4638,7 +4645,7 @@
 				13B07F951A680F5B00A75B9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Artsy" */ = {
 			isa = XCConfigurationList;
@@ -4647,7 +4654,7 @@
 				83CBBA211A601CBA00E9B192 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		CB43266E27E8F39B00B29DD6 /* Build configuration list for PBXNativeTarget "Artsy Stickers" */ = {
 			isa = XCConfigurationList;
@@ -4656,7 +4663,7 @@
 				CB43266D27E8F39B00B29DD6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		CB43267D27E8F6F900B29DD6 /* Build configuration list for PBXNativeTarget "BrazePushServiceExtension" */ = {
 			isa = XCConfigurationList;
@@ -4665,7 +4672,7 @@
 				CB43267C27E8F6F900B29DD6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		CB43269327E8FA6B00B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyWidgetExtension" */ = {
 			isa = XCConfigurationList;
@@ -4674,7 +4681,7 @@
 				CB43269527E8FA6B00B29DD6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "Artsy_Tests" */ = {
 			isa = XCConfigurationList;
@@ -4683,7 +4690,7 @@
 				CB43272427E8FE5400B29DD6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
