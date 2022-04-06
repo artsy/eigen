@@ -106,6 +106,7 @@ export const PhoneInput = React.forwardRef<
     return (
       <Flex style={{ height: 70 }}>
         <Input
+          style={{ flex: 1 }}
           {...rest}
           ref={(ref) => {
             if (typeof outerRef === "function") {

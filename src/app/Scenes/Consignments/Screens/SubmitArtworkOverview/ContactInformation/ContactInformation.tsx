@@ -98,7 +98,6 @@ export const ContactInformation: React.FC<{
           />
           <Spacer mt={4} />
           <PhoneInput
-            style={{ flex: 1 }}
             title="Phone number"
             placeholder="(000) 000-0000"
             onChangeText={handleChange("userPhone")}
