@@ -16,6 +16,7 @@ const emptyInitialLocation = {
   city: "",
   state: "",
   country: "",
+  countryCode: "",
 }
 
 describe("ArtworkDetailsForm", () => {
