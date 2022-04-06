@@ -1,9 +1,9 @@
-<!-- Use a PR title in the form of  
-`type(PROJECT-XXXX): what changed` 
+<!-- Use a PR title in the form of
+  `type(PROJECT-XXXX): what changed`
 -->
 
 <!-- Jira ticket in square brackets like [PROJECT-XXXX] -->
-This PR resolves [] 
+This PR resolves []
 
 ### Description
 
