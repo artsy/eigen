@@ -17,7 +17,7 @@ import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { InfoModal } from "./Components/InfoModal"
 import { LocationAutocomplete } from "./Components/LocationAutocomplete"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
-import { ArtworkDetailsFormModel, Location } from "./validation"
+import { ArtworkDetailsFormModel, countriesRequirePostalCode, Location } from "./validation"
 
 const StandardSpace = () => <Spacer mt={4} />
 
@@ -204,14 +204,18 @@ export const ArtworkDetailsForm: React.FC = () => {
         initialLocation={values.location}
         onChange={(e: Location) => setFieldValue("location", e)}
       />
-      <Spacer m={2} />
-      <Input
-        title="Zip/Postal code"
-        placeholder="Zip/Postal Code Where Artwork Is Located"
-        testID="Submission_ZipInput"
-        value={values.zipCode}
-        onChangeText={(e) => setFieldValue("zipCode", e)}
-      />
+      {countriesRequirePostalCode.includes(values.location.countryCode.toUpperCase()) && (
+        <>
+          <Spacer m={2} />
+          <Input
+            title="Zip/Postal code"
+            placeholder="Zip/Postal Code Where Artwork Is Located"
+            testID="Submission_ZipInput"
+            value={values.zipCode}
+            onChangeText={(e) => setFieldValue("zipCode", e)}
+          />
+        </>
+      )}
       <StandardSpace />
     </>
   )

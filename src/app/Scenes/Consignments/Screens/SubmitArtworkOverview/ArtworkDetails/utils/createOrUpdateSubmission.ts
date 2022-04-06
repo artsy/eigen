@@ -34,6 +34,7 @@ export const createOrUpdateSubmission = async (
     locationCity: values.location.city,
     locationState: values.location.state,
     locationCountry: values.location.country,
+    locationCountryCode: values.location.countryCode,
     locationPostalCode: values.zipCode,
     state: "DRAFT",
     utmMedium: values.utmMedium,
