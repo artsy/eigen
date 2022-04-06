@@ -5345,6 +5345,8 @@ type ConsignmentSubmission {
   internalID: ID
   locationCity: String
   locationCountry: String
+  locationCountryCode: String
+  locationPostalCode: String
   locationState: String
   medium: String
   minimumPriceDollars: Int
@@ -5628,8 +5630,20 @@ enum ConsignmentSubmissionSort {
   # sort by location_country in ascending order
   LOCATION_COUNTRY_ASC
 
+  # sort by location_country_code in ascending order
+  LOCATION_COUNTRY_CODE_ASC
+
+  # sort by location_country_code in descending order
+  LOCATION_COUNTRY_CODE_DESC
+
   # sort by location_country in descending order
   LOCATION_COUNTRY_DESC
+
+  # sort by location_postal_code in ascending order
+  LOCATION_POSTAL_CODE_ASC
+
+  # sort by location_postal_code in descending order
+  LOCATION_POSTAL_CODE_DESC
 
   # sort by location_state in ascending order
   LOCATION_STATE_ASC
@@ -6316,6 +6330,8 @@ input CreateSubmissionMutationInput {
   height: String
   locationCity: String
   locationCountry: String
+  locationCountryCode: String
+  locationPostalCode: String
   locationState: String
   medium: String
   minimumPriceDollars: Int
@@ -13925,6 +13941,8 @@ input UpdateSubmissionMutationInput {
   id: ID
   locationCity: String
   locationCountry: String
+  locationCountryCode: String
+  locationPostalCode: String
   locationState: String
   medium: String
   minimumPriceDollars: Int
