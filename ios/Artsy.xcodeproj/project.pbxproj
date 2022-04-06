@@ -177,6 +177,9 @@
 		CB43299627FDFE5C00B29DD6 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43299527FDFE5C00B29DD6 /* ReplayKit.framework */; };
 		CB43299827FDFE6400B29DD6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43299727FDFE6400B29DD6 /* StoreKit.framework */; };
 		CB43299A27FDFE6B00B29DD6 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43299927FDFE6B00B29DD6 /* WebKit.framework */; };
+		CB43299C27FE0D7F00B29DD6 /* stubbed_image.png in Resources */ = {isa = PBXBuildFile; fileRef = CB43278D27E8FEE400B29DD6 /* stubbed_image.png */; };
+		CB43299D27FE0D9000B29DD6 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE325DD27E275A200395A93 /* CloseButtonLargeHighlighted@2x.png */; };
+		CB43299E27FE0DB100B29DD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB43278427E8FEE400B29DD6 /* InfoPlist.strings */; };
 		CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B85327B585F00007922D /* GoogleService-Info.plist */; };
 		CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210827D9615000395A93 /* OldAdminView.swift */; };
 		CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */; };
@@ -3602,6 +3605,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB43299E27FE0DB100B29DD6 /* InfoPlist.strings in Resources */,
+				CB43299D27FE0D9000B29DD6 /* CloseButtonLargeHighlighted@2x.png in Resources */,
+				CB43299C27FE0D7F00B29DD6 /* stubbed_image.png in Resources */,
 				CB43296C27EA28DE00B29DD6 /* LiveAuctionsAssets.xcassets in Resources */,
 				CB43296A27EA285800B29DD6 /* User_v1.data in Resources */,
 				CB43296B27EA285800B29DD6 /* User_v0.data in Resources */,
@@ -4649,6 +4655,7 @@
 					"PB_ENABLE_MALLOC=1",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist\n";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -4659,6 +4666,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy_Tests/Supporting_Files/Artsy-Tests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
@@ -4677,7 +4685,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 23KMWZ572J;
@@ -4685,6 +4693,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy_Tests/Supporting_Files/Artsy_Tests-Prefix.pch";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist\n";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
@@ -4694,9 +4703,11 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy_Tests/Supporting_Files/Artsy-Tests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
+				VALIDATE_PRODUCT = NO;
 			};
 			name = Release;
 		};
