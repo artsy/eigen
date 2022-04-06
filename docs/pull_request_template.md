@@ -2,7 +2,7 @@
 `type(PROJECT-XXXX): what changed` 
 -->
 
-This PR resolves [PROJECT-XXXX] 
+This PR resolves [] 
 
 ### Description
 
