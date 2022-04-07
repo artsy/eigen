@@ -26,8 +26,9 @@ import { ViewAsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ViewAs
 import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
+import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import _ from "lodash"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { View, ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
 import { CreateSavedSearchModal } from "../Artist/ArtistArtworks/CreateSavedSearchModal"
@@ -261,6 +262,14 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     setIsCreateAlertModalVisible(true)
     tracking.trackEvent(tracks.tappedCreateAlert(id!, name!))
   }
+
+  const setSelectedMetric = ArtworksFiltersStore.useStoreActions((state) => state.setSizeMetric)
+  const { localizedUnit } = useLocalizedUnit()
+
+  // initializes the selected metric to the user preferred metric
+  useEffect(() => {
+    setSelectedMetric(localizedUnit)
+  }, [])
 
   return (
     <NavigationContainer independent>
