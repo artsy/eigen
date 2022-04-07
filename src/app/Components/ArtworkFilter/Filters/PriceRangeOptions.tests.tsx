@@ -103,6 +103,7 @@ describe("PriceRangeOptions", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   const MockPriceRangeOptionsScreen = () => {

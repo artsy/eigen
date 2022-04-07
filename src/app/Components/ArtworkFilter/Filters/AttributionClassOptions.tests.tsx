@@ -50,6 +50,7 @@ describe("AttributionClassOptions Screen", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
@@ -75,6 +76,7 @@ describe("AttributionClassOptions Screen", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getAllByA11yState } = renderWithWrappersTL(

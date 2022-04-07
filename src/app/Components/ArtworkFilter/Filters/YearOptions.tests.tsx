@@ -51,6 +51,7 @@ describe("Year Options Screen", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   const ArtworkFiltersStoreConsumer = () => {

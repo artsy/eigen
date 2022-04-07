@@ -52,6 +52,7 @@ describe("SizesOptionsScreen", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   const MockSizesOptionsScreen = () => {
