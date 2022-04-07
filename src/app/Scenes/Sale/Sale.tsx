@@ -411,8 +411,9 @@ export const SaleQueryRenderer: React.FC<{
                 <SaleContainer sale={props.above.sale} me={props.above.me} below={props.below} />
               )
             }}
+            fetchPolicy="store-and-network"
             cacheConfig={{
-              force: true,
+              fetchPolicy: "store-and-network",
             }}
           />
         )
