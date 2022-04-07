@@ -9,6 +9,7 @@ import {
 } from "app/Components/Bidding/Components/Timer"
 import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { capitalize } from "lodash"
 import { Duration } from "moment"
@@ -46,6 +47,12 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
 
     const { endAt: lotEndAt } = props.artwork.saleArtwork
 
+    const cascadingEndTimeFeatureEnabled = !useFeatureFlag("ARDisableCascadingEndTimerLotPage")
+
+    const endsAt =
+      (cascadingEndTimeFeatureEnabled && cascadingEndTimeInterval ? lotEndAt : saleEndAt) ||
+      undefined
+
     return (
       <TimeOffsetProvider>
         <CountdownStateManager
@@ -59,7 +66,7 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
             const { label, date, hasStarted } = relevantStateData(state, {
               liveStartsAt: liveStartsAt || undefined,
               startsAt: startsAt || undefined,
-              endsAt: cascadingEndTimeInterval ? lotEndAt || undefined : saleEndAt || undefined,
+              endsAt,
             })
             return { label, date, state, hasStarted, cascadingEndTimeInterval }
           }}
@@ -70,7 +77,7 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
             const { label, date, hasStarted } = relevantStateData(nextState, {
               liveStartsAt: liveStartsAt || undefined,
               startsAt: startsAt || undefined,
-              endsAt: cascadingEndTimeInterval ? lotEndAt || undefined : saleEndAt || undefined,
+              endsAt,
             })
             return { state: nextState, date, label, hasStarted }
           }}

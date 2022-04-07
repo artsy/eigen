@@ -6,8 +6,20 @@ import { Sans, Theme } from "palette"
 import React from "react"
 import "react-native"
 
+import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockTimezone } from "app/tests/mockTimezone"
-import { Timer } from "./Timer"
+import { Countdown, Timer } from "./Timer"
+
+const Wrapper: React.FC<{}> = ({ children }) => {
+  return (
+    <GlobalStoreProvider>
+      <Theme>
+        <GlobalStoreProvider>{children}</GlobalStoreProvider>
+      </Theme>
+    </GlobalStoreProvider>
+  )
+}
 
 const SECONDS = 1000
 const MINUTES = 60 * SECONDS
@@ -166,10 +178,10 @@ it("omits the minutes when the sale ends on the hour", () => {
 describe("timer transitions", () => {
   it("transitions state from preview --> closing when the timer ends", () => {
     const timer = mount(
-      <Theme>
+      <Wrapper>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
         <Timer isPreview startsAt={futureTime} endsAt={futureTime} />
-      </Theme>
+      </Wrapper>
     )
 
     expect(getMountedTimerLabel(timer)).toContain("Starts")
@@ -183,10 +195,10 @@ describe("timer transitions", () => {
 
   it("transitions state from preview --> live upcoming when the timer ends", () => {
     const timer = mount(
-      <Theme>
+      <Wrapper>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
         <Timer isPreview startsAt={futureTime} liveStartsAt={futureTime} />
-      </Theme>
+      </Wrapper>
     )
 
     expect(getMountedTimerLabel(timer)).toContain("Starts")
@@ -200,10 +212,10 @@ describe("timer transitions", () => {
 
   it("transitions state from live upcoming --> live ongoing when the timer ends", () => {
     const timer = mount(
-      <Theme>
+      <Wrapper>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
         <Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />
-      </Theme>
+      </Wrapper>
     )
 
     expect(getMountedTimerLabel(timer)).toContain("Live")
@@ -217,10 +229,10 @@ describe("timer transitions", () => {
 
   it("transitions state from closing --> closed when the timer ends", () => {
     const timer = mount(
-      <Theme>
+      <Wrapper>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
         <Timer isPreview={false} startsAt={pastTime} endsAt={futureTime} />
-      </Theme>
+      </Wrapper>
     )
 
     expect(getMountedTimerLabel(timer)).toContain("Closes")
@@ -230,5 +242,68 @@ describe("timer transitions", () => {
 
     expect(getMountedTimerLabel(timer)).toContain("Bidding closed")
     expect(getMountedTimerText(timer)).toContain("00d  00h  00m")
+  })
+})
+
+describe("Countdown", () => {
+  const duration = moment.duration(36180000)
+
+  describe("when the disable cascade feature flag is turned off", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARDisableCascadingEndTimerLotPage: false })
+    })
+
+    afterEach(() => jest.clearAllMocks())
+
+    it("shows the new ticker if the sale has cascading end times", () => {
+      const component = mount(
+        <Wrapper>
+          <Countdown
+            duration={duration}
+            label="This is the label"
+            hasStarted
+            cascadingEndTimeInterval={60}
+          />
+        </Wrapper>
+      )
+
+      expect(component.find(ModernTicker).length).toEqual(1)
+      expect(component.find(SimpleTicker).length).toEqual(0)
+    })
+
+    it("does not shows the new ticker if the sale does not have cascading end times", () => {
+      const component = mount(
+        <Wrapper>
+          <Countdown duration={duration} label="This is the label" />
+        </Wrapper>
+      )
+
+      expect(component.find(ModernTicker).length).toEqual(0)
+      expect(component.find(SimpleTicker).length).toEqual(1)
+    })
+  })
+
+  describe("when the disable cascade feature flag is turned on", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARDisableCascadingEndTimerLotPage: true })
+    })
+
+    afterEach(() => jest.clearAllMocks())
+
+    it("does not shows the new ticker even if the sale has cascading end times", () => {
+      const component = mount(
+        <Wrapper>
+          <Countdown
+            duration={duration}
+            label="This is the label"
+            hasStarted
+            cascadingEndTimeInterval={60}
+          />
+        </Wrapper>
+      )
+
+      expect(component.find(ModernTicker).length).toEqual(0)
+      expect(component.find(SimpleTicker).length).toEqual(1)
+    })
   })
 })

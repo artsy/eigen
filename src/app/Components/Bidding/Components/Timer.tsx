@@ -1,6 +1,7 @@
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import moment from "moment-timezone"
 import { Flex, Sans } from "palette"
 import PropTypes from "prop-types"
@@ -118,10 +119,11 @@ export const Countdown: React.FC<CountdownProps> = ({
   hasStarted,
   cascadingEndTimeInterval,
 }) => {
-  console.log("CASACDINGENDTIMINTERVL", cascadingEndTimeInterval)
+  const cascadingEndTimeFeatureEnabled = !useFeatureFlag("ARDisableCascadingEndTimerLotPage")
+
   return (
     <Flex alignItems="center">
-      {cascadingEndTimeInterval ? (
+      {cascadingEndTimeFeatureEnabled && cascadingEndTimeInterval ? (
         <ModernTicker
           duration={duration}
           separator="  "
