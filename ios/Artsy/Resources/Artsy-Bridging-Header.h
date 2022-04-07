@@ -106,7 +106,7 @@
 #import <Emission/AREmission.h>
 #import <Emission/ARComponentViewController.h>
 
-#import "ARScreenPresenterModule.h"
+#import "ARTNativeScreenPresenterModule.h"
 
 // CityGuide
 #import "AREigenMapContainerViewController.h"

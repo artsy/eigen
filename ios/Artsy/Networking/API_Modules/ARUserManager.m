@@ -21,7 +21,7 @@
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
 #import "ARDispatchManager.h"
-#import "ARScreenPresenterModule.h"
+#import "ARTNativeScreenPresenterModule.h"
 
 #import <Emission/AREmission.h>
 
@@ -183,7 +183,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [ARRouter setAuthToken:nil];
     manager.currentUser = nil;
 
-    [ARScreenPresenterModule clearCachedNavigationStacks];
+    [ARTNativeScreenPresenterModule clearCachedNavigationStacks];
 
     RNCAsyncStorage *asyncStorage = [[[AREmission sharedInstance] bridge] moduleForName:@"RNCAsyncStorage"];
     [asyncStorage clearAllData];

@@ -12,7 +12,7 @@
 #import <JLRoutes/JLRoutes.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import "ARDispatchManager.h"
-#import "ARScreenPresenterModule.h"
+#import "ARTNativeScreenPresenterModule.h"
 
 #import "ARAppDelegate.h"
 #import <CoreServices/CoreServices.h>
@@ -229,7 +229,7 @@
     messsage = [messsage stringByReplacingOccurrencesOfString:@"http://" withString:@""];
     messsage = [messsage stringByReplacingOccurrencesOfString:@"https://" withString:@""];
 
-    UIViewController *presentationVC = [ARScreenPresenterModule currentlyPresentedVC];
+    UIViewController *presentationVC = [ARTNativeScreenPresenterModule currentlyPresentedVC];
     UIAlertController *controller = [UIAlertController alertControllerWithTitle:title message:messsage preferredStyle:UIAlertControllerStyleAlert];
 
     [controller addAction:[UIAlertAction actionWithTitle:@"Open" style:UIAlertActionStyleDefault handler:^(UIAlertAction *_Nonnull action) {

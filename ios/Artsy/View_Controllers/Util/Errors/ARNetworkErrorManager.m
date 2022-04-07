@@ -1,6 +1,6 @@
 #import "ARNetworkErrorManager.h"
 #import "ARCustomEigenLabels.h"
-#import "ARScreenPresenterModule.h"
+#import "ARTNativeScreenPresenterModule.h"
 
 #import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
@@ -40,7 +40,7 @@
 
 - (void)presentActiveError:(NSError *)error withMessage:(NSString *)message;
 {
-    UIView *hostView = [ARScreenPresenterModule currentlyPresentedVC].view;
+    UIView *hostView = [ARTNativeScreenPresenterModule currentlyPresentedVC].view;
 
     // This happens when there’s no network on app launch and onboarding will be shown.
     if (hostView.superview == nil) {

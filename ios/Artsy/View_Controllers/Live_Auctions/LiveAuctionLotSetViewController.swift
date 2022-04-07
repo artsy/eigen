@@ -361,7 +361,7 @@ extension LiveAuctionLotSetViewController: AuctionTitleViewDelegate {
     }
 
     func userDidPressRegister(_ titleView: AuctionTitleView) {
-        let viewController = ARScreenPresenterModule.loadWebViewAuctionRegistration(withID: self.salesPerson.liveSaleID)
+        let viewController = ARTNativeScreenPresenterModule.loadWebViewAuctionRegistration(withID: self.salesPerson.liveSaleID)
         if (self.presentedViewController != nil) {
             self.presentedViewController?.present(viewController, animated: true) {}
         } else {

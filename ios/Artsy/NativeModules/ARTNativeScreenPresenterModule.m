@@ -15,7 +15,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 
-@interface ARScreenPresenterModule () <MFMailComposeViewControllerDelegate>
+@interface ARTNativeScreenPresenterModule () <MFMailComposeViewControllerDelegate>
 @end
 
 @implementation ARTNativeScreenPresenterModule
