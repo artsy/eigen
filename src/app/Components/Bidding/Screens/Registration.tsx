@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/react-native"
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
@@ -29,6 +30,7 @@ import {
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { PaymentInfo } from "../Components/PaymentInfo"
+import { PhoneInfo } from "../Components/PhoneInfo"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
@@ -41,11 +43,12 @@ export interface RegistrationProps extends ViewProps {
 
 interface RegistrationState {
   billingAddress?: Address
+  phoneNumber?: string
   creditCardFormParams?: PaymentCardTextFieldParams
   creditCardToken?: StripeToken
   conditionsOfSaleChecked: boolean
   isLoading: boolean
-  requiresPaymentInformation: boolean
+  missingInformation: "payment" | "phone" | null
   errorModalVisible: boolean
   errorModalDetailText: string
 }
@@ -65,8 +68,14 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   constructor(props) {
     super(props)
 
-    const { hasCreditCards } = this.props.me
-    const requiresPaymentInformation = !hasCreditCards
+    const { me } = this.props
+
+    let missingInformation: RegistrationState["missingInformation"] = null
+    if (!me.hasCreditCards) {
+      missingInformation = "payment"
+    } else if (!me.phoneNumber?.isValid) {
+      missingInformation = "phone"
+    }
 
     this.state = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -76,21 +85,32 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       creditCardFormParams: null,
       conditionsOfSaleChecked: false,
-      requiresPaymentInformation,
+      missingInformation,
       isLoading: false,
       errorModalVisible: false,
       errorModalDetailText: "",
+      phoneNumber: me.phoneNumber?.display || "",
     }
   }
 
   canCreateBidder() {
-    const { billingAddress, creditCardToken, conditionsOfSaleChecked } = this.state
-
-    if (this.state.requiresPaymentInformation) {
-      return billingAddress && creditCardToken && conditionsOfSaleChecked
-    } else {
-      return conditionsOfSaleChecked
+    const {
+      billingAddress,
+      creditCardToken,
+      conditionsOfSaleChecked,
+      phoneNumber,
+      missingInformation: requiredInfo,
+    } = this.state
+    if (!conditionsOfSaleChecked) {
+      return false
     }
+
+    if (requiredInfo === "payment") {
+      return billingAddress && creditCardToken
+    } else if (requiredInfo === "phone") {
+      return phoneNumber
+    }
+    return true
   }
 
   onPressConditionsOfSale = () => {
@@ -105,6 +125,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     this.setState({ billingAddress: values })
   }
 
+  onPhoneAdded(phoneNumber: string) {
+    this.setState({ phoneNumber })
+  }
+
   conditionsOfSalePressed() {
     this.setState({ conditionsOfSaleChecked: !this.state.conditionsOfSaleChecked })
   }
@@ -112,9 +136,13 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   async register() {
     this.setState({ isLoading: true })
 
-    this.state.requiresPaymentInformation
-      ? await this.setupAddressCardAndBidder()
-      : await this.setupBidder()
+    if (this.state.missingInformation === "payment") {
+      await this.setupAddressCardAndBidder()
+    } else if (this.state.missingInformation === "phone") {
+      await this.setupPhoneNumberAndBidder()
+    } else {
+      await this.setupBidder()
+    }
   }
 
   /** Make a bid */
@@ -122,16 +150,42 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     await this.createBidder()
   }
 
+  async setupPhoneNumberAndBidder() {
+    try {
+      const { phoneNumber } = this.state
+      await this.updatePhoneNumber(phoneNumber!)
+      await this.createBidder()
+    } catch (e) {
+      if (__DEV__) {
+        console.error(e)
+      } else {
+        captureException(e)
+      }
+      if (!this.state.errorModalVisible) {
+        this.presentErrorModal(e, null)
+      }
+    }
+  }
+
   /** Run through the full flow setting up the user account and making a bid  */
   async setupAddressCardAndBidder() {
     try {
-      await this.updatePhoneNumber()
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      const { phoneNumber } = this.state.billingAddress
+      await this.updatePhoneNumber(phoneNumber)
+
       const token = await this.createTokenFromAddress()
       await this.createCreditCard(token)
+
       await this.createBidder()
-    } catch (error) {
+    } catch (e) {
+      if (__DEV__) {
+        console.error(e)
+      } else {
+        captureException(e)
+      }
       if (!this.state.errorModalVisible) {
-        this.presentErrorModal(error, null)
+        this.presentErrorModal(e, null)
       }
     }
   }
@@ -140,12 +194,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
    * Because the phone number lives on the user, not as credit card metadata, then we
    * need a separate call to update our User model to store that info
    */
-  async updatePhoneNumber() {
+  async updatePhoneNumber(phoneNumber: string) {
     const errorMessage = "There was a problem processing your phone number, please try again."
 
     return new Promise<void>((done, reject) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const { phoneNumber } = this.state.billingAddress
       commitMutation<RegistrationUpdateUserMutation>(this.props.relay.environment, {
         onCompleted: (_, errors) => {
           if (errors && errors.length) {
@@ -175,22 +227,16 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   async createTokenFromAddress() {
     const { billingAddress, creditCardFormParams } = this.state
+
     return stripe.createTokenWithCard({
       ...creditCardFormParams,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      name: billingAddress.fullName,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressLine1: billingAddress.addressLine1,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressLine2: billingAddress.addressLine2,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressCity: billingAddress.city,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressState: billingAddress.state,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressZip: billingAddress.postalCode,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      addressCountry: billingAddress.country.shortName,
+      name: billingAddress!.fullName,
+      addressLine1: billingAddress!.addressLine1,
+      addressLine2: billingAddress!.addressLine2,
+      addressCity: billingAddress!.city,
+      addressState: billingAddress!.state,
+      addressZip: billingAddress!.postalCode,
+      addressCountry: billingAddress!.country.shortName,
     })
   }
 
@@ -315,9 +361,47 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     this.setState({ errorModalVisible: false })
   }
 
+  renderRequiredInfoForm(): JSX.Element | undefined {
+    const { missingInformation, isLoading } = this.state
+
+    if (missingInformation === "payment") {
+      return (
+        <Flex flex={1} py={20}>
+          <PaymentInfo
+            navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+            onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+            onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+            billingAddress={this.state.billingAddress}
+            creditCardFormParams={this.state.creditCardFormParams}
+            creditCardToken={this.state.creditCardToken}
+          />
+        </Flex>
+      )
+    } else if (missingInformation === "phone") {
+      return (
+        <Flex justifyContent="center" py={20}>
+          <PhoneInfo
+            navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+            onPhoneAdded={this.onPhoneAdded.bind(this)}
+            phoneNumber={this.state.phoneNumber}
+          />
+        </Flex>
+      )
+    }
+  }
+
+  renderRequiredInfoHint(): JSX.Element | undefined {
+    const { missingInformation } = this.state
+    if (missingInformation === "payment") {
+      return <Hint>A valid credit card is required.</Hint>
+    } else if (missingInformation === "phone") {
+      return <Hint>A valid phone number is required.</Hint>
+    }
+  }
+
   render() {
     const { sale, me } = this.props
-    const { isLoading, requiresPaymentInformation } = this.state
+    const { isLoading, missingInformation: missingInformation } = this.state
 
     const saleTimeDetails = saleTime(sale)
 
@@ -338,20 +422,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           )}
         </Box>
 
-        {!!requiresPaymentInformation && (
-          <Flex flex={1} py={20}>
-            <PaymentInfo
-              navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-              onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-              onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-              billingAddress={this.state.billingAddress}
-              creditCardFormParams={this.state.creditCardFormParams}
-              creditCardToken={this.state.creditCardToken}
-            />
-          </Flex>
-        )}
+        {this.renderRequiredInfoForm()}
         <Flex px={20} flex={1}>
-          {!!requiresPaymentInformation && <Hint>A valid credit card is required.</Hint>}
+          {this.renderRequiredInfoHint()}
           {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             !!bidderNeedsIdentityVerification({ sale, user: me }) && (
@@ -366,7 +439,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           }
           {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            !requiresPaymentInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
+            !missingInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
               <Hint>
                 To complete your registration, please confirm that you agree to the Conditions of
                 Sale.
@@ -405,6 +478,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 }
 
+// const RequiredInfoForm: React.FC<{}> = ({navigator, onCreditrCardAdded, onBillingAddressAdded, billingAddress, creditCardFormParams, creditCardToken})
+
 const RegistrationContainer = createFragmentContainer(Registration, {
   sale: graphql`
     fragment Registration_sale on Sale {
@@ -422,6 +497,10 @@ const RegistrationContainer = createFragmentContainer(Registration, {
     fragment Registration_me on Me {
       hasCreditCards
       identityVerified
+      phoneNumber {
+        isValid
+        display(format: E164)
+      }
     }
   `,
 })
