@@ -36,7 +36,7 @@ import { EventEmitter } from "events"
 import { times } from "lodash"
 import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { LayoutAnimation, RefreshControl } from "react-native"
+import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
@@ -66,7 +66,7 @@ const MyCollection: React.FC<{
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
   const [keywordFilter, setKeywordFilter] = useState("")
-  const [isSearchBarVisible, setIsSearchBarVisible] = useState(false)
+  const [yScrollOffset, setYScrollOffset] = useState(0)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
   const filtersCount = useSelectedFiltersCount()
@@ -142,8 +142,11 @@ const MyCollection: React.FC<{
                 Add Works
               </Button>
             </ArtworksFilterHeader>
-            {!!enableSearchBar && !!isSearchBarVisible && (
-              <MyCollectionSearchBar onChangeText={setKeywordFilter} />
+            {!!enableSearchBar && (
+              <MyCollectionSearchBar
+                yScrollOffset={yScrollOffset}
+                onChangeText={setKeywordFilter}
+              />
             )}
             {!!showNewWorksBanner && (
               <Banner
@@ -170,11 +173,15 @@ const MyCollection: React.FC<{
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length, filtersCount, isSearchBarVisible])
+  }, [artworks.length, filtersCount, yScrollOffset])
 
   useEffect(() => {
     reInitializeLocalArtworkFilter(artworks)
   }, [artworks])
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    setYScrollOffset(event.nativeEvent.contentOffset.y)
+  }
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -192,14 +199,10 @@ const MyCollection: React.FC<{
       <StickyTabPageScrollView
         contentContainerStyle={{ paddingBottom: space(2) }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
-        onScrollBeginDrag={() => {
-          if (isSearchBarVisible) {
-            return
-          }
-
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-          setIsSearchBarVisible(true)
-        }}
+        onScrollBeginDrag={handleScroll}
+        onScrollEndDrag={handleScroll}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
       >
         <MyCollectionArtworks me={me} keywordFilter={keywordFilter} relay={relay} />
         {!!showDevAddButton && (
