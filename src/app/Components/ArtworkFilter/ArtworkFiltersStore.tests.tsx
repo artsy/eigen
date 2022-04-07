@@ -86,6 +86,7 @@ describe("Reset Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 })
@@ -130,6 +131,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -178,6 +180,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -236,6 +239,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -302,6 +306,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -344,6 +349,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -397,6 +403,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -433,6 +440,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -514,6 +522,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -550,6 +559,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -592,6 +602,7 @@ describe("Select Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 })
@@ -638,6 +649,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -703,6 +715,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -741,6 +754,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -777,6 +791,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -809,6 +824,7 @@ describe("Apply Filters", () => {
       aggregations: [],
       filterType: "artwork",
       counts: { total: null, followedArtists: null },
+      sizeMetric: "cm",
     })
   })
 
@@ -849,6 +865,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -899,6 +916,7 @@ describe("Apply Filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -949,6 +967,7 @@ describe("Apply Filters", () => {
       ],
       selectedFilters: [],
       aggregations: [],
+      sizeMetric: "cm",
     })
   })
 
@@ -1005,6 +1024,7 @@ describe("Apply Filters", () => {
       ],
       selectedFilters: [],
       aggregations: [],
+      sizeMetric: "cm",
     })
   })
 })
@@ -1046,6 +1066,7 @@ describe("clearFiltersZeroState", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -1080,6 +1101,7 @@ describe("clearFiltersZeroState", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 })
@@ -1120,6 +1142,7 @@ describe("SetInitialFilterState", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 })
@@ -2327,6 +2350,7 @@ describe("SetFilterCounts", () => {
         total: 1000,
         followedArtists: 100,
       },
+      sizeMetric: "cm",
     })
   })
 })
@@ -2374,6 +2398,7 @@ describe("SetSelectedFiltersAction", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
@@ -2425,6 +2450,7 @@ describe("SetSelectedFiltersAction", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     })
   })
 
