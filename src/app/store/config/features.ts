@@ -111,6 +111,17 @@ export const features = defineFeatures({
     description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
   },
+  ARDisableCascadingEndTimerLotPage: {
+    readyForRelease: false,
+    description: "Enable cascading end times on the lot page",
+    showInAdminMenu: true,
+    echoFlagKey: "ARDisableCascadingEndTimerLotPage",
+  },
+  AREnableImageSearch: {
+    readyForRelease: false,
+    description: "Enable search with image",
+    showInAdminMenu: true,
+  },
   AREnableCollectorProfile: {
     readyForRelease: true,
     description: "Enable collector profile",
