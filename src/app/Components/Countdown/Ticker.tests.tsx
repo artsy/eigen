@@ -76,7 +76,7 @@ describe("ModernTicker", () => {
       const todayDuration = moment.duration(2000)
       const { getByText } = render(
         <Theme>
-          <ModernTicker duration={todayDuration} separator="  " size="5" />
+          <ModernTicker duration={todayDuration} />
         </Theme>
       )
 
@@ -91,7 +91,7 @@ describe("ModernTicker", () => {
       const dayDuration = moment.duration(100800000)
       const { getByText } = render(
         <Theme>
-          <ModernTicker duration={dayDuration} separator="  " size="5" />
+          <ModernTicker duration={dayDuration} />
         </Theme>
       )
 
@@ -106,7 +106,7 @@ describe("ModernTicker", () => {
       const daysDuration = moment.duration(342000000)
       const { getByText } = render(
         <Theme>
-          <ModernTicker duration={daysDuration} separator="  " size="5" />
+          <ModernTicker duration={daysDuration} />
         </Theme>
       )
 
@@ -123,7 +123,7 @@ describe("ModernTicker", () => {
       const daysDuration = moment.duration(342000000)
       const { getByText } = render(
         <Theme>
-          <ModernTicker duration={daysDuration} hasStarted separator="  " size="5" />
+          <ModernTicker duration={daysDuration} hasStarted />
         </Theme>
       )
 
@@ -138,7 +138,7 @@ describe("ModernTicker", () => {
       const hoursDuration = moment.duration(36180000)
       const { getByText } = render(
         <Theme>
-          <ModernTicker duration={hoursDuration} hasStarted separator="  " size="5" />
+          <ModernTicker duration={hoursDuration} hasStarted />
         </Theme>
       )
 
@@ -153,7 +153,7 @@ describe("ModernTicker", () => {
       const minutesDuration = moment.duration(2730000)
       const { getByText } = render(
         <Theme>
-          <ModernTicker duration={minutesDuration} hasStarted separator="  " size="5" />
+          <ModernTicker duration={minutesDuration} hasStarted />
         </Theme>
       )
 
@@ -168,7 +168,7 @@ describe("ModernTicker", () => {
       const secondsDuration = moment.duration(30000)
       const { getByText } = render(
         <Theme>
-          <ModernTicker duration={secondsDuration} hasStarted separator="  " size="5" />
+          <ModernTicker duration={secondsDuration} hasStarted />
         </Theme>
       )
 

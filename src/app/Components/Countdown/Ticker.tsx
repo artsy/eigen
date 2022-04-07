@@ -1,5 +1,5 @@
 import { Duration } from "moment"
-import { Flex, Sans } from "palette"
+import { Flex, Sans, Text } from "palette"
 import React from "react"
 
 interface TimeSectionProps {
@@ -85,25 +85,23 @@ export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator,
   )
 }
 
-interface ModernTickerProps extends SimpleTickerProps {
+interface ModernTickerProps {
+  duration: Duration
   hasStarted?: boolean
 }
 
-export const ModernTicker: React.FC<ModernTickerProps> = ({
-  duration,
-  separator,
-  hasStarted,
-  ...rest
-}) => {
-  const timerCopy = getTimerCopy(duration, hasStarted)
-  return (
-    <Sans {...rest} color={timerCopy.color}>
-      {timerCopy.copy}
-    </Sans>
-  )
+export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted }) => {
+  const timerInfo = getTimerInfo(duration, hasStarted)
+
+  return <Text color={timerInfo.color}>{timerInfo.copy}</Text>
 }
 
-export const getTimerCopy = (duration: Duration, hasStarted?: boolean) => {
+interface TimerInfo {
+  copy: string
+  color: string
+}
+
+export const getTimerInfo = (duration: Duration, hasStarted?: boolean): TimerInfo => {
   const days = duration.asDays()
   const hours = duration.hours()
   const minutes = duration.minutes()

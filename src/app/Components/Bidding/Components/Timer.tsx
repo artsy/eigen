@@ -124,13 +124,7 @@ export const Countdown: React.FC<CountdownProps> = ({
   return (
     <Flex alignItems="center">
       {cascadingEndTimeFeatureEnabled && cascadingEndTimeInterval ? (
-        <ModernTicker
-          duration={duration}
-          separator="  "
-          size="4t"
-          weight="medium"
-          hasStarted={hasStarted}
-        />
+        <ModernTicker duration={duration} hasStarted={hasStarted} />
       ) : (
         <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
       )}
@@ -163,13 +157,13 @@ export const Timer: React.FC<Props> = (props) => {
         CountdownComponent={Countdown}
         onCurrentTickerState={() => {
           const state = currentTimerState(props)
-          const { label, date, hasStarted } = relevantStateData(state, props)
-          return { label, date, state, hasStarted } as any // STRICTNESS_MIGRATION
+          const { label, date } = relevantStateData(state, props)
+          return { label, date, state } as any // STRICTNESS_MIGRATION
         }}
         onNextTickerState={({ state }) => {
           const nextState = nextTimerState(state as AuctionTimerState, props)
-          const { label, date, hasStarted } = relevantStateData(nextState, props)
-          return { state: nextState, label, date, hasStarted } as any // STRICTNESS_MIGRATION
+          const { label, date } = relevantStateData(nextState, props)
+          return { state: nextState, label, date } as any // STRICTNESS_MIGRATION
         }}
       />
     </TimeOffsetProvider>
