@@ -7,13 +7,11 @@ if (Platform.OS === "android") {
   RNBootSplash.hide()
 }
 
-let newIosAppShell = false
 if (__DEV__) {
   try {
     const fileContent = require("./metaflags.json")
-    newIosAppShell = fileContent.newIosAppShell
   } catch {}
 }
 
-const appName = newIosAppShell && Platform.OS === "ios" ? require("../../app.json").appName : "Artsy"
+const appName = Platform.OS === "ios" ? require("../../app.json").appName : "Artsy"
 AppRegistry.registerComponent(appName, () => StorybookUIRoot)

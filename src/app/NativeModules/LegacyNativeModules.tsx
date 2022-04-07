@@ -19,20 +19,6 @@ const noop: any = (name: string) => () =>
  * When a thing is made available on android, it should be removed from this file and added to ArtsyNativeModule.
  */
 
-export const usingNewIOSAppShell = () => {
-  let newIOSAppShell = false
-  try {
-    // tslint:disable-next-line:no-var-requires
-    const fileContent = require("../../../metaflags.json")
-    newIOSAppShell = fileContent.newIosAppShell
-    console.log("NEWSHELL successfully loaded metaflags useNewAppShell", newIOSAppShell)
-  } catch {
-    console.log("NEWSHELL failed to load metaflags")
-    newIOSAppShell = false // default to false
-  }
-  return newIOSAppShell
-}
-
 interface LegacyNativeModules {
   ARTemporaryAPIModule: {
     requestPrepromptNotificationPermissions(): void
@@ -175,7 +161,7 @@ const LegacyNativeModulesAndroid = {
   },
 }
 
-const LegacyNativeModulesIOSNewAppShell: LegacyNativeModules = {
+const LegacyNativeModulesIOS: LegacyNativeModules = {
   ARScreenPresenterModule,
   ARTNativeScreenPresenterModule: AllNativeModules.ARTNativeScreenPresenterModule,
   ARTakeCameraPhotoModule: AllNativeModules.ARTakeCameraPhotoModule,
@@ -191,7 +177,7 @@ const nativeModules = () => {
   if (Platform.OS === "android") {
     return LegacyNativeModulesAndroid
   } else {
-    return LegacyNativeModulesIOSNewAppShell
+    return LegacyNativeModulesIOS
   }
 }
 

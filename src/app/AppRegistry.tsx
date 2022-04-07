@@ -18,9 +18,7 @@ import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
 import { useErrorReporting } from "./errorReporting/hooks"
 import { CityGuideView } from "./NativeModules/CityGuideView"
-import { usingNewIOSAppShell } from "./NativeModules/LegacyNativeModules"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
-import { OldAdminView } from "./NativeModules/OldAdminView"
 import { About } from "./Scenes/About/About"
 import { ArticlesScreen, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
@@ -528,8 +526,4 @@ const Main: React.FC = () => {
       {!!fpsCounter && <FPSCounter style={{ bottom: 94 }} />}
     </>
   )
-}
-
-if (Platform.OS === "ios" && !usingNewIOSAppShell()) {
-  register("Artsy", Main, { fullBleed: true, isMainView: true, moduleName: "Artsy" })
 }

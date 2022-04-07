@@ -3,13 +3,11 @@ global.__STORYBOOK__ = false
 
 // for more info about metaflags, look [here](/docs/metaflags.md)
 let metaflags = {
-  newIosAppShell: false,
   startStorybook: false,
 }
 
 try {
   const fileContent = require("./metaflags.json")
-  newIosAppShell = fileContent.newIosAppShell
   startStorybook = fileContent.startStorybook
 } catch {}
 

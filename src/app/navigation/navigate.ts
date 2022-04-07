@@ -2,7 +2,7 @@ import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules, ViewOptions } from "app/AppRegistry"
 import { __unsafe_switchTab } from "app/NativeModules/ARScreenPresenterModule"
-import { LegacyNativeModules, usingNewIOSAppShell } from "app/NativeModules/LegacyNativeModules"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "app/store/GlobalStore"
 import { propsStore } from "app/store/PropsStore"
@@ -125,11 +125,7 @@ export function switchTab(tab: BottomTabType, props?: object) {
   if (props) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
   }
-  if (Platform.OS === "ios" && !usingNewIOSAppShell()) {
-    GlobalStore.actions.bottomTabs.switchTab(tab)
-  } else {
-    __unsafe_switchTab(tab)
-  }
+  __unsafe_switchTab(tab)
 }
 
 const tracks = {
