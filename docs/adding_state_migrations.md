@@ -1,29 +1,27 @@
-# Adding State Migrations
+# State Migrations
 
-## Do I need to add a state migration?
+## What is a migration?
 
-Probably not! 🙂 Most changes to the app only involve creating some new UI and fetching data for it with Relay. In those cases you don't need to worry about migrations. However, if you're working on something that involves managing application state beyond Relay data, then please read on...
+Sometimes we make a code change that can cause a corrupted `initialAppState` the next time the user updates their app. 
 
-When the app launches we do something like
-
-    initialAppState = merge(blankAppState, loadSavedStateFromDeviceStorage())
-
-It is possible to make a code change that would cause this step to produce a corrupt `initialAppState` the next time the user updates their app. To mitigate this we add in a `migrate` step so that old versions of the app state can be brought up-to-date before merging.
-
-    initialAppState = merge(blankAppState, migrate(loadSavedStateFromDeviceStorage()))
+To mitigate this we add in a `migrate` step so that old versions of the app state can be brought up-to-date before merging.
 
 When we make a change to the app store which could affect what is stored on disk, we need to create a new migration.
 
-The following kinds of change do _not_ require creating a new migration:
 
-- Modifying anything which is only stored within a `sessionState` portion of the app store.
-- Adding or removing a `sessionState` object.
-- Modifying, adding, or removing a [computed](https://easy-peasy.now.sh/docs/api/computed.html) property.
-- Modifying, adding, or removing [actions](https://easy-peasy.now.sh/docs/api/action.html) or [thunks](https://easy-peasy.now.sh/docs/api/thunk.html).
+## When do I need to add a state migration?
 
-The following kinds of changes to easy-peasy models in the global app store will **always** require a migration:
+We are using easy-peasy for persistent local state, which is what a migration is there to help us with.
 
-- Adding a property
+### Does _not_ require creating a new migration
+
+- Adding, removing or modifying anything which is stored in a `sessionState` object.
+- Modifying, adding, or removing a [computed](https://easy-peasy.now.sh/docs/api/computed.html) property, [actions](https://easy-peasy.now.sh/docs/api/action.html) or [thunks](https://easy-peasy.now.sh/docs/api/thunk.html).
+
+### The following kinds of changes to easy-peasy models in the global app store will **always** require a migration
+
+- Adding, removing, renaming, or changing the type of a property from the state Model 
+
   ```diff
    interface MyModel = {
      existingProperty: string
@@ -31,72 +29,31 @@ The following kinds of changes to easy-peasy models in the global app store will
      existingAction: action(...)
    }
   ```
-- Removing a property
-  ```diff
-   interface MyModel = {
-     existingProperty: string
-  -  anotherExistingProperty: number
-     existingAction: action(...)
-   }
-  ```
-- Renaming a property
-  ```diff
-   interface MyModel = {
-     existingProperty: string
-  -  oldPropertyName: string
-  +  newPropertyName: string
-     existingAction: action(...)
-   }
-  ```
-- Changing a property's type
-  ```diff
-   interface MyModel = {
-  -  existingProperty: string
-  +  existingProperty: number
-     existingAction: action(...)
-   }
-  ```
-- Doing any of the above inside an array element type
-  ```diff
-   interface MyModel = {
-     existingProperty: string
-     existingCollection: Array<{
-       id: string
-       name: string
-  +    birthday: string
-       phoneNumber: string
-     }>
-     existingAction: action(...)
-   }
-  ```
 
-Remember, if your changes affect the structure of the persisted version of the app store (everything you declare in a model except `sessionState`, computed properties, actions, and thunks) then you need to add a migration.
-
-If you're still unsure whether your change requires a new migration, please reach out to a one of the repository code owners! 🙏
+- If your changes affect the structure of the persisted version of the app store (found on GlobalStore.js) you need to add a migration.
 
 ## How to add a new state migration
 
-1. Navigate to `migration.ts`.
-2. Add a new version in `Versions`. The key should be a meaningful name, and the value should be one higher than the one above.
+1. Open to `migration.ts`.
+2. Add a new version in `Versions`. 
+    The key should be a descriptive name, and the value should be one higher than the one above.
 
-   e.g. if we rename a property from `oldName` to `newName`
-
-   ```diff
-    const Versions = {
-      ...
-      AddSomeNewField: 41,
-   +  RenameOldNameToNewName: 42,
-    }
-   ```
+       ```diff
+        const Versions = {
+          ...
+          SomeMigration: 41,
+       +  MyNewlyAddedMigration: 42,
+        }
+       ```
 
 3. Assign the new `Version` name to `CURRENT_APP_VERSION`.
 
    ```diff
-   -const CURRENT_APP_VERSION = Versions.AddSomeNewField
-   +const CURRENT_APP_VERSION = Versions.RenameOldNameToNewName
+   -const CURRENT_APP_VERSION = Versions.SomeMigration
+   +const CURRENT_APP_VERSION = Versions.MyNewlyAddedMigration
    ```
 
-4. Add a new migration in the `migrations` object.
+4. Edit the `migrations` object.
 
    e.g. to rename a property from `oldName` to `newName`
 
@@ -104,41 +61,6 @@ If you're still unsure whether your change requires a new migration, please reac
     const migrations = {
    +   [Versions.RenameOldNameToNewName]: state => {
    +      state.myModule.newName = state.myModule.oldName
-   +      delete state.myModule.oldName
-   +   }
-    }
-   ```
-
-   e.g. to add a new property called `newProperty` with a default value of `"default_value"`
-
-   ```diff
-    const migrations = {
-   +   [Versions.AddNewProperty]: state => {
-   +      state.myModule.newProperty = "default_value"
-   +   }
-    }
-   ```
-
-   e.g. to remove an existing property called `oldProperty`.
-
-   ```diff
-    const migrations = {
-   +   [Versions.RemoveOldProperty]: state => {
-   +      delete state.myModule.oldProperty
-   +   }
-    }
-   ```
-
-   e.g. to update the items in an array
-
-   ```diff
-    const migrations = {
-   +   [Versions.UpdateArrayOfThings]: state => {
-   +     state.myModule.arrayOfThings.forEach(thing => {
-   +       thing.newProperty = "default_value"
-   +       thing.newName = thing.oldName
-   +       delete thing.oldName
-   +     })
    +   }
     }
    ```
@@ -194,3 +116,7 @@ If you're still unsure whether your change requires a new migration, please reac
    3. Log in and perform actions to accumulate some of the state that will be affected by your changes.
    4. Install your development version of the app from Xcode.
    5. Check that the affected code works as intended.
+
+
+Don't forget, we're here for you! 
+Always feel free to get in touch and ask people for help 🙏
