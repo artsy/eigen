@@ -97,6 +97,14 @@ export function AboveTheFoldQueryRenderer<
     return () => clearImmediate(immediate)
   }, [])
 
+  const cacheConfig = props.cacheConfig ?? {}
+  let fetchPolicy = cacheConfig.fetchPolicy
+
+  if (props.fetchPolicy) {
+    cacheConfig.fetchPolicy = props.fetchPolicy
+    fetchPolicy = props.fetchPolicy
+  }
+
   return (
     <>
       <QueryRenderer
@@ -123,8 +131,8 @@ export function AboveTheFoldQueryRenderer<
               })
             : null
         }}
-        cacheConfig={props.cacheConfig || null}
-        fetchPolicy={props.fetchPolicy}
+        cacheConfig={cacheConfig}
+        fetchPolicy={fetchPolicy}
       />
       {(renderBelowTheFold || aboveArgs?.props) && (
         <QueryRenderer
@@ -141,8 +149,8 @@ export function AboveTheFoldQueryRenderer<
             }
             return null
           }}
-          cacheConfig={props.cacheConfig || null}
-          fetchPolicy={props.fetchPolicy}
+          cacheConfig={cacheConfig}
+          fetchPolicy={fetchPolicy}
         />
       )}
     </>
