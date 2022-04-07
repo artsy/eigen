@@ -10,7 +10,6 @@ import {
   FilterModalMode,
 } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { refreshArtworks } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import Spinner from "app/Components/Spinner"
@@ -71,6 +70,9 @@ interface ViewToken {
   section?: any
 }
 
+// tslint:disable-next-line:no-empty
+const NOOP = () => {}
+
 export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const tracking = useTracking()
 
@@ -82,11 +84,12 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const prevIsLive = usePrevious(isLive)
 
   const scrollAnim = useRef(new Animated.Value(0)).current
+  const artworksRefetchRef = useRef(NOOP)
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
 
-    refreshArtworks()
+    artworksRefetchRef.current()
     relay.refetch(
       {},
       null,
@@ -197,6 +200,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
           saleID={sale.internalID}
           saleSlug={sale.slug}
           scrollToTop={scrollToTop}
+          artworksRefetchRef={artworksRefetchRef}
         />
       ) : (
         // Since most likely this part of the screen will be already loaded when the user
