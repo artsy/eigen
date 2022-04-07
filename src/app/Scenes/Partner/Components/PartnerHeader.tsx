@@ -1,4 +1,5 @@
 import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
+import { PartnerBanner } from "app/Components/PartnerBanner"
 import { Stack } from "app/Components/Stack"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
 import { Box, Flex, Sans } from "palette"
@@ -11,26 +12,38 @@ const PartnerHeader: React.FC<{
 }> = ({ partner }) => {
   const eligibleArtworks = partner.counts?.eligibleArtworks ?? 0
 
+  const galleryBadges = ["Black Owned", "Women Owned"]
+
+  const eligibleCategories = (partner.categories || []).filter(Boolean)
+
+  const categoryNames: string[] = eligibleCategories.map((category) => category?.name || "")
+  const firstEligibleBadgeName: string | undefined = galleryBadges.find((badge) =>
+    categoryNames.includes(badge)
+  )
+
   return (
-    <Box px={2} pb={1} pt={6}>
-      <Sans mb={1} size="8">
-        {partner.name}
-      </Sans>
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Stack spacing={0.5}>
-          {!!eligibleArtworks && (
-            <Sans size="3t">
-              {!!eligibleArtworks && formatLargeNumberOfItems(eligibleArtworks, "work", "works")}
-            </Sans>
+    <>
+      <Box px={2} pb={1} pt={6}>
+        <Sans mb={1} size="8">
+          {partner.name}
+        </Sans>
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Stack spacing={0.5}>
+            {!!eligibleArtworks && (
+              <Sans size="3t">
+                {!!eligibleArtworks && formatLargeNumberOfItems(eligibleArtworks, "work", "works")}
+              </Sans>
+            )}
+          </Stack>
+          {!!partner.profile && (
+            <Flex flexGrow={0} flexShrink={0}>
+              <FollowButton partner={partner} />
+            </Flex>
           )}
-        </Stack>
-        {!!partner.profile && (
-          <Flex flexGrow={0} flexShrink={0}>
-            <FollowButton partner={partner} />
-          </Flex>
-        )}
-      </Flex>
-    </Box>
+        </Flex>
+      </Box>
+      {firstEligibleBadgeName && <PartnerBanner bannerText={firstEligibleBadgeName} />}
+    </>
   )
 }
 
@@ -40,6 +53,9 @@ export const PartnerHeaderContainer = createFragmentContainer(PartnerHeader, {
       name
       profile {
         # Only fetch something so we can see if the profile exists.
+        name
+      }
+      categories {
         name
       }
       counts {
