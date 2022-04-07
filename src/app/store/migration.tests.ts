@@ -620,3 +620,29 @@ describe("App version Versions.AddSourceInitialPhotosToSubmission", () => {
     expect(migratedState.artworkSubmission.submission.photos.initialPhotos).toEqual([])
   })
 })
+
+describe("App version Versions.AddZipCodeAndCountryCodeInSubmissionArtworkDetails", () => {
+  const migrationToTest = Versions.AddZipCodeAndCountryCodeInSubmissionArtworkDetails
+
+  it("adds zipCode and countryCode to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    expect(previousState.artworkSubmission.submission.artworkDetails.zipCode).toEqual(undefined)
+    expect(previousState.artworkSubmission.submission.artworkDetails.location.countryCode).toEqual(
+      undefined
+    )
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artworkSubmission.submission.artworkDetails.zipCode).toEqual("")
+    expect(migratedState.artworkSubmission.submission.artworkDetails.location.countryCode).toEqual(
+      ""
+    )
+  })
+})

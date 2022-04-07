@@ -36,9 +36,10 @@ export const Versions = {
   AddSourceAndMyCollectionArtworkIDToSubmission: 24,
   AddSourceInitialPhotosToSubmission: 25,
   RequestedPriceEstimates: 26,
+  AddZipCodeAndCountryCodeInSubmissionArtworkDetails: 27,
 }
 
-export const CURRENT_APP_VERSION = Versions.RequestedPriceEstimates
+export const CURRENT_APP_VERSION = Versions.AddZipCodeAndCountryCodeInSubmissionArtworkDetails
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -195,6 +196,10 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RequestedPriceEstimates]: (state) => {
     state.requestedPriceEstimates = { requestedPriceEstimates: {} }
+  },
+  [Versions.AddZipCodeAndCountryCodeInSubmissionArtworkDetails]: (state) => {
+    state.artworkSubmission.submission.artworkDetails.zipCode = ""
+    state.artworkSubmission.submission.artworkDetails.location.countryCode = ""
   },
 }
 

@@ -94,7 +94,7 @@ export const countriesRequirePostalCode = [
   "SE", // Sweden
   "CH", // Switzerland
   "GB", // United Kingdom
-  // "NL", // Netherlands
+  "NL", // Netherlands
 ]
 
 const usPostalCodeErrorMessage = "Please enter a 5-digit US zip code."
