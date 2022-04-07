@@ -50,19 +50,23 @@ describe("extractPillFromAggregation", () => {
 
 describe("extractSizeLabel", () => {
   it("returns correcly label when full range is specified", () => {
-    expect(extractSizeLabel("w", "5-10")).toBe("w: 5-10 in")
+    expect(extractSizeLabel({ prefix: "w", value: "5-10", unit: "in" })).toBe("w: 5-10 in")
+    expect(extractSizeLabel({ prefix: "w", value: "5-10", unit: "cm" })).toBe("w: 12.7-25.4 cm")
   })
 
   it("returns correcly label when only min value is specified", () => {
-    expect(extractSizeLabel("w", "5-*")).toBe("w: from 5 in")
+    expect(extractSizeLabel({ prefix: "w", value: "5-*", unit: "in" })).toBe("w: from 5 in")
+    expect(extractSizeLabel({ prefix: "w", value: "5-*", unit: "cm" })).toBe("w: from 12.7 cm")
   })
 
   it("returns correcly label when only max value is specified", () => {
-    expect(extractSizeLabel("w", "*-10")).toBe("w: to 10 in")
+    expect(extractSizeLabel({ prefix: "w", value: "*-10", unit: "in" })).toBe("w: to 10 in")
+    expect(extractSizeLabel({ prefix: "w", value: "*-10", unit: "cm" })).toBe("w: to 25.4 cm")
   })
 
   it("returns specified prefix", () => {
-    expect(extractSizeLabel("h", "5-10")).toBe("h: 5-10 in")
+    expect(extractSizeLabel({ prefix: "h", value: "5-10", unit: "in" })).toBe("h: 5-10 in")
+    expect(extractSizeLabel({ prefix: "h", value: "5-10", unit: "cm" })).toBe("h: 12.7-25.4 cm")
   })
 })
 
@@ -78,7 +82,7 @@ describe("extractPills", () => {
       colors: ["unknown-color"],
     }
 
-    const result = extractPills(attributes, aggregations)
+    const result = extractPills({ attributes, aggregations, unit: "in" })
 
     const pills = [
       {
@@ -131,7 +135,7 @@ describe("extractPills", () => {
       offerable: true,
       atAuction: true,
     }
-    const result = extractPills(attributes, aggregations)
+    const result = extractPills({ attributes, aggregations, unit: "in" })
 
     const pills = [
       {
@@ -153,9 +157,11 @@ describe("extractPills", () => {
     const attributes: SearchCriteriaAttributes = {
       sizes: ["SMALL", "LARGE"],
     }
-    const result = extractPills(attributes, aggregations)
 
-    expect(result).toEqual([
+    // with unit inches
+    const inResult = extractPills({ attributes, aggregations, unit: "in" })
+
+    expect(inResult).toEqual([
       {
         label: "Small (under 16in)",
         paramName: SearchCriteria.sizes,
@@ -167,13 +173,29 @@ describe("extractPills", () => {
         value: "LARGE",
       },
     ])
+
+    // with unit centimeters
+    const cmResult = extractPills({ attributes, aggregations, unit: "cm" })
+
+    expect(cmResult).toEqual([
+      {
+        label: "Small (under 40cm)",
+        paramName: SearchCriteria.sizes,
+        value: "SMALL",
+      },
+      {
+        label: "Large (over 100cm)",
+        paramName: SearchCriteria.sizes,
+        value: "LARGE",
+      },
+    ])
   })
 
   it("should correctly extract time period pills", () => {
     const attributes: SearchCriteriaAttributes = {
       majorPeriods: ["2020", "2010"],
     }
-    const result = extractPills(attributes, aggregations)
+    const result = extractPills({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -191,9 +213,9 @@ describe("extractPills", () => {
 
   it("should correctly extract color pills", () => {
     const attributes: SearchCriteriaAttributes = {
-      colors: ["pink", "orange", "red"],
+      colors: ["pink", "orange", "darkorange"],
     }
-    const result = extractPills(attributes, aggregations)
+    const result = extractPills({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -207,9 +229,9 @@ describe("extractPills", () => {
         value: "orange",
       },
       {
-        label: "Red",
+        label: "Dark Orange",
         paramName: SearchCriteria.colors,
-        value: "red",
+        value: "darkorange",
       },
     ])
   })
@@ -218,7 +240,7 @@ describe("extractPills", () => {
     const attributes: SearchCriteriaAttributes = {
       attributionClass: ["unique", "unknown edition"],
     }
-    const result = extractPills(attributes, aggregations)
+    const result = extractPills({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -238,7 +260,7 @@ describe("extractPills", () => {
     const attributes: SearchCriteriaAttributes = {
       priceRange: "1000-1500",
     }
-    const result = extractPills(attributes, aggregations)
+    const result = extractPills({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {

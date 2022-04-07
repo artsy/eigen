@@ -22,6 +22,7 @@ describe("HeaderArtworksFilterWithTotalArtworks", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   const TestHeaderArtworksFilterWithTotalArtworks = ({

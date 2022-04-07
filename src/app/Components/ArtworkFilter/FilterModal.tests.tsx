@@ -150,6 +150,7 @@ const initialState: ArtworkFiltersState = {
     total: null,
     followedArtists: null,
   },
+  sizeMetric: "cm",
 }
 
 afterEach(() => {
@@ -238,6 +239,7 @@ describe("Filter modal states", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
@@ -263,6 +265,7 @@ describe("Filter modal states", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
@@ -288,6 +291,7 @@ describe("Filter modal states", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText } = renderWithWrappersTL(
@@ -335,6 +339,7 @@ describe("Filter modal states", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
@@ -369,6 +374,7 @@ describe("Clearing filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText, queryByText } = renderWithWrappersTL(
@@ -396,6 +402,7 @@ describe("Clearing filters", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText } = renderWithWrappersTL(
@@ -465,6 +472,7 @@ describe("Applying filters on Artworks", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     renderWithWrappersTL(<TestRenderer initialData={injectedState} />)
@@ -529,6 +537,7 @@ describe("Applying filters on Artworks", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText } = renderWithWrappersTL(

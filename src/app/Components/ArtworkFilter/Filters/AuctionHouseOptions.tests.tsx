@@ -32,6 +32,7 @@ describe("AuctionHouse options screen", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   it("selects only the option that is selected", () => {

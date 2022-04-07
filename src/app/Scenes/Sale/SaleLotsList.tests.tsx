@@ -36,6 +36,7 @@ describe("SaleLotsListContainer", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   const TestRenderer = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
@@ -83,6 +84,7 @@ describe("SaleLotsListContainer", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   })
 
   beforeEach(() => {
