@@ -13,6 +13,7 @@ import {
   getSortDefaultValueByFilterType,
   getUnitedSelectedAndAppliedFilters,
 } from "./ArtworkFilterHelpers"
+import { LOCALIZED_UNIT } from "./Filters/helpers"
 import { FilterDisplayConfig } from "./types"
 
 export interface ArtworkFiltersModel {
@@ -58,7 +59,7 @@ export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
     total: null,
     followedArtists: null,
   },
-  sizeMetric: "cm",
+  sizeMetric: LOCALIZED_UNIT,
 
   /**
    * Store actions
@@ -134,6 +135,7 @@ export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
 
   setSizeMetric: action((state, payload) => {
     state.sizeMetric = payload
+    state.applyFilters = false
   }),
 
   setFiltersCountAction: action((state, payload) => {
