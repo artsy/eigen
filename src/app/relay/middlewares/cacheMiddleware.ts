@@ -9,9 +9,12 @@ export const cacheMiddleware = () => {
     const { cacheConfig, operation, variables } = req
     const isQuery = operation.operationKind === "query"
     const queryID = operation.id
+    const shouldFetch =
+      cacheConfig?.fetchPolicy === "network-only" ||
+      cacheConfig?.fetchPolicy === "store-and-network"
 
     // If we have valid data in cache return
-    if (isQuery && !cacheConfig.force) {
+    if (isQuery && !cacheConfig.force && !shouldFetch) {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const dataFromCache = await cache.get(queryID, variables)
       if (dataFromCache) {
