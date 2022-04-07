@@ -1,4 +1,5 @@
 import { Environment, GraphQLTaggedNode } from "react-relay"
+import { FetchPolicy as RelayFetchPolicy } from "relay-runtime"
 
 interface Variables {
   [name: string]: any
@@ -10,14 +11,6 @@ interface OperationType {
   readonly rawResponse?: unknown | undefined
 }
 
-interface CacheConfig {
-  force?: boolean | null | undefined
-  poll?: number | null | undefined
-  liveConfigId?: string | null | undefined
-  metadata?: { [key: string]: unknown } | undefined
-  transactionId?: string | null | undefined
-}
-
 type FetchQueryFetchPolicy = "store-or-network" | "network-only"
 
 /**
@@ -25,8 +18,8 @@ type FetchQueryFetchPolicy = "store-or-network" | "network-only"
  * unsubscribed or checked to see if the resulting subscription has closed.
  */
 export interface Subscription {
-  unsubscribe(): void
   readonly closed: boolean
+  unsubscribe(): void
 }
 
 /**
@@ -47,10 +40,10 @@ export interface Observer<T> {
  * field to see if the resulting subscription has closed.
  */
 export interface Sink<T> {
+  readonly closed: boolean
   next(value: T): void
   error(error: Error, isUncaughtThrownError?: boolean): void
   complete(): void
-  readonly closed: boolean
 }
 
 /**
@@ -86,9 +79,6 @@ export type ObservableFromValue<T> = Subscribable<T> | Promise<T> | T
  */
 
 export class RelayObservable<T> implements Subscribable<T> {
-  // Use RelayObservable.create(source);
-  private constructor(source: never)
-
   static create<V>(source: Source<V>): RelayObservable<V>
 
   /**
@@ -123,6 +113,8 @@ export class RelayObservable<T> implements Subscribable<T> {
    * useful for accepting the result of a user-provided FetchFunction.
    */
   static from<V>(obj: ObservableFromValue<V>): RelayObservable<V>
+  // Use RelayObservable.create(source);
+  private constructor(source: never)
 
   /**
    * Similar to promise.catch(), observable.catch() handles error events, and
@@ -222,4 +214,13 @@ declare module "relay-runtime" {
       fetchPolicy?: FetchQueryFetchPolicy | null | undefined
     } | null
   ): RelayObservable<T["response"]>
+
+  interface CacheConfig {
+    force?: boolean | null | undefined
+    poll?: number | null | undefined
+    liveConfigId?: string | null | undefined
+    metadata?: { [key: string]: unknown } | undefined
+    transactionId?: string | null | undefined
+    fetchPolicy?: RelayFetchPolicy
+  }
 }
