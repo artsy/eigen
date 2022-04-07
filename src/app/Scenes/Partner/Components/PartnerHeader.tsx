@@ -11,7 +11,15 @@ const PartnerHeader: React.FC<{
   partner: PartnerHeader_partner
 }> = ({ partner }) => {
   const eligibleArtworks = partner.counts?.eligibleArtworks ?? 0
-  const isBlackOwned = partner.categories!.filter((c) => c && c.name === "Black Owned").length > 0
+
+  const galleryBadges = ["Black Owned", "Women Owned"]
+
+  const eligibleCategories = (partner.categories || []).filter(Boolean)
+
+  const categoryNames: string[] = eligibleCategories.map((category) => category?.name || "")
+  const firstEligibleBadgeName: string | undefined = galleryBadges.find((badge) =>
+    categoryNames.includes(badge)
+  )
 
   return (
     <>
@@ -34,7 +42,7 @@ const PartnerHeader: React.FC<{
           )}
         </Flex>
       </Box>
-      {isBlackOwned && <PartnerBanner bannerText="Black Owned" />}
+      {firstEligibleBadgeName && <PartnerBanner bannerText={firstEligibleBadgeName} />}
     </>
   )
 }
