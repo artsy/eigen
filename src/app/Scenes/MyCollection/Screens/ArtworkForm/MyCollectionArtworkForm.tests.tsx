@@ -1,32 +1,30 @@
+import { fireEvent } from "@testing-library/react-native"
+import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
+import { myCollectionCreateArtworkMutationResponse } from "__generated__/myCollectionCreateArtworkMutation.graphql"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import {
+  getConvectionGeminiKey,
+  getGeminiCredentialsForEnvironment,
+  uploadFileToS3,
+} from "app/Scenes/Consignments/Submission/uploadFileToS3"
+import { GlobalStore } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Image } from "react-native-image-crop-picker"
+import { RelayEnvironmentProvider } from "react-relay"
+import { act } from "react-test-renderer"
+import { createMockEnvironment } from "relay-test-utils"
+import * as artworkMutations from "../../mutations/myCollectionCreateArtwork"
+import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import {
   MyCollectionArtworkForm,
   MyCollectionArtworkFormProps,
   updateArtwork,
 } from "./MyCollectionArtworkForm"
-
-import { fireEvent } from "@testing-library/react-native"
-import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
-import { myCollectionAddArtworkMutationResponse } from "__generated__/myCollectionAddArtworkMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-
-import {
-  getConvectionGeminiKey,
-  getGeminiCredentialsForEnvironment,
-  uploadFileToS3,
-} from "app/Scenes/Consignments/Submission/geminiUploadToS3"
-import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { RelayEnvironmentProvider } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
-import * as artworkMutations from "../../mutations/myCollectionAddArtwork"
-import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import * as photoUtil from "./MyCollectionImageUtil"
 
-jest.mock("app/Scenes/Consignments/Submission/geminiUploadToS3", () => ({
+jest.mock("app/Scenes/Consignments/Submission/uploadFileToS3", () => ({
   getConvectionGeminiKey: jest.fn(),
   getGeminiCredentialsForEnvironment: jest.fn(),
   uploadFileToS3: jest.fn(),
@@ -70,6 +68,23 @@ describe("MyCollectionArtworkForm", () => {
   describe("Adding a new artwork", () => {
     describe("when selecting an already existing artwork", () => {
       it("populates the form with the data from the artwork", async () => {
+        const assetCredentials = {
+          signature: "some-signature",
+          credentials: "some-credentials",
+          policyEncoded: "some-policy-encoded",
+          policyDocument: {
+            expiration: "some-expiration",
+            conditions: {
+              acl: "some-acl",
+              bucket: "some-bucket",
+              geminiKey: "some-gemini-key",
+              successActionStatus: "some-success-action-status",
+            },
+          },
+        }
+        getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
+        uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
+
         const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappersTL(
           <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
         )
@@ -124,6 +139,49 @@ describe("MyCollectionArtworkForm", () => {
         // Complete Form
 
         act(() => fireEvent.press(getByTestId("CompleteButton")))
+
+        await flushPromiseQueue()
+
+        const updatePreferencesOperation = mockEnvironment.mock.getMostRecentOperation()
+        expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
+          Object {
+            "input": Object {
+              "currencyPreference": "USD",
+              "lengthUnitPreference": "IN",
+            },
+          }
+        `)
+
+        mockEnvironment.mock.resolveMostRecentOperation(() => ({
+          data: {},
+        }))
+        await flushPromiseQueue()
+
+        const createArtworkOperation = mockEnvironment.mock.getMostRecentOperation()
+        expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
+          Object {
+            "input": Object {
+              "artistIds": Array [
+                "",
+              ],
+              "category": "Screen print",
+              "date": "2007",
+              "depth": 40,
+              "externalImageUrls": Array [
+                "https://some-bucket.s3.amazonaws.com/undefined",
+              ],
+              "height": 20,
+              "importSource": "MY_COLLECTION",
+              "isEdition": true,
+              "medium": "Print",
+              "metric": "in",
+              "pricePaidCents": undefined,
+              "pricePaidCurrency": "USD",
+              "title": "Morons",
+              "width": 30,
+            },
+          }
+        `)
       })
     })
 
@@ -192,6 +250,7 @@ describe("MyCollectionArtworkForm", () => {
   describe("images", () => {
     describe("uploading images", () => {
       it("uploads photos to s3", async () => {
+        uploadFileToS3Mock.mockReset()
         const somePhoto = fakePhoto("some-path")
         const someOtherPhoto = fakePhoto("some-other-path")
         getConvectionGeminiKeyMock.mockReturnValueOnce(Promise.resolve("some-key"))
@@ -217,13 +276,16 @@ describe("MyCollectionArtworkForm", () => {
         await photoUtil.uploadPhotos([somePhoto, someOtherPhoto])
 
         expect(uploadFileToS3).toHaveBeenCalledTimes(2)
-        expect(uploadFileToS3).toHaveBeenNthCalledWith(1, "some-path", "private", assetCredentials)
-        expect(uploadFileToS3).toHaveBeenNthCalledWith(
-          2,
-          "some-other-path",
-          "private",
-          assetCredentials
-        )
+        expect(uploadFileToS3).toHaveBeenNthCalledWith(1, {
+          filePath: "some-path",
+          acl: "private",
+          assetCredentials,
+        })
+        expect(uploadFileToS3).toHaveBeenNthCalledWith(2, {
+          filePath: "some-other-path",
+          acl: "private",
+          assetCredentials,
+        })
       })
     })
 
@@ -274,7 +336,7 @@ describe("MyCollectionArtworkForm", () => {
         )
 
         const artworkSlug = "some-slug"
-        const artworkResponse: myCollectionAddArtworkMutationResponse = {
+        const artworkResponse: myCollectionCreateArtworkMutationResponse = {
           myCollectionCreateArtwork: {
             artworkOrError: {
               artworkEdge: {
@@ -286,6 +348,13 @@ describe("MyCollectionArtworkForm", () => {
                   artist: {
                     internalID: "some-internal-id",
                     formattedNationalityAndBirthday: "British",
+                    targetSupply: {
+                      isP1: false,
+                    },
+                  },
+                  dimensions: {
+                    in: "23",
+                    cm: "26",
                   },
                   artistNames: "some-artist-name",
                   category: null,
@@ -305,13 +374,14 @@ describe("MyCollectionArtworkForm", () => {
                   title: null,
                   attributionClass: null,
                   consignmentSubmission: null,
+                  " $fragmentRefs": null as any,
                 },
               },
             },
           },
         }
 
-        const addArtworkMock = jest.spyOn(artworkMutations, "myCollectionAddArtwork")
+        const addArtworkMock = jest.spyOn(artworkMutations, "myCollectionCreateArtwork")
         addArtworkMock.mockImplementation(() => Promise.resolve(artworkResponse))
 
         const storeLocalPhotosMock = jest.spyOn(photoUtil, "storeLocalPhotos")

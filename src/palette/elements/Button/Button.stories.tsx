@@ -2,7 +2,7 @@ import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { Wrap } from "app/utils/Wrap"
 import { BellIcon, Box, Flex, LinkIcon, Spacer } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { Button as RNButton } from "react-native"
 import { withHooks, withScreenDimensions, withTheme } from "storybook/decorators"
 import { DataList, List } from "storybook/helpers"
@@ -14,6 +14,7 @@ const variants: Array<ButtonProps["variant"]> = [
   "fillDark",
   "fillLight",
   "fillGray",
+  "fillSuccess",
   "outline",
   "outlineGray",
   "outlineLight",
@@ -69,17 +70,14 @@ storiesOf("Button", module)
     <DataList
       data={variants}
       renderItem={({ item: variant }) => (
-        <Wrap
-          if={variant === "outlineLight" || variant === "fillLight"}
-          with={(c) => (
-            <Flex backgroundColor="black100" p={10}>
-              {c}
-            </Flex>
-          )}
-        >
-          <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
-            {variant}
-          </Button>
+        <Wrap if={variant === "outlineLight" || variant === "fillLight"}>
+          <Flex backgroundColor="black100" p={10}>
+            <Wrap.Content>
+              <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
+                {variant}
+              </Button>
+            </Wrap.Content>
+          </Flex>
         </Wrap>
       )}
     />
@@ -98,17 +96,14 @@ storiesOf("Button", module)
     <DataList
       data={variants}
       renderItem={({ item: variant }) => (
-        <Wrap
-          if={variant === "outlineLight"}
-          with={(c) => (
-            <Flex backgroundColor="black100" p={10}>
-              {c}
-            </Flex>
-          )}
-        >
-          <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
-            {variant}
-          </Button>
+        <Wrap if={variant === "outlineLight"}>
+          <Flex backgroundColor="black100" p={10}>
+            <Wrap.Content>
+              <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
+                {variant}
+              </Button>
+            </Wrap.Content>
+          </Flex>
         </Wrap>
       )}
     />

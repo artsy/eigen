@@ -3,6 +3,7 @@ import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterM
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { loadDevNavigationStateCache } from "app/navigation/useReloadedDevNavigationState"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { logAction } from "app/utils/loggers"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import React from "react"
 import { Platform } from "react-native"
@@ -31,7 +32,9 @@ function createGlobalStore() {
   // At dev time but not test time, let's log out each action that is dispatched
   if (__DEV__ && !__TEST__) {
     middleware.push((_api) => (next) => (_action) => {
-      console.log(`ACTION ${_action.type}`, _action)
+      if (logAction) {
+        console.log(`ACTION ${_action.type}`, _action)
+      }
       next(_action)
     })
   }
@@ -153,6 +156,21 @@ export function unsafe_getFeatureFlag(key: FeatureName): boolean {
   return features[key].readyForRelease
 }
 
+/**
+ * This is marked as unsafe because it will not cause a re-render
+ * if used in a react component. Use `useLocalizedUnit` instead.
+ * It is safe to use in contexts that don't require reactivity.
+ */
+export function unsafe_getLocalizedUnit() {
+  const state = globalStoreInstance().getState()
+  if (state) {
+    return state.userPrefs.metric
+  }
+  if (__DEV__) {
+    throw new Error(`Unable to access metric before GlobalStore bootstraps`)
+  }
+}
+
 export function unsafe_getDevToggle(key: DevToggleName) {
   const state = globalStoreInstance().getState() ?? null
   if (state) {
@@ -173,6 +191,19 @@ export const useVisualClue = () => {
 
   return { seenVisualClues, showVisualClue }
 }
+
+export const useSessionVisualClue = () => {
+  const sessionVisualClues = GlobalStore.useAppState((state) => state.visualClue.sessionState.clues)
+
+  const showSessionVisualClue = (clueName?: VisualClueName): boolean =>
+    !!clueName && sessionVisualClues.includes(clueName)
+
+  return { showSessionVisualClue }
+}
+
+export const addClue = GlobalStore.actions.visualClue.addClue
+
+export const removeClue = GlobalStore.actions.visualClue.removeClue
 
 export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
 

@@ -26,14 +26,19 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) =
   const tracking = useTracking()
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
     tracking.trackEvent(tappedConsign(tappedConsignArgs))
-    GlobalStore.actions.artworkSubmission.submission.resetSessionStateAll()
+    GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+      photos: [],
+    })
     const route = "/collections/my-collection/artworks/new/submissions/new"
     navigate(route)
   }
 
   useEffect(() => {
     return () => {
-      GlobalStore.actions.artworkSubmission.submission.resetSessionStateAll()
+      GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+      GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+        photos: [],
+      })
     }
   }, [])
 
@@ -63,6 +68,14 @@ interface ConsignmentsHomeQueryRendererProps {
   environment?: RelayModernEnvironment
 }
 
+export const ConsignmentsHomeScreenQuery = graphql`
+  query ConsignmentsHomeQuery {
+    targetSupply {
+      ...ConsignmentsHome_targetSupply
+    }
+  }
+`
+
 export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({
   environment,
 }) => {
@@ -70,13 +83,7 @@ export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRender
     <QueryRenderer<ConsignmentsHomeQuery>
       environment={environment || defaultEnvironment}
       variables={{}}
-      query={graphql`
-        query ConsignmentsHomeQuery {
-          targetSupply {
-            ...ConsignmentsHome_targetSupply
-          }
-        }
-      `}
+      query={ConsignmentsHomeScreenQuery}
       render={renderWithPlaceholder({
         Container: ConsignmentsHomeContainer,
         renderPlaceholder: () => <ConsignmentsHome isLoading targetSupply={null as any} />,

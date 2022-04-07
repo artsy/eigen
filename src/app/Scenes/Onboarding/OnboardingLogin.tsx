@@ -1,11 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
-import { ScrollView, View } from "react-native"
+import { ScrollView } from "react-native"
 import * as Yup from "yup"
 import { Touchable } from "../../../palette/elements/Touchable/Touchable"
 import { OnboardingNavigationStack } from "./Onboarding"
@@ -70,106 +71,108 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
   }, [])
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
-      <ScrollView
-        contentContainerStyle={{
-          paddingTop: useScreenDimensions().safeAreaInsets.top,
-          paddingHorizontal: 20,
-        }}
-        keyboardShouldPersistTaps="always"
-      >
-        <Spacer mt={60} />
-        <Text variant="lg">Log In</Text>
-        <Spacer mt={50} />
-        <Box>
-          <Input
-            ref={emailInputRef}
-            autoCapitalize="none"
-            autoCompleteType="email"
-            // There is no need to autofocus here if we are getting
-            // the email already from the navigation params
-            autoFocus={!route.params?.email}
-            keyboardType="email-address"
-            onChangeText={(text) => {
-              handleChange("email")(text.trim())
-            }}
-            onSubmitEditing={() => {
-              validateForm()
-              passwordInputRef.current?.focus()
-            }}
-            onBlur={() => validateForm()}
-            blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
-            placeholder="Email address"
-            placeholderTextColor={color("black30")}
-            title="Email"
-            value={values.email}
-            returnKeyType="next"
-            spellCheck={false}
-            autoCorrect={false}
-            // We need to to set textContentType to username (instead of emailAddress) here
-            // enable autofill of login details from the device keychain.
-            textContentType="username"
-            error={errors.email}
-          />
-          <Spacer mt={2} />
-          <Input
-            autoCapitalize="none"
-            autoCompleteType="password"
-            autoCorrect={false}
-            // If we have the email already prefilled from the navigation params
-            // we want the autoFocus to be on the password
-            autoFocus={!!route.params?.email}
-            onChangeText={(text) => {
-              // Hide error when the user starts to type again
-              if (errors.password) {
-                setErrors({
-                  password: undefined,
-                })
-                validateForm()
-              }
-              handleChange("password")(text)
-            }}
-            onSubmitEditing={handleSubmit}
-            onBlur={() => validateForm()}
-            placeholder="Password"
-            placeholderTextColor={color("black30")}
-            ref={passwordInputRef}
-            secureTextEntry
-            title="Password"
-            returnKeyType="done"
-            // We need to to set textContentType to password here
-            // enable autofill of login details from the device keychain.
-            textContentType="password"
-            value={values.password}
-            error={errors.password}
-          />
-        </Box>
-        <Spacer mt={4} />
-        <Touchable
-          onPress={() => {
-            navigation.navigate("ForgotPassword")
+    <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
+      <ArtsyKeyboardAvoidingView>
+        <ScrollView
+          contentContainerStyle={{
+            paddingTop: useScreenDimensions().safeAreaInsets.top,
+            paddingHorizontal: 20,
           }}
+          keyboardShouldPersistTaps="always"
         >
-          <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
-            Forgot password?
-          </Text>
-        </Touchable>
-      </ScrollView>
-      <BackButton onPress={() => navigation.goBack()} />
-      <Flex px={2} paddingBottom={2}>
-        <Button
-          onPress={handleSubmit}
-          block
-          haptic="impactMedium"
-          disabled={!(isValid && dirty) || isSubmitting} // isSubmitting to prevent weird appearances of the errors caused by async submiting
-          loading={isSubmitting}
-          testID="loginButton"
-          variant="fillDark"
-        >
-          Log in
-        </Button>
-      </Flex>
-    </View>
+          <Spacer mt={60} />
+          <Text variant="lg">Log In</Text>
+          <Spacer mt={50} />
+          <Box>
+            <Input
+              ref={emailInputRef}
+              autoCapitalize="none"
+              autoComplete="email"
+              // There is no need to autofocus here if we are getting
+              // the email already from the navigation params
+              autoFocus={!route.params?.email}
+              keyboardType="email-address"
+              onChangeText={(text) => {
+                handleChange("email")(text.trim())
+              }}
+              onSubmitEditing={() => {
+                validateForm()
+                passwordInputRef.current?.focus()
+              }}
+              onBlur={() => validateForm()}
+              blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
+              placeholder="Email address"
+              placeholderTextColor={color("black30")}
+              title="Email"
+              value={values.email}
+              returnKeyType="next"
+              spellCheck={false}
+              autoCorrect={false}
+              // We need to to set textContentType to username (instead of emailAddress) here
+              // enable autofill of login details from the device keychain.
+              textContentType="username"
+              error={errors.email}
+            />
+            <Spacer mt={2} />
+            <Input
+              autoCapitalize="none"
+              autoComplete="password"
+              autoCorrect={false}
+              // If we have the email already prefilled from the navigation params
+              // we want the autoFocus to be on the password
+              autoFocus={!!route.params?.email}
+              onChangeText={(text) => {
+                // Hide error when the user starts to type again
+                if (errors.password) {
+                  setErrors({
+                    password: undefined,
+                  })
+                  validateForm()
+                }
+                handleChange("password")(text)
+              }}
+              onSubmitEditing={handleSubmit}
+              onBlur={() => validateForm()}
+              placeholder="Password"
+              placeholderTextColor={color("black30")}
+              ref={passwordInputRef}
+              secureTextEntry
+              title="Password"
+              returnKeyType="done"
+              // We need to to set textContentType to password here
+              // enable autofill of login details from the device keychain.
+              textContentType="password"
+              value={values.password}
+              error={errors.password}
+            />
+          </Box>
+          <Spacer mt={4} />
+          <Touchable
+            onPress={() => {
+              navigation.navigate("ForgotPassword")
+            }}
+          >
+            <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
+              Forgot password?
+            </Text>
+          </Touchable>
+        </ScrollView>
+        <BackButton onPress={() => navigation.goBack()} />
+        <Flex px={2} paddingBottom={2}>
+          <Button
+            onPress={handleSubmit}
+            block
+            haptic="impactMedium"
+            disabled={!(isValid && dirty) || isSubmitting} // isSubmitting to prevent weird appearances of the errors caused by async submiting
+            loading={isSubmitting}
+            testID="loginButton"
+            variant="fillDark"
+          >
+            Log in
+          </Button>
+        </Flex>
+      </ArtsyKeyboardAvoidingView>
+    </Flex>
   )
 }
 

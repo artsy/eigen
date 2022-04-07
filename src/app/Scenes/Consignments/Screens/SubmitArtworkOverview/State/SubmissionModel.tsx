@@ -1,20 +1,27 @@
+import {
+  Photo,
+  photosEmptyInitialValues,
+  PhotosFormModel,
+} from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
 import { Action, action } from "easy-peasy"
 import { ConsignmentsSubmissionUtmParams } from "../../../ConsignmentsHome/ConsignmentsSubmissionForm"
 import {
   artworkDetailsEmptyInitialValues,
   ArtworkDetailsFormModel,
 } from "../ArtworkDetails/validation"
-import { photosEmptyInitialValues, PhotosFormModel } from "../UploadPhotos/validation"
 
 export interface ArtworkSubmissionModel {
   submissionId: string
   setSubmissionId: Action<ArtworkSubmissionModel, string>
   artworkDetails: ArtworkDetailsFormModel
   setArtworkDetailsForm: Action<ArtworkSubmissionModel, ArtworkDetailsFormModel>
+  initializeArtworkDetailsForm: Action<ArtworkSubmissionModel, Partial<ArtworkDetailsFormModel>>
+  initializePhotos: Action<ArtworkSubmissionModel, Photo[]>
   photos: PhotosFormModel
+  photosForMyCollection: PhotosFormModel
   setPhotos: Action<ArtworkSubmissionModel, PhotosFormModel>
+  setPhotosForMyCollection: Action<ArtworkSubmissionModel, PhotosFormModel>
   setUtmParams: Action<ArtworkSubmissionModel, ConsignmentsSubmissionUtmParams>
-  resetSessionStateAll: Action<ArtworkSubmissionModel>
   resetSessionState: Action<ArtworkSubmissionModel>
 }
 
@@ -27,14 +34,24 @@ export const getSubmissionModel = (): SubmissionModel => ({
     submissionId: "",
     artworkDetails: artworkDetailsEmptyInitialValues,
     photos: photosEmptyInitialValues,
+    photosForMyCollection: photosEmptyInitialValues,
+    setPhotosForMyCollection: action((state, photos) => {
+      state.photosForMyCollection = photos
+    }),
     setPhotos: action((state, photos) => {
       state.photos = photos
+    }),
+    initializePhotos: action((state, photos) => {
+      state.photos.initialPhotos = photos
     }),
     setSubmissionId: action((state, id) => {
       state.submissionId = id
     }),
     setArtworkDetailsForm: action((state, form) => {
       state.artworkDetails = form
+    }),
+    initializeArtworkDetailsForm: action((state, form) => {
+      state.artworkDetails = { ...state.artworkDetails, ...form }
     }),
     setUtmParams: action((state, params) => {
       state.artworkDetails = {
@@ -45,10 +62,6 @@ export const getSubmissionModel = (): SubmissionModel => ({
       }
     }),
     resetSessionState: action((state) => {
-      state.submissionId = ""
-      state.artworkDetails = artworkDetailsEmptyInitialValues
-    }),
-    resetSessionStateAll: action((state) => {
       state.submissionId = ""
       state.artworkDetails = artworkDetailsEmptyInitialValues
       state.photos = photosEmptyInitialValues

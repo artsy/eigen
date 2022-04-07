@@ -1,4 +1,4 @@
-import { useStickyTabPageContext } from "app/Components/StickyTabPage/SitckyTabPageContext"
+import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { GridViewIcon } from "app/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Icons/ListViewIcon"
 import SearchIcon from "app/Icons/SearchIcon"
@@ -14,18 +14,25 @@ import {
   TextInputFocusEventData,
   TouchableWithoutFeedback,
 } from "react-native"
+import usePrevious from "react-use/lib/usePrevious"
 
 interface MyCollectionSearchBarProps {
+  yScrollOffset: number
   onChangeText: ((text: string) => void) | undefined
   onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
 }
 
 export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
+  yScrollOffset,
   onChangeText,
   onFocus,
 }) => {
-  const [value, setValue] = useState("")
+  const previousYScrollOffset = usePrevious(yScrollOffset)
+
+  const [isVisible, setIsVisible] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
+
+  const [value, setValue] = useState("")
 
   const { hideStaticHeader, showStaticHeader } = useStickyTabPageContext()
 
@@ -49,6 +56,20 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   }
 
   useEffect(() => {
+    const newIsVisibility = yScrollOffset <= 10 && (previousYScrollOffset ?? 0) > yScrollOffset
+    const hasValueChanged = isVisible !== newIsVisibility
+
+    console.log("asdf", previousYScrollOffset, yScrollOffset, newIsVisibility, hasValueChanged)
+
+    if (!hasValueChanged) {
+      return
+    }
+
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+    setIsVisible(newIsVisibility)
+  }, [yScrollOffset])
+
+  useEffect(() => {
     debouncedSetKeywordFilter(value)
   }, [value])
 
@@ -56,10 +77,14 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
     isFocused ? hideStaticHeader() : showStaticHeader()
   }, [isFocused])
 
+  if (!isVisible) {
+    return null
+  }
+
   return (
-    <Flex my={0.5} mx={2}>
+    <Flex my={1} mx={2}>
       {isFocused ? (
-        <Flex>
+        <Flex flexDirection="row" alignItems="center">
           <Input
             placeholder="Search by Artist, Artwork or Keyword"
             onChangeText={setValue}
@@ -69,7 +94,19 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             ref={inputRef}
             value={value}
             returnKeyType="done"
+            fontSize={14}
           />
+
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setValue("")
+              setIsFocused(false)
+            }}
+          >
+            <Text ml={1} color="black60" variant="xs">
+              Cancel
+            </Text>
+          </TouchableWithoutFeedback>
         </Flex>
       ) : (
         <Flex>
@@ -83,7 +120,9 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
               >
                 <Flex flexDirection="row" alignItems="center">
                   <SearchIcon width={18} height={18} />
-                  <Text ml={1}>{value.length > 0 ? value : "Search Your Collection"}</Text>
+                  <Text ml={1} variant="xs">
+                    {value.length > 0 ? value : "Search Your Collection"}
+                  </Text>
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>

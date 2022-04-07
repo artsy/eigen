@@ -1,5 +1,8 @@
+import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { useFormikContext } from "formik"
 import React from "react"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
@@ -39,5 +42,36 @@ describe("ArtworkDetailsForm", () => {
 
     expect(inputs.editionNumber).toBeTruthy()
     expect(inputs.editionSize).toBeTruthy()
+  })
+
+  it("opens up rarity modal, when rarity select tooltip pressed", async () => {
+    const { getAllByText } = renderWithWrappersTL(<ArtworkDetailsForm />)
+
+    const raritySelectTooltip = getAllByText("What is this?")[0]
+    expect(raritySelectTooltip).toBeTruthy()
+
+    fireEvent.press(raritySelectTooltip)
+
+    await flushPromiseQueue()
+
+    artworkRarityClassifications.map((classification) => {
+      expect(getAllByText(classification.label)).toBeTruthy()
+      expect(getAllByText(classification.description)).toBeTruthy()
+    })
+  })
+
+  it("opens up provenance modal, when provenance tooltip pressed", async () => {
+    const { getByText, getAllByText } = renderWithWrappersTL(<ArtworkDetailsForm />)
+
+    const provenanceTooltip = getAllByText("What is this?")[1]
+    expect(provenanceTooltip).toBeTruthy()
+
+    fireEvent.press(provenanceTooltip)
+
+    await flushPromiseQueue()
+
+    expect(getByText("Invoices from previous owners")).toBeTruthy()
+    expect(getByText("Certificates of authenticity")).toBeTruthy()
+    expect(getByText("Gallery exhibition catalogues")).toBeTruthy()
   })
 })

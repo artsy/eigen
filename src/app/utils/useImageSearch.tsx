@@ -3,7 +3,7 @@ import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "app/Scenes/Consignments/Submission/geminiUploadToS3"
+} from "app/Scenes/Consignments/Submission/uploadFileToS3"
 import { isEmpty } from "lodash"
 import { useState } from "react"
 import ImagePicker from "react-native-image-crop-picker"
@@ -21,7 +21,11 @@ export const useImageSearch = () => {
       acl,
       name: convectionKey || "",
     })
-    const s3 = await uploadFileToS3(imgPath, acl, assetCredentials)
+    const s3 = await uploadFileToS3({
+      filePath: imgPath,
+      acl,
+      assetCredentials,
+    })
 
     return `https://artsy-hack9.imgix.net/${s3.key}?trim=auto&trim-sd=25&q=1`
   }

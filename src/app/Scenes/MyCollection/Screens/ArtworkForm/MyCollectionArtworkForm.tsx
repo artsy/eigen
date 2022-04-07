@@ -4,8 +4,10 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
 import { OldMyCollectionArtwork_sharedProps } from "__generated__/OldMyCollectionArtwork_sharedProps.graphql"
+import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { goBack } from "app/navigation/navigate"
+import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import {
   cleanArtworkPayload,
   explicitlyClearedFields,
@@ -17,9 +19,9 @@ import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
-import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
+import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
-import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
+import { myCollectionUpdateArtwork } from "../../mutations/myCollectionUpdateArtwork"
 import { refreshMyCollection } from "../../MyCollection"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
@@ -79,6 +81,9 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     (state) => state.myCollection.artwork.sessionState
   )
 
+  const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
+  const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
+
   // we need to store the form values in a ref so that onDismiss can access their current value (prop updates are not
   // sent through the react-navigation system)
   const formValuesRef = useRef(formValues)
@@ -91,6 +96,10 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const handleSubmit = async (values: ArtworkFormValues) => {
     setLoading(true)
     try {
+      await updateMyUserProfile({
+        currencyPreference: preferredCurrency,
+        lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
+      })
       await updateArtwork(values, dirtyFormCheckValues, props)
     } catch (e) {
       if (__DEV__) {
@@ -206,7 +215,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
             <Stack.Screen
               name="ArtworkFormArtwork"
               component={MyCollectionArtworkFormArtwork}
-              initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
+              initialParams={{
+                onDelete,
+                clearForm,
+                mode: props.mode,
+                onHeaderBackButtonPress,
+              }}
             />
           )}
           <Stack.Screen
@@ -251,7 +265,7 @@ export const updateArtwork = async (
   }
 
   if (props.mode === "add") {
-    const response = await myCollectionAddArtwork({
+    const response = await myCollectionCreateArtwork({
       artistIds: [artistSearchResult!.internalID as string],
       externalImageUrls,
       pricePaidCents,
@@ -264,7 +278,7 @@ export const updateArtwork = async (
       storeLocalPhotos(slug, photos)
     }
   } else {
-    const response = await myCollectionEditArtwork({
+    const response = await myCollectionUpdateArtwork({
       artistIds: [artistSearchResult!.internalID as string],
       artworkId: props.artwork.internalID,
       externalImageUrls,

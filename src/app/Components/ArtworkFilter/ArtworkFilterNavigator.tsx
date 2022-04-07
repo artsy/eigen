@@ -25,10 +25,10 @@ import { TimePeriodOptionsScreen } from "app/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
+import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import _ from "lodash"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { View, ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
 import { CreateSavedSearchModal } from "../Artist/ArtistArtworks/CreateSavedSearchModal"
@@ -113,7 +113,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const resetFiltersAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.resetFiltersAction
   )
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   const handleClosingModal = () => {
     resetFiltersAction()
@@ -264,13 +263,21 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     tracking.trackEvent(tracks.tappedCreateAlert(id!, name!))
   }
 
+  const setSelectedMetric = ArtworksFiltersStore.useStoreActions((state) => state.setSizeMetric)
+  const { localizedUnit } = useLocalizedUnit()
+
+  // initializes the selected metric to the user preferred metric
+  useEffect(() => {
+    setSelectedMetric(localizedUnit)
+  }, [])
+
   return (
     <NavigationContainer independent>
       <FancyModal
         visible={props.visible}
         onBackgroundPressed={handleClosingModal}
-        fullScreen={isEnabledImprovedAlertsFlow}
-        animationPosition={isEnabledImprovedAlertsFlow ? "right" : "bottom"}
+        fullScreen
+        animationPosition="right"
       >
         <View style={{ flex: 1 }}>
           <Stack.Navigator
@@ -351,16 +358,14 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             shouldShowCreateAlertButton={shouldShowCreateAlertButton}
           />
 
-          {!!isEnabledImprovedAlertsFlow && (
-            <CreateSavedSearchModal
-              visible={isCreateAlertModalVisible}
-              artistId={id!}
-              artistName={name!}
-              artistSlug={slug!}
-              closeModal={() => setIsCreateAlertModalVisible(false)}
-              onComplete={exitModal}
-            />
-          )}
+          <CreateSavedSearchModal
+            visible={isCreateAlertModalVisible}
+            artistId={id!}
+            artistName={name!}
+            artistSlug={slug!}
+            closeModal={() => setIsCreateAlertModalVisible(false)}
+            onComplete={exitModal}
+          />
         </View>
       </FancyModal>
     </NavigationContainer>

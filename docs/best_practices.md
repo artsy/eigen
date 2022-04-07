@@ -1,8 +1,8 @@
 # :world_map: Our Best Practices
 
-**Last update: February 2022**
+**Last update: March 2022**
 
-This is a living document, expected to be updated regularly, with a broad overview of the history and how we prefere to do things on eigen.
+This is a living document, expected to be updated regularly, with a broad overview of the history and how we prefer to do things on eigen.
 Here you can find links to the tools we use, examples, pull requests with interesting discussions & blog posts.
 
 _Please note: Links should point to specific commits, and not a branch (in case the branch or file is deleted, these links should always work). But it's possible that a file is outdated, that our understanding has moved on since it was linked to; in that case, please update this document._
@@ -12,7 +12,9 @@ _Please note: Links should point to specific commits, and not a branch (in case 
 - [Examples and Hacks](#examples-and-hacks)
 - [History](#history)
 - [File Structure Organization](#file-structure-organization)
-- [Styling](#styling)
+- [Frontend](#frontend)
+  - [Storybook](#storybook)  
+  - [Styling](#styling)
 - [TypeScript](#TypeScript)
 - [Relay](#relay)
 - [Testing](#testing)
@@ -91,11 +93,19 @@ However, if we have a `Button` folder which exports only one button component, w
 
 `Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
 
-### Styling
+### Frontend 
 
-We use [palette](src/palette) as our reusable component toolkit, which uses `styled-system` under the hood. [Here](palette.artsy.net) you can see palette in action!
+#### Storybook
+When developing new components you are strongly encouraged to add them to [Storybook](./storybook.md).
 
-For styling we use custom inline elements like `Flex`, `Box`, `Text`. `Separator` and `Spacer` are also useful elements.
+#### Styling
+
+
+[palette](src/palette) is our reusable component toolkit, which uses [styled-system](https://styled-system.com/getting-started/) under the hood. 
+[Here](palette.artsy.net) you can see palette in action. 
+Some of our most used elements are `Flex`, `Box`, `Text`. `Separator` and `Spacer`.
+
+We want to move towards an [atomic design](https://bradfrost.com/blog/post/atomic-web-design/) and have all our UI elements in palette. Please do not add components there without consulting with **@pvinis** first.
 
 ### TypeScript
 

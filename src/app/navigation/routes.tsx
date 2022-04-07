@@ -1,6 +1,6 @@
 import { AppModule } from "app/AppRegistry"
 import { ArtsyWebViewConfig } from "app/Components/ArtsyReactWebView"
-import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { Platform } from "react-native"
@@ -53,7 +53,7 @@ export function matchRoute(
   console.error("Unhandled route", url)
   return {
     type: "match",
-    module: unsafe_getFeatureFlag("AROptionsUseReactNativeWebView") ? "ReactWebView" : "WebView",
+    module: "ReactWebView",
     params: { url },
   }
 }
@@ -63,14 +63,10 @@ export const addRoute = (route: string, module: AppModule, paramsMapper?: (val: 
 }
 
 export function addWebViewRoute(url: string, config?: ArtsyWebViewConfig) {
-  return addRoute(
-    url,
-    unsafe_getFeatureFlag("AROptionsUseReactNativeWebView") ? "ReactWebView" : "WebView",
-    (params) => ({
-      url: replaceParams(url, params),
-      ...config,
-    })
-  )
+  return addRoute(url, "ReactWebView", (params) => ({
+    url: replaceParams(url, params),
+    ...config,
+  }))
 }
 
 export function replaceParams(url: string, params: any) {
@@ -120,6 +116,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const artsyDotNet: RouteMatcher[] = compact([
     addRoute("/", "Home"),
     addRoute("/sales", "Sales"),
+    addRoute("/map", "NewMap"),
     addRoute("/search", "Search"),
     addRoute("/inbox", "Inbox"),
     addRoute("/my-profile", "MyProfile"),
@@ -142,12 +139,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
     addRoute("/:profile_id_ignored/artist/:artistID", "Artist"),
     addRoute("/auction-registration/:saleID", "AuctionRegistration"),
-    unsafe_getFeatureFlag("AROptionsNewSalePage")
-      ? addRoute("/auction/:saleID", "Auction2")
-      : addRoute("/auction/:id", "Auction"),
-    unsafe_getFeatureFlag("AROptionsNewSalePage")
-      ? addRoute("/auction/:saleID/info", "AuctionInfo")
-      : null,
+    addRoute("/auction/:saleID", "Auction"),
+    addRoute("/auction/:saleID/info", "AuctionInfo"),
     addRoute("/auction-faq", "AuctionFAQ"),
     addRoute("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
     addRoute("/gene/:geneID", "Gene"),
@@ -197,6 +190,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
     addRoute("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
     addRoute("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
+    addRoute(
+      "/my-collection/artwork/:artworkID/request-for-price-estimate",
+      "RequestForPriceEstimateScreen"
+    ),
 
     // TODO: Follow-up about below route names
     addRoute(
@@ -209,6 +206,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addWebViewRoute("/conditions-of-sale"),
     addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
     addRoute("/artwork-submission-status", "ArtworkSubmissionStatusFAQ"),
+    addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
 
     addRoute("/partner/:partnerID", "Partner"),
     addRoute("/partner/:partnerID/works", "Partner"),
@@ -244,13 +242,11 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/user/purchases/:orderID", "OrderDetails"),
     addRoute("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
     addRoute("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
-    unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
-      ? addWebViewRoute("/orders/:orderID", {
-          mimicBrowserBackButton: true,
-          useRightCloseButton: true,
-        })
-      : addRoute("/orders/:orderID", "Checkout"),
-    __DEV__ && addRoute("/storybook", "Storybook"),
+    addWebViewRoute("/orders/:orderID", {
+      mimicBrowserBackButton: true,
+      useRightCloseButton: true,
+    }),
+    // __DEV__ && addRoute("/storybook", "Storybook"),
 
     // Every other route needs to go above
     addRoute("/:slug", "VanityURLEntity"),

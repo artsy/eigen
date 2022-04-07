@@ -1,5 +1,5 @@
 import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
@@ -8,12 +8,19 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { PAGE_SIZE } from "app/Components/constants"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { GlobalStore, useDevToggle, useFeatureFlag } from "app/store/GlobalStore"
+import {
+  GlobalStore,
+  removeClue,
+  useDevToggle,
+  useFeatureFlag,
+  useSessionVisualClue,
+} from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -29,7 +36,7 @@ import { EventEmitter } from "events"
 import { times } from "lodash"
 import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { LayoutAnimation, RefreshControl } from "react-native"
+import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
@@ -47,29 +54,26 @@ export function refreshMyCollection() {
 
 export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
 
-const hasBeenShownBanner = async () => {
-  const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-  return hasSeen === "true"
-}
-
 const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me
 }> = ({ relay, me }) => {
   const { trackEvent } = useTracking()
+  const { showSessionVisualClue } = useSessionVisualClue()
 
   const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
+  const enableConsignmentsInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
   const [keywordFilter, setKeywordFilter] = useState("")
-  const [isSearchBarVisible, setIsSearchBarVisible] = useState(false)
+  const [yScrollOffset, setYScrollOffset] = useState(0)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
   const filtersCount = useSelectedFiltersCount()
 
   const artworks = extractNodes(me?.myCollectionConnection)
 
-  useLocalArtworkFilter(artworks)
+  const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
   useEffect(() => {
@@ -99,10 +103,20 @@ const MyCollection: React.FC<{
   const space = useSpace()
   const toast = useToast()
 
+  const hasBeenShownBanner = async () => {
+    const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
+    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionBanner")
+    return {
+      hasSeenBanner: hasSeen === "true",
+      shouldShowConsignments: shouldShowConsignments === true,
+    }
+  }
+
   useEffect(() => {
     if (artworks.length) {
-      hasBeenShownBanner().then((hasSeenBanner) => {
+      hasBeenShownBanner().then(({ hasSeenBanner, shouldShowConsignments }) => {
         const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
+        const showConsignmentsBanner = shouldShowConsignments && enableConsignmentsInMyCollection
 
         setJSX(
           <Flex>
@@ -128,8 +142,11 @@ const MyCollection: React.FC<{
                 Add Works
               </Button>
             </ArtworksFilterHeader>
-            {!!enableSearchBar && !!isSearchBarVisible && (
-              <MyCollectionSearchBar onChangeText={setKeywordFilter} />
+            {!!enableSearchBar && (
+              <MyCollectionSearchBar
+                yScrollOffset={yScrollOffset}
+                onChangeText={setKeywordFilter}
+              />
             )}
             {!!showNewWorksBanner && (
               <Banner
@@ -141,6 +158,14 @@ const MyCollection: React.FC<{
                 }
               />
             )}
+            {!!showConsignmentsBanner && (
+              <Banner
+                title="Artwork added to My Collection"
+                text="The artwork you submitted for sale has been automatically added."
+                showCloseButton
+                onClose={() => removeClue("ArtworkSubmissionBanner")}
+              />
+            )}
           </Flex>
         )
       })
@@ -148,7 +173,15 @@ const MyCollection: React.FC<{
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length, filtersCount, isSearchBarVisible])
+  }, [artworks.length, filtersCount, yScrollOffset])
+
+  useEffect(() => {
+    reInitializeLocalArtworkFilter(artworks)
+  }, [artworks])
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    setYScrollOffset(event.nativeEvent.contentOffset.y)
+  }
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -166,14 +199,10 @@ const MyCollection: React.FC<{
       <StickyTabPageScrollView
         contentContainerStyle={{ paddingBottom: space(2) }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
-        onScrollBeginDrag={() => {
-          if (isSearchBarVisible) {
-            return
-          }
-
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-          setIsSearchBarVisible(true)
-        }}
+        onScrollBeginDrag={handleScroll}
+        onScrollEndDrag={handleScroll}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
       >
         <MyCollectionArtworks me={me} keywordFilter={keywordFilter} relay={relay} />
         {!!showDevAddButton && (
@@ -252,23 +281,28 @@ export const MyCollectionContainer = createPaginationContainer(
   }
 )
 
+export const MyCollectionScreenQuery = graphql`
+  query MyCollectionQuery {
+    me {
+      ...MyCollection_me
+    }
+  }
+`
+
 export const MyCollectionQueryRenderer: React.FC = () => {
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionQuery>
         environment={defaultEnvironment}
-        query={graphql`
-          query MyCollectionQuery {
-            me {
-              ...MyCollection_me
-            }
-          }
-        `}
+        query={MyCollectionScreenQuery}
         variables={{}}
         cacheConfig={{ force: true }}
         render={renderWithPlaceholder({
           Container: MyCollectionContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,
+          renderFallback: ({ retry }) => (
+            <LoadFailureView onRetry={retry!} justifyContent="flex-end" />
+          ),
         })}
       />
     </ArtworkFiltersStoreProvider>

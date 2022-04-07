@@ -102,7 +102,9 @@ export interface Props {
   /** Allows to use MyCollectionArtworkGridItem */
   isMyCollection?: boolean
 
-  /** Whether to use `ParentAwareScrollView` or `ScrollView` (defaults to true) */
+  /** Whether to use `ParentAwareScrollView` or `ScrollView`
+   * (defaults to true on android, undefined on iOS )
+   */
   useParentAwareScrollView?: boolean
 
   /** Wether to show a loading spinner (defaults to false) */
@@ -120,6 +122,7 @@ interface PrivateProps {
     | InfiniteScrollArtworksGrid_myCollectionConnection
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
+  isLoading?: RelayPaginationProp["isLoading"]
 }
 
 interface MapperProps extends Omit<PrivateProps, "connection"> {
@@ -172,7 +175,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     pageSize: PAGE_SIZE,
     hidePartner: false,
     isMyCollection: false,
-    useParentAwareScrollView: true,
+    useParentAwareScrollView: Platform.OS === "android",
     showLoadingSpinner: false,
     updateRecentSearchesOnTap: false,
   }
@@ -183,7 +186,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   }
 
   fetchNextPage = () => {
-    if (!this.props.hasMore() || this.state.isLoading) {
+    if (!this.props.hasMore() || this.state.isLoading || this.props.isLoading?.()) {
       return
     }
 
@@ -377,7 +380,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     const { shouldAddPadding, hasMore, stickyHeaderIndices, useParentAwareScrollView } = this.props
     const boxPadding = shouldAddPadding ? 2 : 0
 
-    const ScrollViewWrapper = useParentAwareScrollView ? ParentAwareScrollView : ScrollView
+    const ScrollViewWrapper = !!useParentAwareScrollView ? ParentAwareScrollView : ScrollView
 
     return (
       <>

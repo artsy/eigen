@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
@@ -7,6 +7,7 @@ import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
 import { Alert, Linking, Platform } from "react-native"
 import { getDeviceId } from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
+import { logAction, logNotification } from "./loggers"
 import { AnalyticsConstants } from "./track/constants"
 import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
 
@@ -213,8 +214,12 @@ export async function configure() {
     // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
     onAction: (notification) => {
       if (__DEV__) {
-        console.log("ACTION:", notification.action)
-        console.log("NOTIFICATION:", notification)
+        if (logAction) {
+          console.log("ACTION:", notification.action)
+        }
+        if (logNotification) {
+          console.log("NOTIFICATION:", notification)
+        }
       }
 
       // process the action

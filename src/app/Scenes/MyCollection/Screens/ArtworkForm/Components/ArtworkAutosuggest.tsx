@@ -1,5 +1,5 @@
 import SearchIcon from "app/Icons/SearchIcon"
-import { Flex, Input } from "palette"
+import { Flex, Input, Text, Touchable } from "palette"
 import React, { useState } from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkAutosuggestResultsQueryRenderer } from "./ArtworkAutosuggestResults"
@@ -14,6 +14,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
   onSkipPress,
 }) => {
   const { formik } = useArtworkForm()
+  const [showSkipAheadToAddArtworkLink, setShowSkipAheadToAddArtworkLink] = useState(false)
 
   const { artistSearchResult } = formik.values
   const artistSlug = artistSearchResult?.slug || ""
@@ -37,6 +38,20 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
         autoFocus={typeof jest === "undefined"}
       />
 
+      {showSkipAheadToAddArtworkLink && (
+        <Touchable onPress={onSkipPress}>
+          <Flex flexDirection="row" my={1}>
+            <Text variant="xs" color="black60">
+              Or skip ahead to{" "}
+            </Text>
+
+            <Text variant="xs" color="black60" underline>
+              add artwork details
+            </Text>
+          </Flex>
+        </Touchable>
+      )}
+
       {!!keyword.length && (
         <Flex height="100%" mb={2}>
           <ArtworkAutosuggestResultsQueryRenderer
@@ -44,6 +59,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
             artistSlug={artistSlug}
             onPress={onResultPress}
             onSkipPress={onSkipPress}
+            setShowSkipAheadToAddArtworkLink={setShowSkipAheadToAddArtworkLink}
           />
         </Flex>
       )}

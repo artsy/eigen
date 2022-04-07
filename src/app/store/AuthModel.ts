@@ -2,6 +2,7 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { OAuthProvider } from "app/auth/types"
 import * as RelayCache from "app/relay/RelayCache"
 import { isArtsyEmail } from "app/utils/general"
 import { postEventToProviders } from "app/utils/track/providers"
@@ -20,7 +21,7 @@ import Keychain from "react-native-keychain"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
 import { requestPushNotificationsPermission } from "../utils/PushNotification"
 import { AuthError } from "./AuthError"
-import { getCurrentEmissionState } from "./GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
@@ -48,14 +49,12 @@ const showError = (
 
 type SignInStatus = "failure" | "success" | "otp_missing" | "on_demand_otp_missing" | "invalid_otp"
 
-type OAuthProviderT = "google" | "apple" | "email" | "facebook"
-
 const handleSignUpError = ({
   errorObject,
   oauthProvider,
 }: {
   errorObject: any
-  oauthProvider: OAuthProviderT
+  oauthProvider: OAuthProvider
 }) => {
   let message = ""
   let existingProviders: string[] = []
@@ -366,18 +365,14 @@ export const getAuthModel = (): AuthModel => ({
 
       postEventToProviders(tracks.loggedIn(oauthProvider))
 
-      // Keep native iOS in sync with react-native auth state
-      if (Platform.OS === "ios") {
-        requestAnimationFrame(() => {
-          LegacyNativeModules.ArtsyNativeModule.updateAuthState(userAccessToken, expires_in, user)
-        })
-      }
-
       if (!onboardingState || onboardingState === "complete" || onboardingState === "none") {
         requestPushNotificationsPermission()
       }
 
       onSignIn?.()
+
+      // Setting up user prefs from gravity after successsfull login.
+      GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()
 
       return "success"
     }
@@ -454,6 +449,9 @@ export const getAuthModel = (): AuthModel => ({
         default:
           assertNever(oauthProvider)
       }
+
+      // Setting up user prefs from gravity after successsfull registration.
+      GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()
 
       return { success: true, message: "" }
     }

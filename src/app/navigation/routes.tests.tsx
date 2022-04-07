@@ -301,24 +301,10 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to the old Auction view when the AROptionsNewSalePage option is false", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewSalePage: false })
+  it("routes to the new Auction view", () => {
     expect(matchRoute("/auction/special-auction")).toMatchInlineSnapshot(`
       Object {
         "module": "Auction",
-        "params": Object {
-          "id": "special-auction",
-        },
-        "type": "match",
-      }
-    `)
-  })
-
-  it("routes to the new Auction view when the AROptionsNewSalePage option is true", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewSalePage: true })
-    expect(matchRoute("/auction/special-auction")).toMatchInlineSnapshot(`
-      Object {
-        "module": "Auction2",
         "params": Object {
           "saleID": "special-auction",
         },
@@ -347,16 +333,6 @@ describe("artsy.net routes", () => {
           "artworkID": "yayoi-kusama-red-pumpkin",
           "saleID": "other-auction",
         },
-        "type": "match",
-      }
-    `)
-  })
-
-  it("routes to the old Auction view when the AROptionsNewSalePage option is false", () => {
-    expect(matchRoute("/auction-faq")).toMatchInlineSnapshot(`
-      Object {
-        "module": "AuctionFAQ",
-        "params": Object {},
         "type": "match",
       }
     `)
@@ -1311,12 +1287,6 @@ describe(addWebViewRoute, () => {
     const matcher = addWebViewRoute("/conditions-of-sale")
     expect(matcher.module).toBe("ReactWebView")
     expect(matcher.match(["conditions-of-sale"])).toEqual({ url: "/conditions-of-sale" })
-  })
-
-  it("returns react web view when the feature flag is on", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsUseReactNativeWebView: true })
-    const matcher = addWebViewRoute("/conditions-of-sale")
-    expect(matcher.module).toBe("ReactWebView")
   })
 
   it("inlines params and wildcards in the original route", () => {

@@ -1,4 +1,13 @@
-export const artworkRarityClassifications = [
+import { ArtworkAttributionClassType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
+
+interface ArtworkRarityClassification {
+  name: string
+  label: string
+  value: ArtworkAttributionClassType
+  description: string
+}
+
+export const artworkRarityClassifications: ArtworkRarityClassification[] = [
   {
     name: "Unique",
     label: "Unique",
@@ -28,6 +37,11 @@ export const artworkRarityClassifications = [
   },
 ]
 
-export const getAttributionClassValueByName = (name?: string | null): string | undefined => {
-  return artworkRarityClassifications.find((classification) => classification.name === name)?.value
+export const getAttributionClassValueByName = (
+  name?: string | null
+): ArtworkAttributionClassType | null => {
+  return (
+    artworkRarityClassifications.find((classification) => classification.name === name)?.value ??
+    null
+  )
 }

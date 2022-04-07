@@ -1,5 +1,6 @@
 import {
   ConsignmentAttributionClass,
+  ConsignmentSubmissionSource,
   ConsignmentSubmissionStateAggregation,
 } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import * as Yup from "yup"
@@ -10,6 +11,7 @@ export interface Location {
   state: string
   country: string
 }
+
 export interface ArtworkDetailsFormModel {
   artist: string
   artistId: string
@@ -29,6 +31,8 @@ export interface ArtworkDetailsFormModel {
   utmSource: string | undefined
   utmTerm: string | undefined
   location: Location
+  source: ConsignmentSubmissionSource | null
+  myCollectionArtworkID: string | null
 }
 
 export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
@@ -54,6 +58,8 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
     state: "",
     country: "",
   },
+  source: null,
+  myCollectionArtworkID: null,
 }
 
 export const artworkDetailsValidationSchema = Yup.object().shape({

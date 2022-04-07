@@ -1,5 +1,5 @@
 import { ActionSheetProps } from "@expo/react-native-action-sheet"
-import { IconProps } from "palette"
+import { Color, IconProps } from "palette"
 
 export type ToastPlacement = "middle" | "top" | "bottom"
 
@@ -17,6 +17,7 @@ export interface ToastDetails {
 
   onPress?: (helpers: ToastOnPressHelpers) => void
   Icon?: React.FC<IconProps>
+  backgroundColor?: Color
 }
 
-export type ToastOptions = Omit<ToastDetails, "id" | "positionIndex" | "placement" | "message">
+export type ToastOptions = Pick<ToastDetails, "onPress" | "Icon" | "backgroundColor">

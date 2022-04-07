@@ -1,11 +1,16 @@
-import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
 import { google_LinkAccountMutation } from "__generated__/google_LinkAccountMutation.graphql"
 import { google_UnlinkAccountMutation } from "__generated__/google_UnlinkAccountMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
 import { useEffect, useRef, useState } from "react"
-import { Alert } from "react-native"
 import { commitMutation, graphql } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+
+// TODO:- Remove this interface and import NativeModuleError from "@react-native-google-signin/google-signin"
+// after upgrading to > v7.1
+interface GoogleSignInNativeModuleError extends Error {
+  code: string
+}
 
 export const useGoogleLink = (relayEnvironment: RelayModernEnvironment) => {
   const [loading, setIsLoading] = useState(false)
@@ -53,15 +58,25 @@ export const useGoogleLink = (relayEnvironment: RelayModernEnvironment) => {
 
   const link = async () => {
     setLoading(true)
-    if (!(await GoogleSignin.hasPlayServices())) {
-      Alert.alert("Error", "Play services are not available.")
+    try {
+      await GoogleSignin.hasPlayServices()
+      await GoogleSignin.signIn()
+      const accessToken = (await GoogleSignin.getTokens()).accessToken
+      linkUsingOauthToken(accessToken)
+    } catch (error) {
       setLoading(false)
-      return
+      const err = error as GoogleSignInNativeModuleError
+      switch (err.code) {
+        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+          Toast.show("Error: Play services are not available on this device.", "top")
+          break
+        case statusCodes.SIGN_IN_CANCELLED:
+          Toast.show("Error: Linking cancelled", "top")
+          break
+        default:
+          Toast.show(`Error Linking account: ${err.message}`, "top")
+      }
     }
-    await GoogleSignin.signIn()
-    const accessToken = (await GoogleSignin.getTokens()).accessToken
-
-    linkUsingOauthToken(accessToken)
   }
 
   const unlink = () => {

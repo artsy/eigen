@@ -1,16 +1,19 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { captureMessage } from "@sentry/react-native"
+import {
+  Photo,
+  PhotosFormModel,
+} from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
+import { storeLocalPhotos } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
 import { Button, Flex, Spacer, Text } from "palette"
-import React from "react"
+import { PhotoRow } from "palette/elements/PhotoRow/PhotoRow"
+import React, { useEffect, useState } from "react"
 import { removeAssetFromSubmission } from "../Mutations/removeAssetFromConsignmentSubmissionMutation"
-import { PhotoRow } from "./PhotoRow"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
-import { calculateSinglePhotoSize } from "./utils/calculatePhotoSize"
-import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"
-import { Photo, PhotosFormModel } from "./validation"
+import { calculateSinglePhotoSize, isSizeLimitExceeded } from "./utils/calculatePhotoSize"
 
 export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   isAnyPhotoLoading,
@@ -18,9 +21,15 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
+  const [progress, setProgress] = useState<Record<string, number | undefined>>({})
+
+  useEffect(() => {
+    // add initial photos when a My Collection artwork gets submitted
+    addPhotosToSubmission(values.initialPhotos || [])
+  }, [])
 
   // add selected photos to gemini and submission
-  const addPhotoToSubmission = async (photos: Photo[]) => {
+  const addPhotosToSubmission = async (photos: Photo[]) => {
     const processedPhotos: Photo[] = []
 
     // set each to-be-uploaded photo's loading status
@@ -30,7 +39,16 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     for (const photo of photos) {
       try {
         // upload & size the photo, and add it to processed photos
-        const uploadedPhoto = await addPhotoToConsignment(photo, submission.submissionId)
+        const uploadedPhoto = await addPhotoToConsignment({
+          asset: photo,
+          submissionID: submission.submissionId,
+          updateProgress: (newProgress) => {
+            setProgress((prevState) => {
+              const newState = { ...prevState, [photo.path]: newProgress }
+              return newState
+            })
+          },
+        })
         if (uploadedPhoto?.id) {
           const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
           const isTotalSizeLimitExceeded = isSizeLimitExceeded([
@@ -59,18 +77,27 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       }
     }
 
-    // let GlobalStore and Formik know about processed photos
-    GlobalStore.actions.artworkSubmission.submission.setPhotos({
-      photos: [...values.photos, ...processedPhotos],
+    const allPhotos = [...values.photos, ...processedPhotos]
+
+    // set photos for my collection, and submission flow state and Formik
+    GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+      photos: allPhotos,
     })
-    setFieldValue("photos", [...values.photos, ...processedPhotos])
+    GlobalStore.actions.artworkSubmission.submission.setPhotos({
+      photos: allPhotos,
+    })
+
+    // store photos in asynstorage to be retrieved later when the user goes to My Collection
+    storeLocalPhotos(submission.submissionId, photos)
+
+    setFieldValue("photos", photos)
   }
 
   // show Native action sheet and get photos from user's phone
   const handleAddPhotoPress = async () => {
     const photos = await showPhotoActionSheet(showActionSheetWithOptions, true)
     if (photos?.length && submission?.submissionId) {
-      addPhotoToSubmission(photos)
+      addPhotosToSubmission(photos)
     }
   }
 
@@ -87,10 +114,15 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
           p.errorMessage = ""
         })
       }
-      setFieldValue("photos", filteredPhotos)
-      GlobalStore.actions.artworkSubmission.submission.setPhotos({
-        photos: [...filteredPhotos],
+
+      // set photos for my collection, and submission flow state and Formik
+      GlobalStore.actions.artworkSubmission.submission.setPhotosForMyCollection({
+        photos: filteredPhotos,
       })
+      GlobalStore.actions.artworkSubmission.submission.setPhotos({
+        photos: filteredPhotos,
+      })
+      setFieldValue("photos", filteredPhotos)
     } catch (error) {
       photo.error = true
       photo.errorMessage = "Photo could not be deleted"
@@ -105,7 +137,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
           Add Files Here
         </Text>
         <Text variant="md" color="black60" marginBottom={1}>
-          Files Supported: JPG, PNG
+          Files Supported: JPG, PNG, HEIC
         </Text>
         <Text variant="md" color="black60" marginBottom={3}>
           Total Maximum Size: 30MB
@@ -124,7 +156,12 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
       </Flex>
 
       {values.photos.map((photo: Photo, idx: number) => (
-        <PhotoRow key={idx} photo={photo} onPhotoDelete={handlePhotoDelete} />
+        <PhotoRow
+          key={idx}
+          photo={photo}
+          onPhotoDelete={handlePhotoDelete}
+          progress={progress[photo.path] ?? 0}
+        />
       ))}
     </>
   )

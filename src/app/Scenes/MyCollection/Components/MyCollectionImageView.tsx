@@ -32,7 +32,9 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
       }
     })
   }, [])
-  const { photos } = GlobalStore.useAppState((state) => state.artworkSubmission.submission.photos)
+  const { photos } = GlobalStore.useAppState(
+    (state) => state.artworkSubmission.submission.photosForMyCollection
+  )
   useEffect(() => {
     if (photos !== null && photos.length > 0) {
       setLocalImageConsignments(photos[0])

@@ -24,7 +24,6 @@ import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useDebugging } from "./utils/useDebugging"
-import { useSplitExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useIdentifyUser } from "./utils/useIdentifyUser"
 import { useInitialNotification } from "./utils/useInitialNotification"
@@ -59,7 +58,6 @@ const Main: React.FC = () => {
   useWebViewCookies()
   useDeepLinks()
   useInitialNotification()
-  useSplitExperiments()
   useInitializeQueryPrefetching()
   useIdentifyUser()
 

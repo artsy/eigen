@@ -3,13 +3,19 @@ import { Flex, Text, Touchable, useColor } from "palette"
 import React, { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
 import { ReloadIcon } from "../../palette/svgs/ReloadIcon"
+import { JustifyContentValue } from "./Bidding/Elements/types"
 
 interface LoadFailureViewProps {
   error?: Error
   onRetry?: () => void
+  justifyContent?: JustifyContentValue
 }
 
-export const LoadFailureView: React.FC<LoadFailureViewProps> = ({ error, onRetry }) => {
+export const LoadFailureView: React.FC<LoadFailureViewProps> = ({
+  error,
+  onRetry,
+  justifyContent = "center",
+}) => {
   const color = useColor()
   const spinAnimation = useRef(new Animated.Value(0)).current
   const [isAnimating, setIsAnimating] = useState(false)
@@ -27,7 +33,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = ({ error, onRetry
   }
 
   return (
-    <Flex flex={1} justifyContent="center" alignItems="center">
+    <Flex flex={1} justifyContent={justifyContent} alignItems="center">
       <Text variant="lg">Unable to load</Text>
       <Text variant="md" mb="1">
         Please try again

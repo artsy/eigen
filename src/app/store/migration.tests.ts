@@ -545,3 +545,78 @@ describe("App version Versions.RenameModelsAndAddDarkModeSupport", () => {
     expect(migratedState.userPrefs).toEqual(prevUserPreferences)
   })
 })
+
+describe("App version Versions.AddUserPrefsMetricsUnit", () => {
+  const migrationToTest = Versions.AddUserPrefsMetricsUnit
+
+  it("adds default value for UserPrefs Metric unit to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.userPrefs.metric).toEqual("in")
+  })
+})
+
+describe("App version Versions.AddSourceAndMyCollectionArtworkIDToSubmission", () => {
+  const migrationToTest = Versions.AddSourceAndMyCollectionArtworkIDToSubmission
+
+  it("adds source and myCollectionArtworkID to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artworkSubmission.submission.artworkDetails.source).toEqual(null)
+    expect(migratedState.artworkSubmission.submission.artworkDetails.myCollectionArtworkID).toEqual(
+      null
+    )
+  })
+})
+
+describe("RequestedPriceEstimates migration", () => {
+  const migrationToTest = Versions.RequestedPriceEstimates
+
+  it("adds RequestedPriceEstimates to the store", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.requestedPriceEstimates.requestedPriceEstimates).toEqual({})
+  })
+})
+
+describe("App version Versions.AddSourceInitialPhotosToSubmission", () => {
+  const migrationToTest = Versions.AddSourceInitialPhotosToSubmission
+
+  it("adds source and initial photos to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artworkSubmission.submission.photos.initialPhotos).toEqual([])
+  })
+})

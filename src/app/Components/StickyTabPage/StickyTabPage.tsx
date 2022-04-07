@@ -9,8 +9,8 @@ import { LayoutAnimation, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import { useAnimatedValue } from "./reanimatedHelpers"
-import { StickyTabPageContext, useStickyTabPageContext } from "./SitckyTabPageContext"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
+import { StickyTabPageContext, useStickyTabPageContext } from "./StickyTabPageContext"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 
@@ -23,7 +23,7 @@ export interface TabProps {
 
 interface StickyTabPageProps {
   tabs: TabProps[]
-  staticHeaderContent: JSX.Element
+  staticHeaderContent?: JSX.Element
   stickyHeaderContent?: JSX.Element
   bottomContent?: JSX.Element
   // disableBackButtonUpdate allows the original BackButton visibility state. Useful when using StickyTabPage
@@ -42,7 +42,7 @@ interface StickyTabPageProps {
  */
 export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   tabs,
-  staticHeaderContent,
+  staticHeaderContent = <></>,
   stickyHeaderContent = <StickyTabPageTabBar />,
   bottomContent,
   disableBackButtonUpdate,
@@ -69,10 +69,11 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
 
   const stickyRailRef = useRef<SnappyHorizontalRail>(null)
 
-  // This breaks the rules of hooks - you're not supposed to call them inside loops. We're doing it anyway because
-  // useAutoCollapsingMeasuredView is a pure function and all we're doing with tabSpecificStickyHeaderContentArray is
-  // rendering; it's not involved in any conditionals. We're reasonably confident it will be deterministic, and
-  // the alternative (making the hook take in an array of tabs) gets very complicated very quickly
+  // This breaks the rules of hooks - you're not supposed to call them inside loops.
+  // We're doing it anyway because useAutoCollapsingMeasuredView is a pure function and all we're
+  // doing with tabSpecificStickyHeaderContentArray is rendering.
+  // It's not involved in any conditionals. We're reasonably confident it will be deterministic, and
+  // the alternative (making the hook take in an array of tabs) gets very complicated very quickly.
   const tabSpecificStickyHeaderContentArray = tabs.map((_, i) => {
     return useAutoCollapsingMeasuredView(tabSpecificStickyHeaderContent[i])
   })

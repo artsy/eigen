@@ -1,10 +1,10 @@
-import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { getLocationDetails, getLocationPredictions, SimpleLocation } from "app/utils/googleMaps"
-import { Box, Flex, Input, LocationIcon, Separator, Text, Touchable, useSpace } from "palette"
-import React, { useEffect, useRef, useState } from "react"
-import { FlatList, Image } from "react-native"
+import { Box, Flex, Input, LocationIcon, Text, useSpace } from "palette"
+import React, { useEffect, useState } from "react"
+import { Image } from "react-native"
 import { Location } from "../validation"
 
+const MIN_LENGTH = 3
 interface Props {
   initialLocation: Location
   onChange: (loc: Location) => void
@@ -34,7 +34,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ initialLocation, onChang
       setSelectedLocation(null)
     }
 
-    if (query.length < 3 || selectedLocation?.city === query) {
+    if (query.length < MIN_LENGTH || selectedLocation?.city === query) {
       setPredictions([])
     } else {
       ;(async () => {
@@ -55,6 +55,10 @@ export const LocationAutocomplete: React.FC<Props> = ({ initialLocation, onChang
     }
   }
 
+  const locationValue = selectedLocation?.city
+    ? `${selectedLocation.city}, ${selectedLocation.state}, ${selectedLocation.country}`
+    : query
+
   return (
     <>
       <Input
@@ -63,13 +67,10 @@ export const LocationAutocomplete: React.FC<Props> = ({ initialLocation, onChang
         onChangeText={setQuery}
         onFocus={reset}
         testID="Submission_LocationInput"
-        value={
-          selectedLocation?.city
-            ? `${selectedLocation.city}, ${selectedLocation.state}, ${selectedLocation.country}`
-            : query
-        }
+        value={locationValue}
       />
       <LocationPredictions
+        selectedLocation={selectedLocation}
         predictions={predictions}
         query={query}
         onSelect={setSelectedLocation}
@@ -83,14 +84,15 @@ export const LocationPredictions = ({
   predictions,
   query,
   onSelect,
+  selectedLocation,
 }: {
+  selectedLocation: Location | null
   predictions: SimpleLocation[]
   query?: string
   onSelect: (loc: Location) => void
   onOutsidePress: () => void
 }) => {
   const space = useSpace()
-  const flatListRef = useRef<FlatList<any>>(null)
 
   const highlightedQuery = (entry: string) => {
     const re = new RegExp(`(${query?.replace(" ", "|")})`, "gi")
@@ -120,48 +122,42 @@ export const LocationPredictions = ({
     })
   }
 
-  if (!predictions.length) {
+  if (selectedLocation || !query || query.length < MIN_LENGTH) {
     return null
   }
 
   return (
     <Box height={175} mt={0.5}>
-      <AboveTheFoldFlatList
-        listRef={flatListRef}
+      <Flex
         style={{
           flex: 1,
-          padding: space(2),
+          padding: space(1),
           borderStyle: "solid",
           borderColor: "#707070",
           borderWidth: 1,
         }}
-        data={predictions}
-        showsVerticalScrollIndicator
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-        ListEmptyComponent={
-          !predictions.length ? (
+      >
+        <Flex height={175}>
+          {predictions.length ? (
+            predictions.map((item, index) => {
+              return (
+                <Flex key={index} mb={1} onTouchStart={() => onLocationSelect(item)}>
+                  <Flex flexDirection="row" alignItems="center">
+                    <LocationIcon mr={1} />
+                    <Text>{highlightedQuery(item.name)}</Text>
+                  </Flex>
+                </Flex>
+              )
+            })
+          ) : (
             <Text variant="md" color="black60" textAlign="center">
               Please try searching again with a different spelling.
             </Text>
-          ) : null
-        }
-        renderItem={({ item, index }) => {
-          return (
-            <Flex key={index} mb={1}>
-              <Touchable onPress={() => onLocationSelect(item)}>
-                <Flex flexDirection="row" alignItems="center">
-                  <LocationIcon mr={1} />
-                  <Text variant="xs">{highlightedQuery(item.name)}</Text>
-                </Flex>
-              </Touchable>
-              <Separator mt={1} />
-            </Flex>
-          )
-        }}
-      />
-      <Flex alignItems="flex-end" pt={0.5}>
-        <Image source={require("@images/powered_by_google.webp")} resizeMode="contain" />
+          )}
+        </Flex>
+        <Flex alignItems="flex-end" pt={0.5}>
+          <Image source={require("@images/powered_by_google.webp")} resizeMode="contain" />
+        </Flex>
       </Flex>
     </Box>
   )

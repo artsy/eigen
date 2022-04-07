@@ -41,10 +41,9 @@ describe("MyCollection", () => {
           if (props?.me) {
             return (
               <StickyTabPage
-                staticHeaderContent={<></>}
                 tabs={[
                   {
-                    title: "My Collection",
+                    title: "test",
                     content: <MyCollectionContainer me={props.me} />,
                   },
                 ]}
@@ -141,7 +140,8 @@ describe("MyCollection", () => {
     it("user can switch between grid and list view when search the bar is visible", async () => {
       const scrollView = tree.root.findByType(StickyTabPageScrollView)
 
-      scrollView.props.onScrollBeginDrag()
+      // Scrolling up should make the search bar visible
+      scrollView.props.onScrollBeginDrag({ nativeEvent: { contentOffset: { y: -10 } } })
 
       await flushPromiseQueue()
 

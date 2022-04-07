@@ -1,7 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Spinner } from "palette/elements/Spinner"
-import React from "react"
 import { Button } from "./Button"
 
 describe("Button", () => {

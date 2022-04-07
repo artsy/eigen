@@ -7,8 +7,6 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { useLayout } from "app/utils/useLayout"
 import { sortBy } from "lodash"
 import { Flex, useSpace } from "palette"
@@ -70,7 +68,6 @@ interface ColorsOptionsScreenProps
 export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ navigation }) => {
   const space = useSpace()
   const { layout, handleLayout } = useLayout()
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   const { aggregation } = useArtworkFiltersAggregation({
     paramName: FilterParamName.colors,
@@ -98,20 +95,11 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
 
   return (
     <Flex onLayout={handleLayout} flexGrow={1}>
-      {isEnabledImprovedAlertsFlow ? (
-        <ArtworkFilterBackHeader
-          title={FilterDisplayName.colors}
-          onLeftButtonPress={() => navigation.goBack()}
-          {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
-        />
-      ) : (
-        <FancyModalHeader
-          onLeftButtonPress={() => navigation.goBack()}
-          {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
-        >
-          {FilterDisplayName.colors}
-        </FancyModalHeader>
-      )}
+      <ArtworkFilterBackHeader
+        title={FilterDisplayName.colors}
+        onLeftButtonPress={() => navigation.goBack()}
+        {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
+      />
 
       <Flex p={1} flexWrap="wrap" flexDirection="row" justifyContent="flex-start">
         {sortedOptions.map((option, i) => {

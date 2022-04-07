@@ -1,10 +1,15 @@
+import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
 import { transformBytesToSize } from "app/utils/transformBytesToSize"
-import { Photo } from "../validation"
 
 const totalSizeLimitInBytes = 30000000
 
 // calculates a photos size from Bytes to unit and return updated photo
 export const calculateSinglePhotoSize = (photo: Photo): Photo => {
+  if (photo.automaticallyAdded) {
+    photo.sizeDisplayValue = "Automatically added"
+    return photo
+  }
+
   if (!photo.size) {
     photo.error = true
     photo.sizeDisplayValue = "Size not found"

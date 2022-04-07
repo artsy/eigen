@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "app/Components/MenuItem"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -24,12 +24,13 @@ import {
   useColor,
 } from "palette"
 import React, { useEffect, useState } from "react"
-import { Button as RNButton, NativeModules } from "react-native"
 import {
   Alert,
   AlertButton,
   BackHandler,
+  Button as RNButton,
   DevSettings,
+  NativeModules,
   Platform,
   ScrollView,
   TouchableHighlight,
@@ -38,6 +39,7 @@ import {
 import Config from "react-native-config"
 import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
 import Keychain from "react-native-keychain"
+import { useUnleashEnvironment } from "./experiments/hooks"
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = Object.entries(features)
@@ -66,6 +68,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
     onClose()
     return true
   }
+  const { unleashEnv } = useUnleashEnvironment()
 
   return (
     <Flex
@@ -102,12 +105,12 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             }}
           />
         )}
-        <FeatureFlagMenuItem
+        {/* <FeatureFlagMenuItem
           title="Go to Storybook"
           onPress={() => {
             navigate("/storybook")
           }}
-        />
+        /> */}
         <Flex mx="2">
           <Separator my="1" />
         </Flex>
@@ -124,6 +127,12 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         {configurableFeatureFlagKeys.map((flagKey) => {
           return <FeatureFlagItem key={flagKey} flagKey={flagKey} />
         })}
+        <FeatureFlagMenuItem
+          title="Revert all feature flags to default"
+          onPress={() => {
+            GlobalStore.actions.artsyPrefs.features.clearAdminOverrides()
+          }}
+        />
         <Flex mx="2">
           <Separator my="1" />
         </Flex>
@@ -177,6 +186,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             RelayCache.clearAll()
           }}
         />
+        <FeatureFlagMenuItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
         <FeatureFlagMenuItem
           title="Log out"
           onPress={() => {

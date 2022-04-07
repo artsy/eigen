@@ -1,6 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
 import { getUnitedSelectedAndAppliedFilters } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { act } from "react-test-renderer"
@@ -29,10 +28,6 @@ describe("ArtworkFilterOptionCheckboxItem", () => {
     store = ArtworksFiltersStore.useStore()
     return null
   }
-
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-  })
 
   const TestWrapper = ({
     itemProps,

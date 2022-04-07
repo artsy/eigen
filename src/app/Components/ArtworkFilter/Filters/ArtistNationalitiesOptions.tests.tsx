@@ -1,17 +1,13 @@
+import { fireEvent } from "@testing-library/react-native"
 import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { RightButtonContainer } from "app/Components/FancyModal/FancyModalHeader"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Check } from "palette"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { ArtistNationalitiesOptionsScreen } from "./ArtistNationalitiesOptions"
 import { getEssentialProps } from "./helper"
-import { OptionListItem } from "./MultiSelectOption"
 
 const MOCK_AGGREGATIONS: Aggregations = [
   {
@@ -27,10 +23,6 @@ const MOCK_AGGREGATIONS: Aggregations = [
 ]
 
 describe("ArtistNationalitiesOptionsScreen", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: false })
-  })
-
   const INITIAL_DATA: ArtworkFiltersState = {
     selectedFilters: [],
     appliedFilters: [],
@@ -42,13 +34,10 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
-  const MockArtistNationalitiesOptionsScreen = ({
-    initialData = INITIAL_DATA,
-  }: {
-    initialData?: ArtworkFiltersState
-  }) => {
+  const TestWrapper = ({ initialData = INITIAL_DATA }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <ArtistNationalitiesOptionsScreen {...getEssentialProps()} />
@@ -57,12 +46,13 @@ describe("ArtistNationalitiesOptionsScreen", () => {
   }
 
   it("renders the options", () => {
-    const tree = renderWithWrappers(
-      <MockArtistNationalitiesOptionsScreen initialData={INITIAL_DATA} />
-    )
-    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(5)
-    const items = tree.root.findAllByType(OptionListItem)
-    expect(items.map(extractText)).toEqual(["American", "British", "German", "Italian", "Japanese"])
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+
+    expect(getByText("American")).toBeTruthy()
+    expect(getByText("British")).toBeTruthy()
+    expect(getByText("German")).toBeTruthy()
+    expect(getByText("Italian")).toBeTruthy()
+    expect(getByText("Japanese")).toBeTruthy()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
@@ -77,19 +67,13 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       ],
     }
 
-    const tree = renderWithWrappers(
-      <MockArtistNationalitiesOptionsScreen initialData={initialData} />
-    )
-    const options = tree.root.findAllByType(Check)
+    const { getAllByA11yState } = renderWithWrappersTL(<TestWrapper initialData={initialData} />)
 
-    expect(options[0].props.selected).toBe(true)
-    expect(options[1].props.selected).toBe(true)
-    expect(options[2].props.selected).toBe(false)
-    expect(options[3].props.selected).toBe(false)
-    expect(options[4].props.selected).toBe(false)
+    expect(getAllByA11yState({ checked: true })).toHaveLength(2)
+    expect(getAllByA11yState({ checked: false })).toHaveLength(3)
   })
 
-  it("clears all when clear button is tapped", () => {
+  it("clears all when `Clear` button is tapped", () => {
     const initialData: ArtworkFiltersState = {
       ...INITIAL_DATA,
       selectedFilters: [
@@ -101,24 +85,12 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       ],
     }
 
-    const tree = renderWithWrappers(
-      <MockArtistNationalitiesOptionsScreen initialData={initialData} />
+    const { getByText, queryAllByA11yState } = renderWithWrappersTL(
+      <TestWrapper initialData={initialData} />
     )
-    const options = tree.root.findAllByType(Check)
-    const clear = tree.root.findByType(RightButtonContainer)
 
-    expect(options[0].props.selected).toBe(true)
-    expect(options[1].props.selected).toBe(true)
-    expect(options[2].props.selected).toBe(false)
-    expect(options[3].props.selected).toBe(false)
-    expect(options[4].props.selected).toBe(false)
-
-    clear.props.onPress()
-
-    expect(options[0].props.selected).toBe(false)
-    expect(options[1].props.selected).toBe(false)
-    expect(options[2].props.selected).toBe(false)
-    expect(options[3].props.selected).toBe(false)
-    expect(options[4].props.selected).toBe(false)
+    expect(queryAllByA11yState({ checked: true })).toHaveLength(2)
+    fireEvent.press(getByText("Clear"))
+    expect(queryAllByA11yState({ checked: true })).toHaveLength(0)
   })
 })

@@ -108,8 +108,6 @@
 		49BA7E141655ABE600C06572 /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BA7E131655ABE600C06572 /* ARAppDelegate.m */; };
 		49EC62181778AF100020D648 /* PartnerShow.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EC62171778AF100020D648 /* PartnerShow.m */; };
 		49EF164716C568EA00460BD7 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EF164616C568EA00460BD7 /* Profile.m */; };
-		5102616F1BBE8324002AB8BB /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5102616E1BBE8324002AB8BB /* ARAuctionWebViewController.m */; };
-		510261711BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */; };
 		5108A7BC1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5108A7BB1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m */; };
 		512AB35B1BD7C7A100F92B9A /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 512AB35A1BD7C7A100F92B9A /* CoreSpotlight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		512AB35C1BD7C82F00F92B9A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06E44EB8170235D8001B2EBF /* MessageUI.framework */; };
@@ -384,8 +382,6 @@
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
 		CB6AFF2E2793654E00D7DC82 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFF2D2793654E00D7DC82 /* NotificationService.swift */; };
 		CB6AFF322793654E00D7DC82 /* BrazePushServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB6AFF2B2793654E00D7DC82 /* BrazePushServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
-		CB6CE8E624F424E700ED2843 /* ARInternalWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E424F424E700ED2843 /* ARInternalWebView.m */; };
 		CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */; };
 		CB6CE8F024F9684400ED2843 /* Range@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EC24F9684400ED2843 /* Range@2x.png */; };
 		CB6CE8F124F9684400ED2843 /* Thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8ED24F9684400ED2843 /* Thumb.png */; };
@@ -709,9 +705,6 @@
 		49EC62171778AF100020D648 /* PartnerShow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerShow.m; sourceTree = "<group>"; };
 		49EF164516C568EA00460BD7 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
 		49EF164616C568EA00460BD7 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
-		5102616D1BBE8324002AB8BB /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARAuctionWebViewController.h; path = Auction_Results/ARAuctionWebViewController.h; sourceTree = "<group>"; };
-		5102616E1BBE8324002AB8BB /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARAuctionWebViewController.m; path = Auction_Results/ARAuctionWebViewController.m; sourceTree = "<group>"; };
-		510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewControllerTests.m; sourceTree = "<group>"; };
 		5108A7BB1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppActivityContinuationDelegateTests.m; sourceTree = "<group>"; };
 		512AB35A1BD7C7A100F92B9A /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
 		514E56471BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppActivityContinuationDelegate.h; sourceTree = "<group>"; };
@@ -1106,10 +1099,6 @@
 		CB6AFF2B2793654E00D7DC82 /* BrazePushServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BrazePushServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB6AFF2D2793654E00D7DC82 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		CB6AFF2F2793654E00D7DC82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalWebViewManager.m; sourceTree = "<group>"; };
-		CB6CE8E224F424E700ED2843 /* ARInternalWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebViewManager.h; sourceTree = "<group>"; };
-		CB6CE8E324F424E700ED2843 /* ARInternalWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebView.h; sourceTree = "<group>"; };
-		CB6CE8E424F424E700ED2843 /* ARInternalWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalWebView.m; sourceTree = "<group>"; };
 		CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Thumb@2x.png"; sourceTree = "<group>"; };
 		CB6CE8EC24F9684400ED2843 /* Range@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Range@2x.png"; sourceTree = "<group>"; };
 		CB6CE8ED24F9684400ED2843 /* Thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Thumb.png; sourceTree = "<group>"; };
@@ -1631,7 +1620,6 @@
 				3C6AEE26188F228600DD98FC /* ARInternalMobileWebViewControllerTests.m */,
 				60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */,
 				D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */,
-				510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */,
 			);
 			name = "Web Browsing";
 			path = Web_Browsing;
@@ -1834,8 +1822,6 @@
 		5E47F34B1C3EC98200EC0751 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
-				5102616D1BBE8324002AB8BB /* ARAuctionWebViewController.h */,
-				5102616E1BBE8324002AB8BB /* ARAuctionWebViewController.m */,
 				5EA7BC2A1C60024D009C52C9 /* Networking */,
 				60C1C3111C5F9C6500EC98EE /* Auction Presentation */,
 				51DCC6C71C60E26800455309 /* AuctionInformationViewController.swift */,
@@ -2541,10 +2527,6 @@
 		60B9D00F17834A35006E498A /* Web Browsing */ = {
 			isa = PBXGroup;
 			children = (
-				CB6CE8E324F424E700ED2843 /* ARInternalWebView.h */,
-				CB6CE8E424F424E700ED2843 /* ARInternalWebView.m */,
-				CB6CE8E224F424E700ED2843 /* ARInternalWebViewManager.h */,
-				CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */,
 				60D90A0617C2182F0073D5B9 /* ARExternalWebBrowserViewController.h */,
 				60D90A0717C2182F0073D5B9 /* ARExternalWebBrowserViewController.m */,
 				60D90A0917C218930073D5B9 /* ARInternalMobileWebViewController.h */,
@@ -3368,12 +3350,14 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
 				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3502,7 +3486,6 @@
 				5E956E571CD24700005C2332 /* StarscreamExtensions.swift in Sources */,
 				601EC3291FAA6C6E00DD0CC4 /* ARAdminTableViewController.m in Sources */,
 				609A82FB17A1147800AFDF13 /* ARNavigationTransition.m in Sources */,
-				CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */,
 				5E79FCBA1C768108003D5D65 /* ARNvagiationButton+Swift.swift in Sources */,
 				600EE29E16B3003F002E9F9A /* ARNavigationButton.m in Sources */,
 				B9A039462553FE47002E010D /* ARModalViewController.m in Sources */,
@@ -3537,8 +3520,6 @@
 				60FBAA511CC688F7005ED890 /* LiveAuctionViewController.swift in Sources */,
 				6019A9061C7E64B700E292FA /* LiveAuctionLotSetViewController.swift in Sources */,
 				3CEE0B5F18A16EA200FEA6E6 /* ArtsyAPI+Profiles.m in Sources */,
-				CB6CE8E624F424E700ED2843 /* ARInternalWebView.m in Sources */,
-				5102616F1BBE8324002AB8BB /* ARAuctionWebViewController.m in Sources */,
 				5EBD44E01D07325300C60F9F /* UITableViewController+Animations.swift in Sources */,
 				5E1DDF1D1CE24FBF00DFEE2A /* LiveAuctionBiddingViewModel.swift in Sources */,
 				5EA250661C4EE95B001E4950 /* NSArray+Additions.m in Sources */,
@@ -3655,7 +3636,6 @@
 				FC9DDAF6274D64B1005DEE85 /* Fixtures.swift in Sources */,
 				60F242FC1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift in Sources */,
 				5E6A16931C98A914004DB29B /* LiveAuctionStateManagerSpec.swift in Sources */,
-				510261711BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m in Sources */,
 				3C6BDCBD18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m in Sources */,
 				3CB37D991922483100089A1D /* ArtsyAPI+ErrorHandlers.m in Sources */,
 				60CE3CAB1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m in Sources */,

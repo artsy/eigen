@@ -16,14 +16,15 @@ interface ComparableWorks {
 const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
   const { trackEvent } = useTracking()
 
-  const auctionResultsByFollowedArtists = extractNodes(auctionResult.comparableAuctionResults)
+  const comparableAuctionResults = extractNodes(auctionResult.comparableAuctionResults)
 
-  const auctionResults = compact(auctionResultsByFollowedArtists)
+  const auctionResults = compact(comparableAuctionResults)
 
   return (
     <Flex testID="comparableWorks">
       <FlatList
         data={auctionResults}
+        listKey="comparable-works"
         keyExtractor={(item, index) => String(item?.internalID || index)}
         initialNumToRender={3}
         ListHeaderComponent={

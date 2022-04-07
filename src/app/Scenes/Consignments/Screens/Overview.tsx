@@ -2,7 +2,7 @@ import { Schema, screenTrack, Track, track as _track } from "app/utils/track"
 import React from "react"
 import { Alert } from "react-native"
 
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import type NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Dimensions, ScrollView, View } from "react-native"
 
@@ -41,7 +41,6 @@ interface State extends ConsignmentSetup {
   hasSubmittedSuccessfully?: boolean
 }
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const track: Track<Props, State> = _track
 
 @screenTrack({

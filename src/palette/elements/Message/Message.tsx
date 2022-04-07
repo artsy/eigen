@@ -1,9 +1,9 @@
 import { themeGet } from "@styled-system/theme-get"
+import { Text } from "palette"
 import React from "react"
 import styled from "styled-components/native"
-import { useColor } from "../../hooks"
 import { Flex, FlexProps } from "../Flex"
-import { Sans, SansV1Props } from "../Text"
+import { SansV1Props } from "../Text"
 
 interface MessageProps extends FlexProps {
   children: React.ReactNode | null
@@ -22,12 +22,9 @@ const StyledFlex = styled(Flex)`
  * A generic message window for displaying ZerStates, notices, errors, etc.
  */
 export const Message: React.FC<MessageProps> = ({ children, textSize = "3t", ...others }) => {
-  const color = useColor()
   return (
     <StyledFlex p={2} {...others}>
-      <Sans size={textSize} color={color("black60")} weight="regular">
-        {children}
-      </Sans>
+      <Text color="black60">{children}</Text>
     </StyledFlex>
   )
 }

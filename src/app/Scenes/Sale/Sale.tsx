@@ -70,6 +70,9 @@ interface ViewToken {
   section?: any
 }
 
+// tslint:disable-next-line:no-empty
+const NOOP = () => {}
+
 export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const tracking = useTracking()
 
@@ -81,12 +84,20 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const prevIsLive = usePrevious(isLive)
 
   const scrollAnim = useRef(new Animated.Value(0)).current
+  const artworksRefetchRef = useRef(NOOP)
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
-    relay.refetch(() => {
-      setIsRefreshing(false)
-    })
+
+    artworksRefetchRef.current()
+    relay.refetch(
+      {},
+      null,
+      () => {
+        setIsRefreshing(false)
+      },
+      { force: true }
+    )
   }, [])
 
   // poll every .5 seconds to check if sale has gone live
@@ -189,6 +200,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
           saleID={sale.internalID}
           saleSlug={sale.slug}
           scrollToTop={scrollToTop}
+          artworksRefetchRef={artworksRefetchRef}
         />
       ) : (
         // Since most likely this part of the screen will be already loaded when the user
@@ -369,7 +381,7 @@ export const SaleQueryRenderer: React.FC<{
 
   return (
     <RetryErrorBoundaryLegacy
-      render={({ isRetry }) => {
+      render={() => {
         return (
           <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
             environment={environment || defaultEnvironment}
@@ -412,8 +424,7 @@ export const SaleQueryRenderer: React.FC<{
               )
             }}
             cacheConfig={{
-              // Bypass Relay cache on retries.
-              ...(isRetry && { force: true }),
+              force: true,
             }}
           />
         )
