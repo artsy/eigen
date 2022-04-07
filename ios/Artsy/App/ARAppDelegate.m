@@ -134,8 +134,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
 
-    self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
     [self setupAdminTools];
 
     [self countNumberOfRuns];
@@ -146,23 +144,16 @@ static ARAppDelegate *_sharedInstance = nil;
 
     AREmission *emission = [self setupEmission];
 
-// TODO: AppShell remove the else here once we have everything working
-#ifdef APP_SHELL
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:emission.bridge
-                                                    moduleName:@"eigen"
-                                             initialProperties:nil];
+    RCTRootView *rootView = [[RCTRootView alloc]
+                              initWithBridge:emission.bridge
+                              moduleName:@"eigen"
+                              initialProperties:nil];
 
-
-   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+   self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
    UIViewController *rootViewController = [UIViewController new];
    rootViewController.view = rootView;
    self.window.rootViewController = rootViewController;
    [self.window makeKeyAndVisible];
-#else
-  self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Artsy" initialProperties:@{}];
-  self.window.rootViewController = self.viewController;
-  [self.window makeKeyAndVisible];
-#endif
 
   if (@available(iOS 13.0, *)) {
     // prevent dark mode
