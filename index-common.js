@@ -21,23 +21,13 @@ if (metaflags.startStorybook) {
 } else {
   const { Platform } = require("react-native")
 
-  if (Platform.OS === "ios" && !newIosAppShell) {
-    // old ios
-    require("react-native-gesture-handler")
-    require("react-native-screens").enableScreens()
-    require("./src/app/AppRegistry")
+  const appName = !(Platform.OS === "android") ? require("./app.json").appName : "Artsy"
+  require("react-native-gesture-handler")
+  require("react-native-screens").enableScreens()
+  if (Platform.OS === "android") {
+    require("./src/app/utils/PushNotification").configure()
   }
-
-  if (Platform.OS === "android" || newIosAppShell) {
-    const appName =
-      newIosAppShell && !(Platform.OS === "android") ? require("./app.json").appName : "Artsy"
-    require("react-native-gesture-handler")
-    require("react-native-screens").enableScreens()
-    if (!newIosAppShell) {
-      require("./src/app/utils/PushNotification").configure()
-    }
-    const { AppRegistry } = require("react-native")
-    const { App } = require("./src/app/AndroidApp")
-    AppRegistry.registerComponent(appName, () => App)
-  }
+  const { AppRegistry } = require("react-native")
+  const { App } = require("./src/app/AndroidApp")
+  AppRegistry.registerComponent(appName, () => App)
 }
