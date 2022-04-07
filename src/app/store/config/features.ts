@@ -113,7 +113,7 @@ export const features = defineFeatures({
   },
   ARDisableCascadingEndTimerLotPage: {
     readyForRelease: false,
-    description: "Enable cascading end times on the lot page",
+    description: "Disable cascading end times on the lot page",
     showInAdminMenu: true,
     echoFlagKey: "ARDisableCascadingEndTimerLotPage",
   },
