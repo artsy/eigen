@@ -1,8 +1,5 @@
-<!-- Use a PR title in the form of 
-     `type(thing): what changed`
-like:
-     `feat(profile): allow editing of profile photo`.
-Find some examples in the "conventional commits" summary.
+<!-- Use a PR title in the form of
+  `type(PROJECT-XXXX): what changed`
 -->
 
 <!-- Jira ticket in square brackets like [PROJECT-XXXX] -->
@@ -10,16 +7,17 @@ This PR resolves []
 
 ### Description
 
-<!-- Some info, Implementation, Before/After shots, follow-up work, etc -->
+<!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
 ### PR Checklist (tick all before merging)
 
-<!-- 💡 This checklist is experimental. MOPLAT warmly welcomes any feedback about the list or how it impacts your workflow. -->
-- [ ] Feature flag around my changes.
-- [ ] App state migration.
-- [ ] Screenshots/videos of my changes.
-- [ ] Tested on **iOS** and **Android**.
-- [ ] Tests/stories for my changes.
+<!-- 💡 MOPLAT warmly welcomes any feedback about the list or how it impacts your workflow. -->
+
+- [ ] Tested on **iOS** and **Android**
+- [ ] Screenshots and videos 
+- [ ] Added Tests and Stories
+- [ ] App state migration
+- [ ] Feature flag
 
 ### To the reviewers 👀
 
