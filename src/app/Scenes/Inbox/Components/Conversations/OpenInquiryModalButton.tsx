@@ -65,6 +65,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
             artwork={artwork}
             editionSetID={editionSets?.[0]?.internalID || null}
             conversationID={conversationID}
+            onPress={() => trackEvent(tracks.trackTappedMakeOffer(conversationID))}
           />
         )}
       </Flex>

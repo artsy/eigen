@@ -16,6 +16,7 @@ export interface InquiryMakeOfferButtonProps {
   disabled?: boolean
   conversationID: string
   replaceModalView?: boolean
+  onPress?: () => void
 }
 
 export interface State {
@@ -53,7 +54,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
   }
 
   handleCreateInquiryOfferOrder() {
-    const { relay, artwork, editionSetID, conversationID, replaceModalView } = this.props
+    const { relay, artwork, editionSetID, conversationID, replaceModalView = true } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state
     const { internalID } = artwork
 
@@ -126,19 +127,25 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
 
   render() {
     const { isCommittingCreateOfferOrderMutation } = this.state
+    const { onPress, disabled, variant, buttonText } = this.props
 
     return (
       <Button
-        onPress={() => this.handleCreateInquiryOfferOrder()}
+        onPress={() => {
+          if (onPress) {
+            onPress()
+          }
+          this.handleCreateInquiryOfferOrder()
+        }}
         loading={isCommittingCreateOfferOrderMutation}
         size="large"
-        disabled={this.props.disabled}
+        disabled={disabled}
         block
         width={100}
-        variant={this.props.variant}
+        variant={variant}
         haptic
       >
-        {this.props.buttonText ? this.props.buttonText : "Make an Offer"}
+        {buttonText ? buttonText : "Make an Offer"}
       </Button>
     )
   }

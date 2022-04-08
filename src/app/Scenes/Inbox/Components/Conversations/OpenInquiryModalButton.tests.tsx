@@ -7,10 +7,19 @@ import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import relay, { QueryRenderer } from "react-relay"
 import { graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"
 
+const trackEvent = useTracking().trackEvent
+
 jest.unmock("react-relay")
+
+const tappedMakeOfferEvent = {
+  action: "tappedMakeOffer",
+  context_owner_type: "conversation",
+  impulse_conversation_id: "123",
+}
 
 describe("OpenInquiryModalButtonTestQueryRenderer", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
@@ -50,6 +59,7 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
     })
 
     fireEvent(getAllByText("Make an Offer")[0], "press")
+    expect(trackEvent).toHaveBeenCalledWith(tappedMakeOfferEvent)
     expect(relay.commitMutation).toHaveBeenCalledTimes(1)
   })
 
@@ -69,6 +79,7 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
     })
 
     fireEvent(getAllByText("Make an Offer")[0], "press")
+    expect(trackEvent).toHaveBeenCalledWith(tappedMakeOfferEvent)
     expect(relay.commitMutation).toHaveBeenCalledTimes(1)
   })
 
@@ -89,6 +100,7 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
     })
 
     fireEvent(getAllByText("Make an Offer")[0], "press")
+    expect(trackEvent).toHaveBeenCalledWith(tappedMakeOfferEvent)
     expect(navigate).toHaveBeenCalledWith("make-offer/fancy-art", {
       modal: true,
       passProps: { conversationID: "123" },
