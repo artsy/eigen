@@ -131,6 +131,12 @@ export const SaleLotsList: React.FC<Props> = ({
     })
   }
 
+  const handleLoadMore: RelayPaginationProp["loadMore"] = (pageSize, callback) => {
+    relay.loadMore(pageSize, callback, { force: true })
+
+    return null
+  }
+
   if (unfilteredSaleArtworksConnection?.counts?.total === 0) {
     return null
   }
@@ -155,7 +161,7 @@ export const SaleLotsList: React.FC<Props> = ({
         <SaleArtworkListContainer
           connection={saleArtworksConnection.saleArtworksConnection!}
           hasMore={relay.hasMore}
-          loadMore={relay.loadMore}
+          loadMore={handleLoadMore}
           isLoading={relay.isLoading}
           contextScreenOwnerType={OwnerType.sale}
           contextScreenOwnerId={saleID}
@@ -169,7 +175,7 @@ export const SaleLotsList: React.FC<Props> = ({
             contextScreenOwnerId={saleID}
             contextScreenOwnerSlug={saleSlug}
             hasMore={relay.hasMore}
-            loadMore={relay.loadMore}
+            loadMore={handleLoadMore}
             isLoading={relay.isLoading}
             showLotLabel
             hidePartner
