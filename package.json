@@ -63,7 +63,7 @@
     "prestorybook-server": "yarn storybook-load-new",
     "storybook-server": "start-storybook -p 7007",
     "build-storybook": "build-storybook",
-    "prestart-storybook": "yarn storybook-load-new",
+    "prestart-storybook": "yarn sb-rn-get-stories --config-path ./src/storybook",
     "start-storybook": "STORYBOOK=1 yarn start",
     "secrets:audit": "detect-secrets audit .secrets.baseline",
     "secrets:check:staged": "scripts/secrets-check-staged",

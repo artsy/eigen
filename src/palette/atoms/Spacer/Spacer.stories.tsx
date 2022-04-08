@@ -2,7 +2,6 @@ import { storiesOf } from "@storybook/react-native"
 import { Text } from "palette"
 import { bullet } from "palette/helpers"
 import { useSpace } from "palette/hooks"
-import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { Box } from "../../elements"
 import { Spacer, SpacerProps } from "./Spacer"
@@ -48,7 +47,6 @@ function SpacerCol(props: { y: SpacerProps["y"] }) {
 }
 
 storiesOf("palette/atoms/Spacer", module)
-  .addDecorator(withTheme)
   .add("Horizontal", () => (
     <List style={{ marginLeft: 50 }} contentContainerStyle={{ alignItems: "flex-start" }}>
       <Text>Defined</Text>

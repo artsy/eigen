@@ -1,15 +1,12 @@
 import { storiesOf } from "@storybook/react-native"
 import { Box, Flex } from "palette"
-import React from "react"
 import { Platform, Text as RNText, TextStyle, View } from "react-native"
-import { withTheme } from "storybook/decorators"
 import { DataList, List } from "storybook/helpers"
 import { LinkText, Text, TextProps } from "."
 
 const variants: Array<TextProps["variant"]> = ["xs", "sm", "md", "lg", "xl", "xxl"]
 
 storiesOf("Theme/Text", module)
-  .addDecorator(withTheme)
   .add("Variants", () => (
     <DataList
       data={variants}

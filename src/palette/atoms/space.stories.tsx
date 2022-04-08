@@ -1,6 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
 import { Box, bullet, Text } from "palette"
-import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { useSpace } from "../hooks"
 import { SpacingUnitV3 } from "../Theme"
@@ -19,15 +18,13 @@ const SpaceLine = ({ space: theSpace }: { space: SpacingUnitV3 }) => {
   )
 }
 
-storiesOf("Theme/space", module)
-  .addDecorator(withTheme)
-  .add("spaces", () => (
-    <List style={{ marginLeft: 50 }} contentContainerStyle={{ alignItems: "flex-start" }}>
-      <SpaceLine space="0.5" />
-      <SpaceLine space="1" />
-      <SpaceLine space="2" />
-      <SpaceLine space="4" />
-      <SpaceLine space="6" />
-      <SpaceLine space="12" />
-    </List>
-  ))
+storiesOf("Theme/space", module).add("spaces", () => (
+  <List style={{ marginLeft: 50 }} contentContainerStyle={{ alignItems: "flex-start" }}>
+    <SpaceLine space="0.5" />
+    <SpaceLine space="1" />
+    <SpaceLine space="2" />
+    <SpaceLine space="4" />
+    <SpaceLine space="6" />
+    <SpaceLine space="12" />
+  </List>
+))

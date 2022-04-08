@@ -1,11 +1,10 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
-import { withTheme, withTracking } from "storybook/decorators"
+import { withTracking } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { ReadMore } from "./ReadMore"
 
 storiesOf("ReadMore", module)
-  .addDecorator(withTheme)
   .addDecorator(withTracking)
   .add("Misc", () => (
     <List contentContainerStyle={{ alignItems: "flex-start" }}>
