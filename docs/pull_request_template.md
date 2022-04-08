@@ -53,3 +53,7 @@ This PR resolves []
 <!-- end_changelog_updates -->
 
 </details>
+
+Need help with some of the above? Have a look on our [docs](https://github.com/artsy/eigen/blob/main/docs/README.md)! 
+
+
