@@ -1,19 +1,16 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
 import { MyCollectionArtworkGridItem_artwork } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
-import { MyCollectionArtworkGridItemQuery } from "__generated__/MyCollectionArtworkGridItemQuery.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { FadeIn } from "app/Components/FadeIn"
-import { TrendingIcon } from "app/Icons/TrendingIcon"
+import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Flex, Text } from "palette"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { View } from "react-native"
-import { createFragmentContainer, fetchQuery, graphql } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { MyCollectionImageView } from "../../Components/MyCollectionImageView"
@@ -24,7 +21,6 @@ interface MyCollectionArtworkGridItemProps {
 
 const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
   const { trackEvent } = useTracking()
-  const [trending, setTrending] = useState(false)
   const imageURL =
     artwork.images?.find((i: any) => i?.isDefault)?.url ||
     (artwork.images && artwork.images[0]?.url)
@@ -38,46 +34,12 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const sectionCount = isPad() ? (isPadHorizontal ? 4 : 3) : 2
   const imageWidth = (screen.width - DEFAULT_SECTION_MARGIN * (sectionCount + 1)) / sectionCount
 
-  const isPOneArtist =
-    !!artwork.artists?.find((artst) => Boolean(artst?.targetSupply?.isTargetSupply)) ??
-    !!artwork.artist?.targetSupply?.isTargetSupply ??
-    false
+  const isP1Artist = artwork.artist?.targetSupply?.isP1
+  const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
 
   const ARShowDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
 
-  const fetchDemandRank = async (): Promise<number | null> => {
-    if (artist?.internalID && medium) {
-      try {
-        const res = await fetchQuery<MyCollectionArtworkGridItemQuery>(
-          defaultEnvironment,
-          graphql`
-            query MyCollectionArtworkGridItemQuery($internalID: ID!, $medium: String!) {
-              marketPriceInsights(artistId: $internalID, medium: $medium) {
-                demandRank
-              }
-            }
-          `,
-          { internalID: artist.internalID, medium }
-        ).toPromise()
-
-        if (res?.marketPriceInsights?.demandRank) {
-          setTrending(Number(res.marketPriceInsights.demandRank * 10) >= 9)
-        }
-      } catch (e) {
-        console.error(e)
-        return null
-      }
-    }
-    return null
-  }
-
-  useEffect(() => {
-    if (isPOneArtist && ARShowDemandIndexHints) {
-      fetchDemandRank()
-    }
-  }, [])
-
-  const showTrendingIcon = ARShowDemandIndexHints && trending
+  const showHighDemandIcon = isP1Artist && isHighDemand
 
   return (
     <TouchElement
@@ -109,11 +71,9 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
                 {artistNames}
               </Text>
             </Flex>
-            {!!showTrendingIcon && (
+            {!!showHighDemandIcon && !!ARShowDemandIndexHints && (
               <Flex alignSelf="flex-end" mt="2px" pl="3px">
-                <FadeIn>
-                  <TrendingIcon />
-                </FadeIn>
+                <HighDemandIcon />
               </Flex>
             )}
           </Flex>
@@ -140,12 +100,7 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         artist {
           internalID
           targetSupply {
-            isTargetSupply
-          }
-        }
-        artists {
-          targetSupply {
-            isTargetSupply
+            isP1
           }
         }
         images {
@@ -160,6 +115,9 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         slug
         title
         date
+        marketPriceInsights {
+          demandRank
+        }
       }
     `,
   }

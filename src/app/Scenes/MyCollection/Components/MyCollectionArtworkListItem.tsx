@@ -1,17 +1,14 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionArtworkListItem_artwork$key } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
-import { MyCollectionArtworkListItemQuery } from "__generated__/MyCollectionArtworkListItemQuery.graphql"
-import { FadeIn } from "app/Components/FadeIn"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { TrendingIcon } from "app/Icons/TrendingIcon"
+import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { fetchQuery, graphql } from "relay-runtime"
+import { graphql } from "relay-runtime"
 
 export const ARTWORK_LIST_IMAGE_SIZE = 80
 
@@ -19,53 +16,18 @@ export const MyCollectionArtworkListItem: React.FC<{
   artwork: MyCollectionArtworkListItem_artwork$key
 }> = ({ ...restProps }) => {
   const { trackEvent } = useTracking()
-  const [trending, setTrending] = useState(false)
 
   const artwork = useFragment<MyCollectionArtworkListItem_artwork$key>(
     artworkFragment,
     restProps.artwork
   )
 
-  const isPOneArtist =
-    !!artwork.artists?.find((artist) => Boolean(artist?.targetSupply?.isTargetSupply)) ??
-    !!artwork.artist?.targetSupply?.isTargetSupply ??
-    false
+  const isP1Artist = artwork.artist?.targetSupply?.isP1
+  const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
 
   const ARShowDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
 
-  const fetchDemandRank = async (): Promise<number | null> => {
-    if (artwork.artist?.internalID && artwork.medium) {
-      try {
-        const res = await fetchQuery<MyCollectionArtworkListItemQuery>(
-          defaultEnvironment,
-          graphql`
-            query MyCollectionArtworkListItemQuery($internalID: ID!, $medium: String!) {
-              marketPriceInsights(artistId: $internalID, medium: $medium) {
-                demandRank
-              }
-            }
-          `,
-          { internalID: artwork.artist.internalID, medium: artwork.medium }
-        ).toPromise()
-
-        if (res?.marketPriceInsights?.demandRank) {
-          setTrending(Number(res.marketPriceInsights.demandRank * 10) >= 9)
-        }
-      } catch (e) {
-        console.error(e)
-        return null
-      }
-    }
-    return null
-  }
-
-  useEffect(() => {
-    if (isPOneArtist && ARShowDemandIndexHints) {
-      fetchDemandRank()
-    }
-  }, [])
-
-  const showTrendingIcon = ARShowDemandIndexHints && trending
+  const showHighDemandIcon = isP1Artist && isHighDemand
 
   return (
     <Touchable
@@ -130,20 +92,18 @@ export const MyCollectionArtworkListItem: React.FC<{
           )}
         </Flex>
 
-        {!!showTrendingIcon && (
-          <FadeIn>
-            <Flex
-              alignSelf="flex-start"
-              alignItems="center"
-              flexDirection="row"
-              style={{ marginTop: 3 }}
-            >
-              <TrendingIcon style={{ marginTop: 2 }} />
-              <Text ml={0.5} variant="xs" color="blue100">
-                High Demand
-              </Text>
-            </Flex>
-          </FadeIn>
+        {!!showHighDemandIcon && !!ARShowDemandIndexHints && (
+          <Flex
+            alignSelf="flex-start"
+            alignItems="center"
+            flexDirection="row"
+            style={{ marginTop: 3 }}
+          >
+            <HighDemandIcon style={{ marginTop: 2 }} />
+            <Text ml={0.5} variant="xs" color="blue100">
+              High Demand
+            </Text>
+          </Flex>
         )}
       </Flex>
     </Touchable>
@@ -167,12 +127,7 @@ const artworkFragment = graphql`
       internalID
       name
       targetSupply {
-        isTargetSupply
-      }
-    }
-    artists {
-      targetSupply {
-        isTargetSupply
+        isP1
       }
     }
     pricePaid {
@@ -182,6 +137,9 @@ const artworkFragment = graphql`
     width
     height
     date
+    marketPriceInsights {
+      demandRank
+    }
   }
 `
 
