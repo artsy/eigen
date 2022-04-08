@@ -79,7 +79,7 @@ export const RequestForPriceEstimateForm = () => {
               accessibilityLabel="Phone number"
               shouldDisplayLocalError={false}
             />
-            <Spacer p={1} />
+            <Spacer p={2} />
             <Button
               block
               onPress={handleSubmit}
