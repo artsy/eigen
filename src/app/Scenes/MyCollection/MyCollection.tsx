@@ -47,6 +47,7 @@ export function refreshMyCollection() {
 }
 
 export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
+export const SHOW_ARTWORK_SUBMISSION_BANNER = "SHOW_ARTWORK_SUBMISSION_BANNER"
 
 const MyCollection: React.FC<{
   relay: RelayPaginationProp
@@ -98,7 +99,7 @@ const MyCollection: React.FC<{
 
   const hasBeenShownBanner = async () => {
     const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-    const shouldShowConsignments = await AsyncStorage.getItem("SHOW_ARTWORK_SUBMISSION_BANNER")
+    const shouldShowConsignments = await AsyncStorage.getItem(SHOW_ARTWORK_SUBMISSION_BANNER)
     return {
       hasSeenBanner: hasSeen === "true",
       shouldShowConsignments: !!shouldShowConsignments,
@@ -106,7 +107,7 @@ const MyCollection: React.FC<{
   }
 
   useEffect(() => {
-    AsyncStorage.removeItem("SHOW_ARTWORK_SUBMISSION_BANNER")
+    AsyncStorage.removeItem(SHOW_ARTWORK_SUBMISSION_BANNER)
   }, [])
 
   useEffect(() => {
@@ -157,7 +158,7 @@ const MyCollection: React.FC<{
                 title="Artwork added to My Collection"
                 text="The artwork you submitted for sale has been automatically added."
                 showCloseButton
-                onClose={() => AsyncStorage.removeItem("SHOW_ARTWORK_SUBMISSION_BANNER")}
+                onClose={() => AsyncStorage.removeItem(SHOW_ARTWORK_SUBMISSION_BANNER)}
               />
             )}
           </Flex>
