@@ -31,7 +31,7 @@ export interface ArtworkDetailsFormModel {
   utmSource: string | undefined
   utmTerm: string | undefined
   location: Location
-  source: ConsignmentSubmissionSource | null
+  source: ConsignmentSubmissionSource
   myCollectionArtworkID: string | null
 }
 
@@ -58,7 +58,7 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
     state: "",
     country: "",
   },
-  source: null,
+  source: "APP_INBOUND",
   myCollectionArtworkID: null,
 }
 

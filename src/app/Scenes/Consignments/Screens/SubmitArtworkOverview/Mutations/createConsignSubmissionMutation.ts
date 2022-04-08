@@ -19,11 +19,7 @@ export const createConsignSubmission = (input: CreateSubmissionMutationInput) =>
         }
       `,
       variables: {
-        input: {
-          source: "APP_INBOUND",
-          userAgent: getCurrentEmissionState().userAgent,
-          ...input,
-        },
+        input: { ...input, userAgent: getCurrentEmissionState().userAgent },
       },
       onError: reject,
       onCompleted: async (res, errors) => {
