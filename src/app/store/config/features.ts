@@ -188,6 +188,11 @@ export const features = defineFeatures({
     description: "Enable Crossplatform Map Screen",
     showInAdminMenu: true,
   },
+  AREnableAuctionShareButton: {
+    readyForRelease: true,
+    description: "Show share button in auction screen",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
