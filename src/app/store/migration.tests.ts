@@ -620,3 +620,21 @@ describe("App version Versions.AddSourceInitialPhotosToSubmission", () => {
     expect(migratedState.artworkSubmission.submission.photos.initialPhotos).toEqual([])
   })
 })
+
+describe("App version Versions.MakeDefaultConsignmentSubmissionSourceToBeAPP_INBOUND", () => {
+  const migrationToTest = Versions.MakeDefaultConsignmentSubmissionSourceToBeAPP_INBOUND
+
+  it("Makes the default consignment submission source to be app_inbound", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artworkSubmission.submission.artworkDetails.source).toEqual("APP_INBOUND")
+  })
+})
