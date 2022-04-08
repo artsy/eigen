@@ -1066,7 +1066,7 @@ describe("clearFiltersZeroState", () => {
         total: null,
         followedArtists: null,
       },
-      sizeMetric: "cm",
+      sizeMetric: "in",
     })
   })
 
@@ -1101,7 +1101,7 @@ describe("clearFiltersZeroState", () => {
         total: null,
         followedArtists: null,
       },
-      sizeMetric: "cm",
+      sizeMetric: "in",
     })
   })
 })
