@@ -1,4 +1,5 @@
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
+import { unsafe_getLocalizedUnit } from "app/store/GlobalStore"
 import { assignDeep } from "app/store/persistence"
 import { Action, action, createContextStore, State } from "easy-peasy"
 import { filter, find, isEqual, unionBy } from "lodash"
@@ -126,6 +127,7 @@ export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
     state.selectedFilters = []
     state.previouslyAppliedFilters = []
     state.applyFilters = true
+    state.sizeMetric = unsafe_getLocalizedUnit() || LOCALIZED_UNIT
   }),
 
   setAggregationsAction: action((state, payload) => {
