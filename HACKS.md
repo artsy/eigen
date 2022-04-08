@@ -240,16 +240,6 @@ This is happening because react-native-push-notification requires @react-native-
 adding this dependency at this time because it is unnecessary and we do not use react-native-push-notification on iOS. Also,
 we do not want unnecessary conflicts between our native push notification implementation and @react-native-community/push-notification-ios's.
 
-## `@storybook/client-api` patch-package
-
-#### When can we remove this:
-
-Once storybook is upgraded to a version that does not use the removed `Cancellable` from `lodash` in that file.
-
-#### Explanation/Context:
-
-We get an error like here, and that is the solution. https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47166#issuecomment-685738545
-
 # `PropsStore` pass functions as props inside navigate() on iOS
 
 #### When can we remove this:
