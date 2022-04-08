@@ -177,19 +177,6 @@ export const useVisualClue = () => {
   return { seenVisualClues, showVisualClue }
 }
 
-export const useSessionVisualClue = () => {
-  const sessionVisualClues = GlobalStore.useAppState((state) => state.visualClue.sessionState.clues)
-
-  const showSessionVisualClue = (clueName?: VisualClueName): boolean =>
-    !!clueName && sessionVisualClues.includes(clueName)
-
-  return { showSessionVisualClue }
-}
-
-export const addClue = GlobalStore.actions.visualClue.addClue
-
-export const removeClue = GlobalStore.actions.visualClue.removeClue
-
 export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
 
 export function unsafe_getUserAccessToken() {

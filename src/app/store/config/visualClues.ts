@@ -18,7 +18,4 @@ export const visualClues = defineVisualClues({
   // ExampleClueName: {
   //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
   // },
-  ArtworkSubmissionBanner: {
-    description: "The banner shown after artwork submission with SWA flow",
-  },
 })

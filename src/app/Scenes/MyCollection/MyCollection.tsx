@@ -14,13 +14,7 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { useToast } from "app/Components/Toast/toastHook"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import {
-  GlobalStore,
-  removeClue,
-  useDevToggle,
-  useFeatureFlag,
-  useSessionVisualClue,
-} from "app/store/GlobalStore"
+import { GlobalStore, useDevToggle, useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -59,7 +53,6 @@ const MyCollection: React.FC<{
   me: MyCollection_me
 }> = ({ relay, me }) => {
   const { trackEvent } = useTracking()
-  const { showSessionVisualClue } = useSessionVisualClue()
 
   const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
   const enableConsignmentsInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
@@ -105,12 +98,16 @@ const MyCollection: React.FC<{
 
   const hasBeenShownBanner = async () => {
     const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionBanner")
+    const shouldShowConsignments = await AsyncStorage.getItem("SHOW_ARTWORK_SUBMISSION_BANNER")
     return {
       hasSeenBanner: hasSeen === "true",
-      shouldShowConsignments: shouldShowConsignments === true,
+      shouldShowConsignments: !!shouldShowConsignments,
     }
   }
+
+  useEffect(() => {
+    AsyncStorage.removeItem("SHOW_ARTWORK_SUBMISSION_BANNER")
+  }, [])
 
   useEffect(() => {
     if (artworks.length) {
@@ -160,7 +157,7 @@ const MyCollection: React.FC<{
                 title="Artwork added to My Collection"
                 text="The artwork you submitted for sale has been automatically added."
                 showCloseButton
-                onClose={() => removeClue("ArtworkSubmissionBanner")}
+                onClose={() => AsyncStorage.removeItem("SHOW_ARTWORK_SUBMISSION_BANNER")}
               />
             )}
           </Flex>
