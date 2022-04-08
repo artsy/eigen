@@ -44,6 +44,7 @@ const TestRenderer = () => {
               artwork={props!.artwork!}
               editionSetID={null}
               conversationID="1234"
+              replaceModalView
             />
           )
         } else if (Boolean(error)) {
