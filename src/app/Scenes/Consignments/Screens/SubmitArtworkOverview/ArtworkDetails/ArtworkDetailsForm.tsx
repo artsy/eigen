@@ -22,9 +22,11 @@ import { ArtworkDetailsFormModel, countriesRequirePostalCode, Location } from ".
 const StandardSpace = () => <Spacer mt={4} />
 
 export const ArtworkDetailsForm: React.FC = () => {
-  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values, errors, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
+
+  const [isZipInputFocused, setIsZipInputFocused] = useState(false)
 
   return (
     <>
@@ -212,6 +214,9 @@ export const ArtworkDetailsForm: React.FC = () => {
             placeholder="Zip/Postal Code Where Artwork Is Located"
             testID="Submission_ZipInput"
             value={values.zipCode}
+            onBlur={() => setIsZipInputFocused(false)}
+            onFocus={() => setIsZipInputFocused(true)}
+            error={!isZipInputFocused && values.zipCode && errors.zipCode ? errors.zipCode : ""}
             onChangeText={(e) => setFieldValue("zipCode", e)}
           />
         </>
