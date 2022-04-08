@@ -675,6 +675,8 @@ PODS:
     - Sentry (= 7.9.0)
   - RNShare (7.3.6):
     - React-Core
+  - RNSplit (0.0.1):
+    - React
   - RNSVG (9.13.3):
     - React
   - SDWebImage (5.8.3):
@@ -844,6 +846,7 @@ DEPENDENCIES:
   - RNScreens (from `node_modules/react-native-screens`)
   - "RNSentry (from `node_modules/@sentry/react-native`)"
   - RNShare (from `node_modules/react-native-share`)
+  - "RNSplit (from `node_modules/@splitsoftware/splitio-react-native`)"
   - RNSVG (from `node_modules/react-native-svg`)
   - SDWebImage (= 5.8.3)
   - Segment-Adjust (= 3.1.4)
@@ -859,14 +862,7 @@ DEPENDENCIES:
   - Yoga (from `./node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/artsy/Specs.git:
-    - Aerodramus
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts"
-    - "Artsy+UILabels"
-    - Artsy-UIButtons
-    - Extraction
-  trunk:
+  https://cdn.cocoapods.org/:
     - Adjust
     - AFNetworkActivityLogger
     - AFNetworking
@@ -941,6 +937,13 @@ SPEC REPOS:
     - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
     - YogaKit
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - "Artsy+UILabels"
+    - Artsy-UIButtons
+    - Extraction
 
 EXTERNAL SOURCES:
   AFOAuth1Client:

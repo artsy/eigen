@@ -15,7 +15,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "app/utils/track"
 import { Box, Flex, Sans } from "palette"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { MutableRefObject, useCallback, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -28,6 +28,7 @@ interface Props {
   saleID: string
   saleSlug: string
   scrollToTop: () => void
+  artworksRefetchRef?: MutableRefObject<() => void>
 }
 
 export const SaleLotsListSortMode = ({
@@ -67,6 +68,7 @@ export const SaleLotsList: React.FC<Props> = ({
   relay,
   saleID,
   saleSlug,
+  artworksRefetchRef,
   scrollToTop,
 }) => {
   const [totalCount, setTotalCount] = useState<number | null>(null)
@@ -101,6 +103,7 @@ export const SaleLotsList: React.FC<Props> = ({
     componentPath: "Sale/SaleLotsList",
     refetchVariables,
     onApply: () => scrollToTop(),
+    refetchRef: artworksRefetchRef,
   })
 
   useEffect(() => {
