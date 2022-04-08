@@ -2057,6 +2057,9 @@ type ArtworkLayer {
 # is also commonly referred to as just "medium", but should not be confused with
 # the artwork attribute called `medium`.)
 type ArtworkMedium {
+  # The medium gene that corresponds to this medium type. Used for filtering purposes on our frontend, e.g. in artwork grids.
+  filterGene: Gene
+
   # Long descriptive phrase
   longDescription: String
 
