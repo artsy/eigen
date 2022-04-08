@@ -68,6 +68,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
             disabled={!!artwork.isEdition && !selectedEdition}
             editionSetID={selectedEdition ? selectedEdition : null}
             conversationID={conversationID}
+            replaceModalView
           />
           <Button
             mt={1}

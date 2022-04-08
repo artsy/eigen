@@ -15,6 +15,7 @@ export interface InquiryMakeOfferButtonProps {
   buttonText?: string
   disabled?: boolean
   conversationID: string
+  replaceModalView?: boolean
 }
 
 export interface State {
@@ -52,7 +53,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
   }
 
   handleCreateInquiryOfferOrder() {
-    const { relay, artwork, editionSetID, conversationID } = this.props
+    const { relay, artwork, editionSetID, conversationID, replaceModalView } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state
     const { internalID } = artwork
 
@@ -105,7 +106,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
                 navigate(`/orders/${orderOrError.order.internalID}`, {
                   modal: true,
-                  replace: true,
+                  replace: !!replaceModalView,
                   passProps: {
                     orderID: orderOrError.order.internalID,
                     title: "Make Offer",
