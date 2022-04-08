@@ -37,7 +37,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
 
-  const ARShowDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
+  const showDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
@@ -65,18 +65,14 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           artworkSlug={slug}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
-          <Flex flexDirection="row">
-            <Flex flexShrink={1}>
-              <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
-                {artistNames}
-              </Text>
-            </Flex>
-            {!!showHighDemandIcon && !!ARShowDemandIndexHints && (
-              <Flex alignSelf="flex-end" mt="2px" pl="3px">
-                <HighDemandIcon />
+          <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
+            {artistNames}
+            {!!showHighDemandIcon && !!showDemandIndexHints && (
+              <Flex>
+                <HighDemandIcon style={{ marginLeft: 2, marginBottom: -2 }} />
               </Flex>
             )}
-          </Flex>
+          </Text>
           {!!title ? (
             <Text lineHeight="18" variant="xs" weight="regular" numberOfLines={1} color="black60">
               <Text lineHeight="18" variant="xs" weight="regular" italic>

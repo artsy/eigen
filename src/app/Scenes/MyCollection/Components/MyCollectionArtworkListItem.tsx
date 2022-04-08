@@ -25,7 +25,7 @@ export const MyCollectionArtworkListItem: React.FC<{
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
 
-  const ARShowDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
+  const showDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
@@ -92,7 +92,7 @@ export const MyCollectionArtworkListItem: React.FC<{
           )}
         </Flex>
 
-        {!!showHighDemandIcon && !!ARShowDemandIndexHints && (
+        {!!showHighDemandIcon && !!showDemandIndexHints && (
           <Flex
             alignSelf="flex-start"
             alignItems="center"
