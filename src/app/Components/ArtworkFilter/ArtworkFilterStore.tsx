@@ -60,7 +60,7 @@ export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
     total: null,
     followedArtists: null,
   },
-  sizeMetric: LOCALIZED_UNIT,
+  sizeMetric: unsafe_getLocalizedUnit() || LOCALIZED_UNIT,
 
   /**
    * Store actions
