@@ -1,5 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
+import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { Box, Flex, RadioButton, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { ArtworkFilterNavigationStack } from ".."
@@ -159,6 +160,8 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
     (state) => state.selectFiltersAction
   )
 
+  const { localizedUnit } = useLocalizedUnit()
+
   const setSelectedMetric = ArtworksFiltersStore.useStoreActions((state) => state.setSizeMetric)
   const selectedMetric = ArtworksFiltersStore.useStoreState((state) => state.sizeMetric)
 
@@ -269,6 +272,7 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   }
 
   const handleClear = () => {
+    setSelectedMetric(localizedUnit)
     clearPredefinedValues()
     clearCustomSizeValues()
     setCustomValues(DEFAULT_CUSTOM_SIZE)
