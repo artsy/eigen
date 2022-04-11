@@ -6,6 +6,8 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { getCurrentEmissionState } from "app/store/GlobalStore"
 import { commitMutation, graphql } from "relay-runtime"
 
+const DEFAULT_SOURCE = "APP_INBOUND"
+
 export const createConsignSubmission = (input: CreateSubmissionMutationInput) => {
   return new Promise<string>((resolve, reject) => {
     commitMutation<createConsignSubmissionMutation>(defaultEnvironment, {
@@ -21,7 +23,7 @@ export const createConsignSubmission = (input: CreateSubmissionMutationInput) =>
       variables: {
         input: {
           ...input,
-          source: "APP_INBOUND",
+          source: input.source || DEFAULT_SOURCE,
           userAgent: getCurrentEmissionState().userAgent,
         },
       },
