@@ -25,6 +25,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ initialLocation, onChang
         city: "",
         state: "",
         country: "",
+        countryCode: "",
       })
     }
   }, [selectedLocation])
@@ -62,7 +63,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ initialLocation, onChang
   return (
     <>
       <Input
-        title="Location"
+        title="City"
         placeholder="Enter City Where Artwork Is Located"
         onChangeText={setQuery}
         onFocus={reset}
@@ -114,11 +115,12 @@ export const LocationPredictions = ({
   }
 
   const onLocationSelect = async (item: SimpleLocation) => {
-    const { city, state, country } = await getLocationDetails(item)
+    const { city, state, country, countryCode } = await getLocationDetails(item)
     onSelect({
       city: city || "",
       state: state || "",
       country: country || "",
+      countryCode: countryCode || "",
     })
   }
 
