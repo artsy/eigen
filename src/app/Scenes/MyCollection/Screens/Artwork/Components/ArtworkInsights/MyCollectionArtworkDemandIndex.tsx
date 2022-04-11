@@ -76,10 +76,10 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
         <Text color="blue100" variant="xl">
           {adjustedDemandRank}
         </Text>
-        {!!isHighDemand && !!enableDemandIndexHints && (
+        {!!enableDemandIndexHints && (
           <Flex flexDirection="row" alignItems="center" mb={1}>
-            <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />
-            <Text color="blue100">High Demand</Text>
+            {!!isHighDemand && <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />}
+            <Text color="blue100">{getDemandRankText(demandRank)}</Text>
           </Flex>
         )}
       </Flex>
@@ -121,6 +121,18 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
       </Flex>
     </>
   )
+}
+
+const getDemandRankText = (demandRank: number) => {
+  if (demandRank >= 9) {
+    return "High Demand"
+  } else if (demandRank >= 7) {
+    return "Active Demand"
+  } else if (demandRank >= 4) {
+    return "Moderate Demand"
+  }
+
+  return "Less Active Demand"
 }
 
 const artworkFragment = graphql`
