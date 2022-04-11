@@ -320,3 +320,13 @@ When the fix is in a release in the library or when we stop using this library.
 #### Explanation/Context
 
 With updated react native version (66) this library causes an error calling the now non-existent getNode() function, it is fixed on the main branch in the library but has not yet been released on npm.
+
+## @storybook/react-native patch
+
+#### When we can remove this:
+
+When [this](https://github.com/storybookjs/react-native/pull/345) is merged, or when storybook supports rendering outside the safe area.
+
+#### Explanation/Context
+
+Storybook does not render outside the safe area, so for `Screen` and friends, we can't really use storybook otherwise. With this patch, we can now render outside the safe area, by adding `parameters: { noSafeArea: true }` in the new form of stories.
