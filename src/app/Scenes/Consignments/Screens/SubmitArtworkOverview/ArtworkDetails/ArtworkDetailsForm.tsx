@@ -22,7 +22,8 @@ import { ArtworkDetailsFormModel, countriesRequirePostalCode, Location } from ".
 const StandardSpace = () => <Spacer mt={4} />
 
 export const ArtworkDetailsForm: React.FC = () => {
-  const { values, errors, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values, errors, setFieldValue, touched, handleBlur, setFieldTouched } =
+    useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
 
@@ -204,7 +205,13 @@ export const ArtworkDetailsForm: React.FC = () => {
       <StandardSpace />
       <LocationAutocomplete
         initialLocation={values.location}
-        onChange={(e: Location) => setFieldValue("location", e)}
+        onChange={(e: Location) => {
+          setFieldValue("location", e)
+          if (!e.countryCode) {
+            setFieldValue("zipCode", "")
+            setFieldTouched("zipCode", false)
+          }
+        }}
       />
       {countriesRequirePostalCode.includes(values.location.countryCode.toUpperCase()) && (
         <>
@@ -214,9 +221,12 @@ export const ArtworkDetailsForm: React.FC = () => {
             placeholder="Zip/Postal Code Where Artwork Is Located"
             testID="Submission_ZipInput"
             value={values.zipCode}
-            onBlur={() => setIsZipInputFocused(false)}
+            onBlur={(e) => {
+              setIsZipInputFocused(false)
+              handleBlur("zipCode")(e)
+            }}
             onFocus={() => setIsZipInputFocused(true)}
-            error={!isZipInputFocused && values.zipCode && errors.zipCode ? errors.zipCode : ""}
+            error={!isZipInputFocused && touched.zipCode && errors.zipCode ? errors.zipCode : ""}
             onChangeText={(e) => setFieldValue("zipCode", e)}
           />
         </>
