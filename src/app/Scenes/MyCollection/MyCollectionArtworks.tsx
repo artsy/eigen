@@ -8,8 +8,9 @@ import { navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Button, Flex } from "palette"
+import { Button, Flex, Text } from "palette"
 import React from "react"
+import { Image } from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
@@ -95,24 +96,33 @@ const MyCollectionZeroState: React.FC = () => {
 
   return (
     <ZeroState
-      title="Your art collection in your pocket."
-      subtitle="Keep track of your collection all in one place and get market insights"
+      title="Primed and ready for artworks."
+      subtitle="Add works from your collection to access price and market insights."
+      alignItems="center"
       callToAction={
-        <Button
-          testID="add-artwork-button-zero-state"
-          onPress={() => {
-            trackEvent(addCollectedArtwork())
-            navigate("my-collection/artworks/new", {
-              passProps: {
-                mode: "add",
-                onSuccess: popToRoot,
-              },
-            })
-          }}
-          block
-        >
-          Add artwork
-        </Button>
+        <>
+          <Button
+            testID="add-artwork-button-zero-state"
+            onPress={() => {
+              trackEvent(addCollectedArtwork())
+              navigate("my-collection/artworks/new", {
+                passProps: {
+                  mode: "add",
+                  onSuccess: popToRoot,
+                },
+              })
+            }}
+            block
+          >
+            Add artwork
+          </Button>
+          <Flex flexDirection="row" justifyContent="center" alignItems="center" py={1}>
+            <Image source={require("../../../../images/lock.webp")} />
+            <Text color="black60" pl={1} variant="xs">
+              My Collection is not shared with sellers.
+            </Text>
+          </Flex>
+        </>
       }
     />
   )

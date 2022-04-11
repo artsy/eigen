@@ -91,9 +91,9 @@ describe("MyCollection", () => {
     })
 
     it("shows zerostate", () => {
-      expect(extractText(tree.root)).toContain("Your art collection in your pocket.")
+      expect(extractText(tree.root)).toContain("Primed and ready for artworks.")
       expect(extractText(tree.root)).toContain(
-        "Keep track of your collection all in one place and get market insights"
+        "Add works from your collection to access price and market insights."
       )
     })
 
@@ -140,8 +140,7 @@ describe("MyCollection", () => {
     it("user can switch between grid and list view when search the bar is visible", async () => {
       const scrollView = tree.root.findByType(StickyTabPageScrollView)
 
-      // Scrolling up should make the search bar visible
-      scrollView.props.onScrollBeginDrag({ nativeEvent: { contentOffset: { y: -10 } } })
+      scrollView.props.onScrollBeginDrag()
 
       await flushPromiseQueue()
 
