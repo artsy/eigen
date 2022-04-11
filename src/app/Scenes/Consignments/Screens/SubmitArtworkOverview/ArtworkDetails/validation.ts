@@ -11,6 +11,7 @@ export interface Location {
   state: string
   country: string
   countryCode: string
+  zipCode?: string
 }
 
 export interface ArtworkDetailsFormModel {
@@ -32,7 +33,6 @@ export interface ArtworkDetailsFormModel {
   utmSource: string | undefined
   utmTerm: string | undefined
   location: Location
-  zipCode: string
   source: ConsignmentSubmissionSource | null
   myCollectionArtworkID: string | null
 }
@@ -55,12 +55,12 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   utmMedium: "",
   utmSource: "",
   utmTerm: "",
-  zipCode: "",
   location: {
     city: "",
     state: "",
     country: "",
     countryCode: "",
+    zipCode: "",
   },
   source: null,
   myCollectionArtworkID: null,
@@ -129,16 +129,16 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
     city: Yup.string().required().trim(),
     state: Yup.string(),
     country: Yup.string(),
-  }),
-  zipCode: Yup.string().when("location", {
-    is: (location) => location.countryCode?.toUpperCase() === "US",
-    then: Yup.string()
-      .required(usPostalCodeErrorMessage)
-      .matches(/^[0-9]{5}$/, usPostalCodeErrorMessage)
-      .trim(),
-    otherwise: Yup.string().when("location", {
-      is: (location) => countriesRequirePostalCode.includes(location.countryCode?.toUpperCase()),
-      then: Yup.string().required("Please enter a valid zip/postal code for your region").trim(),
+    zipCode: Yup.string().when("countryCode", {
+      is: (countryCode) => countryCode?.toUpperCase() === "US",
+      then: Yup.string()
+        .required(usPostalCodeErrorMessage)
+        .matches(/^[0-9]{5}$/, usPostalCodeErrorMessage)
+        .trim(),
+      otherwise: Yup.string().when("countryCode", {
+        is: (countryCode) => countriesRequirePostalCode.includes(countryCode?.toUpperCase()),
+        then: Yup.string().required("Please enter a valid zip/postal code for your region").trim(),
+      }),
     }),
   }),
 })

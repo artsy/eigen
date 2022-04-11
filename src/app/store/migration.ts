@@ -198,7 +198,7 @@ export const artsyAppMigrations: Migrations = {
     state.requestedPriceEstimates = { requestedPriceEstimates: {} }
   },
   [Versions.AddZipCodeAndCountryCodeInSubmissionArtworkDetails]: (state) => {
-    state.artworkSubmission.submission.artworkDetails.zipCode = ""
+    state.artworkSubmission.submission.artworkDetails.location.zipCode = ""
     state.artworkSubmission.submission.artworkDetails.location.countryCode = ""
   },
 }

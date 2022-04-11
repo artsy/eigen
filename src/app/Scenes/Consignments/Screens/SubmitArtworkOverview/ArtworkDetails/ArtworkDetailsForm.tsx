@@ -208,8 +208,8 @@ export const ArtworkDetailsForm: React.FC = () => {
         onChange={(e: Location) => {
           setFieldValue("location", e)
           if (!e.countryCode) {
-            setFieldValue("zipCode", "")
-            setFieldTouched("zipCode", false)
+            setFieldValue("location.zipCode", "")
+            setFieldTouched("location.zipCode", false)
           }
         }}
       />
@@ -220,14 +220,18 @@ export const ArtworkDetailsForm: React.FC = () => {
             title="Zip/Postal code"
             placeholder="Zip/Postal Code Where Artwork Is Located"
             testID="Submission_ZipInput"
-            value={values.zipCode}
+            value={values.location.zipCode}
             onBlur={(e) => {
               setIsZipInputFocused(false)
-              handleBlur("zipCode")(e)
+              handleBlur("location.zipCode")(e)
             }}
             onFocus={() => setIsZipInputFocused(true)}
-            error={!isZipInputFocused && touched.zipCode && errors.zipCode ? errors.zipCode : ""}
-            onChangeText={(e) => setFieldValue("zipCode", e)}
+            error={
+              !isZipInputFocused && touched.location?.zipCode && errors.location?.zipCode
+                ? errors.location.zipCode
+                : ""
+            }
+            onChangeText={(e) => setFieldValue("location.zipCode", e)}
           />
         </>
       )}

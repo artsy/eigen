@@ -24,8 +24,8 @@ export const mockFormValues: ArtworkDetailsFormModel = {
     state: "England",
     country: "UK",
     countryCode: "UK",
+    zipCode: "71202",
   },
-  zipCode: "71202",
   source: null,
   myCollectionArtworkID: null,
 }

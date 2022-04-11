@@ -630,7 +630,9 @@ describe("App version Versions.AddZipCodeAndCountryCodeInSubmissionArtworkDetail
       toVersion: migrationToTest - 1,
     }) as any
 
-    expect(previousState.artworkSubmission.submission.artworkDetails.zipCode).toEqual(undefined)
+    expect(previousState.artworkSubmission.submission.artworkDetails.location.zipCode).toEqual(
+      undefined
+    )
     expect(previousState.artworkSubmission.submission.artworkDetails.location.countryCode).toEqual(
       undefined
     )
@@ -640,7 +642,7 @@ describe("App version Versions.AddZipCodeAndCountryCodeInSubmissionArtworkDetail
       toVersion: migrationToTest,
     }) as any
 
-    expect(migratedState.artworkSubmission.submission.artworkDetails.zipCode).toEqual("")
+    expect(migratedState.artworkSubmission.submission.artworkDetails.location.zipCode).toEqual("")
     expect(migratedState.artworkSubmission.submission.artworkDetails.location.countryCode).toEqual(
       ""
     )
