@@ -60,7 +60,7 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 }
 
 const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
-  const enableDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
+  const enableDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
 
   let width = demandRank * 10
   if (width > 100) {

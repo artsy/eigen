@@ -161,7 +161,7 @@ export const features = defineFeatures({
     description: "Show request price estimate banner",
     showInAdminMenu: true,
   },
-  ARShowDemandIndexHints: {
+  ARShowMyCollectionDemandIndexHints: {
     readyForRelease: true,
     description: "Show demand index hints",
     showInAdminMenu: true,
