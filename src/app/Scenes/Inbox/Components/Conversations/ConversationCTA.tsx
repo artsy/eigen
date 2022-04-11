@@ -4,7 +4,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CTAPopUp } from "./CTAPopUp"
-import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
+import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"
 import { ReviewOfferButton, ReviewOfferCTAKind } from "./ReviewOfferButton"
 
 interface Props {
@@ -19,7 +19,6 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
     return null
   }
 
-  const artworkID = liveArtwork?.internalID
   const isOfferableFromInquiry = liveArtwork?.isOfferableFromInquiry
 
   let CTA: JSX.Element | null = null
@@ -33,7 +32,12 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
     const activeOrder = extractNodes(conversation.activeOrders)[0]
     if (!activeOrder) {
       if (isOfferableFromInquiry) {
-        CTA = <OpenInquiryModalButton artworkID={artworkID!} conversationID={conversationID} />
+        CTA = (
+          <OpenInquiryModalButtonFragmentContainer
+            artwork={liveArtwork}
+            conversationID={conversationID}
+          />
+        )
       }
     } else {
       const { lastTransactionFailed, state, lastOffer } = activeOrder
@@ -94,6 +98,7 @@ export const ConversationCTAFragmentContainer = createFragmentContainer(Conversa
             isOfferableFromInquiry
             internalID
             __typename
+            ...OpenInquiryModalButton_artwork
           }
         }
       }

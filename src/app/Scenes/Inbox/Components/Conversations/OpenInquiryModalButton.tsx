@@ -1,20 +1,24 @@
 import { ActionType, OwnerType, TappedMakeOffer } from "@artsy/cohesion"
+import { OpenInquiryModalButton_artwork } from "__generated__/OpenInquiryModalButton_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Button, Flex, ShieldIcon, Text } from "palette"
 import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ShadowSeparator } from "../ShadowSeparator"
+import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
 
 export interface OpenInquiryModalButtonProps {
-  artworkID: string
+  artwork: OpenInquiryModalButton_artwork
   conversationID: string
 }
 
 export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
-  artworkID,
+  artwork,
   conversationID,
 }) => {
   const { trackEvent } = useTracking()
+  const { isEdition, editionSets, internalID } = artwork
 
   return (
     <>
@@ -39,21 +43,32 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
             </Text>
           </Flex>
         </Flex>
-        <Button
-          onPress={() => {
-            trackEvent(tracks.trackTappedMakeOffer(conversationID))
-            navigate(`make-offer/${artworkID}`, {
-              modal: true,
-              passProps: { conversationID },
-            })
-          }}
-          size="large"
-          variant="fillDark"
-          block
-          width={100}
-        >
-          Make an Offer
-        </Button>
+        {!!isEdition && editionSets?.length! > 1 ? (
+          <Button
+            onPress={() => {
+              trackEvent(tracks.trackTappedMakeOffer(conversationID))
+              navigate(`make-offer/${internalID}`, {
+                modal: true,
+                passProps: { conversationID },
+              })
+            }}
+            size="large"
+            variant="fillDark"
+            block
+            width={100}
+          >
+            Make an Offer
+          </Button>
+        ) : (
+          <InquiryMakeOfferButtonFragmentContainer
+            variant="fillDark"
+            artwork={artwork}
+            editionSetID={editionSets?.[0]?.internalID || null}
+            conversationID={conversationID}
+            onPress={() => trackEvent(tracks.trackTappedMakeOffer(conversationID))}
+            replaceModalView={false}
+          />
+        )}
       </Flex>
     </>
   )
@@ -66,3 +81,19 @@ const tracks = {
     impulse_conversation_id: id,
   }),
 }
+
+export const OpenInquiryModalButtonFragmentContainer = createFragmentContainer(
+  OpenInquiryModalButton,
+  {
+    artwork: graphql`
+      fragment OpenInquiryModalButton_artwork on Artwork {
+        internalID
+        isEdition
+        editionSets {
+          internalID
+        }
+        ...InquiryMakeOfferButton_artwork
+      }
+    `,
+  }
+)
