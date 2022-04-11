@@ -37,7 +37,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
 
-  const showDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
+  const showDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
