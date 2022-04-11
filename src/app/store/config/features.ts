@@ -111,11 +111,6 @@ export const features = defineFeatures({
     description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
   },
-  AREnableImageSearch: {
-    readyForRelease: false,
-    description: "Enable search with image",
-    showInAdminMenu: true,
-  },
   AREnableCollectorProfile: {
     readyForRelease: true,
     description: "Enable collector profile",
