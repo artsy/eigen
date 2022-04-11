@@ -1,3 +1,4 @@
+import { useDevToggle } from "app/store/GlobalStore"
 import { debounce } from "lodash"
 import { Flex, Text, Touchable, useColor } from "palette"
 import React, { useRef, useState } from "react"
@@ -31,6 +32,8 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = ({
       })
     ).start()
   }
+
+  const showErrorMessage = __DEV__ || useDevToggle("DTShowErrorInLoadFailureView")
 
   return (
     <Flex flex={1} justifyContent={justifyContent} alignItems="center">
@@ -76,7 +79,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = ({
           <ReloadIcon height={25} width={25} />
         </Animated.View>
       </Touchable>
-      {!!__DEV__ && (
+      {!!showErrorMessage && (
         <Flex m={2}>
           <Text>Error: {error?.message}</Text>
         </Flex>
