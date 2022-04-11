@@ -290,9 +290,7 @@ export const MyCollectionScreenQuery = graphql`
   }
 `
 
-export const MyCollectionQueryRenderer: React.FC<{
-  me: MyProfileHeaderMyCollectionAndSavedWorks_me
-}> = ({ me }) => {
+export const MyCollectionQueryRenderer: React.FC = () => {
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionQuery>
@@ -302,7 +300,7 @@ export const MyCollectionQueryRenderer: React.FC<{
         cacheConfig={{ force: true }}
         render={renderWithPlaceholder({
           Container: MyCollectionContainer,
-          renderPlaceholder: () => <MyCollectionPlaceholder me={me} />,
+          renderPlaceholder: () => <MyCollectionPlaceholder />,
           renderFallback: ({ retry }) => (
             <LoadFailureView onRetry={retry!} justifyContent="flex-end" />
           ),
@@ -312,9 +310,7 @@ export const MyCollectionQueryRenderer: React.FC<{
   )
 }
 
-export const MyCollectionPlaceholder: React.FC<{
-  me: MyProfileHeaderMyCollectionAndSavedWorks_me
-}> = ({ me }) => {
+export const MyCollectionPlaceholder: React.FC = () => {
   const screenWidth = useScreenDimensions().width
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
@@ -339,28 +335,6 @@ export const MyCollectionPlaceholder: React.FC<{
             </Flex>
           </Flex>
           <Spacer mb={2} />
-          {/* location */}
-          {!!me?.location?.display && (
-            <>
-              <PlaceholderText width={100} />
-              <Spacer mb={1} />
-            </>
-          )}
-          {/* profession */}
-
-          {!!me?.profession && (
-            <>
-              <PlaceholderText width={100} />
-              <Spacer mb={1} />
-            </>
-          )}
-          {/* otherRelevantPositions */}
-          {!!me?.otherRelevantPositions && (
-            <>
-              <PlaceholderText width={100} />
-              <Spacer mb={1} />
-            </>
-          )}
           <Spacer mb={1} />
           <PlaceholderBox width={screenWidth - 40} height={30} borderRadius={50} />
         </Flex>

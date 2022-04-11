@@ -48,7 +48,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
       tabs={[
         {
           title: Tab.collection,
-          content: <MyCollectionQueryRenderer me={me} />,
+          content: <MyCollectionQueryRenderer />,
           initial: true,
         },
         {
@@ -201,9 +201,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksScreenQuery = graphql`
   }
 `
 
-export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC<{
-  me: MyProfileHeaderMyCollectionAndSavedWorks_me
-}> = ({ me }) => {
+export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = () => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.profile })}
@@ -213,7 +211,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC<{
         query={MyProfileHeaderMyCollectionAndSavedWorksScreenQuery}
         render={renderWithPlaceholder({
           Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
-          renderPlaceholder: () => <MyCollectionPlaceholder me={me} />,
+          renderPlaceholder: () => <MyCollectionPlaceholder />,
         })}
         variables={{}}
       />
