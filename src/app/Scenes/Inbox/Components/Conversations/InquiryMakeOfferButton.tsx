@@ -3,7 +3,7 @@ import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOf
 import { navigate } from "app/navigation/navigate"
 import { Button, ButtonProps } from "palette"
 import React from "react"
-import { Alert } from "react-native"
+import { Alert, GestureResponderEvent } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export interface InquiryMakeOfferButtonProps {
@@ -16,7 +16,7 @@ export interface InquiryMakeOfferButtonProps {
   disabled?: boolean
   conversationID: string
   replaceModalView?: boolean
-  onPress?: () => void
+  onPress?: (event?: GestureResponderEvent) => void
 }
 
 export interface State {
@@ -131,10 +131,8 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
 
     return (
       <Button
-        onPress={() => {
-          if (onPress) {
-            onPress()
-          }
+        onPress={(event) => {
+          onPress?.(event)
           this.handleCreateInquiryOfferOrder()
         }}
         loading={isCommittingCreateOfferOrderMutation}
