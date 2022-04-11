@@ -145,7 +145,6 @@ export default createFragmentContainer(Message, {
       isFromUser
       isFirstMessage
       from {
-        name
         email
       }
       attachments {
