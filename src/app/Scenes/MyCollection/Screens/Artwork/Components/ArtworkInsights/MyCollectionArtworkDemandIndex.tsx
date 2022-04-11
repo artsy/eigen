@@ -69,17 +69,18 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
   const adjustedDemandRank = demandRank.toFixed(1) === "10.0" ? "9.9" : demandRank.toFixed(1)
 
   const isHighDemand = Number(demandRank) >= 9
+  const color = demandRank >= 7 ? "blue100" : "black60"
 
   return (
     <>
       <Flex>
-        <Text color="blue100" variant="xl">
+        <Text color={color} variant="xl">
           {adjustedDemandRank}
         </Text>
         {!!enableDemandIndexHints && (
           <Flex flexDirection="row" alignItems="center" mb={1}>
             {!!isHighDemand && <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />}
-            <Text color="blue100">{getDemandRankText(demandRank)}</Text>
+            <Text color={color}>{getDemandRankText(demandRank)}</Text>
           </Flex>
         )}
       </Flex>
