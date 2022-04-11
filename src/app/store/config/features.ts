@@ -245,6 +245,9 @@ export const devToggles = defineDevToggles({
   DTUseProductionUnleash: {
     description: "Use Production Unleash",
   },
+  DTShowErrorInLoadFailureView: {
+    description: "Show error in load failure view",
+  },
 })
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
