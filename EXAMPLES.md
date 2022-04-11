@@ -82,11 +82,11 @@ Links:
 
 We use `Screen` and friends for that. They come from palette. Some of the building blocks are: `Screen`, `Screen.Body`, `Screen.Header`, `Screen.FloatingHeader`, `Screen.Background`, `Screen.BottomView`, `Screen.BodyPadding`.
 
-You can find examples in [Screen.fakestories.tsx](src/palette/organisms/screenStructure/Screen.fakestories.tsx). You can also find actual screens using these, like  [OnboardingWelcome.tsx](src/app/Scenes/Onboarding/OnboardingWelcome.tsx),  [OnboardingSocialPick.tsx](src/app/Scenes/Onboarding/OnboardingSocialPick.tsx),  [OnboardingLogin.tsx](src/app/Scenes/Onboarding/OnboardingLogin.tsx).
+You can find examples in [Screen.stories.tsx](src/palette/organisms/screenStructure/Screen.stories.tsx). You can also find actual screens using these, like [OnboardingWelcome.tsx](src/app/Scenes/Onboarding/OnboardingWelcome.tsx), [OnboardingSocialPick.tsx](src/app/Scenes/Onboarding/OnboardingSocialPick.tsx), [OnboardingLogin.tsx](src/app/Scenes/Onboarding/OnboardingLogin.tsx).
 
 Links:
 
-- [Screen.fakestories.tsx](src/palette/organisms/screenStructure/Screen.fakestories.tsx)
+- [Screen.stories.tsx](src/palette/organisms/screenStructure/Screen.stories.tsx)
 - [OnboardingWelcome.tsx](src/app/Scenes/Onboarding/OnboardingWelcome.tsx)
 - [OnboardingSocialPick.tsx](src/app/Scenes/Onboarding/OnboardingSocialPick.tsx)
 - [OnboardingLogin.tsx](src/app/Scenes/Onboarding/OnboardingLogin.tsx)
