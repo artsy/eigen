@@ -80,7 +80,6 @@ import { RequestForPriceEstimateScreen } from "./Scenes/MyCollection/Screens/Art
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "./Scenes/MyProfile/MyProfile"
 import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -396,7 +395,6 @@ export const modules = defineModules({
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer, { hidesBackButton: true }),
-  MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithartsyFAQ),
   MyProfile: reactModule(
     MyProfile,

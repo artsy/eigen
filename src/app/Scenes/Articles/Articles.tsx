@@ -7,7 +7,10 @@ import { graphql } from "relay-runtime"
 import { ArticlesList, ArticlesPlaceholder } from "./ArticlesList"
 
 export const Articles: React.FC = () => {
-  const queryData = useLazyLoadQuery<ArticlesQuery>(ArticlesScreenQuery, articlesQueryVariables)
+  const queryData = useLazyLoadQuery<ArticlesQuery>(ArticlesScreenQuery, articlesQueryVariables, {
+    fetchPolicy: "store-or-network",
+    networkCacheConfig: { force: true },
+  })
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
     ArticlesQuery,

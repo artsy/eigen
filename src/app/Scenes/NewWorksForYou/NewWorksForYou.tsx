@@ -114,6 +114,8 @@ export const NewWorksForYouQueryRenderer: React.FC = () => {
         renderPlaceholder: Placeholder,
         renderFallback: () => null,
       })}
+      fetchPolicy="store-or-network"
+      cacheConfig={{ force: true }}
     />
   )
 }

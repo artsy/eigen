@@ -1,5 +1,4 @@
 import { addRoute, addWebViewRoute, matchRoute, replaceParams } from "app/navigation/routes"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 
 describe("artsy.net routes", () => {
   it(`routes to Home`, () => {
@@ -825,27 +824,6 @@ describe("artsy.net routes", () => {
     expect(matchRoute("/my-collection/artwork/456")).toMatchInlineSnapshot(`
       Object {
         "module": "MyCollectionArtwork",
-        "params": Object {
-          "artworkSlug": "456",
-        },
-        "type": "match",
-      }
-    `)
-  })
-
-  it("routes to MyCollectionArtworkFullDetails", () => {
-    expect(matchRoute("/my-collection/artwork-details/123")).toMatchInlineSnapshot(`
-      Object {
-        "module": "MyCollectionArtworkFullDetails",
-        "params": Object {
-          "artworkSlug": "123",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/my-collection/artwork-details/456")).toMatchInlineSnapshot(`
-      Object {
-        "module": "MyCollectionArtworkFullDetails",
         "params": Object {
           "artworkSlug": "456",
         },
