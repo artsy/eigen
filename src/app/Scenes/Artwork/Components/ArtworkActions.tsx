@@ -2,6 +2,7 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { navigate } from "app/navigation/navigate"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
 import { Schema, track } from "app/utils/track"
@@ -106,13 +107,21 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const heightIn = cm2in(heightCm!)
     const widthIn = cm2in(widthCm!)
 
-    LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
-      image?.url!,
-      widthIn,
-      heightIn,
-      slug,
-      id
-    )
+    navigate("/view-in-room", {
+      passProps: {
+        source: image?.url,
+        height: heightCm! / 100,
+        width: widthCm! / 100,
+      },
+    })
+
+    // LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
+    //   image?.url!,
+    //   widthIn,
+    //   heightIn,
+    //   slug,
+    //   id
+    // )
   }
 
   render() {

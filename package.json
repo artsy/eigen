@@ -130,6 +130,7 @@
     "@sentry/react-native": "3.2.13",
     "@splitsoftware/splitio-react-native": "0.0.1",
     "@styled-system/theme-get": "5.1.2",
+    "@viro-community/react-viro": "2.23.0",
     "algoliasearch": "4.10.3",
     "autosuggest-highlight": "3.1.1",
     "easy-peasy": "3.3.0",

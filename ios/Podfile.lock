@@ -705,6 +705,10 @@ PODS:
   - TOCropViewController (2.6.1)
   - UICKeyChainStore (2.2.1)
   - "UIView+BooleanAnimations (1.0.2)"
+  - ViroKit (1.0):
+    - React
+  - ViroReact (1.0):
+    - React
   - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
     - OHHTTPStubs
   - Yoga (1.14.0)
@@ -858,6 +862,8 @@ DEPENDENCIES:
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
+  - "ViroKit (from `../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/`)"
+  - "ViroReact (from `../node_modules/@viro-community/react-viro/ios`)"
   - "XCTest+OHHTTPStubSuiteCleanUp"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -1099,6 +1105,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   tipsi-stripe:
     :path: "../node_modules/tipsi-stripe"
+  ViroKit:
+    :path: "../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/"
+  ViroReact:
+    :path: "../node_modules/@viro-community/react-viro/ios"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1278,10 +1288,12 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
+  ViroKit: 700d3d4ca086368d06224de1cbbc19781aea2094
+  ViroReact: f4980e6b04918c4340637f9cbaae22a6bb7ea440
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 50b6ebc6ce37226e4bafa670cc23d059a3f2830b
+PODFILE CHECKSUM: 6700a0aceb673a57fc8e5a3d6bed50489a3f34fd
 
 COCOAPODS: 1.11.2

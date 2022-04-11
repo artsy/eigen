@@ -135,6 +135,10 @@ target 'Artsy' do
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode', '2.0.0'
 
+  # Viro for AR
+  pod 'ViroReact', :path => '../node_modules/@viro-community/react-viro/ios/'
+  pod 'ViroKit', :path => '../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/'
+
   target 'Artsy Tests' do
     inherit! :search_paths
 

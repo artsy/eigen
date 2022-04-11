@@ -126,6 +126,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/artist/:artistID/shows", "ArtistShows"),
     addRoute("/artwork/:artworkID", "Artwork"),
     addRoute("/artwork/:artworkID/medium", "ArtworkMedium"),
+    addRoute("/view-in-room", "ArtworkViewInRoom"),
     addRoute("/artist/:artistID/auction-results", "Artist", (params) => ({
       ...params,
       initialTab: "Insights",
