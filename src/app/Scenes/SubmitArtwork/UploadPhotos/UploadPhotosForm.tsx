@@ -8,7 +8,7 @@ import { useFormikContext } from "formik"
 import { Button, Flex, Spacer, Text } from "palette"
 import { PhotoRow } from "palette/elements/PhotoRow/PhotoRow"
 import React, { useEffect, useState } from "react"
-import { removeAssetFromSubmission } from "../Mutations/removeAssetFromConsignmentSubmissionMutation"
+import { removeAssetFromSubmission } from "../utils/mutations/removeAssetFromConsignmentSubmissionMutation"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
 import { calculateSinglePhotoSize, isSizeLimitExceeded } from "./utils/calculatePhotoSize"
 

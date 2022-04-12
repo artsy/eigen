@@ -10,8 +10,8 @@ import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import React, { useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ErrorView } from "../Components/ErrorView"
-import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
+import { ErrorView } from "../ErrorView/ErrorView"
+import { updateConsignSubmission } from "../utils/mutations/updateConsignSubmissionMutation"
 import { ContactInformationFormModel, contactInformationValidationSchema } from "./validation"
 
 export const ContactInformation: React.FC<{

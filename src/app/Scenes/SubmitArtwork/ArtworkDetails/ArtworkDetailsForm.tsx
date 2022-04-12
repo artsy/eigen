@@ -14,8 +14,8 @@ import {
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
 import { ArtistAutosuggest } from "../../../Components/ArtistAutosuggest/ArtistAutosuggest"
-import { InfoModal } from "./Components/InfoModal"
-import { LocationAutocomplete } from "./Components/LocationAutocomplete"
+import { LocationAutocomplete } from "../../../Components/LocationAutocomplete/LocationAutocomplete"
+import { InfoModal } from "./InfoModal/InfoModal"
 import { limitedEditionValue, rarityOptions } from "./utils/rarityOptions"
 import { ArtworkDetailsFormModel, countriesRequirePostalCode, Location } from "./validation"
 

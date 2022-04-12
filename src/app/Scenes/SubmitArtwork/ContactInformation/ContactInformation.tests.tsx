@@ -8,7 +8,7 @@ import React from "react"
 import "react-native"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
-import { updateConsignSubmission } from "../Mutations"
+import { updateConsignSubmission } from "../utils/mutations"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
 
 jest.mock(
