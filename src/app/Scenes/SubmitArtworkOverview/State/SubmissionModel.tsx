@@ -2,9 +2,9 @@ import {
   Photo,
   photosEmptyInitialValues,
   PhotosFormModel,
-} from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
+} from "app/Scenes/SubmitArtworkOverview/UploadPhotos/validation"
 import { Action, action } from "easy-peasy"
-import { ConsignmentsSubmissionUtmParams } from "../../../ConsignmentsHome/ConsignmentsSubmissionForm"
+import { ConsignmentsSubmissionUtmParams } from "../../Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
 import {
   artworkDetailsEmptyInitialValues,
   ArtworkDetailsFormModel,

@@ -1,4 +1,4 @@
-import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
+import { Photo } from "app/Scenes/SubmitArtworkOverview/UploadPhotos/validation"
 import { transformBytesToSize } from "app/utils/transformBytesToSize"
 
 const totalSizeLimitInBytes = 30000000

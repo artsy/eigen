@@ -1,6 +1,6 @@
 import { GlobalStore } from "app/store/GlobalStore"
 import React, { useEffect } from "react"
-import { SubmitArtworkOverview } from "../Screens/SubmitArtworkOverview/SubmitArtworkOverview"
+import { SubmitArtworkOverview } from "../../SubmitArtworkOverview/SubmitArtworkOverview"
 
 export interface ConsignmentsSubmissionUtmParams {
   utm_term?: string
