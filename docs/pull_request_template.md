@@ -57,4 +57,4 @@ Need help with something? Have a look on our [docs], or get in touch with us.
 
 [app state migration]: /docs/adding_state_migrations.md
 [feature flag]: /docs/developing_a_feature.md
-[docs]: (docs/README.md)
+[docs]: /docs/README.md
