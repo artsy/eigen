@@ -3,21 +3,20 @@
 -->
 
 <!-- Jira ticket in square brackets like [PROJECT-XXXX] -->
+
 This PR resolves []
 
 ### Description
 
 <!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
-### PR Checklist (tick all before merging)
+### PR Checklist
 
-<!-- 💡 MOPLAT warmly welcomes any feedback about the list or how it impacts your workflow. -->
-
-- [ ] Tested on **iOS** and **Android**
-- [ ] Screenshots and videos 
-- [ ] Added Tests and Stories
-- [ ] App state migration
-- [ ] Feature flag
+- [ ] I tested my changes on **iOS** / **Android**.
+- [ ] I added screenshots or videos to illustrate my changes.
+- [ ] I added Tests and Stories for my changes.
+- [ ] I added an [app state migration].
+- [ ] I hid my changes behind a [feature flag].
 
 ### To the reviewers 👀
 
@@ -54,6 +53,8 @@ This PR resolves []
 
 </details>
 
-Need help with some of the above? Have a look on our [docs](https://github.com/artsy/eigen/blob/main/docs/README.md)! 
+Need help with something? Have a look on our [docs], or get in touch with us.
 
-
+[app state migration]: /docs/adding_state_migrations.md
+[feature flag]: /docs/developing_a_feature.md
+[docs]: (docs/README.md)
