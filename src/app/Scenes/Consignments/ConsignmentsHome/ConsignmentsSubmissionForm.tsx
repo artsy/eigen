@@ -1,9 +1,5 @@
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { GlobalStore } from "app/store/GlobalStore"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import React, { useEffect } from "react"
-import { View } from "react-native"
-import { ConnectedOverview as Overview } from "../Screens/Overview"
 import { SubmitArtworkOverview } from "../Screens/SubmitArtworkOverview/SubmitArtworkOverview"
 
 export interface ConsignmentsSubmissionUtmParams {
@@ -13,8 +9,6 @@ export interface ConsignmentsSubmissionUtmParams {
 }
 
 export const ConsignmentsSubmissionForm: React.FC<ConsignmentsSubmissionUtmParams> = (props) => {
-  const enableNewSWAFlow = useFeatureFlag("AREnableAccordionNavigationOnSubmitArtwork")
-
   useEffect(() => {
     GlobalStore.actions.artworkSubmission.submission.setUtmParams({
       utm_term: props.utm_term || "",
@@ -23,19 +17,5 @@ export const ConsignmentsSubmissionForm: React.FC<ConsignmentsSubmissionUtmParam
     })
   }, [])
 
-  if (enableNewSWAFlow) {
-    return <SubmitArtworkOverview />
-  }
-  return (
-    <View style={{ flex: 1 }}>
-      <NavigatorIOS
-        initialRoute={{
-          component: Overview,
-          passProps: {
-            params: props,
-          },
-        }}
-      />
-    </View>
-  )
+  return <SubmitArtworkOverview />
 }
