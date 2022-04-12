@@ -309,7 +309,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
   )
 }
 
-export const MyCollectionPlaceholder: React.FC<{}> = () => {
+export const MyCollectionPlaceholder: React.FC = () => {
   const screenWidth = useScreenDimensions().width
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
@@ -320,25 +320,21 @@ export const MyCollectionPlaceholder: React.FC<{}> = () => {
         <Spacer />
         <PlaceholderText width={70} margin={20} />
       </Flex>
+      {/* collector's insfo */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
         <Flex>
           <Spacer mb={20} />
+          {/* icon, name, time joined */}
           <Flex flexDirection="row">
             <PlaceholderBox width={100} height={100} borderRadius={50} />
             <Flex justifyContent="center" ml={2}>
-              <PlaceholderText width={80} height={24} />
+              <PlaceholderText width={80} height={35} />
+              <PlaceholderText width={100} height={35} />
               <PlaceholderText width={100} />
             </Flex>
           </Flex>
-          <Spacer mb={1} />
-          <Spacer mb={1} />
-          <PlaceholderText width={180} />
-          <Spacer mb={1} />
-          <PlaceholderText width={100} />
-          <Spacer mb={2} />
-          <PlaceholderText width={200} />
-          <Spacer mb={1} />
-          <PlaceholderBox width={screenWidth - 40} height={28} borderRadius={50} />
+          <Spacer mb={2} mt={1} />
+          <PlaceholderBox width={screenWidth - 40} height={30} borderRadius={50} />
         </Flex>
       </Flex>
       <Spacer mb={2} mt={1} />

@@ -201,7 +201,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksScreenQuery = graphql`
   }
 `
 
-export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {
+export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = () => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.profile })}
