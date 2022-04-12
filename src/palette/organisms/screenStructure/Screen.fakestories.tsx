@@ -124,6 +124,23 @@ const ScrollScreenWithBottomView = () => (
       <Text>Hello</Text>
       <Text>Hello</Text>
       <Text>Hello</Text>
+      <Text>konnichiwa</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>hola</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>asalaam alaikum</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>bonjour</Text>
       <Text>Hello</Text>
       <Text>Hello</Text>
       <Text>Hello</Text>
@@ -131,24 +148,7 @@ const ScrollScreenWithBottomView = () => (
       <Text>Hello</Text>
       <Text>Hello</Text>
       <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
-      <Text>Hello</Text>
+      <Text>nǐn hǎo</Text>
       <Text>Hello</Text>
       <Text>Hello</Text>
       <Text>Hello</Text>
