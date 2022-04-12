@@ -10,8 +10,8 @@ import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
 import React from "react"
 import { ScrollView } from "react-native-gesture-handler"
 import { useTracking } from "react-tracking"
-import { submitAnotherArtworkEvent, viewArtworkMyCollectionEvent } from "../../Utils/TrackingEvent"
 import { SubmitArtworkOverviewNavigationStack } from "./SubmitArtworkOverview"
+import { submitAnotherArtworkEvent, viewArtworkMyCollectionEvent } from "./utils/TrackingEvent"
 
 interface ArtworkSubmittedScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "ArtworkSubmittedScreen"> {}

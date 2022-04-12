@@ -13,11 +13,11 @@ import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
-import { toggledAccordionEvent } from "../../Utils/TrackingEvent"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
 import { ContactInformationQueryRenderer } from "./ContactInformation/ContactInformation"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
+import { toggledAccordionEvent } from "./utils/TrackingEvent"
 
 interface SubmitArtworkScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}

@@ -3,7 +3,7 @@ import {
   PhotosFormModel,
   photosValidationSchema,
 } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
-import { uploadPhotosCompletedEvent } from "app/Scenes/Consignments/Utils/TrackingEvent"
+import { uploadPhotosCompletedEvent } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { BulletedItem, CTAButton, Flex, Spacer } from "palette"
