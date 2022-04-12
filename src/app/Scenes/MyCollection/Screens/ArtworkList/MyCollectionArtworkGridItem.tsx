@@ -68,7 +68,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
             {artistNames}
             {!!showHighDemandIcon && !!showDemandIndexHints && (
-              <Flex>
+              <Flex testID="test-high-demand-icon">
                 <HighDemandIcon style={{ marginLeft: 2, marginBottom: -2 }} />
               </Flex>
             )}

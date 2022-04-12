@@ -23,7 +23,7 @@ describe("MyCollectionArtworkGridItem", () => {
       query={graphql`
         query MyCollectionArtworkGridItemTestsQuery @relay_test_operation {
           artwork(id: "some-slug") {
-            ...OldMyCollectionArtwork_sharedProps @relay(mask: false)
+            ...MyCollectionArtworkGridItem_artwork
           }
         }
       `}
@@ -54,6 +54,7 @@ describe("MyCollectionArtworkGridItem", () => {
           artist: {
             internalID: "artist-id",
           },
+          images: null,
           medium: "artwork medium",
         }),
       })
@@ -125,5 +126,31 @@ describe("MyCollectionArtworkGridItem", () => {
       const image = wrapper.root.findByType(RNImage)
       expect(image.props.source).toEqual({ uri: "some-local-path" })
     })
+  })
+
+  it("renders the high demand icon if artist is P1 and demand rank is over 9", () => {
+    const wrapper = renderWithWrappers(<TestRenderer />)
+
+    // mocking isP1 and demandRank
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Artwork: () => ({
+          internalID: "artwork-id",
+          slug: "artwork-slug",
+          artist: {
+            internalID: "artist-id",
+            targetSupply: {
+              isP1: true,
+            },
+          },
+          medium: "artwork medium",
+          marketPriceInsights: {
+            demandRank: 0.91,
+          },
+        }),
+      })
+    )
+
+    expect(wrapper.root.findByProps({ testID: "test-high-demand-icon" })).toBeDefined()
   })
 })
