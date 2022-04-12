@@ -16,8 +16,11 @@ extern NSString *const ARAPNSDeviceTokenKey;
 extern NSString *const ARNetworkAvailableNotification;
 extern NSString *const ARNetworkUnavailableNotification;
 
+extern NSString *const ARAuctionArtworkBidUpdatedNotification;
 extern NSString *const ARAuctionArtworkRegistrationUpdatedNotification;
 extern NSString *const ARAuctionSaleOnHoldBannerTappedNotification;
+extern NSString *const ARAuctionIDKey;
+extern NSString *const ARAuctionArtworkIDKey;
 
 typedef NS_OPTIONS(NSUInteger, ARAuctionState) {
     ARAuctionStateDefault = 0,
