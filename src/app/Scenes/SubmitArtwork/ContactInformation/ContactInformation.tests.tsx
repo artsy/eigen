@@ -11,12 +11,9 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
 import { updateConsignSubmission } from "../utils/mutations"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
 
-jest.mock(
-  "app/Scenes/Consignments/Screens/SubmitArtwork/Mutations/updateConsignSubmissionMutation",
-  () => ({
-    updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
-  })
-)
+jest.mock("app/Scenes/SubmitArtwork/UploadPhotos/utils/updateConsignSubmissionMutation", () => ({
+  updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
+}))
 
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 

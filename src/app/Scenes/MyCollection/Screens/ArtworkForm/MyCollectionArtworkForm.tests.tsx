@@ -24,7 +24,7 @@ import {
 } from "./MyCollectionArtworkForm"
 import * as photoUtil from "./MyCollectionImageUtil"
 
-jest.mock("app/Scenes/Consignments/Submission/uploadFileToS3", () => ({
+jest.mock("app/Scenes/SubmitArtwork/UploadPhotos/utils/uploadFileToS3.ts", () => ({
   getConvectionGeminiKey: jest.fn(),
   getGeminiCredentialsForEnvironment: jest.fn(),
   uploadFileToS3: jest.fn(),
