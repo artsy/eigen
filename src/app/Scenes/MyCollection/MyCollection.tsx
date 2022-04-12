@@ -333,8 +333,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
               <PlaceholderText width={100} />
             </Flex>
           </Flex>
-          <Spacer mb={2} />
-          <Spacer mb={1} />
+          <Spacer mb={2} mt={1} />
           <PlaceholderBox width={screenWidth - 40} height={30} borderRadius={50} />
         </Flex>
       </Flex>
