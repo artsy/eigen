@@ -12,7 +12,7 @@ import { updateConsignSubmission } from "../Mutations"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
 
 jest.mock(
-  "app/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/updateConsignSubmissionMutation",
+  "app/Scenes/Consignments/Screens/SubmitArtwork/Mutations/updateConsignSubmissionMutation",
   () => ({
     updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
   })

@@ -2,8 +2,8 @@ import {
   Photo,
   PhotosFormModel,
   photosValidationSchema,
-} from "app/Scenes/SubmitArtworkOverview/UploadPhotos/validation"
-import { uploadPhotosCompletedEvent } from "app/Scenes/SubmitArtworkOverview/utils/TrackingEvent"
+} from "app/Scenes/SubmitArtwork/UploadPhotos/validation"
+import { uploadPhotosCompletedEvent } from "app/Scenes/SubmitArtwork/utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { BulletedItem, CTAButton, Flex, Spacer } from "palette"

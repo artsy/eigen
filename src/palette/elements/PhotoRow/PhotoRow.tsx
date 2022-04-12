@@ -1,4 +1,4 @@
-import { Photo } from "app/Scenes/SubmitArtworkOverview/UploadPhotos/validation"
+import { Photo } from "app/Scenes/SubmitArtwork/UploadPhotos/validation"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Button, Flex, ProgressBar, Spacer, Text } from "palette"
 import React from "react"

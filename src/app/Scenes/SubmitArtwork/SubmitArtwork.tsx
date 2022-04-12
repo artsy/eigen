@@ -171,7 +171,7 @@ export type SubmitArtworkOverviewNavigationStack = {
 
 const StackNavigator = createStackNavigator<SubmitArtworkOverviewNavigationStack>()
 
-export const SubmitArtworkOverview = () => {
+export const SubmitArtwork = () => {
   return (
     <NavigationContainer independent>
       <StackNavigator.Navigator

@@ -7,10 +7,7 @@ import {
 import { DevicePrefsModel, getDevicePrefsModel } from "app/Scenes/MyProfile/DevicePrefsModel"
 import { getSearchModel, SearchModel } from "app/Scenes/Search/SearchModel"
 import { getUserPrefsModel, UserPrefsModel } from "app/Scenes/Search/UserPrefsModel"
-import {
-  getSubmissionModel,
-  SubmissionModel,
-} from "app/Scenes/SubmitArtworkOverview/State/SubmissionModel"
+import { getSubmissionModel, SubmissionModel } from "app/Scenes/SubmitArtwork/State/SubmissionModel"
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"

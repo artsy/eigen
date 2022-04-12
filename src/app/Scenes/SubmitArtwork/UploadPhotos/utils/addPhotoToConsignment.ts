@@ -1,4 +1,4 @@
-import { Photo } from "app/Scenes/SubmitArtworkOverview/UploadPhotos/validation"
+import { Photo } from "app/Scenes/SubmitArtwork/UploadPhotos/validation"
 import { addAssetToConsignment } from "../../../Consignments/Submission/addAssetToConsignment"
 import {
   createGeminiAssetWithS3Credentials,
