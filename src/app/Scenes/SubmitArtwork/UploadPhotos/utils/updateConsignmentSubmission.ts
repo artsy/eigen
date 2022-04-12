@@ -1,8 +1,8 @@
 import { updateConsignmentSubmissionMutation } from "__generated__/updateConsignmentSubmissionMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
-import { ConsignmentSetup } from "../index"
 import { consignmentSetupToMutationInput } from "./consignmentSetupToSubmission"
+import { ConsignmentSetup } from "./index"
 
 export const updateConsignmentSubmission = (submission: ConsignmentSetup) => {
   const input = consignmentSetupToMutationInput(submission)

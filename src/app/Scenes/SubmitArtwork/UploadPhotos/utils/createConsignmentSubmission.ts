@@ -2,8 +2,8 @@ import { createConsignmentSubmissionMutation } from "__generated__/createConsign
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { getCurrentEmissionState } from "app/store/GlobalStore"
 import { commitMutation, graphql } from "relay-runtime"
-import { ConsignmentSetup } from "../index"
 import { consignmentSetupToMutationInput } from "./consignmentSetupToSubmission"
+import { ConsignmentSetup } from "./index"
 
 export const createConsignmentSubmission = (submission: ConsignmentSetup) => {
   const input = consignmentSetupToMutationInput(submission)

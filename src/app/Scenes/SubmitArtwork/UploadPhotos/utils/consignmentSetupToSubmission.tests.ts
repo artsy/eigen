@@ -1,5 +1,5 @@
-import { ConsignmentSetup } from "../index"
 import { consignmentSetupToMutationInput } from "./consignmentSetupToSubmission"
+import { ConsignmentSetup } from "./index"
 
 describe("consignment metadata -> submission", () => {
   it("works with an empty object, and always has a mutation ID", () => {

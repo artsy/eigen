@@ -6,7 +6,7 @@ import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "app/Scenes/Consignments/Submission/uploadFileToS3"
+} from "app/Scenes/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"

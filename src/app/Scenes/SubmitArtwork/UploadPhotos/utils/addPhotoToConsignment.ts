@@ -1,11 +1,11 @@
 import { Photo } from "app/Scenes/SubmitArtwork/UploadPhotos/validation"
-import { addAssetToConsignment } from "../../../Consignments/Submission/addAssetToConsignment"
+import { addAssetToConsignment } from "./addAssetToConsignment"
 import {
   createGeminiAssetWithS3Credentials,
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "../../../Consignments/Submission/uploadFileToS3"
+} from "./uploadFileToS3"
 
 interface Props {
   asset: Photo

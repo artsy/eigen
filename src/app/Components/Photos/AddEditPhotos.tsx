@@ -1,7 +1,7 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Stack } from "app/Components/Stack"
-import { Photo } from "app/Scenes/Consignments"
+import { Photo } from "app/Scenes/SubmitArtwork/UploadPhotos/utils"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { isPad } from "app/utils/hardware"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"

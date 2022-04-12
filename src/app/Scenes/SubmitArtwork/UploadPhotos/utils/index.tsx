@@ -3,8 +3,8 @@ import { GlobalStore } from "app/store/GlobalStore"
 import React, { useCallback, useEffect, useRef } from "react"
 import { BackHandler } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
-import { BottomTabType } from "../../Scenes/BottomTabs/BottomTabType"
-import { ConsignmentsHomeQueryRenderer } from "./ConsignmentsHome/ConsignmentsHome"
+import { BottomTabType } from "../../../BottomTabs/BottomTabType"
+import { ConsignmentsHomeQueryRenderer } from "../../../Consignments/ConsignmentsHome/ConsignmentsHome"
 
 /** The metadata for a consigned work */
 export interface ConsignmentMetadata {

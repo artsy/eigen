@@ -2,7 +2,7 @@ import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "app/Scenes/Consignments/Submission/uploadFileToS3"
+} from "app/Scenes/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
 
 export async function getConvertedImageUrlFromS3(imagePath: string) {
   const convectionKey = await getConvectionGeminiKey()

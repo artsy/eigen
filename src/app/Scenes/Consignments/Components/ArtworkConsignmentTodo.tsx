@@ -2,7 +2,7 @@ import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { Image, StyleProp, TouchableOpacity, ViewStyle } from "react-native"
 import styled from "styled-components/native"
-import { ConsignmentSetup } from "../index"
+import { ConsignmentSetup } from "../../SubmitArtwork/UploadPhotos/utils/index"
 
 const ImageBG = styled.View`
   border-color: black;

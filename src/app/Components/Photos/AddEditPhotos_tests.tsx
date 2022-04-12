@@ -1,4 +1,4 @@
-import { Photo } from "app/Scenes/Consignments"
+import { Photo } from "app/Scenes/SubmitArtwork/UploadPhotos/utils"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Image } from "react-native"

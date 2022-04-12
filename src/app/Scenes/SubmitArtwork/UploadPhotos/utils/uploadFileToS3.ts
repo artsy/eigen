@@ -1,8 +1,8 @@
-import { AssetCredentials } from "./Gemini/getGeminiCredentialsForEnvironment"
+import { AssetCredentials } from "./gemini/getGeminiCredentialsForEnvironment"
 
-export { getGeminiCredentialsForEnvironment } from "./Gemini/getGeminiCredentialsForEnvironment"
-export { createGeminiAssetWithS3Credentials } from "./Gemini/createGeminiAssetWithS3Credentials"
-export { getConvectionGeminiKey } from "./Gemini/getConvectionGeminiKey"
+export { getGeminiCredentialsForEnvironment } from "./gemini/getGeminiCredentialsForEnvironment"
+export { createGeminiAssetWithS3Credentials } from "./gemini/createGeminiAssetWithS3Credentials"
+export { getConvectionGeminiKey } from "./gemini/getConvectionGeminiKey"
 
 export interface S3UploadResponse {
   key: string
