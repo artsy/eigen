@@ -98,7 +98,6 @@ const MyCollectionZeroState: React.FC = () => {
     <ZeroState
       title="Primed and ready for artworks."
       subtitle="Add works from your collection to access price and market insights."
-      alignItems="center"
       callToAction={
         <>
           <Button
