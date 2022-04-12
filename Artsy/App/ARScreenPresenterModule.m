@@ -232,7 +232,7 @@ RCT_EXPORT_METHOD(popToRootAndScrollToTop:(nonnull NSString *)stackID
 
 + (UIViewController *)loadWebViewAuctionRegistrationWithID:(NSString *)auctionID
 {
-    NSString *path = [NSString stringWithFormat:@"/auction-registration/%@", auctionID];
+    NSString *path = [NSString stringWithFormat:@"/auction/%@/register", auctionID];
     NSURL *URL = [ARRouter resolveRelativeUrl:path];
     return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
 }
