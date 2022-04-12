@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef } from "react"
 import { BackHandler } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
 import { BottomTabType } from "../../../BottomTabs/BottomTabType"
-import { ConsignmentsHomeQueryRenderer } from "../../../Consignments/ConsignmentsHome/ConsignmentsHome"
+import { ConsignmentsHomeQueryRenderer } from "../../ConsignmentsHome/ConsignmentsHome"
 
 /** The metadata for a consigned work */
 export interface ConsignmentMetadata {
