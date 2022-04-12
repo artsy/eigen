@@ -6,7 +6,7 @@ import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtworkDetails } from "../ArtworkDetails"
+import { ArtworkDetails } from "../../Scenes/SubmitArtwork/ArtworkDetails/ArtworkDetails"
 
 jest.unmock("react-relay")
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
