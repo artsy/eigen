@@ -8,7 +8,12 @@ import {
   artworkDetailsEmptyInitialValues,
   ArtworkDetailsFormModel,
 } from "../ArtworkDetails/validation"
-import { ConsignmentsSubmissionUtmParams } from "../ConsignmentsHome/ConsignmentsSubmissionForm"
+
+interface ConsignmentsSubmissionUtmParams {
+  utm_term?: string
+  utm_medium?: string
+  utm_source?: string
+}
 
 export interface ArtworkSubmissionModel {
   submissionId: string

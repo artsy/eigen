@@ -106,7 +106,7 @@ import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsLi
 import { SearchScreen, SearchScreenQuery } from "./Scenes/Search/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { ConsignmentsHomeScreenQuery } from "./Scenes/SubmitArtwork/ConsignmentsHome/ConsignmentsHome"
-import { ConsignmentsSubmissionForm } from "./Scenes/SubmitArtwork/ConsignmentsHome/ConsignmentsSubmissionForm"
+import { SubmitArtwork } from "./Scenes/SubmitArtwork/SubmitArtwork"
 import { Consignments } from "./Scenes/SubmitArtwork/UploadPhotos/utils"
 import { TagQueryRenderer } from "./Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
@@ -355,7 +355,7 @@ export const modules = defineModules({
   CitySavedList: reactModule(CitySavedListQueryRenderer),
   CitySectionList: reactModule(CitySectionListQueryRenderer),
   Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
-  ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, { hidesBackButton: true }),
+  SubmitArtwork: reactModule(SubmitArtwork, { hidesBackButton: true }),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
