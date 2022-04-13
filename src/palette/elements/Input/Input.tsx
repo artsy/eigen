@@ -312,7 +312,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               />
             </Flex>
             {!!fixedRightPlaceholder && value === "" && (
-              <Flex pr={1} flexGrow={0} justifyContent="center" alignItems="center">
+              <Flex pr={1} justifyContent="center" alignItems="center">
                 <Text variant="sm" color="black60">
                   {fixedRightPlaceholder}
                 </Text>
