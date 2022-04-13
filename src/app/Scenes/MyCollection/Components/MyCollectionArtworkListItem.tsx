@@ -31,6 +31,7 @@ export const MyCollectionArtworkListItem: React.FC<{
 
   return (
     <Touchable
+      testID="list-item-touchable"
       underlayColor="black5"
       onPress={() => {
         trackEvent(tracks.tappedCollectedArtwork(artwork.internalID, artwork.slug))
@@ -46,6 +47,7 @@ export const MyCollectionArtworkListItem: React.FC<{
       <Flex pb={1} flexDirection="row">
         {!artwork.image?.url ? (
           <Flex
+            testID="no-artwork-icon"
             width={ARTWORK_LIST_IMAGE_SIZE}
             height={ARTWORK_LIST_IMAGE_SIZE}
             borderRadius={2}
@@ -76,17 +78,17 @@ export const MyCollectionArtworkListItem: React.FC<{
 
         <Flex pl={15} flex={1} style={{ marginTop: 3 }}>
           {!!artwork.artist?.name && (
-            <Text variant="xs" fontWeight="bold" testID="price">
+            <Text variant="xs" fontWeight="bold" testID="artist-name">
               {artwork.artist?.name}
             </Text>
           )}
           {!!artwork.title && (
-            <Text variant="xs" color="black60" testID="priceUSD">
+            <Text variant="xs" color="black60" testID="artwork-title">
               {artwork.title}
             </Text>
           )}
           {!!artwork.medium && (
-            <Text variant="xs" color="black60" testID="priceUSD">
+            <Text variant="xs" color="black60" testID="artwork-medium">
               {artwork.medium}
             </Text>
           )}
@@ -94,6 +96,7 @@ export const MyCollectionArtworkListItem: React.FC<{
 
         {!!showHighDemandIcon && !!showDemandIndexHints && (
           <Flex
+            testID="test-high-demand-icon"
             alignSelf="flex-start"
             alignItems="center"
             flexDirection="row"
