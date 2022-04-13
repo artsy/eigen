@@ -7252,10 +7252,10 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # Are we currently in the fair's active period?
   isActive: Boolean
   isPublished: Boolean
-  kawsCollectionSlugs: [String]!
   links(format: Format): String
   location: Location
   marketingCollections(size: Int): [MarketingCollection]!
+  marketingCollectionSlugs: [String]!
   mobileImage: Image
   name: String
   organizer: FairOrganizer
