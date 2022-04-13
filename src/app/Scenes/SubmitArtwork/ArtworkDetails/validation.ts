@@ -1,8 +1,8 @@
+import { ConsignmentSubmissionSource } from "__generated__/createConsignSubmissionMutation.graphql"
 import {
   ConsignmentAttributionClass,
-  ConsignmentSubmissionSource,
   ConsignmentSubmissionStateAggregation,
-} from "__generated__/createConsignmentSubmissionMutation.graphql"
+} from "__generated__/updateConsignSubmissionMutation.graphql"
 import * as Yup from "yup"
 import { limitedEditionValue } from "./utils/rarityOptions"
 
