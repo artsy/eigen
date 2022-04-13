@@ -42,10 +42,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   showLimit?: boolean
   fontSize?: number
   /**
-   * This placeholder text is a string that will continue to be displayed on the right side of the
-   * input even if the user starts typing and the text input will not be empty.
-   *
-   * try NOT to use it along with `enableClearButton` prop
+   * This placeholder is fixed to the right side of the input
    */
   fixedRightPlaceholder?: string
   /**
@@ -314,7 +311,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 }}
               />
             </Flex>
-            {!!fixedRightPlaceholder && (
+            {!!fixedRightPlaceholder && value === "" && (
               <Flex pr={1} flexGrow={0} justifyContent="center" alignItems="center">
                 <Text variant="sm" color="black60">
                   {fixedRightPlaceholder}
