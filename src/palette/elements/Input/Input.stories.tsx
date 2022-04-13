@@ -51,6 +51,9 @@ storiesOf("Input", module)
       <Input title="Required" required />
       <Input title="Disabled" disabled />
       <Input placeholder="I'm a placeholder" />
+      <Input description="With clear button enabled" value="5" enableClearButton />
+      <Input description="With fixedRightPlaceholder" fixedRightPlaceholder="cm" />
+      <Input placeholder="I'm a placeholder" />
       <Input
         title="full text"
         value="Wow this is a long text, I wonder if I can read the whole thing!"
