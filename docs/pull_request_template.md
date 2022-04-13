@@ -2,6 +2,8 @@
   `type(PROJECT-XXXX): what changed`
 -->
 
+<!-- If this is a work in progress, please make sure it's a draft or prefix it with [WIP] -->
+
 <!-- Jira ticket in square brackets like [PROJECT-XXXX] -->
 
 This PR resolves []
