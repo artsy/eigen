@@ -3,20 +3,16 @@ import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOf
 import { navigate } from "app/navigation/navigate"
 import { Button, ButtonProps } from "palette"
 import React from "react"
-import { Alert, GestureResponderEvent } from "react-native"
+import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
-export interface InquiryMakeOfferButtonProps {
+export interface InquiryMakeOfferButtonProps extends ButtonProps {
   artwork: InquiryMakeOfferButton_artwork
   relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
-  variant?: ButtonProps["variant"]
-  buttonText?: string
-  disabled?: boolean
   conversationID: string
   replaceModalView?: boolean
-  onPress?: (event?: GestureResponderEvent) => void
 }
 
 export interface State {
@@ -127,7 +123,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
 
   render() {
     const { isCommittingCreateOfferOrderMutation } = this.state
-    const { onPress, disabled, variant, buttonText } = this.props
+    const { onPress, disabled, variant, children } = this.props
 
     return (
       <Button
@@ -143,7 +139,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
         variant={variant}
         haptic
       >
-        {buttonText ? buttonText : "Make an Offer"}
+        {children || "Make an Offer"}
       </Button>
     )
   }
