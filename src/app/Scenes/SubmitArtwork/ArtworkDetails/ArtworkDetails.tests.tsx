@@ -14,11 +14,10 @@ import { ArtworkDetails } from "./ArtworkDetails"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { mockFormValues } from "./utils/testUtils"
 
-jest.mock("app/Scenes/SubmitArtwork/UploadPhotos/utils/createConsignmentSubmission", () => ({
+jest.mock("app/Scenes/SubmitArtwork/utils/mutations/createConsignSubmissionMutation", () => ({
   createConsignSubmission: jest.fn().mockResolvedValue("12345"),
 }))
-
-jest.mock("app/Scenes/SubmitArtwork/UploadPhotos/utils/updateConsignSubmissionMutation", () => ({
+jest.mock("app/Scenes/SubmitArtwork/utils/mutations/updateConsignSubmissionMutation", () => ({
   updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
 }))
 
@@ -34,11 +33,6 @@ describe("ArtworkDetails", () => {
       <ArtworkDetails handlePress={jest.fn()} />
     </RelayEnvironmentProvider>
   )
-
-  beforeEach(() => {
-    ;(createConsignSubmissionMock as jest.Mock).mockClear()
-    ;(updateConsignSubmissionMock as jest.Mock).mockClear()
-  })
 
   afterEach(() => jest.clearAllMocks())
 
