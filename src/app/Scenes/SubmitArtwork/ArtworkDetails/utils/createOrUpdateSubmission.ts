@@ -1,7 +1,7 @@
 import {
   ConsignmentAttributionClass,
   CreateSubmissionMutationInput,
-} from "__generated__/createConsignmentSubmissionMutation.graphql"
+} from "__generated__/createConsignSubmissionMutation.graphql"
 import { UpdateSubmissionMutationInput } from "__generated__/updateConsignSubmissionMutation.graphql"
 import { createConsignSubmission, updateConsignSubmission } from "../../utils/mutations"
 import { ArtworkDetailsFormModel } from "../validation"
@@ -16,9 +16,10 @@ export const createOrUpdateSubmission = async (
   submissionId: string
 ) => {
   const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
+  type NewType = ConsignmentAttributionClass
+
   const attributionClass =
-    (values?.attributionClass?.replace(" ", "_").toUpperCase() as ConsignmentAttributionClass) ||
-    null
+    (values?.attributionClass?.replace(" ", "_").toUpperCase() as NewType) || null
 
   const submissionValues: SubmissionInput = {
     artistID: values.artistId,
