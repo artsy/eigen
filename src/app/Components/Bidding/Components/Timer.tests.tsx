@@ -246,6 +246,7 @@ describe("timer transitions", () => {
 })
 
 describe("Countdown", () => {
+  // 10h 3m
   const duration = moment.duration(36180000)
 
   describe("when the disable cascade feature flag is turned off", () => {
