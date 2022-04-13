@@ -14,6 +14,7 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
+import net.artsy.app.utils.ReactNativeConfigUtils;
 import io.sentry.react.RNSentryPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -64,9 +65,9 @@ public class MainApplication extends Application implements ReactApplication {
     if (BuildConfig.DEBUG) {
       segmentWriteKey = BuildConfig.SEGMENT_STAGING_WRITE_KEY_ANDROID;
     }
-    Analytics analytics = new Analytics.Builder(this, segmentWriteKey)
-        .use(AdjustIntegration.FACTORY)
-        .build();
+    Analytics analytics = new Analytics.Builder(this, ReactNativeConfigUtils.decode(segmentWriteKey, BuildConfig.XOR_KEY))
+            .use(AdjustIntegration.FACTORY)
+                .build();
     Analytics.setSingletonInstance(analytics);
 
     // Example of how to register for Firebase Cloud Messaging manually.
