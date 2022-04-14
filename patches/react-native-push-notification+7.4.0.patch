@@ -1,44 +1,13 @@
-diff --git a/node_modules/react-native-push-notification/android/build.gradle b/node_modules/react-native-push-notification/android/build.gradle
-index d6019f6..df3fdc2 100644
---- a/node_modules/react-native-push-notification/android/build.gradle
-+++ b/node_modules/react-native-push-notification/android/build.gradle
-@@ -14,6 +14,7 @@ allprojects {
-         mavenCentral()
-         google()
-         jcenter()
-+        maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
-     }
- }
- 
-@@ -61,4 +62,5 @@ dependencies {
-     implementation 'com.facebook.react:react-native:+'
-     implementation 'me.leolin:ShortcutBadger:1.1.22@aar'
-     implementation "com.google.firebase:firebase-messaging:${safeExtGet('firebaseMessagingVersion', '21.1.0')}"
-+    implementation "com.appboy:android-sdk-ui:14.0.1"
- }
-diff --git a/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotificationListenerService.java b/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotificationListenerService.java
-index ca78c03..13b1299 100644
---- a/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotificationListenerService.java
-+++ b/node_modules/react-native-push-notification/android/src/main/java/com/dieam/reactnativepushnotification/modules/RNPushNotificationListenerService.java
-@@ -3,6 +3,8 @@ package com.dieam.reactnativepushnotification.modules;
- import com.google.firebase.messaging.FirebaseMessagingService;
- import com.google.firebase.messaging.RemoteMessage;
- 
-+import com.appboy.AppboyFirebaseMessagingService;
-+
- import android.os.Handler;
- import android.os.Looper;
- import android.util.Log;
-@@ -74,6 +76,11 @@ public class RNPushNotificationListenerService extends FirebaseMessagingService
- 
-     @Override
-     public void onMessageReceived(RemoteMessage message) {
--        mMessageReceivedHandler.handleReceivedMessage(message);
-+        if (AppboyFirebaseMessagingService.handleBrazeRemoteMessage(this, message)) {
-+            // This Remote Message originated from Braze and a push notification was displayed.
-+            // No further action is needed.   
-+        } else {
-+            mMessageReceivedHandler.handleReceivedMessage(message);
-+        }
-     }
- }
+diff --git a/node_modules/react-native-push-notification/component/index.ios.js b/node_modules/react-native-push-notification/component/index.ios.js
+deleted file mode 100644
+index 82eee6a..0000000
+--- a/node_modules/react-native-push-notification/component/index.ios.js
++++ /dev/null
+@@ -1,7 +0,0 @@
+-"use strict";
+-
+-import PushNotificationIOS from "@react-native-community/push-notification-ios";
+-
+-module.exports = {
+-  component: PushNotificationIOS
+-};

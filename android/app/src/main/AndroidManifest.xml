@@ -109,7 +109,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService" android:exported="false">
+        <service android:name="net.artsy.app.BrazeMessagingService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
