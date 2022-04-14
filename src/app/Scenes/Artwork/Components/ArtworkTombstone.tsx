@@ -193,13 +193,14 @@ export class ArtworkTombstone extends React.Component<
             .
           </Sans>
         )}
-        {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
-          <CascadingEndTimesBanner
-            cascadingEndTimeInterval={artwork.sale.cascadingEndTimeIntervalMinutes}
-          />
-        )}
+
         {!!artwork.isInAuction && !!artwork.sale && !artwork.sale.isClosed && (
           <>
+            {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
+              <CascadingEndTimesBanner
+                cascadingEndTimeInterval={artwork.sale.cascadingEndTimeIntervalMinutes}
+              />
+            )}
             <Spacer mb={1} />
             {!!artwork.partner && (
               <Sans color="black100" size="3" weight="medium">

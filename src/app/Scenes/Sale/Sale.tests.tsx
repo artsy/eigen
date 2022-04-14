@@ -186,7 +186,7 @@ describe("Sale", () => {
     expect(tree.findAllByType(CascadingEndTimesBanner)).toHaveLength(1)
   })
 
-  it("doesn't render the banner when the sale has cascading end times", () => {
+  it("doesn't render the banner when the sale does not have cascading end times", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -198,6 +198,26 @@ describe("Sale", () => {
           endAt: DateTime.now().plus({ day: 1 }).toISO(),
           name: "Non Cascading Sale",
           cascadingEndTimeIntervalMinutes: null,
+        }),
+      })
+    )
+
+    expect(tree.findAllByType(CascadingEndTimesBanner)).toHaveLength(0)
+  })
+
+  it("doesn't render the banner when the sale has cascading end times but the sale is closed", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          slug: "closed-cascading-sale-slug",
+          startAt: DateTime.now().minus({ days: 3 }).toISO(),
+          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+          endAt: DateTime.now().minus({ day: 1 }).toISO(),
+          name: "Closed Cascading Sale",
+          cascadingEndTimeIntervalMinutes: 1,
+          isClosed: true,
         }),
       })
     )

@@ -181,12 +181,15 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
         </Flex>
       ),
     },
-    sale.cascadingEndTimeIntervalMinutes && {
-      key: SALE_CASCADING_END_TIMES_BANNER,
-      content: (
-        <CascadingEndTimesBanner cascadingEndTimeInterval={sale.cascadingEndTimeIntervalMinutes} />
-      ),
-    },
+    sale.cascadingEndTimeIntervalMinutes &&
+      !sale.isClosed && {
+        key: SALE_CASCADING_END_TIMES_BANNER,
+        content: (
+          <CascadingEndTimesBanner
+            cascadingEndTimeInterval={sale.cascadingEndTimeIntervalMinutes}
+          />
+        ),
+      },
     {
       key: SALE_ACTIVE_BIDS,
       content: <SaleActiveBidsContainer me={me} saleID={sale.internalID} />,
@@ -352,6 +355,7 @@ export const SaleContainer = createRefetchContainer(
         registrationEndsAt
         slug
         cascadingEndTimeIntervalMinutes
+        isClosed
       }
     `,
   },
