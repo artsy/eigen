@@ -165,10 +165,11 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
         <Flex m={2}>
           <Text variant="md">Choose Your Price Range</Text>
         </Flex>
-        <Flex flexDirection="row" alignItems="center" mb={1} mx={2}>
+        <Flex flexDirection="row" mb={1} mx={2}>
           <Input
+            containerStyle={{ flex: 1 }}
             description="Min"
-            placeholder="$USD"
+            fixedRightPlaceholder="$USD"
             enableClearButton
             keyboardType="number-pad"
             value={getInputValue(minValue)}
@@ -178,8 +179,9 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
           />
           <Spacer mx={2} />
           <Input
+            containerStyle={{ flex: 1 }}
             description="Max"
-            placeholder="$USD"
+            fixedRightPlaceholder="$USD"
             enableClearButton
             keyboardType="number-pad"
             value={getInputValue(maxValue)}

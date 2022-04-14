@@ -42,6 +42,10 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   showLimit?: boolean
   fontSize?: number
   /**
+   * This placeholder is fixed to the right side of the input
+   */
+  fixedRightPlaceholder?: string
+  /**
    * The placeholder can be an array of string, specifically for android, because of a bug.
    * On ios, the longest string will always be picked, as ios can add ellipsis.
    * On android, the longest string **that fits** will be picked, as android doesn't use ellipsis.
@@ -93,6 +97,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       textContentType,
       canHidePassword,
       inputTextStyle,
+      fixedRightPlaceholder,
       placeholder,
       multiline,
       maxLength,
@@ -149,6 +154,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             onPress={() => {
               setShowPassword(!showPassword)
             }}
+            accessibilityLabel={showPassword ? "hide password button" : "show password button"}
             hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
           >
             {!showPassword ? <EyeClosedIcon fill="black30" /> : <EyeOpenedIcon fill="black60" />}
@@ -306,6 +312,13 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 }}
               />
             </Flex>
+            {!!fixedRightPlaceholder && value === "" && (
+              <Flex pr={1} justifyContent="center" alignItems="center">
+                <Text variant="sm" color="black60">
+                  {fixedRightPlaceholder}
+                </Text>
+              </Flex>
+            )}
             {renderShowPasswordIcon()}
             {loading ? (
               <Flex pr="3" justifyContent="center" flexGrow={0}>
