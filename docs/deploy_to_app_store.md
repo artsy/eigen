@@ -32,8 +32,3 @@ Our App Store releases are done manually.
 2. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`.
 3. Run `./scripts/deploy-ios` to trigger a new beta. (When we add a new version, the first beta goes through additional TestFlight review by Apple. By trigger the beta now, we go through that review early, and avoid delaying future QA sessions.)
 4. PR your changes back into the `main` branch.
-
-### IDFA
-
-The Identifier for Advertisers ([IDFA](https://www.adjust.com/glossary/idfa/)) is a random device identifier assigned by Apple to a user's device.
-We _do_ use the IDFA to attribute app installations to previously service advertisements. This should be handled for you.
