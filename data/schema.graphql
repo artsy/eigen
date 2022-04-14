@@ -9020,6 +9020,13 @@ type MarketingCollectionGroup {
   name: String!
 }
 
+enum MarketingCollectionGroupTypeEnum {
+  # Artist-focused collections, not to be confused with actual ArtistSeries
+  ArtistSeries
+  FeaturedCollections
+  OtherCollections
+}
+
 type MarketingCollectionQuery {
   acquireable: Boolean
   aggregations: [String!]
