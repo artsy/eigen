@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { Photo } from "app/Scenes/SubmitArtwork/UploadPhotos/validation"
+import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"

@@ -1,5 +1,5 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Photo } from "app/Scenes/SubmitArtwork/UploadPhotos/validation"
+import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
 import { Flex, NoImageIcon, useColor } from "palette"

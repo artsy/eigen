@@ -2,7 +2,7 @@ import { getLocationDetails, getLocationPredictions, SimpleLocation } from "app/
 import { Box, Flex, Input, LocationIcon, Text, useSpace } from "palette"
 import React, { useEffect, useState } from "react"
 import { Image } from "react-native"
-import { Location } from "../../Scenes/SubmitArtwork/ArtworkDetails/validation"
+import { Location } from "../../Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 
 const MIN_LENGTH = 3
 interface Props {

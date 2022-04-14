@@ -10,7 +10,7 @@ import { getUserPrefsModel, UserPrefsModel } from "app/Scenes/Search/UserPrefsMo
 import {
   getSubmissionModel,
   SubmissionModel,
-} from "app/Scenes/SubmitArtwork/utils/submissionModelState"
+} from "app/Scenes/SellWithArtsy/utils/submissionModelState"
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"

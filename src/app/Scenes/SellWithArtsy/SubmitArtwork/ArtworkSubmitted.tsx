@@ -11,7 +11,7 @@ import React from "react"
 import { ScrollView } from "react-native-gesture-handler"
 import { useTracking } from "react-tracking"
 import { SubmitArtworkOverviewNavigationStack } from "./SubmitArtwork"
-import { submitAnotherArtworkEvent, viewArtworkMyCollectionEvent } from "./utils/TrackingEvent"
+import { submitAnotherArtworkEvent, viewArtworkMyCollectionEvent } from "../utils/TrackingEvent"
 
 interface ArtworkSubmittedScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "ArtworkSubmittedScreen"> {}

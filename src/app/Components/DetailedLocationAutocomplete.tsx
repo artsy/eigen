@@ -1,5 +1,5 @@
 import { MyProfileEditForm_me } from "__generated__/MyProfileEditForm_me.graphql"
-import { LocationResult } from "app/Scenes/SubmitArtwork/UploadPhotos/utils"
+import { LocationResult } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
 import {
   getLocationDetails,
   getLocationPredictions,

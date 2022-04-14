@@ -1,4 +1,4 @@
-import { Photo } from "app/Scenes/SubmitArtwork/UploadPhotos/validation"
+import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { transformBytesToSize } from "app/utils/transformBytesToSize"
 
 const totalSizeLimitInBytes = 30000000

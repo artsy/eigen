@@ -17,7 +17,7 @@ import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
 import { ContactInformationQueryRenderer } from "./ContactInformation/ContactInformation"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
-import { toggledAccordionEvent } from "./utils/TrackingEvent"
+import { toggledAccordionEvent } from "../utils/TrackingEvent"
 
 interface SubmitArtworkScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}

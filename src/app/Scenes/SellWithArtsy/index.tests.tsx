@@ -5,7 +5,7 @@ import React from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistList } from "./Components/ArtistList"
 import { RecentlySold } from "./Components/RecentlySold"
-import { ConsignmentsHomeQueryRenderer } from "./ConsignmentsHome"
+import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
 
 jest.unmock("react-relay")
 
@@ -17,7 +17,7 @@ describe("ConsignmentsHome index", () => {
   })
 
   const TestWrapper = () => {
-    return <ConsignmentsHomeQueryRenderer environment={mockEnvironment} />
+    return <SellWithArtsyHomeQueryRenderer environment={mockEnvironment} />
   }
 
   it("renders dynamic components", () => {

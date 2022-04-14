@@ -3,7 +3,7 @@ import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/Search
 import { useFormikContext } from "formik"
 import { Box, Input } from "palette"
 import React, { useEffect, useState } from "react"
-import { ArtworkDetailsFormModel } from "../../Scenes/SubmitArtwork/ArtworkDetails/validation"
+import { ArtworkDetailsFormModel } from "../../Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
 
 export const ArtistAutosuggest: React.FC = () => {

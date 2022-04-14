@@ -3,11 +3,11 @@ import { GlobalStore } from "app/store/GlobalStore"
 import React, { useCallback, useEffect, useRef } from "react"
 import { BackHandler } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
-import { BottomTabType } from "../../../BottomTabs/BottomTabType"
-import { ConsignmentsHomeQueryRenderer } from "../../ConsignmentsHome/ConsignmentsHome"
+import { BottomTabType } from "../../../../BottomTabs/BottomTabType"
+import { SellWithArtsyHomeQueryRenderer } from "../../../SellWithArtsyHome"
 
 /** The metadata for a consigned work */
-export interface ConsignmentMetadata {
+export interface SellWithArtsyMetadata {
   title: string | null
   year: string | null
   category: string | null
@@ -44,12 +44,12 @@ export interface Photo {
   uploading?: boolean
 }
 
-export interface ConsignmentSetup {
+export interface SellWithArtsySetup {
   submissionID?: string
   state?: "DRAFT" | "SUBMITTED"
   artist?: ArtistResult
   photos?: Photo[]
-  metadata?: ConsignmentMetadata
+  metadata?: SellWithArtsyMetadata
   provenance?: string
   editionInfo?: {
     size?: string
@@ -72,7 +72,7 @@ export interface SellTabProps {
   overwriteHardwareBackButtonPath?: BottomTabType
 }
 
-export const Consignments: React.FC = () => {
+export const SellWithArtsy: React.FC = () => {
   const sellTabProps = GlobalStore.useAppState((state) => {
     return state.bottomTabs.sessionState.tabProps.sell ?? {}
   }) as SellTabProps
@@ -104,5 +104,5 @@ export const Consignments: React.FC = () => {
     return true
   }, [sellTabPropsRef.current])
 
-  return <ConsignmentsHomeQueryRenderer />
+  return <SellWithArtsyHomeQueryRenderer />
 }

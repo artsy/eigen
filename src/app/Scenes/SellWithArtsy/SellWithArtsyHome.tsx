@@ -1,6 +1,6 @@
 import { tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
-import { ConsignmentsHome_targetSupply } from "__generated__/ConsignmentsHome_targetSupply.graphql"
-import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
+import { SellWithArtsyHome_targetSupply } from "__generated__/SellWithArtsyHome_targetSupply.graphql"
+import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -18,11 +18,11 @@ import { HowItWorks } from "./Components/HowItWorks"
 import { RecentlySoldFragmentContainer as RecentlySold } from "./Components/RecentlySold"
 
 interface Props {
-  targetSupply: ConsignmentsHome_targetSupply
+  targetSupply: SellWithArtsyHome_targetSupply
   isLoading?: boolean
 }
 
-export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) => {
+export const SellWithArtsyHome: React.FC<Props> = ({ targetSupply, isLoading }) => {
   const tracking = useTracking()
   const handleConsignPress = (tappedConsignArgs: TappedConsignArgs) => {
     tracking.trackEvent(tappedConsign(tappedConsignArgs))
@@ -55,38 +55,38 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) =
   )
 }
 
-const ConsignmentsHomeContainer = createFragmentContainer(ConsignmentsHome, {
+const SellWithArtsyHomeContainer = createFragmentContainer(SellWithArtsyHome, {
   targetSupply: graphql`
-    fragment ConsignmentsHome_targetSupply on TargetSupply {
+    fragment SellWithArtsyHome_targetSupply on TargetSupply {
       ...RecentlySold_targetSupply
       ...ArtistList_targetSupply
     }
   `,
 })
 
-interface ConsignmentsHomeQueryRendererProps {
+interface SellWithArtsyHomeQueryRendererProps {
   environment?: RelayModernEnvironment
 }
 
-export const ConsignmentsHomeScreenQuery = graphql`
-  query ConsignmentsHomeQuery {
+export const SellWithArtsyHomeScreenQuery = graphql`
+  query SellWithArtsyHomeQuery {
     targetSupply {
-      ...ConsignmentsHome_targetSupply
+      ...SellWithArtsyHome_targetSupply
     }
   }
 `
 
-export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({
+export const SellWithArtsyHomeQueryRenderer: React.FC<SellWithArtsyHomeQueryRendererProps> = ({
   environment,
 }) => {
   return (
-    <QueryRenderer<ConsignmentsHomeQuery>
+    <QueryRenderer<SellWithArtsyHomeQuery>
       environment={environment || defaultEnvironment}
       variables={{}}
-      query={ConsignmentsHomeScreenQuery}
+      query={SellWithArtsyHomeScreenQuery}
       render={renderWithPlaceholder({
-        Container: ConsignmentsHomeContainer,
-        renderPlaceholder: () => <ConsignmentsHome isLoading targetSupply={null as any} />,
+        Container: SellWithArtsyHomeContainer,
+        renderPlaceholder: () => <SellWithArtsyHome isLoading targetSupply={null as any} />,
       })}
     />
   )

@@ -104,10 +104,10 @@ import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAd
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { SearchScreen, SearchScreenQuery } from "./Scenes/Search/Search"
+import { SellWithArtsyHomeScreenQuery } from "./Scenes/SellWithArtsy/SellWithArtsyHome"
+import { SubmitArtwork } from "./Scenes/SellWithArtsy/SubmitArtwork/SubmitArtwork"
+import { SellWithArtsy } from "./Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
-import { ConsignmentsHomeScreenQuery } from "./Scenes/SubmitArtwork/ConsignmentsHome/ConsignmentsHome"
-import { SubmitArtwork } from "./Scenes/SubmitArtwork/SubmitArtwork"
-import { Consignments } from "./Scenes/SubmitArtwork/UploadPhotos/utils"
 import { TagQueryRenderer } from "./Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
@@ -419,8 +419,10 @@ export const modules = defineModules({
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
   RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
-  Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }, [ConsignmentsHomeScreenQuery]),
-  SalesNotRootTabView: reactModule(Consignments),
+  Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell" }, [
+    SellWithArtsyHomeScreenQuery,
+  ]),
+  SalesNotRootTabView: reactModule(SellWithArtsy),
   Search: reactModule(SearchScreen, { isRootViewForTabName: "search" }, [SearchScreenQuery]),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),

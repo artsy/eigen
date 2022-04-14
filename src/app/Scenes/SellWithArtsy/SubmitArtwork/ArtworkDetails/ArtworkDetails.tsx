@@ -1,6 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { navigate } from "app/navigation/navigate"
-import { artworkDetailsCompletedEvent } from "app/Scenes/SubmitArtwork/utils/TrackingEvent"
+import { artworkDetailsCompletedEvent } from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { BulletedItem, CTAButton, Flex, LinkText, Spacer } from "palette"
