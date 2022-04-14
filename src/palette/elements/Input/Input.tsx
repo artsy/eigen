@@ -154,6 +154,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             onPress={() => {
               setShowPassword(!showPassword)
             }}
+            accessibilityLabel={showPassword ? "hide password button" : "show password button"}
             hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
           >
             {!showPassword ? <EyeClosedIcon fill="black30" /> : <EyeOpenedIcon fill="black60" />}
