@@ -179,6 +179,7 @@ describe("Sale", () => {
           endAt: DateTime.now().plus({ day: 1 }).toISO(),
           name: "Cascading Sale",
           cascadingEndTimeIntervalMinutes: 1,
+          isClosed: false,
         }),
       })
     )
@@ -198,6 +199,7 @@ describe("Sale", () => {
           endAt: DateTime.now().plus({ day: 1 }).toISO(),
           name: "Non Cascading Sale",
           cascadingEndTimeIntervalMinutes: null,
+          isClosed: false,
         }),
       })
     )
