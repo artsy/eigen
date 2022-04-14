@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.appboy.push.AppboyNotificationUtils;
+import com.appboy.Constants;
+import com.appboy.support.StringUtils;
 
 public class BrazeBroadcastReceiver extends BroadcastReceiver {
   private static final String TAG = BrazeBroadcastReceiver.class.getName();
@@ -25,8 +27,13 @@ public class BrazeBroadcastReceiver extends BroadcastReceiver {
       Log.d(TAG, "Received push notification.");
     } else if (notificationOpenedAction.equals(action)) {
       Log.d(TAG, "Received push notification opened action.");
-      // BrazeNotificationUtils.routeUserWithNotificationOpenedIntent(context,
-      // intent);
+      String deepLink = intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
+      if (!StringUtils.isNullOrBlank(deepLink)) {
+        Log.d(TAG, "Deeplinkg found we need to route ourselves.");
+      } else {
+        Log.d(TAG, "No deeplink found using appboy default routing.");
+        AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
+      }
     } else if (notificationDeletedAction.equals(action)) {
       Log.d(TAG, "Received push notification deleted intent.");
     } else {
