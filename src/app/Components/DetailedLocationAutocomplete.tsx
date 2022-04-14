@@ -1,5 +1,4 @@
 import { MyProfileEditForm_me } from "__generated__/MyProfileEditForm_me.graphql"
-import { LocationResult } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
 import {
   getLocationDetails,
   getLocationPredictions,
@@ -16,6 +15,11 @@ interface DetailedLocationAutocompleteProps extends Omit<InputProps, "onChange">
   initialLocation?: string
   onChange: (location: LocationWithDetails) => void
   locationInputRef?: React.RefObject<Input>
+}
+
+export interface LocationResult {
+  id: string
+  name: string
 }
 
 export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocompleteProps> = ({

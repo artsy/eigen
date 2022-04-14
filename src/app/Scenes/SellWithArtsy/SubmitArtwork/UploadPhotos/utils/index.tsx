@@ -1,10 +1,11 @@
+import { LocationResult } from "app/Components/DetailedLocationAutocomplete"
 import { goBack, switchTab } from "app/navigation/navigate"
+import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
+import { SellWithArtsyHomeQueryRenderer } from "app/Scenes/SellWithArtsy/SellWithArtsyHome"
 import { GlobalStore } from "app/store/GlobalStore"
 import React, { useCallback, useEffect, useRef } from "react"
 import { BackHandler } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
-import { BottomTabType } from "../../../../BottomTabs/BottomTabType"
-import { SellWithArtsyHomeQueryRenderer } from "../../../SellWithArtsyHome"
 
 /** The metadata for a consigned work */
 export interface SellWithArtsyMetadata {
@@ -18,11 +19,6 @@ export interface SellWithArtsyMetadata {
   depth: number | null
   unit: string | null
   displayString: string | null // This would look something like "1/5", "5/5"
-}
-
-export interface LocationResult {
-  id: string
-  name: string
 }
 
 export interface ArtistResult {
