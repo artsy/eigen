@@ -82,8 +82,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
 
       await RNShare.open({
         title: viewingRoom.title,
-        message,
-        url,
+        message: message + "\n" + url,
         failOnCancel: false,
       })
     } catch (error) {
