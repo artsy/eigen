@@ -89,7 +89,7 @@ export const ArtworkFromLiveAuctionRegistrationOpen = {
     isClosed: false,
     isRegistrationClosed: false,
     requireIdentityVerification: false,
-    cascadingEndTimeInterval: null,
+    cascadingEndTimeIntervalMinutes: null,
     liveStartAt: DateTime.fromMillis(Date.now()).minus({ minutes: 1 }).toISO(),
     startAt: DateTime.fromMillis(Date.now()).minus({ minutes: 10 }).toISO(),
     endAt: null,

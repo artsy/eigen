@@ -623,7 +623,7 @@ const CommercialInformationArtworkInCascadingEndTimeAuction = {
     endAt: "2019-08-16T20:20:00+00:00",
     liveStartAt: null,
     formattedStartDateTime: "Ends Aug 16 at 8:20pm UTC",
-    cascadingEndTimeInterval: 60,
+    cascadingEndTimeIntervalMinutes: 1,
   },
   saleArtwork: {
     endAt: "2019-08-18T20:20:00+00:00",
