@@ -2913,6 +2913,15 @@ type CausalityLotState {
 }
 
 type Channel {
+  # A connection of articles related to a partner.
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: ArticleSorts
+  ): ArticleConnection
+
   # A globally unique ID.
   id: ID!
   image: Image
@@ -2921,7 +2930,6 @@ type Channel {
   internalID: ID!
   links: [ChannelLink!]!
   name: String!
-  pinnedArticles: [Article!]!
   slug: String
   tagline: String
   type: ChannelType!
