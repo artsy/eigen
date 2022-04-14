@@ -791,11 +791,12 @@ type Article implements Node {
   # The byline for the article. Defaults to "Artsy Editors" if no authors are present.
   byline: String
   cached: Int
+  channel: Channel
   channelArticles(
     # Number of articles to return
     size: Int = 12
   ): [Article!]!
-  channelID: String
+  channelID: String @deprecated(reason: "Use `channel` instead")
   contributingAuthors: [Author] @deprecated(reason: "Use `byline` or `authors` instead")
   description: String
   hero: ArticleHero
@@ -2909,6 +2910,32 @@ type CausalityLotState {
   sellingPrice: Money
   sellingPriceCents: Int
   soldStatus: String
+}
+
+type Channel {
+  # A globally unique ID.
+  id: ID!
+  image: Image
+
+  # A type-specific ID.
+  internalID: ID!
+  links: [ChannelLink!]!
+  name: String!
+  pinnedArticles: [Article!]!
+  slug: String
+  tagline: String
+  type: ChannelType!
+}
+
+type ChannelLink {
+  text: String!
+  url: String!
+}
+
+enum ChannelType {
+  Editorial
+  Support
+  Team
 }
 
 type City {
@@ -11441,6 +11468,7 @@ type Query {
   # `LOGGED_IN` because we don't know whether or not the authentication is valid
   # (error could be something else).
   authenticationStatus: AuthenticationStatus!
+  channel(id: ID!): Channel!
 
   # A list of cities
   cities(featured: Boolean = false): [City!]!
@@ -14638,6 +14666,7 @@ type Viewer {
   # `LOGGED_IN` because we don't know whether or not the authentication is valid
   # (error could be something else).
   authenticationStatus: AuthenticationStatus!
+  channel(id: ID!): Channel!
 
   # A list of cities
   cities(featured: Boolean = false): [City!]!
