@@ -2,9 +2,10 @@ import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
-import { Box, Flex, Sans, Spacer } from "palette"
+import { Box, Flex, Sans, Spacer, Text } from "palette"
 import React from "react"
-import { Text, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
+import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
 import { FollowArtistLinkFragmentContainer as FollowArtistLink } from "./FollowArtistLink"
 
@@ -131,6 +132,10 @@ export class ArtworkTombstone extends React.Component<
       artwork.sale &&
       !artwork.sale.isClosed
 
+    const helpArticleLink = Config.CASCADING_AUCTION_HELP_ARTICLE_LINK
+
+    const hasLink = !!helpArticleLink
+
     return (
       <Box textAlign="left">
         <Flex flexDirection="row" flexWrap="wrap">
@@ -192,6 +197,18 @@ export class ArtworkTombstone extends React.Component<
             .
           </Sans>
         )}
+        {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
+          <Flex backgroundColor="blue100" p={2} my={2}>
+            <Text color="white" style={{ textAlign: "center" }}>
+              {`Lots will close at ${artwork.sale.cascadingEndTimeIntervalMinutes}-minute intervals.`}
+              {!hasLink && (
+                <TouchableWithoutFeedback onPress={() => navigate(helpArticleLink)}>
+                  <Text style={{ textDecorationLine: "underline" }}>&nbsp;Learn more.</Text>
+                </TouchableWithoutFeedback>
+              )}
+            </Text>
+          </Flex>
+        )}
         {!!artwork.isInAuction && !!artwork.sale && !artwork.sale.isClosed && (
           <>
             <Spacer mb={1} />
@@ -229,6 +246,7 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       }
       sale {
         isClosed
+        cascadingEndTimeIntervalMinutes
       }
       artists {
         name
