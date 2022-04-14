@@ -93,8 +93,6 @@ lane :update_version_string do
   File.open(app_json_path, 'w') do |file|
     file.puts JSON.pretty_generate(app_json)
   end
-
-  create_next_app_version(next_version_code: new_version)
 end
 
 date_str = DateTime.now.strftime("%Y.%m.%d.%H")
