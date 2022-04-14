@@ -118,6 +118,14 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_OPTION.paramValue
 
   const handleTextChange = (changedIndex: number) => (value: string) => {
+    // Early exit the input update if the value is not a number
+    // This was added for the android number-pad keyboard that
+    // includes some special characters
+    const numbersRegex = /^(|\d)+$/
+    if (!numbersRegex.test(value)) {
+      return
+    }
+
     const updatedRange = range.map((rangeValue, index) => {
       if (index === changedIndex) {
         if (value === "" || value === "0") {
