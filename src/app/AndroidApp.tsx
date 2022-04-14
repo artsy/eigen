@@ -10,7 +10,6 @@ import { useDeepLinks } from "app/utils/useDeepLinks"
 import { useStripeConfig } from "app/utils/useStripeConfig"
 import React, { useEffect } from "react"
 import { UIManager, View } from "react-native"
-import RNBootSplash from "react-native-bootsplash"
 import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { FPSCounter } from "./Components/FPSCounter"
@@ -72,10 +71,8 @@ const Main: React.FC = () => {
     if (isHydrated) {
       // We wait a bit until the UI finishes drawing behind the splash screen
       setTimeout(() => {
-        RNBootSplash.hide().then(() => {
-          requestAnimationFrame(() => {
-            ArtsyNativeModule.lockActivityScreenOrientation()
-          })
+        requestAnimationFrame(() => {
+          ArtsyNativeModule.lockActivityScreenOrientation()
         })
         ArtsyNativeModule.setAppStyling()
         if (isLoggedIn) {

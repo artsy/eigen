@@ -12,6 +12,9 @@ if (__DEV__) {
   } catch {}
 }
 
+const RNBootSplash = require("react-native-bootsplash")
+RNBootSplash.hide()
+
 require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
 
 if (metaflags.startStorybook) {
