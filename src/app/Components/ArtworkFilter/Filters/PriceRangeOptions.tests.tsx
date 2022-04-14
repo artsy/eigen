@@ -183,4 +183,22 @@ describe("PriceRangeOptions", () => {
 
     expect(minInput.props.value).toBe("")
   })
+
+  it("should not update input with a special character (included in android num-pad)", () => {
+    const { getByTestId, queryByDisplayValue } = getTree()
+    const minInput = getByTestId("price-min-input")
+
+    fireEvent.changeText(minInput, ".")
+
+    expect(minInput).toHaveProp("value", "")
+    fireEvent.changeText(minInput, " ")
+    expect(minInput).toHaveProp("value", "")
+    fireEvent.changeText(minInput, "-")
+    expect(minInput).toHaveProp("value", "")
+    fireEvent.changeText(minInput, ",")
+    expect(minInput).toHaveProp("value", "")
+
+    fireEvent.changeText(minInput, "1242135")
+    queryByDisplayValue("1242135")
+  })
 })
