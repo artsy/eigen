@@ -47,10 +47,9 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
       <Flex flexDirection="row">
         <Join separator={<Spacer ml={2} />}>
           <Flex flex={1}>
-            <Text variant="xs" mb={0.5} color="black60">
-              Min
-            </Text>
             <Input
+              description="Min"
+              descriptionColor="black60"
               keyboardType="number-pad"
               onChangeText={handleInputChange("min")}
               fixedRightPlaceholder={selectedMetric}
@@ -60,10 +59,9 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
             />
           </Flex>
           <Flex flex={1}>
-            <Text variant="xs" mb={0.5} color="black60">
-              Max
-            </Text>
             <Input
+              description="Max"
+              descriptionColor="black60"
               keyboardType="number-pad"
               onChangeText={handleInputChange("max")}
               fixedRightPlaceholder={selectedMetric}
