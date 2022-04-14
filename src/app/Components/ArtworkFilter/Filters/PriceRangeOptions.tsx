@@ -43,6 +43,7 @@ export const getBarsFromAggregations = (aggregations?: Aggregations) => {
   return sortedBars
 }
 
+const NUMBERS_REGEX = /^(|\d)+$/
 const DEBOUNCE_DELAY = 500
 const DEFAULT_PRICE_RANGE = DEFAULT_PRICE_OPTION.paramValue
 const DEFAULT_RANGE = [0, 50000]
@@ -121,8 +122,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     // Early exit the input update if the value is not a number
     // This was added for the android number-pad keyboard that
     // includes some special characters
-    const numbersRegex = /^(|\d)+$/
-    if (!numbersRegex.test(value)) {
+    if (!NUMBERS_REGEX.test(value)) {
       return
     }
 
