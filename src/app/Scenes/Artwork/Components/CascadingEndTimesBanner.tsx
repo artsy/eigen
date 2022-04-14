@@ -17,7 +17,7 @@ export const CascadingEndTimesBanner: React.FC<CascadingEndTimesBannerProps> = (
     <Flex backgroundColor="blue100" p={2} my={2}>
       <Text color="white" style={{ textAlign: "center" }}>
         {`Lots will close at ${cascadingEndTimeInterval}-minute intervals. `}
-        {!hasLink && (
+        {!!hasLink && (
           <Text
             color="white"
             onPress={() => navigate(helpArticleLink)}
