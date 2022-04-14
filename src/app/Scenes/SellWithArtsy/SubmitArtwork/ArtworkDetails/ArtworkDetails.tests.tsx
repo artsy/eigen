@@ -14,10 +14,10 @@ import { ArtworkDetails } from "./ArtworkDetails"
 import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
 import { mockFormValues } from "./utils/testUtils"
 
-jest.mock("app/Scenes/SubmitArtwork/utils/mutations/createConsignSubmissionMutation", () => ({
+jest.mock("../../mutations/createConsignSubmissionMutation", () => ({
   createConsignSubmission: jest.fn().mockResolvedValue("12345"),
 }))
-jest.mock("app/Scenes/SubmitArtwork/utils/mutations/updateConsignSubmissionMutation", () => ({
+jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
   updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
 }))
 
