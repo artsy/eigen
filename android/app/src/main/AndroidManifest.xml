@@ -109,12 +109,12 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="net.artsy.app.BrazeBroadcastReceiver" android:exported="false" >
-          <intent-filter>
-            <action android:name="com.braze.push.intent.NOTIFICATION_RECEIVED" />
-            <action android:name="com.braze.push.intent.NOTIFICATION_OPENED" />
-            <action android:name="com.braze.push.intent.NOTIFICATION_DELETED" />
-          </intent-filter>
+        <receiver
+            android:name=".BrazeBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="net.artsy.app.intent.APPBOY_NOTIFICATION_OPENED" />
+            </intent-filter>
         </receiver>
 
         <service android:name="net.artsy.app.BrazeMessagingService" android:exported="false">

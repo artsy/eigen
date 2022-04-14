@@ -6,16 +6,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.appboy.Constants;
+import com.appboy.push.AppboyNotificationUtils;
 
 public class BrazeBroadcastReceiver extends BroadcastReceiver {
   private static final String TAG = BrazeBroadcastReceiver.class.getName();
 
   @Override
   public void onReceive(Context context, Intent intent) {
-    String pushReceivedAction = "PUSHGOESHERE"; // Constants.BRAZE_PUSH_INTENT_NOTIFICATION_RECEIVED;
-    String notificationOpenedAction = "PUSHGOESHERE"; // Constants.BRAZE_PUSH_INTENT_NOTIFICATION_OPENED;
-    String notificationDeletedAction = "PUSHGOESHERE"; // Constants.BRAZE_PUSH_INTENT_NOTIFICATION_DELETED;
+    String packageName = context.getPackageName();
+    String pushReceivedAction = packageName + AppboyNotificationUtils.APPBOY_NOTIFICATION_RECEIVED_SUFFIX;
+    String notificationOpenedAction = packageName + AppboyNotificationUtils.APPBOY_NOTIFICATION_OPENED_SUFFIX;
+    String notificationDeletedAction = packageName + AppboyNotificationUtils.APPBOY_NOTIFICATION_DELETED_SUFFIX;
 
     String action = intent.getAction();
     Log.d(TAG, String.format("Received intent with action %s", action));
