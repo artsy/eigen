@@ -73,7 +73,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 
   return (
     <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView>
+      <StickyTabPageScrollView keyboardShouldPersistTaps="handled">
         <ArtistArtworksContainer
           {...props}
           artist={artist}
