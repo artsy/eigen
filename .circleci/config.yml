@@ -610,8 +610,6 @@ workflows:
                 - app_store_submission
                 - play_store_submission
                 - update-changelog
-                - beta-android
-                - beta-ios
       - horizon/block:
           context: horizon
           project_id: 37
