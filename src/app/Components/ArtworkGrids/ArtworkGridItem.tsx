@@ -11,11 +11,13 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
+import { useTimer } from "app/utils/useTimer"
 import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { getTimerInfo } from "../Countdown/Ticker"
 
 export interface ArtworkProps {
   artwork: ArtworkGridItem_artwork
@@ -166,9 +168,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
         )}
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-            <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
-              Lot {artwork.saleArtwork.lotLabel}
-            </Text>
+            <>
+              <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
+                Lot {artwork.saleArtwork.lotLabel}
+              </Text>
+              {!!artwork.sale && (
+                <LotCloseInfo saleArtwork={artwork.saleArtwork} sale={artwork.sale} />
+              )}
+            </>
           )}
           {!!artwork.artistNames && (
             <Text
@@ -299,16 +306,20 @@ export default createFragmentContainer(Artwork, {
         isAuction
         isClosed
         displayTimelyAt
+        cascadingEndTimeIntervalMinutes
         endAt
+        startAt
       }
       saleArtwork {
         counts {
           bidderPositions
         }
+        formattedEndDateTime
         currentBid {
           display
         }
         lotLabel
+        endAt
       }
       partner {
         name
@@ -332,5 +343,56 @@ export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
       <Spacer mb="1" />
       <PlaceholderRaggedText seed={rng.next()} numLines={2} />
     </Flex>
+  )
+}
+
+interface LotCloseInfoProps {
+  saleArtwork: NonNullable<ArtworkGridItem_artwork["saleArtwork"]>
+  sale: NonNullable<ArtworkGridItem_artwork["sale"]>
+}
+
+export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({ saleArtwork, sale }) => {
+  const { hasEnded: lotHasClosed, time } = useTimer(saleArtwork.endAt!, sale.startAt!)
+
+  const { hasEnded: lotsAreClosing, hasStarted: saleHasStarted } = useTimer(
+    sale.endAt!,
+    sale.startAt!
+  )
+
+  if (!saleHasStarted) {
+    return null
+  }
+
+  const timerCopy = getTimerInfo(time, saleHasStarted)
+
+  let lotCloseCopy
+  let labelColor = "black60"
+
+  // Lot has already closed
+  if (lotHasClosed) {
+    lotCloseCopy = "Closed"
+  } else if (saleHasStarted) {
+    // Sale has started and lots are <24 hours from closing or are actively closing
+    if (parseInt(time.days, 10) < 1 || lotsAreClosing) {
+      lotCloseCopy = `Closes, ${timerCopy.copy}`
+      if (
+        parseInt(time.hours, 10) < 1 &&
+        parseInt(time.minutes, 10) < sale.cascadingEndTimeIntervalMinutes!
+      ) {
+        labelColor = "red100"
+      } else {
+        labelColor = "black100"
+      }
+    }
+    // Sale has started but lots have not started closing
+    else {
+      lotCloseCopy = saleArtwork.formattedEndDateTime
+    }
+  }
+
+  return (
+    <Text variant="xs" color={labelColor}>
+      {lotCloseCopy}
+    </Text>
   )
 }

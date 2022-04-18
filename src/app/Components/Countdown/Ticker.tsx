@@ -1,3 +1,4 @@
+import { Time } from "app/utils/useTimer"
 import { Duration } from "moment"
 import { Flex, Sans, Text } from "palette"
 import React from "react"
@@ -91,7 +92,14 @@ interface ModernTickerProps {
 }
 
 export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted }) => {
-  const timerInfo = getTimerInfo(duration, hasStarted)
+  console.log(duration)
+  const time: Time = {
+    days: duration.asDays().toString(),
+    hours: duration.hours().toString(),
+    minutes: duration.minutes().toString(),
+    seconds: duration.seconds().toString(),
+  }
+  const timerInfo = getTimerInfo(time, hasStarted)
 
   return <Text color={timerInfo.color}>{timerInfo.copy}</Text>
 }
@@ -101,16 +109,13 @@ interface TimerInfo {
   color: string
 }
 
-export const getTimerInfo = (duration: Duration, hasStarted?: boolean): TimerInfo => {
-  const days = duration.asDays()
-  const hours = duration.hours()
-  const minutes = duration.minutes()
-  const seconds = duration.seconds()
+export const getTimerInfo = (time: Time, hasStarted?: boolean): TimerInfo => {
+  const { days, hours, minutes, seconds } = time
 
-  const parsedDays = parseInt(days.toString(), 10)
-  const parsedHours = parseInt(hours.toString(), 10)
-  const parsedMinutes = parseInt(minutes.toString(), 10)
-  const parsedSeconds = parseInt(seconds.toString(), 10)
+  const parsedDays = parseInt(days, 10)
+  const parsedHours = parseInt(hours, 10)
+  const parsedMinutes = parseInt(minutes, 10)
+  const parsedSeconds = parseInt(seconds, 10)
 
   let copy = ""
   let color = "blue100"
