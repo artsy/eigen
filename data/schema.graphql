@@ -1646,6 +1646,8 @@ type ArtistTargetSupplyMicrofunnel {
 
 type Artwork implements Node & Searchable & Sellable {
   additionalInformation(format: Format): String
+  artaShippingEnabled: Boolean
+    @deprecated(reason: "Prefer to use `processWithArtsyShippingDomestic`. [Will be removed in v2]")
   articles(size: Int): [Article]
   artist(
     # Use whatever is in the original response instead of making a request
@@ -1851,6 +1853,10 @@ type Artwork implements Node & Searchable & Sellable {
   # The price paid for the artwork in a user's 'my collection'
   pricePaid: Money
   pricingContext: AnalyticsPricingContext
+
+  # Returns true if this work is eligible to be automatically opted into Artsy Domestic Shipping
+  processWithArtaShipping: Boolean
+    @deprecated(reason: "Prefer to use `processWithArtsyShippingDomestic`. [Will be removed in v2]")
 
   # Returns true if this work is eligible to be automatically opted into Artsy Domestic Shipping
   processWithArtsyShippingDomestic: Boolean
