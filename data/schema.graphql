@@ -1736,6 +1736,9 @@ type Artwork implements Node & Searchable & Sellable {
   exhibitionHistory(format: Format): String
   fair: Fair
 
+  # A list of images and videos for the artwork
+  figures: [ArtworkFigures!]!
+
   # Formatted artwork metadata, including artist, title, date and partner; e.g., 'Andy Warhol, Truck, 1980, Westward Gallery'.
   formattedMetadata: String
   framed: ArtworkInfoRow
@@ -2000,6 +2003,8 @@ interface ArtworkEdgeInterface {
   cursor: String
   node: Artwork
 }
+
+union ArtworkFigures = Image | Video
 
 union ArtworkFilterFacet = Gene | Tag
 
@@ -14470,6 +14475,18 @@ type UserSaleProfile {
 }
 
 union VanityURLEntityType = Fair | Partner
+
+# An object containing video metadata
+type Video {
+  # The height of the video
+  height: Int!
+
+  # The url of the video
+  url: String!
+
+  # The width of the video
+  width: Int!
+}
 
 # A wildcard used to support complex root queries in Relay
 type Viewer {
