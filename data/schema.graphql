@@ -12292,6 +12292,12 @@ type Sale implements Node {
     timezone: String
   ): String
 
+  # Amount of time added when a late bid comes in.
+  extendedBiddingIntervalMinutes: Int
+
+  # Duration before lot closes that a late bid would extend the end time.
+  extendedBiddingPeriodMinutes: Int
+
   # A formatted description of when the auction starts or ends or if it has ended
   formattedStartDateTime: String
   href: String
@@ -12417,6 +12423,14 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
 
   # Singular estimate field, if specified
   estimateCents: Int
+  extendedBiddingEndAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
 
   # A formatted description of the lot end date and time
   formattedEndDateTime: String
