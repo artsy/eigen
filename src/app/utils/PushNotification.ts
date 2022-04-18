@@ -157,8 +157,60 @@ export const handleReceivedNotification = (
   notification: Omit<ReceivedNotification, "userInfo">
 ) => {
   if (__DEV__ && !__TEST__) {
-    console.log("RECIEVED NOTIFICATION", notification)
+    console.log("BRAZE RECEIVED NOTIFICATION", notification)
   }
+  const isLoggedIn = !!unsafe_getUserAccessToken()
+  if (notification.userInteraction) {
+    // track notification tapped event only in android
+    // ios handles it in the native side
+    if (Platform.OS === "android") {
+      SegmentTrackingProvider.postEvent({
+        event_name: AnalyticsConstants.NotificationTapped.key,
+        label: notification.data.label,
+        url: notification.data.url,
+        UIApplicationState: notification.foreground ? "active" : "background",
+        message: notification?.message?.toString(),
+      })
+    }
+    if (!isLoggedIn) {
+      // removing finish because we do not use it on android and we don't want to serialise functions at this time
+      const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
+      delete newNotification.finish
+      console.log("BRAZE RNOT notLoggedIn set pending push", newNotification)
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(newNotification)
+      return
+    }
+    const hasUrl = !!notification.data.url
+    if (isLoggedIn && hasUrl) {
+      console.log("BRAZE RNOT logged in hasURL navigate", notification.data.url)
+
+      navigate(notification.data.url as string, { passProps: notification.data })
+      // clear any pending notification
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
+      return
+    }
+    return
+  }
+  if (notification.foreground) {
+    // flash notification and put it in Tray
+    // In order to have a consistent behaviour in Android & iOS with the most flexibility,
+    // it is best to handle it manually by prompting a local notification when onNotification
+    // is triggered by a remote push notification on foreground
+    const typedNotification: TypedNotification = { ...notification }
+    createLocalNotification(typedNotification)
+  }
+}
+
+export const handleNotificationAction = (notification: Omit<ReceivedNotification, "userInfo">) => {
+  if (__DEV__) {
+    if (logAction) {
+      console.log("BRAZE ACTION:", notification.action)
+    }
+    if (logNotification) {
+      console.log("BRAZE NOTIFICATION:", notification)
+    }
+  }
+
   const isLoggedIn = !!unsafe_getUserAccessToken()
   if (notification.userInteraction) {
     // track notification tapped event only in android
@@ -188,14 +240,6 @@ export const handleReceivedNotification = (
     }
     return
   }
-  if (notification.foreground) {
-    // flash notification and put it in Tray
-    // In order to have a consistent behaviour in Android & iOS with the most flexibility,
-    // it is best to handle it manually by prompting a local notification when onNotification
-    // is triggered by a remote push notification on foreground
-    const typedNotification: TypedNotification = { ...notification }
-    createLocalNotification(typedNotification)
-  }
 }
 
 export async function configure() {
@@ -212,18 +256,7 @@ export async function configure() {
     onNotification: handleReceivedNotification,
 
     // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
-    onAction: (notification) => {
-      if (__DEV__) {
-        if (logAction) {
-          console.log("ACTION:", notification.action)
-        }
-        if (logNotification) {
-          console.log("NOTIFICATION:", notification)
-        }
-      }
-
-      // process the action
-    },
+    onAction: handleNotificationAction,
 
     // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
     onRegistrationError: (err) => {

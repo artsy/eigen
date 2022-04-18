@@ -58,6 +58,7 @@ public class MainApplication extends Application implements ReactApplication {
     Log.i(TAG, "TOKEN onCreate called");
 
     SoLoader.init(this, /* native exopackage */ false);
+
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     ArtsyNativeModule.didLaunch(
         this.getSharedPreferences("launchConfig", MODE_PRIVATE));
