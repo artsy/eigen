@@ -73,7 +73,7 @@ describe("LotCloseInfo", () => {
     // Sale has started, lots have not started closing, sale artwork's end date is less than a day away
     const sale = {
       startAt: "2017-05-09T11:12:48-04:00",
-      endAt: "2018-05-10T20:20:48-04:00",
+      endAt: "2018-05-11T09:20:48-04:00",
       ...basicSale,
     }
     const saleArtwork = {
@@ -95,10 +95,10 @@ describe("LotCloseInfo", () => {
   })
 
   it("shows the countdown when lots are actively closing", () => {
-    // Sale has started and lots have started closing
+    // Sale has started and lots have started closing (sale end time has passed)
     const sale = {
       startAt: "2017-05-09T11:12:48-04:00",
-      endAt: "2018-05-10T05:20:48-04:00",
+      endAt: "2018-05-09T05:20:48-04:00",
       ...basicSale,
     }
     const saleArtwork = {
@@ -119,7 +119,7 @@ describe("LotCloseInfo", () => {
     expect(lotCloseText.props.color).toEqual("black100")
   })
 
-  it.only("shows the countdown in red when lot is less than the cascade interval amount from closing", () => {
+  it("shows the countdown in red when lot is less than the cascade interval amount from closing", () => {
     // Sale artwork is <1 min from closing
     const sale = {
       startAt: "2017-05-09T11:12:48-04:00",
