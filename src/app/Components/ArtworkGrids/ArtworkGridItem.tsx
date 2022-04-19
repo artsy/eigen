@@ -11,12 +11,13 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { useTimer } from "app/utils/useTimer"
+import { Duration } from "moment"
 import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { DurationProvider } from "../Countdown"
 import { getTimerInfo } from "../Countdown/Ticker"
 
 export interface ArtworkProps {
@@ -173,7 +174,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 Lot {artwork.saleArtwork.lotLabel}
               </Text>
               {!!artwork.sale && (
-                <LotCloseInfo saleArtwork={artwork.saleArtwork} sale={artwork.sale} />
+                <DurationProvider startAt={artwork.saleArtwork.endAt!}>
+                  <LotCloseInfo
+                    duration={null}
+                    saleArtwork={artwork.saleArtwork}
+                    sale={artwork.sale}
+                  />
+                </DurationProvider>
               )}
             </>
           )}
@@ -349,10 +356,11 @@ export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
 interface LotCloseInfoProps {
   saleArtwork: NonNullable<ArtworkGridItem_artwork["saleArtwork"]>
   sale: NonNullable<ArtworkGridItem_artwork["sale"]>
+  duration: Duration | null
 }
 
-export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({ saleArtwork, sale }) => {
-  const { hasEnded: lotHasClosed, time } = useTimer(saleArtwork.endAt!, sale.startAt!)
+export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({ saleArtwork, sale, duration }) => {
+  const { hasEnded: lotHasClosed } = useTimer(saleArtwork.endAt!, sale.startAt!)
 
   const { hasEnded: lotsAreClosing, hasStarted: saleHasStarted } = useTimer(
     sale.endAt!,
@@ -363,7 +371,7 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({ saleArtwork, sale })
     return null
   }
 
-  const timerCopy = getTimerInfo(time, saleHasStarted)
+  const timerCopy = getTimerInfo(duration, saleHasStarted)
 
   let lotCloseCopy
   let labelColor = "black60"
@@ -373,12 +381,9 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({ saleArtwork, sale })
     lotCloseCopy = "Closed"
   } else if (saleHasStarted) {
     // Sale has started and lots are <24 hours from closing or are actively closing
-    if (parseInt(time.days, 10) < 1 || lotsAreClosing) {
+    if (duration.asDays() < 1 || lotsAreClosing) {
       lotCloseCopy = `Closes, ${timerCopy.copy}`
-      if (
-        parseInt(time.hours, 10) < 1 &&
-        parseInt(time.minutes, 10) < sale.cascadingEndTimeIntervalMinutes!
-      ) {
+      if (duration.hours() < 1 && duration.minutes() < sale.cascadingEndTimeIntervalMinutes!) {
         labelColor = "red100"
       } else {
         labelColor = "black100"

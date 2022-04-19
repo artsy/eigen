@@ -8,7 +8,7 @@ import { Touchable } from "palette"
 import React from "react"
 import "react-native"
 import { act } from "react-test-renderer"
-import Artwork from "./ArtworkGridItem"
+import Artwork, { LotCloseInfo } from "./ArtworkGridItem"
 
 const ArtworkWithProviders = (props: any) => {
   return (
@@ -186,11 +186,42 @@ describe("in a closed sale", () => {
   })
 })
 
+describe("cascading end times", () => {
+  it("shows the LotCloseInfo component when the sale has cascading end times", () => {
+    const saleArtwork = {
+      lotLabel: "Lot 1",
+      sale: {
+        isClosed: false,
+        cascadingEndTimeIntervalMinutes: 1,
+      },
+    }
+    const tree = renderWithWrappers(
+      <Artwork showLotLabel artwork={artworkProps(saleArtwork) as any} />
+    )
+
+    expect(tree.root.findAllByType(LotCloseInfo).length).toEqual(1)
+  })
+
+  it("does not show the LotCloseInfo component when the sale does not have cascading end times", () => {
+    const saleArtwork = {
+      lotLabel: "Lot 1",
+      sale: {
+        isClosed: true,
+      },
+    }
+    const tree = renderWithWrappers(
+      <Artwork showLotLabel artwork={artworkProps(saleArtwork) as any} />
+    )
+
+    expect(tree.root.findAllByType(LotCloseInfo).length).toEqual(0)
+  })
+})
+
 const artworkProps = (
   saleArtwork:
     | {
         currentBid?: { display: string }
-        sale?: { isClosed: boolean }
+        sale?: { isClosed: boolean; cascadingEndTimeIntervalMinutes?: number }
       }
     | null
     | undefined = null
