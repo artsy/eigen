@@ -236,6 +236,7 @@ const artworkProps = (
       isClosed: saleArtwork == null,
       displayTimelyAt: "ends in 6d",
       endAt: "2020-08-26T02:50:09+00:00",
+      cascadingEndTimeIntervalMinutes: saleArtwork?.sale?.cascadingEndTimeIntervalMinutes || null,
     },
     saleArtwork,
     image: {
