@@ -157,7 +157,7 @@ export const handleReceivedNotification = (
   notification: Omit<ReceivedNotification, "userInfo">
 ) => {
   if (__DEV__ && !__TEST__) {
-    console.log("BRAZE RECEIVED NOTIFICATION", notification)
+    console.log("RECEIVED NOTIFICATION", notification)
   }
   const isLoggedIn = !!unsafe_getUserAccessToken()
   if (notification.userInteraction) {
@@ -176,14 +176,11 @@ export const handleReceivedNotification = (
       // removing finish because we do not use it on android and we don't want to serialise functions at this time
       const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
       delete newNotification.finish
-      console.log("BRAZE RNOT notLoggedIn set pending push", newNotification)
       GlobalStore.actions.pendingPushNotification.setPendingPushNotification(newNotification)
       return
     }
     const hasUrl = !!notification.data.url
     if (isLoggedIn && hasUrl) {
-      console.log("BRAZE RNOT logged in hasURL navigate", notification.data.url)
-
       navigate(notification.data.url as string, {
         passProps: notification.data,
         ignoreDebounce: true,
@@ -207,41 +204,11 @@ export const handleReceivedNotification = (
 export const handleNotificationAction = (notification: Omit<ReceivedNotification, "userInfo">) => {
   if (__DEV__) {
     if (logAction) {
-      console.log("BRAZE ACTION:", notification.action)
+      console.log("ACTION:", notification.action)
     }
     if (logNotification) {
-      console.log("BRAZE NOTIFICATION:", notification)
+      console.log("NOTIFICATION:", notification)
     }
-  }
-
-  const isLoggedIn = !!unsafe_getUserAccessToken()
-  if (notification.userInteraction) {
-    // track notification tapped event only in android
-    // ios handles it in the native side
-    if (Platform.OS === "android") {
-      SegmentTrackingProvider.postEvent({
-        event_name: AnalyticsConstants.NotificationTapped.key,
-        label: notification.data.label,
-        url: notification.data.url,
-        UIApplicationState: notification.foreground ? "active" : "background",
-        message: notification?.message?.toString(),
-      })
-    }
-    if (!isLoggedIn) {
-      // removing finish because we do not use it on android and we don't want to serialise functions at this time
-      const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
-      delete newNotification.finish
-      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(newNotification)
-      return
-    }
-    const hasUrl = !!notification.data.url
-    if (isLoggedIn && hasUrl) {
-      navigate(notification.data.url as string, { passProps: notification.data })
-      // clear any pending notification
-      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
-      return
-    }
-    return
   }
 }
 
