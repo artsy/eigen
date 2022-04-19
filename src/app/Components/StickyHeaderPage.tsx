@@ -3,17 +3,22 @@ import { useUpdateShouldHideBackButton } from "app/utils/hideBackButtonOnScroll"
 import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasuredView"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import React from "react"
-import { View } from "react-native"
+import { ScrollViewProps, View } from "react-native"
 import Animated from "react-native-reanimated"
 
-interface StickyHeaderPageProps {
+type OmittedScrollViewProps = Omit<
+  ScrollViewProps,
+  "scrollEventThrottle" | "showsVerticalScrollIndicator" | "onScroll"
+>
+
+interface StickyHeaderPageProps extends OmittedScrollViewProps {
   headerContent: JSX.Element
   stickyHeaderContent: JSX.Element
   footerContent?: JSX.Element
 }
 
 export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
-  const { headerContent, stickyHeaderContent, footerContent, children } = props
+  const { headerContent, stickyHeaderContent, footerContent, children, ...rest } = props
 
   const { jsx: staticHeader, nativeHeight: headerHeight } =
     useAutoCollapsingMeasuredView(headerContent)
@@ -70,6 +75,7 @@ export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
   return (
     <View style={{ flex: 1, position: "relative", overflow: "hidden" }}>
       <Animated.ScrollView
+        {...rest}
         scrollEventThrottle={0.0000000001}
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
