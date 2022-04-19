@@ -1,8 +1,8 @@
 let metaflags = {
-  logAction: true,
+  logAction: false,
   logDatadog: false,
   logEventTracked: false,
-  logNotification: true,
+  logNotification: false,
   logOperation: false,
   logPrefetching: false,
   logRelay: false,

@@ -21,7 +21,6 @@ export function useDeepLinks() {
 
   useEffect(() => {
     Linking.addEventListener("url", ({ url }) => {
-      console.log("BRAZE got url update event with url", url)
       handleDeepLink(url)
     })
 
