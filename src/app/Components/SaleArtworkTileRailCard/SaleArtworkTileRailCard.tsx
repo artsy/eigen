@@ -124,60 +124,9 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
 
   const lotNumber = saleArtwork.lotLabel ? (
     <Text numberOfLines={1} lineHeight="20" variant="sm">
-      Lot {saleArtwork.lotLabel} HI
+      Lot {saleArtwork.lotLabel}
     </Text>
   ) : null
-
-  const lotCloseInfo = saleArtwork.sale?.cascadingEndTimeIntervalMinutes && <Text>"Closed"</Text>
-
-  // const LotCloseInfo: React.FC<LotCloseInfoProps> = ({
-  //   saleArtwork,
-  //   sale,
-  // }) => {
-  //   const { hasEnded: lotHasClosed, time } = useTimer(
-  //     saleArtwork.endAt!,
-  //     sale.startAt!
-  //   )
-
-  //   const { hasEnded: lotsAreClosing, hasStarted: saleHasStarted } = useTimer(
-  //     sale.endAt!,
-  //     sale.startAt!
-  //   )
-
-  //   if (!saleHasStarted) {
-  //     return null
-  //   }
-
-  //   const timerCopy = getTimerCopy(time, saleHasStarted)
-
-  //   let lotCloseCopy
-  //   let labelColor = "black60"
-
-  //   // Lot has already closed
-  //   if (lotHasClosed) {
-  //     lotCloseCopy = "Closed"
-  //   } else if (saleHasStarted) {
-  //     // Sale has started and lots are <24 hours from closing or are actively closing
-  //     if (parseInt(time.days) < 1 || lotsAreClosing) {
-  //       lotCloseCopy = `Closes, ${timerCopy.copy}`
-  //       if (timerCopy.color === "red100") {
-  //         labelColor = "red100"
-  //       } else {
-  //         labelColor = "black100"
-  //       }
-  //     }
-  //     // Sale has started but lots have not started closing
-  //     else {
-  //       lotCloseCopy = saleArtwork.formattedEndDateTime
-  //     }
-  //   }
-
-  //   return (
-  //     <Text variant="xs" color={labelColor}>
-  //       {lotCloseCopy}
-  //     </Text>
-  //   )
-  // }
 
   return (
     <SaleArtworkCard onPress={handleTap}>
@@ -185,7 +134,6 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
         {imageDisplay}
         <Box mt={1} width={CONTAINER_HEIGHT}>
           {lotNumber}
-          {lotCloseInfo}
           {artistNamesDisplay}
           {titleAndDateDisplay}
           {customSaleMessage ? customSaleMessageDisplay : saleMessageDisplay}
