@@ -5,7 +5,9 @@ import { Banner } from "./Banner"
 
 describe("Banner", () => {
   it("it renders", () => {
-    const BannerComponent = renderWithWrappersTL(<Banner title="title" text="text" />)
+    const BannerComponent = renderWithWrappersTL(
+      <Banner variant="default" title="title" text="text" />
+    )
 
     expect(BannerComponent).toBeTruthy()
 
@@ -14,7 +16,9 @@ describe("Banner", () => {
   })
 
   it("does not show close button when !showCloseButton", () => {
-    const { getByTestId } = renderWithWrappersTL(<Banner title="title" text="text" />)
+    const { getByTestId } = renderWithWrappersTL(
+      <Banner variant="default" title="title" text="text" />
+    )
     expect(() => getByTestId("banner-close-button")).toThrow(
       "Unable to find an element with testID: banner-close-button"
     )
@@ -22,7 +26,7 @@ describe("Banner", () => {
 
   it("shows close button when showCloseButton", () => {
     const { getByTestId } = renderWithWrappersTL(
-      <Banner title="title" text="text" showCloseButton />
+      <Banner variant="default" title="title" text="text" showCloseButton />
     )
     expect(getByTestId("banner-close-button")).toBeDefined()
   })
@@ -30,7 +34,7 @@ describe("Banner", () => {
   it("fires onClose press event", () => {
     const onClose = jest.fn()
     const { getByTestId } = renderWithWrappersTL(
-      <Banner onClose={onClose} title="title" text="text" showCloseButton />
+      <Banner variant="default" onClose={onClose} title="title" text="text" showCloseButton />
     )
     fireEvent.press(getByTestId("banner-close-button"))
     expect(onClose).toHaveBeenCalled()

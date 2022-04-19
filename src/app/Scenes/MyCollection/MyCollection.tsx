@@ -150,6 +150,7 @@ const MyCollection: React.FC<{
             )}
             {!!showNewWorksBanner && (
               <Banner
+                variant="info"
                 title="Your collection is growing"
                 text="Based on your purchase history, we’ve added the following works."
                 showCloseButton
@@ -160,6 +161,7 @@ const MyCollection: React.FC<{
             )}
             {!!showConsignmentsBanner && (
               <Banner
+                variant="info"
                 title="Artwork added to My Collection"
                 text="The artwork you submitted for sale has been automatically added."
                 showCloseButton

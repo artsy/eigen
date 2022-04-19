@@ -1,7 +1,10 @@
+import { Color } from "@artsy/palette-tokens/dist/themes/v3"
 import { Image } from "app/Components/Bidding/Elements/Image"
 import { Flex, FlexProps, Text, TextProps, useColor } from "palette"
 import React, { useRef, useState } from "react"
 import { Animated, Easing, TouchableOpacity } from "react-native"
+
+type BannerVariant = "default" | "info" | "success" | "warning" | "error"
 
 export interface BannerProps {
   title: string
@@ -11,6 +14,7 @@ export interface BannerProps {
   containerStyle?: FlexProps
   titleStyle?: TextProps
   bodyTextStyle?: TextProps
+  variant: BannerVariant
 }
 
 export const Banner: React.FC<BannerProps> = ({
@@ -21,6 +25,7 @@ export const Banner: React.FC<BannerProps> = ({
   containerStyle,
   titleStyle,
   bodyTextStyle,
+  variant,
 }) => {
   const color = useColor()
 
@@ -41,6 +46,36 @@ export const Banner: React.FC<BannerProps> = ({
     onClose?.()
   }
 
+  const colors: {
+    [key: string]: { [key: string]: Color }
+  } = {
+    default: {
+      backgroundColor: "black10",
+      titleColor: "black100",
+      textColor: "black100",
+    },
+    info: {
+      backgroundColor: "blue10",
+      titleColor: "blue100",
+      textColor: "black100",
+    },
+    success: {
+      backgroundColor: "green10",
+      titleColor: "green100",
+      textColor: "black100",
+    },
+    warning: {
+      backgroundColor: "copper10",
+      titleColor: "copper100",
+      textColor: "black100",
+    },
+    error: {
+      backgroundColor: "red10",
+      titleColor: "red100",
+      textColor: "black100",
+    },
+  }
+
   return (
     <Animated.View
       style={{
@@ -55,13 +90,13 @@ export const Banner: React.FC<BannerProps> = ({
         ],
       }}
     >
-      <Flex backgroundColor={color("blue10")} {...containerStyle}>
+      <Flex backgroundColor={color(colors[variant].backgroundColor)} {...containerStyle}>
         <Flex px={2} py={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={1}>
-            <Text fontSize="13px" color={color("blue100")} {...titleStyle}>
+            <Text fontSize="13px" color={color(colors[variant].titleColor)} {...titleStyle}>
               {title}
             </Text>
-            <Text fontSize="13px" color={color("black100")} {...bodyTextStyle}>
+            <Text fontSize="13px" color={color(colors[variant].textColor)} {...bodyTextStyle}>
               {text}
             </Text>
           </Flex>
