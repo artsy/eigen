@@ -4,7 +4,7 @@ import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilter
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
   PlaceholderBox,
@@ -137,6 +137,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const urgencyTag = getUrgencyTag(artwork?.sale?.endAt)
 
+  const cascadingEndTimeFeatureEnabled = !useFeatureFlag("ARDisableCascadingEndTimerSalePageGrid")
+
   return (
     <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
       <View ref={itemRef}>
@@ -172,15 +174,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
               <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                 Lot {artwork.saleArtwork.lotLabel}
               </Text>
-              {!!artwork.sale && !!artwork.sale.cascadingEndTimeIntervalMinutes && (
-                <DurationProvider startAt={artwork.saleArtwork.endAt!}>
-                  <LotCloseInfo
-                    duration={null}
-                    saleArtwork={artwork.saleArtwork}
-                    sale={artwork.sale}
-                  />
-                </DurationProvider>
-              )}
+              {!!artwork.sale &&
+                !!artwork.sale.cascadingEndTimeIntervalMinutes &&
+                !!cascadingEndTimeFeatureEnabled && (
+                  <DurationProvider startAt={artwork.saleArtwork.endAt!}>
+                    <LotCloseInfo
+                      duration={null}
+                      saleArtwork={artwork.saleArtwork}
+                      sale={artwork.sale}
+                    />
+                  </DurationProvider>
+                )}
             </>
           )}
           {!!artwork.artistNames && (
