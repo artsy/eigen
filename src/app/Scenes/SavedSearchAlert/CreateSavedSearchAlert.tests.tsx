@@ -42,6 +42,7 @@ const initialData: ArtworkFiltersState = {
     total: null,
     followedArtists: null,
   },
+  sizeMetric: "cm",
 }
 
 const defaultParams: CreateSavedSearchAlertParams = {

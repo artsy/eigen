@@ -28,7 +28,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
   }
 
   return (
-    <Flex>
+    <Flex mb={3}>
       <TouchableOpacity onPress={() => navigate(`/artist/${props.artistSlug}/articles`)}>
         <Flex flexDirection="row" alignItems="flex-start" mb={2}>
           <Flex flex={1} flexDirection="row">

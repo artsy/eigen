@@ -59,6 +59,7 @@ describe("Colors options screen", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   const selectedColorOptions = (componentTree: ReactTestRenderer) => {
@@ -112,6 +113,7 @@ describe("Colors options screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const component = renderWithWrappers(
@@ -140,6 +142,7 @@ describe("Colors options screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const tree = renderWithWrappers(
@@ -175,6 +178,7 @@ describe("Colors options screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const tree = renderWithWrappers(

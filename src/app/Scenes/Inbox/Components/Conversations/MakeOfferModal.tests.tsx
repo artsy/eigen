@@ -130,7 +130,7 @@ beforeEach(() => {
 describe("<MakeOfferModal />", () => {
   it("renders the modal", () => {
     const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Confirm Artwork")
+    expect(extractText(tree.root)).toContain("Select edition set")
   })
   it("displays the correct artwork", () => {
     const wrapper = getWrapper()

@@ -166,6 +166,7 @@ export type AggregationName =
   | "MEDIUM"
   | "PARTNER"
   | "PRICE_RANGE"
+  | "SIMPLE_PRICE_HISTOGRAM"
 
 export interface Aggregation {
   count: number
@@ -218,6 +219,7 @@ export const filterKeyFromAggregation: Record<
   MEDIUM: FilterParamName.additionalGeneIDs,
   PARTNER: FilterParamName.partnerIDs,
   PRICE_RANGE: FilterParamName.priceRange,
+  SIMPLE_PRICE_HISTOGRAM: "SIMPLE_PRICE_HISTOGRAM",
 }
 
 const DEFAULT_ARTWORKS_PARAMS = {

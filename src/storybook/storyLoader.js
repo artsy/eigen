@@ -16,6 +16,7 @@ function loadStories() {
   require("../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories")
   require("../palette/elements/Dialog/Dialog.stories")
   require("../palette/elements/Header/Header.stories")
+  require("../palette/elements/Histogram/Histogram.stories")
   require("../palette/elements/Input/Input.stories")
   require("../palette/elements/List/List.stories")
   require("../palette/elements/Pill/Pill.stories")
@@ -42,6 +43,7 @@ const stories = [
   "../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories",
   "../palette/elements/Dialog/Dialog.stories",
   "../palette/elements/Header/Header.stories",
+  "../palette/elements/Histogram/Histogram.stories",
   "../palette/elements/Input/Input.stories",
   "../palette/elements/List/List.stories",
   "../palette/elements/Pill/Pill.stories",

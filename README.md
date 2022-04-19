@@ -1,16 +1,26 @@
 <a href="http://iphone.artsy.net"><img src ="docs/screenshots/overview.png"></a>
 
+
 ### Meta
 
-- **State:** production
+- **State:** Production
 - **[Point People](https://www.notion.so/artsy/17c4b550458a4cb8bcbf1b68060d63e6?v=3604e2682d024b64bde705abb2facebd):** [Brian Beckerle](https://github.com/brainbicycle), [Mounir Dhahri](https://github.com/MounirDhahri), [Pavlos Vinieratos](https://github.com/pvinis)
 - **CI :** [![Build Status](https://circleci.com/gh/artsy/eigen/tree/main.svg?style=shield&circle-token=f7a3e9b08ab306cd01a15da49933c0774d508ecb)](https://circleci.com/gh/artsy/eigen)
 
-This is an [Artsy](https://github.com/artsy) OSS project. Other mobile projects are [Energy](https://github.com/artsy/energy) and [Eidolon](https://github.com/artsy/eidolon), with the retired [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
+### Intro
 
-Don't know what Artsy is? Check out [this overview](https://github.com/artsy/meta/blob/master/meta/what_is_artsy.md) and [more](https://github.com/artsy/meta/blob/master/README.md), or read our objc.io on [team culture](https://www.objc.io/issues/22-scale/artsy).
+Don't know what Artsy is? 
+Check out [this overview](https://github.com/artsy/README/blob/main/culture/what-is-artsy.md#artsy-in-a-nutshell) or read our objc.io on [team culture](https://www.objc.io/issues/22-scale/artsy).
+
+
+[Artsy](https://github.com/artsy) is an Open Source project. Feel free to check the [Artsy readme](https://github.com/artsy/README) for an overview as well as [Practices](https://github.com/artsy/README/tree/main/practices) and [Playbooks](https://github.com/artsy/README/tree/main/playbooks).
+
+Eigen is Artsy's mobile app repository.
 
 Want to know more about Eigen? Read the [mobile](http://artsy.github.io/blog/categories/mobile/) blog posts, or [eigen's](http://artsy.github.io/blog/categories/eigen/) specifically.
+
+Other mobile projects are [Energy](https://github.com/artsy/energy) and [Eidolon](https://github.com/artsy/eidolon), with the retired [Emission](https://github.com/artsy/emission) and [Emergence](https://github.com/artsy/emergence).
+
 
 ### Getting Started
 

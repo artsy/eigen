@@ -1,8 +1,8 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { isNull, isUndefined, round as __round__ } from "lodash"
 
 export type Numeric = "*" | number
-type Unit = "in" | "cm"
 
 export interface Range {
   min: Numeric
@@ -10,28 +10,19 @@ export interface Range {
 }
 
 const ONE_IN_TO_CM = 2.54
+// to be removed in favor of userPrefs.metric
 export const IS_USA = LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
-export const LOCALIZED_UNIT: Unit = IS_USA ? "in" : "cm"
+export const LOCALIZED_UNIT: Metric = IS_USA ? "in" : "cm"
 
 /**
  * Accepts a value and it's input unit type and returns a localized conversion (or leaves it alone)
  */
-export const localizeDimension = (value: Numeric, unit: Unit): { value: Numeric; unit: Unit } => {
-  // Localize for US (return inches)
-  if (IS_USA && unit === "in") {
-    return { value, unit: "in" }
+export const localizeDimension = (value: Numeric, unit: Metric) => {
+  if (unit === "cm") {
+    return inToCm(value)
   }
 
-  if (IS_USA && unit === "cm") {
-    return { value: cmToIn(value), unit: "in" }
-  }
-
-  // Localize for rest of world (return centimeters)
-  if (unit === "in") {
-    return { value: inToCm(value), unit: "cm" }
-  }
-
-  return { value, unit: "cm" }
+  return round(value)
 }
 
 export const cmToIn = (centimeters: Numeric) => {
@@ -57,7 +48,7 @@ export const inToCm = (inches: Numeric, shouldRound: boolean = true) => {
   return centimeters
 }
 
-export const toIn = (value: Numeric, unit: Unit): Numeric => {
+export const toIn = (value: Numeric, unit: Metric): Numeric => {
   if (unit === "cm") {
     return cmToIn(value)
   }

@@ -1,6 +1,4 @@
-import React, { ComponentClass, FC, ReactNode } from "react"
-
-type ProviderList = Array<FC | ComponentClass<{ children: ReactNode }>>
+type ProviderList = Array<React.FC | React.ComponentClass<{ children: React.ReactNode }>>
 
 /**
  * This function can takes a list of Providers and returns
@@ -32,5 +30,5 @@ type ProviderList = Array<FC | ComponentClass<{ children: ReactNode }>>
  * @param children The children that will be wrapped.
  * @returns A Provider that includes all the Providers from `list`.
  */
-export const combineProviders = (list: ProviderList, children: ReactNode) =>
+export const combineProviders = (list: ProviderList, children: React.ReactNode) =>
   list.reduceRight((acc, Provider) => <Provider>{acc}</Provider>, <>{children}</>)

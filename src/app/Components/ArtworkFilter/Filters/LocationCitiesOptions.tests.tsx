@@ -37,6 +37,7 @@ describe(LocationCitiesOptionsScreen, () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
     filterType: "artwork",
     previouslyAppliedFilters: [],
     selectedFilters: [],

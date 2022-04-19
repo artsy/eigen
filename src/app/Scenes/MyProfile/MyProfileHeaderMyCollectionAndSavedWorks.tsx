@@ -201,9 +201,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksScreenQuery = graphql`
   }
 `
 
-export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {
-  const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
-
+export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = () => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.profile })}
@@ -215,7 +213,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC<{}>
           Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,
         })}
-        variables={{ enableCollectorProfile }}
+        variables={{}}
       />
     </ProvideScreenTrackingWithCohesionSchema>
   )

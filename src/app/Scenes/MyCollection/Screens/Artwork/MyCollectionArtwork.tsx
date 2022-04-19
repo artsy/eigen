@@ -8,6 +8,7 @@ import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholder
 import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
 import React, { Suspense, useCallback } from "react"
+import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
@@ -27,10 +28,26 @@ const MyCollectionArtworkScreenQuery = graphql`
       ...NewMyCollectionArtworkHeader_artwork
       ...MyCollectionArtworkInsights_artwork
       ...MyCollectionArtworkAbout_artwork
+      comparableAuctionResults(first: 6) @optionalField {
+        totalCount
+      }
+      artist {
+        internalID
+        formattedNationalityAndBirthday
+        auctionResultsConnection(first: 3, sort: DATE_DESC) {
+          totalCount
+        }
+      }
     }
     marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
       ...MyCollectionArtworkInsights_marketPriceInsights
       ...MyCollectionArtworkAbout_marketPriceInsights
+    }
+    _marketPriceInsights: marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
+      annualLotsSold
+    }
+    me {
+      ...MyCollectionArtworkInsights_me
     }
   }
 `
@@ -47,6 +64,11 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     artistInternalID,
     medium,
   })
+
+  const enableMyCollectionComparableWorks = useFeatureFlag("AREnableMyCollectionComparableWorks")
+
+  const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
+  const auctionResultsCount = data?.artwork?.artist?.auctionResultsConnection?.totalCount
 
   if (!data.artwork) {
     return (
@@ -70,15 +92,19 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     })
   }, [data.artwork])
 
-  const displayEditButton = !data.artwork.consignmentSubmission?.inProgress
+  const shouldShowInsightsTab =
+    !!data?._marketPriceInsights ||
+    (!!enableMyCollectionComparableWorks && (comparableWorksCount ?? 0) > 0) ||
+    (auctionResultsCount ?? 0) > 0
 
   const tabs = compact([
-    {
+    !!shouldShowInsightsTab && {
       title: Tab.insights,
       content: (
         <MyCollectionArtworkInsights
           artwork={data.artwork}
           marketPriceInsights={data.marketPriceInsights}
+          me={data.me}
         />
       ),
       initial: true,
@@ -99,13 +125,24 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       <FancyModalHeader
         onLeftButtonPress={goBack}
         rightButtonText="Edit"
-        onRightButtonPress={displayEditButton ? handleEdit : undefined}
+        onRightButtonPress={!data.artwork.consignmentSubmission ? handleEdit : undefined}
         hideBottomDivider
       />
-      <StickyTabPage
-        tabs={tabs}
-        staticHeaderContent={<MyCollectionArtworkHeader artwork={data.artwork} />}
-      />
+      {!!shouldShowInsightsTab ? (
+        <StickyTabPage
+          tabs={tabs}
+          staticHeaderContent={<MyCollectionArtworkHeader artwork={data.artwork} />}
+        />
+      ) : (
+        <ScrollView>
+          <MyCollectionArtworkHeader artwork={data.artwork} />
+          <MyCollectionArtworkAbout
+            renderWithoutScrollView
+            artwork={data.artwork}
+            marketPriceInsights={data.marketPriceInsights}
+          />
+        </ScrollView>
+      )}
     </>
   )
 }
@@ -171,6 +208,10 @@ export const ArtworkMetaProps = graphql`
     }
     date
     depth
+    dimensions {
+      in
+      cm
+    }
     editionSize
     editionNumber
     height

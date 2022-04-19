@@ -116,6 +116,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const artsyDotNet: RouteMatcher[] = compact([
     addRoute("/", "Home"),
     addRoute("/sales", "Sales"),
+    addRoute("/map", "NewMap"),
     addRoute("/search", "Search"),
     addRoute("/inbox", "Inbox"),
     addRoute("/my-profile", "MyProfile"),
@@ -189,13 +190,14 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
     addRoute("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
     addRoute("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
+    addRoute(
+      "/my-collection/artwork/:artworkID/request-for-price-estimate",
+      "RequestForPriceEstimateScreen"
+    ),
 
     // TODO: Follow-up about below route names
-    addRoute(
-      "/collections/my-collection/artworks/new/submissions/new",
-      "ConsignmentsSubmissionForm"
-    ),
-    addRoute("/consign/submission", "ConsignmentsSubmissionForm"),
+    addRoute("/collections/my-collection/artworks/new/submissions/new", "SubmitArtwork"),
+    addRoute("/consign/submission", "SubmitArtwork"),
     addRoute("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
     addWebViewRoute("/conditions-of-sale"),

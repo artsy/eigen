@@ -24,7 +24,16 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     myCollectionArtworkHeaderFragment,
     props.artwork
   )
-  const { artistNames, date, images, internalID, title, slug, consignmentSubmission } = artwork
+  const {
+    artistNames,
+    date,
+    images,
+    internalID,
+    title,
+    slug,
+    consignmentSubmission,
+    submissionId,
+  } = artwork
   const allowSubmissionStatusInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
 
   const [imagesToDisplay, setImagesToDisplay] = useState<
@@ -43,19 +52,26 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
     if (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized")) {
       // fallback to local images for this collection artwork
-      retrieveLocalImages(slug).then((localImages) => {
+      ;(async () => {
+        const [localVanillaArtworkImages, localSubmissionArtworkImages] = await Promise.all([
+          retrieveLocalImages(slug),
+          submissionId ? retrieveLocalImages(submissionId) : undefined,
+        ])
+
         const mappedLocalImages =
-          localImages?.map((localImage) => ({
+          (localVanillaArtworkImages || localSubmissionArtworkImages)?.map((localImage) => ({
             url: localImage.path,
             width: localImage.width,
             height: localImage.height,
             deepZoom: null,
           })) ?? null
         setImagesToDisplay(mappedLocalImages)
-        setIsDisplayingLocalImages(!!localImages?.length)
-      })
+        setIsDisplayingLocalImages(
+          !!localVanillaArtworkImages?.length || !!localSubmissionArtworkImages?.length
+        )
+      })()
     }
-  }, [])
+  }, [submissionId])
 
   const ImagesToDisplayCarousel = isDisplayingLocalImages
     ? ImageCarousel
@@ -67,15 +83,14 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       {!!imagesToDisplay ? (
         <ImagesToDisplayCarousel
           images={imagesToDisplay as any}
-          cardHeight={dimensions.height / 2.5}
-          paginationIndicatorType="scrollBar"
+          cardHeight={dimensions.height / 3.5}
           onImagePressed={() => trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
         />
       ) : (
         <Flex
           testID="Fallback-image-mycollection-header"
           bg={color("black5")}
-          height={dimensions.height / 2.5}
+          height={dimensions.height / 3.5}
           justifyContent="center"
           mx={20}
         >
@@ -86,13 +101,13 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       {/* Image Meta */}
       <Flex px={2}>
         <Text variant="lg">{artistNames}</Text>
-        <Text variant="lg" color="black60" italic mb={2}>
+        <Text variant="lg" color="black60" italic>
           {formattedTitleAndYear}
         </Text>
       </Flex>
 
       {!!consignmentSubmission?.displayText && !!allowSubmissionStatusInMyCollection && (
-        <Flex px={2}>
+        <Flex px={2} mt={2}>
           <MyCollectionArtworkSubmissionStatus displayText={consignmentSubmission?.displayText} />
         </Flex>
       )}
@@ -118,6 +133,7 @@ const myCollectionArtworkHeaderFragment = graphql`
     consignmentSubmission {
       displayText
     }
+    submissionId
   }
 `
 

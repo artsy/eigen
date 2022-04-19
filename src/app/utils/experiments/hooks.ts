@@ -1,3 +1,4 @@
+import { useDevToggle, useIsStaging } from "app/store/GlobalStore"
 import { useContext, useEffect, useState } from "react"
 import { getUnleashClient } from "./unleashClient"
 import { UnleashContext } from "./UnleashProvider"
@@ -34,4 +35,18 @@ export function useExperimentVariant(name: string): {
     variant: variant.name,
     payload: variant.payload?.value,
   }
+}
+
+export function useUnleashEnvironment(): { unleashEnv: "staging" | "production" } {
+  const isStaging = useIsStaging()
+
+  const unleashEnv = __DEV__
+    ? useDevToggle("DTUseProductionUnleash")
+      ? "production"
+      : "staging"
+    : isStaging
+    ? "staging"
+    : "production"
+
+  return { unleashEnv }
 }

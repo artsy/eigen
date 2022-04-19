@@ -1,5 +1,12 @@
 This update includes a number of improvements and bug fixes including:
 
-- A new improved alerts flow to get first access to works by your favorite artists
+- A brand new details screen for artworks in your collection
+- Follow the status of your submissions in My Collection
+- Submit artworks from your collection with one click
+- Request price estimates for artworks in your collection
+- An improved collector profile screen
+- An improved search experience
+- New improved price filters with histograms to understand the artist's work range across different price points
+
 
 Have feedback? Email us at support@artsy.net

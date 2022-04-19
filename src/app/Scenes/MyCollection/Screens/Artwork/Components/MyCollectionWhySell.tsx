@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
+import { initializeSubmissionArtworkForm } from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
 import { useFragment } from "react-relay"
@@ -9,9 +10,11 @@ import { graphql } from "relay-runtime"
 
 interface MyCollectionWhySellProps {
   artwork: MyCollectionWhySell_artwork$key
+  contextModule: "insights" | "about" | "oldAbout"
 }
 
 export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) => {
+  const { contextModule } = props
   const { trackEvent } = useTracking()
   const artwork = useFragment<MyCollectionWhySell_artwork$key>(artworkFragment, props.artwork)
 
@@ -22,6 +25,12 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
 
   if (isInProgress || isSold) {
     return null
+  }
+  let setContextModule = ContextModule.sellFooter
+  if (contextModule === "insights") {
+    setContextModule = ContextModule.myCollectionArtworkInsights
+  } else if (contextModule === "about") {
+    setContextModule = ContextModule.myCollectionArtworkAbout
   }
 
   return (
@@ -45,9 +54,14 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
             block
             onPress={() => {
               trackEvent(
-                tracks.tappedSubmit(artwork.internalID, artwork.slug, "Submit This Artwork to Sell")
+                tracks.tappedSellArtwork(
+                  artwork.internalID,
+                  artwork.slug,
+                  setContextModule,
+                  "Submit This Artwork to Sell"
+                )
               )
-              // TODO: Populate form with artwork values
+              initializeSubmissionArtworkForm(artwork)
               navigate("/collections/my-collection/artworks/new/submissions/new")
             }}
             testID="submitArtworkToSellButton"
@@ -76,7 +90,18 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
           variant="fillDark"
           block
           onPress={() => {
-            trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
+            if (contextModule === "oldAbout") {
+              trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
+            } else {
+              trackEvent(
+                tracks.tappedLearnMore(
+                  artwork.internalID,
+                  artwork.slug,
+                  setContextModule,
+                  "Learn More"
+                )
+              )
+            }
             navigate("/sales")
           }}
           testID="learnMoreButton"
@@ -88,14 +113,31 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
   )
 }
 
-export const tests = {
-  MyCollectionWhySell,
-}
-
 const artworkFragment = graphql`
   fragment MyCollectionWhySell_artwork on Artwork {
-    slug
     internalID
+    slug
+    title
+    date
+    medium
+    artist {
+      internalID
+      name
+    }
+    attributionClass {
+      name
+    }
+    images {
+      url: imageURL
+    }
+    editionNumber
+    editionSize
+    metric
+    height
+    width
+    depth
+    provenance
+    artworkLocation
     consignmentSubmission {
       inProgress
       isSold
@@ -108,9 +150,14 @@ const artworkFragment = graphql`
   }
 `
 const tracks = {
-  tappedSubmit: (internalID: string, slug: string, subject: string) => ({
-    action: ActionType.tappedSell,
-    context_module: ContextModule.sellFooter,
+  tappedSellArtwork: (
+    internalID: string,
+    slug: string,
+    module: ContextModule,
+    subject: string
+  ) => ({
+    action: ActionType.tappedSellArtwork,
+    context_module: module,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
@@ -119,6 +166,14 @@ const tracks = {
   tappedShowMore: (internalID: string, slug: string, subject: string) => ({
     action: ActionType.tappedShowMore,
     context_module: ContextModule.sellFooter,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+    subject,
+  }),
+  tappedLearnMore: (internalID: string, slug: string, module: ContextModule, subject: string) => ({
+    action: ActionType.tappedLearnMore,
+    context_module: module,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,

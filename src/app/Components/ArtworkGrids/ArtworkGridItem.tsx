@@ -303,7 +303,7 @@ export const saleMessageOrBidInfo = ({
   }
 
   if (artwork.saleMessage === "Contact For Price") {
-    return "Price on Request"
+    return "Price on request"
   }
 
   return artwork.saleMessage
