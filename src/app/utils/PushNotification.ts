@@ -184,7 +184,10 @@ export const handleReceivedNotification = (
     if (isLoggedIn && hasUrl) {
       console.log("BRAZE RNOT logged in hasURL navigate", notification.data.url)
 
-      navigate(notification.data.url as string, { passProps: notification.data })
+      navigate(notification.data.url as string, {
+        passProps: notification.data,
+        ignoreDebounce: true,
+      })
       // clear any pending notification
       GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
       return

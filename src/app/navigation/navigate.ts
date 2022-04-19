@@ -39,8 +39,6 @@ export interface NavigateOptions {
 let lastInvocation = { url: "", timestamp: 0 }
 
 export async function navigate(url: string, options: NavigateOptions = {}) {
-  console.log("BRAZE navigate called with url", { url, date: Date.now() })
-
   // Debounce double taps
   const ignoreDebounce = options.ignoreDebounce ?? false
   if (
@@ -48,15 +46,12 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     Date.now() - lastInvocation.timestamp < 1000 &&
     !ignoreDebounce
   ) {
-    console.log("BRAZE navigate got debounced")
     return
   }
 
   lastInvocation = { url, timestamp: Date.now() }
 
   const result = matchRoute(url)
-
-  console.log("BRAZE navigate match result", result)
 
   if (result.type === "external_url") {
     Linking.openURL(result.url)

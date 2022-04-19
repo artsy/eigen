@@ -55,8 +55,6 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
 
-    Log.i(TAG, "TOKEN onCreate called");
-
     SoLoader.init(this, /* native exopackage */ false);
 
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
@@ -83,12 +81,6 @@ public class MainApplication extends Application implements ReactApplication {
       }
 
       final String token = task.getResult();
-      Log.i(TAG, "================");
-      Log.i(TAG, "================");
-      Log.i(TAG, "TOKEN registering firebase token " + token);
-      Log.i(TAG, "Registering firebase token in Application class: " + token);
-      Log.i(TAG, "================");
-      Log.i(TAG, "================");
       BrazeLogger.setLogLevel(Log.VERBOSE);
       Braze.getInstance(applicationContext).registerAppboyPushMessages(token);
     });
