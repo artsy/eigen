@@ -11,14 +11,13 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { Duration } from "moment"
 import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { DurationProvider } from "../Countdown"
-import { getTimerInfo } from "../Countdown/Ticker"
+import { LotCloseInfo } from "./LotCloseInfo"
 
 export interface ArtworkProps {
   artwork: ArtworkGridItem_artwork
@@ -173,7 +172,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
               <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                 Lot {artwork.saleArtwork.lotLabel}
               </Text>
-              {!!artwork.sale && (
+              {!!artwork.sale && !!artwork.sale.cascadingEndTimeIntervalMinutes && (
                 <DurationProvider startAt={artwork.saleArtwork.endAt!}>
                   <LotCloseInfo
                     duration={null}
@@ -350,54 +349,5 @@ export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
       <Spacer mb="1" />
       <PlaceholderRaggedText seed={rng.next()} numLines={2} />
     </Flex>
-  )
-}
-
-interface LotCloseInfoProps {
-  saleArtwork: NonNullable<ArtworkGridItem_artwork["saleArtwork"]>
-  sale: NonNullable<ArtworkGridItem_artwork["sale"]>
-  duration: Duration | null
-}
-
-export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({ saleArtwork, sale, duration }) => {
-  const { hasEnded: lotHasClosed } = useTimer(saleArtwork.endAt!, sale.startAt!)
-
-  const { hasEnded: lotsAreClosing, hasStarted: saleHasStarted } = useTimer(
-    sale.endAt!,
-    sale.startAt!
-  )
-
-  if (!saleHasStarted) {
-    return null
-  }
-
-  const timerCopy = getTimerInfo(duration, saleHasStarted)
-
-  let lotCloseCopy
-  let labelColor = "black60"
-
-  // Lot has already closed
-  if (lotHasClosed) {
-    lotCloseCopy = "Closed"
-  } else if (saleHasStarted) {
-    // Sale has started and lots are <24 hours from closing or are actively closing
-    if (duration.asDays() < 1 || lotsAreClosing) {
-      lotCloseCopy = `Closes, ${timerCopy.copy}`
-      if (duration.hours() < 1 && duration.minutes() < sale.cascadingEndTimeIntervalMinutes!) {
-        labelColor = "red100"
-      } else {
-        labelColor = "black100"
-      }
-    }
-    // Sale has started but lots have not started closing
-    else {
-      lotCloseCopy = saleArtwork.formattedEndDateTime
-    }
-  }
-
-  return (
-    <Text variant="xs" color={labelColor}>
-      {lotCloseCopy}
-    </Text>
   )
 }
