@@ -8,7 +8,8 @@ import { Touchable } from "palette"
 import React from "react"
 import "react-native"
 import { act } from "react-test-renderer"
-import Artwork, { LotCloseInfo } from "./ArtworkGridItem"
+import Artwork from "./ArtworkGridItem"
+import { LotCloseInfo } from "./LotCloseInfo"
 
 const ArtworkWithProviders = (props: any) => {
   return (
