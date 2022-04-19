@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ContextModule } from "@artsy/cohesion"
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
@@ -9,6 +10,7 @@ import { refreshMyCollection } from "app/Scenes/MyCollection/MyCollection"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
+import { isEqual } from "lodash"
 import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
@@ -25,7 +27,18 @@ interface SubmitArtworkScreenNavigationProps
 export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({
   navigation,
 }) => {
+  const { trackEvent } = useTracking()
+  const { showActionSheetWithOptions } = useActionSheet()
+  const {
+    submissionId: submissionID,
+    artworkDetails,
+    dirtyArtworkDetailsValues,
+  } = GlobalStore.useAppState((store) => store.artworkSubmission.submission)
+
   const [activeStep, setActiveStep] = useState(0)
+
+  const artworkDetailsFromValuesRef = useRef(artworkDetails)
+  artworkDetailsFromValuesRef.current = artworkDetails
 
   const items = [
     {
@@ -69,11 +82,6 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
     },
   ]
 
-  const { submissionId: submissionID } = GlobalStore.useAppState(
-    (store) => store.artworkSubmission.submission
-  )
-  const { trackEvent } = useTracking()
-
   const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(items.length).fill(null)).current
   const scrollViewRef = useRef<ScrollView>(null)
 
@@ -100,6 +108,36 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
     }
   }
 
+  const handleBackPress = async () => {
+    const isFormDirty = !isEqual(artworkDetailsFromValuesRef.current, dirtyArtworkDetailsValues)
+
+    // when form's in 1st screen and user has entered data, ask for confirmation before leaving form
+    if (activeStep === 0 && isFormDirty) {
+      const leaveSubmission = await new Promise((resolve) =>
+        showActionSheetWithOptions(
+          {
+            title: "Do you want to discard your changes?",
+            options: ["Discard", "Keep editing"],
+            destructiveButtonIndex: 0,
+            cancelButtonIndex: 1,
+            useModal: true,
+          },
+          (buttonIndex) => {
+            if (buttonIndex === 0) {
+              resolve(true)
+            }
+          }
+        )
+      )
+
+      if (!leaveSubmission) {
+        return
+      }
+    }
+
+    goBack()
+  }
+
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
@@ -116,7 +154,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
               justifyContent: "center",
             }}
           >
-            <BackButton onPress={() => goBack()} style={{ top: 10 }} />
+            <BackButton onPress={handleBackPress} style={{ top: 10 }} />
             <Spacer mb={3} />
             <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
               {items.map(({ overtitle, title, Content, contextModule }, index) => (
