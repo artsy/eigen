@@ -110,20 +110,20 @@ export function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) 
 
 export interface CountdownProps extends CountdownTimerProps {
   hasStarted?: boolean
-  cascadingEndTimeInterval?: number | null
+  cascadingEndTimeIntervalMinutes?: number | null
 }
 
 export const Countdown: React.FC<CountdownProps> = ({
   duration,
   label,
   hasStarted,
-  cascadingEndTimeInterval,
+  cascadingEndTimeIntervalMinutes,
 }) => {
   const cascadingEndTimeFeatureEnabled = !useFeatureFlag("ARDisableCascadingEndTimerLotPage")
 
   return (
     <Flex alignItems="center">
-      {cascadingEndTimeFeatureEnabled && cascadingEndTimeInterval ? (
+      {cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? (
         <ModernTicker duration={duration} hasStarted={hasStarted} />
       ) : (
         <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />

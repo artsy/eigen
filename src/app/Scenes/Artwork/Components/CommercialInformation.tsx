@@ -39,7 +39,7 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
     const {
       isPreview,
       isClosed,
-      cascadingEndTimeInterval,
+      cascadingEndTimeIntervalMinutes,
       liveStartAt: liveStartsAt,
       startAt: startsAt,
       endAt: saleEndAt,
@@ -50,7 +50,7 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
     const cascadingEndTimeFeatureEnabled = !useFeatureFlag("ARDisableCascadingEndTimerLotPage")
 
     const endsAt =
-      (cascadingEndTimeFeatureEnabled && cascadingEndTimeInterval ? lotEndAt : saleEndAt) ||
+      (cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? lotEndAt : saleEndAt) ||
       undefined
 
     return (
@@ -68,7 +68,7 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               startsAt: startsAt || undefined,
               endsAt,
             })
-            return { label, date, state, hasStarted, cascadingEndTimeInterval }
+            return { label, date, state, hasStarted, cascadingEndTimeIntervalMinutes }
           }}
           onNextTickerState={({ state }) => {
             const nextState = nextTimerState(state as AuctionTimerState, {
@@ -248,7 +248,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
             <Countdown
               label={label}
               hasStarted={hasStarted}
-              cascadingEndTimeInterval={sale.cascadingEndTimeInterval}
+              cascadingEndTimeIntervalMinutes={sale.cascadingEndTimeIntervalMinutes}
               // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               duration={duration}
             />
@@ -297,7 +297,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         }
 
         sale {
-          cascadingEndTimeInterval
+          cascadingEndTimeIntervalMinutes
           internalID
           isClosed
           isAuction
