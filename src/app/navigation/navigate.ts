@@ -32,6 +32,7 @@ export interface NavigateOptions {
   replace?: boolean
   // Only when onlyShowInTabName specified
   popToRootTabView?: boolean
+  ignoreDebounce?: boolean
   showInTabName?: BottomTabType
 }
 
@@ -41,7 +42,12 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
   console.log("BRAZE navigate called with url", { url, date: Date.now() })
 
   // Debounce double taps
-  if (lastInvocation.url === url && Date.now() - lastInvocation.timestamp < 1000) {
+  const ignoreDebounce = options.ignoreDebounce ?? false
+  if (
+    lastInvocation.url === url &&
+    Date.now() - lastInvocation.timestamp < 1000 &&
+    !ignoreDebounce
+  ) {
     console.log("BRAZE navigate got debounced")
     return
   }
