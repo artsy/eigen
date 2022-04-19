@@ -24,7 +24,6 @@ import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.modules.core.DeviceEventManagerModule.RCTDeviceEventEmitter;
 import com.facebook.react.bridge.WritableMap;
 
-
 import com.dieam.reactnativepushnotification.modules.RNPushNotificationActions;
 import com.dieam.reactnativepushnotification.modules.RNReceivedMessageHandler;
 
@@ -47,45 +46,40 @@ public class BrazeBroadcastReceiver extends RNPushNotificationActions {
 
     String action = intent.getAction();
 
-    Log.d(TAG, String.format("BRAZE Received intent with action %s", action));
-
-    if (pushReceivedAction.equals(action)) {
-      Log.d(TAG, "BRAZE Received push notification.");
-    } else if (notificationOpenedAction.equals(action)) {
-      Log.d(TAG, "BRAZE Received push notification opened action.");
+    if (notificationOpenedAction.equals(action)) {
       String deepLink = intent.getStringExtra(Constants.APPBOY_PUSH_DEEP_LINK_KEY);
 
       if (!StringUtils.isNullOrBlank(deepLink)) {
-        Log.d(TAG, "BRAZE Deeplink found we need to route ourselves.");
+        // Deeplink found we need to route ourselves
+        // Brazes default routing does not seem to work with our setup
         Bundle bundle = buildBundle(context, intent);
         notifyWhenReady(context, bundle);
       } else {
-        Log.d(TAG, "BRAZE No deeplink found using appboy default routing.");
         AppboyNotificationUtils.routeUserWithNotificationOpenedIntent(context, intent);
       }
-    } else if (notificationDeletedAction.equals(action)) {
-      Log.d(TAG, "BRAZE Received push notification deleted intent.");
     } else {
       Log.d(TAG, String.format("BRAZE Ignoring intent with unsupported action %s", action));
     }
   }
 
   private Bundle buildBundle(Context context, Intent intent) {
+    // Braze has already handled display at this point so we only
+    // really care about the uri to deeplink correctly
+
+    String title = intent.getStringExtra("a");
+    String uri = intent.getStringExtra("uri");
+
     Bundle bundle = new Bundle();
-    bundle.putString("title", "some title");
-    bundle.putString("message", "some message");
+    if (title != null) {
+      bundle.putString("title", title);
+    }
+
     Bundle dataBundle = new Bundle();
 
-    // TODO: do standard deeplink url format not work at all?
-    // dataBundle.putString("url", "artsy://artist/kaws");
-
-    dataBundle.putString("url", "https://staging.artsy.net/auctions");
-
-    // Map<String, String> notificationData = message.getData();
-
-    // for(Map.Entry<String, String> entry : notificationData.entrySet()) {
-    //     dataBundle.putString(entry.getKey(), entry.getValue());
-    // }
+    if (uri != null) {
+      uri = uri.replace("artsy://", "https://artsy.net/");
+      dataBundle.putString("url", uri);
+    }
 
     bundle.putParcelable("data", dataBundle);
     return bundle;
@@ -98,45 +92,43 @@ public class BrazeBroadcastReceiver extends RNPushNotificationActions {
     return reactContext;
   }
 
+  // This code borrowed from react-native-push-notification code
   private void notifyWhenReady(Context context, Bundle bundle) {
-    Log.d(TAG, "BRAZE notifyWhenReady called");
-    // We need to run this on the main thread, as the React code assumes that is true.
-    // Namely, DevServerHelper constructs a Handler() without a Looper, which triggers:
+    // We need to run this on the main thread, as the React code assumes that is
+    // true.
+    // Namely, DevServerHelper constructs a Handler() without a Looper, which
+    // triggers:
     // "Can't create handler inside thread that has not called Looper.prepare()"
     Handler handler = new Handler(Looper.getMainLooper());
     handler.post(new Runnable() {
-        public void run() {
-            // Construct and load our normal React JS code bundle
-            final ReactInstanceManager mReactInstanceManager = ((ReactApplication) context.getApplicationContext()).getReactNativeHost().getReactInstanceManager();
-            ReactContext context = mReactInstanceManager.getCurrentReactContext();
-            // If it's constructed, send a notification
-            if (context != null) {
-                Log.d(TAG, "BRAZE notifyWhenReady context NOT null invoking app");
-                ReactApplicationContext appContext = reactAppContext(context);
-                Application applicationContext = (Application) appContext.getApplicationContext();
-                RNPushNotificationHelper pushNotificationHelper = new RNPushNotificationHelper(applicationContext);
-                pushNotificationHelper.invokeApp(bundle);
-            } else {
-                Log.d(TAG, "BRAZE notifyWhenReady context null listening for initialization");
-                // Otherwise wait for construction, then send the notification
-                mReactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
-                    public void onReactContextInitialized(ReactContext context) {
-                        Log.d(TAG, "BRAZE notifyWhenReady context initialize invoking app");
-                        ReactApplicationContext appContext = reactAppContext(context);
-                        Application applicationContext = (Application) appContext.getApplicationContext();
-                        RNPushNotificationHelper pushNotificationHelper = new RNPushNotificationHelper(applicationContext);
-                        pushNotificationHelper.invokeApp(bundle);
-
-                        mReactInstanceManager.removeReactInstanceEventListener(this);
-                    }
-                });
-                if (!mReactInstanceManager.hasStartedCreatingInitialContext()) {
-                    Log.d(TAG, "BRAZE notifyWhenReady context creation started in background");
-                    // Construct it in the background
-                    mReactInstanceManager.createReactContextInBackground();
-                }
+      public void run() {
+        // Construct and load our normal React JS code bundle
+        final ReactInstanceManager mReactInstanceManager = ((ReactApplication) context.getApplicationContext())
+            .getReactNativeHost().getReactInstanceManager();
+        ReactContext context = mReactInstanceManager.getCurrentReactContext();
+        // If it's constructed, send a notification
+        if (context != null) {
+          ReactApplicationContext appContext = reactAppContext(context);
+          Application applicationContext = (Application) appContext.getApplicationContext();
+          RNPushNotificationHelper pushNotificationHelper = new RNPushNotificationHelper(applicationContext);
+          pushNotificationHelper.invokeApp(bundle);
+        } else {
+          // Otherwise wait for construction, then send the notification
+          mReactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
+            public void onReactContextInitialized(ReactContext context) {
+              ReactApplicationContext appContext = reactAppContext(context);
+              Application applicationContext = (Application) appContext.getApplicationContext();
+              RNPushNotificationHelper pushNotificationHelper = new RNPushNotificationHelper(applicationContext);
+              pushNotificationHelper.invokeApp(bundle);
+              mReactInstanceManager.removeReactInstanceEventListener(this);
             }
+          });
+          if (!mReactInstanceManager.hasStartedCreatingInitialContext()) {
+            // Construct it in the background
+            mReactInstanceManager.createReactContextInBackground();
+          }
         }
+      }
     });
   }
 }
