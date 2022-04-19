@@ -139,7 +139,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
         variant={variant}
         haptic
       >
-        {children || "Make an Offer"}
+        {children}
       </Button>
     )
   }
