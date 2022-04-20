@@ -111,7 +111,10 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
   const handleBackPress = async () => {
     const isFormDirty = !isEqual(artworkDetailsFromValuesRef.current, dirtyArtworkDetailsValues)
 
-    // when form's in 1st screen and user has entered data, ask for confirmation before leaving form
+    /*
+    action sheet is displayed only on 1st screen (Artwork Details)
+    since form data is saved on the server and a draft submission is created  after the first step
+    */
     if (activeStep === 0 && isFormDirty) {
       const leaveSubmission = await new Promise((resolve) =>
         showActionSheetWithOptions(
