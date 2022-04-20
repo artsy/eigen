@@ -249,9 +249,9 @@ describe("Countdown", () => {
   // 10h 3m
   const duration = moment.duration(36180000)
 
-  describe("when the disable cascade feature flag is turned off", () => {
+  describe("when the enable cascade feature flag is turned on", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARDisableCascadingEndTimerLotPage: false })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
     })
 
     afterEach(() => jest.clearAllMocks())
@@ -284,9 +284,9 @@ describe("Countdown", () => {
     })
   })
 
-  describe("when the disable cascade feature flag is turned on", () => {
+  describe("when the enable cascade feature flag is turned off", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARDisableCascadingEndTimerLotPage: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
     })
 
     afterEach(() => jest.clearAllMocks())

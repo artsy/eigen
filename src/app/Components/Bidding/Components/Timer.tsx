@@ -119,7 +119,7 @@ export const Countdown: React.FC<CountdownProps> = ({
   hasStarted,
   cascadingEndTimeIntervalMinutes,
 }) => {
-  const cascadingEndTimeFeatureEnabled = !useFeatureFlag("ARDisableCascadingEndTimerLotPage")
+  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
 
   return (
     <Flex alignItems="center">
