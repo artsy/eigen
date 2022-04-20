@@ -1,4 +1,78 @@
 import moment from "moment-timezone"
+import { Time, useTimer } from "./useTimer"
+
+interface TimerInfo {
+  copy: string
+  color: string
+}
+
+export const getTimerInfo = (
+  time: Time,
+  hasStarted?: boolean,
+  saleHasEnded?: boolean,
+  isSaleInfo: boolean = false
+): TimerInfo => {
+  const { days, hours, minutes, seconds } = time
+
+  const parsedDays = parseInt(days, 10)
+  const parsedHours = parseInt(hours, 10)
+  const parsedMinutes = parseInt(minutes, 10)
+  const parsedSeconds = parseInt(seconds, 10)
+
+  let copy = ""
+  let color = "blue100"
+
+  // Sale has not yet started
+  if (!hasStarted) {
+    if (parsedDays < 1) {
+      copy = "Bidding Starts Today"
+    } else {
+      copy = `${parsedDays} Day${parsedDays > 1 ? "s" : ""} Until Bidding Starts`
+    }
+  } else {
+    // When the time is on the sale:
+    if (isSaleInfo) {
+      if (saleHasEnded) {
+        copy = "Lots are closing"
+        color = "red100"
+        // More than 24 hours until close
+      } else if (parsedDays >= 1) {
+        copy = `${parsedDays + 1} Day${parsedDays >= 1 ? "s" : ""} Until Lots Start Closing`
+      }
+      // 1-24 hours until close
+      else if (parsedDays < 1 && parsedHours >= 1) {
+        copy = `${parsedHours}h ${parsedMinutes}m Until Lots Start Closing`
+        color = "red100"
+      }
+
+      // <60 mins until close
+      else if (parsedDays < 1 && parsedHours < 1) {
+        copy = `${parsedMinutes}m ${parsedSeconds}s Until Lots Start Closing`
+        color = "red100"
+      }
+
+      // When the timer is on the lot:
+    } else {
+      // More than 24 hours until close
+      if (parsedDays >= 1) {
+        copy = `${parsedDays}d ${parsedHours}h`
+      }
+
+      // 1-24 hours until close
+      else if (parsedDays < 1 && parsedHours >= 1) {
+        copy = `${parsedHours}h ${parsedMinutes}m`
+      }
+
+      // <60 mins until close
+      else if (parsedDays < 1 && parsedHours < 1) {
+        copy = `${parsedMinutes}m ${parsedSeconds}s`
+        color = "red100"
+      }
+    }
+  }
+
+  return { copy, color }
+}
 
 export const saleTime = (sale: {
   startAt: string | null
@@ -164,9 +238,8 @@ export const getCascadingEndTimeFeatureSaleDetails = (
   if (!sale?.timeZone || !sale.endAt || !sale.startAt) {
     return { absolute: null, relative: null }
   }
-
-  // TODO: Implement function to return relative time for cascade end time feature
-  const relativeTime = null
+  const { hasEnded, time, hasStarted } = useTimer(sale.endAt, sale.startAt)
+  const relativeTime = sale.endedAt === null ? getTimerInfo(time, hasStarted, hasEnded, true) : null
   const userTimeZone = moment.tz.guess()
   const startDateMoment =
     sale.startAt !== null

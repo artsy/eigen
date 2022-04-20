@@ -194,7 +194,7 @@ export class ArtworkTombstone extends React.Component<
           </Sans>
         )}
 
-        {!!artwork.isInAuction && !!artwork.sale && !artwork.sale.isClosed && (
+        {!!artwork.isInAuction && !artwork.sale?.isClosed && (
           <>
             {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
               <CascadingEndTimesBanner

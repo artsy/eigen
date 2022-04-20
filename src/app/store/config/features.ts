@@ -118,7 +118,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableCascadingEndTimerSalePageGrid",
   },
-  AREnableCascadingEndTimerSalePageDetails: {
+  ARDisableCascadingEndTimerSalePageDetails: {
     readyForRelease: true,
     description: "Enable cascading end times on the sale page details",
     showInAdminMenu: true,

@@ -63,7 +63,6 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
       setShareSheetVisible(false)
     }
   }
-  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageDetails")
 
   return (
     <>
@@ -181,10 +180,6 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
               )}
             </Flex>
           )}
-<<<<<<< HEAD
-=======
-
->>>>>>> 8126cd2c4 (Add cascading label and feature flag)
           <CaretButton
             text="More info about this auction"
             onPress={() => {
