@@ -106,6 +106,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableCascadingEndTimerLotPage",
   },
+  AREnableCascadingEndTimerSalePageGrid: {
+    readyForRelease: true,
+    description: "Enable cascading end times on the sale page lot grid",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCascadingEndTimerSalePageGrid",
+  },
   AREnableImageSearch: {
     readyForRelease: false,
     description: "Enable search with image",
