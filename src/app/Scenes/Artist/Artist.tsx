@@ -1,3 +1,11 @@
+import {
+  ArtistAboveTheFoldQuery,
+  ArtistAboveTheFoldQueryVariables,
+} from "__generated__/ArtistAboveTheFoldQuery.graphql"
+import {
+  ArtistBelowTheFoldQuery,
+  ArtistBelowTheFoldQueryVariables,
+} from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
@@ -19,14 +27,6 @@ import React, { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import {
-  ArtistAboveTheFoldQuery,
-  ArtistAboveTheFoldQueryVariables,
-} from "__generated__/ArtistAboveTheFoldQuery.graphql"
-import {
-  ArtistBelowTheFoldQuery,
-  ArtistBelowTheFoldQueryVariables,
-} from "__generated__/ArtistBelowTheFoldQuery.graphql"
 
 const INITIAL_TAB = "Artworks"
 export interface NotificationPayload {

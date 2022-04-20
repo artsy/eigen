@@ -1,3 +1,4 @@
+import { GeneArtworks_gene } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
@@ -10,7 +11,6 @@ import { Box, SimpleMessage, Text } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { GeneArtworks_gene } from "__generated__/GeneArtworks_gene.graphql"
 import { useArtworkFilters, useSelectedFiltersCount } from "../ArtworkFilter/useArtworkFilters"
 
 interface GeneArtworksContainerProps {

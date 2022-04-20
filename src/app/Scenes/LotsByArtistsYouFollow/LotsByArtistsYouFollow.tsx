@@ -1,3 +1,5 @@
+import { LotsByArtistsYouFollow_me } from "__generated__/LotsByArtistsYouFollow_me.graphql"
+import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -6,8 +8,6 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Box, SimpleMessage, Spacer } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
-import { LotsByArtistsYouFollow_me } from "__generated__/LotsByArtistsYouFollow_me.graphql"
 
 const SCREEN_TITLE = "Auction Lots for You"
 interface LotsByArtistsYouFollowProps {

@@ -1,3 +1,5 @@
+import { FairArticles_fair } from "__generated__/FairArticles_fair.graphql"
+import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -8,8 +10,6 @@ import { Box, Button, Join, SimpleMessage, Spacer, Text, Touchable, useSpace } f
 import React, { useState } from "react"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
-import { FairArticles_fair } from "__generated__/FairArticles_fair.graphql"
 import { FairEditorialShare } from "./Components/FairEditorialShare"
 
 const FAIR2_ARTICLES_PAGE_SIZE = 10

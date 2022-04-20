@@ -1,4 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
+import { NewWorksForYou_me } from "__generated__/NewWorksForYou_me.graphql"
+import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -9,8 +11,6 @@ import { screen } from "app/utils/track/helpers"
 import { Box, SimpleMessage, Spacer } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
-import { NewWorksForYou_me } from "__generated__/NewWorksForYou_me.graphql"
 
 const SCREEN_TITLE = "New Works for You"
 const PAGE_SIZE = 10
