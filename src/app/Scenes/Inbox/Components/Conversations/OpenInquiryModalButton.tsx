@@ -67,7 +67,9 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
             conversationID={conversationID}
             onPress={() => trackEvent(tracks.trackTappedMakeOffer(conversationID))}
             replaceModalView={false}
-          />
+          >
+            Make an Offer
+          </InquiryMakeOfferButtonFragmentContainer>
         )}
       </Flex>
     </>
