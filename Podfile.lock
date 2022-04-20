@@ -28,19 +28,19 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
-  - Appboy-iOS-SDK (4.3.4):
-    - Appboy-iOS-SDK/UI (= 4.3.4)
-  - Appboy-iOS-SDK/ContentCards (4.3.4):
+  - Appboy-iOS-SDK (4.4.3):
+    - Appboy-iOS-SDK/UI (= 4.4.3)
+  - Appboy-iOS-SDK/ContentCards (4.4.3):
     - Appboy-iOS-SDK/Core
     - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/Core (4.3.4)
-  - Appboy-iOS-SDK/InAppMessage (4.3.4):
+  - Appboy-iOS-SDK/Core (4.4.3)
+  - Appboy-iOS-SDK/InAppMessage (4.4.3):
     - Appboy-iOS-SDK/Core
     - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/NewsFeed (4.3.4):
+  - Appboy-iOS-SDK/NewsFeed (4.4.3):
     - Appboy-iOS-SDK/Core
     - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/UI (4.3.4):
+  - Appboy-iOS-SDK/UI (4.4.3):
     - Appboy-iOS-SDK/ContentCards
     - Appboy-iOS-SDK/Core
     - Appboy-iOS-SDK/InAppMessage
@@ -498,8 +498,8 @@ PODS:
   - React-jsinspector (0.66.4)
   - React-logger (0.66.4):
     - glog
-  - react-native-appboy-sdk (1.30.0):
-    - Appboy-iOS-SDK (~> 4.3.0)
+  - react-native-appboy-sdk (1.35.1):
+    - Appboy-iOS-SDK (~> 4.4.2)
     - React
   - react-native-cameraroll (1.3.0):
     - React
@@ -628,11 +628,6 @@ PODS:
     - React-Core
     - RNAnalytics
     - Segment-Adjust (~> 3.1.1)
-  - RNAnalyticsIntegration-Appboy (1.5.0):
-    - Analytics
-    - React-Core
-    - RNAnalytics
-    - Segment-Appboy
   - RNAppleAuthentication (2.1.5):
     - React-Core
   - RNBootSplash (3.2.0):
@@ -685,12 +680,12 @@ PODS:
   - Segment-Adjust (3.1.4):
     - Adjust (~> 4.29.3)
     - Analytics
-  - Segment-Appboy (4.2.0):
+  - Segment-Appboy (4.5.0):
     - Analytics
-    - Segment-Appboy/Full-SDK (= 4.2.0)
-  - Segment-Appboy/Full-SDK (4.2.0):
+    - Segment-Appboy/Full-SDK (= 4.5.0)
+  - Segment-Appboy/Full-SDK (4.5.0):
     - Analytics
-    - Appboy-iOS-SDK (~> 4.3.0)
+    - Appboy-iOS-SDK (~> 4.4.1)
   - Sentry (7.9.0):
     - Sentry/Core (= 7.9.0)
   - Sentry/Core (7.9.0)
@@ -829,7 +824,6 @@ DEPENDENCIES:
   - rn-fetch-blob (from `node_modules/rn-fetch-blob`)
   - "RNAnalytics (from `node_modules/@segment/analytics-react-native`)"
   - "RNAnalyticsIntegration-Adjust (from `node_modules/@segment/analytics-react-native-adjust`)"
-  - "RNAnalyticsIntegration-Appboy (from `node_modules/@segment/analytics-react-native-appboy`)"
   - "RNAppleAuthentication (from `node_modules/@invertase/react-native-apple-authentication`)"
   - RNBootSplash (from `node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `node_modules/@react-native-async-storage/async-storage`)"
@@ -849,8 +843,8 @@ DEPENDENCIES:
   - "RNSplit (from `node_modules/@splitsoftware/splitio-react-native`)"
   - RNSVG (from `node_modules/react-native-svg`)
   - SDWebImage (= 5.8.3)
-  - Segment-Adjust (= 3.1.4)
-  - Segment-Appboy (= 4.2.0)
+  - Segment-Adjust
+  - Segment-Appboy
   - Specta
   - Starscream (= 3.0.4)
   - SwiftyJSON (= 4.0.0)
@@ -1060,8 +1054,6 @@ EXTERNAL SOURCES:
     :path: "node_modules/@segment/analytics-react-native"
   RNAnalyticsIntegration-Adjust:
     :path: "node_modules/@segment/analytics-react-native-adjust"
-  RNAnalyticsIntegration-Appboy:
-    :path: "node_modules/@segment/analytics-react-native-appboy"
   RNAppleAuthentication:
     :path: "node_modules/@invertase/react-native-apple-authentication"
   RNBootSplash:
@@ -1134,7 +1126,7 @@ SPEC CHECKSUMS:
   AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  Appboy-iOS-SDK: dd22a28a003c5a1331080ecec398eaa4d7ef4569
+  Appboy-iOS-SDK: a634f5160d4d8a1f08b8817165733af7336fa255
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
   "Artsy+UIFonts": 19efbc985ba95156d75a860633df5538c8045b80
@@ -1146,7 +1138,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
-  DoubleConversion: cde416483dac037923206447da6e1454df403714
+  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   EDColor: 91d127cd67d7c1d3862846fb11ef4b3851151bfa
   Emission: ce472ad11d5dcd1e332938722aef6e97945e4efb
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
@@ -1175,7 +1167,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
-  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  glog: 5337263514dd6f09803962437687240c5dc39aa4
   GoogleDataTransport: 04c3e9a480bbcaa2ec3f5d27f1cdeb6a92f20c8d
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: f8a43108b38a68eebe8b3540e1f4f2d28843ce20
@@ -1219,7 +1211,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 94ce921e1d8ce7023366873ec371f3441383b396
   React-jsinspector: d0374f7509d407d2264168b6d0fad0b54e300b85
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
-  react-native-appboy-sdk: dd0f7fb390666c6cfea7e177dcf22c3391e9cc39
+  react-native-appboy-sdk: e4e36787766637d5c60da264b66f4389ed479867
   react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
   react-native-config: a9b4c57e18a1322de74d052df887535228c9eac7
   react-native-cookies: cd92f3824ed1e32a20802e8185101e14bb5b76da
@@ -1248,7 +1240,6 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAnalytics: fcf308eeac6d34a74c158ec74d733c877f26fb96
   RNAnalyticsIntegration-Adjust: fcd3a1e9e653ea81528cfd21d947d8fa2d865d2a
-  RNAnalyticsIntegration-Appboy: 6940f54ff28e6be80f1e3b78c996b1f0945b4113
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
   RNCAsyncStorage: b49b4e38a1548d03b74b30e558a1d18465b94be7
@@ -1269,7 +1260,7 @@ SPEC CHECKSUMS:
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
   Segment-Adjust: 1a12861ab2e9372fc70af949057490858666cd37
-  Segment-Appboy: 5688916eb8fb104b638116ba251cee5d4d8bd266
+  Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
   Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
@@ -1284,6 +1275,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 75f4115ff5a52ec23f348d9e56bae8c180897dda
+PODFILE CHECKSUM: 9d8980162797315dffe4bd08fbad3ce4d0311823
 
 COCOAPODS: 1.11.2

@@ -2797,11 +2797,6 @@
   resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-adjust/-/analytics-react-native-adjust-1.5.0.tgz#73d721ef9b7462648a8b02d628e798a3f56bf1e4"
   integrity sha512-h69KQqaduJ8jWpOVSBlnep56WHFZr0u4TABi58JvlSwHW1/UMvk4LqDUPrb/5Lk+jhBxle1nYmmyfd85c6DyEA==
 
-"@segment/analytics-react-native-appboy@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-appboy/-/analytics-react-native-appboy-1.5.0.tgz#0aa635710cf6d8198990f9cf5d27112af1f9ed82"
-  integrity sha512-de4NCfopobxziH/sDmGEsZ7VWevNObkFMtDsqhmrbYrjRMs4LGJ/GWo2TX0GhzYqPJurBrNPIoiQlrTaX7rIfg==
-
 "@segment/analytics-react-native@1.5.2":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@segment/analytics-react-native/-/analytics-react-native-1.5.2.tgz#1540cef83a83a6001fc249605ccf28f596edf791"
@@ -13712,10 +13707,10 @@ react-nanny@2.12.0:
   resolved "https://registry.yarnpkg.com/react-nanny/-/react-nanny-2.12.0.tgz#8ee7d20319f81131fc1be50ddf3197f286a81dde"
   integrity sha512-oQ3Mo2oBPVELl96IHc43zVsCJUt8BYoEXoeBtPJzTfTTVezQx3/CRZZ+4Ck6TITxawRTUiOcU8v7EPaGpDk01A==
 
-react-native-appboy-sdk@1.30.0:
-  version "1.30.0"
-  resolved "https://registry.yarnpkg.com/react-native-appboy-sdk/-/react-native-appboy-sdk-1.30.0.tgz#ccebdcb297c887d30bd7fb75afab88022e243884"
-  integrity sha512-IP6QgYZsgGkk7EyTuEzIgr/b/GyHWP2YSmcOcB06S6PTF6tUPyHobHDT1+MyC85UZpwVHkdXJ9k6GvMxHiJo3w==
+react-native-appboy-sdk@1.35.1:
+  version "1.35.1"
+  resolved "https://registry.yarnpkg.com/react-native-appboy-sdk/-/react-native-appboy-sdk-1.35.1.tgz#b9c4e6d84b5460e175a93e9c708cf7b8f1f9c57a"
+  integrity sha512-LGBWl14LTy+jXGq35EponaHB148RJbN/k3+oMbeWAMZ851IUpeBwvL+qWU421MBieVBqO7oLFhT47GgFoya7mQ==
 
 react-native-bootsplash@3.2.0:
   version "3.2.0"
