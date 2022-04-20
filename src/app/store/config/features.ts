@@ -142,11 +142,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
   },
-  AREnableShowOnlySubmittedMyCollectionArtworkFilter: {
-    readyForRelease: true,
-    description: "Enable Show Only Submitted MyCollection Artwork Filter",
-    showInAdminMenu: true,
-  },
   AREnableAvalaraPhase2: {
     readyForRelease: false,
     description: "Enable Avalara Phase 2",
@@ -197,6 +192,11 @@ export const features = defineFeatures({
   AREnableNewOpaqueImageView: {
     readyForRelease: false,
     description: "Enable New Opaque Image View",
+    showInAdminMenu: true,
+  },
+  AREnableConversationalBuyNow: {
+    readyForRelease: false,
+    description: "Conversational Buy Now",
     showInAdminMenu: true,
   },
 })

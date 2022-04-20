@@ -263,7 +263,7 @@ describe("Countdown", () => {
             duration={duration}
             label="This is the label"
             hasStarted
-            cascadingEndTimeInterval={60}
+            cascadingEndTimeIntervalMinutes={1}
           />
         </Wrapper>
       )
@@ -298,7 +298,7 @@ describe("Countdown", () => {
             duration={duration}
             label="This is the label"
             hasStarted
-            cascadingEndTimeInterval={60}
+            cascadingEndTimeIntervalMinutes={1}
           />
         </Wrapper>
       )

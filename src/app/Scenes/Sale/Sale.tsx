@@ -30,6 +30,7 @@ import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { SaleBelowTheFoldQueryResponse } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
+import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
@@ -52,6 +53,7 @@ interface SaleSection {
 
 const SALE_HEADER = "header"
 const SALE_REGISTER_TO_BID = "registerToBid"
+const SALE_CASCADING_END_TIMES_BANNER = "cascadingEndTimesBanner"
 const SALE_ACTIVE_BIDS = "saleActiveBids"
 const SALE_ARTWORKS_RAIL = "saleArtworksRail"
 const BUY_NOW_ARTWORKS_RAIL = "buyNowArtworksRail"
@@ -179,6 +181,15 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
         </Flex>
       ),
     },
+    sale.cascadingEndTimeIntervalMinutes &&
+      !sale.isClosed && {
+        key: SALE_CASCADING_END_TIMES_BANNER,
+        content: (
+          <CascadingEndTimesBanner
+            cascadingEndTimeInterval={sale.cascadingEndTimeIntervalMinutes}
+          />
+        ),
+      },
     {
       key: SALE_ACTIVE_BIDS,
       content: <SaleActiveBidsContainer me={me} saleID={sale.internalID} />,
@@ -343,6 +354,8 @@ export const SaleContainer = createRefetchContainer(
         startAt
         registrationEndsAt
         slug
+        cascadingEndTimeIntervalMinutes
+        isClosed
       }
     `,
   },

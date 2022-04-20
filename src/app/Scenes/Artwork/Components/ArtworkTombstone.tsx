@@ -2,10 +2,11 @@ import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
-import { Box, Flex, Sans, Spacer } from "palette"
+import { Box, Flex, Sans, Spacer, Text } from "palette"
 import React from "react"
-import { Text, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { CascadingEndTimesBanner } from "./CascadingEndTimesBanner"
 import { FollowArtistLinkFragmentContainer as FollowArtistLink } from "./FollowArtistLink"
 
 type Artist = NonNullable<NonNullable<ArtworkTombstone_artwork["artists"]>[0]>
@@ -192,8 +193,14 @@ export class ArtworkTombstone extends React.Component<
             .
           </Sans>
         )}
+
         {!!artwork.isInAuction && !!artwork.sale && !artwork.sale.isClosed && (
           <>
+            {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
+              <CascadingEndTimesBanner
+                cascadingEndTimeInterval={artwork.sale.cascadingEndTimeIntervalMinutes}
+              />
+            )}
             <Spacer mb={1} />
             {!!artwork.partner && (
               <Sans color="black100" size="3" weight="medium">
@@ -229,6 +236,7 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       }
       sale {
         isClosed
+        cascadingEndTimeIntervalMinutes
       }
       artists {
         name
