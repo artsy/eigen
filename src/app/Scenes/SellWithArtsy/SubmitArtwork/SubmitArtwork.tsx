@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ContextModule } from "@artsy/cohesion"
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
@@ -9,6 +10,7 @@ import { refreshMyCollection } from "app/Scenes/MyCollection/MyCollection"
 import { GlobalStore } from "app/store/GlobalStore"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
+import { isEqual } from "lodash"
 import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
@@ -25,6 +27,19 @@ interface SubmitArtworkScreenNavigationProps
 export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({
   navigation,
 }) => {
+  const { trackEvent } = useTracking()
+  const { showActionSheetWithOptions } = useActionSheet()
+  const {
+    submissionId: submissionID,
+    artworkDetails,
+    dirtyArtworkDetailsValues,
+  } = GlobalStore.useAppState((store) => store.artworkSubmission.submission)
+
+  const [activeStep, setActiveStep] = useState(0)
+
+  const artworkDetailsFromValuesRef = useRef(artworkDetails)
+  artworkDetailsFromValuesRef.current = artworkDetails
+
   const items = [
     {
       overtitle: "Step 1 of 3",
@@ -34,7 +49,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
         <ArtworkDetails
           handlePress={() => {
             expandCollapsibleMenuContent(1)
-            enableStep(1)
+            setActiveStep(1)
           }}
         />
       ),
@@ -47,7 +62,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
         <UploadPhotos
           handlePress={() => {
             expandCollapsibleMenuContent(2)
-            enableStep(2)
+            setActiveStep(2)
           }}
         />
       ),
@@ -67,25 +82,8 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
     },
   ]
 
-  const TOTAL_STEPS = items.length
-
-  // This is a temporary logic that will be removed later
-  const [validSteps, setValidSteps] = useState([true, ...new Array(TOTAL_STEPS - 1).fill(false)])
-
-  const { submissionId: submissionID } = GlobalStore.useAppState(
-    (store) => store.artworkSubmission.submission
-  )
-  const { trackEvent } = useTracking()
-
-  const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(TOTAL_STEPS).fill(null)).current
+  const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(items.length).fill(null)).current
   const scrollViewRef = useRef<ScrollView>(null)
-
-  // This will also be removed, it's temporary for the boilerplate
-  const enableStep = (stepIndex: number) => {
-    const newValidSteps = [...validSteps]
-    newValidSteps[stepIndex] = true
-    setValidSteps(newValidSteps)
-  }
 
   const expandCollapsibleMenuContent = (indexToExpand: number) => {
     const indexToCollapse = stepsRefs.findIndex((ref) => ref.isExpanded())
@@ -110,6 +108,39 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
     }
   }
 
+  const handleBackPress = async () => {
+    const isFormDirty = !isEqual(artworkDetailsFromValuesRef.current, dirtyArtworkDetailsValues)
+
+    /*
+    action sheet is displayed only on 1st screen (Artwork Details)
+    since form data is saved on the server and a draft submission is created  after the first step
+    */
+    if (activeStep === 0 && isFormDirty) {
+      const leaveSubmission = await new Promise((resolve) =>
+        showActionSheetWithOptions(
+          {
+            title: "Do you want to discard your changes?",
+            options: ["Discard", "Keep editing"],
+            destructiveButtonIndex: 0,
+            cancelButtonIndex: 1,
+            useModal: true,
+          },
+          (buttonIndex) => {
+            if (buttonIndex === 0) {
+              resolve(true)
+            }
+          }
+        )
+      )
+
+      if (!leaveSubmission) {
+        return
+      }
+    }
+
+    goBack()
+  }
+
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
@@ -126,35 +157,32 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
               justifyContent: "center",
             }}
           >
-            <BackButton onPress={() => goBack()} style={{ top: 10 }} />
+            <BackButton onPress={handleBackPress} style={{ top: 10 }} />
             <Spacer mb={3} />
             <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
-              {items.map(({ overtitle, title, Content, contextModule }, index) => {
-                const disabled = !validSteps[index]
-                return (
-                  <CollapsibleMenuItem
-                    key={index}
-                    overtitle={overtitle}
-                    title={title}
-                    onExpand={() => {
-                      trackEvent(toggledAccordionEvent(submissionID, contextModule, title, true))
-                      expandCollapsibleMenuContent(index)
-                    }}
-                    onCollapse={() => {
-                      trackEvent(toggledAccordionEvent(submissionID, contextModule, title, false))
-                    }}
-                    isExpanded={index === 0}
-                    disabled={disabled}
-                    ref={(ref) => {
-                      if (ref) {
-                        stepsRefs[index] = ref
-                      }
-                    }}
-                  >
-                    {Content}
-                  </CollapsibleMenuItem>
-                )
-              })}
+              {items.map(({ overtitle, title, Content, contextModule }, index) => (
+                <CollapsibleMenuItem
+                  key={index}
+                  overtitle={overtitle}
+                  title={title}
+                  onExpand={() => {
+                    trackEvent(toggledAccordionEvent(submissionID, contextModule, title, true))
+                    expandCollapsibleMenuContent(index)
+                  }}
+                  onCollapse={() => {
+                    trackEvent(toggledAccordionEvent(submissionID, contextModule, title, false))
+                  }}
+                  isExpanded={index === 0}
+                  disabled={activeStep !== index}
+                  ref={(ref) => {
+                    if (ref) {
+                      stepsRefs[index] = ref
+                    }
+                  }}
+                >
+                  {Content}
+                </CollapsibleMenuItem>
+              ))}
             </Join>
           </ScrollView>
         </Flex>

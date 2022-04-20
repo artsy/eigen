@@ -648,3 +648,48 @@ describe("App version Versions.AddZipCodeAndCountryCodeInSubmissionArtworkDetail
     )
   })
 })
+
+describe("App version Versions.AddDirtyFormValuesToSubmissionState", () => {
+  const migrationToTest = Versions.AddDirtyFormValuesToSubmissionState
+
+  it("adds dirty artwork details values to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artworkSubmission.submission.dirtyArtworkDetailsValues).toEqual({
+      artist: "",
+      artistId: "",
+      title: "",
+      year: "",
+      medium: "",
+      myCollectionArtworkID: null,
+      attributionClass: null,
+      editionNumber: "",
+      editionSizeFormatted: "",
+      dimensionsMetric: "in",
+      height: "",
+      width: "",
+      depth: "",
+      provenance: "",
+      source: null,
+      state: "DRAFT",
+      utmMedium: "",
+      utmSource: "",
+      utmTerm: "",
+      location: {
+        city: "",
+        state: "",
+        country: "",
+        countryCode: "",
+        zipCode: "",
+      },
+    })
+  })
+})

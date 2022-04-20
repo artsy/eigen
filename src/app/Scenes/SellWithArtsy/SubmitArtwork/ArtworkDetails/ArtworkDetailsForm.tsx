@@ -1,3 +1,4 @@
+import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { useFormikContext } from "formik"
 import {
@@ -12,7 +13,7 @@ import {
   Text,
 } from "palette"
 import { Select } from "palette/elements/Select"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ArtistAutosuggest } from "../../../../Components/ArtistAutosuggest/ArtistAutosuggest"
 import { LocationAutocomplete } from "../../../../Components/LocationAutocomplete/LocationAutocomplete"
 import { InfoModal } from "./InfoModal/InfoModal"
@@ -26,8 +27,13 @@ export const ArtworkDetailsForm: React.FC = () => {
     useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
-
   const [isZipInputFocused, setIsZipInputFocused] = useState(false)
+
+  useEffect(() => {
+    if (values) {
+      GlobalStore.actions.artworkSubmission.submission.setDirtyArtworkDetailsValues(values)
+    }
+  }, [values])
 
   return (
     <>
