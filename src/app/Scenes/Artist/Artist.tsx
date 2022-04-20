@@ -1,11 +1,3 @@
-import {
-  ArtistAboveTheFoldQuery,
-  ArtistAboveTheFoldQueryVariables,
-} from "__generated__/ArtistAboveTheFoldQuery.graphql"
-import {
-  ArtistBelowTheFoldQuery,
-  ArtistBelowTheFoldQueryVariables,
-} from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
@@ -22,11 +14,19 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Flex, Message } from "palette"
+import { Flex, SimpleMessage } from "palette"
 import React, { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import {
+  ArtistAboveTheFoldQuery,
+  ArtistAboveTheFoldQueryVariables,
+} from "__generated__/ArtistAboveTheFoldQuery.graphql"
+import {
+  ArtistBelowTheFoldQuery,
+  ArtistBelowTheFoldQueryVariables,
+} from "__generated__/ArtistBelowTheFoldQuery.graphql"
 
 const INITIAL_TAB = "Artworks"
 export interface NotificationPayload {
@@ -104,10 +104,10 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       title: "Artworks",
       content: (
         <StickyTabPageScrollView>
-          <Message>
+          <SimpleMessage>
             There aren’t any works available by the artist at this time. Follow to receive
             notifications when new works are added.
-          </Message>
+          </SimpleMessage>
         </StickyTabPageScrollView>
       ),
     })

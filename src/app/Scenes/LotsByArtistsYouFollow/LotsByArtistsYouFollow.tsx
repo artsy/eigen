@@ -1,13 +1,13 @@
-import { LotsByArtistsYouFollow_me } from "__generated__/LotsByArtistsYouFollow_me.graphql"
-import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { Box, Message, Spacer } from "palette"
+import { Box, SimpleMessage, Spacer } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
+import { LotsByArtistsYouFollow_me } from "__generated__/LotsByArtistsYouFollow_me.graphql"
 
 const SCREEN_TITLE = "Auction Lots for You"
 interface LotsByArtistsYouFollowProps {
@@ -30,7 +30,7 @@ export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ 
             showLoadingSpinner
           />
         ) : (
-          <Message m={2}>Nothing yet. Please check back later.</Message>
+          <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
         )}
       </Box>
     </PageWithSimpleHeader>

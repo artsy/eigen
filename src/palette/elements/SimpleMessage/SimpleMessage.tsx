@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 import { Flex, FlexProps } from "../Flex"
 import { SansV1Props } from "../Text"
 
-interface MessageProps extends FlexProps {
+interface SimpleMessageProps extends FlexProps {
   children: React.ReactNode | null
   /**
    * Size of text to display in message window
@@ -21,7 +21,11 @@ const StyledFlex = styled(Flex)`
 /**
  * A generic message window for displaying ZerStates, notices, errors, etc.
  */
-export const Message: React.FC<MessageProps> = ({ children, textSize = "3t", ...others }) => {
+export const SimpleMessage: React.FC<SimpleMessageProps> = ({
+  children,
+  textSize = "3t",
+  ...others
+}) => {
   return (
     <StyledFlex p={2} {...others}>
       <Text color="black60">{children}</Text>

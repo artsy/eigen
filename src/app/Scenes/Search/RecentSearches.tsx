@@ -1,6 +1,6 @@
 import { SectionTitle } from "app/Components/SectionTitle"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Message } from "palette"
+import { SimpleMessage } from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
@@ -32,7 +32,7 @@ export const RecentSearches: React.FC = () => {
           ))}
         />
       ) : (
-        <Message>We’ll save your recent searches here</Message>
+        <SimpleMessage>We’ll save your recent searches here</SimpleMessage>
       )}
     </>
   )
