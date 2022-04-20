@@ -127,11 +127,6 @@ export const features = defineFeatures({
     description: "Enable My Collection search bar",
     showInAdminMenu: true,
   },
-  ARShowConsignmentsInMyCollection: {
-    readyForRelease: true,
-    description: "Show consignments in My Collection",
-    showInAdminMenu: true,
-  },
   AREnablePlaceholderLayoutAnimation: {
     readyForRelease: true,
     description: "Enable placeholder layout animation",
