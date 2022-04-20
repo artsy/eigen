@@ -62,7 +62,6 @@ const MyCollection: React.FC<{
   const { showSessionVisualClue } = useSessionVisualClue()
 
   const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
-  const enableConsignmentsInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
   const [keywordFilter, setKeywordFilter] = useState("")
@@ -116,7 +115,7 @@ const MyCollection: React.FC<{
     if (artworks.length) {
       hasBeenShownBanner().then(({ hasSeenBanner, shouldShowConsignments }) => {
         const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
-        const showConsignmentsBanner = shouldShowConsignments && enableConsignmentsInMyCollection
+        const showConsignmentsBanner = shouldShowConsignments
 
         setJSX(
           <Flex>

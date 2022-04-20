@@ -5,7 +5,6 @@ import {
   ImageCarousel,
   ImageCarouselFragmentContainer,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { retrieveLocalImages } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Join, NoImageIcon, Spacer, Text, useColor } from "palette"
@@ -34,8 +33,6 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     consignmentSubmission,
     submissionId,
   } = artwork
-  const allowSubmissionStatusInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
-
   const [imagesToDisplay, setImagesToDisplay] = useState<
     typeof images | CarouselImageDescriptor[] | null
   >(images)
@@ -106,7 +103,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         </Text>
       </Flex>
 
-      {!!consignmentSubmission?.displayText && !!allowSubmissionStatusInMyCollection && (
+      {!!consignmentSubmission?.displayText && (
         <Flex px={2} mt={2}>
           <MyCollectionArtworkSubmissionStatus displayText={consignmentSubmission?.displayText} />
         </Flex>
