@@ -174,17 +174,15 @@ export const Artwork: React.FC<ArtworkProps> = ({
               <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                 Lot {artwork.saleArtwork.lotLabel}
               </Text>
-              {!!artwork.sale &&
-                !!artwork.sale.cascadingEndTimeIntervalMinutes &&
-                !!cascadingEndTimeFeatureEnabled && (
-                  <DurationProvider startAt={artwork.saleArtwork.endAt!}>
-                    <LotCloseInfo
-                      duration={null}
-                      saleArtwork={artwork.saleArtwork}
-                      sale={artwork.sale}
-                    />
-                  </DurationProvider>
-                )}
+              {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !!cascadingEndTimeFeatureEnabled && (
+                <DurationProvider startAt={artwork.saleArtwork.endAt!}>
+                  <LotCloseInfo
+                    duration={null}
+                    saleArtwork={artwork.saleArtwork}
+                    sale={artwork.sale}
+                  />
+                </DurationProvider>
+              )}
             </>
           )}
           {!!artwork.artistNames && (
