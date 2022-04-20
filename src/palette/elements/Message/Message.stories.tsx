@@ -32,10 +32,10 @@ storiesOf("Message", module)
   ))
   .add("Color Variants", () => (
     <List contentContainerStyle={{ marginHorizontal: 20, alignItems: "stretch" }}>
-      <Message variant="default" showCloseButton title="Title" text="Text" />
-      <Message variant="info" showCloseButton title="Title" text="Text" />
-      <Message variant="success" showCloseButton title="Title" text="Text" />
-      <Message variant="warning" showCloseButton title="Title" text="Text" />
-      <Message variant="error" showCloseButton title="Title" text="Text" />
+      <Message variant="default" showCloseButton title="Default" text="Text" />
+      <Message variant="info" showCloseButton title="Info" text="Text" />
+      <Message variant="success" showCloseButton title="Success" text="Text" />
+      <Message variant="warning" showCloseButton title="Warning" text="Text" />
+      <Message variant="error" showCloseButton title="Error" text="Text" />
     </List>
   ))

@@ -4,7 +4,7 @@ import React from "react"
 import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 
-storiesOf("Message", module)
+storiesOf("SimpleMessage", module)
   .addDecorator(withTheme)
   .add("Variants", () => (
     <List contentContainerStyle={{ marginHorizontal: 20, alignItems: "stretch" }}>
