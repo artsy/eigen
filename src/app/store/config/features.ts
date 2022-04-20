@@ -194,6 +194,11 @@ export const features = defineFeatures({
     description: "Show share button in auction screen",
     showInAdminMenu: true,
   },
+  AREnableConversationalBuyNow: {
+    readyForRelease: false,
+    description: "Conversational Buy Now",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
