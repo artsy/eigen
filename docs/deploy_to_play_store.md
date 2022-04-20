@@ -6,14 +6,19 @@ Play Store builds have to go through the beta process first. [Check out the beta
 
 Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion.so/artsy/Pre-submission-QA-Checklist-785e3233fdcf423f95ee239ab3c22ec3).
 
-## Preparing to Ship a Final Version
+## Ship a Final Version
 
 1. Checkout to the release branch (eg - release/7.3.1)
-1. Run `./scripts/promote-beta-to-submission-android`. This will submit the **most recent beta** for Playstore Store review
+1. Update [`changelogs/default.txt`](https://github.com/artsy/eigen/blob/main/fastlane/metadata/android/en-US/changelogs/default.txt) with the **user-facing** release notes for this version.
+   - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/android/en-US/changelogs/default.txt) of release notes.
+   - Share the notes with the #practice-mobile channel in Slack for feedback.
+   - Commit, push the changes, make a PR from your branch to main.
+1. Run `./scripts/promote-beta-to-submission-android`. This will submit the **most recent beta** for Playstore Store review.
+1. Warning: the Android app will be released automatically once reviewed by Google. Don't release unless you are available over the next few hours to monitor Sentry for errors.
 
-## Release to Play Store
+## Check on Play Store Release
 
-Our Play Store releases are done manually and are available to users **immediately**. Google might review the app later, but it's not a requirement to publish a release. Don't release unless you are available over the next few hours to monitor Sentry for errors.
+Our Play Store releases are released **automatically** once reviewed. Don't release unless you are available over the next few hours to monitor Sentry for errors.
 
 1. Go to [Google Play Console](https://play.google.com/console/u/1/developers/6449739225222972501/app/4975007939329818983/tracks/production).
 1. Select the right version of the app from the list. To make sure check the `Last updated` date.
