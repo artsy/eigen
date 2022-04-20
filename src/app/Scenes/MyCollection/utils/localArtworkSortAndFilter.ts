@@ -32,7 +32,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
             (a) => {
               return a.pricePaid?.minor
             },
-            "asc"
+            "desc"
           ),
       },
       {
@@ -46,7 +46,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
             (a) => {
               return a.pricePaid?.minor
             },
-            "desc"
+            "asc"
           ),
       },
       {
