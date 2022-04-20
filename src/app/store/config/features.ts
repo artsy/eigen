@@ -90,12 +90,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableQueriesPrefetching",
   },
-  AREnableAccordionNavigationOnSubmitArtwork: {
-    readyForRelease: true,
-    description: "Enable New Artwork Submission Flow with Accordion",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableAccordionNavigationOnSubmitArtwork",
-  },
   ARShowLinkedAccounts: {
     readyForRelease: true,
     description: "Show linked social accounts",
