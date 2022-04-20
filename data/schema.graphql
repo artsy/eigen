@@ -6830,6 +6830,12 @@ type Delivery {
   ): String
 }
 
+type Department {
+  id: ID!
+  jobs: [Job!]!
+  name: String!
+}
+
 type Device {
   # E.g., net.artsy.artsy
   appId: String!
@@ -8803,6 +8809,25 @@ enum InvoiceState {
 
 # An ISO 8601-encoded datetime
 scalar ISO8601DateTime
+
+type Job {
+  # HTML of job listing
+  content: String!
+
+  # The url of the job listing on Greenhouse
+  externalURL: String!
+  id: ID!
+  location: String!
+  title: String!
+  updatedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+}
 
 # Represents untyped JSON
 scalar JSON
@@ -11618,6 +11643,7 @@ type Query {
     # The ID of the Credit Card
     id: String!
   ): CreditCard
+  departments: [Department!]!
 
   # A namespace external partners (provided by Galaxy)
   external: External!
@@ -11732,6 +11758,8 @@ type Query {
 
   # Home screen content
   homePage: HomePage
+  job(id: ID!): Job!
+  jobs: [Job!]!
   marketingCategories: [MarketingCollectionCategory!]!
   marketingCollection(slug: String!): MarketingCollection
   marketingCollections(
@@ -14740,6 +14768,7 @@ type Viewer {
     # The ID of the Credit Card
     id: String!
   ): CreditCard
+  departments: [Department!]!
 
   # A namespace external partners (provided by Galaxy)
   external: External!
@@ -14854,6 +14883,8 @@ type Viewer {
 
   # Home screen content
   homePage: HomePage
+  job(id: ID!): Job!
+  jobs: [Job!]!
   marketingCollections(
     artistID: String
     category: String
