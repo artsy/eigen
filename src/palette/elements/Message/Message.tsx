@@ -4,9 +4,9 @@ import { Flex, FlexProps, Text, TextProps, useColor } from "palette"
 import React, { useRef, useState } from "react"
 import { Animated, Easing, TouchableOpacity } from "react-native"
 
-type BannerVariant = "default" | "info" | "success" | "warning" | "error"
+type MessageVariant = "default" | "info" | "success" | "warning" | "error"
 
-export interface BannerProps {
+export interface MessageProps {
   title: string
   text: string
   onClose?: () => void
@@ -14,10 +14,10 @@ export interface BannerProps {
   containerStyle?: FlexProps
   titleStyle?: TextProps
   bodyTextStyle?: TextProps
-  variant: BannerVariant
+  variant: MessageVariant
 }
 
-export const Banner: React.FC<BannerProps> = ({
+export const Message: React.FC<MessageProps> = ({
   title,
   text,
   onClose,
@@ -104,7 +104,7 @@ export const Banner: React.FC<BannerProps> = ({
           {!!showCloseButton && (
             <Flex style={{ marginTop: 2 }}>
               <TouchableOpacity
-                testID="banner-close-button"
+                testID="Message-close-button"
                 onPress={handleClose}
                 hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}
               >
