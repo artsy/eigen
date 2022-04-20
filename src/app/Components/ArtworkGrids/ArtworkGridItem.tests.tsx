@@ -189,7 +189,7 @@ describe("in a closed sale", () => {
 
 describe("cascading end times", () => {
   beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARDisableCascadingEndTimerSalePageGrid: false })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerSalePageGrid: true })
   })
 
   it("shows the LotCloseInfo component when the sale has cascading end times", () => {
@@ -221,9 +221,9 @@ describe("cascading end times", () => {
     expect(tree.root.findAllByType(LotCloseInfo).length).toEqual(0)
   })
 
-  describe("when the disable cascade end times flag is turned on", () => {
+  describe("when the enable cascade end times flag is turned off", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARDisableCascadingEndTimerSalePageGrid: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerSalePageGrid: false })
     })
     it("does not show the LotCloseInfo even if other conditions are met", () => {
       const saleArtwork = {

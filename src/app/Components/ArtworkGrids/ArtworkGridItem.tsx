@@ -137,7 +137,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const urgencyTag = getUrgencyTag(artwork?.sale?.endAt)
 
-  const cascadingEndTimeFeatureEnabled = !useFeatureFlag("ARDisableCascadingEndTimerSalePageGrid")
+  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageGrid")
 
   return (
     <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
