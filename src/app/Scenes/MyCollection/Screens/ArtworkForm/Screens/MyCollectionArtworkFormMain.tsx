@@ -89,11 +89,22 @@ export const MyCollectionArtworkFormMain: React.FC<
         <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
           <Flex p={2}>
             <Join separator={<Spacer my={1} />}>
-              {!!formik.values.artistSearchResult && (
+              {!!formik.values.artistSearchResult ? (
                 <ArtistSearchResult result={formik.values.artistSearchResult} />
+              ) : (
+                <Input
+                  title="Artist"
+                  placeholder="Artist"
+                  onChangeText={formik.handleChange("artistName")}
+                  onBlur={formik.handleBlur("artistName")}
+                  testID="ArtistNameInput"
+                  required
+                  accessibilityLabel="Artist Name"
+                  value={formikValues.title}
+                />
               )}
               <Input
-                title="TITLE"
+                title="Title"
                 placeholder="Title"
                 onChangeText={formik.handleChange("title")}
                 onBlur={formik.handleBlur("title")}
@@ -103,7 +114,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 value={formikValues.title}
               />
               <Input
-                title="YEAR"
+                title="Year"
                 keyboardType="number-pad"
                 placeholder="Year created"
                 onChangeText={formik.handleChange("date")}
@@ -114,7 +125,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               />
               <MediumPicker />
               <Input
-                title="MATERIALS"
+                title="Materials"
                 placeholder="Materials"
                 onChangeText={formik.handleChange("category")}
                 onBlur={formik.handleBlur("category")}
@@ -125,7 +136,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               <Rarity />
               <Dimensions />
               <Input
-                title="PRICE PAID"
+                title="Price Paid"
                 placeholder="Price paid"
                 keyboardType="decimal-pad"
                 accessibilityLabel="Price paid"
@@ -148,7 +159,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="CurrencyPicker"
               />
               <Input
-                title="LOCATION"
+                title="Location"
                 placeholder="Enter City Where Artwork is Located"
                 onChangeText={formik.handleChange("artworkLocation")}
                 onBlur={formik.handleBlur("artworkLocation")}
@@ -158,7 +169,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               />
               <Input
                 multiline
-                title="PROVENANCE"
+                title="Provenance"
                 placeholder="Describe How You Acquired the Artwork"
                 value={formikValues.provenance}
                 accessibilityLabel="Describe How You Acquired the Artwork"

@@ -24,16 +24,23 @@ export const MyCollectionArtworkFormArtist: React.FC<
   }
 
   const handleSkipPress = async () => {
-    GlobalStore.actions.myCollection.artwork.updateFormValues({
-      metric: preferredMetric,
-      pricePaidCurrency: preferredCurrency,
+    requestAnimationFrame(() => {
+      GlobalStore.actions.myCollection.artwork.updateFormValues({
+        metric: preferredMetric,
+        pricePaidCurrency: preferredCurrency,
+      })
+      navigation.navigate("ArtworkFormMain", { ...route.params })
     })
-    navigation.navigate("ArtworkFormMain", { ...route.params })
   }
 
   return (
     <>
-      <FancyModalHeader hideBottomDivider onLeftButtonPress={route.params.onHeaderBackButtonPress}>
+      <FancyModalHeader
+        hideBottomDivider
+        onLeftButtonPress={route.params.onHeaderBackButtonPress}
+        rightButtonText="Skip"
+        onRightButtonPress={handleSkipPress}
+      >
         Select an Artist
       </FancyModalHeader>
       <ScreenMargin>
