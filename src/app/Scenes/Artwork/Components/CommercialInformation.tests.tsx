@@ -319,9 +319,9 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     Date.now = () => dateNow
   })
 
-  describe("when the disable cascading end time feature is off", () => {
+  describe("when the enable cascading end time feature is on", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARDisableCascadingEndTimerLotPage: false })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
     })
 
     afterEach(() => jest.clearAllMocks())
@@ -414,9 +414,9 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     })
   })
 
-  describe("when the disable cascading end time feature is on", () => {
+  describe("when the enable cascading end time feature is off", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARDisableCascadingEndTimerLotPage: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
     })
 
     afterEach(() => jest.clearAllMocks())
