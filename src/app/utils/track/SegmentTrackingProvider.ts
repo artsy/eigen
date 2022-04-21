@@ -14,6 +14,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
   setup: () => {
     analytics = require("@segment/analytics-react-native").default
     const Adjust = require("@segment/analytics-react-native-adjust").default
+    const Braze = require("@segment/analytics-react-native-appboy").default
 
     analytics
       .setup(
@@ -27,7 +28,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
           default: "",
         }),
         {
-          using: [Adjust],
+          using: [Braze, Adjust],
         }
       )
       .then(() => console.log("Analytics is ready"))

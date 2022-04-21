@@ -628,6 +628,11 @@ PODS:
     - React-Core
     - RNAnalytics
     - Segment-Adjust (~> 3.1.1)
+  - RNAnalyticsIntegration-Appboy (1.5.0):
+    - Analytics
+    - React-Core
+    - RNAnalytics
+    - Segment-Appboy
   - RNAppleAuthentication (2.1.5):
     - React-Core
   - RNBootSplash (3.2.0):
@@ -824,6 +829,7 @@ DEPENDENCIES:
   - rn-fetch-blob (from `node_modules/rn-fetch-blob`)
   - "RNAnalytics (from `node_modules/@segment/analytics-react-native`)"
   - "RNAnalyticsIntegration-Adjust (from `node_modules/@segment/analytics-react-native-adjust`)"
+  - "RNAnalyticsIntegration-Appboy (from `node_modules/@segment/analytics-react-native-appboy`)"
   - "RNAppleAuthentication (from `node_modules/@invertase/react-native-apple-authentication`)"
   - RNBootSplash (from `node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `node_modules/@react-native-async-storage/async-storage`)"
@@ -1054,6 +1060,8 @@ EXTERNAL SOURCES:
     :path: "node_modules/@segment/analytics-react-native"
   RNAnalyticsIntegration-Adjust:
     :path: "node_modules/@segment/analytics-react-native-adjust"
+  RNAnalyticsIntegration-Appboy:
+    :path: "node_modules/@segment/analytics-react-native-appboy"
   RNAppleAuthentication:
     :path: "node_modules/@invertase/react-native-apple-authentication"
   RNBootSplash:
@@ -1240,6 +1248,7 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNAnalytics: fcf308eeac6d34a74c158ec74d733c877f26fb96
   RNAnalyticsIntegration-Adjust: fcd3a1e9e653ea81528cfd21d947d8fa2d865d2a
+  RNAnalyticsIntegration-Appboy: 6940f54ff28e6be80f1e3b78c996b1f0945b4113
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
   RNCAsyncStorage: b49b4e38a1548d03b74b30e558a1d18465b94be7
@@ -1275,6 +1284,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 9d8980162797315dffe4bd08fbad3ce4d0311823
+PODFILE CHECKSUM: 4e07c5c4378a59df6a22798c3b60ad1a62c53cfc
 
 COCOAPODS: 1.11.2
