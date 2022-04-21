@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.braze.Braze;
 import com.braze.support.BrazeLogger;
 import com.appboy.AppboyLifecycleCallbackListener;
 import com.segment.analytics.android.integrations.adjust.AdjustIntegration;
