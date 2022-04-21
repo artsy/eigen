@@ -213,7 +213,7 @@ describe("BidResult component", () => {
 
       it("shows the sale's end time if the sale does not have cascading end times", () => {
         const { getByText } = renderWithWrappersTL(<BidResult {...propsForNonCascadingSale} />)
-        // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
+        // Today is May 10. Sale artwork's end time null. Sale's end day is May 10.
         const timerText = getByText("00d 00h 00m 10s")
         expect(timerText).toBeTruthy()
       })
