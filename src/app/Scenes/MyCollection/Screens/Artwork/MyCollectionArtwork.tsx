@@ -11,10 +11,9 @@ import React, { Suspense, useCallback } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
+import { MyCollectionArtworkHeader } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
-import { MyCollectionArtworkHeader } from "./NewComponents/NewMyCollectionArtworkHeader"
-import { OldMyCollectionArtworkQueryRenderer } from "./OldMyCollectionArtwork"
 
 export enum Tab {
   insights = "Insights",
@@ -25,7 +24,7 @@ const MyCollectionArtworkScreenQuery = graphql`
   query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
     artwork(id: $artworkSlug) {
       ...MyCollectionArtwork_sharedProps @relay(mask: false)
-      ...NewMyCollectionArtworkHeader_artwork
+      ...MyCollectionArtworkHeader_artwork
       ...MyCollectionArtworkInsights_artwork
       ...MyCollectionArtworkAbout_artwork
       comparableAuctionResults(first: 6) @optionalField {
@@ -160,20 +159,12 @@ export interface MyCollectionArtworkScreenProps {
   medium: string
 }
 
-export const MyCollectionArtworkQueryRenderer: React.FC<MyCollectionArtworkScreenProps> = (
-  props
-) => {
-  const AREnableNewMyCollectionArtwork = useFeatureFlag("AREnableNewMyCollectionArtwork")
-
-  if (AREnableNewMyCollectionArtwork) {
-    return (
-      <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
-        <MyCollectionArtwork {...props} />
-      </Suspense>
-    )
-  }
-
-  return <OldMyCollectionArtworkQueryRenderer {...props} />
+export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {
+  return (
+    <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
+      <MyCollectionArtwork {...props} />
+    </Suspense>
+  )
 }
 
 const tracks = {
@@ -195,6 +186,9 @@ export const ArtworkMetaProps = graphql`
     artist {
       internalID
       formattedNationalityAndBirthday
+      targetSupply {
+        isP1
+      }
     }
     consignmentSubmission {
       inProgress

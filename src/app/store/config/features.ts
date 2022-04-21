@@ -131,12 +131,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     description: "Enable placeholder layout animation",
   },
-  AREnableNewMyCollectionArtwork: {
-    readyForRelease: true,
-    description: "Enable new my collection artwork page",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnablePlaceholderLayoutAnimation",
-  },
   AREnableAvalaraPhase2: {
     readyForRelease: false,
     description: "Enable Avalara Phase 2",

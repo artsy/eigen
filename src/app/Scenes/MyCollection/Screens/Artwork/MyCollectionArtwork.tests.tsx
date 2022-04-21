@@ -1,48 +1,29 @@
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithHookWrappersTL, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyCollectionArtworkQueryRenderer } from "./MyCollectionArtwork"
+import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
 
-jest.mock("./OldMyCollectionArtwork.tsx", () => {
+jest.mock("./MyCollectionArtwork.tsx", () => {
   const View = require("react-native/Libraries/Components/View/View")
   return {
-    OldMyCollectionArtworkQueryRenderer: () => <View testID="old-my-collection-artwork" />,
+    MyCollectionArtworkScreen: () => <View testID="old-my-collection-artwork" />,
   }
 })
 
 jest.unmock("react-relay")
 
 describe("My Collection Artwork", () => {
-  it("show old my collection artwork page when the feature flag is disabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewMyCollectionArtwork: false })
-
-    const { getByTestId } = renderWithWrappersTL(
-      <MyCollectionArtworkQueryRenderer
-        artworkSlug="random-slug"
-        artistInternalID="internal-id"
-        medium="medium"
-      />
-    )
-
-    expect(getByTestId("old-my-collection-artwork")).toBeTruthy()
-    expect(() => getByTestId("my-collection-artwork")).toThrowError(
-      "Unable to find an element with testID: my-collection-artwork"
-    )
-  })
-
   describe("when new my collection artwork feature flag is enabled", () => {
     let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
     beforeEach(() => {
       mockEnvironment = createMockEnvironment()
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewMyCollectionArtwork: true })
     })
 
     it("show new artwork screen ", () => {
       const { getByTestId } = renderWithHookWrappersTL(
-        <MyCollectionArtworkQueryRenderer
+        <MyCollectionArtworkScreen
           artworkSlug="random-slug"
           artistInternalID="internal-id"
           medium="medium"
@@ -62,14 +43,13 @@ describe("My Collection Artwork", () => {
     let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewMyCollectionArtwork: true })
       mockEnvironment = createMockEnvironment()
     })
 
     describe("when there is no submission", () => {
       it("shows the edit button", async () => {
         const { findByText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkQueryRenderer
+          <MyCollectionArtworkScreen
             artworkSlug="random-slug"
             artistInternalID="internal-id"
             medium="medium"
@@ -90,7 +70,7 @@ describe("My Collection Artwork", () => {
     describe("when submission is in progress", () => {
       it("hides the edit button when the artwork is coming from a submission", async () => {
         const { findByText } = renderWithHookWrappersTL(
-          <MyCollectionArtworkQueryRenderer
+          <MyCollectionArtworkScreen
             artworkSlug="random-slug"
             artistInternalID="internal-id"
             medium="medium"
