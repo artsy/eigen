@@ -10,12 +10,14 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.content.Intent;
 import android.net.Uri;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.zoontek.rnbootsplash.RNBootSplash;
+import com.dieam.reactnativepushnotification.modules.RNPushNotification;
 
 import android.util.Log;
 
@@ -59,35 +61,52 @@ public class MainActivity extends ReactActivity {
       setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     RNBootSplash.init(R.drawable.bootsplash, MainActivity.this);
+
+    RNPushNotification.IntentHandlers.add(new RNPushNotification.RNIntentHandler() {
+      @Override
+      public void onNewIntent(Intent intent) {
+        // If your provider requires some parsing on the intent before the data can be
+        // used, add that code here. Otherwise leave empty.
+      }
+
+      @Nullable
+      @Override
+      public Bundle getBundleFromIntent(Intent intent) {
+        // See here:
+        // https://github.com/zo0r/react-native-push-notification#handling-custom-payloads
+
+        // This should return the bundle data that will be serialized to the
+        // `notification.data`
+        // property sent to the `onNotification()` handler. Return `null` if there is no
+        // data
+        // or this is not an intent from your provider.
+
+        // Parse braze notifications and
+        // send the url in the data bundle so
+        // it can be read in our notifciation callback
+        // on ts side, we may want to pass other stuff for tracking
+        String source = intent.getStringExtra("source");
+        if (source != null && source.equalsIgnoreCase("appboy")) {
+          if (intent.hasExtra("uri")) {
+            Bundle bundle = new Bundle();
+            Bundle uriBundle = new Bundle();
+            String uri = intent.getStringExtra("uri");
+            uriBundle.putString("url", uri);
+            bundle.putBundle("data", uriBundle);
+            return bundle;
+          }
+        }
+
+        return null;
+      }
+    });
   }
 
-  // The default braze intent sent on opening a push with a deeplink does
-  // not fire the url event for react-native-linking
-  // rewrite the intent upon receipt to use a view action and include the uri
-  // in the data which does fire the action, see HACKS.md
   // Basic overriding this class required for braze integration:
   // https://www.braze.com/docs/developer_guide/platform_integration_guides/react_native/react_sdk_setup/#step-2-complete-native-setup
   @Override
   public void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
-    String source = intent.getStringExtra("source");
-    if (source != null && source.equalsIgnoreCase("appboy")) {
-      String action = intent.getAction();
-      if (action == Intent.ACTION_MAIN) {
-        Log.i(TAG, "BRAZE rewriting braze intent for deeplinks");
-        String uri = intent.getStringExtra("uri");
-        intent.setAction(Intent.ACTION_VIEW);
-        if (uri != null) {
-          Uri parsedURI = Uri.parse(uri);
-          if (parsedURI != null) {
-            intent.setData(parsedURI);
-          }
-        }
-        Log.i(TAG, "BRAZE rewritten intent: " + intent.toString());
-        Log.i(TAG, "BRAZE intent action" + intent.getAction());
-        Log.i(TAG, "BRAZE intent content" + intent.getExtras());
-      }
-    }
     setIntent(intent);
   }
 }
