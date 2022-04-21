@@ -86,27 +86,7 @@ describe("regarding the send button", () => {
   })
 })
 
-it("doesn't render the inquiry make offer button if the feature is disabled", () => {
-  __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: false })
-  const tree = getWrapper({
-    Conversation: () => ({
-      items: [
-        {
-          item: {
-            __typename: "Artwork",
-          },
-        },
-      ],
-    }),
-  })
-  expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0) // submit button only
-})
-
-describe("inquiry offer enabled", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: true })
-  })
-
+describe("inquiry offer", () => {
   it("renders the inquiry make offer button if inquiry item is an offerable artwork and no active orders", () => {
     const tree = getWrapper({
       Conversation: () => ({

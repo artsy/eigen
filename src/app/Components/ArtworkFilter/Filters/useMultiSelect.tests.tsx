@@ -24,6 +24,7 @@ describe("useMultiSelect", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   const OPTIONS = [

@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
+import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useExperimentFlag, useExperimentVariant } from "app/utils/experiments/hooks"
 import {
@@ -12,15 +13,9 @@ import { Schema } from "app/utils/track"
 import { useAlgoliaClient } from "app/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "app/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "app/utils/useSearchInsightsConfig"
-import { Box, Flex, Spacer, Text } from "palette"
+import { Box, Flex, Spacer, Text, Touchable } from "palette"
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import {
-  Configure,
-  connectInfiniteHits,
-  connectSearchBox,
-  connectStateResults,
-  InstantSearch,
-} from "react-instantsearch-native"
+import { Configure, connectSearchBox, InstantSearch } from "react-instantsearch-native"
 import { Keyboard, Platform, ScrollView } from "react-native"
 import {
   FetchPolicy,
@@ -31,54 +26,25 @@ import {
 } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
-import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
 import { CityGuideCTA } from "./components/CityGuideCTA"
+import { CityGuideCTANew } from "./components/CityGuideCTANew"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
-import { ALLOWED_ALGOLIA_KEYS } from "./constants"
+import { ALLOWED_ALGOLIA_KEYS, DEFAULT_PILLS, TOP_PILL } from "./constants"
 import { getContextModuleByPillName, isAlgoliaApiKeyExpiredError } from "./helpers"
 import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
-import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
 import { SearchResults } from "./SearchResults"
 import { AlgoliaIndexKey } from "./types"
-import { AlgoliaSearchResult, PillType } from "./types"
-
-interface TappedSearchResultData {
-  query: string
-  type: string
-  position: number
-  contextModule: ContextModule
-  slug: string
-  objectTab?: string
-}
+import { PillType } from "./types"
 
 const SearchInputContainer = connectSearchBox(SearchInput)
-const SearchResultsContainerWithState = connectStateResults(SearchResults)
-const SearchResultsContainer = connectInfiniteHits(SearchResultsContainerWithState)
 
 interface SearchState {
   query?: string
   page?: number
-}
-
-const TOP_PILL: PillType = {
-  displayName: "Top",
-  type: "elastic",
-  key: "top",
-}
-const ARTWORKS_PILL: PillType = {
-  displayName: "Artworks",
-  type: "elastic",
-  key: "artworks",
-}
-const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
-
-const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
-  [ContextModule.auctionTab]: "Auction Results",
-  [ContextModule.artistsTab]: "Artworks",
 }
 
 interface RefreshQueryOptions {
@@ -94,7 +60,7 @@ export const Search: React.FC = () => {
   const { system } = queryData
   const indices = system?.algolia?.indices ?? []
   const indiceNames = indices.map((indice) => indice.name)
-
+  const enableMaps = useFeatureFlag("AREnableMapScreen")
   const onRefetch = () => {
     if (isRefreshing) {
       return
@@ -169,7 +135,7 @@ export const Search: React.FC = () => {
       }
     })
 
-    return [...pills, ...formattedIndices]
+    return [...DEFAULT_PILLS, ...formattedIndices]
   }, [indices, indicesInfo, enableImprovedSearchPills])
 
   useEffect(() => {
@@ -201,30 +167,6 @@ export const Search: React.FC = () => {
     setSearchState((prevState) => ({ ...prevState }))
   }
 
-  const renderResults = () => {
-    if (selectedPill.type === "algolia") {
-      return (
-        <SearchResultsContainer
-          selectedPill={selectedPill}
-          onRetry={handleRetry}
-          trackResultPress={handleTrackAlgoliaResultPress}
-        />
-      )
-    }
-    if (selectedPill.key === TOP_PILL.key) {
-      return (
-        <AutosuggestResults
-          query={searchState.query!}
-          showResultType
-          showQuickNavigationButtons
-          showOnRetryErrorMessage
-          trackResultPress={handleTrackAutosuggestResultPress}
-        />
-      )
-    }
-    return <SearchArtworksQueryRenderer keyword={searchState.query!} />
-  }
-
   const handlePillPress = (pill: PillType) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
@@ -243,36 +185,6 @@ export const Search: React.FC = () => {
     setSelectedPill(TOP_PILL)
   }
 
-  const handleTrackAutosuggestResultPress = (result: AutosuggestResult, itemIndex?: number) => {
-    trackEvent(
-      tracks.tappedSearchResult({
-        type: result.displayType || result.__typename,
-        slug: result.slug!,
-        position: itemIndex!,
-        query: searchState.query!,
-        contextModule: ContextModule.topTab,
-      })
-    )
-  }
-
-  const handleTrackAlgoliaResultPress = (result: AlgoliaSearchResult) => {
-    const contextModule = getContextModuleByPillName(selectedPill.displayName)
-
-    const data: TappedSearchResultData = {
-      type: selectedPill.displayName,
-      slug: result.slug,
-      position: result.__position - 1,
-      query: searchState.query!,
-      contextModule: contextModule!,
-    }
-
-    if (contextModule && objectTabByContextModule[contextModule]) {
-      data.objectTab = objectTabByContextModule[contextModule]
-    }
-
-    trackEvent(tracks.tappedSearchResult(data))
-  }
-
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
@@ -284,7 +196,12 @@ export const Search: React.FC = () => {
         >
           <Configure clickAnalytics />
           <RefetchWhenApiKeyExpiredContainer refetch={onRefetch} />
-          <Flex p={2} pb={1}>
+          {!!enableMaps && (
+            <Flex p={2} pb={1}>
+              <Text variant="xl">Explore</Text>
+            </Flex>
+          )}
+          <Flex p={2} pb={0}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
               onTextChange={onTextChange}
@@ -303,13 +220,23 @@ export const Search: React.FC = () => {
                     isSelected={isSelected}
                   />
                 </Box>
-                {renderResults()}
+                <SearchResults
+                  selectedPill={selectedPill}
+                  query={searchQuery}
+                  onRetry={handleRetry}
+                />
               </>
             ) : (
               <Scrollable>
                 <RecentSearches />
                 <Spacer mb={3} />
-                {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
+                {!!enableMaps ? (
+                  <Touchable onPress={() => navigate("/map")}>
+                    <CityGuideCTANew />
+                  </Touchable>
+                ) : (
+                  !isPad() && Platform.OS === "ios" && <CityGuideCTA />
+                )}
                 <Spacer mb="40px" />
               </Scrollable>
             )}
@@ -386,16 +313,6 @@ const tracks = {
     subject,
     query,
     action: ActionType.tappedNavigationTab,
-  }),
-  tappedSearchResult: (data: TappedSearchResultData) => ({
-    context_screen_owner_type: Schema.OwnerEntityTypes.Search,
-    context_screen: Schema.PageNames.Search,
-    query: data.query,
-    position: data.position,
-    selected_object_type: data.type,
-    selected_object_slug: data.slug,
-    context_module: data.contextModule,
-    action: Schema.ActionNames.SelectedResultFromSearchScreen,
   }),
 }
 

@@ -12,7 +12,7 @@ interface OurReactRule extends Partial<ParserRule> {
   react?: ReactNodeOutput
 }
 
-type MarkdownRules = Partial<{ [k in keyof SimpleMarkdown.DefaultRules]: OurReactRule }>
+export type MarkdownRules = Partial<{ [k in keyof SimpleMarkdown.DefaultRules]: OurReactRule }>
 
 // just to get better intellisense when creating the rules
 function createReactRules(rules: MarkdownRules): ParserRules {

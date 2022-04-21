@@ -55,7 +55,7 @@ describe("LocalImageStore", () => {
     expect(retrievedImages?.[1].height).toEqual(14)
   })
 
-  it("defaults to expiring after 2 minutes", async () => {
+  it("defaults to expiring after 5 minutes", async () => {
     const imageKey = "some-key"
     const imagePath = "some-local-image"
     const image: LocalImage = {
@@ -69,7 +69,7 @@ describe("LocalImageStore", () => {
     console.log("Got images json", imagesJSON)
     const parsedImages = JSON.parse(imagesJSON!)
 
-    const in2mins = DateTime.fromMillis(Date.now()).plus({ minutes: 2 }).toISO()
+    const in2mins = DateTime.fromMillis(Date.now()).plus({ minutes: 5 }).toISO()
     // tslint:disable-next-line:no-string-literal
     expect(parsedImages[0]["expirationDate"]).toEqual(in2mins)
   })
@@ -83,7 +83,7 @@ describe("LocalImageStore", () => {
       height: 10,
     }
     storeLocalImages([image], imageKey)
-    const in3mins = DateTime.fromMillis(Date.now()).plus({ minutes: 3 }).toMillis()
+    const in3mins = DateTime.fromMillis(Date.now()).plus({ minutes: 8 }).toMillis()
     const retrievedImages = await retrieveLocalImages(imageKey, in3mins)
     expect(retrievedImages).toBe(null)
   })

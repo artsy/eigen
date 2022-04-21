@@ -22,6 +22,7 @@ describe("Sort Options Screen", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   const MockSortScreen = ({
@@ -80,6 +81,7 @@ describe("Sort Options Screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
@@ -107,6 +109,7 @@ describe("Sort Options Screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
@@ -148,6 +151,7 @@ describe("Sort Options Screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
@@ -182,6 +186,7 @@ describe("Sort Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
@@ -204,6 +209,7 @@ describe("Sort Options Screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
@@ -228,6 +234,7 @@ describe("Sort Options Screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)

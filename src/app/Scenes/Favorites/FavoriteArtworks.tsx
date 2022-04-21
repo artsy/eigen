@@ -2,6 +2,7 @@ import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { PAGE_SIZE } from "app/Components/constants"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { navigate } from "app/navigation/navigate"
@@ -209,6 +210,9 @@ export const FavoriteArtworksQueryRenderer = () => {
             </StickyTabPageScrollView>
           )
         },
+        renderFallback: ({ retry }) => (
+          <LoadFailureView onRetry={retry!} justifyContent="flex-end" />
+        ),
       })}
     />
   )

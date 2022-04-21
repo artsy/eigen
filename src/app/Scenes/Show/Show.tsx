@@ -134,6 +134,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
               useNativeDriver: true,
             }
           )}
+          keyboardShouldPersistTaps="handled"
         />
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>

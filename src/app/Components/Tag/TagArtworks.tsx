@@ -3,9 +3,8 @@ import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "app/utils/track"
-import { Box, Message, Separator, Spacer, Text } from "palette"
-import React, { useContext, useRef, useState } from "react"
-import { useEffect } from "react"
+import { Box, Separator, SimpleMessage, Spacer, Text } from "palette"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkFilterNavigator } from "../ArtworkFilter"
@@ -58,7 +57,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
   if (initialArtworksTotal.current === 0) {
     return (
       <Box mt={1}>
-        <Message>There aren’t any works available in the tag at this time.</Message>
+        <SimpleMessage>There aren’t any works available in the tag at this time.</SimpleMessage>
       </Box>
     )
   }
@@ -106,7 +105,7 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView>
+      <StickyTabPageScrollView keyboardShouldPersistTaps="handled">
         <TagArtworks {...props} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}

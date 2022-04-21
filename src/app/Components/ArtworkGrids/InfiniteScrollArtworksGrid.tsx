@@ -122,6 +122,7 @@ interface PrivateProps {
     | InfiniteScrollArtworksGrid_myCollectionConnection
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
+  isLoading?: RelayPaginationProp["isLoading"]
 }
 
 interface MapperProps extends Omit<PrivateProps, "connection"> {
@@ -185,7 +186,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   }
 
   fetchNextPage = () => {
-    if (!this.props.hasMore() || this.state.isLoading) {
+    if (!this.props.hasMore() || this.state.isLoading || this.props.isLoading?.()) {
       return
     }
 

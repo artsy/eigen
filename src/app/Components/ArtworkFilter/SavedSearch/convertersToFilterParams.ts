@@ -1,3 +1,4 @@
+import { unsafe_getLocalizedUnit } from "app/store/GlobalStore"
 import { compact, Dictionary, isNil, keyBy, mapValues } from "lodash"
 import {
   Aggregation,
@@ -9,8 +10,9 @@ import {
 } from "../ArtworkFilterHelpers"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
-import { localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
-import { SIZES_OPTIONS } from "../Filters/SizesOptionsScreen"
+import { parsePriceRangeLabel, parseRange } from "../Filters/helpers"
+import { getSizeOptions } from "../Filters/SizesOptionsScreen"
+
 import { WAYS_TO_BUY_OPTIONS } from "../Filters/WaysToBuyOptions"
 import { FALLBACK_SIZE_OPTIONS, shouldExtractValueNamesFromAggregation } from "./constants"
 import { SearchCriteria, SearchCriteriaAttributes } from "./types"
@@ -39,11 +41,9 @@ export const convertPriceToFilterParam = (
 
 export const convertCustomSizeToFilterParamByName = (paramName: FilterParamName, range: string) => {
   const { min, max } = parseRange(range)
-  const widthMinLocalized = localizeDimension(min, "in")
-  const widthMaxLocalized = localizeDimension(max, "in")
 
   return {
-    displayText: `${widthMinLocalized.value}-${widthMaxLocalized.value}`,
+    displayText: `${min}-${max}`,
     paramValue: `${min}-${max}`,
     paramName,
   }
@@ -75,6 +75,9 @@ export const convertSizeToFilterParams = (
 
   if (Array.isArray(sizesValues)) {
     const sizeOptions = sizesValues.map((sizeValue) => {
+      const unit = unsafe_getLocalizedUnit() || "in"
+      const SIZES_OPTIONS = getSizeOptions(unit)
+
       return SIZES_OPTIONS.find((sizeOption) => sizeOption.paramValue === sizeValue)
     })
     const filledSizeOptions = compact(sizeOptions)

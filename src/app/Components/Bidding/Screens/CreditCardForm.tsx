@@ -13,14 +13,14 @@ import { PaymentCardTextFieldParams } from "../types"
 import { LiteCreditCardInput } from "react-native-credit-card-input"
 
 interface CreditCardFormProps {
-  navigator?: NavigatorIOS
+  navigator: NavigatorIOS
   params?: PaymentCardTextFieldParams
   onSubmit: (t: StripeToken, p: PaymentCardTextFieldParams) => void
 }
 
 interface CreditCardFormState {
-  valid: boolean
-  params: PaymentCardTextFieldParams
+  valid: boolean | null
+  params: Partial<PaymentCardTextFieldParams>
   isLoading: boolean
   isError: boolean
 }
@@ -28,12 +28,10 @@ interface CreditCardFormState {
 export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFormState> {
   private paymentInfo: React.RefObject<LiteCreditCardInput>
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
+  constructor(props: CreditCardFormProps) {
     super(props)
 
     this.paymentInfo = (React as any).createRef()
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     this.state = { valid: null, params: { ...this.props.params }, isLoading: false, isError: false }
   }
 
@@ -60,9 +58,9 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
 
     try {
       const token = await stripe.createTokenWithCard({ ...params })
-      this.props.onSubmit(token, this.state.params)
+      // If the form is valid we can assume all params have been filled
+      this.props.onSubmit(token, this.state.params as PaymentCardTextFieldParams)
       this.setState({ isLoading: false })
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       this.props.navigator.pop()
     } catch (error) {
       console.error("CreditCardForm.tsx", error)

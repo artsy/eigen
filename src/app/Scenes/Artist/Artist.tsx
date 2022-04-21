@@ -22,7 +22,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Flex, Message } from "palette"
+import { Flex, SimpleMessage } from "palette"
 import React, { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
@@ -104,10 +104,10 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       title: "Artworks",
       content: (
         <StickyTabPageScrollView>
-          <Message>
+          <SimpleMessage>
             There aren’t any works available by the artist at this time. Follow to receive
             notifications when new works are added.
-          </Message>
+          </SimpleMessage>
         </StickyTabPageScrollView>
       ),
     })

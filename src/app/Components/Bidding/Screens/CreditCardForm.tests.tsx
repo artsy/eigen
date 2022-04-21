@@ -23,7 +23,9 @@ afterEach(() => {
 })
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<CreditCardForm onSubmit={onSubmitMock} />)
+  renderWithWrappers(
+    <CreditCardForm navigator={{ push: () => null } as any} onSubmit={onSubmitMock} />
+  )
 })
 
 it("calls the onSubmit() callback with valid credit card when ADD CREDIT CARD is tapped", async () => {
