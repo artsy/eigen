@@ -189,6 +189,11 @@ export const features = defineFeatures({
     description: "Conversational Buy Now",
     showInAdminMenu: true,
   },
+  AREnableCompleteProfileMessage: {
+    readyForRelease: true,
+    description: "Enable Collector Profile Complete Message",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

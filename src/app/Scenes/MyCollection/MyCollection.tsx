@@ -104,7 +104,7 @@ const MyCollection: React.FC<{
 
   const hasBeenShownBanner = async () => {
     const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionBanner")
+    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
     return {
       hasSeenBanner: hasSeen === "true",
       shouldShowConsignments: shouldShowConsignments === true,
@@ -164,7 +164,7 @@ const MyCollection: React.FC<{
                 title="Artwork added to My Collection"
                 text="The artwork you submitted for sale has been automatically added."
                 showCloseButton
-                onClose={() => removeClue("ArtworkSubmissionBanner")}
+                onClose={() => removeClue("ArtworkSubmissionMessage")}
               />
             )}
           </Flex>
