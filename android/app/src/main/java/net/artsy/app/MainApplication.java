@@ -72,21 +72,7 @@ public class MainApplication extends Application implements ReactApplication {
         .build();
 
     Analytics.setSingletonInstance(analytics);
-
-    // Example of how to register for Firebase Cloud Messaging manually.
-    final Context applicationContext = this;
-    FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-      if (!task.isSuccessful()) {
-        Log.i(TAG, "TOKEN failed to fetch registration token");
-        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-        return;
-      }
-
-      final String token = task.getResult();
-      BrazeLogger.setLogLevel(Log.VERBOSE);
-      Braze.getInstance(applicationContext).registerAppboyPushMessages(token);
-    });
-
+    BrazeLogger.setLogLevel(Log.VERBOSE);
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
   }
 
