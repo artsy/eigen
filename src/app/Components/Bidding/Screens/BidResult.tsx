@@ -17,7 +17,7 @@ import { BidderPositionResult } from "../types"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
