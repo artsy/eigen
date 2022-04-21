@@ -173,7 +173,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
         <Flex m={2}>
           <Text variant="md">Choose Your Price Range</Text>
         </Flex>
-        <Flex flexDirection="row" mb={1} mx={2}>
+        <Flex flexDirection="row" mx={2}>
           <Input
             containerStyle={{ flex: 1 }}
             description="Min"
@@ -201,7 +201,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
         <Spacer m={2} />
         <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
           {!!shouldDisplayHistogram && (
-            <Flex my={2}>
+            <Flex mb={2}>
               <Histogram bars={histogramBars} selectedRange={[sliderRange[0], sliderRange[1]]} />
             </Flex>
           )}
