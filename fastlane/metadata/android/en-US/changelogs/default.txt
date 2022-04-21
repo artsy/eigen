@@ -1,7 +1,12 @@
 This update includes a number of improvements and bug fixes including:
 
-- Improvements to the home screen
-- Improvements to collector profile
-- 2FA now supported for enabled accounts
+- A brand new details screen for artworks in your collection
+- Follow the status of your submissions in My Collection
+- Submit artworks from your collection with one click
+- Request price estimates for artworks in your collection
+- An improved collector profile screen
+- An improved search experience
+- New improved price filters with histograms
+
 
 Have feedback? Email us at support@artsy.net

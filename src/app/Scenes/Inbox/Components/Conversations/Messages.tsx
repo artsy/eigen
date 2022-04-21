@@ -194,14 +194,11 @@ export default createPaginationContainer(
         id
         internalID
         from {
-          name
           email
         }
         to {
           name
         }
-        initialMessage
-        lastMessageID
         orderConnection(first: 10, participantType: BUYER) {
           edges {
             node {

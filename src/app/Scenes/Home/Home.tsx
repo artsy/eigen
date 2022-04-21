@@ -31,16 +31,16 @@ import {
 } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useTreatment } from "app/utils/useExperiments"
 import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
-import { createRef, RefObject, useEffect, useRef, useState } from "react"
+import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
+import { ArtworkRecommendationsRail } from "./Components/ArtworkRecommendationsRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
@@ -93,48 +93,18 @@ const Home = (props: Props) => {
     relay,
   } = props
 
-  const enableAuctionResultsByFollowedArtists = useFeatureFlag(
-    "ARHomeAuctionResultsByFollowedArtists"
-  )
-  const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
-
-  const newWorksTreatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
-  const artistRecommendationsTreatment = useTreatment("HomeScreenArtistRecommendations")
-
-  const newWorks =
-    newWorksTreatment === "worksForYou"
-      ? {
-          title: "New Works for You",
-          type: "newWorksForYou",
-          data: meAbove,
-          prefetchUrl: "/new-works-for-you",
-        }
-      : {
-          title: "New Works by Artists You Follow",
-          type: "artwork",
-          data: homePageAbove?.followedArtistsArtworkModule,
-          prefetchUrl: "/works-for-you",
-        }
-
-  const artistRecommendations =
-    artistRecommendationsTreatment === "newArtistRecommendations"
-      ? {
-          title: "Recommended Artists",
-          type: "recommended-artists",
-          data: meAbove,
-        }
-      : {
-          title: "Recommended Artists",
-          type: "artist",
-          data: homePageAbove?.recommendedArtistsArtistModule,
-        }
+  const enableArtworkRecommendations = useFeatureFlag("AREnableHomeScreenArtworkRecommendations")
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
-    newWorks,
+    {
+      title: "New Works for You",
+      type: "newWorksForYou",
+      data: meAbove,
+      prefetchUrl: "/new-works-for-you",
+    },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
-    artistRecommendations,
     {
       title: "Auction Lots for You Ending Soon",
       type: "lotsByFollowedArtists",
@@ -154,7 +124,6 @@ const Home = (props: Props) => {
       title: "Auction Results for Artists You Follow",
       type: "auction-results",
       data: meBelow,
-      hidden: !enableAuctionResultsByFollowedArtists,
       prefetchUrl: "/auction-results-for-artists-you-follow",
     },
     {
@@ -166,6 +135,11 @@ const Home = (props: Props) => {
       prefetchVariables: articlesQueryVariables,
     },
     {
+      title: "Recommended Artists",
+      type: "recommended-artists",
+      data: meBelow,
+    },
+    {
       title: "Shows for You",
       type: "shows",
       data: showsByFollowedArtists,
@@ -175,7 +149,6 @@ const Home = (props: Props) => {
       title: "Viewing Rooms",
       type: "viewing-rooms",
       data: featured,
-      hidden: !enableViewingRooms,
       prefetchUrl: "/viewing-rooms",
     },
     {
@@ -183,6 +156,12 @@ const Home = (props: Props) => {
       subtitle: "The newest works curated by Artsy",
       type: "collections",
       data: homePageBelow?.marketingCollectionsModule,
+    },
+    {
+      title: "Artwork Recommendations",
+      type: "artworkRecommendations",
+      data: meBelow,
+      hidden: !enableArtworkRecommendations,
     },
     {
       title: "Featured Fairs",
@@ -216,6 +195,7 @@ const Home = (props: Props) => {
     >
       <View style={{ flex: 1 }}>
         <AboveTheFoldFlatList<HomeModule>
+          testID="home-flat-list"
           data={modules}
           initialNumToRender={5}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
@@ -249,6 +229,15 @@ const Home = (props: Props) => {
                   <ArtworkModuleRailFragmentContainer
                     title={item.title}
                     rail={item.data || null}
+                    scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT - 2}
+                  />
+                )
+              case "artworkRecommendations":
+                return (
+                  <ArtworkRecommendationsRail
+                    title={item.title}
+                    me={item.data || null}
                     scrollRef={scrollRefs.current[index]}
                     mb={MODULE_SEPARATOR_HEIGHT - 2}
                   />
@@ -440,12 +429,13 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
         ...NewWorksForYouRail_me
-        ...RecommendedArtistsRail_me
       }
     `,
     meBelow: graphql`
       fragment Home_meBelow on Me {
         ...AuctionResultsRail_me
+        ...RecommendedArtistsRail_me
+        ...ArtworkRecommendationsRail_me
       }
     `,
     articlesConnection: graphql`
@@ -497,21 +487,18 @@ export const HomeFragmentContainer = createRefetchContainer(
 const ModuleSeparator = () => <Spacer mb={MODULE_SEPARATOR_HEIGHT} />
 
 const BelowTheFoldPlaceholder: React.FC = () => {
-  const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
-
   return (
     <ProvidePlaceholderContext>
       <Flex>
-        {!!enableViewingRooms && (
-          <Flex ml="2" mt="3">
-            <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
-            <Flex flexDirection="row">
-              {times(4).map((i) => (
-                <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
-              ))}
-            </Flex>
+        <Flex ml="2" mt="3">
+          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
+          <Flex flexDirection="row">
+            {times(4).map((i) => (
+              <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+            ))}
           </Flex>
-        )}
+        </Flex>
+
         {times(2).map((r) => (
           <Box key={r}>
             <ModuleSeparator />
@@ -534,8 +521,6 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 }
 
 const HomePlaceholder: React.FC = () => {
-  const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
-
   return (
     <Flex>
       <Box mb={1} mt={2}>
@@ -577,16 +562,14 @@ const HomePlaceholder: React.FC = () => {
         </Flex>
       </Box>
 
-      {!!enableViewingRooms && (
-        <Flex ml="2" mt="3">
-          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
-          <Flex flexDirection="row">
-            {times(4).map((i) => (
-              <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
-            ))}
-          </Flex>
+      <Flex ml="2" mt="3">
+        <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
+        <Flex flexDirection="row">
+          {times(4).map((i) => (
+            <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+          ))}
         </Flex>
-      )}
+      </Flex>
     </Flex>
   )
 }

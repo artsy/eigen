@@ -4,7 +4,7 @@ import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilter
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
 import {
   PlaceholderBox,
@@ -16,6 +16,8 @@ import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { DurationProvider } from "../Countdown"
+import { LotCloseInfo } from "./LotCloseInfo"
 
 export interface ArtworkProps {
   artwork: ArtworkGridItem_artwork
@@ -135,6 +137,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const urgencyTag = getUrgencyTag(artwork?.sale?.endAt)
 
+  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageGrid")
+
   return (
     <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
       <View ref={itemRef}>
@@ -166,9 +170,20 @@ export const Artwork: React.FC<ArtworkProps> = ({
         )}
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-            <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
-              Lot {artwork.saleArtwork.lotLabel}
-            </Text>
+            <>
+              <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
+                Lot {artwork.saleArtwork.lotLabel}
+              </Text>
+              {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !!cascadingEndTimeFeatureEnabled && (
+                <DurationProvider startAt={artwork.saleArtwork.endAt!}>
+                  <LotCloseInfo
+                    duration={null}
+                    saleArtwork={artwork.saleArtwork}
+                    sale={artwork.sale}
+                  />
+                </DurationProvider>
+              )}
+            </>
           )}
           {!!artwork.artistNames && (
             <Text
@@ -299,16 +314,20 @@ export default createFragmentContainer(Artwork, {
         isAuction
         isClosed
         displayTimelyAt
+        cascadingEndTimeIntervalMinutes
         endAt
+        startAt
       }
       saleArtwork {
         counts {
           bidderPositions
         }
+        formattedEndDateTime
         currentBid {
           display
         }
         lotLabel
+        endAt
       }
       partner {
         name

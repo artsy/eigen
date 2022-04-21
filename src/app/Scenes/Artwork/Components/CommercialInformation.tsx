@@ -9,6 +9,7 @@ import {
 } from "app/Components/Bidding/Components/Timer"
 import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { capitalize } from "lodash"
 import { Duration } from "moment"
@@ -29,18 +30,28 @@ interface CommercialInformationProps {
   timerState?: AuctionTimerState
   label?: string
   duration?: Duration
+  hasStarted?: boolean
   tracking?: TrackingProp
 }
 
 export const CommercialInformationTimerWrapper: React.FC<CommercialInformationProps> = (props) => {
-  if (props.artwork.isInAuction) {
+  if (props.artwork.isInAuction && props.artwork.saleArtwork) {
     const {
       isPreview,
       isClosed,
+      cascadingEndTimeIntervalMinutes,
       liveStartAt: liveStartsAt,
       startAt: startsAt,
-      endAt: endsAt,
+      endAt: saleEndAt,
     } = props.artwork.sale || {}
+
+    const { endAt: lotEndAt } = props.artwork.saleArtwork
+
+    const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
+
+    const endsAt =
+      (cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? lotEndAt : saleEndAt) ||
+      undefined
 
     return (
       <TimeOffsetProvider>
@@ -52,23 +63,23 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               isClosed: isClosed || undefined,
               liveStartsAt: liveStartsAt || undefined,
             })
-            const { label, date } = relevantStateData(state, {
+            const { label, date, hasStarted } = relevantStateData(state, {
               liveStartsAt: liveStartsAt || undefined,
               startsAt: startsAt || undefined,
-              endsAt: endsAt || undefined,
+              endsAt,
             })
-            return { label, date, state }
+            return { label, date, state, hasStarted, cascadingEndTimeIntervalMinutes }
           }}
           onNextTickerState={({ state }) => {
             const nextState = nextTimerState(state as AuctionTimerState, {
               liveStartsAt: liveStartsAt || undefined,
             })
-            const { label, date } = relevantStateData(nextState, {
+            const { label, date, hasStarted } = relevantStateData(nextState, {
               liveStartsAt: liveStartsAt || undefined,
               startsAt: startsAt || undefined,
-              endsAt: endsAt || undefined,
+              endsAt,
             })
-            return { state: nextState, date, label }
+            return { state: nextState, date, label, hasStarted }
           }}
           {...(props as any)}
         />
@@ -110,6 +121,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   me,
   duration,
   label,
+  hasStarted,
 }) => {
   const [editionSetID, setEditionSetID] = useState<string | null>(null)
 
@@ -235,6 +247,8 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
             <Spacer mb={2} />
             <Countdown
               label={label}
+              hasStarted={hasStarted}
+              cascadingEndTimeIntervalMinutes={sale.cascadingEndTimeIntervalMinutes}
               // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               duration={duration}
             />
@@ -278,7 +292,12 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
           id
         }
 
+        saleArtwork {
+          endAt
+        }
+
         sale {
+          cascadingEndTimeIntervalMinutes
           internalID
           isClosed
           isAuction

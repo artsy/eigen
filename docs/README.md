@@ -50,7 +50,7 @@
 
 - [palette v3 migration guide](palette_v3_migration_guide.md)
 
-#### Thanks to our (contributors)[thanks.md] 🎉
+#### Thanks to our [contributors](thanks.md) 🎉
 
 ### Can these be removed?
 

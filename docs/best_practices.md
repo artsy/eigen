@@ -13,7 +13,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
 - [History](#history)
 - [File Structure Organization](#file-structure-organization)
 - [Frontend](#frontend)
-  - [Storybook](#storybook)  
+  - [Storybook](#storybook)
   - [Styling](#styling)
 - [TypeScript](#TypeScript)
 - [Relay](#relay)
@@ -93,16 +93,16 @@ However, if we have a `Button` folder which exports only one button component, w
 
 `Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
 
-### Frontend 
+### Frontend
 
 #### Storybook
+
 When developing new components you are strongly encouraged to add them to [Storybook](./storybook.md).
 
 #### Styling
 
-
-[palette](src/palette) is our reusable component toolkit, which uses [styled-system](https://styled-system.com/getting-started/) under the hood. 
-[Here](palette.artsy.net) you can see palette in action. 
+[palette](src/palette) is our reusable component toolkit, which uses [styled-system](https://styled-system.com/getting-started/) under the hood.
+[Here](palette.artsy.net) you can see palette in action.
 Some of our most used elements are `Flex`, `Box`, `Text`. `Separator` and `Spacer`.
 
 We want to move towards an [atomic design](https://bradfrost.com/blog/post/atomic-web-design/) and have all our UI elements in palette. Please do not add components there without consulting with **@pvinis** first.

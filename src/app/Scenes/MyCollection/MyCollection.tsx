@@ -8,6 +8,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { PAGE_SIZE } from "app/Components/constants"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -33,9 +34,9 @@ import { screen } from "app/utils/track/helpers"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { EventEmitter } from "events"
 import { times } from "lodash"
-import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
+import { Button, Flex, Message, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { LayoutAnimation, RefreshControl } from "react-native"
+import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
@@ -61,11 +62,10 @@ const MyCollection: React.FC<{
   const { showSessionVisualClue } = useSessionVisualClue()
 
   const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
-  const enableConsignmentsInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
   const [keywordFilter, setKeywordFilter] = useState("")
-  const [isSearchBarVisible, setIsSearchBarVisible] = useState(false)
+  const [yScrollOffset, setYScrollOffset] = useState(0)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
   const filtersCount = useSelectedFiltersCount()
@@ -104,7 +104,7 @@ const MyCollection: React.FC<{
 
   const hasBeenShownBanner = async () => {
     const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionBanner")
+    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
     return {
       hasSeenBanner: hasSeen === "true",
       shouldShowConsignments: shouldShowConsignments === true,
@@ -115,7 +115,7 @@ const MyCollection: React.FC<{
     if (artworks.length) {
       hasBeenShownBanner().then(({ hasSeenBanner, shouldShowConsignments }) => {
         const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
-        const showConsignmentsBanner = shouldShowConsignments && enableConsignmentsInMyCollection
+        const showConsignmentsBanner = shouldShowConsignments
 
         setJSX(
           <Flex>
@@ -141,11 +141,15 @@ const MyCollection: React.FC<{
                 Add Works
               </Button>
             </ArtworksFilterHeader>
-            {!!enableSearchBar && !!isSearchBarVisible && (
-              <MyCollectionSearchBar onChangeText={setKeywordFilter} />
+            {!!enableSearchBar && (
+              <MyCollectionSearchBar
+                yScrollOffset={yScrollOffset}
+                onChangeText={setKeywordFilter}
+              />
             )}
             {!!showNewWorksBanner && (
-              <Banner
+              <Message
+                variant="info"
                 title="Your collection is growing"
                 text="Based on your purchase history, we’ve added the following works."
                 showCloseButton
@@ -155,11 +159,12 @@ const MyCollection: React.FC<{
               />
             )}
             {!!showConsignmentsBanner && (
-              <Banner
+              <Message
+                variant="info"
                 title="Artwork added to My Collection"
                 text="The artwork you submitted for sale has been automatically added."
                 showCloseButton
-                onClose={() => removeClue("ArtworkSubmissionBanner")}
+                onClose={() => removeClue("ArtworkSubmissionMessage")}
               />
             )}
           </Flex>
@@ -169,11 +174,15 @@ const MyCollection: React.FC<{
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length, filtersCount, isSearchBarVisible])
+  }, [artworks.length, filtersCount, yScrollOffset])
 
   useEffect(() => {
     reInitializeLocalArtworkFilter(artworks)
   }, [artworks])
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    setYScrollOffset(event.nativeEvent.contentOffset.y)
+  }
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -191,14 +200,10 @@ const MyCollection: React.FC<{
       <StickyTabPageScrollView
         contentContainerStyle={{ paddingBottom: space(2) }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
-        onScrollBeginDrag={() => {
-          if (isSearchBarVisible) {
-            return
-          }
-
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-          setIsSearchBarVisible(true)
-        }}
+        onScrollBeginDrag={handleScroll}
+        onScrollEndDrag={handleScroll}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
       >
         <MyCollectionArtworks me={me} keywordFilter={keywordFilter} relay={relay} />
         {!!showDevAddButton && (
@@ -296,13 +301,16 @@ export const MyCollectionQueryRenderer: React.FC = () => {
         render={renderWithPlaceholder({
           Container: MyCollectionContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,
+          renderFallback: ({ retry }) => (
+            <LoadFailureView onRetry={retry!} justifyContent="flex-end" />
+          ),
         })}
       />
     </ArtworkFiltersStoreProvider>
   )
 }
 
-export const MyCollectionPlaceholder: React.FC<{}> = () => {
+export const MyCollectionPlaceholder: React.FC = () => {
   const screenWidth = useScreenDimensions().width
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
@@ -313,25 +321,21 @@ export const MyCollectionPlaceholder: React.FC<{}> = () => {
         <Spacer />
         <PlaceholderText width={70} margin={20} />
       </Flex>
+      {/* collector's insfo */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
         <Flex>
           <Spacer mb={20} />
+          {/* icon, name, time joined */}
           <Flex flexDirection="row">
             <PlaceholderBox width={100} height={100} borderRadius={50} />
             <Flex justifyContent="center" ml={2}>
-              <PlaceholderText width={80} height={24} />
+              <PlaceholderText width={80} height={35} />
+              <PlaceholderText width={100} height={35} />
               <PlaceholderText width={100} />
             </Flex>
           </Flex>
-          <Spacer mb={1} />
-          <Spacer mb={1} />
-          <PlaceholderText width={180} />
-          <Spacer mb={1} />
-          <PlaceholderText width={100} />
-          <Spacer mb={2} />
-          <PlaceholderText width={200} />
-          <Spacer mb={1} />
-          <PlaceholderBox width={screenWidth - 40} height={28} borderRadius={50} />
+          <Spacer mb={2} mt={1} />
+          <PlaceholderBox width={screenWidth - 40} height={30} borderRadius={50} />
         </Flex>
       </Flex>
       <Spacer mb={2} mt={1} />

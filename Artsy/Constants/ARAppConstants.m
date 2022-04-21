@@ -16,8 +16,11 @@ NSString *const AROAuthTokenKey = @"access_token";
 NSString *const ARNetworkAvailableNotification = @"network_available_notification";
 NSString *const ARNetworkUnavailableNotification = @"network_unavailable_notification";
 
+NSString *const ARAuctionArtworkBidUpdatedNotification = @"ARAuctionArtworkBidUpdated";
 NSString *const ARAuctionArtworkRegistrationUpdatedNotification = @"ARAuctionArtworkRegistrationUpdated";
 NSString *const ARAuctionSaleOnHoldBannerTappedNotification = @"ARAuctionSaleOnHoldBannerTappedNotification";
+NSString *const ARAuctionIDKey = @"ARAuctionID";
+NSString *const ARAuctionArtworkIDKey = @"ARAuctionArtworkID";
 
 NSString *const ARAPNSDeviceTokenKey = @"apns_device_token";
 

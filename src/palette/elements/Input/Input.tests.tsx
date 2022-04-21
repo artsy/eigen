@@ -1,16 +1,10 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Input } from "./Input"
 
 describe("Input", () => {
   const testID = "input"
-
-  it("is rendered", () => {
-    const inputComponent = renderWithWrappers(<Input />)
-
-    expect(inputComponent).toBeTruthy()
-  })
 
   it("renders an instance of native TextInput", () => {
     const { getByTestId } = renderWithWrappersTL(<Input testID={testID} />)
@@ -25,18 +19,63 @@ describe("Input", () => {
   })
 
   it("mutates given text as value", () => {
-    const { getByTestId } = renderWithWrappersTL(<Input testID={testID} />)
+    const { getByTestId, getByDisplayValue } = renderWithWrappersTL(<Input testID={testID} />)
 
     fireEvent.changeText(getByTestId(testID), "mockStr")
 
-    const value = getByTestId(testID).props.value
-
-    expect(value).toEqual("mockStr")
+    getByDisplayValue("mockStr")
   })
 
   it("Shows an error message when input has an error", () => {
-    const { getByTestId } = renderWithWrappersTL(<Input value="" error="input has an error" />)
+    const { getByText } = renderWithWrappersTL(<Input value="" error="input has an error" />)
 
-    expect(getByTestId("input-error")).not.toBeNull()
+    getByText("input has an error")
+  })
+
+  it("should render the clear button when input is not empty and pressing it should clear the input", () => {
+    const {
+      getByDisplayValue,
+      queryByDisplayValue,
+      getByPlaceholderText,
+      getByText,
+      getByA11yLabel,
+    } = renderWithWrappersTL(<Input description="Input" placeholder="USD" enableClearButton />)
+    // placeholder is rendered
+    getByPlaceholderText("USD")
+
+    // description is rendered
+    getByText("Input")
+
+    fireEvent(getByPlaceholderText("USD"), "onChangeText", "Banksy")
+
+    getByDisplayValue("Banksy")
+
+    getByA11yLabel("Clear input button")
+
+    fireEvent.press(getByA11yLabel("Clear input button"))
+
+    expect(queryByDisplayValue("Banksy")).toBeFalsy()
+  })
+
+  it("should show the correct show/hide password icon", () => {
+    const { getByText, getByPlaceholderText, queryByA11yLabel, getByA11yLabel } =
+      renderWithWrappersTL(<Input description="Password" placeholder="password" secureTextEntry />)
+
+    getByText("Password")
+    getByPlaceholderText("password")
+
+    getByA11yLabel("show password button")
+
+    fireEvent(getByPlaceholderText("password"), "onChangeText", "123456")
+
+    fireEvent.press(getByA11yLabel("show password button"))
+
+    expect(queryByA11yLabel("show password button")).toBeFalsy()
+    getByA11yLabel("hide password button")
+
+    fireEvent.press(getByA11yLabel("hide password button"))
+
+    expect(queryByA11yLabel("hide password button")).toBeFalsy()
+    getByA11yLabel("show password button")
   })
 })

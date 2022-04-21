@@ -222,10 +222,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@artsy/cohesion@4.42.0":
-  version "4.42.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.42.0.tgz#08e41f796d38484924773ac232bce05410468f48"
-  integrity sha512-kXxAt48EJ8r0/6e9mep7ZcxZmGqDAYd9pLhe+YO0bTSXsGyytq9Yp9B8Jt2A+a/FH+QB9pOKb26go4+sPJ2tbg==
+"@artsy/cohesion@4.43.0":
+  version "4.43.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.43.0.tgz#9089ceec64bea8d5fcf7d8a80f26de8ab3e92071"
+  integrity sha512-qN7XLVOXtoxRaRTfTNuAKNtb6uas2UprTXNa74Yh6mBxluxVCEz7rWjRvqwDA363D8+WZg8x2se1ntTjBCiWxg==
   dependencies:
     core-js "3"
 
@@ -2963,21 +2963,6 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@splitsoftware/splitio-commons@0.1.1-canary.12":
-  version "0.1.1-canary.12"
-  resolved "https://registry.yarnpkg.com/@splitsoftware/splitio-commons/-/splitio-commons-0.1.1-canary.12.tgz#e050e308fbbdd7dc573668f32730525f566f9a66"
-  integrity sha512-BvrRilTTMzF2kDzq3u9JrnzgQaSoVDKp6es8NCiIHgR3rBbP/tetfZPzuKRqDNpncI28JgCBJZOGs/GSRuVobQ==
-  dependencies:
-    object-assign "^4.1.1"
-    tslib "^2.1.0"
-
-"@splitsoftware/splitio-react-native@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@splitsoftware/splitio-react-native/-/splitio-react-native-0.0.1.tgz#f6b3eab6134bf48488c6ad421519c060f30ea280"
-  integrity sha512-BEXF/WgXSNhVRGYwwvstjnxLwK28mRDl4c/v0aR+Hq5m+B0daNTgJ88pZRWxDtx9su430M4KJG7wYuDm7YTqOA==
-  dependencies:
-    "@splitsoftware/splitio-commons" "0.1.1-canary.12"
-
 "@storybook/addon-actions@5.3.21":
   version "5.3.21"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-5.3.21.tgz#16eed3eb24996adfcbf70bd476a261324d6de593"
@@ -3456,10 +3441,10 @@
     "@types/react-test-renderer" ">=16.9.0"
     react-error-boundary "^3.1.0"
 
-"@testing-library/react-native@9.0.0":
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-9.0.0.tgz#e9c63411e93d2e8e70d744b12aeb78c58025c5fc"
-  integrity sha512-UE3FWOsDUr+2l3Pg6JTpn2rV5uzYsxIus6ZyN1uMOTmn30bIuBBDDlWQtdWGJx92YcY4xgJA4vViCEKv7wVzJA==
+"@testing-library/react-native@9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-9.1.0.tgz#500698b4ae5ade98211cdea0ffd97d823c61c3ac"
+  integrity sha512-YBCSOIMYlh8gI0VG7ExRe80hNpfhC+i7j0cvpwiopUYtbpft8bMJXO35A4zEk7BkiWXEq6bYZ7VDJR3muSLhyQ==
   dependencies:
     pretty-format "^27.0.0"
 
@@ -3740,6 +3725,14 @@
   integrity sha512-aDVfCsjYnAQaV/E9Qc24C5Njx1CoDjXsEgkxtp9NyXDpYu4CCbmclb6QhWloS9UTU/8YROUEEdEkWI0D7DxnKg==
   dependencies:
     moment-timezone "*"
+
+"@types/node-fetch@2.6.1":
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.6.1.tgz#8f127c50481db65886800ef496f20bbf15518975"
+  integrity sha512-oMqjURCaxoSIsHSr1E47QHzbmzNR5rK8McHuNb11BOM9cHcIK3Avy0s/b2JlXHoQGTYS3NsvWzV1M0iK7l0wbA==
+  dependencies:
+    "@types/node" "*"
+    form-data "^3.0.0"
 
 "@types/node@*", "@types/node@14.17.34", "@types/node@>= 8":
   version "14.17.34"
@@ -12948,9 +12941,9 @@ pkg-up@2.0.0:
     find-up "^2.1.0"
 
 plist@^3.0.2, plist@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/plist/-/plist-3.0.4.tgz#a62df837e3aed2bb3b735899d510c4f186019cbe"
-  integrity sha512-ksrr8y9+nXOxQB2osVNqrgvX/XQPOXaU4BQMKjYq8PvaY1U18mo+fKgBSwzK+luSyinOuPae956lSVcBwxlAMg==
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/plist/-/plist-3.0.5.tgz#2cbeb52d10e3cdccccf0c11a63a85d830970a987"
+  integrity sha512-83vX4eYdQp3vP9SxuYgEM/G/pJQqLUz/V/xzPrzruLs7fz7jxGQ1msZ/mg1nwZxUSuOp4sb+/bEIbRrbzZRxDA==
   dependencies:
     base64-js "^1.5.1"
     xmlbuilder "^9.0.7"

@@ -34,6 +34,7 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   const TestWrapper = ({ initialData = INITIAL_DATA }) => {

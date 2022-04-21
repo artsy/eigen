@@ -30,6 +30,7 @@ import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { SaleBelowTheFoldQueryResponse } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
+import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
@@ -52,6 +53,7 @@ interface SaleSection {
 
 const SALE_HEADER = "header"
 const SALE_REGISTER_TO_BID = "registerToBid"
+const SALE_CASCADING_END_TIMES_BANNER = "cascadingEndTimesBanner"
 const SALE_ACTIVE_BIDS = "saleActiveBids"
 const SALE_ARTWORKS_RAIL = "saleArtworksRail"
 const BUY_NOW_ARTWORKS_RAIL = "buyNowArtworksRail"
@@ -70,6 +72,9 @@ interface ViewToken {
   section?: any
 }
 
+// tslint:disable-next-line:no-empty
+const NOOP = () => {}
+
 export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const tracking = useTracking()
 
@@ -81,12 +86,20 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const prevIsLive = usePrevious(isLive)
 
   const scrollAnim = useRef(new Animated.Value(0)).current
+  const artworksRefetchRef = useRef(NOOP)
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
-    relay.refetch(() => {
-      setIsRefreshing(false)
-    })
+
+    artworksRefetchRef.current()
+    relay.refetch(
+      {},
+      null,
+      () => {
+        setIsRefreshing(false)
+      },
+      { force: true }
+    )
   }, [])
 
   // poll every .5 seconds to check if sale has gone live
@@ -168,6 +181,15 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
         </Flex>
       ),
     },
+    sale.cascadingEndTimeIntervalMinutes &&
+      !sale.isClosed && {
+        key: SALE_CASCADING_END_TIMES_BANNER,
+        content: (
+          <CascadingEndTimesBanner
+            cascadingEndTimeInterval={sale.cascadingEndTimeIntervalMinutes}
+          />
+        ),
+      },
     {
       key: SALE_ACTIVE_BIDS,
       content: <SaleActiveBidsContainer me={me} saleID={sale.internalID} />,
@@ -189,6 +211,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
           saleID={sale.internalID}
           saleSlug={sale.slug}
           scrollToTop={scrollToTop}
+          artworksRefetchRef={artworksRefetchRef}
         />
       ) : (
         // Since most likely this part of the screen will be already loaded when the user
@@ -331,6 +354,8 @@ export const SaleContainer = createRefetchContainer(
         startAt
         registrationEndsAt
         slug
+        cascadingEndTimeIntervalMinutes
+        isClosed
       }
     `,
   },
@@ -369,7 +394,7 @@ export const SaleQueryRenderer: React.FC<{
 
   return (
     <RetryErrorBoundaryLegacy
-      render={({ isRetry }) => {
+      render={() => {
         return (
           <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
             environment={environment || defaultEnvironment}
@@ -412,8 +437,7 @@ export const SaleQueryRenderer: React.FC<{
               )
             }}
             cacheConfig={{
-              // Bypass Relay cache on retries.
-              ...(isRetry && { force: true }),
+              force: true,
             }}
           />
         )

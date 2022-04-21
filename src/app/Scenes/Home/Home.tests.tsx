@@ -1,7 +1,11 @@
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { act } from "react-test-renderer"
+import { GraphQLResponse } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
+import { HomeQueryRenderer } from "./Home"
 
 jest.mock("app/Components/Home/ArtistRails/ArtistRail", () => ({
   ArtistRailFragmentContainer: jest.fn(() => null),
@@ -16,28 +20,13 @@ jest.mock("app/Scenes/Home/Components/SalesRail", () => ({
   SalesRailFragmentContainer: jest.fn(() => null),
 }))
 
-import { EmailConfirmationBanner } from "app/Scenes/Home/Components/EmailConfirmationBanner"
-import { SalesRailFragmentContainer } from "app/Scenes/Home/Components/SalesRail"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { GraphQLResponse } from "relay-runtime"
-import { FairsRailFragmentContainer } from "./Components/FairsRail"
-import { HomeQueryRenderer } from "./Home"
-
 jest.unmock("react-relay")
-const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
 
-const TestRenderer: React.FC = () => {
-  return (
-    <GlobalStoreProvider>
-      <HomeQueryRenderer />
-    </GlobalStoreProvider>
-  )
-}
+const mockEnvironment = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
 
 describe(HomeQueryRenderer, () => {
-  it("always renders sales and fairs", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+  const getWrapper = async () => {
+    const tree = renderWithHookWrappersTL(<HomeQueryRenderer />, mockEnvironment)
 
     mockMostRecentOperation("HomeAboveTheFoldQuery", {
       errors: [],
@@ -47,7 +36,7 @@ describe(HomeQueryRenderer, () => {
           salesModule: [],
         },
         me: {
-          canRequestEmailConfirmation: false,
+          canRequestEmailConfirmation: true,
         },
       },
     })
@@ -61,32 +50,28 @@ describe(HomeQueryRenderer, () => {
       },
     })
 
-    expect(tree.root.findAllByType(SalesRailFragmentContainer)).toHaveLength(1)
-    expect(tree.root.findAllByType(FairsRailFragmentContainer)).toHaveLength(1)
+    await flushPromiseQueue()
+
+    return tree
+  }
+
+  it("renders home screen module flat list", async () => {
+    const { getByTestId } = await getWrapper()
+
+    expect(getByTestId("home-flat-list")).toBeTruthy()
   })
 
-  it("renders an email confirmation banner", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    mockMostRecentOperation("HomeAboveTheFoldQuery", {
-      errors: [],
-      data: {
-        homePage: {
-          artworkModules: [],
-        },
-        me: {
-          canRequestEmailConfirmation: false,
-        },
-      },
-    })
+  it("renders an email confirmation banner", async () => {
+    const { getByText } = await getWrapper()
 
-    expect(tree.root.findAllByType(EmailConfirmationBanner)).toHaveLength(1)
+    expect(getByText("Tap here to verify your email address")).toBeTruthy()
   })
 })
 
 const mockMostRecentOperation = (name: string, result: GraphQLResponse = { errors: [] }) => {
-  expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
+  expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
 
   act(() => {
-    env.mock.resolveMostRecentOperation(result)
+    mockEnvironment.mock.resolveMostRecentOperation(result)
   })
 }

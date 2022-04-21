@@ -40,6 +40,7 @@ describe("Materials Options Screen", () => {
     filterType: "artwork",
     previouslyAppliedFilters: [],
     selectedFilters: [],
+    sizeMetric: "cm",
   }
 
   const MockMaterialsTermsOptionsScreen = ({

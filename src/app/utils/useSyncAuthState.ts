@@ -11,8 +11,8 @@ export default function useSyncNativeAuthState() {
   useEffect(() => {
     // Keep native iOS in sync with react-native auth state
     if (Platform.OS === "ios" && userAccessToken && expiresIn) {
-      requestAnimationFrame(() => {
-        const user = GlobalStore.actions.auth.getUser({ accessToken: userAccessToken })
+      requestAnimationFrame(async () => {
+        const user = await GlobalStore.actions.auth.getUser({ accessToken: userAccessToken })
         LegacyNativeModules.ArtsyNativeModule.updateAuthState(userAccessToken, expiresIn, user)
       })
     }

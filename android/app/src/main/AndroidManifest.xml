@@ -85,6 +85,7 @@
                 <data android:pathPrefix="/identity-verification-faq" />
                 <data android:pathPrefix="/inbox" />
                 <data android:pathPrefix="/inquiry" />
+                <data android:pathPrefix="/map" />
                 <data android:pathPrefix="/make-offer" />
                 <data android:pathPrefix="/my-account" />
                 <data android:pathPrefix="/my-profile" />

@@ -864,10 +864,10 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to ConsignmentsSubmissionForm", () => {
+  it("routes to SubmitArtwork", () => {
     expect(matchRoute("/consign/submission")).toMatchInlineSnapshot(`
       Object {
-        "module": "ConsignmentsSubmissionForm",
+        "module": "SubmitArtwork",
         "params": Object {},
         "type": "match",
       }

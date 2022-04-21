@@ -6,10 +6,10 @@ interface Props {
   startAt: string
   endAt: string
   formattedOpeningHours?: string
-  countdownComponent: React.FC<CountdownProps>
+  countdownComponent: React.FC<CountdownTimerProps>
 }
 
-export interface CountdownProps {
+export interface CountdownTimerProps {
   duration: Duration
   label?: string
 }

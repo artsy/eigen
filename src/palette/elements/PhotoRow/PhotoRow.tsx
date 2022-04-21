@@ -1,4 +1,4 @@
-import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
+import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Button, Flex, ProgressBar, Spacer, Text } from "palette"
 import React from "react"

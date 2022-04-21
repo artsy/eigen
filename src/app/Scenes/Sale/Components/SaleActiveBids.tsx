@@ -1,7 +1,7 @@
 import { SaleActiveBids_me } from "__generated__/SaleActiveBids_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { Flex, Separator } from "palette"
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import { FlatList, LayoutAnimation } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import useInterval from "react-use/lib/useInterval"
@@ -14,11 +14,10 @@ interface SaleActiveBidsProps {
 }
 
 export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me, relay, saleID }) => {
+  const didMount = useRef(false)
+
   // Constantly update the list of lots standing every 5 seconds
   useInterval(() => {
-    // Animate the way new lots show up
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-
     relay.refetch(
       { saleID },
       null,
@@ -28,6 +27,15 @@ export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me, relay, saleI
       { force: true }
     )
   }, 5000)
+
+  useEffect(() => {
+    if (didMount.current) {
+      // Animate the way new lots show up
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+    }
+
+    didMount.current = true
+  }, [me.lotStandings])
 
   if (!me.lotStandings?.length) {
     return null

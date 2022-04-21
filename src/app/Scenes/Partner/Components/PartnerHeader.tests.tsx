@@ -74,6 +74,20 @@ describe("PartnerHeader", () => {
 
     expect(extractText(tree.root.findByType(Button))).toContain("Follow")
   })
+
+  it("renders the Black Owned marquee if the gallery has the 'Black Owned' category", async () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          partner: BlackOwnedPartnerHeaderFixture,
+        },
+      })
+    })
+
+    expect(extractText(tree.root)).toContain("Black Owned")
+  })
 })
 
 const PartnerHeaderFixture = {
@@ -90,6 +104,26 @@ const PartnerHeaderFixture = {
     internalID: "5159da629a60832439000035",
     isFollowed: false,
   },
+  categories: [],
+  internalID: "4d8b92c44eb68a1b2c0004cb",
+  slug: "gagosian",
+}
+
+const BlackOwnedPartnerHeaderFixture = {
+  " $refType": null,
+  name: "Gagosian",
+  counts: {
+    eligibleArtworks: 1231,
+  },
+  profile: {
+    counts: {
+      follows: 136999,
+    },
+    id: "UHJvZmlsZTo1MTU5ZGE2MjlhNjA4MzI0MzkwMDAwMzU=",
+    internalID: "5159da629a60832439000035",
+    isFollowed: false,
+  },
+  categories: [{ name: "Black Owned" }],
   internalID: "4d8b92c44eb68a1b2c0004cb",
   slug: "gagosian",
 }
