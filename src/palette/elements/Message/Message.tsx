@@ -106,10 +106,10 @@ export const Message: React.FC<MessageProps> = ({
               <TouchableOpacity
                 testID="Message-close-button"
                 onPress={handleClose}
-                hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}
+                hitSlop={{ bottom: 10, right: 10, left: 10, top: 10 }}
               >
                 <Image
-                  source={require("../../../../images/close-x.webp")}
+                  source={require("@images/close-x.webp")}
                   style={{ tintColor: color("black100") }}
                 />
               </TouchableOpacity>
