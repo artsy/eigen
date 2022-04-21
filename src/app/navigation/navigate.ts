@@ -39,6 +39,9 @@ export interface NavigateOptions {
 let lastInvocation = { url: "", timestamp: 0 }
 
 export async function navigate(url: string, options: NavigateOptions = {}) {
+  // handle artsy:// urls, we can just remove it
+  url = url.replace("artsy://", "")
+
   // Debounce double taps
   const ignoreDebounce = options.ignoreDebounce ?? false
   if (
