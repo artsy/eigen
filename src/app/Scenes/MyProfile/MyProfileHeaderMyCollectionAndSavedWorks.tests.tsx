@@ -102,8 +102,8 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       expect(await findByText("My Bio")).toBeTruthy()
     })
 
-    describe("Explanatory banner", () => {
-      it("Get displayed if at least one of the fields is empty,", async () => {
+    describe("Complete Profile Message", () => {
+      it("does get displayed if at least one of the fields is empty", async () => {
         beforeEach(() => {
           __globalStoreTestUtils__?.injectFeatureFlags({
             AREnableCompleteProfileMessage: false,
@@ -123,7 +123,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         expect(await findByText("Why complete your Colletor Profile?")).toBeTruthy()
       })
 
-      it("Doesnt get displayed if none of fields are empty", async () => {
+      it("doesn't get displayed if the profile is completed", async () => {
         beforeEach(() => {
           __globalStoreTestUtils__?.injectFeatureFlags({
             AREnableCompleteProfileMessage: false,

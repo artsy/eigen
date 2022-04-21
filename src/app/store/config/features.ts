@@ -191,7 +191,7 @@ export const features = defineFeatures({
   },
   AREnableCompleteProfileMessage: {
     readyForRelease: true,
-    description: "Anable Collector Profile Complete Message",
+    description: "Enable Collector Profile Complete Message",
     showInAdminMenu: true,
   },
 })
