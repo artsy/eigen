@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.content.Intent;
+import android.net.Uri;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView;
 import com.zoontek.rnbootsplash.RNBootSplash;
+
+import android.util.Log;
 
 public class MainActivity extends ReactActivity {
   private static final String TAG = MainActivity.class.getName();
@@ -58,11 +61,33 @@ public class MainActivity extends ReactActivity {
     RNBootSplash.init(R.drawable.bootsplash, MainActivity.this);
   }
 
-  // required for braze integration:
+  // The default braze intent sent on opening a push with a deeplink does
+  // not fire the url event for react-native-linking
+  // rewrite the intent upon receipt to use a view action and include the uri
+  // in the data which does fire the action, see HACKS.md
+  // Basic overriding this class required for braze integration:
   // https://www.braze.com/docs/developer_guide/platform_integration_guides/react_native/react_sdk_setup/#step-2-complete-native-setup
   @Override
   public void onNewIntent(Intent intent) {
     super.onNewIntent(intent);
+    String source = intent.getStringExtra("source");
+    if (source != null && source.equalsIgnoreCase("appboy")) {
+      String action = intent.getAction();
+      if (action == Intent.ACTION_MAIN) {
+        Log.i(TAG, "BRAZE rewriting braze intent for deeplinks");
+        String uri = intent.getStringExtra("uri");
+        intent.setAction(Intent.ACTION_VIEW);
+        if (uri != null) {
+          Uri parsedURI = Uri.parse(uri);
+          if (parsedURI != null) {
+            intent.setData(parsedURI);
+          }
+        }
+        Log.i(TAG, "BRAZE rewritten intent: " + intent.toString());
+        Log.i(TAG, "BRAZE intent action" + intent.getAction());
+        Log.i(TAG, "BRAZE intent content" + intent.getExtras());
+      }
+    }
     setIntent(intent);
   }
 }
