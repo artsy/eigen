@@ -10,23 +10,21 @@ jest.unmock("react-relay")
 const mockEnvironment = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
 
 describe("My Collection Artwork", () => {
-  describe("when new my collection artwork feature flag is enabled", () => {
-    it("show new artwork screen ", () => {
-      const { getByTestId } = renderWithHookWrappersTL(
-        <MyCollectionArtworkScreen
-          artworkSlug="random-slug"
-          artistInternalID="internal-id"
-          medium="medium"
-        />,
-        mockEnvironment
-      )
+  it("show new artwork screen ", () => {
+    const { getByTestId } = renderWithHookWrappersTL(
+      <MyCollectionArtworkScreen
+        artworkSlug="random-slug"
+        artistInternalID="internal-id"
+        medium="medium"
+      />,
+      mockEnvironment
+    )
 
-      mockEnvironmentPayload(mockEnvironment)
-      expect(() => getByTestId("my-collection-artwork")).toBeTruthy()
-      expect(() => getByTestId("old-my-collection-artwork")).toThrowError(
-        "Unable to find an element with testID: old-my-collection-artwork"
-      )
-    })
+    mockEnvironmentPayload(mockEnvironment)
+    expect(() => getByTestId("my-collection-artwork")).toBeTruthy()
+    expect(() => getByTestId("old-my-collection-artwork")).toThrowError(
+      "Unable to find an element with testID: old-my-collection-artwork"
+    )
   })
 
   describe("edit button", () => {
