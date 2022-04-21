@@ -1,26 +1,16 @@
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
 
-jest.mock("./MyCollectionArtwork.tsx", () => {
-  const View = require("react-native/Libraries/Components/View/View")
-  return {
-    MyCollectionArtworkScreen: () => <View testID="old-my-collection-artwork" />,
-  }
-})
-
 jest.unmock("react-relay")
+
+const mockEnvironment = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
 
 describe("My Collection Artwork", () => {
   describe("when new my collection artwork feature flag is enabled", () => {
-    let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-    beforeEach(() => {
-      mockEnvironment = createMockEnvironment()
-    })
-
     it("show new artwork screen ", () => {
       const { getByTestId } = renderWithHookWrappersTL(
         <MyCollectionArtworkScreen
@@ -40,12 +30,6 @@ describe("My Collection Artwork", () => {
   })
 
   describe("edit button", () => {
-    let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-    beforeEach(() => {
-      mockEnvironment = createMockEnvironment()
-    })
-
     describe("when there is no submission", () => {
       it("shows the edit button", async () => {
         const { findByText } = renderWithHookWrappersTL(
