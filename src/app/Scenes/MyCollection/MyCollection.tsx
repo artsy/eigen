@@ -34,7 +34,7 @@ import { screen } from "app/utils/track/helpers"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { EventEmitter } from "events"
 import { times } from "lodash"
-import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
+import { Button, Flex, Message, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -148,7 +148,8 @@ const MyCollection: React.FC<{
               />
             )}
             {!!showNewWorksBanner && (
-              <Banner
+              <Message
+                variant="info"
                 title="Your collection is growing"
                 text="Based on your purchase history, we’ve added the following works."
                 showCloseButton
@@ -158,7 +159,8 @@ const MyCollection: React.FC<{
               />
             )}
             {!!showConsignmentsBanner && (
-              <Banner
+              <Message
+                variant="info"
                 title="Artwork added to My Collection"
                 text="The artwork you submitted for sale has been automatically added."
                 showCloseButton
