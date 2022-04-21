@@ -3290,6 +3290,7 @@ type CommerceBuyOrder implements CommerceOrder {
     thousand: String = ","
   ): String
   sellerTotalCents: Int
+  shippingRadius: String
   shippingTotal(
     decimal: String = "."
 
@@ -3993,6 +3994,7 @@ type CommerceOfferOrder implements CommerceOrder {
     thousand: String = ","
   ): String
   sellerTotalCents: Int
+  shippingRadius: String
   shippingTotal(
     decimal: String = "."
 
@@ -4187,6 +4189,7 @@ interface CommerceOrder {
     thousand: String = ","
   ): String
   sellerTotalCents: Int
+  shippingRadius: String
   shippingTotal(
     decimal: String = "."
 
