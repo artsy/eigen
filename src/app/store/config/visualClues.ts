@@ -21,4 +21,7 @@ export const visualClues = defineVisualClues({
   ArtworkSubmissionBanner: {
     description: "The banner shown after artwork submission with SWA flow",
   },
+  CollectorProfileExplanatoryBanner: {
+    description: "The banner shown if the collector profile is empty",
+  },
 })

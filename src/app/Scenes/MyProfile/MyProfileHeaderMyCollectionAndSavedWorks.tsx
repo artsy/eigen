@@ -7,12 +7,13 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { setVisualClueAsSeen, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import {
   Avatar,
+  Banner,
   Box,
   BriefcaseIcon,
   Button,
@@ -24,7 +25,7 @@ import {
   Text,
   useColor,
 } from "palette"
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
@@ -71,10 +72,29 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
   const navigation = useNavigation()
 
   const showCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
+  const showCollectorProfileExplanatoryBannerFeatureFlag = useFeatureFlag(
+    "ARShowCollectorProfileExplanatoryBanner"
+  )
+  const { showVisualClue } = useVisualClue()
+
+  const [showCollectorProfileExplanatoryBanner, setShowCollectorProfileExplanatoryBanner] =
+    useState(showVisualClue("CollectorProfileExplanatoryBanner"))
 
   const { localImage } = useContext(MyProfileContext)
 
   const userProfileImagePath = localImage || me?.icon?.url
+
+  const collectorProfileIsNotComplete =
+    !me.bio || !me.icon || !me.profession || !me.otherRelevantPositions
+
+  useEffect(() => {
+    setVisualClueAsSeen("CollectorProfileExplanatoryBanner")
+  }, [])
+
+  const showBanner =
+    showCollectorProfileExplanatoryBannerFeatureFlag &&
+    collectorProfileIsNotComplete &&
+    showCollectorProfileExplanatoryBanner
 
   return (
     <>
@@ -85,6 +105,18 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
           navigate("/my-profile/settings")
         }}
       />
+      {showBanner && (
+        <Banner
+          title="Why complete your Colletor Profile?"
+          text="A complete profile helps you build a relationship with sellers. Select “Edit Profile” to see which details are shared when you contact sellers."
+          showCloseButton
+          containerStyle={{ mb: 2, backgroundColor: color("black5") }}
+          titleStyle={{ variant: "xs", color: color("black100") }}
+          bodyTextStyle={{ variant: "xs", color: color("black60") }}
+          onClose={() => setShowCollectorProfileExplanatoryBanner(false)}
+        />
+      )}
+
       <Flex flexDirection="row" alignItems="center" px={2}>
         <Box
           height="99"

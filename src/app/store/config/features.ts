@@ -189,6 +189,11 @@ export const features = defineFeatures({
     description: "Conversational Buy Now",
     showInAdminMenu: true,
   },
+  ARShowCollectorProfileExplanatoryBanner: {
+    readyForRelease: true,
+    description: "Show Collector Profile Explanatory Banner",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
