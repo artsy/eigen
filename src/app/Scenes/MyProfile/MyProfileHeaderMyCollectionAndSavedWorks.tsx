@@ -13,13 +13,13 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import {
   Avatar,
-  Banner,
   Box,
   BriefcaseIcon,
   Button,
   Flex,
   Join,
   MapPinIcon,
+  Message,
   MuseumIcon,
   Spacer,
   Text,
@@ -70,31 +70,30 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
 }) => {
   const color = useColor()
   const navigation = useNavigation()
-
-  const showCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
-  const showCollectorProfileExplanatoryBannerFeatureFlag = useFeatureFlag(
-    "ARShowCollectorProfileExplanatoryBanner"
-  )
   const { showVisualClue } = useVisualClue()
 
-  const [showCollectorProfileExplanatoryBanner, setShowCollectorProfileExplanatoryBanner] =
-    useState(showVisualClue("CollectorProfileExplanatoryBanner"))
+  const showCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
+  const enableCompleteProfileMessage = useFeatureFlag("AREnableCompleteProfileMessage")
 
   const { localImage } = useContext(MyProfileContext)
 
   const userProfileImagePath = localImage || me?.icon?.url
 
-  const collectorProfileIsNotComplete =
-    !me.bio || !me.icon || !me.profession || !me.otherRelevantPositions
+  const [showCompleteCollectorProfileMessage, setShowCompleteCollectorProfileMessage] = useState(
+    showVisualClue("CompleteCollectorProfileMessage")
+  )
 
   useEffect(() => {
-    setVisualClueAsSeen("CollectorProfileExplanatoryBanner")
+    setVisualClueAsSeen("CompleteCollectorProfileMessage")
   }, [])
 
-  const showBanner =
-    showCollectorProfileExplanatoryBannerFeatureFlag &&
-    collectorProfileIsNotComplete &&
-    showCollectorProfileExplanatoryBanner
+  const isCollectorProfileCompleted =
+    me.bio && me.icon && me.profession && me.otherRelevantPositions
+
+  const showCompleteProfileMessage =
+    enableCompleteProfileMessage &&
+    !isCollectorProfileCompleted &&
+    showCompleteCollectorProfileMessage
 
   return (
     <>
@@ -105,16 +104,16 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
           navigate("/my-profile/settings")
         }}
       />
-      {showBanner && (
-        <Banner
-          title="Why complete your Colletor Profile?"
-          text="A complete profile helps you build a relationship with sellers. Select “Edit Profile” to see which details are shared when you contact sellers."
-          showCloseButton
-          containerStyle={{ mb: 2, backgroundColor: color("black5") }}
-          titleStyle={{ variant: "xs", color: color("black100") }}
-          bodyTextStyle={{ variant: "xs", color: color("black60") }}
-          onClose={() => setShowCollectorProfileExplanatoryBanner(false)}
-        />
+      {showCompleteProfileMessage && (
+        <Flex mb={2}>
+          <Message
+            variant="default"
+            title="Why complete your Colletor Profile?"
+            text="A complete profile helps you build a relationship with sellers. Select “Edit Profile” to see which details are shared when you contact sellers."
+            showCloseButton
+            onClose={() => setShowCompleteCollectorProfileMessage(false)}
+          />
+        </Flex>
       )}
 
       <Flex flexDirection="row" alignItems="center" px={2}>
@@ -129,7 +128,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
           {!!userProfileImagePath ? (
             <Avatar src={userProfileImagePath} size="md" />
           ) : (
-            <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
+            <Image source={require("@images/profile_placeholder_avatar.webp")} />
           )}
         </Box>
         <Box px={2} flexShrink={1}>

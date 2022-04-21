@@ -106,7 +106,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       it("Get displayed if at least one of the fields is empty,", async () => {
         beforeEach(() => {
           __globalStoreTestUtils__?.injectFeatureFlags({
-            ARShowCollectorProfileExplanatoryBanner: false,
+            AREnableCompleteProfileMessage: false,
           })
         })
         const { findByText } = getWrapper({
@@ -126,7 +126,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       it("Doesnt get displayed if none of fields are empty", async () => {
         beforeEach(() => {
           __globalStoreTestUtils__?.injectFeatureFlags({
-            ARShowCollectorProfileExplanatoryBanner: false,
+            AREnableCompleteProfileMessage: false,
           })
         })
         const { queryByText } = getWrapper({

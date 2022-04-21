@@ -189,9 +189,9 @@ export const features = defineFeatures({
     description: "Conversational Buy Now",
     showInAdminMenu: true,
   },
-  ARShowCollectorProfileExplanatoryBanner: {
+  AREnableCompleteProfileMessage: {
     readyForRelease: true,
-    description: "Show Collector Profile Explanatory Banner",
+    description: "Anable Collector Profile Complete Message",
     showInAdminMenu: true,
   },
 })
