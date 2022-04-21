@@ -323,6 +323,8 @@ jest.mock("@segment/analytics-react-native", () => ({
   reset: () => null,
 }))
 
+jest.mock("@segment/analytics-react-native-appboy", () => ({}))
+
 jest.mock("react-native-push-notification", () => ({
   configure: jest.fn(),
   onRegister: jest.fn(),
