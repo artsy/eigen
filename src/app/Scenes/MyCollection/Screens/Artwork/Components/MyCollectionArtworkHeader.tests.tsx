@@ -1,59 +1,50 @@
-import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
-import { MyCollectionArtworkHeaderTestsQuery } from "__generated__/MyCollectionArtworkHeaderTestsQuery.graphql"
-import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { ImageWithLoadingState } from "app/Scenes/Artwork/Components/ImageCarousel/ImageWithLoadingState"
-import { extractText } from "app/tests/extractText"
+import { fireEvent } from "@testing-library/react-native"
+import { MyCollectionArtworkHeaderTestQuery } from "__generated__/MyCollectionArtworkHeaderTestQuery.graphql"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import {
-  MyCollectionArtworkHeader,
-  MyCollectionArtworkHeaderFragmentContainer,
-} from "./MyCollectionArtworkHeader"
+import { MyCollectionArtworkHeader } from "./MyCollectionArtworkHeader"
 
 jest.unmock("react-relay")
 
 describe("MyCollectionArtworkHeader", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
   const TestRenderer = () => (
-    <QueryRenderer<MyCollectionArtworkHeaderTestsQuery>
+    <QueryRenderer<MyCollectionArtworkHeaderTestQuery>
       environment={mockEnvironment}
       query={graphql`
-        query MyCollectionArtworkHeaderTestsQuery @relay_test_operation {
-          artwork(id: "some-slug") {
+        query MyCollectionArtworkHeaderTestQuery @relay_test_operation {
+          artwork(id: "artwork-id") {
             ...MyCollectionArtworkHeader_artwork
           }
         }
       `}
-      variables={{}}
       render={({ props }) => {
         if (props?.artwork) {
-          return <MyCollectionArtworkHeaderFragmentContainer artwork={props.artwork} />
+          return <MyCollectionArtworkHeader artwork={props.artwork} />
         }
         return null
       }}
+      variables={{}}
     />
   )
+
+  const getWrapper = (mockResolvers = {}) => {
+    const renderer = renderWithWrappersTL(<TestRenderer />)
+    mockEnvironmentPayload(mockEnvironment, mockResolvers)
+    return renderer
+  }
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
   })
 
-  afterAll(() => {
-    jest.clearAllMocks()
-  })
-
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironmentPayload(mockEnvironment, mockResolvers)
-    return tree
-  }
-
   it("renders without throwing an error", () => {
-    const wrapper = getWrapper({
+    const { getByText } = getWrapper({
       Artwork: () => ({
         artistNames: "some artist name",
         date: "Jan 20th",
@@ -64,20 +55,20 @@ describe("MyCollectionArtworkHeader", () => {
       }),
     })
 
-    const text = extractText(wrapper.root)
-    expect(text).toContain("some artist name")
-    expect(text).toContain("some title, Jan 20th")
-    expect(wrapper.root.findAllByType(OpaqueImageView)).toBeDefined()
+    expect(getByText("some artist name")).toBeTruthy()
+    expect(getByText("some title, Jan 20th")).toBeTruthy()
   })
 
   it("fires the analytics tracking event when image is pressed", () => {
-    const wrapper = getWrapper({
+    const { getByTestId } = getWrapper({
       Artwork: () => ({
         internalID: "someInternalId",
         slug: "someSlug",
       }),
     })
-    wrapper.root.findAllByType(ImageWithLoadingState)[0].props.onPress()
+
+    const carouselImage = getByTestId("image-with-loading-state")
+    fireEvent(carouselImage, "Press")
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action_name: "artworkImageZoom",
@@ -87,15 +78,17 @@ describe("MyCollectionArtworkHeader", () => {
   })
 
   it("shows fallback view when images are null", () => {
-    const mockProps = {
-      artistNames: "names",
-      date: new Date().toISOString(),
-      images: null,
-      internalID: "internal-id",
-      title: "a title",
-      slug: "some-slug",
-    } as MyCollectionArtworkHeader_artwork
-    const { getByTestId } = renderWithWrappersTL(<MyCollectionArtworkHeader artwork={mockProps} />)
+    const { getByTestId } = getWrapper({
+      Artwork: () => ({
+        artistNames: "names",
+        date: new Date().toISOString(),
+        images: null,
+        internalID: "internal-id",
+        title: "a title",
+        slug: "some-slug",
+      }),
+    })
+
     const fallbackView = getByTestId("Fallback-image-mycollection-header")
     expect(fallbackView).toBeDefined()
   })

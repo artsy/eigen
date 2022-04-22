@@ -22,6 +22,7 @@ describe("Ways to Buy Options Screen", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   const MockWaysToBuyScreen = ({
@@ -55,6 +56,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
@@ -90,6 +92,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
@@ -114,6 +117,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getAllByA11yState } = renderWithWrappersTL(
@@ -149,6 +153,7 @@ describe("Ways to Buy Options Screen", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getAllByA11yState } = renderWithWrappersTL(

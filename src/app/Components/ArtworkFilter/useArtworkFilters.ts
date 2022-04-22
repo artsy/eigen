@@ -1,5 +1,5 @@
 import { PAGE_SIZE } from "app/Components/constants"
-import { useEffect, useMemo } from "react"
+import { MutableRefObject, useEffect, useMemo } from "react"
 import { RelayPaginationProp, Variables } from "react-relay"
 import {
   aggregationForFilter,
@@ -19,6 +19,7 @@ interface UseArtworkFiltersOptions {
   refetchVariables?: Variables | null
   onApply?: () => void
   onRefetch?: (error?: Error | null) => void
+  refetchRef?: MutableRefObject<() => void>
 }
 
 export const useArtworkFilters = ({
@@ -30,6 +31,7 @@ export const useArtworkFilters = ({
   onApply,
   onRefetch,
   type = "filter",
+  refetchRef,
 }: UseArtworkFiltersOptions) => {
   const setAggregationsAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setAggregationsAction
@@ -45,8 +47,8 @@ export const useArtworkFilters = ({
     setAggregationsAction(aggregations)
   }, [])
 
-  useEffect(() => {
-    if (relay !== undefined && applyFilters) {
+  const refetch = () => {
+    if (relay !== undefined) {
       const filterParams = filterArtworksParams(appliedFilters, filterType)
 
       relay.refetchConnection(
@@ -64,11 +66,22 @@ export const useArtworkFilters = ({
         },
         refetchVariables ?? { input: prepareFilterArtworksParamsForInput(filterParams) }
       )
+    }
+  }
+
+  if (refetchRef) {
+    refetchRef.current = refetch
+  }
+
+  useEffect(() => {
+    if (applyFilters) {
+      refetch()
+
       if (onApply) {
         onApply()
       }
     }
-  }, [relay, appliedFilters])
+  }, [appliedFilters])
 }
 
 export const useArtworkFiltersAggregation = ({ paramName }: { paramName: FilterParamName }) => {

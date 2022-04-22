@@ -3,9 +3,7 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { action, Action, computed, Computed, createContextStore, State } from "easy-peasy"
-import { extractPills } from "./pillExtractors"
-import { SavedSearchPill } from "./SavedSearchAlertModel"
+import { action, Action, createContextStore, State } from "easy-peasy"
 
 interface SavedSearchModel {
   attributes: SearchCriteriaAttributes
@@ -19,8 +17,6 @@ interface SavedSearchModel {
       value: string | number | boolean
     }
   >
-
-  pills: Computed<this, SavedSearchPill[]>
 }
 
 export type SavedSearchState = State<SavedSearchModel>
@@ -43,8 +39,6 @@ const savedSearchModel: SavedSearchModel = {
 
     state.dirty = true
   }),
-
-  pills: computed((state) => extractPills(state.attributes, state.aggregations)),
 }
 
 export const SavedSearchStore = createContextStore<SavedSearchModel>(

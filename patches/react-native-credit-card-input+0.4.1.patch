@@ -35,7 +35,7 @@ index dde3aec..aec1f45 100644
                s.baseInputStyle,
                inputStyle,
 diff --git a/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js b/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
-index a5f166b..20ede42 100644
+index a5f166b..35e81c4 100644
 --- a/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
 +++ b/node_modules/react-native-credit-card-input/src/LiteCreditCardInput.js
 @@ -5,11 +5,14 @@ import {
@@ -71,16 +71,18 @@ index a5f166b..20ede42 100644
      resizeMode: "contain",
    },
    expanded: {
-@@ -50,18 +54,20 @@ const s = StyleSheet.create({
+@@ -50,18 +54,22 @@ const s = StyleSheet.create({
      width: INFINITE_WIDTH,
    },
    expiryInput: {
 -    width: 80,
-+    width: 70,
++    width: "100%",
++    marginRight: 5,
    },
    cvcInput: {
 -    width: 80,
-+    width: 40,
++    width: "100%",
++    marginRight: 3, // fix truncated text for custom font
    },
    last4Input: {
      width: 60,
@@ -96,7 +98,7 @@ index a5f166b..20ede42 100644
    },
  });
  
-@@ -83,13 +89,13 @@ export default class LiteCreditCardInput extends Component {
+@@ -83,13 +91,13 @@ export default class LiteCreditCardInput extends Component {
  
    static defaultProps = {
      placeholders: {
@@ -112,7 +114,7 @@ index a5f166b..20ede42 100644
      additionalInputsProps: {},
    };
  
-@@ -105,7 +111,7 @@ export default class LiteCreditCardInput extends Component {
+@@ -105,7 +113,7 @@ export default class LiteCreditCardInput extends Component {
    _focus = field => {
      if (!field) return;
      this.refs[field].focus();
@@ -121,7 +123,7 @@ index a5f166b..20ede42 100644
    }
  
    _inputProps = field => {
-@@ -113,6 +119,7 @@ export default class LiteCreditCardInput extends Component {
+@@ -113,6 +121,7 @@ export default class LiteCreditCardInput extends Component {
        inputStyle, validColor, invalidColor, placeholderColor,
        placeholders, values, status,
        onFocus, onChange, onBecomeEmpty, onBecomeValid,
@@ -129,7 +131,7 @@ index a5f166b..20ede42 100644
        additionalInputsProps,
      } = this.props;
  
-@@ -126,6 +133,7 @@ export default class LiteCreditCardInput extends Component {
+@@ -126,6 +135,7 @@ export default class LiteCreditCardInput extends Component {
        status: status[field],
  
        onFocus, onChange, onBecomeEmpty, onBecomeValid,
@@ -137,7 +139,7 @@ index a5f166b..20ede42 100644
        additionalInputProps: additionalInputsProps[field],
      };
    };
-@@ -139,11 +147,22 @@ export default class LiteCreditCardInput extends Component {
+@@ -139,11 +149,22 @@ export default class LiteCreditCardInput extends Component {
    }
  
    render() {
@@ -162,7 +164,7 @@ index a5f166b..20ede42 100644
          <View style={[
            s.leftPart,
            showRightPart ? s.hidden : s.expanded,
-@@ -152,16 +171,23 @@ export default class LiteCreditCardInput extends Component {
+@@ -152,16 +173,23 @@ export default class LiteCreditCardInput extends Component {
              keyboardType="numeric"
              containerStyle={s.numberInput} />
          </View>
@@ -190,7 +192,7 @@ index a5f166b..20ede42 100644
                <CCInput field="last4"
                  keyboardType="numeric"
                  value={ numberStatus === "valid" ? number.substr(number.length - 4, 4) : "" }
-@@ -180,3 +206,14 @@ export default class LiteCreditCardInput extends Component {
+@@ -180,3 +208,14 @@ export default class LiteCreditCardInput extends Component {
      );
    }
  }

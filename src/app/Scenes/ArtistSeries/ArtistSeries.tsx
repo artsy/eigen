@@ -110,6 +110,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
             />
           </Flex>
         }
+        keyboardShouldPersistTaps="handled"
       >
         <Flex px={2} mt={2}>
           <Text variant="md" color="black60" mb={2}>

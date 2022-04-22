@@ -4,7 +4,7 @@ import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Box, Button, Flex, Input, Message, Spacer, Text, useColor } from "palette"
+import { Box, Button, Flex, Input, SimpleMessage, Spacer, Text, useColor } from "palette"
 import React, { useRef } from "react"
 import { ScrollView } from "react-native"
 import * as Yup from "yup"
@@ -95,10 +95,10 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
             {otpMode === "on_demand" ? (
               <>
                 <Spacer mb={20} />
-                <Message testID="on_demand_message">
+                <SimpleMessage testID="on_demand_message">
                   Your safety and security are important to us. Please check your email for a
                   one-time authentication code to complete your login.
-                </Message>
+                </SimpleMessage>
               </>
             ) : null}
           </Box>

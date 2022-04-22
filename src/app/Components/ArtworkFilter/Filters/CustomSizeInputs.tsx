@@ -1,13 +1,15 @@
+import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { Box, Flex, Input, Join, Spacer, Text, useColor } from "palette"
 import React from "react"
 import { TextStyle } from "react-native"
-import { LOCALIZED_UNIT, Numeric, Range } from "./helpers"
+import { Numeric, Range } from "./helpers"
 
 export interface CustomSizeInputsProps {
   label: string
   range: Range
   active?: boolean
   onChange: (range: Range) => void
+  selectedMetric: Metric
 }
 
 // Helpers
@@ -24,6 +26,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
   range,
   active,
   onChange,
+  selectedMetric,
 }) => {
   const color = useColor()
   const handleInputChange = (field: keyof Range) => (text: string) => {
@@ -44,26 +47,24 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
       <Flex flexDirection="row">
         <Join separator={<Spacer ml={2} />}>
           <Flex flex={1}>
-            <Text variant="xs" mb={0.5}>
-              Min
-            </Text>
             <Input
+              description="Min"
+              descriptionColor="black60"
               keyboardType="number-pad"
               onChangeText={handleInputChange("min")}
-              placeholder={LOCALIZED_UNIT}
+              fixedRightPlaceholder={selectedMetric}
               accessibilityLabel={`Minimum ${label} Input`}
               defaultValue={getValue(range.min)}
               inputTextStyle={inputTextStyle}
             />
           </Flex>
           <Flex flex={1}>
-            <Text variant="xs" mb={0.5}>
-              Max
-            </Text>
             <Input
+              description="Max"
+              descriptionColor="black60"
               keyboardType="number-pad"
               onChangeText={handleInputChange("max")}
-              placeholder={LOCALIZED_UNIT}
+              fixedRightPlaceholder={selectedMetric}
               accessibilityLabel={`Maximum ${label} Input`}
               defaultValue={getValue(range.max)}
               inputTextStyle={inputTextStyle}

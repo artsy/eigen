@@ -833,27 +833,6 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to MyCollectionArtworkFullDetails", () => {
-    expect(matchRoute("/my-collection/artwork-details/123")).toMatchInlineSnapshot(`
-      Object {
-        "module": "MyCollectionArtworkFullDetails",
-        "params": Object {
-          "artworkSlug": "123",
-        },
-        "type": "match",
-      }
-    `)
-    expect(matchRoute("/my-collection/artwork-details/456")).toMatchInlineSnapshot(`
-      Object {
-        "module": "MyCollectionArtworkFullDetails",
-        "params": Object {
-          "artworkSlug": "456",
-        },
-        "type": "match",
-      }
-    `)
-  })
-
   it("routes to MyCollection", () => {
     expect(matchRoute("/my-collection")).toMatchInlineSnapshot(`
       Object {
@@ -864,10 +843,10 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to ConsignmentsSubmissionForm", () => {
+  it("routes to SubmitArtwork", () => {
     expect(matchRoute("/consign/submission")).toMatchInlineSnapshot(`
       Object {
-        "module": "ConsignmentsSubmissionForm",
+        "module": "SubmitArtwork",
         "params": Object {},
         "type": "match",
       }

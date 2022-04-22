@@ -1,5 +1,5 @@
 import { Duration } from "moment"
-import { Flex, Sans } from "palette"
+import { Flex, Sans, Text } from "palette"
 import React from "react"
 
 interface TimeSectionProps {
@@ -83,4 +83,61 @@ export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator,
         .join("")}
     </Sans>
   )
+}
+
+interface ModernTickerProps {
+  duration: Duration
+  hasStarted?: boolean
+}
+
+export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted }) => {
+  const timerInfo = getTimerInfo(duration, hasStarted)
+
+  return <Text color={timerInfo.color}>{timerInfo.copy}</Text>
+}
+
+interface TimerInfo {
+  copy: string
+  color: string
+}
+
+export const getTimerInfo = (duration: Duration, hasStarted?: boolean): TimerInfo => {
+  const days = duration.asDays()
+  const hours = duration.hours()
+  const minutes = duration.minutes()
+  const seconds = duration.seconds()
+
+  const parsedDays = parseInt(days.toString(), 10)
+  const parsedHours = parseInt(hours.toString(), 10)
+  const parsedMinutes = parseInt(minutes.toString(), 10)
+  const parsedSeconds = parseInt(seconds.toString(), 10)
+
+  let copy = ""
+  let color = "blue100"
+
+  // // Sale has not yet started
+  if (!hasStarted) {
+    if (parsedDays < 1) {
+      copy = "Bidding Starts Today"
+    } else {
+      copy = `${parsedDays} Day${parsedDays > 1 ? "s" : ""} Until Bidding Starts`
+    }
+  } else {
+    // More than 24 hours until close
+    if (parsedDays >= 1) {
+      copy = `${parsedDays}d ${parsedHours}h`
+    }
+
+    // 1-24 hours until close
+    else if (parsedDays < 1 && parsedHours >= 1) {
+      copy = `${parsedHours}h ${parsedMinutes}m`
+    }
+
+    // <60 mins until close
+    else if (parsedDays < 1 && parsedHours < 1) {
+      copy = `${parsedMinutes}m ${parsedSeconds}s`
+      color = "red100"
+    }
+  }
+  return { copy, color }
 }

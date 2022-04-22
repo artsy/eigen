@@ -186,6 +186,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           scrollEventThrottle={100}
           // @ts-ignore
           CellRendererComponent={cellItemRenderer}
+          keyboardShouldPersistTaps="handled"
           renderItem={({ item }): null | any => {
             switch (item) {
               case "fairHeader": {

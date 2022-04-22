@@ -43,6 +43,7 @@ export const getBarsFromAggregations = (aggregations?: Aggregations) => {
   return sortedBars
 }
 
+const NUMBERS_REGEX = /^(|\d)+$/
 const DEBOUNCE_DELAY = 500
 const DEFAULT_PRICE_RANGE = DEFAULT_PRICE_OPTION.paramValue
 const DEFAULT_RANGE = [0, 50000]
@@ -118,6 +119,13 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_OPTION.paramValue
 
   const handleTextChange = (changedIndex: number) => (value: string) => {
+    // Early exit the input update if the value is not a number
+    // This was added for the android number-pad keyboard that
+    // includes some special characters
+    if (!NUMBERS_REGEX.test(value)) {
+      return
+    }
+
     const updatedRange = range.map((rangeValue, index) => {
       if (index === changedIndex) {
         if (value === "" || value === "0") {
@@ -165,10 +173,11 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
         <Flex m={2}>
           <Text variant="md">Choose Your Price Range</Text>
         </Flex>
-        <Flex flexDirection="row" alignItems="center" mb={1} mx={2}>
+        <Flex flexDirection="row" mx={2}>
           <Input
+            containerStyle={{ flex: 1 }}
             description="Min"
-            placeholder="$USD"
+            fixedRightPlaceholder="$USD"
             enableClearButton
             keyboardType="number-pad"
             value={getInputValue(minValue)}
@@ -178,8 +187,9 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
           />
           <Spacer mx={2} />
           <Input
+            containerStyle={{ flex: 1 }}
             description="Max"
-            placeholder="$USD"
+            fixedRightPlaceholder="$USD"
             enableClearButton
             keyboardType="number-pad"
             value={getInputValue(maxValue)}
@@ -191,7 +201,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
         <Spacer m={2} />
         <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
           {!!shouldDisplayHistogram && (
-            <Flex my={2}>
+            <Flex mb={2}>
               <Histogram bars={histogramBars} selectedRange={[sliderRange[0], sliderRange[1]]} />
             </Flex>
           )}

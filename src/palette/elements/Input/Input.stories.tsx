@@ -1,6 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
 import SearchIcon from "app/Icons/SearchIcon"
-import { Box, Input } from "palette"
+import { Box, Input, Spacer } from "palette"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import React from "react"
 import { DataList, List } from "storybook/helpers"
@@ -11,9 +11,8 @@ storiesOf("Input", module)
   .add("PhoneInput", () => (
     <List contentContainerStyle={{ marginHorizontal: 20, alignItems: "stretch" }}>
       <PhoneInput
-        style={{ flex: 1 }}
         title="Phone number (enabled)"
-        value={phoneNumber ?? ""}
+        value={phoneNumber}
         onChangeText={() => {
           console.log("onChangeText function")
         }}
@@ -21,10 +20,10 @@ storiesOf("Input", module)
           console.log("validation function")
         }}
       />
+      <Spacer m={2} />
       <PhoneInput
-        style={{ flex: 1 }}
         title="Phone number (disabled)"
-        value={phoneNumber ?? ""}
+        value={phoneNumber}
         onChangeText={() => {
           console.log("onChangeText function")
         }}
@@ -48,6 +47,9 @@ storiesOf("Input", module)
       <Input title="Title" description="With error" error="this is an error" />
       <Input title="Required" required />
       <Input title="Disabled" disabled />
+      <Input placeholder="I'm a placeholder" />
+      <Input description="With clear button enabled" value="5" enableClearButton />
+      <Input description="With fixedRightPlaceholder" fixedRightPlaceholder="cm" />
       <Input placeholder="I'm a placeholder" />
       <Input
         title="full text"

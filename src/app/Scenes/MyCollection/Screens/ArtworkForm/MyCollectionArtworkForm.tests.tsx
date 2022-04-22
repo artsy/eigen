@@ -6,7 +6,7 @@ import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "app/Scenes/Consignments/Submission/uploadFileToS3"
+} from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
@@ -24,7 +24,7 @@ import {
 } from "./MyCollectionArtworkForm"
 import * as photoUtil from "./MyCollectionImageUtil"
 
-jest.mock("app/Scenes/Consignments/Submission/uploadFileToS3", () => ({
+jest.mock("app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3", () => ({
   getConvectionGeminiKey: jest.fn(),
   getGeminiCredentialsForEnvironment: jest.fn(),
   uploadFileToS3: jest.fn(),
@@ -374,7 +374,6 @@ describe("MyCollectionArtworkForm", () => {
                   title: null,
                   attributionClass: null,
                   consignmentSubmission: null,
-                  " $fragmentRefs": null as any,
                 },
               },
             },

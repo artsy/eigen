@@ -53,8 +53,8 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
       </Text>
 
       {!!enablePriceEstimateRange && <Field label="Estimate Range" value={estimatePrice} />}
-      <Field label="Medium" value={capitalize(category!)} />
-      <Field label="Materials" value={capitalize(medium!)} />
+      <Field label="Medium" value={capitalize(medium!)} />
+      <Field label="Materials" value={capitalize(category!)} />
       <Field label="Dimensions" value={dimensionsText} />
       <Field label="Year created" value={date} />
       <Field label="Provenance" value={provenance} />

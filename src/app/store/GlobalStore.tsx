@@ -156,6 +156,21 @@ export function unsafe_getFeatureFlag(key: FeatureName): boolean {
   return features[key].readyForRelease
 }
 
+/**
+ * This is marked as unsafe because it will not cause a re-render
+ * if used in a react component. Use `useLocalizedUnit` instead.
+ * It is safe to use in contexts that don't require reactivity.
+ */
+export function unsafe_getLocalizedUnit() {
+  const state = globalStoreInstance().getState()
+  if (state) {
+    return state.userPrefs.metric
+  }
+  if (__DEV__) {
+    throw new Error(`Unable to access metric before GlobalStore bootstraps`)
+  }
+}
+
 export function unsafe_getDevToggle(key: DevToggleName) {
   const state = globalStoreInstance().getState() ?? null
   if (state) {

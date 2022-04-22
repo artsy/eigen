@@ -34,11 +34,6 @@ function defineFeatures<T extends string>(featureMap: {
 export type FeatureName = keyof typeof features
 
 export const features = defineFeatures({
-  AROptionsInquiryCheckout: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsInquiryCheckout",
-    description: "Enable inquiry checkout",
-  },
   AROptionsPriceTransparency: {
     readyForRelease: true,
     echoFlagKey: "AROptionsPriceTransparency",
@@ -95,12 +90,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableQueriesPrefetching",
   },
-  AREnableAccordionNavigationOnSubmitArtwork: {
-    readyForRelease: true,
-    description: "Enable New Artwork Submission Flow with Accordion",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableAccordionNavigationOnSubmitArtwork",
-  },
   ARShowLinkedAccounts: {
     readyForRelease: true,
     description: "Show linked social accounts",
@@ -110,6 +99,24 @@ export const features = defineFeatures({
     readyForRelease: true,
     description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
+  },
+  AREnableCascadingEndTimerLotPage: {
+    readyForRelease: true,
+    description: "Enable cascading end times on the lot page",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCascadingEndTimerLotPage",
+  },
+  AREnableCascadingEndTimerSalePageDetails: {
+    readyForRelease: true,
+    description: "Enable cascading end times on the sale page details",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCascadingEndTimerSalePageDetails",
+  },
+  AREnableCascadingEndTimerSalePageGrid: {
+    readyForRelease: true,
+    description: "Enable cascading end times on the sale page lot grid",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCascadingEndTimerSalePageGrid",
   },
   AREnableImageSearch: {
     readyForRelease: false,
@@ -126,25 +133,9 @@ export const features = defineFeatures({
     description: "Enable My Collection search bar",
     showInAdminMenu: true,
   },
-  ARShowConsignmentsInMyCollection: {
-    readyForRelease: true,
-    description: "Show consignments in My Collection",
-    showInAdminMenu: true,
-  },
   AREnablePlaceholderLayoutAnimation: {
     readyForRelease: true,
     description: "Enable placeholder layout animation",
-  },
-  AREnableNewMyCollectionArtwork: {
-    readyForRelease: true,
-    description: "Enable new my collection artwork page",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnablePlaceholderLayoutAnimation",
-  },
-  AREnableShowOnlySubmittedMyCollectionArtworkFilter: {
-    readyForRelease: true,
-    description: "Enable Show Only Submitted MyCollection Artwork Filter",
-    showInAdminMenu: true,
   },
   AREnableAvalaraPhase2: {
     readyForRelease: false,
@@ -161,7 +152,7 @@ export const features = defineFeatures({
     description: "Show request price estimate banner",
     showInAdminMenu: true,
   },
-  ARShowDemandIndexHints: {
+  ARShowMyCollectionDemandIndexHints: {
     readyForRelease: true,
     description: "Show demand index hints",
     showInAdminMenu: true,
@@ -186,6 +177,26 @@ export const features = defineFeatures({
   AREnableMapScreen: {
     readyForRelease: false,
     description: "Enable Crossplatform Map Screen",
+    showInAdminMenu: true,
+  },
+  AREnableAuctionShareButton: {
+    readyForRelease: true,
+    description: "Show share button in auction screen",
+    showInAdminMenu: true,
+  },
+  AREnableConversationalBuyNow: {
+    readyForRelease: false,
+    description: "Conversational Buy Now",
+    showInAdminMenu: true,
+  },
+  AREnableCompleteProfileMessage: {
+    readyForRelease: true,
+    description: "Enable Collector Profile Complete Message",
+    showInAdminMenu: true,
+  },
+  ARShowMyCollectionInsights: {
+    readyForRelease: false,
+    description: "Enable my collection insights tab",
     showInAdminMenu: true,
   },
 })
@@ -244,6 +255,9 @@ export const devToggles = defineDevToggles({
   },
   DTUseProductionUnleash: {
     description: "Use Production Unleash",
+  },
+  DTShowErrorInLoadFailureView: {
+    description: "Show error in load failure view",
   },
 })
 
