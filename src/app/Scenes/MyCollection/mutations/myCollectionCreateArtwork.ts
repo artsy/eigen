@@ -20,7 +20,7 @@ export function myCollectionCreateArtwork(
                   __id
                   node {
                     ...MyCollectionArtwork_sharedProps @relay(mask: false)
-                    ...OldMyCollectionArtwork_sharedProps @relay(mask: false)
+                    ...MyCollectionArtwork_sharedProps @relay(mask: false)
                   }
                 }
               }
