@@ -12,7 +12,6 @@ import {
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { useHasBeenTrue } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -34,7 +33,7 @@ import {
   Touchable,
   useColor,
 } from "palette"
-import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
+import React, { Suspense, useContext, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -65,7 +64,7 @@ const editMyProfileSchema = Yup.object().shape({
 export const MyProfileEditForm: React.FC = () => {
   const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {})
 
-  const [me, refetch] = useRefetchableFragment<MyProfileEditFormQuery, MyProfileEditForm_me$key>(
+  const [me] = useRefetchableFragment<MyProfileEditFormQuery, MyProfileEditForm_me$key>(
     meFragment,
     data.me
   )
