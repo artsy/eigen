@@ -1488,6 +1488,9 @@ type ArtistRelatedData {
     # Exclude artists the user already follows
     excludeFollowedArtists: Boolean
     first: Int
+
+    # Include featured artists if no results are found
+    includeFallbackArtists: Boolean
     last: Int
   ): ArtistConnection
 }
