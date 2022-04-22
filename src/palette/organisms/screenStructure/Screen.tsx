@@ -27,7 +27,7 @@ const ScreenContext = createContext<ScreenContextValue>(null!)
 function useScreenContext() {
   const context = useContext(ScreenContext)
   if (!context) {
-    throw new Error(`useScreenContext must be used within a Screen`)
+    throw new Error("useScreenContext must be used within a Screen")
   }
   return context
 }

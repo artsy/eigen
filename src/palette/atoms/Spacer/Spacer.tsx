@@ -8,7 +8,7 @@ export interface SpacerProps extends SpaceProps, WidthProps, HeightProps {
 
 /** A component used to inject space where it's needed */
 export const Spacer: React.FC<SpacerProps & { id?: string }> = ({ x, y, ...props }) => {
-  return <Box {...props} ml={x ?? props.ml} mt={y ?? props.mt} />
+  return <Box ml={x ?? props.ml} mt={y ?? props.mt} {...props}  />
 }
 
 Spacer.displayName = "Spacer"
