@@ -2,7 +2,6 @@ import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 import { useState } from "react"
-import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { Dialog, DialogProps } from "."
 import { Button } from "../Button/Button"
@@ -27,7 +26,6 @@ const DialogDemo: React.FC<Omit<DialogProps, "isVisible" | "primaryCta" | "title
 }
 
 storiesOf("Dialog", module)
-  .addDecorator(withTheme)
   .add("Default", () => <DialogDemo />)
   .add("With secondary action", () => (
     <DialogDemo

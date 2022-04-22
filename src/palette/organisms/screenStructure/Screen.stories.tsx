@@ -1,18 +1,159 @@
-import { storiesOf } from "@storybook/react-native"
-import { Text } from "palette"
-import { withTheme } from "storybook/decorators"
+import { ComponentMeta, ComponentStory } from "@storybook/react-native"
+import { Button, Flex, Input, Text } from "palette"
 import { Screen } from "./Screen"
 
-storiesOf("palette/organisms/Screen", module)
-  .addDecorator(withTheme)
-  .add("Regular", () => (
-    <Screen>
-      <Screen.Body>
-        <Text>Storybook doesn't support outside-of-safe-area rendering.</Text>
-        <Text>
-          To test our `Screen`, use `yarn start` and navigate to `Screen.fakestories.tsx` in your
-          editor.
-        </Text>
-      </Screen.Body>
-    </Screen>
-  ))
+const ScreenMeta: ComponentMeta<typeof Screen> = {
+  title: "palette/organisms/Screen",
+  component: Screen,
+  parameters: { noSafeArea: true },
+}
+export default ScreenMeta
+type ScreenStory = ComponentStory<typeof Screen>
+
+export const Regular: ScreenStory = () => (
+  <Screen>
+    <Screen.Body>
+      <Text>Hello</Text>
+    </Screen.Body>
+  </Screen>
+)
+
+export const FullBackground: ScreenStory = () => (
+  <Screen>
+    <Screen.Background>
+      <Flex flex={1} backgroundColor="blue" />
+    </Screen.Background>
+    <Screen.Body>
+      <Text>Hello</Text>
+    </Screen.Body>
+  </Screen>
+)
+
+export const FullBackgroundDifferentColors: ScreenStory = () => (
+  <Screen>
+    <Screen.Background>
+      <Flex flex={1} backgroundColor="blue" />
+    </Screen.Background>
+    <Screen.Body backgroundColor="pink">
+      <Text>Hello</Text>
+    </Screen.Body>
+  </Screen>
+)
+
+export const FullBackgroundDifferentColorsManual: ScreenStory = () => (
+  <Screen>
+    <Screen.Background>
+      <Flex flex={1} backgroundColor="blue" />
+    </Screen.Background>
+    <Screen.Body fullwidth>
+      <Screen.BodyPadding flex={1} backgroundColor="orange">
+        <Text>Hello</Text>
+      </Screen.BodyPadding>
+    </Screen.Body>
+  </Screen>
+)
+
+export const RegularHeader: ScreenStory = () => (
+  <Screen>
+    {/* tslint:disable-next-line:no-empty */}
+    <Screen.Header onBack={() => {}} />
+    <Screen.Body>
+      <Text>Hello</Text>
+    </Screen.Body>
+  </Screen>
+)
+
+export const NoHeader: ScreenStory = () => (
+  <Screen>
+    <Screen.Body>
+      <Text>Hello</Text>
+    </Screen.Body>
+  </Screen>
+)
+
+export const FloatingHeader: ScreenStory = () => (
+  <Screen>
+    {/* tslint:disable-next-line:no-empty */}
+    <Screen.FloatingHeader onBack={() => {}} />
+    <Screen.Body>
+      <Text>Hello</Text>
+    </Screen.Body>
+  </Screen>
+)
+
+export const ScrollScreen: ScreenStory = () => (
+  <Screen>
+    <Screen.Body scroll>
+      <Text>Hello</Text>
+    </Screen.Body>
+  </Screen>
+)
+
+export const ScrollScreenWithRegularHeader: ScreenStory = () => (
+  <Screen>
+    {/* tslint:disable-next-line:no-empty */}
+    <Screen.Header onBack={() => {}} />
+    <Screen.Body scroll>
+      <Text>Hello</Text>
+    </Screen.Body>
+  </Screen>
+)
+
+export const ScrollScreenWithFloatingHeader: ScreenStory = () => (
+  <Screen>
+    {/* tslint:disable-next-line:no-empty */}
+    <Screen.FloatingHeader onBack={() => {}} />
+    <Screen.Body scroll nosafe>
+      <Text>Hello</Text>
+    </Screen.Body>
+  </Screen>
+)
+
+export const ScrollScreenWithBottomView: ScreenStory = () => (
+  <Screen>
+    <Screen.Body scroll>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Input />
+      <Screen.BottomView>
+        {/* tslint:disable-next-line:no-empty */}
+        <Button onPress={() => {}} block>
+          Bottom Action
+        </Button>
+      </Screen.BottomView>
+    </Screen.Body>
+  </Screen>
+)

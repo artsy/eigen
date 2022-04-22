@@ -3,13 +3,11 @@ import SearchIcon from "app/Icons/SearchIcon"
 import { Box, Input } from "palette"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import React from "react"
-import { withTheme } from "storybook/decorators"
 import { DataList, List } from "storybook/helpers"
 
 const phoneNumber = "124343434"
 
 storiesOf("Input", module)
-  .addDecorator(withTheme)
   .add("PhoneInput", () => (
     <List contentContainerStyle={{ marginHorizontal: 20, alignItems: "stretch" }}>
       <PhoneInput

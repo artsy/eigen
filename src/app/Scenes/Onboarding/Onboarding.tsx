@@ -22,7 +22,6 @@ import { OnboardingLoginWithOTP, OTPMode } from "./OnboardingLoginWithOTP"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingWelcome } from "./OnboardingWelcome"
-// import { OnboardingWelcome } from "palette/organisms/screenStructure/Screen.fakestories"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingNavigationStack = {
