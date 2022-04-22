@@ -71,7 +71,6 @@ public class MainApplication extends Application implements ReactApplication {
         .build();
 
     Analytics.setSingletonInstance(analytics);
-    BrazeLogger.setLogLevel(Log.VERBOSE);
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
   }
 
