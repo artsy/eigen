@@ -188,6 +188,11 @@ export const features = defineFeatures({
     description: "Enable Collector Profile Complete Message",
     showInAdminMenu: true,
   },
+  ARShowMyCollectionInsights: {
+    readyForRelease: false,
+    description: "Enable my collection insights tab",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

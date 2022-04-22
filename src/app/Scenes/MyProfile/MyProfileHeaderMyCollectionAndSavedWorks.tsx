@@ -7,10 +7,16 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { setVisualClueAsSeen, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
+import {
+  setVisualClueAsSeen,
+  unsafe_getFeatureFlag,
+  useFeatureFlag,
+  useVisualClue,
+} from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
+import { compact } from "lodash"
 import {
   Avatar,
   Box,
@@ -30,6 +36,7 @@ import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
+import { MyCollectionInsights } from "../MyCollection/Screens/Insights/MyCollectionInsights"
 import { MyProfileContext } from "./MyProfileProvider"
 import { normalizeMyProfileBio } from "./utils"
 
@@ -38,18 +45,28 @@ const ICON_SIZE = 14
 export enum Tab {
   collection = "My Collection",
   savedWorks = "Saved Works",
+  insights = "Insights",
 }
 
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   me: MyProfileHeaderMyCollectionAndSavedWorks_me
 }> = ({ me }) => {
+  // We are using unsafe_getfeatureflag here because we want to avoid breaking the rule of hooks
+  // inside the StickyTabPage
+  const showMyCollectionInsights = unsafe_getFeatureFlag("ARShowMyCollectionInsights")
+
   return (
     <StickyTabPage
       disableBackButtonUpdate
-      tabs={[
+      tabs={compact([
         {
           title: Tab.collection,
           content: <MyCollectionQueryRenderer />,
+          initial: true,
+        },
+        !!showMyCollectionInsights && {
+          title: Tab.insights,
+          content: <MyCollectionInsights />,
           initial: true,
         },
         {
@@ -57,7 +74,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
           content: <FavoriteArtworksQueryRenderer />,
           initial: false,
         },
-      ]}
+      ])}
       staticHeaderContent={<MyProfileHeader me={me} />}
     />
   )
