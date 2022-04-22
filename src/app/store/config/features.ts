@@ -162,12 +162,6 @@ export const features = defineFeatures({
     description: "Enable My Collection Price Estimate Range",
     showInAdminMenu: false,
   },
-  AREnableMyCollectionComparableWorks: {
-    readyForRelease: true,
-    description: "Enable My Collection Comparable Works",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionComparableWorks",
-  },
   AREnableHomeScreenArtworkRecommendations: {
     readyForRelease: true,
     description: "Enable Home Screen Artwork Recommendations",

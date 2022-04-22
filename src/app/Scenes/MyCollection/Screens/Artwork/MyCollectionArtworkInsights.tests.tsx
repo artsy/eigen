@@ -56,7 +56,6 @@ describe("MyCollectionArtworkInsights", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionComparableWorks: true })
   })
 
   it("renders without throwing an error", async () => {
