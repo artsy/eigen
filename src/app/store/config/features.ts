@@ -131,12 +131,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     description: "Enable placeholder layout animation",
   },
-  AREnableNewMyCollectionArtwork: {
-    readyForRelease: true,
-    description: "Enable new my collection artwork page",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnablePlaceholderLayoutAnimation",
-  },
   AREnableAvalaraPhase2: {
     readyForRelease: false,
     description: "Enable Avalara Phase 2",
@@ -192,6 +186,11 @@ export const features = defineFeatures({
   AREnableCompleteProfileMessage: {
     readyForRelease: true,
     description: "Enable Collector Profile Complete Message",
+    showInAdminMenu: true,
+  },
+  ARShowMyCollectionInsights: {
+    readyForRelease: false,
+    description: "Enable my collection insights tab",
     showInAdminMenu: true,
   },
 })

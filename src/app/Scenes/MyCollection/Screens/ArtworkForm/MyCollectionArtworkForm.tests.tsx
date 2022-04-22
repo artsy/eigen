@@ -374,7 +374,6 @@ describe("MyCollectionArtworkForm", () => {
                   title: null,
                   attributionClass: null,
                   consignmentSubmission: null,
-                  " $fragmentRefs": null as any,
                 },
               },
             },

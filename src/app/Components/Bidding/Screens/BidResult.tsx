@@ -17,7 +17,7 @@ import { BidderPositionResult } from "../types"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
@@ -96,8 +96,11 @@ export class BidResult extends React.Component<BidResultProps> {
   render() {
     const { sale_artwork, bidderPositionResult } = this.props
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { liveStartAt, endAt } = sale_artwork.sale
+    const { liveStartAt, endAt: saleEndAt, cascadingEndTimeIntervalMinutes } = sale_artwork.sale
     const { status, message_header, message_description_md } = bidderPositionResult
+
+    const casacadingEndTimeFeatureEnabled =
+      unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage") && cascadingEndTimeIntervalMinutes
 
     return (
       <View style={{ flex: 1 }}>
@@ -126,7 +129,10 @@ export class BidResult extends React.Component<BidResultProps> {
                 </Markdown>
               )}
               {!!this.shouldDisplayTimer(status) && (
-                <Timer liveStartsAt={liveStartAt} endsAt={endAt} />
+                <Timer
+                  liveStartsAt={liveStartAt}
+                  endsAt={casacadingEndTimeFeatureEnabled ? sale_artwork.endAt : saleEndAt}
+                />
               )}
             </Flex>
           </View>
@@ -156,10 +162,12 @@ export class BidResult extends React.Component<BidResultProps> {
 export const BidResultScreen = createFragmentContainer(BidResult, {
   sale_artwork: graphql`
     fragment BidResult_sale_artwork on SaleArtwork {
+      endAt
       sale {
         liveStartAt
         endAt
         slug
+        cascadingEndTimeIntervalMinutes
       }
     }
   `,

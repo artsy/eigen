@@ -452,13 +452,18 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   render() {
-    const { id, artwork, lot_label, sale } = this.props.sale_artwork
+    const { sale_artwork } = this.props
+    const { id, artwork, lot_label, sale } = sale_artwork
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artworkImage = artwork.image
 
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
     const enablePriceTransparency = unsafe_getFeatureFlag("AROptionsPriceTransparency")
+
+    const casacadingEndTimeFeatureEnabled =
+      unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage") &&
+      sale?.cascadingEndTimeIntervalMinutes
 
     return (
       <Flex m={0} flex={1} flexDirection="column">
@@ -473,7 +478,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               liveStartsAt={sale.live_start_at}
               // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              endsAt={sale.end_at}
+              endsAt={casacadingEndTimeFeatureEnabled ? sale_artwork.endAt : sale.end_at}
             />
           </Flex>
 
@@ -636,6 +641,7 @@ export const ConfirmBidScreen = createRefetchContainer(
           live_start_at: liveStartAt
           end_at: endAt
           isBenefit
+          cascadingEndTimeIntervalMinutes
           partner {
             name
           }
@@ -650,6 +656,7 @@ export const ConfirmBidScreen = createRefetchContainer(
           }
         }
         lot_label: lotLabel
+        endAt
         ...BidResult_sale_artwork
       }
     `,
