@@ -94,8 +94,6 @@ export const MyProfileEditForm: React.FC = () => {
     handleVerification: handleIDVerification,
   } = useHandleIDVerification()
 
-  const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
-
   const { localImage, setLocalImage } = useContext(MyProfileContext)
 
   const uploadProfilePhoto = async (photo: string) => {
@@ -181,19 +179,6 @@ export const MyProfileEditForm: React.FC = () => {
       )
   }
 
-  useEffect(() => {
-    const refetchProfileIdentificationInterval = setInterval(() => {
-      // When the user applies the email verification and the modal is visible
-      if (showVerificationBannerForEmail || showVerificationBannerForID) {
-        refetch({ enableCollectorProfile })
-      }
-    }, 3000)
-
-    return () => {
-      clearInterval(refetchProfileIdentificationInterval)
-    }
-  }, [showVerificationBannerForEmail, showVerificationBannerForID])
-
   const onLeftButtonPressHandler = () => {
     setDidUpdatePhoto(false)
     navigation.goBack()
@@ -247,60 +232,54 @@ export const MyProfileEditForm: React.FC = () => {
                 }}
               />
 
-              {!!enableCollectorProfile && (
-                <DetailedLocationAutocomplete
-                  locationInputRef={locationInputRef}
-                  title="Primary Location"
-                  placeholder="City Name"
-                  returnKeyType="next"
-                  initialLocation={values.displayLocation?.display!}
-                  onFocus={() =>
-                    requestAnimationFrame(() =>
-                      scrollViewRef.current?.scrollTo({ y: PRIMARY_LOCATION_OFFSET })
-                    )
-                  }
-                  onChange={({ city, country, postalCode, state, stateCode }) => {
-                    setFieldValue("location", {
-                      city: city ?? "",
-                      country: country ?? "",
-                      postalCode: postalCode ?? "",
-                      state: state ?? "",
-                      stateCode: stateCode ?? "",
-                    })
-                  }}
-                />
-              )}
+              <DetailedLocationAutocomplete
+                locationInputRef={locationInputRef}
+                title="Primary Location"
+                placeholder="City Name"
+                returnKeyType="next"
+                initialLocation={values.displayLocation?.display!}
+                onFocus={() =>
+                  requestAnimationFrame(() =>
+                    scrollViewRef.current?.scrollTo({ y: PRIMARY_LOCATION_OFFSET })
+                  )
+                }
+                onChange={({ city, country, postalCode, state, stateCode }) => {
+                  setFieldValue("location", {
+                    city: city ?? "",
+                    country: country ?? "",
+                    postalCode: postalCode ?? "",
+                    state: state ?? "",
+                    stateCode: stateCode ?? "",
+                  })
+                }}
+              />
 
-              {!!enableCollectorProfile && (
-                <Input
-                  title="Profession"
-                  onChangeText={handleChange("profession")}
-                  onBlur={() => validateForm()}
-                  error={errors.name}
-                  returnKeyType="next"
-                  defaultValue={values.profession}
-                  placeholder="Profession or Job Title"
-                  onSubmitEditing={() => {
-                    relevantPositionsInputRef.current?.focus()
-                  }}
-                />
-              )}
+              <Input
+                title="Profession"
+                onChangeText={handleChange("profession")}
+                onBlur={() => validateForm()}
+                error={errors.name}
+                returnKeyType="next"
+                defaultValue={values.profession}
+                placeholder="Profession or Job Title"
+                onSubmitEditing={() => {
+                  relevantPositionsInputRef.current?.focus()
+                }}
+              />
 
-              {!!enableCollectorProfile && (
-                <Input
-                  ref={relevantPositionsInputRef}
-                  title="Other Relevant Positions"
-                  onChangeText={handleChange("otherRelevantPositions")}
-                  onBlur={() => validateForm()}
-                  error={errors.name}
-                  returnKeyType="next"
-                  defaultValue={values.otherRelevantPositions}
-                  placeholder="Memberships, Institutions, Positions"
-                  onSubmitEditing={() => {
-                    bioInputRef.current?.focus()
-                  }}
-                />
-              )}
+              <Input
+                ref={relevantPositionsInputRef}
+                title="Other Relevant Positions"
+                onChangeText={handleChange("otherRelevantPositions")}
+                onBlur={() => validateForm()}
+                error={errors.name}
+                returnKeyType="next"
+                defaultValue={values.otherRelevantPositions}
+                placeholder="Memberships, Institutions, Positions"
+                onSubmitEditing={() => {
+                  bioInputRef.current?.focus()
+                }}
+              />
 
               <Input
                 ref={bioInputRef}
@@ -317,15 +296,13 @@ export const MyProfileEditForm: React.FC = () => {
                 placeholder="Add a brief bio, so galleries know which artists or genres you collect"
               />
 
-              {!!enableCollectorProfile && (
-                <ProfileVerifications
-                  isIDVerified={!!me?.identityVerified}
-                  canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
-                  emailConfirmed={!!me?.emailConfirmed}
-                  handleEmailVerification={handleEmailVerification}
-                  handleIDVerification={handleIDVerification}
-                />
-              )}
+              <ProfileVerifications
+                isIDVerified={!!me?.identityVerified}
+                canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
+                emailConfirmed={!!me?.emailConfirmed}
+                handleEmailVerification={handleEmailVerification}
+                handleIDVerification={handleIDVerification}
+              />
 
               <Button flex={1} disabled={!touched} onPress={handleSubmit} mb={2}>
                 Save
@@ -386,7 +363,6 @@ export const MyProfileEditFormScreen: React.FC = () => {
 }
 
 const LoadingSkeleton = () => {
-  const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
   return (
     <ProvidePlaceholderContext>
       <Flex alignItems="center" mt={2}>
@@ -399,7 +375,7 @@ const LoadingSkeleton = () => {
         <PlaceholderBox width={99} height={99} borderRadius={50} />
         <PlaceholderText width={100} height={20} marginTop={5} marginLeft={20} />
       </Flex>
-      {[...Array(enableCollectorProfile ? 4 : 1)].map((_x, i) => (
+      {[...Array(4)].map((_x, i) => (
         <Flex mt={30} key={i}>
           <Flex mx={20}>
             <PlaceholderText width={100} height={20} marginTop={5} />
