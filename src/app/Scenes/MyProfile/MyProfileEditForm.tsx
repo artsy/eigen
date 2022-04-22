@@ -33,7 +33,7 @@ import {
   Touchable,
   useColor,
 } from "palette"
-import React, { Suspense, useContext, useRef, useState } from "react"
+import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -64,7 +64,7 @@ const editMyProfileSchema = Yup.object().shape({
 export const MyProfileEditForm: React.FC = () => {
   const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {})
 
-  const [me] = useRefetchableFragment<MyProfileEditFormQuery, MyProfileEditForm_me$key>(
+  const [me, refetch] = useRefetchableFragment<MyProfileEditFormQuery, MyProfileEditForm_me$key>(
     meFragment,
     data.me
   )
@@ -177,6 +177,18 @@ export const MyProfileEditForm: React.FC = () => {
         console.error("Error when uploading an image from the device", JSON.stringify(e))
       )
   }
+  useEffect(() => {
+    const refetchProfileIdentificationInterval = setInterval(() => {
+      // When the user applies the email verification and the modal is visible
+      if (showVerificationBannerForEmail || showVerificationBannerForID) {
+        refetch({})
+      }
+    }, 3000)
+
+    return () => {
+      clearInterval(refetchProfileIdentificationInterval)
+    }
+  }, [showVerificationBannerForEmail, showVerificationBannerForID])
 
   const onLeftButtonPressHandler = () => {
     setDidUpdatePhoto(false)
