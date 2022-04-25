@@ -13,8 +13,6 @@
 - commit where we moved old files over - https://github.com/artsy/eigen/pull/6086/commits/783dc3ada16f1f0604805d41d63d8b711d56a27d
 - added a boolean in app registry for ignoring tabs for rn modules embedded in native bc they don't have access, probably a better way to handle or give access?
 - pointing to main branch for react-native-scrollable-tab-view in package.json, bc of this issue for which fix is in main but has not been released: https://github.com/ptomasroos/react-native-scrollable-tab-view/issues/1138 
-- why is the guard necessary in LiveAuctionStateReconciler but not in old app version? version mismatch somewhere? check WebSocket and network related native dependencies, change in this same commit
-
 
 
 possibly need to set up:
@@ -57,7 +55,8 @@ rn-fetch-blob,
 tipsi-stripe
 
 
-
-
-todo:
+DONE:
 - bring xcode projects to a similar state
+- why is the guard necessary in LiveAuctionStateReconciler but not in old app version? version mismatch somewhere? check WebSocket and network related native dependencies, change in this same commit - no longer crashing, will leave in case but not sure
+
+
