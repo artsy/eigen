@@ -200,7 +200,7 @@ export const MyProfilePushNotifications: React.FC<{
           <SwitchMenu
             title="Order Updates"
             description="An order you've placed has an update"
-            value={!!userNotificationSettings.receiveOutbidNotification}
+            value={!!userNotificationSettings.receiveOrderNotification}
             disabled={isLoading}
             onChange={(value) => {
               handleUpdateUserNotificationSettings("receiveOrderNotification", value)
