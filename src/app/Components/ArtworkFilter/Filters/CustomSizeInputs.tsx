@@ -12,6 +12,9 @@ export interface CustomSizeInputsProps {
   selectedMetric: Metric
 }
 
+// Constants
+const NUMBERS_REGEX = /^(|\d)+$/
+
 // Helpers
 const getValue = (value: Numeric) => {
   if (value === "*" || value === 0) {
@@ -30,6 +33,10 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
 }) => {
   const color = useColor()
   const handleInputChange = (field: keyof Range) => (text: string) => {
+    if (!NUMBERS_REGEX.test(text)) {
+      return
+    }
+
     const parsed = parseFloat(text)
     const value = isNaN(parsed) ? "*" : parsed
 
@@ -54,7 +61,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
               onChangeText={handleInputChange("min")}
               fixedRightPlaceholder={selectedMetric}
               accessibilityLabel={`Minimum ${label} Input`}
-              defaultValue={getValue(range.min)}
+              value={getValue(range.min)}
               inputTextStyle={inputTextStyle}
             />
           </Flex>
@@ -66,7 +73,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
               onChangeText={handleInputChange("max")}
               fixedRightPlaceholder={selectedMetric}
               accessibilityLabel={`Maximum ${label} Input`}
-              defaultValue={getValue(range.max)}
+              value={getValue(range.max)}
               inputTextStyle={inputTextStyle}
             />
           </Flex>
