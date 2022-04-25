@@ -183,8 +183,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [ARRouter setAuthToken:nil];
     manager.currentUser = nil;
 
-    [ARTNativeScreenPresenterModule clearCachedNavigationStacks];
-
     RNCAsyncStorage *asyncStorage = [[[AREmission sharedInstance] bridge] moduleForName:@"RNCAsyncStorage"];
     [asyncStorage clearAllData];
 
