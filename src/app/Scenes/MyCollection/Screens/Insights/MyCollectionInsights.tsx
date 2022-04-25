@@ -1,12 +1,13 @@
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { Flex, Text, useSpace } from "palette"
 import React, { Suspense } from "react"
+import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
 export const MyCollectionInsights = () => {
   const space = useSpace()
   return (
     <StickyTabPageScrollView contentContainerStyle={{ paddingTop: space("2") }}>
-      <Text>My Collection Insights</Text>
+      <MyCollectionInsightsOverview />
     </StickyTabPageScrollView>
   )
 }
