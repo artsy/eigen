@@ -63,6 +63,7 @@ export class Collection extends Component<CollectionProps> {
             ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
             ItemSeparatorComponent={() => <Spacer mb={2} />}
             stickyHeaderIndices={[3]}
+            keyboardShouldPersistTaps="handled"
             renderItem={({ item }): null | any => {
               switch (item) {
                 case "collectionFeaturedArtists":

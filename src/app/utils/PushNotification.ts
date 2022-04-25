@@ -157,7 +157,7 @@ export const handleReceivedNotification = (
   notification: Omit<ReceivedNotification, "userInfo">
 ) => {
   if (__DEV__ && !__TEST__) {
-    console.log("RECIEVED NOTIFICATION", notification)
+    console.log("RECEIVED NOTIFICATION", notification)
   }
   const isLoggedIn = !!unsafe_getUserAccessToken()
   if (notification.userInteraction) {
@@ -181,7 +181,10 @@ export const handleReceivedNotification = (
     }
     const hasUrl = !!notification.data.url
     if (isLoggedIn && hasUrl) {
-      navigate(notification.data.url as string, { passProps: notification.data })
+      navigate(notification.data.url as string, {
+        passProps: notification.data,
+        ignoreDebounce: true,
+      })
       // clear any pending notification
       GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
       return
@@ -198,6 +201,17 @@ export const handleReceivedNotification = (
   }
 }
 
+export const handleNotificationAction = (notification: Omit<ReceivedNotification, "userInfo">) => {
+  if (__DEV__) {
+    if (logAction) {
+      console.log("ACTION:", notification.action)
+    }
+    if (logNotification) {
+      console.log("NOTIFICATION:", notification)
+    }
+  }
+}
+
 export async function configure() {
   PushNotification.configure({
     // (optional) Called when Token is generated (iOS and Android)
@@ -209,18 +223,7 @@ export async function configure() {
     onNotification: handleReceivedNotification,
 
     // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
-    onAction: (notification) => {
-      if (__DEV__) {
-        if (logAction) {
-          console.log("ACTION:", notification.action)
-        }
-        if (logNotification) {
-          console.log("NOTIFICATION:", notification)
-        }
-      }
-
-      // process the action
-    },
+    onAction: handleNotificationAction,
 
     // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
     onRegistrationError: (err) => {

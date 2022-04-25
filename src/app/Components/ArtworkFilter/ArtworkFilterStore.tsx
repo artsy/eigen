@@ -1,3 +1,4 @@
+import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { assignDeep } from "app/store/persistence"
 import { Action, action, createContextStore, State } from "easy-peasy"
 import { filter, find, isEqual, unionBy } from "lodash"
@@ -12,6 +13,7 @@ import {
   getSortDefaultValueByFilterType,
   getUnitedSelectedAndAppliedFilters,
 } from "./ArtworkFilterHelpers"
+import { LOCALIZED_UNIT } from "./Filters/helpers"
 import { FilterDisplayConfig } from "./types"
 
 export interface ArtworkFiltersModel {
@@ -24,6 +26,7 @@ export interface ArtworkFiltersModel {
   counts: FilterCounts
   sortOptions?: FilterData[]
   filterOptions?: FilterDisplayConfig[]
+  sizeMetric: Metric
 
   applyFiltersAction: Action<this>
   selectFiltersAction: Action<this, FilterData>
@@ -32,6 +35,7 @@ export interface ArtworkFiltersModel {
   setAggregationsAction: Action<this, any>
   setFiltersCountAction: Action<this, FilterCounts>
   setFilterTypeAction: Action<this, FilterType>
+  setSizeMetric: Action<this, Metric>
   setInitialFilterStateAction: Action<this, FilterArray>
   setSelectedFiltersAction: Action<this, FilterArray>
   setSortOptions: Action<this, this["sortOptions"]>
@@ -55,6 +59,7 @@ export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
     total: null,
     followedArtists: null,
   },
+  sizeMetric: LOCALIZED_UNIT,
 
   /**
    * Store actions
@@ -125,6 +130,11 @@ export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
 
   setAggregationsAction: action((state, payload) => {
     state.aggregations = payload
+    state.applyFilters = false
+  }),
+
+  setSizeMetric: action((state, payload) => {
+    state.sizeMetric = payload
     state.applyFilters = false
   }),
 

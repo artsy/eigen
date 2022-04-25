@@ -1,5 +1,5 @@
 import { FairEmptyState_fair } from "__generated__/FairEmptyState_fair.graphql"
-import { Message } from "palette"
+import { SimpleMessage } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -19,7 +19,7 @@ const FairEmptyState: React.FC<FairEmptyStateProps> = ({ fair }) => {
       : []),
   ].join(" ")
 
-  return <Message mx={2}>{message}</Message>
+  return <SimpleMessage mx={2}>{message}</SimpleMessage>
 }
 
 export const FairEmptyStateFragmentContainer = createFragmentContainer(FairEmptyState, {

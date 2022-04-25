@@ -1,5 +1,5 @@
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import React from "react"
+import React, { memo } from "react"
 import { ActivityIndicator, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
@@ -131,7 +131,7 @@ export const SelectMaxBidQueryRenderer: React.FC<{
   artworkID: string
   saleID: string
   navigator: NavigatorIOS
-}> = ({ artworkID, saleID, navigator }) => {
+}> = memo(({ artworkID, saleID, navigator }) => {
   // TODO: artworkID can be nil, so omit that part of the query if it is.
   return (
     <Flex flex={1}>
@@ -167,4 +167,4 @@ export const SelectMaxBidQueryRenderer: React.FC<{
       />
     </Flex>
   )
-}
+})

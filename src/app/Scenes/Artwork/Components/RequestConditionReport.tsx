@@ -9,7 +9,7 @@ import { Modal } from "app/Components/Modal"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Schema, track } from "app/utils/track"
 import { Button, Flex } from "palette"
-import React from "react"
+import { Component } from "react"
 import { View } from "react-native"
 import {
   commitMutation,
@@ -37,7 +37,7 @@ interface State {
   action_name: Schema.ActionNames.RequestConditionReport,
   context_module: Schema.ContextModules.ArtworkDetails,
 })
-export class RequestConditionReport extends React.Component<RequestConditionReportProps, State> {
+export class RequestConditionReport extends Component<RequestConditionReportProps, State> {
   state: State = {
     requestingConditionReport: false,
     showConditionReportRequestedModal: false,
@@ -119,6 +119,8 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
       showConditionReportRequestedModal,
     } = this.state
 
+    const conditionReportText = `We have received your request.\nThe condition report will be sent to ${me?.email}.\nFor questions contact [specialist@artsy.net](mailto:specialist@artsy.net).`
+
     return (
       <View>
         <Button
@@ -142,9 +144,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
             textAlign="center"
             visible={showConditionReportRequestedModal}
             headerText="Condition Report Requested"
-            detailText={`We have received your request.\nThe condition report will be sent to ${
-              me && me.email
-            }.\nFor questions contact specialist@artsy.net.`}
+            detailText={conditionReportText}
             closeModal={this.closeModals.bind(this)}
           />
         </Flex>

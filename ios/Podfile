@@ -89,8 +89,8 @@ target 'Artsy' do
   pod 'Firebase/Auth', '8.1.0'
 
   # Analytics
-  pod 'Segment-Appboy', '4.2.0'
-  pod 'Segment-Adjust', '3.1.4'
+  pod 'Segment-Appboy'
+  pod 'Segment-Adjust'
 
   # Developer Pods
   pod 'DHCShakeNotifier', '0.2.0'

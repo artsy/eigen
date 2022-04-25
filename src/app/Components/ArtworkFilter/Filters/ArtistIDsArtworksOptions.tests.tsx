@@ -73,6 +73,7 @@ describe("Artist options screen", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
     const { getAllByA11yState } = renderWithWrappersTL(
       <MockArtistScreen initialData={injectedState} />
@@ -100,6 +101,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const { getAllByA11yState } = renderWithWrappersTL(
@@ -122,6 +124,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const { getByText, getAllByA11yState } = renderWithWrappersTL(
@@ -158,6 +161,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const { queryByA11yState, getAllByA11yState, getByText } = renderWithWrappersTL(
@@ -187,6 +191,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const { queryByText } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
@@ -206,6 +211,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: 10,
         },
+        sizeMetric: "cm",
       }
 
       const { queryByText } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
@@ -238,6 +244,7 @@ describe("Artist options screen", () => {
           total: null,
           followedArtists: null,
         },
+        sizeMetric: "cm",
       }
 
       const { queryByText } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)

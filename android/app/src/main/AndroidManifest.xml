@@ -44,7 +44,13 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="artsy" />
+            </intent-filter>
 
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="www.artsy.net" />
                 <data android:scheme="https" android:host="artsy.net" />
                 <data android:scheme="http" />
@@ -79,6 +85,7 @@
                 <data android:pathPrefix="/identity-verification-faq" />
                 <data android:pathPrefix="/inbox" />
                 <data android:pathPrefix="/inquiry" />
+                <data android:pathPrefix="/map" />
                 <data android:pathPrefix="/make-offer" />
                 <data android:pathPrefix="/my-account" />
                 <data android:pathPrefix="/my-profile" />
@@ -109,7 +116,7 @@
             </intent-filter>
         </receiver>
 
-        <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService" android:exported="false">
+        <service android:name=".BrazePushListenerService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

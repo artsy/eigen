@@ -42,6 +42,7 @@ describe("TimePeriodOptions Screen", () => {
     filterType: "artwork",
     previouslyAppliedFilters: [],
     selectedFilters: [],
+    sizeMetric: "cm",
   }
 
   const MockTimePeriodOptionsScreen = ({

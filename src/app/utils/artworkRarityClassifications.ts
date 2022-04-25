@@ -1,4 +1,4 @@
-import { ArtworkAttributionClassType } from "__generated__/myCollectionAddArtworkMutation.graphql"
+import { ArtworkAttributionClassType } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 
 interface ArtworkRarityClassification {
   name: string

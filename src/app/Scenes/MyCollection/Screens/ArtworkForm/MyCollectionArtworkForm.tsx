@@ -3,7 +3,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
-import { OldMyCollectionArtwork_sharedProps } from "__generated__/OldMyCollectionArtwork_sharedProps.graphql"
+import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { goBack } from "app/navigation/navigate"
@@ -19,9 +19,9 @@ import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
-import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
+import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
-import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
+import { myCollectionUpdateArtwork } from "../../mutations/myCollectionUpdateArtwork"
 import { refreshMyCollection } from "../../MyCollection"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
@@ -69,7 +69,7 @@ export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
   | {
       mode: "edit"
       onDelete: () => void
-      artwork: Omit<OldMyCollectionArtwork_sharedProps, " $refType">
+      artwork: Omit<MyCollectionArtwork_sharedProps, " $refType">
     }
 )
 
@@ -265,7 +265,7 @@ export const updateArtwork = async (
   }
 
   if (props.mode === "add") {
-    const response = await myCollectionAddArtwork({
+    const response = await myCollectionCreateArtwork({
       artistIds: [artistSearchResult!.internalID as string],
       externalImageUrls,
       pricePaidCents,
@@ -278,7 +278,7 @@ export const updateArtwork = async (
       storeLocalPhotos(slug, photos)
     }
   } else {
-    const response = await myCollectionEditArtwork({
+    const response = await myCollectionUpdateArtwork({
       artistIds: [artistSearchResult!.internalID as string],
       artworkId: props.artwork.internalID,
       externalImageUrls,

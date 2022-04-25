@@ -171,6 +171,7 @@ export const SaleArtworkTileRailCardContainer = createFragmentContainer(SaleArtw
         isAuction
         isClosed
         displayTimelyAt
+        cascadingEndTimeIntervalMinutes
       }
     }
   `,

@@ -7,10 +7,8 @@ import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } fro
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "app/utils/track"
-import { Box, Message, Text } from "palette"
-import React, { useContext, useState } from "react"
-import { useEffect } from "react"
-import { useRef } from "react"
+import { Box, SimpleMessage, Text } from "palette"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useArtworkFilters, useSelectedFiltersCount } from "../ArtworkFilter/useArtworkFilters"
@@ -56,7 +54,9 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFil
   if (initialArtworksTotal.current === 0) {
     return (
       <Box mt={1}>
-        <Message>There aren’t any works available in the category at this time.</Message>
+        <SimpleMessage>
+          There aren’t any works available in the category at this time.
+        </SimpleMessage>
       </Box>
     )
   }

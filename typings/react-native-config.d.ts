@@ -1,4 +1,4 @@
-import type { NativeConfig } from "react-native-config"
+import "react-native-config"
 
 declare module "react-native-config" {
   interface NativeConfig {
@@ -12,8 +12,6 @@ declare module "react-native-config" {
     SEGMENT_STAGING_WRITE_KEY_ANDROID: string
     SEGMENT_STAGING_WRITE_KEY_IOS: string
     SENTRY_DSN: string
-    SPLIT_IO_PRODUCTION_API_KEY: string
-    SPLIT_IO_STAGING_API_KEY: string
     UNLEASH_PROXY_CLIENT_KEY_PRODUCTION: string
     UNLEASH_PROXY_CLIENT_KEY_STAGING: string
     UNLEASH_PROXY_URL_PRODUCTION: string

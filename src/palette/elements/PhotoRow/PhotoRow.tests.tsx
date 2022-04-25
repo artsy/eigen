@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
+import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -17,7 +17,7 @@ describe("PhotoRow", () => {
   describe("when passed an uploaded photo", () => {
     const TestRenderer = () => (
       <RelayEnvironmentProvider environment={mockEnvironment}>
-        <PhotoRow photo={mockUploadedPhoto} onPhotoDelete={mockHandlePhotoDelete} />
+        <PhotoRow photo={mockUploadedPhoto} onPhotoDelete={mockHandlePhotoDelete} progress={0.4} />
       </RelayEnvironmentProvider>
     )
 
@@ -52,7 +52,7 @@ describe("PhotoRow", () => {
   describe("when passed a photo with error", () => {
     const TestRenderer = () => (
       <RelayEnvironmentProvider environment={mockEnvironment}>
-        <PhotoRow photo={mockPhotoWithError} onPhotoDelete={mockHandlePhotoDelete} />
+        <PhotoRow photo={mockPhotoWithError} onPhotoDelete={mockHandlePhotoDelete} progress={0.4} />
       </RelayEnvironmentProvider>
     )
 

@@ -7,12 +7,11 @@ import {
 import { ATTRIBUTION_CLASS_OPTIONS } from "app/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import {
-  LOCALIZED_UNIT,
   localizeDimension,
   parsePriceRangeLabel,
   parseRange,
 } from "app/Components/ArtworkFilter/Filters/helpers"
-import { SIZES_OPTIONS } from "app/Components/ArtworkFilter/Filters/SizesOptionsScreen"
+import { getSizeOptions } from "app/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import {
   WAYS_TO_BUY_OPTIONS,
   WAYS_TO_BUY_PARAM_NAMES,
@@ -23,6 +22,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
+import { Metric } from "../Search/UserPrefsModel"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
 export const extractPillFromAggregation = (
@@ -49,10 +49,18 @@ export const extractPillFromAggregation = (
   return []
 }
 
-export const extractSizeLabel = (prefix: string, value: string) => {
+export const extractSizeLabel = ({
+  prefix,
+  value,
+  unit,
+}: {
+  prefix: string
+  value: string
+  unit: Metric
+}) => {
   const range = parseRange(value)
-  const min = localizeDimension(range.min, "in").value
-  const max = localizeDimension(range.max, "in").value
+  const min = localizeDimension(range.min, unit)
+  const max = localizeDimension(range.max, unit)
   let label
 
   if (max === "*") {
@@ -63,11 +71,12 @@ export const extractSizeLabel = (prefix: string, value: string) => {
     label = `${min}-${max}`
   }
 
-  return `${prefix}: ${label} ${LOCALIZED_UNIT}`
+  return `${prefix}: ${label} ${unit}`
 }
 
-export const extractSizesPill = (values: string[]): SavedSearchPill[] => {
+export const extractSizesPill = (values: string[], unit: Metric): SavedSearchPill[] => {
   return values.map((value) => {
+    const SIZES_OPTIONS = getSizeOptions(unit)
     const sizeOption = SIZES_OPTIONS.find((option) => option.paramValue === value)
 
     return {
@@ -134,10 +143,15 @@ export const extractWaysToBuyPill = (paramName: SearchCriteria): SavedSearchPill
   }
 }
 
-export const extractPills = (
-  attributes: SearchCriteriaAttributes,
+export const extractPills = ({
+  attributes,
+  aggregations,
+  unit,
+}: {
+  attributes: SearchCriteriaAttributes
   aggregations: Aggregations
-): SavedSearchPill[] => {
+  unit: Metric
+}): SavedSearchPill[] => {
   const pills = Object.entries(attributes).map((entry) => {
     const [paramName, paramValue] = entry as [SearchCriteria, any]
 
@@ -147,7 +161,7 @@ export const extractPills = (
 
     if (paramName === SearchCriteria.width) {
       return {
-        label: extractSizeLabel("w", paramValue),
+        label: extractSizeLabel({ prefix: "w", value: paramValue, unit }),
         value: paramValue,
         paramName: SearchCriteria.width,
       } as SavedSearchPill
@@ -155,14 +169,14 @@ export const extractPills = (
 
     if (paramName === SearchCriteria.height) {
       return {
-        label: extractSizeLabel("h", paramValue),
+        label: extractSizeLabel({ prefix: "h", value: paramValue, unit }),
         value: paramValue,
         paramName: SearchCriteria.height,
       } as SavedSearchPill
     }
 
     if (paramName === SearchCriteria.sizes) {
-      return extractSizesPill(paramValue)
+      return extractSizesPill(paramValue, unit)
     }
 
     if (paramName === SearchCriteria.majorPeriods) {

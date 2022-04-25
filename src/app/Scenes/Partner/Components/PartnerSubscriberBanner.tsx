@@ -1,6 +1,6 @@
 import { PartnerSubscriberBanner_partner } from "__generated__/PartnerSubscriberBanner_partner.graphql"
 import { navigate } from "app/navigation/navigate"
-import { Box, LinkText, Message } from "palette"
+import { Box, LinkText, SimpleMessage } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -16,7 +16,7 @@ export const PartnerSubscriberBanner: React.FC<PartnerSubscriberBannerProps> = (
 
   return (
     <Box px={2}>
-      <Message>
+      <SimpleMessage>
         {title} Are you a representative of {name}?{" "}
         <LinkText
           onPress={() => {
@@ -25,7 +25,7 @@ export const PartnerSubscriberBanner: React.FC<PartnerSubscriberBannerProps> = (
         >
           Learn about Artsy gallery partnerships.
         </LinkText>
-      </Message>
+      </SimpleMessage>
     </Box>
   )
 }

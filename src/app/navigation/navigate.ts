@@ -32,14 +32,23 @@ export interface NavigateOptions {
   replace?: boolean
   // Only when onlyShowInTabName specified
   popToRootTabView?: boolean
+  ignoreDebounce?: boolean
   showInTabName?: BottomTabType
 }
 
 let lastInvocation = { url: "", timestamp: 0 }
 
 export async function navigate(url: string, options: NavigateOptions = {}) {
+  // handle artsy:// urls, we can just remove it
+  url = url.replace("artsy://", "")
+
   // Debounce double taps
-  if (lastInvocation.url === url && Date.now() - lastInvocation.timestamp < 1000) {
+  const ignoreDebounce = options.ignoreDebounce ?? false
+  if (
+    lastInvocation.url === url &&
+    Date.now() - lastInvocation.timestamp < 1000 &&
+    !ignoreDebounce
+  ) {
     return
   }
 

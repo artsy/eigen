@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
 import { SearchInput as SearchBox } from "app/Components/SearchInput"
 import { useSearchProviderValues } from "app/Scenes/Search/SearchContext"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { throttle } from "lodash"
 import React, { useEffect, useMemo } from "react"
@@ -25,7 +24,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 }) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
-  const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")
   const isAndroid = Platform.OS === "android"
   const navigation = isAndroid ? useNavigation() : null
   const handleChangeText = useMemo(
@@ -34,7 +32,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         refine(value)
         onTextChange(value)
       }, SEARCH_THROTTLE_INTERVAL),
-    []
+    [onTextChange]
   )
 
   useEffect(() => {
@@ -51,7 +49,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
 
   return (
     <SearchBox
-      showCamera={isImageSearchEnabled}
       ref={searchProviderValues.inputRef}
       enableCancelButton
       placeholder={placeholder}

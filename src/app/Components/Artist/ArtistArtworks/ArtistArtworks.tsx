@@ -73,7 +73,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 
   return (
     <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView>
+      <StickyTabPageScrollView keyboardShouldPersistTaps="handled">
         <ArtistArtworksContainer
           {...props}
           artist={artist}
@@ -228,6 +228,7 @@ export default createPaginationContainer(
             MEDIUM
             PARTNER
             PRICE_RANGE
+            SIMPLE_PRICE_HISTOGRAM
           ]
         ) {
           aggregations {

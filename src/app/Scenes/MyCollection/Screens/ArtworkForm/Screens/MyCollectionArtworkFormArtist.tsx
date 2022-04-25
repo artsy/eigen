@@ -7,7 +7,6 @@ import React from "react"
 import { useTracking } from "react-tracking"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
-
 import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 export const MyCollectionArtworkFormArtist: React.FC<

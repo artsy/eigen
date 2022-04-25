@@ -1,6 +1,6 @@
-import { MyCollectionCreateArtworkInput } from "__generated__/myCollectionAddArtworkMutation.graphql"
+import { MyCollectionCreateArtworkInput } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { requestPhotos } from "app/utils/requestPhotos"
-import { myCollectionAddArtwork } from "../mutations/myCollectionAddArtwork"
+import { myCollectionCreateArtwork } from "../mutations/myCollectionCreateArtwork"
 import { storeLocalPhotos, uploadPhotos } from "../Screens/ArtworkForm/MyCollectionImageUtil"
 
 const randomValue = (array: any[]) => {
@@ -38,7 +38,7 @@ export const addRandomMyCollectionArtwork = async () => {
     provenance: "it's always been fake",
     title: randomValue(["An apple", "Very Small Rocks", "A Bit of Gravy", "Lead", "A Duck"]),
   }
-  const response = await myCollectionAddArtwork(input)
+  const response = await myCollectionCreateArtwork(input)
 
   const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
   if (slug) {

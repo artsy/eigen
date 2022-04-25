@@ -123,7 +123,7 @@
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Used for beta testers to collect usage information.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera access is needed for this experience.</string>
+	<string>Try out how art would look in your surroundings.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Used to display shows near you</string>
 	<key>NSLocationAlwaysUsageDescription</key>

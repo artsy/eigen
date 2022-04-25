@@ -84,9 +84,6 @@ describe("ConversationCTA", () => {
   })
 
   describe("conversation about an artwork with inquiry checkout enabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: true })
-    })
     const artworkItem = {
       items: [
         {

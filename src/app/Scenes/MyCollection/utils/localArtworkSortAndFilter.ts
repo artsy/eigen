@@ -7,22 +7,18 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { normalizeText } from "app/utils/normalizeText"
 import { compact, filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { useEffect } from "react"
 import { MyCollectionArtworkEdge } from "../MyCollection"
 
-export const useLocalArtworkFilter = (artworks: any[]) => {
+export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
   const setFilterType = ArtworksFiltersStore.useStoreActions((s) => s.setFilterTypeAction)
   const setSortOptions = ArtworksFiltersStore.useStoreActions((s) => s.setSortOptions)
   const setFilterOptions = ArtworksFiltersStore.useStoreActions((s) => s.setFilterOptions)
-  const allowOnlySubmittedArtworks = useFeatureFlag(
-    "AREnableShowOnlySubmittedMyCollectionArtworkFilter"
-  )
 
-  useEffect(() => {
+  const initLocalArtworkFilter = (artworks: any[]) => {
     setFilterType("local")
     setSortOptions([
       {
@@ -36,7 +32,7 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
             (a) => {
               return a.pricePaid?.minor
             },
-            "asc"
+            "desc"
           ),
       },
       {
@@ -50,7 +46,7 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
             (a) => {
               return a.pricePaid?.minor
             },
-            "desc"
+            "asc"
           ),
       },
       {
@@ -100,7 +96,7 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
     ])
     setFilterOptions(
       compact([
-        allowOnlySubmittedArtworks && {
+        {
           configType: FilterConfigTypes.FilterScreenCheckboxItem,
           displayText: "Show Only Submitted Artworks",
           filterType: "showOnlySubmittedArtworks",
@@ -250,7 +246,14 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
         },
       ])
     )
+  }
+  useEffect(() => {
+    if (artworksList) {
+      initLocalArtworkFilter(artworksList)
+    }
   }, [])
+
+  return { reInitializeLocalArtworkFilter: initLocalArtworkFilter }
 }
 
 export const localSortAndFilterArtworks = (

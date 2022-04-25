@@ -1,5 +1,7 @@
-import { SimpleTicker, StateManager as CountdownStateManager } from "app/Components/Countdown"
-import { CountdownProps } from "app/Components/Countdown/CountdownTimer"
+import { StateManager as CountdownStateManager } from "app/Components/Countdown"
+import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
+import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import moment from "moment-timezone"
 import { Flex, Sans } from "palette"
 import PropTypes from "prop-types"
@@ -43,7 +45,7 @@ export function relevantStateData(
         console.error("startsAt is required when isPreview is true")
       }
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return { date: startsAt, label: `Starts ${formatDate(startsAt)}` }
+      return { date: startsAt, label: `Starts ${formatDate(startsAt)}`, hasStarted: false }
     }
     case AuctionTimerState.LIVE_INTEGRATION_UPCOMING: {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -54,7 +56,7 @@ export function relevantStateData(
     }
     case AuctionTimerState.CLOSING: {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return { date: endsAt, label: `Ends ${formatDate(endsAt)}` }
+      return { date: endsAt, label: `Closes ${formatDate(endsAt)}`, hasStarted: true }
     }
     default: {
       return { date: null, label: "Bidding closed" }
@@ -106,11 +108,28 @@ export function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) 
   }
 }
 
-export const Countdown: React.FC<CountdownProps> = ({ duration, label }) => {
+export interface CountdownProps extends CountdownTimerProps {
+  hasStarted?: boolean
+  cascadingEndTimeIntervalMinutes?: number | null
+}
+
+export const Countdown: React.FC<CountdownProps> = ({
+  duration,
+  label,
+  hasStarted,
+  cascadingEndTimeIntervalMinutes,
+}) => {
+  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
+
   return (
     <Flex alignItems="center">
-      <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
-      <Sans size="2" weight="medium">
+      {cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? (
+        <ModernTicker duration={duration} hasStarted={hasStarted} />
+      ) : (
+        <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
+      )}
+
+      <Sans size="2" weight="medium" color="black60">
         {label}
       </Sans>
     </Flex>

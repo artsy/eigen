@@ -7,10 +7,16 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import {
+  setVisualClueAsSeen,
+  unsafe_getFeatureFlag,
+  useFeatureFlag,
+  useVisualClue,
+} from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
+import { compact } from "lodash"
 import {
   Avatar,
   Box,
@@ -19,16 +25,18 @@ import {
   Flex,
   Join,
   MapPinIcon,
+  Message,
   MuseumIcon,
   Spacer,
   Text,
   useColor,
 } from "palette"
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
+import { MyCollectionInsights } from "../MyCollection/Screens/Insights/MyCollectionInsights"
 import { MyProfileContext } from "./MyProfileProvider"
 import { normalizeMyProfileBio } from "./utils"
 
@@ -37,18 +45,28 @@ const ICON_SIZE = 14
 export enum Tab {
   collection = "My Collection",
   savedWorks = "Saved Works",
+  insights = "Insights",
 }
 
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   me: MyProfileHeaderMyCollectionAndSavedWorks_me
 }> = ({ me }) => {
+  // We are using unsafe_getfeatureflag here because we want to avoid breaking the rule of hooks
+  // inside the StickyTabPage
+  const showMyCollectionInsights = unsafe_getFeatureFlag("ARShowMyCollectionInsights")
+
   return (
     <StickyTabPage
       disableBackButtonUpdate
-      tabs={[
+      tabs={compact([
         {
           title: Tab.collection,
           content: <MyCollectionQueryRenderer />,
+          initial: true,
+        },
+        !!showMyCollectionInsights && {
+          title: Tab.insights,
+          content: <MyCollectionInsights />,
           initial: true,
         },
         {
@@ -56,7 +74,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
           content: <FavoriteArtworksQueryRenderer />,
           initial: false,
         },
-      ]}
+      ])}
       staticHeaderContent={<MyProfileHeader me={me} />}
     />
   )
@@ -69,12 +87,29 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
 }) => {
   const color = useColor()
   const navigation = useNavigation()
+  const { showVisualClue } = useVisualClue()
 
-  const showCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
+  const enableCompleteProfileMessage = useFeatureFlag("AREnableCompleteProfileMessage")
 
   const { localImage } = useContext(MyProfileContext)
 
   const userProfileImagePath = localImage || me?.icon?.url
+
+  const [showCompleteCollectorProfileMessage, setShowCompleteCollectorProfileMessage] = useState(
+    showVisualClue("CompleteCollectorProfileMessage")
+  )
+
+  useEffect(() => {
+    setVisualClueAsSeen("CompleteCollectorProfileMessage")
+  }, [])
+
+  const isCollectorProfileCompleted =
+    me.bio && me.icon && me.profession && me.otherRelevantPositions
+
+  const showCompleteProfileMessage =
+    enableCompleteProfileMessage &&
+    !isCollectorProfileCompleted &&
+    showCompleteCollectorProfileMessage
 
   return (
     <>
@@ -85,6 +120,18 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
           navigate("/my-profile/settings")
         }}
       />
+      {showCompleteProfileMessage && (
+        <Flex mb={2}>
+          <Message
+            variant="default"
+            title="Why complete your Colletor Profile?"
+            text="A complete profile helps you build a relationship with sellers. Select “Edit Profile” to see which details are shared when you contact sellers."
+            showCloseButton
+            onClose={() => setShowCompleteCollectorProfileMessage(false)}
+          />
+        </Flex>
+      )}
+
       <Flex flexDirection="row" alignItems="center" px={2}>
         <Box
           height="99"
@@ -97,7 +144,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
           {!!userProfileImagePath ? (
             <Avatar src={userProfileImagePath} size="md" />
           ) : (
-            <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
+            <Image source={require("@images/profile_placeholder_avatar.webp")} />
           )}
         </Box>
         <Box px={2} flexShrink={1}>
@@ -112,38 +159,36 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
         </Box>
       </Flex>
 
-      {showCollectorProfile && (
-        <Flex px={2} mt={2}>
-          <Join separator={<Spacer my={0.5} />}>
-            {!!me?.location?.display && (
-              <Flex flexDirection="row" alignItems="center">
-                <MapPinIcon width={ICON_SIZE} height={ICON_SIZE} />
-                <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
-                  {me.location.display}
-                </Text>
-              </Flex>
-            )}
+      <Flex px={2} mt={2}>
+        <Join separator={<Spacer my={0.5} />}>
+          {!!me?.location?.display && (
+            <Flex flexDirection="row" alignItems="center">
+              <MapPinIcon width={ICON_SIZE} height={ICON_SIZE} />
+              <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
+                {me.location.display}
+              </Text>
+            </Flex>
+          )}
 
-            {!!me?.profession && (
-              <Flex flexDirection="row" alignItems="center">
-                <BriefcaseIcon width={ICON_SIZE} height={ICON_SIZE} />
-                <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
-                  {me.profession}
-                </Text>
-              </Flex>
-            )}
+          {!!me?.profession && (
+            <Flex flexDirection="row" alignItems="center">
+              <BriefcaseIcon width={ICON_SIZE} height={ICON_SIZE} />
+              <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
+                {me.profession}
+              </Text>
+            </Flex>
+          )}
 
-            {!!me?.otherRelevantPositions && (
-              <Flex flexDirection="row" alignItems="center">
-                <MuseumIcon width={ICON_SIZE} height={ICON_SIZE} />
-                <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
-                  {me?.otherRelevantPositions}
-                </Text>
-              </Flex>
-            )}
-          </Join>
-        </Flex>
-      )}
+          {!!me?.otherRelevantPositions && (
+            <Flex flexDirection="row" alignItems="center">
+              <MuseumIcon width={ICON_SIZE} height={ICON_SIZE} />
+              <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
+                {me?.otherRelevantPositions}
+              </Text>
+            </Flex>
+          )}
+        </Join>
+      </Flex>
       {!!me?.bio && (
         <Text variant="xs" color={color("black100")} px={2} pt={2}>
           {normalizeMyProfileBio(me?.bio)}
@@ -201,9 +246,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksScreenQuery = graphql`
   }
 `
 
-export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {
-  const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
-
+export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = () => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.profile })}
@@ -215,7 +258,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC<{}>
           Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,
         })}
-        variables={{ enableCollectorProfile }}
+        variables={{}}
       />
     </ProvideScreenTrackingWithCohesionSchema>
   )

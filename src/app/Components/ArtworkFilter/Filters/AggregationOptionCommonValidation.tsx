@@ -49,6 +49,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const MockScreenWrapper = ({
@@ -100,6 +101,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
             total: null,
             followedArtists: null,
           },
+          sizeMetric: "cm",
         }
 
         const component = renderWithWrappers(<MockScreenWrapper initialData={injectedState} />)

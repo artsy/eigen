@@ -14,7 +14,7 @@
 
 - [Pull Request template](pull_request_template.md)
 - [Storybook](storybook.md)
-- [FeatureFlags](developing_a_feature.md)
+- [Feature Flags](developing_a_feature.md)
 - [Metaflags](metaflags.md)
 - [Hide loggers](metaflags.md/#hide-loggers)
 - [Debugging](debugging.md)
@@ -50,7 +50,7 @@
 
 - [palette v3 migration guide](palette_v3_migration_guide.md)
 
-#### Thanks to our (contributors)[thanks.md] 🎉
+#### Thanks to our [contributors](thanks.md) 🎉
 
 ### Can these be removed?
 

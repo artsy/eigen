@@ -83,6 +83,10 @@ export const ArtworkFilterOptionsScreen: React.FC<
 
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
+      if (aggregation?.counts?.length === 0) {
+        return null
+      }
+
       const filterOption = filterKeyFromAggregation[aggregation.slice]
       return filterOption ? filterOptionToDisplayConfigMap[filterOption] : null
     })

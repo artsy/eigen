@@ -134,3 +134,58 @@ const ends = (now: moment.Moment, endDate: moment.Moment): string | null => {
     return null
   }
 }
+
+const getAbsoluteTime = (
+  saleStartMoment: moment.Moment | null,
+  saleEndMoment: moment.Moment | null,
+  saleEndedMoment: moment.Moment | null,
+  userTimeZone: string
+): string | null => {
+  const thisMoment = moment.tz(moment(), userTimeZone)
+  if (saleStartMoment && thisMoment.isBefore(saleStartMoment)) {
+    return `${saleStartMoment.format("MMM D, YYYY")} • ${saleStartMoment.format("h:mma z")}`
+  } else if (saleEndedMoment && thisMoment.isAfter(saleEndedMoment)) {
+    return `Closed ${saleEndedMoment.format("MMM D, YYYY")} • ${saleEndedMoment.format("h:mma z")}`
+  } else if (saleEndMoment) {
+    return `${saleEndMoment.format("MMM D, YYYY")} • ${saleEndMoment.format("h:mma z")}`
+  } else {
+    return null
+  }
+}
+
+export const getCascadingEndTimeFeatureSaleDetails = (
+  sale: {
+    startAt: string | null
+    endAt: string | null
+    endedAt: string | null
+    timeZone: string | null
+  } | null
+): { absolute: string | null; relative: { copy: string; color: string } | null } => {
+  if (!sale?.timeZone || !sale.endAt || !sale.startAt) {
+    return { absolute: null, relative: null }
+  }
+
+  // TODO: Implement function to return relative time for cascade end time feature
+  const relativeTime = null
+  const userTimeZone = moment.tz.guess()
+  const startDateMoment =
+    sale.startAt !== null
+      ? moment.tz(sale.startAt, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
+      : null
+  const endDateMoment =
+    sale.endAt !== null
+      ? moment.tz(sale.endAt, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
+      : null
+  const endedDateMoment =
+    sale.endedAt !== null
+      ? moment.tz(sale.endedAt, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
+      : null
+
+  const absoluteTime = getAbsoluteTime(
+    startDateMoment,
+    endDateMoment,
+    endedDateMoment,
+    userTimeZone
+  )
+  return { absolute: absoluteTime, relative: relativeTime }
+}

@@ -1,6 +1,5 @@
-import { Photo } from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/UploadPhotos/validation"
-import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { PlaceholderBox } from "app/utils/placeholders"
+import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
+import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Button, Flex, ProgressBar, Spacer, Text } from "palette"
 import React from "react"
 import { Image } from "react-native"
@@ -8,10 +7,9 @@ import { Image } from "react-native"
 interface PhotoRowContainerProps {
   error?: boolean
   errorMsg?: string
-  children?: JSX.Element
 }
 
-const PhotoRowContainer = ({ error, errorMsg, children }: PhotoRowContainerProps) => (
+const PhotoRowContainer: React.FC<PhotoRowContainerProps> = ({ error, errorMsg, children }) => (
   <>
     <Flex
       p={1}
@@ -36,7 +34,7 @@ const PhotoRowContainer = ({ error, errorMsg, children }: PhotoRowContainerProps
   </>
 )
 
-const PhotoRowPlaceholder = ({ progress = 0.6 }: { progress?: number }) => (
+const PhotoRowPlaceholder = ({ progress }: { progress: number }) => (
   <PhotoRowContainer>
     <ProvidePlaceholderContext>
       <Flex flexDirection="row">
@@ -59,37 +57,36 @@ const PhotoRowPlaceholder = ({ progress = 0.6 }: { progress?: number }) => (
 interface PhotoRowProps {
   photo: Photo
   onPhotoDelete: (arg: Photo) => void
+  progress: number
 }
 
-export const PhotoRow = ({ photo, onPhotoDelete }: PhotoRowProps) => {
+export const PhotoRow = ({ photo, onPhotoDelete, progress }: PhotoRowProps) => {
   if (photo.loading) {
-    return <PhotoRowPlaceholder />
+    return <PhotoRowPlaceholder progress={progress} />
   }
 
   return (
     <PhotoRowContainer error={photo.error} errorMsg={photo.errorMessage}>
-      <>
-        <Flex width="53%" justifyContent="center">
-          <Image
-            style={{ height: 48, width: 48 }}
-            resizeMode="cover"
-            source={{ uri: photo.path }}
-            testID="Submission_Image"
-          />
-        </Flex>
-        <Flex flexDirection="row" justifyContent="space-around" alignItems="center" width="47%">
-          <Text style={{ width: 58 }}>{photo.sizeDisplayValue}</Text>
-          <Button
-            ml={1}
-            variant="text"
-            size="small"
-            onPress={() => onPhotoDelete(photo)}
-            testID="Submission_Delete_Photo_Button"
-          >
-            <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
-          </Button>
-        </Flex>
-      </>
+      <Flex alignItems="center">
+        <Image
+          style={{ height: 48, width: 48 }}
+          resizeMode="cover"
+          source={{ uri: photo.path }}
+          testID="Submission_Image"
+        />
+      </Flex>
+      <Flex flexDirection="row" alignItems="center">
+        <Text>{photo.sizeDisplayValue}</Text>
+        <Button
+          ml={1}
+          variant="text"
+          size="small"
+          onPress={() => onPhotoDelete(photo)}
+          testID="Submission_Delete_Photo_Button"
+        >
+          <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
+        </Button>
+      </Flex>
     </PhotoRowContainer>
   )
 }

@@ -102,6 +102,48 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       expect(await findByText("My Bio")).toBeTruthy()
     })
 
+    describe("Complete Profile Message", () => {
+      it("does get displayed if at least one of the fields is empty", async () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({
+            AREnableCompleteProfileMessage: false,
+          })
+        })
+        const { findByText } = getWrapper({
+          Me: () => ({
+            name: "My Name",
+            profession: null,
+            bio: "some-bio",
+            icon: "icon",
+            otherRelevantPositions: "something",
+          }),
+        })
+
+        await flushPromiseQueue()
+        expect(await findByText("Why complete your Colletor Profile?")).toBeTruthy()
+      })
+
+      it("doesn't get displayed if the profile is completed", async () => {
+        beforeEach(() => {
+          __globalStoreTestUtils__?.injectFeatureFlags({
+            AREnableCompleteProfileMessage: false,
+          })
+        })
+        const { queryByText } = getWrapper({
+          Me: () => ({
+            name: "My Name",
+            profession: "some-profession",
+            bio: "some-bio",
+            icon: "some-icon",
+            otherRelevantPositions: "something",
+          }),
+        })
+
+        await flushPromiseQueue()
+        expect(await queryByText("Why complete your Colletor Profile?")).toBeFalsy()
+      })
+    })
+
     it("Renders Icon", async () => {
       const localImage: LocalImage = {
         path: "some/my/profile/path",
@@ -129,57 +171,23 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       expect(container.findAllByType(Avatar).length).toEqual(1)
     })
 
-    describe("With Collector Profile feature flag OFF", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfile: false })
+    it("renders Collector Profile info", async () => {
+      const { findByText } = getWrapper({
+        Me: () => ({
+          name: "Princess",
+          createdAt: new Date("12/12/12").toISOString(),
+          bio: "Richest Collector! 💰",
+          location: {
+            display: "Atlantis",
+          },
+          profession: "Guardian of the Galaxy",
+          otherRelevantPositions: "Marvel Universe",
+        }),
       })
 
-      it("should not render Collector Profile info", async () => {
-        const { findByText, queryByText } = getWrapper({
-          Me: () => ({
-            name: "Princess",
-            createdAt: new Date("12/12/12").toISOString(),
-            bio: "Richest Collector! 💰",
-            location: {
-              display: "Atlantis",
-            },
-            profession: "Guardian of the Galaxy",
-            otherRelevantPositions: "Marvel Universe",
-          }),
-        })
-
-        expect(await findByText("Princess")).toBeTruthy()
-        expect(await findByText("Member since 2012")).toBeTruthy()
-        expect(await findByText("Richest Collector! 💰")).toBeTruthy()
-        expect(queryByText("Guardian of the Galaxy")).toBeFalsy()
-        expect(queryByText("Atlantis")).toBeFalsy()
-        expect(queryByText("Marvel Universe")).toBeFalsy()
-      })
-    })
-
-    describe("With Collector Profile feature flag ON", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfile: true })
-      })
-
-      it("should render Collector Profile info", async () => {
-        const { findByText } = getWrapper({
-          Me: () => ({
-            name: "Princess",
-            createdAt: new Date("12/12/12").toISOString(),
-            bio: "Richest Collector! 💰",
-            location: {
-              display: "Atlantis",
-            },
-            profession: "Guardian of the Galaxy",
-            otherRelevantPositions: "Marvel Universe",
-          }),
-        })
-
-        expect(await findByText("Guardian of the Galaxy")).toBeTruthy()
-        expect(await findByText("Atlantis")).toBeTruthy()
-        expect(await findByText("Marvel Universe")).toBeTruthy()
-      })
+      expect(await findByText("Guardian of the Galaxy")).toBeTruthy()
+      expect(await findByText("Atlantis")).toBeTruthy()
+      expect(await findByText("Marvel Universe")).toBeTruthy()
     })
   })
 })
