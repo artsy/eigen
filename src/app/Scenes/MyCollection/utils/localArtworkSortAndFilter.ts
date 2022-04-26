@@ -95,7 +95,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
       },
       {
         paramName: FilterParamName.sort,
-        displayText: "Demand Index (High to low)",
+        displayText: "Demand Index (High to Low)",
         paramValue: "demand-index-high-to-low",
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) =>
@@ -106,10 +106,8 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
         displayText: "Demand Index (Low to High)",
         paramValue: "demand-index-low-to-high",
         // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks) => {
-          console.log("artworks", artworks)
-          return orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "asc")
-        },
+        localSortAndFilter: (artworks) =>
+          orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "asc"),
       },
     ])
     setFilterOptions(
