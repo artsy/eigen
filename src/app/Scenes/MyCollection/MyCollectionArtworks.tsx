@@ -155,5 +155,8 @@ export const MyCollectionFilterPropsFragment = graphql`
     width
     height
     date
+    marketPriceInsights {
+      demandRank
+    }
   }
 `

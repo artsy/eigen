@@ -93,6 +93,24 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "desc"),
       },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Demand Index (High to low)",
+        paramValue: "demand-index-high-to-low",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) =>
+          orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "desc"),
+      },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Demand Index (Low to High)",
+        paramValue: "demand-index-low-to-high",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) => {
+          console.log("artworks", artworks)
+          return orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "asc")
+        },
+      },
     ])
     setFilterOptions(
       compact([
