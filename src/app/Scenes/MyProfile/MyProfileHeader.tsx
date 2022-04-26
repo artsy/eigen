@@ -54,8 +54,6 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
     me.otherRelevantPositions
   )
 
-  console.log({ isCollectorProfileCompleted }, { me })
-
   const showCompleteProfileMessage =
     enableCompleteProfileMessage &&
     !isCollectorProfileCompleted &&
