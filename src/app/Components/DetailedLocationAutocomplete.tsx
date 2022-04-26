@@ -98,7 +98,7 @@ export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocomplete
       />
       {!!showSearchResults && (
         <ScrollView keyboardShouldPersistTaps="always">
-          <Flex height={2 * screenHeight} mt={1} mb={2}>
+          <Flex height={screenHeight} mt={1} mb={2}>
             {results.map((result) => (
               <Touchable
                 onPress={() => handleLocationSelected(result)}

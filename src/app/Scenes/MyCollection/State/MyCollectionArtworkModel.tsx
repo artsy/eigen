@@ -1,4 +1,5 @@
 import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
+import { EditableLocation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
@@ -37,6 +38,7 @@ export interface ArtworkFormValues {
   width: string
   artworkLocation: string
   attributionClass: string
+  collectorLocation: EditableLocation | null
 }
 
 export const initialFormValues: ArtworkFormValues = {
@@ -60,6 +62,7 @@ export const initialFormValues: ArtworkFormValues = {
   width: "",
   artworkLocation: "",
   attributionClass: "",
+  collectorLocation: null,
 }
 
 export interface MyCollectionArtworkModel {

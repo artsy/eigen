@@ -1,6 +1,10 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
+import {
+  buildLocationDisplay,
+  DetailedLocationAutocomplete,
+} from "app/Components/DetailedLocationAutocomplete"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -147,7 +151,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 }}
                 testID="CurrencyPicker"
               />
-              <Input
+              <DetailedLocationAutocomplete
                 title="LOCATION"
                 placeholder="Enter City Where Artwork is Located"
                 onChangeText={formik.handleChange("artworkLocation")}
@@ -155,6 +159,25 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="LocationInput"
                 accessibilityLabel="Enter City Where the Artwork is Located"
                 value={formikValues.artworkLocation}
+                initialLocation={formikValues.artworkLocation}
+                onChange={({ city, country, postalCode, state, stateCode }) => {
+                  formik.setFieldValue("collectorLocation", {
+                    city: city ?? "",
+                    country: country ?? "",
+                    postalCode: postalCode ?? "",
+                    state: state ?? "",
+                    stateCode: stateCode ?? "",
+                  })
+                  formik.setFieldValue(
+                    "artworkLocation",
+                    buildLocationDisplay({
+                      display: null,
+                      city: city ?? "",
+                      country: country ?? "",
+                      state: state ?? "",
+                    })
+                  )
+                }}
               />
               <Input
                 multiline
