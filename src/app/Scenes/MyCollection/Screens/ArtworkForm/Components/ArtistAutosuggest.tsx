@@ -2,7 +2,7 @@ import { FadeIn } from "app/Components/FadeIn"
 import SearchIcon from "app/Icons/SearchIcon"
 import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
-import { Box, Button, Flex, Input } from "palette"
+import { Box, Button, Flex, Input, Text } from "palette"
 import React from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 
@@ -33,27 +33,25 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         />
 
         {artistQuery.length > 2 ? (
-          <>
-            <Box height="100%">
-              <AutosuggestResults
-                query={artistQuery}
-                entities={["ARTIST"]}
-                showResultType={false}
-                showQuickNavigationButtons={false}
-                onResultPress={onResultPress}
-                ListEmptyComponent={() => (
-                  <Flex alignItems="center">
-                    {/* Using `FadeIn` prevents the button from being displayed too early. */}
-                    <FadeIn delay={100} slide={false}>
-                      <Button variant="outline" onPress={onSkipPress} mt={3}>
-                        Can't find the Artist? Skip ahead
-                      </Button>
-                    </FadeIn>
+          <Box height="100%">
+            <AutosuggestResults
+              query={artistQuery}
+              entities={["ARTIST"]}
+              showResultType={false}
+              showQuickNavigationButtons={false}
+              onResultPress={onResultPress}
+              ListEmptyComponent={() => (
+                <Flex width="100%">
+                  <Text>We couldn't find any results for "{artistQuery}"</Text>
+                  <Flex alignItems="center" width="100%">
+                    <Button variant="outline" onPress={onSkipPress} mt={3} block>
+                      Can't find the Artist? Skip ahead
+                    </Button>
                   </Flex>
-                )}
-              />
-            </Box>
-          </>
+                </Flex>
+              )}
+            />
+          </Box>
         ) : null}
       </Box>
     </SearchContext.Provider>
