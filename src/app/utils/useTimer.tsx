@@ -1,4 +1,6 @@
 import { DateTime, Duration } from "luxon"
+import { useEffect, useState } from "react"
+import { getTimerInfo } from "./saleTime"
 
 export interface Time {
   days: string
@@ -52,4 +54,30 @@ export const useTimer = (endDate: string, startAt: string = ""): Timer => {
   }
 
   return { hasEnded, time, hasStarted }
+}
+
+export const useSaleEndTimer = (
+  sale: {
+    startAt: string | null
+    endAt: string | null
+    endedAt: string | null
+    timeZone: string | null
+  } | null
+) => {
+  const [relativeTime, seRelativeTime] = useState({ copy: "", color: "" })
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (sale?.endAt && sale?.startAt) {
+        const { hasEnded, time, hasStarted } = useTimer(sale.endAt, sale.startAt)
+        const relativeTimeInfo = getTimerInfo(time, hasStarted, hasEnded, true)
+
+        seRelativeTime(relativeTimeInfo)
+      } else {
+        seRelativeTime({ copy: "", color: "" })
+      }
+    }, 500)
+    return () => clearInterval(intervalId)
+  }, [])
+  return relativeTime
 }

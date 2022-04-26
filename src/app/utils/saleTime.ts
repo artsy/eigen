@@ -1,5 +1,5 @@
 import moment from "moment-timezone"
-import { Time, useTimer } from "./useTimer"
+import { Time, useSaleEndTimer } from "./useTimer"
 
 interface TimerInfo {
   copy: string
@@ -238,8 +238,7 @@ export const getCascadingEndTimeFeatureSaleDetails = (
   if (!sale?.timeZone || !sale.endAt || !sale.startAt) {
     return { absolute: null, relative: null }
   }
-  const { hasEnded, time, hasStarted } = useTimer(sale.endAt, sale.startAt)
-  const relativeTime = sale.endedAt === null ? getTimerInfo(time, hasStarted, hasEnded, true) : null
+  const relativeTime = sale.endedAt === null ? useSaleEndTimer(sale) : null
   const userTimeZone = moment.tz.guess()
   const startDateMoment =
     sale.startAt !== null
