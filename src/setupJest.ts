@@ -104,6 +104,10 @@ jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
+// @ts-expect-error
+import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
+jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
+
 // tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
 
@@ -215,18 +219,6 @@ jest.mock("@react-native-mapbox-gl/maps", () => ({
 }))
 
 const _ = jest.requireActual("lodash")
-
-jest.mock("react-native-safe-area-context", () => {
-  return {
-    ...jest.requireActual("react-native-safe-area-context"),
-    useSafeAreaFrame: () => ({
-      width: 380,
-      height: 550,
-      x: 0,
-      y: 0,
-    }),
-  }
-})
 
 jest.mock("react-native-localize", () => ({
   getCountry: jest.fn(() => "US"),
