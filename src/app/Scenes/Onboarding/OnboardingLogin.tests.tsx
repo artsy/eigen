@@ -1,12 +1,10 @@
+import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Input, Touchable } from "palette"
-import React from "react"
+import { Input } from "palette"
 import { OnboardingLoginWithEmail } from "./OnboardingLogin"
 
-const navigateMock = jest.fn()
-
 const navigationPropsMock = {
-  navigate: navigateMock,
+  navigate: mockNavigate,
   goBack: jest.fn(),
 }
 
@@ -14,36 +12,32 @@ const mockHandleSubmit = jest.fn()
 const mockValidateForm = jest.fn()
 
 jest.mock("formik", () => ({
-  useFormikContext: () => {
-    return {
-      handleSubmit: mockHandleSubmit,
-      values: { mail: "", password: "" },
-      handleChange: jest.fn(() => jest.fn()),
-      validateForm: mockValidateForm,
-      errors: {},
-      isValid: true,
-      dirty: false,
-      isSubmitting: false,
-    }
-  },
+  useFormik: () => ({
+    handleSubmit: mockHandleSubmit,
+    values: { mail: "", password: "" },
+    handleChange: jest.fn(() => jest.fn()),
+    validateForm: mockValidateForm,
+    errors: {},
+    isValid: true,
+    dirty: false,
+    isSubmitting: false,
+  }),
 }))
 
 describe("OnboardingLogin", () => {
-  const TestProvider = ({ email = "" }) => {
-    return (
-      <OnboardingLoginWithEmail
-        navigation={navigationPropsMock as any}
-        route={{ params: { email } } as any}
-      />
-    )
-  }
+  const TestProvider = ({ email = "" }) => (
+    <OnboardingLoginWithEmail
+      navigation={navigationPropsMock as any}
+      route={{ params: { email } } as any}
+    />
+  )
 
   describe("Forget Button", () => {
     it("navigates to forgot password screen", () => {
       const tree = renderWithWrappers(<TestProvider />)
-      const forgotPasswordButton = tree.root.findAllByType(Touchable)[0]
+      const forgotPasswordButton = tree.root.findAllByProps({ testID: "forgot-password" })[0]
       forgotPasswordButton.props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("ForgotPassword")
+      expect(mockNavigate).toHaveBeenCalledWith("ForgotPassword")
     })
   })
 

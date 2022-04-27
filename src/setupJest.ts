@@ -2,6 +2,7 @@ import "@testing-library/jest-native/extend-expect"
 import "jest-extended"
 
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
+import { mockNavigate } from "app/tests/navigationMocks"
 import chalk from "chalk"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
@@ -126,6 +127,17 @@ jest.mock("tipsi-stripe", () => ({
 
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
+
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native")
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: mockNavigate,
+      dispatch: jest.fn(),
+    }),
+  }
+})
 
 jest.mock("react-native-share", () => ({
   open: jest.fn(),

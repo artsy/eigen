@@ -158,6 +158,7 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ route
           color="black60"
           underline
           onPress={() => navigation.navigate("ForgotPassword")}
+          testID="forgot-password"
         >
           Forgot password?
         </Text>
