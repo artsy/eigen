@@ -39,6 +39,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
         hideBottomDivider
         onLeftButtonPress={route.params.onHeaderBackButtonPress}
         rightButtonText="Skip"
+        rightButtonTestId="my-collection-artwork-form-artist-skip-button"
         onRightButtonPress={handleSkipPress}
       >
         Select an Artist

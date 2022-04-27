@@ -38,10 +38,6 @@ const uploadFileToS3Mock = uploadFileToS3 as jest.Mock<any>
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("MyCollectionArtworkForm", () => {
-  beforeEach(() => {
-    mockEnvironment.mockClear()
-  })
-
   describe("Editing an artwork", () => {
     it("renders the main form", async () => {
       const { getByText, getByTestId } = renderWithWrappersTL(
@@ -66,6 +62,11 @@ describe("MyCollectionArtworkForm", () => {
   })
 
   describe("Adding a new artwork", () => {
+    afterEach(() => {
+      mockEnvironment.mockClear()
+      jest.clearAllMocks()
+    })
+
     describe("when selecting an already existing artwork", () => {
       it("populates the form with the data from the artwork", async () => {
         const assetCredentials = {
@@ -187,7 +188,7 @@ describe("MyCollectionArtworkForm", () => {
 
     describe("when skipping the artwork selection", () => {
       it("leaves the form empty", async () => {
-        const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappersTL(
+        const { getByText, getByTestId, getByPlaceholderText, findByTestId } = renderWithWrappersTL(
           <RelayEnvironmentProvider environment={mockEnvironment}>
             <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
           </RelayEnvironmentProvider>
@@ -213,13 +214,43 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artwork")).toBeTruthy()
 
-        act(() => fireEvent.press(getByText("Skip")))
+        act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artwork-skip-button")))
 
         await flushPromiseQueue()
         // Edit Details Screen
 
         expect(getByText("Add Details")).toBeTruthy()
 
+        expect(getByTestId("TitleInput").props.value).toBe("")
+        expect(getByTestId("DateInput").props.value).toBe("")
+        expect(getByTestId("MaterialsInput").props.value).toBe("")
+        expect(getByTestId("WidthInput").props.value).toBe("")
+        expect(getByTestId("HeightInput").props.value).toBe("")
+        expect(getByTestId("DepthInput").props.value).toBe("")
+      })
+    })
+
+    describe("when skipping the artist selection", () => {
+      it("displays the artist display name input", async () => {
+        const { getByText, getByTestId } = renderWithWrappersTL(
+          <RelayEnvironmentProvider environment={mockEnvironment}>
+            <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
+          </RelayEnvironmentProvider>
+        )
+
+        // Select Artist Screen
+
+        expect(getByText("Select an Artist")).toBeTruthy()
+
+        act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artist-skip-button")))
+
+        await flushPromiseQueue()
+
+        // Edit Details Screen
+
+        expect(getByText("Add Details")).toBeTruthy()
+
+        expect(getByTestId("ArtistDisplayNameInput").props.value).toBe(undefined)
         expect(getByTestId("TitleInput").props.value).toBe("")
         expect(getByTestId("DateInput").props.value).toBe("")
         expect(getByTestId("MaterialsInput").props.value).toBe("")

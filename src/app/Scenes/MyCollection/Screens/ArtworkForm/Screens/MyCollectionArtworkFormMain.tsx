@@ -89,18 +89,18 @@ export const MyCollectionArtworkFormMain: React.FC<
         <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
           <Flex p={2}>
             <Join separator={<Spacer my={1} />}>
-              {!!formik.values.artistSearchResult ? (
+              {formik.values.artistSearchResult ? (
                 <ArtistSearchResult result={formik.values.artistSearchResult} />
               ) : (
                 <Input
                   title="Artist"
                   placeholder="Artist"
-                  onChangeText={formik.handleChange("artistName")}
-                  onBlur={formik.handleBlur("artistName")}
-                  testID="ArtistNameInput"
+                  onChangeText={formik.handleChange("artistDisplayName")}
+                  onBlur={formik.handleBlur("artistDisplayName")}
+                  testID="ArtistDisplayNameInput"
                   required
                   accessibilityLabel="Artist Name"
-                  value={formikValues.title}
+                  value={formikValues.artistDisplayName}
                 />
               )}
               <Input
@@ -257,44 +257,6 @@ const pricePaidCurrencySelectOptions: Array<{
   { label: "$ USD", value: "USD" },
   { label: "€ EUR", value: "EUR" },
   { label: "£ GBP", value: "GBP" },
-
-  // Gravity supports the following, however for the prototype
-  // we're only supporting the three above.
-
-  // { label: "AED", value: "AED" },
-  // { label: "ARS", value: "ARS" },
-  // { label: "AUD", value: "AUD" },
-  // { label: "BRL", value: "BRL" },
-  // { label: "CAD", value: "CAD" },
-  // { label: "CDF", value: "CDF" },
-  // { label: "CHF", value: "CHF" },
-  // { label: "CNY", value: "CNY" },
-  // { label: "COP", value: "COP" },
-  // { label: "DKK", value: "DKK" },
-  // { label: "ERN", value: "ERN" },
-  // { label: "ETB", value: "ETB" },
-  // { label: "HKD", value: "HKD" },
-  // { label: "IDR", value: "IDR" },
-  // { label: "ILS", value: "ILS" },
-  // { label: "INR", value: "INR" },
-  // { label: "ISK", value: "ISK" },
-  // { label: "JPY", value: "JPY" },
-  // { label: "KRW", value: "KRW" },
-  // { label: "MXN", value: "MXN" },
-  // { label: "NOK", value: "NOK" },
-  // { label: "NZD", value: "NZD" },
-  // { label: "PHP", value: "PHP" },
-  // { label: "RUB", value: "RUB" },
-  // { label: "SEK", value: "SEK" },
-  // { label: "SGD", value: "SGD" },
-  // { label: "SZL", value: "SZL" },
-  // { label: "TOP", value: "TOP" },
-  // { label: "TRY", value: "TRY" },
-  // { label: "TWD", value: "TWD" },
-  // { label: "TZS", value: "TZS" },
-  // { label: "VND", value: "VND" },
-  // { label: "WST", value: "WST" },
-  // { label: "ZAR", value: "ZAR" },
 ]
 
 const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPress, testID }) => {
