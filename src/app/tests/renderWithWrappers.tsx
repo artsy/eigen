@@ -69,7 +69,9 @@ export const renderWithWrappers = (component: ReactElement) => {
 }
 
 // react-track has no provider, we make one using the decorator and a class wrapper
-const TrackingProvider = (props: { children?: React.ReactNode }) => <PureWrapper {...props} />
+export const TrackingProvider = (props: { children?: React.ReactNode }) => (
+  <PureWrapper {...props} />
+)
 
 @track()
 class PureWrapper extends Component {
