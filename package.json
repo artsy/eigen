@@ -82,7 +82,7 @@
     "react",
     "react-native"
   ],
-  "author": "Eloy Durán",
+  "contributors": "See docs/thanks.md",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/eigen/issues"
@@ -98,7 +98,7 @@
     "cheerio": "0.22.0"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.43.0",
+    "@artsy/cohesion": "4.44.0",
     "@artsy/palette-tokens": "2.6.0",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
@@ -121,7 +121,6 @@
     "@segment/analytics-react-native-adjust": "1.5.0",
     "@segment/analytics-react-native-appboy": "1.5.0",
     "@sentry/react-native": "3.2.13",
-    "@splitsoftware/splitio-react-native": "0.0.1",
     "@styled-system/theme-get": "5.1.2",
     "algoliasearch": "4.10.3",
     "autosuggest-highlight": "3.1.1",
@@ -136,7 +135,7 @@
     "lodash": "4.17.21",
     "luxon": "2.2.0",
     "metro-cache": "0.66.2",
-    "moment": "2.29.1",
+    "moment": "2.29.3",
     "moment-timezone": "0.5.34",
     "ordinal": "1.0.3",
     "prop-types": "15.7.2",
@@ -147,7 +146,7 @@
     "react-instantsearch-native": "6.16.0",
     "react-nanny": "2.12.0",
     "react-native": "0.66.4",
-    "react-native-appboy-sdk": "1.30.0",
+    "react-native-appboy-sdk": "1.35.1",
     "react-native-bootsplash": "3.2.0",
     "react-native-config": "https://github.com/artsy/react-native-config.git#v1.5.0",
     "react-native-credit-card-input": "0.4.1",

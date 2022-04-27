@@ -222,10 +222,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@artsy/cohesion@4.43.0":
-  version "4.43.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.43.0.tgz#9089ceec64bea8d5fcf7d8a80f26de8ab3e92071"
-  integrity sha512-qN7XLVOXtoxRaRTfTNuAKNtb6uas2UprTXNa74Yh6mBxluxVCEz7rWjRvqwDA363D8+WZg8x2se1ntTjBCiWxg==
+"@artsy/cohesion@4.44.0":
+  version "4.44.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.44.0.tgz#b38f54f779b9e8e5e17b8d3c50fc8a6321ded0a3"
+  integrity sha512-xQ2sdOQJ9eUDAcQcvdPBEf8dnj4OqaGw8IDBykRkxkWAuG3pBprPB1hAbqaoZGNu3xu+q1ABO9bIPY8PbVvVyA==
   dependencies:
     core-js "3"
 
@@ -2968,21 +2968,6 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@splitsoftware/splitio-commons@0.1.1-canary.12":
-  version "0.1.1-canary.12"
-  resolved "https://registry.yarnpkg.com/@splitsoftware/splitio-commons/-/splitio-commons-0.1.1-canary.12.tgz#e050e308fbbdd7dc573668f32730525f566f9a66"
-  integrity sha512-BvrRilTTMzF2kDzq3u9JrnzgQaSoVDKp6es8NCiIHgR3rBbP/tetfZPzuKRqDNpncI28JgCBJZOGs/GSRuVobQ==
-  dependencies:
-    object-assign "^4.1.1"
-    tslib "^2.1.0"
-
-"@splitsoftware/splitio-react-native@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@splitsoftware/splitio-react-native/-/splitio-react-native-0.0.1.tgz#f6b3eab6134bf48488c6ad421519c060f30ea280"
-  integrity sha512-BEXF/WgXSNhVRGYwwvstjnxLwK28mRDl4c/v0aR+Hq5m+B0daNTgJ88pZRWxDtx9su430M4KJG7wYuDm7YTqOA==
-  dependencies:
-    "@splitsoftware/splitio-commons" "0.1.1-canary.12"
-
 "@storybook/addon-actions@5.3.21":
   version "5.3.21"
   resolved "https://registry.yarnpkg.com/@storybook/addon-actions/-/addon-actions-5.3.21.tgz#16eed3eb24996adfcbf70bd476a261324d6de593"
@@ -4756,11 +4741,11 @@ async-retry@1.2.3:
     retry "0.12.0"
 
 async@^2.4.0, async@^2.6.0:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/async/-/async-2.6.2.tgz#18330ea7e6e313887f5d2f2a904bac6fe4dd5381"
-  integrity sha512-H1qVYh1MYhEEFLsP97cVKqCGo7KfCyTt6uEWqsTBr9SO84oK9Uwbyd/yCW+6rKJLHksBNUVWZDAjfS+Ccx0Bbg==
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/async/-/async-2.6.4.tgz#706b7ff6084664cd7eae713f6f965433b5504221"
+  integrity sha512-mzo5dfJYwAn29PeiJ0zvwTo04zj8HDJj0Mn8TD7sno7q12prdbnasKJHhkm2c1LgrhlJ0teaea8860oxi51mGA==
   dependencies:
-    lodash "^4.17.11"
+    lodash "^4.17.14"
 
 asynckit@^0.4.0:
   version "0.4.0"
@@ -11152,7 +11137,7 @@ lodash@3.10.1:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
 
-lodash@4.17.21, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.2, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.7.0:
+lodash@4.17.21, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.2, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -11883,10 +11868,10 @@ moment-timezone@*, moment-timezone@0.5.34:
   dependencies:
     moment ">= 2.9.0"
 
-moment@2.29.1, "moment@>= 2.9.0":
-  version "2.29.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
-  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+moment@2.29.3, "moment@>= 2.9.0":
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.3.tgz#edd47411c322413999f7a5940d526de183c031f3"
+  integrity sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==
 
 mout@^1.0.0:
   version "1.2.3"
@@ -12961,9 +12946,9 @@ pkg-up@2.0.0:
     find-up "^2.1.0"
 
 plist@^3.0.2, plist@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/plist/-/plist-3.0.4.tgz#a62df837e3aed2bb3b735899d510c4f186019cbe"
-  integrity sha512-ksrr8y9+nXOxQB2osVNqrgvX/XQPOXaU4BQMKjYq8PvaY1U18mo+fKgBSwzK+luSyinOuPae956lSVcBwxlAMg==
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/plist/-/plist-3.0.5.tgz#2cbeb52d10e3cdccccf0c11a63a85d830970a987"
+  integrity sha512-83vX4eYdQp3vP9SxuYgEM/G/pJQqLUz/V/xzPrzruLs7fz7jxGQ1msZ/mg1nwZxUSuOp4sb+/bEIbRrbzZRxDA==
   dependencies:
     base64-js "^1.5.1"
     xmlbuilder "^9.0.7"
@@ -13720,10 +13705,10 @@ react-nanny@2.12.0:
   resolved "https://registry.yarnpkg.com/react-nanny/-/react-nanny-2.12.0.tgz#8ee7d20319f81131fc1be50ddf3197f286a81dde"
   integrity sha512-oQ3Mo2oBPVELl96IHc43zVsCJUt8BYoEXoeBtPJzTfTTVezQx3/CRZZ+4Ck6TITxawRTUiOcU8v7EPaGpDk01A==
 
-react-native-appboy-sdk@1.30.0:
-  version "1.30.0"
-  resolved "https://registry.yarnpkg.com/react-native-appboy-sdk/-/react-native-appboy-sdk-1.30.0.tgz#ccebdcb297c887d30bd7fb75afab88022e243884"
-  integrity sha512-IP6QgYZsgGkk7EyTuEzIgr/b/GyHWP2YSmcOcB06S6PTF6tUPyHobHDT1+MyC85UZpwVHkdXJ9k6GvMxHiJo3w==
+react-native-appboy-sdk@1.35.1:
+  version "1.35.1"
+  resolved "https://registry.yarnpkg.com/react-native-appboy-sdk/-/react-native-appboy-sdk-1.35.1.tgz#b9c4e6d84b5460e175a93e9c708cf7b8f1f9c57a"
+  integrity sha512-LGBWl14LTy+jXGq35EponaHB148RJbN/k3+oMbeWAMZ851IUpeBwvL+qWU421MBieVBqO7oLFhT47GgFoya7mQ==
 
 react-native-bootsplash@3.2.0:
   version "3.2.0"

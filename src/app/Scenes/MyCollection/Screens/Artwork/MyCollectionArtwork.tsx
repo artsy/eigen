@@ -3,7 +3,7 @@ import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { goBack, navigate, popToRoot } from "app/navigation/navigate"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
@@ -11,10 +11,9 @@ import React, { Suspense, useCallback } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
+import { MyCollectionArtworkHeader } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
-import { MyCollectionArtworkHeader } from "./NewComponents/NewMyCollectionArtworkHeader"
-import { OldMyCollectionArtworkQueryRenderer } from "./OldMyCollectionArtwork"
 
 export enum Tab {
   insights = "Insights",
@@ -25,7 +24,7 @@ const MyCollectionArtworkScreenQuery = graphql`
   query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
     artwork(id: $artworkSlug) {
       ...MyCollectionArtwork_sharedProps @relay(mask: false)
-      ...NewMyCollectionArtworkHeader_artwork
+      ...MyCollectionArtworkHeader_artwork
       ...MyCollectionArtworkInsights_artwork
       ...MyCollectionArtworkAbout_artwork
       comparableAuctionResults(first: 6) @optionalField {
@@ -65,8 +64,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     medium,
   })
 
-  const enableMyCollectionComparableWorks = useFeatureFlag("AREnableMyCollectionComparableWorks")
-
   const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
   const auctionResultsCount = data?.artwork?.artist?.auctionResultsConnection?.totalCount
 
@@ -94,7 +91,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const shouldShowInsightsTab =
     !!data?._marketPriceInsights ||
-    (!!enableMyCollectionComparableWorks && (comparableWorksCount ?? 0) > 0) ||
+    (comparableWorksCount ?? 0) > 0 ||
     (auctionResultsCount ?? 0) > 0
 
   const tabs = compact([
@@ -160,20 +157,12 @@ export interface MyCollectionArtworkScreenProps {
   medium: string
 }
 
-export const MyCollectionArtworkQueryRenderer: React.FC<MyCollectionArtworkScreenProps> = (
-  props
-) => {
-  const AREnableNewMyCollectionArtwork = useFeatureFlag("AREnableNewMyCollectionArtwork")
-
-  if (AREnableNewMyCollectionArtwork) {
-    return (
-      <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
-        <MyCollectionArtwork {...props} />
-      </Suspense>
-    )
-  }
-
-  return <OldMyCollectionArtworkQueryRenderer {...props} />
+export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {
+  return (
+    <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
+      <MyCollectionArtwork {...props} />
+    </Suspense>
+  )
 }
 
 const tracks = {
@@ -195,6 +184,9 @@ export const ArtworkMetaProps = graphql`
     artist {
       internalID
       formattedNationalityAndBirthday
+      targetSupply {
+        isP1
+      }
     }
     consignmentSubmission {
       inProgress

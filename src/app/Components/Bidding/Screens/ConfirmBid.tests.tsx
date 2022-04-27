@@ -10,7 +10,7 @@ import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { waitUntil } from "app/tests/waitUntil"
 import { merge } from "lodash"
 import { Button, LinkText, Sans, Serif, Text } from "palette"
@@ -28,6 +28,8 @@ import { BillingAddress } from "./BillingAddress"
 import { ConfirmBid, ConfirmBidProps } from "./ConfirmBid"
 import { CreditCardForm } from "./CreditCardForm"
 import { SelectMaxBid } from "./SelectMaxBid"
+
+Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
 jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
@@ -581,6 +583,7 @@ describe("polling to verify bid position", () => {
           refreshBidderInfo: expect.anything(),
           refreshSaleArtwork: expect.anything(),
           sale_artwork: {
+            endAt: null,
             id: "node-id",
             internalID: "internal-id",
             " $fragmentRefs": null,
@@ -596,6 +599,8 @@ describe("polling to verify bid position", () => {
             },
             lot_label: "538",
             sale: {
+              start_at: "2018-05-08T20:22:42+00:00",
+              cascadingEndTimeIntervalMinutes: null,
               end_at: "2018-05-10T20:22:42+00:00",
               isBenefit: false,
               live_start_at: "2018-05-09T20:22:42+00:00",
@@ -721,9 +726,9 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
-      "Your card's security code is incorrect."
-    )
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+      "Your card's security code is incorrect.",
+    ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
 
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
@@ -745,9 +750,9 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
-      "There was a problem processing your information. Check your payment details and try again."
-    )
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+      "There was a problem processing your information. Check your payment details and try again.",
+    ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
 
     // it dismisses the modal
@@ -768,9 +773,9 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
-      "There was a problem processing your information. Check your payment details and try again."
-    )
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+      "There was a problem processing your information. Check your payment details and try again.",
+    ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
 
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
@@ -905,6 +910,46 @@ describe("ConfirmBid for unqualified user", () => {
   })
 })
 
+describe("cascading end times", () => {
+  beforeEach(() => {
+    Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
+  })
+
+  describe("with cacsading end time feature enabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
+    })
+
+    it("shows the sale artwork's end time if the sale has cascading end times", () => {
+      const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
+      // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
+      const timerText = getByText("03d 00h 00m 10s")
+      expect(timerText).toBeTruthy()
+    })
+
+    it("shows the sale's end time if the sale does not have cascading end times", () => {
+      const { getByText } = renderWithWrappersTL(
+        <ConfirmBid {...initialPropsForNonCascadingSale} />
+      )
+      // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
+      const timerText = getByText("00d 00h 00m 10s")
+      expect(timerText).toBeTruthy()
+    })
+  })
+
+  describe("with cacsading end time feature disabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
+    })
+    it("shows the sale's end time", () => {
+      const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
+      // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
+      const timerText = getByText("00d 00h 00m 10s")
+      expect(timerText).toBeTruthy()
+    })
+  })
+})
+
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const serifChildren = (comp) =>
   comp.root
@@ -913,7 +958,7 @@ const serifChildren = (comp) =>
     .map((c) => (c.props.children.join ? c.props.children.join("") : c.props.children))
     .join(" ")
 
-const saleArtwork: ConfirmBid_sale_artwork = {
+const baseSaleArtwork = {
   id: "node-id",
   internalID: "internal-id",
   artwork: {
@@ -927,7 +972,7 @@ const saleArtwork: ConfirmBid_sale_artwork = {
   },
   sale: {
     slug: "best-art-sale-in-town",
-    live_start_at: "2018-05-09T20:22:42+00:00",
+    start_at: "2018-05-08T20:22:42+00:00",
     end_at: "2018-05-10T20:22:42+00:00",
     isBenefit: false,
     partner: {
@@ -935,6 +980,47 @@ const saleArtwork: ConfirmBid_sale_artwork = {
     },
   },
   lot_label: "538",
+}
+
+const saleArtwork: ConfirmBid_sale_artwork = {
+  ...baseSaleArtwork,
+  endAt: null,
+  sale: {
+    ...baseSaleArtwork.sale,
+    live_start_at: "2018-05-09T20:22:42+00:00",
+    cascadingEndTimeIntervalMinutes: null,
+  },
+
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  " $fragmentRefs": null, // needs this to keep TS happy
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  " $refType": null, // needs this to keep TS happy
+}
+
+const nonCascadeSaleArtwork: ConfirmBid_sale_artwork = {
+  ...baseSaleArtwork,
+  endAt: null,
+  sale: {
+    ...baseSaleArtwork.sale,
+    live_start_at: null,
+    cascadingEndTimeIntervalMinutes: null,
+  },
+
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  " $fragmentRefs": null, // needs this to keep TS happy
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  " $refType": null, // needs this to keep TS happy
+}
+
+const cascadingEndTimeSaleArtwork: ConfirmBid_sale_artwork = {
+  ...saleArtwork,
+  endAt: "2018-05-13T20:22:42+00:00",
+  sale: {
+    ...baseSaleArtwork.sale,
+    live_start_at: null,
+    cascadingEndTimeIntervalMinutes: 1,
+  },
+
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $fragmentRefs": null, // needs this to keep TS happy
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -1114,3 +1200,13 @@ const initialPropsForRegisteredUser = {
     bidders: [{ qualified_for_bidding: true }],
   },
 } as any
+
+const initialPropsForCascadingSale = {
+  ...initialProps,
+  sale_artwork: cascadingEndTimeSaleArtwork,
+}
+
+const initialPropsForNonCascadingSale = {
+  ...initialProps,
+  sale_artwork: nonCascadeSaleArtwork,
+}

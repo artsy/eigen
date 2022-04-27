@@ -83,7 +83,9 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
           label="Billing address"
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           value={billingAddress && this.formatAddress(billingAddress)}
-          onPress={() => this.presentBillingAddressForm()}
+          onPress={() => {
+            this.presentBillingAddressForm()
+          }}
         />
 
         <Divider />

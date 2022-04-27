@@ -108,6 +108,8 @@
 		49BA7E141655ABE600C06572 /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BA7E131655ABE600C06572 /* ARAppDelegate.m */; };
 		49EC62181778AF100020D648 /* PartnerShow.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EC62171778AF100020D648 /* PartnerShow.m */; };
 		49EF164716C568EA00460BD7 /* Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = 49EF164616C568EA00460BD7 /* Profile.m */; };
+		5102616F1BBE8324002AB8BB /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5102616E1BBE8324002AB8BB /* ARAuctionWebViewController.m */; };
+		510261711BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */; };
 		5108A7BC1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5108A7BB1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m */; };
 		512AB35B1BD7C7A100F92B9A /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 512AB35A1BD7C7A100F92B9A /* CoreSpotlight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		512AB35C1BD7C82F00F92B9A /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 06E44EB8170235D8001B2EBF /* MessageUI.framework */; };
@@ -705,6 +707,9 @@
 		49EC62171778AF100020D648 /* PartnerShow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerShow.m; sourceTree = "<group>"; };
 		49EF164516C568EA00460BD7 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
 		49EF164616C568EA00460BD7 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
+		5102616D1BBE8324002AB8BB /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARAuctionWebViewController.h; path = Auction_Results/ARAuctionWebViewController.h; sourceTree = "<group>"; };
+		5102616E1BBE8324002AB8BB /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARAuctionWebViewController.m; path = Auction_Results/ARAuctionWebViewController.m; sourceTree = "<group>"; };
+		510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewControllerTests.m; sourceTree = "<group>"; };
 		5108A7BB1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppActivityContinuationDelegateTests.m; sourceTree = "<group>"; };
 		512AB35A1BD7C7A100F92B9A /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
 		514E56471BA0BABA008A0DF6 /* ARAppActivityContinuationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppActivityContinuationDelegate.h; sourceTree = "<group>"; };
@@ -1620,6 +1625,7 @@
 				3C6AEE26188F228600DD98FC /* ARInternalMobileWebViewControllerTests.m */,
 				60A309A91AC99B47000783C1 /* ARInternalShareValidatorTests.m */,
 				D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */,
+				510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */,
 			);
 			name = "Web Browsing";
 			path = Web_Browsing;
@@ -1822,6 +1828,8 @@
 		5E47F34B1C3EC98200EC0751 /* Auction */ = {
 			isa = PBXGroup;
 			children = (
+				5102616D1BBE8324002AB8BB /* ARAuctionWebViewController.h */,
+				5102616E1BBE8324002AB8BB /* ARAuctionWebViewController.m */,
 				5EA7BC2A1C60024D009C52C9 /* Networking */,
 				60C1C3111C5F9C6500EC98EE /* Auction Presentation */,
 				51DCC6C71C60E26800455309 /* AuctionInformationViewController.swift */,
@@ -3520,6 +3528,7 @@
 				60FBAA511CC688F7005ED890 /* LiveAuctionViewController.swift in Sources */,
 				6019A9061C7E64B700E292FA /* LiveAuctionLotSetViewController.swift in Sources */,
 				3CEE0B5F18A16EA200FEA6E6 /* ArtsyAPI+Profiles.m in Sources */,
+				5102616F1BBE8324002AB8BB /* ARAuctionWebViewController.m in Sources */,
 				5EBD44E01D07325300C60F9F /* UITableViewController+Animations.swift in Sources */,
 				5E1DDF1D1CE24FBF00DFEE2A /* LiveAuctionBiddingViewModel.swift in Sources */,
 				5EA250661C4EE95B001E4950 /* NSArray+Additions.m in Sources */,
@@ -3636,6 +3645,7 @@
 				FC9DDAF6274D64B1005DEE85 /* Fixtures.swift in Sources */,
 				60F242FC1CB3F32F00387AA1 /* LiveAuctionBidViewControllerTests.swift in Sources */,
 				5E6A16931C98A914004DB29B /* LiveAuctionStateManagerSpec.swift in Sources */,
+				510261711BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m in Sources */,
 				3C6BDCBD18E0AEF60028EF5D /* ArtsyAPI+PrivateTests.m in Sources */,
 				3CB37D991922483100089A1D /* ArtsyAPI+ErrorHandlers.m in Sources */,
 				60CE3CAB1B46F3EE00CA2B75 /* ArtsyOHHTTPAPI.m in Sources */,

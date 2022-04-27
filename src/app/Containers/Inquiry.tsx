@@ -1,15 +1,16 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Inquiry_artwork } from "__generated__/Inquiry_artwork.graphql"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
+import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { dismissModal } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { BottomAlignedButton } from "app/Scenes/Consignments/Components/BottomAlignedButton"
 import ArtworkPreview from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
 import { MetadataText, SmallHeadline } from "app/Scenes/Inbox/Components/Typography"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { Box, Button, Separator, Spacer } from "palette"
 import React from "react"
-import { Dimensions } from "react-native"
+import { Dimensions, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
 import { Schema, Track, track as _track } from "../utils/track"
@@ -82,6 +83,42 @@ const ResponseRateLine = styled.View`
   min-height: 12;
   margin-top: 5;
 `
+
+export interface BottomAlignedProps extends React.Props<JSX.Element> {
+  onPress: () => void
+  buttonText: string
+  disabled?: boolean
+  verticalOffset?: number
+  showSeparator?: boolean
+}
+
+export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
+  buttonText,
+  onPress,
+  children,
+  disabled,
+  showSeparator = true,
+}) => (
+  <ArtsyKeyboardAvoidingView>
+    <View key="space-eater" style={{ flexGrow: 1 }}>
+      {children}
+    </View>
+    {!!showSeparator && <Separator key="separator" />}
+    <Spacer mb={1} />
+    <Box px={2}>
+      <Button
+        accessibilityLabel={buttonText}
+        block
+        width="100%"
+        onPress={onPress}
+        disabled={disabled}
+      >
+        {buttonText}
+      </Button>
+    </Box>
+    <Spacer mb={1} />
+  </ArtsyKeyboardAvoidingView>
+)
 
 interface Props {
   artwork: Inquiry_artwork

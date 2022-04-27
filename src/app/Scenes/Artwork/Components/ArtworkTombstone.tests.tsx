@@ -142,6 +142,34 @@ describe("ArtworkTombstone", () => {
     })
   })
 
+  describe("for an artwork in a sale with cascading end times", () => {
+    it("renders the notification banner", () => {
+      const component = mount(
+        <GlobalStoreProvider>
+          <Theme>
+            <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork} />
+          </Theme>
+        </GlobalStoreProvider>
+      )
+
+      expect(component.text()).toContain("Lots will close at 1-minute intervals.")
+    })
+  })
+
+  describe("for an artwork in a sale without cascading end times", () => {
+    it("renders the notification banner", () => {
+      const component = mount(
+        <GlobalStoreProvider>
+          <Theme>
+            <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
+          </Theme>
+        </GlobalStoreProvider>
+      )
+
+      expect(component.text()).not.toContain("Lots will close at 1-minute intervals.")
+    })
+  })
+
   // TODO: THESE TESTS SHOULD NOT MUTATE THE FIXTURE!!!
   describe("for an artwork with less than 4 artists but more than 1", () => {
     beforeEach(() => {
@@ -294,5 +322,22 @@ const artworkTombstoneAuctionArtwork = {
   },
   sale: {
     isClosed: false,
+    cascadingEndTimeIntervalMinutes: null,
+  },
+}
+
+const artworkTombstoneCascadingEndTimesAuctionArtwork = {
+  ...artworkTombstoneArtwork,
+  isInAuction: true,
+  saleArtwork: {
+    lotLabel: "8",
+    estimate: "CHF 160,000–CHF 230,000",
+  },
+  partner: {
+    name: "Cool Auction",
+  },
+  sale: {
+    isClosed: false,
+    cascadingEndTimeIntervalMinutes: 1,
   },
 }

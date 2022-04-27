@@ -1,16 +1,16 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabsModel, getBottomTabsModel } from "app/Scenes/BottomTabs/BottomTabsModel"
 import {
-  getSubmissionModel,
-  SubmissionModel,
-} from "app/Scenes/Consignments/Screens/SubmitArtworkOverview/State/SubmissionModel"
-import {
   getMyCollectionModel,
   MyCollectionModel,
 } from "app/Scenes/MyCollection/State/MyCollectionModel"
 import { DevicePrefsModel, getDevicePrefsModel } from "app/Scenes/MyProfile/DevicePrefsModel"
 import { getSearchModel, SearchModel } from "app/Scenes/Search/SearchModel"
 import { getUserPrefsModel, UserPrefsModel } from "app/Scenes/Search/UserPrefsModel"
+import {
+  getSubmissionModel,
+  SubmissionModel,
+} from "app/Scenes/SellWithArtsy/utils/submissionModelState"
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"

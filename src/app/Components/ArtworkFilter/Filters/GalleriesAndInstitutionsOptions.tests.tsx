@@ -40,6 +40,7 @@ describe("Galleries and Institutions Options Screen", () => {
     filterType: "artwork",
     previouslyAppliedFilters: [],
     selectedFilters: [],
+    sizeMetric: "cm",
   }
 
   const MockGalleriesAndInstitutionsScreen = ({

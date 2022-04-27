@@ -6,7 +6,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { useEnvironment } from "app/store/GlobalStore"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { compact } from "lodash"
-import { Box, Button, Join, Message, Spacer, Text, Touchable, useSpace } from "palette"
+import { Box, Button, Join, SimpleMessage, Spacer, Text, Touchable, useSpace } from "palette"
 import React, { useState } from "react"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -46,7 +46,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
   }
 
   if (totalCount === 0) {
-    return <Message>There aren’t any articles at this time.</Message>
+    return <SimpleMessage>There aren’t any articles at this time.</SimpleMessage>
   }
 
   const [{ node: heroArticle }, ...remainingArticles] = compact(articles)

@@ -10,6 +10,7 @@ describe("CustomSizeInputs", () => {
         label="Label"
         range={{ min: "*", max: "*" }}
         onChange={jest.fn}
+        selectedMetric="in"
         {...props}
       />
     )

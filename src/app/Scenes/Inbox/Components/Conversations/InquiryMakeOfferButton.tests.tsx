@@ -44,7 +44,9 @@ const TestRenderer = () => {
               artwork={props!.artwork!}
               editionSetID={null}
               conversationID="1234"
-            />
+            >
+              Make an Offer
+            </InquiryMakeOfferButtonFragmentContainer>
           )
         } else if (Boolean(error)) {
           console.error(error)

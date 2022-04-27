@@ -109,6 +109,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
             MEDIUM
             PARTNER
             PRICE_RANGE
+            SIMPLE_PRICE_HISTOGRAM
           ]
           input: $input
         ) @connection(key: "ArtistSeries_artistSeriesArtworks") {

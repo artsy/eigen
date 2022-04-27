@@ -17,15 +17,6 @@ import {
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
 
-export interface ImageCarouselProps {
-  /** CarouselImageDescriptor for when you want to display local images */
-  images: ImageCarousel_images | CarouselImageDescriptor[]
-  cardHeight: number
-  onImageIndexChange?: (imageIndex: number) => void
-  paginationIndicatorType?: IndicatorType
-  onImagePressed?: () => void
-}
-
 export interface CarouselImageDescriptor extends ImageDescriptor {
   imageVersions?: string[]
 }
@@ -35,13 +26,15 @@ interface MappedImageDescriptor extends Pick<ImageDescriptor, "deepZoom"> {
   url: string
 }
 
-export const isALocalImage = (imageUrl?: string | null) => {
-  if (!imageUrl) {
-    return false
-  }
-  const regex = new RegExp("^[.|/|asset://|file:///].*.[/.](gif|jpg|jpeg|bmp|webp|png)$")
-  return regex.test(imageUrl)
+export interface ImageCarouselProps {
+  /** CarouselImageDescriptor for when you want to display local images */
+  images: ImageCarousel_images | CarouselImageDescriptor[]
+  cardHeight: number
+  onImageIndexChange?: (imageIndex: number) => void
+  paginationIndicatorType?: IndicatorType
+  onImagePressed?: () => void
 }
+
 /**
  * ImageCarousel
  * NOTE: This component currently assumes it is being rendered at the full width of the screen.
@@ -144,6 +137,14 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
 })
 
 const imageVersionsSortedBySize = ["normalized", "larger", "large", "medium", "small"] as const
+
+export const isALocalImage = (imageUrl?: string | null) => {
+  if (!imageUrl) {
+    return false
+  }
+  const regex = new RegExp("^[.|/|asset://|file:///].*.[/.](gif|jpg|jpeg|bmp|webp|png)$")
+  return regex.test(imageUrl)
+}
 
 // we used to rely on there being a "normalized" version of every image, but that
 // turns out not to be the case, so in those rare situations we order the image versions
