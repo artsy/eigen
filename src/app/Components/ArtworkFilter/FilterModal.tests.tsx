@@ -15,18 +15,14 @@ import { CollectionFixture } from "app/Scenes/Collection/Components/__fixtures__
 import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
+import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Theme } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import {
-  closeModalMock,
-  getEssentialProps,
-  MockFilterScreen,
-  navigateMock,
-} from "./FilterTestHelper"
+import { closeModalMock, getEssentialProps, MockFilterScreen } from "./FilterTestHelper"
 
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()
@@ -198,7 +194,7 @@ describe("Filter modal navigation flow", () => {
     // the first row item takes users to the Sort navigation route
     fireEvent.press(getByText("Sort By"))
 
-    expect(navigateMock).toBeCalledWith("SortOptionsScreen")
+    expect(mockNavigate).toBeCalledWith("SortOptionsScreen")
   })
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
@@ -214,7 +210,7 @@ describe("Filter modal navigation flow", () => {
     // the second row item takes users to the Medium navigation route
     fireEvent.press(getByText("Medium"))
 
-    expect(navigateMock).toBeCalledWith("AdditionalGeneIDsOptionsScreen")
+    expect(mockNavigate).toBeCalledWith("AdditionalGeneIDsOptionsScreen")
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
