@@ -9,6 +9,7 @@ import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { isPad } from "app/utils/hardware"
 import {
@@ -63,6 +64,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
+  const conversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
 
   const { internalID, slug } = artworkAboveTheFold || {}
   const {
