@@ -41,6 +41,7 @@ export type UserPushNotificationSettings =
   | "receivePromotionNotification"
   | "receivePurchaseNotification"
   | "receiveSaleOpeningClosingNotification"
+  | "receiveOrderNotification"
 
 export const OpenSettingsBanner = () => (
   <>
@@ -196,6 +197,15 @@ export const MyProfilePushNotifications: React.FC<{
               handleUpdateUserNotificationSettings("receiveOutbidNotification", value)
             }}
           />
+          <SwitchMenu
+            title="Order Updates"
+            description="An order you've placed has an update"
+            value={!!userNotificationSettings.receiveOrderNotification}
+            disabled={isLoading}
+            onChange={(value) => {
+              handleUpdateUserNotificationSettings("receiveOrderNotification", value)
+            }}
+          />
         </NotificationPermissionsBox>
         <NotificationPermissionsBox title="Reminders" isLoading={isLoading}>
           <SwitchMenu
@@ -281,6 +291,7 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
         receivePromotionNotification
         receivePurchaseNotification
         receiveSaleOpeningClosingNotification
+        receiveOrderNotification
       }
     `,
   },
