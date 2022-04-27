@@ -7,16 +7,16 @@ import {
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
+import { mockNavigate } from "app/tests/navigationMocks"
 import { Theme } from "palette"
 import React from "react"
 
 export const closeModalMock = jest.fn()
-export const navigateMock = jest.fn()
 
 export const getEssentialProps = (params: {} = {}) =>
   ({
     navigation: {
-      navigate: navigateMock,
+      navigate: mockNavigate,
     },
     route: {
       params: {
