@@ -291,6 +291,7 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
         receivePromotionNotification
         receivePurchaseNotification
         receiveSaleOpeningClosingNotification
+        receiveOrderNotification
       }
     `,
   },
