@@ -149,8 +149,8 @@ const Body = ({
     <>
       <Flex
         flex={1}
-        mt={withTopSafeArea ? insets.top : undefined}
-        mb={withBottomSafeArea ? insets.bottom : undefined}
+        mt={withTopSafeArea ? `${insets.top}px` : undefined}
+        mb={withBottomSafeArea ? `${insets.bottom}px` : undefined}
         {...restFlexProps}
       >
         <Wrap if={scroll}>
