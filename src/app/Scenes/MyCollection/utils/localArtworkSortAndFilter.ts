@@ -155,8 +155,13 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
           // tslint:disable-next-line: no-shadowed-variable
           localSortAndFilter: (artworks, attributionClasses: string[]) => {
             return filter(artworks, (a) => {
+              const formattedAttributionClasses = attributionClasses.map((value) =>
+                value.toLocaleLowerCase()
+              )
               if (a.attributionClass && a.attributionClass.name) {
-                return attributionClasses.includes(a.attributionClass.name)
+                return formattedAttributionClasses.includes(
+                  a.attributionClass.name.toLocaleLowerCase()
+                )
               }
               return false
             })
