@@ -9,6 +9,7 @@ import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { isPad } from "app/utils/hardware"
 import {
@@ -43,6 +44,7 @@ import {
   populatedGrids,
 } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
+import { QuestionsFragmentContainer } from "./Components/Questions"
 
 interface ArtworkProps {
   artworkAboveTheFold: Artwork_artworkAboveTheFold | null
@@ -63,6 +65,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
+  const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
 
   const { internalID, slug } = artworkAboveTheFold || {}
   const {
@@ -235,6 +238,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
         element: <BelowTheFoldPlaceholder />,
       })
       return sections
+    }
+
+    if (enableConversationalBuyNow && artworkAboveTheFold?.isAcquireable) {
+      sections.push({
+        key: "contactGallery",
+        element: <QuestionsFragmentContainer artwork={artworkBelowTheFold} />,
+      })
     }
 
     if (artworkBelowTheFold.description || artworkBelowTheFold.additionalInformation) {
@@ -465,6 +475,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ContextCard_artwork
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
+        ...Questions_artwork
       }
     `,
     me: graphql`
