@@ -12,6 +12,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
 - [Examples and Hacks](#examples-and-hacks)
 - [History](#history)
 - [File Structure Organization](#file-structure-organization)
+- [When committing code](#When-committing-code)
 - [Frontend](#frontend)
   - [Storybook](#storybook)
   - [Styling](#styling)
@@ -92,6 +93,10 @@ However, if we have a `Button` folder which exports only one button component, w
 ```
 
 `Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
+
+#### When committing code
+We generally try to follow the things found under [this RFC](https://github.com/artsy/README/issues/327) when commiting code. 
+<!-- TODO: Add link to the #resolution part of it -->
 
 ### Frontend
 
