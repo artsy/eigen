@@ -98,6 +98,8 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
     if (isFocused) {
       setHasUsedSearchBar(true)
       setSearchBarStillFocused(true)
+    } else {
+      setSearchBarStillFocused(false)
     }
   }, [isFocused])
 
