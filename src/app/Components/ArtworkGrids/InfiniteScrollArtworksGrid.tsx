@@ -18,6 +18,7 @@ import React from "react"
 import {
   ActivityIndicator,
   Dimensions,
+  LayoutAnimation,
   LayoutChangeEvent,
   Platform,
   ScrollView,
@@ -114,6 +115,9 @@ export interface Props {
   updateRecentSearchesOnTap?: boolean
 
   localSortAndFilterArtworks?: (artworks: any[]) => any[]
+
+  /** Hide the header initially when rendered. Default is false */
+  hideHeaderInitially?: boolean
 }
 
 interface PrivateProps {
@@ -160,6 +164,8 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
 interface State {
   sectionDimension: number
   isLoading: boolean
+  headerHeight: number
+  marginTop: number
 }
 
 export const DEFAULT_SECTION_MARGIN = 20
@@ -178,11 +184,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     useParentAwareScrollView: Platform.OS === "android",
     showLoadingSpinner: false,
     updateRecentSearchesOnTap: false,
+    hideHeaderInitially: false,
   }
 
   state = {
     sectionDimension: this.getSectionDimension(this.props.width),
     isLoading: false,
+    headerHeight: 0,
+    marginTop: 0,
   }
 
   fetchNextPage = () => {
@@ -243,6 +252,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   onLayout = (event: LayoutChangeEvent) => {
     this.setState({
       sectionDimension: this.getSectionDimension(event.nativeEvent.layout.width),
+    })
+  }
+
+  onHeaderLayout = (event: LayoutChangeEvent) => {
+    this.setState({
+      headerHeight: event.nativeEvent.layout.height,
+      marginTop: event.nativeEvent.layout.height,
     })
   }
 
@@ -363,7 +379,13 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       return null
     }
 
-    return React.isValidElement(HeaderComponent) ? HeaderComponent : <HeaderComponent />
+    return React.isValidElement(HeaderComponent) ? (
+      <View onLayout={this.onHeaderLayout}>{HeaderComponent}</View>
+    ) : (
+      <View onLayout={this.onHeaderLayout}>
+        <HeaderComponent />
+      </View>
+    )
   }
 
   renderFooter() {
@@ -377,7 +399,16 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, hasMore, stickyHeaderIndices, useParentAwareScrollView } = this.props
+    const {
+      shouldAddPadding,
+      hasMore,
+      stickyHeaderIndices,
+      useParentAwareScrollView,
+      autoFetch,
+      hideHeaderInitially,
+      showLoadingSpinner,
+    } = this.props
+    const { isLoading, headerHeight, marginTop } = this.state
     const boxPadding = shouldAddPadding ? 2 : 0
 
     const ScrollViewWrapper = !!useParentAwareScrollView ? ParentAwareScrollView : ScrollView
@@ -386,10 +417,21 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       <>
         <ScrollViewWrapper
           onScroll={(ev) => {
-            if (this.props.autoFetch) {
+            if (autoFetch) {
               this.handleFetchNextPageOnScroll(ev)
             }
+            if (Platform.OS === "android" && ev.nativeEvent.contentOffset.y - 0 === 0) {
+              LayoutAnimation.configureNext({
+                ...LayoutAnimation.Presets.linear,
+                duration: 200,
+              })
+              this.setState({ marginTop: 0 })
+            }
           }}
+          contentContainerStyle={
+            Platform.OS === "android" && hideHeaderInitially ? { marginTop: -marginTop } : undefined
+          }
+          contentOffset={hideHeaderInitially ? { x: 0, y: headerHeight } : undefined}
           scrollEventThrottle={50}
           onLayout={this.onLayout}
           scrollsToTop={false}
@@ -405,7 +447,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             </View>
           </Box>
 
-          {!this.props.autoFetch && !!hasMore() && (
+          {!autoFetch && !!hasMore() && (
             <Button
               mt={5}
               mb={3}
@@ -418,14 +460,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               Show more
             </Button>
           )}
-          {!!this.props.showLoadingSpinner && !!this.state.isLoading && (
+          {!!showLoadingSpinner && !!isLoading && (
             <Flex mt={2} mb={4} flexDirection="row" justifyContent="center">
               <Spinner />
             </Flex>
           )}
         </ScrollViewWrapper>
 
-        {this.state.isLoading && hasMore() && (
+        {isLoading && hasMore() && (
           <Flex
             alignItems="center"
             justifyContent="center"
@@ -433,7 +475,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             pb="9"
             style={{ opacity: this.state.isLoading && hasMore() ? 1 : 0 }}
           >
-            {!!this.props.autoFetch && (
+            {!!autoFetch && (
               <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
             )}
           </Flex>

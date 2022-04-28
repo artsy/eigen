@@ -1,9 +1,12 @@
 import { MyCollectionArtworkList_myCollectionConnection$key } from "__generated__/MyCollectionArtworkList_myCollectionConnection.graphql"
+import { Props as InfiniteScrollArtworksGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "app/Components/constants"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { extractNodes } from "app/utils/extractNodes"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Spinner } from "palette"
 import React, { useState } from "react"
+import { LayoutAnimation, LayoutChangeEvent, Platform, ScrollView, View } from "react-native"
 import { RelayPaginationProp, useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
@@ -14,7 +17,24 @@ export const MyCollectionArtworkList: React.FC<{
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
   isLoading: RelayPaginationProp["isLoading"]
-}> = ({ localSortAndFilterArtworks, isLoading, loadMore, hasMore, ...restProps }) => {
+  HeaderComponent?: InfiniteScrollArtworksGridProps["HeaderComponent"]
+
+  /** Hide the header initially when rendered. Default is false */
+  hideHeaderInitially?: boolean
+}> = ({
+  localSortAndFilterArtworks,
+  isLoading,
+  loadMore,
+  hasMore,
+  HeaderComponent,
+  hideHeaderInitially,
+  ...restProps
+}) => {
+  const { height: screenHeight } = useScreenDimensions()
+
+  const [headerHeight, setHeaderHeight] = useState(0)
+  const [marginTop, setMarginTop] = useState(0)
+
   const artworkConnection = useFragment<MyCollectionArtworkList_myCollectionConnection$key>(
     artworkConnectionFragment,
     restProps.myCollectionConnection
@@ -41,9 +61,56 @@ export const MyCollectionArtworkList: React.FC<{
     })
   }
 
+  const onHeaderLayout = (event: LayoutChangeEvent) => {
+    setHeaderHeight(event.nativeEvent.layout.height)
+    if (Platform.OS === "android") {
+      setMarginTop(event.nativeEvent.layout.height)
+    }
+  }
+
+  const renderHeader = () => {
+    if (!HeaderComponent) {
+      return null
+    }
+
+    return React.isValidElement(HeaderComponent) ? (
+      <View onLayout={onHeaderLayout}>{HeaderComponent}</View>
+    ) : (
+      <View onLayout={onHeaderLayout}>
+        <HeaderComponent />
+      </View>
+    )
+  }
+
   return (
-    <Flex>
+    <ScrollView
+      contentContainerStyle={
+        Platform.OS === "android" && hideHeaderInitially ? { marginTop: -marginTop } : undefined
+      }
+      contentOffset={hideHeaderInitially ? { x: 0, y: headerHeight } : undefined}
+    >
+      {/*
+       * Rendering a header here instead of passing the header as ListHeaderComponent
+       * to PrefetchFlatlist because this Component is nested inside StickyTabPage's Flatlist,
+       * therefore PrefetchFlatList will not inherit ScrollViewProps and so we cannot use
+       * contentOffset in PrefetchFlatlist
+       */}
+      {renderHeader()}
       <PrefetchFlatList
+        onScroll={
+          Platform.OS === "android"
+            ? ({ nativeEvent }) => {
+                if (nativeEvent.contentOffset.y - 0 === 0) {
+                  LayoutAnimation.configureNext({
+                    ...LayoutAnimation.Presets.linear,
+                    duration: 200,
+                  })
+                  setMarginTop(0)
+                }
+              }
+            : undefined
+        }
+        style={{ minHeight: screenHeight }}
         data={preprocessedArtworks}
         renderItem={({ item }) => <MyCollectionArtworkListItem artwork={item} />}
         // TODO: Add prefetching for this list when the new artwork detail screen is ready
@@ -63,7 +130,7 @@ export const MyCollectionArtworkList: React.FC<{
           ) : null
         }
       />
-    </Flex>
+    </ScrollView>
   )
 }
 

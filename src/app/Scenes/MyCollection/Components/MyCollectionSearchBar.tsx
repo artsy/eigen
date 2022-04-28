@@ -1,40 +1,51 @@
+import { useAnimatedValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
 import { GridViewIcon } from "app/Icons/GridViewIcon"
 import { ListViewIcon } from "app/Icons/ListViewIcon"
 import SearchIcon from "app/Icons/SearchIcon"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { debounce } from "lodash"
 import { Flex, Input, Text } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import {
+  FlatList,
   LayoutAnimation,
   NativeSyntheticEvent,
   TextInput,
   TextInputFocusEventData,
   TouchableWithoutFeedback,
 } from "react-native"
-import usePrevious from "react-use/lib/usePrevious"
+import Animated from "react-native-reanimated"
 
 interface MyCollectionSearchBarProps {
-  yScrollOffset: number
   onChangeText: ((text: string) => void) | undefined
   onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
+  innerFlatListRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
+  searchString: string
+  setHasUsedSearchBar: (hasUsedSearchBar: boolean) => void
+  setSearchBarStillFocused: (stillFocused: boolean) => void
+  startAsFocused?: boolean
 }
 
 export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
-  yScrollOffset,
   onChangeText,
   onFocus,
+  innerFlatListRef,
+  searchString = "",
+  setHasUsedSearchBar,
+  setSearchBarStillFocused,
+  startAsFocused = false,
 }) => {
-  const previousYScrollOffset = usePrevious(yScrollOffset)
+  const [isFocused, setIsFocused] = useState(startAsFocused)
 
-  const [isVisible, setIsVisible] = useState(false)
-  const [isFocused, setIsFocused] = useState(false)
+  const hasRunFocusedAnimation = useAnimatedValue(1)
 
-  const [value, setValue] = useState("")
+  const [value, setValue] = useState(searchString)
 
-  const { hideStaticHeader, showStaticHeader } = useStickyTabPageContext()
+  const enabledSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
+
+  const { staticHeaderHeight } = useStickyTabPageContext()
 
   const viewOptionPreference = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
@@ -51,45 +62,61 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
     })
 
     setViewOption(selectedViewOption)
+    setHasUsedSearchBar(true)
 
     GlobalStore.actions.userPrefs.setArtworkViewOption(selectedViewOption)
   }
 
+  Animated.useCode(
+    () =>
+      Animated.call(
+        [staticHeaderHeight, hasRunFocusedAnimation],
+        ([staticHeaderHeightValue, hasFinishedAnimationLoop]) => {
+          if (hasFinishedAnimationLoop) {
+            return
+          }
+          innerFlatListRef?.current
+            ?.getNode()
+            .scrollToOffset({ offset: Number(staticHeaderHeightValue), animated: true })
+          hasRunFocusedAnimation.setValue(new Animated.Value(1))
+        }
+      ),
+    [isFocused]
+  )
+
   useEffect(() => {
-    const newIsVisibility = yScrollOffset <= 10 && (previousYScrollOffset ?? 0) > yScrollOffset
-    const hasValueChanged = isVisible !== newIsVisibility
-
-    console.log("asdf", previousYScrollOffset, yScrollOffset, newIsVisibility, hasValueChanged)
-
-    if (!hasValueChanged) {
-      return
+    if (startAsFocused) {
+      inputRef.current?.focus()
     }
-
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    setIsVisible(newIsVisibility)
-  }, [yScrollOffset])
+  }, [])
 
   useEffect(() => {
     debouncedSetKeywordFilter(value)
   }, [value])
 
   useEffect(() => {
-    isFocused ? hideStaticHeader() : showStaticHeader()
+    if (isFocused) {
+      setHasUsedSearchBar(true)
+      setSearchBarStillFocused(true)
+    }
   }, [isFocused])
 
-  if (!isVisible) {
+  if (!enabledSearchBar) {
     return null
   }
 
   return (
-    <Flex my={1} mx={2}>
+    <Flex my={1}>
       {isFocused ? (
         <Flex flexDirection="row" alignItems="center">
           <Input
             placeholder="Search by Artist, Artwork or Keyword"
             onChangeText={setValue}
             onFocus={onFocus}
-            onBlur={() => setIsFocused(false)}
+            onBlur={() => {
+              hasRunFocusedAnimation.setValue(new Animated.Value(0))
+              setIsFocused(false)
+            }}
             enableClearButton
             ref={inputRef}
             value={value}
@@ -100,7 +127,9 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
           <TouchableWithoutFeedback
             onPress={() => {
               setValue("")
+              hasRunFocusedAnimation.setValue(new Animated.Value(0))
               setIsFocused(false)
+              setSearchBarStillFocused(false)
             }}
           >
             <Text ml={1} color="black60" variant="xs">
@@ -114,6 +143,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             <Flex>
               <TouchableWithoutFeedback
                 onPress={() => {
+                  hasRunFocusedAnimation.setValue(new Animated.Value(0))
                   setIsFocused(true)
                   requestAnimationFrame(() => inputRef.current?.focus())
                 }}
