@@ -12,18 +12,15 @@ import React, { useContext, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
-export interface InquiryButtonsProps {
+export type InquiryButtonsProps = Omit<ButtonProps, "children"> & {
   artwork: InquiryButtons_artwork
-  // EditionSetID is passed down from the edition selected by the user
-  editionSetID?: string
-  variant?: ButtonProps["variant"]
 }
 
 export interface InquiryButtonsState {
   modalIsVisible: boolean
 }
 
-const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, variant }) => {
+const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, ...rest }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
   const { trackEvent } = useTracking()
   const [notificationVisibility, setNotificationVisibility] = useState(false)
@@ -48,11 +45,8 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, variant }) => 
           trackEvent(tracks.trackTappedContactGallery(artwork.slug, artwork.internalID))
           dispatchAction(InquiryOptions.ContactGallery)
         }}
-        variant={variant}
-        size="large"
-        block
-        width={100}
         haptic
+        {...rest}
       >
         {InquiryOptions.ContactGallery}
       </Button>

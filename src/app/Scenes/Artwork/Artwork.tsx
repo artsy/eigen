@@ -44,6 +44,7 @@ import {
   populatedGrids,
 } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
+import { QuestionsFragmentContainer } from "./Components/Questions"
 
 interface ArtworkProps {
   artworkAboveTheFold: Artwork_artworkAboveTheFold | null
@@ -237,6 +238,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
         element: <BelowTheFoldPlaceholder />,
       })
       return sections
+    }
+
+    if (conversationalBuyNow && artworkAboveTheFold?.isAcquireable) {
+      sections.push({
+        key: "contactGallery",
+        element: <QuestionsFragmentContainer artwork={artworkBelowTheFold} />,
+      })
     }
 
     if (artworkBelowTheFold.description || artworkBelowTheFold.additionalInformation) {
@@ -467,6 +475,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ContextCard_artwork
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
+        ...Questions_artwork
       }
     `,
     me: graphql`
