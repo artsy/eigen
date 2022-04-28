@@ -223,6 +223,11 @@ export const ArtworkMetaProps = graphql`
     medium
     metric
     artworkLocation
+    collectorLocation {
+      city
+      country
+      state
+    }
     provenance
     slug
     title

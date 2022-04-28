@@ -73,6 +73,7 @@ describe("MyCollectionArtworkModel", () => {
       title: "",
       width: "",
       attributionClass: "",
+      collectorLocation: null,
     }
     expect(artworkState?.sessionState.formValues).toEqual(expectedInitialFormValues)
   })

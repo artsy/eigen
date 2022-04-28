@@ -64,6 +64,11 @@ describe("explicitlyClearedFields", () => {
         editionSize: "some-edition-size",
         metric: "in",
         artworkLocation: "some-location",
+        collectorLocation: {
+          city: "a-city",
+          country: "a-country",
+          state: "a-state",
+        },
         photos: [],
         provenance: "some-provenance",
         attributionClass: "Unique",

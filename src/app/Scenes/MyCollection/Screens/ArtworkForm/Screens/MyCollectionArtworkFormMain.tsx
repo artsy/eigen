@@ -156,9 +156,7 @@ export const MyCollectionArtworkFormMain: React.FC<
                 placeholder="Enter City Where Artwork is Located"
                 onChangeText={formik.handleChange("artworkLocation")}
                 onBlur={formik.handleBlur("artworkLocation")}
-                testID="LocationInput"
                 accessibilityLabel="Enter City Where the Artwork is Located"
-                value={formikValues.artworkLocation}
                 initialLocation={formikValues.artworkLocation}
                 onChange={({ city, country, postalCode, state, stateCode }) => {
                   formik.setFieldValue("collectorLocation", {

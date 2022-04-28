@@ -61,6 +61,10 @@ describe("MyCollectionArtworkForm", () => {
       expect(getByTestId("WidthInput").props.value).toBe("30")
       expect(getByTestId("HeightInput").props.value).toBe("20")
       expect(getByTestId("DepthInput").props.value).toBe("40")
+      // DetailedLocationAutocomplete testID
+      expect(getByTestId("detailed-location-autocomplete-input").props.value).toBe(
+        "Berlin, Germany"
+      )
       expect(getByText("1 photo added")).toBeTruthy()
     })
   })
@@ -226,6 +230,8 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByTestId("WidthInput").props.value).toBe("")
         expect(getByTestId("HeightInput").props.value).toBe("")
         expect(getByTestId("DepthInput").props.value).toBe("")
+        // DetailedLocationAutocomplete testID
+        expect(getByTestId("detailed-location-autocomplete-input").props.value).toBe("")
       })
     })
   })
@@ -323,6 +329,11 @@ describe("MyCollectionArtworkForm", () => {
           title: "some-art-piece",
           photos: fakePhotos,
           artworkLocation: "some-location",
+          collectorLocation: {
+            city: "some-city",
+            country: "some-country",
+            state: "some-state",
+          },
           attributionClass: "some-attribution-class",
         }
         const formCheckValues = formValues
@@ -369,6 +380,11 @@ describe("MyCollectionArtworkForm", () => {
                   isEdition: null,
                   metric: null,
                   artworkLocation: null,
+                  collectorLocation: {
+                    city: null,
+                    country: null,
+                    state: null,
+                  },
                   provenance: null,
                   width: null,
                   title: null,
@@ -521,4 +537,5 @@ const mockArtwork = {
   slug: "61c0998ee4b6c3000b76bfb1",
   title: "Morons",
   width: "30",
+  artworkLocation: "Berlin, Germany",
 }
