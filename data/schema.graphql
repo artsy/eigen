@@ -3534,6 +3534,23 @@ scalar CommerceDate
 # An ISO 8601 datetime
 scalar CommerceDateTime
 
+enum CommerceEeiFormStatusEnum {
+  # approved
+  APPROVED
+
+  # cleared
+  CLEARED
+
+  # pending
+  PENDING
+
+  # rejected
+  REJECTED
+
+  # submitted
+  SUBMITTED
+}
+
 interface CommerceEventInterface {
   createdAt(
     format: String
@@ -4684,6 +4701,7 @@ type CommerceShipment {
     timezone: String
   ): String
   deliveryWindowModifier: String
+  eeiFormStatus: CommerceEeiFormStatusEnum
   estimatedDeliveryWindow: String
   estimatedPickupWindow: String
   id: ID!
