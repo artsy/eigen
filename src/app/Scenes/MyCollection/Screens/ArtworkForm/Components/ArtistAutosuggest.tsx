@@ -2,6 +2,7 @@ import { FadeIn } from "app/Components/FadeIn"
 import SearchIcon from "app/Icons/SearchIcon"
 import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Box, Button, Flex, Input, Text } from "palette"
 import React from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
@@ -15,6 +16,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   onResultPress,
   onSkipPress,
 }) => {
+  const enableArtworksFromNonArtsyArtists = useFeatureFlag("AREnableArtworksFromNonArtsyArtists")
   const { formik } = useArtworkForm()
   const { artist: artistQuery } = formik.values
   const searchProviderValues = useSearchProviderValues(artistQuery)
@@ -43,11 +45,13 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
               ListEmptyComponent={() => (
                 <Flex width="100%">
                   <Text>We couldn't find any results for "{artistQuery}"</Text>
-                  <Flex alignItems="center" width="100%">
-                    <Button variant="outline" onPress={onSkipPress} mt={3} block>
-                      Can't find the Artist? Skip ahead
-                    </Button>
-                  </Flex>
+                  {!!enableArtworksFromNonArtsyArtists && (
+                    <Flex alignItems="center" width="100%">
+                      <Button variant="outline" onPress={onSkipPress} mt={3} block>
+                        Can't find the Artist? Skip ahead
+                      </Button>
+                    </Flex>
+                  )}
                 </Flex>
               )}
             />

@@ -2,7 +2,7 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import React from "react"
 import { useTracking } from "react-tracking"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
@@ -12,6 +12,7 @@ import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 export const MyCollectionArtworkFormArtist: React.FC<
   StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">
 > = ({ route, navigation }) => {
+  const enableArtworksFromNonArtsyArtists = useFeatureFlag("AREnableArtworksFromNonArtsyArtists")
   const tracking = useTracking()
 
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
@@ -40,7 +41,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
         onLeftButtonPress={route.params.onHeaderBackButtonPress}
         rightButtonText="Skip"
         rightButtonTestId="my-collection-artwork-form-artist-skip-button"
-        onRightButtonPress={handleSkipPress}
+        onRightButtonPress={enableArtworksFromNonArtsyArtists ? handleSkipPress : undefined}
       >
         Select an Artist
       </FancyModalHeader>
