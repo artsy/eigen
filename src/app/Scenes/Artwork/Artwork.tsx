@@ -65,7 +65,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
-  const conversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
+  const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
 
   const { internalID, slug } = artworkAboveTheFold || {}
   const {
@@ -240,7 +240,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       return sections
     }
 
-    if (conversationalBuyNow && artworkAboveTheFold?.isAcquireable) {
+    if (enableConversationalBuyNow && artworkAboveTheFold?.isAcquireable) {
       sections.push({
         key: "contactGallery",
         element: <QuestionsFragmentContainer artwork={artworkBelowTheFold} />,
