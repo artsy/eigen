@@ -16,7 +16,7 @@ import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { AddCircleIcon, Box, Flex, Separator, Spacer } from "palette"
 import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, TouchableOpacity, View } from "react-native"
+import { Alert, FlatList, TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
@@ -26,6 +26,10 @@ import { FairEmptyStateFragmentContainer } from "./Components/FairEmptyState"
 import { FairExhibitorsFragmentContainer } from "./Components/FairExhibitors"
 import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
 import { FairHeaderFragmentContainer } from "./Components/FairHeader"
+
+import { FairImageSearchQuery } from "__generated__/FairImageSearchQuery.graphql"
+import { Image } from "react-native-image-crop-picker"
+import { fetchQuery } from "relay-runtime"
 
 interface FairQueryRendererProps {
   fairID: string
@@ -170,12 +174,49 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const hideBackButtonOnScroll = useHideBackButtonOnScroll()
 
+  const getFileNameByPath = (imagePath: string) => {
+    return imagePath.split("/").pop()
+  }
+
+  const imageToBlob = async (image: Image) => {
+    console.log("[debug] image", image)
+    const result = await fetch(image.path)
+    const blob = await result.blob()
+
+    // @ts-ignore
+    blob.name = getFileNameByPath(image.path)
+
+    return blob
+  }
+
   const handleSeachByImage = async () => {
     try {
       const images = await showPhotoActionSheet(showActionSheetWithOptions, true, false)
       const image = images[0]
+      const fileBlob = await imageToBlob(image)
 
-      console.log("[debug] image", image)
+      try {
+        const execute = fetchQuery<FairImageSearchQuery>(
+          defaultEnvironment,
+          graphql`
+            query FairImageSearchQuery($file: Upload!) {
+              doNotUseImageSearch(image: $file) {
+                encoding
+                filename
+                mimetype
+              }
+            }
+          `,
+          {
+            file: fileBlob,
+          }
+        )
+        const result = await execute.toPromise()
+
+        Alert.alert("Image info", JSON.stringify(result?.doNotUseImageSearch, null, 2))
+      } catch (error) {
+        console.log("[debug] error", error)
+      }
     } catch (error) {
       console.error(error)
     }

@@ -1,6 +1,7 @@
 import {
   errorMiddleware as relayErrorMiddleware,
   RelayNetworkLayer,
+  uploadMiddleware,
 } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
@@ -36,6 +37,7 @@ export function createEnvironment(
       simpleLoggerMiddleware(),
       __DEV__ ? relayErrorMiddleware() : null,
       timingMiddleware(),
+      uploadMiddleware(),
     ],
     // `noThrow` is currently marked as "experimental" and may be deprecated in the future.
     // See: https://github.com/relay-tools/react-relay-network-modern#advanced-options-2nd-argument-after-middlewares
