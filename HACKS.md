@@ -330,3 +330,14 @@ When the fix is in a release in the library or when we stop using this library.
 #### Explanation/Context
 
 With updated react native version (66) this library causes an error calling the now non-existent getNode() function, it is fixed on the main branch in the library but has not yet been released on npm.
+
+## [Android ContentOffset Bug]: Using marginTop: -headerHeight to initially hide HeaderComponent in MyCollectionArtworksList.tsx and InfiniteScrollArtworkGrid.tsx
+
+#### When we can remove this:
+
+When we upgrade to a react native version that contentOffset works for android
+
+#### Explanation/Context
+
+contentOffset for vertical scrollviews appear to be broken on v0.66.4 (current version). We need the contentOffset to initially hide the HeaderComponent. The workaround currently is to use contentContainerStyle and set the marginTop to -HeightOfHeaderComponent and then remove this when a user scrolls to the top.
+Caveat/Introduced bug: User has to scroll to an offset of any number > 0 to revert the marginTop to 0.

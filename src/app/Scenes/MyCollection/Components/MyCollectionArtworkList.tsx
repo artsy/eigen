@@ -84,9 +84,11 @@ export const MyCollectionArtworkList: React.FC<{
 
   return (
     <ScrollView
+      // [Android ContentOffset Bug]: See Hacks.MD for why we are using marginTop here to hide header
       contentContainerStyle={
         Platform.OS === "android" && hideHeaderInitially ? { marginTop: -marginTop } : undefined
       }
+      // [Android ContentOffset Bug]: contentOffset not working on android. This will only apply to iOS. See Hacks.MD
       contentOffset={hideHeaderInitially ? { x: 0, y: headerHeight } : undefined}
     >
       {/*
@@ -98,6 +100,7 @@ export const MyCollectionArtworkList: React.FC<{
       {renderHeader()}
       <PrefetchFlatList
         onScroll={
+          // [Android ContentOffset Bug]: See Hacks.MD
           Platform.OS === "android"
             ? ({ nativeEvent }) => {
                 if (nativeEvent.contentOffset.y - 0 === 0) {

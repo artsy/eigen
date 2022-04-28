@@ -420,6 +420,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             if (autoFetch) {
               this.handleFetchNextPageOnScroll(ev)
             }
+            // [Android ContentOffset Bug]: See Hacks.MD
             if (Platform.OS === "android" && ev.nativeEvent.contentOffset.y - 0 === 0) {
               LayoutAnimation.configureNext({
                 ...LayoutAnimation.Presets.linear,
@@ -428,9 +429,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               this.setState({ marginTop: 0 })
             }
           }}
+          // [Android ContentOffset Bug]: See Hacks.MD for why we are using marginTop here to hide header
           contentContainerStyle={
             Platform.OS === "android" && hideHeaderInitially ? { marginTop: -marginTop } : undefined
           }
+          // [Android ContentOffset Bug]: contentOffset not working on android. This will only apply to iOS. See Hacks.MD
           contentOffset={hideHeaderInitially ? { x: 0, y: headerHeight } : undefined}
           scrollEventThrottle={50}
           onLayout={this.onLayout}
