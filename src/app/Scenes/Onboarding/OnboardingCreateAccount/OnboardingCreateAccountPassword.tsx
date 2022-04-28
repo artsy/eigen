@@ -39,7 +39,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
               password: undefined,
             })
           }
-          handleChange("password")(text)
+          handleChange("password")(text.trim())
         }}
         onSubmitEditing={handleSubmit}
         blurOnSubmit={false}
