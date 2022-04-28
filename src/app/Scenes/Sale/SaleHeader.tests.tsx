@@ -37,6 +37,9 @@ describe("SaleHeader", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableCascadingEndTimerSalePageDetails: false,
+    })
   })
 
   it("renders without throwing an error", () => {
