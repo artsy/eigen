@@ -93,6 +93,22 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "desc"),
       },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Demand Index (High to Low)",
+        paramValue: "demand-index-high-to-low",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) =>
+          orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "desc"),
+      },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Demand Index (Low to High)",
+        paramValue: "demand-index-low-to-high",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) =>
+          orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "asc"),
+      },
     ])
     setFilterOptions(
       compact([
@@ -139,8 +155,13 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
           // tslint:disable-next-line: no-shadowed-variable
           localSortAndFilter: (artworks, attributionClasses: string[]) => {
             return filter(artworks, (a) => {
+              const formattedAttributionClasses = attributionClasses.map((value) =>
+                value.toLocaleLowerCase()
+              )
               if (a.attributionClass && a.attributionClass.name) {
-                return attributionClasses.includes(a.attributionClass.name)
+                return formattedAttributionClasses.includes(
+                  a.attributionClass.name.toLocaleLowerCase()
+                )
               }
               return false
             })

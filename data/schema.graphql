@@ -3534,6 +3534,23 @@ scalar CommerceDate
 # An ISO 8601 datetime
 scalar CommerceDateTime
 
+enum CommerceEeiFormStatusEnum {
+  # approved
+  APPROVED
+
+  # cleared
+  CLEARED
+
+  # pending
+  PENDING
+
+  # rejected
+  REJECTED
+
+  # submitted
+  SUBMITTED
+}
+
 interface CommerceEventInterface {
   createdAt(
     format: String
@@ -4684,6 +4701,7 @@ type CommerceShipment {
     timezone: String
   ): String
   deliveryWindowModifier: String
+  eeiFormStatus: CommerceEeiFormStatusEnum
   estimatedDeliveryWindow: String
   estimatedPickupWindow: String
   id: ID!
@@ -4765,6 +4783,7 @@ type CommerceShippingQuote {
   priceCents: Int!
   priceCurrency: String!
   tier: String!
+  typeName: String!
   updatedAt(
     format: String
 
@@ -8568,6 +8587,17 @@ type Image {
   width: Int
 }
 
+type ImageSearch {
+  # File stream transfer encoding
+  encoding: String!
+
+  # File name
+  filename: String!
+
+  # File MIME type. Provided by the client and can’t be trusted
+  mimetype: String!
+}
+
 type ImageURLs {
   normalized: String
 }
@@ -9493,6 +9523,9 @@ type Me implements Node {
 
   # This user should receive new works notifications
   receiveNewWorksNotification: Boolean
+
+  # This user should receive order notifications
+  receiveOrderNotification: Boolean
 
   # This user should receive outbid notifications
   receiveOutbidNotification: Boolean
@@ -11180,7 +11213,7 @@ type Query {
 
   # An array of marketing collections. Defaults to returning all available collections if no args are passed
   _unused_gravity_marketingCollections(
-    artistID: ID
+    artistID: String
     category: String
     isFeaturedArtistContent: Boolean
     size: Int
@@ -11650,6 +11683,12 @@ type Query {
     id: String!
   ): CreditCard
   departments: [Department!]!
+
+  # Get an image info
+  doNotUseImageSearch(
+    # Image file
+    image: Upload!
+  ): ImageSearch
 
   # A namespace external partners (provided by Galaxy)
   external: External!
@@ -14048,6 +14087,9 @@ input UpdateMyProfileInput {
   # This user should receive new works notifications
   receiveNewWorksNotification: Boolean
 
+  # This user should receive order notifications
+  receiveOrderNotification: Boolean
+
   # This user should receive outbid notifications
   receiveOutbidNotification: Boolean
 
@@ -14287,6 +14329,9 @@ type UpdateViewingRoomSubsectionsPayload {
   subsections: [ViewingRoomSubsection!]!
 }
 
+# The `Upload` scalar type represents a file upload.
+scalar Upload
+
 type User {
   analytics: AnalyticsUserStats
   cached: Int
@@ -14330,6 +14375,9 @@ type User {
 
   # This user should receive new works notifications
   receiveNewWorksNotification: Boolean
+
+  # This user should receive order notifications
+  receiveOrderNotification: Boolean
 
   # This user should receive outbid notifications
   receiveOutbidNotification: Boolean
@@ -14775,6 +14823,12 @@ type Viewer {
     id: String!
   ): CreditCard
   departments: [Department!]!
+
+  # Get an image info
+  doNotUseImageSearch(
+    # Image file
+    image: Upload!
+  ): ImageSearch
 
   # A namespace external partners (provided by Galaxy)
   external: External!

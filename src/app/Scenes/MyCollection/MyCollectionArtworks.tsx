@@ -183,6 +183,9 @@ export const MyCollectionFilterPropsFragment = graphql`
     id
     artistNames
     medium
+    attributionClass {
+      name
+    }
     artist {
       internalID
       name
@@ -197,5 +200,8 @@ export const MyCollectionFilterPropsFragment = graphql`
     width
     height
     date
+    marketPriceInsights {
+      demandRank
+    }
   }
 `
