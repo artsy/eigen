@@ -42,6 +42,8 @@ export const uploadMiddleware = (): Middleware => {
 
       index = 0
       files.forEach((_, file) => {
+        // We must explicitly specify filename, otherwise Metaphysics will assume that file is NOT being passed
+        // @ts-ignore
         formData.append(index++, file, file.name)
       })
 
