@@ -32,7 +32,6 @@ export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = (
   hideHeaderInitially = false,
   ...restProps
 }) => {
-  console.log("myCollectionConnection", restProps.myCollectionConnection)
   const { height: screenHeight } = useScreenDimensions()
 
   const [headerHeight, setHeaderHeight] = useState(0)
