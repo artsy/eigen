@@ -4,6 +4,7 @@ import { FairQuery } from "__generated__/FairQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { useHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
 import { ReactNativeFile } from "app/utils/ReactNativeFile"
 
@@ -14,7 +15,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { AddCircleIcon, Box, Flex, Separator, Spacer } from "palette"
+import { AddIcon, Box, Flex, Separator, Spacer } from "palette"
 import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useCallback, useRef, useState } from "react"
 import { Alert, FlatList, TouchableOpacity, View } from "react-native"
@@ -48,7 +49,7 @@ const tabs: TabsType = [
   },
 ]
 
-const CAMERA_ICON_CONTAINER_SIZE = 40
+const CAMERA_ICON_CONTAINER_SIZE = 38
 const CAMERA_ICON_SIZE = 20
 
 export const Fair: React.FC<FairProps> = ({ fair }) => {
@@ -64,6 +65,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const isImageSearchEnabled = useExperimentFlag("eigen-image-search")
 
   const sections = isActive
     ? [
@@ -307,21 +309,23 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         />
       </ArtworkFiltersStoreProvider>
 
-      <TouchableOpacity
-        style={{ position: "absolute", top: 35, right: 15 }}
-        onPress={handleSeachByImage}
-      >
-        <Box
-          width={CAMERA_ICON_CONTAINER_SIZE}
-          height={CAMERA_ICON_CONTAINER_SIZE}
-          borderRadius={CAMERA_ICON_CONTAINER_SIZE / 2}
-          bg="white"
-          justifyContent="center"
-          alignItems="center"
+      {!!isImageSearchEnabled && (
+        <TouchableOpacity
+          style={{ position: "absolute", top: 33, right: 12 }}
+          onPress={handleSeachByImage}
         >
-          <AddCircleIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
-        </Box>
-      </TouchableOpacity>
+          <Box
+            width={CAMERA_ICON_CONTAINER_SIZE}
+            height={CAMERA_ICON_CONTAINER_SIZE}
+            borderRadius={CAMERA_ICON_CONTAINER_SIZE / 2}
+            bg="white"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
+          </Box>
+        </TouchableOpacity>
+      )}
     </ProvideScreenTracking>
   )
 }
