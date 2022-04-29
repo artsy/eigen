@@ -207,7 +207,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       )
       const result = await execute.toPromise()
 
-      console.log("[debug] result", result)
       Alert.alert("Image info", JSON.stringify(result?.doNotUseImageSearch, null, 2))
     } catch (error) {
       console.error(error)
