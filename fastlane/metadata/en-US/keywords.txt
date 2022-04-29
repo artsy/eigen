@@ -1,1 +1,1 @@
-buy,collect,bid,sell,consign,gallery,fair,auction,fine,art,artwork,artist,painting,print,photography
+fine,sell,collect,buy,art,artwork,gallery,auction,bid,artist,painting,print,photography,fair,consign
