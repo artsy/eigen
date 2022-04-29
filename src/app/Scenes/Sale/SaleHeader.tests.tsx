@@ -224,9 +224,15 @@ describe("SaleHeader", () => {
       })
 
       describe("relative date label", () => {
-        it("shows Bidding Starts Today if the sale is starting today", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+        beforeEach(() => {
+          jest.useFakeTimers()
+        })
 
+        afterEach(() => {})
+
+        it("shows Bidding Starts Today if the sale is starting today", () => {
+          const { getByText, debug } = renderWithWrappersTL(<TestRenderer />)
+          jest.useFakeTimers()
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
               Sale: () => ({
@@ -238,6 +244,12 @@ describe("SaleHeader", () => {
               }),
             })
           )
+
+          jest.runAllTimers()
+          // jest.advanceTimersByTime(1)
+
+
+          debug()
 
           const relativeTime = getByText("Bidding Starts Today")
           expect(relativeTime).toBeTruthy()
@@ -258,6 +270,8 @@ describe("SaleHeader", () => {
             })
           )
 
+          jest.advanceTimersByTime(500)
+
           const relativeTime = getByText("3 Days Until Bidding Starts")
           expect(relativeTime).toBeTruthy()
         })
@@ -276,6 +290,8 @@ describe("SaleHeader", () => {
               }),
             })
           )
+
+          jest.advanceTimersByTime(500)
 
           const relativeTime = getByText("6 Days Until Lots Start Closing")
           expect(relativeTime).toBeTruthy()
@@ -296,6 +312,8 @@ describe("SaleHeader", () => {
             })
           )
 
+          jest.advanceTimersByTime(500)
+
           const relativeTime = getByText("22h 37m Until Lots Start Closing")
           expect(relativeTime).toBeTruthy()
         })
@@ -315,6 +333,8 @@ describe("SaleHeader", () => {
             })
           )
 
+          jest.advanceTimersByTime(500)
+
           const relativeTime = getByText("37m 28s Until Lots Start Closing")
           expect(relativeTime).toBeTruthy()
         })
@@ -333,6 +353,8 @@ describe("SaleHeader", () => {
               }),
             })
           )
+
+          jest.advanceTimersByTime(500)
 
           const relativeTime = getByText("Lots are closing")
           expect(relativeTime).toBeTruthy()
