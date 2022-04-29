@@ -18,7 +18,7 @@ import {
 } from "react-native"
 import Animated from "react-native-reanimated"
 
-interface MyCollectionSearchBarProps {
+export interface MyCollectionSearchBarProps {
   onChangeText: ((text: string) => void) | undefined
   onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
   innerFlatListRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
@@ -112,6 +112,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
       {isFocused ? (
         <Flex flexDirection="row" alignItems="center">
           <Input
+            testID="MyCollectionSearchBarInput"
             placeholder="Search by Artist, Artwork or Keyword"
             onChangeText={setValue}
             onFocus={onFocus}
@@ -127,6 +128,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
           />
 
           <TouchableWithoutFeedback
+            testID="MyCollectionSearchBarInputCancelButton"
             onPress={() => {
               setValue("")
               hasRunFocusedAnimation.setValue(new Animated.Value(0))
@@ -144,6 +146,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
           <Flex flexDirection="row" my={1} py={0.5} justifyContent="space-between">
             <Flex>
               <TouchableWithoutFeedback
+                testID="MyCollectionSearchBarNoInputTouchable"
                 onPress={() => {
                   hasRunFocusedAnimation.setValue(new Animated.Value(0))
                   setIsFocused(true)
@@ -160,7 +163,10 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             </Flex>
             <Flex flexDirection="row">
               <Flex mr={1}>
-                <TouchableWithoutFeedback onPress={() => onViewOptionChange("list")}>
+                <TouchableWithoutFeedback
+                  testID="MyCollectionSearchListIconTouchable"
+                  onPress={() => onViewOptionChange("list")}
+                >
                   <Flex width={30} height={30} alignItems="center" justifyContent="center">
                     <ListViewIcon
                       fill={viewOption === "list" ? "black" : "gray"}
@@ -170,7 +176,10 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                   </Flex>
                 </TouchableWithoutFeedback>
               </Flex>
-              <TouchableWithoutFeedback onPress={() => onViewOptionChange("grid")}>
+              <TouchableWithoutFeedback
+                testID="MyCollectionSearchGridIconTouchable"
+                onPress={() => onViewOptionChange("grid")}
+              >
                 <Flex width={30} height={30} alignItems="center" justifyContent="center">
                   <GridViewIcon
                     fill={viewOption === "grid" ? "black" : "gray"}

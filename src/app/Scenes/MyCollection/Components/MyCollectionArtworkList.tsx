@@ -11,7 +11,7 @@ import { RelayPaginationProp, useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
-export const MyCollectionArtworkList: React.FC<{
+export interface MyCollectionArtworkListProps {
   myCollectionConnection: MyCollectionArtworkList_myCollectionConnection$key | null
   localSortAndFilterArtworks?: (artworks: any[]) => any[]
   loadMore: RelayPaginationProp["loadMore"]
@@ -21,15 +21,18 @@ export const MyCollectionArtworkList: React.FC<{
 
   /** Hide the header initially when rendered. Default is false */
   hideHeaderInitially?: boolean
-}> = ({
+}
+
+export const MyCollectionArtworkList: React.FC<MyCollectionArtworkListProps> = ({
   localSortAndFilterArtworks,
   isLoading,
   loadMore,
   hasMore,
   HeaderComponent,
-  hideHeaderInitially,
+  hideHeaderInitially = false,
   ...restProps
 }) => {
+  console.log("myCollectionConnection", restProps.myCollectionConnection)
   const { height: screenHeight } = useScreenDimensions()
 
   const [headerHeight, setHeaderHeight] = useState(0)
@@ -84,6 +87,7 @@ export const MyCollectionArtworkList: React.FC<{
 
   return (
     <ScrollView
+      testID="MyCollectionArtworkListScrollView"
       // [Android ContentOffset Bug]: See Hacks.MD for why we are using marginTop here to hide header
       contentContainerStyle={
         Platform.OS === "android" && hideHeaderInitially ? { marginTop: -marginTop } : undefined
@@ -137,7 +141,7 @@ export const MyCollectionArtworkList: React.FC<{
   )
 }
 
-const artworkConnectionFragment = graphql`
+export const artworkConnectionFragment = graphql`
   fragment MyCollectionArtworkList_myCollectionConnection on MyCollectionConnection {
     pageInfo {
       hasNextPage
