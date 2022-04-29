@@ -220,6 +220,7 @@ lane :promote_beta_android do
     track: 'alpha',
     version_code: current_version_code,
     track_promote_to: 'production',
+    rollout: 0.1,
     skip_upload_metadata: true,
     skip_upload_images: true,
     skip_upload_screenshots: true,
@@ -265,6 +266,8 @@ lane :promote_beta_ios do
     skip_screenshots: true,
     skip_binary_upload: true,
     submit_for_review: true,
+    automatic_release: true,
+    phased_release: true,
     precheck_include_in_app_purchases: false,
     submission_information: {
       add_id_info_limits_tracking: true,
