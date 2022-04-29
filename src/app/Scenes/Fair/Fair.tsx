@@ -210,6 +210,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       Alert.alert("Image info", JSON.stringify(result?.doNotUseImageSearch, null, 2))
     } catch (error) {
       console.error(error)
+      Alert.alert("Something went wrong", (error as Error).message)
     }
   }
 
