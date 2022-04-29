@@ -1,5 +1,5 @@
-import { isReactNativeFile } from "app/utils/ReactNativeFile"
-import extractFiles from "extract-files/extractFiles.mjs"
+import { isReactNativeFile, ReactNativeFile } from "app/utils/ReactNativeFile"
+import extractFiles, { ExtractableFile } from "extract-files/extractFiles.mjs"
 import isExtractableFile from "extract-files/isExtractableFile.mjs"
 import { Middleware, RelayNetworkLayerRequestBatch } from "react-relay-network-modern/node8"
 
@@ -23,7 +23,10 @@ export const uploadMiddleware = (): Middleware => {
       variables: req.variables,
     }
 
-    const { clone: extractedOperations, files } = extractFiles(operations, isExtractable)
+    const { clone: extractedOperations, files } = extractFiles<ExtractableFile | ReactNativeFile>(
+      operations,
+      isExtractable
+    )
 
     if (files.size) {
       const formData = new FormData()
