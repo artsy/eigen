@@ -5,6 +5,7 @@ import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkF
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { useHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
+import { ReactNativeFile } from "app/utils/ReactNativeFile"
 
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
@@ -28,7 +29,6 @@ import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollo
 import { FairHeaderFragmentContainer } from "./Components/FairHeader"
 
 import { FairImageSearchQuery } from "__generated__/FairImageSearchQuery.graphql"
-import { Image } from "react-native-image-crop-picker"
 import { fetchQuery } from "relay-runtime"
 
 interface FairQueryRendererProps {
@@ -178,45 +178,35 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
     return imagePath.split("/").pop()
   }
 
-  const imageToBlob = async (image: Image) => {
-    console.log("[debug] image", image)
-    const result = await fetch(image.path)
-    const blob = await result.blob()
-
-    // @ts-ignore
-    blob.name = getFileNameByPath(image.path)
-
-    return blob
-  }
-
   const handleSeachByImage = async () => {
     try {
       const images = await showPhotoActionSheet(showActionSheetWithOptions, true, false)
       const image = images[0]
-      const fileBlob = await imageToBlob(image)
+      const fileImage = new ReactNativeFile({
+        uri: image.path,
+        name: getFileNameByPath(image.path),
+        type: image.mime,
+      })
 
-      try {
-        const execute = fetchQuery<FairImageSearchQuery>(
-          defaultEnvironment,
-          graphql`
-            query FairImageSearchQuery($file: Upload!) {
-              doNotUseImageSearch(image: $file) {
-                encoding
-                filename
-                mimetype
-              }
+      const execute = fetchQuery<FairImageSearchQuery>(
+        defaultEnvironment,
+        graphql`
+          query FairImageSearchQuery($file: Upload!) {
+            doNotUseImageSearch(image: $file) {
+              encoding
+              filename
+              mimetype
             }
-          `,
-          {
-            file: fileBlob,
           }
-        )
-        const result = await execute.toPromise()
+        `,
+        {
+          file: fileImage,
+        }
+      )
+      const result = await execute.toPromise()
 
-        Alert.alert("Image info", JSON.stringify(result?.doNotUseImageSearch, null, 2))
-      } catch (error) {
-        console.log("[debug] error", error)
-      }
+      console.log("[debug] result", result)
+      Alert.alert("Image info", JSON.stringify(result?.doNotUseImageSearch, null, 2))
     } catch (error) {
       console.error(error)
     }
