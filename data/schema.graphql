@@ -12583,6 +12583,7 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
   # it. (Currently only used on me.myBids and me.watchedLotsConnection.)
   isWatching: Boolean
   isWithReserve: Boolean
+  lotID: String
   lotLabel: String
   lotState: CausalityLotState
   lowEstimate: SaleArtworkLowEstimate
