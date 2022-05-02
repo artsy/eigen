@@ -29,6 +29,7 @@ import { useIdentifyUser } from "./utils/useIdentifyUser"
 import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
+import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
@@ -60,6 +61,7 @@ const Main: React.FC = () => {
   useInitialNotification()
   useInitializeQueryPrefetching()
   useIdentifyUser()
+  useSyncNativeAuthState()
 
   useEffect(() => {
     createAllChannels()
