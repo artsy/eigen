@@ -50,6 +50,8 @@ react-native-webview,
 rn-fetch-blob,
 tipsi-stripe
 
+KNOWN ISSUES:
+- The admin menu is not presentable before login, previously was a global component and this caused problems with modal presentation, now showing with standard navigate but that means it can't be presented until after login when navStack is initialized
 
 DONE:
 - bring xcode projects to a similar state
