@@ -1,22 +1,19 @@
 // keep this import of storybook first, otherwise it might produce errors when debugging
 // import { StorybookUIRoot } from "../storybook/storybook-ui"
 
-import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "app/types/SafeAreaInsets"
-import React, { useEffect } from "react"
+import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
-import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
+import { ArtsyReactWebViewPage } from "./Components/ArtsyReactWebView"
 import { FadeIn } from "./Components/FadeIn"
-import { FPSCounter } from "./Components/FPSCounter"
 import { BidFlow } from "./Containers/BidFlow"
 import { InboxQueryRenderer, InboxScreenQuery } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
-import { useErrorReporting } from "./errorReporting/hooks"
 import { CityGuideView } from "./NativeModules/CityGuideView"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
 import { About } from "./Scenes/About/About"
@@ -35,7 +32,6 @@ import {
   AuctionResultsForArtistsYouFollowScreenQuery,
 } from "./Scenes/AuctionResultsForArtistsYouFollow/AuctionResultsForArtistsYouFollow"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
-import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { CityView } from "./Scenes/City"
 import { CityBMWListQueryRenderer } from "./Scenes/City/CityBMWList"
@@ -52,7 +48,6 @@ import { FairBMWArtActivationQueryRenderer } from "./Scenes/Fair/FairBMWArtActiv
 import { FairMoreInfoQueryRenderer } from "./Scenes/Fair/FairMoreInfo"
 import { Favorites } from "./Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
-import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
@@ -90,7 +85,6 @@ import {
   NewWorksForYouQueryRenderer,
   NewWorksForYouScreenQuery,
 } from "./Scenes/NewWorksForYou/NewWorksForYou"
-import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { OrderDetailsQueryRender } from "./Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
@@ -118,24 +112,16 @@ import {
   ViewingRoomsListScreen,
   ViewingRoomsListScreenQuery,
 } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useDevToggle, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
-import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { addTrackingProvider, Schema, screenTrack } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
-import { useDebugging } from "./utils/useDebugging"
-import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
-import { useIdentifyUser } from "./utils/useIdentifyUser"
-import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
-import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
-import { useStripeConfig } from "./utils/useStripeConfig"
-import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -485,51 +471,4 @@ for (const moduleName of Object.keys(modules)) {
       })
     }
   }
-}
-
-const Main: React.FC = () => {
-  useDebugging()
-  usePreferredThemeTracking()
-  useScreenReaderTracking()
-  useFreshInstallTracking()
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
-    })
-  }, [])
-
-  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
-  const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken)
-
-  const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
-  const forceUpdateMessage = GlobalStore.useAppState(
-    (state) => state.artsyPrefs.echo.forceUpdateMessage
-  )
-
-  const fpsCounter = useDevToggle("DTFPSCounter")
-  useErrorReporting()
-  useStripeConfig()
-  useWebViewCookies()
-  useInitializeQueryPrefetching()
-  useIdentifyUser()
-  useSyncNativeAuthState()
-
-  if (!isHydrated) {
-    return <View />
-  }
-
-  if (forceUpdateMessage) {
-    return <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
-  }
-
-  if (!isLoggedIn || onboardingState === "incomplete") {
-    return <Onboarding />
-  }
-
-  return (
-    <>
-      <BottomTabsNavigator />
-      {!!fpsCounter && <FPSCounter style={{ bottom: 94 }} />}
-    </>
-  )
 }

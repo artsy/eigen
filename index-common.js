@@ -26,6 +26,6 @@ if (metaflags.startStorybook) {
     require("./src/app/utils/PushNotification").configure()
   }
   const { AppRegistry } = require("react-native")
-  const { App } = require("./src/app/AndroidApp")
+  const { App } = require("./src/app/App")
   AppRegistry.registerComponent(appName, () => App)
 }
