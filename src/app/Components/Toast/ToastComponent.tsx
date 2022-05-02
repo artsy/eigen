@@ -13,6 +13,7 @@ const MIDDLE_TOAST_SIZE = 120
 const EDGE_TOAST_HEIGHT = 60
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
+const TABBAR_HEIGHT = 50
 
 type ToastProps = ToastDetails & {
   backgroundColor?: Color
@@ -31,7 +32,8 @@ export const ToastComponent: React.FC<ToastProps> = ({
 }) => {
   const color = useColor()
   const { width, height } = useScreenDimensions()
-  const { top: topSafeAreaInset } = useScreenDimensions().safeAreaInsets
+  const { top: topSafeAreaInset, bottom: bottomSafeAreaInset } =
+    useScreenDimensions().safeAreaInsets
   const [opacityAnim] = useState(new Animated.Value(0))
 
   const { showActionSheetWithOptions } = useActionSheet()
@@ -107,7 +109,10 @@ export const ToastComponent: React.FC<ToastProps> = ({
       height={EDGE_TOAST_HEIGHT}
       bottom={
         placement === "bottom"
-          ? EDGE_TOAST_PADDING + positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
+          ? bottomSafeAreaInset +
+            TABBAR_HEIGHT +
+            EDGE_TOAST_PADDING +
+            positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
           : undefined
       }
       top={
