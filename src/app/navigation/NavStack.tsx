@@ -1,6 +1,7 @@
 import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { AppModule, modules } from "app/AppRegistry"
 import { ArtsyKeyboardAvoidingViewContext } from "app/Components/ArtsyKeyboardAvoidingView"
+import { isPad } from "app/utils/hardware"
 import { ProvideScreenDimensions, useScreenDimensions } from "app/utils/useScreenDimensions"
 import React, { useState } from "react"
 import { View } from "react-native"
@@ -85,12 +86,14 @@ export const NavStack: React.FC<{
     props: rootModuleProps,
     stackID: id,
   }
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
         stackAnimation: rootModuleProps?.isPresentedModally ? "slide_from_right" : undefined,
         contentStyle: { backgroundColor: "white" },
+        screenOrientation: isPad() ? "default" : "portrait",
       }}
     >
       <Stack.Screen name={"screen:" + id} component={ScreenWrapper} initialParams={initialParams} />
