@@ -9461,6 +9461,36 @@ type Me implements Node {
     saleID: String
   ): [LotStanding]
   myBids: MyBids
+
+  # A list of auction results from artists in My Collection
+  myCollectionAuctionResults(
+    after: String
+
+    # Filter auction results by empty artwork created date values
+    allowEmptyCreatedDates: Boolean = true
+    before: String
+
+    # Filter auction results by category (medium)
+    categories: [String]
+
+    # Filter auction results by earliest created at year
+    earliestCreatedYear: Int
+    first: Int
+    last: Int
+
+    # Filter auction results by latest created at year
+    latestCreatedYear: Int
+
+    # Filter auction results by organizations
+    organizations: [String]
+
+    # When true, will only return records for allowed artists.
+    recordsTrusted: Boolean = false
+
+    # Filter auction results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sort: AuctionResultSorts
+  ): AuctionResultConnection
   myCollectionConnection(
     after: String
     before: String
