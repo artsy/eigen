@@ -12,6 +12,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
 - [Examples and Hacks](#examples-and-hacks)
 - [History](#history)
 - [File Structure Organization](#file-structure-organization)
+- [When committing code](#When-committing-code)
 - [Frontend](#frontend)
   - [Storybook](#storybook)
   - [Styling](#styling)
@@ -92,6 +93,11 @@ However, if we have a `Button` folder which exports only one button component, w
 ```
 
 `Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
+
+#### When committing code
+- Use the [semantic commit message](https://seesparkbox.com/foundry/semantic_commit_messages) format in the title of your PR (eg. feat, fix, style, test, refactor, docs)
+- When merging a PR, choose "Squash and merge" (unless you have good reason not to)
+- Do not use "Squash and merge" on a new version deployment PR
 
 ### Frontend
 
