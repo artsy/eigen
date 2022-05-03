@@ -222,10 +222,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@artsy/cohesion@4.43.0":
-  version "4.43.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.43.0.tgz#9089ceec64bea8d5fcf7d8a80f26de8ab3e92071"
-  integrity sha512-qN7XLVOXtoxRaRTfTNuAKNtb6uas2UprTXNa74Yh6mBxluxVCEz7rWjRvqwDA363D8+WZg8x2se1ntTjBCiWxg==
+"@artsy/cohesion@4.45.0":
+  version "4.45.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.45.0.tgz#058c0439d0f8f8d304fa7b229a094d5aeede6fe3"
+  integrity sha512-Lbs0Ex0H3ZpHPhahvsba2s4gvXQK1r/b4h6O5o+Y8KzisoQjY8ClXKu4BiC9ZZq2cr44xdnF+JsorqRbYMIaUw==
   dependencies:
     core-js "3"
 
@@ -16302,10 +16302,10 @@ typescript-template-language-service-decorator@^2.2.0:
   resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-2.2.0.tgz#4ee6d580f307fb9239978e69626f2775b8a59b2a"
   integrity sha512-xiolqt1i7e22rpqMaprPgSFVgU64u3b9n6EJlAaUYE61jumipKAdI1+O5khPlWslpTUj80YzjUKjJ2jxT0D74w==
 
-typescript@4.6.3:
-  version "4.6.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.3.tgz#eefeafa6afdd31d725584c67a0eaba80f6fc6c6c"
-  integrity sha512-yNIatDa5iaofVozS/uQJEl3JRWLKKGJKh6Yaiv0GLGSuhpFJe7P3SbHZ8/yjAHRQwKRoA6YZqlfjXWmVzoVSMw==
+typescript@4.6.4:
+  version "4.6.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.4.tgz#caa78bbc3a59e6a5c510d35703f6a09877ce45e9"
+  integrity sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==
 
 typical@^4.0.0:
   version "4.0.0"
