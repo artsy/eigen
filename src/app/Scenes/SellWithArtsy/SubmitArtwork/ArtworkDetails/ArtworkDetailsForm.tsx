@@ -40,7 +40,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <ArtistAutosuggest />
       <StandardSpace />
       <Input
-        title="Title"
+        title="Title erererer"
         placeholder="Add Title or Write 'Unknown'"
         testID="Submission_TitleInput"
         value={values.title}

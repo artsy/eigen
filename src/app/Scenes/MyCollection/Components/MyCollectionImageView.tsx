@@ -1,9 +1,7 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
-import { GlobalStore } from "app/store/GlobalStore"
-import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
+import { LocalImage } from "app/utils/LocalImageStore"
 import { Flex, NoImageIcon, useColor } from "palette"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Image as RNImage } from "react-native"
 
 export interface MyCollectionImageViewProps {
@@ -11,7 +9,7 @@ export interface MyCollectionImageViewProps {
   imageWidth: number
   imageHeight?: number
   aspectRatio?: number
-  artworkSlug: string
+  localImage?: LocalImage
 }
 
 export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
@@ -19,27 +17,9 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   imageWidth,
   imageHeight,
   aspectRatio,
-  artworkSlug,
+  localImage,
 }) => {
   const color = useColor()
-  const [localImage, setLocalImage] = useState<LocalImage | null>(null)
-  const [localImageConsignments, setLocalImageConsignments] = useState<Photo | null>(null)
-
-  useEffect(() => {
-    retrieveLocalImages(artworkSlug).then((images) => {
-      if (images && images.length > 0) {
-        setLocalImage(images[0])
-      }
-    })
-  }, [])
-  const { photos } = GlobalStore.useAppState(
-    (state) => state.artworkSubmission.submission.photosForMyCollection
-  )
-  useEffect(() => {
-    if (photos !== null && photos.length > 0) {
-      setLocalImageConsignments(photos[0])
-    }
-  }, [])
 
   const renderImage = () => {
     if (!!imageURL) {
@@ -54,7 +34,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
           aspectRatio={aspectRatio}
         />
       )
-    } else if (localImage) {
+    } else if (!!localImage) {
       return (
         <RNImage
           testID="Image-Local"
@@ -66,25 +46,8 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
           source={{ uri: localImage.path }}
         />
       )
-    } else if (localImageConsignments) {
-      return (
-        <RNImage
-          testID="Image-Local"
-          style={{
-            width: imageWidth,
-            height:
-              (imageWidth / (localImageConsignments.width || 120)) *
-              (localImageConsignments.height || 120),
-          }}
-          resizeMode="contain"
-          source={{
-            uri: localImageConsignments.path,
-          }}
-        />
-      )
     } else {
       const width = imageWidth ?? 120
-
       return (
         <Flex
           testID="Fallback"

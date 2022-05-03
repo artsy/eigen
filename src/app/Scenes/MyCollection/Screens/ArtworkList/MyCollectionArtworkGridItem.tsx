@@ -6,9 +6,10 @@ import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
+import { LocalImage, retrieveLocalImages } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Flex, Text } from "palette"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -26,7 +27,10 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
     (artwork.images && artwork.images[0]?.url)
   const { width } = useScreenDimensions()
 
-  const { artist, artistNames, internalID, medium, slug, title, image, date } = artwork
+  const { artist, artistNames, internalID, medium, slug, title, image, date, submissionId } =
+    artwork
+
+  const [localImage, setLocalImage] = useState<LocalImage | null>(null)
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
   const screen = useScreenDimensions()
@@ -40,6 +44,27 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const showDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
 
   const showHighDemandIcon = isP1Artist && isHighDemand
+
+  async function getLocalImages() {
+    const [localVanillaArtworkImages, localSubmissionArtworkImages] = await Promise.all([
+      retrieveLocalImages(slug),
+      submissionId ? retrieveLocalImages(submissionId) : undefined,
+    ])
+
+    const mappedLocalImages =
+      (localVanillaArtworkImages || localSubmissionArtworkImages)?.map((i) => ({
+        path: i.path,
+        width: i.width,
+        height: i.height,
+      })) ?? null
+    if (mappedLocalImages) {
+      setLocalImage(mappedLocalImages[0])
+    }
+  }
+
+  useEffect(() => {
+    getLocalImages()
+  }, [getLocalImages])
 
   return (
     <TouchElement
@@ -61,8 +86,8 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
         <MyCollectionImageView
           imageWidth={imageWidth}
           imageURL={imageURL ?? undefined}
+          localImage={localImage ?? undefined}
           aspectRatio={image?.aspectRatio}
-          artworkSlug={slug}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
@@ -109,6 +134,7 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         artistNames
         medium
         slug
+        submissionId
         title
         date
         marketPriceInsights {
