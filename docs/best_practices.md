@@ -95,8 +95,9 @@ However, if we have a `Button` folder which exports only one button component, w
 `Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
 
 #### When committing code
-We generally try to follow the things found under [this RFC](https://github.com/artsy/README/issues/327) when commiting code. 
-<!-- TODO: Add link to the #resolution part of it -->
+- Use the [semantic commit message](https://seesparkbox.com/foundry/semantic_commit_messages) format in the title of your PR (eg. feat, fix, style, test, refactor, docs)
+- When merging a PR, choose "Squash and merge" (unless you have good reason not to)
+- Do not use "Squash and merge" on a new version deployment PR
 
 ### Frontend
 
