@@ -71,7 +71,7 @@ export const passwordSchema = Yup.object().shape({
     .required("Password field is required"),
 })
 export const nameSchema = Yup.object().shape({
-  name: Yup.string().required("Full name field is required"),
+  name: Yup.string().required("Full name field is required").trim(),
 })
 
 export const getCurrentRoute = () =>
@@ -125,7 +125,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
               oauthProvider: "email",
               email,
               password,
-              name,
+              name: name.trim(),
               agreedToReceiveEmails,
             })
             if (!res.success) {

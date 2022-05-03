@@ -367,7 +367,7 @@ function envMenuOption(
 ): AlertButton | null {
   let text = `Log out and switch to '${capitalize(env)}'`
   if (currentEnv === env) {
-    if (!__DEV__) {
+    if (!ArtsyNativeModule.isBetaOrDev) {
       return null
     }
     if (showCustomURLOptions) {
@@ -401,6 +401,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [showCustomURLOptions, setShowCustomURLOptions] = useState(
     Object.keys(adminOverrides).length > 0
   )
+
   return (
     <>
       <FeatureFlagMenuItem
