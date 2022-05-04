@@ -30,7 +30,22 @@ describe(errorMiddleware, () => {
       // @ts-ignore
       const relayResponse: RelayNetworkLayerResponse = {
         json: {
-          errors: [{}],
+          errors: [
+            {
+              message:
+                'https://stagingapi.artsy.net/api/v1/artwork/asdf? - {"error":"Artwork Not Found"}',
+              locations: [
+                {
+                  line: 2,
+                  column: 2,
+                },
+              ],
+              path: ["artwork"],
+              extensions: {
+                httpStatusCodes: [404],
+              },
+            },
+          ],
         },
       }
 

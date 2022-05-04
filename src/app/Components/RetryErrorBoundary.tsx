@@ -1,6 +1,7 @@
 import { captureMessage } from "@sentry/react-native"
-import { Component } from "react"
+import React, { Component } from "react"
 import { LoadFailureView } from "./LoadFailureView"
+import { NotFoundFailureView } from "./NotFoundFailureView"
 
 enum ErrorState {
   Okay,
@@ -74,6 +75,16 @@ export class RetryErrorBoundary extends Component<
       if (failureView) {
         return failureView({ error, retry: this._retry })
       }
+
+      // @ts-expect-error
+      const httpStatusCodes = error?.res?.json?.errors?.[0].extensions.httpStatusCodes || []
+
+      const isNotFoundError = httpStatusCodes.includes(404)
+
+      if (isNotFoundError) {
+        return <NotFoundFailureView error={error} />
+      }
+
       return <LoadFailureView error={error} onRetry={this._retry} />
     }
 
