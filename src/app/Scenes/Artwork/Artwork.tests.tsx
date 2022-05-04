@@ -31,6 +31,7 @@ import { CommercialPartnerInformation } from "./Components/CommercialPartnerInfo
 import { ContextCard } from "./Components/ContextCard"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
+import { QuestionsFragmentContainer } from "./Components/Questions"
 
 type ArtworkQueries =
   | "ArtworkAboveTheFoldQuery"
@@ -382,6 +383,24 @@ describe("Artwork", () => {
     await flushPromiseQueue()
 
     expect(tree.root.findAllByType(ContextCard)).toHaveLength(1)
+  })
+
+  it("renders buy now contact gallery when feature flag is enabled", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+      Artwork: () => ({
+        slug: "test-artwork",
+        isAcquireable: true,
+      }),
+    })
+    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+    mockMostRecentOperation("ArtworkBelowTheFoldQuery")
+
+    await flushPromiseQueue()
+
+    expect(tree.root.findAllByType(QuestionsFragmentContainer)).toHaveLength(1)
   })
 
   describe("Live Auction States", () => {

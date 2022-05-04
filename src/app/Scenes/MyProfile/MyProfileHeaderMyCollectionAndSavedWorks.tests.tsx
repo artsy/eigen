@@ -120,7 +120,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         })
 
         await flushPromiseQueue()
-        expect(await findByText("Why complete your Colletor Profile?")).toBeTruthy()
+        expect(await findByText("Why complete your Collector Profile?")).toBeTruthy()
       })
 
       it("doesn't get displayed if the profile is completed", async () => {
@@ -140,7 +140,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         })
 
         await flushPromiseQueue()
-        expect(await queryByText("Why complete your Colletor Profile?")).toBeFalsy()
+        expect(await queryByText("Why complete your Collector Profile?")).toBeFalsy()
       })
     })
 
@@ -171,57 +171,23 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       expect(container.findAllByType(Avatar).length).toEqual(1)
     })
 
-    describe("With Collector Profile feature flag OFF", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfile: false })
+    it("renders Collector Profile info", async () => {
+      const { findByText } = getWrapper({
+        Me: () => ({
+          name: "Princess",
+          createdAt: new Date("12/12/12").toISOString(),
+          bio: "Richest Collector! 💰",
+          location: {
+            display: "Atlantis",
+          },
+          profession: "Guardian of the Galaxy",
+          otherRelevantPositions: "Marvel Universe",
+        }),
       })
 
-      it("should not render Collector Profile info", async () => {
-        const { findByText, queryByText } = getWrapper({
-          Me: () => ({
-            name: "Princess",
-            createdAt: new Date("12/12/12").toISOString(),
-            bio: "Richest Collector! 💰",
-            location: {
-              display: "Atlantis",
-            },
-            profession: "Guardian of the Galaxy",
-            otherRelevantPositions: "Marvel Universe",
-          }),
-        })
-
-        expect(await findByText("Princess")).toBeTruthy()
-        expect(await findByText("Member since 2012")).toBeTruthy()
-        expect(await findByText("Richest Collector! 💰")).toBeTruthy()
-        expect(queryByText("Guardian of the Galaxy")).toBeFalsy()
-        expect(queryByText("Atlantis")).toBeFalsy()
-        expect(queryByText("Marvel Universe")).toBeFalsy()
-      })
-    })
-
-    describe("With Collector Profile feature flag ON", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfile: true })
-      })
-
-      it("should render Collector Profile info", async () => {
-        const { findByText } = getWrapper({
-          Me: () => ({
-            name: "Princess",
-            createdAt: new Date("12/12/12").toISOString(),
-            bio: "Richest Collector! 💰",
-            location: {
-              display: "Atlantis",
-            },
-            profession: "Guardian of the Galaxy",
-            otherRelevantPositions: "Marvel Universe",
-          }),
-        })
-
-        expect(await findByText("Guardian of the Galaxy")).toBeTruthy()
-        expect(await findByText("Atlantis")).toBeTruthy()
-        expect(await findByText("Marvel Universe")).toBeTruthy()
-      })
+      expect(await findByText("Guardian of the Galaxy")).toBeTruthy()
+      expect(await findByText("Atlantis")).toBeTruthy()
+      expect(await findByText("Marvel Universe")).toBeTruthy()
     })
   })
 })

@@ -3,7 +3,7 @@ import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { goBack, navigate, popToRoot } from "app/navigation/navigate"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
@@ -64,8 +64,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     medium,
   })
 
-  const enableMyCollectionComparableWorks = useFeatureFlag("AREnableMyCollectionComparableWorks")
-
   const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
   const auctionResultsCount = data?.artwork?.artist?.auctionResultsConnection?.totalCount
 
@@ -93,7 +91,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const shouldShowInsightsTab =
     !!data?._marketPriceInsights ||
-    (!!enableMyCollectionComparableWorks && (comparableWorksCount ?? 0) > 0) ||
+    (comparableWorksCount ?? 0) > 0 ||
     (auctionResultsCount ?? 0) > 0
 
   const tabs = compact([

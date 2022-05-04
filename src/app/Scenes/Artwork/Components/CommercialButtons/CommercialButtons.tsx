@@ -79,11 +79,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
         {isInquireable && (
           <>
             <Spacer my={0.5} />
-            <InquiryButtonsFragmentContainer
-              artwork={artwork}
-              editionSetID={editionSetID}
-              variant="outline"
-            />
+            <InquiryButtonsFragmentContainer artwork={artwork} variant="outline" block />
           </>
         )}
       </>
@@ -91,7 +87,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
   }
 
   if (isInquireable) {
-    return <InquiryButtonsFragmentContainer artwork={artwork} editionSetID={editionSetID} />
+    return <InquiryButtonsFragmentContainer artwork={artwork} block />
   }
 
   return null

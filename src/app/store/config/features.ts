@@ -123,11 +123,6 @@ export const features = defineFeatures({
     description: "Enable search with image",
     showInAdminMenu: true,
   },
-  AREnableCollectorProfile: {
-    readyForRelease: true,
-    description: "Enable collector profile",
-    showInAdminMenu: true,
-  },
   AREnableMyCollectionSearchBar: {
     readyForRelease: false,
     description: "Enable My Collection search bar",
@@ -161,12 +156,6 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable My Collection Price Estimate Range",
     showInAdminMenu: false,
-  },
-  AREnableMyCollectionComparableWorks: {
-    readyForRelease: true,
-    description: "Enable My Collection Comparable Works",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionComparableWorks",
   },
   AREnableHomeScreenArtworkRecommendations: {
     readyForRelease: true,
