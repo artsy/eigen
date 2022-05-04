@@ -1,6 +1,7 @@
 import { editCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { goBack, navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -159,9 +160,11 @@ export interface MyCollectionArtworkScreenProps {
 
 export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {
   return (
-    <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
-      <MyCollectionArtwork {...props} />
-    </Suspense>
+    <RetryErrorBoundary notFoundMessage="Sorry, the artwork you were looking for doesn’t exist.">
+      <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
+        <MyCollectionArtwork {...props} />
+      </Suspense>
+    </RetryErrorBoundary>
   )
 }
 
