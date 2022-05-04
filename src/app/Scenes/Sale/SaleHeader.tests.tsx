@@ -162,6 +162,8 @@ describe("SaleHeader", () => {
         __globalStoreTestUtils__?.injectFeatureFlags({
           AREnableCascadingEndTimerSalePageDetails: true,
         })
+
+        jest.useFakeTimers()
       })
 
       it("shows the cascading end time label", () => {
@@ -224,14 +226,8 @@ describe("SaleHeader", () => {
       })
 
       describe("relative date label", () => {
-        beforeEach(() => {
-          jest.useFakeTimers()
-        })
-
-        afterEach(() => {})
-
         it("shows Bidding Starts Today if the sale is starting today", () => {
-          const { getByText, debug } = renderWithWrappersTL(<TestRenderer />)
+          const { getByText } = renderWithWrappersTL(<TestRenderer />)
           jest.useFakeTimers()
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
@@ -239,17 +235,14 @@ describe("SaleHeader", () => {
                 endAt: "2018-05-16T15:00:00",
                 startAt: "2018-05-10T20:00:00",
                 endedAt: null,
+                slug: "the weird one",
                 cascadingEndTimeIntervalMinutes: 1,
                 ...baseSale,
               }),
             })
           )
 
-          jest.runAllTimers()
-          // jest.advanceTimersByTime(1)
-
-
-          debug()
+          jest.advanceTimersByTime(500)
 
           const relativeTime = getByText("Bidding Starts Today")
           expect(relativeTime).toBeTruthy()
