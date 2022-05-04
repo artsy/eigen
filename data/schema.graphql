@@ -10068,6 +10068,11 @@ type MyBids {
   closed: [MyBid]
 }
 
+input MyCollectionArtistInput {
+  # The artist's display name.
+  displayName: String
+}
+
 type MyCollectionArtworkMutationDeleteSuccess {
   success: Boolean
 }
@@ -10111,7 +10116,8 @@ type MyCollectionConnection {
 }
 
 input MyCollectionCreateArtworkInput {
-  artistIds: [String]!
+  artistIds: [String]
+  artists: [MyCollectionArtistInput]
   artworkLocation: String
   attributionClass: ArtworkAttributionClassType
   category: String
