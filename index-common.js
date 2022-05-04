@@ -17,14 +17,9 @@ if (metaflags.startStorybook) {
   global.__STORYBOOK__ = true
   require("./src/storybook")
 } else {
-  const { Platform } = require("react-native")
-
-  const appName = !(Platform.OS === "android") ? require("./app.json").appName : "Artsy"
+  const appName = require("./app.json").appName
   require("react-native-gesture-handler")
   require("react-native-screens").enableScreens()
-  if (Platform.OS === "android") {
-    require("./src/app/utils/PushNotification").configure()
-  }
   const { AppRegistry } = require("react-native")
   const { App } = require("./src/app/App")
   AppRegistry.registerComponent(appName, () => App)
