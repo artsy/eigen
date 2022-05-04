@@ -6,8 +6,13 @@ on:
   push:
     branches: [play_store_submission]
 
+permissions:
+  contents: read
+
 jobs:
   trigger:
+    permissions:
+      contents: none
     runs-on: ubuntu-latest
     steps:
       - name: Trigger promotion
