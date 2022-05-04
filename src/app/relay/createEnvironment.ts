@@ -28,6 +28,7 @@ export function createEnvironment(
       persistedQueryMiddleware(),
       metaphysicsURLMiddleware(),
       rateLimitMiddleware(),
+      uploadMiddleware(),
       // @ts-ignore
       errorMiddleware(),
       // We need to run the checkAuthenticationMiddleware as early as possible to make sure that the user
@@ -36,7 +37,6 @@ export function createEnvironment(
       metaphysicsExtensionsLoggerMiddleware(),
       simpleLoggerMiddleware(),
       __DEV__ ? relayErrorMiddleware() : null,
-      uploadMiddleware(),
       timingMiddleware(),
     ],
     // `noThrow` is currently marked as "experimental" and may be deprecated in the future.
