@@ -4,7 +4,7 @@ import { FairQuery } from "__generated__/FairQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { useExperimentFlag } from "app/utils/experiments/hooks"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { useHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
 import { ReactNativeFile } from "app/utils/ReactNativeFile"
 
@@ -65,7 +65,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const isImageSearchEnabled = useExperimentFlag("eigen-image-search")
+  const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")
 
   const sections = isActive
     ? [
