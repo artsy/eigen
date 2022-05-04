@@ -39,6 +39,9 @@ export function deleteArtworkImage(artworkID: string, imageID: string) {
           resolve(response)
         }
       },
+      /* updater: (store) => {
+        store.get(imageID)?.invalidateRecord()
+      }, */
       onError: reject,
     })
   })

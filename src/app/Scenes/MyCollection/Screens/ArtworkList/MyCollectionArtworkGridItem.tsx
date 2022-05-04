@@ -46,6 +46,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
   async function getLocalImages() {
+    console.log("LOGD IN USEEFFECT")
     const [localVanillaArtworkImages, localSubmissionArtworkImages] = await Promise.all([
       retrieveLocalImages(slug),
       submissionId ? retrieveLocalImages(submissionId) : undefined,
@@ -62,6 +63,13 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
     }
   }
 
+  // LOOPS when localImage is present
+  /*   useEffect(() => {
+    getLocalImages()
+  }, [getLocalImages])  */
+
+  // Works only if I update the existed image
+  // Doesn't work when I add an image to the artrork without images or remove all images from the artwrok
   useEffect(() => {
     getLocalImages()
   }, [artwork])
@@ -83,6 +91,8 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
       }}
     >
       <View>
+        {console.log("LOGD grid ")}
+
         <MyCollectionImageView
           imageWidth={imageWidth}
           imageURL={imageURL ?? undefined}

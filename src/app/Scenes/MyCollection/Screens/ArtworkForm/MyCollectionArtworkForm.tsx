@@ -288,11 +288,15 @@ export const updateArtwork = async (
       ...explicitlyClearedFields(others, dirtyFormCheckValues),
     })
 
+    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
+
     const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)
     for (const photo of deletedImages) {
       await deleteArtworkImage(props.artwork.internalID, photo.id)
+      if (slug) {
+        await removeLocalPhotos(slug)
+      }
     }
-    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
     if (slug && externalImageUrls.length > 0) {
       storeLocalPhotos(slug, photos)
     } else if (slug) {
