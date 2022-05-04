@@ -64,7 +64,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   useEffect(() => {
     getLocalImages()
-  }, [getLocalImages])
+  }, [artwork])
 
   return (
     <TouchElement

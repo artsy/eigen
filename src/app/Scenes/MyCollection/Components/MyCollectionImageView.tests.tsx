@@ -12,7 +12,6 @@ describe("MyCollectionImageView", () => {
       imageHeight: 100,
       aspectRatio: 1,
       imageURL: "https://some-url/:version.jpg",
-      artworkSlug: "some-slug",
     }
     const { getAllByTestId } = renderWithWrappersTL(<MyCollectionImageView {...props} />)
     expect(getAllByTestId("Image-Remote")).toBeDefined()
@@ -23,7 +22,6 @@ describe("MyCollectionImageView", () => {
       imageWidth: 100,
       imageHeight: 100,
       aspectRatio: 1,
-      artworkSlug: "some-slug",
     }
     const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImages")
     const localImage: LocalImage = {
@@ -50,7 +48,6 @@ describe("MyCollectionImageView", () => {
       imageWidth: 100,
       imageHeight: 100,
       aspectRatio: 1,
-      artworkSlug: "some-slug",
     }
     const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImages")
     const retrievalPromise = new Promise<LocalImage[] | null>((resolve) => {

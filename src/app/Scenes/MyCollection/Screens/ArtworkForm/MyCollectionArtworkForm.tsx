@@ -26,7 +26,7 @@ import { refreshMyCollection } from "../../MyCollection"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
-import { storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
+import { removeLocalPhotos, storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormArtist } from "./Screens/MyCollectionArtworkFormArtist"
 import { MyCollectionArtworkFormArtwork } from "./Screens/MyCollectionArtworkFormArtwork"
@@ -295,6 +295,8 @@ export const updateArtwork = async (
     const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
     if (slug && externalImageUrls.length > 0) {
       storeLocalPhotos(slug, photos)
+    } else if (slug) {
+      removeLocalPhotos(slug)
     }
   }
 
