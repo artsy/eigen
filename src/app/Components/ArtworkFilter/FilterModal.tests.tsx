@@ -179,6 +179,90 @@ const MockFilterModalNavigator = ({
   </GlobalStoreProvider>
 )
 
+describe("Filter modal", () => {
+  it("should display filter when aggregation counts are NOT empty", () => {
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [
+        {
+          slice: "MEDIUM",
+          counts: [
+            {
+              name: "Sculpture",
+              count: 277,
+              value: "sculpture",
+            },
+          ],
+        },
+        {
+          slice: "MAJOR_PERIOD",
+          counts: [
+            {
+              name: "Late 19th Century",
+              count: 6,
+              value: "Late 19th Century",
+            },
+          ],
+        },
+      ],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      sizeMetric: "cm",
+    }
+
+    const { getByText } = renderWithWrappersTL(
+      <MockFilterModalNavigator initialData={injectedState} />
+    )
+
+    expect(getByText("Medium")).toBeTruthy()
+    expect(getByText("Time Period")).toBeTruthy()
+  })
+
+  it("should hide filter when aggregation counts are empty", () => {
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [
+        {
+          slice: "MEDIUM",
+          counts: [],
+        },
+        {
+          slice: "MAJOR_PERIOD",
+          counts: [
+            {
+              name: "Late 19th Century",
+              count: 6,
+              value: "Late 19th Century",
+            },
+          ],
+        },
+      ],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      sizeMetric: "cm",
+    }
+
+    const { getByText, queryByText } = renderWithWrappersTL(
+      <MockFilterModalNavigator initialData={injectedState} />
+    )
+
+    expect(queryByText("Medium")).toBeFalsy()
+    expect(getByText("Time Period")).toBeTruthy()
+  })
+})
+
 describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to sort screen from filter screen", () => {
     const { getByText } = renderWithWrappersTL(

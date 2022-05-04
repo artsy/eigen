@@ -14,13 +14,7 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { useToast } from "app/Components/Toast/toastHook"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import {
-  GlobalStore,
-  removeClue,
-  useDevToggle,
-  useFeatureFlag,
-  useSessionVisualClue,
-} from "app/store/GlobalStore"
+import { GlobalStore, removeClue, useDevToggle, useSessionVisualClue } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -35,12 +29,11 @@ import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { EventEmitter } from "events"
 import { times } from "lodash"
 import { Button, Flex, Message, Separator, Spacer, useSpace } from "palette"
-import React, { useContext, useEffect, useState } from "react"
-import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl } from "react-native"
+import React, { useContext, useEffect, useRef, useState } from "react"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
-import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
@@ -61,11 +54,8 @@ const MyCollection: React.FC<{
   const { trackEvent } = useTracking()
   const { showSessionVisualClue } = useSessionVisualClue()
 
-  const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
-  const [keywordFilter, setKeywordFilter] = useState("")
-  const [yScrollOffset, setYScrollOffset] = useState(0)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
   const filtersCount = useSelectedFiltersCount()
@@ -141,12 +131,6 @@ const MyCollection: React.FC<{
                 Add Works
               </Button>
             </ArtworksFilterHeader>
-            {!!enableSearchBar && (
-              <MyCollectionSearchBar
-                yScrollOffset={yScrollOffset}
-                onChangeText={setKeywordFilter}
-              />
-            )}
             {!!showNewWorksBanner && (
               <Message
                 variant="info"
@@ -174,15 +158,13 @@ const MyCollection: React.FC<{
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length, filtersCount, yScrollOffset])
+  }, [artworks.length, filtersCount])
 
   useEffect(() => {
     reInitializeLocalArtworkFilter(artworks)
   }, [artworks])
 
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    setYScrollOffset(event.nativeEvent.contentOffset.y)
-  }
+  const innerFlatListRef = useRef(null)
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -200,12 +182,11 @@ const MyCollection: React.FC<{
       <StickyTabPageScrollView
         contentContainerStyle={{ paddingBottom: space(2) }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
-        onScrollBeginDrag={handleScroll}
-        onScrollEndDrag={handleScroll}
+        innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
-        <MyCollectionArtworks me={me} keywordFilter={keywordFilter} relay={relay} />
+        <MyCollectionArtworks innerFlatlistRef={innerFlatListRef} me={me} relay={relay} />
         {!!showDevAddButton && (
           <Button
             onPress={async () => {

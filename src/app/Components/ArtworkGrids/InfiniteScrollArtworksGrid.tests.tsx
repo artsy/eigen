@@ -1,12 +1,17 @@
+import { fireEvent } from "@testing-library/react-native"
 import {
   InfiniteScrollArtworksGridTestsQuery,
   InfiniteScrollArtworksGridTestsQueryResponse,
 } from "__generated__/InfiniteScrollArtworksGridTestsQuery.graphql"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import {
+  InfiniteScrollArtworksGridContainer,
+  Props as InfiniteScrollArtworksGridProps,
+} from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
 import "react-native"
+import { ScrollView, View } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -26,7 +31,7 @@ describe("Artist Series Artworks", () => {
     env = createMockEnvironment()
   })
 
-  const TestRenderer = () => (
+  const TestRenderer = (otherProps: InfiniteScrollArtworksGridProps) => (
     <QueryRenderer<InfiniteScrollArtworksGridTestsQuery>
       environment={env}
       query={graphql`
@@ -59,6 +64,7 @@ describe("Artist Series Artworks", () => {
               connection={artworksConnection}
               loadMore={relayMock.loadMore}
               hasMore={relayMock.hasMore}
+              {...otherProps}
             />
           )
         } else if (error) {
@@ -83,6 +89,35 @@ describe("Artist Series Artworks", () => {
     }
     expect(wrapper().root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
     expect(wrapper().root.findAllByType(Button)).toHaveLength(0)
+  })
+
+  it("can hide header initially", () => {
+    const headerHeight = 50
+    const HeaderComponent = <View testID="header-component" style={{ padding: headerHeight }} />
+    const wrapper = () => {
+      const tree = renderWithWrappersTL(
+        <TestRenderer HeaderComponent={HeaderComponent} hideHeaderInitially />
+      )
+      act(() => {
+        env.mock.resolveMostRecentOperation({
+          errors: [],
+          data: {
+            ...artworksConnection,
+          },
+        })
+      })
+      return tree
+    }
+
+    const { getByTestId, UNSAFE_getByType } = wrapper()
+    const header = getByTestId("header-component")
+    act(() => {
+      fireEvent(header, "onLayout", {
+        nativeEvent: { layout: { height: headerHeight } },
+      })
+    })
+
+    expect(UNSAFE_getByType(ScrollView).props.contentOffset.y).toBe(headerHeight)
   })
 })
 
