@@ -120,7 +120,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         })
 
         await flushPromiseQueue()
-        expect(await findByText("Why complete your Colletor Profile?")).toBeTruthy()
+        expect(await findByText("Why complete your Collector Profile?")).toBeTruthy()
       })
 
       it("doesn't get displayed if the profile is completed", async () => {
@@ -140,7 +140,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         })
 
         await flushPromiseQueue()
-        expect(await queryByText("Why complete your Colletor Profile?")).toBeFalsy()
+        expect(await queryByText("Why complete your Collector Profile?")).toBeFalsy()
       })
     })
 
