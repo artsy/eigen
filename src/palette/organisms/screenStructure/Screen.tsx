@@ -99,6 +99,9 @@ export const Header: React.FC<HeaderProps> = ({ onBack }) => {
   )
 }
 
+/**
+ * @deprecated Use `Screen.Header` instead.
+ */
 export const FloatingHeader: React.FC<HeaderProps> = ({ onBack }) => {
   useUpdateScreenContext({ header: "floating" })
   const insets = useSafeAreaInsets()

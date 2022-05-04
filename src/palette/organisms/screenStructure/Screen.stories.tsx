@@ -59,6 +59,8 @@ export const RegularHeader: ScreenStory = () => (
     <Screen.Header onBack={() => {}} />
     <Screen.Body>
       <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
     </Screen.Body>
   </Screen>
 )
@@ -76,6 +78,12 @@ export const FloatingHeader: ScreenStory = () => (
     {/* tslint:disable-next-line:no-empty */}
     <Screen.FloatingHeader onBack={() => {}} />
     <Screen.Body>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
+      <Text>Hello</Text>
       <Text>Hello</Text>
     </Screen.Body>
   </Screen>
