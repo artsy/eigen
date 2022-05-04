@@ -14,6 +14,7 @@ import { InboxQueryRenderer, InboxScreenQuery } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
+import { Admin } from "./NativeModules/Admin"
 import { CityGuideView } from "./NativeModules/CityGuideView"
 import { LiveAuctionView } from "./NativeModules/LiveAuctionView"
 import { About } from "./Scenes/About/About"
@@ -289,10 +290,6 @@ type ModuleDescriptor =
     }
   | {
       type: "native"
-      options: ViewOptions
-    }
-  | {
-      type: "new_native"
       Component: React.ComponentType<any>
       Query?: GraphQLTaggedNode
       options: ViewOptions
@@ -306,16 +303,12 @@ function reactModule(
   return { type: "react", options, Component, Queries }
 }
 
-function newNativeModule(
+function nativeModule(
   Component: React.ComponentType<any>,
   options: ViewOptions = {},
   Query?: GraphQLTaggedNode
 ): ModuleDescriptor {
-  return { type: "new_native", options, Component, Query }
-}
-
-function nativeModule(options: ViewOptions = {}): ModuleDescriptor {
-  return { type: "native", options }
+  return { type: "native", options, Component, Query }
 }
 
 // little helper function to make sure we get both intellisense and good type information on the result
@@ -327,7 +320,7 @@ export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
   // Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
-  Admin: nativeModule({ alwaysPresentModally: true }),
+  Admin: reactModule(Admin, { alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
@@ -385,14 +378,12 @@ export const modules = defineModules({
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
   Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, [InboxScreenQuery]),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
-  LiveAuction: newNativeModule(LiveAuctionView, {
+  LiveAuction: reactModule(LiveAuctionView, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
     modalPresentationStyle: "fullScreen",
   }),
-  LocalDiscovery: newNativeModule(CityGuideView, {
-    fullBleed: true,
-  }),
+  LocalDiscovery: reactModule(CityGuideView, { fullBleed: true }),
   ReactWebView: reactModule(ArtsyReactWebViewPage, {
     fullBleed: true,
     hasOwnModalCloseButton: true,
@@ -462,13 +453,12 @@ export const modules = defineModules({
 // Register react modules with the app registry
 for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
-  if ("Component" in descriptor && descriptor.type !== "new_native") {
-    if (Platform.OS === "ios") {
-      register(moduleName, descriptor.Component, {
-        fullBleed: descriptor.options.fullBleed,
-        ignoreTabs: descriptor.options.ignoreTabs,
-        moduleName,
-      })
-    }
+  if (Platform.OS === "ios") {
+    // TODO: this should not be needed. right?
+    register(moduleName, descriptor.Component, {
+      fullBleed: descriptor.options.fullBleed,
+      ignoreTabs: descriptor.options.ignoreTabs,
+      moduleName,
+    })
   }
 }

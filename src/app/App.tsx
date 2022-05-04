@@ -74,11 +74,13 @@ const Main: React.FC = () => {
     if (isHydrated) {
       // We wait a bit until the UI finishes drawing behind the splash screen
       setTimeout(() => {
-        RNBootSplash.hide().then(() => {
-          requestAnimationFrame(() => {
-            ArtsyNativeModule.lockActivityScreenOrientation()
+        if (Platform.OS === "android") {
+          RNBootSplash.hide().then(() => {
+            requestAnimationFrame(() => {
+              ArtsyNativeModule.lockActivityScreenOrientation()
+            })
           })
-        })
+        }
         if (Platform.OS === "android") {
           ArtsyNativeModule.setAppStyling()
         }

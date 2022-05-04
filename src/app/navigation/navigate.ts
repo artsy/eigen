@@ -12,7 +12,7 @@ import { Linking, Platform } from "react-native"
 import { matchRoute } from "./routes"
 
 export interface ViewDescriptor extends ViewOptions {
-  type: "react" | "native" | "new_native"
+  type: "react" | "native"
   moduleName: AppModule
   // Whether the new view should replace the previous (modal only)
   replace?: boolean

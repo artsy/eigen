@@ -392,7 +392,6 @@ function getNativeModules(): OurNativeModules {
       didFinishBootstrapping: jest.fn(),
       reactStateUpdated: jest.fn(),
     },
-
     ARTemporaryAPIModule: {
       requestPrepromptNotificationPermissions: jest.fn(),
       requestDirectNotificationPermissions: jest.fn(),
@@ -405,14 +404,10 @@ function getNativeModules(): OurNativeModules {
       requestPhotos: jest.fn(),
     },
     ARScreenPresenterModule: {
-      presentMediaPreviewController: jest.fn(),
       dismissModal: jest.fn(),
       pushView: jest.fn(),
       goBack: jest.fn(),
       updateShouldHideBackButton: jest.fn(),
-      presentAugmentedRealityVIR: jest.fn(),
-      presentEmailComposerWithBody: jest.fn(),
-      presentEmailComposerWithSubject: jest.fn(),
       popStack: jest.fn(),
       popToRootAndScrollToTop: jest.fn(),
       popToRootOrScrollToTop: jest.fn(),
