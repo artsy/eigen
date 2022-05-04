@@ -238,7 +238,8 @@ export const getCascadingEndTimeFeatureSaleDetails = (
   if (!sale?.timeZone || !sale.endAt || !sale.startAt) {
     return { absolute: null, relative: null }
   }
-  const relativeTime = sale.endedAt === null ? useSaleEndTimer(sale) : null
+
+  const relativeTime = useSaleEndTimer(sale)
   const userTimeZone = moment.tz.guess()
   const startDateMoment =
     sale.startAt !== null

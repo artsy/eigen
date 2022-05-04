@@ -66,6 +66,10 @@ export const useSaleEndTimer = (
 ) => {
   const [relativeTime, seRelativeTime] = useState({ copy: "", color: "" })
 
+  if (sale?.endedAt) {
+    return null
+  }
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (sale?.endAt && sale?.startAt) {
