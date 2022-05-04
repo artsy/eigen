@@ -18,6 +18,8 @@
     "ci:skip-native-if-possible": "node scripts/ci-skip-native-if-possible.js",
     "ci:type-check": "tsc --pretty false | tee tsc_raw.log",
     "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && rm -rf src/__generated__ && yarn relay && yarn ci:test",
+    "detox:ios:build": "yarn detox build --configuration ios.simulator.release",
+    "detox:android:build": "yarn detox build --configuration android.emulator.release",
     "detox:ios": "yarn detox test --configuration ios.simulator.release",
     "detox:android": "yarn detox test --configuration android.emulator.release",
     "danger": "danger",
