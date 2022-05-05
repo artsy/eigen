@@ -1,19 +1,21 @@
-import { Questions_artwork } from "__generated__/Questions_artwork.graphql"
+import { Questions_artwork$key } from "__generated__/Questions_artwork.graphql"
 import { Box, Text } from "palette"
 import React from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
 
-export interface QuestionsProps {
-  artwork: Questions_artwork
+interface QuestionsProps {
+  artwork: Questions_artwork$key
 }
 
-export const Questions: React.FC<QuestionsProps> = ({ artwork }) => {
+export const Questions: React.FC<QuestionsProps> = (props) => {
+  const artworkData = useFragment(artworkFragment, props.artwork)
+
   return (
     <Box>
       <Text>Questions about this piece?</Text>
       <InquiryButtonsFragmentContainer
-        artwork={artwork}
+        artwork={artworkData}
         variant="outlineGray"
         size="small"
         mt={1}
@@ -22,10 +24,8 @@ export const Questions: React.FC<QuestionsProps> = ({ artwork }) => {
   )
 }
 
-export const QuestionsFragmentContainer = createFragmentContainer(Questions, {
-  artwork: graphql`
-    fragment Questions_artwork on Artwork {
-      ...InquiryButtons_artwork
-    }
-  `,
-})
+const artworkFragment = graphql`
+  fragment Questions_artwork on Artwork {
+    ...InquiryButtons_artwork
+  }
+`

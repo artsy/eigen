@@ -3,7 +3,6 @@ import { Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import { CollapsibleMenuItem } from "palette/elements/CollapsibleMenuItem/CollapsibleMenuItem"
 import React, { useRef, useState } from "react"
 import { ScrollView, View } from "react-native"
-import { withTheme } from "storybook/decorators"
 
 export const ArtworkDetails = ({ handlePress }: { handlePress: () => void }) => {
   return (
@@ -151,10 +150,8 @@ export const ComponentWithCollapsibleMenu = () => {
   )
 }
 
-storiesOf("Collapsible Menu ", module)
-  .addDecorator(withTheme)
-  .add("Collapse Collapse Items", () => (
-    <>
-      <ComponentWithCollapsibleMenu />
-    </>
-  ))
+storiesOf("Collapsible Menu ", module).add("Collapse Collapse Items", () => (
+  <>
+    <ComponentWithCollapsibleMenu />
+  </>
+))

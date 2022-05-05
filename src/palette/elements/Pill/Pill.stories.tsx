@@ -2,12 +2,10 @@ import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { ArtworkIcon, AuctionIcon, CheckIcon, CloseIcon } from "palette"
 import React from "react"
-import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { Pill } from "./Pill"
 
 storiesOf("Pill", module)
-  .addDecorator(withTheme)
   .add("Artist", () => (
     <List>
       <Pill size="sm" rounded imageUrl="https://ychef.files.bbci.co.uk/976x549/p0400cts.jpg">

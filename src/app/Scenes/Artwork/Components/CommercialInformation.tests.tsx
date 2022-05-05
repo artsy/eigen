@@ -8,6 +8,7 @@ import "moment-timezone"
 import { _test_THEMES, Sans, Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
+import { SafeAreaProvider } from "react-native-safe-area-context"
 import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { BidButton } from "./CommercialButtons/BidButton"
 import { BuyNowButton } from "./CommercialButtons/BuyNowButton"
@@ -17,11 +18,11 @@ import { CommercialInformationTimerWrapper, SaleAvailability } from "./Commercia
 
 const Wrapper: React.FC<{}> = ({ children }) => {
   return (
-    <GlobalStoreProvider>
-      <Theme>
-        <GlobalStoreProvider>{children}</GlobalStoreProvider>
-      </Theme>
-    </GlobalStoreProvider>
+    <SafeAreaProvider>
+      <GlobalStoreProvider>
+        <Theme>{children}</Theme>
+      </GlobalStoreProvider>
+    </SafeAreaProvider>
   )
 }
 
@@ -295,7 +296,7 @@ describe("CommercialInformation", () => {
 
     // Expect the component to default to first edition set's internalID
     expect(component.find(CommercialButtons).props().editionSetID).toEqual(
-      "5bbb9777ce2fc3002c179013"
+      "5bbb9777ce2fc3002c179013" // pragma: allowlist secret
     )
 
     const secondEditionButton = component
@@ -306,7 +307,7 @@ describe("CommercialInformation", () => {
     component.update()
 
     expect(component.find(CommercialButtons).props().editionSetID).toEqual(
-      "5bc0ec007e64300a39b23da4"
+      "5bc0ec007e64300a39b23da4" // pragma: allowlist secret
     )
   })
 })

@@ -1,16 +1,13 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
-import { withTheme } from "storybook/decorators"
 import { Histogram, HistogramBarEntity } from "."
 import { Flex } from ".."
 
-storiesOf("Histogram", module)
-  .addDecorator(withTheme)
-  .add("Simple Histogram", () => (
-    <Flex mx={2} my={2}>
-      <Histogram selectedRange={[0, 50000]} bars={BAR_DUMMY_DATA} />
-    </Flex>
-  ))
+storiesOf("Histogram", module).add("Simple Histogram", () => (
+  <Flex mx={2} my={2}>
+    <Histogram selectedRange={[0, 50000]} bars={BAR_DUMMY_DATA} />
+  </Flex>
+))
 
 const BAR_DUMMY_DATA: HistogramBarEntity[] = [
   { value: 0, count: 1919 },
