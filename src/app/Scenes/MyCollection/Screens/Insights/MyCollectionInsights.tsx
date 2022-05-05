@@ -31,7 +31,7 @@ export const MyCollectionInsightsQR: React.FC<{}> = () => (
 )
 
 // TODO: fix, placeHolder is hidden behind the header
-const MyCollectionInsightsPlaceHolder = () => (
+export const MyCollectionInsightsPlaceHolder = () => (
   <Flex>
     <Text>A Placeholder</Text>
   </Flex>
