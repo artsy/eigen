@@ -3,6 +3,7 @@ import { CaretButton } from "app/Components/Buttons/CaretButton"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
+import { mockTimezone } from "app/tests/mockTimezone"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import React from "react"
@@ -187,6 +188,7 @@ describe("SaleHeader", () => {
 
       describe("absolute date label", () => {
         it("shows the start date if the sale has not started", () => {
+          mockTimezone("America/New_York")
           const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
