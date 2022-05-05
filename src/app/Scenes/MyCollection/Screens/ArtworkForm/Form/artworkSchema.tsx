@@ -4,9 +4,17 @@ import { trim } from "lodash"
 import * as Yup from "yup"
 
 export const artworkSchema = Yup.object().shape({
-  artistSearchResult: Yup.object()
-    .nullable()
-    .test("artistSearchResult", "Artist search result required", (value) => value !== null),
+  artistDisplayName: Yup.string().when("artistSearchResult", {
+    is: null,
+    then: Yup.string()
+      .required("Artist name is required")
+      .test(
+        "artistDisplayName",
+        "Artist name should not be empty",
+        (value) => !!value && trim(value) !== ""
+      ),
+    otherwise: Yup.string().notRequired(),
+  }),
   title: Yup.string()
     .required("Title is required")
     .test("title", "Title should not be empty", (value) => !!value && trim(value) !== ""),

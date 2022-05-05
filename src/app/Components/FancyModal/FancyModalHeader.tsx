@@ -20,6 +20,7 @@ export interface FancyModalHeaderProps {
   onRightButtonPress?: () => void
   rightButtonDisabled?: boolean
   rightButtonText?: string
+  rightButtonTestId?: string
   useXButton?: boolean
   useShareButton?: boolean
   rightCloseButton?: boolean
@@ -32,6 +33,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   leftButtonText,
   onLeftButtonPress,
   rightButtonText,
+  rightButtonTestId,
   onRightButtonPress,
   rightButtonDisabled,
   useXButton,
@@ -60,6 +62,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
       return <ArrowRightIcon fill="black100" />
     }
   }
+
   return (
     <Flex>
       <Container alignItems="center" justifyContent="center">
@@ -74,7 +77,6 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
             </LeftButtonContainer>
           )}
         </Flex>
-
         <Flex position="absolute" right={0} alignItems="flex-end">
           {!!onRightButtonPress && (
             <RightButtonContainer
@@ -82,7 +84,11 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
               onPress={() => !rightButtonDisabled && onRightButtonPress()}
             >
               {rightButtonText ? (
-                <Text variant="sm" color={rightButtonDisabled ? "black30" : "black100"}>
+                <Text
+                  variant="sm"
+                  color={rightButtonDisabled ? "black30" : "black100"}
+                  testID={rightButtonTestId}
+                >
                   {rightButtonText}
                 </Text>
               ) : (
@@ -91,7 +97,6 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
             </RightButtonContainer>
           )}
         </Flex>
-
         <Flex position="absolute" left={0} right={0} alignItems="center" pointerEvents="none">
           <Text variant="sm" color="black100">
             {children}
