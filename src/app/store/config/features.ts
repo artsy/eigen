@@ -188,6 +188,12 @@ export const features = defineFeatures({
     description: "Enable my collection insights tab",
     showInAdminMenu: true,
   },
+  AREnableNotFoundFailureView: {
+    readyForRelease: true,
+    description: "Enable Not Found Failure View",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableNotFoundFailureView",
+  },
 })
 
 export interface DevToggleDescriptor {
