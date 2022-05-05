@@ -6,7 +6,7 @@ import { QuestionsFragmentContainer } from "./Questions"
 
 jest.unmock("react-relay")
 
-describe("Questions", () => {
+xdescribe("Questions", () => {
   const { renderWithRelay } = setupTestWrapperTL({
     Component: ({ artwork }: any) => (
       <Theme>
