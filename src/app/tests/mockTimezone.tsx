@@ -1,7 +1,9 @@
+import { IANATimezone } from "app/utils/IANATimezone"
+
 // Does not work with Luxon, use Settings.defaultZoneName instead
-export const mockTimezone = (timezone: any /* STRICTNESS_MIGRATION */) => {
-  const mutatedResolvedOptions: any = Intl.DateTimeFormat().resolvedOptions()
-  const mutatedDateTimeFormat: any = Intl.DateTimeFormat()
+export const mockTimezone = (timezone: IANATimezone) => {
+  const mutatedResolvedOptions = Intl.DateTimeFormat().resolvedOptions()
+  const mutatedDateTimeFormat = Intl.DateTimeFormat()
 
   mutatedResolvedOptions.timeZone = timezone
   mutatedDateTimeFormat.resolvedOptions = () => mutatedResolvedOptions
