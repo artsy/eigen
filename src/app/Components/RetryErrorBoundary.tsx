@@ -1,4 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import React, { Component } from "react"
 import { LoadFailureView } from "./LoadFailureView"
 import { NotFoundFailureView } from "./NotFoundFailureView"
@@ -76,6 +77,8 @@ export class RetryErrorBoundary extends Component<
       this.props
     const { error } = this.state
 
+    const enableNotFoundFailureView = unsafe_getFeatureFlag("AREnableNotFoundFailureView")
+
     if (error) {
       if (failureView) {
         return failureView({ error, retry: this._retry })
@@ -86,7 +89,7 @@ export class RetryErrorBoundary extends Component<
 
       const isNotFoundError = httpStatusCodes.includes(404)
 
-      if (isNotFoundError) {
+      if (isNotFoundError && enableNotFoundFailureView) {
         return (
           <NotFoundFailureView
             title={notFoundTitle}
