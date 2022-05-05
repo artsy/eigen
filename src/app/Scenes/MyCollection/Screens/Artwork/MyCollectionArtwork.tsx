@@ -160,7 +160,11 @@ export interface MyCollectionArtworkScreenProps {
 
 export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {
   return (
-    <RetryErrorBoundary notFoundMessage="Sorry, the artwork you were looking for doesn’t exist.">
+    <RetryErrorBoundary
+      notFoundTitle="Artwork no Longer in My Collection"
+      notFoundText="You previously deleted this artwork."
+      notFoundBackButtonText="Back to My Collection"
+    >
       <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
         <MyCollectionArtwork {...props} />
       </Suspense>

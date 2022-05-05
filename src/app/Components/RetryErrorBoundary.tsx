@@ -47,7 +47,10 @@ export class RetryErrorBoundaryLegacy extends Component<Props, State> {
 // Taken from https://relay.dev/docs/guided-tour/rendering/error-states/#when-using-uselazyloadquery
 interface RetryErrorBoundaryProps {
   failureView?: React.FC<{ error: Error; retry: () => void }>
-  notFoundMessage?: string
+  notFoundTitle?: string
+  notFoundText?: string
+  notFoundBackButtonText?: string
+  notFoundOnBackPress?: () => void
   children: React.ReactNode
 }
 interface RetryErrorBoundaryState {
@@ -69,7 +72,8 @@ export class RetryErrorBoundary extends Component<
   }
 
   render() {
-    const { children, failureView, notFoundMessage } = this.props
+    const { children, failureView, notFoundTitle, notFoundText, notFoundBackButtonText } =
+      this.props
     const { error } = this.state
 
     if (error) {
@@ -79,11 +83,18 @@ export class RetryErrorBoundary extends Component<
 
       // @ts-expect-error
       const httpStatusCodes = error?.res?.json?.errors?.[0].extensions.httpStatusCodes || []
-      console.log({ daCodes: error })
+
       const isNotFoundError = httpStatusCodes.includes(404)
 
       if (isNotFoundError) {
-        return <NotFoundFailureView error={error} notFoundMessage={notFoundMessage} />
+        return (
+          <NotFoundFailureView
+            title={notFoundTitle}
+            text={notFoundText}
+            backButtonText={notFoundBackButtonText}
+            error={error}
+          />
+        )
       }
 
       return <LoadFailureView error={error} onRetry={this._retry} />
