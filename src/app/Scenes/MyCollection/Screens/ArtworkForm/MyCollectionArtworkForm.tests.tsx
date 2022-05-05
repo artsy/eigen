@@ -7,7 +7,7 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
-import { GlobalStore } from "app/store/GlobalStore"
+import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
@@ -106,6 +106,7 @@ describe("MyCollectionArtworkForm", () => {
         act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
 
         await flushPromiseQueue()
+
         // Select Artwork Screen
 
         expect(getByText("Select an Artwork")).toBeTruthy()
@@ -163,8 +164,9 @@ describe("MyCollectionArtworkForm", () => {
           Object {
             "input": Object {
               "artistIds": Array [
-                "",
+                "internal-id",
               ],
+              "artists": undefined,
               "category": "Screen print",
               "date": "2007",
               "depth": 40,
@@ -231,6 +233,12 @@ describe("MyCollectionArtworkForm", () => {
     })
 
     describe("when skipping the artist selection", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableArtworksFromNonArtsyArtists: true,
+        })
+      })
+
       it("displays the artist display name input", async () => {
         const { getByText, getByTestId } = renderWithWrappersTL(
           <RelayEnvironmentProvider environment={mockEnvironment}>
@@ -469,7 +477,7 @@ const mockArtistSearchResult: AutosuggestResultsQueryRawResponse = {
         node: {
           __isNode: "SearchableItem",
           __typename: "SearchableItem",
-          internalID: "",
+          internalID: "internal-id",
           displayLabel: "Banksy",
           displayType: "Artist",
           href: "banksy-href",
