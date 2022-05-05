@@ -82,7 +82,7 @@ export class RetryErrorBoundary extends Component<
       }
 
       // @ts-expect-error
-      const httpStatusCodes = error?.res?.json?.errors?.[0].extensions.httpStatusCodes || []
+      const httpStatusCodes = error?.res?.json?.errors?.[0]?.extensions?.httpStatusCodes || []
 
       const isNotFoundError = httpStatusCodes.includes(404)
 
