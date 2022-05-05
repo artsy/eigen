@@ -185,8 +185,14 @@ export const features = defineFeatures({
   },
   ARShowMyCollectionInsights: {
     readyForRelease: false,
-    description: "Enable my collection insights tab",
+    description: "Enable My Collection insights tab",
     showInAdminMenu: true,
+  },
+  AREnableArtworksFromNonArtsyArtists: {
+    readyForRelease: false,
+    description: "Enable My Collection artworks from non-Artsy artists",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
   },
 })
 

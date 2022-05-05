@@ -19,6 +19,7 @@ export interface Image {
 export interface ArtworkFormValues {
   artist: string
   artistIds: string[]
+  artistDisplayName?: string
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
   pricePaidDollars: string
@@ -42,6 +43,7 @@ export interface ArtworkFormValues {
 export const initialFormValues: ArtworkFormValues = {
   artist: "",
   artistIds: [],
+  artistDisplayName: undefined,
   artistSearchResult: null,
   category: "",
   pricePaidDollars: "",
