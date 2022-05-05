@@ -188,7 +188,7 @@ describe("MyCollectionArtworkForm", () => {
 
     describe("when skipping the artwork selection", () => {
       it("leaves the form empty", async () => {
-        const { getByText, getByTestId, getByPlaceholderText, findByTestId } = renderWithWrappersTL(
+        const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappersTL(
           <RelayEnvironmentProvider environment={mockEnvironment}>
             <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
           </RelayEnvironmentProvider>
