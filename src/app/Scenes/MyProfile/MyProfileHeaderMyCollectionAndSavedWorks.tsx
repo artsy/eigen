@@ -13,7 +13,7 @@ import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
-import { MyCollectionInsights } from "../MyCollection/Screens/Insights/MyCollectionInsights"
+import { MyCollectionInsightsQueryRenderer } from "../MyCollection/Screens/Insights/MyCollectionInsights"
 import { MyProfileHeader } from "./MyProfileHeader"
 
 export enum Tab {
@@ -40,8 +40,8 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         },
         !!showMyCollectionInsights && {
           title: Tab.insights,
-          content: <MyCollectionInsights />,
-          initial: true,
+          content: <MyCollectionInsightsQueryRenderer />,
+          initial: false,
         },
         {
           title: Tab.savedWorks,
@@ -62,6 +62,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer = createR
     me: graphql`
       fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
         ...MyProfileHeader_me
+        ...MyCollectionInsights_me
       }
     `,
   },
