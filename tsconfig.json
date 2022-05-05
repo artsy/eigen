@@ -12,11 +12,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "build",
-    "plugins": [
-      {
-        "name": "typescript-styled-plugin"
-      }
-    ],
+    "plugins": [{ "name": "typescript-styled-plugin" }],
     "allowSyntheticDefaultImports": true,
     "pretty": true,
     "resolveJsonModule": true,

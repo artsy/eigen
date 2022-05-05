@@ -2,29 +2,29 @@ import { render } from "@testing-library/react-native"
 import { PopoverMessageProvider } from "app/Components/PopoverMessage/PopoverMessageProvider"
 import { ToastProvider } from "app/Components/Toast/toastHook"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
+import { combineProviders } from "app/utils/combineProviders"
 import { track } from "app/utils/track"
 import { ProvideScreenDimensions } from "app/utils/useScreenDimensions"
 import { Theme } from "palette"
-import React, { Suspense } from "react"
+import { Component, Suspense } from "react"
+import { SafeAreaProvider } from "react-native-safe-area-context"
 import { Environment, RelayEnvironmentProvider } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
-const Wrappers: React.FC = ({ children }) => {
-  return (
-    <TrackProvider>
-      <GlobalStoreProvider>
-        <Theme>
-          <ToastProvider>
-            <PopoverMessageProvider>
-              <ProvideScreenDimensions>{children}</ProvideScreenDimensions>
-            </PopoverMessageProvider>
-          </ToastProvider>
-        </Theme>
-      </GlobalStoreProvider>
-    </TrackProvider>
+const Wrappers: React.FC = ({ children }) =>
+  combineProviders(
+    [
+      TrackingProvider,
+      GlobalStoreProvider,
+      SafeAreaProvider,
+      ProvideScreenDimensions, // uses: SafeAreaProvider
+      Theme, // uses: GlobalStoreProvider
+      PopoverMessageProvider,
+      ToastProvider, // uses: GlobalStoreProvider
+    ],
+    children
   )
-}
 
 /**
  * Returns given component wrapped with our page wrappers
@@ -68,9 +68,17 @@ export const renderWithWrappers = (component: ReactElement) => {
   }
 }
 
-export const TrackProvider = track()(({ children }: { children?: React.ReactNode }) => {
-  return <>{children}</>
-})
+// react-track has no provider, we make one using the decorator and a class wrapper
+export const TrackingProvider = (props: { children?: React.ReactNode }) => (
+  <PureWrapper {...props} />
+)
+
+@track()
+class PureWrapper extends Component {
+  render() {
+    return this.props.children
+  }
+}
 
 /**
  * Renders a React Component with our page wrappers
