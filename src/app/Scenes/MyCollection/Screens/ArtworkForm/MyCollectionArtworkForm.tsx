@@ -250,6 +250,7 @@ export const updateArtwork = async (
     pricePaidCurrency,
     artist,
     artistIds,
+    artistDisplayName,
     ...others
   } = values
   const externalImageUrls = await uploadPhotos(photos)
@@ -266,7 +267,8 @@ export const updateArtwork = async (
 
   if (props.mode === "add") {
     const response = await myCollectionCreateArtwork({
-      artistIds: [artistSearchResult!.internalID as string],
+      artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
+      artists: [{ displayName: artistDisplayName }],
       externalImageUrls,
       pricePaidCents,
       pricePaidCurrency,
@@ -279,7 +281,7 @@ export const updateArtwork = async (
     }
   } else {
     const response = await myCollectionUpdateArtwork({
-      artistIds: [artistSearchResult!.internalID as string],
+      artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
       artworkId: props.artwork.internalID,
       externalImageUrls,
       pricePaidCents: pricePaidCents ?? null,
