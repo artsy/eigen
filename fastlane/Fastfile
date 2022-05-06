@@ -67,8 +67,6 @@ lane :ship_beta_ios do
 
   build_ios_app(configuration: 'Store', silent: true)
 
-  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: bundle_version, platform: "ios")
-
   # Send to the app store
   beta_app_review_info = {
     contact_email: ENV['BETA_CONTACT_EMAIL'],
@@ -85,6 +83,9 @@ lane :ship_beta_ios do
         itc_provider: 'ArtsyInc',
         distribute_external: true,
         groups: ['Artsy People'])
+
+  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: bundle_version, platform: "ios")
+
 end
 
 lane :update_version_string do
@@ -175,8 +176,6 @@ lane :ship_beta_android_play_store do
     flags: "--no-daemon -x bundleReleaseJsAndAssets",
   )
 
-  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
-
   supply(
     track: "alpha",
     skip_upload_apk: true,
@@ -184,6 +183,9 @@ lane :ship_beta_android_play_store do
     skip_upload_images: true,
     skip_upload_screenshots: true,
   )
+
+  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
+
 end
 
 lane :ship_beta_android_firebase do
