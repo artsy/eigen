@@ -6,7 +6,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
-import { ReactNativeFile } from "app/utils/ReactNativeFile"
+import { ReactNativeFile } from "extract-files"
 
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
@@ -177,7 +177,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   const hideBackButtonOnScroll = useHideBackButtonOnScroll()
 
   const getFileNameByPath = (imagePath: string) => {
-    return imagePath.split("/").pop()
+    return imagePath.split("/").pop()!
   }
 
   const handleSeachByImage = async () => {

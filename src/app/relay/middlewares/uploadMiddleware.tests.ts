@@ -1,7 +1,6 @@
-import { ReactNativeFile } from "app/utils/ReactNativeFile"
-import { RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
+import { ReactNativeFile } from "extract-files"
+import { RelayNetworkLayerResponse, uploadMiddleware } from "react-relay-network-modern/node8"
 import { GraphQLRequest } from "./types"
-import { uploadMiddleware } from "./uploadMiddleware"
 
 describe("uploadMiddleware", () => {
   const mockAppend = jest.fn()
@@ -78,7 +77,7 @@ describe("uploadMiddleware", () => {
     expect(call[1][0]).toBe("map")
 
     // File
-    expect(call[2][0]).toBe("0")
+    expect(call[2][0]).toBe(1)
     expect(call[2][1]).toMatchInlineSnapshot(`
       ReactNativeFile {
         "name": "filename-one.jpg",
@@ -117,7 +116,7 @@ describe("uploadMiddleware", () => {
     expect(call[1][0]).toBe("map")
 
     // First file
-    expect(call[2][0]).toBe("0")
+    expect(call[2][0]).toBe(1)
     expect(call[2][1]).toMatchInlineSnapshot(`
       ReactNativeFile {
         "name": "filename-one.jpg",
@@ -127,7 +126,7 @@ describe("uploadMiddleware", () => {
     `)
 
     // Second file
-    expect(call[3][0]).toBe("1")
+    expect(call[3][0]).toBe(2)
     expect(call[3][1]).toMatchInlineSnapshot(`
       ReactNativeFile {
         "name": "filename-two.jpg",
