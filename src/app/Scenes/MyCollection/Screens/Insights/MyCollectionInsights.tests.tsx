@@ -1,4 +1,4 @@
-import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
+import { MyCollectionInsightsTestsQuery } from "__generated__/MyCollectionInsightsTestsQuery.graphql"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React from "react"
@@ -15,10 +15,10 @@ jest.unmock("react-relay")
 describe("MyCollectionInsights", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<MyCollectionInsightsQuery>
+    <QueryRenderer<MyCollectionInsightsTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query MyCollectionInsightsQuery @raw_response_type {
+        query MyCollectionInsightsTestsQuery @raw_response_type {
           me {
             ...MyCollectionInsights_me
           }
