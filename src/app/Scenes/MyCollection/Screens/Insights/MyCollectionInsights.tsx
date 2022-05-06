@@ -67,10 +67,13 @@ export const MyCollectionInsightsQueryRenderer = () => {
       `}
       variables={{}}
       cacheConfig={{ force: true }}
-      render={renderWithPlaceholder({
-        Container: MyCollectionInsightsContainer,
-        renderPlaceholder: MyCollectionInsightsPlaceHolder,
-      })}
+      render={({ props }) => {
+        if (props?.me) {
+          return <MyCollectionInsightsContainer me={props.me} />
+        } else {
+          return null
+        }
+      }}
     />
   )
 }
