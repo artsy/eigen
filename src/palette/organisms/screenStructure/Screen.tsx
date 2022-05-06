@@ -1,6 +1,6 @@
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { Wrap } from "app/utils/Wrap"
-import { BackButton, BackButtonWithBackground, SpacingUnit } from "palette"
+import { BackButton, BackButtonWithBackground, Spacer, SpacingUnit } from "palette"
 import { Flex, FlexProps } from "palette/elements"
 import { createContext, useContext, useEffect, useState } from "react"
 import {
@@ -191,12 +191,35 @@ const BottomView: React.FC = ({ children }) => {
   useEffect(() => {
     const listeners: EmitterSubscription[] = []
     listeners.push(
-      Keyboard.addListener("keyboardWillShow", (e) => {
-        setKeyboardHeight(e.endCoordinates.height)
-        setKeyboardShowing(true)
-      })
+      Keyboard.addListener(
+        "keyboardWillShow", // ios only event
+        (e) => {
+          setKeyboardHeight(e.endCoordinates.height)
+          setKeyboardShowing(true)
+        }
+      )
     )
-    listeners.push(Keyboard.addListener("keyboardWillHide", () => setKeyboardShowing(false)))
+    listeners.push(
+      Keyboard.addListener(
+        "keyboardDidShow", // android event
+        (e) => {
+          setKeyboardHeight(e.endCoordinates.height)
+          setKeyboardShowing(true)
+        }
+      )
+    )
+    listeners.push(
+      Keyboard.addListener(
+        "keyboardWillHide", // ios only event
+        () => setKeyboardShowing(false)
+      )
+    )
+    listeners.push(
+      Keyboard.addListener(
+        "keyboardDidHide", // android event
+        () => setKeyboardShowing(false)
+      )
+    )
     return () => {
       listeners.map((l) => l.remove())
     }
@@ -227,6 +250,8 @@ const BottomView: React.FC = ({ children }) => {
       >
         {children}
       </Flex>
+
+      {keyboardShowing ? null : <SafeBottomPadding />}
     </Flex>
   )
 }
@@ -237,9 +262,25 @@ const BottomView: React.FC = ({ children }) => {
  * One use case might be if you need to put an image background or something in the body,
  * but you also need some content with the right padding.
  */
-const BodyPadding: React.FC<FlexProps> = (props) => (
+const BodyXPadding: React.FC<FlexProps> = (props) => (
   <Flex px={SCREEN_HORIZONTAL_PADDING} {...props} />
 )
+
+/**
+ * If there is a bottom safe area, this will render nothing.
+ * If there is no bottom safe area, this will render a small padding.
+ *
+ * This is useful for texts/buttons that are at the bottom, and with safe area they seem like they
+ * have enough space underneath, but with no safe area they look stuck at the bottom.
+ */
+const SafeBottomPadding = () => {
+  const insets = useSafeAreaInsets()
+  if (insets.bottom > 0) {
+    return null
+  }
+
+  return <Spacer y={2} />
+}
 
 export const Screen = Object.assign(ScreenWrapper, {
   Body,
@@ -247,5 +288,6 @@ export const Screen = Object.assign(ScreenWrapper, {
   FloatingHeader,
   Background,
   BottomView,
-  BodyPadding,
+  BodyXPadding,
+  SafeBottomPadding,
 })

@@ -243,6 +243,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </Flex>
           </Join>
         </Flex>
+        <Screen.SafeBottomPadding />
       </Screen.Body>
     </Screen>
   )

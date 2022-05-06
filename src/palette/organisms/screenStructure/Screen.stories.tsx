@@ -46,9 +46,9 @@ export const FullBackgroundDifferentColorsManual: ScreenStory = () => (
       <Flex flex={1} backgroundColor="blue" />
     </Screen.Background>
     <Screen.Body fullwidth>
-      <Screen.BodyPadding flex={1} backgroundColor="orange">
+      <Screen.BodyXPadding flex={1} backgroundColor="orange">
         <Text>Hello</Text>
-      </Screen.BodyPadding>
+      </Screen.BodyXPadding>
     </Screen.Body>
   </Screen>
 )
