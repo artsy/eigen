@@ -7,6 +7,8 @@ permissions:
 
 jobs:
   build:
+      permissions:
+      contents: none
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
