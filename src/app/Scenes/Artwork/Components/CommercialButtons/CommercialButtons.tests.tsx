@@ -9,6 +9,7 @@ import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquirySt
 import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Button, Theme } from "palette"
 import React from "react"
+import { SafeAreaProvider } from "react-native-safe-area-context"
 import { FragmentRef, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { CommercialButtonsFragmentContainer } from "./CommercialButtons"
@@ -50,19 +51,21 @@ const state: ArtworkInquiryContextState = {
 }
 
 const wrapper = (mockArtwork: FragmentRef<"CommercialButtons_artwork">): JSX.Element => (
-  <GlobalStoreProvider>
-    <Theme>
-      <ArtworkInquiryContext.Provider
-        value={{
-          state,
-          dispatch: jest.fn(),
-        }}
-      >
-        {/* @ts-ignore */}
-        <CommercialButtonsFragmentContainer artwork={mockArtwork} />
-      </ArtworkInquiryContext.Provider>
-    </Theme>
-  </GlobalStoreProvider>
+  <SafeAreaProvider>
+    <GlobalStoreProvider>
+      <Theme>
+        <ArtworkInquiryContext.Provider
+          value={{
+            state,
+            dispatch: jest.fn(),
+          }}
+        >
+          {/* @ts-ignore */}
+          <CommercialButtonsFragmentContainer artwork={mockArtwork} />
+        </ArtworkInquiryContext.Provider>
+      </Theme>
+    </GlobalStoreProvider>
+  </SafeAreaProvider>
 )
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

@@ -1,6 +1,6 @@
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { ChevronIcon, CloseIcon } from "palette"
-import React, { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Animated, ViewStyle } from "react-native"
 import { TouchableOpacity } from "react-native"
 import { useFirstMountState } from "react-use/esm/useFirstMountState"

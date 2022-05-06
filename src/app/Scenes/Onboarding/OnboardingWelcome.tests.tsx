@@ -1,20 +1,18 @@
 import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
-const navigateMock = jest.fn()
-
 const navigationPropsMock = {
-  navigate: navigateMock,
+  navigate: mockNavigate,
   addListener: jest.fn(),
 }
 
 describe("OnboardingWelcome", () => {
   describe("onboarding flow", () => {
     beforeEach(() => {
-      navigateMock.mockReset()
+      mockNavigate.mockReset()
     })
 
     it("navigates to create account screen when the user taps on create account", () => {
@@ -22,7 +20,7 @@ describe("OnboardingWelcome", () => {
         <OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />
       )
       fireEvent.press(getByTestId("button-create"))
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingCreateAccount")
+      expect(mockNavigate).toHaveBeenCalledWith("OnboardingCreateAccount")
     })
 
     it("navigates to log in screen when the user taps on log in", () => {
@@ -30,7 +28,7 @@ describe("OnboardingWelcome", () => {
         <OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />
       )
       fireEvent.press(getByTestId("button-login"))
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingLogin")
+      expect(mockNavigate).toHaveBeenCalledWith("OnboardingLogin")
     })
   })
 })

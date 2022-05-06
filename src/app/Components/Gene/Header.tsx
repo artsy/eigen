@@ -23,11 +23,13 @@ class Header extends React.Component<Props, State> {
 
   render() {
     const { gene } = this.props
+    const title = gene.displayName || gene.name || ""
+
     return (
       <>
         <Box marginTop={60} justifyContent="center">
           <Sans size="8" numberOfLines={2}>
-            {gene.name || ""}
+            {title}
           </Sans>
         </Box>
         {this.renderFollowButton()}
@@ -155,6 +157,7 @@ export default createFragmentContainer(Header, {
       id
       isFollowed
       name
+      displayName
     }
   `,
 })

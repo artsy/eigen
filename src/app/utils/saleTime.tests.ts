@@ -1,4 +1,7 @@
-const timezones = {
+import { IANATimezone } from "./IANATimezone"
+import { saleTime } from "./saleTime"
+
+const timezones: Record<string, IANATimezone> = {
   ny: "America/New_York",
   la: "America/Los_Angeles",
   de: "Europe/Berlin",
@@ -11,8 +14,6 @@ jest.mock("moment-timezone", () => {
   momentMock.tz.guess = () => timezone
   return momentMock
 })
-
-import { saleTime } from "./saleTime"
 
 const times = {
   past20: "2020-08-01T15:00:00",
