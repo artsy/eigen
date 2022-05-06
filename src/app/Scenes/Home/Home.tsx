@@ -380,10 +380,6 @@ export const HomeFragmentContainer = createRefetchContainer(
     homePageAbove: graphql`
       fragment Home_homePageAbove on HomePage
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
-        followedArtistsArtworkModule: artworkModule(key: FOLLOWED_ARTISTS) {
-          id
-          ...ArtworkModuleRail_rail
-        }
         activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
           id
           ...ArtworkModuleRail_rail
