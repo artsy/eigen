@@ -77,6 +77,7 @@ import { RequestForPriceEstimateScreen } from "./Scenes/MyCollection/Screens/Art
 import { MyCollectionArtworkScreen } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { AuctionResultsBasedOnArtistsYouCollectList } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsBasedOnArtistsYouCollectList"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "./Scenes/MyProfile/MyProfile"
 import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -335,6 +336,9 @@ export const modules = defineModules({
     AuctionResultsForArtistsYouFollowQueryRenderer,
     {},
     [AuctionResultsForArtistsYouFollowScreenQuery]
+  ),
+  AuctionResultsBasedOnArtistsYouCollectList: reactModule(
+    AuctionResultsBasedOnArtistsYouCollectList
   ),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,

@@ -32,7 +32,7 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
         title="Auction Results"
         subtitle="Recent Auction Results from the Artists You Collect"
         onPress={() => {
-          console.log("navigate to the list of auction results")
+          navigate("/auction-results-based-on-artists-you-collect")
         }}
       />
       <FlatList
