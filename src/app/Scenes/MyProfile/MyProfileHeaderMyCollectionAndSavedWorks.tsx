@@ -41,7 +41,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         !!showMyCollectionInsights && {
           title: Tab.insights,
           content: <MyCollectionInsights />,
-          initial: true,
+          initial: false,
         },
         {
           title: Tab.savedWorks,
@@ -62,6 +62,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer = createR
     me: graphql`
       fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
         ...MyProfileHeader_me
+        ...AuctionResultsBasedOnArtistsYouCollect_me
       }
     `,
   },
