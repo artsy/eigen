@@ -1,7 +1,7 @@
 import { ActionSheetProps } from "@expo/react-native-action-sheet"
 import { Color, IconProps } from "palette"
 
-export type ToastDuration = "LONG" | "SHORT"
+export type ToastDuration = "long" | "short"
 
 export type ToastPlacement = "middle" | "top" | "bottom"
 

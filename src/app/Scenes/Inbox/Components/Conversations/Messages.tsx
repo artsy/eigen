@@ -152,7 +152,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         message="To protect your payment, always communicate and pay through the Artsy platform."
         placement="top"
         backgroundColor="blue100"
-        duration="LONG"
+        duration="long"
         Icon={() => <ShieldIcon shieldColor="white100" checkColor="white100" mr={1} />}
       />
       <FlatList

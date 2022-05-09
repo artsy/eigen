@@ -15,8 +15,8 @@ const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
 
 export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
-  SHORT: 2500,
-  LONG: 5000,
+  short: 2500,
+  long: 5000,
 }
 
 export const ToastComponent: React.FC<ToastDetails> = ({
@@ -27,7 +27,7 @@ export const ToastComponent: React.FC<ToastDetails> = ({
   onPress,
   Icon,
   backgroundColor = "black100",
-  duration = "SHORT",
+  duration = "short",
 }) => {
   const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()

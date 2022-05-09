@@ -94,7 +94,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
             "top",
             {
               backgroundColor: "blue100",
-              duration: "LONG",
+              duration: "long",
             }
           )
           goBack()

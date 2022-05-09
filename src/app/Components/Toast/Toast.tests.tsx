@@ -41,7 +41,7 @@ describe("Toast", () => {
   })
 
   it("Does Not clear Toast before duration is reached", () => {
-    const duration = "SHORT"
+    const duration = "short"
     const tree = renderWithWrappers(<TestRenderer toastOptions={{ duration }} />)
 
     const buttonInstance = tree.root.findByType(Touchable)
@@ -54,7 +54,7 @@ describe("Toast", () => {
   })
 
   it("Clears Toast when the duration is reached", () => {
-    const duration = "SHORT"
+    const duration = "short"
     const tree = renderWithWrappers(<TestRenderer toastOptions={{ duration }} />)
 
     const buttonInstance = tree.root.findByType(Touchable)
