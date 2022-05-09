@@ -161,7 +161,7 @@ export interface MyCollectionArtworkScreenProps {
 export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {
   return (
     <RetryErrorBoundary
-      notFoundTitle="Artwork no Longer in My Collection"
+      notFoundTitle="Artwork no longer in My Collection"
       notFoundText="You previously deleted this artwork."
       notFoundBackButtonText="Back to My Collection"
     >
