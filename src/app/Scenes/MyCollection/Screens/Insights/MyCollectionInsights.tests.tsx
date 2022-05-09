@@ -1,66 +1,65 @@
 import { MyCollectionInsightsTestsQuery } from "__generated__/MyCollectionInsightsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
-import { QueryRenderer } from "react-relay"
+import { useLazyLoadQuery } from "react-relay"
+import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyCollectionInsightsContainer } from "./MyCollectionInsights"
+import { AuctionResultsBasedOnArtistsYouCollect } from "./AuctionResultsBasedOnArtistsYouCollect"
 
 jest.unmock("react-relay")
 
 describe("MyCollectionInsights", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
   beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
     __globalStoreTestUtils__?.injectFeatureFlags({ ARShowMyCollectionInsights: true })
   })
-  const TestRenderer = () => (
-    <QueryRenderer<MyCollectionInsightsTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query MyCollectionInsightsTestsQuery @relay_test_operation {
+  const TestRenderer: React.FC = () => {
+    const queryData = useLazyLoadQuery<MyCollectionInsightsTestsQuery>(
+      graphql`
+        query MyCollectionInsightsTestsQuery @raw_response_type {
           me {
             ...MyCollectionInsights_me
           }
         }
-      `}
-      variables={{}}
-      cacheConfig={{ force: true }}
-      render={({ props }) => {
-        if (props?.me) {
-          return (
-            <StickyTabPage
-              tabs={[
-                {
-                  title: "test",
-                  content: <MyCollectionInsightsContainer me={props.me} />,
-                },
-              ]}
-            />
-          )
-        } else {
-          return null
-        }
-      }}
-    />
-  )
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
+      `,
+      {}
+    )
+    return (
+      <StickyTabPage
+        tabs={[
+          {
+            title: "test",
+            content: <AuctionResultsBasedOnArtistsYouCollect me={queryData.me!} />,
+          },
+        ]}
+      />
+    )
+  }
+  const getWrapper = async () => {
+    const tree = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-  it("container renders without throwing an error", () => {
-    renderWithWrappersTL(<TestRenderer />)
-  })
+    act(() => {
+      mockEnvironment.mock.resolveMostRecentOperation({
+        errors: [],
+        data: { me: mockData },
+      })
+    })
+
+    await flushPromiseQueue()
+
+    return tree
+  }
 
   it("displayes the Auction Results section", async () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText } = await getWrapper()
 
-    mockEnvironmentPayload(mockEnvironment, {
-      Me: () => mockData,
-    })
-    expect(await getByText("Auction Results")).toBeTruthy()
+    expect(queryByText("Auction Results")).toBeTruthy()
   })
 })
 

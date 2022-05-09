@@ -40,7 +40,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         },
         !!showMyCollectionInsights && {
           title: Tab.insights,
-          content: <MyCollectionInsightsQueryRenderer />,
+          content: <MyCollectionInsights />,
           initial: false,
         },
         {

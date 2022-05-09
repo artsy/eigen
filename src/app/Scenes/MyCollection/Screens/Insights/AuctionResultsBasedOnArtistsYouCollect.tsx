@@ -1,4 +1,4 @@
-import { MyCollectionInsights_me } from "__generated__/MyCollectionInsights_me.graphql"
+import { MyCollectionInsights_me$key } from "__generated__/MyCollectionInsights_me.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -7,15 +7,17 @@ import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Separator } from "palette"
 import React from "react"
 import { FlatList } from "react-native-gesture-handler"
+import { graphql, useFragment } from "react-relay"
 
 interface AuctionResultsBasedOnArtistsYouCollectProps {
-  me: MyCollectionInsights_me
+  me: MyCollectionInsights_me$key
 }
 
 export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
   AuctionResultsBasedOnArtistsYouCollectProps
 > = ({ me }) => {
-  const auctionResults = extractNodes(me.myCollectionAuctionResults)
+  const meData = useFragment<MyCollectionInsights_me$key>(myCollectionInsightsFragment, me)
+  const auctionResults = extractNodes(meData.myCollectionAuctionResults)
 
   if (!auctionResults.length) {
     return null
@@ -46,3 +48,19 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
     </Flex>
   )
 }
+
+const myCollectionInsightsFragment = graphql`
+  fragment MyCollectionInsights_me on Me {
+    myCollectionAuctionResults(first: 3) {
+      totalCount
+      edges {
+        node {
+          ...AuctionResultListItem_auctionResult
+          id
+          internalID
+          artistID
+        }
+      }
+    }
+  }
+`
