@@ -14,6 +14,11 @@ const EDGE_TOAST_HEIGHT = 60
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
 
+export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
+  SHORT: 2500,
+  LONG: 5000,
+}
+
 export const ToastComponent: React.FC<ToastDetails> = ({
   id,
   positionIndex,
@@ -22,8 +27,9 @@ export const ToastComponent: React.FC<ToastDetails> = ({
   onPress,
   Icon,
   backgroundColor = "black100",
-  duration = ToastDuration.SHORT,
+  duration = "SHORT",
 }) => {
+  const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()
   const { width, height } = useScreenDimensions()
   const { top: topSafeAreaInset } = useScreenDimensions().safeAreaInsets
@@ -45,7 +51,7 @@ export const ToastComponent: React.FC<ToastDetails> = ({
       useNativeDriver: true,
       duration: 450,
     }).start(() => GlobalStore.actions.toast.remove(id))
-  }, duration)
+  }, toastDuration)
 
   if (placement === "middle") {
     const innerMiddle = (

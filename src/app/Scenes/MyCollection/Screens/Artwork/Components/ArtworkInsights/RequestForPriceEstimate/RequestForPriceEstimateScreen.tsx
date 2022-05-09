@@ -4,7 +4,6 @@ import {
 } from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
 import { ArtsyKeyboardAvoidingViewContext } from "app/Components/ArtsyKeyboardAvoidingView"
 import { Toast } from "app/Components/Toast/Toast"
-import { ToastDuration } from "app/Components/Toast/types"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -95,7 +94,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
             "top",
             {
               backgroundColor: "blue100",
-              duration: ToastDuration.LONG,
+              duration: "LONG",
             }
           )
           goBack()
