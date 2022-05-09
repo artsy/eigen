@@ -34,13 +34,11 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
         data={auctionResults}
         listKey="artist-auction-results"
         renderItem={({ item }) => (
-          <>
-            <AuctionResultListItemFragmentContainer
-              auctionResult={item}
-              showArtistName
-              onPress={() => navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)}
-            />
-          </>
+          <AuctionResultListItemFragmentContainer
+            auctionResult={item}
+            showArtistName
+            onPress={() => navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)}
+          />
         )}
         ItemSeparatorComponent={() => <Separator px={2} />}
         style={{ width: useScreenDimensions().width, left: -20 }}
