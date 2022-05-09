@@ -1,6 +1,7 @@
 import { MyCollectionInsights_me } from "__generated__/MyCollectionInsights_me.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Separator } from "palette"
@@ -34,9 +35,9 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
               <AuctionResultListItemFragmentContainer
                 auctionResult={item}
                 showArtistName
-                onPress={() => {
-                  console.log("navigate to the auction page")
-                }}
+                onPress={() =>
+                  navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+                }
               />
             </>
           )}

@@ -2,7 +2,6 @@ import { MyCollectionInsights_me } from "__generated__/MyCollectionInsights_me.g
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Flex, Text, useSpace } from "palette"
 import React, { Suspense } from "react"
 import { createFragmentContainer, QueryRenderer } from "react-relay"
@@ -47,6 +46,7 @@ export const MyCollectionInsightsContainer = createFragmentContainer(MyCollectio
             ...AuctionResultListItem_auctionResult
             id
             internalID
+            artistID
           }
         }
       }
