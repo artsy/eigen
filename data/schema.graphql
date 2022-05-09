@@ -9843,6 +9843,11 @@ type Mutation {
   createInquiryOfferOrder(
     input: CommerceCreateInquiryOfferOrderWithArtworkInput!
   ): CommerceCreateInquiryOfferOrderWithArtworkPayload
+
+  # Creates an order and links the conversation to it
+  createInquiryOrder(
+    input: CommerceCreateInquiryOrderWithArtworkInput!
+  ): CommerceCreateInquiryOrderWithArtworkPayload
   createSavedSearch(input: CreateSavedSearchInput!): CreateSavedSearchPayload
   createSmsSecondFactor(input: CreateSmsSecondFactorInput!): CreateSmsSecondFactorPayload
   createUserAddress(input: CreateUserAddressInput!): CreateUserAddressPayload

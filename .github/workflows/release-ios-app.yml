@@ -6,8 +6,13 @@ on:
   push:
     branches: [release-ios-app]
 
+permissions:
+  contents: read
+
 jobs:
   build:
+    permissions:
+      contents: none
     runs-on: ubuntu-latest
     steps:
       - name: 🚨 Trigger release ios app to users
