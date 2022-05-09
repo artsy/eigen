@@ -24,7 +24,7 @@ describe("MyCollectionInsights", () => {
       graphql`
         query MyCollectionInsightsTestsQuery @raw_response_type {
           me {
-            ...MyCollectionInsights_me
+            ...AuctionResultsBasedOnArtistsYouCollect_me
           }
         }
       `,
@@ -35,7 +35,7 @@ describe("MyCollectionInsights", () => {
         tabs={[
           {
             title: "test",
-            content: <AuctionResultsBasedOnArtistsYouCollect me={queryData.me!} />,
+            content: <AuctionResultsBasedOnArtistsYouCollect auctionResults={queryData.me!} />,
           },
         ]}
       />

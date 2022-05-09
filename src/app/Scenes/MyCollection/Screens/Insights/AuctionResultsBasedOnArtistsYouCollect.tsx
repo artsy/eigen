@@ -1,4 +1,4 @@
-import { MyCollectionInsights_me$key } from "__generated__/MyCollectionInsights_me.graphql"
+import { AuctionResultsBasedOnArtistsYouCollect_me$key } from "__generated__/AuctionResultsBasedOnArtistsYouCollect_me.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -10,16 +10,19 @@ import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
 
 interface AuctionResultsBasedOnArtistsYouCollectProps {
-  me: MyCollectionInsights_me$key
+  auctionResults: AuctionResultsBasedOnArtistsYouCollect_me$key
 }
 
 export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
   AuctionResultsBasedOnArtistsYouCollectProps
-> = ({ me }) => {
-  const meData = useFragment<MyCollectionInsights_me$key>(myCollectionInsightsFragment, me)
-  const auctionResults = extractNodes(meData.myCollectionAuctionResults)
+> = ({ auctionResults }) => {
+  const fragmentData = useFragment<AuctionResultsBasedOnArtistsYouCollect_me$key>(
+    auctionResultsBasedOnArtistsYouCollectFragment,
+    auctionResults
+  )
+  const auctionResultsData = extractNodes(fragmentData.myCollectionAuctionResults)
 
-  if (!auctionResults.length) {
+  if (!auctionResultsData.length) {
     return null
   }
 
@@ -33,7 +36,7 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
         }}
       />
       <FlatList
-        data={auctionResults}
+        data={auctionResultsData}
         listKey="artist-auction-results"
         renderItem={({ item }) => (
           <AuctionResultListItemFragmentContainer
@@ -49,8 +52,8 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
   )
 }
 
-const myCollectionInsightsFragment = graphql`
-  fragment MyCollectionInsights_me on Me {
+const auctionResultsBasedOnArtistsYouCollectFragment = graphql`
+  fragment AuctionResultsBasedOnArtistsYouCollect_me on Me {
     myCollectionAuctionResults(first: 3) {
       totalCount
       edges {

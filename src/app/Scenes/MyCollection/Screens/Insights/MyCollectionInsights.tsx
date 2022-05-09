@@ -14,7 +14,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   return (
     <StickyTabPageScrollView contentContainerStyle={{ paddingTop: space("2") }}>
       <MyCollectionInsightsOverview />
-      <AuctionResultsBasedOnArtistsYouCollect me={data.me!} />
+      <AuctionResultsBasedOnArtistsYouCollect auctionResults={data.me!} />
     </StickyTabPageScrollView>
   )
 }
@@ -35,7 +35,7 @@ export const MyCollectionInsightsPlaceHolder = () => (
 export const MyCollectionInsightsScreenQuery = graphql`
   query MyCollectionInsightsQuery {
     me {
-      ...MyCollectionInsights_me
+      ...AuctionResultsBasedOnArtistsYouCollect_me
     }
   }
 `
