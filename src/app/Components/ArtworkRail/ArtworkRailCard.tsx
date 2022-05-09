@@ -54,7 +54,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
       <Flex alignItems="flex-end">
         <ArtworkRailCardImage image={image} size={size} urgencyTag={urgencyTag} />
         <Flex
-          mt={1}
+          my={1}
           width={artwork.image?.resized?.width}
           style={{ height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT }}
         >
