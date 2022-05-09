@@ -1,6 +1,11 @@
 import { ActionSheetProps } from "@expo/react-native-action-sheet"
 import { Color, IconProps } from "palette"
 
+export enum ToastDuration {
+  LONG = 5000,
+  SHORT = 2500,
+}
+
 export type ToastPlacement = "middle" | "top" | "bottom"
 
 export interface ToastOnPressHelpers {
@@ -18,6 +23,7 @@ export interface ToastDetails {
   onPress?: (helpers: ToastOnPressHelpers) => void
   Icon?: React.FC<IconProps>
   backgroundColor?: Color
+  duration?: ToastDuration | number
 }
 
-export type ToastOptions = Pick<ToastDetails, "onPress" | "Icon" | "backgroundColor">
+export type ToastOptions = Pick<ToastDetails, "onPress" | "Icon" | "backgroundColor" | "duration">

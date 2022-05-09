@@ -1,11 +1,11 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Color, Flex, Text, Touchable, useColor } from "palette"
+import { Flex, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
-import { ToastDetails } from "./types"
+import { ToastDetails, ToastDuration } from "./types"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
@@ -14,12 +14,7 @@ const EDGE_TOAST_HEIGHT = 60
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
 
-type ToastProps = ToastDetails & {
-  backgroundColor?: Color
-  duration?: number
-}
-
-export const ToastComponent: React.FC<ToastProps> = ({
+export const ToastComponent: React.FC<ToastDetails> = ({
   id,
   positionIndex,
   placement,
@@ -27,7 +22,7 @@ export const ToastComponent: React.FC<ToastProps> = ({
   onPress,
   Icon,
   backgroundColor = "black100",
-  duration = 2500,
+  duration = ToastDuration.SHORT,
 }) => {
   const color = useColor()
   const { width, height } = useScreenDimensions()

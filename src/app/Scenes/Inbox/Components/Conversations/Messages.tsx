@@ -9,6 +9,7 @@ import { Messages_conversation } from "__generated__/Messages_conversation.graph
 import { extractNodes } from "app/utils/extractNodes"
 
 import { ToastComponent } from "app/Components/Toast/ToastComponent"
+import { ToastDuration } from "app/Components/Toast/types"
 import { sortBy } from "lodash"
 import { DateTime } from "luxon"
 import { ShieldIcon } from "palette"
@@ -152,7 +153,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         message="To protect your payment, always communicate and pay through the Artsy platform."
         placement="top"
         backgroundColor="blue100"
-        duration={5000}
+        duration={ToastDuration.LONG}
         Icon={() => <ShieldIcon shieldColor="white100" checkColor="white100" mr={1} />}
       />
       <FlatList
