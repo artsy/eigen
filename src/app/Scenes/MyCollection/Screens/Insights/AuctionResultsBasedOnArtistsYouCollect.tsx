@@ -17,6 +17,10 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
 > = ({ me }) => {
   const auctionResults = extractNodes(me.myCollectionAuctionResults)
 
+  if (!auctionResults.length) {
+    return null
+  }
+
   return (
     <Flex pb={3}>
       <SectionTitle
@@ -26,27 +30,21 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
           console.log("navigate to the list of auction results")
         }}
       />
-      {auctionResults.length > 0 ? (
-        <FlatList
-          data={auctionResults}
-          listKey="artist-auction-results"
-          renderItem={({ item }) => (
-            <>
-              <AuctionResultListItemFragmentContainer
-                auctionResult={item}
-                showArtistName
-                onPress={() =>
-                  navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-                }
-              />
-            </>
-          )}
-          ItemSeparatorComponent={() => <Separator px={2} />}
-          style={{ width: useScreenDimensions().width, left: -20 }}
-        />
-      ) : (
-        <></>
-      )}
+      <FlatList
+        data={auctionResults}
+        listKey="artist-auction-results"
+        renderItem={({ item }) => (
+          <>
+            <AuctionResultListItemFragmentContainer
+              auctionResult={item}
+              showArtistName
+              onPress={() => navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)}
+            />
+          </>
+        )}
+        ItemSeparatorComponent={() => <Separator px={2} />}
+        style={{ width: useScreenDimensions().width, left: -20 }}
+      />
     </Flex>
   )
 }
