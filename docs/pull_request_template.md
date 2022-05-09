@@ -13,6 +13,13 @@ This PR resolves []
 
 <!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
+### QA
+
+<!-- Test cases for the recent changes QA. See example. -->
+| Test Case | Feature | Environment | Acceptance Criteria | Setup Instructions/Link |
+|-----------|---------|-------------|---------------------|-------------------------|
+<!-- | Save a search | Search | Staging | The user should be able to .. | Start from .. | -->
+
 ### PR Checklist
 
 - [ ] I tested my changes on **iOS** / **Android**.
