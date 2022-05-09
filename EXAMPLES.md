@@ -80,7 +80,7 @@ Links:
 
 ## I want to make a new screen.
 
-We use `Screen` and friends for that. They come from palette. Some of the building blocks are: `Screen`, `Screen.Body`, `Screen.Header`, `Screen.FloatingHeader`, `Screen.Background`, `Screen.BottomView`, `Screen.BodyPadding`.
+We use `Screen` and friends for that. They come from palette. Some of the building blocks are: `Screen`, `Screen.Body`, `Screen.Header`, `Screen.FloatingHeader`, `Screen.Background`, `Screen.BottomView`, `Screen.BodyXPadding`, `Screen.SafeBottomPadding`.
 
 You can find examples in [Screen.stories.tsx](src/palette/organisms/screenStructure/Screen.stories.tsx). You can also find actual screens using these, like [OnboardingWelcome.tsx](src/app/Scenes/Onboarding/OnboardingWelcome.tsx), [OnboardingSocialPick.tsx](src/app/Scenes/Onboarding/OnboardingSocialPick.tsx), [OnboardingLogin.tsx](src/app/Scenes/Onboarding/OnboardingLogin.tsx).
 

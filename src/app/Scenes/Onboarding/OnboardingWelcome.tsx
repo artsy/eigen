@@ -164,6 +164,8 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           <Text textAlign="center" color="black30" mt={4}>
             Faith Ringgold <Text fontStyle="italic">Groovin' High, 1996</Text>.
           </Text>
+
+          <Screen.SafeBottomPadding />
         </Animated.View>
       </Screen.Body>
     </Screen>
