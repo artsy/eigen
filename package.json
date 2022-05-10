@@ -215,6 +215,7 @@
     "@types/chalk": "2.2.0",
     "@types/cheerio": "0.22.31",
     "@types/dedent": "0.7.0",
+    "@types/extract-files": "8.1.1",
     "@types/google-libphonenumber": "7.4.23",
     "@types/jest": "26.0.24",
     "@types/lodash": "4.14.179",

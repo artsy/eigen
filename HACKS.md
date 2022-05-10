@@ -175,6 +175,16 @@ There are two hacks here:
 - We hack the output of the compiler to provide clickable links for error messages. Relay assumes that you put your `__generated__` folder in the root of your project, but we put it in `src`.
 - We make sure that files which do not change are not overwritten. This prevents excessive reloading by metro.
 
+## react-relay-network-modern (upload middleware patch)
+
+#### When can we remove this:
+
+We can remove this hack when we can pass Blob/File with specified `name` field to `fetch()` and we won't get an error on Android
+
+#### Explanation/Context:
+
+If we try to pass Blob/File with specified `name` field (if we forgot to specify this field, Metaphysics will assume that no file was passed) to `fetch()`, we will get an error on Android. For this reason, support for these data formats is extracted from `upload` middleware.
+
 ## react-native-credit-card-input
 
 #### When can we remove this:
