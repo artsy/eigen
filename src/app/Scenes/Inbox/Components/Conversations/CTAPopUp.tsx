@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
 
-export const CTAPopUp = ({ show, children }: { show: boolean; children: JSX.Element }) => {
+export const CTAPopUp = ({ show, children }: { show: boolean; children: React.ReactNode }) => {
   const [CTAHeight, setCTAHeight] = useState<number>(0)
   const [hidden, setHidden] = useState<boolean>(!show)
   const animationProgress = useRef(new Animated.Value(show ? 0 : 1)).current
