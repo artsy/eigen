@@ -11514,6 +11514,16 @@ type Query {
     width: String
   ): FilterArtworksConnection
 
+  # A connection of artworks for a user.
+  artworksForUser(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    userId: String
+  ): ArtworkConnection
+
   # An auction result
   auctionResult(
     # The ID of the auction result
@@ -14801,6 +14811,16 @@ type Viewer {
     tagID: String
     width: String
   ): FilterArtworksConnection
+
+  # A connection of artworks for a user.
+  artworksForUser(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    userId: String
+  ): ArtworkConnection
 
   # An auction result
   auctionResult(
