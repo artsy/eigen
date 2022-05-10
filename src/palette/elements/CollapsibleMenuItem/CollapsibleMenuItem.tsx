@@ -101,7 +101,7 @@ export const CollapsibleMenuItem = forwardRef<
             </Flex>
           </Flex>
         </Touchable>
-        <Collapse isOpen={isOpen}>{children}</Collapse>
+        <Collapse opened={isOpen}>{children}</Collapse>
       </Flex>
     )
   }

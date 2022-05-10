@@ -158,7 +158,7 @@ export const LocationPredictions = ({
           )}
         </Flex>
         <Flex alignItems="flex-end" pt={0.5}>
-          <Image source={require("@images/powered_by_google.webp")} resizeMode="contain" />
+          <Image source={require("images/powered_by_google.webp")} resizeMode="contain" />
         </Flex>
       </Flex>
     </Box>

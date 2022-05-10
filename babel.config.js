@@ -14,10 +14,10 @@ module.exports = (api) => {
     plugins: [
       /**
        * Currently Flow generates non-spec compliant code and so we need to make sure to strip any Flow type annotations
-       * /before/ running any of the other spec transforms that we’ve added.
+       * /before/ running any of the other spec transforms that we've added.
        *
-       * You may think “but golly, doesn’t the RN preset already include the plugin that strips Flow type annotations?”
-       * and you wouldn’t be wrong; however, Babel runs plugins specified in one’s config /before/ presets and thus too
+       * You may think “but golly, doesn't the RN preset already include the plugin that strips Flow type annotations?”
+       * and you wouldn't be wrong; however, Babel runs plugins specified in one's config /before/ presets and thus too
        * late.
        *
        * @see:

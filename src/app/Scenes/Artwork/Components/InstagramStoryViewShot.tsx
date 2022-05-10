@@ -1,10 +1,10 @@
 import { useDevToggle } from "app/store/GlobalStore"
-import { useOffscreenStyle } from "app/utils/useOffscreenStyle"
 import { useSizeToFitScreen } from "app/utils/useSizeToFit"
 import { ArtsyLogoBlackIcon, Flex, Text } from "palette"
 import React, { RefObject } from "react"
 import { Image } from "react-native"
 import ViewShot from "react-native-view-shot"
+import { useOffscreenStyle } from "shared/hooks"
 
 /**
  * This component is used to generate an image to share in Instagram Stories.

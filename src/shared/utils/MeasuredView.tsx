@@ -1,7 +1,7 @@
 import { Box } from "palette"
-import React, { useCallback } from "react"
+import { useCallback } from "react"
 import { LayoutChangeEvent } from "react-native"
-import { useOffscreenStyle } from "./useOffscreenStyle"
+import { useOffscreenStyle } from "shared/hooks"
 
 export interface ViewMeasurements {
   width: number

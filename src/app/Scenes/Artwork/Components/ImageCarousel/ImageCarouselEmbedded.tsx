@@ -1,8 +1,8 @@
 import * as Sentry from "@sentry/react-native"
 import { isPad } from "app/utils/hardware"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import React, { useCallback, useContext } from "react"
 import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"

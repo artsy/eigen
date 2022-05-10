@@ -1,9 +1,9 @@
 import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { useFormikContext } from "formik"
 import { Box, Button, Input, PhoneInput, Spacer, Text } from "palette"
 import React from "react"
 import { Platform, ScrollView } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 import { RequestForPriceEstimateFormikSchema } from "./RequestForPriceEstimateScreen"
 
 export const RequestForPriceEstimateForm = () => {

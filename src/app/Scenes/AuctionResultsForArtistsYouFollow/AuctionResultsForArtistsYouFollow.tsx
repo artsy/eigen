@@ -18,6 +18,7 @@ import React, { useState } from "react"
 import { RelayPaginationProp } from "react-relay"
 import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { Tab } from "../Favorites/Favorites"
 
 interface Props {

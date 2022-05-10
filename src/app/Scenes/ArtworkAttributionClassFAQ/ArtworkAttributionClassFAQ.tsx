@@ -3,11 +3,11 @@ import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributio
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Button, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 
 interface Props {
   artworkAttributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses
