@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */; };
 		91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */; };
 		A313AD2B2F6DEDD3EBAC285C /* libPods-Artsy_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD039FAEDE94A51FC91ED26B /* libPods-Artsy_Tests.a */; };
 		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
@@ -534,6 +535,8 @@
 		13B07F961A680F5B00A75B9A /* Artsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13F369B4E56A4D026D55DC53 /* Pods-eigen-eigenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.release.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.release.xcconfig"; sourceTree = "<group>"; };
 		17C42880D2ACAFFAD6731367 /* Pods-eigen-eigenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.debug.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1A550F0C282AE4D200126D22 /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionWebViewController.h; sourceTree = "<group>"; };
+		1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewController.m; sourceTree = "<group>"; };
 		236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.release.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.release.xcconfig"; sourceTree = "<group>"; };
 		41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		775AB16F96387B70AABE4731 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
@@ -2533,6 +2536,8 @@
 			isa = PBXGroup;
 			children = (
 				CBE324C427E275A100395A93 /* ARInternalMobileWebViewController.h */,
+				1A550F0C282AE4D200126D22 /* ARAuctionWebViewController.h */,
+				1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */,
 				CBE324C527E275A100395A93 /* ARExternalWebBrowserViewController.h */,
 				CBE324C627E275A100395A93 /* ARInternalShareValidator.h */,
 				CBE324C727E275A100395A93 /* ARExternalWebBrowserViewController.m */,
@@ -3861,6 +3866,7 @@
 				CBE3267E27E275A300395A93 /* NSArray+Additions.m in Sources */,
 				CBE326E327E275A300395A93 /* ARValueTransformer.m in Sources */,
 				CBE326A627E275A300395A93 /* ARInternalMobileWebViewController.m in Sources */,
+				1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */,
 				CBE326EE27E275A300395A93 /* ARAugmentedFloorBasedVIRViewController.m in Sources */,
 				CBE326C527E275A300395A93 /* LiveBidProgressOverlayView.swift in Sources */,
 				CBE3279027E275A400395A93 /* Gene.m in Sources */,

@@ -6,6 +6,7 @@
 #import "AROptions.h"
 #import "ARModalViewController.h"
 #import "ARAppDelegate+Echo.h"
+#import "ARAuctionWebViewController.h"
 #import "Artsy-Swift.h"
 
 #import <MessageUI/MFMailComposeViewController.h>
@@ -144,6 +145,13 @@ RCT_EXPORT_METHOD(presentEmailComposerWithSubject:(NSString *)subject toAddress:
       [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:nil]];
       [fromViewController presentViewController:alert animated:YES completion:nil];
     }
+}
+
++ (UIViewController *)loadWebViewAuctionRegistrationWithID:(NSString *)auctionID
+{
+    NSString *path = [NSString stringWithFormat:@"/auction/%@/register", auctionID];
+    NSURL *URL = [ARRouter resolveRelativeUrl:path];
+    return [[ARAuctionWebViewController alloc] initWithURL:URL auctionID:auctionID artworkID:nil];
 }
 
 #pragma mark - MFMailComposeViewControllerDelegate
