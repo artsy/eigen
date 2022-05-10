@@ -1,15 +1,10 @@
+const moduleNameMap = require("./alias").jestModuleNameMap
+
 module.exports = {
   preset: "react-native",
   moduleFileExtensions: ["ts", "tsx", "js"],
-  moduleNameMapper: {
-    "^app/(.*)": "<rootDir>/src/app/$1",
-    "^palette$": "<rootDir>/src/palette",
-    "^palette/(.*)": "<rootDir>/src/palette/$1",
-    "^storybook$": "<rootDir>/src/storybook",
-    "^storybook/(.*)": "<rootDir>/src/storybook/$1",
-    "^images/(.*)": "<rootDir>/images/$1",
-    "^shared/(.*)": "<rootDir>/src/shared/$1",
-  },
+  rootDir: "./",
+  moduleNameMapper: moduleNameMap,
   testMatch: ["<rootDir>/**/*.tests.(ts|tsx|js)"],
   testEnvironment: "jsdom",
   testURL: "http://localhost/",
