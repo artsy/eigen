@@ -1,9 +1,16 @@
 import { AuctionResultsBasedOnArtistsYouCollectList_me$key } from "__generated__/AuctionResultsBasedOnArtistsYouCollectList_me.graphql"
 import { AuctionResultsBasedOnArtistsYouCollectListQuery } from "__generated__/AuctionResultsBasedOnArtistsYouCollectListQuery.graphql"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
+import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Text } from "palette"
+import { useScreenDimensions } from "app/utils/useScreenDimensions"
+import { groupBy } from "lodash"
+import moment from "moment"
+import { Flex, Spinner, Text } from "palette"
 import React, { useState } from "react"
-import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { RefreshControl, SectionList } from "react-native"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const articlesQueryVariables = {
   count: 10,
@@ -22,6 +29,26 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
 
   const [refreshing, setRefreshing] = useState(false)
 
+  const allAuctionResults = extractNodes(data.myCollectionAuctionResults)
+
+  const groupedAuctionResults = groupBy(allAuctionResults, (item) =>
+    moment(item!.saleDate!).format("YYYY-MM")
+  )
+
+  const groupedAuctionResultSections = Object.entries(groupedAuctionResults).map(
+    ([date, auctionResults]) => {
+      const sectionTitle = moment(date).format("MMMM")
+
+      return { sectionTitle, data: auctionResults }
+    }
+  )
+
+  const handleRefresh = () => {
+    setRefreshing(true)
+    refetch({})
+    setRefreshing(false)
+  }
+
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
       return
@@ -30,27 +57,91 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
     loadNext(articlesQueryVariables.count)
   }
 
-  const handleRefresh = () => {
-    setRefreshing(true)
-    refetch({})
-    setRefreshing(false)
-  }
-
-  const results = extractNodes(data.myCollectionAuctionResults)
-
-  console.log("LOGD RESULTS = ", results.length, results)
-
-  console.log("data = ", data)
+  console.log("LOGD data = ", data)
   if (!queryData) {
     return null
   }
 
-  /*   const fragmentData = useFragment<AuctionResultsBasedOnArtistsYouCollectList_me$key>(
-    auctionResultsBasedOnArtistsYouCollectListFragment,
-    data.me!
-  ) */
+  const ListHeader: React.FC = () => {
+    return (
+      <Flex>
+        <Text variant="lg" mx={20} mt={2}>
+          Auction Results
+        </Text>
+        <Text variant="xs" mx={20} mt={1} mb={2}>
+          The latest auction results for the artists you collect.
+        </Text>
+      </Flex>
+    )
+  }
 
-  return <Text> HELLO </Text>
+  /*
+TODO: ideally add header in Animated element wothout having exeptions
+
+  const { headerElement, scrollProps } = useStickyScrollHeader({
+    header: (
+      <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
+        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
+          Auction Results
+        </Text>
+      </Flex>
+    ),
+  })
+
+
+const renderItems = (item: any) => {
+    return (
+      <AuctionResultListItemFragmentContainer
+        auctionResult={item}
+        showArtistName
+        onPress={() => {
+          navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+        }}
+      />
+    )
+  } */
+
+  return (
+    <Flex flexDirection="column" justifyContent="space-between" height="100%">
+      <FancyModalHeader hideBottomDivider />
+      <SectionList
+        sections={groupedAuctionResultSections}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+        onEndReached={handleLoadMore}
+        keyExtractor={(item) => item.internalID}
+        stickySectionHeadersEnabled
+        ListHeaderComponent={ListHeader}
+        renderSectionHeader={({ section: { sectionTitle } }) => (
+          <Flex mx="2">
+            <Text variant="md">{sectionTitle}</Text>
+          </Flex>
+        )}
+        renderItem={({ item }) =>
+          item ? (
+            <Flex>
+              <AuctionResultListItemFragmentContainer
+                auctionResult={item}
+                showArtistName
+                onPress={() => {
+                  navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+                }}
+              />
+            </Flex>
+          ) : (
+            <></>
+          )
+        }
+        ListFooterComponent={
+          isLoadingNext ? (
+            <Flex my={2} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : null
+        }
+        style={{ width: useScreenDimensions().width, paddingBottom: 40 }}
+      />
+    </Flex>
+  )
 }
 
 const auctionResultsBasedOnArtistsYouCollectListFragment = graphql`
@@ -62,10 +153,11 @@ const auctionResultsBasedOnArtistsYouCollectListFragment = graphql`
       totalCount
       edges {
         node {
-          ...AuctionResultListItem_auctionResult
           id
           internalID
           artistID
+          saleDate
+          ...AuctionResultListItem_auctionResult
         }
       }
     }
@@ -79,17 +171,3 @@ const AuctionResultsBasedOnArtistsYouCollectListScreenQuery = graphql`
     }
   }
 `
-
-/*
-{
-          totalCount
-          edges {
-            node {
-              saleDate
-              internalID
-              artistID
-              ...AuctionResultListItem_auctionResult
-            }
-          }
-        }
-*/
