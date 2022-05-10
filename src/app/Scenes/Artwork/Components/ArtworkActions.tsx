@@ -4,6 +4,7 @@ import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMuta
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { cm2in } from "app/utils/conversions"
+import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema, track } from "app/utils/track"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { take } from "lodash"
@@ -84,13 +85,16 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
       optimisticResponse: {
         saveArtwork: { artwork: { id: artwork.id, is_saved: !artwork.is_saved } },
       },
-      onCompleted: () =>
+      onCompleted: () => {
+        refreshFavoriteArtworks()
+
         userHadMeaningfulInteraction({
           contextModule: ContextModule.artworkMetadata,
           contextOwnerType: OwnerType.artwork,
           contextOwnerId: artwork.internalID,
           contextOwnerSlug: artwork.slug,
-        }),
+        })
+      },
     })
   }
 
