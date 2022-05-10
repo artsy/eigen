@@ -4,7 +4,7 @@ import _ from "lodash"
 import { Text, useColor } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { useEffect } from "react"
-import { Animated, PixelRatio, StyleSheet, View } from "react-native"
+import { Animated, ColorValue, PixelRatio, StyleSheet, View } from "react-native"
 import FastImage, { ImageStyle } from "react-native-fast-image"
 
 interface Props {
@@ -25,7 +25,7 @@ interface Props {
   retryFailedURLs?: boolean
 
   /** The background color for the image view */
-  placeholderBackgroundColor?: string
+  placeholderBackgroundColor?: ColorValue
 
   width?: number
   height?: number
@@ -192,9 +192,9 @@ export const OpaqueImageView: React.FC<Props> = ({
       <FastImage
         {...props}
         style={[
-          ...fastImageStyle,
           { position: "absolute" },
           { backgroundColor: backgroundColorStyle },
+          ...fastImageStyle,
         ]}
         source={{
           uri: getImageURL(),

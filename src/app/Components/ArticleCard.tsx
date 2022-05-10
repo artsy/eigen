@@ -2,7 +2,7 @@ import { ArticleCard_article } from "__generated__/ArticleCard_article.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, OpaqueImageView, Spacer, Text } from "palette"
+import { Flex, OpaqueImageView, Spacer, Text, useTheme } from "palette"
 import React from "react"
 import {
   GestureResponderEvent,
@@ -30,6 +30,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
     navigate(article.href!)
   }
 
+  const { space } = useTheme()
   const { width } = useWindowDimensions()
   const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageView")
 
@@ -41,29 +42,25 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             (isFluid ? (
               <>
                 {enableNewOpaqueImageView ? (
-                  <View style={{ width, flexDirection: "row" }}>
+                  <View style={{ width }}>
                     <OpaqueImageView
-                      imageURL={article.thumbnailImage?.url}
+                      imageURL={imageURL}
                       // aspect ratio is fixed to 1.33 to match the old image aspect ratio
                       aspectRatio={1.33}
                       // 40 here comes from the mx={2} from the parent component
-                      width={width - 40}
+                      width={width - 2 * space(2)}
                     />
                   </View>
                 ) : (
-                  <View style={{ width: "100%", aspectRatio: 1.33, flexDirection: "row" }}>
-                    <ImageView imageURL={article.thumbnailImage?.url} style={{ flex: 1 }} />
+                  <View style={{ width: "100%", aspectRatio: 1.33 }}>
+                    <ImageView imageURL={imageURL} style={{ flex: 1 }} />
                   </View>
                 )}
               </>
             ) : enableNewOpaqueImageView ? (
-              <OpaqueImageView
-                imageURL={article.thumbnailImage?.url}
-                width={WIDTH}
-                height={HEIGHT}
-              />
+              <OpaqueImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />
             ) : (
-              <ImageView imageURL={article.thumbnailImage?.url} width={WIDTH} height={HEIGHT} />
+              <ImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />
             ))}
           <Spacer mb={1} />
           <Text variant="xs">{article.vertical || " "}</Text>
