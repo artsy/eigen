@@ -75,32 +75,6 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
     )
   }
 
-  /*
-TODO: ideally add header in Animated element wothout having exeptions
-
-  const { headerElement, scrollProps } = useStickyScrollHeader({
-    header: (
-      <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
-        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
-          Auction Results
-        </Text>
-      </Flex>
-    ),
-  })
-
-
-const renderItems = (item: any) => {
-    return (
-      <AuctionResultListItemFragmentContainer
-        auctionResult={item}
-        showArtistName
-        onPress={() => {
-          navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-        }}
-      />
-    )
-  } */
-
   return (
     <Flex flexDirection="column" justifyContent="space-between" height="100%">
       <FancyModalHeader hideBottomDivider />
@@ -133,7 +107,7 @@ const renderItems = (item: any) => {
         }
         ListFooterComponent={
           isLoadingNext ? (
-            <Flex my={2} flexDirection="row" justifyContent="center">
+            <Flex my={3} flexDirection="row" justifyContent="center">
               <Spinner />
             </Flex>
           ) : null
