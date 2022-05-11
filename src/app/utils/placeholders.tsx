@@ -61,6 +61,12 @@ export const ProvidePlaceholderContext: React.FC = ({ children }) => {
   return <PlaceholderContext.Provider value={{ clock }} children={children} />
 }
 
+export const ProvidePlaceholderContextStatic: React.FC = ({ children }) => {
+  const clock = useCurrentTime()
+
+  return <PlaceholderContext.Provider value={{ clock }} children={children} />
+}
+
 export const PlaceholderBox: React.FC<ViewStyle> = ({ children, ...styles }) => {
   const color = useColor()
   const ctx = useContext(PlaceholderContext)

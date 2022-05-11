@@ -1,19 +1,20 @@
 import { AuctionResultsForArtistsYouCollectList_me$key } from "__generated__/AuctionResultsForArtistsYouCollectList_me.graphql"
 import { AuctionResultsForArtistsYouCollectListQuery } from "__generated__/AuctionResultsForArtistsYouCollectListQuery.graphql"
-import { AuctionResulstList } from "app/Components/AuctionResulstList"
+import { AuctionResulstList, LoadingSkeleton } from "app/Components/AuctionResulstList"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { ProvidePlaceholderContextStatic } from "app/utils/placeholders"
 import { groupBy } from "lodash"
 import moment from "moment"
 import { Flex, Text } from "palette"
-import React, { useState } from "react"
+import React, { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const articlesQueryVariables = {
   count: 10,
 }
 
-export const AuctionResultsForArtistsYouCollectList: React.FC<{}> = () => {
+export const ListOfresults: React.FC<{}> = () => {
   const queryData = useLazyLoadQuery<AuctionResultsForArtistsYouCollectListQuery>(
     AuctionResultsForArtistsYouCollectListScreenQuery,
     articlesQueryVariables
@@ -67,6 +68,16 @@ export const AuctionResultsForArtistsYouCollectList: React.FC<{}> = () => {
       }}
       isLoadingNext={isLoadingNext}
     />
+  )
+}
+
+export const AuctionResultsForArtistsYouCollectList: React.FC = () => {
+  return (
+    <ProvidePlaceholderContextStatic>
+      <Suspense fallback={<LoadingSkeleton listHeader={<ListHeader />} />}>
+        <ListOfresults />
+      </Suspense>
+    </ProvidePlaceholderContextStatic>
   )
 }
 

@@ -1,6 +1,7 @@
 import { AuctionResultListItem_auctionResult } from "__generated__/AuctionResultListItem_auctionResult.graphql"
+import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Text } from "palette"
+import { Flex, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import {
   NativeScrollEvent,
@@ -9,7 +10,6 @@ import {
   SectionList,
   SectionListData,
 } from "react-native"
-import { Flex } from "./Bidding/Elements/Flex"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 import { AuctionResultListItemFragmentContainer } from "./Lists/AuctionResultListItem"
 import Spinner from "./Spinner"
@@ -87,5 +87,52 @@ export const AuctionResulstList: React.FC<AuctionResultListProps> = (props) => {
         style={{ width: useScreenDimensions().width, paddingBottom: 40 }}
       />
     </Flex>
+  )
+}
+
+export const LoadingSkeleton: React.FC<{ listHeader: React.ReactElement }> = ({ listHeader }) => {
+  const placeholderResults = []
+  for (let i = 0; i < 8; i++) {
+    placeholderResults.push(
+      <React.Fragment key={i}>
+        <Spacer height={20} />
+        <Flex flexDirection="row" flexGrow={1}>
+          {/* Image */}
+          <PlaceholderBox width={60} height={60} />
+          <Spacer width={15} />
+          <Flex flexDirection="row" justifyContent="space-between" py={0.5} flexGrow={1}>
+            <Flex>
+              {/* Artist name */}
+              <PlaceholderText width={100} />
+              {/* Artwork name */}
+              <PlaceholderText width={150} />
+              {/* Artwork medium */}
+              <PlaceholderText width={125} />
+              {/* Auction Date & Place */}
+              <PlaceholderText width={100} />
+            </Flex>
+            <Flex alignItems="flex-end" pr={1}>
+              {/* Price */}
+              <PlaceholderText width={40} />
+              {/* Mid estimate */}
+              <PlaceholderText width={65} />
+            </Flex>
+          </Flex>
+        </Flex>
+        <Spacer height={10} />
+        <Separator borderColor="black10" />
+      </React.Fragment>
+    )
+  }
+  return (
+    <>
+      <FancyModalHeader hideBottomDivider />
+      {listHeader}
+      <Flex mx={2}>
+        <Spacer height={20} />
+        <Separator borderColor="black10" />
+        {placeholderResults}
+      </Flex>
+    </>
   )
 }

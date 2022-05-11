@@ -1,17 +1,15 @@
 import { ActionType, ContextModule, OwnerType, tappedLink } from "@artsy/cohesion"
 import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
 import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
-import { AuctionResulstList } from "app/Components/AuctionResulstList"
+import { AuctionResulstList, LoadingSkeleton } from "app/Components/AuctionResulstList"
 import { PAGE_SIZE } from "app/Components/constants"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { groupBy } from "lodash"
 import moment from "moment"
-import { Flex, LinkText, Separator, Spacer, Text } from "palette"
+import { Flex, LinkText, Text } from "palette"
 import React, { useState } from "react"
 import { RelayPaginationProp } from "react-relay"
 import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
@@ -171,59 +169,12 @@ export const AuctionResultsForArtistsYouFollowQueryRenderer: React.FC = () => (
     }}
     render={renderWithPlaceholder({
       Container: AuctionResultsForArtistsYouFollowContainer,
-      renderPlaceholder: LoadingSkeleton,
+      renderPlaceholder: () => {
+        return <LoadingSkeleton listHeader={<ListHeader />} />
+      },
     })}
   />
 )
-
-const LoadingSkeleton = () => {
-  const placeholderResults = []
-  for (let i = 0; i < 8; i++) {
-    placeholderResults.push(
-      <React.Fragment key={i}>
-        <Spacer height={20} />
-        <Flex flexDirection="row" pl={1} flexGrow={1}>
-          {/* Image */}
-          <PlaceholderBox width={60} height={60} />
-          <Spacer width={15} />
-          <Flex flexDirection="row" justifyContent="space-between" py={0.5} flexGrow={1}>
-            <Flex>
-              {/* Artist name */}
-              <PlaceholderText width={100} />
-              {/* Artwork name */}
-              <PlaceholderText width={150} />
-              {/* Artwork medium */}
-              <PlaceholderText width={125} />
-              {/* Auction Date & Place */}
-              <PlaceholderText width={100} />
-            </Flex>
-            <Flex alignItems="flex-end" pr={1}>
-              {/* Price */}
-              <PlaceholderText width={40} />
-              {/* Mid estimate */}
-              <PlaceholderText width={65} />
-            </Flex>
-          </Flex>
-        </Flex>
-        <Spacer height={10} />
-        <Separator borderColor="black10" />
-      </React.Fragment>
-    )
-  }
-  return (
-    <>
-      <FancyModalHeader hideBottomDivider />
-      <ListHeader />
-      <Flex mx={2}>
-        <Spacer height={20} />
-        <PlaceholderText height={24} width={100 + Math.random() * 50} />
-        <Spacer height={10} />
-        <Separator borderColor="black10" />
-        {placeholderResults}
-      </Flex>
-    </>
-  )
-}
 
 export const tracks = {
   tapAuctionGroup: (auctionResultId: string) => ({
