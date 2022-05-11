@@ -11,7 +11,6 @@ import {
 } from "react-native"
 import { Flex } from "./Bidding/Elements/Flex"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
-import { ListHeader } from "./ListHeader"
 import { AuctionResultListItemFragmentContainer } from "./Lists/AuctionResultListItem"
 import Spinner from "./Spinner"
 
@@ -21,16 +20,27 @@ interface SectionT {
 type ItemT = any // TODO: ><'
 
 interface AuctionResultListProps {
+  header: string
   sections: ReadonlyArray<SectionListData<ItemT, SectionT>>
   refreshing: boolean
   handleRefresh: () => void
   onEndReached: () => void
+  ListHeaderComponent: React.ReactElement
   onItemPress: (item: AuctionResultListItem_auctionResult) => void
   isLoadingNext: boolean
 }
 
 export const AuctionResulstList: React.FC<AuctionResultListProps> = (props) => {
-  const { sections, refreshing, handleRefresh, onEndReached, onItemPress, isLoadingNext } = props
+  const {
+    header,
+    sections,
+    refreshing,
+    handleRefresh,
+    onEndReached,
+    ListHeaderComponent,
+    onItemPress,
+    isLoadingNext,
+  } = props
   const [showHeader, setShowHeader] = useState<boolean>(false)
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -39,7 +49,7 @@ export const AuctionResulstList: React.FC<AuctionResultListProps> = (props) => {
 
   return (
     <Flex flexDirection="column" justifyContent="space-between" height="100%">
-      <FancyModalHeader hideBottomDivider>{!!showHeader && "Auction Results"} </FancyModalHeader>
+      <FancyModalHeader hideBottomDivider>{!!showHeader && header}</FancyModalHeader>
       <SectionList
         testID="Results_Section_List"
         onScroll={(event) => handleScroll(event)}
@@ -48,14 +58,7 @@ export const AuctionResulstList: React.FC<AuctionResultListProps> = (props) => {
         onEndReached={onEndReached}
         keyExtractor={(item) => item.internalID}
         stickySectionHeadersEnabled
-        ListHeaderComponent={() => {
-          return (
-            <ListHeader
-              title="Auction Results"
-              subtitle="The latest auction results for the artists you collect."
-            />
-          )
-        }}
+        ListHeaderComponent={ListHeaderComponent}
         renderSectionHeader={({ section: { sectionTitle } }) => (
           <Flex mx="2">
             <Text variant="md">{sectionTitle}</Text>

@@ -1,10 +1,11 @@
 import { AuctionResultsForArtistsYouCollectList_me$key } from "__generated__/AuctionResultsForArtistsYouCollectList_me.graphql"
 import { AuctionResultsForArtistsYouCollectListQuery } from "__generated__/AuctionResultsForArtistsYouCollectListQuery.graphql"
-import { AuctionResulstList, AuctionResultList } from "app/Components/AuctionResulstList"
+import { AuctionResulstList } from "app/Components/AuctionResulstList"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { groupBy } from "lodash"
 import moment from "moment"
+import { Flex, Text } from "palette"
 import React, { useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -55,10 +56,12 @@ export const AuctionResultsForArtistsYouCollectList: React.FC<{}> = () => {
 
   return (
     <AuctionResulstList
+      header="Auction Results"
       sections={groupedAuctionResultSections}
       refreshing={refreshing}
       handleRefresh={handleRefresh}
       onEndReached={handleLoadMore}
+      ListHeaderComponent={<ListHeader />}
       onItemPress={(item: any) => {
         navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
       }}
@@ -67,6 +70,18 @@ export const AuctionResultsForArtistsYouCollectList: React.FC<{}> = () => {
   )
 }
 
+const ListHeader: React.FC<{}> = () => {
+  return (
+    <Flex>
+      <Text variant="lg" mx={20} mt={2}>
+        Auction Results
+      </Text>
+      <Text variant="xs" mx={20} mt={1} mb={2}>
+        The latest auction results for the artists you collect
+      </Text>
+    </Flex>
+  )
+}
 const auctionResultsForArtistsYouCollectListFragment = graphql`
   fragment AuctionResultsForArtistsYouCollectList_me on Me
   @refetchable(queryName: "AuctionResultsForArtistsYouCollectList_meRefetch")

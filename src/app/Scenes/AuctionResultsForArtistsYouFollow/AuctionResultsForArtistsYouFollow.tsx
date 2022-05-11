@@ -1,23 +1,18 @@
 import { ActionType, ContextModule, OwnerType, tappedLink } from "@artsy/cohesion"
 import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
 import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
-import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { AuctionResulstList } from "app/Components/AuctionResulstList"
 import { PAGE_SIZE } from "app/Components/constants"
-import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { groupBy } from "lodash"
 import moment from "moment"
-import { Flex, LinkText, Separator, Spacer, Spinner, Text } from "palette"
+import { Flex, LinkText, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import { RefreshControl, SectionList } from "react-native"
 import { RelayPaginationProp } from "react-relay"
 import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -70,64 +65,44 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
     })
     setRefreshing(false)
   }
+  return (
+    <AuctionResulstList
+      header="Auction Results"
+      sections={groupedAuctionResultSections}
+      refreshing={refreshing}
+      handleRefresh={handleRefresh}
+      onEndReached={loadMoreArtworks}
+      ListHeaderComponent={<ListHeader />}
+      onItemPress={(item: any) => {
+        trackEvent(tracks.tapAuctionGroup(item.internalID))
+        navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+      }}
+      isLoadingNext={loadingMoreData}
+    />
+  )
+}
+
+const ListHeader: React.FC<{}> = ({}) => {
+  const { trackEvent } = useTracking()
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
-      })}
-    >
-      <PageWithSimpleHeader title="Auction Results for Artists You Follow">
-        <ArtworkFiltersStoreProvider>
-          <SectionList
-            sections={groupedAuctionResultSections}
-            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-            onEndReached={loadMoreArtworks}
-            keyExtractor={(item) => item.internalID}
-            stickySectionHeadersEnabled
-            ListHeaderComponent={ListHeader}
-            renderSectionHeader={({ section: { sectionTitle } }) => (
-              <Flex bg="white" mx="2">
-                <Text my="2" variant="md">
-                  {sectionTitle}
-                </Text>
-                <Separator borderColor="black10" />
-              </Flex>
-            )}
-            renderSectionFooter={() => <Flex mt="2" />}
-            ItemSeparatorComponent={() => (
-              <Flex px={2}>
-                <Separator borderColor="black10" />
-              </Flex>
-            )}
-            renderItem={({ item }) =>
-              item ? (
-                <Flex px={1}>
-                  <AuctionResultListItemFragmentContainer
-                    auctionResult={item}
-                    showArtistName
-                    onPress={() => {
-                      trackEvent(tracks.tapAuctionGroup(item.internalID))
-                      navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-                    }}
-                  />
-                </Flex>
-              ) : (
-                <></>
-              )
-            }
-            ListFooterComponent={
-              loadingMoreData ? (
-                <Flex my={2} flexDirection="row" justifyContent="center">
-                  <Spinner />
-                </Flex>
-              ) : null
-            }
-            style={{ width: useScreenDimensions().width }}
-          />
-        </ArtworkFiltersStoreProvider>
-      </PageWithSimpleHeader>
-    </ProvideScreenTrackingWithCohesionSchema>
+    <Flex>
+      <Text variant="lg" mx={20} mt={2}>
+        Auction Results for Artists You Follow
+      </Text>
+      <Text variant="xs" mx={20} mt={1} mb={2}>
+        The latest auction results for the {""}
+        <LinkText
+          onPress={() => {
+            trackEvent(tracks.tappedLink)
+            navigate("/favorites", { passProps: { initialTab: Tab.artists } })
+          }}
+        >
+          artists you follow
+        </LinkText>
+        . You can also look up more auction results on the insights tab on any artist’s page.
+      </Text>
+    </Flex>
   )
 }
 
@@ -177,26 +152,6 @@ export const AuctionResultsForArtistsYouFollowContainer = createPaginationContai
     `,
   }
 )
-
-export const ListHeader: React.FC = () => {
-  const { trackEvent } = useTracking()
-  return (
-    <Flex>
-      <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
-        The latest auction results for the {""}
-        <LinkText
-          onPress={() => {
-            trackEvent(tracks.tappedLink)
-            navigate("/favorites", { passProps: { initialTab: Tab.artists } })
-          }}
-        >
-          artists you follow
-        </LinkText>
-        . You can also look up more auction results on the insights tab on any artist’s page.
-      </Text>
-    </Flex>
-  )
-}
 
 export const AuctionResultsForArtistsYouFollowScreenQuery = graphql`
   query AuctionResultsForArtistsYouFollowContainerQuery {
@@ -256,7 +211,8 @@ const LoadingSkeleton = () => {
     )
   }
   return (
-    <PageWithSimpleHeader title="Auction Results for Artists You Follow">
+    <>
+      <FancyModalHeader hideBottomDivider />
       <ListHeader />
       <Flex mx={2}>
         <Spacer height={20} />
@@ -265,7 +221,7 @@ const LoadingSkeleton = () => {
         <Separator borderColor="black10" />
         {placeholderResults}
       </Flex>
-    </PageWithSimpleHeader>
+    </>
   )
 }
 
