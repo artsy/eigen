@@ -88,7 +88,7 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     })
 
     // store photos in asynstorage to be retrieved later when the user goes to My Collection
-    storeLocalPhotos(submission.submissionId, photos)
+    storeLocalPhotos(submission.submissionId, allPhotos)
 
     setFieldValue("photos", allPhotos)
   }
