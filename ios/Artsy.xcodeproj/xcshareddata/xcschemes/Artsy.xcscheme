@@ -64,8 +64,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CB43271B27E8FE5400B29DD6"
-               BuildableName = "Artsy_Tests.xctest"
-               BlueprintName = "Artsy_Tests"
+               BuildableName = "ArtsyTests.xctest"
+               BlueprintName = "ArtsyTests"
                ReferencedContainer = "container:Artsy.xcodeproj">
             </BuildableReference>
          </TestableReference>

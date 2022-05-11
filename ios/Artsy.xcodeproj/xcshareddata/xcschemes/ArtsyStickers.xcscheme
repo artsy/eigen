@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CB43266227E8F39900B29DD6"
-               BuildableName = "Artsy Stickers.appex"
-               BlueprintName = "Artsy Stickers"
+               BuildableName = "ArtsyStickers.appex"
+               BlueprintName = "ArtsyStickers"
                ReferencedContainer = "container:Artsy.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
