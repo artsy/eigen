@@ -144,9 +144,6 @@ commands:
       - run:
           name: Install Pods
           command: bundle exec pod check --ignore-dev-pods || bundle exec pod install
-      - run:
-          name: Update echo
-          command: ls Artsy/App/EchoNew.json || ./scripts/update-echo
       - save_cache:
           key: v9-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
@@ -555,7 +552,6 @@ workflows:
                 - main
     jobs:
       - check-if-app-has-been-approved-for-release
-
 
   update-changelog-workflow:
     jobs:
