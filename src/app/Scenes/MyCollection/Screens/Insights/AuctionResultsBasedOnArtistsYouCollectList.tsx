@@ -9,7 +9,7 @@ import { groupBy } from "lodash"
 import moment from "moment"
 import { Flex, Spinner, Text } from "palette"
 import React, { useState } from "react"
-import { RefreshControl, SectionList } from "react-native"
+import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl, SectionList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const articlesQueryVariables = {
@@ -27,7 +27,8 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
     AuctionResultsBasedOnArtistsYouCollectList_me$key
   >(auctionResultsBasedOnArtistsYouCollectListFragment, queryData.me!)
 
-  const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState<boolean>(false)
+  const [showHeader, setShowHeader] = useState<boolean>(false)
 
   const allAuctionResults = extractNodes(data.myCollectionAuctionResults)
 
@@ -45,7 +46,7 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
 
   const handleRefresh = () => {
     setRefreshing(true)
-    refetch({})
+    refetch({ count: articlesQueryVariables.count })
     setRefreshing(false)
   }
 
@@ -57,7 +58,6 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
     loadNext(articlesQueryVariables.count)
   }
 
-  console.log("LOGD data = ", data)
   if (!queryData) {
     return null
   }
@@ -75,10 +75,19 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
     )
   }
 
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (event.nativeEvent.contentOffset.y > 40) {
+      setShowHeader(true)
+    } else {
+      setShowHeader(false)
+    }
+  }
+
   return (
     <Flex flexDirection="column" justifyContent="space-between" height="100%">
-      <FancyModalHeader hideBottomDivider />
+      <FancyModalHeader hideBottomDivider>{!!showHeader && "Auction Results"} </FancyModalHeader>
       <SectionList
+        onScroll={(event) => handleScroll(event)}
         sections={groupedAuctionResultSections}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
         onEndReached={handleLoadMore}
