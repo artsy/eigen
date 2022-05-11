@@ -303,14 +303,6 @@ function reactModule(
   return { type: "react", options, Component, Queries }
 }
 
-function nativeModule(
-  Component: React.ComponentType<any>,
-  options: ViewOptions = {},
-  Query?: GraphQLTaggedNode
-): ModuleDescriptor {
-  return { type: "native", options, Component, Query }
-}
-
 // little helper function to make sure we get both intellisense and good type information on the result
 function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
   return obj
