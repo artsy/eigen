@@ -14,6 +14,9 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   return (
     <StickyTabPageScrollView contentContainerStyle={{ paddingTop: space("2") }}>
       <MyCollectionInsightsOverview />
+      <Text variant="lg" mr={0.5} mb={2}>
+        Market Signals
+      </Text>
       <AuctionResultsBasedOnArtistsYouCollect auctionResults={data.me!} />
     </StickyTabPageScrollView>
   )
