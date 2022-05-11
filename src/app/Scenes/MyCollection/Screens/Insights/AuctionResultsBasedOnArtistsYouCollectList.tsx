@@ -1,6 +1,7 @@
 import { AuctionResultsBasedOnArtistsYouCollectList_me$key } from "__generated__/AuctionResultsBasedOnArtistsYouCollectList_me.graphql"
 import { AuctionResultsBasedOnArtistsYouCollectListQuery } from "__generated__/AuctionResultsBasedOnArtistsYouCollectListQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { ListHeader } from "app/Components/ListHeader"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -58,19 +59,6 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
     loadNext(articlesQueryVariables.count)
   }
 
-  const ListHeader: React.FC = () => {
-    return (
-      <Flex>
-        <Text variant="lg" mx={20} mt={2}>
-          Auction Results
-        </Text>
-        <Text variant="xs" mx={20} mt={1} mb={2}>
-          The latest auction results for the artists you collect.
-        </Text>
-      </Flex>
-    )
-  }
-
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (event.nativeEvent.contentOffset.y > 40) {
       setShowHeader(true)
@@ -90,7 +78,14 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
         onEndReached={handleLoadMore}
         keyExtractor={(item) => item.internalID}
         stickySectionHeadersEnabled
-        ListHeaderComponent={ListHeader}
+        ListHeaderComponent={() => {
+          return (
+            <ListHeader
+              title="Auction Results"
+              subtitle="The latest auction results for the artists you collect."
+            />
+          )
+        }}
         renderSectionHeader={({ section: { sectionTitle } }) => (
           <Flex mx="2">
             <Text variant="md">{sectionTitle}</Text>
