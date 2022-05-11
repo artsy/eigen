@@ -6,6 +6,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
@@ -141,15 +142,16 @@ describe("CreateSavedSearchAlert", () => {
   })
 
   describe("Notification toggles", () => {
-    it("email toggle is disabled by enabled if the user has allowed email notifications", async () => {
+    it("email toggle is disabled by default if the user has allowed email notifications", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
       mockEnvironmentPayload(mockEnvironment, {
-        Me: () => ({
-          emailFrequency: "alerts_only",
+        Viewer: () => ({
+          notificationPreferences: [{ status: "SUBSCRIBED" }, { status: "UNSUBSCRIBED" }],
         }),
       })
+      await flushPromiseQueue()
 
       const toggles = await findAllByA11yState({ selected: true })
       expect(toggles).toHaveLength(2)
@@ -160,10 +162,11 @@ describe("CreateSavedSearchAlert", () => {
       const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
       mockEnvironmentPayload(mockEnvironment, {
-        Me: () => ({
-          emailFrequency: "none",
+        Viewer: () => ({
+          notificationPreferences: [{ status: "UNSUBSCRIBED" }],
         }),
       })
+      await flushPromiseQueue()
 
       const toggles = await findAllByA11yState({ selected: false })
       expect(toggles).toHaveLength(1)
@@ -172,6 +175,14 @@ describe("CreateSavedSearchAlert", () => {
     it("push toggle is enabled by default when push permissions are enabled", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Viewer: () => ({
+          notificationPreferences: [{ status: "SUBSCRIBED" }],
+        }),
+      })
+      await flushPromiseQueue()
+
       const toggles = await findAllByA11yState({ selected: true })
 
       expect(toggles).toHaveLength(2)
@@ -182,6 +193,13 @@ describe("CreateSavedSearchAlert", () => {
       const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
       const toggles = await findAllByA11yState({ selected: false })
 
+      mockEnvironmentPayload(mockEnvironment, {
+        Viewer: () => ({
+          notificationPreferences: [{ status: "SUBSCRIBED" }],
+        }),
+      })
+      await flushPromiseQueue()
+
       expect(toggles).toHaveLength(1)
     })
 
@@ -189,6 +207,13 @@ describe("CreateSavedSearchAlert", () => {
       setStatusForPushNotifications(PushAuthorizationStatus.NotDetermined)
       const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
       const toggles = await findAllByA11yState({ selected: false })
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Viewer: () => ({
+          notificationPreferences: [{ status: "SUBSCRIBED" }],
+        }),
+      })
+      await flushPromiseQueue()
 
       expect(toggles).toHaveLength(1)
     })
