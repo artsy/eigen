@@ -22,10 +22,18 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
     articlesQueryVariables
   )
 
+  if (!queryData) {
+    return null
+  }
+
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
     AuctionResultsBasedOnArtistsYouCollectListQuery,
     AuctionResultsBasedOnArtistsYouCollectList_me$key
   >(auctionResultsBasedOnArtistsYouCollectListFragment, queryData.me!)
+
+  if (!data) {
+    return null
+  }
 
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const [showHeader, setShowHeader] = useState<boolean>(false)
@@ -58,10 +66,6 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
     loadNext(articlesQueryVariables.count)
   }
 
-  if (!queryData) {
-    return null
-  }
-
   const ListHeader: React.FC = () => {
     return (
       <Flex>
@@ -87,6 +91,7 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
     <Flex flexDirection="column" justifyContent="space-between" height="100%">
       <FancyModalHeader hideBottomDivider>{!!showHeader && "Auction Results"} </FancyModalHeader>
       <SectionList
+        testID="Results_Section_List"
         onScroll={(event) => handleScroll(event)}
         sections={groupedAuctionResultSections}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
