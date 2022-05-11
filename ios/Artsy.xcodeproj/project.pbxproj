@@ -674,7 +674,6 @@
 		CB43278727E8FEE400B29DD6 /* Artsy-Tests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Artsy-Tests-Bridging-Header.h"; sourceTree = "<group>"; };
 		CB43278827E8FEE400B29DD6 /* ARTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTestHelper.h; sourceTree = "<group>"; };
 		CB43278927E8FEE400B29DD6 /* ARTestContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTestContext.h; sourceTree = "<group>"; };
-		CB43278A27E8FEE400B29DD6 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CB43278B27E8FEE400B29DD6 /* ARTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTestHelper.m; sourceTree = "<group>"; };
 		CB43278C27E8FEE400B29DD6 /* stub.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = stub.jpg; sourceTree = "<group>"; };
 		CB43278D27E8FEE400B29DD6 /* stubbed_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stubbed_image.png; sourceTree = "<group>"; };
@@ -868,6 +867,7 @@
 		CB43299727FDFE6400B29DD6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CB43299927FDFE6B00B29DD6 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		CB61B85327B585F00007922D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CBE3210827D9615000395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
 		CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideViewManager.m; sourceTree = "<group>"; };
 		CBE3210A27D9615000395A93 /* ARTOldAdminViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTOldAdminViewManager.h; sourceTree = "<group>"; };
@@ -1805,12 +1805,12 @@
 		CB43278327E8FEE400B29DD6 /* Supporting_Files */ = {
 			isa = PBXGroup;
 			children = (
+				CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */,
 				CB43278427E8FEE400B29DD6 /* InfoPlist.strings */,
 				CB43278627E8FEE400B29DD6 /* Artsy_Tests-Prefix.pch */,
 				CB43278727E8FEE400B29DD6 /* Artsy-Tests-Bridging-Header.h */,
 				CB43278827E8FEE400B29DD6 /* ARTestHelper.h */,
 				CB43278927E8FEE400B29DD6 /* ARTestContext.h */,
-				CB43278A27E8FEE400B29DD6 /* Artsy_Tests-Info.plist */,
 				CB43278B27E8FEE400B29DD6 /* ARTestHelper.m */,
 				CB43278C27E8FEE400B29DD6 /* stub.jpg */,
 				CB43278D27E8FEE400B29DD6 /* stubbed_image.png */,
@@ -4649,7 +4649,7 @@
 					"PB_ENABLE_MALLOC=1",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist\n";
+				INFOPLIST_FILE = "Artsy_Tests/Supporting_Files/Artsy_Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -4687,7 +4687,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy_Tests/Supporting_Files/Artsy_Tests-Prefix.pch";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist\n";
+				INFOPLIST_FILE = "Artsy_Tests/Supporting_Files/Artsy_Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
