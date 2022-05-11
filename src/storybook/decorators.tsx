@@ -1,5 +1,5 @@
 import { DecoratorFunction } from "@storybook/addons"
-import { TrackProvider } from "app/tests/renderWithWrappers"
+import { TrackingProvider } from "app/tests/renderWithWrappers"
 import { ProvideScreenDimensions } from "app/utils/useScreenDimensions"
 import { Theme } from "palette"
 import { SafeAreaProvider } from "react-native-safe-area-context"
@@ -17,7 +17,7 @@ export const withScreenDimensions: DecoratorFunction<React.ReactNode> = (story) 
 )
 
 export const withTracking: DecoratorFunction<React.ReactNode> = (story) => (
-  <TrackProvider>{story()}</TrackProvider>
+  <TrackingProvider>{story()}</TrackingProvider>
 )
 
 /**

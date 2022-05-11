@@ -49,7 +49,7 @@ export const ArtsyKeyboardAvoidingView: React.FC = ({ children }) => {
  *
  * The things we've changed are:
  * - to allow for bottom-based keyboard height calculations for modals
- * - to use measerInWindow to get the view offset, rather than the bounding box from onLayout
+ * - to use measureInWindow to get the view offset, rather than the bounding box from onLayout
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
  *

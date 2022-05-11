@@ -1,12 +1,14 @@
-import { ActionType, OwnerType, TappedMakeOffer } from "@artsy/cohesion"
+import { ActionType, OwnerType, TappedBuyNow, TappedMakeOffer } from "@artsy/cohesion"
 import { OpenInquiryModalButton_artwork } from "__generated__/OpenInquiryModalButton_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
-import { Button, Flex, ShieldIcon, Text } from "palette"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { Button, Flex, ShieldIcon, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ShadowSeparator } from "../ShadowSeparator"
 import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
+import { InquiryPurchaseButtonFragmentContainer } from "./InquiryPurchaseButton"
 
 export interface OpenInquiryModalButtonProps {
   artwork: OpenInquiryModalButton_artwork
@@ -18,7 +20,12 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
   conversationID,
 }) => {
   const { trackEvent } = useTracking()
-  const { isEdition, editionSets, internalID } = artwork
+  const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
+  const { isEdition, editionSets, internalID, isOfferableFromInquiry, isAcquireable, isOfferable } =
+    artwork
+  const isAcquireableFromInquiry = isAcquireable && enableConversationalBuyNow
+  const isOfferableConversationalBuyNow = isOfferable && enableConversationalBuyNow
+  const isEditionSet = !!isEdition && editionSets?.length! > 1
 
   return (
     <>
@@ -43,33 +50,79 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
             </Text>
           </Flex>
         </Flex>
-        {!!isEdition && editionSets?.length! > 1 ? (
-          <Button
-            onPress={() => {
-              trackEvent(tracks.trackTappedMakeOffer(conversationID))
-              navigate(`make-offer/${internalID}`, {
-                modal: true,
-                passProps: { conversationID },
-              })
-            }}
-            size="large"
-            variant="fillDark"
-            block
-            width={100}
-          >
-            Make an Offer
-          </Button>
+
+        {isEditionSet ? (
+          <Flex flexDirection="row">
+            {!!isAcquireableFromInquiry && (
+              <Flex flex={1}>
+                <Button
+                  onPress={() => {
+                    trackEvent(tracks.trackTappedPurchase(conversationID, artwork))
+                    navigate(`purchase/${internalID}`, {
+                      modal: true,
+                      passProps: { conversationID },
+                    })
+                  }}
+                  size="large"
+                  block
+                >
+                  Purchase
+                </Button>
+              </Flex>
+            )}
+            {!!isAcquireableFromInquiry &&
+              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer ml={1} />}
+            {(!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && (
+              <Flex flex={1}>
+                <Button
+                  onPress={() => {
+                    trackEvent(tracks.trackTappedMakeOffer(conversationID))
+                    navigate(`make-offer/${internalID}`, {
+                      modal: true,
+                      passProps: { conversationID },
+                    })
+                  }}
+                  size="large"
+                  variant={isAcquireableFromInquiry ? "outline" : "fillDark"}
+                  block
+                >
+                  Make an Offer
+                </Button>
+              </Flex>
+            )}
+          </Flex>
         ) : (
-          <InquiryMakeOfferButtonFragmentContainer
-            variant="fillDark"
-            artwork={artwork}
-            editionSetID={editionSets?.[0]?.internalID || null}
-            conversationID={conversationID}
-            onPress={() => trackEvent(tracks.trackTappedMakeOffer(conversationID))}
-            replaceModalView={false}
-          >
-            Make an Offer
-          </InquiryMakeOfferButtonFragmentContainer>
+          <Flex flexDirection="row">
+            {!!isAcquireableFromInquiry && (
+              <Flex flex={1}>
+                <InquiryPurchaseButtonFragmentContainer
+                  artwork={artwork}
+                  editionSetID={editionSets?.[0]?.internalID || null}
+                  conversationID={conversationID}
+                  onPress={() => trackEvent(tracks.trackTappedPurchase(conversationID, artwork))}
+                  replaceModalView={false}
+                >
+                  Purchase
+                </InquiryPurchaseButtonFragmentContainer>
+              </Flex>
+            )}
+            {!!isAcquireableFromInquiry &&
+              (!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && <Spacer ml={1} />}
+            {(!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && (
+              <Flex flex={1}>
+                <InquiryMakeOfferButtonFragmentContainer
+                  variant="outline"
+                  artwork={artwork}
+                  editionSetID={editionSets?.[0]?.internalID || null}
+                  conversationID={conversationID}
+                  onPress={() => trackEvent(tracks.trackTappedMakeOffer(conversationID))}
+                  replaceModalView={false}
+                >
+                  Make an Offer
+                </InquiryMakeOfferButtonFragmentContainer>
+              </Flex>
+            )}
+          </Flex>
         )}
       </Flex>
     </>
@@ -82,6 +135,13 @@ const tracks = {
     context_owner_type: OwnerType.conversation,
     impulse_conversation_id: id,
   }),
+  trackTappedPurchase: (id: string, artwork: OpenInquiryModalButton_artwork): TappedBuyNow => ({
+    action: ActionType.tappedBuyNow,
+    context_owner_type: OwnerType.conversation,
+    context_owner_id: artwork.internalID,
+    context_owner_slug: artwork.slug,
+    impulse_conversation_id: id,
+  }),
 }
 
 export const OpenInquiryModalButtonFragmentContainer = createFragmentContainer(
@@ -90,11 +150,16 @@ export const OpenInquiryModalButtonFragmentContainer = createFragmentContainer(
     artwork: graphql`
       fragment OpenInquiryModalButton_artwork on Artwork {
         internalID
+        slug
         isEdition
+        isOfferable
+        isOfferableFromInquiry
+        isAcquireable
         editionSets {
           internalID
         }
         ...InquiryMakeOfferButton_artwork
+        ...InquiryPurchaseButton_artwork
       }
     `,
   }

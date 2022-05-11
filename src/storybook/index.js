@@ -1,7 +1,7 @@
 import { AppRegistry, Platform } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 
-import { StorybookUIRoot } from "./storybook-ui"
+import { StorybookUIRoot } from "./StorybookUI"
 
 if (Platform.OS === "android") {
   RNBootSplash.hide()

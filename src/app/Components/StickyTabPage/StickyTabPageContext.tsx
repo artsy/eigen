@@ -9,8 +9,6 @@ export const StickyTabPageContext = React.createContext<{
   tabLabels: string[]
   tabSuperscripts: Array<string | undefined>
   activeTabIndex: GlobalState<number>
-  showStaticHeader: () => void
-  hideStaticHeader: () => void
   setActiveTabIndex(index: number): void
 }>(null as any)
 

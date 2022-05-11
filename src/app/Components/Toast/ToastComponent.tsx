@@ -1,11 +1,11 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Color, Flex, Text, Touchable, useColor } from "palette"
+import { Flex, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
-import { ToastDetails } from "./types"
+import { ToastDetails, ToastDuration } from "./types"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
 
@@ -15,12 +15,12 @@ const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
 const TABBAR_HEIGHT = 50
 
-type ToastProps = ToastDetails & {
-  backgroundColor?: Color
-  duration?: number
+export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
+  short: 2500,
+  long: 5000,
 }
 
-export const ToastComponent: React.FC<ToastProps> = ({
+export const ToastComponent: React.FC<ToastDetails> = ({
   id,
   positionIndex,
   placement,
@@ -28,8 +28,9 @@ export const ToastComponent: React.FC<ToastProps> = ({
   onPress,
   Icon,
   backgroundColor = "black100",
-  duration = 2500,
+  duration = "short",
 }) => {
+  const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()
   const { width, height } = useScreenDimensions()
   const { top: topSafeAreaInset, bottom: bottomSafeAreaInset } =
@@ -52,7 +53,7 @@ export const ToastComponent: React.FC<ToastProps> = ({
       useNativeDriver: true,
       duration: 450,
     }).start(() => GlobalStore.actions.toast.remove(id))
-  }, duration)
+  }, toastDuration)
 
   if (placement === "middle") {
     const innerMiddle = (

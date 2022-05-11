@@ -1,5 +1,11 @@
 {
-  "extends": ["tslint:recommended", "tslint-react", "react", "tslint-config-prettier", "tslint-plugin-relay"],
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "react",
+    "tslint-config-prettier",
+    "tslint-plugin-relay"
+  ],
   "rulesDirectory": "./tslint-rules",
   "linterOptions": {
     "exclude": ["src/palette/**/*test.*", "dangerfile.ts"]

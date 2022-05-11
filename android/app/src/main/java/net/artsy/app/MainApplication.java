@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.braze.Braze;
 import com.braze.support.BrazeLogger;
 import com.appboy.AppboyLifecycleCallbackListener;
 import com.segment.analytics.android.integrations.adjust.AdjustIntegration;
@@ -71,6 +72,20 @@ public class MainApplication extends Application implements ReactApplication {
         .build();
 
     Analytics.setSingletonInstance(analytics);
+
+    // Register for Firebase Cloud Messaging manually.
+    final Context applicationContext = this;
+    FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+      if (!task.isSuccessful()) {
+        Log.i(TAG, "TOKEN failed to fetch registration token");
+        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+        return;
+      }
+      final String token = task.getResult();
+      Log.i(TAG, "TOKEN firebase messaging token " + token);
+      Braze.getInstance(applicationContext).registerAppboyPushMessages(token);
+    });
+
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener());
   }
 
