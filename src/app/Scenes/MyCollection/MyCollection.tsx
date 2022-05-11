@@ -22,11 +22,11 @@ import {
   PlaceholderText,
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
+import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { EventEmitter } from "events"
 import { times } from "lodash"
 import { Button, Flex, Message, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
@@ -37,13 +37,6 @@ import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListIte
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
-
-const RefreshEvents = new EventEmitter()
-const REFRESH_KEY = "refresh"
-
-export function refreshMyCollection() {
-  RefreshEvents.emit(REFRESH_KEY)
-}
 
 export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
 
@@ -66,9 +59,9 @@ const MyCollection: React.FC<{
 
   const [isRefreshing, setIsRefreshing] = useState(false)
   useEffect(() => {
-    RefreshEvents.addListener(REFRESH_KEY, refetch)
+    RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
     return () => {
-      RefreshEvents.removeListener(REFRESH_KEY, refetch)
+      RefreshEvents.removeListener(MY_COLLECTION_REFRESH_KEY, refetch)
     }
   }, [])
 

@@ -87,6 +87,7 @@
                 <data android:pathPrefix="/inquiry" />
                 <data android:pathPrefix="/map" />
                 <data android:pathPrefix="/make-offer" />
+                <data android:pathPrefix="/purchase" />
                 <data android:pathPrefix="/my-account" />
                 <data android:pathPrefix="/my-profile" />
                 <data android:pathPrefix="/my-profile/saved-addresses" />

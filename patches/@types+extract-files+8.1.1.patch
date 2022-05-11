@@ -1,0 +1,20 @@
+diff --git a/node_modules/@types/extract-files/index.d.ts b/node_modules/@types/extract-files/index.d.ts
+index c329089..854c552 100755
+--- a/node_modules/@types/extract-files/index.d.ts
++++ b/node_modules/@types/extract-files/index.d.ts
+@@ -7,13 +7,13 @@
+ export interface ReactNativeFileOptions {
+     uri: string;
+     type?: string | undefined;
+-    name?: string | undefined;
++    name: string;
+ }
+ 
+ export class ReactNativeFile {
+     uri: string;
+     type?: string | undefined;
+-    name?: string | undefined;
++    name: string;
+ 
+     constructor(options: ReactNativeFileOptions);
+ }

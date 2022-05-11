@@ -33,3 +33,13 @@ updates:
       - "pvinis"
     reviewers:
       - "artsy/collector-experience"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule: 
+      interval: daily
+    open-pull-requests-limit: 0
+    assignees: 
+     - brainbicycle
+     - pvinis
+    reviewers: 
+     - artsy/mobile-platform

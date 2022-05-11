@@ -240,7 +240,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
       return sections
     }
 
-    if (enableConversationalBuyNow && artworkAboveTheFold?.isAcquireable) {
+    if (
+      enableConversationalBuyNow &&
+      (artworkAboveTheFold?.isAcquireable ||
+        (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
+    ) {
       sections.push({
         key: "contactGallery",
         element: <Questions artwork={artworkBelowTheFold} />,

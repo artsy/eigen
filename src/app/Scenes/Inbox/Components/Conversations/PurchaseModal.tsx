@@ -1,9 +1,9 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.graphql"
+import { PurchaseModal_artwork } from "__generated__/PurchaseModal_artwork.graphql"
 import {
-  MakeOfferModalQuery,
-  MakeOfferModalQueryResponse,
-} from "__generated__/MakeOfferModalQuery.graphql"
+  PurchaseModalQuery,
+  PurchaseModalQueryResponse,
+} from "__generated__/PurchaseModalQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -14,16 +14,16 @@ import { BorderBox, Button, Flex, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 
 import { EditionSelectBox } from "./EditionSelectBox"
+import { InquiryPurchaseButtonFragmentContainer } from "./InquiryPurchaseButton"
 
-interface MakeOfferModalProps {
-  artwork: MakeOfferModal_artwork
+interface PurchaseModalProps {
+  artwork: PurchaseModal_artwork
   conversationID: string
 }
 
-export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
+export const PurchaseModal: React.FC<PurchaseModalProps> = ({ ...props }) => {
   const { artwork, conversationID } = props
   const { editionSets } = artwork
 
@@ -41,7 +41,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   return (
     <View>
       <FancyModalHeader rightButtonDisabled hideBottomDivider>
-        Make Offer
+        Purchase
       </FancyModalHeader>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Flex p={1.5}>
@@ -61,15 +61,14 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
               ))}
             </Flex>
           )}
-          <InquiryMakeOfferButton
-            variant="fillDark"
+          <InquiryPurchaseButtonFragmentContainer
             artwork={artwork}
             disabled={!!artwork.isEdition && !selectedEdition}
             editionSetID={selectedEdition ? selectedEdition : null}
             conversationID={conversationID}
           >
             Confirm
-          </InquiryMakeOfferButton>
+          </InquiryPurchaseButtonFragmentContainer>
           <Button
             mt={1}
             size="large"
@@ -88,11 +87,11 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   )
 }
 
-export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOfferModal, {
+export const PurchaseModalFragmentContainer = createFragmentContainer(PurchaseModal, {
   artwork: graphql`
-    fragment MakeOfferModal_artwork on Artwork {
+    fragment PurchaseModal_artwork on Artwork {
       ...CollapsibleArtworkDetails_artwork
-      ...InquiryMakeOfferButton_artwork
+      ...InquiryPurchaseButton_artwork
       internalID
       isEdition
       editionSets {
@@ -117,7 +116,7 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
   `,
 })
 
-export const MakeOfferModalQueryRenderer: React.FC<{
+export const PurchaseModalQueryRenderer: React.FC<{
   artworkID: string
   conversationID: string
 }> = ({ artworkID, conversationID }) => {
@@ -125,24 +124,24 @@ export const MakeOfferModalQueryRenderer: React.FC<{
     <ProvideScreenTrackingWithCohesionSchema
       info={{
         action: ActionType.screen,
-        context_screen_owner_type: OwnerType.conversationMakeOfferConfirmArtwork,
+        context_screen_owner_type: OwnerType.conversation,
         context_screen_referrer_type: OwnerType.conversation,
       }}
     >
-      <QueryRenderer<MakeOfferModalQuery>
+      <QueryRenderer<PurchaseModalQuery>
         environment={defaultEnvironment}
         query={graphql`
-          query MakeOfferModalQuery($artworkID: String!) {
+          query PurchaseModalQuery($artworkID: String!) {
             artwork(id: $artworkID) {
-              ...MakeOfferModal_artwork
+              ...PurchaseModal_artwork
             }
           }
         `}
         variables={{
           artworkID,
         }}
-        render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
-          <MakeOfferModalFragmentContainer artwork={artwork!} conversationID={conversationID} />
+        render={renderWithLoadProgress<PurchaseModalQueryResponse>(({ artwork }) => (
+          <PurchaseModalFragmentContainer artwork={artwork!} conversationID={conversationID} />
         ))}
       />
     </ProvideScreenTrackingWithCohesionSchema>

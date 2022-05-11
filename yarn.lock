@@ -222,10 +222,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@artsy/cohesion@4.45.0":
-  version "4.45.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.45.0.tgz#058c0439d0f8f8d304fa7b229a094d5aeede6fe3"
-  integrity sha512-Lbs0Ex0H3ZpHPhahvsba2s4gvXQK1r/b4h6O5o+Y8KzisoQjY8ClXKu4BiC9ZZq2cr44xdnF+JsorqRbYMIaUw==
+"@artsy/cohesion@4.46.0":
+  version "4.46.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.46.0.tgz#8d6d80d86eb5ccf5eadcd1fce4a9c29dc0ac3e63"
+  integrity sha512-3TMxfxstyc7y1attuiYc7oQmSIXKKLIA6szhX5NNO0nWMag2aHXbHMpem7MGIpaG708r6nwnPn1iyZPRZ6R7DA==
   dependencies:
     core-js "3"
 
@@ -3392,6 +3392,11 @@
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@types/dedent/-/dedent-0.7.0.tgz#155f339ca404e6dd90b9ce46a3f78fd69ca9b050"
   integrity sha512-EGlKlgMhnLt/cM4DbUSafFdrkeJoC9Mvnj0PUCU7tFmTjMjNRT957kXCx0wYm3JuEq4o4ZsS5vG+NlkM2DMd2A==
+
+"@types/extract-files@8.1.1":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@types/extract-files/-/extract-files-8.1.1.tgz#11b67e795ad2c8b483431e8d4f190db2fd22944b"
+  integrity sha512-dMJJqBqyhsfJKuK7p7HyyNmki7qj1AlwhUKWx6KrU7i1K2T2SPsUsSUTWFmr/sEM1q8rfR8j5IyUmYrDbrhfjQ==
 
 "@types/geojson@*", "@types/geojson@^7946.0.7":
   version "7946.0.7"
