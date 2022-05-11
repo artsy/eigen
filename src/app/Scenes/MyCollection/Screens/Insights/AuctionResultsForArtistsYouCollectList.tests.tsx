@@ -5,16 +5,16 @@ import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { AuctionResultsBasedOnArtistsYouCollectList } from "./AuctionResultsBasedOnArtistsYouCollectList"
+import { AuctionResultsForArtistsYouCollectList } from "./AuctionResultsForArtistsYouCollectList"
 
 jest.unmock("react-relay")
 
-describe("AuctionResultsBasedOnArtistsYouCollectList", () => {
+describe("AuctionResultsForArtistsYouCollectList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <AuctionResultsBasedOnArtistsYouCollectList />
+      <AuctionResultsForArtistsYouCollectList />
     </RelayEnvironmentProvider>
   )
 

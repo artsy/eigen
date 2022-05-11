@@ -1,4 +1,4 @@
-import { AuctionResultsBasedOnArtistsYouCollect_me$key } from "__generated__/AuctionResultsBasedOnArtistsYouCollect_me.graphql"
+import { AuctionResultsForArtistsYouCollect_me$key } from "__generated__/AuctionResultsForArtistsYouCollect_me.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -9,15 +9,15 @@ import React from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
 
-interface AuctionResultsBasedOnArtistsYouCollectProps {
-  auctionResults: AuctionResultsBasedOnArtistsYouCollect_me$key
+interface AuctionResultsForArtistsYouCollectProps {
+  auctionResults: AuctionResultsForArtistsYouCollect_me$key
 }
 
-export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
-  AuctionResultsBasedOnArtistsYouCollectProps
+export const AuctionResultsForArtistsYouCollect: React.FC<
+  AuctionResultsForArtistsYouCollectProps
 > = ({ auctionResults }) => {
-  const fragmentData = useFragment<AuctionResultsBasedOnArtistsYouCollect_me$key>(
-    auctionResultsBasedOnArtistsYouCollectFragment,
+  const fragmentData = useFragment<AuctionResultsForArtistsYouCollect_me$key>(
+    auctionResultsForArtistsYouCollectFragment,
     auctionResults
   )
   const auctionResultsData = extractNodes(fragmentData.myCollectionAuctionResults)
@@ -32,7 +32,7 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
         title="Auction Results"
         subtitle="Recent Auction Results from the Artists You Collect"
         onPress={() => {
-          navigate("/auction-results-based-on-artists-you-collect")
+          navigate("/auction-results-for-artists-you-collect")
         }}
       />
       <FlatList
@@ -52,8 +52,8 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
   )
 }
 
-const auctionResultsBasedOnArtistsYouCollectFragment = graphql`
-  fragment AuctionResultsBasedOnArtistsYouCollect_me on Me {
+const auctionResultsForArtistsYouCollectFragment = graphql`
+  fragment AuctionResultsForArtistsYouCollect_me on Me {
     myCollectionAuctionResults(first: 3) {
       totalCount
       edges {
