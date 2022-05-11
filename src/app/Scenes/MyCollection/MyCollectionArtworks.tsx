@@ -29,10 +29,12 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   relay,
   innerFlatlistRef,
 }) => {
+  const { height: screenHeight } = useScreenDimensions()
+
+  const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
   const [keywordFilter, setKeywordFilter] = useState("")
   const [hasUsedSearchBar, setHasUsedSearchBar] = useState(false)
   const [searchBarStillFocused, setSearchBarStillFocused] = useState(false)
-  const { height: screenHeight } = useScreenDimensions()
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
@@ -53,33 +55,17 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
 
   if (filteredArtworks.length === 0) {
     return (
-      <FlatList
-        style={{ minHeight: screenHeight }}
-        data={[]}
-        renderItem={({ item }) => item}
-        ListEmptyComponent={
-          <Flex py="6" px="2">
-            <FilteredArtworkGridZeroState hideClearButton />
-          </Flex>
-        }
-        ListHeaderComponent={
-          <MyCollectionSearchBar
-            onChangeText={setKeywordFilter}
-            searchString={keywordFilter}
-            setHasUsedSearchBar={setHasUsedSearchBar}
-            startAsFocused={hasUsedSearchBar}
-            setSearchBarStillFocused={setSearchBarStillFocused}
-          />
-        }
-      />
+      <Flex py="6" px="2">
+        <FilteredArtworkGridZeroState hideClearButton />
+      </Flex>
     )
   }
 
   return (
-    <Flex pt={1}>
+    <Flex minHeight={minHeight}>
       {viewOption === "grid" ? (
         // Setting a min height to avoid a screen jump when switching to the grid view.
-        <Flex minHeight={screenHeight}>
+        <Flex>
           <InfiniteScrollMyCollectionArtworksGridContainer
             hideHeaderInitially={!hasUsedSearchBar}
             HeaderComponent={
@@ -90,6 +76,9 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
                 setHasUsedSearchBar={setHasUsedSearchBar}
                 startAsFocused={searchBarStillFocused}
                 setSearchBarStillFocused={setSearchBarStillFocused}
+                onIsFocused={(isFocused) => {
+                  setMinHeight(isFocused ? screenHeight : undefined)
+                }}
               />
             }
             myCollectionConnection={me.myCollectionConnection!}
@@ -117,6 +106,9 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
               setHasUsedSearchBar={setHasUsedSearchBar}
               startAsFocused={searchBarStillFocused}
               setSearchBarStillFocused={setSearchBarStillFocused}
+              onIsFocused={(isFocused) => {
+                setMinHeight(isFocused ? screenHeight : undefined)
+              }}
             />
           }
           myCollectionConnection={me.myCollectionConnection}
