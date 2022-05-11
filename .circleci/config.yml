@@ -147,10 +147,10 @@ commands:
       - save_cache:
           key: v9-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
-            - Pods
-            # this changes after pod install because we don't instal dev tools on CI
+            - ios/Pods
+            # this changes after pod install because we don't install dev tools on CI
             # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
-            - Podfile.lock
+            - ios/Podfile.lock
   build-app-ios:
     steps:
       - restore_cache:
