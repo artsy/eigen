@@ -1,7 +1,10 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { captureMessage } from "@sentry/react-native"
 import { storeLocalPhotos } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionImageUtil"
-import { Photo, PhotosFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
+import {
+  Photo,
+  PhotosFormModel,
+} from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { useFormikContext } from "formik"
@@ -85,9 +88,9 @@ export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
     })
 
     // store photos in asynstorage to be retrieved later when the user goes to My Collection
-    storeLocalPhotos(submission.submissionId, photos)
+    storeLocalPhotos(submission.submissionId, allPhotos)
 
-    setFieldValue("photos", photos)
+    setFieldValue("photos", allPhotos)
   }
 
   // show Native action sheet and get photos from user's phone
