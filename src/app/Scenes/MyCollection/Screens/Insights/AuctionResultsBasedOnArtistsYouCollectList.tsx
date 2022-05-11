@@ -22,18 +22,10 @@ export const AuctionResultsBasedOnArtistsYouCollectList: React.FC<{}> = () => {
     articlesQueryVariables
   )
 
-  if (!queryData) {
-    return null
-  }
-
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
     AuctionResultsBasedOnArtistsYouCollectListQuery,
     AuctionResultsBasedOnArtistsYouCollectList_me$key
   >(auctionResultsBasedOnArtistsYouCollectListFragment, queryData.me!)
-
-  if (!data) {
-    return null
-  }
 
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const [showHeader, setShowHeader] = useState<boolean>(false)
