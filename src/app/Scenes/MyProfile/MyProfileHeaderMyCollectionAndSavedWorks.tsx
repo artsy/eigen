@@ -62,7 +62,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer = createR
     me: graphql`
       fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
         ...MyProfileHeader_me
-        ...AuctionResultsForArtistsYouCollect_me
+        ...AuctionResultsForArtistsYouCollectRail_me
       }
     `,
   },

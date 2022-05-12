@@ -8,7 +8,7 @@ import { useLazyLoadQuery } from "react-relay"
 import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
-import { AuctionResultsForArtistsYouCollect } from "./AuctionResultsForArtistsYouCollect"
+import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 
 jest.unmock("react-relay")
 
@@ -24,7 +24,7 @@ describe("MyCollectionInsights", () => {
       graphql`
         query MyCollectionInsightsTestsQuery @raw_response_type {
           me {
-            ...AuctionResultsForArtistsYouCollect_me
+            ...AuctionResultsForArtistsYouCollectRail_me
           }
         }
       `,
@@ -35,7 +35,7 @@ describe("MyCollectionInsights", () => {
         tabs={[
           {
             title: "test",
-            content: <AuctionResultsForArtistsYouCollect auctionResults={queryData.me!} />,
+            content: <AuctionResultsForArtistsYouCollectRail auctionResults={queryData.me!} />,
           },
         ]}
       />

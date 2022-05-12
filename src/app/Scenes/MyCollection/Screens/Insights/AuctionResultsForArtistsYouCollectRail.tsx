@@ -1,4 +1,4 @@
-import { AuctionResultsForArtistsYouCollect_me$key } from "__generated__/AuctionResultsForArtistsYouCollect_me.graphql"
+import { AuctionResultsForArtistsYouCollectRail_me$key } from "__generated__/AuctionResultsForArtistsYouCollectRail_me.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -9,15 +9,15 @@ import React from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
 
-interface AuctionResultsForArtistsYouCollectProps {
-  auctionResults: AuctionResultsForArtistsYouCollect_me$key
+interface AuctionResultsForArtistsYouCollectRailProps {
+  auctionResults: AuctionResultsForArtistsYouCollectRail_me$key
 }
 
-export const AuctionResultsForArtistsYouCollect: React.FC<
-  AuctionResultsForArtistsYouCollectProps
+export const AuctionResultsForArtistsYouCollectRail: React.FC<
+  AuctionResultsForArtistsYouCollectRailProps
 > = ({ auctionResults }) => {
-  const fragmentData = useFragment<AuctionResultsForArtistsYouCollect_me$key>(
-    auctionResultsForArtistsYouCollectFragment,
+  const fragmentData = useFragment<AuctionResultsForArtistsYouCollectRail_me$key>(
+    auctionResultsForArtistsYouCollectRailFragment,
     auctionResults
   )
   const auctionResultsData = extractNodes(fragmentData.myCollectionAuctionResults)
@@ -52,8 +52,8 @@ export const AuctionResultsForArtistsYouCollect: React.FC<
   )
 }
 
-const auctionResultsForArtistsYouCollectFragment = graphql`
-  fragment AuctionResultsForArtistsYouCollect_me on Me {
+const auctionResultsForArtistsYouCollectRailFragment = graphql`
+  fragment AuctionResultsForArtistsYouCollectRail_me on Me {
     myCollectionAuctionResults(first: 3) {
       totalCount
       edges {
