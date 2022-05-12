@@ -43,7 +43,7 @@ export const ListOfresults: React.FC<{}> = () => {
 
   const handleRefresh = () => {
     setRefreshing(true)
-    refetch({ count: articlesQueryVariables.count })
+    refetch({})
     setRefreshing(false)
   }
 
