@@ -11,6 +11,7 @@ const TabContent = ({
 }: {
   route: { params: { tabName: BottomTabType; rootModuleName: AppModule } }
 }) => {
+  // TODO: simplify this, we probably can get rid of NavStack
   return <NavStack id={route.params.tabName} rootModuleName={route.params.rootModuleName} />
 }
 

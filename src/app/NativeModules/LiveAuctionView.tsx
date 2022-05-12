@@ -1,5 +1,5 @@
 import { dismissModal, navigationEvents } from "app/navigation/navigate"
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { requireNativeComponent } from "react-native"
 
 const ARTLiveAuctionView = requireNativeComponent("ARTLiveAuctionView")
