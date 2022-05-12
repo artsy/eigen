@@ -1,5 +1,5 @@
-import { AuctionResultsForArtistsYouCollectList_me$key } from "__generated__/AuctionResultsForArtistsYouCollectList_me.graphql"
-import { AuctionResultsForArtistsYouCollectListQuery } from "__generated__/AuctionResultsForArtistsYouCollectListQuery.graphql"
+import { AuctionResultsForArtistsYouCollect_me$key } from "__generated__/AuctionResultsForArtistsYouCollect_me.graphql"
+import { AuctionResultsForArtistsYouCollectQuery } from "__generated__/AuctionResultsForArtistsYouCollectQuery.graphql"
 import { AuctionResulstList, LoadingSkeleton } from "app/Components/AuctionResulstList"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -15,15 +15,15 @@ const articlesQueryVariables = {
 }
 
 export const ListOfresults: React.FC<{}> = () => {
-  const queryData = useLazyLoadQuery<AuctionResultsForArtistsYouCollectListQuery>(
-    AuctionResultsForArtistsYouCollectListScreenQuery,
+  const queryData = useLazyLoadQuery<AuctionResultsForArtistsYouCollectQuery>(
+    AuctionResultsForArtistsYouCollectScreenQuery,
     articlesQueryVariables
   )
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
-    AuctionResultsForArtistsYouCollectListQuery,
-    AuctionResultsForArtistsYouCollectList_me$key
-  >(auctionResultsForArtistsYouCollectListFragment, queryData.me!)
+    AuctionResultsForArtistsYouCollectQuery,
+    AuctionResultsForArtistsYouCollect_me$key
+  >(auctionResultsForArtistsYouCollectFragment, queryData.me!)
 
   const [refreshing, setRefreshing] = useState<boolean>(false)
 
@@ -71,7 +71,7 @@ export const ListOfresults: React.FC<{}> = () => {
   )
 }
 
-export const AuctionResultsForArtistsYouCollectList: React.FC = () => {
+export const AuctionResultsForArtistsYouCollect: React.FC = () => {
   return (
     <ProvidePlaceholderContext>
       <Suspense fallback={<LoadingSkeleton listHeader={<ListHeader />} />}>
@@ -93,9 +93,9 @@ const ListHeader: React.FC<{}> = () => {
     </Flex>
   )
 }
-const auctionResultsForArtistsYouCollectListFragment = graphql`
-  fragment AuctionResultsForArtistsYouCollectList_me on Me
-  @refetchable(queryName: "AuctionResultsForArtistsYouCollectList_meRefetch")
+const auctionResultsForArtistsYouCollectFragment = graphql`
+  fragment AuctionResultsForArtistsYouCollect_me on Me
+  @refetchable(queryName: "AuctionResultsForArtistsYouCollect_meRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
     myCollectionAuctionResults(first: $count, after: $after)
       @connection(key: "AuctionResults_myCollectionAuctionResults") {
@@ -113,10 +113,10 @@ const auctionResultsForArtistsYouCollectListFragment = graphql`
   }
 `
 
-const AuctionResultsForArtistsYouCollectListScreenQuery = graphql`
-  query AuctionResultsForArtistsYouCollectListQuery($count: Int, $after: String) {
+const AuctionResultsForArtistsYouCollectScreenQuery = graphql`
+  query AuctionResultsForArtistsYouCollectQuery($count: Int, $after: String) {
     me {
-      ...AuctionResultsForArtistsYouCollectList_me @arguments(count: $count, after: $after)
+      ...AuctionResultsForArtistsYouCollect_me @arguments(count: $count, after: $after)
     }
   }
 `
