@@ -72,12 +72,7 @@ function getCurrentlyPresentedModalNavStackKey() {
   return key
 }
 
-/**
- * This is marked as unsafe because, at the time of writing, it does not work on iOS.
- * You might want the switchTab function in navigate.ts
- * @param tab
- */
-export function __unsafe_switchTab(tab: BottomTabType) {
+export function switchTab(tab: BottomTabType) {
   __unsafe_mainModalStackRef.current?.dispatch(TabActions.jumpTo(tab))
 }
 

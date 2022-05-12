@@ -1,10 +1,8 @@
-import { NativeTabs } from "app/Components/NativeTabs"
-import { __unsafe_switchTab } from "app/NativeModules/ARScreenPresenterModule"
+import { switchTab } from "app/NativeModules/ARScreenPresenterModule"
 import { ModalStack } from "app/navigation/ModalStack"
-import { switchTab } from "app/navigation/navigate"
 import { NavStack } from "app/navigation/NavStack"
-import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
@@ -39,7 +37,7 @@ describe(BottomTabsNavigator, () => {
     ).toHaveLength(0)
 
     await act(() => {
-      __unsafe_switchTab("search")
+      switchTab("search")
     })
 
     expect(
