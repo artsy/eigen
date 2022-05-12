@@ -15,15 +15,8 @@ export const MyCollectionArtworkList: React.FC<{
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
   isLoading: RelayPaginationProp["isLoading"]
-  onScrollBeginDrag?: PrefetchFlatListProps<any>["onScrollBeginDrag"]
-}> = ({
-  localSortAndFilterArtworks,
-  isLoading,
-  loadMore,
-  hasMore,
-  onScrollBeginDrag,
-  ...restProps
-}) => {
+  onScroll?: PrefetchFlatListProps<any>["onScroll"]
+}> = ({ localSortAndFilterArtworks, isLoading, loadMore, hasMore, onScroll, ...restProps }) => {
   const artworkConnection = useFragment<MyCollectionArtworkList_myCollectionConnection$key>(
     artworkConnectionFragment,
     restProps.myCollectionConnection
@@ -71,7 +64,7 @@ export const MyCollectionArtworkList: React.FC<{
             </Flex>
           ) : null
         }
-        onScrollBeginDrag={onScrollBeginDrag}
+        onScroll={onScroll}
       />
     </Flex>
   )

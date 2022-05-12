@@ -95,7 +95,7 @@ export interface Props {
 
   itemComponentProps?: Partial<ArtworkProps>
 
-  onScrollBeginDrag?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void
+  onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void
 
   /** Show Lot Label  */
   showLotLabel?: boolean
@@ -381,15 +381,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const {
-      shouldAddPadding,
-      hasMore,
-      stickyHeaderIndices,
-      useParentAwareScrollView,
-      onScrollBeginDrag,
-    } = this.props
+    const { shouldAddPadding, hasMore, stickyHeaderIndices, useParentAwareScrollView, onScroll } =
+      this.props
 
-    console.log({ onScrollBeginDrag })
     const boxPadding = shouldAddPadding ? 2 : 0
 
     const ScrollViewWrapper = !!useParentAwareScrollView ? ParentAwareScrollView : ScrollView
@@ -398,11 +392,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       <>
         <ScrollViewWrapper
           onScroll={(ev) => {
+            onScroll?.(ev)
             if (this.props.autoFetch) {
               this.handleFetchNextPageOnScroll(ev)
             }
           }}
-          onScrollBeginDrag={onScrollBeginDrag}
           scrollEventThrottle={50}
           onLayout={this.onLayout}
           scrollsToTop={false}

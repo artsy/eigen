@@ -9,7 +9,14 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Button, Flex, Text } from "palette"
 import React, { useState } from "react"
-import { FlatList, Image, LayoutAnimation, LayoutChangeEvent } from "react-native"
+import {
+  FlatList,
+  Image,
+  LayoutAnimation,
+  LayoutChangeEvent,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -33,6 +40,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
 
   const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
   const [marginTop, setMarginTop] = useState(0)
+  const [initialScrollPosition, setInitialScrollPosition] = useState(-1)
 
   const [keywordFilter, setKeywordFilter] = useState("")
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
@@ -69,18 +77,27 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     setMarginTop(-event.nativeEvent.layout.height)
   }
 
-  const handleScrollBeginDrag = () => {
+  const handleScrollBeginDrag = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (marginTop === 0) {
       return
     }
 
-    LayoutAnimation.configureNext({
-      ...LayoutAnimation.Presets.easeInEaseOut,
-      duration: 50,
-    })
+    if (initialScrollPosition === -1) {
+      setInitialScrollPosition(nativeEvent.contentOffset.y)
+      return
+    }
 
-    setMarginTop(0)
+    if (nativeEvent.contentOffset.y < initialScrollPosition) {
+      LayoutAnimation.configureNext({
+        ...LayoutAnimation.Presets.easeInEaseOut,
+        duration: 50,
+      })
+
+      setMarginTop(0)
+    }
   }
+
+  console.log({ initialScrollPosition, marginTop })
 
   return (
     <Flex minHeight={minHeight} marginTop={marginTop}>
@@ -103,11 +120,11 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
             localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, keywordFilter)
           }
-          onScrollBeginDrag={handleScrollBeginDrag}
+          onScroll={handleScrollBeginDrag}
         />
       ) : (
         <MyCollectionArtworkList
-          onScrollBeginDrag={handleScrollBeginDrag}
+          onScroll={handleScrollBeginDrag}
           myCollectionConnection={me.myCollectionConnection}
           hasMore={relay.hasMore}
           loadMore={relay.loadMore}
