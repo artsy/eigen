@@ -129,6 +129,7 @@
     "autosuggest-highlight": "3.1.1",
     "easy-peasy": "3.3.0",
     "events": "3.3.0",
+    "extract-files": "9.0.0",
     "formik": "2.2.9",
     "google-libphonenumber": "3.2.27",
     "grapheme-splitter": "1.0.4",
