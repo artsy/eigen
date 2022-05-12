@@ -28,6 +28,7 @@ import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
 import { ArtworkQueryRenderer, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium"
+import { AuctionBuyersPremiumQueryRenderer } from "./Scenes/AuctionBuyersPremium/AuctionBuyersPremium"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import {
   AuctionResultsForArtistsYouFollowQueryRenderer,
@@ -346,6 +347,11 @@ export const modules = defineModules({
     fullBleed: true,
   }),
   AuctionBidArtwork: reactModule(BidFlow, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+    fullBleed: true,
+  }),
+  AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
     fullBleed: true,
