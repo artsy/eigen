@@ -1,7 +1,7 @@
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
-import { useSelectedTab } from "app/store/GlobalStore"
+import { useFeatureFlag, useSelectedTab } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { Sans } from "palette"
 import React from "react"
@@ -21,10 +21,13 @@ export const ArtworkExtraLinks: React.FC<ArtworkExtraLinksProps> = ({ artwork, a
   const consignableArtistsCount = artists.filter((artist) => artist.isConsignable).length
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const artistName = artists && artists.length === 1 ? artists[0].name : null
+  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
 
   return (
     <>
-      <FaqAndSpecialistSection artwork={artwork} auctionState={auctionState} />
+      {!enableCreateArtworkAlert && (
+        <FaqAndSpecialistSection artwork={artwork} auctionState={auctionState} />
+      )}
       {!!consignableArtistsCount && (
         <ConsignmentsLink
           artistName={consignableArtistsCount > 1 ? "these artists" : artistName ?? "this artist"}
