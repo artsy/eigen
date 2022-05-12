@@ -3,7 +3,7 @@ import { AuctionResultsForArtistsYouCollectListQuery } from "__generated__/Aucti
 import { AuctionResulstList, LoadingSkeleton } from "app/Components/AuctionResulstList"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { ProvidePlaceholderContext, ProvidePlaceholderContextStatic } from "app/utils/placeholders"
+import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { groupBy } from "lodash"
 import moment from "moment"
 import { Flex, Text } from "palette"
