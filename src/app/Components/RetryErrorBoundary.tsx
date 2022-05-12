@@ -84,10 +84,7 @@ export class RetryErrorBoundary extends Component<
         return failureView({ error, retry: this._retry })
       }
 
-      // @ts-expect-error
-      const httpStatusCodes = error?.res?.json?.errors?.[0]?.extensions?.httpStatusCodes || []
-
-      const isNotFoundError = httpStatusCodes.includes(404)
+      const isNotFoundError = getErrorHttpStatusCodes(error).includes(404)
 
       if (isNotFoundError && enableNotFoundFailureView) {
         return (
@@ -105,4 +102,8 @@ export class RetryErrorBoundary extends Component<
 
     return children
   }
+}
+
+export const getErrorHttpStatusCodes = (error: any) => {
+  return error?.res?.json?.errors?.[0]?.extensions?.httpStatusCodes || []
 }
