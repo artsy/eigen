@@ -11958,6 +11958,12 @@ type Query {
   # A requested location
   requestLocation(ip: String!): RequestLocation
 
+  # Search for matching artworks by image
+  reverseImageSearch(
+    # Image file
+    image: Upload!
+  ): ReverseImageSearchResults
+
   # A Sale
   sale(
     # The slug or ID of the Sale
@@ -12307,6 +12313,40 @@ type ResizedImageUrl {
   srcSet: String!
   url: String!
   width: Int
+}
+
+type ReverseImageSearchResult {
+  # The matching collection image’s file path
+  filepath: String!
+
+  # How much of the query image’s fingerprint overlaps the collection image’s fingerprint, as a percentage
+  matchPercent: Float!
+
+  # Location of the matching area in the first image
+  queryMatchRect: ReverseImageSearchResultMatchRect!
+
+  # How much of the query image overlaps the collection image, as a percentage
+  queryOverlapPercent: Float!
+
+  # How closely the query image matches the collection image
+  score: Float!
+
+  # Location of the matching area in the second image
+  targetMatchRect: ReverseImageSearchResultMatchRect!
+
+  # How much of the collection image overlaps the query image, as a percentage
+  targetOverlapPercent: Float!
+}
+
+type ReverseImageSearchResultMatchRect {
+  bottom: Float!
+  left: Float!
+  right: Float!
+  top: Float!
+}
+
+type ReverseImageSearchResults {
+  results: [ReverseImageSearchResult]
 }
 
 enum Role {
@@ -15083,6 +15123,12 @@ type Viewer {
 
   # A requested location
   requestLocation(ip: String!): RequestLocation
+
+  # Search for matching artworks by image
+  reverseImageSearch(
+    # Image file
+    image: Upload!
+  ): ReverseImageSearchResults
 
   # A Sale
   sale(
