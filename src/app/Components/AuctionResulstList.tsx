@@ -2,16 +2,10 @@ import { AuctionResultListItem_auctionResult } from "__generated__/AuctionResult
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Separator, Spacer, Text } from "palette"
-import React, { useState } from "react"
-import {
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  RefreshControl,
-  SectionList,
-  SectionListData,
-} from "react-native"
-import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
+import React from "react"
+import { RefreshControl, SectionList, SectionListData } from "react-native"
 import { AuctionResultListItemFragmentContainer } from "./Lists/AuctionResultListItem"
+import { PageWithSimpleHeader } from "./PageWithSimpleHeader"
 import Spinner from "./Spinner"
 
 interface SectionT {
@@ -20,7 +14,6 @@ interface SectionT {
 type ItemT = any // TODO: ><'
 
 interface AuctionResultListProps {
-  header: string
   sections: ReadonlyArray<SectionListData<ItemT, SectionT>>
   refreshing: boolean
   handleRefresh: () => void
@@ -32,7 +25,6 @@ interface AuctionResultListProps {
 
 export const AuctionResulstList: React.FC<AuctionResultListProps> = (props) => {
   const {
-    header,
     sections,
     refreshing,
     handleRefresh,
@@ -41,18 +33,11 @@ export const AuctionResulstList: React.FC<AuctionResultListProps> = (props) => {
     onItemPress,
     isLoadingNext,
   } = props
-  const [showHeader, setShowHeader] = useState<boolean>(false)
-
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    setShowHeader(event.nativeEvent.contentOffset.y > 40)
-  }
 
   return (
     <Flex flexDirection="column" justifyContent="space-between" height="100%">
-      <FancyModalHeader hideBottomDivider>{!!showHeader && header}</FancyModalHeader>
       <SectionList
         testID="Results_Section_List"
-        onScroll={(event) => handleScroll(event)}
         sections={sections}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
         onEndReached={onEndReached}
@@ -60,8 +45,11 @@ export const AuctionResulstList: React.FC<AuctionResultListProps> = (props) => {
         stickySectionHeadersEnabled
         ListHeaderComponent={ListHeaderComponent}
         renderSectionHeader={({ section: { sectionTitle } }) => (
-          <Flex mx="2">
-            <Text variant="md">{sectionTitle}</Text>
+          <Flex bg="white" mx="2">
+            <Text my="2" variant="md">
+              {sectionTitle}
+            </Text>
+            <Separator borderColor="black10" />
           </Flex>
         )}
         renderItem={({ item }) =>
@@ -125,14 +113,15 @@ export const LoadingSkeleton: React.FC<{ listHeader: React.ReactElement }> = ({ 
     )
   }
   return (
-    <>
-      <FancyModalHeader hideBottomDivider />
+    <PageWithSimpleHeader title="Auction Results for Artists You Follow">
       {listHeader}
       <Flex mx={2}>
         <Spacer height={20} />
+        <PlaceholderText height={24} width={100 + Math.random() * 50} />
+        <Spacer height={10} />
         <Separator borderColor="black10" />
         {placeholderResults}
       </Flex>
-    </>
+    </PageWithSimpleHeader>
   )
 }

@@ -1,12 +1,16 @@
 import { ActionType, ContextModule, OwnerType, tappedLink } from "@artsy/cohesion"
 import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
 import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AuctionResulstList, LoadingSkeleton } from "app/Components/AuctionResulstList"
 import { PAGE_SIZE } from "app/Components/constants"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { groupBy } from "lodash"
 import moment from "moment"
 import { Flex, LinkText, Text } from "palette"
@@ -64,31 +68,36 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
     setRefreshing(false)
   }
   return (
-    <AuctionResulstList
-      header="Auction Results"
-      sections={groupedAuctionResultSections}
-      refreshing={refreshing}
-      handleRefresh={handleRefresh}
-      onEndReached={loadMoreArtworks}
-      ListHeaderComponent={<ListHeader />}
-      onItemPress={(item: any) => {
-        trackEvent(tracks.tapAuctionGroup(item.internalID))
-        navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-      }}
-      isLoadingNext={loadingMoreData}
-    />
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
+      })}
+    >
+      <PageWithSimpleHeader title="Auction Results for Artists You Follow">
+        <ArtworkFiltersStoreProvider>
+          <AuctionResulstList
+            sections={groupedAuctionResultSections}
+            refreshing={refreshing}
+            handleRefresh={handleRefresh}
+            onEndReached={loadMoreArtworks}
+            ListHeaderComponent={<ListHeader />}
+            onItemPress={(item: any) => {
+              trackEvent(tracks.tapAuctionGroup(item.internalID))
+              navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+            }}
+            isLoadingNext={loadingMoreData}
+          />
+        </ArtworkFiltersStoreProvider>
+      </PageWithSimpleHeader>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
-const ListHeader: React.FC<{}> = ({}) => {
+export const ListHeader: React.FC = () => {
   const { trackEvent } = useTracking()
-
   return (
     <Flex>
-      <Text variant="lg" mx={20} mt={2}>
-        Auction Results for Artists You Follow
-      </Text>
-      <Text variant="xs" mx={20} mt={1} mb={2}>
+      <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
         The latest auction results for the {""}
         <LinkText
           onPress={() => {

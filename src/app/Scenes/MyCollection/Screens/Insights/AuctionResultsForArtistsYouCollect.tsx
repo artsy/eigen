@@ -1,6 +1,7 @@
 import { AuctionResultsForArtistsYouCollect_me$key } from "__generated__/AuctionResultsForArtistsYouCollect_me.graphql"
 import { AuctionResultsForArtistsYouCollectQuery } from "__generated__/AuctionResultsForArtistsYouCollectQuery.graphql"
 import { AuctionResulstList, LoadingSkeleton } from "app/Components/AuctionResulstList"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -56,18 +57,19 @@ export const ListOfresults: React.FC<{}> = () => {
   }
 
   return (
-    <AuctionResulstList
-      header="Auction Results"
-      sections={groupedAuctionResultSections}
-      refreshing={refreshing}
-      handleRefresh={handleRefresh}
-      onEndReached={handleLoadMore}
-      ListHeaderComponent={<ListHeader />}
-      onItemPress={(item: any) => {
-        navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-      }}
-      isLoadingNext={isLoadingNext}
-    />
+    <PageWithSimpleHeader title="Auction Results for Artists You Collect">
+      <AuctionResulstList
+        sections={groupedAuctionResultSections}
+        refreshing={refreshing}
+        handleRefresh={handleRefresh}
+        onEndReached={handleLoadMore}
+        ListHeaderComponent={<ListHeader />}
+        onItemPress={(item: any) => {
+          navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+        }}
+        isLoadingNext={isLoadingNext}
+      />
+    </PageWithSimpleHeader>
   )
 }
 
@@ -81,18 +83,16 @@ export const AuctionResultsForArtistsYouCollect: React.FC = () => {
   )
 }
 
-const ListHeader: React.FC<{}> = () => {
+export const ListHeader: React.FC = () => {
   return (
     <Flex>
-      <Text variant="lg" mx={20} mt={2}>
-        Auction Results
-      </Text>
-      <Text variant="xs" mx={20} mt={1} mb={2}>
+      <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
         The latest auction results for the artists you collect
       </Text>
     </Flex>
   )
 }
+
 const auctionResultsForArtistsYouCollectFragment = graphql`
   fragment AuctionResultsForArtistsYouCollect_me on Me
   @refetchable(queryName: "AuctionResultsForArtistsYouCollect_meRefetch")
