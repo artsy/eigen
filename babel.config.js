@@ -14,7 +14,7 @@ module.exports = (api) => {
       ],
     ],
     plugins: [
-      ["module-resolver", { root: ["./"], alias: moduleResolverAlias }],
+      ["module-resolver", { alias: moduleResolverAlias }],
       /**
        * Currently Flow generates non-spec compliant code and so we need to make sure to strip any Flow type annotations
        * /before/ running any of the other spec transforms that we've added.
