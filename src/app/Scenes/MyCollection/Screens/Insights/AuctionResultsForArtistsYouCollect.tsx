@@ -1,6 +1,6 @@
 import { AuctionResultsForArtistsYouCollect_me$key } from "__generated__/AuctionResultsForArtistsYouCollect_me.graphql"
 import { AuctionResultsForArtistsYouCollectQuery } from "__generated__/AuctionResultsForArtistsYouCollectQuery.graphql"
-import { AuctionResulstList, LoadingSkeleton } from "app/Components/AuctionResulstList"
+import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -57,7 +57,7 @@ export const ListOfresults: React.FC<{}> = () => {
 
   return (
     <PageWithSimpleHeader title="Auction Results for Artists You Collect">
-      <AuctionResulstList
+      <AuctionResultsList
         sections={groupedAuctionResultSections}
         refreshing={refreshing}
         handleRefresh={handleRefresh}

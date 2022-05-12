@@ -13,7 +13,7 @@ interface SectionT {
 }
 type ItemT = any // TODO: ><'
 
-interface AuctionResultListProps {
+interface AuctionResultsListProps {
   sections: ReadonlyArray<SectionListData<ItemT, SectionT>>
   refreshing: boolean
   handleRefresh: () => void
@@ -23,7 +23,7 @@ interface AuctionResultListProps {
   isLoadingNext: boolean
 }
 
-export const AuctionResulstList: React.FC<AuctionResultListProps> = (props) => {
+export const AuctionResultsList: React.FC<AuctionResultsListProps> = (props) => {
   const {
     sections,
     refreshing,

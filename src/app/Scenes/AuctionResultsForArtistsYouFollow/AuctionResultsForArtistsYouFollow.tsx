@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType, tappedLink } from "@artsy/cohesio
 import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
 import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { AuctionResulstList, LoadingSkeleton } from "app/Components/AuctionResulstList"
+import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
 import { PAGE_SIZE } from "app/Components/constants"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/navigation/navigate"
@@ -75,7 +75,7 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
     >
       <PageWithSimpleHeader title="Auction Results for Artists You Follow">
         <ArtworkFiltersStoreProvider>
-          <AuctionResulstList
+          <AuctionResultsList
             sections={groupedAuctionResultSections}
             refreshing={refreshing}
             handleRefresh={handleRefresh}
