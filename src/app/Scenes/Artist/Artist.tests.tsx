@@ -2,6 +2,7 @@ import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAb
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
 import { ArtistInsights } from "app/Components/Artist/ArtistInsights/ArtistInsights"
+import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -52,7 +53,9 @@ describe("availableTabs", () => {
   }
 
   const TestWrapper = (props: Record<string, any>) => (
-    <ArtistQueryRenderer artistID="ignored" environment={environment} {...props} />
+    <ModalStack>
+      <ArtistQueryRenderer artistID="ignored" environment={environment} {...props} />
+    </ModalStack>
   )
 
   it("returns an empty state if artist has no metadata, shows, insights, or works", async () => {
