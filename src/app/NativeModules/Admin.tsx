@@ -1,6 +1,5 @@
 import { dismissModal } from "app/navigation/navigate"
 import { Button } from "palette"
-import React from "react"
 import { requireNativeComponent, View } from "react-native"
 
 const ARTOldAdminView = requireNativeComponent("ARTOldAdminView")

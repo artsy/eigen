@@ -19,7 +19,7 @@
 
 - (instancetype)initWithEmission:(AREmission *)emission
                       moduleName:(NSString *)moduleName
-               initialProperties:(NSDictionary *)initialProperties;
+               initialProperties:(NSDictionary *)initialProperties
 {
   if ((self = [super initWithNibName:nil bundle:nil])) {
     _emission = emission ?: [AREmission sharedInstance];
@@ -38,14 +38,14 @@
 - (instancetype)initWithEmission:(AREmission *)emission
                       moduleName:(NSString *)moduleName
                initialProperties:(NSDictionary *)initialProperties
-                 hidesBackButton:(BOOL)hidesBackButton;
+                 hidesBackButton:(BOOL)hidesBackButton
 {
     self = [self initWithEmission:emission moduleName:moduleName initialProperties:initialProperties];
     self.hidesBackButton = hidesBackButton;
     return self;
 }
 
-- (void)viewDidLoad;
+- (void)viewDidLoad
 {
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;

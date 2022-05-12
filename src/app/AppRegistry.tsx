@@ -281,19 +281,13 @@ export interface ViewOptions {
   onlyShowInTabName?: BottomTabType
 }
 
-type ModuleDescriptor =
-  | {
-      type: "react"
-      Component: React.ComponentType<any>
-      Queries?: GraphQLTaggedNode[]
-      options: ViewOptions
-    }
-  | {
-      type: "native"
-      Component: React.ComponentType<any>
-      Query?: GraphQLTaggedNode
-      options: ViewOptions
-    }
+// tslint:disable-next-line: interface-over-type-literal
+type ModuleDescriptor = {
+  type: "react"
+  Component: React.ComponentType<any>
+  Queries?: GraphQLTaggedNode[]
+  options: ViewOptions
+}
 
 function reactModule(
   Component: React.ComponentType<any>,

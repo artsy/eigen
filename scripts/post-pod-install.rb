@@ -22,7 +22,7 @@ def fix_fonts_in_uifonts_pod
 
   system("./scripts/download-fonts")
 
-  font_file = "Pods/Artsy+UIFonts/Pod/Classes/UIFont+ArtsyFonts.m"
+  font_file = "ios/Pods/Artsy+UIFonts/Pod/Classes/UIFont+ArtsyFonts.m"
   system("chmod +w #{font_file}")
   contents = File.read(font_file)
   changed = contents.gsub(/static BOOL useClosedFonts = false;/, "static BOOL useClosedFonts = true;")
