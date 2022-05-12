@@ -9,8 +9,6 @@ describe("MyCollectionSearchBar", () => {
   const defaultProps: MyCollectionSearchBarProps = {
     onChangeText: jest.fn(),
     searchString: "",
-    setHasUsedSearchBar: jest.fn(),
-    setSearchBarStillFocused: jest.fn(),
   }
   const wrapper = (props: MyCollectionSearchBarProps) =>
     renderWithWrappersTL(
@@ -30,7 +28,7 @@ describe("MyCollectionSearchBar", () => {
 
   describe("renders properly", () => {
     it("When isFocused is true", () => {
-      const { queryByTestId } = wrapper({ ...defaultProps, startAsFocused: true })
+      const { queryByTestId } = wrapper({ ...defaultProps })
       expect(queryByTestId("MyCollectionSearchBarInput")).toBeDefined()
       expect(queryByTestId("MyCollectionSearchBarInputCancelButton")).toBeDefined()
 
@@ -40,7 +38,7 @@ describe("MyCollectionSearchBar", () => {
     })
 
     it("When isFocused is false", () => {
-      const { queryByTestId } = wrapper({ ...defaultProps, startAsFocused: false })
+      const { queryByTestId } = wrapper({ ...defaultProps })
       expect(queryByTestId("MyCollectionSearchBarNoInputTouchable")).toBeDefined()
       expect(queryByTestId("MyCollectionSearchListIconTouchable")).toBeDefined()
       expect(queryByTestId("MyCollectionSearchGridIconTouchable")).toBeDefined()
@@ -50,7 +48,7 @@ describe("MyCollectionSearchBar", () => {
   })
 
   it("can switch from Grid to List and vice-versa", () => {
-    const { queryByTestId } = wrapper({ ...defaultProps, startAsFocused: false })
+    const { queryByTestId } = wrapper({ ...defaultProps })
     expect(__globalStoreTestUtils__?.getCurrentState().userPrefs.artworkViewOption).toEqual("grid")
     const listIcon = queryByTestId("MyCollectionSearchListIconTouchable")
     const gridIcon = queryByTestId("MyCollectionSearchGridIconTouchable")

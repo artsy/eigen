@@ -9,7 +9,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Button, Flex, Text } from "palette"
 import React, { useState } from "react"
-import { FlatList, Image } from "react-native"
+import { FlatList, Image, LayoutAnimation, LayoutChangeEvent } from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -32,9 +32,9 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   const { height: screenHeight } = useScreenDimensions()
 
   const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
+  const [marginTop, setMarginTop] = useState(0)
+
   const [keywordFilter, setKeywordFilter] = useState("")
-  const [hasUsedSearchBar, setHasUsedSearchBar] = useState(false)
-  const [searchBarStillFocused, setSearchBarStillFocused] = useState(false)
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
@@ -61,56 +61,53 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     )
   }
 
+  const onHeaderLayout = (event: LayoutChangeEvent) => {
+    if (marginTop !== 0) {
+      return
+    }
+
+    setMarginTop(-event.nativeEvent.layout.height)
+  }
+
+  const handleScrollBeginDrag = () => {
+    if (marginTop === 0) {
+      return
+    }
+
+    LayoutAnimation.configureNext({
+      ...LayoutAnimation.Presets.easeInEaseOut,
+      duration: 50,
+    })
+
+    setMarginTop(0)
+  }
+
   return (
-    <Flex minHeight={minHeight}>
+    <Flex minHeight={minHeight} marginTop={marginTop}>
+      <Flex onLayout={onHeaderLayout} mb={1}>
+        <MyCollectionSearchBar
+          searchString={keywordFilter}
+          onChangeText={setKeywordFilter}
+          innerFlatListRef={innerFlatlistRef}
+          onIsFocused={(isFocused) => {
+            setMinHeight(isFocused ? screenHeight : undefined)
+          }}
+        />
+      </Flex>
       {viewOption === "grid" ? (
-        // Setting a min height to avoid a screen jump when switching to the grid view.
-        <Flex>
-          <InfiniteScrollMyCollectionArtworksGridContainer
-            hideHeaderInitially={!hasUsedSearchBar}
-            HeaderComponent={
-              <MyCollectionSearchBar
-                innerFlatListRef={innerFlatlistRef}
-                onChangeText={setKeywordFilter}
-                searchString={keywordFilter}
-                setHasUsedSearchBar={setHasUsedSearchBar}
-                startAsFocused={searchBarStillFocused}
-                setSearchBarStillFocused={setSearchBarStillFocused}
-                onIsFocused={(isFocused) => {
-                  setMinHeight(isFocused ? screenHeight : undefined)
-                }}
-              />
-            }
-            myCollectionConnection={me.myCollectionConnection!}
-            hasMore={relay.hasMore}
-            loadMore={relay.loadMore}
-            // tslint:disable-next-line: no-shadowed-variable
-            localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
-              localSortAndFilterArtworks(
-                artworks,
-                appliedFiltersState,
-                filterOptions,
-                keywordFilter
-              )
-            }
-          />
-        </Flex>
+        <InfiniteScrollMyCollectionArtworksGridContainer
+          myCollectionConnection={me.myCollectionConnection!}
+          hasMore={relay.hasMore}
+          loadMore={relay.loadMore}
+          // tslint:disable-next-line: no-shadowed-variable
+          localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
+            localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, keywordFilter)
+          }
+          onScrollBeginDrag={handleScrollBeginDrag}
+        />
       ) : (
         <MyCollectionArtworkList
-          hideHeaderInitially={!hasUsedSearchBar}
-          HeaderComponent={
-            <MyCollectionSearchBar
-              searchString={keywordFilter}
-              onChangeText={setKeywordFilter}
-              innerFlatListRef={innerFlatlistRef}
-              setHasUsedSearchBar={setHasUsedSearchBar}
-              startAsFocused={searchBarStillFocused}
-              setSearchBarStillFocused={setSearchBarStillFocused}
-              onIsFocused={(isFocused) => {
-                setMinHeight(isFocused ? screenHeight : undefined)
-              }}
-            />
-          }
+          onScrollBeginDrag={handleScrollBeginDrag}
           myCollectionConnection={me.myCollectionConnection}
           hasMore={relay.hasMore}
           loadMore={relay.loadMore}

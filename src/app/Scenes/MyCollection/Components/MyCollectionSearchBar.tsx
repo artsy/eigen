@@ -23,9 +23,6 @@ export interface MyCollectionSearchBarProps {
   onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
   innerFlatListRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
   searchString: string
-  setHasUsedSearchBar: (hasUsedSearchBar: boolean) => void
-  setSearchBarStillFocused: (stillFocused: boolean) => void
-  startAsFocused?: boolean
   onIsFocused?: (isFocused: boolean) => void
 }
 
@@ -34,12 +31,9 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   onFocus,
   innerFlatListRef,
   searchString = "",
-  setHasUsedSearchBar,
-  setSearchBarStillFocused,
-  startAsFocused = false,
   onIsFocused,
 }) => {
-  const [isFocused, setIsFocused] = useState(startAsFocused)
+  const [isFocused, setIsFocused] = useState(false)
 
   const hasRunFocusedAnimation = useAnimatedValue(1)
 
@@ -64,7 +58,6 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
     })
 
     setViewOption(selectedViewOption)
-    setHasUsedSearchBar(true)
 
     GlobalStore.actions.userPrefs.setArtworkViewOption(selectedViewOption)
   }
@@ -87,23 +80,8 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   )
 
   useEffect(() => {
-    if (startAsFocused) {
-      inputRef.current?.focus()
-    }
-  }, [])
-
-  useEffect(() => {
     debouncedSetKeywordFilter(value)
   }, [value])
-
-  useEffect(() => {
-    if (isFocused) {
-      setHasUsedSearchBar(true)
-      setSearchBarStillFocused(true)
-    } else {
-      setSearchBarStillFocused(false)
-    }
-  }, [isFocused])
 
   if (!enabledSearchBar) {
     return null
@@ -137,7 +115,6 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
               hasRunFocusedAnimation.setValue(new Animated.Value(0))
               onIsFocused?.(false)
               setIsFocused(false)
-              setSearchBarStillFocused(false)
             }}
           >
             <Text ml={1} color="black60" variant="xs">
