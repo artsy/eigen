@@ -12108,11 +12108,6 @@ relay-test-utils@12.0.0:
     invariant "^2.2.4"
     relay-runtime "12.0.0"
 
-remeda@0.0.32:
-  version "0.0.32"
-  resolved "https://registry.yarnpkg.com/remeda/-/remeda-0.0.32.tgz#668e5d3b8a5c9edb1a19f33d5df805dd1e7d299c"
-  integrity sha512-FEdl8ONpqY7AvvMHG5WYdomc0mGf2khHPUDu6QvNkOq4Wjkw5BvzWM4QyksAQ/US1sFIIRG8TVBn6iJx6HbRrA==
-
 remove-markdown@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/remove-markdown/-/remove-markdown-0.1.0.tgz#cf8b66e9e6fcb4acc9721048adeee7a357698ba9"
