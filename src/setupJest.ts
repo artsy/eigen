@@ -467,6 +467,7 @@ jest.mock("app/utils/track/providers", () => ({
 
 jest.mock("app/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+  createEnvironment: require("relay-test-utils").createMockEnvironment,
   reset(this: { defaultEnvironment: any }) {
     this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
   },
