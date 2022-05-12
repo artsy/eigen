@@ -200,7 +200,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
   },
-
+  AREnableCreateArtworkAlert: {
+    readyForRelease: false,
+    description: "Enable Create Alert on Artwork pages",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
