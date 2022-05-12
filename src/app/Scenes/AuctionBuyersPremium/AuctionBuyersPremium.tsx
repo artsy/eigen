@@ -3,8 +3,10 @@ import { AuctionBuyersPremiumQuery } from "__generated__/AuctionBuyersPremiumQue
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { PlaceholderRaggedText, PlaceholderText } from "app/utils/placeholders"
+import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact } from "lodash"
-import { Flex, Spinner, Text, useSpace } from "palette"
+import { Flex, Text, useSpace } from "palette"
 import { FC } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -104,8 +106,13 @@ const AuctionBuyersPremiumLoadingPlaceholder = () => {
   return (
     <Flex flex={1}>
       <FancyModalHeader onLeftButtonPress={() => goBack()} />
-      <Flex flex={1} justifyContent="center" alignItems="center">
-        <Spinner color="blue100" />
+      <Flex flex={1} m={2}>
+        <PlaceholderText height={25} width={200} marginBottom={20} />
+        <PlaceholderRaggedText textHeight={15} numLines={12} />
+
+        <PlaceholderText height={25} width={200} marginTop={15} />
+        <PlaceholderText height={25} width={120} marginBottom={15} />
+        <PlaceholderRaggedText textHeight={15} numLines={5} />
       </Flex>
     </Flex>
   )
@@ -125,17 +132,10 @@ export const AuctionBuyersPremiumQueryRenderer: FC<AuctionBuyersPremiumQueryRend
           }
         }
       `}
-      render={({ props, error }) => {
-        if (error) {
-          return null
-        }
-
-        if (props?.sale) {
-          return <AuctionBuyersPremiumFragmentContainer sale={props.sale} />
-        }
-
-        return <AuctionBuyersPremiumLoadingPlaceholder />
-      }}
+      render={renderWithPlaceholder({
+        Container: AuctionBuyersPremiumFragmentContainer,
+        renderPlaceholder: AuctionBuyersPremiumLoadingPlaceholder,
+      })}
     />
   )
 }
