@@ -72,7 +72,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
         <Flex mb={2}>
           <Message
             variant="default"
-            title="Why complete your Colletor Profile?"
+            title="Why complete your Collector Profile?"
             text="A complete profile helps you build a relationship with sellers. Select “Edit Profile” to see which details are shared when you contact sellers."
             showCloseButton
             onClose={() => setShowCompleteCollectorProfileMessage(false)}

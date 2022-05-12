@@ -235,6 +235,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     addRoute("/city-bmw-list/:citySlug", "CityBMWList"),
     addRoute("/make-offer/:artworkID", "MakeOfferModal"),
+    addRoute("/purchase/:artworkID", "PurchaseModal"),
     addRoute("/user/purchases/:orderID", "OrderDetails"),
     addRoute("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
     addRoute("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),

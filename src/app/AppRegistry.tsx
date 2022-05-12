@@ -52,6 +52,7 @@ import { FeatureQueryRenderer } from "./Scenes/Feature/Feature"
 import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
+import { PurchaseModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/PurchaseModal"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { ConversationDetailsQueryRenderer } from "./Scenes/Inbox/Screens/ConversationDetails"
 import {
@@ -376,6 +377,9 @@ export const modules = defineModules({
     hidesBackButton: true,
   }),
   MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
+    hasOwnModalCloseButton: true,
+  }),
+  PurchaseModal: reactModule(PurchaseModalQueryRenderer, {
     hasOwnModalCloseButton: true,
   }),
   Map: reactModule(MapContainer, { fullBleed: true, ignoreTabs: true }),

@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react-native"
 import { Text } from "palette"
 import React from "react"
-import { withScreenDimensions, withTheme } from "storybook/decorators"
+import { withScreenDimensions } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { Select } from "./Select"
 
@@ -19,7 +19,6 @@ const options = [
 ]
 
 storiesOf("Select", module)
-  .addDecorator(withTheme)
   .addDecorator(withScreenDimensions)
   .add("Variants", () => (
     <List>

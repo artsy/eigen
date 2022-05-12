@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */; };
+		50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */; };
 		91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */; };
-		A313AD2B2F6DEDD3EBAC285C /* libPods-Artsy_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD039FAEDE94A51FC91ED26B /* libPods-Artsy_Tests.a */; };
 		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
-		CB43266A27E8F39B00B29DD6 /* Artsy Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CB43266A27E8F39B00B29DD6 /* ArtsyStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB43267627E8F6F900B29DD6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43267527E8F6F900B29DD6 /* NotificationService.swift */; };
 		CB43267A27E8F6F900B29DD6 /* BrazePushServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43267327E8F6F900B29DD6 /* BrazePushServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB43268427E8FA6900B29DD6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43268327E8FA6900B29DD6 /* WidgetKit.framework */; };
@@ -521,7 +521,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				CB43266A27E8F39B00B29DD6 /* Artsy Stickers.appex in Embed App Extensions */,
+				CB43266A27E8F39B00B29DD6 /* ArtsyStickers.appex in Embed App Extensions */,
 				CB43269227E8FA6B00B29DD6 /* ArtsyWidgetExtension.appex in Embed App Extensions */,
 				CB43267A27E8F6F900B29DD6 /* BrazePushServiceExtension.appex in Embed App Extensions */,
 			);
@@ -539,11 +539,13 @@
 		1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewController.m; sourceTree = "<group>"; };
 		236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.release.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.release.xcconfig"; sourceTree = "<group>"; };
 		41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		46687F9E977C7CE0F1B12B05 /* Pods-ArtsyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.release.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.release.xcconfig"; sourceTree = "<group>"; };
+		4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		775AB16F96387B70AABE4731 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
-		BD039FAEDE94A51FC91ED26B /* libPods-Artsy_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BE5EFBF10AC43C4ECF725994 /* Pods-Artsy_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Artsy_Tests/Pods-Artsy_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BE681C4A642B6359D3C2A4AF /* Pods-Artsy-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-Artsy-ArtsyTests/Pods-Artsy-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
-		CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Artsy Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB43266527E8F39B00B29DD6 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
 		CB43266727E8F39B00B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB43267327E8F6F900B29DD6 /* BrazePushServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BrazePushServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -596,7 +598,7 @@
 		CB4326C227E8FAD900B29DD6 /* Artwork.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
 		CB4326C327E8FAD900B29DD6 /* Article.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		CB4326C427E8FAD900B29DD6 /* ArticleParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleParser.swift; sourceTree = "<group>"; };
-		CB43271C27E8FE5400B29DD6 /* Artsy_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Artsy_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB43271C27E8FE5400B29DD6 /* ArtsyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ArtsyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB43272727E8FEE300B29DD6 /* ARInternalMobileWebViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalMobileWebViewControllerTests.m; sourceTree = "<group>"; };
 		CB43272827E8FEE300B29DD6 /* ARInternalShareValidatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalShareValidatorTests.m; sourceTree = "<group>"; };
 		CB43272927E8FEE300B29DD6 /* ARExternalWebBrowserViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExternalWebBrowserViewControllerTests.m; sourceTree = "<group>"; };
@@ -674,7 +676,6 @@
 		CB43278727E8FEE400B29DD6 /* Artsy-Tests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Artsy-Tests-Bridging-Header.h"; sourceTree = "<group>"; };
 		CB43278827E8FEE400B29DD6 /* ARTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTestHelper.h; sourceTree = "<group>"; };
 		CB43278927E8FEE400B29DD6 /* ARTestContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTestContext.h; sourceTree = "<group>"; };
-		CB43278A27E8FEE400B29DD6 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CB43278B27E8FEE400B29DD6 /* ARTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTestHelper.m; sourceTree = "<group>"; };
 		CB43278C27E8FEE400B29DD6 /* stub.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = stub.jpg; sourceTree = "<group>"; };
 		CB43278D27E8FEE400B29DD6 /* stubbed_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stubbed_image.png; sourceTree = "<group>"; };
@@ -868,6 +869,7 @@
 		CB43299727FDFE6400B29DD6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CB43299927FDFE6B00B29DD6 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		CB61B85327B585F00007922D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CBE3210827D9615000395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
 		CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideViewManager.m; sourceTree = "<group>"; };
 		CBE3210A27D9615000395A93 /* ARTOldAdminViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTOldAdminViewManager.h; sourceTree = "<group>"; };
@@ -1388,7 +1390,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A313AD2B2F6DEDD3EBAC285C /* libPods-Artsy_Tests.a in Frameworks */,
+				50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1414,7 +1416,7 @@
 				EF8AF6797C9A1A0E84BB9DDC /* libPods-Artsy-ArtsyTests.a */,
 				CB43268327E8FA6900B29DD6 /* WidgetKit.framework */,
 				CB43268527E8FA6900B29DD6 /* SwiftUI.framework */,
-				BD039FAEDE94A51FC91ED26B /* libPods-Artsy_Tests.a */,
+				4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1432,6 +1434,8 @@
 				FA81742737039A65CB15C5D7 /* Pods-Artsy-ArtsyTests.release.xcconfig */,
 				BE5EFBF10AC43C4ECF725994 /* Pods-Artsy_Tests.debug.xcconfig */,
 				F4DF92ED8DF8B40E1D2D5A4B /* Pods-Artsy_Tests.release.xcconfig */,
+				8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */,
+				46687F9E977C7CE0F1B12B05 /* Pods-ArtsyTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1447,10 +1451,10 @@
 			isa = PBXGroup;
 			children = (
 				CBE3210527D9615000395A93 /* Artsy */,
-				CB43271D27E8FE5400B29DD6 /* Artsy_Tests */,
+				CB43271D27E8FE5400B29DD6 /* ArtsyTests */,
 				676C72DD1D291306F09E9C48 /* Pods */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				CB43266427E8F39900B29DD6 /* Artsy Stickers */,
+				CB43266427E8F39900B29DD6 /* ArtsyStickers */,
 				CB43267427E8F6F900B29DD6 /* BrazePushServiceExtension */,
 				CB43268727E8FA6900B29DD6 /* ArtsyWidget */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -1465,21 +1469,21 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* Artsy.app */,
-				CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */,
+				CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */,
 				CB43267327E8F6F900B29DD6 /* BrazePushServiceExtension.appex */,
 				CB43268227E8FA6900B29DD6 /* ArtsyWidgetExtension.appex */,
-				CB43271C27E8FE5400B29DD6 /* Artsy_Tests.xctest */,
+				CB43271C27E8FE5400B29DD6 /* ArtsyTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CB43266427E8F39900B29DD6 /* Artsy Stickers */ = {
+		CB43266427E8F39900B29DD6 /* ArtsyStickers */ = {
 			isa = PBXGroup;
 			children = (
 				CB43266527E8F39B00B29DD6 /* Stickers.xcassets */,
 				CB43266727E8F39B00B29DD6 /* Info.plist */,
 			);
-			path = "Artsy Stickers";
+			path = ArtsyStickers;
 			sourceTree = "<group>";
 		};
 		CB43267427E8F6F900B29DD6 /* BrazePushServiceExtension */ = {
@@ -1582,7 +1586,7 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		CB43271D27E8FE5400B29DD6 /* Artsy_Tests */ = {
+		CB43271D27E8FE5400B29DD6 /* ArtsyTests */ = {
 			isa = PBXGroup;
 			children = (
 				CB43275E27E8FEE300B29DD6 /* App_Tests */,
@@ -1597,7 +1601,7 @@
 				CB43272527E8FEE300B29DD6 /* View_Controller_Tests */,
 				CB43275527E8FEE300B29DD6 /* View_Tests */,
 			);
-			path = Artsy_Tests;
+			path = ArtsyTests;
 			sourceTree = "<group>";
 		};
 		CB43272527E8FEE300B29DD6 /* View_Controller_Tests */ = {
@@ -1805,12 +1809,12 @@
 		CB43278327E8FEE400B29DD6 /* Supporting_Files */ = {
 			isa = PBXGroup;
 			children = (
+				CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */,
 				CB43278427E8FEE400B29DD6 /* InfoPlist.strings */,
 				CB43278627E8FEE400B29DD6 /* Artsy_Tests-Prefix.pch */,
 				CB43278727E8FEE400B29DD6 /* Artsy-Tests-Bridging-Header.h */,
 				CB43278827E8FEE400B29DD6 /* ARTestHelper.h */,
 				CB43278927E8FEE400B29DD6 /* ARTestContext.h */,
-				CB43278A27E8FEE400B29DD6 /* Artsy_Tests-Info.plist */,
 				CB43278B27E8FEE400B29DD6 /* ARTestHelper.m */,
 				CB43278C27E8FEE400B29DD6 /* stub.jpg */,
 				CB43278D27E8FEE400B29DD6 /* stubbed_image.png */,
@@ -3360,9 +3364,9 @@
 			productReference = 13B07F961A680F5B00A75B9A /* Artsy.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CB43266227E8F39900B29DD6 /* Artsy Stickers */ = {
+		CB43266227E8F39900B29DD6 /* ArtsyStickers */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CB43266E27E8F39B00B29DD6 /* Build configuration list for PBXNativeTarget "Artsy Stickers" */;
+			buildConfigurationList = CB43266E27E8F39B00B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyStickers" */;
 			buildPhases = (
 				CB43266127E8F39900B29DD6 /* Resources */,
 			);
@@ -3370,9 +3374,9 @@
 			);
 			dependencies = (
 			);
-			name = "Artsy Stickers";
+			name = ArtsyStickers;
 			productName = "Artsy Stickers";
-			productReference = CB43266327E8F39900B29DD6 /* Artsy Stickers.appex */;
+			productReference = CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */;
 			productType = "com.apple.product-type.app-extension.messages-sticker-pack";
 		};
 		CB43267227E8F6F900B29DD6 /* BrazePushServiceExtension */ = {
@@ -3409,9 +3413,9 @@
 			productReference = CB43268227E8FA6900B29DD6 /* ArtsyWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		CB43271B27E8FE5400B29DD6 /* Artsy_Tests */ = {
+		CB43271B27E8FE5400B29DD6 /* ArtsyTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "Artsy_Tests" */;
+			buildConfigurationList = CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyTests" */;
 			buildPhases = (
 				C43DDB41B4350A3E0D09B275 /* [CP] Check Pods Manifest.lock */,
 				CB43271827E8FE5400B29DD6 /* Sources */,
@@ -3423,9 +3427,9 @@
 			dependencies = (
 				CB43272127E8FE5400B29DD6 /* PBXTargetDependency */,
 			);
-			name = Artsy_Tests;
+			name = ArtsyTests;
 			productName = Artsy_Tests;
-			productReference = CB43271C27E8FE5400B29DD6 /* Artsy_Tests.xctest */;
+			productReference = CB43271C27E8FE5400B29DD6 /* ArtsyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -3469,10 +3473,10 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* Artsy */,
-				CB43266227E8F39900B29DD6 /* Artsy Stickers */,
+				CB43266227E8F39900B29DD6 /* ArtsyStickers */,
 				CB43267227E8F6F900B29DD6 /* BrazePushServiceExtension */,
 				CB43268127E8FA6900B29DD6 /* ArtsyWidgetExtension */,
-				CB43271B27E8FE5400B29DD6 /* Artsy_Tests */,
+				CB43271B27E8FE5400B29DD6 /* ArtsyTests */,
 			);
 		};
 /* End PBXProject section */
@@ -3686,7 +3690,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Artsy_Tests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ArtsyTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4120,7 +4124,7 @@
 /* Begin PBXTargetDependency section */
 		CB43266927E8F39B00B29DD6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CB43266227E8F39900B29DD6 /* Artsy Stickers */;
+			target = CB43266227E8F39900B29DD6 /* ArtsyStickers */;
 			targetProxy = CB43266827E8F39B00B29DD6 /* PBXContainerItemProxy */;
 		};
 		CB43267927E8F6F900B29DD6 /* PBXTargetDependency */ = {
@@ -4620,7 +4624,7 @@
 		};
 		CB43272327E8FE5400B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BE5EFBF10AC43C4ECF725994 /* Pods-Artsy_Tests.debug.xcconfig */;
+			baseConfigurationReference = 8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4649,7 +4653,7 @@
 					"PB_ENABLE_MALLOC=1",
 				);
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist\n";
+				INFOPLIST_FILE = "Artsy_Tests/Supporting_Files/Artsy_Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -4669,7 +4673,7 @@
 		};
 		CB43272427E8FE5400B29DD6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4DF92ED8DF8B40E1D2D5A4B /* Pods-Artsy_Tests.release.xcconfig */;
+			baseConfigurationReference = 46687F9E977C7CE0F1B12B05 /* Pods-ArtsyTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4687,7 +4691,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Artsy_Tests/Supporting_Files/Artsy_Tests-Prefix.pch";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Artsy_Tests/Supporting_files/Artsy_Tests-Info.plist\n";
+				INFOPLIST_FILE = "Artsy_Tests/Supporting_Files/Artsy_Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
@@ -4726,7 +4730,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		CB43266E27E8F39B00B29DD6 /* Build configuration list for PBXNativeTarget "Artsy Stickers" */ = {
+		CB43266E27E8F39B00B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyStickers" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB43266C27E8F39B00B29DD6 /* Debug */,
@@ -4753,7 +4757,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "Artsy_Tests" */ = {
+		CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB43272327E8FE5400B29DD6 /* Debug */,

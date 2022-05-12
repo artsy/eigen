@@ -1,6 +1,7 @@
 import {
   errorMiddleware as relayErrorMiddleware,
   RelayNetworkLayer,
+  uploadMiddleware,
 } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
@@ -27,6 +28,7 @@ export function createEnvironment(
       persistedQueryMiddleware(),
       metaphysicsURLMiddleware(),
       rateLimitMiddleware(),
+      uploadMiddleware(),
       // @ts-ignore
       errorMiddleware(),
       // We need to run the checkAuthenticationMiddleware as early as possible to make sure that the user

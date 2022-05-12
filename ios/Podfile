@@ -105,7 +105,7 @@ target 'Artsy' do
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode', '2.0.0'
 
-  target 'Artsy_Tests' do
+  target 'ArtsyTests' do
     inherit! :search_paths
 
     pod 'OHHTTPStubs', '3.1.2'

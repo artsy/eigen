@@ -6,10 +6,12 @@ let metaflags = {
   startStorybook: false,
 }
 
-try {
-  const fileContent = require("./metaflags.json")
-  startStorybook = fileContent.startStorybook
-} catch {}
+if (__DEV__) {
+  try {
+    const fileContents = require("./metaflags.json")
+    metaflags = { ...metaflags, ...fileContents }
+  } catch {}
+}
 
 require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
 

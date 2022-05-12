@@ -31,7 +31,7 @@ import { CommercialPartnerInformation } from "./Components/CommercialPartnerInfo
 import { ContextCard } from "./Components/ContextCard"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
-import { QuestionsFragmentContainer } from "./Components/Questions"
+import { Questions } from "./Components/Questions"
 
 type ArtworkQueries =
   | "ArtworkAboveTheFoldQuery"
@@ -400,7 +400,7 @@ describe("Artwork", () => {
 
     await flushPromiseQueue()
 
-    expect(tree.root.findAllByType(QuestionsFragmentContainer)).toHaveLength(1)
+    expect(tree.root.findAllByType(Questions)).toHaveLength(1)
   })
 
   describe("Live Auction States", () => {

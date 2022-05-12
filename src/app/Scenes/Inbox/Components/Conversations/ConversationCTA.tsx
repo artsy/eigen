@@ -1,4 +1,5 @@
 import { ConversationCTA_conversation } from "__generated__/ConversationCTA_conversation.graphql"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -13,68 +14,73 @@ interface Props {
 
 export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
   const liveArtwork = conversation?.items?.[0]?.liveArtwork
+  const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
 
   if (liveArtwork?.__typename !== "Artwork") {
     return null
   }
 
   const isOfferableFromInquiry = liveArtwork?.isOfferableFromInquiry
-
-  let CTA: JSX.Element | null = null
+  const isOfferableConversationalBuyNow = liveArtwork?.isOfferable && enableConversationalBuyNow
+  const conversationalBuyNow = liveArtwork?.isAcquireable && enableConversationalBuyNow
 
   // artworkID is guaranteed to be present if `isOfferableFromInquiry` was present.
   const conversationID = conversation.conversationID!
 
   const activeOrder = extractNodes(conversation.activeOrders)[0]
+
   if (!activeOrder) {
-    if (isOfferableFromInquiry) {
-      CTA = (
-        <OpenInquiryModalButtonFragmentContainer
-          artwork={liveArtwork}
-          conversationID={conversationID}
-        />
+    if (isOfferableFromInquiry || isOfferableConversationalBuyNow || conversationalBuyNow) {
+      return (
+        <CTAPopUp show={show}>
+          <OpenInquiryModalButtonFragmentContainer
+            artwork={liveArtwork}
+            conversationID={conversationID}
+          />
+        </CTAPopUp>
       )
     }
-  } else {
-    const { lastTransactionFailed, state, lastOffer } = activeOrder
+    return null
+  }
 
-    let kind: ReviewOfferCTAKind | null = null
+  const { lastTransactionFailed, state, lastOffer } = activeOrder
+  let kind: ReviewOfferCTAKind | null = null
 
-    if (lastTransactionFailed) {
-      kind = "PAYMENT_FAILED"
-    } else if (state === "SUBMITTED" && lastOffer?.fromParticipant === "SELLER") {
-      if (lastOffer.definesTotal) {
-        // provisional inquery checkout offer scenarios where metadata was initially missing
-        if (lastOffer.offerAmountChanged) {
-          // Brown CTA: 'Counteroffer received - confirm total'
-          kind = "OFFER_RECEIVED_CONFIRM_NEEDED"
-        } else {
-          // Brown CTA: 'Offer accepted - confirm total'
-          kind = "OFFER_ACCEPTED_CONFIRM_NEEDED"
-        }
+  if (lastTransactionFailed) {
+    kind = "PAYMENT_FAILED"
+  } else if (state === "SUBMITTED" && lastOffer?.fromParticipant === "SELLER") {
+    if (lastOffer.definesTotal) {
+      // provisional inquery checkout offer scenarios where metadata was initially missing
+      if (lastOffer.offerAmountChanged) {
+        // Brown CTA: 'Counteroffer received - confirm total'
+        kind = "OFFER_RECEIVED_CONFIRM_NEEDED"
       } else {
-        // regular counter offer. either a definite offer on artwork with all metadata, or a provisional offer but metadata was provided in previous back and forth
-        if (lastOffer.offerAmountChanged) {
-          // Brown CTA: 'Counteroffer received'
-          kind = "OFFER_RECEIVED"
-        }
+        // Brown CTA: 'Offer accepted - confirm total'
+        kind = "OFFER_ACCEPTED_CONFIRM_NEEDED"
       }
-    } else if (state === "FULFILLED") {
-      kind = "OFFER_ACCEPTED"
-    } else if (state === "APPROVED") {
-      const isProvisionalOffer = lastOffer?.fromParticipant === "SELLER" && lastOffer?.definesTotal
-      kind = isProvisionalOffer ? "PROVISIONAL_OFFER_ACCEPTED" : "OFFER_ACCEPTED"
+    } else {
+      // regular counter offer. either a definite offer on artwork with all metadata, or a provisional offer but metadata was provided in previous back and forth
+      if (lastOffer.offerAmountChanged) {
+        // Brown CTA: 'Counteroffer received'
+        kind = "OFFER_RECEIVED"
+      }
     }
-    CTA = kind && (
-      <ReviewOfferButton kind={kind} activeOrder={activeOrder} conversationID={conversationID} />
+  } else if (state === "FULFILLED") {
+    kind = "OFFER_ACCEPTED"
+  } else if (state === "APPROVED") {
+    const isProvisionalOffer = lastOffer?.fromParticipant === "SELLER" && lastOffer?.definesTotal
+    kind = isProvisionalOffer ? "PROVISIONAL_OFFER_ACCEPTED" : "OFFER_ACCEPTED"
+  }
+
+  if (kind) {
+    return (
+      <CTAPopUp show={show}>
+        <ReviewOfferButton kind={kind} activeOrder={activeOrder} conversationID={conversationID} />
+      </CTAPopUp>
     )
   }
 
-  if (!CTA) {
-    return null
-  } else {
-    return <CTAPopUp show={show}>{CTA}</CTAPopUp>
-  }
+  return null
 }
 
 export const ConversationCTAFragmentContainer = createFragmentContainer(ConversationCTA, {
@@ -91,6 +97,8 @@ export const ConversationCTAFragmentContainer = createFragmentContainer(Conversa
         liveArtwork {
           ... on Artwork {
             isOfferableFromInquiry
+            isOfferable
+            isAcquireable
             internalID
             __typename
             ...OpenInquiryModalButton_artwork
