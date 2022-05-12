@@ -1,4 +1,5 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { ModalStack } from "app/navigation/ModalStack"
 import { createEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
@@ -46,7 +47,9 @@ function resolveUnreadConversationCountQuery(unreadConversationCount: number) {
 const TestWrapper: React.FC<{}> = ({}) => {
   return (
     <GlobalStoreProvider>
-      <BottomTabs />
+      <ModalStack>
+        <BottomTabs />
+      </ModalStack>
     </GlobalStoreProvider>
   )
 }
