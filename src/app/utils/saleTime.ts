@@ -1,9 +1,18 @@
 import moment from "moment-timezone"
-import { Time, useSaleEndTimer } from "./useTimer"
+import { useState } from "react"
+import useInterval from "react-use/lib/useInterval"
+import { Time, useTimer } from "./useTimer"
 
 interface TimerInfo {
   copy: string
   color: string
+}
+
+export interface SaleTimeFeature {
+  startAt: string | null
+  endAt: string | null
+  endedAt: string | null
+  timeZone: string | null
 }
 
 export const getTimerInfo = (
@@ -209,56 +218,57 @@ const ends = (now: moment.Moment, endDate: moment.Moment): string | null => {
   }
 }
 
-const getAbsoluteTime = (
-  saleStartMoment: moment.Moment | null,
-  saleEndMoment: moment.Moment | null,
-  saleEndedMoment: moment.Moment | null,
-  userTimeZone: string
-): string | null => {
-  const thisMoment = moment.tz(moment(), userTimeZone)
-  if (saleStartMoment && thisMoment.isBefore(saleStartMoment)) {
-    return `${saleStartMoment.format("MMM D, YYYY")} • ${saleStartMoment.format("h:mma z")}`
-  } else if (saleEndedMoment && thisMoment.isAfter(saleEndedMoment)) {
-    return `Closed ${saleEndedMoment.format("MMM D, YYYY")} • ${saleEndedMoment.format("h:mma z")}`
-  } else if (saleEndMoment) {
-    return `${saleEndMoment.format("MMM D, YYYY")} • ${saleEndMoment.format("h:mma z")}`
+const getMomentForDate = (date: string, timeZone: string): moment.Moment => {
+  const userTimeZone = moment.tz.guess()
+  return moment.tz(date, moment.ISO_8601, timeZone).tz(userTimeZone)
+}
+
+export const getAbsoluteTimeOfSale = (sale: SaleTimeFeature): string | null => {
+  if (!sale.timeZone) {
+    return null
+  }
+  const startDateMoment = sale.startAt ? getMomentForDate(sale.startAt, sale.timeZone) : null
+  const endDateMoment = sale.endAt ? getMomentForDate(sale.endAt, sale.timeZone) : null
+  const endedDateMoment = sale.endedAt ? getMomentForDate(sale.endedAt, sale.timeZone) : null
+  const thisMoment = moment.tz(moment(), moment.tz.guess())
+
+  if (startDateMoment && thisMoment.isBefore(startDateMoment)) {
+    return `${startDateMoment.format("MMM D, YYYY")} • ${startDateMoment.format("h:mma z")}`
+  } else if (endedDateMoment && thisMoment.isAfter(endedDateMoment)) {
+    return `Closed ${endedDateMoment.format("MMM D, YYYY")} • ${endedDateMoment.format("h:mma z")}`
+  } else if (endDateMoment) {
+    return `${endDateMoment.format("MMM D, YYYY")} • ${endDateMoment.format("h:mma z")}`
   } else {
     return null
   }
 }
 
-export const getCascadingEndTimeFeatureSaleDetails = (
-  sale: {
-    startAt: string | null
-    endAt: string | null
-    endedAt: string | null
-    timeZone: string | null
-  } | null
-): { absolute: string | null; relative: { copy: string; color: string } | null } => {
-  if (!sale?.timeZone || !sale.endAt || !sale.startAt) {
-    return { absolute: null, relative: null }
+export const useRelativeTimeOfSale = (
+  sale: SaleTimeFeature,
+  /** in millisecs */
+  updateDelay: number = 1000
+) => {
+  const [relativeTime, setRelativeTime] = useState<TimerInfo | null>(null)
+
+  const saleHasEnded = !!sale.endedAt
+  if (saleHasEnded || !(sale.endAt && sale.startAt)) {
+    return null
   }
 
-  const relativeTime = useSaleEndTimer(sale)
-  const userTimeZone = moment.tz.guess()
-  const startDateMoment =
-    sale.startAt !== null
-      ? moment.tz(sale.startAt, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
-      : null
-  const endDateMoment =
-    sale.endAt !== null
-      ? moment.tz(sale.endAt, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
-      : null
-  const endedDateMoment =
-    sale.endedAt !== null
-      ? moment.tz(sale.endedAt, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
-      : null
+  const callback = () => {
+    if (!sale.endAt || !sale.startAt) {
+      return
+    }
+    const { hasEnded, time, hasStarted } = useTimer(sale.endAt, sale.startAt)
+    const relativeTimeInfo = getTimerInfo(time, hasStarted, hasEnded, true)
 
-  const absoluteTime = getAbsoluteTime(
-    startDateMoment,
-    endDateMoment,
-    endedDateMoment,
-    userTimeZone
-  )
-  return { absolute: absoluteTime, relative: relativeTime }
+    if (relativeTimeInfo?.copy !== relativeTime?.copy) {
+      // prevent unnecessary updates
+      setRelativeTime(relativeTimeInfo)
+    }
+  }
+
+  useInterval(callback, updateDelay)
+
+  return relativeTime
 }

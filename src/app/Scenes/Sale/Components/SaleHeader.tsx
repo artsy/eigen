@@ -3,7 +3,7 @@ import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
-import { getCascadingEndTimeFeatureSaleDetails, saleTime } from "app/utils/saleTime"
+import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import moment from "moment"
 import { Flex, LinkIcon, MoreIcon, ShareIcon, Text, Touchable } from "palette"
@@ -33,7 +33,9 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
 
   const saleTimeDetails = saleTime(sale)
 
-  const cascadingEndTimeFeatureSaleDetails = getCascadingEndTimeFeatureSaleDetails(sale)
+  const absoluteTimeOfSale = getAbsoluteTimeOfSale(sale)
+
+  const relativeTimeOfSale = useRelativeTimeOfSale(sale)
 
   const cascadingEndTimeFeatureEnabled =
     useFeatureFlag("AREnableCascadingEndTimerSalePageDetails") &&
@@ -150,14 +152,12 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
           {cascadingEndTimeFeatureEnabled ? (
             <>
               <Flex mb="1" mt="2">
-                {!!cascadingEndTimeFeatureSaleDetails.relative && (
-                  <Text variant="sm" color={cascadingEndTimeFeatureSaleDetails.relative.color}>
-                    {cascadingEndTimeFeatureSaleDetails.relative.copy}
+                {!!relativeTimeOfSale?.copy && (
+                  <Text variant="sm" color={relativeTimeOfSale.color}>
+                    {relativeTimeOfSale.copy}
                   </Text>
                 )}
-                {!!cascadingEndTimeFeatureSaleDetails.absolute && (
-                  <Text variant="sm">{cascadingEndTimeFeatureSaleDetails.absolute}</Text>
-                )}
+                {!!absoluteTimeOfSale && <Text variant="sm">{absoluteTimeOfSale}</Text>}
               </Flex>
               {!!sale.cascadingEndTimeIntervalMinutes && (
                 <Text
