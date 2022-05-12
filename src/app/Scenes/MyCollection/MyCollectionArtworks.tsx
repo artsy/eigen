@@ -13,7 +13,6 @@ import {
   FlatList,
   Image,
   LayoutAnimation,
-  LayoutChangeEvent,
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from "react-native"
@@ -39,7 +38,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   const { height: screenHeight } = useScreenDimensions()
 
   const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
-  const [marginTop, setMarginTop] = useState(0)
+  const [showSearchBar, setShowSearchBar] = useState(false)
   const [initialScrollPosition, setInitialScrollPosition] = useState(-1)
 
   const [keywordFilter, setKeywordFilter] = useState("")
@@ -69,16 +68,8 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     )
   }
 
-  const onHeaderLayout = (event: LayoutChangeEvent) => {
-    if (marginTop !== 0) {
-      return
-    }
-
-    setMarginTop(-event.nativeEvent.layout.height)
-  }
-
   const handleScrollBeginDrag = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (marginTop === 0) {
+    if (showSearchBar) {
       return
     }
 
@@ -93,24 +84,26 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
         duration: 50,
       })
 
-      setMarginTop(0)
+      setShowSearchBar(true)
     }
   }
 
-  console.log({ initialScrollPosition, marginTop })
+  console.log({ initialScrollPosition, showSearchBar })
 
   return (
-    <Flex minHeight={minHeight} marginTop={marginTop}>
-      <Flex onLayout={onHeaderLayout} mb={1}>
-        <MyCollectionSearchBar
-          searchString={keywordFilter}
-          onChangeText={setKeywordFilter}
-          innerFlatListRef={innerFlatlistRef}
-          onIsFocused={(isFocused) => {
-            setMinHeight(isFocused ? screenHeight : undefined)
-          }}
-        />
-      </Flex>
+    <Flex minHeight={minHeight}>
+      {!!showSearchBar && (
+        <Flex mb={1}>
+          <MyCollectionSearchBar
+            searchString={keywordFilter}
+            onChangeText={setKeywordFilter}
+            innerFlatListRef={innerFlatlistRef}
+            onIsFocused={(isFocused) => {
+              setMinHeight(isFocused ? screenHeight : undefined)
+            }}
+          />
+        </Flex>
+      )}
       {viewOption === "grid" ? (
         <InfiniteScrollMyCollectionArtworksGridContainer
           myCollectionConnection={me.myCollectionConnection!}
@@ -120,11 +113,11 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
             localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, keywordFilter)
           }
+          // TODO: Add scrollEventThrottle
           onScroll={handleScrollBeginDrag}
         />
       ) : (
         <MyCollectionArtworkList
-          onScroll={handleScrollBeginDrag}
           myCollectionConnection={me.myCollectionConnection}
           hasMore={relay.hasMore}
           loadMore={relay.loadMore}
@@ -133,6 +126,8 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
             localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, keywordFilter)
           }
+          // TODO: Add scrollEventThrottle
+          onScroll={handleScrollBeginDrag}
         />
       )}
     </Flex>
