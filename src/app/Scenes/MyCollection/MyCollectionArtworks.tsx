@@ -81,7 +81,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     if (nativeEvent.contentOffset.y < initialScrollPosition) {
       LayoutAnimation.configureNext({
         ...LayoutAnimation.Presets.easeInEaseOut,
-        duration: 50,
+        duration: 150,
       })
 
       setShowSearchBar(true)
