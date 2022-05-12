@@ -4,7 +4,6 @@ import { AuctionResulstList, LoadingSkeleton } from "app/Components/AuctionResul
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { groupBy } from "lodash"
 import moment from "moment"
 import { Flex, Text } from "palette"
@@ -75,11 +74,16 @@ export const ListOfresults: React.FC<{}> = () => {
 
 export const AuctionResultsForArtistsYouCollect: React.FC = () => {
   return (
-    <ProvidePlaceholderContext>
-      <Suspense fallback={<LoadingSkeleton listHeader={<ListHeader />} />}>
-        <ListOfresults />
-      </Suspense>
-    </ProvidePlaceholderContext>
+    <Suspense
+      fallback={
+        <LoadingSkeleton
+          title="Auction Results for Artists You Collect"
+          listHeader={<ListHeader />}
+        />
+      }
+    >
+      <ListOfresults />
+    </Suspense>
   )
 }
 
@@ -87,7 +91,7 @@ export const ListHeader: React.FC = () => {
   return (
     <Flex>
       <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
-        The latest auction results for the artists you collect
+        The latest auction results for the artists you collect.
       </Text>
     </Flex>
   )

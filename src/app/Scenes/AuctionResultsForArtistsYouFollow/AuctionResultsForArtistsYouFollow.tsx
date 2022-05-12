@@ -179,7 +179,12 @@ export const AuctionResultsForArtistsYouFollowQueryRenderer: React.FC = () => (
     render={renderWithPlaceholder({
       Container: AuctionResultsForArtistsYouFollowContainer,
       renderPlaceholder: () => {
-        return <LoadingSkeleton listHeader={<ListHeader />} />
+        return (
+          <LoadingSkeleton
+            title="Auction Results for Artists You Follow"
+            listHeader={<ListHeader />}
+          />
+        )
       },
     })}
   />

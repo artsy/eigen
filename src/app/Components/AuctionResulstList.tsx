@@ -1,5 +1,5 @@
 import { AuctionResultListItem_auctionResult } from "__generated__/AuctionResultListItem_auctionResult.graphql"
-import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
@@ -78,7 +78,10 @@ export const AuctionResulstList: React.FC<AuctionResultListProps> = (props) => {
   )
 }
 
-export const LoadingSkeleton: React.FC<{ listHeader: React.ReactElement }> = ({ listHeader }) => {
+export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactElement }> = ({
+  title,
+  listHeader,
+}) => {
   const placeholderResults = []
   for (let i = 0; i < 8; i++) {
     placeholderResults.push(
@@ -113,15 +116,17 @@ export const LoadingSkeleton: React.FC<{ listHeader: React.ReactElement }> = ({ 
     )
   }
   return (
-    <PageWithSimpleHeader title="Auction Results for Artists You Follow">
-      {listHeader}
-      <Flex mx={2}>
-        <Spacer height={20} />
-        <PlaceholderText height={24} width={100 + Math.random() * 50} />
-        <Spacer height={10} />
-        <Separator borderColor="black10" />
-        {placeholderResults}
-      </Flex>
-    </PageWithSimpleHeader>
+    <ProvidePlaceholderContext>
+      <PageWithSimpleHeader title={title}>
+        {listHeader}
+        <Flex mx={2}>
+          <Spacer height={20} />
+          <PlaceholderText height={24} width={100 + Math.random() * 50} />
+          <Spacer height={10} />
+          <Separator borderColor="black10" />
+          {placeholderResults}
+        </Flex>
+      </PageWithSimpleHeader>
+    </ProvidePlaceholderContext>
   )
 }
