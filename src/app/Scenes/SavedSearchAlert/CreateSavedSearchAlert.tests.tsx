@@ -49,6 +49,11 @@ const initialData: ArtworkFiltersState = {
 const defaultParams: CreateSavedSearchAlertParams = {
   artistId: "artistID",
   artistName: "artistName",
+  aggregations: [],
+  attributes: {
+    attributionClass: ["open edition"],
+    atAuction: true,
+  },
   onComplete: jest.fn(),
   onClosePress: jest.fn(),
 }

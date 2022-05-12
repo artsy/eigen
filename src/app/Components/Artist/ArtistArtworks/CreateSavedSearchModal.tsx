@@ -1,4 +1,7 @@
 import { ActionType, OwnerType, ToggledSavedSearch } from "@artsy/cohesion"
+import { getUnitedSelectedAndAppliedFilters } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { getSearchCriteriaFromFilters } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { navigate, NavigateOptions } from "app/navigation/navigate"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
@@ -22,6 +25,9 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   const { visible, artistId, artistName, artistSlug, closeModal, onComplete } = props
   const tracking = useTracking()
   const popover = usePopoverMessage()
+  const filterState = ArtworksFiltersStore.useStoreState((state) => state)
+  const unitedFilters = getUnitedSelectedAndAppliedFilters(filterState)
+  const attributes = getSearchCriteriaFromFilters(artistId, unitedFilters)
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
     tracking.trackEvent(tracks.toggleSavedSearch(true, artistId, artistSlug, result.id))
@@ -48,6 +54,8 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   const params: CreateSavedSearchAlertParams = {
     artistId,
     artistName,
+    aggregations: filterState.aggregations,
+    attributes,
     onClosePress: closeModal,
     onComplete: handleComplete,
   }

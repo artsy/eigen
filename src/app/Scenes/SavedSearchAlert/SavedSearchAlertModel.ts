@@ -1,4 +1,8 @@
-import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  SearchCriteria,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 
 export interface SavedSearchAlertFormValues {
   name: string
@@ -17,6 +21,8 @@ export interface SavedSearchAlertMutationResult {
 
 // Navigation
 export interface CreateSavedSearchAlertParams extends SavedSearchAlertFormPropsBase {
+  aggregations: Aggregations
+  attributes: SearchCriteriaAttributes
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
 }
