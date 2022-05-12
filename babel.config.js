@@ -1,3 +1,5 @@
+const moduleResolverAlias = require("./alias").babelModuleResolverAlias
+
 module.exports = (api) => {
   api.cache.forever() // don't call this babel config all the time if it hasn't changed.
 
@@ -12,6 +14,7 @@ module.exports = (api) => {
       ],
     ],
     plugins: [
+      ["module-resolver", { root: ["./"], alias: moduleResolverAlias }],
       /**
        * Currently Flow generates non-spec compliant code and so we need to make sure to strip any Flow type annotations
        * /before/ running any of the other spec transforms that we've added.

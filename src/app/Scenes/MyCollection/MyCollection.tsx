@@ -26,7 +26,6 @@ import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpe
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { EventEmitter } from "events"
 import { times } from "lodash"
 import { Button, Flex, Message, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
