@@ -198,7 +198,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         uri: image.path,
         width: resizedWidth,
         height: resizedHeight,
-        quality: 80,
+        quality: 85,
         onlyScaleDown: true,
       })
       const fileImage = new ReactNativeFile({
