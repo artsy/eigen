@@ -10,6 +10,7 @@ jest.unmock("react-tracking")
 
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { ModalStack } from "app/navigation/ModalStack"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { postEventToProviders } from "app/utils/track/providers"
@@ -23,9 +24,11 @@ function getWrapper({
 }) {
   return mount(
     <GlobalStoreProvider>
-      <Theme>
-        <ArtworkExtraLinks artwork={artwork} auctionState={auctionState!} />
-      </Theme>
+      <ModalStack>
+        <Theme>
+          <ArtworkExtraLinks artwork={artwork} auctionState={auctionState!} />
+        </Theme>
+      </ModalStack>
     </GlobalStoreProvider>
   )
 }
