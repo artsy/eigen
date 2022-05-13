@@ -6,7 +6,7 @@ import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
-import { navigationEvents } from "app/navigation/navigate"
+import { navigateToPartner, navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { useFeatureFlag } from "app/store/GlobalStore"
@@ -14,7 +14,7 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Separator } from "palette"
+import { Box, Flex, LinkButton, Separator } from "palette"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -25,12 +25,14 @@ import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutA
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
+// import { FaqAndSpecialistSection } from "./Components/ArtworkExtraLinks/FaqAndSpecialistSection"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
+import { CreateArtworkAlertSection } from "./Components/CreateArtworkAlertSection"
 import {
   OtherWorksFragmentContainer as OtherWorks,
   populatedGrids,
@@ -58,6 +60,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
+  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
 
   const { internalID, slug } = artworkAboveTheFold || {}
   const {
@@ -223,6 +226,40 @@ export const Artwork: React.FC<ArtworkProps> = ({
         ),
       })
     }
+
+    // --- place the components here ---
+
+    // add partner section
+    // should we add here the is_default_profile_public field?
+    // if (!!partner?.href && !!partner?.name &&enableCreateArtworkAlert) {
+    if (true) {
+      sections.push({
+        key: "partnerSection",
+        element: (
+          <Flex my={-2}>
+            <LinkButton onPress={() => navigateToPartner(partner?.href!)}>
+              {partner?.name}
+            </LinkButton>
+          </Flex>
+        ),
+      })
+    }
+
+    // add create alert section
+    if (enableCreateArtworkAlert) {
+      sections.push({
+        key: "createAlertSection",
+        element: <CreateArtworkAlertSection />,
+      })
+    }
+
+    // add FAQ section but maybe here we want to check some things, and also the code is 🤯 might need to address that in another ticket?
+    // if (enableCreateArtworkAlert) {
+    //   sections.push({
+    //     key: "faqSection",
+    //     element: <FaqAndSpecialistSection artwork={artworkAboveTheFold} />
+    //   })
+    // }
 
     if (!artworkBelowTheFold) {
       sections.push({
@@ -401,6 +438,8 @@ export const ArtworkContainer = createRefetchContainer(
         partner {
           type
           id
+          name
+          href
         }
         artist {
           biographyBlurb {
