@@ -12316,6 +12316,8 @@ type ResizedImageUrl {
 }
 
 type ReverseImageSearchResult {
+  artwork: Artwork
+
   # The matching collection image’s file path
   filepath: String!
 
@@ -12346,7 +12348,7 @@ type ReverseImageSearchResultMatchRect {
 }
 
 type ReverseImageSearchResults {
-  results: [ReverseImageSearchResult]
+  results: [ReverseImageSearchResult]!
 }
 
 enum Role {
