@@ -97,7 +97,7 @@ import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
-import { SalesQueryRenderer, SalesScreenQuery } from "./Scenes/Sales"
+import { Sales, SalesScreenQuery } from "./Scenes/Sales"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
@@ -327,7 +327,7 @@ export const modules = defineModules({
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkSubmissionStatusFAQ: reactModule(ArtworkSubmissionStatusFAQ),
   Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
-  Auctions: reactModule(SalesQueryRenderer, {}, [SalesScreenQuery]),
+  Auctions: reactModule(Sales, {}, [SalesScreenQuery]),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
