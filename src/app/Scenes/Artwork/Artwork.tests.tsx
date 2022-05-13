@@ -6,6 +6,7 @@ import {
 } from "app/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { Countdown } from "app/Components/Bidding/Components/Timer"
+import { ModalStack } from "app/navigation/ModalStack"
 import { navigationEvents } from "app/navigation/navigate"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
@@ -82,12 +83,14 @@ describe("Artwork", () => {
     // not 100% sure why we need a suspense fallback here but I guess new relay (v9) containers
     // use suspense and one of the containers in our tree is suspending itself only in tests :|
     <Suspense fallback={() => null}>
-      <ArtworkQueryRenderer
-        isVisible={isVisible}
-        artworkID="ignored"
-        environment={environment}
-        tracking={{ trackEvent: jest.fn() } as any}
-      />
+      <ModalStack>
+        <ArtworkQueryRenderer
+          isVisible={isVisible}
+          artworkID="ignored"
+          environment={environment}
+          tracking={{ trackEvent: jest.fn() } as any}
+        />
+      </ModalStack>
     </Suspense>
   )
 
