@@ -1,8 +1,5 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import {
-  ReverseSearchImageResultsQuery,
-  ReverseSearchImageResultsQueryResponse,
-} from "__generated__/ReverseSearchImageResultsQuery.graphql"
+import { ReverseSearchImageResultsQuery } from "__generated__/ReverseSearchImageResultsQuery.graphql"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"

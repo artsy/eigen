@@ -7,7 +7,6 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
 
-import { useActionSheet } from "@expo/react-native-action-sheet"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { navigate } from "app/navigation/navigate"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
@@ -78,7 +77,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   const { safeAreaInsets } = useScreenDimensions()
 
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
-  const { showActionSheetWithOptions } = useActionSheet()
 
   /*
   This function is necessary to achieve the effect whereby the sticky tab
