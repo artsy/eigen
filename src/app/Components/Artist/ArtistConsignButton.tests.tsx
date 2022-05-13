@@ -1,4 +1,5 @@
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
+import { ModalStack } from "app/navigation/ModalStack"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
@@ -32,7 +33,9 @@ describe("ArtistConsignButton", () => {
         if (props) {
           return (
             <GlobalStoreProvider>
-              <ArtistConsignButtonFragmentContainer artist={props.artist as any} />
+              <ModalStack>
+                <ArtistConsignButtonFragmentContainer artist={props.artist as any} />
+              </ModalStack>
             </GlobalStoreProvider>
           )
         } else if (error) {
