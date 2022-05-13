@@ -1,33 +1,24 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { ReverseSearchImageResultsQuery } from "__generated__/ReverseSearchImageResultsQuery.graphql"
-import { goBack, navigate } from "app/navigation/navigate"
+import {
+  ReverseSearchImageResultsQuery,
+  ReverseSearchImageResultsQueryResponse,
+} from "__generated__/ReverseSearchImageResultsQuery.graphql"
+import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { resizeImage } from "app/utils/resizeImage"
 import { ReactNativeFile } from "extract-files"
-import { Box, Button, Flex, Screen, Text } from "palette"
+import { Button, Flex, Screen, Text } from "palette"
 import { useState } from "react"
-import { Alert, Image, TouchableOpacity } from "react-native"
+import { Alert } from "react-native"
 import { graphql } from "react-relay"
 import { fetchQuery } from "relay-runtime"
-
-interface SearchImageResults {
-  matchPercent: number
-  artwork: {
-    internalID: string
-    href: string
-    title: string
-    artistNames: string
-    image: {
-      url: string
-    }
-  }
-}
+import { ReverseSearchImageResultItemFragmentContainer } from "./ReverseSearchImageResultItem"
 
 export const ReverseSearchImageResults = () => {
   const { showActionSheetWithOptions } = useActionSheet()
   const [fetching, setFetching] = useState(false)
-  const [results, setResults] = useState<SearchImageResults[] | null>(null)
+  const [results, setResults] = useState<ReadonlyArray<any> | null>(null)
 
   const handleSeachByImage = async () => {
     try {
@@ -67,15 +58,9 @@ export const ReverseSearchImageResults = () => {
           query ReverseSearchImageResultsQuery($file: Upload!) {
             reverseImageSearch(image: $file) {
               results {
-                matchPercent
+                ...ReverseSearchImageResultItem_item
                 artwork {
                   internalID
-                  href
-                  title
-                  artistNames
-                  image {
-                    url(version: "square")
-                  }
                 }
               }
             }
@@ -86,29 +71,9 @@ export const ReverseSearchImageResults = () => {
         }
       )
       const response = await execute.toPromise()
-      const imageSearchResults = response?.reverseImageSearch?.results ?? []
-      const formattedResults = imageSearchResults.reduce((acc, result) => {
-        if (result?.artwork) {
-          const resultEntity: SearchImageResults = {
-            matchPercent: result?.matchPercent!,
-            artwork: {
-              internalID: result.artwork.internalID,
-              href: result.artwork.href!,
-              title: result.artwork.title!,
-              artistNames: result.artwork.artistNames!,
-              image: {
-                url: result.artwork.image!.url!,
-              },
-            },
-          }
+      const imageResults = response?.reverseImageSearch?.results ?? []
 
-          return [...acc, resultEntity]
-        }
-
-        return acc
-      }, [] as SearchImageResults[])
-
-      setResults(formattedResults)
+      setResults(imageResults)
     } catch (error) {
       console.error(error)
       Alert.alert("Something went wrong", (error as Error).message)
@@ -136,27 +101,10 @@ export const ReverseSearchImageResults = () => {
 
         {!!hasResults &&
           results.map((result) => (
-            <TouchableOpacity
+            <ReverseSearchImageResultItemFragmentContainer
               key={result.artwork.internalID}
-              onPress={() => navigate(result.artwork.href)}
-            >
-              <Flex my={1} alignItems="center" flexDirection="row">
-                <Image
-                  source={{ uri: result.artwork.image.url }}
-                  style={{
-                    width: 60,
-                    height: 60,
-                    resizeMode: "contain",
-                  }}
-                />
-                <Box ml={1}>
-                  <Text>{result.artwork.title}</Text>
-                  <Text variant="sm" color="black60">
-                    {result.artwork.artistNames}
-                  </Text>
-                </Box>
-              </Flex>
-            </TouchableOpacity>
+              item={result}
+            />
           ))}
       </Screen.Body>
     </Screen>
