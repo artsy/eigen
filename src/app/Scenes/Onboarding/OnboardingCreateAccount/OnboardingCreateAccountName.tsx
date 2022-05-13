@@ -26,7 +26,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
   return (
     <OnboardingCreateAccountScreenWrapper
       onBackButtonPress={navigation.goBack}
-      title="What’s Your Full Name?"
+      title="What’s your full name?"
       caption="This is used to build your profile and collection on Artsy."
     >
       <Input
@@ -53,7 +53,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
           })
         }}
         blurOnSubmit={false}
-        placeholder="First and Last Name"
+        placeholder="First and last name"
         placeholderTextColor={color("black30")}
         returnKeyType="done"
         maxLength={128}
