@@ -2,10 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react"
 import { InteractionManager, Modal, Platform } from "react-native"
 import { useSafeAreaFrame } from "react-native-safe-area-context"
 import { useScreenDimensions } from "shared/hooks"
-import {
-  ArtsyKeyboardAvoidingView,
-  ArtsyKeyboardAvoidingViewContext,
-} from "../ArtsyKeyboardAvoidingView"
+import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import {
   CARD_STACK_OVERLAY_HEIGHT,
   CARD_STACK_OVERLAY_Y_OFFSET,

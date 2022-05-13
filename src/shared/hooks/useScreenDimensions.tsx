@@ -1,9 +1,10 @@
-import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import { createContext, useContext, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { EdgeInsets, useSafeAreaInsets } from "react-native-safe-area-context"
 
 export type ScreenOrientation = "landscape" | "portrait"
+
+export type SafeAreaInsets = EdgeInsets
 
 export interface ScreenDimensions {
   width: number

@@ -1,5 +1,4 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
@@ -7,6 +6,7 @@ import { Box, Button, Flex, Input, SimpleMessage, Spacer, Text, useColor } from 
 import React, { useRef } from "react"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 

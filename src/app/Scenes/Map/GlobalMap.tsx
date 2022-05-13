@@ -5,7 +5,6 @@ import { Pin } from "app/Icons/Pin"
 import PinFairSelected from "app/Icons/PinFairSelected"
 import PinSavedSelected from "app/Icons/PinSavedSelected"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import {
   convertCityToGeoJSON,
   fairToGeoCityFairs,
@@ -21,6 +20,7 @@ import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
+import { SafeAreaInsets } from "shared/hooks"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { cityTabs } from "../City/cityTabs"

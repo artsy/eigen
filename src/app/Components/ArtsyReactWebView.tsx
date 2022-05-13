@@ -18,8 +18,8 @@ import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { parse as parseURL } from "url"
-import { ArtsyKeyboardAvoidingView } from "./ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
 export interface ArtsyWebViewConfig {
