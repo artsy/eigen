@@ -408,6 +408,7 @@ function getNativeModules(): OurNativeModules {
       requestPhotos: jest.fn(),
     },
     ARScreenPresenterModule: {
+      switchTab: jest.fn(),
       dismissModal: jest.fn(),
       pushView: jest.fn(),
       goBack: jest.fn(),

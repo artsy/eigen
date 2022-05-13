@@ -72,11 +72,10 @@ function getCurrentlyPresentedModalNavStackKey() {
   return key
 }
 
-export function switchTab(tab: BottomTabType) {
-  __unsafe_mainModalStackRef.current?.dispatch(TabActions.jumpTo(tab))
-}
-
 export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterModule"] = {
+  switchTab(tab: BottomTabType) {
+    __unsafe_mainModalStackRef.current?.dispatch(TabActions.jumpTo(tab))
+  },
   presentModal(viewDescriptor: ViewDescriptor) {
     if (viewDescriptor.replace) {
       __unsafe_mainModalStackRef.current?.dispatch(

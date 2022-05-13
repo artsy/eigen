@@ -1,4 +1,4 @@
-import { switchTab } from "app/NativeModules/ARScreenPresenterModule"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ModalStack } from "app/navigation/ModalStack"
 import { NavStack } from "app/navigation/NavStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -37,7 +37,7 @@ describe(BottomTabsNavigator, () => {
     ).toHaveLength(0)
 
     await act(() => {
-      switchTab("search")
+      LegacyNativeModules.ARScreenPresenterModule.switchTab("search")
     })
 
     expect(

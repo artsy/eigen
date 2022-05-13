@@ -1,7 +1,6 @@
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules, ViewOptions } from "app/AppRegistry"
-import { switchTab as nav_switchTab } from "app/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "app/store/GlobalStore"
@@ -134,7 +133,7 @@ export function switchTab(tab: BottomTabType, props?: object) {
   if (props) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
   }
-  nav_switchTab(tab)
+  LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
 }
 
 const tracks = {
