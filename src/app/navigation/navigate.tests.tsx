@@ -9,14 +9,48 @@ function args(mock: jest.Mock) {
 }
 
 jest.unmock("./navigate")
+
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
+
+jest.mock("app/NativeModules/LegacyNativeModules", () => ({
+  LegacyNativeModules: {
+    ARScreenPresenterModule: {
+      pushView: jest.fn(),
+      switchTab: jest.fn(),
+      presentModal: jest.fn(),
+      popToRootAndScrollToTop: jest.fn(),
+    },
+    ARNotificationsManager: {
+      nativeState: {
+        launchCount: 2,
+      },
+    },
+    ARCocoaConstantsModule: {
+      CurrentLocale: "en-us",
+    },
+  },
+}))
+
+jest.mock("app/Store/GlobalStore", () => ({
+  unsafe__getSelectedTab: jest.fn().mockReturnValue("home"),
+  unsafe__getEnvironment: jest.fn().mockReturnValue({
+    webURL: "https://www.artsy.net",
+  }),
+  GlobalStore: {
+    actions: {
+      bottomTabs: {
+        setTabProps: jest.fn(),
+      },
+    },
+  },
+}))
 
 describe(navigate, () => {
   beforeEach(() => {
-    GlobalStore.actions.bottomTabs.switchTab = jest.fn() as any
-    GlobalStore.actions.bottomTabs.setTabProps = jest.fn() as any
     Linking.openURL = jest.fn()
+    LegacyNativeModules.ARScreenPresenterModule.pushView = jest.fn()
   })
+
   describe("routes to various screens", () => {
     it("like artwork", () => {
       navigate("/artwork/josef-albers-homage-to-the-square")
@@ -121,7 +155,7 @@ describe(navigate, () => {
               "slug": "blah",
             },
             "replace": false,
-            "type": "native",
+            "type": "react",
           },
         ]
       `)
@@ -135,7 +169,7 @@ describe(navigate, () => {
 
   it("switches tab and pops the view stack when routing to a root tab view", async () => {
     await navigate("/search")
-    expect(GlobalStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("search")
+    expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("search")
     expect(
       LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop
     ).toHaveBeenCalledWith("search")
@@ -143,7 +177,7 @@ describe(navigate, () => {
 
   it("passes tab props when switching", async () => {
     await navigate("/search?query=banksy")
-    expect(GlobalStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("search")
+    expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("search")
     expect(
       LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop
     ).toHaveBeenCalledWith("search")
@@ -155,7 +189,7 @@ describe(navigate, () => {
 
   it("switches tab before pushing in cases where that's required", async () => {
     await navigate("/conversation/234")
-    expect(GlobalStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("inbox")
+    expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("inbox")
     await flushPromiseQueue()
     expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
       .toMatchInlineSnapshot(`
@@ -183,7 +217,7 @@ describe(navigate, () => {
 
     await flushPromiseQueue()
 
-    expect(GlobalStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("profile")
+    expect(LegacyNativeModules.ARScreenPresenterModule.switchTab).toHaveBeenCalledWith("profile")
     expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any))
       .toMatchInlineSnapshot(`
       Array [
