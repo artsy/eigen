@@ -13,6 +13,7 @@ import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "a
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
+import { resizeImage } from "app/utils/resizeImage"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { AddIcon, Box, Flex, Separator, Spacer } from "palette"
@@ -176,18 +177,34 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const hideBackButtonOnScroll = useHideBackButtonOnScroll()
 
-  const getFileNameByPath = (imagePath: string) => {
-    return imagePath.split("/").pop()!
-  }
-
   const handleSeachByImage = async () => {
     try {
       const images = await showPhotoActionSheet(showActionSheetWithOptions, true, false)
       const image = images[0]
-      const fileImage = new ReactNativeFile({
+      let resizedWidth = image.width
+      let resizedHeight = image.height
+
+      /**
+       * For optimal performance of TinEye, image should be 600px in size in the smallest dimension
+       * For example, image with 1600x1200 size should be resized to 800x600
+       */
+      if (image.width > image.height) {
+        resizedHeight = 600
+      } else {
+        resizedWidth = 600
+      }
+
+      const resizedImage = await resizeImage({
         uri: image.path,
-        name: getFileNameByPath(image.path),
-        type: image.mime,
+        width: resizedWidth,
+        height: resizedHeight,
+        quality: 80,
+        onlyScaleDown: true,
+      })
+      const fileImage = new ReactNativeFile({
+        uri: resizedImage.uri,
+        name: resizedImage.name,
+        type: "image/jpeg",
       })
 
       const execute = fetchQuery<FairImageSearchQuery>(
