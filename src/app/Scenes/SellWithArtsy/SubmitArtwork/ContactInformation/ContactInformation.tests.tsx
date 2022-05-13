@@ -52,8 +52,8 @@ describe("ContactInformationForm", () => {
     await flushPromiseQueue()
 
     const inputs = {
-      nameInput: getByPlaceholderText("Your Full Name"),
-      emailInput: getByPlaceholderText("Your Email Address"),
+      nameInput: getByPlaceholderText("Your full name"),
+      emailInput: getByPlaceholderText("Your email address"),
       phoneInput: getByPlaceholderText("(000) 000-0000"),
     }
 
@@ -91,8 +91,8 @@ describe("ContactInformationForm", () => {
       })
     )
     const inputs = {
-      nameInput: getByPlaceholderText("Your Full Name"),
-      emailInput: getByPlaceholderText("Your Email Address"),
+      nameInput: getByPlaceholderText("Your full name"),
+      emailInput: getByPlaceholderText("Your email address"),
       phoneInput: getByPlaceholderText("(000) 000-0000"),
     }
 
@@ -125,8 +125,8 @@ describe("ContactInformationForm", () => {
       await flushPromiseQueue()
 
       const inputs = {
-        nameInput: getByPlaceholderText("Your Full Name"),
-        emailInput: getByPlaceholderText("Your Email Address"),
+        nameInput: getByPlaceholderText("Your full name"),
+        emailInput: getByPlaceholderText("Your email address"),
       }
 
       fireEvent.changeText(inputs.nameInput, "a")
@@ -150,7 +150,7 @@ describe("ContactInformationForm", () => {
       await flushPromiseQueue()
 
       const inputs = {
-        emailInput: getByPlaceholderText("Your Email Address"),
+        emailInput: getByPlaceholderText("Your email address"),
         phoneInput: getByPlaceholderText("(000) 000-0000"),
       }
 
@@ -175,7 +175,7 @@ describe("ContactInformationForm", () => {
       await flushPromiseQueue()
 
       const inputs = {
-        emailInput: getByPlaceholderText("Your Email Address"),
+        emailInput: getByPlaceholderText("Your email address"),
         phoneInput: getByPlaceholderText("(000) 000-0000"),
       }
 

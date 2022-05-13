@@ -232,7 +232,7 @@ export const MyProfileEditForm: React.FC = () => {
             <Join separator={<Spacer py={2} />}>
               <Input
                 ref={nameInputRef}
-                title="Full Name"
+                title="Full name"
                 onChangeText={handleChange("name")}
                 onBlur={() => validateForm()}
                 error={errors.name}
@@ -245,8 +245,8 @@ export const MyProfileEditForm: React.FC = () => {
 
               <DetailedLocationAutocomplete
                 locationInputRef={locationInputRef}
-                title="Primary Location"
-                placeholder="City Name"
+                title="Primary location"
+                placeholder="City name"
                 returnKeyType="next"
                 initialLocation={values.displayLocation?.display!}
                 onFocus={() =>
@@ -272,7 +272,7 @@ export const MyProfileEditForm: React.FC = () => {
                 error={errors.name}
                 returnKeyType="next"
                 defaultValue={values.profession}
-                placeholder="Profession or Job Title"
+                placeholder="Profession or job title"
                 onSubmitEditing={() => {
                   relevantPositionsInputRef.current?.focus()
                 }}
@@ -286,7 +286,7 @@ export const MyProfileEditForm: React.FC = () => {
                 error={errors.name}
                 returnKeyType="next"
                 defaultValue={values.otherRelevantPositions}
-                placeholder="Memberships, Institutions, Positions"
+                placeholder="Memberships, institutions, positions"
                 onSubmitEditing={() => {
                   bioInputRef.current?.focus()
                 }}

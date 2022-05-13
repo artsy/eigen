@@ -204,7 +204,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         <Input
           ref={stateRef}
           title="State, province, or region"
-          placeholder="Add State, Province, or Region"
+          placeholder="Add state, province, or region"
           onChangeText={actions.fields.state.setValue}
           onSubmitEditing={() => {
             stateRef.current?.blur()

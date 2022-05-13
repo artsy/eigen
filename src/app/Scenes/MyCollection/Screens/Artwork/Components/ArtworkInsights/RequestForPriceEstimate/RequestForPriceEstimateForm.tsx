@@ -36,7 +36,7 @@ export const RequestForPriceEstimateForm = () => {
                 handleChange("requesterName")(text)
               }}
               blurOnSubmit={false}
-              placeholder="First and Last Name"
+              placeholder="First and last name"
               returnKeyType="done"
               maxLength={128}
               value={values.requesterName}
