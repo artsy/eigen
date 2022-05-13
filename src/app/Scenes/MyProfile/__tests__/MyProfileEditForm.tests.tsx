@@ -45,11 +45,7 @@ describe("MyProfileEditForm", () => {
     />
   )
 
-  describe("when AREnableCollectorProfile feature flag is enabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfile: true })
-    })
-
+  describe("collector profile edit form", () => {
     it("shows the profile verification section", () => {
       const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
       mockEnvironmentPayload(mockEnvironment)
@@ -151,20 +147,6 @@ describe("MyProfileEditForm", () => {
         })
         expect(getByText("Verify Your ID")).toBeTruthy()
       })
-    })
-  })
-
-  describe("when AREnableCollectorProfile feature flag is disabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfile: false })
-    })
-
-    it("shows the profile verification section", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
-      mockEnvironmentPayload(mockEnvironment)
-      expect(() => getByTestId("profile-verifications")).toThrow(
-        "Unable to find an element with testID: profile-verifications"
-      )
     })
   })
 })

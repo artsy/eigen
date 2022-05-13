@@ -63,12 +63,13 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           )}
           <InquiryMakeOfferButton
             variant="fillDark"
-            buttonText="Confirm"
             artwork={artwork}
             disabled={!!artwork.isEdition && !selectedEdition}
             editionSetID={selectedEdition ? selectedEdition : null}
             conversationID={conversationID}
-          />
+          >
+            Confirm
+          </InquiryMakeOfferButton>
           <Button
             mt={1}
             size="large"
@@ -97,6 +98,7 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
       editionSets {
         internalID
         editionOf
+        isAcquireable
         isOfferableFromInquiry
         listPrice {
           ... on Money {

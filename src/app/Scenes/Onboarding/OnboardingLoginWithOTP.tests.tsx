@@ -1,11 +1,10 @@
+import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { OnboardingLoginWithOTPForm, OTPMode } from "./OnboardingLoginWithOTP"
 
-const navigateMock = jest.fn()
-
 const navigationPropsMock = {
-  navigate: navigateMock,
+  navigate: mockNavigate,
   goBack: jest.fn(),
 }
 

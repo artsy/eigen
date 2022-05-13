@@ -1,8 +1,8 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useSpace } from "palette/hooks"
 import React from "react"
+import { Spacer } from "../../atoms/Spacer"
 import { Box, BoxProps } from "../Box"
-import { Spacer } from "../Spacer"
 import { Text } from "../Text"
 import { CardTag, CardTagProps } from "./CardTag"
 

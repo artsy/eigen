@@ -47,7 +47,7 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
 
     const { endAt: lotEndAt } = props.artwork.saleArtwork
 
-    const cascadingEndTimeFeatureEnabled = !useFeatureFlag("ARDisableCascadingEndTimerLotPage")
+    const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
 
     const endsAt =
       (cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? lotEndAt : saleEndAt) ||

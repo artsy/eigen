@@ -42,7 +42,7 @@ export const ContactInformation: React.FC<{
         trackEvent(consignmentSubmittedEvent(updatedSubmissionId, formValues.userEmail, userID))
 
         GlobalStore.actions.artworkSubmission.submission.resetSessionState()
-        addClue("ArtworkSubmissionBanner")
+        addClue("ArtworkSubmissionMessage")
         handlePress(submissionId)
       }
     } catch (error) {

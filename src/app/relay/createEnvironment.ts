@@ -15,6 +15,7 @@ import {
 import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
 import { simpleLoggerMiddleware } from "./middlewares/simpleLoggerMiddleware"
 import { timingMiddleware } from "./middlewares/timingMiddleware"
+import { uploadMiddleware } from "./middlewares/uploadMiddleware"
 
 /// WARNING: Creates a whole new, separate Relay environment. Useful for testing.
 /// Use `defaultEnvironment` for production code.
@@ -27,6 +28,7 @@ export function createEnvironment(
       persistedQueryMiddleware(),
       metaphysicsURLMiddleware(),
       rateLimitMiddleware(),
+      uploadMiddleware(),
       // @ts-ignore
       errorMiddleware(),
       // We need to run the checkAuthenticationMiddleware as early as possible to make sure that the user

@@ -8,6 +8,7 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, ClassTheme } from "palette"
@@ -30,6 +31,14 @@ export class SavedWorks extends Component<Props, State> {
   state = {
     fetchingMoreData: false,
     refreshingFromPull: false,
+  }
+
+  componentDidMount = () => {
+    RefreshEvents.addListener(FAVORITE_ARTWORKS_REFRESH_KEY, this.handleRefresh)
+  }
+
+  componentWillUnmount = () => {
+    RefreshEvents.removeListener(FAVORITE_ARTWORKS_REFRESH_KEY, this.handleRefresh)
   }
 
   loadMore = () => {

@@ -90,12 +90,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableQueriesPrefetching",
   },
-  AREnableAccordionNavigationOnSubmitArtwork: {
-    readyForRelease: true,
-    description: "Enable New Artwork Submission Flow with Accordion",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableAccordionNavigationOnSubmitArtwork",
-  },
   ARShowLinkedAccounts: {
     readyForRelease: true,
     description: "Show linked social accounts",
@@ -106,20 +100,27 @@ export const features = defineFeatures({
     description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
   },
-  ARDisableCascadingEndTimerLotPage: {
-    readyForRelease: false,
-    description: "Disable cascading end times on the lot page",
+  AREnableCascadingEndTimerLotPage: {
+    readyForRelease: true,
+    description: "Enable cascading end times on the lot page",
     showInAdminMenu: true,
-    echoFlagKey: "ARDisableCascadingEndTimerLotPage",
+    echoFlagKey: "AREnableCascadingEndTimerLotPage",
+  },
+  AREnableCascadingEndTimerSalePageDetails: {
+    readyForRelease: true,
+    description: "Enable cascading end times on the sale page details",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCascadingEndTimerSalePageDetails",
+  },
+  AREnableCascadingEndTimerSalePageGrid: {
+    readyForRelease: true,
+    description: "Enable cascading end times on the sale page lot grid",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCascadingEndTimerSalePageGrid",
   },
   AREnableImageSearch: {
     readyForRelease: false,
     description: "Enable search with image",
-    showInAdminMenu: true,
-  },
-  AREnableCollectorProfile: {
-    readyForRelease: true,
-    description: "Enable collector profile",
     showInAdminMenu: true,
   },
   AREnableMyCollectionSearchBar: {
@@ -127,20 +128,9 @@ export const features = defineFeatures({
     description: "Enable My Collection search bar",
     showInAdminMenu: true,
   },
-  ARShowConsignmentsInMyCollection: {
-    readyForRelease: true,
-    description: "Show consignments in My Collection",
-    showInAdminMenu: true,
-  },
   AREnablePlaceholderLayoutAnimation: {
     readyForRelease: true,
     description: "Enable placeholder layout animation",
-  },
-  AREnableNewMyCollectionArtwork: {
-    readyForRelease: true,
-    description: "Enable new my collection artwork page",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnablePlaceholderLayoutAnimation",
   },
   AREnableAvalaraPhase2: {
     readyForRelease: false,
@@ -166,12 +156,6 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable My Collection Price Estimate Range",
     showInAdminMenu: false,
-  },
-  AREnableMyCollectionComparableWorks: {
-    readyForRelease: true,
-    description: "Enable My Collection Comparable Works",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionComparableWorks",
   },
   AREnableHomeScreenArtworkRecommendations: {
     readyForRelease: true,
@@ -199,6 +183,29 @@ export const features = defineFeatures({
     description: "Conversational Buy Now",
     showInAdminMenu: true,
   },
+  AREnableCompleteProfileMessage: {
+    readyForRelease: true,
+    description: "Enable Collector Profile Complete Message",
+    showInAdminMenu: true,
+  },
+  ARShowMyCollectionInsights: {
+    readyForRelease: false,
+    description: "Enable My Collection insights tab",
+    showInAdminMenu: true,
+  },
+  AREnableNotFoundFailureView: {
+    readyForRelease: true,
+    description: "Enable Not Found Failure View",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableNotFoundFailureView",
+  },
+  AREnableArtworksFromNonArtsyArtists: {
+    readyForRelease: false,
+    description: "Enable My Collection artworks from non-Artsy artists",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
+  },
+
 })
 
 export interface DevToggleDescriptor {

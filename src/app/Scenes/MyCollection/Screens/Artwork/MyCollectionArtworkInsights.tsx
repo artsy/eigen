@@ -3,7 +3,7 @@ import { MyCollectionArtworkInsights_marketPriceInsights$key } from "__generated
 import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionArtworkInsights_me.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, Spacer } from "palette/elements"
+import { Flex, Spacer } from "palette"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -34,8 +34,6 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
   )
 
   const me = useFragment<MyCollectionArtworkInsights_me$key>(meFragment, restProps.me)
-
-  const enableMyCollectionComparableWorks = useFeatureFlag("AREnableMyCollectionComparableWorks")
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
 
@@ -75,9 +73,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           />
         )}
 
-        {!!enableMyCollectionComparableWorks && (
-          <MyCollectionArtworkComparableWorks artwork={artwork} />
-        )}
+        <MyCollectionArtworkComparableWorks artwork={artwork} />
 
         <MyCollectionArtworkArtistAuctionResults artwork={artwork} />
 

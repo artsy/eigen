@@ -175,6 +175,16 @@ There are two hacks here:
 - We hack the output of the compiler to provide clickable links for error messages. Relay assumes that you put your `__generated__` folder in the root of your project, but we put it in `src`.
 - We make sure that files which do not change are not overwritten. This prevents excessive reloading by metro.
 
+## react-relay-network-modern (upload middleware patch)
+
+#### When can we remove this:
+
+We can remove this hack when we can pass Blob/File with specified `name` field to `fetch()` and we won't get an error on Android
+
+#### Explanation/Context:
+
+If we try to pass Blob/File with specified `name` field (if we forgot to specify this field, Metaphysics will assume that no file was passed) to `fetch()`, we will get an error on Android. For this reason, support for these data formats is extracted from `upload` middleware.
+
 ## react-native-credit-card-input
 
 #### When can we remove this:
@@ -239,16 +249,6 @@ Once we want to use react-native-push-notification on iOS
 This is happening because react-native-push-notification requires @react-native-community/push-notification-ios. We are not
 adding this dependency at this time because it is unnecessary and we do not use react-native-push-notification on iOS. Also,
 we do not want unnecessary conflicts between our native push notification implementation and @react-native-community/push-notification-ios's.
-
-## `@storybook/client-api` patch-package
-
-#### When can we remove this:
-
-Once storybook is upgraded to a version that does not use the removed `Cancellable` from `lodash` in that file.
-
-#### Explanation/Context:
-
-We get an error like here, and that is the solution. https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47166#issuecomment-685738545
 
 # `PropsStore` pass functions as props inside navigate() on iOS
 
@@ -330,3 +330,24 @@ When the fix is in a release in the library or when we stop using this library.
 #### Explanation/Context
 
 With updated react native version (66) this library causes an error calling the now non-existent getNode() function, it is fixed on the main branch in the library but has not yet been released on npm.
+
+## @storybook/react-native patch
+
+#### When we can remove this:
+
+When [this](https://github.com/storybookjs/react-native/pull/345) is merged, or when storybook supports rendering outside the safe area.
+
+#### Explanation/Context
+
+Storybook does not render outside the safe area, so for `Screen` and friends, we can't really use storybook otherwise. With this patch, we can now render outside the safe area, by adding `parameters: { noSafeArea: true }` in the new form of stories.
+
+## [Android ContentOffset Bug]: Using marginTop: -headerHeight to initially hide HeaderComponent in MyCollectionArtworksList.tsx and InfiniteScrollArtworkGrid.tsx
+
+#### When we can remove this:
+
+When we upgrade to a react native version that contentOffset works for android
+
+#### Explanation/Context
+
+contentOffset for vertical scrollviews appear to be broken on v0.66.4 (current version). We need the contentOffset to initially hide the HeaderComponent. The workaround currently is to use contentContainerStyle and set the marginTop to -HeightOfHeaderComponent and then remove this when a user scrolls to the top.
+Caveat/Introduced bug: User has to scroll to an offset of any number > 0 to revert the marginTop to 0.

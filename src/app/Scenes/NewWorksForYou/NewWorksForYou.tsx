@@ -8,7 +8,7 @@ import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholde
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Box, Message, Spacer } from "palette"
+import { Box, SimpleMessage, Spacer } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
@@ -42,7 +42,7 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
               useParentAwareScrollView={false}
             />
           ) : (
-            <Message m={2}>Nothing yet. Please check back later.</Message>
+            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
           )}
         </Box>
       </PageWithSimpleHeader>

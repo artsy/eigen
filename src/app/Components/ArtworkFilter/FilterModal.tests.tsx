@@ -15,18 +15,14 @@ import { CollectionFixture } from "app/Scenes/Collection/Components/__fixtures__
 import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
+import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Theme } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import {
-  closeModalMock,
-  getEssentialProps,
-  MockFilterScreen,
-  navigateMock,
-} from "./FilterTestHelper"
+import { closeModalMock, getEssentialProps, MockFilterScreen } from "./FilterTestHelper"
 
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()
@@ -183,6 +179,90 @@ const MockFilterModalNavigator = ({
   </GlobalStoreProvider>
 )
 
+describe("Filter modal", () => {
+  it("should display filter when aggregation counts are NOT empty", () => {
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [
+        {
+          slice: "MEDIUM",
+          counts: [
+            {
+              name: "Sculpture",
+              count: 277,
+              value: "sculpture",
+            },
+          ],
+        },
+        {
+          slice: "MAJOR_PERIOD",
+          counts: [
+            {
+              name: "Late 19th Century",
+              count: 6,
+              value: "Late 19th Century",
+            },
+          ],
+        },
+      ],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      sizeMetric: "cm",
+    }
+
+    const { getByText } = renderWithWrappersTL(
+      <MockFilterModalNavigator initialData={injectedState} />
+    )
+
+    expect(getByText("Medium")).toBeTruthy()
+    expect(getByText("Time Period")).toBeTruthy()
+  })
+
+  it("should hide filter when aggregation counts are empty", () => {
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [
+        {
+          slice: "MEDIUM",
+          counts: [],
+        },
+        {
+          slice: "MAJOR_PERIOD",
+          counts: [
+            {
+              name: "Late 19th Century",
+              count: 6,
+              value: "Late 19th Century",
+            },
+          ],
+        },
+      ],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      sizeMetric: "cm",
+    }
+
+    const { getByText, queryByText } = renderWithWrappersTL(
+      <MockFilterModalNavigator initialData={injectedState} />
+    )
+
+    expect(queryByText("Medium")).toBeFalsy()
+    expect(getByText("Time Period")).toBeTruthy()
+  })
+})
+
 describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to sort screen from filter screen", () => {
     const { getByText } = renderWithWrappersTL(
@@ -198,7 +278,7 @@ describe("Filter modal navigation flow", () => {
     // the first row item takes users to the Sort navigation route
     fireEvent.press(getByText("Sort By"))
 
-    expect(navigateMock).toBeCalledWith("SortOptionsScreen")
+    expect(mockNavigate).toBeCalledWith("SortOptionsScreen")
   })
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
@@ -214,7 +294,7 @@ describe("Filter modal navigation flow", () => {
     // the second row item takes users to the Medium navigation route
     fireEvent.press(getByText("Medium"))
 
-    expect(navigateMock).toBeCalledWith("AdditionalGeneIDsOptionsScreen")
+    expect(mockNavigate).toBeCalledWith("AdditionalGeneIDsOptionsScreen")
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {

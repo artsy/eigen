@@ -6,8 +6,13 @@ on:
   push:
     branches: [beta-android]
 
+permissions:
+  contents: read
+
 jobs:
   build:
+    permissions:
+      contents: none
     runs-on: ubuntu-latest
     steps:
       - name: Trigger release

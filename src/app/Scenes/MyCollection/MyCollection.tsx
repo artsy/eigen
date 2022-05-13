@@ -14,13 +14,7 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { useToast } from "app/Components/Toast/toastHook"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import {
-  GlobalStore,
-  removeClue,
-  useDevToggle,
-  useFeatureFlag,
-  useSessionVisualClue,
-} from "app/store/GlobalStore"
+import { GlobalStore, removeClue, useDevToggle, useSessionVisualClue } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -28,29 +22,21 @@ import {
   PlaceholderText,
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
+import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { EventEmitter } from "events"
 import { times } from "lodash"
-import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
-import React, { useContext, useEffect, useState } from "react"
-import { NativeScrollEvent, NativeSyntheticEvent, RefreshControl } from "react-native"
+import { Button, Flex, Message, Separator, Spacer, useSpace } from "palette"
+import React, { useContext, useEffect, useRef, useState } from "react"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
-import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
-
-const RefreshEvents = new EventEmitter()
-const REFRESH_KEY = "refresh"
-
-export function refreshMyCollection() {
-  RefreshEvents.emit(REFRESH_KEY)
-}
 
 export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
 
@@ -61,12 +47,8 @@ const MyCollection: React.FC<{
   const { trackEvent } = useTracking()
   const { showSessionVisualClue } = useSessionVisualClue()
 
-  const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
-  const enableConsignmentsInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
-  const [keywordFilter, setKeywordFilter] = useState("")
-  const [yScrollOffset, setYScrollOffset] = useState(0)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
   const filtersCount = useSelectedFiltersCount()
@@ -77,9 +59,9 @@ const MyCollection: React.FC<{
 
   const [isRefreshing, setIsRefreshing] = useState(false)
   useEffect(() => {
-    RefreshEvents.addListener(REFRESH_KEY, refetch)
+    RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
     return () => {
-      RefreshEvents.removeListener(REFRESH_KEY, refetch)
+      RefreshEvents.removeListener(MY_COLLECTION_REFRESH_KEY, refetch)
     }
   }, [])
 
@@ -105,7 +87,7 @@ const MyCollection: React.FC<{
 
   const hasBeenShownBanner = async () => {
     const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionBanner")
+    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
     return {
       hasSeenBanner: hasSeen === "true",
       shouldShowConsignments: shouldShowConsignments === true,
@@ -116,7 +98,7 @@ const MyCollection: React.FC<{
     if (artworks.length) {
       hasBeenShownBanner().then(({ hasSeenBanner, shouldShowConsignments }) => {
         const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
-        const showConsignmentsBanner = shouldShowConsignments && enableConsignmentsInMyCollection
+        const showConsignmentsBanner = shouldShowConsignments
 
         setJSX(
           <Flex>
@@ -142,14 +124,9 @@ const MyCollection: React.FC<{
                 Add Works
               </Button>
             </ArtworksFilterHeader>
-            {!!enableSearchBar && (
-              <MyCollectionSearchBar
-                yScrollOffset={yScrollOffset}
-                onChangeText={setKeywordFilter}
-              />
-            )}
             {!!showNewWorksBanner && (
-              <Banner
+              <Message
+                variant="info"
                 title="Your collection is growing"
                 text="Based on your purchase history, we’ve added the following works."
                 showCloseButton
@@ -159,11 +136,12 @@ const MyCollection: React.FC<{
               />
             )}
             {!!showConsignmentsBanner && (
-              <Banner
+              <Message
+                variant="info"
                 title="Artwork added to My Collection"
                 text="The artwork you submitted for sale has been automatically added."
                 showCloseButton
-                onClose={() => removeClue("ArtworkSubmissionBanner")}
+                onClose={() => removeClue("ArtworkSubmissionMessage")}
               />
             )}
           </Flex>
@@ -173,15 +151,13 @@ const MyCollection: React.FC<{
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length, filtersCount, yScrollOffset])
+  }, [artworks.length, filtersCount])
 
   useEffect(() => {
     reInitializeLocalArtworkFilter(artworks)
   }, [artworks])
 
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    setYScrollOffset(event.nativeEvent.contentOffset.y)
-  }
+  const innerFlatListRef = useRef(null)
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -199,12 +175,11 @@ const MyCollection: React.FC<{
       <StickyTabPageScrollView
         contentContainerStyle={{ paddingBottom: space(2) }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
-        onScrollBeginDrag={handleScroll}
-        onScrollEndDrag={handleScroll}
+        innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
-        <MyCollectionArtworks me={me} keywordFilter={keywordFilter} relay={relay} />
+        <MyCollectionArtworks innerFlatlistRef={innerFlatListRef} me={me} relay={relay} />
         {!!showDevAddButton && (
           <Button
             onPress={async () => {

@@ -54,6 +54,7 @@ import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { GeneQueryRenderer } from "./Scenes/Gene/Gene"
 import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
+import { PurchaseModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/PurchaseModal"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { ConversationDetailsQueryRenderer } from "./Scenes/Inbox/Screens/ConversationDetails"
 import {
@@ -74,10 +75,10 @@ import {
 } from "./Scenes/MyCollection/MyCollection"
 import { ArtworkSubmissionStatusFAQ } from "./Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
 import { RequestForPriceEstimateScreen } from "./Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateScreen"
-import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
+import { MyCollectionArtworkScreen } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
+import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "./Scenes/MyProfile/MyProfile"
 import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -337,6 +338,7 @@ export const modules = defineModules({
     {},
     [AuctionResultsForArtistsYouFollowScreenQuery]
   ),
+  AuctionResultsForArtistsYouCollect: reactModule(AuctionResultsForArtistsYouCollect),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
@@ -386,6 +388,9 @@ export const modules = defineModules({
   MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
     hasOwnModalCloseButton: true,
   }),
+  PurchaseModal: reactModule(PurchaseModalQueryRenderer, {
+    hasOwnModalCloseButton: true,
+  }),
   Map: reactModule(MapContainer, { fullBleed: true }),
   NewMap: reactModule(NewMapScreen, { fullBleed: true }),
   MyAccount: reactModule(MyAccountQueryRenderer),
@@ -395,8 +400,7 @@ export const modules = defineModules({
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
-  MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer, { hidesBackButton: true }),
-  MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
+  MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithartsyFAQ),
   MyProfile: reactModule(
     MyProfile,

@@ -4,17 +4,21 @@ import { FairQuery } from "__generated__/FairQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { useHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
+import { ReactNativeFile } from "extract-files"
 
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Box, Flex, Separator, Spacer } from "palette"
+import { AddIcon, Box, Flex, Separator, Spacer } from "palette"
 import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, View } from "react-native"
+import { Alert, FlatList, TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
@@ -24,6 +28,9 @@ import { FairEmptyStateFragmentContainer } from "./Components/FairEmptyState"
 import { FairExhibitorsFragmentContainer } from "./Components/FairExhibitors"
 import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
 import { FairHeaderFragmentContainer } from "./Components/FairHeader"
+
+import { FairImageSearchQuery } from "__generated__/FairImageSearchQuery.graphql"
+import { fetchQuery } from "relay-runtime"
 
 interface FairQueryRendererProps {
   fairID: string
@@ -42,6 +49,9 @@ const tabs: TabsType = [
   },
 ]
 
+const CAMERA_ICON_CONTAINER_SIZE = 38
+const CAMERA_ICON_SIZE = 20
+
 export const Fair: React.FC<FairProps> = ({ fair }) => {
   const { isActive } = fair
   const hasArticles = !!fair.articles?.edges?.length
@@ -55,6 +65,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")
 
   const sections = isActive
     ? [
@@ -71,6 +82,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   const { safeAreaInsets } = useScreenDimensions()
 
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
+  const { showActionSheetWithOptions } = useActionSheet()
 
   /*
   This function is necessary to achieve the effect whereby the sticky tab
@@ -163,6 +175,44 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   }
 
   const hideBackButtonOnScroll = useHideBackButtonOnScroll()
+
+  const getFileNameByPath = (imagePath: string) => {
+    return imagePath.split("/").pop()!
+  }
+
+  const handleSeachByImage = async () => {
+    try {
+      const images = await showPhotoActionSheet(showActionSheetWithOptions, true, false)
+      const image = images[0]
+      const fileImage = new ReactNativeFile({
+        uri: image.path,
+        name: getFileNameByPath(image.path),
+        type: image.mime,
+      })
+
+      const execute = fetchQuery<FairImageSearchQuery>(
+        defaultEnvironment,
+        graphql`
+          query FairImageSearchQuery($file: Upload!) {
+            doNotUseImageSearch(image: $file) {
+              encoding
+              filename
+              mimetype
+            }
+          }
+        `,
+        {
+          file: fileImage,
+        }
+      )
+      const result = await execute.toPromise()
+
+      Alert.alert("Image info", JSON.stringify(result?.doNotUseImageSearch, null, 2))
+    } catch (error) {
+      console.error(error)
+      Alert.alert("Something went wrong", (error as Error).message)
+    }
+  }
 
   return (
     <ProvideScreenTracking
@@ -258,6 +308,24 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           }}
         />
       </ArtworkFiltersStoreProvider>
+
+      {!!isImageSearchEnabled && (
+        <TouchableOpacity
+          style={{ position: "absolute", top: 33, right: 12 }}
+          onPress={handleSeachByImage}
+        >
+          <Box
+            width={CAMERA_ICON_CONTAINER_SIZE}
+            height={CAMERA_ICON_CONTAINER_SIZE}
+            borderRadius={CAMERA_ICON_CONTAINER_SIZE / 2}
+            bg="white"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
+          </Box>
+        </TouchableOpacity>
+      )}
     </ProvideScreenTracking>
   )
 }
