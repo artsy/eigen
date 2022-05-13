@@ -104,12 +104,12 @@ export const OpaqueImageView: React.FC<Props> = ({
     }
   }
 
-  const getActualDimensions: () => Array<string | number> = () => {
+  const getActualDimensions = useCallback(() => {
     if (props.height && props.width) {
       return [props.width, props.height]
     }
     if (style.height && style.width) {
-      return [style.width, style.height]
+      return [Number(style.width), Number(style.height)]
     }
     const width = props.width ?? style.width
     if (_.isNumber(width)) {
@@ -126,13 +126,13 @@ export const OpaqueImageView: React.FC<Props> = ({
       return [layoutHeight * aspectRatio!, layoutHeight]
     }
     return [layoutWidth, layoutHeight]
-  }
+  }, [props.height, props.width, style.width, style.height, aspectRatio, layoutHeight, layoutWidth])
 
   useEffect(() => {
-    const [fw, fh] = getActualDimensions()
-    setFIHeight(fh as number)
-    setFIWidth(fw as number)
-  }, [props.height, props.width, style.width, style.height, aspectRatio, layoutHeight, layoutWidth])
+    const [fWidth, fHeight] = getActualDimensions()
+    setFIHeight(fHeight)
+    setFIWidth(fWidth)
+  }, [getActualDimensions])
 
   if (React.Children.count(props.children) > 0) {
     console.error("Please don't add children to a OpaqueImageView. Doesn't work on android.")
