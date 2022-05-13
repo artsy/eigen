@@ -15,7 +15,7 @@ const ReverseSearchImageResultItem: FC<ReverseSearchImageResultItemProps> = ({ i
   const { matchPercent, artwork } = item
 
   return (
-    <TouchableOpacity key={artwork!.internalID} onPress={() => navigate(artwork!.href!)}>
+    <TouchableOpacity onPress={() => navigate(artwork!.href!)}>
       <Flex my={1} alignItems="center" flexDirection="row">
         <Image
           source={{ uri: artwork!.image!.url! }}
@@ -46,7 +46,6 @@ export const ReverseSearchImageResultItemFragmentContainer = createFragmentConta
       fragment ReverseSearchImageResultItem_item on ReverseImageSearchResult {
         matchPercent
         artwork {
-          internalID
           href
           title
           artistNames

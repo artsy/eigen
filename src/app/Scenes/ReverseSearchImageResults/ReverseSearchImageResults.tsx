@@ -8,7 +8,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { resizeImage } from "app/utils/resizeImage"
 import { ReactNativeFile } from "extract-files"
-import { Button, Flex, Screen, Text } from "palette"
+import { Box, Button, Screen, Text } from "palette"
 import { useState } from "react"
 import { Alert } from "react-native"
 import { graphql } from "react-relay"
@@ -92,24 +92,26 @@ export const ReverseSearchImageResults = () => {
   return (
     <Screen>
       <Screen.Header onBack={goBack} />
-      <Screen.Body>
-        <Button block loading={fetching} mb={2} onPress={handleSeachByImage}>
+      <Screen.Body scroll>
+        <Button block loading={fetching} onPress={handleSeachByImage}>
           Search by image
         </Button>
 
-        {!!isEmptyResults && (
-          <Flex flex={1} alignItems="center" justifyContent="center">
-            <Text>No matches</Text>
-          </Flex>
-        )}
+        <Box mt={2} mb={1}>
+          {!!isEmptyResults && (
+            <Text textAlign="center" my={2}>
+              No matches
+            </Text>
+          )}
 
-        {!!hasResults &&
-          results.map((result) => (
-            <ReverseSearchImageResultItemFragmentContainer
-              key={result.artwork.internalID}
-              item={result}
-            />
-          ))}
+          {!!hasResults &&
+            results.map((result) => (
+              <ReverseSearchImageResultItemFragmentContainer
+                key={result.artwork?.internalID}
+                item={result}
+              />
+            ))}
+        </Box>
       </Screen.Body>
     </Screen>
   )
