@@ -1,5 +1,8 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { ReverseSearchImageResultsQuery } from "__generated__/ReverseSearchImageResultsQuery.graphql"
+import {
+  ReverseSearchImageResultsQuery,
+  ReverseSearchImageResultsQueryResponse,
+} from "__generated__/ReverseSearchImageResultsQuery.graphql"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
@@ -12,10 +15,14 @@ import { graphql } from "react-relay"
 import { fetchQuery } from "relay-runtime"
 import { ReverseSearchImageResultItemFragmentContainer } from "./ReverseSearchImageResultItem"
 
+type SearchImageResults = NonNullable<
+  ReverseSearchImageResultsQueryResponse["reverseImageSearch"]
+>["results"]
+
 export const ReverseSearchImageResults = () => {
   const { showActionSheetWithOptions } = useActionSheet()
   const [fetching, setFetching] = useState(false)
-  const [results, setResults] = useState<ReadonlyArray<any> | null>(null)
+  const [results, setResults] = useState<SearchImageResults | null>(null)
 
   const handleSeachByImage = async () => {
     try {
