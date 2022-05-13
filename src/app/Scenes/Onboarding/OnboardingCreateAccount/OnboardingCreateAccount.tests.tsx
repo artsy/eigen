@@ -71,7 +71,7 @@ describe("OnboardingCreateAccount", () => {
 
     const nameInput = tree.root.findByProps({ testID: "nameInput" })
     nameInput.props.onChangeText("Full Name")
-    expect(nameInput.props.placeholder).toEqual("First and last Name")
+    expect(nameInput.props.placeholder).toEqual("First and last name")
 
     expect(signUpButton.props.disabled).toEqual(true)
 
