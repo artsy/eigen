@@ -240,6 +240,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/user/purchases/:orderID", "OrderDetails"),
     addRoute("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
     addRoute("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
+    addRoute("/reverse-search-image-results", "ReverseSearchImageResults"),
     addWebViewRoute("/orders/:orderID", {
       mimicBrowserBackButton: true,
       useRightCloseButton: true,
