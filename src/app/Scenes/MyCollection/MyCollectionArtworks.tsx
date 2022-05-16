@@ -60,14 +60,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     return <MyCollectionZeroState />
   }
 
-  if (filteredArtworks.length === 0) {
-    return (
-      <Flex py="6" px="2">
-        <FilteredArtworkGridZeroState hideClearButton />
-      </Flex>
-    )
-  }
-
   const handleScrollBeginDrag = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (showSearchBar) {
       return
@@ -88,12 +80,10 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     }
   }
 
-  console.log({ initialScrollPosition, showSearchBar })
-
   return (
     <Flex minHeight={minHeight}>
-      {!!showSearchBar && (
-        <Flex mb={1}>
+      <Flex mb={1}>
+        {!!showSearchBar && (
           <MyCollectionSearchBar
             searchString={keywordFilter}
             onChangeText={setKeywordFilter}
@@ -102,33 +92,49 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
               setMinHeight(isFocused ? screenHeight : undefined)
             }}
           />
-        </Flex>
-      )}
-      {viewOption === "grid" ? (
-        <InfiniteScrollMyCollectionArtworksGridContainer
-          myCollectionConnection={me.myCollectionConnection!}
-          hasMore={relay.hasMore}
-          loadMore={relay.loadMore}
-          // tslint:disable-next-line: no-shadowed-variable
-          localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
-            localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, keywordFilter)
-          }
-          // TODO: Add scrollEventThrottle
-          onScroll={handleScrollBeginDrag}
-        />
+        )}
+      </Flex>
+      {filteredArtworks.length > 0 ? (
+        viewOption === "grid" ? (
+          <InfiniteScrollMyCollectionArtworksGridContainer
+            myCollectionConnection={me.myCollectionConnection!}
+            hasMore={relay.hasMore}
+            loadMore={relay.loadMore}
+            // tslint:disable-next-line: no-shadowed-variable
+            localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
+              localSortAndFilterArtworks(
+                artworks,
+                appliedFiltersState,
+                filterOptions,
+                keywordFilter
+              )
+            }
+            // TODO: Add scrollEventThrottle
+            onScroll={handleScrollBeginDrag}
+          />
+        ) : (
+          <MyCollectionArtworkList
+            myCollectionConnection={me.myCollectionConnection}
+            hasMore={relay.hasMore}
+            loadMore={relay.loadMore}
+            isLoading={relay.isLoading}
+            // tslint:disable-next-line: no-shadowed-variable
+            localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
+              localSortAndFilterArtworks(
+                artworks,
+                appliedFiltersState,
+                filterOptions,
+                keywordFilter
+              )
+            }
+            // TODO: Add scrollEventThrottle
+            onScroll={handleScrollBeginDrag}
+          />
+        )
       ) : (
-        <MyCollectionArtworkList
-          myCollectionConnection={me.myCollectionConnection}
-          hasMore={relay.hasMore}
-          loadMore={relay.loadMore}
-          isLoading={relay.isLoading}
-          // tslint:disable-next-line: no-shadowed-variable
-          localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
-            localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, keywordFilter)
-          }
-          // TODO: Add scrollEventThrottle
-          onScroll={handleScrollBeginDrag}
-        />
+        <Flex py="6" px="2">
+          <FilteredArtworkGridZeroState hideClearButton />
+        </Flex>
       )}
     </Flex>
   )
