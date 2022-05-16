@@ -1,7 +1,7 @@
-import { NoUndefined } from "app/utils/types"
 import { useTheme } from "palette"
 import { isThemeV3 } from "palette/Theme"
 import { TextStyle } from "react-native"
+import { NoUndefined } from "shared/types"
 import { TextProps } from "."
 
 export const useFontFamilyFor = ({

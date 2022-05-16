@@ -3,10 +3,10 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "app/Components/Stack"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, FlexProps, Sans } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { FeatureMarkdown } from "./FeatureMarkdown"
 
 export interface FeatureHeaderProps extends FlexProps {

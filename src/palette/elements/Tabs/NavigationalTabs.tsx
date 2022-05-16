@@ -1,8 +1,8 @@
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box } from "palette"
 import { Tab, TabsProps } from "palette/elements/Tabs"
 import React, { useState } from "react"
 import { LayoutRectangle } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 import { TabBarContainer } from "./TabBarContainer"
 
 /**

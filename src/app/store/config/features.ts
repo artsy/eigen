@@ -200,7 +200,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
   },
-
 })
 
 export interface DevToggleDescriptor {

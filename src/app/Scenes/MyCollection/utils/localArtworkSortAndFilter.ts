@@ -1,4 +1,3 @@
-import { FilterConfigTypes } from "app/Components/ArtworkFilter"
 import {
   FilterArray,
   FilterData,
@@ -6,11 +5,11 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
-import { normalizeText } from "app/utils/normalizeText"
+import { FilterConfigTypes, FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
 import { compact, filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { useEffect } from "react"
+import { normalizeText } from "shared/utils"
 import { MyCollectionArtworkEdge } from "../MyCollection"
 
 export const useLocalArtworkFilter = (artworksList?: any[] | null) => {

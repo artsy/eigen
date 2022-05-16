@@ -1,7 +1,5 @@
-import { SafeAreaInsets } from "app/types/SafeAreaInsets"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import React from "react"
 import { View } from "react-native"
+import { SafeAreaInsets, useScreenDimensions } from "shared/hooks"
 import { MapRenderer } from "./MapRenderer"
 
 interface Props {

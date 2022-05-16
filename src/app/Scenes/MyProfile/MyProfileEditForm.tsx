@@ -3,7 +3,6 @@ import { useNavigation } from "@react-navigation/native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { Image } from "app/Components/Bidding/Elements/Image"
 import {
   buildLocationDisplay,
@@ -37,6 +36,7 @@ import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { graphql } from "relay-runtime"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 import { MyProfileContext } from "./MyProfileProvider"
@@ -220,7 +220,7 @@ export const MyProfileEditForm: React.FC = () => {
                 {!!values.photo ? (
                   <Avatar src={values.photo} size="md" />
                 ) : (
-                  <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
+                  <Image source={require("images/profile_placeholder_avatar.webp")} />
                 )}
               </Box>
             </Touchable>

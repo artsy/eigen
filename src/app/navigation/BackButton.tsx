@@ -1,9 +1,9 @@
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { ChevronIcon, CloseIcon } from "palette"
 import { useEffect, useRef } from "react"
 import { Animated, ViewStyle } from "react-native"
 import { TouchableOpacity } from "react-native"
 import { useFirstMountState } from "react-use/esm/useFirstMountState"
+import { useScreenDimensions } from "shared/hooks"
 import { goBack } from "./navigate"
 
 export const BackButton: React.FC<{

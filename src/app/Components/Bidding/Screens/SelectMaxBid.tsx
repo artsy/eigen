@@ -16,9 +16,9 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { ScreenDimensionsContext } from "app/utils/useScreenDimensions"
 import { compact } from "lodash"
 import { Select } from "palette/elements/Select"
+import { ScreenDimensionsContext } from "shared/hooks"
 
 interface SelectMaxBidProps extends ViewProps {
   sale_artwork: SelectMaxBid_sale_artwork
