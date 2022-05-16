@@ -100,6 +100,7 @@ export const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = (
   }
 }
 
+// TODO: move track events to cohesion
 const tracks = {
   tappedAskASpecialist: () => ({
     action_name: Schema.ActionNames.AskASpecialist,
