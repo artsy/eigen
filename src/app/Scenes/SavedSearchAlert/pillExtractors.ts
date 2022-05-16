@@ -18,12 +18,24 @@ import {
 } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { shouldExtractValueNamesFromAggregation } from "app/Components/ArtworkFilter/SavedSearch/constants"
 import {
+  SavedSearchEntity,
+  SavedSearchEntityArtist,
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
 import { Metric } from "../Search/UserPrefsModel"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
+
+interface ExtractFromCriteriaOptions {
+  attributes: SearchCriteriaAttributes
+  aggregations: Aggregations
+  unit: Metric
+}
+
+type ExtractPillsOptions = ExtractFromCriteriaOptions & {
+  entity: SavedSearchEntity
+}
 
 export const extractPillFromAggregation = (
   paramName: SearchCriteria,
@@ -143,15 +155,10 @@ export const extractWaysToBuyPill = (paramName: SearchCriteria): SavedSearchPill
   }
 }
 
-export const extractPillsFromCriteria = ({
-  attributes,
-  aggregations,
-  unit,
-}: {
-  attributes: SearchCriteriaAttributes
-  aggregations: Aggregations
-  unit: Metric
-}): SavedSearchPill[] => {
+export const extractPillsFromCriteria = (
+  options: ExtractFromCriteriaOptions
+): SavedSearchPill[] => {
+  const { attributes, aggregations, unit } = options
   const pills = Object.entries(attributes).map((entry) => {
     const [paramName, paramValue] = entry as [SearchCriteria, any]
 
@@ -216,19 +223,26 @@ export const extractPillsFromCriteria = ({
   return preparedPills
 }
 
-export const extractPills = (options: {
-  attributes: SearchCriteriaAttributes
-  aggregations: Aggregations
-  unit: Metric
-}) => {
-  const { attributes, aggregations, unit } = options
+export const extractArtistPills = (artists: SavedSearchEntityArtist[] = []): SavedSearchPill[] => {
+  return artists.map((artist) => {
+    return {
+      label: artist.name,
+      value: artist.id,
+      paramName: SearchCriteria.artistID,
+    }
+  })
+}
+
+export const extractPills = (options: ExtractPillsOptions) => {
+  const { attributes, aggregations, unit, entity } = options
+  const artistPills = extractArtistPills(entity.artists)
   const pillsFromCriteria = extractPillsFromCriteria({
     attributes,
     aggregations,
     unit,
   })
 
-  return compact([...pillsFromCriteria])
+  return compact([...artistPills, ...pillsFromCriteria])
 }
 
 export const extractPillValue = (pills: SavedSearchPill[]) => {

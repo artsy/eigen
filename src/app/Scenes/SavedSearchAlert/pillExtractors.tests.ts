@@ -1,9 +1,11 @@
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
+  SavedSearchEntityArtist,
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import {
+  extractArtistPills,
   extractPillFromAggregation,
   extractPillsFromCriteria,
   extractSizeLabel,
@@ -275,6 +277,55 @@ describe("extractPillsFromCriteria", () => {
     ])
   })
 })
+
+describe("artistPills", () => {
+  it("should return empty array", () => {
+    const result = extractArtistPills([])
+
+    expect(result).toEqual([])
+  })
+
+  it("should correctly extract single artist", () => {
+    const result = extractArtistPills([firstArtist])
+
+    expect(result).toEqual([
+      {
+        label: "firstArtistName",
+        value: "firstArtistId",
+        paramName: SearchCriteria.artistID,
+      },
+    ])
+  })
+
+  it("should correctly extract single artist", () => {
+    const result = extractArtistPills([firstArtist, secondArtist])
+
+    expect(result).toEqual([
+      {
+        label: "firstArtistName",
+        value: "firstArtistId",
+        paramName: SearchCriteria.artistID,
+      },
+      {
+        label: "secondArtistName",
+        value: "secondArtistId",
+        paramName: SearchCriteria.artistID,
+      },
+    ])
+  })
+})
+
+const firstArtist: SavedSearchEntityArtist = {
+  id: "firstArtistId",
+  name: "firstArtistName",
+  slug: "firstArtistSlug",
+}
+
+const secondArtist: SavedSearchEntityArtist = {
+  id: "secondArtistId",
+  name: "secondArtistName",
+  slug: "secondArtistSlug",
+}
 
 const aggregations: Aggregations = [
   {
