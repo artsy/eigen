@@ -193,6 +193,7 @@ export enum ActionNames {
   ArtworkUnsave = "artworkUnsave",
   AskASpecialist = "askASpecialist",
   AuctionsFAQ = "auctionsFAQ",
+  FAQ = "FAQ",
   IdentityVerificationFAQ = "identityVerificationFAQ",
   ConditionsOfSale = "conditionsOfSale",
   ConsignWithArtsy = "consignWithArtsy",
