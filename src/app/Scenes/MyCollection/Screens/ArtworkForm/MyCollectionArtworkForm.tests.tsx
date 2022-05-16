@@ -223,10 +223,12 @@ describe("MyCollectionArtworkForm", () => {
         act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artwork-skip-button")))
 
         await flushPromiseQueue()
+
         // Edit Details Screen
 
         expect(getByText("Add Details")).toBeTruthy()
 
+        expect(getByTestId("ArtistDisplayNameInput").props.value).toBe(undefined)
         expect(getByTestId("TitleInput").props.value).toBe("")
         expect(getByTestId("DateInput").props.value).toBe("")
         expect(getByTestId("MaterialsInput").props.value).toBe("")
