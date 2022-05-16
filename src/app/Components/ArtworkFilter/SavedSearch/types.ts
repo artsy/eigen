@@ -1,3 +1,5 @@
+import { OwnerType } from "@artsy/cohesion"
+
 export enum SearchCriteria {
   artistID = "artistID",
   artistIDs = "artistIDs",
@@ -38,4 +40,22 @@ export interface SearchCriteriaAttributes {
   [SearchCriteria.width]?: string | null
   [SearchCriteria.materialsTerms]?: string[] | null
   [SearchCriteria.priceRange]?: string | null
+}
+
+export interface SavedSearchEntityArtist {
+  id: string
+  name: string
+  slug: string
+}
+
+export interface SavedSearchEntityOwner {
+  type: OwnerType
+  slug: string
+  id: string
+  name: string
+}
+
+export interface SavedSearchEntity {
+  artists: SavedSearchEntityArtist[]
+  owner: SavedSearchEntityOwner
 }
