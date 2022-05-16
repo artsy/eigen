@@ -276,7 +276,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
           Container: MyCollectionContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,
           renderFallback: ({ retry }) => (
-            <LoadFailureView onRetry={retry!} justifyContent="flex-end" />
+            <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb={100} />
           ),
         })}
       />

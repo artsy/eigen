@@ -1,6 +1,6 @@
 import { useDevToggle } from "app/store/GlobalStore"
 import { debounce } from "lodash"
-import { Flex, Text, Touchable, useColor } from "palette"
+import { BoxProps, Flex, Text, Touchable, useColor } from "palette"
 import React, { useRef, useState } from "react"
 import { Animated, Easing } from "react-native"
 import { ReloadIcon } from "../../palette/svgs/ReloadIcon"
@@ -12,10 +12,10 @@ interface LoadFailureViewProps {
   justifyContent?: JustifyContentValue
 }
 
-export const LoadFailureView: React.FC<LoadFailureViewProps> = ({
+export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   error,
   onRetry,
-  justifyContent = "center",
+  ...restProps
 }) => {
   const color = useColor()
   const spinAnimation = useRef(new Animated.Value(0)).current
@@ -36,7 +36,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = ({
   const showErrorMessage = __DEV__ || useDevToggle("DTShowErrorInLoadFailureView")
 
   return (
-    <Flex flex={1} justifyContent={justifyContent} alignItems="center">
+    <Flex flex={1} alignItems="center" {...restProps}>
       <Text variant="lg">Unable to load</Text>
       <Text variant="md" mb="1">
         Please try again
