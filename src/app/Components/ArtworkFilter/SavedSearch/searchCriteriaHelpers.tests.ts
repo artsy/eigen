@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { FilterParamName } from "../ArtworkFilterHelpers"
 import {
   getAllowedFiltersForSavedSearchInput,
@@ -5,6 +6,7 @@ import {
   getSearchCriteriaFromFilters,
   prepareFilterDataForSaveSearchInput,
 } from "./searchCriteriaHelpers"
+import { SavedSearchEntity, SavedSearchEntityArtist, SavedSearchEntityOwner } from "./types"
 
 describe("getOnlyFilledSearchCriteriaValues", () => {
   it("should return nothing", () => {
@@ -258,6 +260,22 @@ describe("getAllowedFiltersForSavedSearchInput", () => {
 })
 
 describe("getSearchCriteriaFromFilters", () => {
+  const owner: SavedSearchEntityOwner = {
+    type: OwnerType.artist,
+    id: "ownerId",
+    name: "ownerName",
+    slug: "ownerSlug",
+  }
+  const firstArtist: SavedSearchEntityArtist = {
+    id: "firstArtistId",
+    name: "firstArtistName",
+    slug: "firstArtistSlug",
+  }
+  const secondArtist: SavedSearchEntityArtist = {
+    id: "secondArtistId",
+    name: "secondArtistName",
+    slug: "secondArtistSlug",
+  }
   const filters = [
     {
       displayText: "Prints",
@@ -272,10 +290,50 @@ describe("getSearchCriteriaFromFilters", () => {
   ]
 
   it("returns fields in the saved search criteria format", () => {
-    expect(getSearchCriteriaFromFilters("artistID", filters)).toEqual({
-      artistIDs: ["artistID"],
+    const savedSearchEntity: SavedSearchEntity = {
+      artists: [firstArtist],
+      owner,
+    }
+
+    expect(getSearchCriteriaFromFilters(savedSearchEntity, filters)).toEqual({
+      artistIDs: ["firstArtistId"],
       additionalGeneIDs: ["prints"],
       majorPeriods: ["1990"],
+    })
+  })
+
+  it("returns fields in the saved search criteria format for multiple artists", () => {
+    const savedSearchEntity: SavedSearchEntity = {
+      artists: [firstArtist, secondArtist],
+      owner,
+    }
+
+    expect(getSearchCriteriaFromFilters(savedSearchEntity, filters)).toEqual({
+      artistIDs: ["firstArtistId", "secondArtistId"],
+      additionalGeneIDs: ["prints"],
+      majorPeriods: ["1990"],
+    })
+  })
+
+  it("returns single artist id", () => {
+    const savedSearchEntity: SavedSearchEntity = {
+      artists: [firstArtist],
+      owner,
+    }
+
+    expect(getSearchCriteriaFromFilters(savedSearchEntity, [])).toEqual({
+      artistIDs: ["firstArtistId"],
+    })
+  })
+
+  it("returns multiple artist ids", () => {
+    const savedSearchEntity: SavedSearchEntity = {
+      artists: [firstArtist, secondArtist],
+      owner,
+    }
+
+    expect(getSearchCriteriaFromFilters(savedSearchEntity, [])).toEqual({
+      artistIDs: ["firstArtistId", "secondArtistId"],
     })
   })
 })
