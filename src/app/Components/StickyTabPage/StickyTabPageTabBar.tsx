@@ -1,4 +1,3 @@
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Sans } from "palette"
 import { NavigationalTabs } from "palette/elements/Tabs"
 import React, { useEffect, useRef, useState } from "react"
@@ -10,6 +9,7 @@ import {
   View,
   ViewProps,
 } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 import { useStickyTabPageContext } from "./StickyTabPageContext"
 
 export const TAB_BAR_HEIGHT = 48

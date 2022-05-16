@@ -4,12 +4,12 @@ import { ToastProvider } from "app/Components/Toast/toastHook"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { combineProviders } from "app/utils/combineProviders"
 import { track } from "app/utils/track"
-import { ProvideScreenDimensions } from "app/utils/useScreenDimensions"
 import { Theme } from "palette"
 import { Component, Suspense } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { Environment, RelayEnvironmentProvider } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
+import { ProvideScreenDimensions } from "shared/hooks"
 import { ReactElement } from "simple-markdown"
 
 const Wrappers: React.FC = ({ children }) =>

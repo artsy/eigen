@@ -10,11 +10,11 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, ClassTheme } from "palette"
 import React, { Component } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 
 interface Props {
   me: FavoriteArtworks_me

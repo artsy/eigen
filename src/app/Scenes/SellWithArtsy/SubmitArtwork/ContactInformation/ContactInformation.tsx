@@ -74,7 +74,7 @@ export const ContactInformation: React.FC<{
           <Spacer mt={4} />
           <Input
             title="Name"
-            placeholder="Your Full Name"
+            placeholder="Your full name"
             onChangeText={handleChange("userName")}
             value={values.userName}
             accessibilityLabel="Name"
@@ -85,7 +85,7 @@ export const ContactInformation: React.FC<{
           <Spacer mt={4} />
           <Input
             title="Email"
-            placeholder="Your Email Address"
+            placeholder="Your email address"
             keyboardType="email-address"
             onChangeText={handleChange("userEmail")}
             value={values.userEmail}

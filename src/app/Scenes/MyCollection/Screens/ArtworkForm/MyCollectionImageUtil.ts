@@ -2,7 +2,7 @@ import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArt
 import { getMeasurements, Size } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { deleteLocalImages, LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
-import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
+import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
 import { ArtworkFormValues, Image } from "../../State/MyCollectionArtworkModel"
 
 export const storeLocalPhotos = (slug: string, photos: Image[]) => {

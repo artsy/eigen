@@ -151,6 +151,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/inquiry/:artworkID", "Inquiry"),
     addRoute("/viewing-rooms", "ViewingRooms"),
     addRoute("/auction-results-for-artists-you-follow", "AuctionResultsForArtistsYouFollow"),
+    addRoute("/auction-results-for-artists-you-collect", "AuctionResultsForArtistsYouCollect"),
     addRoute("/viewing-room/:viewing_room_id", "ViewingRoom"),
     addRoute("/viewing-room/:viewing_room_id/artworks", "ViewingRoomArtworks"),
     addRoute("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
@@ -239,6 +240,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/user/purchases/:orderID", "OrderDetails"),
     addRoute("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
     addRoute("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
+    addRoute("/reverse-search-image-results", "ReverseSearchImageResults"),
     addWebViewRoute("/orders/:orderID", {
       mimicBrowserBackButton: true,
       useRightCloseButton: true,

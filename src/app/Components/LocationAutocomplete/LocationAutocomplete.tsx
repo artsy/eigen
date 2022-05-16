@@ -64,7 +64,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ initialLocation, onChang
     <>
       <Input
         title="City"
-        placeholder="Enter City Where Artwork Is Located"
+        placeholder="Enter city where artwork is located"
         onChangeText={setQuery}
         onFocus={reset}
         testID="Submission_LocationInput"
@@ -158,7 +158,7 @@ export const LocationPredictions = ({
           )}
         </Flex>
         <Flex alignItems="flex-end" pt={0.5}>
-          <Image source={require("@images/powered_by_google.webp")} resizeMode="contain" />
+          <Image source={require("images/powered_by_google.webp")} resizeMode="contain" />
         </Flex>
       </Flex>
     </Box>

@@ -92,7 +92,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           {!!userProfileImagePath ? (
             <Avatar src={userProfileImagePath} size="md" />
           ) : (
-            <Image source={require("@images/profile_placeholder_avatar.webp")} />
+            <Image source={require("images/profile_placeholder_avatar.webp")} />
           )}
         </Box>
         <Box px={2} flexShrink={1}>

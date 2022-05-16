@@ -36,7 +36,7 @@ export const NotFoundFailureView: React.FC<NotFoundFailureViewProps> = ({
         </Button>
 
         {!!showErrorMessage && (
-          <Flex m={2}>
+          <Flex my={2}>
             <Text>Error: {error?.message}</Text>
           </Flex>
         )}

@@ -2,11 +2,14 @@ import React from "react"
 import { QueryRenderer } from "react-relay"
 
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { NotFoundFailureView } from "app/Components/NotFoundFailureView"
+import { getErrorHttpStatusCodes } from "app/Components/RetryErrorBoundary"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { ProvidePlaceholderContext } from "./placeholders"
 
 type ReadyState = Parameters<React.ComponentProps<typeof QueryRenderer>["render"]>[0]
 
-type FallbackRenderer = (args: { retry: null | (() => void) }) => React.ReactElement | null
+export type FallbackRenderer = (args: { retry: null | (() => void) }) => React.ReactElement | null
 
 export function renderWithPlaceholder<Props>({
   Container,
@@ -50,6 +53,14 @@ export function renderWithPlaceholder<Props>({
           // tslint:disable-next-line:no-empty
         } catch (e) {}
         console.error("Error data", data)
+      }
+
+      const enableNotFoundFailureView = unsafe_getFeatureFlag("AREnableNotFoundFailureView")
+
+      const isNotFoundError = getErrorHttpStatusCodes(error).includes(404)
+
+      if (isNotFoundError && enableNotFoundFailureView) {
+        return <NotFoundFailureView error={error} />
       }
 
       if (renderFallback) {

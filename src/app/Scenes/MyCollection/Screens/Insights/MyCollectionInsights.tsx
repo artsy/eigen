@@ -4,7 +4,7 @@ import { Flex, Text, useSpace } from "palette"
 import React, { Suspense } from "react"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
-import { AuctionResultsBasedOnArtistsYouCollect } from "./AuctionResultsBasedOnArtistsYouCollect"
+import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
@@ -17,7 +17,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       <Text variant="lg" mr={0.5} mb={2}>
         Market Signals
       </Text>
-      <AuctionResultsBasedOnArtistsYouCollect auctionResults={data.me!} />
+      <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
     </StickyTabPageScrollView>
   )
 }
@@ -38,7 +38,7 @@ export const MyCollectionInsightsPlaceHolder = () => (
 export const MyCollectionInsightsScreenQuery = graphql`
   query MyCollectionInsightsQuery {
     me {
-      ...AuctionResultsBasedOnArtistsYouCollect_me
+      ...AuctionResultsForArtistsYouCollectRail_me
     }
   }
 `

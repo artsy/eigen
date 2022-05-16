@@ -1,7 +1,6 @@
-import { Flex, Text, useColor } from "palette"
+import { Flex, PopIn, Text, useColor } from "palette"
 import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
-import { PopIn } from "../../../app/Components/PopIn"
 
 const WRAPPER_WIDTH = 56
 const WRAPPER_HEIGHT = 52

@@ -4,8 +4,8 @@ import { View } from "react-native"
 
 import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { FragmentRef } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import SaleListItem from "./SaleListItem"
 
 export const SaleList: React.FC<{

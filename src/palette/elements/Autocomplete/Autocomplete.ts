@@ -1,4 +1,4 @@
-import { normalizeText } from "./normalizeText"
+import { normalizeText } from "shared/utils"
 
 export interface AutocompleteEntry<T> {
   key: T

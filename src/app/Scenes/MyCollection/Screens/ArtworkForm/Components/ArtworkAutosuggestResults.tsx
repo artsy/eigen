@@ -6,10 +6,10 @@ import { FadeIn } from "app/Components/FadeIn"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, Flex } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 
 export interface ArtworkAutosuggestResultsProps {
   viewer: ArtworkAutosuggestResults_viewer

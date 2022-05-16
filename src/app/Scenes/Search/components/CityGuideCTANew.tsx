@@ -4,7 +4,7 @@ import React from "react"
 import { Image } from "react-native"
 
 export const CityGuideCTANew = () => {
-  const mapImage = require("../../../../../images/city-guide.webp")
+  const mapImage = require("images/city-guide.webp")
 
   return (
     <ClassTheme>
