@@ -3,7 +3,11 @@ import {
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { extractPillFromAggregation, extractPills, extractSizeLabel } from "./pillExtractors"
+import {
+  extractPillFromAggregation,
+  extractPillsFromCriteria,
+  extractSizeLabel,
+} from "./pillExtractors"
 
 describe("extractPillFromAggregation", () => {
   it("returns pills", () => {
@@ -70,7 +74,7 @@ describe("extractSizeLabel", () => {
   })
 })
 
-describe("extractPills", () => {
+describe("extractPillsFromCriteria", () => {
   it("should correctly extract pills", () => {
     const attributes: SearchCriteriaAttributes = {
       materialsTerms: ["acrylic", "canvas"],
@@ -82,7 +86,7 @@ describe("extractPills", () => {
       colors: ["unknown-color"],
     }
 
-    const result = extractPills({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     const pills = [
       {
@@ -135,7 +139,7 @@ describe("extractPills", () => {
       offerable: true,
       atAuction: true,
     }
-    const result = extractPills({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     const pills = [
       {
@@ -159,7 +163,7 @@ describe("extractPills", () => {
     }
 
     // with unit inches
-    const inResult = extractPills({ attributes, aggregations, unit: "in" })
+    const inResult = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     expect(inResult).toEqual([
       {
@@ -175,7 +179,7 @@ describe("extractPills", () => {
     ])
 
     // with unit centimeters
-    const cmResult = extractPills({ attributes, aggregations, unit: "cm" })
+    const cmResult = extractPillsFromCriteria({ attributes, aggregations, unit: "cm" })
 
     expect(cmResult).toEqual([
       {
@@ -195,7 +199,7 @@ describe("extractPills", () => {
     const attributes: SearchCriteriaAttributes = {
       majorPeriods: ["2020", "2010"],
     }
-    const result = extractPills({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -215,7 +219,7 @@ describe("extractPills", () => {
     const attributes: SearchCriteriaAttributes = {
       colors: ["pink", "orange", "darkorange"],
     }
-    const result = extractPills({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -240,7 +244,7 @@ describe("extractPills", () => {
     const attributes: SearchCriteriaAttributes = {
       attributionClass: ["unique", "unknown edition"],
     }
-    const result = extractPills({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -260,7 +264,7 @@ describe("extractPills", () => {
     const attributes: SearchCriteriaAttributes = {
       priceRange: "1000-1500",
     }
-    const result = extractPills({ attributes, aggregations, unit: "in" })
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {

@@ -143,7 +143,7 @@ export const extractWaysToBuyPill = (paramName: SearchCriteria): SavedSearchPill
   }
 }
 
-export const extractPills = ({
+export const extractPillsFromCriteria = ({
   attributes,
   aggregations,
   unit,
@@ -214,6 +214,21 @@ export const extractPills = ({
   })
 
   return preparedPills
+}
+
+export const extractPills = (options: {
+  attributes: SearchCriteriaAttributes
+  aggregations: Aggregations
+  unit: Metric
+}) => {
+  const { attributes, aggregations, unit } = options
+  const pillsFromCriteria = extractPillsFromCriteria({
+    attributes,
+    aggregations,
+    unit,
+  })
+
+  return compact([...pillsFromCriteria])
 }
 
 export const extractPillValue = (pills: SavedSearchPill[]) => {
