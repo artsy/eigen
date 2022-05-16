@@ -10,9 +10,10 @@ import { resizeImage } from "app/utils/resizeImage"
 import { ReactNativeFile } from "extract-files"
 import { Box, Button, Screen, Text } from "palette"
 import { useState } from "react"
-import { Alert } from "react-native"
+import { Alert, Platform } from "react-native"
 import { graphql } from "react-relay"
 import { fetchQuery } from "relay-runtime"
+import RNFetchBlob from "rn-fetch-blob"
 import { ReverseSearchImageResultItemFragmentContainer } from "./ReverseSearchImageResultItem"
 
 type SearchImageResults = NonNullable<
@@ -50,6 +51,25 @@ export const ReverseSearchImageResults = () => {
         quality: 85,
         onlyScaleDown: true,
       })
+
+      /**
+       * Images posted to server via fetch get their size inflated significantly for iOS.
+       * This is a small hack to solve this problem
+       *
+       * You can find more context here: https://github.com/facebook/react-native/issues/27099
+       */
+      if (Platform.OS === "ios") {
+        const updatedPath = replaceFilenameInValue(resizedImage.path, resizedImage.name)
+        const updatedURI = replaceFilenameInValue(resizedImage.uri, resizedImage.name)
+        const updatedFilename = replaceFilenameInValue(resizedImage.name, resizedImage.name)
+
+        await RNFetchBlob.fs.mv(resizedImage.path, updatedPath)
+
+        resizedImage.path = updatedPath
+        resizedImage.uri = updatedURI
+        resizedImage.name = updatedFilename
+      }
+
       const fileImage = new ReactNativeFile({
         uri: resizedImage.uri,
         name: resizedImage.name,
@@ -115,4 +135,8 @@ export const ReverseSearchImageResults = () => {
       </Screen.Body>
     </Screen>
   )
+}
+
+const replaceFilenameInValue = (value: string, filename: string) => {
+  return value.replace(filename, `${filename}.toUpload`)
 }
