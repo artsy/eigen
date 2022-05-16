@@ -16,6 +16,9 @@ export interface SaleTimeFeature {
 }
 
 const isNotStartingToday = (startDate: string) => {
+  if (!startDate.length) {
+    return false
+  }
   const todayDay = moment().toObject().date
   const startDateDay = moment(startDate).toObject().date
   return todayDay !== startDateDay

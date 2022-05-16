@@ -98,6 +98,8 @@ export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted
     hours: duration.hours().toString(),
     minutes: duration.minutes().toString(),
     seconds: duration.seconds().toString(),
+    startAt: "",
+    endDate: "",
   }
   const timerInfo = getTimerInfo(time, hasStarted)
 

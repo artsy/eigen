@@ -27,6 +27,8 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({ saleArtwork, sale, d
     hours: duration.hours().toString(),
     minutes: duration.minutes().toString(),
     seconds: duration.seconds().toString(),
+    startAt: "",
+    endDate: "",
   }
 
   const timerCopy = getTimerInfo(time, saleHasStarted)
