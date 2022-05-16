@@ -11,9 +11,6 @@ export const CreateSavedSearchAlertScreen: React.FC<Props> = (props) => {
   const { route, navigation } = props
   const { attributes, aggregations, entity, ...other } = route.params
 
-  console.log("[debug] params", route.params)
-  console.log("[debug] other", other)
-
   return (
     <SavedSearchStoreProvider initialData={{ attributes, aggregations, entity }}>
       <Box flex={1}>
