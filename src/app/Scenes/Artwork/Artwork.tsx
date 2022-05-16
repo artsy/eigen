@@ -14,13 +14,14 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Flex, LinkButton, Separator } from "palette"
+import { Box, LinkButton, Separator } from "palette"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { ResponsiveValue } from "styled-system"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
@@ -230,11 +231,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "partnerSection",
         element: (
-          <Flex background="red">
-            <LinkButton onPress={() => navigateToPartner(partner?.href!)}>
-              {partner?.name}
-            </LinkButton>
-          </Flex>
+          <LinkButton onPress={() => navigateToPartner(partner?.href!)}>{partner?.name}</LinkButton>
         ),
         verticalMargin: 2,
       })
@@ -407,7 +404,7 @@ interface ArtworkPageSection {
   element: JSX.Element
   excludePadding?: boolean
   // use verticalMargin to pass custom spacing between separator and section
-  verticalMargin?: number
+  verticalMargin?: ResponsiveValue<number>
 }
 
 export const ArtworkContainer = createRefetchContainer(
