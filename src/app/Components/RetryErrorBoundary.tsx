@@ -1,6 +1,8 @@
 import { captureMessage } from "@sentry/react-native"
-import { Component } from "react"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import React, { Component } from "react"
 import { LoadFailureView } from "./LoadFailureView"
+import { NotFoundFailureView } from "./NotFoundFailureView"
 
 enum ErrorState {
   Okay,
@@ -46,6 +48,10 @@ export class RetryErrorBoundaryLegacy extends Component<Props, State> {
 // Taken from https://relay.dev/docs/guided-tour/rendering/error-states/#when-using-uselazyloadquery
 interface RetryErrorBoundaryProps {
   failureView?: React.FC<{ error: Error; retry: () => void }>
+  notFoundTitle?: string
+  notFoundText?: string
+  notFoundBackButtonText?: string
+  notFoundOnBackPress?: () => void
   children: React.ReactNode
 }
 interface RetryErrorBoundaryState {
@@ -67,16 +73,37 @@ export class RetryErrorBoundary extends Component<
   }
 
   render() {
-    const { children, failureView } = this.props
+    const { children, failureView, notFoundTitle, notFoundText, notFoundBackButtonText } =
+      this.props
     const { error } = this.state
+
+    const enableNotFoundFailureView = unsafe_getFeatureFlag("AREnableNotFoundFailureView")
 
     if (error) {
       if (failureView) {
         return failureView({ error, retry: this._retry })
       }
+
+      const isNotFoundError = getErrorHttpStatusCodes(error).includes(404)
+
+      if (isNotFoundError && enableNotFoundFailureView) {
+        return (
+          <NotFoundFailureView
+            title={notFoundTitle}
+            text={notFoundText}
+            backButtonText={notFoundBackButtonText}
+            error={error}
+          />
+        )
+      }
+
       return <LoadFailureView error={error} onRetry={this._retry} />
     }
 
     return children
   }
+}
+
+export const getErrorHttpStatusCodes = (error: any) => {
+  return error?.res?.json?.errors?.[0]?.extensions?.httpStatusCodes || []
 }

@@ -5,7 +5,7 @@ import { Button, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { useScreenDimensions } from "../../../utils/useScreenDimensions"
+import { useScreenDimensions } from "shared/hooks"
 import { ArtistShowFragmentContainer } from "../ArtistShows/ArtistShow"
 
 interface Props {

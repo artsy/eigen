@@ -95,7 +95,7 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByText("Select an Artist")).toBeTruthy()
 
         act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for Artists on Artsy"), "banksy")
+          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
         )
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -201,7 +201,7 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByText("Select an Artist")).toBeTruthy()
 
         act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for Artists on Artsy"), "banksy")
+          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
         )
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({

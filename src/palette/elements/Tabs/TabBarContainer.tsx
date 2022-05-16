@@ -1,8 +1,8 @@
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { compact } from "lodash"
 import { useColor } from "palette/hooks"
 import React, { useEffect, useRef } from "react"
 import { Animated, LayoutRectangle, ScrollView, View } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 import { Box } from "../Box"
 
 export const TAB_BAR_HEIGHT = 48

@@ -194,6 +194,12 @@ export const features = defineFeatures({
     description: "Enable My Collection insights tab",
     showInAdminMenu: true,
   },
+  AREnableNotFoundFailureView: {
+    readyForRelease: true,
+    description: "Enable Not Found Failure View",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableNotFoundFailureView",
+  },
   AREnableArtworksFromNonArtsyArtists: {
     readyForRelease: false,
     description: "Enable My Collection artworks from non-Artsy artists",

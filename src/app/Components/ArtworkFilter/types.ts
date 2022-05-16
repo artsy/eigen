@@ -1,4 +1,3 @@
-import { FilterConfigTypes } from "."
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 
 export type FilterScreen =
@@ -36,4 +35,9 @@ export interface FilterDisplayConfig {
   // for `local` filtering
   values?: any[]
   localSortAndFilter?: (items: any[], value?: any) => any[]
+}
+
+export enum FilterConfigTypes {
+  FilterScreen = "FilterScreen",
+  FilterScreenCheckboxItem = "FilterScreenCheckboxItem",
 }

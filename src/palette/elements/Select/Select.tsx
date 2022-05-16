@@ -1,18 +1,18 @@
-import { TriangleDown } from "app/Icons/TriangleDown"
-import { Autocomplete } from "app/utils/Autocomplete"
+import { FancyModal } from "app/Components/FancyModal/FancyModal"
+import { SearchInput } from "app/Components/SearchInput"
 import {
+  Autocomplete,
   CloseIcon,
   Flex,
   Separator,
   Text,
   Touchable,
+  TriangleDown,
   useColor,
   useTextStyleForPalette,
 } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
-import { FancyModal } from "../../../app/Components/FancyModal/FancyModal"
-import { SearchInput } from "../../../app/Components/SearchInput"
 import { INPUT_HEIGHT, InputTitle } from "../Input"
 
 export interface SelectOption<ValueType> {

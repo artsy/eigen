@@ -7,12 +7,12 @@ import { ZeroState } from "app/Components/States/ZeroState"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, Flex, Text } from "palette"
 import React, { useState } from "react"
 import { FlatList, Image } from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionArtworkEdge } from "./MyCollection"
@@ -158,7 +158,7 @@ const MyCollectionZeroState: React.FC = () => {
             Add artwork
           </Button>
           <Flex flexDirection="row" justifyContent="center" alignItems="center" py={1}>
-            <Image source={require("@images/lock.webp")} />
+            <Image source={require("images/lock.webp")} />
             <Text color="black60" pl={1} variant="xs">
               My Collection is not shared with sellers.
             </Text>

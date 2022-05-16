@@ -98,6 +98,7 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
       editionSets {
         internalID
         editionOf
+        isAcquireable
         isOfferableFromInquiry
         listPrice {
           ... on Money {

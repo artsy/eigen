@@ -1,4 +1,3 @@
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { goBack } from "app/navigation/navigate"
@@ -14,6 +13,7 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from "react-native"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 
 export interface MyAccountFieldEditScreen {
   scrollToEnd(): void

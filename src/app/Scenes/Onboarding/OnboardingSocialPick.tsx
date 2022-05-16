@@ -142,7 +142,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                   iconPosition="left-start"
                   icon={
                     <Image
-                      source={require("@images/apple.webp")}
+                      source={require("images/apple.webp")}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -163,7 +163,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                   iconPosition="left-start"
                   icon={
                     <Image
-                      source={require("@images/google.webp")}
+                      source={require("images/google.webp")}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -183,7 +183,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 iconPosition="left-start"
                 icon={
                   <Image
-                    source={require("@images/facebook.webp")}
+                    source={require("images/facebook.webp")}
                     resizeMode="contain"
                     style={{ marginRight: 10 }}
                   />
@@ -243,6 +243,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </Flex>
           </Join>
         </Flex>
+        <Screen.SafeBottomPadding />
       </Screen.Body>
     </Screen>
   )

@@ -93,8 +93,9 @@ expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
 // MARK: - External deps mocks
 
-jest.mock("react-native-screens/native-stack", () => ({
-  createNativeStackNavigator: require("@react-navigation/stack").createStackNavigator,
+jest.mock("react-native-screens", () => ({
+  ...jest.requireActual("react-native-screens"),
+  enableScreens: jest.fn(),
 }))
 
 // @ts-expect-error typescript doesn't see this for some reason
@@ -353,8 +354,8 @@ jest.mock("react-native-keychain", () => ({
 // Native modules
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
+import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
 
@@ -471,7 +472,7 @@ jest.mock("app/relay/createEnvironment", () => ({
   },
 }))
 
-jest.mock("app/utils/useScreenDimensions", () => {
+jest.mock("shared/hooks", () => {
   const React = require("react")
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,
@@ -495,6 +496,7 @@ jest.mock("app/utils/useScreenDimensions", () => {
       return React.createElement(React.Fragment, null, children)
     },
     useScreenDimensions: () => screenDimensions,
+    useOffscreenStyle: () => ({}),
   }
 })
 

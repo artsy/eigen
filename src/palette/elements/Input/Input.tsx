@@ -1,5 +1,4 @@
 import { themeGet } from "@styled-system/theme-get"
-import { MeasuredView } from "app/utils/MeasuredView"
 import { EventEmitter } from "events"
 import _ from "lodash"
 import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
@@ -14,6 +13,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native"
+import { MeasuredView } from "shared/utils"
 import styled from "styled-components/native"
 import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"

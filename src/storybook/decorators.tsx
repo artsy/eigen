@@ -1,8 +1,8 @@
 import { DecoratorFunction } from "@storybook/addons"
 import { TrackingProvider } from "app/tests/renderWithWrappers"
-import { ProvideScreenDimensions } from "app/utils/useScreenDimensions"
 import { Theme } from "palette"
 import { SafeAreaProvider } from "react-native-safe-area-context"
+import { ProvideScreenDimensions } from "shared/hooks"
 
 export const withTheme: DecoratorFunction<React.ReactNode> = (story) => <Theme>{story()}</Theme>
 

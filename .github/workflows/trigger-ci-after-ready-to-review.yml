@@ -6,8 +6,13 @@ on:
   pull_request:
     types: [ready_for_review]
 
+permissions:
+  contents: read
+
 jobs:
   trigger:
+    permissions:
+      contents: none
     runs-on: ubuntu-latest
     steps:
       - name: Trigger release

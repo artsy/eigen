@@ -1,6 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useExperimentFlag, useExperimentVariant } from "app/utils/experiments/hooks"
@@ -25,6 +24,7 @@ import {
   useRelayEnvironment,
 } from "react-relay"
 import { useTracking } from "react-tracking"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import styled from "styled-components"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { CityGuideCTANew } from "./components/CityGuideCTANew"
