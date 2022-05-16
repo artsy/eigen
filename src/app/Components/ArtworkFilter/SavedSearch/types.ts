@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ScreenOwnerType } from "@artsy/cohesion"
 
 export enum SearchCriteria {
   artistID = "artistID",
@@ -49,7 +49,7 @@ export interface SavedSearchEntityArtist {
 }
 
 export interface SavedSearchEntityOwner {
-  type: OwnerType
+  type: ScreenOwnerType
   slug: string
   id: string
   name: string

@@ -40,6 +40,7 @@ import {
 import { ArtworkFilterApplyButton } from "./components/ArtworkFilterApplyButton"
 import { AuctionHouseOptionsScreen } from "./Filters/AuctionHouseOptions"
 import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
+import { SavedSearchEntity } from "./SavedSearch/types"
 
 interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
@@ -271,6 +272,16 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     setSelectedMetric(localizedUnit)
   }, [])
 
+  const savedSearchEntity: SavedSearchEntity = {
+    artists: [{ id: id!, name: name!, slug: slug! }],
+    owner: {
+      type: OwnerType.artist,
+      id: id!,
+      slug: slug!,
+      name: name!,
+    },
+  }
+
   return (
     <NavigationContainer independent>
       <FancyModal
@@ -362,7 +373,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             visible={isCreateAlertModalVisible}
             artistId={id!}
             artistName={name!}
-            artistSlug={slug!}
+            entity={savedSearchEntity}
             closeModal={() => setIsCreateAlertModalVisible(false)}
             onComplete={exitModal}
           />
