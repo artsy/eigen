@@ -2,7 +2,7 @@ import { BellIcon, Button, Flex, Text } from "palette"
 
 export const CreateArtworkAlertSection = () => {
   return (
-    <Flex my={-2} flexDirection="row" justifyContent="space-between">
+    <Flex flexDirection="row" justifyContent="space-between">
       <Flex flex={1}>
         <Text variant="xs" numberOfLines={2}>
           Be notified when a similar piece is available

@@ -230,12 +230,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "partnerSection",
         element: (
-          <Flex my={-2}>
+          <Flex background="red">
             <LinkButton onPress={() => navigateToPartner(partner?.href!)}>
               {partner?.name}
             </LinkButton>
           </Flex>
         ),
+        verticalMargin: 2,
       })
     }
 
@@ -243,6 +244,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "createAlertSection",
         element: <CreateArtworkAlertSection />,
+        verticalMargin: 2,
       })
     }
 
@@ -382,15 +384,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
           keyboardShouldPersistTaps="handled"
           data={sectionsData()}
           ItemSeparatorComponent={() => (
-            <Box mx={2} my={3}>
+            <Box mx={2}>
               <Separator />
             </Box>
           )}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           contentContainerStyle={{ paddingBottom: 40 }}
-          renderItem={({ item }) =>
-            item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>
-          }
+          renderItem={({ item }) => (
+            <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
+              {item.element}
+            </Box>
+          )}
         />
       )}
       <QAInfo />
@@ -402,6 +406,8 @@ interface ArtworkPageSection {
   key: string
   element: JSX.Element
   excludePadding?: boolean
+  // use verticalMargin to pass custom spacing between separator and section
+  verticalMargin?: number
 }
 
 export const ArtworkContainer = createRefetchContainer(
