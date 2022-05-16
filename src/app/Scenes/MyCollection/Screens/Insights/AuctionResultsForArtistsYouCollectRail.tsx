@@ -30,7 +30,7 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
     <Flex pb={3}>
       <SectionTitle
         title="Auction Results"
-        subtitle="Recent Auction Results from the Artists You Collect"
+        subtitle="Based on Auction Results for the Last 36 Months"
         onPress={() => {
           navigate("/auction-results-for-artists-you-collect")
         }}
