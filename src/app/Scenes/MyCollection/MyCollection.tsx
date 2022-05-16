@@ -276,6 +276,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
           Container: MyCollectionContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,
           renderFallback: ({ retry }) => (
+            // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
             <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb={100} />
           ),
         })}
