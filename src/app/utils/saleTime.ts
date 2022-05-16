@@ -65,7 +65,7 @@ export const getTimerInfo = (
         color = "red100"
         // More than 24 hours until close
       } else if (parsedDays >= 1) {
-        copy = `${parsedDays} Day${parsedDays >= 1 ? "s" : ""} Until Lots Start Closing`
+        copy = `${parsedDays} Day${parsedDays > 1 ? "s" : ""} Until Lots Start Closing`
       }
       // 1-24 hours until close
       else if (parsedDays < 1 && parsedHours >= 1) {
