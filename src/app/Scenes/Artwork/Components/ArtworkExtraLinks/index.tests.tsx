@@ -373,17 +373,17 @@ describe("ArtworkExtraLinks", () => {
         )
 
       it("should not show the FaqAndSpecialistSection component", () => {
-        const { queryAllByText } = TestRenderer()
+        const { queryByText } = TestRenderer()
 
         // Makes sure that no parts of the text references of the FaqAndSpecialistSection
         // appear in the rendered component when ff - AREnableCreateArtworkAlert is true
 
-        expect(queryAllByText("By placing a bid you agree to")).toStrictEqual([])
-        expect(queryAllByText("Conditions of Sale")).toStrictEqual([])
-        expect(queryAllByText("Have a question?")).toStrictEqual([])
-        expect(queryAllByText("Read our auction FAQs")).toStrictEqual([])
-        expect(queryAllByText("ask a specialist")).toStrictEqual([])
-        expect(queryAllByText("Read our FAQ")).toStrictEqual([])
+        expect(queryByText("By placing a bid you agree to")).toBeNull()
+        expect(queryByText("Conditions of Sale")).toBeNull()
+        expect(queryByText("Have a question?")).toBeNull()
+        expect(queryByText("Read our auction FAQs")).toBeNull()
+        expect(queryByText("ask a specialist")).toBeNull()
+        expect(queryByText("Read our FAQ")).toBeNull()
       })
     })
   })

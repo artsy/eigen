@@ -25,7 +25,6 @@ import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutA
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
-// import { FaqAndSpecialistSection } from "./Components/ArtworkExtraLinks/FaqAndSpecialistSection"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
@@ -227,12 +226,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    // --- place the components here ---
-
-    // add partner section
-    // should we add here the is_default_profile_public field?
-    // if (!!partner?.href && !!partner?.name &&enableCreateArtworkAlert) {
-    if (true) {
+    if (!!partner?.href && !!partner?.name && enableCreateArtworkAlert) {
       sections.push({
         key: "partnerSection",
         element: (
@@ -245,7 +239,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    // add create alert section
     if (enableCreateArtworkAlert) {
       sections.push({
         key: "createAlertSection",
