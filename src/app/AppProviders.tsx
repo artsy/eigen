@@ -3,6 +3,7 @@ import { Spinner, Theme } from "palette"
 import { Component, Suspense } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
+import { ProvideScreenDimensions } from "shared/hooks"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
 import { RetryErrorBoundary } from "./Components/RetryErrorBoundary"
@@ -12,7 +13,6 @@ import { GlobalStore, GlobalStoreProvider, useFeatureFlag } from "./store/Global
 import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"
 import { track } from "./utils/track"
-import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 
 export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
   combineProviders(

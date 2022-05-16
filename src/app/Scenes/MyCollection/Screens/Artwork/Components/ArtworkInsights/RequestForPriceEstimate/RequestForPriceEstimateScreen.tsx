@@ -2,7 +2,6 @@ import {
   RequestForPriceEstimateScreenMutation,
   RequestForPriceEstimateScreenMutationResponse,
 } from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
-import { ArtsyKeyboardAvoidingViewContext } from "app/Components/ArtsyKeyboardAvoidingView"
 import { Toast } from "app/Components/Toast/Toast"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -11,6 +10,7 @@ import { FormikProvider, useFormik } from "formik"
 import React from "react"
 import { Environment } from "react-relay"
 import { commitMutation, graphql } from "relay-runtime"
+import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import * as Yup from "yup"
 import { RequestForPriceEstimateForm } from "./RequestForPriceEstimateForm"
 
@@ -94,6 +94,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
             "top",
             {
               backgroundColor: "blue100",
+              duration: "long",
             }
           )
           goBack()

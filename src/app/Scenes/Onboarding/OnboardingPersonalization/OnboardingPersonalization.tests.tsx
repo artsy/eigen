@@ -4,6 +4,7 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
+import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import React from "react"
@@ -12,8 +13,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingPersonalizationList } from "./OnboardingPersonalization"
 
 jest.unmock("react-relay")
-
-const navigateMock = jest.fn()
 
 describe("OnboardingPersonalizationList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -39,7 +38,7 @@ describe("OnboardingPersonalizationList", () => {
             <OnboardingPersonalizationList
               // no need to redeclare the OnboardingPersonalization_highlights fragment here
               highlights={props.highlights as OnboardingPersonalization_highlights}
-              navigation={{ navigate: navigateMock } as any}
+              navigation={{ navigate: mockNavigate } as any}
               route={null as any}
             />
           )
@@ -60,7 +59,7 @@ describe("OnboardingPersonalizationList", () => {
 
       const searchInput = tree.root.findByProps({ testID: "searchArtistButton" })
       searchInput.props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingPersonalizationModal")
+      expect(mockNavigate).toHaveBeenCalledWith("OnboardingPersonalizationModal")
     })
   })
 

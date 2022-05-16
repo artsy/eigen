@@ -13,6 +13,7 @@ import {
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { GlobalStore } from "app/store/GlobalStore"
+import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
@@ -22,7 +23,6 @@ import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
 import { myCollectionUpdateArtwork } from "../../mutations/myCollectionUpdateArtwork"
-import { refreshMyCollection } from "../../MyCollection"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
@@ -250,6 +250,7 @@ export const updateArtwork = async (
     pricePaidCurrency,
     artist,
     artistIds,
+    artistDisplayName,
     ...others
   } = values
   const externalImageUrls = await uploadPhotos(photos)
@@ -266,7 +267,8 @@ export const updateArtwork = async (
 
   if (props.mode === "add") {
     const response = await myCollectionCreateArtwork({
-      artistIds: [artistSearchResult!.internalID as string],
+      artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : undefined,
+      artists: artistDisplayName ? [{ displayName: artistDisplayName }] : undefined,
       externalImageUrls,
       pricePaidCents,
       pricePaidCurrency,
@@ -279,7 +281,7 @@ export const updateArtwork = async (
     }
   } else {
     const response = await myCollectionUpdateArtwork({
-      artistIds: [artistSearchResult!.internalID as string],
+      artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
       artworkId: props.artwork.internalID,
       externalImageUrls,
       pricePaidCents: pricePaidCents ?? null,

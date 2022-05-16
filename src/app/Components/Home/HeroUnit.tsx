@@ -1,11 +1,11 @@
 import { HomeHero_homePage } from "__generated__/HomeHero_homePage.graphql"
 import { Trove_trove } from "__generated__/Trove_trove.graphql"
 import { isPad } from "app/utils/hardware"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Text, Touchable, useColor } from "palette"
 import React, { useState } from "react"
 import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
+import { useScreenDimensions } from "shared/hooks"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 type UnitType = NonNullable<

@@ -39,8 +39,8 @@ import {
 import Config from "react-native-config"
 import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
 import Keychain from "react-native-keychain"
+import { useScreenDimensions } from "shared/hooks"
 import { useUnleashEnvironment } from "./experiments/hooks"
-import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = Object.entries(features)
   .filter(([_, { showInAdminMenu }]) => showInAdminMenu)
@@ -367,7 +367,7 @@ function envMenuOption(
 ): AlertButton | null {
   let text = `Log out and switch to '${capitalize(env)}'`
   if (currentEnv === env) {
-    if (!__DEV__) {
+    if (!ArtsyNativeModule.isBetaOrDev) {
       return null
     }
     if (showCustomURLOptions) {
@@ -401,6 +401,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [showCustomURLOptions, setShowCustomURLOptions] = useState(
     Object.keys(adminOverrides).length > 0
   )
+
   return (
     <>
       <FeatureFlagMenuItem

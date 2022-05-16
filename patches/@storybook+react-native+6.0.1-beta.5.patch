@@ -1,0 +1,128 @@
+diff --git a/node_modules/@storybook/react-native/dist/preview/Preview.js b/node_modules/@storybook/react-native/dist/preview/Preview.js
+index e1ab158..59dd37c 100644
+--- a/node_modules/@storybook/react-native/dist/preview/Preview.js
++++ b/node_modules/@storybook/react-native/dist/preview/Preview.js
+@@ -15,6 +15,7 @@ import Events from '@storybook/core-events';
+ import { toId } from '@storybook/csf';
+ import { ThemeProvider } from 'emotion-theming';
+ import React from 'react';
++import { SafeAreaProvider } from 'react-native-safe-area-context';
+ import OnDeviceUI from './components/OnDeviceUI';
+ import { theme } from './components/Shared/theme';
+ import { loadCsf } from './loadCsf';
+@@ -33,8 +34,8 @@ export default class Preview {
+             const { _storyStore } = this;
+             addons.loadAddons(this._clientApi);
+             const appliedTheme = Object.assign(Object.assign({}, theme), params.theme);
+-            return () => (React.createElement(ThemeProvider, { theme: appliedTheme },
+-                React.createElement(OnDeviceUI, { storyStore: _storyStore, isUIHidden: params.isUIHidden, tabOpen: params.tabOpen, shouldDisableKeyboardAvoidingView: params.shouldDisableKeyboardAvoidingView, keyboardAvoidingViewVerticalOffset: params.keyboardAvoidingViewVerticalOffset })));
++            return () => (React.createElement(SafeAreaProvider, null, React.createElement(ThemeProvider, { theme: appliedTheme },
++                React.createElement(OnDeviceUI, { storyStore: _storyStore, isUIHidden: params.isUIHidden, tabOpen: params.tabOpen, shouldDisableKeyboardAvoidingView: params.shouldDisableKeyboardAvoidingView, keyboardAvoidingViewVerticalOffset: params.keyboardAvoidingViewVerticalOffset }))));
+         };
+         this._setInitialStory = (initialSelection, shouldPersistSelection = true) => __awaiter(this, void 0, void 0, function* () {
+             const story = yield this._getInitialStory(initialSelection, shouldPersistSelection);
+diff --git a/node_modules/@storybook/react-native/dist/preview/components/OnDeviceUI/OnDeviceUI.js b/node_modules/@storybook/react-native/dist/preview/components/OnDeviceUI/OnDeviceUI.js
+index 45578b7..fd9aa10 100644
+--- a/node_modules/@storybook/react-native/dist/preview/components/OnDeviceUI/OnDeviceUI.js
++++ b/node_modules/@storybook/react-native/dist/preview/components/OnDeviceUI/OnDeviceUI.js
+@@ -1,7 +1,7 @@
+ import styled from '@emotion/native';
+ import { addons } from '@storybook/addons';
+ import React, { useState, useEffect, useRef, useReducer } from 'react';
+-import { Animated, Dimensions, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, TouchableOpacity, StatusBar, StyleSheet, } from 'react-native';
++import { Animated, Dimensions, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, TouchableOpacity, StatusBar, StyleSheet, View } from 'react-native';
+ import Events from '@storybook/core-events';
+ import StoryListView from '../StoryListView';
+ import StoryView from '../StoryView';
+@@ -87,7 +87,11 @@ const OnDeviceUI = ({ storyStore, isUIHidden, shouldDisableKeyboardAvoidingView,
+         getPreviewPosition(animatedValue.current, previewDimensions, slideBetweenAnimation, wide),
+     ];
+     const previewStyles = [flex, getPreviewScale(animatedValue.current, slideBetweenAnimation, wide)];
+-    return (React.createElement(SafeAreaView, { style: [flex, IS_ANDROID && IS_EXPO && styles.expoAndroidContainer] },
++    const noSafeArea = (story.parameters && story.parameters.noSafeArea) || false;
++    const WrapperView = noSafeArea ? View : SafeAreaView;
++    return (
++      React.createElement(React.Fragment, null,
++      React.createElement(WrapperView, { style: [flex, IS_ANDROID && IS_EXPO && styles.expoAndroidContainer] },
+         React.createElement(KeyboardAvoidingView, { enabled: !shouldDisableKeyboardAvoidingView || tabOpen !== PREVIEW, behavior: IS_IOS ? 'padding' : null, keyboardVerticalOffset: keyboardAvoidingViewVerticalOffset, style: flex },
+             React.createElement(AbsolutePositionedKeyboardAwareView, { onLayout: setPreviewDimensions, previewDimensions: previewDimensions },
+                 React.createElement(Animated.View, { style: previewWrapperStyles },
+@@ -99,6 +103,8 @@ const OnDeviceUI = ({ storyStore, isUIHidden, shouldDisableKeyboardAvoidingView,
+                     React.createElement(StoryListView, { storyStore: storyStore, selectedStory: story })),
+                 React.createElement(Panel, { style: getAddonPanelPosition(animatedValue.current, previewDimensions.width, wide) },
+                     React.createElement(Addons, { active: tabOpen === ADDONS }))),
+-            React.createElement(Navigation, { tabOpen: tabOpen, onChangeTab: handleToggleTab, initialUiVisible: !isUIHidden }))));
++                    )),
++                    React.createElement(Navigation, { tabOpen: tabOpen, onChangeTab: handleToggleTab, initialUiVisible: !isUIHidden })
++            ));
+ };
+ export default React.memo(OnDeviceUI);
+diff --git a/node_modules/@storybook/react-native/dist/preview/components/OnDeviceUI/navigation/Navigation.js b/node_modules/@storybook/react-native/dist/preview/components/OnDeviceUI/navigation/Navigation.js
+index b7d19a4..8a297b1 100644
+--- a/node_modules/@storybook/react-native/dist/preview/components/OnDeviceUI/navigation/Navigation.js
++++ b/node_modules/@storybook/react-native/dist/preview/components/OnDeviceUI/navigation/Navigation.js
+@@ -1,5 +1,6 @@
+ import React, { useState } from 'react';
+-import { View, SafeAreaView } from 'react-native';
++import { View, ViewProps } from 'react-native';
++import { useSafeAreaInsets } from 'react-native-safe-area-context';
+ import GestureRecognizer from 'react-native-swipe-gestures';
+ import Bar from './Bar';
+ import VisibilityButton from './VisibilityButton';
+@@ -8,6 +9,13 @@ const SWIPE_CONFIG = {
+     directionalOffsetThreshold: 80,
+ };
+ const Navigation = ({ tabOpen, onChangeTab, initialUiVisible }) => {
++    const insets = useSafeAreaInsets();
++    const navStyle = {
++        position: 'absolute',
++        left: 0,
++        right: 0,
++        bottom: insets.bottom,
++    };
+     const [isUIVisible, setIsUIVisible] = useState(initialUiVisible !== undefined ? initialUiVisible : true);
+     const handleToggleUI = () => {
+         setIsUIVisible((oldIsUIVisible) => !oldIsUIVisible);
+@@ -22,11 +30,9 @@ const Navigation = ({ tabOpen, onChangeTab, initialUiVisible }) => {
+             onChangeTab(tabOpen - 1);
+         }
+     };
+-    return (React.createElement(View, null,
+-        React.createElement(SafeAreaView, null,
++    return (React.createElement(View, { style:navStyle },
+             isUIVisible && (React.createElement(GestureRecognizer, { onSwipeLeft: handleSwipeLeft, onSwipeRight: handleSwipeRight, config: SWIPE_CONFIG },
+                 React.createElement(Bar, { index: tabOpen, onPress: onChangeTab }))),
+-            React.createElement(View, null,
+-                React.createElement(VisibilityButton, { onPress: handleToggleUI })))));
++                React.createElement(VisibilityButton, { onPress: handleToggleUI })));
+ };
+ export default React.memo(Navigation);
+diff --git a/node_modules/@storybook/react-native/dist/preview/components/StoryListView/StoryListView.js b/node_modules/@storybook/react-native/dist/preview/components/StoryListView/StoryListView.js
+index def8f1a..498d1dc 100644
+--- a/node_modules/@storybook/react-native/dist/preview/components/StoryListView/StoryListView.js
++++ b/node_modules/@storybook/react-native/dist/preview/components/StoryListView/StoryListView.js
+@@ -1,8 +1,9 @@
+ import styled from '@emotion/native';
+ import { addons } from '@storybook/addons';
+ import Events from '@storybook/core-events';
++import { useSafeAreaInsets} from 'react-native-safe-area-context'
+ import React, { useMemo, useState } from 'react';
+-import { SectionList, StyleSheet } from 'react-native';
++import { SectionList, StyleSheet, View } from 'react-native';
+ import { GridIcon, StoryIcon } from '../Shared/icons';
+ import { Header, Name } from '../Shared/text';
+ const SearchBar = styled.TextInput({
+@@ -89,8 +90,11 @@ const StoryListView = ({ selectedStory, storyStore }) => {
+         const channel = addons.getChannel();
+         channel.emit(Events.SET_CURRENT_STORY, { storyId });
+     };
+-    return (React.createElement(StoryListContainer, null,
++    const insets = useSafeAreaInsets();
++    return (
++      React.createElement(StoryListContainer, null,
++      React.createElement(View, {style: {flex: 1, marginTop: insets.top, marginBottom: insets.bottom + 40}},
+         React.createElement(SearchBar, { testID: "Storybook.ListView.SearchBar", clearButtonMode: "while-editing", disableFullscreenUI: true, onChangeText: handleChangeSearchText, placeholder: "Filter", returnKeyType: "search" }),
+-        React.createElement(SectionList, { style: styles.sectionList, testID: "Storybook.ListView", renderItem: ({ item }) => (React.createElement(ListItem, { title: item.name, kind: item.kind, selected: selectedStory && item.id === selectedStory.id, onPress: () => changeStory(item.id) })), renderSectionHeader: ({ section: { title } }) => (React.createElement(SectionHeader, { title: title, selected: selectedStory && title === selectedStory.kind })), keyExtractor: (item, index) => item.id + index, sections: data, stickySectionHeadersEnabled: false })));
++        React.createElement(SectionList, { style: styles.sectionList, testID: "Storybook.ListView", renderItem: ({ item }) => (React.createElement(ListItem, { title: item.name, kind: item.kind, selected: selectedStory && item.id === selectedStory.id, onPress: () => changeStory(item.id) })), renderSectionHeader: ({ section: { title } }) => (React.createElement(SectionHeader, { title: title, selected: selectedStory && title === selectedStory.kind })), keyExtractor: (item, index) => item.id + index, sections: data, stickySectionHeadersEnabled: false }))));
+ };
+ export default StoryListView;

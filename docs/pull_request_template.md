@@ -1,10 +1,11 @@
-<!-- Use a PR title in the form of
-  `type(PROJECT-XXXX): what changed`
+<!--
+
+➡️ Use a PR title in the form of  `type(PROJECT-XXXX): what changed`
+➡️ Provide the Jira ticket in square brackets like [PROJECT-XXXX]
+
+❗️ If this is a work in progress, remember to prefix it with [WIP] and/or open a draft PR instead of normal PR
+
 -->
-
-<!-- If this is a work in progress, please make sure it's a draft or prefix it with [WIP] -->
-
-<!-- Jira ticket in square brackets like [PROJECT-XXXX] -->
 
 This PR resolves []
 
@@ -55,8 +56,8 @@ This PR resolves []
 
 </details>
 
-Need help with something? Have a look on our [docs], or get in touch with us.
+Need help with something? Have a look at our [docs], or get in touch with us.
 
-[app state migration]: /docs/adding_state_migrations.md
-[feature flag]: /docs/developing_a_feature.md
-[docs]: /docs/README.md
+[app state migration]: ../blob/main/docs/adding_state_migrations.md
+[feature flag]: ../blob/main/docs/developing_a_feature.md
+[docs]: ../blob/main/docs/README.md

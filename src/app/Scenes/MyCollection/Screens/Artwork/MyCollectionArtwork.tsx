@@ -1,6 +1,7 @@
 import { editCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { goBack, navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -159,9 +160,15 @@ export interface MyCollectionArtworkScreenProps {
 
 export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {
   return (
-    <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
-      <MyCollectionArtwork {...props} />
-    </Suspense>
+    <RetryErrorBoundary
+      notFoundTitle="Artwork no longer in My Collection"
+      notFoundText="You previously deleted this artwork."
+      notFoundBackButtonText="Back to My Collection"
+    >
+      <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
+        <MyCollectionArtwork {...props} />
+      </Suspense>
+    </RetryErrorBoundary>
   )
 }
 

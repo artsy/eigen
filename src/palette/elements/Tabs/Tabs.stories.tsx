@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
 import React, { useState } from "react"
 import { View } from "react-native"
-import { withTheme } from "storybook/decorators"
 import { TabsProps, TabsType } from "."
 import { ContentTabs } from "./ContentTabs"
 import { NavigationalTabs } from "./NavigationalTabs"
@@ -22,7 +21,6 @@ const Wrapper: React.FC<WrapperProps> = ({ component: Component, tabs }) => {
 }
 
 storiesOf("Navigational Tabs", module)
-  .addDecorator(withTheme)
   .add("With 3 Tabs", () => {
     const tabs: TabsType = [{ label: "Artist" }, { label: "Artworks" }, { label: "Insights" }]
     return <Wrapper component={NavigationalTabs} tabs={tabs} />
@@ -36,22 +34,19 @@ storiesOf("Navigational Tabs", module)
     return <Wrapper tabs={tabs} component={NavigationalTabs} />
   })
 
-storiesOf("Content Tabs", module)
-  .addDecorator(withTheme)
-  .add("ContentTabs", () => {
-    const tabs: TabsType = [
-      { label: "Artist" },
-      { label: "Artworks" },
-      { label: "Insights" },
-      { label: "Artist Two" },
-      { label: "Long Artworks Artworks" },
-      { label: "An Insight" },
-    ]
-    return <Wrapper tabs={tabs} component={ContentTabs} />
-  })
+storiesOf("Content Tabs", module).add("ContentTabs", () => {
+  const tabs: TabsType = [
+    { label: "Artist" },
+    { label: "Artworks" },
+    { label: "Insights" },
+    { label: "Artist Two" },
+    { label: "Long Artworks Artworks" },
+    { label: "An Insight" },
+  ]
+  return <Wrapper tabs={tabs} component={ContentTabs} />
+})
 
 storiesOf("Step Tabs", module)
-  .addDecorator(withTheme)
   .add("Step Tabs with step 1 completed", () => {
     const tabs: TabsType = [
       { label: "Step 1", completed: true },

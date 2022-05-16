@@ -1,4 +1,3 @@
-import { FilterConfigTypes } from "app/Components/ArtworkFilter"
 import {
   FilterArray,
   FilterData,
@@ -6,11 +5,11 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
-import { normalizeText } from "app/utils/normalizeText"
+import { FilterConfigTypes, FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
 import { compact, filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { useEffect } from "react"
+import { normalizeText } from "shared/utils"
 import { MyCollectionArtworkEdge } from "../MyCollection"
 
 export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
@@ -30,7 +29,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
           orderBy(
             artworks,
             (a) => {
-              return a.pricePaid?.minor
+              return a.pricePaid?.minor ?? 0
             },
             "desc"
           ),
@@ -44,7 +43,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
           orderBy(
             artworks,
             (a) => {
-              return a.pricePaid?.minor
+              return a.pricePaid?.minor ?? 0
             },
             "asc"
           ),
@@ -93,6 +92,22 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "desc"),
       },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Demand Index (High to Low)",
+        paramValue: "demand-index-high-to-low",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) =>
+          orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "desc"),
+      },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Demand Index (Low to High)",
+        paramValue: "demand-index-low-to-high",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) =>
+          orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "asc"),
+      },
     ])
     setFilterOptions(
       compact([
@@ -139,8 +154,13 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
           // tslint:disable-next-line: no-shadowed-variable
           localSortAndFilter: (artworks, attributionClasses: string[]) => {
             return filter(artworks, (a) => {
+              const formattedAttributionClasses = attributionClasses.map((value) =>
+                value.toLocaleLowerCase()
+              )
               if (a.attributionClass && a.attributionClass.name) {
-                return attributionClasses.includes(a.attributionClass.name)
+                return formattedAttributionClasses.includes(
+                  a.attributionClass.name.toLocaleLowerCase()
+                )
               }
               return false
             })

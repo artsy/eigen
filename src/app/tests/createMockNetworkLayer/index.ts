@@ -11,7 +11,7 @@ import { IMocks } from "graphql-tools/dist/Interfaces"
 import getNetworkLayer from "relay-mock-network-layer"
 import { INetwork as RelayNetwork, Network } from "relay-runtime"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import uuid from "uuid"
+import uuidv4 from "uuid-browser/v4"
 
 import { get } from "app/utils/get"
 import schema from "../../../../data/schema.graphql"
@@ -116,7 +116,7 @@ export const createMockFetchQuery = ({
           return idMap.get(source)
         }
 
-        const id = uuid()
+        const id = uuidv4()
         idMap.set(source, id)
         return id
       }

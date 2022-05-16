@@ -39,8 +39,8 @@ const messageForPollingTimeout = {
 }
 
 const Icons = {
-  WINNING: require("../../../../../images/circle-check-green.webp"),
-  PENDING: require("../../../../../images/circle-exclamation.webp"),
+  WINNING: require("images/circle-check-green.webp"),
+  PENDING: require("images/circle-exclamation.webp"),
 }
 
 export class BidResult extends React.Component<BidResultProps> {
@@ -113,7 +113,7 @@ export class BidResult extends React.Component<BidResultProps> {
               <Icon20
                 source={
                   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  Icons[status] || require("../../../../../images/circle-x-red.webp")
+                  Icons[status] || require("images/circle-x-red.webp")
                 }
               />
               <Title mt={2} mb={5}>

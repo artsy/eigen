@@ -10,7 +10,6 @@ import {
   useEnvironment,
 } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Text } from "palette"
 import { parse as parseQueryString } from "query-string"
 import React, { useEffect, useRef, useState } from "react"
@@ -18,8 +17,9 @@ import { Platform } from "react-native"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { parse as parseURL } from "url"
-import { ArtsyKeyboardAvoidingView } from "./ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
 export interface ArtsyWebViewConfig {

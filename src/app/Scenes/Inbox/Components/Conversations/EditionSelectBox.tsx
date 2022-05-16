@@ -1,4 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { BorderBox, Flex, Text, Touchable } from "palette"
 import { RadioButton } from "palette/elements/Radio"
 import React from "react"
@@ -22,16 +23,14 @@ interface Props {
 }
 
 export const EditionSelectBox: React.FC<Props> = ({ edition, selected, onPress }) => {
-  const available = !!edition.isOfferableFromInquiry
+  const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
+  const available =
+    !!edition.isOfferableFromInquiry || (enableConversationalBuyNow && !!edition.isAcquireable)
 
   return (
-    <Touchable
-      onPress={() => {
-        onPress(edition.internalID, available)
-      }}
-    >
+    <Touchable onPress={() => onPress(edition.internalID, available)}>
       <BorderBox p={2} my={0.5} flexDirection="row">
-        <RadioButton selected={selected} />
+        <RadioButton selected={selected} onPress={() => onPress(edition.internalID, available)} />
         <Flex mx={1} flexGrow={1}>
           <Text color={available ? "black100" : "black30"}>{edition.dimensions?.in}</Text>
           <Text color={available ? "black60" : "black30"} variant="xs">

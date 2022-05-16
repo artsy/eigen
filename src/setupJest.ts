@@ -2,6 +2,7 @@ import "@testing-library/jest-native/extend-expect"
 import "jest-extended"
 
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
+import { mockNavigate } from "app/tests/navigationMocks"
 import chalk from "chalk"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
@@ -92,8 +93,9 @@ expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
 // MARK: - External deps mocks
 
-jest.mock("react-native-screens/native-stack", () => ({
-  createNativeStackNavigator: require("@react-navigation/stack").createStackNavigator,
+jest.mock("react-native-screens", () => ({
+  ...jest.requireActual("react-native-screens"),
+  enableScreens: jest.fn(),
 }))
 
 // @ts-expect-error typescript doesn't see this for some reason
@@ -103,6 +105,10 @@ jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 // @ts-expect-error
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
+
+// @ts-expect-error
+import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
+jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 
 // tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
@@ -122,6 +128,17 @@ jest.mock("tipsi-stripe", () => ({
 
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
+
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native")
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: mockNavigate,
+      dispatch: jest.fn(),
+    }),
+  }
+})
 
 jest.mock("react-native-share", () => ({
   open: jest.fn(),
@@ -215,18 +232,6 @@ jest.mock("@react-native-mapbox-gl/maps", () => ({
 }))
 
 const _ = jest.requireActual("lodash")
-
-jest.mock("react-native-safe-area-context", () => {
-  return {
-    ...jest.requireActual("react-native-safe-area-context"),
-    useSafeAreaFrame: () => ({
-      width: 380,
-      height: 550,
-      x: 0,
-      y: 0,
-    }),
-  }
-})
 
 jest.mock("react-native-localize", () => ({
   getCountry: jest.fn(() => "US"),
@@ -349,8 +354,8 @@ jest.mock("react-native-keychain", () => ({
 // Native modules
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
+import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
 
@@ -467,7 +472,7 @@ jest.mock("app/relay/createEnvironment", () => ({
   },
 }))
 
-jest.mock("app/utils/useScreenDimensions", () => {
+jest.mock("shared/hooks", () => {
   const React = require("react")
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,
@@ -491,6 +496,7 @@ jest.mock("app/utils/useScreenDimensions", () => {
       return React.createElement(React.Fragment, null, children)
     },
     useScreenDimensions: () => screenDimensions,
+    useOffscreenStyle: () => ({}),
   }
 })
 
