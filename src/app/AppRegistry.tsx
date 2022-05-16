@@ -97,10 +97,10 @@ import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { ReverseSearchImageResults } from "./Scenes/ReverseSearchImageResults/ReverseSearchImageResults"
-import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale"
+import { SaleQueryRenderer } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
-import { SalesQueryRenderer, SalesScreenQuery } from "./Scenes/Sales"
+import { SalesQueryRenderer } from "./Scenes/Sales"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
@@ -328,8 +328,8 @@ export const modules = defineModules({
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkSubmissionStatusFAQ: reactModule(ArtworkSubmissionStatusFAQ),
-  Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
-  Auctions: reactModule(SalesQueryRenderer, {}, [SalesScreenQuery]),
+  Auction: reactModule(SaleQueryRenderer, { fullBleed: true }),
+  Auctions: reactModule(SalesQueryRenderer),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
