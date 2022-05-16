@@ -6749,6 +6749,9 @@ input DeleteAccountInput {
   # Reason for deleting the account.
   explanation: String
 
+  # Password.
+  password: String
+
   # Referrer location
   url: String
 }
