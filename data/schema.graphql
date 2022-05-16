@@ -1668,7 +1668,7 @@ type Artwork implements Node & Searchable & Sellable {
   artsyShippingInternational: Boolean
 
   # Represents the location of the artwork for "My Collection" artworks
-  artworkLocation: String
+  artworkLocation: String @deprecated(reason: "Please use `collectorLocation` instead")
 
   # Represents the "**classification**" of an artwork, such as _limited edition_
   attributionClass: AttributionClass
@@ -1686,6 +1686,9 @@ type Artwork implements Node & Searchable & Sellable {
   # Returns the display label and detail when artwork has a certificate of authenticity
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
+
+  # The location of the artwork in My Collection
+  collectorLocation: MyLocation
 
   # Comparable auction results
   comparableAuctionResults(
@@ -6975,6 +6978,9 @@ input EditableLocation {
   # The county the location is based in
   country: String
 
+  # The county code of the location is based in
+  countryCode: String
+
   # Postal code for a string
   postalCode: String
 
@@ -10082,6 +10088,9 @@ input MyCollectionCreateArtworkInput {
   attributionClass: ArtworkAttributionClassType
   category: String
   clientMutationId: String
+
+  # The given location of the user as structured data
+  collectorLocation: EditableLocation
   costCurrencyCode: String
   costMinor: Int
   date: String
@@ -10141,6 +10150,9 @@ input MyCollectionUpdateArtworkInput {
   attributionClass: ArtworkAttributionClassType
   category: String
   clientMutationId: String
+
+  # The given location of the user as structured data
+  collectorLocation: EditableLocation
   costCurrencyCode: String
   costMinor: Int
   date: String
@@ -10171,6 +10183,7 @@ type MyLocation {
   city: String
   coordinates: LatLng!
   country: String
+  countryCode: String
   display: String
   displayCountry: String
 
