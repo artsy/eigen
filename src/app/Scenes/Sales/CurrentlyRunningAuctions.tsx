@@ -1,7 +1,8 @@
 import { CurrentlyRunningAuctions_viewer$key } from "__generated__/CurrentlyRunningAuctions_viewer.graphql"
 import { CurrentlyRunningAuctionsRefetchQuery } from "__generated__/CurrentlyRunningAuctionsRefetchQuery.graphql"
-import { Stack } from "app/Components/Stack"
+
 import { extractNodes } from "app/utils/extractNodes"
+import { Box } from "palette"
 import React, { useEffect } from "react"
 import { graphql, RefetchFnDynamic, useRefetchableFragment } from "react-relay"
 import { Options } from "react-relay/relay-hooks/useRefetchableFragmentNode"
@@ -41,10 +42,11 @@ export const CurrentlyRunningAuctions: React.FC<CurrentlyRunningAuctionsProps> =
   }, [nodes])
 
   return (
-    <Stack py={2} spacing={3}>
-      <SaleList title="Current Live Auctions" sales={liveAuctions} />
-      <SaleList title="Current Timed Auctions" sales={timedAuctions} />
-    </Stack>
+    <>
+      {!!liveAuctions.length && <SaleList title="Current Live Auctions" sales={liveAuctions} />}
+      {!!liveAuctions.length && !!timedAuctions.length && <Box pb={3} />}
+      {!!timedAuctions.length && <SaleList title="Current Timed Auctions" sales={timedAuctions} />}
+    </>
   )
 }
 

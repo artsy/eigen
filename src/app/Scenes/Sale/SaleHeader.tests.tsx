@@ -235,7 +235,7 @@ describe("SaleHeader", () => {
             MockPayloadGenerator.generate(operation, {
               Sale: () => ({
                 endAt: "2018-05-16T15:00:00",
-                startAt: "2018-05-10T20:00:00",
+                startAt: new Date(Date.now() + 1000 * 60 * 10).toISOString(),
                 endedAt: null,
                 slug: "the weird one",
                 cascadingEndTimeIntervalMinutes: 1,
@@ -244,9 +244,32 @@ describe("SaleHeader", () => {
             })
           )
 
-          jest.advanceTimersByTime(500)
+          jest.advanceTimersByTime(1000)
 
           const relativeTime = getByText("Bidding Starts Today")
+          expect(relativeTime).toBeTruthy()
+        })
+
+        it("shows Bidding Starts In 7 Hours if the sale is starting in 7 hours BUT NOT THE SAME DAY", () => {
+          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+          jest.useFakeTimers()
+          mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              Sale: () => ({
+                endAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3).toISOString(),
+                // Date.now is mocked to 8:22:32 PM. Set startAt at early hours of the next day
+                startAt: new Date(Date.now() + 1000 * 60 * 60 * 7).toISOString(),
+                endedAt: null,
+                slug: "the weird one",
+                cascadingEndTimeIntervalMinutes: 1,
+                ...baseSale,
+              }),
+            })
+          )
+
+          jest.advanceTimersByTime(1000)
+
+          const relativeTime = getByText("Bidding Starts In 7 Hours")
           expect(relativeTime).toBeTruthy()
         })
 
@@ -257,7 +280,7 @@ describe("SaleHeader", () => {
             MockPayloadGenerator.generate(operation, {
               Sale: () => ({
                 endAt: "2018-05-16T15:00:00",
-                startAt: "2018-05-14T15:00:00",
+                startAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3).toISOString(),
                 endedAt: null,
                 cascadingEndTimeIntervalMinutes: 1,
                 ...baseSale,
@@ -265,9 +288,9 @@ describe("SaleHeader", () => {
             })
           )
 
-          jest.advanceTimersByTime(500)
+          jest.advanceTimersByTime(1000)
 
-          const relativeTime = getByText("4 Days Until Bidding Starts")
+          const relativeTime = getByText("3 Days Until Bidding Starts")
           expect(relativeTime).toBeTruthy()
         })
 
@@ -277,7 +300,7 @@ describe("SaleHeader", () => {
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
               Sale: () => ({
-                endAt: "2018-05-16T15:00:00",
+                endAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 6.5).toISOString(),
                 startAt: "2018-05-09T15:00:00",
                 endedAt: null,
                 cascadingEndTimeIntervalMinutes: 1,
@@ -286,19 +309,21 @@ describe("SaleHeader", () => {
             })
           )
 
-          jest.advanceTimersByTime(500)
+          jest.advanceTimersByTime(1000)
 
-          const relativeTime = getByText("7 Days Until Lots Start Closing")
+          const relativeTime = getByText("6 Days Until Lots Start Closing")
           expect(relativeTime).toBeTruthy()
         })
 
-        it("shows 9h37d if the sale started and ends in 22+ hours", () => {
+        it("shows 9h37m if the sale started and ends in less than 24 hours but > 1 hour", () => {
           const { getByText } = renderWithWrappersTL(<TestRenderer />)
+
+          const nineHoursAndThirtySevenMins = 1000 * 60 * 60 * 9 + 1000 * 60 * 37
 
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
               Sale: () => ({
-                endAt: "2018-05-10T23:00:00",
+                endAt: new Date(Date.now() + nineHoursAndThirtySevenMins).toISOString(),
                 startAt: "2018-05-09T20:00:00",
                 endedAt: null,
                 cascadingEndTimeIntervalMinutes: 1,
@@ -307,7 +332,7 @@ describe("SaleHeader", () => {
             })
           )
 
-          jest.advanceTimersByTime(500)
+          jest.advanceTimersByTime(1000)
 
           const relativeTime = getByText("9h 37m Until Lots Start Closing")
           expect(relativeTime).toBeTruthy()
@@ -316,10 +341,12 @@ describe("SaleHeader", () => {
         it("shows 37m28s if the sale started and ends in 37+ minutes", () => {
           const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
+          const ThirtySevenMinsAndTwentyEightSecs = 1000 * 60 * 37 + 28 * 1000
+
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
               Sale: () => ({
-                endAt: "2018-05-10T14:00:00",
+                endAt: new Date(Date.now() + ThirtySevenMinsAndTwentyEightSecs).toISOString(),
                 startAt: "2018-05-09T15:00:00",
                 endedAt: null,
                 cascadingEndTimeIntervalMinutes: 1,
@@ -328,7 +355,7 @@ describe("SaleHeader", () => {
             })
           )
 
-          jest.advanceTimersByTime(500)
+          jest.advanceTimersByTime(1000)
 
           const relativeTime = getByText("37m 28s Until Lots Start Closing")
           expect(relativeTime).toBeTruthy()
@@ -349,7 +376,7 @@ describe("SaleHeader", () => {
             })
           )
 
-          jest.advanceTimersByTime(500)
+          jest.advanceTimersByTime(1000)
 
           const relativeTime = getByText("Lots are closing")
           expect(relativeTime).toBeTruthy()

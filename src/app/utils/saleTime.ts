@@ -15,13 +15,19 @@ export interface SaleTimeFeature {
   timeZone: string | null
 }
 
+const isNotStartingToday = (startDate: string) => {
+  const todayDay = moment().toObject().date
+  const startDateDay = moment(startDate).toObject().date
+  return todayDay !== startDateDay
+}
+
 export const getTimerInfo = (
   time: Time,
   hasStarted?: boolean,
   saleHasEnded?: boolean,
   isSaleInfo: boolean = false
 ): TimerInfo => {
-  const { days, hours, minutes, seconds } = time
+  const { days, hours, minutes, seconds, startAt } = time
 
   const parsedDays = parseInt(days, 10)
   const parsedHours = parseInt(hours, 10)
@@ -34,7 +40,17 @@ export const getTimerInfo = (
   // Sale has not yet started
   if (!hasStarted) {
     if (parsedDays < 1) {
-      copy = "Bidding Starts Today"
+      if (isNotStartingToday(startAt)) {
+        // then it is starting in a few hours or minutes, but tomorrow.
+        // For example, a bidding that starts around 1A.M the next day and my current time is 11P.M
+        if (parsedHours >= 1) {
+          copy = `Bidding Starts In ${parsedHours} ${parsedHours > 1 ? "Hours" : "Hour"}`
+        } else {
+          copy = `Bidding Starts In ${parsedMinutes}m ${parsedSeconds}s`
+        }
+      } else {
+        copy = "Bidding Starts Today"
+      }
     } else {
       copy = `${parsedDays} Day${parsedDays > 1 ? "s" : ""} Until Bidding Starts`
     }
@@ -46,7 +62,7 @@ export const getTimerInfo = (
         color = "red100"
         // More than 24 hours until close
       } else if (parsedDays >= 1) {
-        copy = `${parsedDays + 1} Day${parsedDays >= 1 ? "s" : ""} Until Lots Start Closing`
+        copy = `${parsedDays} Day${parsedDays >= 1 ? "s" : ""} Until Lots Start Closing`
       }
       // 1-24 hours until close
       else if (parsedDays < 1 && parsedHours >= 1) {
