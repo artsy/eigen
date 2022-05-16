@@ -9659,7 +9659,6 @@ type MetaphysicsService {
   stitchingConvection: Boolean!
   stitchingExchange: Boolean!
   stitchingGravity: Boolean!
-  stitchingKaws: Boolean!
 }
 
 type Money {
