@@ -3,6 +3,7 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { sendEmail } from "app/utils/sendEmail"
+import { Schema } from "app/utils/track"
 import { Sans, Spacer } from "palette"
 import React from "react"
 import { Text } from "react-native"
@@ -101,23 +102,23 @@ export const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = (
 
 const tracks = {
   tappedAskASpecialist: () => ({
-    action_name: "askASpecialist",
-    action_type: "tap",
-    context_module: "ArtworkExtraLinks",
+    action_name: Schema.ActionNames.AskASpecialist,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkExtraLinks,
   }),
   tappedAuctionFAQs: () => ({
-    action_name: "auctionsFAQ",
-    action_type: "tap",
-    context_module: "ArtworkExtraLinks",
+    action_name: Schema.ActionNames.AuctionsFAQ,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkExtraLinks,
   }),
   tappedConditionsOfSale: () => ({
-    action_name: "conditionsOfSale",
-    action_type: "tap",
-    context_module: "ArtworkExtraLinks",
+    action_name: Schema.ActionNames.ConditionsOfSale,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkExtraLinks,
   }),
   tappedFAQ: () => ({
-    action_name: "FAQ",
-    action_type: "tap",
-    context_module: "ArtworkExtraLinks",
+    action_name: Schema.ActionNames.FAQ,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: Schema.ContextModules.ArtworkExtraLinks,
   }),
 }
