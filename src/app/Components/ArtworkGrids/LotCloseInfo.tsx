@@ -1,8 +1,8 @@
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
-import { useTimer } from "app/utils/useTimer"
+import { getTimerInfo } from "app/utils/saleTime"
+import { Time, useTimer } from "app/utils/useTimer"
 import { Duration } from "moment"
 import { Text } from "palette"
-import { getTimerInfo } from "../Countdown/Ticker"
 
 interface LotCloseInfoProps {
   saleArtwork: NonNullable<ArtworkGridItem_artwork["saleArtwork"]>
@@ -22,7 +22,16 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({ saleArtwork, sale, d
     return null
   }
 
-  const timerCopy = getTimerInfo(duration, saleHasStarted)
+  const time: Time = {
+    days: duration.asDays().toString(),
+    hours: duration.hours().toString(),
+    minutes: duration.minutes().toString(),
+    seconds: duration.seconds().toString(),
+    startAt: "",
+    endDate: "",
+  }
+
+  const timerCopy = getTimerInfo(time, saleHasStarted)
 
   let lotCloseCopy
   let labelColor = "black60"

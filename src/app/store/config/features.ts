@@ -101,22 +101,28 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableCascadingEndTimerLotPage: {
-    readyForRelease: true,
+    readyForRelease: false,
     description: "Enable cascading end times on the lot page",
     showInAdminMenu: true,
     echoFlagKey: "AREnableCascadingEndTimerLotPage",
   },
   AREnableCascadingEndTimerSalePageDetails: {
-    readyForRelease: true,
+    readyForRelease: false,
     description: "Enable cascading end times on the sale page details",
     showInAdminMenu: true,
     echoFlagKey: "AREnableCascadingEndTimerSalePageDetails",
   },
   AREnableCascadingEndTimerSalePageGrid: {
-    readyForRelease: true,
+    readyForRelease: false,
     description: "Enable cascading end times on the sale page lot grid",
     showInAdminMenu: true,
     echoFlagKey: "AREnableCascadingEndTimerSalePageGrid",
+  },
+  ARDisableCascadingEndTimerSalePageDetails: {
+    readyForRelease: false,
+    description: "Enable cascading end times on the sale page details",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCascadingEndTimerSalePageDetails",
   },
   AREnableImageSearch: {
     readyForRelease: false,
@@ -199,6 +205,11 @@ export const features = defineFeatures({
     description: "Enable My Collection artworks from non-Artsy artists",
     showInAdminMenu: true,
     echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
+  },
+  AREnableCreateArtworkAlert: {
+    readyForRelease: false,
+    description: "Enable Create Alert on Artwork pages",
+    showInAdminMenu: true,
   },
 })
 

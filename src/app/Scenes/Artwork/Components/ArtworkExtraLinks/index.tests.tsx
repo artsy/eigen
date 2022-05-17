@@ -1,18 +1,17 @@
+import { fireEvent } from "@testing-library/react-native"
+import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { navigate } from "app/navigation/navigate"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "./index"
-
-jest.unmock("react-tracking")
-
-import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
-import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { navigate } from "app/navigation/navigate"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
-import { postEventToProviders } from "app/utils/track/providers"
 
 function getWrapper({
   artwork,
@@ -31,6 +30,10 @@ function getWrapper({
 }
 
 describe("ArtworkExtraLinks", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
+  })
+
   it("redirects to /sales when consignments link is clicked from outside of sell tab", () => {
     const artwork = {
       ...ArtworkFixture,
@@ -298,48 +301,89 @@ describe("ArtworkExtraLinks", () => {
       expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
     })
 
-    it("posts proper event in when clicking Ask A Specialist", () => {
-      component
-        .find("Text")
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        .findWhere((t) => t.text() === "ask a specialist")
-        .first()
-        .props()
-        .onPress()
-      expect(postEventToProviders).toBeCalledWith({
-        action_name: "askASpecialist",
-        action_type: "tap",
-        context_module: "ArtworkExtraLinks",
+    describe("Analytics", () => {
+      const TestRenderer = () =>
+        renderWithWrappersTL(
+          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+        )
+
+      it("posts proper event in when clicking Ask A Specialist", () => {
+        const { getByText, queryByText } = TestRenderer()
+
+        expect(queryByText("ask a specialist")).toBeTruthy()
+        fireEvent.press(getByText("ask a specialist"))
+
+        expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+        expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "action_name": "askASpecialist",
+              "action_type": "tap",
+              "context_module": "ArtworkExtraLinks",
+            },
+          ]
+        `)
+      })
+
+      it("posts proper event in when clicking Read our auction FAQs", () => {
+        const { getByText, queryByText } = TestRenderer()
+
+        expect(queryByText("Read our auction FAQs")).toBeTruthy()
+        fireEvent.press(getByText("Read our auction FAQs"))
+
+        expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+        expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "action_name": "auctionsFAQ",
+              "action_type": "tap",
+              "context_module": "ArtworkExtraLinks",
+            },
+          ]
+        `)
+      })
+
+      it("posts proper event in when clicking Conditions of Sale", () => {
+        const { getByText, queryByText } = TestRenderer()
+
+        expect(queryByText("Conditions of Sale")).toBeTruthy()
+        fireEvent.press(getByText("Conditions of Sale"))
+
+        expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+        expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+          Array [
+            Object {
+              "action_name": "conditionsOfSale",
+              "action_type": "tap",
+              "context_module": "ArtworkExtraLinks",
+            },
+          ]
+        `)
       })
     })
 
-    it("posts proper event in when clicking Read our auction FAQs", () => {
-      component
-        .find("Text")
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        .findWhere((t) => t.text() === "Read our auction FAQs")
-        .first()
-        .props()
-        .onPress()
-      expect(postEventToProviders).toBeCalledWith({
-        action_name: "auctionsFAQ",
-        action_type: "tap",
-        context_module: "ArtworkExtraLinks",
+    describe("AREnableCreateArtworkAlert is switched to true", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
       })
-    })
 
-    it("posts proper event in when clicking Conditions of Sale", () => {
-      component
-        .find("Text")
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        .findWhere((t) => t.text() === "Conditions of Sale")
-        .first()
-        .props()
-        .onPress()
-      expect(postEventToProviders).toBeCalledWith({
-        action_name: "conditionsOfSale",
-        action_type: "tap",
-        context_module: "ArtworkExtraLinks",
+      const TestRenderer = () =>
+        renderWithWrappersTL(
+          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+        )
+
+      it("should not show the FaqAndSpecialistSection component", () => {
+        const { queryByText } = TestRenderer()
+
+        // Makes sure that no parts of the text references of the FaqAndSpecialistSection
+        // appear in the rendered component when ff - AREnableCreateArtworkAlert is true
+
+        expect(queryByText("By placing a bid you agree to")).toBeNull()
+        expect(queryByText("Conditions of Sale")).toBeNull()
+        expect(queryByText("Have a question?")).toBeNull()
+        expect(queryByText("Read our auction FAQs")).toBeNull()
+        expect(queryByText("ask a specialist")).toBeNull()
+        expect(queryByText("Read our FAQ")).toBeNull()
       })
     })
   })

@@ -6,7 +6,7 @@ import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
-import { navigationEvents } from "app/navigation/navigate"
+import { navigateToPartner, navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { useFeatureFlag } from "app/store/GlobalStore"
@@ -14,13 +14,14 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Separator } from "palette"
+import { Box, LinkButton, Separator } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { ResponsiveValue } from "styled-system"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
@@ -31,6 +32,7 @@ import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
+import { CreateArtworkAlertSection } from "./Components/CreateArtworkAlertSection"
 import {
   OtherWorksFragmentContainer as OtherWorks,
   populatedGrids,
@@ -58,6 +60,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
+  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
 
   const { internalID, slug } = artworkAboveTheFold || {}
   const {
@@ -224,6 +227,32 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
+    if (!!partner?.href && !!partner?.name && enableCreateArtworkAlert) {
+      sections.push({
+        key: "partnerSection",
+        element: (
+          <LinkButton onPress={() => navigateToPartner(partner?.href!)}>{partner?.name}</LinkButton>
+        ),
+        verticalMargin: 2,
+      })
+    }
+
+    if (enableCreateArtworkAlert) {
+      sections.push({
+        key: "createAlertSection",
+        element: <CreateArtworkAlertSection />,
+        verticalMargin: 2,
+      })
+    }
+
+    // add FAQ section but maybe here we want to check some things, and also the code is 🤯 might need to address that in another ticket?
+    // if (enableCreateArtworkAlert) {
+    //   sections.push({
+    //     key: "faqSection",
+    //     element: <FaqAndSpecialistSection artwork={artworkAboveTheFold} />
+    //   })
+    // }
+
     if (!artworkBelowTheFold) {
       sections.push({
         key: "belowTheFoldPlaceholder",
@@ -352,15 +381,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
           keyboardShouldPersistTaps="handled"
           data={sectionsData()}
           ItemSeparatorComponent={() => (
-            <Box mx={2} my={3}>
+            <Box mx={2}>
               <Separator />
             </Box>
           )}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           contentContainerStyle={{ paddingBottom: 40 }}
-          renderItem={({ item }) =>
-            item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>
-          }
+          renderItem={({ item }) => (
+            <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
+              {item.element}
+            </Box>
+          )}
         />
       )}
       <QAInfo />
@@ -372,6 +403,8 @@ interface ArtworkPageSection {
   key: string
   element: JSX.Element
   excludePadding?: boolean
+  // use verticalMargin to pass custom spacing between separator and section
+  verticalMargin?: ResponsiveValue<number>
 }
 
 export const ArtworkContainer = createRefetchContainer(
@@ -401,6 +434,8 @@ export const ArtworkContainer = createRefetchContainer(
         partner {
           type
           id
+          name
+          href
         }
         artist {
           biographyBlurb {

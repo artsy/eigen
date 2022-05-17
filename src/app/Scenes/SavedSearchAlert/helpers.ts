@@ -7,20 +7,7 @@ import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
 } from "app/utils/PushNotification"
-import { bullet } from "palette"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
-import { SavedSearchPill } from "./SavedSearchAlertModel"
-
-export const getNamePlaceholder = (artistName: string, pills: SavedSearchPill[]) => {
-  const filteredPills = pills.filter((pill) => pill.paramName !== SearchCriteria.artistID)
-  const filtersCountLabel = filteredPills.length > 1 ? "filters" : "filter"
-
-  if (filteredPills.length === 0) {
-    return artistName
-  }
-
-  return `${artistName} ${bullet} ${filteredPills.length} ${filtersCountLabel}`
-}
 
 export const requestNotificationPermissions = () => {
   // permissions not determined: Android should never need this
