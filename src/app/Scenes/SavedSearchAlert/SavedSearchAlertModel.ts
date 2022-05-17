@@ -11,17 +11,12 @@ export interface SavedSearchAlertFormValues {
   email: boolean
 }
 
-export interface SavedSearchAlertFormPropsBase {
-  artistId: string
-  artistName: string
-}
-
 export interface SavedSearchAlertMutationResult {
   id: string
 }
 
 // Navigation
-export interface CreateSavedSearchAlertParams extends SavedSearchAlertFormPropsBase {
+export interface CreateSavedSearchAlertParams {
   aggregations: Aggregations
   attributes: SearchCriteriaAttributes
   entity: SavedSearchEntity

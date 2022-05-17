@@ -1,23 +1,45 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { Flex, Text, useSpace } from "palette"
+import { extractNodes } from "app/utils/extractNodes"
+import { Flex, Text } from "palette"
+import { useSpace } from "palette/hooks"
 import React, { Suspense } from "react"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
+import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const space = useSpace()
   const data = useLazyLoadQuery<MyCollectionInsightsQuery>(MyCollectionInsightsScreenQuery, {})
 
+  const myCollectionArtworksCount = extractNodes(data.me?.myCollectionConnection).length
+
+  const renderContent = () => {
+    return (
+      <>
+        <MyCollectionInsightsOverview />
+        <Text variant="lg" mr={0.5} mb={2}>
+          Market Signals
+        </Text>
+        <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+      </>
+    )
+  }
+
   return (
-    <StickyTabPageScrollView contentContainerStyle={{ paddingTop: space("2") }}>
-      <MyCollectionInsightsOverview />
-      <Text variant="lg" mr={0.5} mb={2}>
-        Market Signals
-      </Text>
-      <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+    <StickyTabPageScrollView
+      style={{
+        flex: 1,
+      }}
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: "center",
+        paddingTop: space("2"),
+      }}
+    >
+      {myCollectionArtworksCount > 0 ? renderContent() : <MyCollectionInsightsEmptyState />}
     </StickyTabPageScrollView>
   )
 }
@@ -39,6 +61,13 @@ export const MyCollectionInsightsScreenQuery = graphql`
   query MyCollectionInsightsQuery {
     me {
       ...AuctionResultsForArtistsYouCollectRail_me
+      myCollectionConnection(first: 1) {
+        edges {
+          node {
+            id
+          }
+        }
+      }
     }
   }
 `

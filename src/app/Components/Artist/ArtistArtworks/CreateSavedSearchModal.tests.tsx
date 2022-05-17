@@ -22,19 +22,17 @@ import {
 jest.unmock("react-relay")
 
 const savedSearchEntity: SavedSearchEntity = {
-  artists: [{ id: "artistId", name: "artistName", slug: "artistSlug" }],
+  placeholder: "Placeholder",
+  artists: [{ id: "artistId", name: "artistName" }],
   owner: {
     type: OwnerType.artist,
     id: "ownerId",
     slug: "ownerSlug",
-    name: "ownerName",
   },
 }
 
 const defaultProps: CreateSavedSearchModalProps = {
   visible: true,
-  artistId: "artistId",
-  artistName: "artistName",
   entity: savedSearchEntity,
   closeModal: jest.fn,
 }

@@ -11,7 +11,6 @@ import { Form } from "./Components/Form"
 import {
   checkOrRequestPushPermissions,
   clearDefaultAttributes,
-  getNamePlaceholder,
   showWarningMessageForDuplicateAlert,
 } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
@@ -20,7 +19,6 @@ import { updateNotificationPreferences } from "./mutations/updateNotificationPre
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
 import { getSavedSearchIdByCriteria } from "./queries/getSavedSearchIdByCriteria"
 import {
-  SavedSearchAlertFormPropsBase,
   SavedSearchAlertFormValues,
   SavedSearchAlertMutationResult,
   SavedSearchPill,
@@ -28,7 +26,7 @@ import {
 import { SavedSearchStore } from "./SavedSearchStore"
 import { useSavedSearchPills } from "./useSavedSearchPills"
 
-export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
+export interface SavedSearchAlertFormProps {
   initialValues: SavedSearchAlertFormValues
   savedSearchAlertId?: string
   userAllowsEmails: boolean
@@ -43,8 +41,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const {
     initialValues,
     savedSearchAlertId,
-    artistId,
-    artistName,
     userAllowsEmails,
     contentContainerStyle,
     onComplete,
@@ -56,6 +52,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const pills = useSavedSearchPills()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
+  const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.removeValueFromAttributesByKeyAction
   )
@@ -73,7 +70,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       let alertName = values.name
 
       if (alertName.length === 0) {
-        alertName = getNamePlaceholder(artistName, pills)
+        alertName = entity.placeholder
       }
 
       const userAlertSettings: SavedSearchAlertFormValues = {
@@ -250,8 +247,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         <Form
           pills={pills}
           savedSearchAlertId={savedSearchAlertId}
-          artistId={artistId}
-          artistName={artistName}
           hasChangedFilters={hasChangedFilters}
           onDeletePress={handleDeletePress}
           onSubmitPress={formik.handleSubmit}

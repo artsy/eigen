@@ -49,18 +49,16 @@ const initialData: ArtworkFiltersState = {
 }
 
 const savedSearchEntity: SavedSearchEntity = {
+  placeholder: "Placeholder",
   artists: [],
   owner: {
     type: OwnerType.artist,
     id: "ownerId",
     slug: "ownerSlug",
-    name: "ownerName",
   },
 }
 
 const defaultParams: CreateSavedSearchAlertParams = {
-  artistId: "artistID",
-  artistName: "artistName",
   aggregations: [],
   attributes: {
     attributionClass: ["open edition"],
