@@ -1,8 +1,9 @@
 import { ActionType, ScreenOwnerType, ToggledSavedSearch } from "@artsy/cohesion"
-import { getUnitedSelectedAndAppliedFilters } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { getSearchCriteriaFromFilters } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
-import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  SavedSearchEntity,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { navigate, NavigateOptions } from "app/navigation/navigate"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
@@ -16,17 +17,16 @@ import { useTracking } from "react-tracking"
 export interface CreateSavedSearchModalProps {
   visible: boolean
   entity: SavedSearchEntity
+  attributes: SearchCriteriaAttributes
+  aggregations: Aggregations
   closeModal: () => void
   onComplete?: () => void
 }
 
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
-  const { visible, entity, closeModal, onComplete } = props
+  const { visible, entity, attributes, aggregations, closeModal, onComplete } = props
   const tracking = useTracking()
   const popover = usePopoverMessage()
-  const filterState = ArtworksFiltersStore.useStoreState((state) => state)
-  const unitedFilters = getUnitedSelectedAndAppliedFilters(filterState)
-  const attributes = getSearchCriteriaFromFilters(entity, unitedFilters)
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
     const { owner } = entity
@@ -53,7 +53,7 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   }
 
   const params: CreateSavedSearchAlertParams = {
-    aggregations: filterState.aggregations,
+    aggregations,
     attributes,
     entity,
     onClosePress: closeModal,

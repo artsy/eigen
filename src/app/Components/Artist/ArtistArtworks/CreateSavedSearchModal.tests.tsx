@@ -1,10 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
 import {
-  ArtworkFiltersState,
-  ArtworkFiltersStoreProvider,
-} from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
+  SavedSearchEntity,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "app/navigation/navigate"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertMutationResult } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
@@ -31,24 +30,16 @@ const savedSearchEntity: SavedSearchEntity = {
   },
 }
 
+const attributes: SearchCriteriaAttributes = {
+  artistIDs: ["artistId"],
+}
+
 const defaultProps: CreateSavedSearchModalProps = {
   visible: true,
   entity: savedSearchEntity,
-  closeModal: jest.fn,
-}
-
-const initialData: ArtworkFiltersState = {
-  selectedFilters: [],
-  appliedFilters: [],
-  previouslyAppliedFilters: [],
-  applyFilters: false,
+  attributes,
   aggregations: [],
-  filterType: "artwork",
-  counts: {
-    total: null,
-    followedArtists: null,
-  },
-  sizeMetric: "cm",
+  closeModal: jest.fn,
 }
 
 const mockedMutationResult: SavedSearchAlertMutationResult = {
@@ -57,11 +48,7 @@ const mockedMutationResult: SavedSearchAlertMutationResult = {
 
 describe("CreateSavedSearchModal", () => {
   const TestRenderer = (props?: Partial<CreateSavedSearchModalProps>) => {
-    return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
-        <CreateSavedSearchModal {...defaultProps} {...props} />
-      </ArtworkFiltersStoreProvider>
-    )
+    return <CreateSavedSearchModal {...defaultProps} {...props} />
   }
 
   it("renders without throwing an error", () => {
