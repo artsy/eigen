@@ -33,7 +33,7 @@ import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
-import { CreateArtworkAlertSection } from "./Components/CreateArtworkAlertSection"
+import { CreateArtworkAlertSectionFragmentContainer as CreateArtworkAlertSection } from "./Components/CreateArtworkAlertSection"
 import {
   OtherWorksFragmentContainer as OtherWorks,
   populatedGrids,
@@ -241,7 +241,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (enableCreateArtworkAlert) {
       sections.push({
         key: "createAlertSection",
-        element: <CreateArtworkAlertSection />,
+        element: <CreateArtworkAlertSection artwork={artworkBelowTheFold} />,
         verticalMargin: 2,
       })
     }
@@ -512,6 +512,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
         ...Questions_artwork
+        ...CreateArtworkAlertSection_artwork
       }
     `,
     me: graphql`
