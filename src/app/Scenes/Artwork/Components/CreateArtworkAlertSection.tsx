@@ -20,7 +20,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface CreateArtworkAlertSectionProps {
-  artwork: CreateArtworkAlertSection_artwork
+  artwork: CreateArtworkAlertSection_artwork | null
 }
 
 export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ artwork }) => {
@@ -42,9 +42,9 @@ export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ 
     artists: formattedArtists,
     owner: {
       type: OwnerType.artwork,
-      id: artwork?.internalID,
-      slug: artwork?.slug,
-      name: artwork?.title!,
+      id: artwork?.internalID ?? "",
+      slug: artwork?.slug ?? "",
+      name: artwork?.title ?? "",
     },
   }
 
