@@ -11,7 +11,6 @@ import { Form } from "./Components/Form"
 import {
   checkOrRequestPushPermissions,
   clearDefaultAttributes,
-  getNamePlaceholder,
   showWarningMessageForDuplicateAlert,
 } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
