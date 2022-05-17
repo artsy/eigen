@@ -34,7 +34,6 @@ export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ 
   const formattedArtists: SavedSearchEntityArtist[] = artists.map((artist) => ({
     id: artist.internalID,
     name: artist.name!,
-    slug: artist.slug!,
   }))
 
   const entity: SavedSearchEntity = {
@@ -44,7 +43,6 @@ export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ 
       type: OwnerType.artwork,
       id: artwork?.internalID ?? "",
       slug: artwork?.slug ?? "",
-      name: artwork?.title ?? "",
     },
   }
 
@@ -137,7 +135,6 @@ export const CreateArtworkAlertSectionFragmentContainer = createFragmentContaine
         artists {
           internalID
           name
-          slug
         }
       }
     `,

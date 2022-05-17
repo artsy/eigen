@@ -130,7 +130,6 @@ const Artwork = {
     {
       internalID: "4dd1584de0091e000100207c",
       name: "Banksy",
-      slug: "banksy",
     },
   ],
   attributionClass: {
