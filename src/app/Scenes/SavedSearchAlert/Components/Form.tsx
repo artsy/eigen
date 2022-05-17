@@ -15,8 +15,8 @@ import {
 } from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"
-import { getNamePlaceholder } from "../helpers"
 import { SavedSearchAlertFormValues, SavedSearchPill } from "../SavedSearchAlertModel"
+import { SavedSearchStore } from "../SavedSearchStore"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
@@ -49,8 +49,7 @@ export const Form: React.FC<FormProps> = (props) => {
   } = props
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
-  // TODO: Replace artistName
-  const namePlaceholder = getNamePlaceholder("artistName", pills)
+  const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
 
@@ -112,7 +111,7 @@ export const Form: React.FC<FormProps> = (props) => {
       <Box mb={2}>
         <Input
           title="Name"
-          placeholder={namePlaceholder}
+          placeholder={entity.placeholder}
           value={values.name}
           onChangeText={handleChange("name")}
           onBlur={handleBlur("name")}

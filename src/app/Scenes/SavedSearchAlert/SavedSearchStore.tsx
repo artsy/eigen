@@ -29,6 +29,7 @@ const savedSearchModel: SavedSearchModel = {
   aggregations: [],
   dirty: false,
   entity: {
+    placeholder: "",
     artists: [],
     owner: {
       type: OwnerType.artist,

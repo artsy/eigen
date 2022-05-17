@@ -38,6 +38,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   const { userAlertSettings, internalID, ...attributes } = me?.savedSearch ?? {}
 
   const entity: SavedSearchEntity = {
+    placeholder: artist.name ?? "",
     artists: [{ id: artist.internalID, name: artist.name!, slug: artist.slug! }],
     owner: {
       type: OwnerType.savedSearch,

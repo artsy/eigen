@@ -53,6 +53,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const pills = useSavedSearchPills()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
+  const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.removeValueFromAttributesByKeyAction
   )
@@ -70,8 +71,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       let alertName = values.name
 
       if (alertName.length === 0) {
-        // TODO: Replace artistName
-        alertName = getNamePlaceholder("artistName", pills)
+        alertName = entity.placeholder
       }
 
       const userAlertSettings: SavedSearchAlertFormValues = {

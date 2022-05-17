@@ -49,6 +49,7 @@ const initialData: ArtworkFiltersState = {
 }
 
 const savedSearchEntity: SavedSearchEntity = {
+  placeholder: "Placeholder",
   artists: [],
   owner: {
     type: OwnerType.artist,

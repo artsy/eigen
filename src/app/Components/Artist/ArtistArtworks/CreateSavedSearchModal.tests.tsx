@@ -22,6 +22,7 @@ import {
 jest.unmock("react-relay")
 
 const savedSearchEntity: SavedSearchEntity = {
+  placeholder: "Placeholder",
   artists: [{ id: "artistId", name: "artistName", slug: "artistSlug" }],
   owner: {
     type: OwnerType.artist,

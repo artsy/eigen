@@ -56,6 +56,7 @@ export interface SavedSearchEntityOwner {
 }
 
 export interface SavedSearchEntity {
+  placeholder: string
   artists: SavedSearchEntityArtist[]
   owner: SavedSearchEntityOwner
 }

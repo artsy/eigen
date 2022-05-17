@@ -59,12 +59,10 @@ describe("Saved search alert form", () => {
     renderWithWrappersTL(<TestRenderer />)
   })
 
-  it("correctly renders placeholder for input name", () => {
+  it("correctly renders default placeholder for input name", () => {
     const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
-    expect(getByTestId("alert-input-name").props.placeholder).toEqual(
-      `artistName ${bullet} 5 filters`
-    )
+    expect(getByTestId("alert-input-name").props.placeholder).toEqual("Placeholder")
   })
 
   it("calls onComplete when mutation is completed", async () => {
@@ -121,7 +119,7 @@ describe("Saved search alert form", () => {
           input: {
             attributes,
             userAlertSettings: {
-              name: "artistName • 5 filters",
+              name: "Placeholder",
             },
           },
         })
@@ -156,7 +154,7 @@ describe("Saved search alert form", () => {
         expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
           input: {
             userAlertSettings: {
-              name: `artistName ${bullet} 5 filters`,
+              name: `Placeholder`,
             },
           },
         })
@@ -783,6 +781,7 @@ describe("Checking for a duplicate alert", () => {
 })
 
 const savedSearchEntity: SavedSearchEntity = {
+  placeholder: "Placeholder",
   artists: [{ id: "artistID", name: "artistName", slug: "artistSlug" }],
   owner: {
     type: OwnerType.artist,
