@@ -1,5 +1,5 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { goBack, navigate } from "app/navigation/navigate"
+import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractText } from "app/tests/extractText"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
@@ -67,30 +67,6 @@ describe("EditSavedSearchAlert", () => {
     })
 
     expect(goBack).toHaveBeenCalled()
-  })
-
-  it("should navigate to artworks grid when the view artworks is pressed", async () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
-
-    mockEnvironmentPayload(mockEnvironment, {
-      SearchCriteria: () => searchCriteria,
-    })
-    mockEnvironmentPayload(mockEnvironment, {
-      Artist: () => ({
-        internalID: "artistID",
-        slug: "artistSlug",
-      }),
-      FilterArtworksConnection: () => filterArtworks,
-      Me: () => meMocked,
-    })
-
-    fireEvent.press(getByTestId("view-artworks-button"))
-
-    expect(navigate).toBeCalledWith("artist/artistID", {
-      passProps: {
-        searchCriteriaID: "savedSearchAlertId",
-      },
-    })
   })
 
   it("should pass updated criteria to update mutation when pills are removed", async () => {
