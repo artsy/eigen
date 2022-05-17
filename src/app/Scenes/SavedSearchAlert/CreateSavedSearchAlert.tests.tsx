@@ -59,8 +59,6 @@ const savedSearchEntity: SavedSearchEntity = {
 }
 
 const defaultParams: CreateSavedSearchAlertParams = {
-  artistId: "artistID",
-  artistName: "artistName",
   aggregations: [],
   attributes: {
     attributionClass: ["open edition"],

@@ -33,8 +33,6 @@ const savedSearchEntity: SavedSearchEntity = {
 
 const defaultProps: CreateSavedSearchModalProps = {
   visible: true,
-  artistId: "artistId",
-  artistName: "artistName",
   entity: savedSearchEntity,
   closeModal: jest.fn,
 }

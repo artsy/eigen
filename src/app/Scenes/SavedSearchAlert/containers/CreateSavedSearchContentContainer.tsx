@@ -16,21 +16,17 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import { SavedSearchAlertForm } from "../SavedSearchAlertForm"
 import {
   CreateSavedSearchAlertNavigationStack,
-  SavedSearchAlertFormPropsBase,
   SavedSearchAlertMutationResult,
 } from "../SavedSearchAlertModel"
 
 interface CreateSavedSearchAlertContentQueryRendererProps {
   navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
-  artistId: string
-  artistName: string
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
 }
 
 interface CreateSavedSearchAlertContentProps
-  extends CreateSavedSearchAlertContentQueryRendererProps,
-    SavedSearchAlertFormPropsBase {
+  extends CreateSavedSearchAlertContentQueryRendererProps {
   relay: RelayRefetchProp
   viewer?: CreateSavedSearchContentContainer_viewer | null
   loading: boolean

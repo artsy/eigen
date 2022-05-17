@@ -865,7 +865,5 @@ const baseProps: SavedSearchAlertFormProps = {
     email: true,
     push: true,
   },
-  artistId: "artistID",
-  artistName: "artistName",
   userAllowsEmails: true,
 }

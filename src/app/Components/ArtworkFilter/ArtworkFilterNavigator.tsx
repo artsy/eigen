@@ -371,8 +371,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
           <CreateSavedSearchModal
             visible={isCreateAlertModalVisible}
-            artistId={id!}
-            artistName={name!}
             entity={savedSearchEntity}
             closeModal={() => setIsCreateAlertModalVisible(false)}
             onComplete={exitModal}

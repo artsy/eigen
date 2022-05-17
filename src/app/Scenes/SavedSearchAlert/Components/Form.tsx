@@ -22,8 +22,6 @@ import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 interface FormProps {
   pills: SavedSearchPill[]
   savedSearchAlertId?: string
-  artistId: string
-  artistName: string
   isLoading?: boolean
   hasChangedFilters?: boolean
   shouldShowEmailWarning?: boolean
@@ -38,8 +36,6 @@ interface FormProps {
 export const Form: React.FC<FormProps> = (props) => {
   const {
     pills,
-    artistId,
-    artistName,
     savedSearchAlertId,
     isLoading,
     hasChangedFilters,
@@ -53,7 +49,8 @@ export const Form: React.FC<FormProps> = (props) => {
   } = props
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
-  const namePlaceholder = getNamePlaceholder(artistName, pills)
+  // TODO: Replace artistName
+  const namePlaceholder = getNamePlaceholder("artistName", pills)
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
 
@@ -130,13 +127,14 @@ export const Form: React.FC<FormProps> = (props) => {
             haptic
             testID="view-artworks-button"
             hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
-            onPress={() =>
-              navigate(`artist/${artistId}`, {
-                passProps: {
-                  searchCriteriaID: savedSearchAlertId,
-                },
-              })
-            }
+            onPress={() => {
+              // TODO: Replace artistId
+              // navigate(`artist/${artistId}`, {
+              //   passProps: {
+              //     searchCriteriaID: savedSearchAlertId,
+              //   },
+              // })
+            }}
           >
             <Text variant="xs" color="blue100" style={{ textDecorationLine: "underline" }}>
               View Artworks
