@@ -45,7 +45,6 @@ export interface SearchCriteriaAttributes {
 export interface SavedSearchEntityArtist {
   id: string
   name: string
-  slug: string
 }
 
 export interface SavedSearchEntityOwner {

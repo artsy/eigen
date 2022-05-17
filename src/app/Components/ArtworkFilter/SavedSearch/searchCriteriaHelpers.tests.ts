@@ -268,12 +268,10 @@ describe("getSearchCriteriaFromFilters", () => {
   const firstArtist: SavedSearchEntityArtist = {
     id: "firstArtistId",
     name: "firstArtistName",
-    slug: "firstArtistSlug",
   }
   const secondArtist: SavedSearchEntityArtist = {
     id: "secondArtistId",
     name: "secondArtistName",
-    slug: "secondArtistSlug",
   }
   const filters = [
     {

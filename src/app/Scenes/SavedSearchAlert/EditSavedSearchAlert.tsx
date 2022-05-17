@@ -43,7 +43,6 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   const formattedArtists: SavedSearchEntityArtist[] = artists.map((artist) => ({
     id: artist.internalID,
     name: artist.name!,
-    slug: artist.slug!,
   }))
   const entity: SavedSearchEntity = {
     placeholder: formattedArtists[0].name ?? "",
@@ -119,7 +118,6 @@ export const EditSavedSearchAlertRefetchContainer = createRefetchContainer(
       fragment EditSavedSearchAlert_artists on Artist @relay(plural: true) {
         internalID
         name
-        slug
       }
     `,
     artworksConnection: graphql`

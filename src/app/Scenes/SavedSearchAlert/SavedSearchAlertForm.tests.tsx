@@ -781,7 +781,7 @@ describe("Checking for a duplicate alert", () => {
 
 const savedSearchEntity: SavedSearchEntity = {
   placeholder: "Placeholder",
-  artists: [{ id: "artistID", name: "artistName", slug: "artistSlug" }],
+  artists: [{ id: "artistID", name: "artistName" }],
   owner: {
     type: OwnerType.artist,
     id: "ownerId",

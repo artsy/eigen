@@ -274,7 +274,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   const savedSearchEntity: SavedSearchEntity = {
     placeholder: name!,
-    artists: [{ id: id!, name: name!, slug: slug! }],
+    artists: [{ id: id!, name: name! }],
     owner: {
       type: OwnerType.artist,
       id: id!,
