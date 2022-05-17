@@ -45,17 +45,16 @@ export interface SearchCriteriaAttributes {
 export interface SavedSearchEntityArtist {
   id: string
   name: string
-  slug: string
 }
 
 export interface SavedSearchEntityOwner {
   type: ScreenOwnerType
   slug: string
   id: string
-  name: string
 }
 
 export interface SavedSearchEntity {
+  placeholder: string
   artists: SavedSearchEntityArtist[]
   owner: SavedSearchEntityOwner
 }

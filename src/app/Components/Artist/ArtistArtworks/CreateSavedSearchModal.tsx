@@ -15,15 +15,13 @@ import { useTracking } from "react-tracking"
 
 export interface CreateSavedSearchModalProps {
   visible: boolean
-  artistId: string
-  artistName: string
   entity: SavedSearchEntity
   closeModal: () => void
   onComplete?: () => void
 }
 
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
-  const { visible, artistId, artistName, entity, closeModal, onComplete } = props
+  const { visible, entity, closeModal, onComplete } = props
   const tracking = useTracking()
   const popover = usePopoverMessage()
   const filterState = ArtworksFiltersStore.useStoreState((state) => state)
@@ -55,8 +53,6 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   }
 
   const params: CreateSavedSearchAlertParams = {
-    artistId,
-    artistName,
     aggregations: filterState.aggregations,
     attributes,
     entity,

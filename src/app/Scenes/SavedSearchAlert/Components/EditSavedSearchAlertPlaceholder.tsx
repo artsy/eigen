@@ -14,10 +14,6 @@ export const EditSavedSearchFormPlaceholder = () => {
           <PlaceholderText height={40} />
         </Box>
 
-        <Box mb={2} height={40} justifyContent="center" alignItems="center">
-          <PlaceholderText width={100} height={18} />
-        </Box>
-
         {/* Filter pills */}
         <Box mb={2}>
           <PlaceholderText width={50} height={18} />

@@ -263,18 +263,15 @@ describe("getSearchCriteriaFromFilters", () => {
   const owner: SavedSearchEntityOwner = {
     type: OwnerType.artist,
     id: "ownerId",
-    name: "ownerName",
     slug: "ownerSlug",
   }
   const firstArtist: SavedSearchEntityArtist = {
     id: "firstArtistId",
     name: "firstArtistName",
-    slug: "firstArtistSlug",
   }
   const secondArtist: SavedSearchEntityArtist = {
     id: "secondArtistId",
     name: "secondArtistName",
-    slug: "secondArtistSlug",
   }
   const filters = [
     {
@@ -291,6 +288,7 @@ describe("getSearchCriteriaFromFilters", () => {
 
   it("returns fields in the saved search criteria format", () => {
     const savedSearchEntity: SavedSearchEntity = {
+      placeholder: "placeholder",
       artists: [firstArtist],
       owner,
     }
@@ -304,6 +302,7 @@ describe("getSearchCriteriaFromFilters", () => {
 
   it("returns fields in the saved search criteria format for multiple artists", () => {
     const savedSearchEntity: SavedSearchEntity = {
+      placeholder: "placeholder",
       artists: [firstArtist, secondArtist],
       owner,
     }
@@ -317,6 +316,7 @@ describe("getSearchCriteriaFromFilters", () => {
 
   it("returns single artist id", () => {
     const savedSearchEntity: SavedSearchEntity = {
+      placeholder: "placeholder",
       artists: [firstArtist],
       owner,
     }
@@ -328,6 +328,7 @@ describe("getSearchCriteriaFromFilters", () => {
 
   it("returns multiple artist ids", () => {
     const savedSearchEntity: SavedSearchEntity = {
+      placeholder: "placeholder",
       artists: [firstArtist, secondArtist],
       owner,
     }

@@ -273,12 +273,12 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   }, [])
 
   const savedSearchEntity: SavedSearchEntity = {
-    artists: [{ id: id!, name: name!, slug: slug! }],
+    placeholder: name!,
+    artists: [{ id: id!, name: name! }],
     owner: {
       type: OwnerType.artist,
       id: id!,
       slug: slug!,
-      name: name!,
     },
   }
 
@@ -371,8 +371,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
           <CreateSavedSearchModal
             visible={isCreateAlertModalVisible}
-            artistId={id!}
-            artistName={name!}
             entity={savedSearchEntity}
             closeModal={() => setIsCreateAlertModalVisible(false)}
             onComplete={exitModal}
