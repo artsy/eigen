@@ -50,6 +50,7 @@ export const Form: React.FC<FormProps> = (props) => {
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
   const entity = SavedSearchStore.useStoreState((state) => state.entity)
+  const artist = entity.artists[0]
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
 
@@ -126,14 +127,13 @@ export const Form: React.FC<FormProps> = (props) => {
             haptic
             testID="view-artworks-button"
             hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
-            onPress={() => {
-              // TODO: Replace artistId
-              // navigate(`artist/${artistId}`, {
-              //   passProps: {
-              //     searchCriteriaID: savedSearchAlertId,
-              //   },
-              // })
-            }}
+            onPress={() =>
+              navigate(`artist/${artist.id}`, {
+                passProps: {
+                  searchCriteriaID: savedSearchAlertId,
+                },
+              })
+            }
           >
             <Text variant="xs" color="blue100" style={{ textDecorationLine: "underline" }}>
               View Artworks
