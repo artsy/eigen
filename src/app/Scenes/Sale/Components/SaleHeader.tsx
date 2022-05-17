@@ -127,24 +127,28 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
       >
         <Flex mx="2" mt="2">
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-            <Text variant="lg" testID="saleName">
-              {sale.name}
-            </Text>
+            <Flex flex={1}>
+              <Text variant="lg" testID="saleName">
+                {sale.name}
+              </Text>
+            </Flex>
             {!!enableAuctionShare && (
-              <Touchable
-                onPress={() => {
-                  setShareSheetVisible(true)
-                }}
-                style={{
-                  width: 30,
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                }}
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                haptic="impactLight"
-              >
-                <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-              </Touchable>
+              <Flex flex={0.1}>
+                <Touchable
+                  onPress={() => {
+                    setShareSheetVisible(true)
+                  }}
+                  style={{
+                    width: 30,
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                  }}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  haptic="impactLight"
+                >
+                  <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
+                </Touchable>
+              </Flex>
             )}
           </Flex>
           {cascadingEndTimeFeatureEnabled ? (
