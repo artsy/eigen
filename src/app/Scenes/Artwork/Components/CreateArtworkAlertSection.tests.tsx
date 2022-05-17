@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { CreateArtworkAlertSectionTestsQuery } from "__generated__/CreateArtworkAlertSectionTestsQuery.graphql"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
@@ -96,6 +97,28 @@ describe("CreateArtworkAlertSection", () => {
     fireEvent.press(getAllByText("Create Alert")[0])
 
     expect(queryByText("Prints")).toBeFalsy()
+  })
+
+  it("should correctly track event when `Create Alert` button is pressed", () => {
+    const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Artwork: () => Artwork,
+    })
+
+    fireEvent.press(getAllByText("Create Alert")[0])
+
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "tappedCreateAlert",
+          "context_module": "artworkMetadata",
+          "context_screen_owner_id": "artwork-id",
+          "context_screen_owner_slug": "artwork-slug",
+          "context_screen_owner_type": "artwork",
+        },
+      ]
+    `)
   })
 })
 

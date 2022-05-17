@@ -1,4 +1,10 @@
-import { OwnerType } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  ScreenOwnerType,
+  TappedCreateAlert,
+} from "@artsy/cohesion"
 import { CreateArtworkAlertSection_artwork } from "__generated__/CreateArtworkAlertSection_artwork.graphql"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -11,12 +17,14 @@ import { compact } from "lodash"
 import { BellIcon, Button, Flex, Text } from "palette"
 import { FC, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface CreateArtworkAlertSectionProps {
   artwork: CreateArtworkAlertSection_artwork
 }
 
 export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ artwork }) => {
+  const tracking = useTracking()
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
 
   let aggregations: Aggregations = []
@@ -29,7 +37,7 @@ export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ 
     slug: artist.slug!,
   }))
 
-  const savedSearchEntity: SavedSearchEntity = {
+  const entity: SavedSearchEntity = {
     placeholder: `Artworks like: ${artwork?.title!}`,
     artists: formattedArtists,
     owner: {
@@ -62,6 +70,18 @@ export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ 
     additionalGeneIDs,
   }
 
+  const handleCreateAlertPress = () => {
+    setIsCreateAlertModalVisible(true)
+
+    const event = tracks.tappedCreateAlert({
+      ownerId: entity.owner.id,
+      ownerType: entity.owner.type,
+      ownerSlug: entity.owner.slug,
+    })
+
+    tracking.trackEvent(event)
+  }
+
   return (
     <>
       <Flex flexDirection="row" justifyContent="space-between">
@@ -77,7 +97,7 @@ export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ 
             variant="outline"
             icon={<BellIcon fill="black100" width="16px" height="16px" />}
             haptic
-            onPress={() => setIsCreateAlertModalVisible(true)}
+            onPress={handleCreateAlertPress}
             disabled={!artwork}
           >
             <Text variant="xs" ml={0.5} numberOfLines={1} lineHeight={16}>
@@ -88,7 +108,7 @@ export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ 
       </Flex>
       <CreateSavedSearchModal
         visible={isCreateAlertModalVisible}
-        entity={savedSearchEntity}
+        entity={entity}
         attributes={attributes}
         aggregations={aggregations}
         closeModal={() => setIsCreateAlertModalVisible(false)}
@@ -123,3 +143,24 @@ export const CreateArtworkAlertSectionFragmentContainer = createFragmentContaine
     `,
   }
 )
+
+interface TappedCreateAlertOptions {
+  ownerType: ScreenOwnerType
+  ownerId: string
+  ownerSlug: string
+}
+
+const tracks = {
+  tappedCreateAlert: ({
+    ownerType,
+    ownerId,
+    ownerSlug,
+  }: TappedCreateAlertOptions): TappedCreateAlert => ({
+    action: ActionType.tappedCreateAlert,
+    context_screen_owner_type: ownerType,
+    context_screen_owner_id: ownerId,
+    context_screen_owner_slug: ownerSlug,
+    // TODO: Clarify this moment
+    context_module: ContextModule.artworkMetadata,
+  }),
+}
