@@ -5,7 +5,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { navigate, popToRoot } from "app/navigation/navigate"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Button, Flex, Text } from "palette"
 import React, { useState } from "react"
@@ -36,6 +36,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   innerFlatlistRef,
 }) => {
   const { height: screenHeight } = useScreenDimensions()
+  const enabledSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
 
   const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
   const [showSearchBar, setShowSearchBar] = useState(false)
@@ -60,7 +61,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     return <MyCollectionZeroState />
   }
 
-  const handleScrollBeginDrag = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+  const handleScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (showSearchBar) {
       return
     }
@@ -109,8 +110,8 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
                 keywordFilter
               )
             }
-            // TODO: Add scrollEventThrottle
-            onScroll={handleScrollBeginDrag}
+            scrollEventThrottle={100}
+            onScroll={enabledSearchBar ? handleScroll : undefined}
           />
         ) : (
           <MyCollectionArtworkList
@@ -127,8 +128,8 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
                 keywordFilter
               )
             }
-            // TODO: Add scrollEventThrottle
-            onScroll={handleScrollBeginDrag}
+            scrollEventThrottle={100}
+            onScroll={enabledSearchBar ? handleScroll : undefined}
           />
         )
       ) : (

@@ -6,7 +6,6 @@ import { Flex, Spinner } from "palette"
 import React, { useState } from "react"
 import { RelayPaginationProp, useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { useScreenDimensions } from "shared/hooks"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 export const MyCollectionArtworkList: React.FC<{
@@ -16,7 +15,16 @@ export const MyCollectionArtworkList: React.FC<{
   hasMore: RelayPaginationProp["hasMore"]
   isLoading: RelayPaginationProp["isLoading"]
   onScroll?: PrefetchFlatListProps<any>["onScroll"]
-}> = ({ localSortAndFilterArtworks, isLoading, loadMore, hasMore, onScroll, ...restProps }) => {
+  scrollEventThrottle?: PrefetchFlatListProps<any>["scrollEventThrottle"]
+}> = ({
+  localSortAndFilterArtworks,
+  isLoading,
+  loadMore,
+  hasMore,
+  onScroll,
+  scrollEventThrottle,
+  ...restProps
+}) => {
   const artworkConnection = useFragment<MyCollectionArtworkList_myCollectionConnection$key>(
     artworkConnectionFragment,
     restProps.myCollectionConnection
@@ -65,6 +73,7 @@ export const MyCollectionArtworkList: React.FC<{
           ) : null
         }
         onScroll={onScroll}
+        scrollEventThrottle={scrollEventThrottle}
       />
     </Flex>
   )

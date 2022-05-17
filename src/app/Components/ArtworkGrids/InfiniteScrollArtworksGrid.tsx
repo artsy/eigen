@@ -96,7 +96,7 @@ export interface Props {
   itemComponentProps?: Partial<ArtworkProps>
 
   onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void
-
+  scrollEventThrottle?: number
   /** Show Lot Label  */
   showLotLabel?: boolean
 
@@ -381,8 +381,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, hasMore, stickyHeaderIndices, useParentAwareScrollView, onScroll } =
-      this.props
+    const {
+      shouldAddPadding,
+      hasMore,
+      stickyHeaderIndices,
+      useParentAwareScrollView,
+      onScroll,
+      scrollEventThrottle,
+    } = this.props
 
     const boxPadding = shouldAddPadding ? 2 : 0
 
@@ -397,7 +403,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               this.handleFetchNextPageOnScroll(ev)
             }
           }}
-          scrollEventThrottle={50}
+          scrollEventThrottle={scrollEventThrottle ?? 50}
           onLayout={this.onLayout}
           scrollsToTop={false}
           accessibilityLabel="Artworks ScrollView"
