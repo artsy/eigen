@@ -5,6 +5,7 @@ import { EditSavedSearchAlert_user } from "__generated__/EditSavedSearchAlert_us
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { SavedSearchAlertQueryResponse } from "__generated__/SavedSearchAlertQuery.graphql"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { goBack, GoBackProps, navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -35,6 +36,16 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   const { me, user, artist, artworksConnection, savedSearchAlertId, relay } = props
   const aggregations = (artworksConnection.aggregations ?? []) as Aggregations
   const { userAlertSettings, internalID, ...attributes } = me?.savedSearch ?? {}
+
+  const entity: SavedSearchEntity = {
+    artists: [{ id: artist.internalID, name: artist.name!, slug: artist.slug! }],
+    owner: {
+      type: OwnerType.savedSearch,
+      id: savedSearchAlertId,
+      name: "",
+      slug: "",
+    },
+  }
 
   const onComplete = () => {
     goBack({
@@ -69,7 +80,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     >
       <ArtsyKeyboardAvoidingView>
         <PageWithSimpleHeader title="Edit your Alert">
-          <SavedSearchStoreProvider initialData={{ attributes, aggregations }}>
+          <SavedSearchStoreProvider initialData={{ attributes, aggregations, entity }}>
             <SavedSearchAlertForm
               initialValues={{
                 name: userAlertSettings?.name ?? "",
@@ -102,6 +113,7 @@ export const EditSavedSearchAlertRefetchContainer = createRefetchContainer(
       fragment EditSavedSearchAlert_artist on Artist {
         internalID
         name
+        slug
       }
     `,
     artworksConnection: graphql`

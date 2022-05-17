@@ -78,6 +78,7 @@ describe("EditSavedSearchAlert", () => {
     mockEnvironmentPayload(mockEnvironment, {
       Artist: () => ({
         internalID: "artistID",
+        slug: "artistSlug",
       }),
       FilterArtworksConnection: () => filterArtworks,
       Me: () => meMocked,
@@ -102,6 +103,7 @@ describe("EditSavedSearchAlert", () => {
     mockEnvironmentPayload(mockEnvironment, {
       Artist: () => ({
         internalID: "artistID",
+        slug: "artistSlug",
       }),
       FilterArtworksConnection: () => filterArtworks,
     })

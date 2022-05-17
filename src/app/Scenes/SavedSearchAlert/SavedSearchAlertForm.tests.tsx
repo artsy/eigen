@@ -1,6 +1,10 @@
+import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
+import {
+  SavedSearchEntity,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -36,7 +40,7 @@ const withoutDuplicateAlert = async () => {
 
 const TestRenderer = (props: Partial<SavedSearchAlertFormProps>) => {
   return (
-    <SavedSearchStoreProvider initialData={{ attributes, aggregations }}>
+    <SavedSearchStoreProvider initialData={{ attributes, aggregations, entity: savedSearchEntity }}>
       <SavedSearchAlertForm {...baseProps} {...props} />
     </SavedSearchStoreProvider>
   )
@@ -778,6 +782,15 @@ describe("Checking for a duplicate alert", () => {
   })
 })
 
+const savedSearchEntity: SavedSearchEntity = {
+  artists: [{ id: "artistID", name: "artistName", slug: "artistSlug" }],
+  owner: {
+    type: OwnerType.artist,
+    id: "ownerId",
+    name: "ownerName",
+    slug: "ownerSlug",
+  },
+}
 const attributes: SearchCriteriaAttributes = {
   artistIDs: ["artistID"],
   attributionClass: ["limited edition"],

@@ -1,7 +1,7 @@
 import { isEqual, isNull } from "lodash"
 import { defaultCommonFilterOptions, FilterArray, FilterData } from "../ArtworkFilterHelpers"
 import { allowedSearchCriteriaKeys } from "./constants"
-import { SearchCriteria, SearchCriteriaAttributes } from "./types"
+import { SavedSearchEntity, SearchCriteria, SearchCriteriaAttributes } from "./types"
 
 export const getOnlyFilledSearchCriteriaValues = (searchCriteria: SearchCriteriaAttributes) => {
   const prepared: Record<string, any> = {}
@@ -48,10 +48,12 @@ export const prepareFilterDataForSaveSearchInput = (filters: FilterData[]) => {
   return input
 }
 
-export const getSearchCriteriaFromFilters = (artistID: string, filters: FilterData[]) => {
+export const getSearchCriteriaFromFilters = (entity: SavedSearchEntity, filters: FilterData[]) => {
   const input = prepareFilterDataForSaveSearchInput(filters)
+  const artistIDs = entity.artists.map((artist) => artist.id)
+
   const criteria: SearchCriteriaAttributes = {
-    artistIDs: [artistID],
+    artistIDs,
     ...input,
   }
 

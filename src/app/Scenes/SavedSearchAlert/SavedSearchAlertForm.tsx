@@ -1,8 +1,5 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
-import {
-  SearchCriteria,
-  SearchCriteriaAttributes,
-} from "app/Components/ArtworkFilter/SavedSearch/types"
+import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { goBack, navigate } from "app/navigation/navigate"
 import { FormikProvider, useFormik } from "formik"
 import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
@@ -56,18 +53,12 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   } = props
   const isUpdateForm = !!savedSearchAlertId
   const isFirstRender = useFirstMountState()
-  const savedSearchPills = useSavedSearchPills()
+  const pills = useSavedSearchPills()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.removeValueFromAttributesByKeyAction
   )
-  const artistPill: SavedSearchPill = {
-    label: artistName,
-    value: artistId,
-    paramName: SearchCriteria.artistID,
-  }
-  const pills = [artistPill, ...savedSearchPills]
   const tracking = useTracking()
   const { space } = useTheme()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
