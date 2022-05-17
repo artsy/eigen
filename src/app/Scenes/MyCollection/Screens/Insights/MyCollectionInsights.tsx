@@ -5,6 +5,7 @@ import React, { Suspense } from "react"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
+import { Banner } from "./Banner"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
@@ -18,6 +19,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
         Market Signals
       </Text>
       <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+      <Banner />
     </StickyTabPageScrollView>
   )
 }
