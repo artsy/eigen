@@ -263,7 +263,6 @@ describe("getSearchCriteriaFromFilters", () => {
   const owner: SavedSearchEntityOwner = {
     type: OwnerType.artist,
     id: "ownerId",
-    name: "ownerName",
     slug: "ownerSlug",
   }
   const firstArtist: SavedSearchEntityArtist = {

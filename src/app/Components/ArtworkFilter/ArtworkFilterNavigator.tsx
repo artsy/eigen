@@ -279,7 +279,6 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
       type: OwnerType.artist,
       id: id!,
       slug: slug!,
-      name: name!,
     },
   }
 

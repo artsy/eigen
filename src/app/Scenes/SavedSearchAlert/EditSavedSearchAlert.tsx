@@ -51,7 +51,6 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     owner: {
       type: OwnerType.savedSearch,
       id: savedSearchAlertId,
-      name: "",
       slug: "",
     },
   }

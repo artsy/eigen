@@ -52,7 +52,6 @@ export interface SavedSearchEntityOwner {
   type: ScreenOwnerType
   slug: string
   id: string
-  name: string
 }
 
 export interface SavedSearchEntity {

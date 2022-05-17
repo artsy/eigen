@@ -35,7 +35,6 @@ const savedSearchModel: SavedSearchModel = {
       type: OwnerType.artist,
       id: "",
       slug: "",
-      name: "",
     },
   },
 
