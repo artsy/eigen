@@ -13,7 +13,7 @@ import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { capitalize } from "lodash"
 import { Duration } from "moment"
-import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
+import { Box, ClassTheme, Flex, Sans, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
@@ -214,7 +214,8 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     )
   }
 
-  const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale } = artwork
+  const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, saleArtwork } =
+    artwork
 
   const isBiddableInAuction =
     isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
@@ -251,6 +252,11 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
               cascadingEndTimeIntervalMinutes={sale.cascadingEndTimeIntervalMinutes}
               // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
               duration={duration}
+              extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
+              extendedBiddingPeriodMinutes={sale.extendedBiddingPeriodMinutes}
+              extendedBiddingEndAt={saleArtwork?.extendedBiddingEndAt}
+              startAt={sale.startAt}
+              endAt={saleArtwork?.endAt}
             />
           </>
         )}
@@ -294,10 +300,13 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
 
         saleArtwork {
           endAt
+          extendedBiddingEndAt
         }
 
         sale {
           cascadingEndTimeIntervalMinutes
+          extendedBiddingIntervalMinutes
+          extendedBiddingPeriodMinutes
           internalID
           isClosed
           isAuction

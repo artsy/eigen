@@ -2,10 +2,12 @@ import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { useTimer } from "app/utils/useTimer"
 import moment from "moment-timezone"
 import { Flex, Sans } from "palette"
 import PropTypes from "prop-types"
 import React from "react"
+import { ArtworkAuctionProgressBar } from "./ArtworkAuctionProgressBar"
 
 // Possible states for an auction:
 // - PREVIEW: Auction is open for registration but artworks cannot be bid on. This occurs when the current time is before any auction's startAt.
@@ -111,13 +113,23 @@ export function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) 
 export interface CountdownProps extends CountdownTimerProps {
   hasStarted?: boolean
   cascadingEndTimeIntervalMinutes?: number | null
+  extendedBiddingIntervalMinutes?: number | null
+  extendedBiddingPeriodMinutes?: number | null
+  extendedBiddingEndAt?: string | null
+  startAt?: string | null
+  endAt?: string | null
 }
 
 export const Countdown: React.FC<CountdownProps> = ({
   duration,
   label,
   hasStarted,
+  startAt,
+  endAt,
   cascadingEndTimeIntervalMinutes,
+  extendedBiddingIntervalMinutes,
+  extendedBiddingPeriodMinutes,
+  extendedBiddingEndAt,
 }) => {
   const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
 
@@ -128,7 +140,15 @@ export const Countdown: React.FC<CountdownProps> = ({
       ) : (
         <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
       )}
-
+      {!!extendedBiddingPeriodMinutes && !!extendedBiddingIntervalMinutes && (
+        <ArtworkAuctionProgressBar
+          startAt={startAt}
+          endAt={endAt}
+          extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
+          extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
+          extendedBiddingEndAt={extendedBiddingEndAt}
+        />
+      )}
       <Sans size="2" weight="medium" color="black60">
         {label}
       </Sans>
