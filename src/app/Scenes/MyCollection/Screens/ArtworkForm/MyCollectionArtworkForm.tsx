@@ -12,7 +12,7 @@ import {
   cleanArtworkPayload,
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
-import { GlobalStore } from "app/store/GlobalStore"
+import { addClue, GlobalStore } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
@@ -109,6 +109,11 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       }
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     } finally {
+      if (props.mode === "add") {
+        // TODO: check tabs
+        // TODO: check Artwork insights
+        addClue("AddedArtworkHasNoInsightsMessage")
+      }
       setLoading(false)
     }
   }

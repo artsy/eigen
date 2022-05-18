@@ -14,7 +14,13 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { useToast } from "app/Components/Toast/toastHook"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { GlobalStore, removeClue, useDevToggle, useSessionVisualClue } from "app/store/GlobalStore"
+import {
+  GlobalStore,
+  removeClue,
+  unsafe_getFeatureFlag,
+  useDevToggle,
+  useSessionVisualClue,
+} from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -35,6 +41,7 @@ import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
+import { AddedArtworkHasNoInsightsMessage } from "./Screens/Insights/Messages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
@@ -48,6 +55,7 @@ const MyCollection: React.FC<{
   const { showSessionVisualClue } = useSessionVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
+  const showMyCollectionInsights = unsafe_getFeatureFlag("ARShowMyCollectionInsights")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
@@ -88,65 +96,78 @@ const MyCollection: React.FC<{
   const hasBeenShownBanner = async () => {
     const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
     const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
+    const shouldShowAddedArtworkHasNoInsightsMessage = showSessionVisualClue(
+      "AddedArtworkHasNoInsightsMessage"
+    )
     return {
       hasSeenBanner: hasSeen === "true",
       shouldShowConsignments: shouldShowConsignments === true,
+      shouldShowAddedArtworkHasNoInsightsMessage:
+        shouldShowAddedArtworkHasNoInsightsMessage === true && showMyCollectionInsights,
     }
   }
 
   useEffect(() => {
     if (artworks.length) {
-      hasBeenShownBanner().then(({ hasSeenBanner, shouldShowConsignments }) => {
-        const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
-        const showConsignmentsBanner = shouldShowConsignments
-
-        setJSX(
-          <Flex>
-            <ArtworksFilterHeader
-              selectedFiltersCount={filtersCount}
-              onFilterPress={() => setIsFilterModalVisible(true)}
-            >
-              <Button
-                data-test-id="add-artwork-button-non-zero-state"
-                size="small"
-                variant="fillDark"
-                onPress={() => {
-                  navigate("my-collection/artworks/new", {
-                    passProps: {
-                      mode: "add",
-                      onSuccess: popToRoot,
-                    },
-                  })
-                  trackEvent(tracks.addCollectedArtwork())
-                }}
-                haptic
+      hasBeenShownBanner().then(
+        ({ hasSeenBanner, shouldShowConsignments, shouldShowAddedArtworkHasNoInsightsMessage }) => {
+          const showNewWorksBanner =
+            me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
+          const showConsignmentsBanner = shouldShowConsignments
+          const showAddedArtworkHasNoInsightsMessage = shouldShowAddedArtworkHasNoInsightsMessage
+          setJSX(
+            <Flex>
+              <ArtworksFilterHeader
+                selectedFiltersCount={filtersCount}
+                onFilterPress={() => setIsFilterModalVisible(true)}
               >
-                Add Works
-              </Button>
-            </ArtworksFilterHeader>
-            {!!showNewWorksBanner && (
-              <Message
-                variant="info"
-                title="Your collection is growing"
-                text="Based on your purchase history, we’ve added the following works."
-                showCloseButton
-                onClose={() =>
-                  AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
-                }
-              />
-            )}
-            {!!showConsignmentsBanner && (
-              <Message
-                variant="info"
-                title="Artwork added to My Collection"
-                text="The artwork you submitted for sale has been automatically added."
-                showCloseButton
-                onClose={() => removeClue("ArtworkSubmissionMessage")}
-              />
-            )}
-          </Flex>
-        )
-      })
+                <Button
+                  data-test-id="add-artwork-button-non-zero-state"
+                  size="small"
+                  variant="fillDark"
+                  onPress={() => {
+                    navigate("my-collection/artworks/new", {
+                      passProps: {
+                        mode: "add",
+                        onSuccess: popToRoot,
+                      },
+                    })
+                    trackEvent(tracks.addCollectedArtwork())
+                  }}
+                  haptic
+                >
+                  Add Works
+                </Button>
+              </ArtworksFilterHeader>
+              {!!showNewWorksBanner && (
+                <Message
+                  variant="info"
+                  title="Your collection is growing"
+                  text="Based on your purchase history, we’ve added the following works."
+                  showCloseButton
+                  onClose={() =>
+                    AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
+                  }
+                />
+              )}
+              {!!showConsignmentsBanner && (
+                <Message
+                  variant="info"
+                  title="Artwork added to My Collection"
+                  text="The artwork you submitted for sale has been automatically added."
+                  showCloseButton
+                  onClose={() => removeClue("ArtworkSubmissionMessage")}
+                />
+              )}
+              {!!showAddedArtworkHasNoInsightsMessage && (
+                <AddedArtworkHasNoInsightsMessage
+                  onClose={() => removeClue("AddedArtworkHasNoInsightsMessage")}
+                />
+              )}
+            </Flex>
+          )
+        }
+      )
     } else {
       // remove already set JSX
       setJSX(null)
