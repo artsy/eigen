@@ -99,7 +99,7 @@ const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps
         </Button>
 
         {!!isInquireable && (
-          <InquiryButtonsFragmentContainer artwork={artwork} variant="outline" mt={2} block />
+          <InquiryButtonsFragmentContainer artwork={artwork} variant="outline" mt={1} block />
         )}
       </Box>
       <CreateSavedSearchModal
