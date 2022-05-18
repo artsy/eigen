@@ -9,7 +9,6 @@ const BackgroundImage = styled(ImageBackground)`
   align-items: center;
   padding-right: 20px;
   padding-left: 20px;
-  height: 204px;
   width: 100%;
 `
 
@@ -18,15 +17,12 @@ export const Banner: React.FC<{}> = () => {
 
   return (
     <Box mb={3} width={screenDimensions.width} alignSelf="center">
-      <BackgroundImage
-        style={{ justifyContent: "space-between" }}
-        source={require("images/MCInsights_banner_backgound_image.webp")}
-      >
+      <BackgroundImage source={require("images/MCInsights_banner_backgound_image.webp")}>
         <Flex alignItems="flex-start">
-          <Text variant="lg" color="white100" mt={2}>
+          <Text variant="xl" color="white100" mt={2}>
             Activate More Market Insights
           </Text>
-          <Text mt={1} variant="xs" color="white100">
+          <Text mt={1} mb={2} variant="md" color="white100">
             Upload more of your artworks to get insights about artists you collect.
           </Text>
         </Flex>
@@ -34,6 +30,7 @@ export const Banner: React.FC<{}> = () => {
           mt={2}
           mb={2}
           block
+          variant="outline"
           position="absolute"
           onPress={() => {
             navigate("my-collection/artworks/new", {
