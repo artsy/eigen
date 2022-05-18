@@ -1,8 +1,10 @@
+import { OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "app/navigation/navigate"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertMutationResult } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
@@ -19,11 +21,19 @@ import {
 
 jest.unmock("react-relay")
 
+const savedSearchEntity: SavedSearchEntity = {
+  placeholder: "Placeholder",
+  artists: [{ id: "artistId", name: "artistName" }],
+  owner: {
+    type: OwnerType.artist,
+    id: "ownerId",
+    slug: "ownerSlug",
+  },
+}
+
 const defaultProps: CreateSavedSearchModalProps = {
   visible: true,
-  artistId: "artistId",
-  artistName: "artistName",
-  artistSlug: "artistSlug",
+  entity: savedSearchEntity,
   closeModal: jest.fn,
 }
 
@@ -91,7 +101,7 @@ describe("CreateSavedSearchModal", () => {
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      tracks.toggleSavedSearch(true, "artistId", "artistSlug", "savedSearchAlertId")
+      tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "savedSearchAlertId")
     )
   })
 })

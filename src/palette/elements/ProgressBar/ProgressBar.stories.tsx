@@ -5,10 +5,10 @@ import { ProgressBar } from "./"
 storiesOf("Progress Indicators", module).add("ProgressBar", () => (
   <Flex p={2}>
     <Text>10%</Text>
-    <ProgressBar progress={0.1} />
+    <ProgressBar progress={10} />
     <Text>20%</Text>
-    <ProgressBar progress={0.2} />
+    <ProgressBar progress={20} />
     <Text>50%</Text>
-    <ProgressBar progress={0.5} />
+    <ProgressBar progress={50} />
   </Flex>
 ))

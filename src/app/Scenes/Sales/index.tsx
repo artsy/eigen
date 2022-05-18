@@ -1,135 +1,117 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Sales_me } from "__generated__/Sales_me.graphql"
-import { Sales_sales } from "__generated__/Sales_sales.graphql"
-import { SalesQueryRendererQuery } from "__generated__/SalesQueryRendererQuery.graphql"
+import { SalesQuery, SalesQueryResponse } from "__generated__/SalesQuery.graphql"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { Stack } from "app/Components/Stack"
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { extractNodes } from "app/utils/extractNodes"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React from "react"
+import { Flex, Spinner } from "palette"
+import React, { Suspense, useRef, useState } from "react"
 import { RefreshControl, ScrollView } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { SaleList } from "./Components/SaleList"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { ZeroState } from "./Components/ZeroState"
-
-interface Props {
-  relay: RelayRefetchProp
-  sales: Sales_sales
-  me: Sales_me
-}
-
-interface State {
-  isRefreshing: boolean
-}
-
-class Sales extends React.Component<Props, State> {
-  state = {
-    isRefreshing: false,
-  }
-
-  handleRefresh = () => {
-    this.setState({ isRefreshing: true })
-    this.props.relay.refetch(
-      {},
-      {},
-      (error) => {
-        if (error) {
-          console.error("Sales/index.tsx", error.message)
-        }
-        this.setState({ isRefreshing: false })
-      },
-      { force: true }
-    )
-  }
-
-  render() {
-    const sales = extractNodes(this.props.sales)
-
-    if (sales.length === 0) {
-      return <ZeroState />
-    }
-
-    const liveAuctions = sales.filter((a) => !!a.live_start_at)
-    const timedAuctions = sales.filter((a) => !a.live_start_at)
-
-    return (
-      <ProvideScreenTrackingWithCohesionSchema
-        info={screen({ context_screen_owner_type: OwnerType.auctions })}
-      >
-        <PageWithSimpleHeader title="Auctions">
-          <ScrollView
-            refreshControl={
-              <RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />
-            }
-          >
-            <Stack py={2} spacing={3}>
-              <LotsByFollowedArtistsRailContainer
-                title="Lots by Artists You Follow"
-                me={this.props.me}
-              />
-              <SaleList title="Current Live Auctions" sales={liveAuctions} />
-              <SaleList title="Current Timed Auctions" sales={timedAuctions} />
-            </Stack>
-          </ScrollView>
-        </PageWithSimpleHeader>
-      </ProvideScreenTrackingWithCohesionSchema>
-    )
-  }
-}
-
-export const SalesFragmentContainer = createRefetchContainer(
-  Sales,
-  {
-    sales: graphql`
-      fragment Sales_sales on SaleConnection {
-        edges {
-          node {
-            ...SaleListItem_sale
-            live_start_at: liveStartAt
-          }
-        }
-      }
-    `,
-    me: graphql`
-      fragment Sales_me on Me {
-        ...LotsByFollowedArtistsRail_me
-      }
-    `,
-  },
-  graphql`
-    query SalesQuery {
-      sales: salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
-        ...Sales_sales
-      }
-      me {
-        ...Sales_me
-      }
-    }
-  `
-)
+import {
+  CurrentlyRunningAuctions,
+  CurrentlyRunningAuctionsRefetchType,
+} from "./CurrentlyRunningAuctions"
+import { UpcomingAuctions, UpcomingAuctionsRefetchType } from "./UpcomingAuctions"
 
 export const SalesScreenQuery = graphql`
-  query SalesQueryRendererQuery {
-    sales: salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
-      ...Sales_sales
+  query SalesQuery {
+    currentlyRunningAuctions: viewer {
+      ...CurrentlyRunningAuctions_viewer
+    }
+    upcomingAuctions: viewer {
+      ...UpcomingAuctions_viewer
     }
     me {
-      ...Sales_me
+      ...LotsByFollowedArtistsRail_me
     }
   }
 `
 
-export const SalesQueryRenderer: React.FC = () => {
+export const Sales: React.FC<{ data: SalesQueryResponse }> = ({ data }) => {
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  // using max_value because we want CurrentlyRunningAuctions & UpcomingAuctions
+  // to initially render
+  const [currentSalesCount, setCurrentSalesCount] = useState(Number.MAX_VALUE)
+  const [upcomingSalesCount, setUpcomingSalesCount] = useState(Number.MAX_VALUE)
+
+  const currentAuctionsRefreshRef = useRef<CurrentlyRunningAuctionsRefetchType>()
+
+  const upcomingAuctionsRefreshRef = useRef<UpcomingAuctionsRefetchType>()
+
+  const setCurrentAuctionsRefreshProp = (refreshProp: CurrentlyRunningAuctionsRefetchType) =>
+    (currentAuctionsRefreshRef.current = refreshProp)
+
+  const setUpcomongAuctionsRefreshProp = (refreshProp: UpcomingAuctionsRefetchType) =>
+    (upcomingAuctionsRefreshRef.current = refreshProp)
+
+  const handleRefresh = () => {
+    setIsRefreshing(true)
+    currentAuctionsRefreshRef.current?.({})
+    upcomingAuctionsRefreshRef.current?.({})
+    setIsRefreshing(false)
+  }
+
+  const totalSalesCount = currentSalesCount + upcomingSalesCount
+
+  if (totalSalesCount < 1) {
+    return <ZeroState />
+  }
+
   return (
-    <QueryRenderer<SalesQueryRendererQuery>
-      environment={defaultEnvironment}
-      query={SalesScreenQuery}
-      variables={{}}
-      render={renderWithLoadProgress(SalesFragmentContainer)}
-    />
+    <PageWithSimpleHeader title="Auctions">
+      <ScrollView
+        testID="Sales-Screen-ScrollView"
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+      >
+        <Stack py={2} spacing={3}>
+          {!!data.me && (
+            <LotsByFollowedArtistsRailContainer title="Lots by Artists You Follow" me={data.me} />
+          )}
+
+          <CurrentlyRunningAuctions
+            sales={data.currentlyRunningAuctions}
+            setRefetchPropOnParent={setCurrentAuctionsRefreshProp}
+            setSalesCountOnParent={(count: number) => setCurrentSalesCount(count)}
+          />
+          <UpcomingAuctions
+            sales={data.upcomingAuctions}
+            setRefetchPropOnParent={setUpcomongAuctionsRefreshProp}
+            setSalesCountOnParent={(count: number) => setUpcomingSalesCount(count)}
+          />
+        </Stack>
+      </ScrollView>
+    </PageWithSimpleHeader>
+  )
+}
+
+export const SalesQueryRenderer = () => {
+  const data = useLazyLoadQuery<SalesQuery>(
+    SalesScreenQuery,
+    {},
+    {
+      fetchPolicy: "store-and-network",
+      networkCacheConfig: { force: true },
+    }
+  )
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.auctions })}
+    >
+      <Suspense
+        fallback={
+          <PageWithSimpleHeader title="Auctions">
+            <Flex flex={1} justifyContent="center" alignItems="center">
+              <Spinner />
+            </Flex>
+          </PageWithSimpleHeader>
+        }
+      >
+        <Sales data={data} />
+      </Suspense>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }

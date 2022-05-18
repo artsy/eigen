@@ -5,6 +5,9 @@ export interface Time {
   hours: string
   minutes: string
   seconds: string
+  // also return the original args for further manipulation
+  endDate: string
+  startAt: string
 }
 
 interface Timer {
@@ -49,6 +52,8 @@ export const useTimer = (endDate: string, startAt: string = ""): Timer => {
     hours,
     minutes,
     seconds,
+    startAt,
+    endDate,
   }
 
   return { hasEnded, time, hasStarted }
