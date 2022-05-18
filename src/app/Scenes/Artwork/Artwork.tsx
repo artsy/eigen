@@ -246,10 +246,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (enableCreateArtworkAlert) {
+    if (
+      !!(artworkAboveTheFold?.isAcquireable || artworkAboveTheFold?.isOfferable) &&
+      enableCreateArtworkAlert
+    ) {
       sections.push({
         key: "faqSection",
-        element: <FaqAndSpecialistSection artwork={artworkAboveTheFold!} />,
+        element: <FaqAndSpecialistSection artwork={artworkAboveTheFold} />,
         verticalMargin: 2,
       })
     }
