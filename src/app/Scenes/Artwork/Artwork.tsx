@@ -241,7 +241,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (enableCreateArtworkAlert) {
       sections.push({
         key: "createAlertSection",
-        element: <CreateArtworkAlertSection artwork={artworkBelowTheFold} />,
+        element: <CreateArtworkAlertSection artwork={artworkAboveTheFold} />,
         verticalMargin: 2,
       })
     }
@@ -419,6 +419,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkHeader_artwork
         ...CommercialInformation_artwork
         ...FaqAndSpecialistSection_artwork
+        ...CreateArtworkAlertSection_artwork
         slug
         internalID
         id
@@ -512,7 +513,6 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
         ...Questions_artwork
-        ...CreateArtworkAlertSection_artwork
       }
     `,
     me: graphql`
