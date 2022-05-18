@@ -23,7 +23,7 @@ import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
-import { CreateAlertButtonFragmentContainer } from "./CreateAlertButton"
+import { CreateArtworkAlertButtonsSectionFragmentContainer as CreateArtworkAlertButtonsSection } from "./CreateArtworkAlertButtonsSection"
 
 interface CommercialInformationProps {
   artwork: CommercialInformation_artwork
@@ -237,7 +237,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
 
   if (enableCreateArtworkAlert && isSold) {
-    return <CreateAlertButtonFragmentContainer artwork={artwork} />
+    return <CreateArtworkAlertButtonsSection artwork={artwork} />
   }
 
   return (
@@ -338,7 +338,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         ...CommercialEditionSetInformation_artwork
         ...ArtworkExtraLinks_artwork
         ...AuctionPrice_artwork
-        ...CreateAlertButton_artwork
+        ...CreateArtworkAlertButtonsSection_artwork
       }
     `,
     me: graphql`

@@ -5,7 +5,7 @@ import {
   ScreenOwnerType,
   TappedCreateAlert,
 } from "@artsy/cohesion"
-import { CreateAlertButton_artwork } from "__generated__/CreateAlertButton_artwork.graphql"
+import { CreateArtworkAlertButtonsSection_artwork } from "__generated__/CreateArtworkAlertButtonsSection_artwork.graphql"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
@@ -20,11 +20,13 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
 
-interface CreateAlertButtonProps {
-  artwork: CreateAlertButton_artwork
+interface CreateArtworkAlertButtonsSectionProps {
+  artwork: CreateArtworkAlertButtonsSection_artwork
 }
 
-const CreateAlertButton: FC<CreateAlertButtonProps> = ({ artwork }) => {
+const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps> = ({
+  artwork,
+}) => {
   const tracking = useTracking()
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
   const { isInquireable } = artwork
@@ -111,30 +113,33 @@ const CreateAlertButton: FC<CreateAlertButtonProps> = ({ artwork }) => {
   )
 }
 
-export const CreateAlertButtonFragmentContainer = createFragmentContainer(CreateAlertButton, {
-  artwork: graphql`
-    fragment CreateAlertButton_artwork on Artwork {
-      isInquireable
-      internalID
-      slug
-      title
-      attributionClass {
+export const CreateArtworkAlertButtonsSectionFragmentContainer = createFragmentContainer(
+  CreateArtworkAlertButtonsSection,
+  {
+    artwork: graphql`
+      fragment CreateArtworkAlertButtonsSection_artwork on Artwork {
+        isInquireable
         internalID
-      }
-      mediumType {
-        filterGene {
-          slug
+        slug
+        title
+        attributionClass {
+          internalID
+        }
+        mediumType {
+          filterGene {
+            slug
+            name
+          }
+        }
+        artists {
+          internalID
           name
         }
+        ...InquiryButtons_artwork
       }
-      artists {
-        internalID
-        name
-      }
-      ...InquiryButtons_artwork
-    }
-  `,
-})
+    `,
+  }
+)
 
 interface TappedCreateAlertOptions {
   ownerType: ScreenOwnerType
