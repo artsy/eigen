@@ -66,17 +66,21 @@ export const MyCollectionInsightsScreenQuery = graphql`
 const renderMarketSignalsModal = () => {
   return (
     <Flex mt={1}>
-      <Text>{"what are artsy insights".toUpperCase()}</Text>
+      <Text caps>what are artsy insights</Text>
       <Text>
         Artsy insights are free, at-a glance insights into the market and career of artists in your
         collection.
       </Text>
-      <Text mt={2}>{"where do insights come from?".toUpperCase()}</Text>
+      <Text caps mt={2}>
+        where do insights come from?
+      </Text>
       <Text>
         Our market data comes from the Artsy price database, which includes millions of results from
         leading auction houses across the globe.
       </Text>
-      <Text mt={2}>{"will I see insights on my entire collection?".toUpperCase()}</Text>
+      <Text caps mt={2}>
+        will I see insights on my entire collection?
+      </Text>
       <Text>
         Our database covers 300,000 artists — and counting. Not all artists in your collection will
         have insights right now, but we're adding more all the time.
