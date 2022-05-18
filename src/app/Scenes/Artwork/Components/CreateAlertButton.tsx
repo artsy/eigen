@@ -84,7 +84,7 @@ const CreateAlertButton: FC<CreateAlertButtonProps> = ({ artwork }) => {
 
   return (
     <>
-      <Box>
+      <Box testID="create-artwork-alert-buttons-section">
         <Text variant="lg">Sold</Text>
         <Text variant="xs" color="black60">
           Be notified when a similar piece is available

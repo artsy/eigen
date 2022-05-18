@@ -238,7 +238,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (enableCreateArtworkAlert) {
+    if (enableCreateArtworkAlert && !artworkAboveTheFold?.isSold) {
       sections.push({
         key: "createAlertSection",
         element: <CreateArtworkAlertSection artwork={artworkAboveTheFold} />,
@@ -427,6 +427,7 @@ export const ArtworkContainer = createRefetchContainer(
         isOfferable
         isBiddable
         isInquireable
+        isSold
         availability
       }
     `,

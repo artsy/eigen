@@ -13,7 +13,7 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
 import { Touchable } from "palette"
@@ -466,6 +466,38 @@ describe("Artwork", () => {
         expect(extractText(tree.root.findByType(Countdown))).toContain("00d  00h  00m  00s")
         expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
       })
+    })
+  })
+
+  describe("Create Alert button", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+    })
+
+    it("should display create artwork alert section by default", () => {
+      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isSold: false,
+        }),
+      })
+
+      expect(queryByTestId("create-artwork-alert-section")).toBeTruthy()
+      expect(queryByTestId("create-artwork-alert-buttons-section")).toBeFalsy()
+    })
+
+    it("should display create artwork alert buttons section when artwork is sold", () => {
+      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isSold: true,
+        }),
+      })
+
+      expect(queryByTestId("create-artwork-alert-section")).toBeFalsy()
+      expect(queryByTestId("create-artwork-alert-buttons-section")).toBeTruthy()
     })
   })
 })
