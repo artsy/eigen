@@ -8,6 +8,7 @@ import React from "react"
 import { Text, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { AuctionFaqSection } from "./AuctionFaqSection"
 import { FaqAndSpecialistSection } from "./FaqAndSpecialistSection"
 
 export interface ArtworkExtraLinksProps {
@@ -24,9 +25,8 @@ export const ArtworkExtraLinks: React.FC<ArtworkExtraLinksProps> = ({ artwork, a
 
   return (
     <>
-      {!enableCreateArtworkAlert && (
-        <FaqAndSpecialistSection artwork={artwork} auctionState={auctionState} />
-      )}
+      <AuctionFaqSection artwork={artwork} auctionState={auctionState} />
+      {!enableCreateArtworkAlert && <FaqAndSpecialistSection artwork={artwork} />}
       {!!consignableArtistsCount && (
         <ConsignmentsLink
           artistName={consignableArtistsCount > 1 ? "these artists" : artistName ?? "this artist"}
