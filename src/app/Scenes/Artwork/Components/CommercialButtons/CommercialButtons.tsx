@@ -1,7 +1,6 @@
 import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwork.graphql"
 import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -32,11 +31,8 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
     isInAuction,
     editionSets,
     isForSale,
-    isSold,
   } = artwork
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
   const noEditions = !editionSets || editionSets.length === 0
-  const shouldShowCreateAlertButton = enableCreateArtworkAlert && isSold
 
   if (isInAuction && artwork.sale && auctionState !== AuctionTimerState.CLOSED && isForSale) {
     return (
@@ -91,13 +87,7 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
   }
 
   if (isInquireable) {
-    return (
-      <InquiryButtonsFragmentContainer
-        artwork={artwork}
-        variant={shouldShowCreateAlertButton ? "outline" : "fillDark"}
-        block
-      />
-    )
+    return <InquiryButtonsFragmentContainer artwork={artwork} block />
   }
 
   return null
@@ -113,7 +103,6 @@ export const CommercialButtonsFragmentContainer = createFragmentContainer(Commer
       isInAuction
       isBuyNowable
       isForSale
-      isSold
       editionSets {
         id
       }

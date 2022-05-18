@@ -13,7 +13,7 @@ import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { capitalize } from "lodash"
 import { Duration } from "moment"
-import { Box, ClassTheme, Flex, Sans, Spacer, Text } from "palette"
+import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
@@ -23,7 +23,7 @@ import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
-import { CreateAlertButton } from "./CreateAlertButton"
+import { CreateAlertButtonFragmentContainer } from "./CreateAlertButton"
 
 interface CommercialInformationProps {
   artwork: CommercialInformation_artwork
@@ -216,20 +216,6 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     )
   }
 
-  const renderCreateAlertButton = () => {
-    return (
-      <>
-        <Text variant="lg">Sold</Text>
-        <Text variant="xs" color="black60">
-          Be notified when a similar piece is available
-        </Text>
-
-        <Spacer mt={2} />
-        <CreateAlertButton />
-      </>
-    )
-  }
-
   const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
     artwork
 
@@ -241,14 +227,17 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   const artistIsConsignable = artwork?.artists?.filter((artist) => artist?.isConsignable).length
   const hidesPriceInformation =
     isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
-  const shouldShowCreateAlertButton = enableCreateArtworkAlert && isSold
+
+  if (enableCreateArtworkAlert && isSold) {
+    return <CreateAlertButtonFragmentContainer artwork={artwork} />
+  }
 
   return (
-    <Box>
-      {shouldShowCreateAlertButton ? renderCreateAlertButton() : renderPriceInformation()}
+    <>
+      {renderPriceInformation()}
       {!!(canTakeCommercialAction && !isInClosedAuction) && (
         <>
-          {!!(!hidesPriceInformation || shouldShowCreateAlertButton) && <Spacer mb={2} />}
+          {!hidesPriceInformation && <Spacer mb={2} />}
 
           <CommercialButtons
             artwork={artwork}
@@ -282,7 +271,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
           />
         </>
       )}
-    </Box>
+    </>
   )
 }
 
@@ -335,6 +324,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         ...CommercialEditionSetInformation_artwork
         ...ArtworkExtraLinks_artwork
         ...AuctionPrice_artwork
+        ...CreateAlertButton_artwork
       }
     `,
     me: graphql`
