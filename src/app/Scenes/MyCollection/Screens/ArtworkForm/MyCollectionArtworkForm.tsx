@@ -12,7 +12,7 @@ import {
   cleanArtworkPayload,
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
@@ -25,6 +25,7 @@ import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArt
 import { myCollectionUpdateArtwork } from "../../mutations/myCollectionUpdateArtwork"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
+import { InsightsLoadingModal } from "./Components/InsightsLoadingModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 import { removeLocalPhotos, storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
@@ -90,17 +91,41 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   formValuesRef.current = formValues
 
   const [loading, setLoading] = useState<boolean>(false)
+  const [artworkSaved, setArtworkSaved] = useState<boolean>(false)
+  const [keepVisible, setVisible] = useState<boolean>(true)
 
   const { showActionSheetWithOptions } = useActionSheet()
 
+  const showMyCollectionInsights = useFeatureFlag("ARShowMyCollectionInsights")
+
+  // This is to satisfy showing the insights modal for 2500 ms
+  const waitForModalToClose = async () => {
+    await new Promise((resolve) =>
+      setTimeout(() => {
+        setVisible(false)
+        return resolve
+      }, 2500)
+    )
+  }
+
   const handleSubmit = async (values: ArtworkFormValues) => {
     setLoading(true)
+    if (showMyCollectionInsights) {
+      waitForModalToClose()
+    }
+
     try {
       await updateMyUserProfile({
         currencyPreference: preferredCurrency,
         lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
       })
       await updateArtwork(values, dirtyFormCheckValues, props)
+      if (showMyCollectionInsights) {
+        setArtworkSaved(true)
+        // TODO: update to request for market data
+        // simulate requesting market data
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+      }
     } catch (e) {
       if (__DEV__) {
         console.error(e)
@@ -230,7 +255,11 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           />
           <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
         </Stack.Navigator>
-        <LoadingModal isVisible={loading} />
+        {showMyCollectionInsights && props.mode === "add" ? (
+          <InsightsLoadingModal isVisible={loading || keepVisible} artworkSaved={artworkSaved} />
+        ) : (
+          <LoadingModal isVisible={loading} />
+        )}
       </FormikProvider>
     </NavigationContainer>
   )
@@ -301,6 +330,7 @@ export const updateArtwork = async (
   }
 
   refreshMyCollection()
+  // TODO: request for market data
   props.onSuccess?.()
 }
 
