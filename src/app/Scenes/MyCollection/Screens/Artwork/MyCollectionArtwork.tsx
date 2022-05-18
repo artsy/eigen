@@ -234,6 +234,7 @@ export const ArtworkMetaProps = graphql`
       city
       country
       state
+      displayCountry
     }
     provenance
     slug

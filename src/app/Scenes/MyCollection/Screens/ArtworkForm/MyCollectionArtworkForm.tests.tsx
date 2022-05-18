@@ -228,7 +228,6 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Add Details")).toBeTruthy()
 
-        expect(getByTestId("ArtistDisplayNameInput").props.value).toBe(undefined)
         expect(getByTestId("TitleInput").props.value).toBe("")
         expect(getByTestId("DateInput").props.value).toBe("")
         expect(getByTestId("MaterialsInput").props.value).toBe("")
@@ -425,6 +424,7 @@ describe("MyCollectionArtworkForm", () => {
                     city: null,
                     country: null,
                     state: null,
+                    displayCountry: null,
                   },
                   provenance: null,
                   width: null,

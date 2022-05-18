@@ -163,20 +163,19 @@ export const MyCollectionArtworkFormMain: React.FC<
                 testID="CurrencyPicker"
               />
               <DetailedLocationAutocomplete
-                title="LOCATION"
-                placeholder="Enter City Where Artwork is Located"
+                title="Location"
+                placeholder="Enter city where the artwork is located"
                 onChangeText={formik.handleChange("artworkLocation")}
                 onBlur={formik.handleBlur("artworkLocation")}
-                accessibilityLabel="Enter City Where the Artwork is Located"
+                accessibilityLabel="Enter city where the artwork is located"
                 initialLocation={formikValues.artworkLocation}
                 onChange={({ city, country, postalCode, state, stateCode, countryCode }) => {
                   formik.setFieldValue("collectorLocation", {
                     city: city ?? "",
-                    country: country ?? "",
+                    country: countryCode ?? "",
                     postalCode: postalCode ?? "",
                     state: state ?? "",
                     stateCode: stateCode ?? "",
-                    countryCode: countryCode ?? "",
                   })
                   formik.setFieldValue(
                     "artworkLocation",
