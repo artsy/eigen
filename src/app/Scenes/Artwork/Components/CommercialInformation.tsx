@@ -216,8 +216,16 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     )
   }
 
-  const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
-    artwork
+  const {
+    isAcquireable,
+    isOfferable,
+    isInquireable,
+    isInAuction,
+    sale,
+    isForSale,
+    saleArtwork,
+    isSold,
+  } = artwork
 
   const isBiddableInAuction =
     isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
@@ -235,42 +243,48 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   return (
     <>
       {renderPriceInformation()}
-      {!!(canTakeCommercialAction && !isInClosedAuction) && (
-        <>
-          {!hidesPriceInformation && <Spacer mb={2} />}
-
-          <CommercialButtons
-            artwork={artwork}
-            me={me}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            auctionState={timerState}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            editionSetID={editionSetID}
-          />
-        </>
-      )}
-      {!!isBiddableInAuction && (
-        <>
-          <Spacer mb={2} />
-          <Countdown
-            label={label}
-            hasStarted={hasStarted}
-            cascadingEndTimeIntervalMinutes={sale.cascadingEndTimeIntervalMinutes}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            duration={duration}
-          />
-        </>
-      )}
-      {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
-        <>
-          <Spacer mb={2} />
-          <ArtworkExtraLinks
-            artwork={artwork}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            auctionState={timerState}
-          />
-        </>
-      )}
+      <Box>
+        {!!(canTakeCommercialAction && !isInClosedAuction) && (
+          <>
+            {!hidesPriceInformation && <Spacer mb={2} />}
+            <CommercialButtons
+              artwork={artwork}
+              me={me}
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              auctionState={timerState}
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              editionSetID={editionSetID}
+            />
+          </>
+        )}
+        {!!isBiddableInAuction && (
+          <>
+            <Spacer mb={2} />
+            <Countdown
+              label={label}
+              hasStarted={hasStarted}
+              cascadingEndTimeIntervalMinutes={sale.cascadingEndTimeIntervalMinutes}
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              duration={duration}
+              extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
+              extendedBiddingPeriodMinutes={sale.extendedBiddingPeriodMinutes}
+              extendedBiddingEndAt={saleArtwork?.extendedBiddingEndAt}
+              startAt={sale.startAt}
+              endAt={saleArtwork?.endAt}
+            />
+          </>
+        )}
+        {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
+          <>
+            <Spacer mb={2} />
+            <ArtworkExtraLinks
+              artwork={artwork}
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              auctionState={timerState}
+            />
+          </>
+        )}
+      </Box>
     </>
   )
 }
