@@ -4,22 +4,20 @@ import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Banner } from "./Banner"
 
 describe("MyCollectionInsights banner", () => {
-  const TestRenderer = () => <Banner />
+  const TestRenderer = () => {
+    return <Banner />
+  }
 
-  beforeEach(() => {
-    jest.resetModules()
-  })
+  it("renders", async () => {
+    const { findByText } = renderWithWrappersTL(<TestRenderer />)
 
-  it("renders", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    expect(getByText("Activate More Market Insights")).toBeTruthy()
+    expect(await findByText("Activate More Market Insights")).toBeTruthy()
   })
 
   it("navigates to MyCollectionArtworkForm when Upload Another Artwork is pressed", () => {
     const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
 
-    fireEvent.press(getAllByText("Update Another Artwork")[0])
+    fireEvent.press(getAllByText("Upload Another Artwork")[0])
 
     expect(navigate).toHaveBeenCalledWith(
       "my-collection/artworks/new",

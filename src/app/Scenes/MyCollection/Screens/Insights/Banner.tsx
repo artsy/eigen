@@ -1,4 +1,4 @@
-import { navigate } from "app/navigation/navigate"
+import { navigate, popToRoot } from "app/navigation/navigate"
 import { Box, Button, Flex, Text } from "palette"
 import React from "react"
 import { ImageBackground } from "react-native"
@@ -35,6 +35,7 @@ export const Banner: React.FC<{}> = () => {
             navigate("my-collection/artworks/new", {
               passProps: {
                 mode: "add",
+                onSuccess: popToRoot,
               },
             })
           }}
