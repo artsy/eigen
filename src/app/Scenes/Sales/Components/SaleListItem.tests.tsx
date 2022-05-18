@@ -6,9 +6,7 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import SaleListItem from "./SaleListItem"
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />
-  )
+  renderWithWrappers(<SaleListItem sale={props as any} columnCount={4} />)
 })
 
 const props = {

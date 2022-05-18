@@ -7,60 +7,61 @@ import { navigate } from "app/navigation/navigate"
 
 import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
 import { formatDisplayTimelyAt } from "app/Scenes/Sale/helpers"
-import { Sans } from "palette"
+import { Flex, Text, useSpace } from "palette"
+import { useScreenDimensions } from "shared/hooks"
 
 interface Props {
   sale: SaleListItem_sale
-  containerWidth: number
-  index: number
   columnCount: number
 }
 
-export class SaleListItem extends React.Component<Props> {
-  handleTap = () => {
+export const SaleListItem: React.FC<Props> = (props) => {
+  const handleTap = () => {
     const {
       sale: { liveURLIfOpen, href },
-    } = this.props
+    } = props
     const url = (liveURLIfOpen || href) as string
     navigate(url)
   }
 
-  render() {
-    const { sale, containerWidth, index, columnCount } = this.props
-    const image = sale.coverImage
-    const timestamp = formatDisplayTimelyAt(sale.displayTimelyAt)
-    const isFirstItemInRow = index === 0 || index % columnCount === 0
-    const marginLeft = isFirstItemInRow ? 0 : 20
+  const { sale, columnCount } = props
+  const image = sale.coverImage
+  const timestamp = formatDisplayTimelyAt(sale.displayTimelyAt)
 
-    return (
-      <TouchableOpacity onPress={this.handleTap}>
-        <View
+  const { width: screenWidth } = useScreenDimensions()
+
+  const space = useSpace()
+
+  const maxWidth = columnCount > 0 ? screenWidth / columnCount - space(2) : 0
+
+  return (
+    <TouchableOpacity onPress={handleTap}>
+      <View
+        style={{
+          width: maxWidth,
+          alignSelf: "center",
+          marginBottom: space(2),
+        }}
+      >
+        <OpaqueImageView
           style={{
-            width: containerWidth,
-            marginBottom: 20,
-            marginLeft,
+            width: maxWidth,
+            height: maxWidth,
+            alignContent: "center",
+            justifyContent: "center",
+            borderRadius: 2,
+            marginBottom: 5,
           }}
-        >
-          <OpaqueImageView
-            style={{
-              width: containerWidth,
-              height: containerWidth,
-              borderRadius: 2,
-              overflow: "hidden",
-              marginBottom: 5,
-            }}
-            imageURL={image && image.url}
-          />
-          <Sans size="3t" numberOfLines={2} weight="medium">
-            {sale.name}
-          </Sans>
-          <Sans size="3" color="black60">
-            {timestamp}
-          </Sans>
-        </View>
-      </TouchableOpacity>
-    )
-  }
+          imageURL={image && image.url}
+          resizeMode="contain"
+        />
+        <Text numberOfLines={2} weight="medium">
+          {sale.name}
+        </Text>
+        <Text color="black60">{timestamp}</Text>
+      </View>
+    </TouchableOpacity>
+  )
 }
 
 export default createFragmentContainer(SaleListItem, {
@@ -77,3 +78,21 @@ export default createFragmentContainer(SaleListItem, {
     }
   `,
 })
+
+export const SaleItemPadder: React.FC<{ columnCount: number }> = ({ columnCount }) => {
+  const { width: screenWidth } = useScreenDimensions()
+  const space = useSpace()
+  const maxWidth = columnCount > 0 ? screenWidth / columnCount - space(2) : 0
+
+  return (
+    <Flex
+      style={{
+        width: maxWidth,
+        alignSelf: "center",
+        marginBottom: space(2),
+      }}
+    >
+      <Flex width={maxWidth} height={maxWidth} marginBottom={5} />
+    </Flex>
+  )
+}
