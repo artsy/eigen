@@ -68,7 +68,14 @@ export const SalesScreenQuery = graphql`
 `
 
 export const SalesQueryRenderer = () => {
-  const data = useLazyLoadQuery<SalesQuery>(SalesScreenQuery, {})
+  const data = useLazyLoadQuery<SalesQuery>(
+    SalesScreenQuery,
+    {},
+    {
+      fetchPolicy: "store-and-network",
+      networkCacheConfig: { force: true },
+    }
+  )
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.auctions })}

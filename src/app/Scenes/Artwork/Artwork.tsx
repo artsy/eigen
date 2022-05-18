@@ -544,7 +544,7 @@ export const ArtworkQueryRenderer: React.FC<{
 }> = ({ artworkID, environment, ...others }) => {
   return (
     <RetryErrorBoundaryLegacy
-      render={({ isRetry }) => {
+      render={() => {
         return (
           <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
             environment={environment || defaultEnvironment}
@@ -575,10 +575,8 @@ export const ArtworkQueryRenderer: React.FC<{
                 )
               },
             }}
-            cacheConfig={{
-              // Bypass Relay cache on retries.
-              ...(isRetry && { force: true }),
-            }}
+            fetchPolicy="store-and-network"
+            cacheConfig={{ force: true }}
           />
         )
       }}
