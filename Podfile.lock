@@ -1156,7 +1156,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
-  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
+  DoubleConversion: cde416483dac037923206447da6e1454df403714
   EDColor: 91d127cd67d7c1d3862846fb11ef4b3851151bfa
   Emission: ce472ad11d5dcd1e332938722aef6e97945e4efb
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
@@ -1185,7 +1185,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
-  glog: 5337263514dd6f09803962437687240c5dc39aa4
+  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   GoogleDataTransport: 04c3e9a480bbcaa2ec3f5d27f1cdeb6a92f20c8d
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: f8a43108b38a68eebe8b3540e1f4f2d28843ce20
