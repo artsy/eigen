@@ -13,12 +13,17 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const data = useLazyLoadQuery<MyCollectionInsightsQuery>(MyCollectionInsightsScreenQuery, {})
 
   return (
-    <StickyTabPageScrollView contentContainerStyle={{ paddingTop: space("2") }}>
-      <MyCollectionInsightsOverview />
-      <Text variant="lg" mr={0.5} mb={2}>
-        Market Signals
-      </Text>
-      <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+    <StickyTabPageScrollView
+      contentContainerStyle={{ paddingTop: space("2") }}
+      paddingHorizontal={0}
+    >
+      <Flex paddingX={space("2")}>
+        <MyCollectionInsightsOverview />
+        <Text variant="lg" mr={0.5} mb={2}>
+          Market Signals
+        </Text>
+        <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+      </Flex>
       <Banner />
     </StickyTabPageScrollView>
   )

@@ -6,7 +6,6 @@ import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components"
 
 const BackgroundImage = styled(ImageBackground)`
-  align-items: center;
   padding-right: 20px;
   padding-left: 20px;
   width: 100%;
