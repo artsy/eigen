@@ -1,17 +1,18 @@
-import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
+import { FaqAndSpecialistSection_artwork } from "__generated__/FaqAndSpecialistSection_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
 import { Sans } from "palette"
 import React from "react"
 import { Text } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface FaqAndSpecialistSectionProps {
-  artwork: ArtworkExtraLinks_artwork
+  artwork: FaqAndSpecialistSection_artwork
 }
 
-export const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = ({ artwork }) => {
+const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = ({ artwork }) => {
   const { isAcquireable, isOfferable } = artwork
   const { trackEvent } = useTracking()
 
@@ -50,6 +51,22 @@ export const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = (
     return null
   }
 }
+
+export const FaqAndSpecialistSectionFragmentContainer = createFragmentContainer(
+  FaqAndSpecialistSection,
+  {
+    artwork: graphql`
+      fragment FaqAndSpecialistSection_artwork on Artwork {
+        isAcquireable
+        isOfferable
+        title
+        artist {
+          name
+        }
+      }
+    `,
+  }
+)
 
 // TODO: move track events to cohesion
 const tracks = {

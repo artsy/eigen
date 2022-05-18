@@ -9,7 +9,7 @@ import { Text, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { AuctionFaqSection } from "./AuctionFaqSection"
-import { FaqAndSpecialistSection } from "./FaqAndSpecialistSection"
+import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./FaqAndSpecialistSection"
 
 export interface ArtworkExtraLinksProps {
   artwork: ArtworkExtraLinks_artwork
@@ -66,6 +66,7 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
 export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(ArtworkExtraLinks, {
   artwork: graphql`
     fragment ArtworkExtraLinks_artwork on Artwork {
+      ...FaqAndSpecialistSection_artwork
       isAcquireable
       isInAuction
       isOfferable
