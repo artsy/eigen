@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import moment from "moment"
@@ -248,6 +248,21 @@ describe("timer transitions", () => {
 describe("Countdown", () => {
   // 10h 3m
   const duration = moment.duration(36180000)
+
+  it("shows extended bidding info when extendedBiddingPeriodMinutes is present", () => {
+    const { getByText } = renderWithWrappersTL(
+      <Wrapper>
+        <Countdown
+          duration={duration}
+          label="A label"
+          cascadingEndTimeIntervalMinutes={1}
+          extendedBiddingPeriodMinutes={2}
+        />
+      </Wrapper>
+    )
+    const textBlock = getByText("*Closure times may be extended to accomodate last minute bids")
+    expect(textBlock).toBeDefined()
+  })
 
   describe("when the enable cascade feature flag is turned on", () => {
     beforeEach(() => {
