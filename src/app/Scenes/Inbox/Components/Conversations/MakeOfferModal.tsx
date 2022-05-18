@@ -16,7 +16,7 @@ import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 
-import { EditionSelectBox } from "./EditionSelectBox"
+import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
 
 interface MakeOfferModalProps {
   artwork: MakeOfferModal_artwork
@@ -52,8 +52,8 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           {!!artwork.isEdition && artwork.editionSets!.length > 1 && (
             <Flex mb={2}>
               {artwork.editionSets?.map((edition) => (
-                <EditionSelectBox
-                  edition={edition!}
+                <EditionSelectBoxFragmentContainer
+                  editionSet={edition!}
                   selected={edition!.internalID === selectedEdition}
                   onPress={selectEdition}
                   key={`edition-set-${edition?.internalID}`}
@@ -96,22 +96,8 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
       internalID
       isEdition
       editionSets {
+        ...EditionSelectBox_editionSet
         internalID
-        editionOf
-        isAcquireable
-        isOfferableFromInquiry
-        listPrice {
-          ... on Money {
-            display
-          }
-          ... on PriceRange {
-            display
-          }
-        }
-        dimensions {
-          cm
-          in
-        }
       }
     }
   `,
