@@ -31,7 +31,7 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({ saleArtwork, sale, d
     endDate: "",
   }
 
-  const timerCopy = getTimerInfo(time, saleHasStarted)
+  const timerCopy = getTimerInfo(time, { hasStarted: saleHasStarted })
 
   let lotCloseCopy
   let labelColor = "black60"
