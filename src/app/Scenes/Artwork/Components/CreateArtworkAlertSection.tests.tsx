@@ -112,7 +112,7 @@ describe("CreateArtworkAlertSection", () => {
       Array [
         Object {
           "action": "tappedCreateAlert",
-          "context_module": "artworkMetadata",
+          "context_module": "ArtworkTombstone",
           "context_screen_owner_id": "artwork-id",
           "context_screen_owner_slug": "artwork-slug",
           "context_screen_owner_type": "artwork",

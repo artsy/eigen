@@ -157,7 +157,6 @@ const tracks = {
     context_screen_owner_type: ownerType,
     context_screen_owner_id: ownerId,
     context_screen_owner_slug: ownerSlug,
-    // TODO: Clarify this moment
-    context_module: ContextModule.artworkMetadata,
+    context_module: "ArtworkTombstone" as ContextModule,
   }),
 }
