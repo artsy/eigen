@@ -377,12 +377,13 @@ describe("ArtworkExtraLinks", () => {
 
         // Makes sure that no parts of the text references of the FaqAndSpecialistSection
         // appear in the rendered component when ff - AREnableCreateArtworkAlert is true
-
-        expect(queryByText("By placing a bid you agree to")).toBeNull()
-        expect(queryByText("Conditions of Sale")).toBeNull()
-        expect(queryByText("Have a question?")).toBeNull()
-        expect(queryByText("Read our auction FAQs")).toBeNull()
-        expect(queryByText("ask a specialist")).toBeNull()
+        expect(
+          queryByText("By placing a bid you agree to Artsy's and Christie's", { exact: false })
+        ).toBeTruthy()
+        expect(queryByText("Conditions of Sale")).toBeTruthy()
+        expect(queryByText("Have a question?", { exact: false })).toBeTruthy()
+        expect(queryByText("Read our auction FAQs")).toBeTruthy()
+        expect(queryByText("ask a specialist")).toBeTruthy()
         expect(queryByText("Read our FAQ")).toBeNull()
       })
     })
