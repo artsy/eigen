@@ -323,7 +323,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
       <Spacer mb={2} mt={1} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        {!showMyCollectionInsights ? (
+        {!!showMyCollectionInsights ? (
           <>
             <PlaceholderText width="25%" height={22} />
             <PlaceholderText width="25%" height={22} />
