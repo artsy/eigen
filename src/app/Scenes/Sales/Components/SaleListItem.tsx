@@ -79,6 +79,10 @@ export default createFragmentContainer(SaleListItem, {
   `,
 })
 
+/** This helps keep SaleItems in the AuctionTabContent evenly spaced
+ *  when the flatlist columns do not match data length. We pad the data
+ *  with this item so items displayed are spaced right.
+ */
 export const SaleItemPadder: React.FC<{ columnCount: number }> = ({ columnCount }) => {
   const { width: screenWidth } = useScreenDimensions()
   const space = useSpace()
