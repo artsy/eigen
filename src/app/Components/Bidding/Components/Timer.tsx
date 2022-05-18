@@ -3,7 +3,7 @@ import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import moment from "moment-timezone"
-import { Flex, Sans } from "palette"
+import { Flex, Sans, Spacer, Text } from "palette"
 import PropTypes from "prop-types"
 import React from "react"
 import { ArtworkAuctionProgressBar } from "./ArtworkAuctionProgressBar"
@@ -151,6 +151,14 @@ export const Countdown: React.FC<CountdownProps> = ({
       <Sans size="2" weight="medium" color="black60">
         {label}
       </Sans>
+      {!!extendedBiddingPeriodMinutes && (
+        <>
+          <Spacer mt={1} />
+          <Text variant="xs" color="black60" textAlign="center">
+            *Closure times may be extended to accomodate last minute bids
+          </Text>
+        </>
+      )}
     </Flex>
   )
 }
