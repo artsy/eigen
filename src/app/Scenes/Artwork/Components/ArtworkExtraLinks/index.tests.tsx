@@ -12,8 +12,20 @@ import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwo
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ModalStack } from "app/navigation/ModalStack"
 import { navigate } from "app/navigation/navigate"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+
 import { postEventToProviders } from "app/utils/track/providers"
+
+import {
+  __globalStoreTestUtils__,
+  GlobalStoreProvider,
+  useSelectedTab,
+} from "app/store/GlobalStore"
+
+jest.mock("app/store/GlobalStore", () => ({
+  __globalStoreTestUtils__: jest.requireActual("app/store/GlobalStore").__globalStoreTestUtils__,
+  GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,
+  useSelectedTab: jest.fn(() => "home"),
+}))
 
 function getWrapper({
   artwork,
@@ -68,7 +80,8 @@ describe("ArtworkExtraLinks", () => {
       ],
     }
 
-    __globalStoreTestUtils__?.injectState({ bottomTabs: { sessionState: { selectedTab: "sell" } } })
+    ;(useSelectedTab as any).mockImplementation(() => "sell")
+
     const component = getWrapper({ artwork })
     const consignmentsLink = component.find(Text).at(1)
 
