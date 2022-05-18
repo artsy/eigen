@@ -24,6 +24,7 @@ export const ArtistAutosuggest: React.FC = () => {
   }, [])
 
   const onArtistSearchTextChange = (e: string) => {
+    setFocused(true)
     setIsArtistSelected(false)
     setFieldValue("artist", e)
     setFieldValue("artistId", "")

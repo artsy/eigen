@@ -44,26 +44,9 @@ export const features = defineFeatures({
     echoFlagKey: "AROptionsPriceTransparency",
     description: "Price Transparency",
   },
-  ARDisableReactNativeBidFlow: {
-    readyForRelease: true,
-    echoFlagKey: "ARDisableReactNativeBidFlow",
-  },
-  AREnableNewPartnerView: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableNewPartnerView",
-  },
   AROptionsLotConditionReport: {
     readyForRelease: true,
     echoFlagKey: "AROptionsLotConditionReport",
-  },
-  AREnableViewingRooms: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableViewingRooms",
-  },
-  ARHomeAuctionResultsByFollowedArtists: {
-    readyForRelease: true,
-    echoFlagKey: "ARHomeAuctionResultsByFollowedArtists",
-    description: "Enable home auction results",
   },
   AREnableOrderHistoryOption: {
     readyForRelease: true,
@@ -73,11 +56,6 @@ export const features = defineFeatures({
   AREnableSavedAddresses: {
     readyForRelease: false,
     description: "Enable Saved Addresses",
-  },
-  AREnableImprovedSearchPills: {
-    readyForRelease: false,
-    description: "Enable improved search pills",
-    echoFlagKey: "AREnableImprovedSearchPills",
   },
   AREnableTrove: {
     readyForRelease: true,
@@ -105,21 +83,11 @@ export const features = defineFeatures({
     description: "Enable Improved Alerts flow",
     echoFlagKey: "AREnableImprovedAlertsFlow",
   },
-  AREnableSplitIOABTesting: {
-    readyForRelease: true,
-    description: "Enable Split.io A/B testing",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableSplitIOABTesting",
-  },
   AREnableExampleExperiments: {
     // we can remove this as soon as we have a real experiment on Unleash
     readyForRelease: false,
     description: "Show example Unleash experiments",
     showInAdminMenu: true,
-  },
-  AREnableArtistRecommendations: {
-    readyForRelease: false,
-    description: "Enable new artist recommendations",
   },
   AREnableQueriesPrefetching: {
     readyForRelease: true,
@@ -143,11 +111,6 @@ export const features = defineFeatures({
     description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
   },
-  AREnableImageSearch: {
-    readyForRelease: false,
-    description: "Enable search with image",
-    showInAdminMenu: true,
-  },
   AREnableCollectorProfile: {
     readyForRelease: true,
     description: "Enable collector profile",
@@ -159,7 +122,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   ARShowConsignmentsInMyCollection: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Show consignments in My Collection",
     showInAdminMenu: true,
   },
@@ -168,13 +131,13 @@ export const features = defineFeatures({
     description: "Enable placeholder layout animation",
   },
   AREnableNewMyCollectionArtwork: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable new my collection artwork page",
     showInAdminMenu: true,
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
   },
   AREnableShowOnlySubmittedMyCollectionArtworkFilter: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Show Only Submitted MyCollection Artwork Filter",
     showInAdminMenu: true,
   },
@@ -189,18 +152,35 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   ARShowRequestPriceEstimateBanner: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Show request price estimate banner",
     showInAdminMenu: true,
   },
-  ARShowDemandIndexHints: {
-    readyForRelease: false,
+  ARShowMyCollectionDemandIndexHints: {
+    readyForRelease: true,
     description: "Show demand index hints",
     showInAdminMenu: true,
   },
   AREnablePriceEstimateRange: {
     readyForRelease: false,
     description: "Enable My Collection Price Estimate Range",
+    showInAdminMenu: false,
+  },
+  AREnableMyCollectionComparableWorks: {
+    readyForRelease: true,
+    description: "Enable My Collection Comparable Works",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionComparableWorks",
+  },
+  AREnableHomeScreenArtworkRecommendations: {
+    readyForRelease: true,
+    description: "Enable Home Screen Artwork Recommendations",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableHomeScreenArtworkRecommendations",
+  },
+  AREnableMapScreen: {
+    readyForRelease: false,
+    description: "Enable Crossplatform Map Screen",
     showInAdminMenu: true,
   },
 })
@@ -259,6 +239,9 @@ export const devToggles = defineDevToggles({
   },
   DTUseProductionUnleash: {
     description: "Use Production Unleash",
+  },
+  DTShowErrorInLoadFailureView: {
+    description: "Show error in load failure view",
   },
 })
 

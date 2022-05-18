@@ -3,7 +3,7 @@ import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOf
 import { navigate } from "app/navigation/navigate"
 import { Button, ButtonProps } from "palette"
 import React from "react"
-import { Alert } from "react-native"
+import { Alert, GestureResponderEvent } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export interface InquiryMakeOfferButtonProps {
@@ -15,6 +15,8 @@ export interface InquiryMakeOfferButtonProps {
   buttonText?: string
   disabled?: boolean
   conversationID: string
+  replaceModalView?: boolean
+  onPress?: (event?: GestureResponderEvent) => void
 }
 
 export interface State {
@@ -52,7 +54,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
   }
 
   handleCreateInquiryOfferOrder() {
-    const { relay, artwork, editionSetID, conversationID } = this.props
+    const { relay, artwork, editionSetID, conversationID, replaceModalView = true } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state
     const { internalID } = artwork
 
@@ -105,7 +107,7 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
                 navigate(`/orders/${orderOrError.order.internalID}`, {
                   modal: true,
-                  replace: true,
+                  replace: !!replaceModalView,
                   passProps: {
                     orderID: orderOrError.order.internalID,
                     title: "Make Offer",
@@ -125,19 +127,23 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
 
   render() {
     const { isCommittingCreateOfferOrderMutation } = this.state
+    const { onPress, disabled, variant, buttonText } = this.props
 
     return (
       <Button
-        onPress={() => this.handleCreateInquiryOfferOrder()}
+        onPress={(event) => {
+          onPress?.(event)
+          this.handleCreateInquiryOfferOrder()
+        }}
         loading={isCommittingCreateOfferOrderMutation}
         size="large"
-        disabled={this.props.disabled}
+        disabled={disabled}
         block
         width={100}
-        variant={this.props.variant}
+        variant={variant}
         haptic
       >
-        {this.props.buttonText ? this.props.buttonText : "Make an Offer"}
+        {buttonText ? buttonText : "Make an Offer"}
       </Button>
     )
   }

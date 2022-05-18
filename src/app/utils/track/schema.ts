@@ -90,6 +90,7 @@ export enum PageNames {
   Auction = "Auction",
   AuctionInfo = "AuctionInfo",
   BidFlowBillingAddressPage = "YourBillingAddress",
+  BidFlowPhoneNumberPage = "YourPhoneNumber",
   BidFlowConfirmBidPage = "ConfirmYourBid",
   BidFlowMaxBidPage = "YourMaxBid",
   BidFlowRegistration = "Registration",
@@ -270,6 +271,7 @@ export enum ActionNames {
   BidFlowAddBillingAddress = "addBillingAddress",
   BidFlowPlaceBid = "placeBid",
   BidFlowSaveBillingAddress = "saveBillingAddress",
+  BidFlowSavePhoneNumber = "savePhoneNumber",
   ContactGallery = "contactGallery",
 
   /**

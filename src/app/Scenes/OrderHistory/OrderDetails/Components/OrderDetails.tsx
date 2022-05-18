@@ -7,7 +7,6 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact } from "lodash"
 import { Box, Flex, Separator, Text } from "palette"
-import React, { FC } from "react"
 import { SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
@@ -27,7 +26,7 @@ export interface SectionListItem {
   data: readonly JSX.Element[]
 }
 
-const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
+const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   const partnerName = extractNodes(order?.lineItems)?.[0]?.artwork?.partner
   const fulfillmentType = order.requestedFulfillment?.__typename
   const isShipping = fulfillmentType === "CommerceShipArta" || fulfillmentType === "CommerceShip"
@@ -124,7 +123,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
   )
 }
 
-export const OrderDetailsPlaceholder: FC<{}> = () => (
+export const OrderDetailsPlaceholder: React.FC<{}> = () => (
   <PageWithSimpleHeader title="Order Details">
     <Flex px={2}>
       <Flex flexDirection="row" mt={2}>
@@ -222,7 +221,7 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
   `,
 })
 
-export const OrderDetailsQueryRender: FC<{ orderID: string }> = ({ orderID: orderID }) => {
+export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID: orderID }) => {
   return (
     <QueryRenderer<OrderDetailsQuery>
       environment={defaultEnvironment}

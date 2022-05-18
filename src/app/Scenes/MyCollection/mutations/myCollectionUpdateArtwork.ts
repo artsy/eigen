@@ -1,20 +1,23 @@
 import {
-  myCollectionEditArtworkMutation,
-  myCollectionEditArtworkMutationResponse,
-  myCollectionEditArtworkMutationVariables,
-} from "__generated__/myCollectionEditArtworkMutation.graphql"
+  myCollectionUpdateArtworkMutation,
+  myCollectionUpdateArtworkMutationResponse,
+  myCollectionUpdateArtworkMutationVariables,
+} from "__generated__/myCollectionUpdateArtworkMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
-export function myCollectionEditArtwork(input: myCollectionEditArtworkMutationVariables["input"]) {
-  return new Promise<myCollectionEditArtworkMutationResponse>((resolve, reject) => {
-    commitMutation<myCollectionEditArtworkMutation>(defaultEnvironment, {
+export function myCollectionUpdateArtwork(
+  input: myCollectionUpdateArtworkMutationVariables["input"]
+) {
+  return new Promise<myCollectionUpdateArtworkMutationResponse>((resolve, reject) => {
+    commitMutation<myCollectionUpdateArtworkMutation>(defaultEnvironment, {
       mutation: graphql`
-        mutation myCollectionEditArtworkMutation($input: MyCollectionUpdateArtworkInput!) {
+        mutation myCollectionUpdateArtworkMutation($input: MyCollectionUpdateArtworkInput!) {
           myCollectionUpdateArtwork(input: $input) {
             artworkOrError {
               ... on MyCollectionArtworkMutationSuccess {
                 artwork {
+                  ...MyCollectionArtwork_sharedProps @relay(mask: false)
                   ...OldMyCollectionArtwork_sharedProps @relay(mask: false)
                 }
               }

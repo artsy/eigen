@@ -5,9 +5,9 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { isPad } from "app/utils/hardware"
 import { Pill } from "palette"
-import React from "react"
 import { Keyboard } from "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -49,6 +49,11 @@ jest.mock("lodash", () => ({
 
     return fn
   },
+}))
+
+jest.mock("app/utils/experiments/hooks", () => ({
+  ...jest.requireActual("app/utils/experiments/hooks"),
+  useExperimentFlag: jest.fn(),
 }))
 
 describe("Search Screen", () => {
@@ -147,7 +152,7 @@ describe("Search Screen", () => {
     })
 
     await flushPromiseQueue()
-    expect(getByText("Explore Art on View")).toBeTruthy()
+    expect(getByText("City Guide")).toBeTruthy()
   })
 
   it('the "Top" pill should be selected by default', async () => {
@@ -210,9 +215,14 @@ describe("Search Screen", () => {
   })
 
   describe("search pills", () => {
-    describe("with AREnableImprovedSearchPills enabled", () => {
+    describe("when improved search pills are enabled", () => {
+      const mockUseExperimentFlag = useExperimentFlag as jest.Mock
+
+      beforeEach(() => {
+        mockUseExperimentFlag.mockImplementation(() => true)
+      })
+
       it("are displayed when the user has typed the minimum allowed number of characters", async () => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
         const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 
         mockEnvironmentPayload(mockEnvironment, {
@@ -221,12 +231,7 @@ describe("Search Screen", () => {
               algolia: {
                 appID: "",
                 apiKey: "",
-                indices: [
-                  { name: "Artist_staging", displayName: "Artist", key: "artist" },
-                  { name: "Sale_staging", displayName: "Auction", key: "sale" },
-                  { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
-                  { name: "Fair_staging", displayName: "Fair", key: "fair" },
-                ],
+                indices: INDICES,
               },
             },
           }),
@@ -251,7 +256,6 @@ describe("Search Screen", () => {
       })
 
       it("have top pill selected and disabled at the same time", async () => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
         const { getByPlaceholderText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
         mockEnvironmentPayload(mockEnvironment, {
@@ -260,12 +264,7 @@ describe("Search Screen", () => {
               algolia: {
                 appID: "",
                 apiKey: "",
-                indices: [
-                  { name: "Artist_staging", displayName: "Artist", key: "artist" },
-                  { name: "Sale_staging", displayName: "Auction", key: "sale" },
-                  { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
-                  { name: "Fair_staging", displayName: "Fair", key: "fair" },
-                ],
+                indices: INDICES,
               },
             },
           }),
@@ -280,7 +279,6 @@ describe("Search Screen", () => {
       })
 
       it("are enabled when they have results", async () => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
         const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithWrappersTL(<TestRenderer />)
         mockEnvironmentPayload(mockEnvironment, {
           Query: () => ({
@@ -288,12 +286,7 @@ describe("Search Screen", () => {
               algolia: {
                 appID: "",
                 apiKey: "",
-                indices: [
-                  { name: "Artist_staging", displayName: "Artist", key: "artist" },
-                  { name: "Sale_staging", displayName: "Auction", key: "sale" },
-                  { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
-                  { name: "Fair_staging", displayName: "Fair", key: "fair" },
-                ],
+                indices: INDICES,
               },
             },
           }),
@@ -320,12 +313,7 @@ describe("Search Screen", () => {
             algolia: {
               appID: "",
               apiKey: "",
-              indices: [
-                { name: "Artist_staging", displayName: "Artist", key: "artist" },
-                { name: "Sale_staging", displayName: "Auction", key: "sale" },
-                { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
-                { name: "Fair_staging", displayName: "Fair", key: "fair" },
-              ],
+              indices: INDICES,
             },
           },
         }),
@@ -702,3 +690,10 @@ describe("Search Screen", () => {
     `)
   })
 })
+
+const INDICES = [
+  { name: "Artist_staging", displayName: "Artist", key: "artist" },
+  { name: "Sale_staging", displayName: "Auction", key: "sale" },
+  { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
+  { name: "Fair_staging", displayName: "Fair", key: "fair" },
+]

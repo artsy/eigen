@@ -1,6 +1,6 @@
 import { useTheme } from "palette"
 import { isThemeV3, TextVariantV3 } from "palette/Theme"
-import React, { forwardRef, ReactNode, Ref } from "react"
+import { forwardRef, Ref } from "react"
 import { StyleProp, TextStyle } from "react-native"
 import { Text as RNText, TextProps as RNTextProps } from "react-native"
 import styled from "styled-components/native"
@@ -17,7 +17,7 @@ import {
 import { useFontFamilyFor } from "./helpers"
 
 export interface TextProps extends RNTextProps, InnerStyledTextProps {
-  children?: ReactNode
+  children?: React.ReactNode
   variant?: TextVariantV3
   italic?: boolean
   caps?: boolean
@@ -54,9 +54,9 @@ export const Text = forwardRef(
         ref={ref}
         style={[
           ...nativeTextStyle,
-          style,
           { textAlignVertical: "center" }, // android renders text higher by default, so we bring it down to be consistent with ios
           { textDecorationLine: !!underline ? "underline" : "none" },
+          style, // keep last so we can override
         ]}
         fontFamily={fontFamily}
         {...theme.textTreatments[variant]}

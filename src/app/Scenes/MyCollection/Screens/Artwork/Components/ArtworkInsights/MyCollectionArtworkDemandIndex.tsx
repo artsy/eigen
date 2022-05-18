@@ -60,25 +60,27 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 }
 
 const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
-  const enableDemandIndexHints = useFeatureFlag("ARShowDemandIndexHints")
+  const enableDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
 
   let width = demandRank * 10
   if (width > 100) {
     width = 100
   }
   const adjustedDemandRank = demandRank.toFixed(1) === "10.0" ? "9.9" : demandRank.toFixed(1)
-  const trending = Number(demandRank * 10) >= 9
+
+  const isHighDemand = Number(demandRank) >= 9
+  const color = demandRank >= 7 ? "blue100" : "black60"
 
   return (
     <>
       <Flex>
-        <Text color="blue100" variant="xl">
+        <Text color={color} variant="xl">
           {adjustedDemandRank}
         </Text>
-        {!!trending && !!enableDemandIndexHints && (
+        {!!enableDemandIndexHints && (
           <Flex flexDirection="row" alignItems="center" mb={1}>
-            <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />
-            <Text color="blue100">High Demand</Text>
+            {!!isHighDemand && <HighDemandIcon style={{ marginTop: 2, marginRight: 2 }} />}
+            <Text color={color}>{getDemandRankText(demandRank)}</Text>
           </Flex>
         )}
       </Flex>
@@ -120,6 +122,18 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
       </Flex>
     </>
   )
+}
+
+const getDemandRankText = (demandRank: number) => {
+  if (demandRank >= 9) {
+    return "High Demand"
+  } else if (demandRank >= 7) {
+    return "Active Demand"
+  } else if (demandRank >= 4) {
+    return "Moderate Demand"
+  }
+
+  return "Less Active Demand"
 }
 
 const artworkFragment = graphql`

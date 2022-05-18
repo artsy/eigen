@@ -1,22 +1,25 @@
 import {
-  myCollectionAddArtworkMutation,
-  myCollectionAddArtworkMutationResponse,
-  myCollectionAddArtworkMutationVariables,
-} from "__generated__/myCollectionAddArtworkMutation.graphql"
+  myCollectionCreateArtworkMutation,
+  myCollectionCreateArtworkMutationResponse,
+  myCollectionCreateArtworkMutationVariables,
+} from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
-export function myCollectionAddArtwork(input: myCollectionAddArtworkMutationVariables["input"]) {
-  return new Promise<myCollectionAddArtworkMutationResponse>((resolve, reject) => {
-    commitMutation<myCollectionAddArtworkMutation>(defaultEnvironment, {
+export function myCollectionCreateArtwork(
+  input: myCollectionCreateArtworkMutationVariables["input"]
+) {
+  return new Promise<myCollectionCreateArtworkMutationResponse>((resolve, reject) => {
+    commitMutation<myCollectionCreateArtworkMutation>(defaultEnvironment, {
       mutation: graphql`
-        mutation myCollectionAddArtworkMutation($input: MyCollectionCreateArtworkInput!) {
+        mutation myCollectionCreateArtworkMutation($input: MyCollectionCreateArtworkInput!) {
           myCollectionCreateArtwork(input: $input) {
             artworkOrError {
               ... on MyCollectionArtworkMutationSuccess {
                 artworkEdge {
                   __id
                   node {
+                    ...MyCollectionArtwork_sharedProps @relay(mask: false)
                     ...OldMyCollectionArtwork_sharedProps @relay(mask: false)
                   }
                 }
@@ -32,7 +35,7 @@ export function myCollectionAddArtwork(input: myCollectionAddArtworkMutationVari
         }
       `,
       variables: {
-        input,
+        input: { importSource: "MY_COLLECTION", ...input },
       },
       onCompleted: (response, errors) => {
         if (errors?.length) {

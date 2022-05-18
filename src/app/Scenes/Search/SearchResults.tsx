@@ -1,123 +1,105 @@
-import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
-import { LoadFailureView } from "app/Components/LoadFailureView"
-import { isPad } from "app/utils/hardware"
-import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { Box, Flex, Spacer, Spinner, Text, useSpace } from "palette"
-import React, { useEffect, useRef, useState } from "react"
-import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
-import { FlatList } from "react-native"
-import { AlgoliaSearchPlaceholder } from "./components/placeholders/AlgoliaSearchPlaceholder"
-import { SearchResult } from "./components/SearchResult"
-import { ALGOLIA_INDICES_WITH_AN_ARTICLE } from "./constants"
-import { isAlgoliaApiKeyExpiredError } from "./helpers"
-import { AlgoliaIndexKey, AlgoliaSearchResult, PillType } from "./types"
+import { ContextModule } from "@artsy/cohesion"
+import { Schema } from "app/utils/track"
+import { FC } from "react"
+import { connectInfiniteHits, connectStateResults } from "react-instantsearch-core"
+import { useTracking } from "react-tracking"
+import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
+import { AlgoliaSearchResults } from "./components/AlgoliaSearchResults"
+import { TOP_PILL } from "./constants"
+import { getContextModuleByPillName } from "./helpers"
+import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
+import { AlgoliaSearchResult, PillType } from "./types"
 
-interface SearchResultsProps
-  extends StateResultsProvided<AlgoliaSearchResult>,
-    InfiniteHitsProvided<AlgoliaSearchResult> {
+interface SearchResultsProps {
   selectedPill: PillType
-  onRetry?: () => void
-  trackResultPress?: (result: AlgoliaSearchResult) => void
+  query: string
+  onRetry: () => void
 }
 
-export const SearchResults: React.FC<SearchResultsProps> = ({
-  hits,
-  hasMore,
-  searching,
-  isSearchStalled,
-  searchState,
-  searchResults,
-  error,
-  selectedPill,
-  onRetry,
-  refineNext,
-  trackResultPress,
-}) => {
-  const [showLoadingPlaceholder, setShowLoadingPlaceholder] = useState(true)
-  const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
-  const didMountRef = useRef(false)
-  const loading = searching || isSearchStalled
-  const space = useSpace()
+interface TappedSearchResultData {
+  query: string
+  type: string
+  position: number
+  contextModule: ContextModule
+  slug: string
+  objectTab?: string
+}
 
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
-    })
-  }, [selectedPill.indexName])
+export const SearchResults: FC<SearchResultsProps> = ({ selectedPill, query, onRetry }) => {
+  const { trackEvent } = useTracking()
 
-  useEffect(() => {
-    setShowLoadingPlaceholder(true)
-  }, [selectedPill.displayName])
+  const handleTrackAlgoliaResultPress = (result: AlgoliaSearchResult) => {
+    const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
-  // When we get the first search results, we hide the loading placeholder
-  useEffect(() => {
-    // Skips the initial mount
-    if (didMountRef.current) {
-      setShowLoadingPlaceholder(false)
+    const data: TappedSearchResultData = {
+      type: selectedPill.displayName,
+      slug: result.slug,
+      position: result.__position - 1,
+      query,
+      contextModule: contextModule!,
     }
 
-    didMountRef.current = true
-  }, [searchResults?.hits])
-
-  const loadMore = () => {
-    if (hasMore && !loading) {
-      refineNext()
+    if (contextModule && objectTabByContextModule[contextModule]) {
+      data.objectTab = objectTabByContextModule[contextModule]
     }
+
+    trackEvent(tracks.tappedSearchResult(data))
   }
 
-  if (hits.length === 0 && error && !isAlgoliaApiKeyExpiredError(error) && !loading) {
-    return <LoadFailureView onRetry={onRetry} />
-  }
-
-  if (showLoadingPlaceholder) {
-    return (
-      <ProvidePlaceholderContext>
-        <AlgoliaSearchPlaceholder hasRoundedImages={selectedPill.key === AlgoliaIndexKey.Artist} />
-      </ProvidePlaceholderContext>
+  const handleTrackAutosuggestResultPress = (result: AutosuggestResult, itemIndex?: number) => {
+    trackEvent(
+      tracks.tappedSearchResult({
+        type: result.displayType || result.__typename,
+        slug: result.slug!,
+        position: itemIndex!,
+        query,
+        contextModule: ContextModule.topTab,
+      })
     )
   }
 
-  if (searchResults?.nbHits === 0) {
-    const article = ALGOLIA_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndexKey)
-      ? "an"
-      : "a"
-
+  if (selectedPill.type === "algolia") {
     return (
-      <Box px={2} py={1}>
-        <Spacer mt={4} />
-        <Text variant="md" textAlign="center">
-          Sorry, we couldn’t find {article} {selectedPill.displayName} for “{searchState.query}.”
-        </Text>
-        <Text variant="md" color="black60" textAlign="center">
-          Please try searching again with a different spelling.
-        </Text>
-      </Box>
+      <AlgoliaSearchResultsContainer
+        selectedPill={selectedPill}
+        onRetry={onRetry}
+        trackResultPress={handleTrackAlgoliaResultPress}
+      />
     )
   }
 
-  return (
-    <AboveTheFoldFlatList<AlgoliaSearchResult>
-      listRef={flatListRef}
-      initialNumToRender={isPad() ? 24 : 12}
-      contentContainerStyle={{ paddingVertical: space(1), paddingHorizontal: space(2) }}
-      data={hits}
-      keyExtractor={(item) => item.objectID}
-      ItemSeparatorComponent={() => <Spacer mb={2} />}
-      renderItem={({ item }) => (
-        <SearchResult
-          result={item}
-          selectedPill={selectedPill}
-          trackResultPress={trackResultPress}
-        />
-      )}
-      onEndReached={loadMore}
-      ListFooterComponent={
-        <Flex alignItems="center" my={2}>
-          {loading ? <Spinner /> : null}
-        </Flex>
-      }
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
-    />
-  )
+  if (selectedPill.key === TOP_PILL.key) {
+    return (
+      <AutosuggestResults
+        query={query}
+        showResultType
+        showQuickNavigationButtons
+        showOnRetryErrorMessage
+        trackResultPress={handleTrackAutosuggestResultPress}
+      />
+    )
+  }
+
+  return <SearchArtworksQueryRenderer keyword={query} />
+}
+
+const AlgoliaSearchResultsWithState = connectStateResults(AlgoliaSearchResults)
+const AlgoliaSearchResultsContainer = connectInfiniteHits(AlgoliaSearchResultsWithState)
+
+const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
+  [ContextModule.auctionTab]: "Auction Results",
+  [ContextModule.artistsTab]: "Artworks",
+}
+
+const tracks = {
+  tappedSearchResult: (data: TappedSearchResultData) => ({
+    context_screen_owner_type: Schema.OwnerEntityTypes.Search,
+    context_screen: Schema.PageNames.Search,
+    query: data.query,
+    position: data.position,
+    selected_object_type: data.type,
+    selected_object_slug: data.slug,
+    context_module: data.contextModule,
+    action: Schema.ActionNames.SelectedResultFromSearchScreen,
+  }),
 }

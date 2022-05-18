@@ -228,6 +228,7 @@ export default createPaginationContainer(
             MEDIUM
             PARTNER
             PRICE_RANGE
+            SIMPLE_PRICE_HISTOGRAM
           ]
         ) {
           aggregations {

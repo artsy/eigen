@@ -365,13 +365,6 @@ export const getAuthModel = (): AuthModel => ({
 
       postEventToProviders(tracks.loggedIn(oauthProvider))
 
-      // Keep native iOS in sync with react-native auth state
-      if (Platform.OS === "ios") {
-        requestAnimationFrame(() => {
-          LegacyNativeModules.ArtsyNativeModule.updateAuthState(userAccessToken, expires_in, user)
-        })
-      }
-
       if (!onboardingState || onboardingState === "complete" || onboardingState === "none") {
         requestPushNotificationsPermission()
       }

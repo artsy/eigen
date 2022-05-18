@@ -30,6 +30,7 @@ describe("ArtworkDetailsForm", () => {
     expect(findByText("oil on canvas")).toBeTruthy()
     expect(findByText("found")).toBeTruthy()
     expect(findByText("London")).toBeTruthy()
+    expect(findByText("71202")).toBeTruthy()
   })
 
   it("when rarity is limited edition, renders additional inputs for edition number and size", () => {

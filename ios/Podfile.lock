@@ -868,14 +868,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/artsy/Specs.git:
-    - Aerodramus
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts"
-    - "Artsy+UILabels"
-    - Artsy-UIButtons
-    - Extraction
-  trunk:
+  https://cdn.cocoapods.org/:
     - Adjust
     - AFNetworkActivityLogger
     - AFNetworking
@@ -949,6 +942,13 @@ SPEC REPOS:
     - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
     - YogaKit
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - "Artsy+UILabels"
+    - Artsy-UIButtons
+    - Extraction
 
 EXTERNAL SOURCES:
   AFOAuth1Client:
@@ -1098,9 +1098,7 @@ EXTERNAL SOURCES:
   RNSentry:
     :path: "../node_modules/@sentry/react-native"
   RNShare:
-    :path: "../node_modules/react-native-share"
-  RNSplit:
-    :path: "../node_modules/@splitsoftware/splitio-react-native"
+    :path: node_modules/react-native-share
   RNSVG:
     :path: "../node_modules/react-native-svg"
   tipsi-stripe:
@@ -1273,7 +1271,6 @@ SPEC CHECKSUMS:
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
   RNShare: b955e66f1af2849711f13c193debda72b94f8aa0
-  RNSplit: 5c78d865a08e56dd125968ba1b529358f0b9f537
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
   Segment-Adjust: 1a12861ab2e9372fc70af949057490858666cd37

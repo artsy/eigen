@@ -9,6 +9,8 @@ import { limitedEditionValue } from "./rarityOptions"
 
 export type SubmissionInput = CreateSubmissionMutationInput | UpdateSubmissionMutationInput
 
+const DEFAULT_SOURCE = "APP_INBOUND"
+
 export const createOrUpdateSubmission = async (
   values: ArtworkDetailsFormModel,
   submissionId: string
@@ -34,6 +36,8 @@ export const createOrUpdateSubmission = async (
     locationCity: values.location.city,
     locationState: values.location.state,
     locationCountry: values.location.country,
+    locationCountryCode: values.location.countryCode,
+    locationPostalCode: values.location.zipCode || null,
     state: "DRAFT",
     utmMedium: values.utmMedium,
     utmSource: values.utmSource,
@@ -49,7 +53,7 @@ export const createOrUpdateSubmission = async (
 
   return await createConsignSubmission({
     myCollectionArtworkID: values.myCollectionArtworkID,
-    source: values.source,
+    source: values.source || DEFAULT_SOURCE,
     ...submissionValues,
   } as CreateSubmissionMutationInput)
 }

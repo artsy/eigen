@@ -5,9 +5,15 @@ import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "../../../../Submission/geminiUploadToS3"
+} from "../../../../Submission/uploadFileToS3"
 
-export const addPhotoToConsignment = async (asset: Photo, submissionID: string) => {
+interface Props {
+  asset: Photo
+  submissionID: string
+  updateProgress?: (progress: number) => void
+}
+
+export const addPhotoToConsignment = async ({ asset, submissionID, updateProgress }: Props) => {
   const acl = "private"
 
   // return if no path is found
@@ -27,7 +33,12 @@ export const addPhotoToConsignment = async (asset: Photo, submissionID: string) 
   const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
 
   // upload file to S3
-  const s3 = await uploadFileToS3(asset.path, acl, assetCredentials)
+  const s3 = await uploadFileToS3({
+    filePath: asset.path,
+    acl,
+    assetCredentials,
+    updateProgress,
+  })
 
   // let Gemini know that this file exists and should be processed
   const geminiToken = await createGeminiAssetWithS3Credentials({

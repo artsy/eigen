@@ -12,7 +12,6 @@ import {
   Variables,
 } from "relay-runtime"
 import { logPrefetching } from "./loggers"
-import { useTreatment } from "./useExperiments"
 
 const DEFAULT_QUERIES_PER_INTERVAL = 60
 
@@ -74,31 +73,32 @@ const prefetchUrl = async (url: string, variables?: Variables) => {
     return
   }
 
-  const query = module.Query
+  const queries = module.Queries
 
-  if (!query) {
-    console.error(`Failed to prefetch "${url}" (couldn't find query).`)
+  if (!queries) {
+    console.error(`Failed to prefetch "${url}" (couldn't find queries).`)
     return
   }
 
   const options = { ...result.params, ...variables }
 
-  if (logPrefetching) {
-    console.log(`Prefetching "${url}"`)
-  }
-
   try {
-    prefetchQuery(query, options)
+    for (const query of queries) {
+      prefetchQuery(query, options)
+    }
   } catch (error) {
     console.error(`Prefetching "${url}" failed.`, error)
+  }
+
+  if (logPrefetching) {
+    console.log(`Prefetching "${url}"`)
   }
 }
 
 export const usePrefetch = () => {
   const enablePrefetching = useFeatureFlag("AREnableQueriesPrefetching")
-  const queryPrefetchingTreatment = useTreatment("QueryPrefetching")
 
-  if (!enablePrefetching || queryPrefetchingTreatment === "disabled" || __TEST__) {
+  if (!enablePrefetching || __TEST__) {
     return () => null
   }
 

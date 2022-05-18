@@ -15,7 +15,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "app/utils/track"
 import { Box, Flex, Sans } from "palette"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { MutableRefObject, useCallback, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -28,6 +28,7 @@ interface Props {
   saleID: string
   saleSlug: string
   scrollToTop: () => void
+  artworksRefetchRef?: MutableRefObject<() => void>
 }
 
 export const SaleLotsListSortMode = ({
@@ -67,6 +68,7 @@ export const SaleLotsList: React.FC<Props> = ({
   relay,
   saleID,
   saleSlug,
+  artworksRefetchRef,
   scrollToTop,
 }) => {
   const [totalCount, setTotalCount] = useState<number | null>(null)
@@ -101,6 +103,7 @@ export const SaleLotsList: React.FC<Props> = ({
     componentPath: "Sale/SaleLotsList",
     refetchVariables,
     onApply: () => scrollToTop(),
+    refetchRef: artworksRefetchRef,
   })
 
   useEffect(() => {
@@ -128,6 +131,12 @@ export const SaleLotsList: React.FC<Props> = ({
     })
   }
 
+  const handleLoadMore: RelayPaginationProp["loadMore"] = (pageSize, callback) => {
+    relay.loadMore(pageSize, callback, { force: true })
+
+    return null
+  }
+
   if (unfilteredSaleArtworksConnection?.counts?.total === 0) {
     return null
   }
@@ -152,7 +161,7 @@ export const SaleLotsList: React.FC<Props> = ({
         <SaleArtworkListContainer
           connection={saleArtworksConnection.saleArtworksConnection!}
           hasMore={relay.hasMore}
-          loadMore={relay.loadMore}
+          loadMore={handleLoadMore}
           isLoading={relay.isLoading}
           contextScreenOwnerType={OwnerType.sale}
           contextScreenOwnerId={saleID}
@@ -166,7 +175,8 @@ export const SaleLotsList: React.FC<Props> = ({
             contextScreenOwnerId={saleID}
             contextScreenOwnerSlug={saleSlug}
             hasMore={relay.hasMore}
-            loadMore={relay.loadMore}
+            loadMore={handleLoadMore}
+            isLoading={relay.isLoading}
             showLotLabel
             hidePartner
             hideUrgencyTags

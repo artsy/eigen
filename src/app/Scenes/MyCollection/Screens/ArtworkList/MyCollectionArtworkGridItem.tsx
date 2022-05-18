@@ -2,10 +2,12 @@ import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
 import { MyCollectionArtworkGridItem_artwork } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
 import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Box, Text } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -32,6 +34,13 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const sectionCount = isPad() ? (isPadHorizontal ? 4 : 3) : 2
   const imageWidth = (screen.width - DEFAULT_SECTION_MARGIN * (sectionCount + 1)) / sectionCount
 
+  const isP1Artist = artwork.artist?.targetSupply?.isP1
+  const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
+
+  const showDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
+
+  const showHighDemandIcon = isP1Artist && isHighDemand
+
   return (
     <TouchElement
       onPress={() => {
@@ -56,8 +65,13 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           artworkSlug={slug}
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
-          <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={1}>
+          <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={2}>
             {artistNames}
+            {!!showHighDemandIcon && !!showDemandIndexHints && (
+              <Flex>
+                <HighDemandIcon style={{ marginLeft: 2, marginBottom: -2 }} />
+              </Flex>
+            )}
           </Text>
           {!!title ? (
             <Text lineHeight="18" variant="xs" weight="regular" numberOfLines={1} color="black60">
@@ -81,6 +95,9 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         internalID
         artist {
           internalID
+          targetSupply {
+            isP1
+          }
         }
         images {
           url
@@ -94,6 +111,9 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         slug
         title
         date
+        marketPriceInsights {
+          demandRank
+        }
       }
     `,
   }

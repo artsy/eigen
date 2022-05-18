@@ -2,6 +2,7 @@ import * as Yup from "yup"
 
 export interface PhotosFormModel {
   photos: Photo[]
+  initialPhotos?: Photo[]
 }
 
 export interface Photo {
@@ -11,7 +12,7 @@ export interface Photo {
   isDefault?: boolean
   imageURL?: string
   internalID?: string
-  path?: string
+  path: string
   width?: number
   imageVersions?: string[]
   loading?: boolean
@@ -19,10 +20,12 @@ export interface Photo {
   errorMessage?: string
   size?: number
   sizeDisplayValue?: string
+  automaticallyAdded?: boolean
 }
 
 export const photosEmptyInitialValues: PhotosFormModel = {
   photos: [],
+  initialPhotos: [],
 }
 
 export const photosValidationSchema = Yup.object().shape({

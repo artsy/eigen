@@ -12,6 +12,7 @@ export interface LocationWithDetails extends SimpleLocation {
   city?: string
   coordinates?: string[]
   country?: string
+  countryCode?: string
   postalCode?: string
   state?: string
   stateCode?: string
@@ -69,6 +70,7 @@ export const getLocationDetails = async ({
 
   const city = cityPlace && cityPlace.long_name
   const country = countryPlace && countryPlace.long_name
+  const countryCode = countryPlace && countryPlace.short_name
   const state = statePlace && statePlace.long_name
   const stateCode = statePlace && statePlace.short_name
   const postalCode = postalCodePlace && postalCodePlace.long_name
@@ -77,6 +79,7 @@ export const getLocationDetails = async ({
     city,
     coordinates: [lat, lng],
     country,
+    countryCode,
     state,
     stateCode,
     postalCode,

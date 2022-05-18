@@ -10,6 +10,8 @@ export interface Location {
   city: string
   state: string
   country: string
+  countryCode: string
+  zipCode?: string
 }
 
 export interface ArtworkDetailsFormModel {
@@ -57,10 +59,45 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
     city: "",
     state: "",
     country: "",
+    countryCode: "",
+    zipCode: "",
   },
   source: null,
   myCollectionArtworkID: null,
 }
+
+export const countriesRequirePostalCode = [
+  "US",
+  "AT", // Austria
+  "BE", // Belgium
+  "CA", // Canada
+  "CN", // China
+  "HR", // Croatia
+  "CY", // Cyprus
+  "DK", // Denmark
+  "EE", // Estonia
+  "FI", // Finland
+  "FR", // France
+  "DE", // Germany
+  "GR", // Greece
+  "HU", // Hungary
+  "IS", // Iceland
+  "IL", // Ireland
+  "IT", // Italy
+  "JP", // Japan
+  "LV", // Latvia
+  "MC", // Monaco
+  "NO", // Norway
+  "PL", // Poland
+  "PT", // Portugal
+  "ES", // Spain
+  "SE", // Sweden
+  "CH", // Switzerland
+  "GB", // United Kingdom
+  "NL", // Netherlands
+]
+
+const usPostalCodeErrorMessage = "Please enter a 5-digit US zip code."
 
 export const artworkDetailsValidationSchema = Yup.object().shape({
   artist: Yup.string().trim(),
@@ -92,5 +129,16 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
     city: Yup.string().required().trim(),
     state: Yup.string(),
     country: Yup.string(),
+    zipCode: Yup.string().when("countryCode", {
+      is: (countryCode) => countryCode?.toUpperCase() === "US",
+      then: Yup.string()
+        .required(usPostalCodeErrorMessage)
+        .matches(/^[0-9]{5}$/, usPostalCodeErrorMessage)
+        .trim(),
+      otherwise: Yup.string().when("countryCode", {
+        is: (countryCode) => countriesRequirePostalCode.includes(countryCode?.toUpperCase()),
+        then: Yup.string().required("Please enter a valid zip/postal code for your region").trim(),
+      }),
+    }),
   }),
 })

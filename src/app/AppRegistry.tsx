@@ -49,6 +49,7 @@ import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import { Consignments } from "./Scenes/Consignments"
+import { ConsignmentsHomeScreenQuery } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsHome"
 import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import { FairAllFollowedArtistsQueryRenderer } from "./Scenes/Fair/FairAllFollowedArtists"
@@ -68,14 +69,19 @@ import {
   LotsByArtistsYouFollowScreenQuery,
 } from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { MapContainer } from "./Scenes/Map"
+import { NewMapScreen } from "./Scenes/Map/NewMap"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
 import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { MyBidsQueryRenderer } from "./Scenes/MyBids"
-import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
+import {
+  MyCollectionQueryRenderer,
+  MyCollectionScreenQuery,
+} from "./Scenes/MyCollection/MyCollection"
 import { ArtworkSubmissionStatusFAQ } from "./Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
+import { RequestForPriceEstimateScreen } from "./Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateScreen"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
@@ -127,13 +133,13 @@ import {
   SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
 import { useDebugging } from "./utils/useDebugging"
-import { useSplitExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useIdentifyUser } from "./utils/useIdentifyUser"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import { useStripeConfig } from "./utils/useStripeConfig"
+import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -296,7 +302,7 @@ type ModuleDescriptor =
   | {
       type: "react"
       Component: React.ComponentType<any>
-      Query?: GraphQLTaggedNode
+      Queries?: GraphQLTaggedNode[]
       options: ViewOptions
     }
   | {
@@ -313,9 +319,9 @@ type ModuleDescriptor =
 function reactModule(
   Component: React.ComponentType<any>,
   options: ViewOptions = {},
-  Query?: GraphQLTaggedNode
+  Queries?: GraphQLTaggedNode[]
 ): ModuleDescriptor {
-  return { type: "react", options, Component, Query }
+  return { type: "react", options, Component, Queries }
 }
 
 function newNativeModule(
@@ -343,25 +349,25 @@ export const modules = defineModules({
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
-  Articles: reactModule(ArticlesScreen, {}, ArticlesScreenQuery),
-  Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, ArtistScreenQuery),
+  Articles: reactModule(ArticlesScreen, {}, [ArticlesScreenQuery]),
+  Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, [ArtistScreenQuery]),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
-  Artwork: reactModule(Artwork, {}, ArtworkScreenQuery),
+  Artwork: reactModule(Artwork, {}, [ArtworkScreenQuery]),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   ArtworkSubmissionStatusFAQ: reactModule(ArtworkSubmissionStatusFAQ),
   ArtworkViewInRoom: reactModule(ArtworkViewInRoom),
-  Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, SaleScreenQuery),
-  Auctions: reactModule(SalesQueryRenderer, {}, SalesScreenQuery),
+  Auction: reactModule(SaleQueryRenderer, { fullBleed: true }, [SaleScreenQuery]),
+  Auctions: reactModule(SalesQueryRenderer, {}, [SalesScreenQuery]),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
   AuctionResultsForArtistsYouFollow: reactModule(
     AuctionResultsForArtistsYouFollowQueryRenderer,
     {},
-    AuctionResultsForArtistsYouFollowScreenQuery
+    [AuctionResultsForArtistsYouFollowScreenQuery]
   ),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
@@ -396,7 +402,7 @@ export const modules = defineModules({
   Gene: reactModule(GeneQueryRenderer),
   Tag: reactModule(TagQueryRenderer),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
-  Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, InboxScreenQuery),
+  Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, [InboxScreenQuery]),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: newNativeModule(LiveAuctionView, {
     alwaysPresentModally: true,
@@ -414,7 +420,8 @@ export const modules = defineModules({
   MakeOfferModal: reactModule(MakeOfferModalQueryRenderer, {
     hasOwnModalCloseButton: true,
   }),
-  Map: reactModule(MapContainer, { fullBleed: true, ignoreTabs: true }),
+  Map: reactModule(MapContainer, { fullBleed: true }),
+  NewMap: reactModule(NewMapScreen, { fullBleed: true }),
   MyAccount: reactModule(MyAccountQueryRenderer),
   MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
   MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
@@ -430,7 +437,7 @@ export const modules = defineModules({
     {
       isRootViewForTabName: "profile",
     },
-    MyProfileHeaderMyCollectionAndSavedWorksScreenQuery
+    [MyProfileHeaderMyCollectionAndSavedWorksScreenQuery, MyCollectionScreenQuery]
   ),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
@@ -445,9 +452,10 @@ export const modules = defineModules({
   Partner: reactModule(PartnerQueryRenderer),
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
-  Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
+  RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
+  Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }, [ConsignmentsHomeScreenQuery]),
   SalesNotRootTabView: reactModule(Consignments),
-  Search: reactModule(SearchScreen, { isRootViewForTabName: "search" }, SearchScreenQuery),
+  Search: reactModule(SearchScreen, { isRootViewForTabName: "search" }, [SearchScreenQuery]),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
@@ -459,14 +467,12 @@ export const modules = defineModules({
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
-  ViewingRooms: reactModule(ViewingRoomsListScreen, {}, ViewingRoomsListScreenQuery),
-  WorksForYou: reactModule(WorksForYouQueryRenderer, {}, WorksForYouScreenQuery),
-  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {}, NewWorksForYouScreenQuery),
-  LotsByArtistsYouFollow: reactModule(
-    LotsByArtistsYouFollowQueryRenderer,
-    {},
-    LotsByArtistsYouFollowScreenQuery
-  ),
+  ViewingRooms: reactModule(ViewingRoomsListScreen, {}, [ViewingRoomsListScreenQuery]),
+  WorksForYou: reactModule(WorksForYouQueryRenderer, {}, [WorksForYouScreenQuery]),
+  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {}, [NewWorksForYouScreenQuery]),
+  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer, {}, [
+    LotsByArtistsYouFollowScreenQuery,
+  ]),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
 })
@@ -508,9 +514,9 @@ const Main: React.FC = () => {
   useErrorReporting()
   useStripeConfig()
   useWebViewCookies()
-  useSplitExperiments()
   useInitializeQueryPrefetching()
   useIdentifyUser()
+  useSyncNativeAuthState()
 
   if (!isHydrated) {
     return <View />
