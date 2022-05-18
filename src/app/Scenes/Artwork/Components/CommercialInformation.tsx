@@ -13,7 +13,7 @@ import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { capitalize } from "lodash"
 import { Duration } from "moment"
-import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
+import { Box, ClassTheme, Flex, Sans, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
@@ -23,6 +23,7 @@ import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
+import { CreateAlertButton } from "./CreateAlertButton"
 
 interface CommercialInformationProps {
   artwork: CommercialInformation_artwork
@@ -123,6 +124,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   label,
   hasStarted,
 }) => {
+  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
   const [editionSetID, setEditionSetID] = useState<string | null>(null)
 
   const { trackEvent } = useTracking()
@@ -214,7 +216,21 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     )
   }
 
-  const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, saleArtwork } =
+  const renderCreateAlertButton = () => {
+    return (
+      <>
+        <Text variant="lg">Sold</Text>
+        <Text variant="xs" color="black60">
+          Be notified when a similar piece is available
+        </Text>
+
+        <Spacer mt={2} />
+        <CreateAlertButton />
+      </>
+    )
+  }
+
+  const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
     artwork
 
   const isBiddableInAuction =
@@ -225,53 +241,48 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   const artistIsConsignable = artwork?.artists?.filter((artist) => artist?.isConsignable).length
   const hidesPriceInformation =
     isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
+  const shouldShowCreateAlertButton = enableCreateArtworkAlert && isSold
 
   return (
-    <>
-      {renderPriceInformation()}
-      <Box>
-        {!!(canTakeCommercialAction && !isInClosedAuction) && (
-          <>
-            {!hidesPriceInformation && <Spacer mb={2} />}
-            <CommercialButtons
-              artwork={artwork}
-              me={me}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              auctionState={timerState}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              editionSetID={editionSetID}
-            />
-          </>
-        )}
-        {!!isBiddableInAuction && (
-          <>
-            <Spacer mb={2} />
-            <Countdown
-              label={label}
-              hasStarted={hasStarted}
-              cascadingEndTimeIntervalMinutes={sale.cascadingEndTimeIntervalMinutes}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              duration={duration}
-              extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
-              extendedBiddingPeriodMinutes={sale.extendedBiddingPeriodMinutes}
-              extendedBiddingEndAt={saleArtwork?.extendedBiddingEndAt}
-              startAt={sale.startAt}
-              endAt={saleArtwork?.endAt}
-            />
-          </>
-        )}
-        {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
-          <>
-            <Spacer mb={2} />
-            <ArtworkExtraLinks
-              artwork={artwork}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              auctionState={timerState}
-            />
-          </>
-        )}
-      </Box>
-    </>
+    <Box>
+      {shouldShowCreateAlertButton ? renderCreateAlertButton() : renderPriceInformation()}
+      {!!(canTakeCommercialAction && !isInClosedAuction) && (
+        <>
+          {!!(!hidesPriceInformation || shouldShowCreateAlertButton) && <Spacer mb={2} />}
+
+          <CommercialButtons
+            artwork={artwork}
+            me={me}
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            auctionState={timerState}
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            editionSetID={editionSetID}
+          />
+        </>
+      )}
+      {!!isBiddableInAuction && (
+        <>
+          <Spacer mb={2} />
+          <Countdown
+            label={label}
+            hasStarted={hasStarted}
+            cascadingEndTimeIntervalMinutes={sale.cascadingEndTimeIntervalMinutes}
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            duration={duration}
+          />
+        </>
+      )}
+      {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
+        <>
+          <Spacer mb={2} />
+          <ArtworkExtraLinks
+            artwork={artwork}
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            auctionState={timerState}
+          />
+        </>
+      )}
+    </Box>
   )
 }
 
@@ -284,6 +295,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         isOfferable
         isInquireable
         isInAuction
+        isSold
         availability
         saleMessage
         isForSale
