@@ -1,7 +1,7 @@
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
 import { ModalStack } from "app/navigation/ModalStack"
 import { navigate } from "app/navigation/navigate"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -14,6 +14,14 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "./ArtistConsignButton"
 
 jest.unmock("react-relay")
+
+import { GlobalStoreProvider, useSelectedTab } from "app/store/GlobalStore"
+
+jest.mock("app/store/GlobalStore", () => ({
+  GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,
+  GlobalStore: jest.requireActual("app/store/GlobalStore").GlobalStore,
+  useSelectedTab: jest.fn(() => "home"),
+}))
 
 describe("ArtistConsignButton", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -208,10 +216,6 @@ describe("ArtistConsignButton", () => {
     }
 
     it("sends user to sales tab if not already there", () => {
-      __globalStoreTestUtils__?.injectState({
-        bottomTabs: { sessionState: { selectedTab: "home" } },
-      })
-
       const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
@@ -227,9 +231,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
-      __globalStoreTestUtils__?.injectState({
-        bottomTabs: { sessionState: { selectedTab: "sell" } },
-      })
+      ;(useSelectedTab as any).mockImplementation(() => "sell")
 
       const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
