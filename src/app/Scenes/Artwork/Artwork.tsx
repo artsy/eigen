@@ -26,6 +26,7 @@ import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutA
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
+import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./Components/ArtworkExtraLinks/FaqAndSpecialistSection"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
@@ -245,13 +246,16 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    // add FAQ section but maybe here we want to check some things, and also the code is 🤯 might need to address that in another ticket?
-    // if (enableCreateArtworkAlert) {
-    //   sections.push({
-    //     key: "faqSection",
-    //     element: <FaqAndSpecialistSection artwork={artworkAboveTheFold} />
-    //   })
-    // }
+    if (
+      !!(artworkAboveTheFold?.isAcquireable || artworkAboveTheFold?.isOfferable) &&
+      enableCreateArtworkAlert
+    ) {
+      sections.push({
+        key: "faqSection",
+        element: <FaqAndSpecialistSection artwork={artworkAboveTheFold} />,
+        verticalMargin: 2,
+      })
+    }
 
     if (!artworkBelowTheFold) {
       sections.push({
@@ -414,6 +418,7 @@ export const ArtworkContainer = createRefetchContainer(
       fragment Artwork_artworkAboveTheFold on Artwork {
         ...ArtworkHeader_artwork
         ...CommercialInformation_artwork
+        ...FaqAndSpecialistSection_artwork
         slug
         internalID
         id
