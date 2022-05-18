@@ -89,7 +89,14 @@ export const Sales: React.FC<{ data: SalesQueryResponse }> = ({ data }) => {
 }
 
 export const SalesQueryRenderer = () => {
-  const data = useLazyLoadQuery<SalesQuery>(SalesScreenQuery, {})
+  const data = useLazyLoadQuery<SalesQuery>(
+    SalesScreenQuery,
+    {},
+    {
+      fetchPolicy: "store-and-network",
+      networkCacheConfig: { force: true },
+    }
+  )
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.auctions })}
