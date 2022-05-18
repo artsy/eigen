@@ -1,5 +1,5 @@
 import { CircularSpinner, Flex, Spacer, Text } from "palette"
-import React, { useState } from "react"
+import React from "react"
 import { Dimensions, Image, Modal, ModalProps, View } from "react-native"
 
 interface InsightsLoadingModalProps {
