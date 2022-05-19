@@ -11,7 +11,7 @@ const BackgroundImage = styled(ImageBackground)`
   width: 100%;
 `
 
-export const Banner: React.FC<{}> = () => {
+export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
   const screenDimensions = useScreenDimensions()
 
   return (

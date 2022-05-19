@@ -1,11 +1,11 @@
 import { fireEvent } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { Banner } from "./Banner"
+import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 
 describe("MyCollectionInsights banner", () => {
   const TestRenderer = () => {
-    return <Banner />
+    return <ActivateMoreMarketInsightsBanner />
   }
 
   it("renders", async () => {
