@@ -40,10 +40,12 @@ describe("CommercialInformation", () => {
     }
 
     const { queryByText } = renderWithWrappersTL(
-      <CommercialInformationTimerWrapper
-        artwork={ForSaleArtwork as any}
-        me={{ identityVerified: false } as any}
-      />
+      <Wrapper>
+        <CommercialInformationTimerWrapper
+          artwork={ForSaleArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
+      </Wrapper>
     )
 
     expect(queryByText("For sale")).toBeTruthy()
@@ -60,10 +62,12 @@ describe("CommercialInformation", () => {
     }
 
     const { queryByText } = renderWithWrappersTL(
-      <CommercialInformationTimerWrapper
-        artwork={ForSaleArtwork as any}
-        me={{ identityVerified: false } as any}
-      />
+      <Wrapper>
+        <CommercialInformationTimerWrapper
+          artwork={ForSaleArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
+      </Wrapper>
     )
 
     expect(queryByText("For sale")).toBeTruthy()
@@ -177,10 +181,12 @@ describe("CommercialInformation", () => {
     }
 
     const { queryByText } = renderWithWrappersTL(
-      <CommercialInformationTimerWrapper
-        artwork={CommercialInformationArtworkClosedAuction as any}
-        me={{ identityVerified: false } as any}
-      />
+      <Wrapper>
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtworkClosedAuction as any}
+          me={{ identityVerified: false } as any}
+        />
+      </Wrapper>
     )
 
     expect(queryByText("Bidding closed")).toBeTruthy()
