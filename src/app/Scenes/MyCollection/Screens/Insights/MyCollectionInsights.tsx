@@ -44,7 +44,11 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
         {renderTitle()}
         <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
       </Flex>
-      <Banner />
+      {
+        // TODO: The banner should be visible always as long as the user has at least an artwork with insights
+        // waiting for the backend
+        <Banner />
+      }
     </StickyTabPageScrollView>
   )
 }
