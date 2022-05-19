@@ -1,8 +1,8 @@
 import { GlobalStore, useIsStaging } from "app/store/GlobalStore"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Separator, useTheme } from "palette"
 import React, { useEffect } from "react"
 import useInterval from "react-use/lib/useInterval"
+import { useScreenDimensions } from "shared/hooks"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
