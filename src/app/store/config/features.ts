@@ -194,6 +194,21 @@ export const features = defineFeatures({
     description: "Enable My Collection insights tab",
     showInAdminMenu: true,
   },
+  ARShowMyCollectionInsightsPhase1Part1: {
+    readyForRelease: false,
+    description: "Enable My Collection insights tab",
+    showInAdminMenu: true,
+  },
+  ARShowMyCollectionInsightsPhase1Part2: {
+    readyForRelease: false,
+    description: "Enable My Collection insights tab",
+    showInAdminMenu: true,
+  },
+  ARShowMyCollectionInsightsPhase1Part3: {
+    readyForRelease: false,
+    description: "Enable My Collection insights tab",
+    showInAdminMenu: true,
+  },
   AREnableNotFoundFailureView: {
     readyForRelease: true,
     description: "Enable Not Found Failure View",
