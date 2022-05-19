@@ -3223,6 +3223,7 @@ type CommerceBuyOrder implements CommerceOrder {
   ): String
   commissionFeeCents: Int
   commissionRate: Float
+  conversation: Conversation
   createdAt(
     format: String
 
