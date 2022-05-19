@@ -1,4 +1,4 @@
-import { withStickyTabPage } from "app/Components/StickyTabPage/helpers"
+import { withStickyTabPage } from "app/Components/StickyTabPage/testHelpers"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
