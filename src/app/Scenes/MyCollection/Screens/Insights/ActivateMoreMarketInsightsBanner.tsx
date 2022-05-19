@@ -19,7 +19,7 @@ export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
       <BackgroundImage source={require("images/MCInsights_banner_backgound_image.webp")}>
         <Flex alignItems="flex-start">
           <Text variant="xl" color="white100" mt={2}>
-            Activate More Market Insights
+            Activate More{"\n"}Market Insights
           </Text>
           <Text mt={1} mb={2} variant="md" color="white100">
             Upload more of your artworks to get insights about artists you collect.
