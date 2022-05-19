@@ -1,35 +1,20 @@
-import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
-import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { FaqAndSpecialistSection_artwork } from "__generated__/FaqAndSpecialistSection_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
-import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
-import { Sans, Spacer } from "palette"
+import { Sans } from "palette"
 import React from "react"
 import { Text } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface FaqAndSpecialistSectionProps {
-  artwork: ArtworkExtraLinks_artwork
-  auctionState: AuctionTimerState
+  artwork: FaqAndSpecialistSection_artwork
 }
 
-export const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = ({
-  artwork,
-  auctionState,
-}) => {
-  const { isAcquireable, isOfferable, isInAuction, sale, isForSale } = artwork
+const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = ({ artwork }) => {
+  const { isAcquireable, isOfferable } = artwork
   const { trackEvent } = useTracking()
-
-  const handleConditionsOfSaleTap = () => {
-    trackEvent(tracks.tappedConditionsOfSale())
-    navigate(`/conditions-of-sale`)
-  }
-
-  const handleReadOurAuctionFAQsTap = () => {
-    trackEvent(tracks.tappedAuctionFAQs())
-    navigate(`/auction-faq`)
-  }
 
   const handleAskASpecialistTap = (emailAddress: string) => {
     trackEvent(tracks.tappedAskASpecialist())
@@ -45,40 +30,7 @@ export const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = (
     navigate(`/buy-now-feature-faq`)
   }
 
-  if (isInAuction && sale && isForSale && auctionState !== AuctionTimerState.CLOSED) {
-    return (
-      <>
-        <Sans size="2" color="black60">
-          By placing a bid you agree to {partnerName(sale)}{" "}
-          <Text
-            style={{ textDecorationLine: "underline" }}
-            onPress={() => handleConditionsOfSaleTap()}
-          >
-            Conditions of Sale
-          </Text>
-          .
-        </Sans>
-        <Spacer mb={1} />
-        <Sans size="2" color="black60">
-          Have a question?{" "}
-          <Text
-            style={{ textDecorationLine: "underline" }}
-            onPress={() => handleReadOurAuctionFAQsTap()}
-          >
-            Read our auction FAQs
-          </Text>{" "}
-          or{" "}
-          <Text
-            style={{ textDecorationLine: "underline" }}
-            onPress={() => handleAskASpecialistTap("specialist@artsy.net")}
-          >
-            ask a specialist
-          </Text>
-          .
-        </Sans>
-      </>
-    )
-  } else if (isAcquireable || isOfferable) {
+  if (isAcquireable || isOfferable) {
     return (
       <Sans size="2" color="black60">
         Have a question?{" "}
@@ -100,20 +52,26 @@ export const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = (
   }
 }
 
+export const FaqAndSpecialistSectionFragmentContainer = createFragmentContainer(
+  FaqAndSpecialistSection,
+  {
+    artwork: graphql`
+      fragment FaqAndSpecialistSection_artwork on Artwork {
+        isAcquireable
+        isOfferable
+        title
+        artist {
+          name
+        }
+      }
+    `,
+  }
+)
+
 // TODO: move track events to cohesion
 const tracks = {
   tappedAskASpecialist: () => ({
     action_name: Schema.ActionNames.AskASpecialist,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.ArtworkExtraLinks,
-  }),
-  tappedAuctionFAQs: () => ({
-    action_name: Schema.ActionNames.AuctionsFAQ,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.ArtworkExtraLinks,
-  }),
-  tappedConditionsOfSale: () => ({
-    action_name: Schema.ActionNames.ConditionsOfSale,
     action_type: Schema.ActionTypes.Tap,
     context_module: Schema.ContextModules.ArtworkExtraLinks,
   }),

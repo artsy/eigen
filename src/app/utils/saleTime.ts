@@ -26,11 +26,17 @@ const isNotStartingToday = (startDate: string) => {
 
 export const getTimerInfo = (
   time: Time,
-  hasStarted?: boolean,
-  saleHasEnded?: boolean,
-  isSaleInfo: boolean = false
+  options: {
+    hasStarted?: boolean
+    lotsAreClosing?: boolean
+    isSaleInfo?: boolean
+    saleHasEnded?: boolean
+    urgencyIntervalMinutes?: number | null
+    isExtended?: boolean
+  }
 ): TimerInfo => {
   const { days, hours, minutes, seconds, startAt } = time
+  const { hasStarted, isSaleInfo, saleHasEnded, isExtended } = options
 
   const parsedDays = parseInt(days, 10)
   const parsedHours = parseInt(hours, 10)
@@ -57,6 +63,9 @@ export const getTimerInfo = (
     } else {
       copy = `${parsedDays} Day${parsedDays > 1 ? "s" : ""} Until Bidding Starts`
     }
+  } else if (isExtended) {
+    copy = `Extended: ${parsedMinutes}m ${parsedSeconds}s`
+    color = "red100"
   } else {
     // When the time is on the sale:
     if (isSaleInfo) {
@@ -279,7 +288,11 @@ export const useRelativeTimeOfSale = (
       return
     }
     const { hasEnded, time, hasStarted } = useTimer(sale.endAt, sale.startAt)
-    const relativeTimeInfo = getTimerInfo(time, hasStarted, hasEnded, true)
+    const relativeTimeInfo = getTimerInfo(time, {
+      hasStarted,
+      saleHasEnded: hasEnded,
+      isSaleInfo: true,
+    })
 
     if (relativeTimeInfo?.copy !== relativeTime?.copy) {
       // prevent unnecessary updates

@@ -26,13 +26,14 @@ import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutA
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
+import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./Components/ArtworkExtraLinks/FaqAndSpecialistSection"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
 import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
-import { CreateArtworkAlertSection } from "./Components/CreateArtworkAlertSection"
+import { CreateArtworkAlertSectionFragmentContainer as CreateArtworkAlertSection } from "./Components/CreateArtworkAlertSection"
 import {
   OtherWorksFragmentContainer as OtherWorks,
   populatedGrids,
@@ -240,18 +241,21 @@ export const Artwork: React.FC<ArtworkProps> = ({
     if (enableCreateArtworkAlert) {
       sections.push({
         key: "createAlertSection",
-        element: <CreateArtworkAlertSection />,
+        element: <CreateArtworkAlertSection artwork={artworkAboveTheFold} />,
         verticalMargin: 2,
       })
     }
 
-    // add FAQ section but maybe here we want to check some things, and also the code is 🤯 might need to address that in another ticket?
-    // if (enableCreateArtworkAlert) {
-    //   sections.push({
-    //     key: "faqSection",
-    //     element: <FaqAndSpecialistSection artwork={artworkAboveTheFold} />
-    //   })
-    // }
+    if (
+      !!(artworkAboveTheFold?.isAcquireable || artworkAboveTheFold?.isOfferable) &&
+      enableCreateArtworkAlert
+    ) {
+      sections.push({
+        key: "faqSection",
+        element: <FaqAndSpecialistSection artwork={artworkAboveTheFold} />,
+        verticalMargin: 2,
+      })
+    }
 
     if (!artworkBelowTheFold) {
       sections.push({
@@ -414,6 +418,8 @@ export const ArtworkContainer = createRefetchContainer(
       fragment Artwork_artworkAboveTheFold on Artwork {
         ...ArtworkHeader_artwork
         ...CommercialInformation_artwork
+        ...FaqAndSpecialistSection_artwork
+        ...CreateArtworkAlertSection_artwork
         slug
         internalID
         id
@@ -544,7 +550,7 @@ export const ArtworkQueryRenderer: React.FC<{
 }> = ({ artworkID, environment, ...others }) => {
   return (
     <RetryErrorBoundaryLegacy
-      render={({ isRetry }) => {
+      render={() => {
         return (
           <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
             environment={environment || defaultEnvironment}
@@ -575,10 +581,8 @@ export const ArtworkQueryRenderer: React.FC<{
                 )
               },
             }}
-            cacheConfig={{
-              // Bypass Relay cache on retries.
-              ...(isRetry && { force: true }),
-            }}
+            fetchPolicy="store-and-network"
+            cacheConfig={{ force: true }}
           />
         )
       }}

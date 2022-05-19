@@ -90,9 +90,10 @@ export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator,
 interface ModernTickerProps {
   duration: Duration
   hasStarted?: boolean
+  isExtended?: boolean
 }
 
-export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted }) => {
+export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted, isExtended }) => {
   const time: Time = {
     days: duration.asDays().toString(),
     hours: duration.hours().toString(),
@@ -101,7 +102,7 @@ export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted
     startAt: "",
     endDate: "",
   }
-  const timerInfo = getTimerInfo(time, hasStarted)
+  const timerInfo = getTimerInfo(time, { hasStarted, isExtended })
 
   return <Text color={timerInfo.color}>{timerInfo.copy}</Text>
 }

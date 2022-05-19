@@ -17,8 +17,8 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import {
   GlobalStore,
   removeClue,
-  unsafe_getFeatureFlag,
   useDevToggle,
+  useFeatureFlag,
   useSessionVisualClue,
 } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -309,6 +309,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 export const MyCollectionPlaceholder: React.FC = () => {
   const screenWidth = useScreenDimensions().width
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
+  const showMyCollectionInsights = useFeatureFlag("ARShowMyCollectionInsights")
 
   return (
     <Flex>
@@ -337,8 +338,18 @@ export const MyCollectionPlaceholder: React.FC = () => {
       <Spacer mb={2} mt={1} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        <PlaceholderText width="40%" height={22} />
-        <PlaceholderText width="40%" height={22} />
+        {!!showMyCollectionInsights ? (
+          <>
+            <PlaceholderText width="25%" height={22} />
+            <PlaceholderText width="25%" height={22} />
+            <PlaceholderText width="25%" height={22} />
+          </>
+        ) : (
+          <>
+            <PlaceholderText width="40%" height={22} />
+            <PlaceholderText width="40%" height={22} />
+          </>
+        )}
       </Flex>
       <Spacer mb={1} />
       <Separator />
