@@ -187,6 +187,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
         content: (
           <CascadingEndTimesBanner
             cascadingEndTimeInterval={sale.cascadingEndTimeIntervalMinutes}
+            extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
           />
         ),
       },
@@ -355,6 +356,7 @@ export const SaleContainer = createRefetchContainer(
         registrationEndsAt
         slug
         cascadingEndTimeIntervalMinutes
+        extendedBiddingIntervalMinutes
         isClosed
       }
     `,
