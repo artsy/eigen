@@ -2,26 +2,6 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getSelectedTab } from "app/store/GlobalStore"
 import { createHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
 
-jest.mock("app/NativeModules/LegacyNativeModules", () => ({
-  LegacyNativeModules: {
-    ARScreenPresenterModule: {
-      pushView: jest.fn(),
-      switchTab: jest.fn(),
-      presentModal: jest.fn(),
-      popToRootAndScrollToTop: jest.fn(),
-      updateShouldHideBackButton: jest.fn(),
-    },
-    ARNotificationsManager: {
-      nativeState: {
-        launchCount: 2,
-      },
-    },
-    ARCocoaConstantsModule: {
-      CurrentLocale: "en-us",
-    },
-  },
-}))
-
 const hideBackButtonOnScroll = createHideBackButtonOnScroll((shouldHide) =>
   LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton(
     shouldHide,

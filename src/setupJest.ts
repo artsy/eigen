@@ -437,6 +437,86 @@ function getNativeModules(): OurNativeModules {
   }
 }
 
+// ARScreenPresenterModule is no longer a native module on either platform
+// so we must mock differently
+jest.mock("app/NativeModules/LegacyNativeModules", () => ({
+  LegacyNativeModules: {
+    ARTNativeScreenPresenterModule: {
+      presentAugmentedRealityVIR: jest.fn(),
+      presentEmailComposerWithBody: jest.fn(),
+      presentEmailComposerWithSubject: jest.fn(),
+      presentMediaPreviewController: jest.fn(),
+    },
+    ARTakeCameraPhotoModule: {
+      errorCodes: {
+        cameraNotAvailable: "cameraNotAvailable",
+        imageMediaNotAvailable: "imageMediaNotAvailable",
+        cameraAccessDenied: "cameraAccessDenied",
+        saveFailed: "saveFailed",
+      },
+      triggerCameraModal: jest.fn(),
+    },
+
+    ARCocoaConstantsModule: {
+      UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+      AREnabled: true,
+      CurrentLocale: "en_US",
+      LocalTimeZone: "",
+    },
+
+    ARNotificationsManager: {
+      nativeState: {
+        userAgent: "Jest Unit Tests",
+        authenticationToken: "authenticationToken",
+        launchCount: 1,
+        deviceId: "testDevice",
+        userID: "userID",
+        userEmail: "user@example.com",
+      },
+      postNotificationName: jest.fn(),
+      didFinishBootstrapping: jest.fn(),
+      reactStateUpdated: jest.fn(),
+    },
+    ARTemporaryAPIModule: {
+      requestPrepromptNotificationPermissions: jest.fn(),
+      requestDirectNotificationPermissions: jest.fn(),
+      fetchNotificationPermissions: jest.fn(),
+      markNotificationsRead: jest.fn(),
+      setApplicationIconBadgeNumber: jest.fn(),
+      getUserEmail: jest.fn(),
+    },
+    ARPHPhotoPickerModule: {
+      requestPhotos: jest.fn(),
+    },
+    ARScreenPresenterModule: {
+      switchTab: jest.fn(),
+      dismissModal: jest.fn(),
+      pushView: jest.fn(),
+      goBack: jest.fn(),
+      updateShouldHideBackButton: jest.fn(),
+      popStack: jest.fn(),
+      popToRootAndScrollToTop: jest.fn(),
+      popToRootOrScrollToTop: jest.fn(),
+      presentModal: jest.fn(),
+    },
+    AREventsModule: {
+      requestAppStoreRating: jest.fn(),
+    },
+    ArtsyNativeModule: {
+      launchCount: 3,
+      setAppStyling: jest.fn(),
+      setNavigationBarColor: jest.fn(),
+      setAppLightContrast: jest.fn(),
+      navigationBarHeight: 11,
+      lockActivityScreenOrientation: jest.fn(),
+      gitCommitShortHash: "de4dc0de",
+      isBetaOrDev: true,
+      updateAuthState: jest.fn(),
+      clearUserData: jest.fn(),
+    },
+  },
+}))
+
 Object.assign(NativeModules, getNativeModules())
 
 beforeEach(() => {

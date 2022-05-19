@@ -12,25 +12,6 @@ jest.unmock("./navigate")
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
-jest.mock("app/NativeModules/LegacyNativeModules", () => ({
-  LegacyNativeModules: {
-    ARScreenPresenterModule: {
-      pushView: jest.fn(),
-      switchTab: jest.fn(),
-      presentModal: jest.fn(),
-      popToRootAndScrollToTop: jest.fn(),
-    },
-    ARNotificationsManager: {
-      nativeState: {
-        launchCount: 2,
-      },
-    },
-    ARCocoaConstantsModule: {
-      CurrentLocale: "en-us",
-    },
-  },
-}))
-
 jest.mock("app/Store/GlobalStore", () => ({
   unsafe__getSelectedTab: jest.fn().mockReturnValue("home"),
   unsafe__getEnvironment: jest.fn().mockReturnValue({
