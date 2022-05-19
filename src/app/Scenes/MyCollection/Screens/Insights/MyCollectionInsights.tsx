@@ -1,7 +1,7 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
-import { Flex, Text, Touchable, useSpace } from "palette"
+import { Flex, Spinner, Text, Touchable, useSpace } from "palette"
 import React, { Suspense, useState } from "react"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -48,11 +48,21 @@ export const MyCollectionInsightsQR: React.FC<{}> = () => (
   </Suspense>
 )
 
-// TODO: fix, placeHolder is hidden behind the header
 export const MyCollectionInsightsPlaceHolder = () => (
-  <Flex>
-    <Text>A Placeholder</Text>
-  </Flex>
+  <StickyTabPageScrollView
+    style={{
+      flex: 1,
+    }}
+    contentContainerStyle={{
+      flexGrow: 1,
+      justifyContent: "center",
+    }}
+    scrollEnabled={false}
+  >
+    <Flex alignItems="center">
+      <Spinner />
+    </Flex>
+  </StickyTabPageScrollView>
 )
 
 export const MyCollectionInsightsScreenQuery = graphql`
