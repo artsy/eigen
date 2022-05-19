@@ -18,12 +18,12 @@ import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "./index"
 
-jest.unmock("react-tracking")
-
 jest.mock("app/store/GlobalStore", () => ({
   __globalStoreTestUtils__: jest.requireActual("app/store/GlobalStore").__globalStoreTestUtils__,
   GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,
   useSelectedTab: jest.fn(() => "home"),
+  useFeatureFlag: jest.requireActual("app/store/GlobalStore").useFeatureFlag,
+  GlobalStore: jest.requireActual("app/store/GlobalStore").GlobalStore,
 }))
 
 function getWrapper({
@@ -320,7 +320,13 @@ describe("ArtworkExtraLinks", () => {
     describe("Analytics", () => {
       const TestRenderer = () =>
         renderWithWrappersTL(
-          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+          <GlobalStoreProvider>
+            <ModalStack>
+              <Theme>
+                <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+              </Theme>
+            </ModalStack>
+          </GlobalStoreProvider>
         )
 
       it("posts proper event in when clicking Ask A Specialist", () => {
@@ -385,7 +391,13 @@ describe("ArtworkExtraLinks", () => {
 
       const TestRenderer = () =>
         renderWithWrappersTL(
-          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+          <GlobalStoreProvider>
+            <ModalStack>
+              <Theme>
+                <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+              </Theme>
+            </ModalStack>
+          </GlobalStoreProvider>
         )
 
       it("should not show the FaqAndSpecialistSection component", () => {
