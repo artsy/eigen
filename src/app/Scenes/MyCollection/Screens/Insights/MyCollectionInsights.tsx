@@ -1,5 +1,6 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Spinner, useSpace } from "palette"
 import React, { Suspense } from "react"
@@ -19,11 +20,13 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
 
   const hasMarketSignals = !!data.me?.auctionResults?.totalCount
 
+  const enablePhase1 = useFeatureFlag("ARShowMyCollectionInsightsPhase1Part1")
+
   const renderContent = () => {
     return (
       <>
         <MyCollectionInsightsOverview />
-        {hasMarketSignals && (
+        {hasMarketSignals && !!enablePhase1 && (
           <>
             <MarketSignalsSectionHeader />
             <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
