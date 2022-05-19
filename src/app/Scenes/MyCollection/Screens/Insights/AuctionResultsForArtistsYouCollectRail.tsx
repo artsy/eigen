@@ -27,7 +27,7 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
   }
 
   return (
-    <Flex pb={3}>
+    <Flex pb={2}>
       <SectionTitle
         title="Auction Results"
         subtitle="Based on Auction Results for the Last 36 Months"

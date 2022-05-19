@@ -5,6 +5,7 @@ import { Flex, Text, Touchable, useSpace } from "palette"
 import React, { Suspense, useState } from "react"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
+import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
@@ -34,10 +35,20 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   }
 
   return (
-    <StickyTabPageScrollView contentContainerStyle={{ paddingTop: space("2") }}>
-      <MyCollectionInsightsOverview />
-      {renderTitle()}
-      <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+    <StickyTabPageScrollView
+      contentContainerStyle={{ paddingTop: space("2") }}
+      paddingHorizontal={0}
+    >
+      <Flex paddingX={space("2")}>
+        <MyCollectionInsightsOverview />
+        {renderTitle()}
+        <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+      </Flex>
+      {
+        // TODO: The banner should be visible always as long as the user has at least an artwork with insights
+        // waiting for the backend
+        <ActivateMoreMarketInsightsBanner />
+      }
     </StickyTabPageScrollView>
   )
 }
