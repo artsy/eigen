@@ -1,5 +1,6 @@
 import { deleteCollectedArtwork } from "@artsy/cohesion"
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
@@ -110,9 +111,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     } finally {
       if (props.mode === "add") {
-        // TODO: check tabs
-        // TODO: check Artwork insights
-        addClue("AddedArtworkHasNoInsightsMessage")
+        const isAddedFromMyC = await AsyncStorage.getItem("ADDING_ARTWORK_FROM_MY_COLECTION_TAB")
+
+        if (!!isAddedFromMyC) {
+          // TODO: check Artwork insights - blocked by the backend
+          addClue("AddedArtworkHasNoInsightsMessage")
+        } // else - another ticket
       }
       setLoading(false)
     }
