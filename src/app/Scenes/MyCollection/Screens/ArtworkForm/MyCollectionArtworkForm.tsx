@@ -115,7 +115,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
         if (!!isAddedFromMyC) {
           // TODO: check Artwork insights - blocked by the backend
-          addClue("AddedArtworkHasNoInsightsMessage")
+          addClue("AddedArtworkHasNoInsightsMessage_MyCTab")
         } // else - another ticket
       }
       setLoading(false)
