@@ -25,7 +25,7 @@ import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArt
 import { myCollectionUpdateArtwork } from "../../mutations/myCollectionUpdateArtwork"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
-import { InsightsLoadingModal } from "./Components/InsightsLoadingModal"
+import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 import { removeLocalPhotos, storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
@@ -91,8 +91,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   formValuesRef.current = formValues
 
   const [loading, setLoading] = useState<boolean>(false)
-  const [artworkSaved, setArtworkSaved] = useState<boolean>(false)
-  const [keepVisible, setVisible] = useState<boolean>(false)
+  const [isArtworkSaved, setIsArtworkSaved] = useState<boolean>(false)
 
   const { showActionSheetWithOptions } = useActionSheet()
 
@@ -100,28 +99,19 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const handleSubmit = async (values: ArtworkFormValues) => {
     setLoading(true)
-    if (showMyCollectionInsights) {
-      setVisible(true)
-    }
 
     try {
       await Promise.all([
         // This is to satisfy showing the insights modal for 2500 ms
-        new Promise((resolve) =>
-          setTimeout(() => {
-            setVisible(false)
-            return resolve("")
-          }, 2500)
-        ),
+        __TEST__ ? undefined : new Promise((resolve) => setTimeout(() => resolve, 2500)),
         updateMyUserProfile({
           currencyPreference: preferredCurrency,
           lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
         }),
         updateArtwork(values, dirtyFormCheckValues, props),
-        // TODO: update to request for market data after saving/updating artworks
       ])
       if (showMyCollectionInsights) {
-        setArtworkSaved(true)
+        setIsArtworkSaved(true)
         // simulate requesting market data
         await new Promise((resolve) => setTimeout(resolve, 1000))
       }
@@ -136,7 +126,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     } finally {
       setLoading(false)
-      setArtworkSaved(false)
+      setIsArtworkSaved(false)
     }
   }
 
@@ -258,7 +248,10 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
         </Stack.Navigator>
         {showMyCollectionInsights && props.mode === "add" ? (
-          <InsightsLoadingModal isVisible={loading || keepVisible} artworkSaved={artworkSaved} />
+          <SavingArtworkModal
+            isVisible={loading}
+            loadingText={isArtworkSaved ? "Generating market data" : "Saving Artwork"}
+          />
         ) : (
           <LoadingModal isVisible={loading} />
         )}
