@@ -9,7 +9,7 @@ import { SpinnerProps } from "./Spinner"
  * @param props
  */
 const getSize = (props: SpinnerProps | CircleProps) => {
-  const base = { width: 50, height: 50, radius: 25, borderWidth: 4 }
+  const base = { width: 80, height: 80, radius: 40, borderWidth: 6 }
 
   switch (props.size) {
     case "small":
@@ -17,28 +17,28 @@ const getSize = (props: SpinnerProps | CircleProps) => {
         width: base.width * 0.5,
         height: base.height * 0.5,
         radius: (base.width * 0.5) / 2,
-        borderWidth: (base.width * 0.5) / 8,
+        borderWidth: (base.width * 0.5) / 10,
       }
     case "medium":
       return {
         width: base.width * 0.8,
         height: base.height * 0.8,
         radius: (base.width * 0.8) / 2,
-        borderWidth: (base.width * 0.8) / 8,
+        borderWidth: (base.width * 0.8) / 10,
       }
     case "large":
       return {
         width: base.width,
         height: base.height,
         radius: base.width / 2,
-        borderWidth: base.width / 8,
+        borderWidth: base.width / 10,
       }
     default:
       return {
         width: props.width,
         height: props.height,
         radius: props.width ? props.width / 2 : base.radius,
-        borderWidth: props.width ? props.width / 8 : base.borderWidth,
+        borderWidth: props.width ? props.width / 10 : base.borderWidth,
       }
   }
 }
