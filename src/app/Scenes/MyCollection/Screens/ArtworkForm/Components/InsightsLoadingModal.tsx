@@ -15,7 +15,7 @@ export const InsightsLoadingModal: React.FC<InsightsLoadingModalProps & ModalPro
   const { height: screenHeight } = Dimensions.get("screen")
 
   return (
-    <Modal animationType="slide" visible={isVisible} {...rest} statusBarTranslucent transparent>
+    <Modal animationType="slide" visible={isVisible} {...rest} statusBarTranslucent>
       <View style={{ position: "absolute", width: "100%" }}>
         <Image
           style={{ height: screenHeight, width: "100%" }}

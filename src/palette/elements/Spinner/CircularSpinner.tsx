@@ -105,9 +105,15 @@ const Circle = styled(Animated.View)<CircleProps>`
     const { width, height, borderWidth, radius } = getSize(props)
 
     return `
-      border: ${borderWidth}px solid ${props.color};
-      border-radius: ${radius}px;
+      border-top-width: ${borderWidth};
+      border-left-width: ${borderWidth};
+      border-bottom-width: ${borderWidth};
+      border-right-width: ${borderWidth};
+      border-top-color: ${props.color};
+      border-left-color: ${props.color};
+      border-bottom-color: ${props.color};
       border-right-color: transparent;
+      border-radius: ${radius}px;
 
       background: transparent;
 

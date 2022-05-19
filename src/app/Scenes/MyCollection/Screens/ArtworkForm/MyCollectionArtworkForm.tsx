@@ -92,40 +92,41 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const [loading, setLoading] = useState<boolean>(false)
   const [artworkSaved, setArtworkSaved] = useState<boolean>(false)
-  const [keepVisible, setVisible] = useState<boolean>(true)
+  const [keepVisible, setVisible] = useState<boolean>(false)
 
   const { showActionSheetWithOptions } = useActionSheet()
 
   const showMyCollectionInsights = useFeatureFlag("ARShowMyCollectionInsights")
 
-  // This is to satisfy showing the insights modal for 2500 ms
-  const waitForModalToClose = async () => {
-    await new Promise((resolve) =>
-      setTimeout(() => {
-        setVisible(false)
-        return resolve
-      }, 2500)
-    )
-  }
-
   const handleSubmit = async (values: ArtworkFormValues) => {
     setLoading(true)
     if (showMyCollectionInsights) {
-      waitForModalToClose()
+      setVisible(true)
     }
 
     try {
-      await updateMyUserProfile({
-        currencyPreference: preferredCurrency,
-        lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
-      })
-      await updateArtwork(values, dirtyFormCheckValues, props)
+      await Promise.all([
+        // This is to satisfy showing the insights modal for 2500 ms
+        new Promise((resolve) =>
+          setTimeout(() => {
+            setVisible(false)
+            return resolve("")
+          }, 2500)
+        ),
+        updateMyUserProfile({
+          currencyPreference: preferredCurrency,
+          lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
+        }),
+        updateArtwork(values, dirtyFormCheckValues, props),
+        // TODO: update to request for market data after saving/updating artworks
+      ])
       if (showMyCollectionInsights) {
         setArtworkSaved(true)
-        // TODO: update to request for market data
         // simulate requesting market data
         await new Promise((resolve) => setTimeout(resolve, 1000))
       }
+
+      props.onSuccess?.()
     } catch (e) {
       if (__DEV__) {
         console.error(e)
@@ -135,6 +136,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     } finally {
       setLoading(false)
+      setArtworkSaved(false)
     }
   }
 
@@ -330,8 +332,6 @@ export const updateArtwork = async (
   }
 
   refreshMyCollection()
-  // TODO: request for market data
-  props.onSuccess?.()
 }
 
 const tracks = {
