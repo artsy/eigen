@@ -73,6 +73,20 @@ describe("ArtworkDetails", () => {
   })
 
   describe("Save & Continue button", () => {
+    it("corrently rendered", () => {
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      expect(getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
+    })
+
+    it("still corrently rendered when location is set", () => {
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+      const locationInput = getByTestId("Submission_LocationInput")
+      fireEvent.changeText(locationInput, "Berlin, Germany")
+
+      expect(getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
+    })
+
     it("disabled when a required field is missing", async () => {
       const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
 
