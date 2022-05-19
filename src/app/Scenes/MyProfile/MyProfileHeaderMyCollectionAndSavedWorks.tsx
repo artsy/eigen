@@ -41,12 +41,10 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         !!showMyCollectionInsights && {
           title: Tab.insights,
           content: <MyCollectionInsightsQR />,
-          initial: false,
         },
         {
           title: Tab.savedWorks,
           content: <FavoriteArtworksQueryRenderer />,
-          initial: false,
         },
       ])}
       staticHeaderContent={<MyProfileHeader me={me} />}
