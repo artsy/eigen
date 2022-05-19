@@ -15,7 +15,7 @@ export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
   const screenDimensions = useScreenDimensions()
 
   return (
-    <Box mb={3} width={screenDimensions.width} alignSelf="center">
+    <Box width={screenDimensions.width} alignSelf="center">
       <BackgroundImage source={require("images/MCInsights_banner_backgound_image.webp")}>
         <Flex alignItems="flex-start">
           <Text variant="xl" color="white100" mt={2}>
@@ -31,6 +31,7 @@ export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
           block
           variant="outline"
           position="absolute"
+          testID="activate-more-market-insights-banner"
           onPress={() => {
             navigate("my-collection/artworks/new", {
               passProps: {

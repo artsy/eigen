@@ -15,10 +15,9 @@ describe("MyCollectionInsights banner", () => {
   })
 
   it("navigates to MyCollectionArtworkForm when Upload Another Artwork is pressed", () => {
-    const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
-    fireEvent.press(getAllByText("Upload Another Artwork")[0])
-
+    fireEvent.press(getByTestId("activate-more-market-insights-banner"))
     expect(navigate).toHaveBeenCalledWith(
       "my-collection/artworks/new",
       expect.objectContaining({ passProps: { mode: "add", onSuccess: expect.anything() } })
