@@ -477,7 +477,7 @@ describe("Artwork", () => {
     })
 
     it("should display create artwork alert section by default", () => {
-      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
@@ -485,12 +485,12 @@ describe("Artwork", () => {
         }),
       })
 
-      expect(queryByTestId("create-artwork-alert-section")).toBeTruthy()
-      expect(queryByTestId("create-artwork-alert-buttons-section")).toBeFalsy()
+      expect(queryByA11yLabel("Create artwork alert section")).toBeTruthy()
+      expect(queryByA11yLabel("Create artwork alert buttons section")).toBeFalsy()
     })
 
     it("should display create artwork alert buttons section when artwork is sold", () => {
-      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
@@ -498,8 +498,8 @@ describe("Artwork", () => {
         }),
       })
 
-      expect(queryByTestId("create-artwork-alert-section")).toBeFalsy()
-      expect(queryByTestId("create-artwork-alert-buttons-section")).toBeTruthy()
+      expect(queryByA11yLabel("Create artwork alert section")).toBeFalsy()
+      expect(queryByA11yLabel("Create artwork alert buttons section")).toBeTruthy()
     })
   })
 })

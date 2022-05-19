@@ -83,7 +83,8 @@ export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ 
   return (
     <>
       <Flex
-        testID="create-artwork-alert-section"
+        accessible
+        accessibilityLabel="Create artwork alert section"
         flexDirection="row"
         justifyContent="space-between"
       >
