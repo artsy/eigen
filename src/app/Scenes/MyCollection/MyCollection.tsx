@@ -55,7 +55,7 @@ const MyCollection: React.FC<{
   const { showSessionVisualClue } = useSessionVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
-  const showMyCollectionInsights = unsafe_getFeatureFlag("ARShowMyCollectionInsights")
+  const showMyCollectionInsights = useFeatureFlag("ARShowMyCollectionInsights")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
