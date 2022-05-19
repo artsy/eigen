@@ -1,23 +1,49 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { Flex, Text, useSpace } from "palette"
+import { extractNodes } from "app/utils/extractNodes"
+import { Flex, Spinner, useSpace } from "palette"
 import React, { Suspense } from "react"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
-import { AuctionResultsBasedOnArtistsYouCollect } from "./AuctionResultsBasedOnArtistsYouCollect"
+import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
+import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
+import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
+import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const space = useSpace()
   const data = useLazyLoadQuery<MyCollectionInsightsQuery>(MyCollectionInsightsScreenQuery, {})
 
+  const myCollectionArtworksCount = extractNodes(data.me?.myCollectionConnection).length
+
+  const hasMarketSignals = !!data.me?.auctionResults?.totalCount
+
+  const renderContent = () => {
+    return (
+      <>
+        <MyCollectionInsightsOverview />
+        {hasMarketSignals && (
+          <>
+            <MarketSignalsSectionHeader />
+            <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+            {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
+            <ActivateMoreMarketInsightsBanner />
+          </>
+        )}
+      </>
+    )
+  }
+
   return (
-    <StickyTabPageScrollView contentContainerStyle={{ paddingTop: space("2") }}>
-      <MyCollectionInsightsOverview />
-      <Text variant="lg" mr={0.5} mb={2}>
-        Market Signals
-      </Text>
-      <AuctionResultsBasedOnArtistsYouCollect auctionResults={data.me!} />
+    <StickyTabPageScrollView
+      style={{
+        flex: 1,
+      }}
+      contentContainerStyle={{ paddingTop: space("2"), flexGrow: 1, justifyContent: "center" }}
+      paddingHorizontal={0}
+    >
+      {myCollectionArtworksCount > 0 ? renderContent() : <MyCollectionInsightsEmptyState />}
     </StickyTabPageScrollView>
   )
 }
@@ -28,17 +54,32 @@ export const MyCollectionInsightsQR: React.FC<{}> = () => (
   </Suspense>
 )
 
-// TODO: fix, placeHolder is hidden behind the header
 export const MyCollectionInsightsPlaceHolder = () => (
-  <Flex>
-    <Text>A Placeholder</Text>
-  </Flex>
+  <StickyTabPageScrollView
+    style={{ flex: 1 }}
+    contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+    scrollEnabled={false}
+  >
+    <Flex alignItems="center">
+      <Spinner />
+    </Flex>
+  </StickyTabPageScrollView>
 )
 
 export const MyCollectionInsightsScreenQuery = graphql`
   query MyCollectionInsightsQuery {
     me {
-      ...AuctionResultsBasedOnArtistsYouCollect_me
+      ...AuctionResultsForArtistsYouCollectRail_me
+      auctionResults: myCollectionAuctionResults(first: 1) {
+        totalCount
+      }
+      myCollectionConnection(first: 1) {
+        edges {
+          node {
+            id
+          }
+        }
+      }
     }
   }
 `

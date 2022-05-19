@@ -24,7 +24,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     <SearchContext.Provider value={searchProviderValues}>
       <Box>
         <Input
-          placeholder="Search for Artists on Artsy"
+          placeholder="Search for artists on Artsy"
           icon={<SearchIcon width={18} height={18} />}
           onChangeText={formik.handleChange("artist")}
           onBlur={formik.handleBlur("artist")}

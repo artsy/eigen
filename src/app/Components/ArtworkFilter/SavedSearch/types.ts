@@ -1,3 +1,5 @@
+import { ScreenOwnerType } from "@artsy/cohesion"
+
 export enum SearchCriteria {
   artistID = "artistID",
   artistIDs = "artistIDs",
@@ -38,4 +40,21 @@ export interface SearchCriteriaAttributes {
   [SearchCriteria.width]?: string | null
   [SearchCriteria.materialsTerms]?: string[] | null
   [SearchCriteria.priceRange]?: string | null
+}
+
+export interface SavedSearchEntityArtist {
+  id: string
+  name: string
+}
+
+export interface SavedSearchEntityOwner {
+  type: ScreenOwnerType
+  slug: string
+  id: string
+}
+
+export interface SavedSearchEntity {
+  placeholder: string
+  artists: SavedSearchEntityArtist[]
+  owner: SavedSearchEntityOwner
 }

@@ -361,3 +361,15 @@ When we upgrade to a react native version that contentOffset works for android
 
 contentOffset for vertical scrollviews appear to be broken on v0.66.4 (current version). We need the contentOffset to initially hide the HeaderComponent. The workaround currently is to use contentContainerStyle and set the marginTop to -HeightOfHeaderComponent and then remove this when a user scrolls to the top.
 Caveat/Introduced bug: User has to scroll to an offset of any number > 0 to revert the marginTop to 0.
+
+## [iOS specific bug]: Images posted to server via fetch in `multipart/form-data` get their size inflated significantly
+
+#### When we can remove this:
+
+When this problem will be fixed in one of the next React Native releases (fixes were already added in 0.66.4, but were eventually [reversed](https://github.com/facebook/react-native/commit/e83feffeba567b4e304181632128ee1caa036c45))
+
+#### Explanation/Context
+
+When we try to upload a file with the `.jpg` extension in `multipart/form-data` format via `fetch`, then the size of this file will be increased on iOS. That bug happens not due to the file content nor for the blob MIME but just due to the file extension. See more about this problem [here](https://github.com/facebook/react-native/issues/27099).
+
+One of the simplest solutions to this problem is to rename the file and add a suffix (for example, from `filename.jpg` to `filename.jpg.toUpload`)

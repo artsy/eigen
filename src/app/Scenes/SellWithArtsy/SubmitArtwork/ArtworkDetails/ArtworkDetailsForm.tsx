@@ -41,7 +41,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <StandardSpace />
       <Input
         title="Title"
-        placeholder="Add Title or Write 'Unknown'"
+        placeholder="Add title or write 'Unknown'"
         testID="Submission_TitleInput"
         value={values.title}
         onChangeText={(e) => setFieldValue("title", e)}
@@ -60,7 +60,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <StandardSpace />
       <Input
         title="Materials"
-        placeholder="Oil on Canvas, Mixed Media, Lithograph.."
+        placeholder="Oil on canvas, mixed media, lithograph.."
         testID="Submission_MaterialsInput"
         value={values.medium}
         onChangeText={(e) => setFieldValue("medium", e)}
@@ -81,7 +81,7 @@ export const ArtworkDetailsForm: React.FC = () => {
             What is this?
           </LinkButton>
         }
-        placeholder="Select a Classification"
+        placeholder="Select a classification"
         options={rarityOptions}
       />
       <InfoModal
@@ -184,7 +184,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         </LinkButton>
       </Flex>
       <Input
-        placeholder="Describe How You Acquired the Artwork"
+        placeholder="Describe how you acquired the artwork"
         testID="Submission_ProvenanceInput"
         value={values.provenance}
         onChangeText={(e) => setFieldValue("provenance", e)}
@@ -224,7 +224,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           <Spacer m={2} />
           <Input
             title="Zip/Postal code"
-            placeholder="Zip/Postal Code Where Artwork Is Located"
+            placeholder="Zip/postal code where artwork is located"
             testID="Submission_ZipInput"
             value={values.location.zipCode}
             onBlur={(e) => {

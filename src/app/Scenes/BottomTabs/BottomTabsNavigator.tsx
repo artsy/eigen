@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { AppModule } from "app/AppRegistry"
 import { NavStack } from "app/navigation/NavStack"
+import React from "react"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabType } from "./BottomTabType"
 

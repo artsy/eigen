@@ -1,6 +1,5 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import {
   ArtsyWebViewConditionsOfSale,
   ArtsyWebViewPrivacy,
@@ -8,11 +7,12 @@ import {
 } from "app/Components/ArtsyReactWebViewPolicy"
 import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
 import { Alert, Animated, ScrollView } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingSocialPick } from "../OnboardingSocialPick"

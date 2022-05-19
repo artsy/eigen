@@ -3,7 +3,6 @@ import { navigate } from "app/navigation/navigate"
 import { cm2in } from "app/utils/conversions"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import _ from "lodash"
 import {
   Box,
@@ -20,6 +19,7 @@ import {
 import React, { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"

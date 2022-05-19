@@ -1,7 +1,7 @@
 import { useFocusEffect } from "@react-navigation/core"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
-import { CreateSavedSearchContentContainer_me } from "__generated__/CreateSavedSearchContentContainer_me.graphql"
+import { CreateSavedSearchContentContainer_viewer } from "__generated__/CreateSavedSearchContentContainer_viewer.graphql"
 import { CreateSavedSearchContentContainerQuery } from "__generated__/CreateSavedSearchContentContainerQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -16,32 +16,33 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import { SavedSearchAlertForm } from "../SavedSearchAlertForm"
 import {
   CreateSavedSearchAlertNavigationStack,
-  SavedSearchAlertFormPropsBase,
   SavedSearchAlertMutationResult,
 } from "../SavedSearchAlertModel"
 
 interface CreateSavedSearchAlertContentQueryRendererProps {
   navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
-  artistId: string
-  artistName: string
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
 }
 
 interface CreateSavedSearchAlertContentProps
-  extends CreateSavedSearchAlertContentQueryRendererProps,
-    SavedSearchAlertFormPropsBase {
+  extends CreateSavedSearchAlertContentQueryRendererProps {
   relay: RelayRefetchProp
-  me?: CreateSavedSearchContentContainer_me | null
+  viewer?: CreateSavedSearchContentContainer_viewer | null
   loading: boolean
 }
 
 const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
-  const { me, loading, relay, navigation, onClosePress, ...other } = props
+  const { viewer, loading, relay, navigation, onClosePress, ...other } = props
   const isPreviouslyFocused = useRef(false)
   const [refetching, setRefetching] = useState(false)
   const [enablePushNotifications, setEnablePushNotifications] = useState(true)
-  const userAllowsEmails = me?.emailFrequency !== "none"
+  const userAllowsEmails =
+    viewer === null
+      ? false
+      : Object.values(viewer!.notificationPreferences).some(
+          (preference) => preference.status === "SUBSCRIBED"
+        )
 
   const handleUpdateEmailPreferencesPress = () => {
     navigation.navigate("EmailPreferences")
@@ -102,16 +103,18 @@ const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps
 const CreateSavedSearchContentContainer = createRefetchContainer(
   CreateSavedSearchAlertContent,
   {
-    me: graphql`
-      fragment CreateSavedSearchContentContainer_me on Me {
-        emailFrequency
+    viewer: graphql`
+      fragment CreateSavedSearchContentContainer_viewer on Viewer {
+        notificationPreferences {
+          status
+        }
       }
     `,
   },
   graphql`
     query CreateSavedSearchContentContainerRefetchQuery {
-      me {
-        ...CreateSavedSearchContentContainer_me
+      viewer {
+        ...CreateSavedSearchContentContainer_viewer
       }
     }
   `
@@ -125,8 +128,8 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
       environment={defaultEnvironment}
       query={graphql`
         query CreateSavedSearchContentContainerQuery {
-          me {
-            ...CreateSavedSearchContentContainer_me
+          viewer {
+            ...CreateSavedSearchContentContainer_viewer
           }
         }
       `}
@@ -142,7 +145,7 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
         return (
           <CreateSavedSearchContentContainer
             {...props}
-            me={relayProps?.me ?? null}
+            viewer={relayProps?.viewer ?? null}
             loading={relayProps === null && error === null}
           />
         )

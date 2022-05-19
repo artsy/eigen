@@ -11,6 +11,7 @@ import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { formatDisplayTimelyAt } from "app/Scenes/Sale/helpers"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import { bullet, Flex, Text } from "palette"
@@ -39,6 +40,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
 }) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
+  const isCascadingEnabled = useFeatureFlag("AREnableCascadingEndTimerHomeSalesRail")
 
   const getSaleSubtitle = (
     liveStartAt: string | undefined | null,
@@ -139,7 +141,9 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
                     testID="sale-subtitle"
                     ellipsizeMode="middle"
                   >
-                    {getSaleSubtitle(result?.liveStartAt, result?.displayTimelyAt).trim()}
+                    {isCascadingEnabled
+                      ? result?.formattedStartDateTime
+                      : getSaleSubtitle(result?.liveStartAt, result?.displayTimelyAt).trim()}
                   </Text>
                 </MetadataContainer>
               </View>
@@ -163,6 +167,7 @@ export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {
         liveURLIfOpen
         liveStartAt
         displayTimelyAt
+        formattedStartDateTime
         saleArtworksConnection(first: 3) {
           edges {
             node {

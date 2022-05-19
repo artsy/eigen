@@ -6,21 +6,19 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
-import { ReactNativeFile } from "extract-files"
 
-import { useActionSheet } from "@expo/react-native-action-sheet"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
+import { navigate } from "app/navigation/navigate"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { AddIcon, Box, Flex, Separator, Spacer } from "palette"
 import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useCallback, useRef, useState } from "react"
-import { Alert, FlatList, TouchableOpacity, View } from "react-native"
+import { FlatList, TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
 import { FairCollectionsFragmentContainer } from "./Components/FairCollections"
 import { FairEditorialFragmentContainer } from "./Components/FairEditorial"
@@ -28,9 +26,6 @@ import { FairEmptyStateFragmentContainer } from "./Components/FairEmptyState"
 import { FairExhibitorsFragmentContainer } from "./Components/FairExhibitors"
 import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
 import { FairHeaderFragmentContainer } from "./Components/FairHeader"
-
-import { FairImageSearchQuery } from "__generated__/FairImageSearchQuery.graphql"
-import { fetchQuery } from "relay-runtime"
 
 interface FairQueryRendererProps {
   fairID: string
@@ -82,7 +77,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   const { safeAreaInsets } = useScreenDimensions()
 
   const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 30 })
-  const { showActionSheetWithOptions } = useActionSheet()
 
   /*
   This function is necessary to achieve the effect whereby the sticky tab
@@ -175,44 +169,6 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   }
 
   const hideBackButtonOnScroll = useHideBackButtonOnScroll()
-
-  const getFileNameByPath = (imagePath: string) => {
-    return imagePath.split("/").pop()!
-  }
-
-  const handleSeachByImage = async () => {
-    try {
-      const images = await showPhotoActionSheet(showActionSheetWithOptions, true, false)
-      const image = images[0]
-      const fileImage = new ReactNativeFile({
-        uri: image.path,
-        name: getFileNameByPath(image.path),
-        type: image.mime,
-      })
-
-      const execute = fetchQuery<FairImageSearchQuery>(
-        defaultEnvironment,
-        graphql`
-          query FairImageSearchQuery($file: Upload!) {
-            doNotUseImageSearch(image: $file) {
-              encoding
-              filename
-              mimetype
-            }
-          }
-        `,
-        {
-          file: fileImage,
-        }
-      )
-      const result = await execute.toPromise()
-
-      Alert.alert("Image info", JSON.stringify(result?.doNotUseImageSearch, null, 2))
-    } catch (error) {
-      console.error(error)
-      Alert.alert("Something went wrong", (error as Error).message)
-    }
-  }
 
   return (
     <ProvideScreenTracking
@@ -312,7 +268,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       {!!isImageSearchEnabled && (
         <TouchableOpacity
           style={{ position: "absolute", top: 33, right: 12 }}
-          onPress={handleSeachByImage}
+          onPress={() => navigate("/reverse-search-image-results")}
         >
           <Box
             width={CAMERA_ICON_CONTAINER_SIZE}

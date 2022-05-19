@@ -1,12 +1,12 @@
 // keep this import of storybook first, otherwise it might produce errors when debugging
 // import { StorybookUIRoot } from "../storybook/storybook-ui"
 
-import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
+import { SafeAreaInsets, useScreenDimensions } from "shared/hooks"
+import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import { AppProviders } from "./AppProviders"
-import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage } from "./Components/ArtsyReactWebView"
 import { FadeIn } from "./Components/FadeIn"
 import { BidFlow } from "./Containers/BidFlow"
@@ -76,6 +76,7 @@ import { RequestForPriceEstimateScreen } from "./Scenes/MyCollection/Screens/Art
 import { MyCollectionArtworkScreen } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
+import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "./Scenes/MyProfile/MyProfile"
 import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -92,6 +93,7 @@ import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
+import { ReverseSearchImageResults } from "./Scenes/ReverseSearchImageResults/ReverseSearchImageResults"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
@@ -123,7 +125,6 @@ import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
 } from "./utils/track/SegmentTrackingProvider"
-import { useScreenDimensions } from "./utils/useScreenDimensions"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -330,6 +331,7 @@ export const modules = defineModules({
     {},
     [AuctionResultsForArtistsYouFollowScreenQuery]
   ),
+  AuctionResultsForArtistsYouCollect: reactModule(AuctionResultsForArtistsYouCollect),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
@@ -414,6 +416,7 @@ export const modules = defineModules({
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
   RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
+  ReverseSearchImageResults: reactModule(ReverseSearchImageResults),
   Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell" }, [
     SellWithArtsyHomeScreenQuery,
   ]),

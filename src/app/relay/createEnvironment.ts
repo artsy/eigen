@@ -1,7 +1,6 @@
 import {
   errorMiddleware as relayErrorMiddleware,
   RelayNetworkLayer,
-  uploadMiddleware,
 } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
@@ -16,6 +15,7 @@ import {
 import { rateLimitMiddleware } from "./middlewares/rateLimitMiddleware"
 import { simpleLoggerMiddleware } from "./middlewares/simpleLoggerMiddleware"
 import { timingMiddleware } from "./middlewares/timingMiddleware"
+import { uploadMiddleware } from "./middlewares/uploadMiddleware"
 
 /// WARNING: Creates a whole new, separate Relay environment. Useful for testing.
 /// Use `defaultEnvironment` for production code.

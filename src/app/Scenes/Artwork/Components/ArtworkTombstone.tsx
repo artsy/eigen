@@ -194,11 +194,12 @@ export class ArtworkTombstone extends React.Component<
           </Sans>
         )}
 
-        {!!artwork.isInAuction && !!artwork.sale && !artwork.sale.isClosed && (
+        {!!artwork.isInAuction && !artwork.sale?.isClosed && (
           <>
             {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
               <CascadingEndTimesBanner
                 cascadingEndTimeInterval={artwork.sale.cascadingEndTimeIntervalMinutes}
+                extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
               />
             )}
             <Spacer mb={1} />
@@ -237,6 +238,7 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       sale {
         isClosed
         cascadingEndTimeIntervalMinutes
+        extendedBiddingIntervalMinutes
       }
       artists {
         name

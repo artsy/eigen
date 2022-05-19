@@ -1,23 +1,23 @@
-import { AuctionResultsBasedOnArtistsYouCollect_me$key } from "__generated__/AuctionResultsBasedOnArtistsYouCollect_me.graphql"
+import { AuctionResultsForArtistsYouCollectRail_me$key } from "__generated__/AuctionResultsForArtistsYouCollectRail_me.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Separator } from "palette"
 import React from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 
-interface AuctionResultsBasedOnArtistsYouCollectProps {
-  auctionResults: AuctionResultsBasedOnArtistsYouCollect_me$key
+interface AuctionResultsForArtistsYouCollectRailProps {
+  auctionResults: AuctionResultsForArtistsYouCollectRail_me$key
 }
 
-export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
-  AuctionResultsBasedOnArtistsYouCollectProps
+export const AuctionResultsForArtistsYouCollectRail: React.FC<
+  AuctionResultsForArtistsYouCollectRailProps
 > = ({ auctionResults }) => {
-  const fragmentData = useFragment<AuctionResultsBasedOnArtistsYouCollect_me$key>(
-    auctionResultsBasedOnArtistsYouCollectFragment,
+  const fragmentData = useFragment<AuctionResultsForArtistsYouCollectRail_me$key>(
+    auctionResultsForArtistsYouCollectRailFragment,
     auctionResults
   )
   const auctionResultsData = extractNodes(fragmentData.myCollectionAuctionResults)
@@ -27,12 +27,12 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
   }
 
   return (
-    <Flex pb={3}>
+    <Flex pb={2} px={2}>
       <SectionTitle
         title="Auction Results"
-        subtitle="Recent Auction Results from the Artists You Collect"
+        subtitle="Based on Auction Results for the Last 36 Months"
         onPress={() => {
-          console.log("navigate to the list of auction results")
+          navigate("/auction-results-for-artists-you-collect")
         }}
       />
       <FlatList
@@ -52,8 +52,8 @@ export const AuctionResultsBasedOnArtistsYouCollect: React.FC<
   )
 }
 
-const auctionResultsBasedOnArtistsYouCollectFragment = graphql`
-  fragment AuctionResultsBasedOnArtistsYouCollect_me on Me {
+const auctionResultsForArtistsYouCollectRailFragment = graphql`
+  fragment AuctionResultsForArtistsYouCollectRail_me on Me {
     myCollectionAuctionResults(first: 3) {
       totalCount
       edges {

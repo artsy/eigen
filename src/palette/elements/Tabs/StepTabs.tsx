@@ -1,9 +1,9 @@
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Tab, TabsProps } from "palette/elements/Tabs"
 import { CheckIcon, ChevronIcon } from "palette/svgs"
 import React, { useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { LayoutRectangle } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 import { Box } from "../Box"
 import { TabBarContainer } from "./TabBarContainer"
 

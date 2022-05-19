@@ -1,10 +1,10 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Text, Touchable, useColor } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
+import { useScreenDimensions } from "shared/hooks"
 import { ToastDetails, ToastDuration } from "./types"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)

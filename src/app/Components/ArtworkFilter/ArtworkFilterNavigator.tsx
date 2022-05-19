@@ -6,6 +6,7 @@ import {
   FilterArray,
   filterArtworksParams,
   FilterParams,
+  getUnitedSelectedAndAppliedFilters,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AdditionalGeneIDsOptionsScreen } from "app/Components/ArtworkFilter/Filters/AdditionalGeneIDsOptions"
@@ -40,6 +41,8 @@ import {
 import { ArtworkFilterApplyButton } from "./components/ArtworkFilterApplyButton"
 import { AuctionHouseOptionsScreen } from "./Filters/AuctionHouseOptions"
 import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
+import { getSearchCriteriaFromFilters } from "./SavedSearch/searchCriteriaHelpers"
+import { SavedSearchEntity } from "./SavedSearch/types"
 
 interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
@@ -100,6 +103,16 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const { id, mode, slug, name, query, shouldShowCreateAlertButton, closeModal, exitModal } = props
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
 
+  const savedSearchEntity: SavedSearchEntity = {
+    placeholder: name!,
+    artists: [{ id: id!, name: name! }],
+    owner: {
+      type: OwnerType.artist,
+      id: id!,
+      slug: slug!,
+    },
+  }
+
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState(
@@ -113,6 +126,10 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const resetFiltersAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.resetFiltersAction
   )
+
+  const filterState = ArtworksFiltersStore.useStoreState((state) => state)
+  const unitedFilters = getUnitedSelectedAndAppliedFilters(filterState)
+  const attributes = getSearchCriteriaFromFilters(savedSearchEntity, unitedFilters)
 
   const handleClosingModal = () => {
     resetFiltersAction()
@@ -360,11 +377,11 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
           <CreateSavedSearchModal
             visible={isCreateAlertModalVisible}
-            artistId={id!}
-            artistName={name!}
-            artistSlug={slug!}
+            entity={savedSearchEntity}
             closeModal={() => setIsCreateAlertModalVisible(false)}
             onComplete={exitModal}
+            attributes={attributes}
+            aggregations={filterState.aggregations}
           />
         </View>
       </FancyModal>

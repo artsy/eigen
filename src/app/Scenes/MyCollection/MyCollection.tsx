@@ -14,7 +14,13 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { useToast } from "app/Components/Toast/toastHook"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { GlobalStore, removeClue, useDevToggle, useSessionVisualClue } from "app/store/GlobalStore"
+import {
+  GlobalStore,
+  removeClue,
+  useDevToggle,
+  useFeatureFlag,
+  useSessionVisualClue,
+} from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -26,13 +32,13 @@ import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpe
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { times } from "lodash"
 import { Button, Flex, Message, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
@@ -276,7 +282,8 @@ export const MyCollectionQueryRenderer: React.FC = () => {
           Container: MyCollectionContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,
           renderFallback: ({ retry }) => (
-            <LoadFailureView onRetry={retry!} justifyContent="flex-end" />
+            // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
+            <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb={100} />
           ),
         })}
       />
@@ -287,6 +294,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 export const MyCollectionPlaceholder: React.FC = () => {
   const screenWidth = useScreenDimensions().width
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
+  const showMyCollectionInsights = useFeatureFlag("ARShowMyCollectionInsights")
 
   return (
     <Flex>
@@ -315,8 +323,18 @@ export const MyCollectionPlaceholder: React.FC = () => {
       <Spacer mb={2} mt={1} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        <PlaceholderText width="40%" height={22} />
-        <PlaceholderText width="40%" height={22} />
+        {!!showMyCollectionInsights ? (
+          <>
+            <PlaceholderText width="25%" height={22} />
+            <PlaceholderText width="25%" height={22} />
+            <PlaceholderText width="25%" height={22} />
+          </>
+        ) : (
+          <>
+            <PlaceholderText width="40%" height={22} />
+            <PlaceholderText width="40%" height={22} />
+          </>
+        )}
       </Flex>
       <Spacer mb={1} />
       <Separator />

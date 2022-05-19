@@ -3,6 +3,7 @@ import { Countdown } from "app/Components/Bidding/Components/Timer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import "moment-timezone"
@@ -30,25 +31,44 @@ const Wrapper: React.FC<{}> = ({ children }) => {
 }
 
 describe("CommercialInformation", () => {
-  it("renders all information when the data is present", () => {
+  it("renders all information when the data is present  with ff false", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
     const ForSaleArtwork = {
       ...CommercialInformationArtwork,
       isForSale: true,
       availability: "for sale",
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={ForSaleArtwork as any}
-          me={{ identityVerified: false } as any}
-        />
-      </Wrapper>
+    const { queryByText } = renderWithWrappersTL(
+      <CommercialInformationTimerWrapper
+        artwork={ForSaleArtwork as any}
+        me={{ identityVerified: false } as any}
+      />
     )
 
-    expect(component.text()).toContain("For sale")
-    expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"From I'm a Gallery"`)
-    expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
+    expect(queryByText("For sale")).toBeTruthy()
+    expect(queryByText("From I'm a Gallery")).toBeTruthy()
+    expect(queryByText("Consign with Artsy")).toBeTruthy()
+  })
+
+  it("renders all information when the data is present with ff true", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+    const ForSaleArtwork = {
+      ...CommercialInformationArtwork,
+      isForSale: true,
+      availability: "for sale",
+    }
+
+    const { queryByText } = renderWithWrappersTL(
+      <CommercialInformationTimerWrapper
+        artwork={ForSaleArtwork as any}
+        me={{ identityVerified: false } as any}
+      />
+    )
+
+    expect(queryByText("For sale")).toBeTruthy()
+    expect(queryByText("From I'm a Gallery")).toBeNull()
+    expect(queryByText("Consign with Artsy")).toBeTruthy()
   })
 
   it("renders yellow indicator and correct message when artwork is on hold", () => {
@@ -156,18 +176,17 @@ describe("CommercialInformation", () => {
       },
     }
 
-    const component = mount(
-      <Wrapper>
-        <CommercialInformationTimerWrapper
-          artwork={CommercialInformationArtworkClosedAuction as any}
-          me={{ identityVerified: false } as any}
-        />
-      </Wrapper>
+    const { queryByText } = renderWithWrappersTL(
+      <CommercialInformationTimerWrapper
+        artwork={CommercialInformationArtworkClosedAuction as any}
+        me={{ identityVerified: false } as any}
+      />
     )
-    expect(component.text()).toContain("Bidding closed")
-    expect(component.text()).not.toContain("I'm a Gallery")
-    expect(component.text()).not.toContain("Shipping, tax, and service quoted by seller")
-    expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
+
+    expect(queryByText("Bidding closed")).toBeTruthy()
+    expect(queryByText("I'm a Gallery")).toBeNull()
+    expect(queryByText("Shipping, tax, and service quoted by seller")).toBeNull()
+    expect(queryByText("Consign with Artsy")).toBeTruthy()
   })
 
   it("doesn't render information when the data is not present", () => {

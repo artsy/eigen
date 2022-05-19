@@ -1,13 +1,13 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useAnimatedValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
+import backgoundImage from "images/WelcomeImage.webp"
 import { ArtsyLogoWhiteIcon, Button, Flex, Screen, Spacer, Text, useTheme } from "palette"
 import React, { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, { Easing } from "react-native-reanimated"
-import backgoundImage from "../../../../images/WelcomeImage.webp"
+import { useScreenDimensions } from "shared/hooks"
 import { OnboardingNavigationStack } from "./Onboarding"
 
 interface OnboardingWelcomeProps
@@ -88,7 +88,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           }}
         >
           <Image
-            source={require("@images/WelcomeImage.webp")}
+            source={require("images/WelcomeImage.webp")}
             resizeMode="cover"
             style={{ height: screenHeight }}
           />

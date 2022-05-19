@@ -293,7 +293,7 @@ jobs:
       - install-gems
       - run:
           name: Check flags
-          command: ./scripts/check-if-app-has-been-approved-for-release
+          command: ./scripts/check-if-app-has-been-approved-for-release.sh
 
   check-metaphysics-freshness:
     executor:
