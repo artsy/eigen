@@ -28,6 +28,11 @@ const Wrapper: React.FC<{}> = ({ children }) => {
 }
 
 describe("CommercialInformation", () => {
+  beforeEach(() => {
+    // TODO: Remove it when AREnableCreateArtworkAlert flag is true in Echo
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
+  })
+
   it("renders all information when the data is present", () => {
     const ForSaleArtwork = {
       ...CommercialInformationArtwork,

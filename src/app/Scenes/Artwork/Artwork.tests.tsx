@@ -94,6 +94,8 @@ describe("Artwork", () => {
   beforeEach(() => {
     require("app/relay/createEnvironment").reset()
     environment = require("app/relay/createEnvironment").defaultEnvironment
+    // TODO: Remove it when AREnableCreateArtworkAlert flag is true in Echo
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
   })
 
   afterEach(() => {
