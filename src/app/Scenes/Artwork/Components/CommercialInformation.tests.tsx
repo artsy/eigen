@@ -28,8 +28,12 @@ const Wrapper: React.FC<{}> = ({ children }) => {
 }
 
 describe("CommercialInformation", () => {
-  it("renders all information when the data is present  with ff false", () => {
+  beforeEach(() => {
+    // TODO: Remove it when AREnableCreateArtworkAlert flag is true in Echo
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
+  })
+
+  it("renders all information when the data is present", () => {
     const ForSaleArtwork = {
       ...CommercialInformationArtwork,
       isForSale: true,
@@ -48,12 +52,11 @@ describe("CommercialInformation", () => {
     expect(queryByText("Consign with Artsy")).toBeTruthy()
   })
 
-  it("renders all information when the data is present with ff true", () => {
+  it("returns correct information with ff true and artworks is sold", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
     const ForSaleArtwork = {
       ...CommercialInformationArtwork,
-      isForSale: true,
-      availability: "for sale",
+      isSold: true,
     }
 
     const { queryByText } = renderWithWrappersTL(
@@ -63,9 +66,8 @@ describe("CommercialInformation", () => {
       />
     )
 
-    expect(queryByText("For sale")).toBeTruthy()
-    expect(queryByText("From I'm a Gallery")).toBeNull()
-    expect(queryByText("Consign with Artsy")).toBeTruthy()
+    expect(queryByText("For sale")).toBeFalsy()
+    expect(queryByText("Sold")).toBeTruthy()
   })
 
   it("renders yellow indicator and correct message when artwork is on hold", () => {
