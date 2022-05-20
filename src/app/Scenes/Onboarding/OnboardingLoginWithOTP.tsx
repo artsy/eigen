@@ -1,9 +1,11 @@
+import Clipboard, { useClipboard } from "@react-native-community/clipboard"
 import { StackScreenProps } from "@react-navigation/stack"
 import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
+import useAppState from "app/utils/useAppState"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Input, SimpleMessage, Spacer, Text, useColor } from "palette"
-import React, { useRef } from "react"
+import { useCallback, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
@@ -42,6 +44,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
 
   const {
     values,
+    setValues,
     handleChange,
     handleSubmit,
     errors,
@@ -77,9 +80,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
               onChangeText={(text) => {
                 // Hide error when the user starts to type again
                 if (errors.otp) {
-                  setErrors({
-                    otp: undefined,
-                  })
+                  setErrors({ otp: undefined })
                   validateForm()
                 }
                 handleChange("otp")(text)
@@ -91,6 +92,24 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
               returnKeyType="done"
               value={values.otp}
               error={errors.otp}
+              renderRightHandSection={() => {
+                const [otpCode, setOtpCode] = useState<string | null>(null)
+
+                const onForeground = useCallback(() => {
+                  Clipboard.getString().then((cbContent) => {
+                    if (cbContent.match(/\d\d\d\d/)) {
+                      setOtpCode(cbContent)
+                    }
+                  })
+                }, [])
+                useAppState({ onForeground })
+
+                return (
+                  <Button disabled={otpCode === null} onPress={() => setValues({ otp: otpCode! })}>
+                    Paste
+                  </Button>
+                )
+              }}
             />
             {otpMode === "on_demand" ? (
               <>

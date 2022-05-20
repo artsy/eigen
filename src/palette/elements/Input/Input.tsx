@@ -72,6 +72,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   addClearListener?: boolean
   onClear?(): void
   renderLeftHandSection?(): JSX.Element
+  renderRightHandSection?(): JSX.Element
 }
 
 export type Input = TextInput
@@ -93,6 +94,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       enableClearButton,
       title,
       renderLeftHandSection,
+      renderRightHandSection,
       secureTextEntry = false,
       textContentType,
       canHidePassword,
@@ -319,6 +321,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 </Text>
               </Flex>
             )}
+            {renderRightHandSection?.()}
             {renderShowPasswordIcon()}
             {loading ? (
               <Flex pr="3" justifyContent="center" flexGrow={0}>
