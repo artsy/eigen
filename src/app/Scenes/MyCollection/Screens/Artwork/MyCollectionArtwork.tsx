@@ -39,11 +39,12 @@ const MyCollectionArtworkScreenQuery = graphql`
         }
       }
     }
-    marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
+    marketPriceInsights(artistId: $artistInternalID, medium: $medium) @optionalField {
       ...MyCollectionArtworkInsights_marketPriceInsights
       ...MyCollectionArtworkAbout_marketPriceInsights
     }
-    _marketPriceInsights: marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
+    _marketPriceInsights: marketPriceInsights(artistId: $artistInternalID, medium: $medium)
+      @optionalField {
       annualLotsSold
     }
     me {
@@ -61,7 +62,8 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(MyCollectionArtworkScreenQuery, {
     artworkSlug,
-    artistInternalID,
+    // To not let the whole query fail if the artwork doesn't has an artist
+    artistInternalID: artistInternalID || "",
     medium,
   })
 

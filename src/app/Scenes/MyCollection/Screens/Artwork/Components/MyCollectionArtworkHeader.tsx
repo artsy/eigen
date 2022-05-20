@@ -14,6 +14,8 @@ import { useScreenDimensions } from "shared/hooks"
 import { imageIsProcessing, isImage } from "../../ArtworkForm/MyCollectionImageUtil"
 import { MyCollectionArtworkSubmissionStatus } from "./MyCollectionArtworkSubmissionStatus"
 
+const NO_ARTIST_NAMES_TEXT = "-"
+
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork$key
 }
@@ -97,7 +99,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
       {/* Image Meta */}
       <Flex px={2}>
-        <Text variant="lg">{artistNames}</Text>
+        <Text variant="lg">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
         <Text variant="lg" color="black60" italic>
           {formattedTitleAndYear}
         </Text>
