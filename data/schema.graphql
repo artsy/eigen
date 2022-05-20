@@ -11544,6 +11544,7 @@ type Query {
     after: String
     before: String
     first: Int
+    includeBackfill: Boolean!
     last: Int
     page: Int
     userId: String
@@ -14890,6 +14891,7 @@ type Viewer {
     after: String
     before: String
     first: Int
+    includeBackfill: Boolean!
     last: Int
     page: Int
     userId: String
