@@ -146,7 +146,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
   const canTakeCommercialAction =
     isAcquireable || isOfferable || isInquireable || isBiddableInAuction
-  const shouldCreateArtworkAlertButton = enableCreateArtworkAlert && isSold
+  const shouldCreateArtworkAlertButton = enableCreateArtworkAlert && (isSold || isInClosedAuction)
 
   useEffect(() => {
     const artworkIsInActiveAuction = artwork.isInAuction && timerState !== AuctionTimerState.CLOSED
@@ -282,7 +282,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   return (
     <>
       {shouldCreateArtworkAlertButton ? (
-        <CreateArtworkAlertButtonsSection artwork={artwork} />
+        <CreateArtworkAlertButtonsSection artwork={artwork} auctionState={timerState} />
       ) : (
         <Box>
           {renderPriceInformation()}
