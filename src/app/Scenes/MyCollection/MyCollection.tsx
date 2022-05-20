@@ -46,7 +46,8 @@ import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
 export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
-export const ADDING_ARTWORK_FROM_MY_COLECTION_TAB = "ADDING_ARTWORK_FROM_MY_COLECTION_TAB"
+export const TAB_WHERE_ADD_WORKS_BUTTON_WAS_PRESSED = "TAB_WHERE_ADD_WORKS_BUTTON_WAS_PRESSED"
+export const MY_COLLECION = "MY_COLLECION"
 
 const MyCollection: React.FC<{
   relay: RelayPaginationProp
@@ -127,7 +128,7 @@ const MyCollection: React.FC<{
                   size="small"
                   variant="fillDark"
                   onPress={async () => {
-                    await AsyncStorage.setItem(ADDING_ARTWORK_FROM_MY_COLECTION_TAB, "true")
+                    await AsyncStorage.setItem(TAB_WHERE_ADD_WORKS_BUTTON_WAS_PRESSED, MY_COLLECION)
                     navigate("my-collection/artworks/new", {
                       passProps: {
                         mode: "add",

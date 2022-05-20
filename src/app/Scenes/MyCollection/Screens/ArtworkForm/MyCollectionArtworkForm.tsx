@@ -24,6 +24,7 @@ import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
 import { myCollectionUpdateArtwork } from "../../mutations/myCollectionUpdateArtwork"
+import { MY_COLLECION, TAB_WHERE_ADD_WORKS_BUTTON_WAS_PRESSED } from "../../MyCollection"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
@@ -111,12 +112,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     } finally {
       if (props.mode === "add") {
-        const isAddedFromMyC = await AsyncStorage.getItem("ADDING_ARTWORK_FROM_MY_COLECTION_TAB")
+        const activeTab = await AsyncStorage.getItem(TAB_WHERE_ADD_WORKS_BUTTON_WAS_PRESSED)
 
-        if (!!isAddedFromMyC) {
-          // TODO: check Artwork insights - blocked by the backend
+        if (!!activeTab && activeTab === MY_COLLECION /* and insights are not awailable */) {
+          // TODO: check Artwork insights ^^^ - blocked by the backend
           addClue("AddedArtworkHasNoInsightsMessage_MyCTab")
-        } // else - another ticket
+        } // else - isAddedFromInsights - other tickets
       }
       setLoading(false)
     }
