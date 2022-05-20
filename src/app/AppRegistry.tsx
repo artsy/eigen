@@ -17,6 +17,7 @@ import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
 import { useErrorReporting } from "./errorReporting/hooks"
+import { usePurgeCacheOnAppUpdate } from "./relay/usePurgeCacheOnAppUpdate"
 import { About } from "./Scenes/About/About"
 import { ArticlesScreen, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
@@ -468,6 +469,8 @@ const Main: React.FC = () => {
   usePreferredThemeTracking()
   useScreenReaderTracking()
   useFreshInstallTracking()
+  usePurgeCacheOnAppUpdate()
+
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
