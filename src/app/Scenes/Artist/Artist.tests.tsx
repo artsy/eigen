@@ -8,6 +8,7 @@ import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
+jest.unmock("app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx")
 
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery"
 
@@ -42,10 +43,33 @@ describe("Artist", () => {
     <ArtistQueryRenderer artistID="ignored" environment={mockEnvironment} {...props} />
   )
 
-  it("returns an empty state if artist has no metadata, shows, insights, or works", async () => {
+  it("returns an empty state if artist has no artworks", async () => {
     const { getByText } = renderWithWrappersTL(<TestWrapper />)
-    const message =
-      "There aren’t any works available by the artist at this time. Follow to receive notifications when new works are added."
+    const emptyTitle = "No works available by the artist at this time"
+    const emptyMessage = "Create an Alert to receive notifications when new works are added"
+
+    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
+      Artist() {
+        return {
+          has_metadata: false,
+          counts: {
+            related_artists: 0,
+          },
+          statuses: {
+            articles: false,
+            artworks: false,
+            auctionLots: false,
+          },
+        }
+      },
+    })
+
+    expect(getByText(emptyTitle)).toBeTruthy()
+    expect(getByText(emptyMessage)).toBeTruthy()
+  })
+
+  it("should render Artworks tab by default", async () => {
+    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -61,10 +85,12 @@ describe("Artist", () => {
       },
     })
 
-    expect(getByText(message)).toBeTruthy()
+    expect(queryByText("Artworks")).toBeTruthy()
+    expect(queryByText("Overview")).toBeFalsy()
+    expect(queryByText("Insights")).toBeFalsy()
   })
 
-  it("returns only Overview tab if artist has only metadata", async () => {
+  it("returns Overview tab if artist has metadata", async () => {
     const { queryByText } = renderWithWrappersTL(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
@@ -82,7 +108,6 @@ describe("Artist", () => {
     })
 
     expect(queryByText("Overview")).toBeTruthy()
-    expect(queryByText("Artworks")).toBeFalsy()
   })
 
   it("returns Overview tab if artist has only articles", async () => {

@@ -26,6 +26,7 @@ import { Box, Spacer } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { ArtistArtworksEmptyMessage } from "./ArtistArtworksEmptyMessage"
 import { SavedSearchButtonV2 } from "./SavedSearchButtonV2"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
@@ -200,6 +201,10 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     }
   }
 
+  if (!artist.statuses?.artworks) {
+    return <ArtistArtworksEmptyMessage />
+  }
+
   return artist.artworks ? filteredArtworks() : null
 }
 
@@ -251,6 +256,9 @@ export default createPaginationContainer(
             total
           }
           ...InfiniteScrollArtworksGrid_connection
+        }
+        statuses {
+          artworks
         }
       }
     `,

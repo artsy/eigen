@@ -17,12 +17,11 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Flex, SimpleMessage } from "palette"
+import { Flex } from "palette"
 import React, { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
@@ -79,12 +78,10 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     })
   }
 
-  if (!!artistAboveTheFold.statuses?.artworks) {
-    tabs.push({
-      title: "Artworks",
-      content: <ArtistArtworks artist={artistAboveTheFold} searchCriteria={searchCriteria} />,
-    })
-  }
+  tabs.push({
+    title: "Artworks",
+    content: <ArtistArtworks artist={artistAboveTheFold} searchCriteria={searchCriteria} />,
+  })
 
   if (!!artistAboveTheFold?.statuses?.auctionLots) {
     tabs.push({
@@ -95,20 +92,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
         )
       ) : (
         <LoadingPage />
-      ),
-    })
-  }
-
-  if (tabs.length === 0) {
-    tabs.push({
-      title: "Artworks",
-      content: (
-        <StickyTabPageScrollView>
-          <SimpleMessage>
-            There aren’t any works available by the artist at this time. Follow to receive
-            notifications when new works are added.
-          </SimpleMessage>
-        </StickyTabPageScrollView>
       ),
     })
   }
@@ -164,7 +147,6 @@ export const ArtistScreenQuery = graphql`
       ...ArtistArtworks_artist @arguments(input: $input)
       ...ArtistHeaderFloatingButtons_artist
       statuses {
-        artworks
         auctionLots
         articles
       }
