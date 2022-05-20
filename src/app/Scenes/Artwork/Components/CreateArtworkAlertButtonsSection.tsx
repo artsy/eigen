@@ -5,7 +5,7 @@ import {
   ScreenOwnerType,
   TappedCreateAlert,
 } from "@artsy/cohesion"
-import { CreateArtworkAlertSection_artwork } from "__generated__/CreateArtworkAlertSection_artwork.graphql"
+import { CreateArtworkAlertButtonsSection_artwork } from "__generated__/CreateArtworkAlertButtonsSection_artwork.graphql"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
@@ -14,18 +14,22 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { compact } from "lodash"
-import { BellIcon, Button, Flex, Text } from "palette"
+import { Box, Button, Spacer, Text } from "palette"
 import { FC, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
 
-interface CreateArtworkAlertSectionProps {
-  artwork: CreateArtworkAlertSection_artwork | null
+interface CreateArtworkAlertButtonsSectionProps {
+  artwork: CreateArtworkAlertButtonsSection_artwork
 }
 
-export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ artwork }) => {
+const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps> = ({
+  artwork,
+}) => {
   const tracking = useTracking()
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
+  const { isInquireable } = artwork
 
   let aggregations: Aggregations = []
   let additionalGeneIDs: string[] = []
@@ -82,33 +86,22 @@ export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ 
 
   return (
     <>
-      <Flex
-        accessible
-        accessibilityLabel="Create artwork alert section"
-        flexDirection="row"
-        justifyContent="space-between"
-      >
-        <Flex flex={1}>
-          <Text variant="xs" numberOfLines={2}>
-            Be notified when a similar piece is available
-          </Text>
-        </Flex>
+      <Box accessible accessibilityLabel="Create artwork alert buttons section">
+        <Text variant="lg">Sold</Text>
+        <Text variant="xs" color="black60">
+          Be notified when a similar piece is available
+        </Text>
 
-        <Flex flex={1} alignItems="flex-end" justifyContent="center">
-          <Button
-            size="small"
-            variant="outline"
-            icon={<BellIcon fill="black100" width="16px" height="16px" />}
-            haptic
-            onPress={handleCreateAlertPress}
-            disabled={!artwork}
-          >
-            <Text variant="xs" ml={0.5} numberOfLines={1} lineHeight={16}>
-              Create Alert
-            </Text>
-          </Button>
-        </Flex>
-      </Flex>
+        <Spacer mt={2} />
+
+        <Button block onPress={handleCreateAlertPress}>
+          Create Alert
+        </Button>
+
+        {!!isInquireable && (
+          <InquiryButtonsFragmentContainer artwork={artwork} variant="outline" mt={1} block />
+        )}
+      </Box>
       <CreateSavedSearchModal
         visible={isCreateAlertModalVisible}
         entity={entity}
@@ -120,11 +113,12 @@ export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ 
   )
 }
 
-export const CreateArtworkAlertSectionFragmentContainer = createFragmentContainer(
-  CreateArtworkAlertSection,
+export const CreateArtworkAlertButtonsSectionFragmentContainer = createFragmentContainer(
+  CreateArtworkAlertButtonsSection,
   {
     artwork: graphql`
-      fragment CreateArtworkAlertSection_artwork on Artwork {
+      fragment CreateArtworkAlertButtonsSection_artwork on Artwork {
+        isInquireable
         internalID
         slug
         title
@@ -141,6 +135,7 @@ export const CreateArtworkAlertSectionFragmentContainer = createFragmentContaine
           internalID
           name
         }
+        ...InquiryButtons_artwork
       }
     `,
   }
@@ -160,8 +155,8 @@ const tracks = {
   }: TappedCreateAlertOptions): TappedCreateAlert => ({
     action: ActionType.tappedCreateAlert,
     context_screen_owner_type: ownerType,
-    context_screen_owner_id: ownerId,
     context_screen_owner_slug: ownerSlug,
+    context_screen_owner_id: ownerId,
     context_module: "ArtworkTombstone" as ContextModule,
   }),
 }

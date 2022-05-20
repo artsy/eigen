@@ -213,7 +213,6 @@ export const SaleHeaderContainer = createFragmentContainer(SaleHeader, {
       cascadingEndTimeIntervalMinutes
       startAt
       timeZone
-      cascadingEndTimeIntervalMinutes
       coverImage {
         url
       }

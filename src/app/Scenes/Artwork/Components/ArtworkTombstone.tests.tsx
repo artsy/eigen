@@ -142,17 +142,33 @@ describe("ArtworkTombstone", () => {
     })
   })
 
-  describe("for an artwork in a sale with cascading end times", () => {
-    it("renders the notification banner", () => {
+  describe("for an artwork in a sale with cascading end times or popcorn bidding", () => {
+    const cascadingMessage = "Lots will close at 1-minute intervals."
+    const popcornMessage = "Closing times may be extended due to last minute competitive bidding. "
+    it("renders the notification banner with cascading message", () => {
       const component = mount(
         <GlobalStoreProvider>
           <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork} />
+            <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork()} />
           </Theme>
         </GlobalStoreProvider>
       )
 
-      expect(component.text()).toContain("Lots will close at 1-minute intervals.")
+      expect(component.text()).toContain(cascadingMessage)
+      expect(component.text()).not.toContain(popcornMessage)
+    })
+
+    it("renders the notification banner with popcorn message", () => {
+      const component = mount(
+        <GlobalStoreProvider>
+          <Theme>
+            <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork(true)} />
+          </Theme>
+        </GlobalStoreProvider>
+      )
+
+      expect(component.text()).not.toContain(cascadingMessage)
+      expect(component.text()).toContain(popcornMessage)
     })
   })
 
@@ -323,10 +339,11 @@ const artworkTombstoneAuctionArtwork = {
   sale: {
     isClosed: false,
     cascadingEndTimeIntervalMinutes: null,
+    extendedBiddingIntervalMinutes: null,
   },
 }
 
-const artworkTombstoneCascadingEndTimesAuctionArtwork = {
+const artworkTombstoneCascadingEndTimesAuctionArtwork = (withextendedBidding: boolean = false) => ({
   ...artworkTombstoneArtwork,
   isInAuction: true,
   saleArtwork: {
@@ -339,5 +356,6 @@ const artworkTombstoneCascadingEndTimesAuctionArtwork = {
   sale: {
     isClosed: false,
     cascadingEndTimeIntervalMinutes: 1,
+    extendedBiddingIntervalMinutes: withextendedBidding ? 1 : null,
   },
-}
+})
