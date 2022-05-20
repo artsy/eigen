@@ -497,6 +497,8 @@ describe("Artwork", () => {
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
           isSold: true,
+          isInAuction: false,
+          sale: null,
         }),
       })
 
