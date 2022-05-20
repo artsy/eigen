@@ -9,7 +9,7 @@ In Eigen, as in many mobile apps, we have mainly two types for routes.
 
 ### Global Navigation functions
 
-In `src/lib/navigation/navigate.ts` we have helper functions we can globally use to navigate through the app. A good example is the `goBack()` helper which navigates you back to the previous global route you visited.
+In `src/app/navigation/navigate.ts` we have helper functions we can globally use to navigate through the app. A good example is the `goBack()` helper which navigates you back to the previous global route you visited.
 
 ### Global App Routes
 
