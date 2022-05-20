@@ -22,14 +22,13 @@ import {
   Touchable,
 } from "palette"
 import React from "react"
-import { TouchableWithoutFeedback, View } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
 interface ArtworkActionsProps {
   artwork: ArtworkActions_artwork
   relay?: RelayProp
-
   shareOnPress: () => void
 }
 
@@ -127,56 +126,60 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const isOpenSale = sale && sale.isAuction && !sale.isClosed
 
     return (
-      <View>
-        <Flex flexDirection="row">
-          {isOpenSale ? (
-            <Touchable haptic onPress={() => this.handleArtworkSave()}>
-              <UtilButton pr={2}>
-                <Box mr={0.5}>{is_saved ? <BellFillIcon fill="blue100" /> : <BellIcon />}</Box>
-                <ClassTheme>
-                  {({ color }) => (
-                    <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
-                      Watch lot
-                    </Sans>
-                  )}
-                </ClassTheme>
-              </UtilButton>
-            </Touchable>
-          ) : (
-            <Touchable haptic onPress={() => this.handleArtworkSave()}>
-              <UtilButton pr={2}>
-                <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />}</Box>
-                <ClassTheme>
-                  {({ color }) => (
-                    <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
-                      {is_saved ? "Saved" : "Save"}
-                    </Sans>
-                  )}
-                </ClassTheme>
-              </UtilButton>
-            </Touchable>
-          )}
-
-          {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
-            <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
-              <UtilButton pr={2}>
-                <Box mr={0.5}>
-                  <EyeOpenedIcon />
-                </Box>
-                <Sans size="3">View in Room</Sans>
-              </UtilButton>
-            </TouchableWithoutFeedback>
-          )}
-          <Touchable haptic onPress={() => this.props.shareOnPress()}>
-            <UtilButton>
-              <Box mr={0.5}>
-                <ShareIcon />
-              </Box>
-              <Sans size="3">Share</Sans>
+      <Flex justifyContent="center" flexDirection="row" width="100%">
+        {isOpenSale ? (
+          <Touchable haptic onPress={() => this.handleArtworkSave()}>
+            <UtilButton pr={2}>
+              <Box mr={0.5}>{is_saved ? <BellFillIcon fill="blue100" /> : <BellIcon />}</Box>
+              <ClassTheme>
+                {({ color }) => (
+                  <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
+                    Watch lot
+                  </Sans>
+                )}
+              </ClassTheme>
             </UtilButton>
           </Touchable>
-        </Flex>
-      </View>
+        ) : (
+          <Touchable haptic onPress={() => this.handleArtworkSave()}>
+            <UtilButton pr={2}>
+              <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />}</Box>
+              <ClassTheme>
+                {({ color }) => (
+                  <Sans
+                    size="3"
+                    // fixed size to prevent button from pushing elements on thex
+                    // right when text changes from save -> saved
+                    style={{ width: 48 }}
+                    color={is_saved ? color("blue100") : color("black100")}
+                  >
+                    {is_saved ? "Saved" : "Save"}
+                  </Sans>
+                )}
+              </ClassTheme>
+            </UtilButton>
+          </Touchable>
+        )}
+
+        {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
+          <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
+            <UtilButton pr={2}>
+              <Box mr={0.5}>
+                <EyeOpenedIcon />
+              </Box>
+              <Sans size="3">View in Room</Sans>
+            </UtilButton>
+          </TouchableWithoutFeedback>
+        )}
+        <Touchable haptic onPress={() => this.props.shareOnPress()}>
+          <UtilButton>
+            <Box mr={0.5}>
+              <ShareIcon />
+            </Box>
+            <Sans size="3">Share</Sans>
+          </UtilButton>
+        </Touchable>
+      </Flex>
     )
   }
 }
