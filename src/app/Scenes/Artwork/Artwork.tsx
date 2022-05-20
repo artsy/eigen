@@ -83,6 +83,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     artist,
     context,
   } = artworkBelowTheFold || {}
+  const isInClosedAuction = artworkAboveTheFold?.isInAuction && artworkAboveTheFold.sale?.isClosed
 
   const shouldRenderDetails = () => {
     return !!(
@@ -238,7 +239,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (enableCreateArtworkAlert && !artworkAboveTheFold?.isSold) {
+    if (enableCreateArtworkAlert && !artworkAboveTheFold?.isSold && !isInClosedAuction) {
       sections.push({
         key: "createAlertSection",
         element: <CreateArtworkAlertSection artwork={artworkAboveTheFold} />,
@@ -428,7 +429,11 @@ export const ArtworkContainer = createRefetchContainer(
         isBiddable
         isInquireable
         isSold
+        isInAuction
         availability
+        sale {
+          isClosed
+        }
       }
     `,
     artworkBelowTheFold: graphql`
