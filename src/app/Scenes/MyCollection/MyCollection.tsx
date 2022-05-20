@@ -41,7 +41,7 @@ import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
-import { AddedArtworkHasNoInsightsMessage } from "./Screens/Insights/Messages"
+import { AddedArtworkHasNoInsightsMessage } from "./Screens/Insights/MyCollectionInsightsMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
