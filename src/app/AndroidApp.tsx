@@ -17,6 +17,7 @@ import { FPSCounter } from "./Components/FPSCounter"
 import { useErrorReporting } from "./errorReporting/hooks"
 import { ArtsyNativeModule } from "./NativeModules/ArtsyNativeModule"
 import { ModalStack } from "./navigation/ModalStack"
+import { usePurgeCacheOnAppUpdate } from "./relay/usePurgeCacheOnAppUpdate"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
@@ -67,6 +68,7 @@ const Main: React.FC = () => {
   usePreferredThemeTracking()
   useScreenReaderTracking()
   useFreshInstallTracking()
+  usePurgeCacheOnAppUpdate()
 
   useEffect(() => {
     if (isHydrated) {
