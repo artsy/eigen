@@ -1,5 +1,6 @@
+import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { useColor } from "palette"
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect } from "react"
 import { Animated, Easing } from "react-native"
 import styled from "styled-components/native"
 import { SpinnerProps } from "./Spinner"
@@ -52,7 +53,7 @@ export const CircularSpinner: React.FC<SpinnerProps> = ({
   ...rest
 }) => {
   const color = useColor()
-  const rotation = useMemo(() => new Animated.Value(0), [])
+  const rotation = useAnimatedValue(0)
 
   const startRotation = () => {
     Animated.loop(

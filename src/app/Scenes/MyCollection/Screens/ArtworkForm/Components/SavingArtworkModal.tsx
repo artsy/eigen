@@ -16,7 +16,7 @@ export const SavingArtworkModal: React.FC<SavingArtworkModalProps & ModalProps> 
   const { height: screenHeight } = useScreenDimensions()
 
   return (
-    <Modal animationType="fade" visible={isVisible || true} {...rest} statusBarTranslucent>
+    <Modal animationType="fade" visible={isVisible} {...rest} statusBarTranslucent>
       <ImageBackground
         style={{ height: screenHeight, width: "100%", ...StyleSheet.absoluteFillObject }}
         source={require("images/InsightsLoadingImage.webp")}
