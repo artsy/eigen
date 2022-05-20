@@ -5,6 +5,7 @@ import { Artwork_me } from "__generated__/Artwork_me.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
+import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { navigateToPartner, navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -63,7 +64,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
 
-  const { internalID, slug } = artworkAboveTheFold || {}
+  const { internalID, slug, isInAuction } = artworkAboveTheFold || {}
+  const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
   const {
     category,
     canRequestLotConditionsReport,
@@ -83,7 +85,21 @@ export const Artwork: React.FC<ArtworkProps> = ({
     artist,
     context,
   } = artworkBelowTheFold || {}
-  const isInClosedAuction = artworkAboveTheFold?.isInAuction && artworkAboveTheFold.sale?.isClosed
+
+  const getInitialAuctionTimerState = () => {
+    if (isInAuction) {
+      return currentTimerState({
+        isPreview: isPreview || undefined,
+        isClosed: isClosed || undefined,
+        liveStartsAt: liveStartAt || undefined,
+      })
+    }
+
+    return undefined
+  }
+
+  const [auctionTimerState, setAuctionTimerState] = useState(getInitialAuctionTimerState())
+  const isInClosedAuction = isInAuction && auctionTimerState === AuctionTimerState.CLOSED
 
   const shouldRenderDetails = () => {
     return !!(
@@ -224,7 +240,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "commercialInformation",
         element: (
-          <CommercialInformation artwork={artworkAboveTheFold} me={me} tracking={tracking} />
+          <CommercialInformation
+            artwork={artworkAboveTheFold}
+            me={me}
+            tracking={tracking}
+            setAuctionTimerState={setAuctionTimerState}
+          />
         ),
       })
     }
@@ -433,6 +454,8 @@ export const ArtworkContainer = createRefetchContainer(
         availability
         sale {
           isClosed
+          isPreview
+          liveStartAt
         }
       }
     `,

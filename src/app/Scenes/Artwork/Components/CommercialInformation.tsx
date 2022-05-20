@@ -33,6 +33,7 @@ interface CommercialInformationProps {
   duration?: Duration
   hasStarted?: boolean
   tracking?: TrackingProp
+  setAuctionTimerState?: (auctionTimerState: AuctionTimerState) => void
 }
 
 export const CommercialInformationTimerWrapper: React.FC<CommercialInformationProps> = (props) => {
@@ -47,6 +48,7 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
     } = props.artwork.sale || {}
 
     const { endAt: lotEndAt } = props.artwork.saleArtwork
+    const { setAuctionTimerState } = props
 
     const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
 
@@ -69,6 +71,9 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               startsAt: startsAt || undefined,
               endsAt,
             })
+
+            setAuctionTimerState?.(state)
+
             return { label, date, state, hasStarted, cascadingEndTimeIntervalMinutes }
           }}
           onNextTickerState={({ state }) => {
@@ -80,6 +85,9 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               startsAt: startsAt || undefined,
               endsAt,
             })
+
+            setAuctionTimerState?.(nextState)
+
             return { state: nextState, date, label, hasStarted }
           }}
           {...(props as any)}
