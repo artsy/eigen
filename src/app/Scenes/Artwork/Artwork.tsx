@@ -94,8 +94,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
         liveStartsAt: liveStartAt || undefined,
       })
     }
-
-    return undefined
   }
 
   const [auctionTimerState, setAuctionTimerState] = useState(getInitialAuctionTimerState())
