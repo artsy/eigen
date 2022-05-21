@@ -19,6 +19,7 @@ import { useTracking } from "react-tracking"
 import { ArtworkAuctionProgressBar } from "../Bidding/Components/ArtworkAuctionProgressBar"
 import { DurationProvider } from "../Countdown"
 import { LotCloseInfo } from "./LotCloseInfo"
+import { LotProgressBar } from "./LotProgressBar"
 
 export interface ArtworkProps {
   artwork: ArtworkGridItem_artwork
@@ -182,13 +183,16 @@ export const Artwork: React.FC<ArtworkProps> = ({
         )}
         {!!canShowAuctionProgressBar && (
           <Box mt={1}>
-            <ArtworkAuctionProgressBar
-              startAt={artwork.sale?.startAt}
-              endAt={artwork.saleArtwork?.endAt}
-              extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
-              extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
-              extendedBiddingEndAt={artwork.saleArtwork?.extendedBiddingEndAt}
-            />
+            <DurationProvider startAt={endsAt}>
+              <LotProgressBar
+                duration={null}
+                startAt={artwork.sale?.startAt}
+                endAt={artwork.saleArtwork?.endAt}
+                extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
+                extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
+                extendedBiddingEndAt={artwork.saleArtwork?.extendedBiddingEndAt}
+              />
+            </DurationProvider>
           </Box>
         )}
         <Box mt={1}>
