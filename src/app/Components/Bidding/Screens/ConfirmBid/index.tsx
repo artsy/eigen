@@ -453,7 +453,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   render() {
     const { sale_artwork } = this.props
-    const { id, artwork, lot_label, sale } = sale_artwork
+    const { id, artwork, lot_label, sale, endAt, extendedBiddingEndAt } = sale_artwork
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artworkImage = artwork.image
@@ -461,9 +461,16 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
     const enablePriceTransparency = unsafe_getFeatureFlag("AROptionsPriceTransparency")
 
-    const casacadingEndTimeFeatureEnabled =
+    const cascadingEndTimeFeatureEnabled =
       unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage") &&
       sale?.cascadingEndTimeIntervalMinutes
+
+    const endsAt =
+      (cascadingEndTimeFeatureEnabled && extendedBiddingEndAt) ||
+      (cascadingEndTimeFeatureEnabled && sale?.cascadingEndTimeIntervalMinutes
+        ? endAt
+        : sale?.end_at) ||
+      undefined
 
     return (
       <Flex m={0} flex={1} flexDirection="column">
@@ -474,12 +481,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         </Theme>
         <ScrollView scrollEnabled>
           <Flex alignItems="center" pt="20px">
-            <Timer
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              liveStartsAt={sale.live_start_at}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              endsAt={casacadingEndTimeFeatureEnabled ? sale_artwork.endAt : sale.end_at}
-            />
+            <Timer liveStartsAt={sale?.live_start_at ?? undefined} endsAt={endsAt} />
           </Flex>
 
           <Box>
@@ -657,6 +659,7 @@ export const ConfirmBidScreen = createRefetchContainer(
         }
         lot_label: lotLabel
         endAt
+        extendedBiddingEndAt
         ...BidResult_sale_artwork
       }
     `,
