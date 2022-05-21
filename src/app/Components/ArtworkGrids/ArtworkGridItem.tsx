@@ -136,9 +136,15 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const saleInfo = saleMessageOrBidInfo({ artwork })
 
-  const urgencyTag = getUrgencyTag(artwork?.sale?.endAt)
-
   const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageGrid")
+  const endsAt =
+    (cascadingEndTimeFeatureEnabled && artwork.saleArtwork?.extendedBiddingEndAt) ||
+    (cascadingEndTimeFeatureEnabled && artwork.sale?.cascadingEndTimeIntervalMinutes
+      ? artwork.saleArtwork?.endAt
+      : artwork.sale?.endAt) ||
+    undefined
+
+  const urgencyTag = getUrgencyTag(endsAt)
 
   const canShowAuctionProgressBar =
     cascadingEndTimeFeatureEnabled &&
@@ -192,7 +198,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 Lot {artwork.saleArtwork.lotLabel}
               </Text>
               {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !!cascadingEndTimeFeatureEnabled && (
-                <DurationProvider startAt={artwork.saleArtwork.endAt!}>
+                <DurationProvider startAt={endsAt}>
                   <LotCloseInfo
                     duration={null}
                     saleArtwork={artwork.saleArtwork}
