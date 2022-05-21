@@ -16,6 +16,7 @@ import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { ArtworkAuctionProgressBar } from "../Bidding/Components/ArtworkAuctionProgressBar"
 import { DurationProvider } from "../Countdown"
 import { LotCloseInfo } from "./LotCloseInfo"
 
@@ -139,6 +140,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageGrid")
 
+  const canShowAuctionProgressBar =
+    cascadingEndTimeFeatureEnabled &&
+    !!artwork.sale?.extendedBiddingPeriodMinutes &&
+    !!artwork.sale?.extendedBiddingIntervalMinutes
+
   return (
     <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
       <View ref={itemRef}>
@@ -167,6 +173,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
               </Flex>
             )}
           </View>
+        )}
+        {!!canShowAuctionProgressBar && (
+          <Box mt={1}>
+            <ArtworkAuctionProgressBar
+              startAt={artwork.sale?.startAt}
+              endAt={artwork.saleArtwork?.endAt}
+              extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
+              extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
+              extendedBiddingEndAt={artwork.saleArtwork?.extendedBiddingEndAt}
+            />
+          </Box>
         )}
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
@@ -315,6 +332,8 @@ export default createFragmentContainer(Artwork, {
         isClosed
         displayTimelyAt
         cascadingEndTimeIntervalMinutes
+        extendedBiddingPeriodMinutes
+        extendedBiddingIntervalMinutes
         endAt
         startAt
       }
@@ -328,6 +347,7 @@ export default createFragmentContainer(Artwork, {
         }
         lotLabel
         endAt
+        extendedBiddingEndAt
       }
       partner {
         name

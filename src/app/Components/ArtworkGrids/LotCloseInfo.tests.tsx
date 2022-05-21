@@ -12,6 +12,8 @@ const basicSale = {
   isClosed: false,
   displayTimelyAt: null,
   cascadingEndTimeIntervalMinutes: 1,
+  extendedBiddingPeriodMinutes: 1,
+  extendedBiddingIntervalMinutes: 1,
 }
 
 const basicSaleArtwork = {
@@ -19,6 +21,7 @@ const basicSaleArtwork = {
   formattedEndDateTime: "Formatted end date time",
   currentBid: null,
   lotLabel: "Lot 1",
+  extendedBiddingEndAt: null,
 }
 
 describe("LotCloseInfo", () => {
