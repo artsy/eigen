@@ -145,7 +145,7 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
           ),
           // tslint:disable-next-line: no-shadowed-variable
           localSortAndFilter: (artworks, artistIDs: string[]) =>
-            filter(artworks, (a) => artistIDs.includes(a.artist.internalID)),
+            filter(artworks, (a) => artistIDs.includes(a.artist?.internalID)),
         },
         {
           displayText: FilterDisplayName.attributionClass,

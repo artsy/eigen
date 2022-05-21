@@ -36,7 +36,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
   const showErrorMessage = __DEV__ || useDevToggle("DTShowErrorInLoadFailureView")
 
   return (
-    <Flex flex={1} alignItems="center" {...restProps}>
+    <Flex flex={1} alignItems="center" justifyContent="center" {...restProps}>
       <Text variant="lg">Unable to load</Text>
       <Text variant="md" mb="1">
         Please try again
