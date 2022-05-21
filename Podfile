@@ -154,12 +154,18 @@ target 'Artsy' do
 end
 
 
-# Enables Flipper.
+# Enables Flipper but not for CI.
 # Note that if you have use_frameworks! enabled, Flipper will not work and
 # you should disable these next few lines.
-use_flipper!({ 'Flipper' => '0.87.0', 'Flipper-Folly' => '2.5.3',  'Flipper-RSocket' => '1.3.1' })
+if !ENV['CI']
+  use_flipper!({ 'Flipper' => '0.87.0', 'Flipper-Folly' => '2.5.3',  'Flipper-RSocket' => '1.3.1' })
+end
+
 post_install do |installer|
+
+if !ENV['CI']
   flipper_post_install(installer)
+end
 
   $RNMBGL.post_install(installer)
 
