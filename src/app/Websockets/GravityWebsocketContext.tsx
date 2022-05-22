@@ -23,7 +23,7 @@ interface GravityWebsocketContextProviderProps {
     channel: string
     [id: string]: string | undefined
   }
-  callbacks: ConnectionCallbacks
+  callbacks?: ConnectionCallbacks
 }
 
 const initialValues = {

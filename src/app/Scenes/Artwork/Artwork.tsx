@@ -14,6 +14,7 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { GravityWebsocketContextProvider } from "app/Websockets/GravityWebsocketContext"
 import { Box, LinkButton, Separator } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
@@ -361,6 +362,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
     />
   )
 
+  const websocketEnabled = !!artworkBelowTheFold?.sale?.extendedBiddingIntervalMinutes
+
   return (
     <ProvideScreenTracking
       info={{
@@ -376,29 +379,37 @@ export const Artwork: React.FC<ArtworkProps> = ({
         biddable: artworkAboveTheFold?.isBiddable,
       }}
     >
-      {fetchingData ? (
-        <ProvidePlaceholderContext>
-          <AboveTheFoldPlaceholder />
-        </ProvidePlaceholderContext>
-      ) : (
-        <FlatList<ArtworkPageSection>
-          keyboardShouldPersistTaps="handled"
-          data={sectionsData()}
-          ItemSeparatorComponent={() => (
-            <Box mx={2}>
-              <Separator />
-            </Box>
-          )}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          contentContainerStyle={{ paddingBottom: 40 }}
-          renderItem={({ item }) => (
-            <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
-              {item.element}
-            </Box>
-          )}
-        />
-      )}
-      <QAInfo />
+      <GravityWebsocketContextProvider
+        channelInfo={{
+          channel: "SalesChannel",
+          sale_id: artworkBelowTheFold?.sale?.internalID,
+        }}
+        enabled={websocketEnabled}
+      >
+        {fetchingData ? (
+          <ProvidePlaceholderContext>
+            <AboveTheFoldPlaceholder />
+          </ProvidePlaceholderContext>
+        ) : (
+          <FlatList<ArtworkPageSection>
+            keyboardShouldPersistTaps="handled"
+            data={sectionsData()}
+            ItemSeparatorComponent={() => (
+              <Box mx={2}>
+                <Separator />
+              </Box>
+            )}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            contentContainerStyle={{ paddingBottom: 40 }}
+            renderItem={({ item }) => (
+              <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
+                {item.element}
+              </Box>
+            )}
+          />
+        )}
+        <QAInfo />
+      </GravityWebsocketContextProvider>
     </ProvideScreenTracking>
   )
 }
@@ -454,9 +465,11 @@ export const ArtworkContainer = createRefetchContainer(
           ...ArtistSeriesMoreSeries_artist
         }
         sale {
+          internalID
           id
           isBenefit
           isGalleryAuction
+          extendedBiddingIntervalMinutes
         }
         category
         canRequestLotConditionsReport

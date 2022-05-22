@@ -132,45 +132,41 @@ export function currentTimerState({
 
 export interface CountdownProps extends CountdownTimerProps {
   hasStarted?: boolean
+  hasBeenExtended: boolean
   cascadingEndTimeIntervalMinutes?: number | null
   extendedBiddingIntervalMinutes?: number | null
   extendedBiddingPeriodMinutes?: number | null
-  extendedBiddingEndAt?: string | null
+  biddingEndAt?: string | null
   startAt?: string | null
-  endAt?: string | null
 }
 
 export const Countdown: React.FC<CountdownProps> = ({
   duration,
   label,
   hasStarted,
+  hasBeenExtended,
   startAt,
-  endAt,
   cascadingEndTimeIntervalMinutes,
   extendedBiddingIntervalMinutes,
   extendedBiddingPeriodMinutes,
-  extendedBiddingEndAt,
+  biddingEndAt,
 }) => {
   const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
 
   return (
     <Flex alignItems="center">
       {cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? (
-        <ModernTicker
-          duration={duration}
-          hasStarted={hasStarted}
-          isExtended={!!extendedBiddingEndAt}
-        />
+        <ModernTicker duration={duration} hasStarted={hasStarted} isExtended={hasBeenExtended} />
       ) : (
         <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
       )}
       {!!extendedBiddingPeriodMinutes && !!extendedBiddingIntervalMinutes && (
         <ArtworkAuctionProgressBar
           startAt={startAt}
-          endAt={endAt}
           extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
           extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
-          extendedBiddingEndAt={extendedBiddingEndAt}
+          biddingEndAt={biddingEndAt}
+          hasBeenExtended={hasBeenExtended}
         />
       )}
       <Sans size="2" weight="medium" color="black60">

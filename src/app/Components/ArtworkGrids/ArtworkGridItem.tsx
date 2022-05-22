@@ -11,8 +11,9 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
+import { useAuctionWebsocket } from "app/Websockets/auctions/useAuctionWebsocket"
 import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -86,6 +87,20 @@ export const Artwork: React.FC<ArtworkProps> = ({
     const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
     filterParams = filterArtworksParams(appliedFilters)
   }
+
+  const extendedBiddingEndAt = artwork.saleArtwork?.extendedBiddingEndAt
+  const biddingEndAt = extendedBiddingEndAt ?? artwork.saleArtwork?.endAt
+
+  const [currentBiddingEndAt, setCurrentBiddingEndAt] = useState(biddingEndAt)
+  const [lotSaleExtended, setLotSaleExtended] = useState(false)
+
+  useAuctionWebsocket({
+    lotID: artwork.saleArtwork?.lotID!,
+    onChange: ({ extended_bidding_end_at }) => {
+      setCurrentBiddingEndAt(extended_bidding_end_at)
+      setLotSaleExtended(true)
+    },
+  })
 
   const addArtworkToRecentSearches = () => {
     if (updateRecentSearchesOnTap) {
@@ -182,14 +197,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
         )}
         {!!canShowAuctionProgressBar && (
           <Box mt={1}>
-            <DurationProvider startAt={endsAt}>
+            <DurationProvider startAt={currentBiddingEndAt ?? undefined}>
               <LotProgressBar
                 duration={null}
                 startAt={artwork.sale?.startAt}
-                endAt={artwork.saleArtwork?.endAt}
                 extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
                 extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
-                extendedBiddingEndAt={artwork.saleArtwork?.extendedBiddingEndAt}
+                biddingEndAt={currentBiddingEndAt}
+                hasBeenExtended={lotSaleExtended}
               />
             </DurationProvider>
           </Box>
@@ -200,15 +215,19 @@ export const Artwork: React.FC<ArtworkProps> = ({
               <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                 Lot {artwork.saleArtwork.lotLabel}
               </Text>
-              {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !!cascadingEndTimeFeatureEnabled && (
-                <DurationProvider startAt={endsAt}>
-                  <LotCloseInfo
-                    duration={null}
-                    saleArtwork={artwork.saleArtwork}
-                    sale={artwork.sale}
-                  />
-                </DurationProvider>
-              )}
+              {!!artwork.sale?.cascadingEndTimeIntervalMinutes &&
+                !!cascadingEndTimeFeatureEnabled &&
+                !!currentBiddingEndAt && (
+                  <DurationProvider startAt={currentBiddingEndAt}>
+                    <LotCloseInfo
+                      duration={null}
+                      saleArtwork={artwork.saleArtwork}
+                      sale={artwork.sale}
+                      lotEndAt={currentBiddingEndAt}
+                      hasBeenExtended={lotSaleExtended}
+                    />
+                  </DurationProvider>
+                )}
             </>
           )}
           {!!artwork.artistNames && (
@@ -354,6 +373,7 @@ export default createFragmentContainer(Artwork, {
         currentBid {
           display
         }
+        lotID
         lotLabel
         endAt
         extendedBiddingEndAt

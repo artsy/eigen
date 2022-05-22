@@ -12,6 +12,7 @@ import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
+import { useAuctionWebsocket } from "app/Websockets/auctions/useAuctionWebsocket"
 import { capitalize } from "lodash"
 import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React, { useEffect, useState } from "react"
@@ -138,6 +139,20 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     saleArtwork,
     isSold,
   } = artwork
+
+  const extendedBiddingEndAt = saleArtwork?.extendedBiddingEndAt
+  const biddingEndAt = extendedBiddingEndAt ?? saleArtwork?.endAt
+
+  const [currentBiddingEndAt, setCurrentBiddingEndAt] = useState(biddingEndAt)
+  const [lotSaleExtended, setLotSaleExtended] = useState(false)
+
+  useAuctionWebsocket({
+    lotID: saleArtwork?.lotID!,
+    onChange: ({ extended_bidding_end_at }) => {
+      setCurrentBiddingEndAt(extended_bidding_end_at)
+      setLotSaleExtended(true)
+    },
+  })
 
   const isInClosedAuction = isInAuction && sale && timerState === AuctionTimerState.CLOSED
   const artistIsConsignable = artwork?.artists?.filter((artist) => artist?.isConsignable).length
@@ -268,9 +283,9 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
             duration={duration}
             extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
             extendedBiddingPeriodMinutes={sale.extendedBiddingPeriodMinutes}
-            extendedBiddingEndAt={saleArtwork?.extendedBiddingEndAt}
+            biddingEndAt={currentBiddingEndAt}
             startAt={sale.startAt}
-            endAt={saleArtwork?.endAt}
+            hasBeenExtended={lotSaleExtended}
           />
         </>
       )
@@ -329,6 +344,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         }
 
         saleArtwork {
+          lotID
           endAt
           extendedBiddingEndAt
         }
