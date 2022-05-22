@@ -95,12 +95,16 @@ export class BidResult extends React.Component<BidResultProps> {
 
   render() {
     const { sale_artwork, bidderPositionResult } = this.props
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { liveStartAt, endAt: saleEndAt, cascadingEndTimeIntervalMinutes } = sale_artwork.sale
     const { status, message_header, message_description_md } = bidderPositionResult
 
-    const casacadingEndTimeFeatureEnabled =
-      unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage") && cascadingEndTimeIntervalMinutes
+    const cascadingEndTimeFeatureEnabled = unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage")
+
+    const endsAt =
+      (cascadingEndTimeFeatureEnabled && sale_artwork.extendedBiddingEndAt) ||
+      (cascadingEndTimeFeatureEnabled && sale_artwork.sale?.cascadingEndTimeIntervalMinutes
+        ? sale_artwork.endAt
+        : sale_artwork.sale?.endAt) ||
+      undefined
 
     return (
       <View style={{ flex: 1 }}>
@@ -129,10 +133,7 @@ export class BidResult extends React.Component<BidResultProps> {
                 </Markdown>
               )}
               {!!this.shouldDisplayTimer(status) && (
-                <Timer
-                  liveStartsAt={liveStartAt}
-                  endsAt={casacadingEndTimeFeatureEnabled ? sale_artwork.endAt : saleEndAt}
-                />
+                <Timer liveStartsAt={sale_artwork.sale?.liveStartAt ?? undefined} endsAt={endsAt} />
               )}
             </Flex>
           </View>
@@ -163,6 +164,7 @@ export const BidResultScreen = createFragmentContainer(BidResult, {
   sale_artwork: graphql`
     fragment BidResult_sale_artwork on SaleArtwork {
       endAt
+      extendedBiddingEndAt
       sale {
         liveStartAt
         endAt

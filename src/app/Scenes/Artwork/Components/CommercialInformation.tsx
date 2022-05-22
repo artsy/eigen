@@ -9,10 +9,10 @@ import {
 } from "app/Components/Bidding/Components/Timer"
 import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
+import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { capitalize } from "lodash"
-import { Duration } from "moment"
 import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -25,12 +25,9 @@ import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSe
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 import { CreateArtworkAlertButtonsSectionFragmentContainer as CreateArtworkAlertButtonsSection } from "./CreateArtworkAlertButtonsSection"
 
-interface CommercialInformationProps {
+interface CommercialInformationProps extends CountdownTimerProps {
   artwork: CommercialInformation_artwork
   me: CommercialInformation_me
-  timerState?: AuctionTimerState
-  label?: string
-  duration?: Duration
   hasStarted?: boolean
   tracking?: TrackingProp
 }
@@ -46,11 +43,12 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
       endAt: saleEndAt,
     } = props.artwork.sale || {}
 
-    const { endAt: lotEndAt } = props.artwork.saleArtwork
+    const { endAt: lotEndAt, extendedBiddingEndAt } = props.artwork.saleArtwork
 
     const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
 
     const endsAt =
+      (cascadingEndTimeFeatureEnabled && extendedBiddingEndAt) ||
       (cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? lotEndAt : saleEndAt) ||
       undefined
 
@@ -63,6 +61,9 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               isPreview: isPreview || undefined,
               isClosed: isClosed || undefined,
               liveStartsAt: liveStartsAt || undefined,
+              extendedBiddingEndAt: cascadingEndTimeFeatureEnabled
+                ? extendedBiddingEndAt
+                : undefined,
             })
             const { label, date, hasStarted } = relevantStateData(state, {
               liveStartsAt: liveStartsAt || undefined,
@@ -264,7 +265,6 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
             label={label}
             hasStarted={hasStarted}
             cascadingEndTimeIntervalMinutes={sale.cascadingEndTimeIntervalMinutes}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             duration={duration}
             extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
             extendedBiddingPeriodMinutes={sale.extendedBiddingPeriodMinutes}
