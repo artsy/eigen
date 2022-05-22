@@ -2261,6 +2261,11 @@
   resolved "https://registry.yarnpkg.com/@ptomasroos/react-native-multi-slider/-/react-native-multi-slider-2.2.2.tgz#35a97fb8c355627c6a2ded010b360ac5728b44ad"
   integrity sha512-HWyCnRD3Z3SbHK2FLWYmBBqd1B4iXipeKv1+AK0FoY/CElEDTEixHE8hN60TsqxalPrznn798LE2Q4tHuCiyaA==
 
+"@rails/actioncable@6.0.5":
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.0.5.tgz#a889f25b0c13ea0215d747e32fa3d1a52967f17b"
+  integrity sha512-79sIsTpIoHnJ6pRHKaC6h5NMRpY+VZD4mqOKN/035X1ehxHgToDWvgMZ4jV5y1qeObg4enmNESmgeKoImYGzOw==
+
 "@reach/router@^1.3.4":
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/@reach/router/-/router-1.3.4.tgz#d2574b19370a70c80480ed91f3da840136d10f8c"
@@ -3556,6 +3561,11 @@
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@types/query-string/-/query-string-5.0.1.tgz#6cb41c724cb1644d56c2d1dae7c7b204e706b39e"
   integrity sha512-qlH3YtJ5ipp6z5SU9G0LJsBnNEZqTKPeGjNIyMcGD5Dhbooz0CCsW/sILsgb+LBRrDeTehRtQviXV2kfLm3dqg==
+
+"@types/rails__actioncable@6.1.6":
+  version "6.1.6"
+  resolved "https://registry.yarnpkg.com/@types/rails__actioncable/-/rails__actioncable-6.1.6.tgz#c5427f7ba5a41e41e1237bc943c81d7f44b46167"
+  integrity sha512-/whIczf4uhpac/X19vMRTHOF4reN92I6C4uOmTTtbT1xdesjrStLNQq9v+jexHehc8RENUHk4sXVzwm5PBy2fA==
 
 "@types/reach__router@^1.3.7":
   version "1.3.10"
