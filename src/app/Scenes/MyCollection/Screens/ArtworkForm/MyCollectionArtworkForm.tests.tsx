@@ -144,7 +144,9 @@ describe("MyCollectionArtworkForm", () => {
 
         await flushPromiseQueue()
 
-        const updatePreferencesOperation = mockEnvironment.mock.getMostRecentOperation()
+        const mockOperations = mockEnvironment.mock.getAllOperations()
+
+        const updatePreferencesOperation = mockOperations[0]
         expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
           Object {
             "input": Object {
@@ -154,12 +156,7 @@ describe("MyCollectionArtworkForm", () => {
           }
         `)
 
-        mockEnvironment.mock.resolveMostRecentOperation(() => ({
-          data: {},
-        }))
-        await flushPromiseQueue()
-
-        const createArtworkOperation = mockEnvironment.mock.getMostRecentOperation()
+        const createArtworkOperation = mockOperations[1]
         expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
           Object {
             "input": Object {

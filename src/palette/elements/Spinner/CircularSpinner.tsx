@@ -90,7 +90,7 @@ export const CircularSpinner: React.FC<SpinnerProps> = ({
   return (
     <>
       <CircleBackground size={size} color={color(theColor)} />
-      <Circle size={size} color={color(theColor)} {...rest} style={style} />
+      <Circle size={size} color={color(theColor)} style={style} {...rest} />
     </>
   )
 }
@@ -115,9 +115,7 @@ const Circle = styled(Animated.View)<CircleProps>`
       border-bottom-color: ${props.color};
       border-right-color: transparent;
       border-radius: ${radius}px;
-
       background: transparent;
-
       width: ${width}px;
       height: ${height}px;
     `
@@ -137,7 +135,6 @@ const CircleBackground = styled(Animated.View)<CircleProps>`
       border: ${borderWidth}px solid ${props.color};
       border-radius: ${radius}px;
       background: transparent;
-
       width: ${width}px;
       height: ${height}px;
     `

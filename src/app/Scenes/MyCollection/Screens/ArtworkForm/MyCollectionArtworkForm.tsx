@@ -103,7 +103,9 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     try {
       await Promise.all([
         // This is to satisfy showing the insights modal for 2500 ms
-        __TEST__ ? undefined : new Promise((resolve) => setTimeout(() => resolve, 2500)),
+        __TEST__ || !showMyCollectionInsights
+          ? undefined
+          : new Promise((resolve) => setTimeout(resolve, 2500)),
         updateMyUserProfile({
           currencyPreference: preferredCurrency,
           lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
@@ -113,9 +115,10 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       if (showMyCollectionInsights) {
         setIsArtworkSaved(true)
         // simulate requesting market data
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        await new Promise((resolve) => setTimeout(resolve, 2000))
       }
 
+      refreshMyCollection()
       props.onSuccess?.()
     } catch (e) {
       if (__DEV__) {
@@ -250,7 +253,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
         {showMyCollectionInsights && props.mode === "add" ? (
           <SavingArtworkModal
             isVisible={loading}
-            loadingText={isArtworkSaved ? "Generating market data" : "Saving Artwork"}
+            loadingText={isArtworkSaved ? "Generating market data" : "Saving artwork"}
           />
         ) : (
           <LoadingModal isVisible={loading} />
@@ -323,8 +326,6 @@ export const updateArtwork = async (
       removeLocalPhotos(slug)
     }
   }
-
-  refreshMyCollection()
 }
 
 const tracks = {
