@@ -115,7 +115,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       if (props.mode === "add") {
         if (props.source === Tab.collection /* and insights are not awailable */) {
           // TODO: check Artwork insights ^^^ - blocked by the backend
-          addClue("AddedArtworkHasNoInsightsMessage_MyCTab")
+          addClue("AddArtworkWithoutInsightsMessage_MyCTab")
         } // else - isAddedFromInsights - other tickets
       }
       setLoading(false)

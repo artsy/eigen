@@ -98,7 +98,7 @@ const MyCollection: React.FC<{
     const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
     const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
     const shouldShowAddedArtworkHasNoInsightsMessage = showSessionVisualClue(
-      "AddedArtworkHasNoInsightsMessage_MyCTab"
+      "AddArtworkWithoutInsightsMessage_MyCTab"
     )
     return {
       hasSeenBanner: hasSeen === "true",
@@ -163,7 +163,7 @@ const MyCollection: React.FC<{
               )}
               {!!showAddedArtworkHasNoInsightsMessage && (
                 <AddedArtworkHasNoInsightsMessage
-                  onClose={() => removeClue("AddedArtworkHasNoInsightsMessage_MyCTab")}
+                  onClose={() => removeClue("AddArtworkWithoutInsightsMessage_MyCTab")}
                 />
               )}
             </Flex>
