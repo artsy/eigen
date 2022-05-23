@@ -39,6 +39,7 @@ import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
+import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import { AddedArtworkHasNoInsightsMessage } from "./Screens/Insights/MyCollectionInsightsMessages"
@@ -46,8 +47,6 @@ import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
 export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
-export const TAB_WHERE_ADD_WORKS_BUTTON_WAS_PRESSED = "TAB_WHERE_ADD_WORKS_BUTTON_WAS_PRESSED"
-export const MY_COLLECION = "MY_COLLECION"
 
 const MyCollection: React.FC<{
   relay: RelayPaginationProp
@@ -128,10 +127,10 @@ const MyCollection: React.FC<{
                   size="small"
                   variant="fillDark"
                   onPress={async () => {
-                    await AsyncStorage.setItem(TAB_WHERE_ADD_WORKS_BUTTON_WAS_PRESSED, MY_COLLECION)
                     navigate("my-collection/artworks/new", {
                       passProps: {
                         mode: "add",
+                        source: Tab.collection,
                         onSuccess: popToRoot,
                       },
                     })

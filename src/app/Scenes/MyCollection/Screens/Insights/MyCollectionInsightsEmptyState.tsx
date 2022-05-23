@@ -1,4 +1,5 @@
 import { navigate, popToRoot } from "app/navigation/navigate"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { Button, Flex, Text, useSpace } from "palette"
 import React from "react"
 import { Image } from "react-native"
@@ -30,6 +31,7 @@ export const MyCollectionInsightsEmptyState = () => {
           navigate("my-collection/artworks/new", {
             passProps: {
               mode: "add",
+              source: Tab.insights,
               onSuccess: popToRoot,
             },
           })

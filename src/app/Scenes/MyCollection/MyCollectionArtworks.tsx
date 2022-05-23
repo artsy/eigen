@@ -13,6 +13,7 @@ import { FlatList, Image } from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
+import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionArtworkEdge } from "./MyCollection"
@@ -149,6 +150,7 @@ const MyCollectionZeroState: React.FC = () => {
               navigate("my-collection/artworks/new", {
                 passProps: {
                   mode: "add",
+                  source: Tab.collection,
                   onSuccess: popToRoot,
                 },
               })

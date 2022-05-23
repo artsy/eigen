@@ -13,6 +13,7 @@ import {
   cleanArtworkPayload,
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { addClue, GlobalStore } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
@@ -24,7 +25,6 @@ import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
 import { myCollectionUpdateArtwork } from "../../mutations/myCollectionUpdateArtwork"
-import { MY_COLLECION, TAB_WHERE_ADD_WORKS_BUTTON_WAS_PRESSED } from "../../MyCollection"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
@@ -67,6 +67,7 @@ export type ArtworkFormScreen = {
 export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
   | {
       mode: "add"
+      source: Tab
     }
   | {
       mode: "edit"
@@ -112,9 +113,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     } finally {
       if (props.mode === "add") {
-        const activeTab = await AsyncStorage.getItem(TAB_WHERE_ADD_WORKS_BUTTON_WAS_PRESSED)
-
-        if (!!activeTab && activeTab === MY_COLLECION /* and insights are not awailable */) {
+        if (props.source === Tab.collection /* and insights are not awailable */) {
           // TODO: check Artwork insights ^^^ - blocked by the backend
           addClue("AddedArtworkHasNoInsightsMessage_MyCTab")
         } // else - isAddedFromInsights - other tickets

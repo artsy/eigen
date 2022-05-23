@@ -3,6 +3,7 @@ import { Message } from "palette"
 interface AddedArtworkHasNoInsightsMessageProps {
   onClose: () => void
 }
+
 export const AddedArtworkHasNoInsightsMessage: React.FC<AddedArtworkHasNoInsightsMessageProps> = ({
   onClose,
 }) => {
