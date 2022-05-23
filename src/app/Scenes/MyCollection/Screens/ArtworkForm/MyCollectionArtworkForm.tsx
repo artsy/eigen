@@ -252,11 +252,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
         </Stack.Navigator>
         {showMyCollectionInsights && props.mode === "add" ? (
           <SavingArtworkModal
+            testID="saving-artwork-modal"
             isVisible={loading}
             loadingText={isArtworkSaved ? "Generating market data" : "Saving artwork"}
           />
         ) : (
-          <LoadingModal isVisible={loading} />
+          <LoadingModal testID="loading-modal" isVisible={loading} />
         )}
       </FormikProvider>
     </NavigationContainer>

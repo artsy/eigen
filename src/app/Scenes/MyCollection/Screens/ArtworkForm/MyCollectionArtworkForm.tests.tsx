@@ -429,6 +429,145 @@ describe("MyCollectionArtworkForm", () => {
       })
     })
   })
+
+  describe("loading screens", () => {
+    afterEach(() => {
+      mockEnvironment.mockClear()
+      jest.clearAllMocks()
+    })
+
+    describe("when ARShowMyCollectionInsights is enabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ ARShowMyCollectionInsights: true })
+      })
+
+      it("displays the new saving artwork loading screen", async () => {
+        const assetCredentials = {
+          signature: "some-signature",
+          credentials: "some-credentials",
+          policyEncoded: "some-policy-encoded",
+          policyDocument: {
+            expiration: "some-expiration",
+            conditions: {
+              acl: "some-acl",
+              bucket: "some-bucket",
+              geminiKey: "some-gemini-key",
+              successActionStatus: "some-success-action-status",
+            },
+          },
+        }
+        getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
+        uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
+
+        const { getByTestId, getByPlaceholderText } = renderWithWrappersTL(
+          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
+        )
+
+        // Select Artist Screen
+        act(() =>
+          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
+        )
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtistSearchResult,
+          })
+        )
+        await flushPromiseQueue()
+
+        act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
+
+        await flushPromiseQueue()
+
+        // Select Artwork Screen
+        act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtworkSearchResult,
+          })
+        )
+        act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
+
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
+        )
+
+        await flushPromiseQueue()
+
+        // Complete Form
+        act(() => fireEvent.press(getByTestId("CompleteButton")))
+
+        await flushPromiseQueue()
+
+        expect(getByTestId("saving-artwork-modal").props.visible).toBe(true)
+      })
+    })
+
+    describe("when ARShowMyCollectionInsights is not enabled", () => {
+      it("displays normal loading screen", async () => {
+        const assetCredentials = {
+          signature: "some-signature",
+          credentials: "some-credentials",
+          policyEncoded: "some-policy-encoded",
+          policyDocument: {
+            expiration: "some-expiration",
+            conditions: {
+              acl: "some-acl",
+              bucket: "some-bucket",
+              geminiKey: "some-gemini-key",
+              successActionStatus: "some-success-action-status",
+            },
+          },
+        }
+        getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
+        uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
+
+        const { getByTestId, getByPlaceholderText } = renderWithWrappersTL(
+          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
+        )
+
+        // Select Artist Screen
+        act(() =>
+          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
+        )
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtistSearchResult,
+          })
+        )
+        await flushPromiseQueue()
+
+        act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
+
+        await flushPromiseQueue()
+
+        // Select Artwork Screen
+        act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtworkSearchResult,
+          })
+        )
+        act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
+
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
+        )
+
+        await flushPromiseQueue()
+
+        // Complete Form
+        act(() => fireEvent.press(getByTestId("CompleteButton")))
+
+        await flushPromiseQueue()
+
+        expect(getByTestId("loading-modal").props.visible).toBe(true)
+      })
+    })
+  })
 })
 
 const mockArtworkSearchResult = {
