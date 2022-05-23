@@ -1,5 +1,5 @@
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { Countdown } from "app/Components/Bidding/Components/Timer"
+import { AuctionTimerState, Countdown } from "app/Components/Bidding/Components/Timer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
@@ -70,6 +70,30 @@ describe("CommercialInformation", () => {
 
     expect(queryByText("For sale")).toBeFalsy()
     expect(queryByText("Sold")).toBeTruthy()
+  })
+
+  it("returns correct information for auction works when the auction has ended and ff true", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+    const Artwork = {
+      ...CommercialInformationArtwork,
+      isInAuction: true,
+      sale: {
+        ...CommercialInformationArtwork.sale,
+        isClosed: true,
+        isAuction: true,
+      },
+    }
+
+    const { queryByText } = renderWithWrappersTL(
+      <CommercialInformationTimerWrapper
+        artwork={Artwork as any}
+        me={{ identityVerified: false } as any}
+        timerState={AuctionTimerState.CLOSED}
+      />
+    )
+
+    expect(queryByText("For sale")).toBeFalsy()
+    expect(queryByText("Bidding closed")).toBeTruthy()
   })
 
   it("renders yellow indicator and correct message when artwork is on hold", () => {

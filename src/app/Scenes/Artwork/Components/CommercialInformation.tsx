@@ -36,6 +36,7 @@ interface CommercialInformationProps extends CountdownTimerProps {
   biddingEndAt?: string
   hasBeenExtended?: boolean
   refetchArtwork: () => void
+  setAuctionTimerState?: (auctionTimerState: AuctionTimerState) => void
 }
 
 // On Android, the useAuctionWebsocket fails to receive data, bringing the
@@ -71,6 +72,7 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
     const { endAt: lotEndAt, extendedBiddingEndAt, lotID } = props.artwork.saleArtwork
 
     const biddingEndAt = extendedBiddingEndAt ?? lotEndAt ?? saleEndAt
+    const { setAuctionTimerState } = props
 
     const [currentBiddingEndAt, setCurrentBiddingEndAt] = useState(biddingEndAt)
 
@@ -112,6 +114,9 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               lotEndAt,
               biddingEndAt: currentBiddingEndAt,
             })
+
+            setAuctionTimerState?.(state)
+
             return {
               label,
               date,
@@ -132,6 +137,9 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               lotEndAt,
               biddingEndAt: currentBiddingEndAt,
             })
+
+            setAuctionTimerState?.(nextState)
+
             return {
               state: nextState,
               date,
@@ -199,7 +207,8 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
   const canTakeCommercialAction =
     isAcquireable || isOfferable || isInquireable || isBiddableInAuction
-  const shouldCreateArtworkAlertButton = enableCreateArtworkAlert && isSold
+  const shouldShowCreateArtworkAlertButton =
+    enableCreateArtworkAlert && (isSold || isInClosedAuction)
 
   useEffect(() => {
     const artworkIsInActiveAuction = artwork.isInAuction && timerState !== AuctionTimerState.CLOSED
@@ -333,8 +342,8 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
 
   return (
     <>
-      {shouldCreateArtworkAlertButton ? (
-        <CreateArtworkAlertButtonsSection artwork={artwork} />
+      {shouldShowCreateArtworkAlertButton ? (
+        <CreateArtworkAlertButtonsSection artwork={artwork} auctionState={timerState} />
       ) : (
         <Box>
           {renderPriceInformation()}

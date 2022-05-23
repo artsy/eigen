@@ -5,6 +5,7 @@ import { Artwork_me } from "__generated__/Artwork_me.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
+import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { navigateToPartner, navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -64,7 +65,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
 
-  const { internalID, slug } = artworkAboveTheFold || {}
+  const { internalID, slug, isInAuction } = artworkAboveTheFold || {}
+  const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
   const {
     category,
     canRequestLotConditionsReport,
@@ -84,6 +86,19 @@ export const Artwork: React.FC<ArtworkProps> = ({
     artist,
     context,
   } = artworkBelowTheFold || {}
+
+  const getInitialAuctionTimerState = () => {
+    if (isInAuction) {
+      return currentTimerState({
+        isPreview: isPreview || undefined,
+        isClosed: isClosed || undefined,
+        liveStartsAt: liveStartAt || undefined,
+      })
+    }
+  }
+
+  const [auctionTimerState, setAuctionTimerState] = useState(getInitialAuctionTimerState())
+  const isInClosedAuction = isInAuction && auctionTimerState === AuctionTimerState.CLOSED
 
   const shouldRenderDetails = () => {
     return !!(
@@ -231,6 +246,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             refetchArtwork={() =>
               relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
             }
+            setAuctionTimerState={setAuctionTimerState}
           />
         ),
       })
@@ -246,7 +262,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (enableCreateArtworkAlert && !artworkAboveTheFold?.isSold) {
+    if (enableCreateArtworkAlert && !artworkAboveTheFold?.isSold && !isInClosedAuction) {
       sections.push({
         key: "createAlertSection",
         element: <CreateArtworkAlertSection artwork={artworkAboveTheFold} />,
@@ -446,7 +462,13 @@ export const ArtworkContainer = createRefetchContainer(
         isBiddable
         isInquireable
         isSold
+        isInAuction
         availability
+        sale {
+          isClosed
+          isPreview
+          liveStartAt
+        }
       }
     `,
     artworkBelowTheFold: graphql`
