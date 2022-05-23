@@ -145,12 +145,11 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
             <UtilButton pr={2}>
               <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />}</Box>
               <Box position="relative">
-                {/* Longest text */}
+                {/* Longest text transparent to prevent changing text pushing elements on the right */}
                 <Sans size="3" color="transparent">
                   Saved
                 </Sans>
 
-                {/* place changeable text on top of longest text via absolute positioning */}
                 <Box {...StyleSheet.absoluteFillObject}>
                   <ClassTheme>
                     {({ color }) => (
