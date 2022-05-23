@@ -89,6 +89,7 @@ describe("CommercialInformation", () => {
         artwork={Artwork as any}
         me={{ identityVerified: false } as any}
         timerState={AuctionTimerState.CLOSED}
+        refetchArtwork={jest.fn()}
       />
     )
 
