@@ -91,6 +91,10 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
               returnKeyType="done"
               value={values.otp}
               error={errors.otp}
+              // ios only
+              textContentType="oneTimeCode"
+              // android only
+              autoComplete="sms-otp"
             />
             {otpMode === "on_demand" ? (
               <>
