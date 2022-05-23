@@ -22,7 +22,7 @@ import {
   Touchable,
 } from "palette"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -144,19 +144,23 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           <Touchable haptic onPress={() => this.handleArtworkSave()}>
             <UtilButton pr={2}>
               <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />}</Box>
-              <ClassTheme>
-                {({ color }) => (
-                  <Sans
-                    size="3"
-                    // fixed size to prevent button from pushing elements on thex
-                    // right when text changes from save -> saved
-                    style={{ width: 48 }}
-                    color={is_saved ? color("blue100") : color("black100")}
-                  >
-                    {is_saved ? "Saved" : "Save"}
-                  </Sans>
-                )}
-              </ClassTheme>
+              <Box position="relative">
+                {/* Longest text */}
+                <Sans size="3" color="transparent">
+                  Saved
+                </Sans>
+
+                {/* place changeable text on top of longest text via absolute positioning */}
+                <Box {...StyleSheet.absoluteFillObject}>
+                  <ClassTheme>
+                    {({ color }) => (
+                      <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
+                        {is_saved ? "Saved" : "Save"}
+                      </Sans>
+                    )}
+                  </ClassTheme>
+                </Box>
+              </Box>
             </UtilButton>
           </Touchable>
         )}
