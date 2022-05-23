@@ -13,6 +13,8 @@ const basicSale = {
   isClosed: false,
   displayTimelyAt: null,
   cascadingEndTimeIntervalMinutes: 1,
+  extendedBiddingPeriodMinutes: 1,
+  extendedBiddingIntervalMinutes: 1,
 }
 
 const basicSaleArtwork = {
