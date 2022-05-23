@@ -1,5 +1,6 @@
 import moment from "moment"
 import React from "react"
+import { AppState, AppStateStatus, NativeEventSubscription } from "react-native"
 
 interface Props {
   startAt?: string
@@ -10,23 +11,38 @@ interface Props {
 
 interface State {
   timeLeftInMilliseconds: number
+  appState: AppStateStatus
 }
 
 export class DurationProvider extends React.Component<Props, State> {
   state = {
     timeLeftInMilliseconds: this.props.startAt ? Date.parse(this.props.startAt) - Date.now() : 0,
+    appState: AppState.currentState,
   }
 
   private intervalId: ReturnType<typeof setInterval> | null = null
+  private appStateSubscription: NativeEventSubscription | null = null
 
   componentDidMount() {
     this.intervalId = setInterval(this.timer, 1000)
+    this.appStateSubscription = AppState.addEventListener("change", (nextAppState) => {
+      if (this.state.appState.match(/inactive|background/) && nextAppState === "active") {
+        // recalculate timeLeftInMilliseconds
+        if (this.props.startAt) {
+          this.setState({ timeLeftInMilliseconds: Date.parse(this.props.startAt) - Date.now() })
+        }
+      }
+      this.setState({ appState: nextAppState })
+    })
   }
 
   componentWillUnmount() {
     if (this.intervalId) {
       clearInterval(this.intervalId)
       this.intervalId = null
+    }
+    if (this.appStateSubscription) {
+      this.appStateSubscription.remove()
     }
   }
 

@@ -971,6 +971,7 @@ const baseSaleArtwork = {
     },
   },
   sale: {
+    internalID: "internal-id",
     slug: "best-art-sale-in-town",
     start_at: "2018-05-08T20:22:42+00:00",
     end_at: "2018-05-10T20:22:42+00:00",

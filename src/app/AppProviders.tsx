@@ -13,6 +13,7 @@ import { GlobalStore, GlobalStoreProvider, useFeatureFlag } from "./store/Global
 import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"
 import { track } from "./utils/track"
+import { GravityWebsocketContextProvider } from "./Websockets/GravityWebsocketContext"
 
 export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
   combineProviders(
@@ -32,6 +33,7 @@ export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
       PopoverMessageProvider,
       _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
+      GravityWebsocketContextProvider, // uses GlobalStoreProvider
     ],
     children
   )

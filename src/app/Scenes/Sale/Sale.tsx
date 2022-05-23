@@ -19,7 +19,7 @@ import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { GravityWebsocketContextProvider } from "app/Websockets/GravityWebsocketContext"
+import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import _, { times } from "lodash"
 import { DateTime } from "luxon"
 import { Box, Flex, Join, Spacer } from "palette"
@@ -230,7 +230,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   return (
     <ArtworkFiltersStoreProvider>
       <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
-        <GravityWebsocketContextProvider
+        <AuctionWebsocketContextProvider
           channelInfo={{
             channel: "SalesChannel",
             sale_id: sale.internalID,
@@ -272,7 +272,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
             isVisible={isArtworksGridVisible}
             onPress={openFilterArtworksModal}
           />
-        </GravityWebsocketContextProvider>
+        </AuctionWebsocketContextProvider>
       </ProvideScreenTracking>
     </ArtworkFiltersStoreProvider>
   )

@@ -13,7 +13,7 @@ interface LotCloseInfoProps {
    *  extendedBiddingEndAt received from the websocket which may be diffrent
    *  from the extendedBiddingEndAt you may find on saleArtwork
    */
-  lotEndAt: string
+  lotEndAt?: string
   hasBeenExtended: boolean
 }
 
@@ -24,7 +24,10 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({
   sale,
   duration,
 }) => {
-  const { hasEnded: lotHasClosed } = useTimer(lotEndAt!, sale.startAt!)
+  if (!lotEndAt) {
+    return null
+  }
+  const { hasEnded: lotHasClosed } = useTimer(lotEndAt, sale.startAt ?? "")
 
   const { hasEnded: lotsAreClosing, hasStarted: saleHasStarted } = useTimer(
     sale.endAt!,

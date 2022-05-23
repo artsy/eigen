@@ -2,6 +2,7 @@ import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { DateTime } from "luxon"
 import moment from "moment-timezone"
 import { Flex, Sans, Spacer, Text } from "palette"
 import PropTypes from "prop-types"
@@ -25,11 +26,11 @@ export enum AuctionTimerState {
 
 interface Props {
   liveStartsAt?: string
-  endsAt?: string
   isPreview?: boolean
   isClosed?: boolean
   startsAt?: string
-  extendedBiddingEndAt?: string | null
+  biddingEndAt?: string | null
+  lotEndAt?: string | null
 }
 function formatDate(date: string) {
   const dateInMoment = moment(date, moment.ISO_8601).tz(moment.tz.guess(true))
@@ -40,7 +41,7 @@ function formatDate(date: string) {
 
 export function relevantStateData(
   currentState: AuctionTimerState,
-  { liveStartsAt, startsAt, endsAt, extendedBiddingEndAt }: Props
+  { liveStartsAt, startsAt, lotEndAt, biddingEndAt }: Props
 ) {
   switch (currentState) {
     case AuctionTimerState.PREVIEW: {
@@ -60,13 +61,17 @@ export function relevantStateData(
       return { date: null, label: "In progress" }
     }
     case AuctionTimerState.CLOSING: {
-      return { date: endsAt, label: endsAt ? `Closes ${formatDate(endsAt)}` : "", hasStarted: true }
-    }
-    case AuctionTimerState.EXTENDED: {
-      const endTime = extendedBiddingEndAt || endsAt
+      const endTime = biddingEndAt || lotEndAt
       return {
         date: endTime,
         label: endTime ? `Closes ${formatDate(endTime)}` : "",
+        hasStarted: true,
+      }
+    }
+    case AuctionTimerState.EXTENDED: {
+      return {
+        date: biddingEndAt,
+        label: biddingEndAt ? `Closes ${formatDate(biddingEndAt)}` : "",
         hasStarted: true,
       }
     }
@@ -110,11 +115,16 @@ export function currentTimerState({
   isPreview,
   isClosed,
   liveStartsAt,
-  extendedBiddingEndAt,
+  lotEndAt,
+  biddingEndAt,
 }: Props) {
+  const isExtended =
+    !!biddingEndAt && !!lotEndAt
+      ? DateTime.fromISO(biddingEndAt) > DateTime.fromISO(lotEndAt)
+      : false
   if (isPreview) {
     return AuctionTimerState.PREVIEW
-  } else if (!!extendedBiddingEndAt && moment().isBefore(extendedBiddingEndAt)) {
+  } else if (isExtended) {
     return AuctionTimerState.EXTENDED
   } else if (isClosed) {
     return AuctionTimerState.CLOSED
@@ -132,7 +142,7 @@ export function currentTimerState({
 
 export interface CountdownProps extends CountdownTimerProps {
   hasStarted?: boolean
-  hasBeenExtended: boolean
+  hasBeenExtended?: boolean
   cascadingEndTimeIntervalMinutes?: number | null
   extendedBiddingIntervalMinutes?: number | null
   extendedBiddingPeriodMinutes?: number | null
@@ -160,19 +170,21 @@ export const Countdown: React.FC<CountdownProps> = ({
       ) : (
         <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
       )}
-      {!!extendedBiddingPeriodMinutes && !!extendedBiddingIntervalMinutes && (
-        <ArtworkAuctionProgressBar
-          startAt={startAt}
-          extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
-          extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
-          biddingEndAt={biddingEndAt}
-          hasBeenExtended={hasBeenExtended}
-        />
-      )}
+      {!!extendedBiddingPeriodMinutes &&
+        !!extendedBiddingIntervalMinutes &&
+        !!cascadingEndTimeFeatureEnabled && (
+          <ArtworkAuctionProgressBar
+            startAt={startAt}
+            extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
+            extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
+            biddingEndAt={biddingEndAt}
+            hasBeenExtended={!!hasBeenExtended}
+          />
+        )}
       <Sans size="2" weight="medium" color="black60">
         {label}
       </Sans>
-      {!!extendedBiddingPeriodMinutes && (
+      {!!extendedBiddingPeriodMinutes && !!cascadingEndTimeFeatureEnabled && (
         <>
           <Spacer mt={1} />
           <Text variant="xs" color="black60" textAlign="center">

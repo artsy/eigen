@@ -14,7 +14,7 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { GravityWebsocketContextProvider } from "app/Websockets/GravityWebsocketContext"
+import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { Box, LinkButton, Separator } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
@@ -224,7 +224,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "commercialInformation",
         element: (
-          <CommercialInformation artwork={artworkAboveTheFold} me={me} tracking={tracking} />
+          <CommercialInformation
+            artwork={artworkAboveTheFold}
+            me={me}
+            tracking={tracking}
+            refetchArtwork={() =>
+              relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
+            }
+          />
         ),
       })
     }
@@ -379,7 +386,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         biddable: artworkAboveTheFold?.isBiddable,
       }}
     >
-      <GravityWebsocketContextProvider
+      <AuctionWebsocketContextProvider
         channelInfo={{
           channel: "SalesChannel",
           sale_id: artworkBelowTheFold?.sale?.internalID,
@@ -409,7 +416,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
           />
         )}
         <QAInfo />
-      </GravityWebsocketContextProvider>
+      </AuctionWebsocketContextProvider>
     </ProvideScreenTracking>
   )
 }

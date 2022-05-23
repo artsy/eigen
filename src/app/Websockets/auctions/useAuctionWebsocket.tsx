@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useGravityWebsocketContext } from "../GravityWebsocketContext"
+import { useAuctionWebsocketContext } from "./AuctionSocketContext"
 
 interface AuctionWebsocketData {
   [key: string]: string
@@ -11,7 +11,7 @@ interface AuctionWebsocketParams {
 }
 
 export const useAuctionWebsocket = ({ onChange, lotID }: AuctionWebsocketParams) => {
-  const { data } = useGravityWebsocketContext()
+  const { data } = useAuctionWebsocketContext()
   const { lot_id } = data
   const receivedMessageForThisLot = lot_id === lotID
 

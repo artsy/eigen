@@ -8,6 +8,8 @@ export interface TickerState {
   date?: string
   hasStarted?: boolean
   state: string
+  biddingEndAt?: string
+  hasBeenExtended?: boolean
 }
 
 interface Props {
@@ -50,7 +52,7 @@ export class StateManager extends React.Component<Props, State> {
   render() {
     const { CountdownComponent, timeOffsetInMilliseconds, ...props } = this.props
     const {
-      tickerState: { label, date, state, hasStarted },
+      tickerState: { label, date, state, hasStarted, hasBeenExtended, biddingEndAt },
     } = this.state
     return (
       <DurationProvider
@@ -63,6 +65,8 @@ export class StateManager extends React.Component<Props, State> {
           duration={null}
           hasStarted={hasStarted}
           timerState={state}
+          hasBeenExtended={hasBeenExtended}
+          biddingEndAt={biddingEndAt}
           {...props}
         />
       </DurationProvider>
