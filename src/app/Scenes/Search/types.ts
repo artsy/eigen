@@ -23,7 +23,7 @@ export enum AlgoliaIndexKey {
   Article = "article",
   Auction = "sale",
   ArtistSeries = "artist_series",
-  Collection = "kaws_collection",
+  Collection = "marketing_collection",
   Fair = "fair",
   Show = "partner_show",
   Gallery = "partner_gallery",
