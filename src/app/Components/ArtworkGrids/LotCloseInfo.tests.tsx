@@ -1,6 +1,7 @@
 import { render } from "@testing-library/react-native"
 import { Theme } from "palette"
 import React from "react"
+import { currentTimerState, relevantStateData } from "../Bidding/Components/Timer"
 import { DurationProvider } from "../Countdown"
 import { LotCloseInfo } from "./LotCloseInfo"
 
@@ -19,6 +20,7 @@ const basicSaleArtwork = {
   formattedEndDateTime: "Formatted end date time",
   currentBid: null,
   lotLabel: "Lot 1",
+  extendedBiddingEndAt: null,
 }
 
 describe("LotCloseInfo", () => {
@@ -166,5 +168,44 @@ describe("LotCloseInfo", () => {
 
     expect(lotCloseText).toBeTruthy()
     expect(lotCloseText.props.color).toEqual("black60")
+  })
+
+  it("shows Extended when the sale is extended", () => {
+    const sale = {
+      startAt: "2017-04-19T11:12:48-04:00",
+      endAt: "2017-04-25T11:12:48-04:00",
+      ...basicSale,
+    }
+    const saleArtwork = {
+      ...basicSaleArtwork,
+      endAt: sale.endAt,
+      extendedBiddingEndAt: new Date(new Date(sale.endAt).getTime() + 1000 * 60 * 2).toISOString(),
+    }
+
+    Date.now = jest.fn(() => new Date(saleArtwork.endAt).getTime())
+
+    const theCurrentTimerState = currentTimerState({
+      extendedBiddingEndAt: saleArtwork.extendedBiddingEndAt,
+    })
+
+    const { getByText } = render(
+      <Theme>
+        <DurationProvider
+          startAt={
+            relevantStateData(theCurrentTimerState, {
+              endsAt: saleArtwork.endAt,
+              extendedBiddingEndAt: saleArtwork.extendedBiddingEndAt,
+            }).date!
+          }
+        >
+          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+        </DurationProvider>
+      </Theme>
+    )
+
+    const lotCloseText = getByText("Extended, 2m 0s")
+
+    expect(lotCloseText).toBeTruthy()
+    expect(lotCloseText.props.color).toEqual("red100")
   })
 })

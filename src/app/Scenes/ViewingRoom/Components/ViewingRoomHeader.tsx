@@ -44,7 +44,7 @@ const Overlay = styled(LinearGradient)`
 
 const CountdownText: React.FC<CountdownTimerProps> = ({ duration }) => {
   const separator = "  "
-  const sections = durationSections(duration, ["d", "h", "m", "s"])
+  const sections = duration ? durationSections(duration, ["d", "h", "m", "s"]) : []
   return (
     <Text variant="xs" fontWeight={500} color="white100">
       {sections
