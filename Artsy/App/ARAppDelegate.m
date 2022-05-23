@@ -159,7 +159,7 @@ static ARAppDelegate *_sharedInstance = nil;
 /// This is called when the app is almost done launching
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-#ifdef FB_SONARKIT_ENABLED
+#if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
     InitializeFlipper(application);
 #endif
 
