@@ -68,11 +68,13 @@ export const AuctionWebsocketContextProvider: React.FC<AuctionWebsocketContextPr
         xapp_token: xappToken,
       })
     )
-    channel
-      .on("received", onReceived)
-      .on("connected", onConnected)
-      .on("disconnected", onDisconnected)
-      .on("rejected", onRejected)
+    if (channel) {
+      channel
+        .on("received", onReceived)
+        .on("connected", onConnected)
+        .on("disconnected", onDisconnected)
+        .on("rejected", onRejected)
+    }
 
     setChannelKey(theChannelKey)
   }

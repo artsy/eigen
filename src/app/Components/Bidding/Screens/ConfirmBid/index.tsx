@@ -59,7 +59,7 @@ interface ConfirmBidState {
   selectedBidIndex: number
   errorModalVisible: boolean
   errorModalDetailText: string
-  currentBiddingEndAt: string | null
+  currentBiddingEndAt?: string | null
 }
 
 const MAX_POLL_ATTEMPTS = 20
@@ -103,7 +103,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       errorModalVisible: false,
       errorModalDetailText: "",
       currentBiddingEndAt:
-        this.props.sale_artwork.extendedBiddingEndAt || this.props.sale_artwork.endAt,
+        this.props.sale_artwork.extendedBiddingEndAt ||
+        this.props.sale_artwork.endAt ||
+        this.props.sale_artwork.sale?.end_at,
     }
   }
 
@@ -467,9 +469,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
     const enablePriceTransparency = unsafe_getFeatureFlag("AROptionsPriceTransparency")
 
-    const cascadingEndTimeFeatureEnabled =
-      unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage") &&
-      sale?.cascadingEndTimeIntervalMinutes
+    const cascadingEndTimeFeatureEnabled = unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage")
 
     const websocketEnabled =
       !!cascadingEndTimeFeatureEnabled && !!sale?.cascadingEndTimeIntervalMinutes

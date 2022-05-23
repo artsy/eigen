@@ -229,14 +229,14 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
 
   return (
     <ArtworkFiltersStoreProvider>
-      <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
-        <AuctionWebsocketContextProvider
-          channelInfo={{
-            channel: "SalesChannel",
-            sale_id: sale.internalID,
-          }}
-          enabled={websocketEnabled}
-        >
+      <AuctionWebsocketContextProvider
+        channelInfo={{
+          channel: "SalesChannel",
+          sale_id: sale.internalID,
+        }}
+        enabled={websocketEnabled}
+      >
+        <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
           <Animated.FlatList
             ref={flatListRef}
             data={saleSectionsData}
@@ -272,8 +272,8 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
             isVisible={isArtworksGridVisible}
             onPress={openFilterArtworksModal}
           />
-        </AuctionWebsocketContextProvider>
-      </ProvideScreenTracking>
+        </ProvideScreenTracking>
+      </AuctionWebsocketContextProvider>
     </ArtworkFiltersStoreProvider>
   )
 }
