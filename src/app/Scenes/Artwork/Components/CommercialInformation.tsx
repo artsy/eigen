@@ -30,6 +30,7 @@ interface CommercialInformationProps extends CountdownTimerProps {
   me: CommercialInformation_me
   hasStarted?: boolean
   tracking?: TrackingProp
+  setAuctionTimerState?: (auctionTimerState: AuctionTimerState) => void
 }
 
 export const CommercialInformationTimerWrapper: React.FC<CommercialInformationProps> = (props) => {
@@ -44,6 +45,8 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
     } = props.artwork.sale || {}
 
     const { endAt: lotEndAt, extendedBiddingEndAt } = props.artwork.saleArtwork
+
+    const { setAuctionTimerState } = props
 
     const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
 
@@ -70,6 +73,9 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               startsAt: startsAt || undefined,
               endsAt,
             })
+
+            setAuctionTimerState?.(state)
+
             return { label, date, state, hasStarted, cascadingEndTimeIntervalMinutes }
           }}
           onNextTickerState={({ state }) => {
@@ -81,6 +87,9 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               startsAt: startsAt || undefined,
               endsAt,
             })
+
+            setAuctionTimerState?.(nextState)
+
             return { state: nextState, date, label, hasStarted }
           }}
           {...(props as any)}
@@ -147,7 +156,8 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
   const canTakeCommercialAction =
     isAcquireable || isOfferable || isInquireable || isBiddableInAuction
-  const shouldCreateArtworkAlertButton = enableCreateArtworkAlert && isSold
+  const shouldShowCreateArtworkAlertButton =
+    enableCreateArtworkAlert && (isSold || isInClosedAuction)
 
   useEffect(() => {
     const artworkIsInActiveAuction = artwork.isInAuction && timerState !== AuctionTimerState.CLOSED
@@ -281,8 +291,8 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
 
   return (
     <>
-      {shouldCreateArtworkAlertButton ? (
-        <CreateArtworkAlertButtonsSection artwork={artwork} />
+      {shouldShowCreateArtworkAlertButton ? (
+        <CreateArtworkAlertButtonsSection artwork={artwork} auctionState={timerState} />
       ) : (
         <Box>
           {renderPriceInformation()}

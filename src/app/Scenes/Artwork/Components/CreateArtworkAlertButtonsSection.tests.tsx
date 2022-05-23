@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { CreateArtworkAlertButtonsSectionTestsQuery } from "__generated__/CreateArtworkAlertButtonsSectionTestsQuery.graphql"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
@@ -19,7 +20,7 @@ describe("CreateArtworkAlertButtonsSection", () => {
     jest.clearAllMocks()
   })
 
-  const TestRenderer = () => {
+  const TestRenderer = ({ auctionState }: { auctionState?: AuctionTimerState }) => {
     return (
       <QueryRenderer<CreateArtworkAlertButtonsSectionTestsQuery>
         environment={mockEnvironment}
@@ -33,7 +34,12 @@ describe("CreateArtworkAlertButtonsSection", () => {
         variables={{}}
         render={({ props }) => {
           if (props?.artwork) {
-            return <CreateArtworkAlertButtonsSection artwork={props.artwork} />
+            return (
+              <CreateArtworkAlertButtonsSection
+                artwork={props.artwork}
+                auctionState={auctionState}
+              />
+            )
           }
           return null
         }}
@@ -97,12 +103,47 @@ describe("CreateArtworkAlertButtonsSection", () => {
 
     expect(getAllByText("Contact Gallery").length).toBeGreaterThan(0)
   })
+
+  it("should render `Bidding closed` title", () => {
+    const { getByText } = renderWithWrappersTL(
+      <TestRenderer auctionState={AuctionTimerState.CLOSED} />
+    )
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Artwork: () => ({
+        ...Artwork,
+        isInAuction: true,
+        sale: {
+          internalID: "sale-id",
+        },
+      }),
+    })
+
+    expect(getByText("Bidding closed")).toBeTruthy()
+  })
+
+  it("should render `Sold` title", () => {
+    const { getByText } = renderWithWrappersTL(
+      <TestRenderer auctionState={AuctionTimerState.CLOSED} />
+    )
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Artwork: () => ({
+        ...Artwork,
+        isSold: true,
+      }),
+    })
+
+    expect(getByText("Sold")).toBeTruthy()
+  })
 })
 
 const Artwork = {
   title: "Some artwork title",
   slug: "artwork-slug",
   internalID: "artwork-id",
+  isInAuction: false,
+  sale: null,
   artists: [
     {
       internalID: "4dd1584de0091e000100207c",

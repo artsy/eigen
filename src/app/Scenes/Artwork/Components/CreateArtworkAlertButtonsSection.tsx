@@ -13,6 +13,7 @@ import {
   SavedSearchEntityArtist,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { compact } from "lodash"
 import { Box, Button, Spacer, Text } from "palette"
 import { FC, useState } from "react"
@@ -20,16 +21,21 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
 
-interface CreateArtworkAlertButtonsSectionProps {
+export interface CreateArtworkAlertButtonsSectionProps {
   artwork: CreateArtworkAlertButtonsSection_artwork
+  // FIXME:- state manager can return a string different from AuctionTimerState
+  // Check CountdownTimer.tsx
+  auctionState?: AuctionTimerState | string
 }
 
 const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps> = ({
   artwork,
+  auctionState,
 }) => {
   const tracking = useTracking()
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
-  const { isInquireable } = artwork
+  const { isInquireable, isInAuction, sale } = artwork
+  const isInClosedAuction = isInAuction && sale && auctionState === AuctionTimerState.CLOSED
 
   let aggregations: Aggregations = []
   let additionalGeneIDs: string[] = []
@@ -87,7 +93,7 @@ const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps
   return (
     <>
       <Box accessible accessibilityLabel="Create artwork alert buttons section">
-        <Text variant="lg">Sold</Text>
+        <Text variant="lg">{isInClosedAuction ? "Bidding closed" : "Sold"}</Text>
         <Text variant="xs" color="black60">
           Be notified when a similar piece is available
         </Text>
@@ -119,6 +125,7 @@ export const CreateArtworkAlertButtonsSectionFragmentContainer = createFragmentC
     artwork: graphql`
       fragment CreateArtworkAlertButtonsSection_artwork on Artwork {
         isInquireable
+        isInAuction
         internalID
         slug
         title
@@ -134,6 +141,9 @@ export const CreateArtworkAlertButtonsSectionFragmentContainer = createFragmentC
         artists {
           internalID
           name
+        }
+        sale {
+          internalID
         }
         ...InquiryButtons_artwork
       }
