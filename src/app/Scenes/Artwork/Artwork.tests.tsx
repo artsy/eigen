@@ -482,6 +482,8 @@ describe("Artwork", () => {
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
           isSold: false,
+          isInAuction: false,
+          sale: null,
         }),
       })
 
@@ -495,6 +497,31 @@ describe("Artwork", () => {
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
           isSold: true,
+          isInAuction: false,
+          sale: null,
+        }),
+      })
+
+      expect(queryByA11yLabel("Create artwork alert section")).toBeFalsy()
+      expect(queryByA11yLabel("Create artwork alert buttons section")).toBeTruthy()
+    })
+
+    it("should display create artwork alert buttons section when artwork is in closed auction", () => {
+      const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isSold: false,
+          isInAuction: true,
+          sale: {
+            isLiveOpen: false,
+            isPreview: false,
+            liveStartAt: null,
+            endAt: null,
+            startAt: null,
+            isClosed: true,
+            isAuction: true,
+          },
         }),
       })
 
