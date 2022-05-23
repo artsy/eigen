@@ -23,7 +23,9 @@ import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButt
 
 export interface CreateArtworkAlertButtonsSectionProps {
   artwork: CreateArtworkAlertButtonsSection_artwork
-  auctionState?: AuctionTimerState
+  // FIXME:- state manager can return a string different from AuctionTimerState
+  // Check CountdownTimer.tsx
+  auctionState?: AuctionTimerState | string
 }
 
 const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps> = ({
