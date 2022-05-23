@@ -1,6 +1,5 @@
 import { deleteCollectedArtwork } from "@artsy/cohesion"
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
