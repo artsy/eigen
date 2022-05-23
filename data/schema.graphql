@@ -3184,6 +3184,8 @@ type CommerceBuyerRejectOfferPayload {
 }
 
 type CommerceBuyOrder implements CommerceOrder {
+  additionalPaymentMethods: [String]
+
   # Whether Artsy collects taxes (e.g., sales tax or VAT) on this order.
   artsyCollectsTaxes: Boolean
   artsyRemitsTaxes: Boolean
@@ -3900,6 +3902,8 @@ type CommerceOfferEdge {
 }
 
 type CommerceOfferOrder implements CommerceOrder {
+  additionalPaymentMethods: [String]
+
   # Whether Artsy collects taxes (e.g., sales tax or VAT) on this order.
   artsyCollectsTaxes: Boolean
   artsyRemitsTaxes: Boolean
@@ -4131,6 +4135,8 @@ type CommerceOfferSubmittedEvent implements CommerceEventInterface {
 
 # Order
 interface CommerceOrder {
+  additionalPaymentMethods: [String]
+
   # Whether Artsy collects taxes (e.g., sales tax or VAT) on this order.
   artsyCollectsTaxes: Boolean
   artsyRemitsTaxes: Boolean
