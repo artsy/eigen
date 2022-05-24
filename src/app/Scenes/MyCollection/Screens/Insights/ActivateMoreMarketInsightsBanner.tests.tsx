@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 
@@ -20,7 +21,9 @@ describe("MyCollectionInsights banner", () => {
     fireEvent.press(getByTestId("activate-more-market-insights-banner"))
     expect(navigate).toHaveBeenCalledWith(
       "my-collection/artworks/new",
-      expect.objectContaining({ passProps: { mode: "add", onSuccess: expect.anything() } })
+      expect.objectContaining({
+        passProps: { mode: "add", onSuccess: expect.anything(), source: Tab.insights },
+      })
     )
   })
 })

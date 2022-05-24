@@ -539,7 +539,6 @@ beforeEach(() => {
 
 const mockedModule = (path: string, mockModuleName: string) => jest.mock(path, () => mockModuleName)
 mockedModule("./app/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
-mockedModule("./app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
 mockedModule("./app/Components/Gene/Header.tsx", "Header")
 
 jest.mock("app/utils/track/providers", () => ({

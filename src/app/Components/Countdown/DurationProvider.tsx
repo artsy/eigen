@@ -1,8 +1,10 @@
+import { DateTime } from "luxon"
 import moment from "moment"
 import React from "react"
+import { AppState, AppStateStatus, NativeEventSubscription } from "react-native"
 
 interface Props {
-  startAt: string
+  startAt?: string
   timeOffsetInMilliseconds?: number
   children: React.ReactElement<any>
   onDurationEnd?: () => void
@@ -10,37 +12,53 @@ interface Props {
 
 interface State {
   timeLeftInMilliseconds: number
+  appState: AppStateStatus
 }
 
 export class DurationProvider extends React.Component<Props, State> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private intervalId: ReturnType<typeof setInterval>
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
-    super(props)
-    this.state = { timeLeftInMilliseconds: Date.parse(props.startAt) - Date.now() }
+  state = {
+    timeLeftInMilliseconds: this.props.startAt
+      ? DateTime.fromISO(this.props.startAt).toMillis() - DateTime.now().toMillis()
+      : 0,
+    appState: AppState.currentState,
   }
+
+  private intervalId: ReturnType<typeof setInterval> | null = null
+  private appStateSubscription: NativeEventSubscription | null = null
 
   componentDidMount() {
     this.intervalId = setInterval(this.timer, 1000)
+    this.appStateSubscription = AppState.addEventListener("change", (nextAppState) => {
+      if (this.state.appState.match(/inactive|background/) && nextAppState === "active") {
+        // recalculate timeLeftInMilliseconds
+        if (this.props.startAt) {
+          this.setState({
+            timeLeftInMilliseconds:
+              DateTime.fromISO(this.props.startAt).toMillis() - DateTime.now().toMillis(),
+          })
+        }
+      }
+      this.setState({ appState: nextAppState })
+    })
   }
 
   componentWillUnmount() {
     if (this.intervalId) {
       clearInterval(this.intervalId)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       this.intervalId = null
+    }
+    if (this.appStateSubscription) {
+      this.appStateSubscription.remove()
     }
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps: Props) {
     if (nextProps.startAt !== this.props.startAt) {
-      clearInterval(this.intervalId)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      if (this.intervalId) {
+        clearInterval(this.intervalId)
+      }
       this.intervalId = null
-      if (nextProps.startAt !== null) {
+      if (!!nextProps.startAt) {
         this.setState(
           {
             timeLeftInMilliseconds: Date.parse(nextProps.startAt) - Date.now(),
@@ -62,7 +80,6 @@ export class DurationProvider extends React.Component<Props, State> {
       // Countdown expired, clear interval
       if (this.intervalId) {
         clearInterval(this.intervalId)
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         this.intervalId = null
       }
 

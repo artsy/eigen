@@ -580,6 +580,7 @@ describe("polling to verify bid position", () => {
             },
             status: "RESERVE_NOT_MET",
           },
+          biddingEndAt: expect.anything(),
           refreshBidderInfo: expect.anything(),
           refreshSaleArtwork: expect.anything(),
           sale_artwork: {
@@ -602,6 +603,7 @@ describe("polling to verify bid position", () => {
               start_at: "2018-05-08T20:22:42+00:00",
               cascadingEndTimeIntervalMinutes: null,
               end_at: "2018-05-10T20:22:42+00:00",
+              internalID: "internal-id",
               isBenefit: false,
               live_start_at: "2018-05-09T20:22:42+00:00",
               partner: {
@@ -920,10 +922,9 @@ describe("cascading end times", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
     })
 
-    it("shows the sale artwork's end time if the sale has cascading end times", () => {
+    it("sale endtime defaults to extendedBiddingEndtime", () => {
       const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
-      // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
-      const timerText = getByText("03d 00h 00m 10s")
+      const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
 
@@ -931,7 +932,6 @@ describe("cascading end times", () => {
       const { getByText } = renderWithWrappersTL(
         <ConfirmBid {...initialPropsForNonCascadingSale} />
       )
-      // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
       const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
@@ -943,7 +943,6 @@ describe("cascading end times", () => {
     })
     it("shows the sale's end time", () => {
       const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
-      // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
       const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
@@ -971,6 +970,7 @@ const baseSaleArtwork = {
     },
   },
   sale: {
+    internalID: "internal-id",
     slug: "best-art-sale-in-town",
     start_at: "2018-05-08T20:22:42+00:00",
     end_at: "2018-05-10T20:22:42+00:00",
@@ -1002,6 +1002,7 @@ const nonCascadeSaleArtwork: ConfirmBid_sale_artwork = {
   endAt: null,
   sale: {
     ...baseSaleArtwork.sale,
+    end_at: new Date(Date.now() + 10000).toISOString(),
     live_start_at: null,
     cascadingEndTimeIntervalMinutes: null,
   },
@@ -1015,6 +1016,7 @@ const nonCascadeSaleArtwork: ConfirmBid_sale_artwork = {
 const cascadingEndTimeSaleArtwork: ConfirmBid_sale_artwork = {
   ...saleArtwork,
   endAt: "2018-05-13T20:22:42+00:00",
+  extendedBiddingEndAt: new Date(Date.now() + 10000).toISOString(),
   sale: {
     ...baseSaleArtwork.sale,
     live_start_at: null,

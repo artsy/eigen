@@ -2,6 +2,7 @@ import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { DateTime } from "luxon"
 import moment from "moment-timezone"
 import { Flex, Sans, Spacer, Text } from "palette"
 import PropTypes from "prop-types"
@@ -20,14 +21,16 @@ export enum AuctionTimerState {
   LIVE_INTEGRATION_ONGOING = "LIVE_INTEGRATION_ONGOING",
   CLOSING = "CLOSING",
   CLOSED = "CLOSED",
+  EXTENDED = "EXTENDED",
 }
 
 interface Props {
   liveStartsAt?: string
-  endsAt?: string
   isPreview?: boolean
   isClosed?: boolean
   startsAt?: string
+  biddingEndAt?: string | null
+  lotEndAt?: string | null
 }
 function formatDate(date: string) {
   const dateInMoment = moment(date, moment.ISO_8601).tz(moment.tz.guess(true))
@@ -38,26 +41,39 @@ function formatDate(date: string) {
 
 export function relevantStateData(
   currentState: AuctionTimerState,
-  { liveStartsAt, startsAt, endsAt }: Props
+  { liveStartsAt, startsAt, lotEndAt, biddingEndAt }: Props
 ) {
   switch (currentState) {
     case AuctionTimerState.PREVIEW: {
       if (!startsAt) {
         console.error("startsAt is required when isPreview is true")
       }
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return { date: startsAt, label: `Starts ${formatDate(startsAt)}`, hasStarted: false }
+      return {
+        date: startsAt,
+        label: startsAt ? `Starts ${formatDate(startsAt)}` : "",
+        hasStarted: false,
+      }
     }
     case AuctionTimerState.LIVE_INTEGRATION_UPCOMING: {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return { date: liveStartsAt, label: `Live ${formatDate(liveStartsAt)}` }
+      return { date: liveStartsAt, label: liveStartsAt ? `Live ${formatDate(liveStartsAt)}` : "" }
     }
     case AuctionTimerState.LIVE_INTEGRATION_ONGOING: {
       return { date: null, label: "In progress" }
     }
     case AuctionTimerState.CLOSING: {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return { date: endsAt, label: `Closes ${formatDate(endsAt)}`, hasStarted: true }
+      const endTime = biddingEndAt || lotEndAt
+      return {
+        date: endTime,
+        label: endTime ? `Closes ${formatDate(endTime)}` : "",
+        hasStarted: true,
+      }
+    }
+    case AuctionTimerState.EXTENDED: {
+      return {
+        date: biddingEndAt,
+        label: biddingEndAt ? `Closes ${formatDate(biddingEndAt)}` : "",
+        hasStarted: true,
+      }
     }
     default: {
       return { date: null, label: "Bidding closed" }
@@ -83,6 +99,9 @@ export function nextTimerState(currentState: AuctionTimerState, { liveStartsAt }
     case AuctionTimerState.LIVE_INTEGRATION_ONGOING: {
       return AuctionTimerState.LIVE_INTEGRATION_ONGOING
     }
+    case AuctionTimerState.EXTENDED: {
+      return AuctionTimerState.CLOSED
+    }
     case AuctionTimerState.CLOSING: {
       return AuctionTimerState.CLOSED
     }
@@ -92,9 +111,21 @@ export function nextTimerState(currentState: AuctionTimerState, { liveStartsAt }
   }
 }
 
-export function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) {
+export function currentTimerState({
+  isPreview,
+  isClosed,
+  liveStartsAt,
+  lotEndAt,
+  biddingEndAt,
+}: Props) {
+  const isExtended =
+    !!biddingEndAt && !!lotEndAt
+      ? DateTime.fromISO(biddingEndAt) > DateTime.fromISO(lotEndAt)
+      : false
   if (isPreview) {
     return AuctionTimerState.PREVIEW
+  } else if (isExtended) {
+    return AuctionTimerState.EXTENDED
   } else if (isClosed) {
     return AuctionTimerState.CLOSED
   } else if (liveStartsAt) {
@@ -111,51 +142,49 @@ export function currentTimerState({ isPreview, isClosed, liveStartsAt }: Props) 
 
 export interface CountdownProps extends CountdownTimerProps {
   hasStarted?: boolean
+  hasBeenExtended?: boolean
   cascadingEndTimeIntervalMinutes?: number | null
   extendedBiddingIntervalMinutes?: number | null
   extendedBiddingPeriodMinutes?: number | null
-  extendedBiddingEndAt?: string | null
+  biddingEndAt?: string | null
   startAt?: string | null
-  endAt?: string | null
 }
 
 export const Countdown: React.FC<CountdownProps> = ({
   duration,
   label,
   hasStarted,
+  hasBeenExtended,
   startAt,
-  endAt,
   cascadingEndTimeIntervalMinutes,
   extendedBiddingIntervalMinutes,
   extendedBiddingPeriodMinutes,
-  extendedBiddingEndAt,
+  biddingEndAt,
 }) => {
   const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
 
   return (
     <Flex alignItems="center">
       {cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? (
-        <ModernTicker
-          duration={duration}
-          hasStarted={hasStarted}
-          isExtended={!!extendedBiddingEndAt}
-        />
+        <ModernTicker duration={duration} hasStarted={hasStarted} isExtended={hasBeenExtended} />
       ) : (
         <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
       )}
-      {!!extendedBiddingPeriodMinutes && !!extendedBiddingIntervalMinutes && (
-        <ArtworkAuctionProgressBar
-          startAt={startAt}
-          endAt={endAt}
-          extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
-          extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
-          extendedBiddingEndAt={extendedBiddingEndAt}
-        />
-      )}
+      {!!extendedBiddingPeriodMinutes &&
+        !!extendedBiddingIntervalMinutes &&
+        !!cascadingEndTimeFeatureEnabled && (
+          <ArtworkAuctionProgressBar
+            startAt={startAt}
+            extendedBiddingPeriodMinutes={extendedBiddingPeriodMinutes}
+            extendedBiddingIntervalMinutes={extendedBiddingIntervalMinutes}
+            biddingEndAt={biddingEndAt}
+            hasBeenExtended={!!hasBeenExtended}
+          />
+        )}
       <Sans size="2" weight="medium" color="black60">
         {label}
       </Sans>
-      {!!extendedBiddingPeriodMinutes && (
+      {!!extendedBiddingPeriodMinutes && !!cascadingEndTimeFeatureEnabled && (
         <>
           <Spacer mt={1} />
           <Text variant="xs" color="black60" textAlign="center">

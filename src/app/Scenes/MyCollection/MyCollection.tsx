@@ -39,8 +39,10 @@ import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
+import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
+import { AddedArtworkHasNoInsightsMessage } from "./Screens/Insights/MyCollectionInsightsMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
@@ -54,6 +56,7 @@ const MyCollection: React.FC<{
   const { showSessionVisualClue } = useSessionVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
+  const showMyCollectionInsights = useFeatureFlag("ARShowMyCollectionInsights")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
@@ -94,65 +97,79 @@ const MyCollection: React.FC<{
   const hasBeenShownBanner = async () => {
     const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
     const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
+    const shouldShowAddedArtworkHasNoInsightsMessage = showSessionVisualClue(
+      "AddArtworkWithoutInsightsMessage_MyCTab"
+    )
     return {
       hasSeenBanner: hasSeen === "true",
       shouldShowConsignments: shouldShowConsignments === true,
+      shouldShowAddedArtworkHasNoInsightsMessage:
+        shouldShowAddedArtworkHasNoInsightsMessage === true && showMyCollectionInsights,
     }
   }
 
   useEffect(() => {
     if (artworks.length) {
-      hasBeenShownBanner().then(({ hasSeenBanner, shouldShowConsignments }) => {
-        const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
-        const showConsignmentsBanner = shouldShowConsignments
-
-        setJSX(
-          <Flex>
-            <ArtworksFilterHeader
-              selectedFiltersCount={filtersCount}
-              onFilterPress={() => setIsFilterModalVisible(true)}
-            >
-              <Button
-                data-test-id="add-artwork-button-non-zero-state"
-                size="small"
-                variant="fillDark"
-                onPress={() => {
-                  navigate("my-collection/artworks/new", {
-                    passProps: {
-                      mode: "add",
-                      onSuccess: popToRoot,
-                    },
-                  })
-                  trackEvent(tracks.addCollectedArtwork())
-                }}
-                haptic
+      hasBeenShownBanner().then(
+        ({ hasSeenBanner, shouldShowConsignments, shouldShowAddedArtworkHasNoInsightsMessage }) => {
+          const showNewWorksBanner =
+            me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
+          const showConsignmentsBanner = shouldShowConsignments
+          const showAddedArtworkHasNoInsightsMessage = shouldShowAddedArtworkHasNoInsightsMessage
+          setJSX(
+            <Flex>
+              <ArtworksFilterHeader
+                selectedFiltersCount={filtersCount}
+                onFilterPress={() => setIsFilterModalVisible(true)}
               >
-                Add Works
-              </Button>
-            </ArtworksFilterHeader>
-            {!!showNewWorksBanner && (
-              <Message
-                variant="info"
-                title="Your collection is growing"
-                text="Based on your purchase history, we’ve added the following works."
-                showCloseButton
-                onClose={() =>
-                  AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
-                }
-              />
-            )}
-            {!!showConsignmentsBanner && (
-              <Message
-                variant="info"
-                title="Artwork added to My Collection"
-                text="The artwork you submitted for sale has been automatically added."
-                showCloseButton
-                onClose={() => removeClue("ArtworkSubmissionMessage")}
-              />
-            )}
-          </Flex>
-        )
-      })
+                <Button
+                  data-test-id="add-artwork-button-non-zero-state"
+                  size="small"
+                  variant="fillDark"
+                  onPress={async () => {
+                    navigate("my-collection/artworks/new", {
+                      passProps: {
+                        mode: "add",
+                        source: Tab.collection,
+                        onSuccess: popToRoot,
+                      },
+                    })
+                    trackEvent(tracks.addCollectedArtwork())
+                  }}
+                  haptic
+                >
+                  Add Works
+                </Button>
+              </ArtworksFilterHeader>
+              {!!showNewWorksBanner && (
+                <Message
+                  variant="info"
+                  title="Your collection is growing"
+                  text="Based on your purchase history, we’ve added the following works."
+                  showCloseButton
+                  onClose={() =>
+                    AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
+                  }
+                />
+              )}
+              {!!showConsignmentsBanner && (
+                <Message
+                  variant="info"
+                  title="Artwork added to My Collection"
+                  text="The artwork you submitted for sale has been automatically added."
+                  showCloseButton
+                  onClose={() => removeClue("ArtworkSubmissionMessage")}
+                />
+              )}
+              {!!showAddedArtworkHasNoInsightsMessage && (
+                <AddedArtworkHasNoInsightsMessage
+                  onClose={() => removeClue("AddArtworkWithoutInsightsMessage_MyCTab")}
+                />
+              )}
+            </Flex>
+          )
+        }
+      )
     } else {
       // remove already set JSX
       setJSX(null)

@@ -9,10 +9,12 @@ import {
 } from "app/Components/Bidding/Components/Timer"
 import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
+import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
+import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
+import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
 import { capitalize } from "lodash"
-import { Duration } from "moment"
 import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -23,15 +25,36 @@ import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformationFragmentContainer as CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
+import { CreateArtworkAlertButtonsSectionFragmentContainer as CreateArtworkAlertButtonsSection } from "./CreateArtworkAlertButtonsSection"
 
-interface CommercialInformationProps {
+interface CommercialInformationProps extends CountdownTimerProps {
   artwork: CommercialInformation_artwork
   me: CommercialInformation_me
-  timerState?: AuctionTimerState
-  label?: string
-  duration?: Duration
   hasStarted?: boolean
   tracking?: TrackingProp
+  biddingEndAt?: string
+  hasBeenExtended?: boolean
+  refetchArtwork: () => void
+  setAuctionTimerState?: (auctionTimerState: AuctionTimerState) => void
+}
+
+// On Android, the useArtworkBidding fails to receive data, bringing the
+// ContextProvider down closer to this component fixed it. [Android Only]
+const CommercialInformationWebsocketWrapper: React.FC<CommercialInformationProps> = (props) => {
+  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
+  const websocketEnabled =
+    cascadingEndTimeFeatureEnabled && !!props.artwork.sale?.cascadingEndTimeIntervalMinutes
+  return (
+    <AuctionWebsocketContextProvider
+      channelInfo={{
+        channel: "SalesChannel",
+        sale_id: props.artwork.sale?.internalID,
+      }}
+      enabled={websocketEnabled}
+    >
+      <CommercialInformationTimerWrapper {...props} />
+    </AuctionWebsocketContextProvider>
+  )
 }
 
 export const CommercialInformationTimerWrapper: React.FC<CommercialInformationProps> = (props) => {
@@ -45,13 +68,18 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
       endAt: saleEndAt,
     } = props.artwork.sale || {}
 
-    const { endAt: lotEndAt } = props.artwork.saleArtwork
+    const { endAt: lotEndAt, extendedBiddingEndAt, lotID } = props.artwork.saleArtwork
 
-    const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
+    const initialBiddingEndAt = extendedBiddingEndAt ?? lotEndAt ?? saleEndAt
 
-    const endsAt =
-      (cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? lotEndAt : saleEndAt) ||
-      undefined
+    const { setAuctionTimerState } = props
+
+    const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
+      lotID,
+      lotEndAt,
+      biddingEndAt: initialBiddingEndAt,
+      onDataReceived: props.refetchArtwork,
+    })
 
     return (
       <TimeOffsetProvider>
@@ -62,13 +90,27 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               isPreview: isPreview || undefined,
               isClosed: isClosed || undefined,
               liveStartsAt: liveStartsAt || undefined,
+              lotEndAt,
+              biddingEndAt: currentBiddingEndAt,
             })
             const { label, date, hasStarted } = relevantStateData(state, {
               liveStartsAt: liveStartsAt || undefined,
               startsAt: startsAt || undefined,
-              endsAt,
+              lotEndAt,
+              biddingEndAt: currentBiddingEndAt,
             })
-            return { label, date, state, hasStarted, cascadingEndTimeIntervalMinutes }
+
+            setAuctionTimerState?.(state)
+
+            return {
+              label,
+              date,
+              state,
+              hasStarted,
+              cascadingEndTimeIntervalMinutes,
+              hasBeenExtended: lotSaleExtended,
+              biddingEndAt: currentBiddingEndAt,
+            }
           }}
           onNextTickerState={({ state }) => {
             const nextState = nextTimerState(state as AuctionTimerState, {
@@ -77,9 +119,20 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
             const { label, date, hasStarted } = relevantStateData(nextState, {
               liveStartsAt: liveStartsAt || undefined,
               startsAt: startsAt || undefined,
-              endsAt,
+              lotEndAt,
+              biddingEndAt: currentBiddingEndAt,
             })
-            return { state: nextState, date, label, hasStarted }
+
+            setAuctionTimerState?.(nextState)
+
+            return {
+              state: nextState,
+              date,
+              label,
+              hasStarted,
+              hasBeenExtended: lotSaleExtended,
+              biddingEndAt: currentBiddingEndAt,
+            }
           }}
           {...(props as any)}
         />
@@ -122,10 +175,25 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   duration,
   label,
   hasStarted,
+  biddingEndAt,
+  hasBeenExtended,
 }) => {
-  const [editionSetID, setEditionSetID] = useState<string | null>(null)
-
   const { trackEvent } = useTracking()
+  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
+  const [editionSetID, setEditionSetID] = useState<string | null>(null)
+  const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
+    artwork
+
+  const isInClosedAuction = isInAuction && sale && timerState === AuctionTimerState.CLOSED
+  const artistIsConsignable = artwork?.artists?.filter((artist) => artist?.isConsignable).length
+  const hidesPriceInformation =
+    isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
+  const isBiddableInAuction =
+    isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
+  const canTakeCommercialAction =
+    isAcquireable || isOfferable || isInquireable || isBiddableInAuction
+  const shouldShowCreateArtworkAlertButton =
+    enableCreateArtworkAlert && (isSold || isInClosedAuction)
 
   useEffect(() => {
     const artworkIsInActiveAuction = artwork.isInAuction && timerState !== AuctionTimerState.CLOSED
@@ -214,69 +282,76 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
     )
   }
 
-  const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, saleArtwork } =
-    artwork
+  const renderCommercialButtons = () => {
+    if (!!(canTakeCommercialAction && !isInClosedAuction)) {
+      return (
+        <>
+          {!hidesPriceInformation && <Spacer mb={2} />}
+          <CommercialButtons
+            artwork={artwork}
+            me={me}
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            auctionState={timerState}
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            editionSetID={editionSetID}
+          />
+        </>
+      )
+    }
 
-  const isBiddableInAuction =
-    isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
-  const isInClosedAuction = isInAuction && sale && timerState === AuctionTimerState.CLOSED
-  const canTakeCommercialAction =
-    isAcquireable || isOfferable || isInquireable || isBiddableInAuction
-  const artistIsConsignable = artwork?.artists?.filter((artist) => artist?.isConsignable).length
-  const hidesPriceInformation =
-    isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
+    return null
+  }
+
+  const renderCountdown = () => {
+    if (!!isBiddableInAuction) {
+      return (
+        <>
+          <Spacer mb={2} />
+          <Countdown
+            label={label}
+            hasStarted={hasStarted}
+            cascadingEndTimeIntervalMinutes={sale.cascadingEndTimeIntervalMinutes}
+            duration={duration}
+            extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
+            extendedBiddingPeriodMinutes={sale.extendedBiddingPeriodMinutes}
+            biddingEndAt={biddingEndAt}
+            startAt={sale.startAt}
+            hasBeenExtended={hasBeenExtended}
+          />
+        </>
+      )
+    }
+
+    return null
+  }
 
   return (
     <>
-      {renderPriceInformation()}
-      <Box>
-        {!!(canTakeCommercialAction && !isInClosedAuction) && (
-          <>
-            {!hidesPriceInformation && <Spacer mb={2} />}
-            <CommercialButtons
-              artwork={artwork}
-              me={me}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              auctionState={timerState}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              editionSetID={editionSetID}
-            />
-          </>
-        )}
-        {!!isBiddableInAuction && (
-          <>
-            <Spacer mb={2} />
-            <Countdown
-              label={label}
-              hasStarted={hasStarted}
-              cascadingEndTimeIntervalMinutes={sale.cascadingEndTimeIntervalMinutes}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              duration={duration}
-              extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
-              extendedBiddingPeriodMinutes={sale.extendedBiddingPeriodMinutes}
-              extendedBiddingEndAt={saleArtwork?.extendedBiddingEndAt}
-              startAt={sale.startAt}
-              endAt={saleArtwork?.endAt}
-            />
-          </>
-        )}
-        {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
-          <>
-            <Spacer mb={2} />
-            <ArtworkExtraLinks
-              artwork={artwork}
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              auctionState={timerState}
-            />
-          </>
-        )}
-      </Box>
+      {shouldShowCreateArtworkAlertButton ? (
+        <CreateArtworkAlertButtonsSection artwork={artwork} auctionState={timerState} />
+      ) : (
+        <Box>
+          {renderPriceInformation()}
+          {renderCommercialButtons()}
+          {renderCountdown()}
+        </Box>
+      )}
+      {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
+        <>
+          <Spacer mb={2} />
+          <ArtworkExtraLinks
+            artwork={artwork}
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            auctionState={timerState}
+          />
+        </>
+      )}
     </>
   )
 }
 
 export const CommercialInformationFragmentContainer = createFragmentContainer(
-  CommercialInformationTimerWrapper,
+  CommercialInformationWebsocketWrapper,
   {
     artwork: graphql`
       fragment CommercialInformation_artwork on Artwork {
@@ -284,6 +359,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         isOfferable
         isInquireable
         isInAuction
+        isSold
         availability
         saleMessage
         isForSale
@@ -299,6 +375,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         }
 
         saleArtwork {
+          lotID
           endAt
           extendedBiddingEndAt
         }
@@ -323,6 +400,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         ...CommercialEditionSetInformation_artwork
         ...ArtworkExtraLinks_artwork
         ...AuctionPrice_artwork
+        ...CreateArtworkAlertButtonsSection_artwork
       }
     `,
     me: graphql`

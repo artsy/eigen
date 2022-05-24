@@ -5,6 +5,7 @@ import { Artwork_me } from "__generated__/Artwork_me.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
+import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { navigateToPartner, navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -14,6 +15,7 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { Box, LinkButton, Separator } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
@@ -63,7 +65,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
 
-  const { internalID, slug } = artworkAboveTheFold || {}
+  const { internalID, slug, isInAuction } = artworkAboveTheFold || {}
+  const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
   const {
     category,
     canRequestLotConditionsReport,
@@ -83,6 +86,19 @@ export const Artwork: React.FC<ArtworkProps> = ({
     artist,
     context,
   } = artworkBelowTheFold || {}
+
+  const getInitialAuctionTimerState = () => {
+    if (isInAuction) {
+      return currentTimerState({
+        isPreview: isPreview || undefined,
+        isClosed: isClosed || undefined,
+        liveStartsAt: liveStartAt || undefined,
+      })
+    }
+  }
+
+  const [auctionTimerState, setAuctionTimerState] = useState(getInitialAuctionTimerState())
+  const isInClosedAuction = isInAuction && auctionTimerState === AuctionTimerState.CLOSED
 
   const shouldRenderDetails = () => {
     return !!(
@@ -223,7 +239,15 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "commercialInformation",
         element: (
-          <CommercialInformation artwork={artworkAboveTheFold} me={me} tracking={tracking} />
+          <CommercialInformation
+            artwork={artworkAboveTheFold}
+            me={me}
+            tracking={tracking}
+            refetchArtwork={() =>
+              relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
+            }
+            setAuctionTimerState={setAuctionTimerState}
+          />
         ),
       })
     }
@@ -238,7 +262,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (enableCreateArtworkAlert) {
+    if (enableCreateArtworkAlert && !artworkAboveTheFold?.isSold && !isInClosedAuction) {
       sections.push({
         key: "createAlertSection",
         element: <CreateArtworkAlertSection artwork={artworkAboveTheFold} />,
@@ -361,6 +385,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
     />
   )
 
+  const websocketEnabled = !!artworkBelowTheFold?.sale?.extendedBiddingIntervalMinutes
+
   return (
     <ProvideScreenTracking
       info={{
@@ -376,29 +402,37 @@ export const Artwork: React.FC<ArtworkProps> = ({
         biddable: artworkAboveTheFold?.isBiddable,
       }}
     >
-      {fetchingData ? (
-        <ProvidePlaceholderContext>
-          <AboveTheFoldPlaceholder />
-        </ProvidePlaceholderContext>
-      ) : (
-        <FlatList<ArtworkPageSection>
-          keyboardShouldPersistTaps="handled"
-          data={sectionsData()}
-          ItemSeparatorComponent={() => (
-            <Box mx={2}>
-              <Separator />
-            </Box>
-          )}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          contentContainerStyle={{ paddingBottom: 40 }}
-          renderItem={({ item }) => (
-            <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
-              {item.element}
-            </Box>
-          )}
-        />
-      )}
-      <QAInfo />
+      <AuctionWebsocketContextProvider
+        channelInfo={{
+          channel: "SalesChannel",
+          sale_id: artworkBelowTheFold?.sale?.internalID,
+        }}
+        enabled={websocketEnabled}
+      >
+        {fetchingData ? (
+          <ProvidePlaceholderContext>
+            <AboveTheFoldPlaceholder />
+          </ProvidePlaceholderContext>
+        ) : (
+          <FlatList<ArtworkPageSection>
+            keyboardShouldPersistTaps="handled"
+            data={sectionsData()}
+            ItemSeparatorComponent={() => (
+              <Box mx={2}>
+                <Separator />
+              </Box>
+            )}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            contentContainerStyle={{ paddingBottom: 40 }}
+            renderItem={({ item }) => (
+              <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
+                {item.element}
+              </Box>
+            )}
+          />
+        )}
+        <QAInfo />
+      </AuctionWebsocketContextProvider>
     </ProvideScreenTracking>
   )
 }
@@ -427,7 +461,14 @@ export const ArtworkContainer = createRefetchContainer(
         isOfferable
         isBiddable
         isInquireable
+        isSold
+        isInAuction
         availability
+        sale {
+          isClosed
+          isPreview
+          liveStartAt
+        }
       }
     `,
     artworkBelowTheFold: graphql`
@@ -453,9 +494,11 @@ export const ArtworkContainer = createRefetchContainer(
           ...ArtistSeriesMoreSeries_artist
         }
         sale {
+          internalID
           id
           isBenefit
           isGalleryAuction
+          extendedBiddingIntervalMinutes
         }
         category
         canRequestLotConditionsReport

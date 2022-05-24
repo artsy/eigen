@@ -1,4 +1,5 @@
 import { navigate, popToRoot } from "app/navigation/navigate"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { Button, Flex, Text, useSpace } from "palette"
 import React from "react"
 import { Image } from "react-native"
@@ -7,7 +8,7 @@ export const MyCollectionInsightsEmptyState = () => {
   const space = useSpace()
 
   return (
-    <Flex px={1} testID="my-collection-insights-empty-state">
+    <Flex px={2} testID="my-collection-insights-empty-state">
       <Text variant="md" textAlign="center">
         Gain deeper knowledge of your artwork
       </Text>
@@ -18,6 +19,7 @@ export const MyCollectionInsightsEmptyState = () => {
         source={require("images/my-collection-empty-state.webp")}
         resizeMode="contain"
         style={{
+          alignSelf: "center",
           height: 120,
           width: 327,
           marginVertical: space(2),
@@ -29,6 +31,7 @@ export const MyCollectionInsightsEmptyState = () => {
           navigate("my-collection/artworks/new", {
             passProps: {
               mode: "add",
+              source: Tab.insights,
               onSuccess: popToRoot,
             },
           })
