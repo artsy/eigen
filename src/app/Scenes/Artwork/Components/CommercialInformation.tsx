@@ -13,9 +13,8 @@ import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
-import { useAuctionWebsocket } from "app/Websockets/auctions/useAuctionWebsocket"
+import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
 import { capitalize } from "lodash"
-import { DateTime } from "luxon"
 import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -39,7 +38,7 @@ interface CommercialInformationProps extends CountdownTimerProps {
   setAuctionTimerState?: (auctionTimerState: AuctionTimerState) => void
 }
 
-// On Android, the useAuctionWebsocket fails to receive data, bringing the
+// On Android, the useArtworkBidding fails to receive data, bringing the
 // ContextProvider down closer to this component fixed it. [Android Only]
 const CommercialInformationWebsocketWrapper: React.FC<CommercialInformationProps> = (props) => {
   const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
@@ -71,29 +70,15 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
 
     const { endAt: lotEndAt, extendedBiddingEndAt, lotID } = props.artwork.saleArtwork
 
-    const biddingEndAt = extendedBiddingEndAt ?? lotEndAt ?? saleEndAt
+    const initialBiddingEndAt = extendedBiddingEndAt ?? lotEndAt ?? saleEndAt
+
     const { setAuctionTimerState } = props
 
-    const [currentBiddingEndAt, setCurrentBiddingEndAt] = useState(biddingEndAt)
-
-    const isExtended =
-      !!currentBiddingEndAt && !!lotEndAt
-        ? DateTime.fromISO(currentBiddingEndAt) > DateTime.fromISO(lotEndAt)
-        : false
-
-    const [lotSaleExtended, setLotSaleExtended] = useState(isExtended)
-
-    useAuctionWebsocket({
-      lotID: lotID!,
-      onChange: ({ extended_bidding_end_at }) => {
-        if (extended_bidding_end_at) {
-          setCurrentBiddingEndAt(extended_bidding_end_at)
-          setLotSaleExtended(true)
-        }
-        // This is unfortunately necessary else you will find old data
-        // if you immediately reopen the artwork page again
-        props.refetchArtwork()
-      },
+    const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
+      lotID,
+      lotEndAt,
+      biddingEndAt: initialBiddingEndAt,
+      onDataReceived: props.refetchArtwork,
     })
 
     return (

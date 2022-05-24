@@ -11,10 +11,9 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { useAuctionWebsocket } from "app/Websockets/auctions/useAuctionWebsocket"
-import { DateTime } from "luxon"
+import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
 import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
-import React, { useRef, useState } from "react"
+import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -92,21 +91,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const extendedBiddingEndAt = artwork.saleArtwork?.extendedBiddingEndAt
   const lotEndAt = artwork.saleArtwork?.endAt
   const biddingEndAt = extendedBiddingEndAt ?? lotEndAt
+  const lotID = artwork.saleArtwork?.lotID
 
-  const [currentBiddingEndAt, setCurrentBiddingEndAt] = useState(biddingEndAt)
-  const isExtended =
-    !!currentBiddingEndAt && !!lotEndAt && DateTime.fromISO(currentBiddingEndAt) > DateTime.fromISO(lotEndAt)
-
-  const [lotSaleExtended, setLotSaleExtended] = useState(isExtended)
-
-  useAuctionWebsocket({
-    lotID: artwork.saleArtwork?.lotID!,
-    onChange: ({ extended_bidding_end_at }) => {
-      if (extended_bidding_end_at) {
-        setCurrentBiddingEndAt(extended_bidding_end_at)
-        setLotSaleExtended(true)
-      }
-    },
+  const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
+    lotID,
+    lotEndAt,
+    biddingEndAt,
   })
 
   const addArtworkToRecentSearches = () => {

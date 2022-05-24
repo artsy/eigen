@@ -57,7 +57,7 @@ export const AuctionWebsocketContextProvider: React.FC<AuctionWebsocketContextPr
     return () => {
       unsubscribe()
     }
-  }, [])
+  }, [enabled])
 
   const subscribe = () => {
     const theChannelKey = `sales:${channelInfo.sale_id}`

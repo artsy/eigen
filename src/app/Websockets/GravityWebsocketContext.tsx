@@ -32,7 +32,12 @@ export const GravityWebsocketContextProvider: React.FC = ({ children }) => {
         ActionCable.startDebugging()
       }
     }
-  }, [])
+    return () => {
+      if (__DEV__) {
+        ActionCable.stopDebugging()
+      }
+    }
+  }, [isStaging])
 
   return (
     <WebsocketContext.Provider value={{ cable: actionCable, channelsHolder }}>

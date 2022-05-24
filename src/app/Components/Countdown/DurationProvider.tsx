@@ -1,3 +1,4 @@
+import { DateTime } from "luxon"
 import moment from "moment"
 import React from "react"
 import { AppState, AppStateStatus, NativeEventSubscription } from "react-native"
@@ -16,7 +17,9 @@ interface State {
 
 export class DurationProvider extends React.Component<Props, State> {
   state = {
-    timeLeftInMilliseconds: this.props.startAt ? Date.parse(this.props.startAt) - Date.now() : 0,
+    timeLeftInMilliseconds: this.props.startAt
+      ? DateTime.fromISO(this.props.startAt).toMillis() - DateTime.now().toMillis()
+      : 0,
     appState: AppState.currentState,
   }
 
@@ -29,7 +32,10 @@ export class DurationProvider extends React.Component<Props, State> {
       if (this.state.appState.match(/inactive|background/) && nextAppState === "active") {
         // recalculate timeLeftInMilliseconds
         if (this.props.startAt) {
-          this.setState({ timeLeftInMilliseconds: Date.parse(this.props.startAt) - Date.now() })
+          this.setState({
+            timeLeftInMilliseconds:
+              DateTime.fromISO(this.props.startAt).toMillis() - DateTime.now().toMillis(),
+          })
         }
       }
       this.setState({ appState: nextAppState })
