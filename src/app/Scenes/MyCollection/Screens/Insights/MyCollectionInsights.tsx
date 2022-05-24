@@ -43,7 +43,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       style={{
         flex: 1,
       }}
-      contentContainerStyle={{ paddingTop: space("2"), flexGrow: 1, justifyContent: "center" }}
+      contentContainerStyle={{ paddingTop: space("2"), justifyContent: "center" }}
       paddingHorizontal={0}
     >
       {myCollectionArtworksCount > 0 ? renderContent() : <MyCollectionInsightsEmptyState />}
@@ -60,7 +60,7 @@ export const MyCollectionInsightsQR: React.FC<{}> = () => (
 export const MyCollectionInsightsPlaceHolder = () => (
   <StickyTabPageScrollView
     style={{ flex: 1 }}
-    contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+    contentContainerStyle={{ justifyContent: "center" }}
     scrollEnabled={false}
   >
     <Flex alignItems="center">
