@@ -33,6 +33,7 @@ export const GravityWebsocketContextProvider: React.FC = ({ children }) => {
       }
     }
     return () => {
+      actionCable?.disconnect()
       if (__DEV__) {
         ActionCable.stopDebugging()
       }
