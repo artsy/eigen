@@ -12,7 +12,7 @@ jest.unmock("./navigate")
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
-jest.mock("app/Store/GlobalStore", () => ({
+jest.mock("app/store/GlobalStore", () => ({
   unsafe__getSelectedTab: jest.fn().mockReturnValue("home"),
   unsafe__getEnvironment: jest.fn().mockReturnValue({
     webURL: "https://www.artsy.net",
