@@ -39,9 +39,8 @@ commands:
             scripts/generate-manifest.js .manifests/node_modules '^yarn\.lock$' '^patches/' '^package\.json$'
             scripts/generate-manifest.js .manifests/js_transform '^\.manifests/node_modules' '^babel\.config\.js' '^relay\.config\.js' '^jest\.config\.js'
             scripts/generate-manifest.js .manifests/js_bundle '^\.manifests/js_transform' '^data/' '^index\.ios\.js' '^src/(?!.*(__mocks__|__fixtures__))'
-            ls -lR emission > .manifests/emission_pod_file_list
-            scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile' '^\.manifests/emission_pod_file_list'
-            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native' '^\.env\.example'
+            scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile'
+            scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Gemfile' '^dist/' '^Artsy' '^patches/react-native' '^\.env\.example'
             scripts/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
   setup-env-file:
     steps:
@@ -104,23 +103,23 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v6-js_bundle-{{ checksum ".manifests/js_bundle" }}
+            - v7-js_bundle-{{ checksum ".manifests/js_bundle" }}
       - restore_cache:
           keys:
             - v6-metro-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Bundle emission
-          command: ls emission/Pod/Assets/Emission.js || yarn bundle-for-native-ci:ios
+          command: ls dist/jsbundle.js || yarn bundle-for-native-ci:ios
       - save_cache:
           key: v6-metro-{{ checksum ".manifests/js_transform" }}
           paths:
             - .metro
       - save_cache:
-          key: v6-js_bundle-{{ checksum ".manifests/js_bundle" }}
+          key: v7-js_bundle-{{ checksum ".manifests/js_bundle" }}
           paths:
-            - emission/Pod/Assets/Emission.js
-            - emission/Pod/Assets/Emission.js.map
-            - emission/Pod/Assets/assets
+            - dist/jsbundle.js
+            - dist/jsbundle.js.map
+            - dist/assets
   install-gems:
     steps:
       - restore_cache:
@@ -350,7 +349,7 @@ jobs:
       - bundle-js
       - run:
           name: Generate app_build manifest
-          command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^emission/Pod/Assets/'
+          command: ./scripts/generate-manifest.js .manifests/app_build '^\./manifests/native_code' '^dist/'
       - store_artifacts:
           path: .manifests
       - store_test_results:
@@ -359,7 +358,7 @@ jobs:
           root: .
           paths:
             - .manifests
-            - emission/Pod/Assets
+            - dist
 
   build-test-app-ios:
     environment:
