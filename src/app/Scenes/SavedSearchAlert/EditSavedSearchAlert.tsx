@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { EditSavedSearchAlert_artists } from "__generated__/EditSavedSearchAlert_artists.graphql"
 import { EditSavedSearchAlert_artworksConnection } from "__generated__/EditSavedSearchAlert_artworksConnection.graphql"
-import { EditSavedSearchAlert_user } from "__generated__/EditSavedSearchAlert_user.graphql"
+import { EditSavedSearchAlert_viewer } from "__generated__/EditSavedSearchAlert_viewer.graphql"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { SavedSearchAlertQueryResponse } from "__generated__/SavedSearchAlertQuery.graphql"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -28,7 +28,7 @@ interface EditSavedSearchAlertBaseProps {
 
 interface EditSavedSearchAlertProps {
   me: SavedSearchAlertQueryResponse["me"]
-  user: EditSavedSearchAlert_user
+  viewer: EditSavedSearchAlert_viewer
   artists: EditSavedSearchAlert_artists
   savedSearchAlertId: string
   artworksConnection: EditSavedSearchAlert_artworksConnection
@@ -36,9 +36,17 @@ interface EditSavedSearchAlertProps {
 }
 
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
-  const { me, user, artists, artworksConnection, savedSearchAlertId, relay } = props
+  const { me, viewer, artists, artworksConnection, savedSearchAlertId, relay } = props
   const aggregations = (artworksConnection.aggregations ?? []) as Aggregations
   const { userAlertSettings, internalID, ...attributes } = me?.savedSearch ?? {}
+  const isCustomAlertsNotificationsEnabled = viewer.notificationPreferences.some((preference) => {
+    return (
+      preference.channel === "email" &&
+      preference.name === "custom_alerts" &&
+      preference.status === "SUBSCRIBED"
+    )
+  })
+  const userAllowsEmails = isCustomAlertsNotificationsEnabled ?? false
 
   const formattedArtists: SavedSearchEntityArtist[] = artists.map((artist) => ({
     id: artist.internalID,
@@ -95,7 +103,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
                 push: userAlertSettings?.push ?? false,
               }}
               savedSearchAlertId={savedSearchAlertId}
-              userAllowsEmails={user?.emailFrequency !== "none"}
+              userAllowsEmails={userAllowsEmails}
               onComplete={onComplete}
               onDeleteComplete={onComplete}
             />
@@ -109,9 +117,13 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
 export const EditSavedSearchAlertRefetchContainer = createRefetchContainer(
   EditSavedSearchAlert,
   {
-    user: graphql`
-      fragment EditSavedSearchAlert_user on Me {
-        emailFrequency
+    viewer: graphql`
+      fragment EditSavedSearchAlert_viewer on Viewer {
+        notificationPreferences {
+          status
+          name
+          channel
+        }
       }
     `,
     artists: graphql`
@@ -135,8 +147,8 @@ export const EditSavedSearchAlertRefetchContainer = createRefetchContainer(
   },
   graphql`
     query EditSavedSearchAlertRefetchQuery {
-      user: me {
-        ...EditSavedSearchAlert_user
+      viewer {
+        ...EditSavedSearchAlert_viewer
       }
     }
   `
@@ -156,8 +168,8 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
             environment={defaultEnvironment}
             query={graphql`
               query EditSavedSearchAlertQuery($artistIDs: [String]) {
-                user: me {
-                  ...EditSavedSearchAlert_user
+                viewer {
+                  ...EditSavedSearchAlert_viewer
                 }
                 artists(ids: $artistIDs) {
                   ...EditSavedSearchAlert_artists

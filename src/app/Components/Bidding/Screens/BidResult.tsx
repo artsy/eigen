@@ -17,7 +17,7 @@ import { BidderPositionResult } from "../types"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
@@ -27,6 +27,7 @@ interface BidResultProps {
   navigator: NavigatorIOS
   refreshBidderInfo?: () => void
   refreshSaleArtwork?: () => void
+  biddingEndAt?: string
 }
 
 const messageForPollingTimeout = {
@@ -95,12 +96,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   render() {
     const { sale_artwork, bidderPositionResult } = this.props
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { liveStartAt, endAt: saleEndAt, cascadingEndTimeIntervalMinutes } = sale_artwork.sale
     const { status, message_header, message_description_md } = bidderPositionResult
-
-    const casacadingEndTimeFeatureEnabled =
-      unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage") && cascadingEndTimeIntervalMinutes
 
     return (
       <View style={{ flex: 1 }}>
@@ -130,8 +126,9 @@ export class BidResult extends React.Component<BidResultProps> {
               )}
               {!!this.shouldDisplayTimer(status) && (
                 <Timer
-                  liveStartsAt={liveStartAt}
-                  endsAt={casacadingEndTimeFeatureEnabled ? sale_artwork.endAt : saleEndAt}
+                  liveStartsAt={sale_artwork.sale?.liveStartAt ?? undefined}
+                  lotEndAt={sale_artwork.endAt}
+                  biddingEndAt={this.props.biddingEndAt}
                 />
               )}
             </Flex>
@@ -163,6 +160,7 @@ export const BidResultScreen = createFragmentContainer(BidResult, {
   sale_artwork: graphql`
     fragment BidResult_sale_artwork on SaleArtwork {
       endAt
+      extendedBiddingEndAt
       sale {
         liveStartAt
         endAt

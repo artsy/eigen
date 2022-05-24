@@ -16,6 +16,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionContainer } from "./MyCollection"
 
 jest.unmock("react-relay")
@@ -100,7 +101,9 @@ describe("MyCollection", () => {
 
       expect(navigate).toHaveBeenCalledWith(
         "my-collection/artworks/new",
-        expect.objectContaining({ passProps: { mode: "add", onSuccess: expect.anything() } })
+        expect.objectContaining({
+          passProps: { mode: "add", onSuccess: expect.anything(), source: Tab.collection },
+        })
       )
     })
 

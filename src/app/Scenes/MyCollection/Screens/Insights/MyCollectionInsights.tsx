@@ -1,43 +1,82 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { InfoModal } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/InfoModal/InfoModal"
-import { Flex, Text, Touchable, useSpace } from "palette"
-import React, { Suspense, useState } from "react"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { extractNodes } from "app/utils/extractNodes"
+import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
+import { Flex, Spinner, useSpace } from "palette"
+import React, { Suspense, useEffect, useState } from "react"
+import { RefreshControl } from "react-native"
 import { useLazyLoadQuery } from "react-relay"
-import { graphql } from "relay-runtime"
+import { fetchQuery, graphql } from "relay-runtime"
+import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
+import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
+import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const space = useSpace()
-  const [shouldShowarketSignalsModal, setShouldShowarketSignalsModal] = useState<boolean>(false)
-  const data = useLazyLoadQuery<MyCollectionInsightsQuery>(MyCollectionInsightsScreenQuery, {})
+  const enablePhase1 = useFeatureFlag("ARShowMyCollectionInsightsPhase1Part1")
 
-  const renderTitle = () => {
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const data = useLazyLoadQuery<MyCollectionInsightsQuery>(MyCollectionInsightsScreenQuery, {}, {})
+
+  const myCollectionArtworksCount = extractNodes(data.me?.myCollectionConnection).length
+
+  const hasMarketSignals = !!data.me?.auctionResults?.totalCount
+
+  useEffect(() => {
+    RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refresh)
+    return () => {
+      RefreshEvents.removeListener(MY_COLLECTION_REFRESH_KEY, refresh)
+    }
+  }, [])
+
+  const refresh = () => {
+    if (isRefreshing) {
+      return
+    }
+
+    setIsRefreshing(true)
+
+    fetchQuery(defaultEnvironment, MyCollectionInsightsScreenQuery, {}).subscribe({
+      complete: () => {
+        setIsRefreshing(false)
+      },
+      error: () => {
+        setIsRefreshing(false)
+      },
+    })
+  }
+
+  const renderContent = () => {
     return (
-      <Flex justifyContent="space-between" flexDirection="row" mb={2} alignItems="center">
-        <Text variant="lg">Market Signals</Text>
-        <Touchable onPress={() => setShouldShowarketSignalsModal(true)}>
-          <Text style={{ textDecorationLine: "underline" }} variant="sm" color="black60">
-            What is this?
-          </Text>
-        </Touchable>
-        <InfoModal
-          title="Market Signals"
-          visible={shouldShowarketSignalsModal}
-          onDismiss={() => setShouldShowarketSignalsModal(false)}
-        >
-          {renderMarketSignalsModal()}
-        </InfoModal>
-      </Flex>
+      <>
+        <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
+        {hasMarketSignals && !!enablePhase1 && (
+          <>
+            <MarketSignalsSectionHeader />
+            <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+            {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
+            <ActivateMoreMarketInsightsBanner />
+          </>
+        )}
+      </>
     )
   }
 
   return (
-    <StickyTabPageScrollView contentContainerStyle={{ paddingTop: space("2") }}>
-      <MyCollectionInsightsOverview />
-      {renderTitle()}
-      <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+    <StickyTabPageScrollView
+      style={{
+        flex: 1,
+      }}
+      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
+      contentContainerStyle={{ paddingTop: space("2"), flexGrow: 1, justifyContent: "center" }}
+      paddingHorizontal={0}
+    >
+      {myCollectionArtworksCount > 0 ? renderContent() : <MyCollectionInsightsEmptyState />}
     </StickyTabPageScrollView>
   )
 }
@@ -48,43 +87,35 @@ export const MyCollectionInsightsQR: React.FC<{}> = () => (
   </Suspense>
 )
 
-// TODO: fix, placeHolder is hidden behind the header
 export const MyCollectionInsightsPlaceHolder = () => (
-  <Flex>
-    <Text>A Placeholder</Text>
-  </Flex>
+  <StickyTabPageScrollView
+    style={{ flex: 1 }}
+    contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+    scrollEnabled={false}
+  >
+    <Flex alignItems="center">
+      <Spinner />
+    </Flex>
+  </StickyTabPageScrollView>
 )
 
 export const MyCollectionInsightsScreenQuery = graphql`
   query MyCollectionInsightsQuery {
     me {
       ...AuctionResultsForArtistsYouCollectRail_me
+      auctionResults: myCollectionAuctionResults(first: 1) {
+        totalCount
+      }
+      myCollectionInfo {
+        ...MyCollectionInsightsOverview_myCollectionInfo
+      }
+      myCollectionConnection(first: 1) {
+        edges {
+          node {
+            id
+          }
+        }
+      }
     }
   }
 `
-
-const renderMarketSignalsModal = () => {
-  return (
-    <Flex mt={1}>
-      <Text caps>what are artsy insights</Text>
-      <Text>
-        Artsy insights are free, at-a glance insights into the market and career of artists in your
-        collection.
-      </Text>
-      <Text caps mt={2}>
-        where do insights come from?
-      </Text>
-      <Text>
-        Our market data comes from the Artsy price database, which includes millions of results from
-        leading auction houses across the globe.
-      </Text>
-      <Text caps mt={2}>
-        will I see insights on my entire collection?
-      </Text>
-      <Text>
-        Our database covers 300,000 artists — and counting. Not all artists in your collection will
-        have insights right now, but we're adding more all the time.
-      </Text>
-    </Flex>
-  )
-}

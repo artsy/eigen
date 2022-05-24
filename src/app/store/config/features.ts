@@ -118,11 +118,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableCascadingEndTimerSalePageGrid",
   },
-  ARDisableCascadingEndTimerSalePageDetails: {
+  AREnableCascadingEndTimerHomeSalesRail: {
     readyForRelease: false,
-    description: "Enable cascading end times on the sale page details",
+    description: "Enable cascading end times on the Sales Rail on Home screen",
     showInAdminMenu: true,
-    echoFlagKey: "AREnableCascadingEndTimerSalePageDetails",
+    echoFlagKey: "AREnableCascadingEndTimerHomeSalesRail",
   },
   AREnableImageSearch: {
     readyForRelease: false,
@@ -192,6 +192,21 @@ export const features = defineFeatures({
   ARShowMyCollectionInsights: {
     readyForRelease: false,
     description: "Enable My Collection insights tab",
+    showInAdminMenu: true,
+  },
+  ARShowMyCollectionInsightsPhase1Part1: {
+    readyForRelease: false,
+    description: "Enable MyC insights Ph 1 Pt 1",
+    showInAdminMenu: true,
+  },
+  ARShowMyCollectionInsightsPhase1Part2: {
+    readyForRelease: false,
+    description: "Enable MyC insights Ph 1 Pt 2",
+    showInAdminMenu: true,
+  },
+  ARShowMyCollectionInsightsPhase1Part3: {
+    readyForRelease: false,
+    description: "Enable MyC insights Ph 1 Pt 3",
     showInAdminMenu: true,
   },
   AREnableNotFoundFailureView: {

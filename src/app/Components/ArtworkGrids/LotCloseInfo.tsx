@@ -1,17 +1,33 @@
 import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { getTimerInfo } from "app/utils/saleTime"
 import { Time, useTimer } from "app/utils/useTimer"
-import { Duration } from "moment"
 import { Text } from "palette"
+import { CountdownTimerProps } from "../Countdown/CountdownTimer"
 
 interface LotCloseInfoProps {
   saleArtwork: NonNullable<ArtworkGridItem_artwork["saleArtwork"]>
   sale: NonNullable<ArtworkGridItem_artwork["sale"]>
-  duration: Duration | null
+  duration: CountdownTimerProps["duration"]
+
+  /** Specific time lot sale ends, taking into account the current
+   *  extendedBiddingEndAt received from the websocket which may be diffrent
+   *  from the extendedBiddingEndAt you may find on saleArtwork
+   */
+  lotEndAt?: string
+  hasBeenExtended: boolean
 }
 
-export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({ saleArtwork, sale, duration }) => {
-  const { hasEnded: lotHasClosed } = useTimer(saleArtwork.endAt!, sale.startAt!)
+export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({
+  lotEndAt,
+  hasBeenExtended,
+  saleArtwork,
+  sale,
+  duration,
+}) => {
+  if (!lotEndAt) {
+    return null
+  }
+  const { hasEnded: lotHasClosed } = useTimer(lotEndAt, sale.startAt ?? "")
 
   const { hasEnded: lotsAreClosing, hasStarted: saleHasStarted } = useTimer(
     sale.endAt!,
@@ -39,6 +55,9 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({ saleArtwork, sale, d
   // Lot has already closed
   if (lotHasClosed) {
     lotCloseCopy = "Closed"
+  } else if (hasBeenExtended) {
+    labelColor = "red100"
+    lotCloseCopy = `Extended, ${timerCopy.copy}`
   } else if (saleHasStarted) {
     // Sale has started and lots are <24 hours from closing or are actively closing
     if (duration.asDays() < 1 || lotsAreClosing) {

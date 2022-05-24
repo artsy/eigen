@@ -2,6 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutationResponse } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
@@ -87,7 +88,7 @@ describe("MyCollectionArtworkForm", () => {
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
         const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappersTL(
-          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
+          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
         )
 
         // Select Artist Screen
@@ -189,7 +190,7 @@ describe("MyCollectionArtworkForm", () => {
       it("leaves the form empty", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappersTL(
           <RelayEnvironmentProvider environment={mockEnvironment}>
-            <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
+            <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
           </RelayEnvironmentProvider>
         )
 
@@ -239,7 +240,7 @@ describe("MyCollectionArtworkForm", () => {
       it("displays the artist display name input", async () => {
         const { getByText, getByTestId } = renderWithWrappersTL(
           <RelayEnvironmentProvider environment={mockEnvironment}>
-            <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
+            <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
           </RelayEnvironmentProvider>
         )
 
@@ -365,6 +366,7 @@ describe("MyCollectionArtworkForm", () => {
         const props: MyCollectionArtworkFormProps = {
           onSuccess: jest.fn(),
           mode: "add",
+          source: Tab.collection,
         }
         const uploadPhotosMock = jest.spyOn(photoUtil, "uploadPhotos")
         uploadPhotosMock.mockImplementation(() =>

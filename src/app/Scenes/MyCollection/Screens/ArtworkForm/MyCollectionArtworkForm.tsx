@@ -12,7 +12,8 @@ import {
   cleanArtworkPayload,
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
-import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { addClue, GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
@@ -66,6 +67,7 @@ export type ArtworkFormScreen = {
 export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
   | {
       mode: "add"
+      source: Tab
     }
   | {
       mode: "edit"
@@ -128,6 +130,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       }
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     } finally {
+      if (props.mode === "add") {
+        if (props.source === Tab.collection /* and insights are not awailable */) {
+          // TODO: check Artwork insights ^^^ - blocked by the backend
+          addClue("AddArtworkWithoutInsightsMessage_MyCTab")
+        } // else - isAddedFromInsights - other tickets
+      }
       setLoading(false)
       setIsArtworkSaved(false)
     }

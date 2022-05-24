@@ -13,7 +13,7 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
 import { Touchable } from "palette"
@@ -94,6 +94,8 @@ describe("Artwork", () => {
   beforeEach(() => {
     require("app/relay/createEnvironment").reset()
     environment = require("app/relay/createEnvironment").defaultEnvironment
+    // TODO: Remove it when AREnableCreateArtworkAlert flag is true in Echo
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
   })
 
   afterEach(() => {
@@ -466,6 +468,65 @@ describe("Artwork", () => {
         expect(extractText(tree.root.findByType(Countdown))).toContain("00d  00h  00m  00s")
         expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
       })
+    })
+  })
+
+  describe("Create Alert button", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+    })
+
+    it("should display create artwork alert section by default", () => {
+      const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isSold: false,
+          isInAuction: false,
+          sale: null,
+        }),
+      })
+
+      expect(queryByA11yLabel("Create artwork alert section")).toBeTruthy()
+      expect(queryByA11yLabel("Create artwork alert buttons section")).toBeFalsy()
+    })
+
+    it("should display create artwork alert buttons section when artwork is sold", () => {
+      const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isSold: true,
+          isInAuction: false,
+          sale: null,
+        }),
+      })
+
+      expect(queryByA11yLabel("Create artwork alert section")).toBeFalsy()
+      expect(queryByA11yLabel("Create artwork alert buttons section")).toBeTruthy()
+    })
+
+    it("should display create artwork alert buttons section when artwork is in closed auction", () => {
+      const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isSold: false,
+          isInAuction: true,
+          sale: {
+            isLiveOpen: false,
+            isPreview: false,
+            liveStartAt: null,
+            endAt: null,
+            startAt: null,
+            isClosed: true,
+            isAuction: true,
+          },
+        }),
+      })
+
+      expect(queryByA11yLabel("Create artwork alert section")).toBeFalsy()
+      expect(queryByA11yLabel("Create artwork alert buttons section")).toBeTruthy()
     })
   })
 })

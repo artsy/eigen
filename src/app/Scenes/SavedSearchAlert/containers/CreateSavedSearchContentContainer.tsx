@@ -37,12 +37,14 @@ const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps
   const isPreviouslyFocused = useRef(false)
   const [refetching, setRefetching] = useState(false)
   const [enablePushNotifications, setEnablePushNotifications] = useState(true)
-  const userAllowsEmails =
-    viewer === null
-      ? false
-      : Object.values(viewer!.notificationPreferences).some(
-          (preference) => preference.status === "SUBSCRIBED"
-        )
+  const isCustomAlertsNotificationsEnabled = viewer?.notificationPreferences.some((preference) => {
+    return (
+      preference.channel === "email" &&
+      preference.name === "custom_alerts" &&
+      preference.status === "SUBSCRIBED"
+    )
+  })
+  const userAllowsEmails = isCustomAlertsNotificationsEnabled ?? false
 
   const handleUpdateEmailPreferencesPress = () => {
     navigation.navigate("EmailPreferences")
@@ -107,6 +109,8 @@ const CreateSavedSearchContentContainer = createRefetchContainer(
       fragment CreateSavedSearchContentContainer_viewer on Viewer {
         notificationPreferences {
           status
+          name
+          channel
         }
       }
     `,

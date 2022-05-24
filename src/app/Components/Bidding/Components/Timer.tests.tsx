@@ -63,23 +63,23 @@ it("formats the remaining time in '00d  00h  00m  00s'", () => {
   let timer
 
   // Thursday, May 14, 2018 10:24:31.000 AM UTC
-  timer = renderWithWrappers(<Timer endsAt="2018-05-14T10:24:31+00:00" />)
+  timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T10:24:31+00:00" />)
 
   expect(getTimerText(timer)).toEqual("03d  14h  01m  59s")
 
   // Thursday, May 10, 2018 8:42:32.000 PM UTC
-  timer = renderWithWrappers(<Timer endsAt="2018-05-10T20:42:32+00:00" />)
+  timer = renderWithWrappers(<Timer lotEndAt="2018-05-10T20:42:32+00:00" />)
 
   expect(getTimerText(timer)).toEqual("00d  00h  20m  00s")
 
   // Thursday, May 10, 2018 8:22:42.000 PM UTC
-  timer = renderWithWrappers(<Timer endsAt="2018-05-10T20:22:42+00:00" />)
+  timer = renderWithWrappers(<Timer lotEndAt="2018-05-10T20:22:42+00:00" />)
 
   expect(getTimerText(timer)).toEqual("00d  00h  00m  10s")
 })
 
 it("shows 'Closes' when it's an online-only sale with an ending time", () => {
-  const timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
+  const timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toContain("Closes")
 })
@@ -132,7 +132,7 @@ it("shows 'In progress' when the auction is in live auction integration mode", (
 })
 
 it("counts down to zero", () => {
-  const timer = renderWithWrappers(<Timer endsAt="2018-05-14T10:23:10+00:00" />)
+  const timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T10:23:10+00:00" />)
 
   expect(getTimerText(timer)).toEqual("03d  14h  00m  38s")
 
@@ -150,7 +150,7 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
 
   // Thursday, May 14, 2018 8:00:00.000 PM UTC
   // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
-  const timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
+  const timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toEqual("Closes May 14, 1 PM PDT")
 })
@@ -158,11 +158,11 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
 it("displays the minutes when the sale does not end on the hour", () => {
   mockTimezone("America/New_York")
 
-  let timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:01:00+00:00" />)
+  let timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:01:00+00:00" />)
 
   expect(getTimerLabel(timer)).toEqual("Closes May 14, 4:01 PM EDT")
 
-  timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:30:00+00:00" />)
+  timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:30:00+00:00" />)
 
   expect(getTimerLabel(timer)).toEqual("Closes May 14, 4:30 PM EDT")
 })
@@ -170,7 +170,7 @@ it("displays the minutes when the sale does not end on the hour", () => {
 it("omits the minutes when the sale ends on the hour", () => {
   mockTimezone("America/New_York")
 
-  const timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
+  const timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toEqual("Closes May 14, 4 PM EDT")
 })
@@ -180,7 +180,7 @@ describe("timer transitions", () => {
     const timer = mount(
       <Wrapper>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <Timer isPreview startsAt={futureTime} endsAt={futureTime} />
+        <Timer isPreview startsAt={futureTime} lotEndAt={futureTime} />
       </Wrapper>
     )
 
@@ -231,7 +231,7 @@ describe("timer transitions", () => {
     const timer = mount(
       <Wrapper>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <Timer isPreview={false} startsAt={pastTime} endsAt={futureTime} />
+        <Timer isPreview={false} startsAt={pastTime} lotEndAt={futureTime} />
       </Wrapper>
     )
 
@@ -249,27 +249,27 @@ describe("Countdown", () => {
   // 10h 3m
   const duration = moment.duration(36180000)
 
-  it("shows extended bidding info when extendedBiddingPeriodMinutes is present", () => {
-    const { getByText } = renderWithWrappersTL(
-      <Wrapper>
-        <Countdown
-          duration={duration}
-          label="A label"
-          cascadingEndTimeIntervalMinutes={1}
-          extendedBiddingPeriodMinutes={2}
-        />
-      </Wrapper>
-    )
-    const textBlock = getByText("*Closure times may be extended to accomodate last minute bids")
-    expect(textBlock).toBeDefined()
-  })
-
   describe("when the enable cascade feature flag is turned on", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
     })
 
     afterEach(() => jest.clearAllMocks())
+
+    it("shows extended bidding info when extendedBiddingPeriodMinutes is present", () => {
+      const { getByText } = renderWithWrappersTL(
+        <Wrapper>
+          <Countdown
+            duration={duration}
+            label="A label"
+            cascadingEndTimeIntervalMinutes={1}
+            extendedBiddingPeriodMinutes={2}
+          />
+        </Wrapper>
+      )
+      const textBlock = getByText("*Closure times may be extended to accomodate last minute bids")
+      expect(textBlock).toBeDefined()
+    })
 
     it("shows the new ticker if the sale has cascading end times", () => {
       const component = mount(

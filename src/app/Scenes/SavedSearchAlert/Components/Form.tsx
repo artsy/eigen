@@ -154,7 +154,7 @@ export const Form: React.FC<FormProps> = (props) => {
       {!!shouldShowEmailWarning && (
         <Box backgroundColor="orange10" my={1} p={2}>
           <Text variant="xs" color="orange150">
-            Change your email frequency
+            Change your email preferences
           </Text>
           <Text variant="xs" mt={0.5}>
             To receive Email Alerts, please update your email preferences.

@@ -127,12 +127,12 @@ describe("Saved search alert form", () => {
   })
 
   describe("Update flow", () => {
-    it("should show a warning message if a user has set email frequency to None", async () => {
+    it("should show a warning message if a user has disabled `Custom Alerts`", async () => {
       const { getByText } = renderWithWrappersTL(
         <TestRenderer savedSearchAlertId="savedSearchAlertId" userAllowsEmails={false} />
       )
 
-      expect(getByText("Change your email frequency")).toBeTruthy()
+      expect(getByText("Change your email preferences")).toBeTruthy()
       expect(
         getByText("To receive Email Alerts, please update your email preferences.")
       ).toBeTruthy()
