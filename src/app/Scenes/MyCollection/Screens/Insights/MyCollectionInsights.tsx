@@ -1,3 +1,4 @@
+import { MyCollectionInsightsOverview_myCollectionInfo$key } from "__generated__/MyCollectionInsightsOverview_myCollectionInfo.graphql"
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
@@ -8,14 +9,14 @@ import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpe
 import { Flex, Spinner, useSpace } from "palette"
 import React, { Suspense, useContext, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
-import { useLazyLoadQuery } from "react-relay"
+import { useFragment, useLazyLoadQuery } from "react-relay"
 import { fetchQuery, graphql } from "relay-runtime"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { InsightsTabAddedArtworkHasNoInsightsMessage } from "./MyCollectionInsightsMessages"
-import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
+import { fragment, MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const space = useSpace()
@@ -25,6 +26,10 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const data = useLazyLoadQuery<MyCollectionInsightsQuery>(MyCollectionInsightsScreenQuery, {}, {})
+  const myCollectionInfo = useFragment<MyCollectionInsightsOverview_myCollectionInfo$key>(
+    fragment,
+    data.me?.myCollectionInfo!
+  )
 
   const myCollectionArtworksCount = extractNodes(data.me?.myCollectionConnection).length
 
@@ -66,26 +71,21 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
-  useEffect(
-    () => {
-      hasBeenShownBanner().then(({ shouldShowAddedArtworkHasNoInsightsMessage }) => {
-        setJSX(
-          <>
-            {!!shouldShowAddedArtworkHasNoInsightsMessage && (
-              <InsightsTabAddedArtworkHasNoInsightsMessage
-                onClose={() => {
-                  removeClue("AddArtworkWithoutInsightsMessage_InsightsTab")
-                }}
-              />
-            )}
-          </>
-        )
-      })
-    },
-    [
-      /* TODO: ~insights length or something~ ***artworks.length*** */
-    ]
-  )
+  useEffect(() => {
+    hasBeenShownBanner().then(({ shouldShowAddedArtworkHasNoInsightsMessage }) => {
+      setJSX(
+        <>
+          {!!shouldShowAddedArtworkHasNoInsightsMessage && (
+            <InsightsTabAddedArtworkHasNoInsightsMessage
+              onClose={() => {
+                removeClue("AddArtworkWithoutInsightsMessage_InsightsTab")
+              }}
+            />
+          )}
+        </>
+      )
+    })
+  }, [myCollectionInfo.artworksCount])
 
   const renderContent = () => {
     return (

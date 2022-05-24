@@ -34,7 +34,7 @@ export const MyCollectionInsightsOverview: React.FC<MyCollectionInsightsOverview
   )
 }
 
-const fragment = graphql`
+export const fragment = graphql`
   fragment MyCollectionInsightsOverview_myCollectionInfo on MyCollectionInfo {
     artworksCount
     artistsCount
