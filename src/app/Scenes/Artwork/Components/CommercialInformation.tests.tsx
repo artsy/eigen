@@ -92,12 +92,14 @@ describe("CommercialInformation", () => {
     }
 
     const { queryByText } = renderWithWrappersTL(
-      <CommercialInformationTimerWrapper
-        artwork={Artwork as any}
-        me={{ identityVerified: false } as any}
-        timerState={AuctionTimerState.CLOSED}
-        refetchArtwork={jest.fn()}
-      />
+      <Wrapper>
+        <CommercialInformationTimerWrapper
+          artwork={Artwork as any}
+          me={{ identityVerified: false } as any}
+          timerState={AuctionTimerState.CLOSED}
+          refetchArtwork={jest.fn()}
+        />
+      </Wrapper>
     )
 
     expect(queryByText("For sale")).toBeFalsy()
