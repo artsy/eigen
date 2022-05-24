@@ -17,8 +17,6 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
   const avalaraPhase2 = useFeatureFlag("AREnableAvalaraPhase2")
   const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
 
-  console.warn(enableCreateArtworkAlert)
-
   return (
     <>
       {showsSellerInfo && (
