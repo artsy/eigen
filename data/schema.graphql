@@ -173,6 +173,12 @@ type AnalyticsArtistAffinityEdge {
   node: AnalyticsArtistAffinity
 }
 
+# Artist ID and Medium Tuple
+input AnalyticsArtistIdMediumTupleType {
+  artistId: String!
+  medium: String!
+}
+
 # Artist Recommendation
 type AnalyticsArtistRecommendation {
   # Artist ID
@@ -204,6 +210,40 @@ type AnalyticsArtistRecommendationEdge {
 
   # The item at the end of the edge.
   node: AnalyticsArtistRecommendation
+}
+
+# Artist Sparkline
+type AnalyticsArtistSparkline {
+  artistId: ID!
+  artistName: String
+  eventDigest: String
+  sparkles: BigInt
+  tier: Float
+  year: String
+}
+
+# The connection type for ArtistSparkline.
+type AnalyticsArtistSparklineConnection {
+  # A list of edges.
+  edges: [AnalyticsArtistSparklineEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsArtistSparkline]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AnalyticsArtistSparklineEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsArtistSparkline
 }
 
 type AnalyticsArtwork {
@@ -335,6 +375,42 @@ type AnalyticsHistogramBin {
   ): String
   minPriceCents: Int!
   numArtworks: Int!
+}
+
+# New For You Recommendation
+type AnalyticsNewForYouRecommendation {
+  # Artwork ID
+  artworkId: ID!
+
+  # Artwork's published_at
+  publishedAt: AnalyticsDateTime!
+
+  # Artist affinity score
+  score: Float!
+}
+
+# The connection type for NewForYouRecommendation.
+type AnalyticsNewForYouRecommendationConnection {
+  # A list of edges.
+  edges: [AnalyticsNewForYouRecommendationEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsNewForYouRecommendation]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AnalyticsNewForYouRecommendationEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsNewForYouRecommendation
 }
 
 # Information about pagination in a connection.
@@ -9200,6 +9276,30 @@ type MarketPriceInsights {
   smallLowRangeCents: BigInt
   smallMidRangeCents: BigInt
   updatedAt: ISO8601DateTime
+}
+
+# The connection type for MarketPriceInsights.
+type MarketPriceInsightsConnection {
+  # A list of edges.
+  edges: [MarketPriceInsightsEdge]
+
+  # A list of nodes.
+  nodes: [MarketPriceInsights]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type MarketPriceInsightsEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: MarketPriceInsights
 }
 
 type Me implements Node {
