@@ -17,8 +17,8 @@ import {
   Flex,
   HeartFillIcon,
   HeartIcon,
-  Sans,
   ShareIcon,
+  Text,
   Touchable,
 } from "palette"
 import React from "react"
@@ -130,12 +130,16 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
         {isOpenSale ? (
           <Touchable haptic onPress={() => this.handleArtworkSave()}>
             <UtilButton pr={2}>
-              <Box mr={0.5}>{is_saved ? <BellFillIcon fill="blue100" /> : <BellIcon />}</Box>
+              {is_saved ? (
+                <BellFillIcon accessibilityLabel="unwatch lot icon" mr={0.5} fill="blue100" />
+              ) : (
+                <BellIcon accessibilityLabel="watch lot icon" mr={0.5} />
+              )}
               <ClassTheme>
                 {({ color }) => (
-                  <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
+                  <Text variant="sm" color={is_saved ? color("blue100") : color("black100")}>
                     Watch lot
-                  </Sans>
+                  </Text>
                 )}
               </ClassTheme>
             </UtilButton>
@@ -143,19 +147,19 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
         ) : (
           <Touchable haptic onPress={() => this.handleArtworkSave()}>
             <UtilButton pr={2}>
-              <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />}</Box>
+              {is_saved ? <HeartFillIcon mr={0.5} fill="blue100" /> : <HeartIcon mr={0.5} />}
               <Box position="relative">
                 {/* Longest text transparent to prevent changing text pushing elements on the right */}
-                <Sans size="3" color="transparent">
+                <Text variant="sm" color="transparent">
                   Saved
-                </Sans>
+                </Text>
 
                 <Box {...StyleSheet.absoluteFillObject}>
                   <ClassTheme>
                     {({ color }) => (
-                      <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
+                      <Text variant="sm" color={is_saved ? color("blue100") : color("black100")}>
                         {is_saved ? "Saved" : "Save"}
-                      </Sans>
+                      </Text>
                     )}
                   </ClassTheme>
                 </Box>
@@ -167,19 +171,15 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
         {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
           <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
             <UtilButton pr={2}>
-              <Box mr={0.5}>
-                <EyeOpenedIcon />
-              </Box>
-              <Sans size="3">View in Room</Sans>
+              <EyeOpenedIcon mr={0.5} />
+              <Text variant="sm">View in Room</Text>
             </UtilButton>
           </TouchableWithoutFeedback>
         )}
         <Touchable haptic onPress={() => this.props.shareOnPress()}>
           <UtilButton>
-            <Box mr={0.5}>
-              <ShareIcon />
-            </Box>
-            <Sans size="3">Share</Sans>
+            <ShareIcon mr={0.5} />
+            <Text variant="sm">Share</Text>
           </UtilButton>
         </Touchable>
       </Flex>
