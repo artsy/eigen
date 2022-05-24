@@ -23,7 +23,7 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
         <>
           <Spacer mb={1} />
           {!enableCreateArtworkAlert && (
-            <Sans size="3t" color="red">
+            <Sans size="3t" color="black60">
               {availabilityDisplayText} {artwork.partner!.name}
             </Sans>
           )}
