@@ -24,4 +24,7 @@ export const visualClues = defineVisualClues({
   CompleteCollectorProfileMessage: {
     description: "The message shown if the collector profile is incomplete",
   },
+  AddArtworkWithoutInsightsMessage_MyCTab: {
+    description: "The message shown after addind an artwork without insights for the Insights tab",
+  },
 })
