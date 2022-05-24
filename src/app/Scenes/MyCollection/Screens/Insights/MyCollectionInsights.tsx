@@ -4,6 +4,7 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { removeClue, useFeatureFlag, useSessionVisualClue } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { Flex, Spinner, useSpace } from "palette"
 import React, { Suspense, useContext, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
@@ -28,6 +29,13 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const myCollectionArtworksCount = extractNodes(data.me?.myCollectionConnection).length
 
   const hasMarketSignals = !!data.me?.auctionResults?.totalCount
+
+  useEffect(() => {
+    RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refresh)
+    return () => {
+      RefreshEvents.removeListener(MY_COLLECTION_REFRESH_KEY, refresh)
+    }
+  }, [])
 
   const refresh = () => {
     if (isRefreshing) {
