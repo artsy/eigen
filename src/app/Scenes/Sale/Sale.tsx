@@ -452,6 +452,7 @@ export const SaleQueryRenderer: React.FC<{
             cacheConfig={{
               force: true,
             }}
+            fetchPolicy="store-and-network"
           />
         )
       }}

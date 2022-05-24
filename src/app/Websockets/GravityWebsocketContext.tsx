@@ -21,7 +21,7 @@ export const GravityWebsocketContextProvider: React.FC = ({ children }) => {
   const [channelsHolder, setChannelsHolder] = useState<any | null>(null)
 
   const isStaging = useIsStaging()
-  const wssUrl = isStaging ? "wss://stagingapi.artsy.net/cable" : Config.GRAVITY_WEBSOCKET_URL
+  const wssUrl = isStaging ? Config.GRAVITY_STAGING_WEBSOCKET_URL : Config.GRAVITY_WEBSOCKET_URL
 
   useEffect(() => {
     if (!actionCable) {

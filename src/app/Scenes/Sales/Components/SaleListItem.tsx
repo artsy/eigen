@@ -6,7 +6,6 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 
 import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
-import { RelayCache } from "app/relay/RelayCache"
 import { formatDisplayTimelyAt } from "app/Scenes/Sale/helpers"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Sans } from "palette"
@@ -22,10 +21,6 @@ export const SaleListItem: React.FC<Props> = (props) => {
   const isCascadingEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageGrid")
 
   const handleTap = () => {
-    // FIXME:- Hack! RelayCache populates Sale with stale data after some time
-    // This is a temporary hack.
-    RelayCache.clearAll()
-
     const {
       sale: { liveURLIfOpen, href },
     } = props
