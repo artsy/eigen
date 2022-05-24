@@ -29,12 +29,31 @@ describe("MyCollectionInsights", () => {
         Me: () => ({
           myCollectionConnection: myCollectionConnectionMock,
           myCollectionAuctionResults: myCollectionAuctionResultsMock,
+          myCollectionInfo: myCollectionInfoMock,
         }),
       })
 
       await flushPromiseQueue()
 
       expect(getByText("Market Signals")).toBeTruthy()
+    })
+
+    it("shows insights overview", async () => {
+      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      mockEnvironmentPayload(mockEnvironment, {
+        Me: () => ({
+          myCollectionConnection: myCollectionConnectionMock,
+          myCollectionAuctionResults: myCollectionAuctionResultsMock,
+          myCollectionInfo: myCollectionInfoMock,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(getByText("Total Artworks")).toBeTruthy()
+      expect(getByText("24")).toBeTruthy()
+      expect(getByText("Total Artists")).toBeTruthy()
+      expect(getByText("13")).toBeTruthy()
     })
   })
 
@@ -49,6 +68,7 @@ describe("MyCollectionInsights", () => {
         Me: () => ({
           myCollectionConnection: myCollectionConnectionMock,
           myCollectionAuctionResults: myCollectionAuctionResultsMock,
+          myCollectionInfo: myCollectionInfoMock,
         }),
       })
 
@@ -64,6 +84,7 @@ describe("MyCollectionInsights", () => {
       Me: () => ({
         myCollectionConnection: { edges: [] },
         myCollectionAuctionResults: myCollectionAuctionResultsMock,
+        myCollectionInfo: myCollectionInfoMock,
       }),
     })
 
@@ -92,4 +113,9 @@ const myCollectionAuctionResultsMock = {
       },
     },
   ],
+}
+
+const myCollectionInfoMock = {
+  artworksCount: 24,
+  artistsCount: 13,
 }
