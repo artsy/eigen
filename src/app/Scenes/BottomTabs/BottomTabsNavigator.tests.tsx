@@ -11,6 +11,8 @@ import { BottomTabsNavigator } from "./BottomTabsNavigator"
 
 jest.unmock("react-relay")
 
+jest.unmock("app/NativeModules/LegacyNativeModules")
+
 describe(BottomTabsNavigator, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
