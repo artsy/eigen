@@ -17,3 +17,20 @@ export const AddedArtworkHasNoInsightsMessage: React.FC<AddedArtworkHasNoInsight
     />
   )
 }
+
+interface InsightsTabAddedArtworkHasNoInsightsMessageProps {
+  onClose: () => void
+}
+export const InsightsTabAddedArtworkHasNoInsightsMessage: React.FC<
+  InsightsTabAddedArtworkHasNoInsightsMessageProps
+> = ({ onClose }) => {
+  return (
+    <Message
+      variant="info"
+      title="New artwork successfully added"
+      text="There are currently no insights available on your collection. Insights will be shown here if they become available."
+      onClose={onClose}
+      showCloseButton
+    />
+  )
+}

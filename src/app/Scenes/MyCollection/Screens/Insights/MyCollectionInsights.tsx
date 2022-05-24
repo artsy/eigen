@@ -1,10 +1,11 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
+import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { removeClue, useFeatureFlag, useSessionVisualClue } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Spinner, useSpace } from "palette"
-import React, { Suspense, useState } from "react"
+import React, { Suspense, useContext, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 import { useLazyLoadQuery } from "react-relay"
 import { fetchQuery, graphql } from "relay-runtime"
@@ -12,10 +13,12 @@ import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBa
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
+import { InsightsTabAddedArtworkHasNoInsightsMessage } from "./MyCollectionInsightsMessages"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const space = useSpace()
+  const { showSessionVisualClue } = useSessionVisualClue()
   const enablePhase1 = useFeatureFlag("ARShowMyCollectionInsightsPhase1Part1")
 
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -42,6 +45,39 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       },
     })
   }
+
+  const hasBeenShownBanner = async () => {
+    const shouldShowAddedArtworkHasNoInsightsMessage = showSessionVisualClue(
+      "AddArtworkWithoutInsightsMessage_InsightsTab"
+    )
+    return {
+      shouldShowAddedArtworkHasNoInsightsMessage:
+        shouldShowAddedArtworkHasNoInsightsMessage === true && enablePhase1,
+    }
+  }
+
+  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+
+  useEffect(
+    () => {
+      hasBeenShownBanner().then(({ shouldShowAddedArtworkHasNoInsightsMessage }) => {
+        setJSX(
+          <>
+            {!!shouldShowAddedArtworkHasNoInsightsMessage && (
+              <InsightsTabAddedArtworkHasNoInsightsMessage
+                onClose={() => {
+                  removeClue("AddArtworkWithoutInsightsMessage_InsightsTab")
+                }}
+              />
+            )}
+          </>
+        )
+      })
+    },
+    [
+      /* TODO: ~insights length or something~ ***artworks.length*** */
+    ]
+  )
 
   const renderContent = () => {
     return (

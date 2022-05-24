@@ -112,10 +112,17 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     } finally {
       if (props.mode === "add") {
-        if (props.source === Tab.collection /* and insights are not awailable */) {
+        if (
+          props.source === Tab.collection /* and insights are not awailable for the added artwork */
+        ) {
           // TODO: check Artwork insights ^^^ - blocked by the backend
           addClue("AddArtworkWithoutInsightsMessage_MyCTab")
-        } // else - isAddedFromInsights - other tickets
+        } else if (
+          props.source ===
+          Tab.insights /* and insights are not awailable for the entire collection and added artwork*/
+        ) {
+          addClue("AddArtworkWithoutInsightsMessage_InsightsTab")
+        }
       }
       setLoading(false)
     }
