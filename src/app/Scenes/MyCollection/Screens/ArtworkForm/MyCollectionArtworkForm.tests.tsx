@@ -462,7 +462,7 @@ describe("MyCollectionArtworkForm", () => {
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
         const { getByTestId, getByPlaceholderText } = renderWithWrappersTL(
-          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
+          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
         )
 
         // Select Artist Screen
@@ -526,7 +526,7 @@ describe("MyCollectionArtworkForm", () => {
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
         const { getByTestId, getByPlaceholderText } = renderWithWrappersTL(
-          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
+          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
         )
 
         // Select Artist Screen
