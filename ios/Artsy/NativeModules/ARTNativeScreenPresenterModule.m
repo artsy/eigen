@@ -11,7 +11,7 @@
 
 #import <MessageUI/MFMailComposeViewController.h>
 #import "ARDispatchManager.h"
-#import <Emission/ARMediaPreviewController.h>
+#import "ARMediaPreviewController.h"
 
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>

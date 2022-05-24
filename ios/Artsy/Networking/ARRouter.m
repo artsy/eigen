@@ -27,7 +27,7 @@
 #import <AFNetworking/AFURLSessionManager.h>
 #import <AFNetworking/AFHTTPSessionManager.h>
 
-#import <AREmission.h>
+#import "AREmission.h"
 
 static AFHTTPSessionManager *staticHTTPClient = nil;
 static NSSet *artsyHosts = nil;

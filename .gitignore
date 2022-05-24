@@ -55,8 +55,6 @@ Pods
 derived_data
 ios/Artsy/Networking/ARReactPackagerHost.m
 
-# COPIED FROM EMISSION
-
 # Xcode
 xcode_build_raw.log
 

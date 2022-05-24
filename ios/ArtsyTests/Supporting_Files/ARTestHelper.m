@@ -7,7 +7,7 @@
 #import <SDWebImage/SDWebImageManager.h>
 #import <SDWebImage/SDImageCache.h>
 #import "ARFonts.h"
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 
 @implementation ARTestHelper

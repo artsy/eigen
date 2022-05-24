@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */; };
+		1A4B97BD283CDD5A00878EAE /* AREventsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9793283CDD5900878EAE /* AREventsModule.m */; };
+		1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */; };
+		1A4B97BF283CDD5A00878EAE /* RCTScrollView+Artsy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */; };
+		1A4B97C0283CDD5A00878EAE /* AREmission.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9798283CDD5900878EAE /* AREmission.m */; };
+		1A4B97C1283CDD5A00878EAE /* ARTemporaryAPIModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B979D283CDD5900878EAE /* ARTemporaryAPIModule.m */; };
+		1A4B97C2283CDD5A00878EAE /* ARMapComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97A0283CDD5900878EAE /* ARMapComponentViewController.m */; };
+		1A4B97C3283CDD5A00878EAE /* ARMediaPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97A1283CDD5900878EAE /* ARMediaPreviewController.m */; };
+		1A4B97C4283CDD5A00878EAE /* ARCityComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97A2283CDD5900878EAE /* ARCityComponentViewController.m */; };
+		1A4B97C5283CDD5A00878EAE /* ARCityPickerComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97A7283CDD5900878EAE /* ARCityPickerComponentViewController.m */; };
+		1A4B97C6283CDD5A00878EAE /* ARComponentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97A9283CDD5900878EAE /* ARComponentViewController.m */; };
+		1A4B97C7283CDD5A00878EAE /* ARMapContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97AA283CDD5900878EAE /* ARMapContainerViewController.m */; };
+		1A4B97C8283CDD5A00878EAE /* ARPHPhotoPickerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */; };
+		1A4B97C9283CDD5A00878EAE /* ARNotificationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */; };
+		1A4B97CA283CDD5A00878EAE /* ARTakeCameraPhotoModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B1283CDD5900878EAE /* ARTakeCameraPhotoModule.m */; };
+		1A4B97CB283CDD5A00878EAE /* ARCity+GeospatialAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B5283CDD5900878EAE /* ARCity+GeospatialAdditions.m */; };
+		1A4B97CC283CDD5A00878EAE /* ARCity.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B6283CDD5900878EAE /* ARCity.m */; };
+		1A4B97CD283CDD5A00878EAE /* AROpaqueImageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */; };
+		1A4B97CE283CDD5A00878EAE /* AROpaqueImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */; };
 		1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */; };
 		50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */; };
 		91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */; };
@@ -532,9 +551,48 @@
 
 /* Begin PBXFileReference section */
 		02F2C90B06AD6C83572BCE60 /* Pods-eigen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.debug.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.debug.xcconfig"; sourceTree = "<group>"; };
+		0CDAD2121FD27A65D671548A /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Artsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13F369B4E56A4D026D55DC53 /* Pods-eigen-eigenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.release.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.release.xcconfig"; sourceTree = "<group>"; };
 		17C42880D2ACAFFAD6731367 /* Pods-eigen-eigenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.debug.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCocoaConstantsModule.m; sourceTree = "<group>"; };
+		1A4B9792283CDD5900878EAE /* AREmission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmission.h; sourceTree = "<group>"; };
+		1A4B9793283CDD5900878EAE /* AREventsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREventsModule.m; sourceTree = "<group>"; };
+		1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTScrollView+Artsy.h"; sourceTree = "<group>"; };
+		1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScrollViewHelpers.m; sourceTree = "<group>"; };
+		1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTScrollView+Artsy.m"; sourceTree = "<group>"; };
+		1A4B9797283CDD5900878EAE /* AREventsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREventsModule.h; sourceTree = "<group>"; };
+		1A4B9798283CDD5900878EAE /* AREmission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmission.m; sourceTree = "<group>"; };
+		1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCocoaConstantsModule.h; sourceTree = "<group>"; };
+		1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARScrollViewHelpers.h; sourceTree = "<group>"; };
+		1A4B979C283CDD5900878EAE /* ARTemporaryAPIModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTemporaryAPIModule.h; sourceTree = "<group>"; };
+		1A4B979D283CDD5900878EAE /* ARTemporaryAPIModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTemporaryAPIModule.m; sourceTree = "<group>"; };
+		1A4B979F283CDD5900878EAE /* ARCityPickerComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCityPickerComponentViewController.h; sourceTree = "<group>"; };
+		1A4B97A0283CDD5900878EAE /* ARMapComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMapComponentViewController.m; sourceTree = "<group>"; };
+		1A4B97A1283CDD5900878EAE /* ARMediaPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMediaPreviewController.m; sourceTree = "<group>"; };
+		1A4B97A2283CDD5900878EAE /* ARCityComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCityComponentViewController.m; sourceTree = "<group>"; };
+		1A4B97A3283CDD5900878EAE /* ARComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARComponentViewController.h; sourceTree = "<group>"; };
+		1A4B97A4283CDD5900878EAE /* ARMapContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMapContainerViewController.h; sourceTree = "<group>"; };
+		1A4B97A5283CDD5900878EAE /* ARMediaPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMediaPreviewController.h; sourceTree = "<group>"; };
+		1A4B97A6283CDD5900878EAE /* ARMapComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMapComponentViewController.h; sourceTree = "<group>"; };
+		1A4B97A7283CDD5900878EAE /* ARCityPickerComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCityPickerComponentViewController.m; sourceTree = "<group>"; };
+		1A4B97A8283CDD5900878EAE /* ARCityComponentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCityComponentViewController.h; sourceTree = "<group>"; };
+		1A4B97A9283CDD5900878EAE /* ARComponentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARComponentViewController.m; sourceTree = "<group>"; };
+		1A4B97AA283CDD5900878EAE /* ARMapContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMapContainerViewController.m; sourceTree = "<group>"; };
+		1A4B97AC283CDD5900878EAE /* ARPHPhotoPickerModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPHPhotoPickerModule.h; sourceTree = "<group>"; };
+		1A4B97AD283CDD5900878EAE /* ARNotificationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARNotificationsManager.h; sourceTree = "<group>"; };
+		1A4B97AE283CDD5900878EAE /* ARTakeCameraPhotoModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTakeCameraPhotoModule.h; sourceTree = "<group>"; };
+		1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPHPhotoPickerModule.m; sourceTree = "<group>"; };
+		1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNotificationsManager.m; sourceTree = "<group>"; };
+		1A4B97B1283CDD5900878EAE /* ARTakeCameraPhotoModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTakeCameraPhotoModule.m; sourceTree = "<group>"; };
+		1A4B97B3283CDD5900878EAE /* ARCity+GeospatialAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARCity+GeospatialAdditions.h"; sourceTree = "<group>"; };
+		1A4B97B4283CDD5900878EAE /* ARCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCity.h; sourceTree = "<group>"; };
+		1A4B97B5283CDD5900878EAE /* ARCity+GeospatialAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARCity+GeospatialAdditions.m"; sourceTree = "<group>"; };
+		1A4B97B6283CDD5900878EAE /* ARCity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCity.m; sourceTree = "<group>"; };
+		1A4B97B8283CDD5900878EAE /* AROpaqueImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROpaqueImageView.h; sourceTree = "<group>"; };
+		1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROpaqueImageViewManager.m; sourceTree = "<group>"; };
+		1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROpaqueImageView.m; sourceTree = "<group>"; };
+		1A4B97BB283CDD5900878EAE /* AROpaqueImageViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROpaqueImageViewManager.h; sourceTree = "<group>"; };
 		1A550F0C282AE4D200126D22 /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionWebViewController.h; sourceTree = "<group>"; };
 		1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewController.m; sourceTree = "<group>"; };
 		236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.release.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.release.xcconfig"; sourceTree = "<group>"; };
@@ -545,6 +603,7 @@
 		8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BE5EFBF10AC43C4ECF725994 /* Pods-Artsy_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Artsy_Tests/Pods-Artsy_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BE681C4A642B6359D3C2A4AF /* Pods-Artsy-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-Artsy-ArtsyTests/Pods-Artsy-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C168330C173A3F5845F15B0F /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB43266527E8F39B00B29DD6 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
 		CB43266727E8F39B00B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1397,6 +1456,99 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A4B978F283CDD5900878EAE /* Emission */ = {
+			isa = PBXGroup;
+			children = (
+				1A4B9790283CDD5900878EAE /* Core */,
+				1A4B979B283CDD5900878EAE /* TemporaryAPI */,
+				1A4B979E283CDD5900878EAE /* ViewControllers */,
+				1A4B97AB283CDD5900878EAE /* EigenCommunications */,
+				1A4B97B2283CDD5900878EAE /* Data */,
+				1A4B97B7283CDD5900878EAE /* OpaqueImageViewComponent */,
+			);
+			path = Emission;
+			sourceTree = "<group>";
+		};
+		1A4B9790283CDD5900878EAE /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */,
+				1A4B9792283CDD5900878EAE /* AREmission.h */,
+				1A4B9793283CDD5900878EAE /* AREventsModule.m */,
+				1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */,
+				1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */,
+				1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */,
+				1A4B9797283CDD5900878EAE /* AREventsModule.h */,
+				1A4B9798283CDD5900878EAE /* AREmission.m */,
+				1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */,
+				1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		1A4B979B283CDD5900878EAE /* TemporaryAPI */ = {
+			isa = PBXGroup;
+			children = (
+				1A4B979C283CDD5900878EAE /* ARTemporaryAPIModule.h */,
+				1A4B979D283CDD5900878EAE /* ARTemporaryAPIModule.m */,
+			);
+			path = TemporaryAPI;
+			sourceTree = "<group>";
+		};
+		1A4B979E283CDD5900878EAE /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				1A4B979F283CDD5900878EAE /* ARCityPickerComponentViewController.h */,
+				1A4B97A0283CDD5900878EAE /* ARMapComponentViewController.m */,
+				1A4B97A1283CDD5900878EAE /* ARMediaPreviewController.m */,
+				1A4B97A2283CDD5900878EAE /* ARCityComponentViewController.m */,
+				1A4B97A3283CDD5900878EAE /* ARComponentViewController.h */,
+				1A4B97A4283CDD5900878EAE /* ARMapContainerViewController.h */,
+				1A4B97A5283CDD5900878EAE /* ARMediaPreviewController.h */,
+				1A4B97A6283CDD5900878EAE /* ARMapComponentViewController.h */,
+				1A4B97A7283CDD5900878EAE /* ARCityPickerComponentViewController.m */,
+				1A4B97A8283CDD5900878EAE /* ARCityComponentViewController.h */,
+				1A4B97A9283CDD5900878EAE /* ARComponentViewController.m */,
+				1A4B97AA283CDD5900878EAE /* ARMapContainerViewController.m */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		1A4B97AB283CDD5900878EAE /* EigenCommunications */ = {
+			isa = PBXGroup;
+			children = (
+				1A4B97AC283CDD5900878EAE /* ARPHPhotoPickerModule.h */,
+				1A4B97AD283CDD5900878EAE /* ARNotificationsManager.h */,
+				1A4B97AE283CDD5900878EAE /* ARTakeCameraPhotoModule.h */,
+				1A4B97AF283CDD5900878EAE /* ARPHPhotoPickerModule.m */,
+				1A4B97B0283CDD5900878EAE /* ARNotificationsManager.m */,
+				1A4B97B1283CDD5900878EAE /* ARTakeCameraPhotoModule.m */,
+			);
+			path = EigenCommunications;
+			sourceTree = "<group>";
+		};
+		1A4B97B2283CDD5900878EAE /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				1A4B97B3283CDD5900878EAE /* ARCity+GeospatialAdditions.h */,
+				1A4B97B4283CDD5900878EAE /* ARCity.h */,
+				1A4B97B5283CDD5900878EAE /* ARCity+GeospatialAdditions.m */,
+				1A4B97B6283CDD5900878EAE /* ARCity.m */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		1A4B97B7283CDD5900878EAE /* OpaqueImageViewComponent */ = {
+			isa = PBXGroup;
+			children = (
+				1A4B97B8283CDD5900878EAE /* AROpaqueImageView.h */,
+				1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */,
+				1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */,
+				1A4B97BB283CDD5900878EAE /* AROpaqueImageViewManager.h */,
+			);
+			path = OpaqueImageViewComponent;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1436,6 +1588,8 @@
 				F4DF92ED8DF8B40E1D2D5A4B /* Pods-Artsy_Tests.release.xcconfig */,
 				8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */,
 				46687F9E977C7CE0F1B12B05 /* Pods-ArtsyTests.release.xcconfig */,
+				C168330C173A3F5845F15B0F /* Pods-Artsy.store.xcconfig */,
+				0CDAD2121FD27A65D671548A /* Pods-ArtsyTests.store.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -2311,6 +2465,7 @@
 		CBE3210527D9615000395A93 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
+				1A4B978F283CDD5900878EAE /* Emission */,
 				CBE3249427E275A100395A93 /* App */,
 				CBE3262027E275A200395A93 /* App_Resources */,
 				CBE3245F27E275A100395A93 /* Categories */,
@@ -3741,6 +3896,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A4B97C7283CDD5A00878EAE /* ARMapContainerViewController.m in Sources */,
 				CBE3279227E275A400395A93 /* User.m in Sources */,
 				CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */,
 				CBE3277927E275A400395A93 /* ArtsyAPI+Notifications.m in Sources */,
@@ -3769,11 +3925,15 @@
 				CBE326AE27E275A300395A93 /* LiveAuctionLotListViewController.swift in Sources */,
 				CBE3270727E275A300395A93 /* ARSerifNavigationViewController.m in Sources */,
 				CBE326FA27E275A300395A93 /* ARInformationView.m in Sources */,
+				1A4B97C5283CDD5A00878EAE /* ARCityPickerComponentViewController.m in Sources */,
 				CBE3271F27E275A300395A93 /* Stringify.swift in Sources */,
 				CBE326DA27E275A300395A93 /* ARMessageItemProvider.m in Sources */,
 				CBE3278F27E275A400395A93 /* Image.m in Sources */,
+				1A4B97C6283CDD5A00878EAE /* ARComponentViewController.m in Sources */,
+				1A4B97CB283CDD5A00878EAE /* ARCity+GeospatialAdditions.m in Sources */,
 				CBE326D527E275A300395A93 /* RefinementOptionsViewController+Private.swift in Sources */,
 				CBE326BD27E275A300395A93 /* LiveAuctionBidHistoryViewController.swift in Sources */,
+				1A4B97CE283CDD5A00878EAE /* AROpaqueImageView.m in Sources */,
 				CBE3267627E275A300395A93 /* NSAttributedString+Additions.swift in Sources */,
 				CBE326ED27E275A300395A93 /* SCNArtworkNode.m in Sources */,
 				CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */,
@@ -3783,6 +3943,7 @@
 				CBE326AC27E275A300395A93 /* LiveAuctionSalesPerson.swift in Sources */,
 				CBE326AF27E275A300395A93 /* LiveAuctionLoadingView.swift in Sources */,
 				CBE326E127E275A300395A93 /* ARFileUtils.m in Sources */,
+				1A4B97C8283CDD5A00878EAE /* ARPHPhotoPickerModule.m in Sources */,
 				CBE3269727E275A300395A93 /* ARApplicationShortcutItemDelegate.m in Sources */,
 				CBE326E627E275A300395A93 /* UIApplicationStateEnum.m in Sources */,
 				CBE3270E27E275A300395A93 /* AuctionTitleView.swift in Sources */,
@@ -3790,6 +3951,7 @@
 				CBE3278C27E275A400395A93 /* Artist.m in Sources */,
 				CBE3277627E275A400395A93 /* ArtsyAPI+Following.m in Sources */,
 				CBE326C927E275A300395A93 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */,
+				1A4B97BD283CDD5A00878EAE /* AREventsModule.m in Sources */,
 				CBE3268427E275A300395A93 /* UIView+OldSchoolSnapshots.m in Sources */,
 				CBE3270227E275A300395A93 /* ARAnimatedTickView.m in Sources */,
 				CBE3272527E275A400395A93 /* ARTNativeScreenPresenterModule.m in Sources */,
@@ -3803,6 +3965,7 @@
 				CBE3269D27E275A300395A93 /* ARAppDelegate+Emission.m in Sources */,
 				CBE326A227E275A300395A93 /* ARNavigationTransitionController.m in Sources */,
 				CBE326B127E275A300395A93 /* LiveAuctionViewController.swift in Sources */,
+				1A4B97C0283CDD5A00878EAE /* AREmission.m in Sources */,
 				CBE3267C27E275A300395A93 /* UIImage+ImageFromColor.m in Sources */,
 				CBE3266F27E275A300395A93 /* ARAppConstants.m in Sources */,
 				CBE326B427E275A300395A93 /* LiveAuctionStaticDataFetcher+Stubs.swift in Sources */,
@@ -3810,7 +3973,9 @@
 				CBE3277327E275A400395A93 /* ArtsyAPI+Pages.m in Sources */,
 				CBE326FD27E275A300395A93 /* ARAdminSettingsViewController.m in Sources */,
 				CBE326C827E275A300395A93 /* LiveAuctionBiddingViewModel.swift in Sources */,
+				1A4B97C9283CDD5A00878EAE /* ARNotificationsManager.m in Sources */,
 				CBE3267027E275A300395A93 /* ARDefaults.m in Sources */,
+				1A4B97CA283CDD5A00878EAE /* ARTakeCameraPhotoModule.m in Sources */,
 				CBE3268227E275A300395A93 /* NSDate+DateRange.m in Sources */,
 				CBE326B927E275A300395A93 /* LiveAuctionStateManager.swift in Sources */,
 				CBE326A927E275A300395A93 /* LiveAuctionViewModel.swift in Sources */,
@@ -3827,6 +3992,7 @@
 				CBE3276D27E275A400395A93 /* MTLModel+JSON.m in Sources */,
 				CBE3270027E275A300395A93 /* ARAdminTableViewCell.m in Sources */,
 				CBE326CC27E275A300395A93 /* SaleStatusView.swift in Sources */,
+				1A4B97C3283CDD5A00878EAE /* ARMediaPreviewController.m in Sources */,
 				CBE326B027E275A300395A93 /* LiveAuctionStaticDataFetcher.swift in Sources */,
 				CBE3267727E275A300395A93 /* UIImageView+AsyncImageLoading.m in Sources */,
 				CBE3271D27E275A300395A93 /* ARNotificationView.m in Sources */,
@@ -3855,6 +4021,7 @@
 				CBE3271827E275A300395A93 /* ARBidButton.m in Sources */,
 				CBE3267B27E275A300395A93 /* UIViewController+ARUserActivity.m in Sources */,
 				CBE326BF27E275A300395A93 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift in Sources */,
+				1A4B97BF283CDD5A00878EAE /* RCTScrollView+Artsy.m in Sources */,
 				CBE326A127E275A300395A93 /* ARDefaultNavigationTransition.m in Sources */,
 				CBE3279D27E275A400395A93 /* BuyersPremium.m in Sources */,
 				CBE3270D27E275A300395A93 /* SaleViewModel.swift in Sources */,
@@ -3863,6 +4030,7 @@
 				CBE3269B27E275A300395A93 /* ARAppDelegate+Echo.m in Sources */,
 				CBE3212027D9615000395A93 /* ARTOldAdminViewManager.m in Sources */,
 				CBE3279F27E275A400395A93 /* Bid.m in Sources */,
+				1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */,
 				CBE3277127E275A400395A93 /* ArtsyAPI.m in Sources */,
 				CBE3267227E275A300395A93 /* NSString+StringBetweenStrings.m in Sources */,
 				CBE326FE27E275A300395A93 /* ARAdminNetworkModel.m in Sources */,
@@ -3877,6 +4045,8 @@
 				CBE3279027E275A400395A93 /* Gene.m in Sources */,
 				CBE3276F27E275A400395A93 /* LiveAuctionSocketCommunicator.swift in Sources */,
 				CBE3270F27E275A300395A93 /* SaleAuctionStatus.swift in Sources */,
+				1A4B97CD283CDD5A00878EAE /* AROpaqueImageViewManager.m in Sources */,
+				1A4B97C4283CDD5A00878EAE /* ARCityComponentViewController.m in Sources */,
 				CBE3269E27E275A300395A93 /* AROptions.m in Sources */,
 				CBE3211E27D9615000395A93 /* ARTLiveAuctionViewManager.m in Sources */,
 				CBE326B327E275A300395A93 /* LotListCollectionViewCell.swift in Sources */,
@@ -3884,6 +4054,7 @@
 				CBE326DF27E275A300395A93 /* ARStandardDateFormatter.m in Sources */,
 				CBE3279927E275A400395A93 /* LiveSale.m in Sources */,
 				CBE326A327E275A300395A93 /* ARNavigationTransition.m in Sources */,
+				1A4B97CC283CDD5A00878EAE /* ARCity.m in Sources */,
 				CBE3267D27E275A300395A93 /* UIViewController+Popovers.m in Sources */,
 				CBE3277227E275A400395A93 /* ArtsyAPI+HEAD.m in Sources */,
 				CBE326AD27E275A300395A93 /* LiveAuctionLotViewController.swift in Sources */,
@@ -3934,6 +4105,7 @@
 				CBE3269427E275A300395A93 /* ARAnalyticsConstants.m in Sources */,
 				CBE3270927E275A300395A93 /* StoryboardImages.swift in Sources */,
 				CBE326E027E275A300395A93 /* ARBackButton.m in Sources */,
+				1A4B97C2283CDD5A00878EAE /* ARMapComponentViewController.m in Sources */,
 				CBE3268727E275A300395A93 /* ORStackView+ArtsyViews.m in Sources */,
 				CBE3269C27E275A300395A93 /* ARTArtsyNativeModule.m in Sources */,
 				CBE3271327E275A300395A93 /* ARReusableLoadingView.m in Sources */,
@@ -3942,7 +4114,9 @@
 				CBE326A827E275A300395A93 /* LiveAuctionSaleLotsDataSource.swift in Sources */,
 				CBE3270A27E275A300395A93 /* ARDispatchManager.m in Sources */,
 				CBE326AA27E275A300395A93 /* LiveAuctionEventViewModel.swift in Sources */,
+				1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */,
 				CBE326B227E275A300395A93 /* LiveAuctionLotSetViewController.swift in Sources */,
+				1A4B97C1283CDD5A00878EAE /* ARTemporaryAPIModule.m in Sources */,
 				CBE3269527E275A300395A93 /* ARModalViewController.m in Sources */,
 				CBE326D627E275A300395A93 /* AuctionSaleNetworkModel.swift in Sources */,
 				CBE3278227E275A400395A93 /* ARRouter+GraphQL.m in Sources */,
@@ -4226,7 +4400,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DDA9792067E817001B8803BA /* Pods-Artsy.release.xcconfig */;
+			baseConfigurationReference = C168330C173A3F5845F15B0F /* Pods-Artsy.store.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4696,7 +4870,7 @@
 		};
 		CB43272427E8FE5400B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46687F9E977C7CE0F1B12B05 /* Pods-ArtsyTests.release.xcconfig */;
+			baseConfigurationReference = 0CDAD2121FD27A65D671548A /* Pods-ArtsyTests.store.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;

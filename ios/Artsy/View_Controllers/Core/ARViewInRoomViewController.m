@@ -1,6 +1,6 @@
 #import "ARViewInRoomViewController.h"
 
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 #import "ARAnalyticsConstants.h"
 
 #import "Artwork.h"

@@ -1,6 +1,6 @@
 #import "ARTemporaryAPIModule.h"
 #import <UserNotifications/UserNotifications.h>
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 
 @implementation ARTemporaryAPIModule

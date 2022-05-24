@@ -6,7 +6,7 @@
 #import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 #import "ARAppConstants.h"
 #import "ARDefaults.h"

@@ -5,7 +5,7 @@
 #import "ArtsyAPI.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 #import <Adjust/Adjust.h>
 
 static  NSString *SailthruLinkDomain = @"link.artsy.net";

@@ -17,7 +17,7 @@
 #import "ARAppDelegate.h"
 #import <CoreServices/CoreServices.h>
 
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 @interface ARExternalWebBrowserViewController () <UIGestureRecognizerDelegate, UIScrollViewDelegate, WKUIDelegate>
 @property (nonatomic, readonly, strong) UIGestureRecognizer *gesture;

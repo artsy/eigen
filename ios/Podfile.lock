@@ -66,32 +66,6 @@ PODS:
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
   - EDColor (1.0.1)
-  - Emission (1.21.52):
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts (>= 3.0.0)"
-    - boost (= 1.76.0)
-    - DoubleConversion (= 1.1.6)
-    - Extraction (>= 1.2.1)
-    - glog (= 0.3.5)
-    - INTUAnimationEngine
-    - Pulley
-    - RCT-Folly (= 2021.06.28.00-v2)
-    - React-Core (= 0.66.4)
-    - React-cxxreact (= 0.66.4)
-    - react-native-cameraroll (= 1.3.0)
-    - react-native-geolocation (= 2.0.2)
-    - react-native-mapbox-gl (= 8.5.0)
-    - react-native-netinfo (= 6.0.1)
-    - React-RCTActionSheet (= 0.66.4)
-    - React-RCTAnimation (= 0.66.4)
-    - React-RCTImage (= 0.66.4)
-    - React-RCTLinking (= 0.66.4)
-    - React-RCTNetwork (= 0.66.4)
-    - React-RCTText (= 0.66.4)
-    - RNSentry (= 3.2.13)
-    - RNSVG (= 9.13.3)
-    - SDWebImage (= 5.8.3)
-    - tipsi-stripe (= 7.5.0)
   - Expecta (1.0.6)
   - "Expecta+Snapshots (3.1.1)":
     - Expecta (~> 1.0)
@@ -735,7 +709,6 @@ DEPENDENCIES:
   - DHCShakeNotifier (= 0.2.0)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EDColor (= 1.0.1)
-  - Emission (from `../emission`)
   - Expecta (= 1.0.6)
   - "Expecta+Snapshots (= 3.1.1)"
   - Extraction
@@ -772,6 +745,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleSignIn (= 5.0.2)
   - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
+  - INTUAnimationEngine
   - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/artsy/JLRoutes.git`)
   - JSDecoupledAppDelegate
@@ -963,8 +937,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
-  Emission:
-    :path: "../emission"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -1158,7 +1130,6 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   EDColor: 91d127cd67d7c1d3862846fb11ef4b3851151bfa
-  Emission: ce472ad11d5dcd1e332938722aef6e97945e4efb
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -1296,6 +1267,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: a813d8e9cd6f7d80fd7c105a0c2a80e8898e9f5f
+PODFILE CHECKSUM: 49dcee9da49792bca24e1c944bf9038838dee446
 
 COCOAPODS: 1.11.2

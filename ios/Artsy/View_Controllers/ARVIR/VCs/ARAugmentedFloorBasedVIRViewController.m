@@ -10,7 +10,7 @@
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
 #import <Artsy-UIButtons/ARButtonSubclasses.h>
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import <Extraction/ARSpinner.h>

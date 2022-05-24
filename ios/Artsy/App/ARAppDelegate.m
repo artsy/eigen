@@ -44,8 +44,8 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <React/RCTDevSettings.h>
 #import <React/RCTRootView.h>
-#import <Emission/AREmission.h>
-#import <Emission/ARNotificationsManager.h>
+#import "AREmission.h"
+#import "ARNotificationsManager.h"
 
 #if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
 #import <FlipperKit/FlipperClient.h>

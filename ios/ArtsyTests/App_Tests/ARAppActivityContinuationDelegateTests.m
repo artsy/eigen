@@ -3,7 +3,7 @@
 #import "ARAppDelegate+Analytics.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 SpecBegin(ARAppActivityContinuationDelegate);
 

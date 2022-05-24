@@ -66,6 +66,7 @@ target 'Artsy' do
   pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'
   pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '5.8.3'
+  pod 'INTUAnimationEngine'
 
   # Core
   pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
@@ -97,8 +98,6 @@ target 'Artsy' do
   pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
   pod 'Extraction'
-
-  pod 'Emission', path: '../emission', :inhibit_warnings => false
 
   # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'

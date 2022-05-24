@@ -1,6 +1,6 @@
 #import "ARSharingController.h"
 
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 #import "ARAnalyticsConstants.h"
 
 #import "Artist.h"
