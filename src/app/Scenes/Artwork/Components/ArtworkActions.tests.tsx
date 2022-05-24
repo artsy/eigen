@@ -12,6 +12,7 @@ import { graphql } from "react-relay"
 import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from "./ArtworkActions"
 
 jest.unmock("react-relay")
+jest.unmock("app/NativeModules/LegacyNativeModules")
 
 describe("ArtworkActions", () => {
   beforeEach(() => {
