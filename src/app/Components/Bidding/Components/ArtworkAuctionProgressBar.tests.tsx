@@ -13,8 +13,8 @@ describe("ArtworkAuctionProgressBar", () => {
         extendedBiddingPeriodMinutes: 2,
         extendedBiddingIntervalMinutes: 2,
         startAt: new Date(Date.now()).toISOString(),
-        endAt: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
-        extendedBiddingEndAt: null,
+        biddingEndAt: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
+        hasBeenExtended: false,
       }
 
       const wrapper = renderWithWrappersTL(<ArtworkAuctionProgressBar {...props} />)
@@ -29,8 +29,8 @@ describe("ArtworkAuctionProgressBar", () => {
         extendedBiddingPeriodMinutes: 2,
         extendedBiddingIntervalMinutes: 2,
         startAt: new Date(Date.now()).toISOString(),
-        endAt: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
-        extendedBiddingEndAt: new Date(Date.now() + 1000).toISOString(),
+        biddingEndAt: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
+        hasBeenExtended: true,
       }
 
       const wrapper = renderWithWrappersTL(<ArtworkAuctionProgressBar {...props} />)
@@ -45,8 +45,8 @@ describe("ArtworkAuctionProgressBar", () => {
         extendedBiddingPeriodMinutes: 2,
         extendedBiddingIntervalMinutes: 2,
         startAt: new Date(Date.now()).toISOString(),
-        endAt: new Date(Date.now() + 1000 * 60 * 1.5).toISOString(),
-        extendedBiddingEndAt: null,
+        biddingEndAt: new Date(Date.now() + 1000 * 60 * 1.5).toISOString(),
+        hasBeenExtended: false,
       }
 
       const wrapper = renderWithWrappersTL(<ArtworkAuctionProgressBar {...props} />)

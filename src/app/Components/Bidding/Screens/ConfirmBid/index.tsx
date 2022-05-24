@@ -24,6 +24,7 @@ import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/par
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "app/utils/track"
+import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { get, isEmpty } from "lodash"
 import { Box, Button, Checkbox, LinkText, Serif, Text, Theme } from "palette"
 import React from "react"
@@ -58,6 +59,7 @@ interface ConfirmBidState {
   selectedBidIndex: number
   errorModalVisible: boolean
   errorModalDetailText: string
+  currentBiddingEndAt?: string | null
 }
 
 const MAX_POLL_ATTEMPTS = 20
@@ -100,6 +102,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       selectedBidIndex: this.props.selectedBidIndex,
       errorModalVisible: false,
       errorModalDetailText: "",
+      currentBiddingEndAt:
+        this.props.sale_artwork.extendedBiddingEndAt ||
+        this.props.sale_artwork.endAt ||
+        this.props.sale_artwork.sale?.end_at,
     }
   }
 
@@ -398,6 +404,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       passProps: {
         sale_artwork: this.props.sale_artwork,
         bidderPositionResult: resultForNetworkError,
+        biddingEndAt: this.state.currentBiddingEndAt,
       },
     })
 
@@ -428,6 +435,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         bidderPositionResult,
         refreshBidderInfo: this.refreshBidderInfo,
         refreshSaleArtwork: this.props.refreshSaleArtwork,
+        biddingEndAt: this.state.currentBiddingEndAt,
       },
     })
 
@@ -453,7 +461,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   render() {
     const { sale_artwork } = this.props
-    const { id, artwork, lot_label, sale, endAt, extendedBiddingEndAt } = sale_artwork
+    const { id, artwork, lot_label, sale } = sale_artwork
     const { requiresPaymentInformation, requiresCheckbox, isLoading } = this.state
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artworkImage = artwork.image
@@ -461,158 +469,171 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
     const enablePriceTransparency = unsafe_getFeatureFlag("AROptionsPriceTransparency")
 
-    const cascadingEndTimeFeatureEnabled =
-      unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage") &&
-      sale?.cascadingEndTimeIntervalMinutes
+    const cascadingEndTimeFeatureEnabled = unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage")
 
-    const endsAt =
-      (cascadingEndTimeFeatureEnabled && extendedBiddingEndAt) ||
-      (cascadingEndTimeFeatureEnabled && sale?.cascadingEndTimeIntervalMinutes
-        ? endAt
-        : sale?.end_at) ||
-      undefined
+    const websocketEnabled =
+      !!cascadingEndTimeFeatureEnabled && !!sale?.cascadingEndTimeIntervalMinutes
 
     return (
-      <Flex m={0} flex={1} flexDirection="column">
-        <Theme>
-          <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
-            Confirm your bid
-          </FancyModalHeader>
-        </Theme>
-        <ScrollView scrollEnabled>
-          <Flex alignItems="center" pt="20px">
-            <Timer liveStartsAt={sale?.live_start_at ?? undefined} endsAt={endsAt} />
-          </Flex>
+      <AuctionWebsocketContextProvider
+        channelInfo={{
+          channel: "SalesChannel",
+          sale_id: sale?.internalID,
+        }}
+        enabled={websocketEnabled}
+        callbacks={{
+          received: ({ extended_bidding_end_at }) => {
+            if (!!extended_bidding_end_at) {
+              this.setState({ currentBiddingEndAt: extended_bidding_end_at })
+            }
+          },
+        }}
+      >
+        <Flex m={0} flex={1} flexDirection="column">
+          <Theme>
+            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
+              Confirm your bid
+            </FancyModalHeader>
+          </Theme>
+          <ScrollView scrollEnabled>
+            <Flex alignItems="center" pt="20px">
+              <Timer
+                liveStartsAt={sale?.live_start_at ?? undefined}
+                lotEndAt={sale_artwork.endAt}
+                biddingEndAt={this.state.currentBiddingEndAt}
+              />
+            </Flex>
 
-          <Box>
-            <Flex m={4} alignItems="center">
-              {!!artworkImage && (
-                <Image
-                  resizeMode="contain"
-                  style={{ width: 50, height: 50 }}
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  source={{ uri: artworkImage.url }}
+            <Box>
+              <Flex m={4} alignItems="center">
+                {!!artworkImage && (
+                  <Image
+                    resizeMode="contain"
+                    style={{ width: 50, height: 50 }}
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                    source={{ uri: artworkImage.url }}
+                  />
+                )}
+
+                <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode="tail">
+                  {
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                    artwork.artist_names
+                  }
+                </Serif>
+                <Serif size="2" weight="semibold">
+                  Lot {lot_label}
+                </Serif>
+
+                <Serif
+                  italic
+                  size="2"
+                  color="black60"
+                  textAlign="center"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                    artwork.title
+                  }
+                  {!!artwork! /* STRICTNESS_MIGRATION */.date && (
+                    <Serif size="2">
+                      ,{" "}
+                      {
+                        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                        artwork.date
+                      }
+                    </Serif>
+                  )}
+                </Serif>
+              </Flex>
+
+              <Divider />
+
+              <BidInfoRow
+                label="Max bid"
+                value={this.selectedBid().display}
+                onPress={isLoading ? () => null : () => this.props.navigator?.pop()}
+              />
+
+              {requiresPaymentInformation ? (
+                <PaymentInfo
+                  navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+                  onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+                  onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+                  billingAddress={this.state.billingAddress}
+                  creditCardFormParams={this.state.creditCardFormParams}
+                  creditCardToken={this.state.creditCardToken}
                 />
+              ) : (
+                <Divider mb={2} />
               )}
 
-              <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode="tail">
-                {
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  artwork.artist_names
-                }
-              </Serif>
-              <Serif size="2" weight="semibold">
-                Lot {lot_label}
-              </Serif>
+              {enablePriceTransparency ? (
+                <Box mt={4}>
+                  <PriceSummary saleArtworkId={id} bid={this.selectedBid()} />
+                </Box>
+              ) : null}
 
-              <Serif
-                italic
-                size="2"
-                color="black60"
-                textAlign="center"
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  artwork.title
-                }
-                {!!artwork! /* STRICTNESS_MIGRATION */.date && (
-                  <Serif size="2">
-                    ,{" "}
-                    {
-                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                      artwork.date
-                    }
-                  </Serif>
-                )}
-              </Serif>
-            </Flex>
-
-            <Divider />
-
-            <BidInfoRow
-              label="Max bid"
-              value={this.selectedBid().display}
-              onPress={isLoading ? () => null : () => this.props.navigator?.pop()}
-            />
-
-            {requiresPaymentInformation ? (
-              <PaymentInfo
-                navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-                onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-                onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-                billingAddress={this.state.billingAddress}
-                creditCardFormParams={this.state.creditCardFormParams}
-                creditCardToken={this.state.creditCardToken}
+              <Modal
+                visible={this.state.errorModalVisible}
+                headerText="An error occurred"
+                detailText={this.state.errorModalDetailText}
+                closeModal={this.closeModal.bind(this)}
               />
+            </Box>
+          </ScrollView>
+          <Divider />
+
+          <Box>
+            {requiresCheckbox ? (
+              <Checkbox
+                mt={4}
+                mx={3}
+                justifyContent="center"
+                onPress={() => this.onConditionsOfSaleCheckboxPressed()}
+                disabled={isLoading}
+                flex={undefined}
+              >
+                <Text color="black60">
+                  You agree to{" "}
+                  <LinkText
+                    onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
+                  >
+                    {partnerName(sale!)} Conditions of Sale
+                  </LinkText>
+                  .
+                </Text>
+              </Checkbox>
             ) : (
-              <Divider mb={2} />
+              <Flex alignItems="center" px={4}>
+                <Serif size="2" mt={2} color="black60">
+                  You agree to{" "}
+                  <LinkText
+                    onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
+                  >
+                    {partnerName(sale!)} Conditions of Sale
+                  </LinkText>
+                  .
+                </Serif>
+              </Flex>
             )}
 
-            {enablePriceTransparency ? (
-              <Box mt={4}>
-                <PriceSummary saleArtworkId={id} bid={this.selectedBid()} />
-              </Box>
-            ) : null}
-
-            <Modal
-              visible={this.state.errorModalVisible}
-              headerText="An error occurred"
-              detailText={this.state.errorModalDetailText}
-              closeModal={this.closeModal.bind(this)}
-            />
+            <Box m={4}>
+              <Button
+                loading={this.state.isLoading}
+                block
+                width={100}
+                disabled={!this.canPlaceBid()}
+                onPress={this.canPlaceBid() ? () => this.placeBid() : undefined}
+              >
+                Bid
+              </Button>
+            </Box>
           </Box>
-        </ScrollView>
-        <Divider />
-
-        <Box>
-          {requiresCheckbox ? (
-            <Checkbox
-              mt={4}
-              mx={3}
-              justifyContent="center"
-              onPress={() => this.onConditionsOfSaleCheckboxPressed()}
-              disabled={isLoading}
-              flex={undefined}
-            >
-              <Text color="black60">
-                You agree to{" "}
-                <LinkText
-                  onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
-                >
-                  {partnerName(sale!)} Conditions of Sale
-                </LinkText>
-                .
-              </Text>
-            </Checkbox>
-          ) : (
-            <Flex alignItems="center" px={4}>
-              <Serif size="2" mt={2} color="black60">
-                You agree to{" "}
-                <LinkText
-                  onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
-                >
-                  {partnerName(sale!)} Conditions of Sale
-                </LinkText>
-                .
-              </Serif>
-            </Flex>
-          )}
-
-          <Box m={4}>
-            <Button
-              loading={this.state.isLoading}
-              block
-              width={100}
-              disabled={!this.canPlaceBid()}
-              onPress={this.canPlaceBid() ? () => this.placeBid() : undefined}
-            >
-              Bid
-            </Button>
-          </Box>
-        </Box>
-      </Flex>
+        </Flex>
+      </AuctionWebsocketContextProvider>
     )
   }
 
@@ -639,6 +660,7 @@ export const ConfirmBidScreen = createRefetchContainer(
         id
         internalID
         sale {
+          internalID
           slug
           live_start_at: liveStartAt
           end_at: endAt
