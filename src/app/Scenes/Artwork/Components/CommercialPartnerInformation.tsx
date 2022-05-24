@@ -15,15 +15,20 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
   const showsSellerInfo = artwork.partner && artwork.partner.name
   const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "From" : "At"
   const avalaraPhase2 = useFeatureFlag("AREnableAvalaraPhase2")
+  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
+
+  console.warn(enableCreateArtworkAlert)
 
   return (
     <>
       {showsSellerInfo && (
         <>
           <Spacer mb={1} />
-          <Sans size="3t" color="black60">
-            {availabilityDisplayText} {artwork.partner!.name}
-          </Sans>
+          {!enableCreateArtworkAlert && (
+            <Sans size="3t" color="red">
+              {availabilityDisplayText} {artwork.partner!.name}
+            </Sans>
+          )}
           {avalaraPhase2 && (
             <Sans size="3t" color="black60">
               Taxes may apply at checkout.{" "}
