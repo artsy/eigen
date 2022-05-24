@@ -158,15 +158,18 @@ describe("CreateSavedSearchAlert", () => {
   })
 
   describe("Notification toggles", () => {
-    it("email toggle is disabled by default if the user has allowed email notifications", async () => {
+    it("email toggle is enabled by default if the user has allowed email notifications", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
       mockEnvironmentPayload(mockEnvironment, {
         Viewer: () => ({
-          notificationPreferences: [{ status: "SUBSCRIBED" }, { status: "UNSUBSCRIBED" }],
+          notificationPreferences: [
+            { status: "SUBSCRIBED", name: "custom_alerts", channel: "email" },
+          ],
         }),
       })
+
       await flushPromiseQueue()
 
       const toggles = await findAllByA11yState({ selected: true })
@@ -179,9 +182,12 @@ describe("CreateSavedSearchAlert", () => {
 
       mockEnvironmentPayload(mockEnvironment, {
         Viewer: () => ({
-          notificationPreferences: [{ status: "UNSUBSCRIBED" }],
+          notificationPreferences: [
+            { status: "UNSUBSCRIBED", name: "custom_alerts", channel: "email" },
+          ],
         }),
       })
+
       await flushPromiseQueue()
 
       const toggles = await findAllByA11yState({ selected: false })
@@ -192,16 +198,8 @@ describe("CreateSavedSearchAlert", () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
-        Viewer: () => ({
-          notificationPreferences: [{ status: "SUBSCRIBED" }],
-        }),
-      })
-      await flushPromiseQueue()
-
       const toggles = await findAllByA11yState({ selected: true })
-
-      expect(toggles).toHaveLength(2)
+      expect(toggles).toHaveLength(1)
     })
 
     it("push toggle is disabled by default when push permissions are denied", async () => {
