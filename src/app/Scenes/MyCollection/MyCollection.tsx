@@ -42,7 +42,10 @@ import { useScreenDimensions } from "shared/hooks"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
-import { AddedArtworkHasNoInsightsMessage } from "./Screens/Insights/MyCollectionInsightsMessages"
+import {
+  AddedArtworkHasNoInsightsMessage,
+  NoArtworksHaveInsightsMessage,
+} from "./Screens/Insights/MyCollectionInsightsMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
@@ -95,27 +98,36 @@ const MyCollection: React.FC<{
   const toast = useToast()
 
   const hasBeenShownBanner = async () => {
-    const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
-    const shouldShowAddedArtworkHasNoInsightsMessage = showSessionVisualClue(
-      "AddArtworkWithoutInsightsMessage_MyCTab"
-    )
+    const hasSeenBanner =
+      (await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)) === "true"
+    const showConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
+    const showAddedArtworkHasNoInsightsMessage =
+      showMyCollectionInsights && showSessionVisualClue("AddArtworkWithoutInsightsMessage_MyCTab")
+    const showArtworksHaveInsightsMessage =
+      showMyCollectionInsights &&
+      artworks.find((artwork) => artwork.marketPriceInsights !== null) &&
+      showSessionVisualClue("NoArtworksHaveInsightsMessage_MyCTab")
     return {
-      hasSeenBanner: hasSeen === "true",
-      shouldShowConsignments: shouldShowConsignments === true,
-      shouldShowAddedArtworkHasNoInsightsMessage:
-        shouldShowAddedArtworkHasNoInsightsMessage === true && showMyCollectionInsights,
+      hasSeenBanner,
+      showConsignments,
+      showAddedArtworkHasNoInsightsMessage,
+      showArtworksHaveInsightsMessage,
     }
   }
 
   useEffect(() => {
     if (artworks.length) {
       hasBeenShownBanner().then(
-        ({ hasSeenBanner, shouldShowConsignments, shouldShowAddedArtworkHasNoInsightsMessage }) => {
+        ({
+          hasSeenBanner,
+          showConsignments,
+          showAddedArtworkHasNoInsightsMessage,
+          showArtworksHaveInsightsMessage,
+        }) => {
           const showNewWorksBanner =
             me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
-          const showConsignmentsBanner = shouldShowConsignments
-          const showAddedArtworkHasNoInsightsMessage = shouldShowAddedArtworkHasNoInsightsMessage
+          const showConsignmentsBanner = showConsignments
+
           setJSX(
             <Flex>
               <ArtworksFilterHeader
@@ -164,6 +176,11 @@ const MyCollection: React.FC<{
               {!!showAddedArtworkHasNoInsightsMessage && (
                 <AddedArtworkHasNoInsightsMessage
                   onClose={() => removeClue("AddArtworkWithoutInsightsMessage_MyCTab")}
+                />
+              )}
+              {!!showArtworksHaveInsightsMessage && (
+                <NoArtworksHaveInsightsMessage
+                  onClose={() => removeClue("NoArtworksHaveInsightsMessage_MyCTab")}
                 />
               )}
             </Flex>
@@ -242,6 +259,9 @@ export const MyCollectionContainer = createPaginationContainer(
               }
               attributionClass {
                 name
+              }
+              marketPriceInsights {
+                demandRank
               }
               sizeBucket
               width
