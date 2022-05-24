@@ -42,7 +42,7 @@ import { useScreenDimensions } from "shared/hooks"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
-import { AddedArtworkHasNoInsightsMessage } from "./Screens/Insights/MyCollectionInsightsMessages"
+import { MyCTabAddedArtworkHasNoInsightsMessage } from "./Screens/Insights/MyCollectionInsightsMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
@@ -162,7 +162,7 @@ const MyCollection: React.FC<{
                 />
               )}
               {!!showAddedArtworkHasNoInsightsMessage && (
-                <AddedArtworkHasNoInsightsMessage
+                <MyCTabAddedArtworkHasNoInsightsMessage
                   onClose={() => removeClue("AddArtworkWithoutInsightsMessage_MyCTab")}
                 />
               )}

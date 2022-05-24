@@ -1,12 +1,12 @@
 import { Message } from "palette"
 
-interface AddedArtworkHasNoInsightsMessageProps {
+interface MyCTabAddedArtworkHasNoInsightsMessageProps {
   onClose: () => void
 }
 
-export const AddedArtworkHasNoInsightsMessage: React.FC<AddedArtworkHasNoInsightsMessageProps> = ({
-  onClose,
-}) => {
+export const AddedArtworkHasNoInsightsMessage: React.FC<
+  MyCTabAddedArtworkHasNoInsightsMessageProps
+> = ({ onClose }) => {
   return (
     <Message
       variant="info"
