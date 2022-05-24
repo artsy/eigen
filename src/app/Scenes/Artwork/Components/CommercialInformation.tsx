@@ -86,7 +86,7 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
     useAuctionWebsocket({
       lotID: lotID!,
       onChange: ({ extended_bidding_end_at }) => {
-        if (!!extended_bidding_end_at) {
+        if (extended_bidding_end_at) {
           setCurrentBiddingEndAt(extended_bidding_end_at)
           setLotSaleExtended(true)
         }

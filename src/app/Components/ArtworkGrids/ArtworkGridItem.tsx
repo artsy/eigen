@@ -95,16 +95,14 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const [currentBiddingEndAt, setCurrentBiddingEndAt] = useState(biddingEndAt)
   const isExtended =
-    !!currentBiddingEndAt && !!lotEndAt
-      ? DateTime.fromISO(currentBiddingEndAt) > DateTime.fromISO(lotEndAt)
-      : false
+    !!currentBiddingEndAt && !!lotEndAt && DateTime.fromISO(currentBiddingEndAt) > DateTime.fromISO(lotEndAt)
 
   const [lotSaleExtended, setLotSaleExtended] = useState(isExtended)
 
   useAuctionWebsocket({
     lotID: artwork.saleArtwork?.lotID!,
     onChange: ({ extended_bidding_end_at }) => {
-      if (!!extended_bidding_end_at) {
+      if (extended_bidding_end_at) {
         setCurrentBiddingEndAt(extended_bidding_end_at)
         setLotSaleExtended(true)
       }
