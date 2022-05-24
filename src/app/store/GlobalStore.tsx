@@ -1,6 +1,7 @@
 import { useNavigationState } from "@react-navigation/native"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { switchTab } from "app/navigation/navigate"
 import { loadDevNavigationStateCache } from "app/navigation/useReloadedDevNavigationState"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { logAction } from "app/utils/loggers"
@@ -55,7 +56,7 @@ function createGlobalStore() {
 
   if (!__TEST__) {
     unpersist().then(async (state) => {
-      await loadDevNavigationStateCache(store.getActions().bottomTabs.switchTab)
+      await loadDevNavigationStateCache(switchTab)
       store.getActions().rehydrate(state)
     })
   }

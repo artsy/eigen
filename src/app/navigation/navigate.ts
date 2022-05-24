@@ -9,6 +9,7 @@ import { postEventToProviders } from "app/utils/track/providers"
 import { EventEmitter } from "events"
 import { Linking, Platform } from "react-native"
 import { matchRoute } from "./routes"
+import { saveDevNavigationStateSelectedTab } from "./useReloadedDevNavigationState"
 
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
@@ -134,6 +135,7 @@ export function switchTab(tab: BottomTabType, props?: object) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
   }
   LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
+  saveDevNavigationStateSelectedTab(tab)
 }
 
 const tracks = {
