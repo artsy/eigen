@@ -1,11 +1,13 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Spinner, useSpace } from "palette"
-import React, { Suspense } from "react"
+import React, { Suspense, useState } from "react"
+import { RefreshControl } from "react-native"
 import { useLazyLoadQuery } from "react-relay"
-import { graphql } from "relay-runtime"
+import { FetchPolicy, fetchQuery, graphql } from "relay-runtime"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
@@ -14,13 +16,32 @@ import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const space = useSpace()
-  const data = useLazyLoadQuery<MyCollectionInsightsQuery>(MyCollectionInsightsScreenQuery, {})
+  const enablePhase1 = useFeatureFlag("ARShowMyCollectionInsightsPhase1Part1")
+
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const data = useLazyLoadQuery<MyCollectionInsightsQuery>(MyCollectionInsightsScreenQuery, {}, {})
 
   const myCollectionArtworksCount = extractNodes(data.me?.myCollectionConnection).length
 
   const hasMarketSignals = !!data.me?.auctionResults?.totalCount
 
-  const enablePhase1 = useFeatureFlag("ARShowMyCollectionInsightsPhase1Part1")
+  const refresh = () => {
+    if (isRefreshing) {
+      return
+    }
+
+    setIsRefreshing(true)
+
+    fetchQuery(defaultEnvironment, MyCollectionInsightsScreenQuery, {}).subscribe({
+      complete: () => {
+        setIsRefreshing(false)
+      },
+      error: () => {
+        setIsRefreshing(false)
+      },
+    })
+  }
 
   const renderContent = () => {
     return (
@@ -43,6 +64,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       style={{
         flex: 1,
       }}
+      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
       contentContainerStyle={{ paddingTop: space("2"), flexGrow: 1, justifyContent: "center" }}
       paddingHorizontal={0}
     >
