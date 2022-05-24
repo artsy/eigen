@@ -25,7 +25,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const renderContent = () => {
     return (
       <>
-        <MyCollectionInsightsOverview />
+        <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
         {hasMarketSignals && !!enablePhase1 && (
           <>
             <MarketSignalsSectionHeader />
@@ -75,6 +75,9 @@ export const MyCollectionInsightsScreenQuery = graphql`
       ...AuctionResultsForArtistsYouCollectRail_me
       auctionResults: myCollectionAuctionResults(first: 1) {
         totalCount
+      }
+      myCollectionInfo {
+        ...MyCollectionInsightsOverview_myCollectionInfo
       }
       myCollectionConnection(first: 1) {
         edges {
