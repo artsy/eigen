@@ -4422,7 +4422,7 @@
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Artsy Stickers/Info.plist";
+				INFOPLIST_FILE = ArtsyStickers/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 6.7.7;
@@ -4453,7 +4453,7 @@
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Artsy Stickers/Info.plist";
+				INFOPLIST_FILE = ArtsyStickers/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MARKETING_VERSION = 6.7.7;
