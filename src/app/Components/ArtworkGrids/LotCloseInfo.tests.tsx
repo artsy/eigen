@@ -1,7 +1,6 @@
 import { render } from "@testing-library/react-native"
 import { Theme } from "palette"
 import React from "react"
-import { currentTimerState, relevantStateData } from "../Bidding/Components/Timer"
 import { DurationProvider } from "../Countdown"
 import { LotCloseInfo } from "./LotCloseInfo"
 
@@ -18,6 +17,7 @@ const basicSale = {
 }
 
 const basicSaleArtwork = {
+  lotID: "lot-1",
   counts: null,
   formattedEndDateTime: "Formatted end date time",
   currentBid: null,
@@ -40,7 +40,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            lotEndAt={saleArtwork.endAt}
+            duration={null}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -62,7 +68,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            lotEndAt={saleArtwork.endAt}
+            duration={null}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -87,7 +99,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            lotEndAt={saleArtwork.endAt}
+            duration={null}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -112,7 +130,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            lotEndAt={saleArtwork.endAt}
+            duration={null}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -137,7 +161,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            duration={null}
+            lotEndAt={saleArtwork.endAt}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -161,7 +191,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            duration={null}
+            lotEndAt={saleArtwork.endAt}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -174,33 +210,26 @@ describe("LotCloseInfo", () => {
 
   it("shows Extended when the sale is extended", () => {
     const sale = {
-      startAt: "2017-04-19T11:12:48-04:00",
-      endAt: "2017-04-25T11:12:48-04:00",
       ...basicSale,
+      startAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+      endAt: new Date(Date.now() + 1000 * 60).toISOString(),
     }
     const saleArtwork = {
       ...basicSaleArtwork,
       endAt: sale.endAt,
-      extendedBiddingEndAt: new Date(new Date(sale.endAt).getTime() + 1000 * 60 * 2).toISOString(),
+      extendedBiddingEndAt: new Date(Date.now() + 1000 * 60 * 2).toISOString(),
     }
-
-    Date.now = jest.fn(() => new Date(saleArtwork.endAt).getTime())
-
-    const theCurrentTimerState = currentTimerState({
-      extendedBiddingEndAt: saleArtwork.extendedBiddingEndAt,
-    })
 
     const { getByText } = render(
       <Theme>
-        <DurationProvider
-          startAt={
-            relevantStateData(theCurrentTimerState, {
-              endsAt: saleArtwork.endAt,
-              extendedBiddingEndAt: saleArtwork.extendedBiddingEndAt,
-            }).date!
-          }
-        >
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+        <DurationProvider startAt={saleArtwork.extendedBiddingEndAt}>
+          <LotCloseInfo
+            lotEndAt={saleArtwork.extendedBiddingEndAt}
+            duration={null}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended
+          />
         </DurationProvider>
       </Theme>
     )

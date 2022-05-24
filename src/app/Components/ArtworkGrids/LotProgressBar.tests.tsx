@@ -1,4 +1,6 @@
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { DateTime } from "luxon"
+import moment from "moment"
 import { ProgressBar } from "palette"
 import React from "react"
 import { DurationProvider } from "../Countdown"
@@ -6,9 +8,8 @@ import { LotProgressBar, LotProgressBarProps } from "./LotProgressBar"
 
 describe("LotProgressBar", () => {
   const getWrapper = (props: LotProgressBarProps) => {
-    const endsAt = props.extendedBiddingEndAt || props.endAt
     return renderWithWrappersTL(
-      <DurationProvider startAt={endsAt!}>
+      <DurationProvider startAt={props.biddingEndAt!}>
         <LotProgressBar {...props} />
       </DurationProvider>
     )
@@ -20,8 +21,8 @@ describe("LotProgressBar", () => {
         extendedBiddingPeriodMinutes: 2,
         extendedBiddingIntervalMinutes: 2,
         startAt: new Date(Date.now()).toISOString(),
-        endAt: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
-        extendedBiddingEndAt: new Date(Date.now() + 1000).toISOString(),
+        biddingEndAt: new Date(Date.now() + 1000).toISOString(),
+        hasBeenExtended: false,
         duration: null,
       }
 
@@ -41,8 +42,8 @@ describe("LotProgressBar", () => {
         extendedBiddingPeriodMinutes: 2,
         extendedBiddingIntervalMinutes: 2,
         startAt: new Date(Date.now()).toISOString(),
-        endAt: new Date(Date.now() - 1000 * 60 * 60).toISOString(),
-        extendedBiddingEndAt: new Date(Date.now() - 1000).toISOString(),
+        biddingEndAt: new Date(Date.now() - 1000).toISOString(),
+        hasBeenExtended: false,
         duration: null,
       }
 
@@ -52,14 +53,15 @@ describe("LotProgressBar", () => {
     })
 
     it("ProgressBar disappears when time elapses", () => {
+      // 2 mins
+      const biddingEndAt = new Date(Date.now() + 1000 * 60 * 60 * 2).toISOString()
       const props = {
         extendedBiddingPeriodMinutes: 2,
         extendedBiddingIntervalMinutes: 2,
         startAt: new Date(Date.now()).toISOString(),
-        endAt: new Date(Date.now() + 1000).toISOString(),
-        // 2 mins
-        extendedBiddingEndAt: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
-        duration: null,
+        biddingEndAt,
+        hasBeenExtended: true,
+        duration: moment.duration(DateTime.fromISO(biddingEndAt).toMillis()),
       }
 
       jest.useFakeTimers()
@@ -68,7 +70,7 @@ describe("LotProgressBar", () => {
 
       expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(1)
 
-      jest.advanceTimersByTime(1000 * 60 * 60)
+      jest.advanceTimersByTime(1000 * 60 * 60 * 2)
 
       expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(0)
     })

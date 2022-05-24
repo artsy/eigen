@@ -15,6 +15,7 @@ import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { Box, LinkButton, Separator } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
@@ -242,6 +243,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
             artwork={artworkAboveTheFold}
             me={me}
             tracking={tracking}
+            refetchArtwork={() =>
+              relay.refetch({ artworkID: internalID }, null, () => null, { force: true })
+            }
             setAuctionTimerState={setAuctionTimerState}
           />
         ),
@@ -381,6 +385,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
     />
   )
 
+  const websocketEnabled = !!artworkBelowTheFold?.sale?.extendedBiddingIntervalMinutes
+
   return (
     <ProvideScreenTracking
       info={{
@@ -396,29 +402,37 @@ export const Artwork: React.FC<ArtworkProps> = ({
         biddable: artworkAboveTheFold?.isBiddable,
       }}
     >
-      {fetchingData ? (
-        <ProvidePlaceholderContext>
-          <AboveTheFoldPlaceholder />
-        </ProvidePlaceholderContext>
-      ) : (
-        <FlatList<ArtworkPageSection>
-          keyboardShouldPersistTaps="handled"
-          data={sectionsData()}
-          ItemSeparatorComponent={() => (
-            <Box mx={2}>
-              <Separator />
-            </Box>
-          )}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          contentContainerStyle={{ paddingBottom: 40 }}
-          renderItem={({ item }) => (
-            <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
-              {item.element}
-            </Box>
-          )}
-        />
-      )}
-      <QAInfo />
+      <AuctionWebsocketContextProvider
+        channelInfo={{
+          channel: "SalesChannel",
+          sale_id: artworkBelowTheFold?.sale?.internalID,
+        }}
+        enabled={websocketEnabled}
+      >
+        {fetchingData ? (
+          <ProvidePlaceholderContext>
+            <AboveTheFoldPlaceholder />
+          </ProvidePlaceholderContext>
+        ) : (
+          <FlatList<ArtworkPageSection>
+            keyboardShouldPersistTaps="handled"
+            data={sectionsData()}
+            ItemSeparatorComponent={() => (
+              <Box mx={2}>
+                <Separator />
+              </Box>
+            )}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            contentContainerStyle={{ paddingBottom: 40 }}
+            renderItem={({ item }) => (
+              <Box my={item.verticalMargin ?? 3} px={item.excludePadding ? 0 : 2}>
+                {item.element}
+              </Box>
+            )}
+          />
+        )}
+        <QAInfo />
+      </AuctionWebsocketContextProvider>
     </ProvideScreenTracking>
   )
 }
@@ -480,9 +494,11 @@ export const ArtworkContainer = createRefetchContainer(
           ...ArtistSeriesMoreSeries_artist
         }
         sale {
+          internalID
           id
           isBenefit
           isGalleryAuction
+          extendedBiddingIntervalMinutes
         }
         category
         canRequestLotConditionsReport
