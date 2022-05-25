@@ -16,7 +16,7 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
-import { Box, LinkButton, Separator } from "palette"
+import { Box, LinkText, Separator, Text } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -252,14 +252,23 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (!!partnerAbove?.href && !!partnerAbove?.name && enableCreateArtworkAlert) {
+    if (enableCreateArtworkAlert && !!partnerAbove?.name) {
+      const { isLinkable, name, href } = partnerAbove
       sections.push({
         key: "partnerSection",
-        element: (
-          <LinkButton onPress={() => navigateToPartner(partnerAbove.href!)}>
-            {partnerAbove.name!}
-          </LinkButton>
-        ),
+        element:
+          !!isLinkable && !!href ? (
+            <LinkText
+              accessibilityRole="link"
+              accessibilityLabel={name}
+              accessibilityHint={`Visit ${name} page`}
+              onPress={() => navigateToPartner(href)}
+            >
+              {name}
+            </LinkText>
+          ) : (
+            <Text testID="non linkable partner">{name}</Text>
+          ),
         verticalMargin: 2,
       })
     }
@@ -474,6 +483,7 @@ export const ArtworkContainer = createRefetchContainer(
         partner {
           name
           href
+          isLinkable
         }
       }
     `,
