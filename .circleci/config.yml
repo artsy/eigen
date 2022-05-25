@@ -155,12 +155,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v5-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v6-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
           command: ./scripts/ci-ios
       - save_cache:
-          key: v5-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v6-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -373,7 +373,7 @@ jobs:
           at: ../workspace
       - restore_cache:
           keys:
-            - v6-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v7-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -410,7 +410,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci-test-ios
       - save_cache:
-          key: v6-test-success-{{ checksum ".manifests/native_code" }}
+          key: v7-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
 
