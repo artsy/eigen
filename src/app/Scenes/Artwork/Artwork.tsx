@@ -16,7 +16,7 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
-import { Box, LinkButton, Separator, Text } from "palette"
+import { Box, LinkText, Separator, Text } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -256,9 +256,16 @@ export const Artwork: React.FC<ArtworkProps> = ({
       sections.push({
         key: "partnerSection",
         element: !!partner?.isLinkable ? (
-          <LinkButton onPress={() => navigateToPartner(partner?.href!)}>{partner?.name}</LinkButton>
+          <LinkText
+            accessibilityRole="link"
+            accessibilityLabel={partner.name}
+            accessibilityHint={`Visit ${partner.name} page`}
+            onPress={() => navigateToPartner(partner?.href!)}
+          >
+            {partner?.name}
+          </LinkText>
         ) : (
-          <Text>{partner?.name}</Text>
+          <Text testID="non linkable partner">{partner?.name}</Text>
         ),
         verticalMargin: 2,
       })
