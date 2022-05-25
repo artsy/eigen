@@ -300,7 +300,7 @@ export const updateArtwork = async (
           addClue("AddArtworkWithInsightsMessage_InsightsTab")
         } else if (!hasInsights) {
           removeClue("AddArtworkWithInsightsMessage_InsightsTab")
-          addClue("AddArtworkWithoutInsightsMessage_InsightsTab") // show this one when insight are not awailable for the artwor AND THE ENTIRE COLLECTION
+          addClue("AddArtworkWithoutInsightsMessage_InsightsTab") // TODO: show this one when insight are not awailable for the artwor AND THE ENTIRE COLLECTION (CX-2607)
         }
       }
     }
