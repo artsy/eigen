@@ -1,0 +1,25 @@
+diff --git a/node_modules/@react-native-community/cli-platform-ios/native_modules.rb b/node_modules/@react-native-community/cli-platform-ios/native_modules.rb
+index 1b6eece..4ccf979 100644
+--- a/node_modules/@react-native-community/cli-platform-ios/native_modules.rb
++++ b/node_modules/@react-native-community/cli-platform-ios/native_modules.rb
+@@ -12,7 +12,7 @@
+ require 'pathname'
+ require 'cocoapods'
+ 
+-def use_native_modules!(config = nil)
++def use_native_modules!(config = nil, packages_to_skip: [])
+   if (config.is_a? String)
+     Pod::UI.warn("Passing custom root to use_native_modules! is deprecated.",
+       [
+@@ -45,6 +45,11 @@ def use_native_modules!(config = nil)
+   packages.each do |package_name, package|
+     next unless package_config = package["platforms"]["ios"]
+     
++    if skipped_pod = packages_to_skip.find { |pod_name| package["platforms"]["ios"]["podspecPath"].include? "#{pod_name}.podspec" }
++      Pod::UI.notice "Skipping pod: #{skipped_pod}"
++      next
++    end
++
+     podspec_path = package_config["podspecPath"]
+     configurations = package_config["configurations"]
+ 

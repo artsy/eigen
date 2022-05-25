@@ -61,7 +61,11 @@ pre_install do |installer|
 end
 
 target 'Artsy' do
-  config = use_native_modules!
+  if ENV['CI']
+    config = use_native_modules!(packages_to_skip: ['react-native-flipper'])
+  else
+    config = use_native_modules!
+  end
   use_react_native!(
     :path => './node_modules/react-native',
     :production => ENV['CIRCLE_BUILD_NUM'],
