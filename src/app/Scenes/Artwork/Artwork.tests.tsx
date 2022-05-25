@@ -473,7 +473,7 @@ describe("Artwork", () => {
     })
   })
 
-  describe.only("Partner Section", () => {
+  describe("Partner Section", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
     })
@@ -481,9 +481,7 @@ describe("Artwork", () => {
     it("should render a pressable partner name section when partner is linkable and has a href", () => {
       const { getByA11yHint, queryByA11yHint } = renderWithWrappersTL(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
           partner: {
             name: "Test Partner",
@@ -502,9 +500,7 @@ describe("Artwork", () => {
     it("should render a non pressable partner name section when partner is not linkable", () => {
       const { queryByA11yHint, queryByTestId } = renderWithWrappersTL(<TestRenderer />)
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
           partner: {
             name: "Test Partner",
@@ -523,8 +519,6 @@ describe("Artwork", () => {
       const { queryByA11yLabel, queryByTestId } = renderWithWrappersTL(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery")
 
       expect(queryByA11yLabel("Visit Test Partner page")).toBeFalsy()
       expect(queryByTestId("non linkable partner")).toBeFalsy()
