@@ -1,4 +1,5 @@
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
+import { useToast } from "app/Components/Toast/toastHook"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -25,6 +26,8 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
 
   const editScreenRef = useRef<MyAccountFieldEditScreen>(null)
 
+  const toast = useToast()
+
   return (
     <MyAccountFieldEditScreen
       ref={editScreenRef}
@@ -33,6 +36,13 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
       onSave={async (dismiss) => {
         try {
           await updateMyUserProfile({ email })
+
+          if (email !== me.email) {
+            toast.show("Please confirm your new email for this update to take effect", "bottom", {
+              duration: "long",
+            })
+          }
+
           dismiss()
         } catch (e: any) {
           setReceivedError(e)
