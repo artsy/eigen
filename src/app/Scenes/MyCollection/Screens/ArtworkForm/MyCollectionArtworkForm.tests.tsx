@@ -410,6 +410,7 @@ describe("MyCollectionArtworkForm", () => {
                   isEdition: null,
                   metric: null,
                   artworkLocation: null,
+                  hasMarketPriceInsights: false,
                   provenance: null,
                   width: null,
                   title: null,

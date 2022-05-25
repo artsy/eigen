@@ -15,7 +15,10 @@ import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBa
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
-import { InsightsTabAddedArtworkHasNoInsightsMessage } from "./MyCollectionInsightsMessages"
+import {
+  AddedArtworkHasInsightsMessage,
+  InsightsTabAddedArtworkHasNoInsightsMessage,
+} from "./MyCollectionInsightsMessages"
 import { fragment, MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
@@ -63,28 +66,45 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     const shouldShowAddedArtworkHasNoInsightsMessage = showSessionVisualClue(
       "AddArtworkWithoutInsightsMessage_InsightsTab"
     )
+    const shouldShowAddedArtworkHasInsightsMessage = showSessionVisualClue(
+      "AddArtworkWithInsightsMessage_InsightsTab"
+    )
     return {
       shouldShowAddedArtworkHasNoInsightsMessage:
         shouldShowAddedArtworkHasNoInsightsMessage === true && enablePhase1,
+      shouldShowAddedArtworkHasInsightsMessage:
+        shouldShowAddedArtworkHasInsightsMessage === true && enablePhase1,
     }
   }
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
   useEffect(() => {
-    hasBeenShownBanner().then(({ shouldShowAddedArtworkHasNoInsightsMessage }) => {
-      setJSX(
-        <>
-          {!!shouldShowAddedArtworkHasNoInsightsMessage && (
-            <InsightsTabAddedArtworkHasNoInsightsMessage
-              onClose={() => {
-                removeClue("AddArtworkWithoutInsightsMessage_InsightsTab")
-              }}
-            />
-          )}
-        </>
-      )
-    })
+    hasBeenShownBanner().then(
+      ({
+        shouldShowAddedArtworkHasNoInsightsMessage,
+        shouldShowAddedArtworkHasInsightsMessage,
+      }) => {
+        setJSX(
+          <>
+            {!!shouldShowAddedArtworkHasNoInsightsMessage && (
+              <InsightsTabAddedArtworkHasNoInsightsMessage
+                onClose={() => {
+                  removeClue("AddArtworkWithoutInsightsMessage_InsightsTab")
+                }}
+              />
+            )}
+            {!!shouldShowAddedArtworkHasInsightsMessage && (
+              <AddedArtworkHasInsightsMessage
+                onClose={() => {
+                  removeClue("AddArtworkWithInsightsMessage_InsightsTab")
+                }}
+              />
+            )}
+          </>
+        )
+      }
+    )
   }, [myCollectionInfo.artworksCount])
 
   const renderContent = () => {
