@@ -73,7 +73,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
         flex: 1,
       }}
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
-      contentContainerStyle={{ paddingTop: space("2"), flexGrow: 1, justifyContent: "center" }}
+      contentContainerStyle={{ paddingTop: space("2"), justifyContent: "center" }}
       paddingHorizontal={0}
     >
       {myCollectionArtworksCount > 0 ? renderContent() : <MyCollectionInsightsEmptyState />}
