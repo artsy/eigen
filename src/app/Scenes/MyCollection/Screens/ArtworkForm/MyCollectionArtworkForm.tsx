@@ -16,7 +16,7 @@ import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWor
 import { addClue, GlobalStore, removeClue } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
-import { hasIn, isEqual } from "lodash"
+import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
