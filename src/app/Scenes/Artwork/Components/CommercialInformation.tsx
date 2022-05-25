@@ -12,6 +12,8 @@ import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
+import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
+import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
 import { capitalize } from "lodash"
 import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React, { useEffect, useState } from "react"
@@ -30,7 +32,29 @@ interface CommercialInformationProps extends CountdownTimerProps {
   me: CommercialInformation_me
   hasStarted?: boolean
   tracking?: TrackingProp
+  biddingEndAt?: string
+  hasBeenExtended?: boolean
+  refetchArtwork: () => void
   setAuctionTimerState?: (auctionTimerState: AuctionTimerState) => void
+}
+
+// On Android, the useArtworkBidding fails to receive data, bringing the
+// ContextProvider down closer to this component fixed it. [Android Only]
+const CommercialInformationWebsocketWrapper: React.FC<CommercialInformationProps> = (props) => {
+  const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
+  const websocketEnabled =
+    cascadingEndTimeFeatureEnabled && !!props.artwork.sale?.cascadingEndTimeIntervalMinutes
+  return (
+    <AuctionWebsocketContextProvider
+      channelInfo={{
+        channel: "SalesChannel",
+        sale_id: props.artwork.sale?.internalID,
+      }}
+      enabled={websocketEnabled}
+    >
+      <CommercialInformationTimerWrapper {...props} />
+    </AuctionWebsocketContextProvider>
+  )
 }
 
 export const CommercialInformationTimerWrapper: React.FC<CommercialInformationProps> = (props) => {
@@ -44,16 +68,18 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
       endAt: saleEndAt,
     } = props.artwork.sale || {}
 
-    const { endAt: lotEndAt, extendedBiddingEndAt } = props.artwork.saleArtwork
+    const { endAt: lotEndAt, extendedBiddingEndAt, lotID } = props.artwork.saleArtwork
+
+    const initialBiddingEndAt = extendedBiddingEndAt ?? lotEndAt ?? saleEndAt
 
     const { setAuctionTimerState } = props
 
-    const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerLotPage")
-
-    const endsAt =
-      (cascadingEndTimeFeatureEnabled && extendedBiddingEndAt) ||
-      (cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? lotEndAt : saleEndAt) ||
-      undefined
+    const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
+      lotID,
+      lotEndAt,
+      biddingEndAt: initialBiddingEndAt,
+      onDataReceived: props.refetchArtwork,
+    })
 
     return (
       <TimeOffsetProvider>
@@ -64,19 +90,27 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               isPreview: isPreview || undefined,
               isClosed: isClosed || undefined,
               liveStartsAt: liveStartsAt || undefined,
-              extendedBiddingEndAt: cascadingEndTimeFeatureEnabled
-                ? extendedBiddingEndAt
-                : undefined,
+              lotEndAt,
+              biddingEndAt: currentBiddingEndAt,
             })
             const { label, date, hasStarted } = relevantStateData(state, {
               liveStartsAt: liveStartsAt || undefined,
               startsAt: startsAt || undefined,
-              endsAt,
+              lotEndAt,
+              biddingEndAt: currentBiddingEndAt,
             })
 
             setAuctionTimerState?.(state)
 
-            return { label, date, state, hasStarted, cascadingEndTimeIntervalMinutes }
+            return {
+              label,
+              date,
+              state,
+              hasStarted,
+              cascadingEndTimeIntervalMinutes,
+              hasBeenExtended: lotSaleExtended,
+              biddingEndAt: currentBiddingEndAt,
+            }
           }}
           onNextTickerState={({ state }) => {
             const nextState = nextTimerState(state as AuctionTimerState, {
@@ -85,12 +119,20 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
             const { label, date, hasStarted } = relevantStateData(nextState, {
               liveStartsAt: liveStartsAt || undefined,
               startsAt: startsAt || undefined,
-              endsAt,
+              lotEndAt,
+              biddingEndAt: currentBiddingEndAt,
             })
 
             setAuctionTimerState?.(nextState)
 
-            return { state: nextState, date, label, hasStarted }
+            return {
+              state: nextState,
+              date,
+              label,
+              hasStarted,
+              hasBeenExtended: lotSaleExtended,
+              biddingEndAt: currentBiddingEndAt,
+            }
           }}
           {...(props as any)}
         />
@@ -133,20 +175,14 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   duration,
   label,
   hasStarted,
+  biddingEndAt,
+  hasBeenExtended,
 }) => {
   const { trackEvent } = useTracking()
   const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
   const [editionSetID, setEditionSetID] = useState<string | null>(null)
-  const {
-    isAcquireable,
-    isOfferable,
-    isInquireable,
-    isInAuction,
-    sale,
-    isForSale,
-    saleArtwork,
-    isSold,
-  } = artwork
+  const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
+    artwork
 
   const isInClosedAuction = isInAuction && sale && timerState === AuctionTimerState.CLOSED
   const artistIsConsignable = artwork?.artists?.filter((artist) => artist?.isConsignable).length
@@ -278,9 +314,9 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
             duration={duration}
             extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
             extendedBiddingPeriodMinutes={sale.extendedBiddingPeriodMinutes}
-            extendedBiddingEndAt={saleArtwork?.extendedBiddingEndAt}
+            biddingEndAt={biddingEndAt}
             startAt={sale.startAt}
-            endAt={saleArtwork?.endAt}
+            hasBeenExtended={hasBeenExtended}
           />
         </>
       )
@@ -315,7 +351,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
 }
 
 export const CommercialInformationFragmentContainer = createFragmentContainer(
-  CommercialInformationTimerWrapper,
+  CommercialInformationWebsocketWrapper,
   {
     artwork: graphql`
       fragment CommercialInformation_artwork on Artwork {
@@ -339,6 +375,7 @@ export const CommercialInformationFragmentContainer = createFragmentContainer(
         }
 
         saleArtwork {
+          lotID
           endAt
           extendedBiddingEndAt
         }

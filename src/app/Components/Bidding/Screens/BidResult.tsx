@@ -17,7 +17,7 @@ import { BidderPositionResult } from "../types"
 
 import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
@@ -27,6 +27,7 @@ interface BidResultProps {
   navigator: NavigatorIOS
   refreshBidderInfo?: () => void
   refreshSaleArtwork?: () => void
+  biddingEndAt?: string
 }
 
 const messageForPollingTimeout = {
@@ -97,15 +98,6 @@ export class BidResult extends React.Component<BidResultProps> {
     const { sale_artwork, bidderPositionResult } = this.props
     const { status, message_header, message_description_md } = bidderPositionResult
 
-    const cascadingEndTimeFeatureEnabled = unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage")
-
-    const endsAt =
-      (cascadingEndTimeFeatureEnabled && sale_artwork.extendedBiddingEndAt) ||
-      (cascadingEndTimeFeatureEnabled && sale_artwork.sale?.cascadingEndTimeIntervalMinutes
-        ? sale_artwork.endAt
-        : sale_artwork.sale?.endAt) ||
-      undefined
-
     return (
       <View style={{ flex: 1 }}>
         <Theme>
@@ -133,7 +125,11 @@ export class BidResult extends React.Component<BidResultProps> {
                 </Markdown>
               )}
               {!!this.shouldDisplayTimer(status) && (
-                <Timer liveStartsAt={sale_artwork.sale?.liveStartAt ?? undefined} endsAt={endsAt} />
+                <Timer
+                  liveStartsAt={sale_artwork.sale?.liveStartAt ?? undefined}
+                  lotEndAt={sale_artwork.endAt}
+                  biddingEndAt={this.props.biddingEndAt}
+                />
               )}
             </Flex>
           </View>

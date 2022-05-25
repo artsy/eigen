@@ -4,23 +4,19 @@ import React from "react"
 
 export interface ArtworkAuctionProgressBarProps {
   startAt?: string | null
-  endAt?: string | null
   extendedBiddingPeriodMinutes: number
   extendedBiddingIntervalMinutes: number
-  extendedBiddingEndAt?: string | null
+  biddingEndAt?: string | null
+  hasBeenExtended: boolean
 }
 
 export const ArtworkAuctionProgressBar: React.FC<ArtworkAuctionProgressBarProps> = ({
   startAt,
-  endAt,
   extendedBiddingPeriodMinutes,
   extendedBiddingIntervalMinutes,
-  extendedBiddingEndAt,
+  biddingEndAt,
+  hasBeenExtended,
 }) => {
-  const hasBeenExtended = !!extendedBiddingEndAt
-
-  const biddingEndAt = extendedBiddingEndAt ?? endAt
-
   if (!biddingEndAt) {
     return null
   }

@@ -19,6 +19,7 @@ import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import _, { times } from "lodash"
 import { DateTime } from "luxon"
 import { Box, Flex, Join, Spacer } from "palette"
@@ -224,45 +225,55 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     },
   ])
 
+  const websocketEnabled = !!sale.extendedBiddingIntervalMinutes
+
   return (
     <ArtworkFiltersStoreProvider>
-      <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
-        <Animated.FlatList
-          ref={flatListRef}
-          data={saleSectionsData}
-          viewabilityConfig={viewConfigRef.current}
-          onViewableItemsChanged={viewableItemsChangedRef.current}
-          contentContainerStyle={{ paddingBottom: 40 }}
-          renderItem={({ item }: { item: SaleSection }) => item.content}
-          keyExtractor={(item: SaleSection) => item.key}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: { y: scrollAnim },
+      <AuctionWebsocketContextProvider
+        channelInfo={{
+          channel: "SalesChannel",
+          sale_id: sale.internalID,
+        }}
+        enabled={websocketEnabled}
+      >
+        <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
+          <Animated.FlatList
+            ref={flatListRef}
+            data={saleSectionsData}
+            viewabilityConfig={viewConfigRef.current}
+            onViewableItemsChanged={viewableItemsChangedRef.current}
+            contentContainerStyle={{ paddingBottom: 40 }}
+            renderItem={({ item }: { item: SaleSection }) => item.content}
+            keyExtractor={(item: SaleSection) => item.key}
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: { y: scrollAnim },
+                  },
                 },
-              },
-            ],
-            {
-              useNativeDriver: true,
-            }
-          )}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-          scrollEventThrottle={16}
-        />
-        <ArtworkFilterNavigator
-          visible={isFilterArtworksModalVisible}
-          id={sale.internalID}
-          slug={sale.slug}
-          mode={FilterModalMode.SaleArtworks}
-          exitModal={closeFilterArtworksModal}
-          closeModal={closeFilterArtworksModal}
-        />
-        <AnimatedArtworkFilterButton
-          isVisible={isArtworksGridVisible}
-          onPress={openFilterArtworksModal}
-        />
-      </ProvideScreenTracking>
+              ],
+              {
+                useNativeDriver: true,
+              }
+            )}
+            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+            scrollEventThrottle={16}
+          />
+          <ArtworkFilterNavigator
+            visible={isFilterArtworksModalVisible}
+            id={sale.internalID}
+            slug={sale.slug}
+            mode={FilterModalMode.SaleArtworks}
+            exitModal={closeFilterArtworksModal}
+            closeModal={closeFilterArtworksModal}
+          />
+          <AnimatedArtworkFilterButton
+            isVisible={isArtworksGridVisible}
+            onPress={openFilterArtworksModal}
+          />
+        </ProvideScreenTracking>
+      </AuctionWebsocketContextProvider>
     </ArtworkFiltersStoreProvider>
   )
 }
@@ -441,6 +452,7 @@ export const SaleQueryRenderer: React.FC<{
             cacheConfig={{
               force: true,
             }}
+            fetchPolicy="store-and-network"
           />
         )
       }}

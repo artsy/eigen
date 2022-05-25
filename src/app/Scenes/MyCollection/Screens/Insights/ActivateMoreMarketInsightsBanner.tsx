@@ -1,4 +1,5 @@
 import { navigate, popToRoot } from "app/navigation/navigate"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { Box, Button, Flex, Text } from "palette"
 import React from "react"
 import { ImageBackground } from "react-native"
@@ -36,6 +37,7 @@ export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
             navigate("my-collection/artworks/new", {
               passProps: {
                 mode: "add",
+                source: Tab.insights,
                 onSuccess: popToRoot,
               },
             })
