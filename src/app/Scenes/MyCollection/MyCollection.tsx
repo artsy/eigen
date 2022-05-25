@@ -42,7 +42,10 @@ import { useScreenDimensions } from "shared/hooks"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
-import { MyCTabAddedArtworkHasNoInsightsMessage } from "./Screens/Insights/MyCollectionInsightsMessages"
+import {
+  AddedArtworkHasInsightsMessage,
+  MyCTabAddedArtworkHasNoInsightsMessage,
+} from "./Screens/Insights/MyCollectionInsightsMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
@@ -100,22 +103,34 @@ const MyCollection: React.FC<{
     const shouldShowAddedArtworkHasNoInsightsMessage = showSessionVisualClue(
       "AddArtworkWithoutInsightsMessage_MyCTab"
     )
+    const shouldShowAddedArtworkHasInsightsMessage = showSessionVisualClue(
+      "AddArtworkWithInsightsMessage_MyCTab"
+    )
     return {
       hasSeenBanner: hasSeen === "true",
       shouldShowConsignments: shouldShowConsignments === true,
       shouldShowAddedArtworkHasNoInsightsMessage:
         shouldShowAddedArtworkHasNoInsightsMessage === true && showMyCollectionInsights,
+      shouldShowAddedArtworkHasInsightsMessage:
+        shouldShowAddedArtworkHasInsightsMessage === true && showMyCollectionInsights,
     }
   }
 
   useEffect(() => {
     if (artworks.length) {
       hasBeenShownBanner().then(
-        ({ hasSeenBanner, shouldShowConsignments, shouldShowAddedArtworkHasNoInsightsMessage }) => {
+        ({
+          hasSeenBanner,
+          shouldShowConsignments,
+          shouldShowAddedArtworkHasNoInsightsMessage,
+          shouldShowAddedArtworkHasInsightsMessage,
+        }) => {
           const showNewWorksBanner =
             me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
           const showConsignmentsBanner = shouldShowConsignments
           const showAddedArtworkHasNoInsightsMessage = shouldShowAddedArtworkHasNoInsightsMessage
+          const showAddedArtworkHasInsightsMessage = shouldShowAddedArtworkHasInsightsMessage
+
           setJSX(
             <Flex>
               <ArtworksFilterHeader
@@ -164,6 +179,11 @@ const MyCollection: React.FC<{
               {!!showAddedArtworkHasNoInsightsMessage && (
                 <MyCTabAddedArtworkHasNoInsightsMessage
                   onClose={() => removeClue("AddArtworkWithoutInsightsMessage_MyCTab")}
+                />
+              )}
+              {!!showAddedArtworkHasInsightsMessage && (
+                <AddedArtworkHasInsightsMessage
+                  onClose={() => removeClue("AddArtworkWithInsightsMessage_MyCTab")}
                 />
               )}
             </Flex>

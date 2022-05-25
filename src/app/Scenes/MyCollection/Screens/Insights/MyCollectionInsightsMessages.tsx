@@ -4,7 +4,7 @@ interface MyCTabAddedArtworkHasNoInsightsMessageProps {
   onClose: () => void
 }
 
-export const AddedArtworkHasNoInsightsMessage: React.FC<
+export const MyCTabAddedArtworkHasNoInsightsMessage: React.FC<
   MyCTabAddedArtworkHasNoInsightsMessageProps
 > = ({ onClose }) => {
   return (
@@ -29,6 +29,24 @@ export const InsightsTabAddedArtworkHasNoInsightsMessage: React.FC<
       variant="info"
       title="New artwork successfully added"
       text="There are currently no insights available on your collection. Insights will be shown here if they become available."
+      onClose={onClose}
+      showCloseButton
+    />
+  )
+}
+
+// the message is the same for both tabs
+interface AddedArtworkHasInsightsMessageProps {
+  onClose: () => void
+}
+export const AddedArtworkHasInsightsMessage: React.FC<AddedArtworkHasInsightsMessageProps> = ({
+  onClose,
+}) => {
+  return (
+    <Message
+      variant="info"
+      title="New artwork successfully added"
+      text="Insights for your collection have been updated."
       onClose={onClose}
       showCloseButton
     />

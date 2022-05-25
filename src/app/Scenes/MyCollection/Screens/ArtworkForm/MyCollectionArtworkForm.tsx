@@ -111,20 +111,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       }
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     } finally {
-      if (props.mode === "add") {
-        if (
-          props.source === Tab.collection /* and insights are not awailable for the added artwork */
-        ) {
-          // TODO: check Artwork insights ^^^ - blocked by the backend
-          addClue("AddArtworkWithoutInsightsMessage_MyCTab")
-        } else if (
-          props.source ===
-          Tab.insights /* and insights are not awailable for the entire collection and added artwork */
-        ) {
-          // TODO: check Artwork insights ^^^ - blocked by the backend
-          addClue("AddArtworkWithoutInsightsMessage_InsightsTab")
-        }
-      }
       setLoading(false)
     }
   }
@@ -294,6 +280,21 @@ export const updateArtwork = async (
     const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
     if (slug) {
       storeLocalPhotos(slug, photos)
+
+      const hasInsights =
+        !!response.myCollectionCreateArtwork.artworkOrError.artworkEdge.node.hasMarketPriceInsights
+
+      refreshMyCollection()
+
+      if (props.source === Tab.collection) {
+        hasInsights
+          ? addClue("AddArtworkWithInsightsMessage_MyCTab")
+          : addClue("AddArtworkWithoutInsightsMessage_MyCTab")
+      } else if (props.source === Tab.insights) {
+        hasInsights
+          ? addClue("AddArtworkWithInsightsMessage_InsightsTab")
+          : addClue("AddArtworkWithoutInsightsMessage_InsightsTab") // show this one when insight are not awailable for the artwor AND THE ENTIRE COLLECTION
+      }
     }
   } else {
     const response = await myCollectionUpdateArtwork({
@@ -314,9 +315,10 @@ export const updateArtwork = async (
     if (slug) {
       removeLocalPhotos(slug)
     }
+
+    refreshMyCollection()
   }
 
-  refreshMyCollection()
   props.onSuccess?.()
 }
 

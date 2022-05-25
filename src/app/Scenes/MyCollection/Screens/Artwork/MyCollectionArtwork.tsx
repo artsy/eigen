@@ -232,6 +232,7 @@ export const ArtworkMetaProps = graphql`
     medium
     metric
     artworkLocation
+    hasMarketPriceInsights
     provenance
     slug
     title
