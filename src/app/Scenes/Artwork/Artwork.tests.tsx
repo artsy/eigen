@@ -1,3 +1,4 @@
+import { fireEvent } from "@testing-library/react-native"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
   ArtworkFromLiveAuctionRegistrationOpen,
@@ -8,6 +9,7 @@ import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { Countdown } from "app/Components/Bidding/Components/Timer"
 import { ModalStack } from "app/navigation/ModalStack"
 import { navigationEvents } from "app/navigation/navigate"
+import { navigateToPartner } from "app/navigation/navigate"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -471,6 +473,58 @@ describe("Artwork", () => {
         expect(extractText(tree.root.findByType(Countdown))).toContain("00d  00h  00m  00s")
         expect(extractText(tree.root.findByType(BidButton))).toContain("Enter live bidding")
       })
+    })
+  })
+
+  describe("Partner Section", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+    })
+
+    it("should render a pressable partner name section when partner is linkable and has a href", () => {
+      const { getByA11yHint, queryByA11yHint } = renderWithWrappersTL(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          partner: {
+            name: "Test Partner",
+            href: "/partner/test-partner",
+            isLinkable: true,
+          },
+        }),
+      })
+
+      expect(queryByA11yHint("Visit Test Partner page")).toBeTruthy()
+      fireEvent.press(getByA11yHint("Visit Test Partner page"))
+
+      expect(navigateToPartner).toHaveBeenCalledWith("/partner/test-partner")
+    })
+
+    it("should render a non pressable partner name section when partner is not linkable", () => {
+      const { queryByA11yHint, queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          partner: {
+            name: "Test Partner",
+            href: "/whateva",
+            isLinkable: false,
+          },
+        }),
+      })
+
+      expect(queryByA11yHint("Visit Test Partner page")).toBeFalsy()
+      expect(queryByTestId("non linkable partner")).toBeTruthy()
+      expect(queryByTestId("non linkable partner")).toHaveTextContent("Test Partner")
+    })
+
+    it("should not render the partner section when the partner has no name", () => {
+      const { queryByA11yLabel, queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+
+      expect(queryByA11yLabel("Visit Test Partner page")).toBeFalsy()
+      expect(queryByTestId("non linkable partner")).toBeFalsy()
     })
   })
 
