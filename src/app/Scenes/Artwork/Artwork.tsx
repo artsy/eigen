@@ -252,21 +252,22 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (enableCreateArtworkAlert && !!partner?.name) {
+    if (enableCreateArtworkAlert && !!partnerAbove?.name) {
+      const { isLinkable, name, href } = partnerAbove
       sections.push({
         key: "partnerSection",
         element:
-          !!partner?.isLinkable && !!partner?.href ? (
+          !!isLinkable && !!href ? (
             <LinkText
               accessibilityRole="link"
-              accessibilityLabel={partner.name}
-              accessibilityHint={`Visit ${partner.name} page`}
-              onPress={() => navigateToPartner(partner?.href!)}
+              accessibilityLabel={name}
+              accessibilityHint={`Visit ${name} page`}
+              onPress={() => navigateToPartner(href)}
             >
-              {partner?.name}
+              {name}
             </LinkText>
           ) : (
-            <Text testID="non linkable partner">{partner?.name}</Text>
+            <Text testID="non linkable partner">{name}</Text>
           ),
         verticalMargin: 2,
       })
@@ -482,6 +483,7 @@ export const ArtworkContainer = createRefetchContainer(
         partner {
           name
           href
+          isLinkable
         }
       }
     `,
@@ -495,9 +497,6 @@ export const ArtworkContainer = createRefetchContainer(
         partner {
           type
           id
-          name
-          href
-          isLinkable
         }
         artist {
           biographyBlurb {
