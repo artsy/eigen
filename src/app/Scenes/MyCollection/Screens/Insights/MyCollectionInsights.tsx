@@ -60,7 +60,7 @@ export const MyCollectionInsightsQR: React.FC<{}> = () => (
 export const MyCollectionInsightsPlaceHolder = () => (
   <StickyTabPageScrollView
     style={{ flex: 1 }}
-    contentContainerStyle={{ justifyContent: "center" }}
+    contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
     scrollEnabled={false}
   >
     <Flex alignItems="center">
