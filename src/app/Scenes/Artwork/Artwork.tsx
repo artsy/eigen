@@ -65,7 +65,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
 
-  const { internalID, slug, isInAuction } = artworkAboveTheFold || {}
+  const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
   const {
     category,
@@ -252,11 +252,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (!!partner?.href && !!partner?.name && enableCreateArtworkAlert) {
+    if (!!partnerAbove?.href && !!partnerAbove?.name && enableCreateArtworkAlert) {
       sections.push({
         key: "partnerSection",
         element: (
-          <LinkButton onPress={() => navigateToPartner(partner?.href!)}>{partner?.name}</LinkButton>
+          <LinkButton onPress={() => navigateToPartner(partnerAbove.href!)}>
+            {partnerAbove.name!}
+          </LinkButton>
         ),
         verticalMargin: 2,
       })
@@ -469,6 +471,10 @@ export const ArtworkContainer = createRefetchContainer(
           isPreview
           liveStartAt
         }
+        partner {
+          name
+          href
+        }
       }
     `,
     artworkBelowTheFold: graphql`
@@ -481,8 +487,6 @@ export const ArtworkContainer = createRefetchContainer(
         partner {
           type
           id
-          name
-          href
         }
         artist {
           biographyBlurb {
