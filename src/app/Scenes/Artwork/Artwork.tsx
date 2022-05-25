@@ -252,21 +252,22 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (enableCreateArtworkAlert && !!partner?.href && !!partner?.name) {
+    if (enableCreateArtworkAlert && !!partner?.name) {
       sections.push({
         key: "partnerSection",
-        element: !!partner?.isLinkable ? (
-          <LinkText
-            accessibilityRole="link"
-            accessibilityLabel={partner.name}
-            accessibilityHint={`Visit ${partner.name} page`}
-            onPress={() => navigateToPartner(partner?.href!)}
-          >
-            {partner?.name}
-          </LinkText>
-        ) : (
-          <Text testID="non linkable partner">{partner?.name}</Text>
-        ),
+        element:
+          !!partner?.isLinkable && !!partner?.href ? (
+            <LinkText
+              accessibilityRole="link"
+              accessibilityLabel={partner.name}
+              accessibilityHint={`Visit ${partner.name} page`}
+              onPress={() => navigateToPartner(partner?.href!)}
+            >
+              {partner?.name}
+            </LinkText>
+          ) : (
+            <Text testID="non linkable partner">{partner?.name}</Text>
+          ),
         verticalMargin: 2,
       })
     }
