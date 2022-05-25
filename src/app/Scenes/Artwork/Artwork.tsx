@@ -16,8 +16,8 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
-import { Box, LinkButton, Separator } from "palette"
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { Box, LinkButton, Separator, Text } from "palette"
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
@@ -252,13 +252,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (!!partnerAbove?.href && !!partnerAbove?.name && enableCreateArtworkAlert) {
+    if (enableCreateArtworkAlert && !!partner?.href && !!partner?.name) {
       sections.push({
         key: "partnerSection",
-        element: (
-          <LinkButton onPress={() => navigateToPartner(partnerAbove.href!)}>
-            {partnerAbove.name!}
-          </LinkButton>
+        element: !!partner?.isLinkable ? (
+          <LinkButton onPress={() => navigateToPartner(partner?.href!)}>{partner?.name}</LinkButton>
+        ) : (
+          <Text>{partner?.name}</Text>
         ),
         verticalMargin: 2,
       })
@@ -487,6 +487,9 @@ export const ArtworkContainer = createRefetchContainer(
         partner {
           type
           id
+          name
+          href
+          isLinkable
         }
         artist {
           biographyBlurb {
