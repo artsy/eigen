@@ -16,7 +16,7 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
-import { Box, LinkButton, Separator } from "palette"
+import { Box, LinkText, Separator, Text } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -65,7 +65,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
 
-  const { internalID, slug, isInAuction } = artworkAboveTheFold || {}
+  const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
   const {
     category,
@@ -252,12 +252,23 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (!!partner?.href && !!partner?.name && enableCreateArtworkAlert) {
+    if (enableCreateArtworkAlert && !!partnerAbove?.name) {
+      const { isLinkable, name, href } = partnerAbove
       sections.push({
         key: "partnerSection",
-        element: (
-          <LinkButton onPress={() => navigateToPartner(partner?.href!)}>{partner?.name}</LinkButton>
-        ),
+        element:
+          !!isLinkable && !!href ? (
+            <LinkText
+              accessibilityRole="link"
+              accessibilityLabel={name}
+              accessibilityHint={`Visit ${name} page`}
+              onPress={() => navigateToPartner(href)}
+            >
+              {name}
+            </LinkText>
+          ) : (
+            <Text testID="non linkable partner">{name}</Text>
+          ),
         verticalMargin: 2,
       })
     }
@@ -469,6 +480,11 @@ export const ArtworkContainer = createRefetchContainer(
           isPreview
           liveStartAt
         }
+        partner {
+          name
+          href
+          isLinkable
+        }
       }
     `,
     artworkBelowTheFold: graphql`
@@ -481,8 +497,6 @@ export const ArtworkContainer = createRefetchContainer(
         partner {
           type
           id
-          name
-          href
         }
         artist {
           biographyBlurb {
