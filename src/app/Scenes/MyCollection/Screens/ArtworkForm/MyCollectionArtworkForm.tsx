@@ -13,10 +13,10 @@ import {
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { addClue, GlobalStore } from "app/store/GlobalStore"
+import { addClue, GlobalStore, removeClue } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
-import { isEqual } from "lodash"
+import { hasIn, isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
@@ -287,13 +287,21 @@ export const updateArtwork = async (
       refreshMyCollection()
 
       if (props.source === Tab.collection) {
-        hasInsights
-          ? addClue("AddArtworkWithInsightsMessage_MyCTab")
-          : addClue("AddArtworkWithoutInsightsMessage_MyCTab")
+        if (hasInsights) {
+          removeClue("AddArtworkWithoutInsightsMessage_MyCTab")
+          addClue("AddArtworkWithInsightsMessage_MyCTab")
+        } else if (!hasInsights) {
+          removeClue("AddArtworkWithInsightsMessage_MyCTab")
+          addClue("AddArtworkWithoutInsightsMessage_MyCTab")
+        }
       } else if (props.source === Tab.insights) {
-        hasInsights
-          ? addClue("AddArtworkWithInsightsMessage_InsightsTab")
-          : addClue("AddArtworkWithoutInsightsMessage_InsightsTab") // show this one when insight are not awailable for the artwor AND THE ENTIRE COLLECTION
+        if (hasInsights) {
+          removeClue("AddArtworkWithoutInsightsMessage_InsightsTab")
+          addClue("AddArtworkWithInsightsMessage_InsightsTab")
+        } else if (!hasInsights) {
+          removeClue("AddArtworkWithInsightsMessage_InsightsTab")
+          addClue("AddArtworkWithoutInsightsMessage_InsightsTab") // show this one when insight are not awailable for the artwor AND THE ENTIRE COLLECTION
+        }
       }
     }
   } else {
