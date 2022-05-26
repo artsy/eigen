@@ -16,12 +16,26 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
   const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "From" : "At"
   const avalaraPhase2 = useFeatureFlag("AREnableAvalaraPhase2")
   const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
+  const shouldRenderShipsFromLabel = artworkEcommerceAvailable && !!artwork.shippingOrigin
+  const shouldRenderShippingInfoLabel = artworkEcommerceAvailable && !!artwork.shippingInfo
+  const shouldRenderPriceTaxLabel =
+    artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay && !avalaraPhase2
 
   if (!showsSellerInfo) {
     return null
   }
 
   if (enableCreateArtworkAlert) {
+    const shouldRenderLabels =
+      avalaraPhase2 ||
+      shouldRenderShipsFromLabel ||
+      shouldRenderShippingInfoLabel ||
+      shouldRenderPriceTaxLabel
+
+    if (!shouldRenderLabels) {
+      return null
+    }
+
     return (
       <>
         <Spacer mb={1} />
@@ -39,17 +53,17 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
             </LinkText>
           </Text>
         )}
-        {artworkEcommerceAvailable && !!artwork.shippingOrigin && (
+        {shouldRenderShipsFromLabel && (
           <Text variant="xs" color="black60">
             Ships from {artwork.shippingOrigin}
           </Text>
         )}
-        {artworkEcommerceAvailable && !!artwork.shippingInfo && (
+        {shouldRenderShippingInfoLabel && (
           <Text variant="xs" color="black60">
             {artwork.shippingInfo}
           </Text>
         )}
-        {artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay && !avalaraPhase2 && (
+        {shouldRenderPriceTaxLabel && (
           <Text variant="xs" color="black60">
             {artwork.priceIncludesTaxDisplay}
           </Text>
@@ -61,11 +75,9 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
   return (
     <>
       <Spacer mb={1} />
-      {!enableCreateArtworkAlert && (
-        <Sans size="3t" color="black60">
-          {availabilityDisplayText} {artwork.partner!.name}
-        </Sans>
-      )}
+      <Sans size="3t" color="black60">
+        {availabilityDisplayText} {artwork.partner!.name}
+      </Sans>
       {avalaraPhase2 && (
         <Sans size="3t" color="black60">
           Taxes may apply at checkout.{" "}
@@ -80,17 +92,17 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
           </LinkText>
         </Sans>
       )}
-      {artworkEcommerceAvailable && !!artwork.shippingOrigin && (
+      {shouldRenderShipsFromLabel && (
         <Sans size="3t" color="black60">
           Ships from {artwork.shippingOrigin}
         </Sans>
       )}
-      {artworkEcommerceAvailable && !!artwork.shippingInfo && (
+      {shouldRenderShippingInfoLabel && (
         <Sans size="3t" color="black60">
           {artwork.shippingInfo}
         </Sans>
       )}
-      {artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay && !avalaraPhase2 && (
+      {shouldRenderPriceTaxLabel && (
         <Sans size="3t" color="black60">
           {artwork.priceIncludesTaxDisplay}
         </Sans>
