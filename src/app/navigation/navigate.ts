@@ -7,6 +7,7 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "app/store/GlobalStore"
 import { propsStore } from "app/store/PropsStore"
 import { postEventToProviders } from "app/utils/track/providers"
+import { visualize } from "app/utils/visualizer"
 import { EventEmitter } from "events"
 import { Linking, Platform } from "react-native"
 import { matchRoute } from "./routes"
@@ -41,6 +42,8 @@ let lastInvocation = { url: "", timestamp: 0 }
 export async function navigate(url: string, options: NavigateOptions = {}) {
   // handle artsy:// urls, we can just remove it
   url = url.replace("artsy://", "")
+
+  visualize("NAV", url, { url, options }, "DTShowNavigationVisualiser")
 
   // Debounce double taps
   const ignoreDebounce = options.ignoreDebounce ?? false
