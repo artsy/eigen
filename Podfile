@@ -61,7 +61,11 @@ pre_install do |installer|
 end
 
 target 'Artsy' do
-  config = use_native_modules!
+  if ENV['CI']
+    config = use_native_modules!(packages_to_skip: ['react-native-flipper'])
+  else
+    config = use_native_modules!
+  end
   use_react_native!(
     :path => './node_modules/react-native',
     :production => ENV['CIRCLE_BUILD_NUM'],
@@ -154,12 +158,18 @@ target 'Artsy' do
 end
 
 
-# Enables Flipper.
+# Enables Flipper but not for CI.
 # Note that if you have use_frameworks! enabled, Flipper will not work and
 # you should disable these next few lines.
-use_flipper!({ 'Flipper' => '0.87.0', 'Flipper-Folly' => '2.5.3',  'Flipper-RSocket' => '1.3.1' })
+if !ENV['CI']
+  use_flipper!({ 'Flipper' => '0.87.0', 'Flipper-Folly' => '2.5.3',  'Flipper-RSocket' => '1.3.1' })
+end
+
 post_install do |installer|
+
+if !ENV['CI']
   flipper_post_install(installer)
+end
 
   $RNMBGL.post_install(installer)
 
