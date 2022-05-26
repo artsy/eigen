@@ -104,7 +104,7 @@ const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps
           Create Alert
         </Button>
 
-        {!!isInquireable && (
+        {!!isInquireable && !isInClosedAuction && (
           <InquiryButtonsFragmentContainer artwork={artwork} variant="outline" mt={1} block />
         )}
       </Box>
