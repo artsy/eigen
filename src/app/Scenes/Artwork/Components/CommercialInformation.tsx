@@ -35,7 +35,7 @@ interface CommercialInformationProps extends CountdownTimerProps {
   biddingEndAt?: string
   hasBeenExtended?: boolean
   refetchArtwork: () => void
-  setAuctionTimerState?: (auctionTimerState: AuctionTimerState) => void
+  setAuctionTimerState?: (auctionTimerState: string) => void
 }
 
 // On Android, the useArtworkBidding fails to receive data, bringing the
@@ -72,8 +72,6 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
 
     const initialBiddingEndAt = extendedBiddingEndAt ?? lotEndAt ?? saleEndAt
 
-    const { setAuctionTimerState } = props
-
     const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
       lotID,
       lotEndAt,
@@ -100,8 +98,6 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               biddingEndAt: currentBiddingEndAt,
             })
 
-            setAuctionTimerState?.(state)
-
             return {
               label,
               date,
@@ -122,8 +118,6 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
               lotEndAt,
               biddingEndAt: currentBiddingEndAt,
             })
-
-            setAuctionTimerState?.(nextState)
 
             return {
               state: nextState,
@@ -177,6 +171,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   hasStarted,
   biddingEndAt,
   hasBeenExtended,
+  setAuctionTimerState,
 }) => {
   const { trackEvent } = useTracking()
   const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
@@ -208,6 +203,12 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
       })
     }
   }, [])
+
+  useEffect(() => {
+    if (timerState) {
+      setAuctionTimerState?.(timerState)
+    }
+  }, [timerState])
 
   const renderSingleEditionArtwork = () => {
     const artworkIsInClosedAuction = artwork.isInAuction && timerState === AuctionTimerState.CLOSED
