@@ -7,6 +7,8 @@ import { isCohesionScreen, TrackingProvider } from "./providers"
 
 export const SEGMENT_TRACKING_PROVIDER = "SEGMENT_TRACKING_PROVIDER"
 
+const visualizeDevToggle = "DTShowAnalyticsVisualiser"
+
 let analytics: Analytics.Client
 export const SegmentTrackingProvider: TrackingProvider = {
   setup: () => {
@@ -46,7 +48,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
     // Events bubbled up from ios native
     if ("screen_name" in info) {
       const { screen_name, ...rest } = info
-      visualize("Screen", screen_name, info, "DTShowAnalyticsVisualiser")
+      visualize("Screen", screen_name, info, visualizeDevToggle)
       analytics.screen(screen_name, rest as any)
       return
     }
@@ -55,10 +57,10 @@ export const SegmentTrackingProvider: TrackingProvider = {
       const { action } = info
       if (isCohesionScreen(info)) {
         const { context_screen_owner_type } = info
-        visualize("Screen", context_screen_owner_type, info, "DTShowAnalyticsVisualiser")
+        visualize("Screen", context_screen_owner_type, info, visualizeDevToggle)
         analytics.screen(context_screen_owner_type, info as any)
       } else {
-        visualize("Track", action, info, "DTShowAnalyticsVisualiser")
+        visualize("Track", action, info, visualizeDevToggle)
         analytics.track(action, info as any)
       }
       return
@@ -66,21 +68,21 @@ export const SegmentTrackingProvider: TrackingProvider = {
 
     if ("action_type" in info) {
       const { action_type, ...rest } = info
-      visualize("Track", action_type, info, "DTShowAnalyticsVisualiser")
+      visualize("Track", action_type, info, visualizeDevToggle)
       analytics.track(action_type, rest as any)
       return
     }
 
     if ("name" in info) {
       const { name, ...rest } = info
-      visualize("Track", name, info, "DTShowAnalyticsVisualiser")
+      visualize("Track", name, info, visualizeDevToggle)
       analytics.track(name, rest as any)
       return
     }
 
     if ("context_screen" in info) {
       const { context_screen, ...rest } = info
-      visualize("Screen", context_screen, info, "DTShowAnalyticsVisualiser")
+      visualize("Screen", context_screen, info, visualizeDevToggle)
       analytics.screen(context_screen, rest as any)
       return
     }
@@ -88,7 +90,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
     // default check events from ios native
     if ("event_name" in info) {
       const { event_name, ...rest } = info
-      visualize("Track", event_name, info, "DTShowAnalyticsVisualiser")
+      visualize("Track", event_name, info, visualizeDevToggle)
       analytics.track(event_name, rest as any)
       return
     }
