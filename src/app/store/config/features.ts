@@ -265,6 +265,9 @@ export const devToggles = defineDevToggles({
   DTShowAnalyticsVisualiser: {
     description: "Analytics visualiser",
   },
+  DTShowNavigationVisualiser: {
+    description: "Navigation visualiser",
+  },
   DTEasyMyCollectionArtworkCreation: {
     description: "MyCollection artworks easy add",
   },

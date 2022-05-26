@@ -1,3 +1,5 @@
 This update includes a number of improvements, bug fixes, performance optimizations and My Collection filter improvements.
 
+- Added support for popcorn bidding in auctions
+
 Have feedback? Email us at support@artsy.net
