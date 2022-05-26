@@ -1,7 +1,7 @@
 import { CommercialPartnerInformation_artwork } from "__generated__/CommercialPartnerInformation_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { LinkText, Sans, Spacer } from "palette"
+import { LinkText, Sans, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -17,46 +17,83 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
   const avalaraPhase2 = useFeatureFlag("AREnableAvalaraPhase2")
   const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
 
+  if (!showsSellerInfo) {
+    return null
+  }
+
+  if (enableCreateArtworkAlert) {
+    return (
+      <>
+        <Spacer mb={1} />
+        {avalaraPhase2 && (
+          <Text variant="xs" color="black60">
+            Taxes may apply at checkout.{" "}
+            <LinkText
+              onPress={() => {
+                navigate(
+                  "https://support.artsy.net/hc/en-us/articles/360047294733-How-is-sales-tax-and-VAT-handled-on-works-listed-with-secure-checkout-"
+                )
+              }}
+            >
+              Learn more.
+            </LinkText>
+          </Text>
+        )}
+        {artworkEcommerceAvailable && !!artwork.shippingOrigin && (
+          <Text variant="xs" color="black60">
+            Ships from {artwork.shippingOrigin}
+          </Text>
+        )}
+        {artworkEcommerceAvailable && !!artwork.shippingInfo && (
+          <Text variant="xs" color="black60">
+            {artwork.shippingInfo}
+          </Text>
+        )}
+        {artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay && !avalaraPhase2 && (
+          <Text variant="xs" color="black60">
+            {artwork.priceIncludesTaxDisplay}
+          </Text>
+        )}
+      </>
+    )
+  }
+
   return (
     <>
-      {showsSellerInfo && (
-        <>
-          <Spacer mb={1} />
-          {!enableCreateArtworkAlert && (
-            <Sans size="3t" color="black60">
-              {availabilityDisplayText} {artwork.partner!.name}
-            </Sans>
-          )}
-          {avalaraPhase2 && (
-            <Sans size="3t" color="black60">
-              Taxes may apply at checkout.{" "}
-              <LinkText
-                onPress={() => {
-                  navigate(
-                    "https://support.artsy.net/hc/en-us/articles/360047294733-How-is-sales-tax-and-VAT-handled-on-works-listed-with-secure-checkout-"
-                  )
-                }}
-              >
-                Learn more.
-              </LinkText>
-            </Sans>
-          )}
-          {artworkEcommerceAvailable && !!artwork.shippingOrigin && (
-            <Sans size="3t" color="black60">
-              Ships from {artwork.shippingOrigin}
-            </Sans>
-          )}
-          {artworkEcommerceAvailable && !!artwork.shippingInfo && (
-            <Sans size="3t" color="black60">
-              {artwork.shippingInfo}
-            </Sans>
-          )}
-          {artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay && !avalaraPhase2 && (
-            <Sans size="3t" color="black60">
-              {artwork.priceIncludesTaxDisplay}
-            </Sans>
-          )}
-        </>
+      <Spacer mb={1} />
+      {!enableCreateArtworkAlert && (
+        <Sans size="3t" color="black60">
+          {availabilityDisplayText} {artwork.partner!.name}
+        </Sans>
+      )}
+      {avalaraPhase2 && (
+        <Sans size="3t" color="black60">
+          Taxes may apply at checkout.{" "}
+          <LinkText
+            onPress={() => {
+              navigate(
+                "https://support.artsy.net/hc/en-us/articles/360047294733-How-is-sales-tax-and-VAT-handled-on-works-listed-with-secure-checkout-"
+              )
+            }}
+          >
+            Learn more.
+          </LinkText>
+        </Sans>
+      )}
+      {artworkEcommerceAvailable && !!artwork.shippingOrigin && (
+        <Sans size="3t" color="black60">
+          Ships from {artwork.shippingOrigin}
+        </Sans>
+      )}
+      {artworkEcommerceAvailable && !!artwork.shippingInfo && (
+        <Sans size="3t" color="black60">
+          {artwork.shippingInfo}
+        </Sans>
+      )}
+      {artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay && !avalaraPhase2 && (
+        <Sans size="3t" color="black60">
+          {artwork.priceIncludesTaxDisplay}
+        </Sans>
       )}
     </>
   )
