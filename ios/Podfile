@@ -91,13 +91,6 @@ target 'Artsy' do
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 
-  # Artsy Spec repo stuff
-  pod 'Artsy+UIFonts', '3.3.4'
-  pod 'Artsy-UIButtons'
-  pod 'Artsy+UIColors'
-  pod 'Artsy+UILabels'
-  pod 'Extraction'
-
   # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
 

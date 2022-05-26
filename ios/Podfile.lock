@@ -46,15 +46,6 @@ PODS:
     - Appboy-iOS-SDK/InAppMessage
     - Appboy-iOS-SDK/NewsFeed
   - ARGenericTableViewController (1.0.2)
-  - "Artsy+UIColors (3.1.0)"
-  - "Artsy+UIFonts (3.3.4)"
-  - "Artsy+UILabels (2.2.0)":
-    - "Artsy+UIColors (~> 3.0)"
-    - "Artsy+UIFonts"
-  - Artsy-UIButtons (2.3.3):
-    - "Artsy+UIColors (~> 3.0)"
-    - "Artsy+UIFonts"
-    - "UIView+BooleanAnimations"
   - boost (1.76.0)
   - boost-for-react-native (1.63.0)
   - BVLinearGradient (2.5.6):
@@ -71,29 +62,6 @@ PODS:
     - Expecta (~> 1.0)
     - FBSnapshotTestCase/Core (~> 2.0)
     - Specta (~> 1.0)
-  - Extraction (1.2.6):
-    - Extraction/ARAnimationContinuation (= 1.2.6)
-    - Extraction/ARLoadFailureView (= 1.2.6)
-    - Extraction/ARSpinner (= 1.2.6)
-    - Extraction/ARSwitchView (= 1.2.6)
-    - "Extraction/UILabel+Typography (= 1.2.6)"
-    - "Extraction/UIView+ARSpinner (= 1.2.6)"
-  - Extraction/ARAnimationContinuation (1.2.6)
-  - Extraction/ARLoadFailureView (1.2.6):
-    - Artsy-UIButtons
-    - "Extraction/UILabel+Typography"
-    - ORStackView (< 3)
-  - Extraction/ARSpinner (1.2.6):
-    - "Extraction/UIView+ARSpinner"
-    - "UIView+BooleanAnimations"
-  - Extraction/ARSwitchView (1.2.6):
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts (>= 1.1.0)"
-    - FLKAutoLayout
-    - "UIView+BooleanAnimations"
-  - "Extraction/UILabel+Typography (1.2.6)"
-  - "Extraction/UIView+ARSpinner (1.2.6)":
-    - Extraction/ARAnimationContinuation
   - FBLazyVector (0.66.4)
   - FBReactNativeSpec (0.66.4):
     - RCT-Folly (= 2021.06.28.00-v2)
@@ -699,10 +667,6 @@ DEPENDENCIES:
   - AFNetworking/Serialization (= 2.7.0)
   - AFOAuth1Client (from `https://github.com/artsy/AFOAuth1Client.git`, tag `0.4.0-subspec-fix`)
   - ARGenericTableViewController (from `https://github.com/artsy/ARGenericTableViewController.git`)
-  - "Artsy+UIColors"
-  - "Artsy+UIFonts (= 3.3.4)"
-  - "Artsy+UILabels"
-  - Artsy-UIButtons
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.7.2)
@@ -711,7 +675,6 @@ DEPENDENCIES:
   - EDColor (= 1.0.1)
   - Expecta (= 1.0.6)
   - "Expecta+Snapshots (= 3.1.1)"
-  - Extraction
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - FBSDKCoreKit (= 9.3.0)
@@ -844,11 +807,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/artsy/Specs.git:
     - Aerodramus
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts"
-    - "Artsy+UILabels"
-    - Artsy-UIButtons
-    - Extraction
   trunk:
     - Adjust
     - AFNetworkActivityLogger
@@ -1118,10 +1076,6 @@ SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   Appboy-iOS-SDK: a634f5160d4d8a1f08b8817165733af7336fa255
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
-  "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  "Artsy+UIFonts": 19efbc985ba95156d75a860633df5538c8045b80
-  "Artsy+UILabels": 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
-  Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
@@ -1132,7 +1086,6 @@ SPEC CHECKSUMS:
   EDColor: 91d127cd67d7c1d3862846fb11ef4b3851151bfa
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
-  Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
   FBLazyVector: e5569e42a1c79ca00521846c223173a57aca1fe1
   FBReactNativeSpec: fe08c1cd7e2e205718d77ad14b34957cce949b58
   FBSDKCoreKit: 0d1ae58388a458b8222f72025804cdc84eb5d0c3
@@ -1267,6 +1220,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 68c3490631f3153d3494bed067b87246d27f05ed
+PODFILE CHECKSUM: 489f71b0ebd4f9caaff176d13aab9d170df86d50
 
 COCOAPODS: 1.11.3

@@ -1,4 +1,4 @@
-#import <Artsy+UILabels/Artsy+UILabels.h>
+#import "Artsy+UILabels.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

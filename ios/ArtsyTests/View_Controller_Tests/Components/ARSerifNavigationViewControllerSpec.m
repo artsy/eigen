@@ -1,6 +1,6 @@
 #import "ARSerifNavigationViewController.h"
-#import <Artsy+UIColors/UIColor+ArtsyColors.h>
-#import <Artsy+UIColors/UIColor+DebugColours.h>
+#import "UIColor+ArtsyColors.h"
+#import "UIColor+DebugColours.h"
 
 
 @interface ARSerifNavigationViewController ()
@@ -71,7 +71,7 @@ describe(@"", ^{
         insideVC.title = @"Title";
 
         UIViewController *secondVC = [[UIViewController alloc] init];
-        secondVC.view.backgroundColor = [UIColor debugColourBlue];
+        secondVC.view.backgroundColor = [UIColor blueColor];
         secondVC.title = @"Title3";
 
         subject = [[ARSerifNavigationViewController alloc] initWithRootViewController:insideVC];

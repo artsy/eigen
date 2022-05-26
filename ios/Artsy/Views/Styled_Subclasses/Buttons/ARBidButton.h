@@ -1,4 +1,4 @@
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import "ARButtonSubclasses.h"
 
 #import "SaleArtwork.h"
 

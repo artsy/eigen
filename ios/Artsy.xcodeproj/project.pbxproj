@@ -27,6 +27,17 @@
 		1A4B97CD283CDD5A00878EAE /* AROpaqueImageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */; };
 		1A4B97CE283CDD5A00878EAE /* AROpaqueImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */; };
 		1A4B97D0283CFA1E00878EAE /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 1A4B97CF283CFA1E00878EAE /* fonts */; };
+		1A4E5118283F91BA0008EF35 /* NSNumberFormatter+ARCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E50FA283F91B90008EF35 /* NSNumberFormatter+ARCurrency.m */; };
+		1A4E5119283F91BA0008EF35 /* Artsy+UILabels.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */; };
+		1A4E511A283F91BA0008EF35 /* UIView+ARDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */; };
+		1A4E511B283F91BA0008EF35 /* ARSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5104283F91B90008EF35 /* ARSpinner.m */; };
+		1A4E511C283F91BA0008EF35 /* ARSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5107283F91B90008EF35 /* ARSwitchView.m */; };
+		1A4E511D283F91BA0008EF35 /* ARAnimationContinuation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5108283F91B90008EF35 /* ARAnimationContinuation.m */; };
+		1A4E511E283F91BA0008EF35 /* UILabel+Typography.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E510A283F91B90008EF35 /* UILabel+Typography.m */; };
+		1A4E511F283F91BA0008EF35 /* UIView+ARSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E510B283F91B90008EF35 /* UIView+ARSpinner.m */; };
+		1A4E5121283F91BA0008EF35 /* UIColor+ArtsyColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E510E283F91B90008EF35 /* UIColor+ArtsyColors.m */; };
+		1A4E5123283F91BA0008EF35 /* UIFont+ArtsyFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5114283F91B90008EF35 /* UIFont+ArtsyFonts.m */; };
+		1A4E5124283F91BA0008EF35 /* ARButtonSubclasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */; };
 		1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */; };
 		4A9190A1CCE54CE09384C9FC /* Unica77LL-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CC557644CEE44511A73431D7 /* Unica77LL-MediumItalic.otf */; };
 		50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */; };
@@ -599,6 +610,28 @@
 		1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROpaqueImageView.m; sourceTree = "<group>"; };
 		1A4B97BB283CDD5900878EAE /* AROpaqueImageViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROpaqueImageViewManager.h; sourceTree = "<group>"; };
 		1A4B97CF283CFA1E00878EAE /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		1A4E50FA283F91B90008EF35 /* NSNumberFormatter+ARCurrency.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+ARCurrency.m"; sourceTree = "<group>"; };
+		1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Artsy+UILabels.m"; sourceTree = "<group>"; };
+		1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ARDrawing.m"; sourceTree = "<group>"; };
+		1A4E50FD283F91B90008EF35 /* Artsy+UILabels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Artsy+UILabels.h"; sourceTree = "<group>"; };
+		1A4E50FE283F91B90008EF35 /* NSNumberFormatter+ARCurrency.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+ARCurrency.h"; sourceTree = "<group>"; };
+		1A4E50FF283F91B90008EF35 /* UIView+ARDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ARDrawing.h"; sourceTree = "<group>"; };
+		1A4E5101283F91B90008EF35 /* ARSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSwitchView.h; sourceTree = "<group>"; };
+		1A4E5102283F91B90008EF35 /* ARAnimationContinuation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnimationContinuation.h; sourceTree = "<group>"; };
+		1A4E5103283F91B90008EF35 /* UILabel+Typography.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Typography.h"; sourceTree = "<group>"; };
+		1A4E5104283F91B90008EF35 /* ARSpinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpinner.m; sourceTree = "<group>"; };
+		1A4E5106283F91B90008EF35 /* UIView+ARSpinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ARSpinner.h"; sourceTree = "<group>"; };
+		1A4E5107283F91B90008EF35 /* ARSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchView.m; sourceTree = "<group>"; };
+		1A4E5108283F91B90008EF35 /* ARAnimationContinuation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnimationContinuation.m; sourceTree = "<group>"; };
+		1A4E5109283F91B90008EF35 /* ARSpinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpinner.h; sourceTree = "<group>"; };
+		1A4E510A283F91B90008EF35 /* UILabel+Typography.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Typography.m"; sourceTree = "<group>"; };
+		1A4E510B283F91B90008EF35 /* UIView+ARSpinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ARSpinner.m"; sourceTree = "<group>"; };
+		1A4E510E283F91B90008EF35 /* UIColor+ArtsyColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ArtsyColors.m"; sourceTree = "<group>"; };
+		1A4E5110283F91B90008EF35 /* UIColor+ArtsyColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ArtsyColors.h"; sourceTree = "<group>"; };
+		1A4E5113283F91B90008EF35 /* UIFont+ArtsyFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+ArtsyFonts.h"; sourceTree = "<group>"; };
+		1A4E5114283F91B90008EF35 /* UIFont+ArtsyFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+ArtsyFonts.m"; sourceTree = "<group>"; };
+		1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARButtonSubclasses.m; sourceTree = "<group>"; };
+		1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARButtonSubclasses.h; sourceTree = "<group>"; };
 		1A550F0C282AE4D200126D22 /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionWebViewController.h; sourceTree = "<group>"; };
 		1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewController.m; sourceTree = "<group>"; };
 		236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.release.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.release.xcconfig"; sourceTree = "<group>"; };
@@ -1554,6 +1587,63 @@
 			path = OpaqueImageViewComponent;
 			sourceTree = "<group>";
 		};
+		1A4E50F9283F91B90008EF35 /* ArtsyUILabels */ = {
+			isa = PBXGroup;
+			children = (
+				1A4E50FA283F91B90008EF35 /* NSNumberFormatter+ARCurrency.m */,
+				1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */,
+				1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */,
+				1A4E50FD283F91B90008EF35 /* Artsy+UILabels.h */,
+				1A4E50FE283F91B90008EF35 /* NSNumberFormatter+ARCurrency.h */,
+				1A4E50FF283F91B90008EF35 /* UIView+ARDrawing.h */,
+			);
+			path = ArtsyUILabels;
+			sourceTree = "<group>";
+		};
+		1A4E5100283F91B90008EF35 /* Extraction */ = {
+			isa = PBXGroup;
+			children = (
+				1A4E5101283F91B90008EF35 /* ARSwitchView.h */,
+				1A4E5102283F91B90008EF35 /* ARAnimationContinuation.h */,
+				1A4E5103283F91B90008EF35 /* UILabel+Typography.h */,
+				1A4E5104283F91B90008EF35 /* ARSpinner.m */,
+				1A4E5106283F91B90008EF35 /* UIView+ARSpinner.h */,
+				1A4E5107283F91B90008EF35 /* ARSwitchView.m */,
+				1A4E5108283F91B90008EF35 /* ARAnimationContinuation.m */,
+				1A4E5109283F91B90008EF35 /* ARSpinner.h */,
+				1A4E510A283F91B90008EF35 /* UILabel+Typography.m */,
+				1A4E510B283F91B90008EF35 /* UIView+ARSpinner.m */,
+			);
+			path = Extraction;
+			sourceTree = "<group>";
+		};
+		1A4E510D283F91B90008EF35 /* ArtsyUIColors */ = {
+			isa = PBXGroup;
+			children = (
+				1A4E510E283F91B90008EF35 /* UIColor+ArtsyColors.m */,
+				1A4E5110283F91B90008EF35 /* UIColor+ArtsyColors.h */,
+			);
+			path = ArtsyUIColors;
+			sourceTree = "<group>";
+		};
+		1A4E5112283F91B90008EF35 /* ArtsyUIFonts */ = {
+			isa = PBXGroup;
+			children = (
+				1A4E5113283F91B90008EF35 /* UIFont+ArtsyFonts.h */,
+				1A4E5114283F91B90008EF35 /* UIFont+ArtsyFonts.m */,
+			);
+			path = ArtsyUIFonts;
+			sourceTree = "<group>";
+		};
+		1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */ = {
+			isa = PBXGroup;
+			children = (
+				1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */,
+				1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */,
+			);
+			path = ArtsyUIButtons;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -2478,6 +2568,11 @@
 		CBE3210527D9615000395A93 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
+				1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */,
+				1A4E510D283F91B90008EF35 /* ArtsyUIColors */,
+				1A4E5112283F91B90008EF35 /* ArtsyUIFonts */,
+				1A4E50F9283F91B90008EF35 /* ArtsyUILabels */,
+				1A4E5100283F91B90008EF35 /* Extraction */,
 				1A4B978F283CDD5900878EAE /* Emission */,
 				CBE3249427E275A100395A93 /* App */,
 				CBE3262027E275A200395A93 /* App_Resources */,
@@ -3945,9 +4040,11 @@
 				CBE326BD27E275A300395A93 /* LiveAuctionBidHistoryViewController.swift in Sources */,
 				1A4B97CE283CDD5A00878EAE /* AROpaqueImageView.m in Sources */,
 				CBE3267627E275A300395A93 /* NSAttributedString+Additions.swift in Sources */,
+				1A4E5124283F91BA0008EF35 /* ARButtonSubclasses.m in Sources */,
 				CBE326ED27E275A300395A93 /* SCNArtworkNode.m in Sources */,
 				CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */,
 				CBE3278927E275A400395A93 /* PartnerShow.m in Sources */,
+				1A4E5118283F91BA0008EF35 /* NSNumberFormatter+ARCurrency.m in Sources */,
 				CBE3269927E275A300395A93 /* SwiftExtensions.swift in Sources */,
 				CBE3271227E275A300395A93 /* AuctionColors.swift in Sources */,
 				CBE326AC27E275A300395A93 /* LiveAuctionSalesPerson.swift in Sources */,
@@ -3966,6 +4063,7 @@
 				CBE3270227E275A300395A93 /* ARAnimatedTickView.m in Sources */,
 				CBE3272527E275A400395A93 /* ARTNativeScreenPresenterModule.m in Sources */,
 				CBE326D927E275A300395A93 /* ARScrollNavigationChief.m in Sources */,
+				1A4E511B283F91BA0008EF35 /* ARSpinner.m in Sources */,
 				CBE3277E27E275A400395A93 /* ArtsyAPI+RelatedModels.m in Sources */,
 				CBE3278427E275A400395A93 /* ARSystemTime.m in Sources */,
 				CBE326CF27E275A300395A93 /* LiveAuctionPlaceMaxBidViewController.swift in Sources */,
@@ -3984,6 +4082,7 @@
 				CBE326FD27E275A300395A93 /* ARAdminSettingsViewController.m in Sources */,
 				CBE326C827E275A300395A93 /* LiveAuctionBiddingViewModel.swift in Sources */,
 				1A4B97C9283CDD5A00878EAE /* ARNotificationsManager.m in Sources */,
+				1A4E5121283F91BA0008EF35 /* UIColor+ArtsyColors.m in Sources */,
 				CBE3267027E275A300395A93 /* ARDefaults.m in Sources */,
 				1A4B97CA283CDD5A00878EAE /* ARTakeCameraPhotoModule.m in Sources */,
 				CBE3268227E275A300395A93 /* NSDate+DateRange.m in Sources */,
@@ -3997,11 +4096,13 @@
 				CBE326CD27E275A300395A93 /* LiveAuctionLotImageCollectionViewCell.swift in Sources */,
 				CBE326D327E275A300395A93 /* AuctionInformationViewController.swift in Sources */,
 				CBE326C727E275A300395A93 /* SimpleProgressView.swift in Sources */,
+				1A4E511A283F91BA0008EF35 /* UIView+ARDrawing.m in Sources */,
 				CBE3271427E275A300395A93 /* ARCustomEigenLabels.m in Sources */,
 				CBE326C427E275A300395A93 /* LiveAuctionFancyLotCollectionViewLayout.swift in Sources */,
 				CBE3276D27E275A400395A93 /* MTLModel+JSON.m in Sources */,
 				CBE3270027E275A300395A93 /* ARAdminTableViewCell.m in Sources */,
 				CBE326CC27E275A300395A93 /* SaleStatusView.swift in Sources */,
+				1A4E511D283F91BA0008EF35 /* ARAnimationContinuation.m in Sources */,
 				1A4B97C3283CDD5A00878EAE /* ARMediaPreviewController.m in Sources */,
 				CBE326B027E275A300395A93 /* LiveAuctionStaticDataFetcher.swift in Sources */,
 				CBE3267727E275A300395A93 /* UIImageView+AsyncImageLoading.m in Sources */,
@@ -4066,6 +4167,7 @@
 				CBE326A327E275A300395A93 /* ARNavigationTransition.m in Sources */,
 				1A4B97CC283CDD5A00878EAE /* ARCity.m in Sources */,
 				CBE3267D27E275A300395A93 /* UIViewController+Popovers.m in Sources */,
+				1A4E5123283F91BA0008EF35 /* UIFont+ArtsyFonts.m in Sources */,
 				CBE3277227E275A400395A93 /* ArtsyAPI+HEAD.m in Sources */,
 				CBE326AD27E275A300395A93 /* LiveAuctionLotViewController.swift in Sources */,
 				CBE326C227E275A300395A93 /* LiveAuctionLotCollectionViewDataSource.swift in Sources */,
@@ -4077,6 +4179,7 @@
 				CBE3277727E275A400395A93 /* ArtsyAPI+SystemTime.m in Sources */,
 				CBE3268527E275A300395A93 /* UIViewController+FullScreenLoading.m in Sources */,
 				CBE326EF27E275A300395A93 /* ARAugmentedVIRSetupViewController.m in Sources */,
+				1A4E511E283F91BA0008EF35 /* UILabel+Typography.m in Sources */,
 				CBE3267F27E275A300395A93 /* UIViewController+Traits.swift in Sources */,
 				CBE3270C27E275A300395A93 /* ARCountdownView.m in Sources */,
 				CBE326A527E275A300395A93 /* ARExternalWebBrowserViewController.m in Sources */,
@@ -4107,6 +4210,7 @@
 				CBE3277427E275A400395A93 /* ArtsyAPI+ErrorHandlers.m in Sources */,
 				CBE326DB27E275A300395A93 /* ARSharingController.m in Sources */,
 				CBE326C127E275A300395A93 /* AuctionLotMetadataStackScrollView.swift in Sources */,
+				1A4E511F283F91BA0008EF35 /* UIView+ARSpinner.m in Sources */,
 				CBE3268627E275A300395A93 /* PanDirectionGestureRecognizer.swift in Sources */,
 				CBE3269227E275A300395A93 /* ARAppNotificationsDelegate.m in Sources */,
 				CBE3271E27E275A300395A93 /* AuctionCircularButtons.swift in Sources */,
@@ -4124,6 +4228,7 @@
 				CBE326A827E275A300395A93 /* LiveAuctionSaleLotsDataSource.swift in Sources */,
 				CBE3270A27E275A300395A93 /* ARDispatchManager.m in Sources */,
 				CBE326AA27E275A300395A93 /* LiveAuctionEventViewModel.swift in Sources */,
+				1A4E511C283F91BA0008EF35 /* ARSwitchView.m in Sources */,
 				1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */,
 				CBE326B227E275A300395A93 /* LiveAuctionLotSetViewController.swift in Sources */,
 				1A4B97C1283CDD5A00878EAE /* ARTemporaryAPIModule.m in Sources */,
@@ -4131,6 +4236,7 @@
 				CBE326D627E275A300395A93 /* AuctionSaleNetworkModel.swift in Sources */,
 				CBE3278227E275A400395A93 /* ARRouter+GraphQL.m in Sources */,
 				CBE326D227E275A300395A93 /* AuctionBiddersNetworkModel.swift in Sources */,
+				1A4E5119283F91BA0008EF35 /* Artsy+UILabels.m in Sources */,
 				CBE3267927E275A300395A93 /* NSDate+Util.m in Sources */,
 				CBE326E227E275A300395A93 /* ARNavigationController.m in Sources */,
 				CBE3271527E275A300395A93 /* ARSeparatorViews.m in Sources */,

@@ -9,12 +9,12 @@
 #import "ARFonts.h"
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import "ARButtonSubclasses.h"
 #import "AREmission.h"
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
-#import <Extraction/ARSpinner.h>
-#import <Extraction/UIView+ARSpinner.h>
+#import "ARSpinner.h"
+#import "UIView+ARSpinner.h"
 
 #import "ARAugmentedRealityConfig.h"
 #import "ARAnalyticsConstants.h"

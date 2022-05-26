@@ -3,8 +3,8 @@
 #import "Artsy-Swift.h"
 #import "UIDevice-Hardware.h"
 #import "UIImage+ImageFromColor.h"
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
-#import <Artsy+UILabels/Artsy+UILabels.h>
+#import "ARButtonSubclasses.h"
+#import "Artsy+UILabels.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <FLKAutoLayout/FLKAutoLayout.h>
 

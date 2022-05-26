@@ -19,7 +19,7 @@
 #import "ARMacros.h"
 #import "UIDevice-Hardware.h"
 
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import "ARButtonSubclasses.h"
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
