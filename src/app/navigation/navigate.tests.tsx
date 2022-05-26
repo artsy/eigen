@@ -17,6 +17,7 @@ jest.mock("app/store/GlobalStore", () => ({
   unsafe__getEnvironment: jest.fn().mockReturnValue({
     webURL: "https://www.artsy.net",
   }),
+  unsafe_getDevToggle: jest.fn().mockReturnValue(false),
   GlobalStore: {
     actions: {
       bottomTabs: {
