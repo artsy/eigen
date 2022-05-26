@@ -158,14 +158,14 @@ const THEMES = {
       },
       serif: {
         regular: {
-          normal: "ReactNativeAGaramondPro-Regular",
-          italic: "ReactNativeAGaramondPro-Italic",
+          normal: "Unica77LL-Regular",
+          italic: "Unica77LL-Italic",
         },
         medium: { normal: null, italic: null },
-        semibold: { normal: "ReactNativeAGaramondPro-Semibold", italic: null },
+        semibold: { normal: "Unica77LL-Medium", italic: null },
       },
     },
-    fonts: { sans: "Unica77LL-Regular", serif: "ReactNativeAGaramondPro-Regular" },
+    fonts: { sans: "Unica77LL-Regular", serif: "Unica77LL-Regular" },
     space: fixSpaceUnitsV2(THEME_V2.space),
   },
   v3: {

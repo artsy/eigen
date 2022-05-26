@@ -65,46 +65,47 @@ static BOOL useClosedFonts = YES;
 
 + (UIFont *)serifSemiBoldFontWithSize:(CGFloat)size
 {
-    // This does not have corresponding OSS variant, so we re-use the bold one
     static dispatch_once_t onceToken;
-    NSString *fontName = useClosedFonts ? @"AGaramondPro-Semibold" : @"EBGaramond08-Regular";
-    NSString *font = useClosedFonts ? @"AGaramondPro-Semibold" : @"AGaramondPro-Bold";
-    NSString *type = useClosedFonts ? @"otf" : @"ttf";
-    return [self ar_LoadAndReturnFont:font extension:type size:size onceToken:&onceToken fontFileName:fontName];
+  if (!useClosedFonts) {
+      return [UIFont fontWithName:@"Helvetica" size:size];
+  }
+  return [self ar_LoadAndReturnFont:@"Unica77LL-Medium" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Medium"];
 }
 
 + (UIFont *)serifFontWithSize:(CGFloat)size
 {
-    static dispatch_once_t onceToken;
-    NSString *font = useClosedFonts ? @"AGaramondPro-Regular" : @"EBGaramond12-Regular";
-    NSString *type = useClosedFonts ? @"otf" : @"ttf";
-    return [self ar_LoadAndReturnFont:@"AGaramondPro-Regular" extension:type size:size onceToken:&onceToken fontFileName:font];
+  static dispatch_once_t onceToken;
+  if (!useClosedFonts) {
+      return [UIFont fontWithName:@"Helvetica" size:size];
+  }
+  return [self ar_LoadAndReturnFont:@"Unica77LL-Regular" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Regular"];
 }
 
 + (UIFont *)serifItalicFontWithSize:(CGFloat)size
 {
-    static dispatch_once_t onceToken;
-    NSString *fontName = useClosedFonts ? @"AGaramondPro-Italic" : @"EBGaramond12-Italic";
-    NSString *type = useClosedFonts ? @"otf" : @"ttf";
-    return [self ar_LoadAndReturnFont:@"AGaramondPro-Italic" extension:type size:size onceToken:&onceToken fontFileName:fontName];
+  static dispatch_once_t onceToken;
+  if (!useClosedFonts) {
+      return [UIFont fontWithName:@"Helvetica" size:size];
+  }
+  return [self ar_LoadAndReturnFont:@"Unica77LL-Italic" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Italic"];
 }
 
 + (UIFont *)reactNativeSerifSemiBoldFontWithSize:(CGFloat)size
 {
-    // This does not have corresponding OSS variant, so we re-use the bold one
-    static dispatch_once_t onceToken;
-    NSString *fontName = useClosedFonts ? @"ReactNativeAGaramondPro-Semibold" : @"EBGaramond08-Regular";
-    NSString *font = useClosedFonts ? @"ReactNativeAGaramondPro-Semibold" : @"AGaramondPro-Bold";
-    NSString *type = useClosedFonts ? @"otf" : @"ttf";
-    return [self ar_LoadAndReturnFont:font extension:type size:size onceToken:&onceToken fontFileName:fontName];
+  static dispatch_once_t onceToken;
+  if (!useClosedFonts) {
+      return [UIFont fontWithName:@"Helvetica" size:size];
+  }
+  return [self ar_LoadAndReturnFont:@"Unica77LL-Medium" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Medium"];
 }
 
 + (UIFont *)reactNativeSerifItalicFontWithSize:(CGFloat)size
 {
-    static dispatch_once_t onceToken;
-    NSString *fontName = useClosedFonts ? @"ReactNativeAGaramondPro-Italic" : @"EBGaramond12-Italic";
-    NSString *type = useClosedFonts ? @"otf" : @"ttf";
-    return [self ar_LoadAndReturnFont:@"ReactNativeAGaramondPro-Italic" extension:type size:size onceToken:&onceToken fontFileName:fontName];
+  static dispatch_once_t onceToken;
+  if (!useClosedFonts) {
+      return [UIFont fontWithName:@"Helvetica" size:size];
+  }
+  return [self ar_LoadAndReturnFont:@"Unica77LL-Italic" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Italic"];
 }
 
 + (UIFont *)sansSerifFontWithSize:(CGFloat)size

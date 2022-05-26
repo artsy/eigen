@@ -60,7 +60,7 @@ const Content = styled.View`
 const InquiryTextInput = styled.TextInput`
   font-size: 16;
   margin-top: 20;
-  font-family: "ReactNativeAGaramondPro-Regular";
+  font-family: "Unica77LL-Regular";
 `
 const ResponseRate = styled(SmallHeadline)`
   color: ${themeGet("colors.yellow100")};
