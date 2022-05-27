@@ -6292,7 +6292,6 @@ type ConversationOfferSubmitted implements Node {
   id: ID!
   isCounter: Boolean
   offerAmountChanged: Boolean
-  respondsTo: ConversationOfferSubmitted
 }
 
 # A conversation order state change
