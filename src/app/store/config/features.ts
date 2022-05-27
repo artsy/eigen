@@ -222,9 +222,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
   },
   AREnableCreateArtworkAlert: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Create Alert on Artwork pages",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableCreateArtworkAlert",
   },
 })
 
