@@ -1,4 +1,6 @@
+import { fireEvent } from "@testing-library/react-native"
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
@@ -104,5 +106,37 @@ describe("SavedSearches", () => {
 
     expect(getByText("one")).toBeTruthy()
     expect(getByText("Untitled Alert")).toBeTruthy()
+  })
+
+  describe("Sort By", () => {
+    it("should hide Sort By button when feature flag is disabled", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSortByOnAlertsList: false })
+      const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment)
+
+      expect(queryByText("Sort By")).toBeFalsy()
+    })
+
+    it("should display Sort By button when feature flag is enabled", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSortByOnAlertsList: true })
+      const { getByText } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment)
+
+      expect(getByText("Sort By")).toBeTruthy()
+    })
+
+    it("should display sort options", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSortByOnAlertsList: true })
+      const { getByText } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment)
+
+      fireEvent.press(getByText("Sort By"))
+
+      expect(getByText("Recently Added")).toBeTruthy()
+      expect(getByText("Name (A-Z)")).toBeTruthy()
+    })
   })
 })
