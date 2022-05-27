@@ -250,6 +250,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableCreateArtworkAlert",
   },
+  AREnableSortByOnAlertsList: {
+    readyForRelease: false,
+    description: "Display Sort By button on Alerts List screen",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
