@@ -7,7 +7,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Flex, Spinner, useTheme } from "palette"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { EmptyMessage } from "./EmptyMessage"
@@ -16,50 +16,30 @@ import { SavedSearchListItem } from "./SavedSearchListItem"
 import { SortButton } from "./SortButton"
 import { SortByModal, SortOption } from "./SortByModal"
 
+type RefreshType = "default" | "delete"
+type RefreshHandler = (type?: RefreshType) => void
+
 interface SavedSearchesListProps {
   me: SavedSearchesList_me$data
   relay: RelayPaginationProp
 }
-
-type RefreshType = "default" | "delete"
 
 const SORT_OPTIONS: SortOption[] = [
   { value: "CREATED_AT_DESC", text: "Recently Added" },
   { value: "NAME_ASC", text: "Name (A-Z)" },
 ]
 
+// tslint:disable-next-line:no-empty
+const NOOP = () => {}
+
 export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { me, relay } = props
   const [fetchingMore, setFetchingMore] = useState(false)
   const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
   const { space } = useTheme()
+  const refreshRef = useRef<RefreshHandler>(NOOP)
+
   const items = extractNodes(me.savedSearchesConnection)
-  const onRefresh = useCallback(
-    (type: RefreshType = "default") => {
-      setRefreshMode(type)
-
-      relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
-        if (error) {
-          console.error(error)
-        }
-
-        setRefreshMode(null)
-      })
-    },
-    [relay]
-  )
-
-  useEffect(() => {
-    const onDeleteRefresh = (backProps?: GoBackProps) => {
-      if (backProps?.previousScreen === "EditSavedSearchAlert") {
-        onRefresh("delete")
-      }
-    }
-    navigationEvents.addListener("goBack", onDeleteRefresh)
-    return () => {
-      navigationEvents.removeListener("goBack", onDeleteRefresh)
-    }
-  }, [onRefresh])
 
   const loadMore = () => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -73,6 +53,32 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       setFetchingMore(false)
     })
   }
+
+  const onRefresh = (type: RefreshType = "default") => {
+    setRefreshMode(type)
+
+    relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
+      if (error) {
+        console.error(error)
+      }
+
+      setRefreshMode(null)
+    })
+  }
+
+  refreshRef.current = onRefresh
+
+  useEffect(() => {
+    const onDeleteRefresh = (backProps?: GoBackProps) => {
+      if (backProps?.previousScreen === "EditSavedSearchAlert") {
+        refreshRef.current("delete")
+      }
+    }
+    navigationEvents.addListener("goBack", onDeleteRefresh)
+    return () => {
+      navigationEvents.removeListener("goBack", onDeleteRefresh)
+    }
+  }, [])
 
   if (refreshMode === "delete") {
     return (
