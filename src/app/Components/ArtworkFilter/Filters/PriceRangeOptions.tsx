@@ -88,7 +88,6 @@ const getInputValue = (value: CustomRange[number]) => {
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { width } = useWindowDimensions()
   const color = useColor()
-  const [scrollEnabled, setScrollEnabled] = useState(true)
 
   const enableHistogram = useExperimentFlag("eigen-enable-price-histogram")
 
@@ -171,7 +170,7 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
         {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
       />
       <Flex flexGrow={1}>
-        <ScrollView scrollEnabled={scrollEnabled}>
+        <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="handled">
           <Flex m={2}>
             <Text variant="md">Choose Your Price Range</Text>
           </Flex>
@@ -238,12 +237,6 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
                   height: RANGE_DOT_SIZE,
                   width: RANGE_DOT_SIZE,
                   borderRadius: 16,
-                }}
-                onValuesChangeStart={() => {
-                  setScrollEnabled(false)
-                }}
-                onValuesChangeFinish={() => {
-                  setScrollEnabled(true)
                 }}
               />
             </Flex>
