@@ -9,7 +9,7 @@ export interface SortOption {
   text: string
 }
 
-interface SortByModalProps {
+export interface SortByModalProps {
   visible: boolean
   options: SortOption[]
   selectedValue: string
@@ -32,16 +32,24 @@ export const SortByModal: FC<SortByModalProps> = (props) => {
       <FancyModalHeader useXButton onLeftButtonPress={onCloseModal}>
         Sort By
       </FancyModalHeader>
-      {options.map((option) => (
-        <TouchableRow key={option.value} onPress={() => onSelectOption(option)}>
-          <Flex flexDirection="row" p={2} alignItems="center" justifyContent="space-between">
-            <Flex flex={1} mr={1}>
-              <Text numberOfLines={2}>{option.text}</Text>
+      {options.map((option) => {
+        const selected = selectedValue === option.value
+
+        return (
+          <TouchableRow
+            accessibilityState={{ selected }}
+            key={option.value}
+            onPress={() => onSelectOption(option)}
+          >
+            <Flex flexDirection="row" p={2} alignItems="center" justifyContent="space-between">
+              <Flex flex={1} mr={1}>
+                <Text numberOfLines={2}>{option.text}</Text>
+              </Flex>
+              <RadioDot selected={selected} />
             </Flex>
-            <RadioDot selected={selectedValue === option.value} />
-          </Flex>
-        </TouchableRow>
-      ))}
+          </TouchableRow>
+        )
+      })}
     </FancyModal>
   )
 }
