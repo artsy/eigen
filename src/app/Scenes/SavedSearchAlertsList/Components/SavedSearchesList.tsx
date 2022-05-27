@@ -30,7 +30,9 @@ interface SavedSearchListWrapperProps {
 
 interface SavedSearchesListProps extends SavedSearchListWrapperProps {
   refreshMode: RefreshType | null
+  fetchingMore: boolean
   onRefresh: (options: RefreshOptions) => void
+  onLoadMore: () => void
 }
 
 const SORT_OPTIONS: SortOption[] = [
@@ -39,24 +41,9 @@ const SORT_OPTIONS: SortOption[] = [
 ]
 
 export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
-  const { me, relay, refreshMode, onRefresh } = props
-  const [fetchingMore, setFetchingMore] = useState(false)
+  const { me, fetchingMore, refreshMode, onRefresh, onLoadMore } = props
   const { space } = useTheme()
-
   const items = extractNodes(me.savedSearchesConnection)
-
-  const loadMore = () => {
-    if (!relay.hasMore() || relay.isLoading()) {
-      return
-    }
-    setFetchingMore(true)
-    relay.loadMore(SAVED_SERCHES_PAGE_SIZE, (error) => {
-      if (error) {
-        console.log(error.message)
-      }
-      setFetchingMore(false)
-    })
-  }
 
   if (refreshMode === "delete") {
     return (
@@ -91,7 +78,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
           />
         )
       }}
-      onEndReached={loadMore}
+      onEndReached={onLoadMore}
       ListFooterComponent={
         fetchingMore ? (
           <Flex alignItems="center" mt={2} mb={4}>
@@ -108,10 +95,24 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedSortValue, setSelectedSortValue] = useState("CREATED_AT_DESC")
+  const [fetchingMore, setFetchingMore] = useState(false)
   const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
 
   const handleCloseModal = () => {
     setModalVisible(false)
+  }
+
+  const handleLoadMore = () => {
+    if (!relay.hasMore() || relay.isLoading()) {
+      return
+    }
+    setFetchingMore(true)
+    relay.loadMore(SAVED_SERCHES_PAGE_SIZE, (error) => {
+      if (error) {
+        console.log(error.message)
+      }
+      setFetchingMore(false)
+    })
   }
 
   const onRefresh = (options: RefreshOptions) => {
@@ -172,7 +173,13 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
         title="Saved Alerts"
         right={<SortButton onPress={() => setModalVisible(true)} />}
       >
-        <SavedSearchesList {...props} refreshMode={refreshMode} onRefresh={onRefresh} />
+        <SavedSearchesList
+          {...props}
+          fetchingMore={fetchingMore}
+          refreshMode={refreshMode}
+          onRefresh={onRefresh}
+          onLoadMore={handleLoadMore}
+        />
         <SortByModal
           visible={modalVisible}
           options={SORT_OPTIONS}
