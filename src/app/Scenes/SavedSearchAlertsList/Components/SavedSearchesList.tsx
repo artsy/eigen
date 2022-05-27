@@ -18,11 +18,6 @@ import { SortByModal, SortOption } from "./SortByModal"
 
 type RefreshType = "default" | "delete"
 
-interface RefreshOptions {
-  type: RefreshType
-  sort?: string
-}
-
 interface SavedSearchListWrapperProps {
   me: SavedSearchesList_me$data
   relay: RelayPaginationProp
@@ -31,7 +26,7 @@ interface SavedSearchListWrapperProps {
 interface SavedSearchesListProps extends SavedSearchListWrapperProps {
   refreshMode: RefreshType | null
   fetchingMore: boolean
-  onRefresh: (options: RefreshOptions) => void
+  onRefresh: (type: RefreshType) => void
   onLoadMore: () => void
 }
 
@@ -64,9 +59,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       contentContainerStyle={{ paddingVertical: space(1) }}
       refreshing={refreshMode !== null}
       onRefresh={() => {
-        onRefresh({
-          type: "default",
-        })
+        onRefresh("default")
       }}
       renderItem={({ item }) => {
         return (
@@ -115,8 +108,8 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
     })
   }
 
-  const onRefresh = (options: RefreshOptions) => {
-    setRefreshMode(options.type)
+  const onRefresh = (type: RefreshType) => {
+    setRefreshMode(type)
 
     relay.refetchConnection(
       SAVED_SERCHES_PAGE_SIZE,
@@ -128,7 +121,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
         setRefreshMode(null)
       },
       {
-        sort: options.sort ?? selectedSortValue,
+        sort: selectedSortValue,
       }
     )
   }
@@ -137,25 +130,25 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
   refreshRef.current = onRefresh
 
   const handleSelectOption = (option: SortOption) => {
-    if (selectedSortValue === option.value) {
-      return
-    }
-
     setSelectedSortValue(option.value)
     handleCloseModal()
+  }
 
-    onRefresh({
-      type: "delete",
-      sort: option.value,
-    })
+  /**
+   * If we call `refetch` immediately after we have specified sort value,
+   * we get "freeze" screen on which nothing can be clicked or scrolled.
+   * For this reason, we call `refetch` only after the modal is closed completely.
+   *
+   * More context here: https://github.com/facebook/react-native/issues/16182#issuecomment-333814201
+   */
+  const handleSortByModalClosed = () => {
+    onRefresh("delete")
   }
 
   useEffect(() => {
     const onDeleteRefresh = (backProps?: GoBackProps) => {
       if (backProps?.previousScreen === "EditSavedSearchAlert") {
-        refreshRef.current({
-          type: "delete",
-        })
+        refreshRef.current("delete")
       }
     }
 
@@ -190,6 +183,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
           selectedValue={selectedSortValue}
           onCloseModal={handleCloseModal}
           onSelectOption={handleSelectOption}
+          onModalFinishedClosing={handleSortByModalClosed}
         />
       </PageWithSimpleHeader>
     </ProvideScreenTracking>
