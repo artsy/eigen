@@ -17,7 +17,11 @@ import { SortButton } from "./SortButton"
 import { SortByModal, SortOption } from "./SortByModal"
 
 type RefreshType = "default" | "delete"
-type RefreshHandler = (type?: RefreshType) => void
+
+interface RefreshOptions {
+  type: RefreshType
+  sort?: string
+}
 
 interface SavedSearchListWrapperProps {
   me: SavedSearchesList_me$data
@@ -26,16 +30,13 @@ interface SavedSearchListWrapperProps {
 
 interface SavedSearchesListProps extends SavedSearchListWrapperProps {
   refreshMode: RefreshType | null
-  onRefresh: RefreshHandler
+  onRefresh: (options: RefreshOptions) => void
 }
 
 const SORT_OPTIONS: SortOption[] = [
   { value: "CREATED_AT_DESC", text: "Recently Added" },
   { value: "NAME_ASC", text: "Name (A-Z)" },
 ]
-
-// tslint:disable-next-line:no-empty
-const NOOP = () => {}
 
 export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { me, relay, refreshMode, onRefresh } = props
@@ -75,7 +76,11 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       keyExtractor={(item) => item.internalID}
       contentContainerStyle={{ paddingVertical: space(1) }}
       refreshing={refreshMode !== null}
-      onRefresh={onRefresh}
+      onRefresh={() => {
+        onRefresh({
+          type: "default",
+        })
+      }}
       renderItem={({ item }) => {
         return (
           <SavedSearchListItem
@@ -104,47 +109,48 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedSortValue, setSelectedSortValue] = useState("CREATED_AT_DESC")
   const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
-  const refreshRef = useRef<RefreshHandler>(NOOP)
 
   const handleCloseModal = () => {
     setModalVisible(false)
   }
 
-  const handleSelectOption = (option: SortOption) => {
-    setSelectedSortValue(option.value)
-    handleCloseModal()
+  const onRefresh = (options: RefreshOptions) => {
+    setRefreshMode(options.type)
 
-    props.relay.refetchConnection(
+    relay.refetchConnection(
       SAVED_SERCHES_PAGE_SIZE,
       (error) => {
         if (error) {
           console.error(error)
         }
+
+        setRefreshMode(null)
       },
       {
-        sort: option.value,
+        sort: options.sort ?? selectedSortValue,
       }
     )
   }
 
-  const onRefresh = (type: RefreshType = "default") => {
-    setRefreshMode(type)
+  const refreshRef = useRef(onRefresh)
+  refreshRef.current = onRefresh
 
-    relay.refetchConnection(SAVED_SERCHES_PAGE_SIZE, (error) => {
-      if (error) {
-        console.error(error)
-      }
+  const handleSelectOption = (option: SortOption) => {
+    setSelectedSortValue(option.value)
+    handleCloseModal()
 
-      setRefreshMode(null)
+    onRefresh({
+      type: "delete",
+      sort: option.value,
     })
   }
-
-  refreshRef.current = onRefresh
 
   useEffect(() => {
     const onDeleteRefresh = (backProps?: GoBackProps) => {
       if (backProps?.previousScreen === "EditSavedSearchAlert") {
-        refreshRef.current("delete")
+        refreshRef.current({
+          type: "delete",
+        })
       }
     }
 
