@@ -15,13 +15,20 @@ interface SortByModalProps {
   selectedValue: string
   onCloseModal: () => void
   onSelectOption: (selectedOption: SortOption) => void
+  onModalFinishedClosing: () => void
 }
 
 export const SortByModal: FC<SortByModalProps> = (props) => {
-  const { visible, options, selectedValue, onCloseModal, onSelectOption } = props
+  const { visible, options, selectedValue, onCloseModal, onSelectOption, onModalFinishedClosing } =
+    props
 
   return (
-    <FancyModal visible={visible} maxHeight={250} onBackgroundPressed={onCloseModal}>
+    <FancyModal
+      visible={visible}
+      maxHeight={250}
+      onBackgroundPressed={onCloseModal}
+      onModalFinishedClosing={onModalFinishedClosing}
+    >
       <FancyModalHeader useXButton onLeftButtonPress={onCloseModal}>
         Sort By
       </FancyModalHeader>
