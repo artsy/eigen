@@ -137,6 +137,10 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
   refreshRef.current = onRefresh
 
   const handleSelectOption = (option: SortOption) => {
+    if (selectedSortValue === option.value) {
+      return
+    }
+
     setSelectedSortValue(option.value)
     handleCloseModal()
 
