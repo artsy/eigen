@@ -23,7 +23,9 @@ export interface MyCollectionSearchBarProps {
   onFocus?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
   innerFlatListRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
   searchString: string
-  onIsFocused?: (isFocused: boolean) => void
+  setHasUsedSearchBar: (hasUsedSearchBar: boolean) => void
+  setSearchBarStillFocused: (stillFocused: boolean) => void
+  startAsFocused?: boolean
 }
 
 export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
@@ -31,9 +33,11 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   onFocus,
   innerFlatListRef,
   searchString = "",
-  onIsFocused,
+  setHasUsedSearchBar,
+  setSearchBarStillFocused,
+  startAsFocused = false,
 }) => {
-  const [isFocused, setIsFocused] = useState(false)
+  const [isFocused, setIsFocused] = useState(startAsFocused)
 
   const hasRunFocusedAnimation = useAnimatedValue(1)
 
@@ -58,6 +62,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
     })
 
     setViewOption(selectedViewOption)
+    setHasUsedSearchBar(true)
 
     GlobalStore.actions.userPrefs.setArtworkViewOption(selectedViewOption)
   }
@@ -80,8 +85,23 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   )
 
   useEffect(() => {
+    if (startAsFocused) {
+      inputRef.current?.focus()
+    }
+  }, [])
+
+  useEffect(() => {
     debouncedSetKeywordFilter(value)
   }, [value])
+
+  useEffect(() => {
+    if (isFocused) {
+      setHasUsedSearchBar(true)
+      setSearchBarStillFocused(true)
+    } else {
+      setSearchBarStillFocused(false)
+    }
+  }, [isFocused])
 
   if (!enabledSearchBar) {
     return null
@@ -90,7 +110,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   return (
     <Flex my={1}>
       {isFocused ? (
-        <Flex flexDirection="row" alignItems="center" my={0.5}>
+        <Flex flexDirection="row" alignItems="center">
           <Input
             testID="MyCollectionSearchBarInput"
             placeholder="Search by Artist, Artwork or Keyword"
@@ -98,7 +118,6 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             onFocus={onFocus}
             onBlur={() => {
               hasRunFocusedAnimation.setValue(new Animated.Value(0))
-              onIsFocused?.(false)
               setIsFocused(false)
             }}
             enableClearButton
@@ -113,8 +132,8 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             onPress={() => {
               setValue("")
               hasRunFocusedAnimation.setValue(new Animated.Value(0))
-              onIsFocused?.(false)
               setIsFocused(false)
+              setSearchBarStillFocused(false)
             }}
           >
             <Text ml={1} color="black60" variant="xs">
@@ -125,17 +144,16 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
       ) : (
         <Flex>
           <Flex flexDirection="row" my={1} py={0.5} justifyContent="space-between">
-            <Flex flex={1} mr={1} justifyContent="center">
+            <Flex>
               <TouchableWithoutFeedback
                 testID="MyCollectionSearchBarNoInputTouchable"
                 onPress={() => {
                   hasRunFocusedAnimation.setValue(new Animated.Value(0))
                   setIsFocused(true)
-                  onIsFocused?.(true)
                   requestAnimationFrame(() => inputRef.current?.focus())
                 }}
               >
-                <Flex flexDirection="row" width="100%">
+                <Flex flexDirection="row" alignItems="center">
                   <SearchIcon width={18} height={18} />
                   <Text ml={1} variant="xs">
                     {value.length > 0 ? value : "Search Your Collection"}
