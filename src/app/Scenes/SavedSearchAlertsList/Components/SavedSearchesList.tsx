@@ -11,6 +11,7 @@ import { Flex, Spinner, useTheme } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import usePrevious from "react-use/lib/usePrevious"
 import { EmptyMessage } from "./EmptyMessage"
 import { SavedSearchAlertsListPlaceholder } from "./SavedSearchAlertsListPlaceholder"
 import { SavedSearchListItem } from "./SavedSearchListItem"
@@ -89,6 +90,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedSortValue, setSelectedSortValue] = useState("CREATED_AT_DESC")
+  const prevSelectedSortValue = usePrevious(selectedSortValue)
   const [fetchingMore, setFetchingMore] = useState(false)
   const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
   const enableSortByForAlerts = useFeatureFlag("AREnableSortByOnAlertsList")
@@ -144,6 +146,10 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
    * More context here: https://github.com/facebook/react-native/issues/16182#issuecomment-333814201
    */
   const handleSortByModalClosed = () => {
+    if (selectedSortValue === prevSelectedSortValue) {
+      return
+    }
+
     onRefresh("delete")
   }
 
