@@ -126,6 +126,18 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchesListProps> = (props
   const handleSelectOption = (option: SortOption) => {
     setSelectedSortValue(option.value)
     handleCloseModal()
+
+    props.relay.refetchConnection(
+      SAVED_SERCHES_PAGE_SIZE,
+      (error) => {
+        if (error) {
+          console.error(error)
+        }
+      },
+      {
+        sort: option.value,
+      }
+    )
   }
 
   return (
@@ -157,8 +169,12 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
   {
     me: graphql`
       fragment SavedSearchesList_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
-        savedSearchesConnection(first: $count, after: $cursor)
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 20 }
+        cursor: { type: "String" }
+        sort: { type: "SavedSearchesSortEnum", defaultValue: CREATED_AT_DESC }
+      ) {
+        savedSearchesConnection(first: $count, after: $cursor, sort: $sort)
           @connection(key: "SavedSearches_savedSearchesConnection") {
           pageInfo {
             hasNextPage
@@ -178,8 +194,9 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
     `,
   },
   {
-    getVariables(_props, { count, cursor }) {
+    getVariables(_props, { count, cursor }, fragmentVariables) {
       return {
+        ...fragmentVariables,
         count,
         cursor,
       }
@@ -188,9 +205,9 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
       return props.me.savedSearchesConnection
     },
     query: graphql`
-      query SavedSearchesListQuery($count: Int!, $cursor: String) {
+      query SavedSearchesListQuery($count: Int!, $cursor: String, $sort: SavedSearchesSortEnum) {
         me {
-          ...SavedSearchesList_me @arguments(count: $count, cursor: $cursor)
+          ...SavedSearchesList_me @arguments(count: $count, cursor: $cursor, sort: $sort)
         }
       }
     `,
