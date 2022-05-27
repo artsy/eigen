@@ -38,7 +38,7 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
           await updateMyUserProfile({ email })
 
           if (email !== me.email) {
-            toast.show("Please confirm your new email for this update to take effect", "bottom", {
+            toast.show("Please confirm your new email for this update to take effect", "center", {
               duration: "long",
             })
           }
