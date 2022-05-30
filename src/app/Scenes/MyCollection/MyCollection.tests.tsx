@@ -134,44 +134,6 @@ describe("MyCollection", () => {
     })
   })
 
-  describe("no insights message", () => {
-    it("shows message if there are no market insights", async () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
-
-      mockEnvironmentPayload(mockEnvironment, {
-        Me: () => ({ auctionResults: { totalCount: 0 } }),
-      })
-
-      await flushPromiseQueue()
-
-      expect(getByTestId("artworks-have-no-insights-message")).toBeTruthy()
-    })
-
-    it("doesn't show the message if there are market insights", async () => {
-      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
-
-      mockEnvironmentPayload(mockEnvironment, {
-        Me: () => ({ auctionResults: { totalCount: 1 } }),
-      })
-
-      await flushPromiseQueue()
-
-      expect(await queryByTestId("artworks-have-no-insights-message")).toBeFalsy()
-    })
-
-    it("doesn't show the message if there are market insights", async () => {
-      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
-
-      mockEnvironmentPayload(mockEnvironment, {
-        Me: () => ({ auctionResults: { totalCount: 1 } }),
-      })
-
-      await flushPromiseQueue()
-
-      expect(await queryByTestId("artworks-have-no-insights-message")).toBeFalsy()
-    })
-  })
-
   describe("sorting and filtering", () => {
     it("filters and sorts without crashing", async () => {
       const renderApi = renderWithWrappersTL(<TestRenderer />)

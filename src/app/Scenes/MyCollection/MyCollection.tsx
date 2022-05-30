@@ -43,10 +43,7 @@ import { useScreenDimensions } from "shared/hooks"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
-import {
-  AddedArtworkHasNoInsightsMessage,
-  ArtworksHaveNoInsights,
-} from "./Screens/Insights/MyCollectionInsightsMessages"
+import { AddedArtworkHasNoInsightsMessage } from "./Screens/Insights/MyCollectionInsightsMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
@@ -58,7 +55,6 @@ const MyCollection: React.FC<{
 }> = ({ relay, me }) => {
   const { trackEvent } = useTracking()
   const { showSessionVisualClue } = useSessionVisualClue()
-  const { showVisualClue } = useVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
   const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
@@ -68,7 +64,6 @@ const MyCollection: React.FC<{
   const filtersCount = useSelectedFiltersCount()
 
   const artworks = extractNodes(me?.myCollectionConnection)
-  const hasMarketSignals = !!me?.auctionResults?.totalCount
 
   const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
@@ -106,29 +101,18 @@ const MyCollection: React.FC<{
     const showConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
     const showAddedArtworkHasNoInsightsMessage =
       enableMyCollectionInsights && showSessionVisualClue("AddArtworkWithoutInsightsMessage_MyCTab")
-    const showArtworksHaveInsightsMessage =
-      enableMyCollectionInsights &&
-      artworks.length &&
-      !hasMarketSignals &&
-      showVisualClue("ArtworksHaveNoInsights_MyCTab")
 
     return {
       hasSeenBanner,
       showConsignments,
       showAddedArtworkHasNoInsightsMessage,
-      showArtworksHaveInsightsMessage,
     }
   }
 
   useEffect(() => {
     if (artworks.length) {
       hasBeenShownBanner().then(
-        ({
-          hasSeenBanner,
-          showConsignments,
-          showAddedArtworkHasNoInsightsMessage,
-          showArtworksHaveInsightsMessage,
-        }) => {
+        ({ hasSeenBanner, showConsignments, showAddedArtworkHasNoInsightsMessage }) => {
           const showNewWorksBanner =
             me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
           const showConsignmentsBanner = showConsignments
@@ -181,11 +165,6 @@ const MyCollection: React.FC<{
               {!!showAddedArtworkHasNoInsightsMessage && (
                 <AddedArtworkHasNoInsightsMessage
                   onClose={() => removeClue("AddArtworkWithoutInsightsMessage_MyCTab")}
-                />
-              )}
-              {!!showArtworksHaveInsightsMessage && (
-                <ArtworksHaveNoInsights
-                  onClose={() => removeClue("ArtworksHaveNoInsights_MyCTab")}
                 />
               )}
             </Flex>
@@ -283,9 +262,6 @@ export const MyCollectionContainer = createPaginationContainer(
 
           ...MyCollectionArtworkList_myCollectionConnection
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)
-        }
-        auctionResults: myCollectionAuctionResults(first: 3) {
-          totalCount
         }
       }
     `,
