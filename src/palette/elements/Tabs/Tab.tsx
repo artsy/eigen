@@ -3,10 +3,12 @@ import { useColor } from "palette/hooks"
 import React from "react"
 import { ViewProps } from "react-native"
 import { Pressable, View, ViewStyle } from "react-native"
+import { VisualClueDot } from "../VisualClue"
 
 export interface TabV3Props {
   label: string
   superscript?: string
+  visualClue?: boolean
   active: boolean
   style?: ViewStyle
   onPress: () => void
@@ -16,6 +18,7 @@ export interface TabV3Props {
 export const TabV3: React.FC<TabV3Props> = ({
   label,
   superscript,
+  visualClue,
   active,
   onLayout,
   onPress,
@@ -56,6 +59,11 @@ export const TabV3: React.FC<TabV3Props> = ({
             >
               {superscript}
             </Text>
+          )}
+          {!!visualClue && (
+            <View style={{ marginLeft: 5, alignSelf: "flex-start" }}>
+              <VisualClueDot />
+            </View>
           )}
         </View>
       )}

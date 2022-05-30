@@ -17,12 +17,13 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
 
   return (
     <TabBarContainer scrollEnabled activeTabIndex={activeTab} tabLayouts={tabLayouts}>
-      {tabs.map(({ label, superscript }, index) => {
+      {tabs.map(({ label, superscript, visualClue }, index) => {
         return (
           <Box minWidth={tabWidth} key={label + index}>
             <Tab
               label={label}
               superscript={superscript}
+              visualClue={visualClue}
               onPress={() => onTabPress(label, index)}
               active={activeTab === index}
               onLayout={(e) => {

@@ -1,3 +1,5 @@
+import { VisualClueName } from "app/store/config/visualClues"
+import { removeClue, useSessionVisualClue } from "app/store/GlobalStore"
 import { useUpdateShouldHideBackButton } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasuredView"
@@ -19,6 +21,7 @@ export interface TabProps {
   title: string
   content: JSX.Element | ((tabIndex: number) => JSX.Element)
   superscript?: string
+  visualClue?: VisualClueName
 }
 
 interface StickyTabPageProps {
@@ -62,6 +65,8 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
     Array<JSX.Element | null>
   >([])
 
+  const { showSessionVisualClue } = useSessionVisualClue()
+
   const { jsx: staticHeader, nativeHeight: staticHeaderHeight } =
     useAutoCollapsingMeasuredView(staticHeaderContent)
 
@@ -102,6 +107,18 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
     []
   )
 
+  const hideVisualClue = (visualClue: VisualClueName | undefined) => {
+    if (visualClue) {
+      removeClue(visualClue)
+    }
+  }
+
+  const getVisualClue = (visualClue: VisualClueName | undefined) => {
+    if (visualClue) {
+      return showSessionVisualClue(visualClue)
+    }
+  }
+
   return (
     <StickyTabPageContext.Provider
       value={{
@@ -111,6 +128,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
         headerOffsetY,
         tabLabels: tabs.map((tab) => tab.title),
         tabSuperscripts: tabs.map((tab) => tab.superscript),
+        tabVisualClues: tabs.map((tab) => getVisualClue(tab.visualClue)),
         setActiveTabIndex(index) {
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)
@@ -120,6 +138,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
             action_name: tabs[index].title,
             action_type: Schema.ActionTypes.Tap,
           })
+          hideVisualClue(tabs[index].visualClue)
         },
       }}
     >
