@@ -20,7 +20,6 @@ import {
   useDevToggle,
   useFeatureFlag,
   useSessionVisualClue,
-  useVisualClue,
 } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
