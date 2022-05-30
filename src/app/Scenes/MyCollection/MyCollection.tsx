@@ -284,7 +284,7 @@ export const MyCollectionContainer = createPaginationContainer(
           ...MyCollectionArtworkList_myCollectionConnection
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)
         }
-        auctionResults: myCollectionAuctionResults(first: 1) {
+        auctionResults: myCollectionAuctionResults(first: 3) {
           totalCount
         }
       }

@@ -103,7 +103,7 @@ export const MyCollectionInsightsScreenQuery = graphql`
   query MyCollectionInsightsQuery {
     me {
       ...AuctionResultsForArtistsYouCollectRail_me
-      auctionResults: myCollectionAuctionResults(first: 1) {
+      auctionResults: myCollectionAuctionResults(first: 3) {
         totalCount
       }
       myCollectionInfo {
