@@ -1,6 +1,7 @@
 import { CommercialPartnerInformation_artwork } from "__generated__/CommercialPartnerInformation_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { LinkText, Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -15,7 +16,7 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
   const showsSellerInfo = artwork.partner && artwork.partner.name
   const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "From" : "At"
   const avalaraPhase2 = useFeatureFlag("AREnableAvalaraPhase2")
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
+  const enableCreateArtworkAlert = useExperimentFlag("eigen-artwork-page-create-alert")
 
   return (
     <>

@@ -1,7 +1,8 @@
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag, useSelectedTab } from "app/store/GlobalStore"
+import { useSelectedTab } from "app/store/GlobalStore"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { Schema } from "app/utils/track"
 import { Sans } from "palette"
 import React from "react"
@@ -20,8 +21,7 @@ export const ArtworkExtraLinks: React.FC<ArtworkExtraLinksProps> = ({ artwork, a
   const artists = artwork.artists ?? []
   const consignableArtistsCount = artists.filter((artist) => artist?.isConsignable).length ?? 0
   const artistName = artists.length === 1 ? artists[0]!.name : null
-
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
+  const enableCreateArtworkAlert = useExperimentFlag("eigen-artwork-page-create-alert")
 
   return (
     <>

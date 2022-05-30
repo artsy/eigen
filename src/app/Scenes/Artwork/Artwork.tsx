@@ -12,6 +12,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -63,7 +64,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
+  const enableCreateArtworkAlert = useExperimentFlag("eigen-artwork-page-create-alert")
 
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}

@@ -3,6 +3,7 @@ import { AuctionTimerState, Countdown } from "app/Components/Bidding/Components/
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import "moment-timezone"
@@ -17,6 +18,11 @@ import { CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialInformationTimerWrapper, SaleAvailability } from "./CommercialInformation"
 
+jest.mock("app/utils/experiments/hooks", () => ({
+  ...jest.requireActual("app/utils/experiments/hooks"),
+  useExperimentFlag: jest.fn(),
+}))
+
 const Wrapper: React.FC<{}> = ({ children }) => {
   return (
     <SafeAreaProvider>
@@ -28,9 +34,11 @@ const Wrapper: React.FC<{}> = ({ children }) => {
 }
 
 describe("CommercialInformation", () => {
+  const mockUseExperimentFlag = useExperimentFlag as jest.Mock
+
   beforeEach(() => {
-    // TODO: Remove it when AREnableCreateArtworkAlert flag is true in Echo
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
+    // TODO: Remove it when "eigen-artwork-page-create-alert" flag is released
+    mockUseExperimentFlag.mockImplementation(() => false)
   })
 
   it("renders all information when the data is present", () => {
@@ -54,7 +62,7 @@ describe("CommercialInformation", () => {
   })
 
   it("returns correct information with ff true and artworks is sold", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+    mockUseExperimentFlag.mockImplementation(() => true)
     const ForSaleArtwork = {
       ...CommercialInformationArtwork,
       isSold: true,
@@ -73,7 +81,7 @@ describe("CommercialInformation", () => {
   })
 
   it("returns correct information for auction works when the auction has ended and ff true", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+    mockUseExperimentFlag.mockImplementation(() => true)
     const Artwork = {
       ...CommercialInformationArtwork,
       isInAuction: true,

@@ -11,6 +11,7 @@ import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetPro
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
@@ -174,7 +175,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   setAuctionTimerState,
 }) => {
   const { trackEvent } = useTracking()
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
+  const enableCreateArtworkAlert = useExperimentFlag("eigen-artwork-page-create-alert")
   const [editionSetID, setEditionSetID] = useState<string | null>(null)
   const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale, isSold } =
     artwork

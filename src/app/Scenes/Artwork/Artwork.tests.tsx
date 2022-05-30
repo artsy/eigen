@@ -16,6 +16,7 @@ import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { merge } from "lodash"
 import _ from "lodash"
 import { Touchable } from "palette"
@@ -43,6 +44,10 @@ type ArtworkQueries =
 
 jest.unmock("react-relay")
 
+jest.mock("app/utils/experiments/hooks", () => ({
+  ...jest.requireActual("app/utils/experiments/hooks"),
+  useExperimentFlag: jest.fn(),
+}))
 jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   class TimeOffsetProvider extends require("react").Component {
     static childContextTypes = {
@@ -64,6 +69,7 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
 
 describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>
+  const mockUseExperimentFlag = useExperimentFlag as jest.Mock
 
   function mockMostRecentOperation(name: ArtworkQueries, mockResolvers: MockResolvers = {}) {
     expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
@@ -96,8 +102,9 @@ describe("Artwork", () => {
   beforeEach(() => {
     require("app/relay/createEnvironment").reset()
     environment = require("app/relay/createEnvironment").defaultEnvironment
-    // TODO: Remove it when AREnableCreateArtworkAlert flag is true in Echo
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
+
+    // TODO: Remove it when "eigen-artwork-page-create-alert" flag is released
+    mockUseExperimentFlag.mockImplementation(() => false)
   })
 
   afterEach(() => {
@@ -475,7 +482,7 @@ describe("Artwork", () => {
 
   describe("Partner Section", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+      mockUseExperimentFlag.mockImplementation(() => true)
     })
 
     it("should render a pressable partner name section when partner is linkable and has a href", () => {
@@ -527,7 +534,7 @@ describe("Artwork", () => {
 
   describe("Create Alert button", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+      mockUseExperimentFlag.mockImplementation(() => true)
     })
 
     it("should display create artwork alert section by default", () => {

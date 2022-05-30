@@ -6,12 +6,18 @@ import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "./index"
+
+jest.mock("app/utils/experiments/hooks", () => ({
+  ...jest.requireActual("app/utils/experiments/hooks"),
+  useExperimentFlag: jest.fn(),
+}))
 
 function getWrapper({
   artwork,
@@ -30,8 +36,11 @@ function getWrapper({
 }
 
 describe("ArtworkExtraLinks", () => {
+  const mockUseExperimentFlag = useExperimentFlag as jest.Mock
+
   beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
+    // TODO: Remove it when "eigen-artwork-page-create-alert" flag is released
+    mockUseExperimentFlag.mockImplementation(() => false)
   })
 
   it("redirects to /sales when consignments link is clicked from outside of sell tab", () => {
@@ -362,9 +371,9 @@ describe("ArtworkExtraLinks", () => {
       })
     })
 
-    describe("AREnableCreateArtworkAlert is switched to true", () => {
+    describe("`eigen-artwork-page-create-alert` flag is enabled", () => {
       beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+        mockUseExperimentFlag.mockImplementation(() => true)
       })
 
       const TestRenderer = () =>
@@ -376,7 +385,7 @@ describe("ArtworkExtraLinks", () => {
         const { queryByText } = TestRenderer()
 
         // Makes sure that no parts of the text references of the FaqAndSpecialistSection
-        // appear in the rendered component when ff - AREnableCreateArtworkAlert is true
+        // appear in the rendered component when ff - eigen-artwork-page-create-alert is enabled
         expect(
           queryByText("By placing a bid you agree to Artsy's and Christie's", { exact: false })
         ).toBeTruthy()
