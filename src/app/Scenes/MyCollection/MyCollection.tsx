@@ -52,6 +52,8 @@ const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me
 }> = ({ relay, me }) => {
+  const space = useSpace()
+  const toast = useToast()
   const { trackEvent } = useTracking()
   const { showSessionVisualClue } = useSessionVisualClue()
 
@@ -91,85 +93,69 @@ const MyCollection: React.FC<{
   // hack for tests. we should fix that.
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
-  const space = useSpace()
-  const toast = useToast()
-
-  const hasBeenShownBanner = async () => {
-    const hasSeenBanner =
-      (await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)) === "true"
-    const showConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
+  const showMessages = async () => {
+    const showConsignmentsMessage = showSessionVisualClue("ArtworkSubmissionMessage")
     const showAddedArtworkHasNoInsightsMessage =
       enableMyCollectionInsights && showSessionVisualClue("AddArtworkWithoutInsightsMessage_MyCTab")
+    const showNewWorksMessage =
+      me.myCollectionInfo?.includesPurchasedArtworks &&
+      !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
 
-    return {
-      hasSeenBanner,
-      showConsignments,
-      showAddedArtworkHasNoInsightsMessage,
-    }
+    setJSX(
+      <Flex>
+        <ArtworksFilterHeader
+          selectedFiltersCount={filtersCount}
+          onFilterPress={() => setIsFilterModalVisible(true)}
+        >
+          <Button
+            data-test-id="add-artwork-button-non-zero-state"
+            size="small"
+            variant="fillDark"
+            onPress={async () => {
+              navigate("my-collection/artworks/new", {
+                passProps: {
+                  mode: "add",
+                  source: Tab.collection,
+                  onSuccess: popToRoot,
+                },
+              })
+              trackEvent(tracks.addCollectedArtwork())
+            }}
+            haptic
+          >
+            Add Works
+          </Button>
+        </ArtworksFilterHeader>
+        {!!showNewWorksMessage && (
+          <Message
+            variant="info"
+            title="Your collection is growing"
+            text="Based on your purchase history, we’ve added the following works."
+            showCloseButton
+            onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
+          />
+        )}
+        {!!showConsignmentsMessage && (
+          <Message
+            variant="info"
+            title="Artwork added to My Collection"
+            text="The artwork you submitted for sale has been automatically added."
+            showCloseButton
+            onClose={() => removeClue("ArtworkSubmissionMessage")}
+          />
+        )}
+        {!!showAddedArtworkHasNoInsightsMessage && (
+          <AddedArtworkHasNoInsightsMessage
+            onClose={() => removeClue("AddArtworkWithoutInsightsMessage_MyCTab")}
+          />
+        )}
+      </Flex>
+    )
   }
 
   useEffect(() => {
     if (artworks.length) {
-      hasBeenShownBanner().then(
-        ({ hasSeenBanner, showConsignments, showAddedArtworkHasNoInsightsMessage }) => {
-          const showNewWorksBanner =
-            me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
-          const showConsignmentsBanner = showConsignments
-
-          setJSX(
-            <Flex>
-              <ArtworksFilterHeader
-                selectedFiltersCount={filtersCount}
-                onFilterPress={() => setIsFilterModalVisible(true)}
-              >
-                <Button
-                  data-test-id="add-artwork-button-non-zero-state"
-                  size="small"
-                  variant="fillDark"
-                  onPress={async () => {
-                    navigate("my-collection/artworks/new", {
-                      passProps: {
-                        mode: "add",
-                        source: Tab.collection,
-                        onSuccess: popToRoot,
-                      },
-                    })
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                  haptic
-                >
-                  Add Works
-                </Button>
-              </ArtworksFilterHeader>
-              {!!showNewWorksBanner && (
-                <Message
-                  variant="info"
-                  title="Your collection is growing"
-                  text="Based on your purchase history, we’ve added the following works."
-                  showCloseButton
-                  onClose={() =>
-                    AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
-                  }
-                />
-              )}
-              {!!showConsignmentsBanner && (
-                <Message
-                  variant="info"
-                  title="Artwork added to My Collection"
-                  text="The artwork you submitted for sale has been automatically added."
-                  showCloseButton
-                  onClose={() => removeClue("ArtworkSubmissionMessage")}
-                />
-              )}
-              {!!showAddedArtworkHasNoInsightsMessage && (
-                <AddedArtworkHasNoInsightsMessage
-                  onClose={() => removeClue("AddArtworkWithoutInsightsMessage_MyCTab")}
-                />
-              )}
-            </Flex>
-          )
-        }
-      )
+      showMessages()
     } else {
       // remove already set JSX
       setJSX(null)
