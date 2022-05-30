@@ -59,7 +59,7 @@ const MyCollection: React.FC<{
   const { showSessionVisualClue } = useSessionVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
-  const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
+  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
@@ -102,9 +102,9 @@ const MyCollection: React.FC<{
       (await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)) === "true"
     const showConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
     const showAddedArtworkHasNoInsightsMessage =
-      showMyCollectionInsights && showSessionVisualClue("AddArtworkWithoutInsightsMessage_MyCTab")
+      enableMyCollectionInsights && showSessionVisualClue("AddArtworkWithoutInsightsMessage_MyCTab")
     const showArtworksHaveInsightsMessage =
-      showMyCollectionInsights &&
+      enableMyCollectionInsights &&
       artworks.find((artwork) => artwork.marketPriceInsights !== null) &&
       showSessionVisualClue("NoArtworksHaveInsightsMessage_MyCTab")
     return {
@@ -331,7 +331,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 export const MyCollectionPlaceholder: React.FC = () => {
   const screenWidth = useScreenDimensions().width
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
-  const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
+  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   return (
     <Flex>
@@ -360,7 +360,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
       <Spacer mb={2} mt={1} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        {!!showMyCollectionInsights ? (
+        {!!enableMyCollectionInsights ? (
           <>
             <PlaceholderText width="25%" height={22} />
             <PlaceholderText width="25%" height={22} />
