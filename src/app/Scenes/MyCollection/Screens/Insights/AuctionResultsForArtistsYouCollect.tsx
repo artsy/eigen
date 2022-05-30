@@ -29,8 +29,6 @@ export const ListOfresults: React.FC<{}> = () => {
 
   const allAuctionResults = extractNodes(data.myCollectionAuctionResults)
 
-  console.log({ allAuctionResultsda: allAuctionResults })
-
   const groupedAuctionResults = groupBy(allAuctionResults, (item) =>
     moment(item!.saleDate!).format("YYYY-MM")
   )

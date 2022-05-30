@@ -211,7 +211,7 @@ export const MyCollectionContainer = createPaginationContainer(
   {
     me: graphql`
       fragment MyCollection_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 30 }, cursor: { type: "String" }) {
         id
         myCollectionInfo {
           includesPurchasedArtworks
@@ -229,9 +229,6 @@ export const MyCollectionContainer = createPaginationContainer(
               attributionClass {
                 name
               }
-              marketPriceInsights {
-                demandRank
-              }
               sizeBucket
               width
               height
@@ -244,7 +241,6 @@ export const MyCollectionContainer = createPaginationContainer(
               }
             }
           }
-
           ...MyCollectionArtworkList_myCollectionConnection
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)
         }
