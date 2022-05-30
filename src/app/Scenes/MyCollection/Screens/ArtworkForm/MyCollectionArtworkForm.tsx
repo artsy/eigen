@@ -97,7 +97,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const { showActionSheetWithOptions } = useActionSheet()
 
-  const showMyCollectionInsights = useFeatureFlag("ARShowMyCollectionInsights")
+  const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const handleSubmit = async (values: ArtworkFormValues) => {
     setLoading(true)

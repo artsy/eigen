@@ -189,22 +189,22 @@ export const features = defineFeatures({
     description: "Enable Collector Profile Complete Message",
     showInAdminMenu: true,
   },
-  ARShowMyCollectionInsights: {
+  AREnableMyCollectionInsights: {
     readyForRelease: false,
     description: "Enable My Collection insights tab",
     showInAdminMenu: true,
   },
-  ARShowMyCollectionInsightsPhase1Part1: {
+  AREnableMyCollectionInsightsPhase1Part1: {
     readyForRelease: false,
     description: "Enable MyC insights Ph 1 Pt 1",
     showInAdminMenu: true,
   },
-  ARShowMyCollectionInsightsPhase1Part2: {
+  AREnableMyCollectionInsightsPhase1Part2: {
     readyForRelease: false,
     description: "Enable MyC insights Ph 1 Pt 2",
     showInAdminMenu: true,
   },
-  ARShowMyCollectionInsightsPhase1Part3: {
+  AREnableMyCollectionInsightsPhase1Part3: {
     readyForRelease: false,
     description: "Enable MyC insights Ph 1 Pt 3",
     showInAdminMenu: true,

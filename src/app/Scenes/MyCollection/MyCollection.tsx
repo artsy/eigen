@@ -56,7 +56,7 @@ const MyCollection: React.FC<{
   const { showSessionVisualClue } = useSessionVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
-  const showMyCollectionInsights = useFeatureFlag("ARShowMyCollectionInsights")
+  const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
@@ -311,7 +311,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 export const MyCollectionPlaceholder: React.FC = () => {
   const screenWidth = useScreenDimensions().width
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
-  const showMyCollectionInsights = useFeatureFlag("ARShowMyCollectionInsights")
+  const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   return (
     <Flex>

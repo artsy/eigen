@@ -20,7 +20,9 @@ describe("MyCollectionInsights", () => {
 
   describe("when the step 1 of phase 1 feature flag is enabled ", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARShowMyCollectionInsightsPhase1Part1: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableMyCollectionInsightsPhase1Part1: true,
+      })
     })
 
     it("shows market signal when they're available", async () => {
@@ -59,7 +61,9 @@ describe("MyCollectionInsights", () => {
 
   describe("when the step 1 of phase 1 feature flag is disabled ", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARShowMyCollectionInsightsPhase1Part1: false })
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableMyCollectionInsightsPhase1Part1: false,
+      })
     })
 
     it("shows market signal when they're available", async () => {

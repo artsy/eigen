@@ -27,7 +27,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
 }> = ({ me }) => {
   // We are using unsafe_getfeatureflag here because we want to avoid breaking the rule of hooks
   // inside the StickyTabPage
-  const showMyCollectionInsights = unsafe_getFeatureFlag("ARShowMyCollectionInsights")
+  const showMyCollectionInsights = unsafe_getFeatureFlag("AREnableMyCollectionInsights")
 
   return (
     <StickyTabPage
