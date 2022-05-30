@@ -17,7 +17,7 @@ import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const space = useSpace()
-  const enablePhase1 = useFeatureFlag("ARShowMyCollectionInsightsPhase1Part1")
+  const enablePhase1 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part1")
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
