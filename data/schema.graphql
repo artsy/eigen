@@ -9565,6 +9565,8 @@ type Me implements Node {
     excludePurchasedArtworks: Boolean = false
     first: Int
     last: Int
+    page: Int
+    size: Int
     sort: MyCollectionArtworkSorts
   ): MyCollectionConnection
 
