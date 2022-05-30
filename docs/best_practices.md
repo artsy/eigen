@@ -17,7 +17,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
   - [Storybook](#storybook)
   - [Styling](#styling)
 - [TypeScript](#TypeScript)
-- [Relay](#relay)
+- [Fetching Data](#fetching-data)
 - [Testing](#testing)
 - [Navigation](#Navigation)
 - [Analytics and tracking](#analytics-and-tracking)
@@ -128,7 +128,7 @@ The change left comments like this throughout the codebase that we aim to gradua
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 ```
 
-### Relay
+### Fetching data
 
 We use [Relay](https://relay.dev) for network requests.
 
@@ -137,6 +137,8 @@ Artsy's **GraphQL** server is [Metaphysics](https://github.com/artsy/metaphysics
 We prefer using **Relay hooks** over relay containers (Higher Order Components).
 
 Refactoring components using HoCs in favour of hooks is encouraged.
+
+➡️ Read more about how to fetch data [here](https://github.com/artsy/eigen/blob/main/docs/readme.md)
 
 - [Why Artsy uses Relay](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#Relay)
 - [Artsy's Relay Workshop](https://github.com/artsy/relay-workshop)
