@@ -78,7 +78,7 @@ export const MyCollectionArtworkListItem: React.FC<{
 
         <Flex pl={15} flex={1} style={{ marginTop: 3 }}>
           {!!artwork.artist?.name && (
-            <Text variant="xs" fontWeight="bold" testID="artist-name">
+            <Text variant="xs" testID="artist-name">
               {artwork.artist?.name}
             </Text>
           )}
