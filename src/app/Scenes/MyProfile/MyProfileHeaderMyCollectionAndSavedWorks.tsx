@@ -41,6 +41,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         !!showMyCollectionInsights && {
           title: Tab.insights,
           content: <MyCollectionInsightsQR />,
+          visualClue: "AddArtworkWithInsights",
         },
         {
           title: Tab.savedWorks,
