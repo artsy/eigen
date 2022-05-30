@@ -11,6 +11,7 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -23,6 +24,7 @@ jest.unmock("react-relay")
 
 describe("MyCollection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
   const TestRenderer = () => (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionTestsQuery>
@@ -56,6 +58,10 @@ describe("MyCollection", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableMyCollectionInsights: true,
+    })
   })
 
   afterEach(() => {
@@ -128,18 +134,54 @@ describe("MyCollection", () => {
     })
   })
 
+  describe("no insights message", () => {
+    it("shows message if there are no market insights", async () => {
+      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Me: () => ({ auctionResults: { totalCount: 0 } }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(getByTestId("artworks-have-no-insights-message")).toBeTruthy()
+    })
+
+    it("doesn't show the message if there are market insights", async () => {
+      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Me: () => ({ auctionResults: { totalCount: 1 } }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(await queryByTestId("artworks-have-no-insights-message")).toBeFalsy()
+    })
+
+    it("doesn't show the message if there are market insights", async () => {
+      const { queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Me: () => ({ auctionResults: { totalCount: 1 } }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(await queryByTestId("artworks-have-no-insights-message")).toBeFalsy()
+    })
+  })
+
   describe("sorting and filtering", () => {
     it("filters and sorts without crashing", async () => {
       const renderApi = renderWithWrappersTL(<TestRenderer />)
 
       act(() => {
-        mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            Me: () => ({
-              myCollectionConnection: mockArtworkConnection,
-            }),
-          })
-        )
+        mockEnvironmentPayload(mockEnvironment, {
+          Me: () => ({
+            myCollectionConnection,
+          }),
+        })
       })
 
       await applyFilter(renderApi, "Sort By", "Price Paid (High to Low)")
@@ -160,7 +202,7 @@ const applyFilter = async (renderApi: RenderAPI, filterName: string, filterOptio
   act(() => fireEvent.press(renderApi.getByText("Show Results")))
 }
 
-const mockArtworkConnection = {
+const myCollectionConnection = {
   edges: [
     {
       node: {

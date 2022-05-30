@@ -12,13 +12,14 @@ export const AddedArtworkHasNoInsightsMessage: React.FC<Partial<MessageProps>> =
   )
 }
 
-export const NoArtworksHaveInsightsMessage: React.FC<Partial<MessageProps>> = (props) => {
+export const ArtworksHaveNoInsights: React.FC<Partial<MessageProps>> = (props) => {
   return (
     <Message
       variant="info"
       title="Why don’t I see insights for all my artworks?"
       text="Insights are market data on artists you collect. Not all artists in your collection currently have insights available."
       showCloseButton
+      testID="artworks-have-no-insights-message"
       {...props}
     />
   )

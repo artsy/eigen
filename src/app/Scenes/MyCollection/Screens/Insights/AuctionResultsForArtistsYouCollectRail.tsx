@@ -10,15 +10,15 @@ import { graphql, useFragment } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
 interface AuctionResultsForArtistsYouCollectRailProps {
-  auctionResults: AuctionResultsForArtistsYouCollectRail_me$key
+  me: AuctionResultsForArtistsYouCollectRail_me$key
 }
 
 export const AuctionResultsForArtistsYouCollectRail: React.FC<
   AuctionResultsForArtistsYouCollectRailProps
-> = ({ auctionResults }) => {
+> = ({ me }) => {
   const fragmentData = useFragment<AuctionResultsForArtistsYouCollectRail_me$key>(
     auctionResultsForArtistsYouCollectRailFragment,
-    auctionResults
+    me
   )
   const auctionResultsData = extractNodes(fragmentData.myCollectionAuctionResults)
 

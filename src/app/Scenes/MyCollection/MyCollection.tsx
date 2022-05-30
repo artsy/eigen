@@ -20,6 +20,7 @@ import {
   useDevToggle,
   useFeatureFlag,
   useSessionVisualClue,
+  useVisualClue,
 } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
@@ -44,7 +45,7 @@ import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListIte
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import {
   AddedArtworkHasNoInsightsMessage,
-  NoArtworksHaveInsightsMessage,
+  ArtworksHaveNoInsights,
 } from "./Screens/Insights/MyCollectionInsightsMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
@@ -57,6 +58,7 @@ const MyCollection: React.FC<{
 }> = ({ relay, me }) => {
   const { trackEvent } = useTracking()
   const { showSessionVisualClue } = useSessionVisualClue()
+  const { showVisualClue } = useVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
   const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
@@ -66,6 +68,7 @@ const MyCollection: React.FC<{
   const filtersCount = useSelectedFiltersCount()
 
   const artworks = extractNodes(me?.myCollectionConnection)
+  const hasMarketSignals = !!me?.auctionResults?.totalCount
 
   const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
@@ -105,8 +108,10 @@ const MyCollection: React.FC<{
       enableMyCollectionInsights && showSessionVisualClue("AddArtworkWithoutInsightsMessage_MyCTab")
     const showArtworksHaveInsightsMessage =
       enableMyCollectionInsights &&
-      artworks.find((artwork) => artwork.marketPriceInsights !== null) &&
-      showSessionVisualClue("NoArtworksHaveInsightsMessage_MyCTab")
+      artworks.length &&
+      !hasMarketSignals &&
+      showVisualClue("ArtworksHaveNoInsights_MyCTab")
+
     return {
       hasSeenBanner,
       showConsignments,
@@ -179,8 +184,8 @@ const MyCollection: React.FC<{
                 />
               )}
               {!!showArtworksHaveInsightsMessage && (
-                <NoArtworksHaveInsightsMessage
-                  onClose={() => removeClue("NoArtworksHaveInsightsMessage_MyCTab")}
+                <ArtworksHaveNoInsights
+                  onClose={() => removeClue("ArtworksHaveNoInsights_MyCTab")}
                 />
               )}
             </Flex>
@@ -242,7 +247,7 @@ export const MyCollectionContainer = createPaginationContainer(
   {
     me: graphql`
       fragment MyCollection_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 30 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String" }) {
         id
         myCollectionInfo {
           includesPurchasedArtworks
@@ -275,8 +280,12 @@ export const MyCollectionContainer = createPaginationContainer(
               }
             }
           }
+
           ...MyCollectionArtworkList_myCollectionConnection
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)
+        }
+        auctionResults: myCollectionAuctionResults(first: 1) {
+          totalCount
         }
       }
     `,

@@ -58,7 +58,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
         {hasMarketSignals && !!enablePhase1 && (
           <>
             <MarketSignalsSectionHeader />
-            <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+            <AuctionResultsForArtistsYouCollectRail me={data.me!} />
             {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
             <ActivateMoreMarketInsightsBanner />
           </>
