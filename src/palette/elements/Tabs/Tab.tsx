@@ -42,7 +42,6 @@ export const Tab: React.FC<TabProps> = ({
             style={{
               textDecorationLine: pressed ? "underline" : "none",
             }}
-            // backgroundColor="green"
           >
             {label}
           </Text>
