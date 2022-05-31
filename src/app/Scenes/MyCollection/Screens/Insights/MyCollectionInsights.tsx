@@ -34,10 +34,6 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     }
   }, [])
 
-  useEffect(() => {
-    setVisualClueAsSeen("MyCollectionInsights")
-  }, [])
-
   const refresh = () => {
     if (isRefreshing) {
       return

@@ -1,3 +1,4 @@
+import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
 import { Box } from "palette"
 import { Tab, TabsProps } from "palette/elements/Tabs"
 import React, { useState } from "react"
@@ -17,13 +18,23 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
 
   return (
     <TabBarContainer scrollEnabled activeTabIndex={activeTab} tabLayouts={tabLayouts}>
-      {tabs.map(({ label, superscript }, index) => {
+      {tabs.map(({ label, superscript: supercriptProp, visualClue }, index) => {
+        const { showVisualClue } = useVisualClue()
+
+        const superscript = showVisualClue(visualClue) ? "new" : supercriptProp
+
         return (
           <Box minWidth={tabWidth} key={label + index}>
             <Tab
               label={label}
               superscript={superscript}
-              onPress={() => onTabPress(label, index)}
+              onPress={() => {
+                if (visualClue) {
+                  setVisualClueAsSeen(visualClue)
+                }
+
+                onTabPress(label, index)
+              }}
               active={activeTab === index}
               onLayout={(e) => {
                 const layout = e.nativeEvent.layout

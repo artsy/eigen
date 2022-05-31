@@ -23,7 +23,7 @@ export const VisualClueText: React.FC<{ style?: StyleProp<ViewStyle> }> = ({ sty
           style={{
             position: "absolute",
             top: 14,
-            right: -48,
+            right: 26,
             ...(style as object),
           }}
         >

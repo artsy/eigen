@@ -29,8 +29,6 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   // inside the StickyTabPage
   const showMyCollectionInsights = unsafe_getFeatureFlag("AREnableMyCollectionInsights")
 
-  const { showVisualClue } = useVisualClue()
-
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -43,7 +41,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         !!showMyCollectionInsights && {
           title: Tab.insights,
           content: <MyCollectionInsightsQR />,
-          superscript: showVisualClue("MyCollectionInsights") ? "new" : undefined,
+          visualClue: "MyCollectionInsights9",
         },
         {
           title: Tab.savedWorks,

@@ -1,5 +1,5 @@
 import { Sans } from "palette"
-import { NavigationalTabs } from "palette/elements/Tabs"
+import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useEffect, useRef, useState } from "react"
 import {
   Animated,
@@ -18,7 +18,7 @@ export const StickyTabPageTabBar: React.FC<{
   onTabPress?(tab: { label: string; index: number }): void
 }> = ({ onTabPress }) => {
   const screen = useScreenDimensions()
-  const { tabLabels, activeTabIndex, setActiveTabIndex, tabSuperscripts } =
+  const { tabLabels, activeTabIndex, setActiveTabIndex, tabSuperscripts, tabVisualClues } =
     useStickyTabPageContext()
   activeTabIndex.useUpdates()
 
@@ -46,7 +46,11 @@ export const StickyTabPageTabBar: React.FC<{
     }
   }, [activeTabIndex.current])
 
-  const tabs = tabLabels.map((label, index) => ({ label, superscript: tabSuperscripts[index] }))
+  const tabs = tabLabels.map((label, index) => ({
+    label,
+    superscript: tabSuperscripts[index],
+    visualClue: tabVisualClues[index],
+  }))
 
   return (
     <NavigationalTabs

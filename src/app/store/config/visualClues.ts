@@ -24,7 +24,7 @@ export const visualClues = defineVisualClues({
   AddArtworkWithoutInsightsMessage_MyCTab: {
     description: "The message shown after addind an artwork without insights for the Insights tab",
   },
-  MyCollectionInsights: {
+  MyCollectionInsights9: {
     description: "The new My Collection insights tab",
   },
 })

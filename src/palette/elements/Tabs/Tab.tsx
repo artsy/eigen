@@ -3,8 +3,9 @@ import { useColor } from "palette/hooks"
 import React from "react"
 import { ViewProps } from "react-native"
 import { Pressable, View, ViewStyle } from "react-native"
+import { VisualClueText } from "../VisualClue"
 
-export interface TabV3Props {
+export interface TabProps {
   label: string
   superscript?: string
   active: boolean
@@ -13,7 +14,7 @@ export interface TabV3Props {
   onLayout: ViewProps["onLayout"]
 }
 
-export const TabV3: React.FC<TabV3Props> = ({
+export const Tab: React.FC<TabProps> = ({
   label,
   superscript,
   active,
@@ -45,18 +46,7 @@ export const TabV3: React.FC<TabV3Props> = ({
           >
             {label}
           </Text>
-          {!!superscript && (
-            <Text
-              fontSize={12}
-              color={color("blue100")}
-              style={{
-                textDecorationLine: pressed ? "underline" : "none",
-                top: -3,
-              }}
-            >
-              {superscript}
-            </Text>
-          )}
+          {!!superscript && <VisualClueText>{superscript}</VisualClueText>}
         </View>
       )}
     </Pressable>

@@ -1,3 +1,4 @@
+import { VisualClueName } from "app/store/config/visualClues"
 import { GlobalState } from "app/utils/useGlobalState"
 import React from "react"
 import Animated from "react-native-reanimated"
@@ -8,6 +9,7 @@ export const StickyTabPageContext = React.createContext<{
   headerOffsetY: Animated.Value<number>
   tabLabels: string[]
   tabSuperscripts: Array<string | undefined>
+  tabVisualClues: Array<VisualClueName | undefined>
   activeTabIndex: GlobalState<number>
   setActiveTabIndex(index: number): void
 }>(null as any)

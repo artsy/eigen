@@ -21,7 +21,22 @@ To add a visual clue to the app, you will need to do the following:
 
 ```
 
-3. Add the visual clue text to the correct place in the app.
+3. Add the visuel clue text to the correct `StickyTabPage` tab.
+
+```diff
+<StickyTabPage
+  tabs={[
+    {
+      title: "Tab Title",
+      content: <TabContent />,
++     visualClue: "NewVisualClue",
+    },
+
+  ]}
+/>
+```
+
+Alternatively, you can add the visual clue to a text element and programmatically mark the hint as seen.
 
 ```diff
   const { showVisualClue } = useVisualClue()
@@ -31,8 +46,6 @@ return(
 + {!!showVisualClue("NewVisualClue") && <VisualClueText style={{ top: 14, right: -36 }} />}
 )
 ```
-
-4. Mark the clue as seen in the correct place in the app (e.g. a component).
 
 ```diff
   // The component that renders the new feature
