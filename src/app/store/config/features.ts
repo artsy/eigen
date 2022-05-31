@@ -2,27 +2,38 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { echoLaunchJson } from "app/utils/jsonFiles"
 import { GlobalStore } from "../GlobalStore"
 
-export interface FeatureDescriptor {
+interface FeatureDescriptorExtras {
+  /** Provide a short description for the admin menu. */
+  readonly description?: string
+
+  /** Whether or not to show the feature flag in the admin menu. Consider also providing a description. */
+  readonly showInAdminMenu?: boolean
+}
+
+interface FeatureDescriptorReadyForRelease {
   /**
    * Set readyForRelease to `true` when the feature is ready to be exposed outside of dev mode.
    * If an echo flag key is specified, the echo flag's value will be used after this is set to `true`.
-   * If this is set to `false`, the feature will never be shown except if overridden in the admin menu.
    */
-  readonly readyForRelease: boolean
+  readonly readyForRelease: true
   /**
    * Provide an echo feature flag key to allow this feature to be toggled globally via echo.
-   * Make sure to add the flag to echo before setting this value. Then run ./scripts/update-echo
+   * Make sure to add the flag to echo before setting this value. Then run `./scripts/update-echo`.
    */
-  readonly echoFlagKey?: string
-  /**
-   * Provide a short description for the admin menu
-   */
-  readonly description?: string
-  /**
-   * Whether or not to show the feature flag in the admin menu. Consider also providing a description.
-   */
-  readonly showInAdminMenu?: boolean
+  readonly echoFlagKey: string
 }
+
+interface FeatureDescriptorNotReady {
+  /**
+   * If this is set to `false`, the feature will never be shown except if overridden in the admin menu.
+   */
+  readonly readyForRelease: false
+
+  readonly echoFlagKey?: string
+}
+
+export type FeatureDescriptor = (FeatureDescriptorReadyForRelease | FeatureDescriptorNotReady) &
+  FeatureDescriptorExtras
 
 // Helper function to get good typings and intellisense
 function defineFeatures<T extends string>(featureMap: {
@@ -92,11 +103,13 @@ export const features = defineFeatures({
   },
   ARShowLinkedAccounts: {
     readyForRelease: true,
+    echoFlagKey: "ARShowLinkedAccounts",
     description: "Show linked social accounts",
     showInAdminMenu: true,
   },
   ARAllowLinkSocialAccountsOnSignUp: {
     readyForRelease: true,
+    echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
     description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
   },
@@ -136,6 +149,7 @@ export const features = defineFeatures({
   },
   AREnablePlaceholderLayoutAnimation: {
     readyForRelease: true,
+    echoFlagKey: "AREnablePlaceholderLayoutAnimation",
     description: "Enable placeholder layout animation",
   },
   AREnableAvalaraPhase2: {
@@ -150,11 +164,13 @@ export const features = defineFeatures({
   },
   ARShowRequestPriceEstimateBanner: {
     readyForRelease: true,
+    echoFlagKey: "ARShowRequestPriceEstimateBanner",
     description: "Show request price estimate banner",
     showInAdminMenu: true,
   },
   ARShowMyCollectionDemandIndexHints: {
     readyForRelease: true,
+    echoFlagKey: "ARShowMyCollectionDemandIndexHints",
     description: "Show demand index hints",
     showInAdminMenu: true,
   },
@@ -176,6 +192,7 @@ export const features = defineFeatures({
   },
   AREnableAuctionShareButton: {
     readyForRelease: true,
+    echoFlagKey: "AREnableAuctionShareButton",
     description: "Show share button in auction screen",
     showInAdminMenu: true,
   },
@@ -186,6 +203,7 @@ export const features = defineFeatures({
   },
   AREnableCompleteProfileMessage: {
     readyForRelease: true,
+    echoFlagKey: "AREnableCompleteProfileMessage",
     description: "Enable Collector Profile Complete Message",
     showInAdminMenu: true,
   },
