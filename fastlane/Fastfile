@@ -50,7 +50,7 @@ lane :ship_beta_ios do
 
   ios_targets.each do |id, meta|
     disable_automatic_code_signing(
-      path: 'Artsy.xcodeproj',
+      path: 'ios/Artsy.xcodeproj',
       team_id: '23KMWZ572J',
       targets: [meta[:name]],
       profile_name: "match AppStore #{id}"
