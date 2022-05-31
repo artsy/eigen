@@ -16,7 +16,7 @@ import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import {
   GlobalStore,
-  removeClue,
+  setVisualClueAsSeen,
   useDevToggle,
   useFeatureFlag,
   useSessionVisualClue,
@@ -158,12 +158,12 @@ const MyCollection: React.FC<{
                   title="Artwork added to My Collection"
                   text="The artwork you submitted for sale has been automatically added."
                   showCloseButton
-                  onClose={() => removeClue("ArtworkSubmissionMessage")}
+                  onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
                 />
               )}
               {!!showAddedArtworkHasNoInsightsMessage && (
                 <AddedArtworkHasNoInsightsMessage
-                  onClose={() => removeClue("AddArtworkWithoutInsightsMessage_MyCTab")}
+                  onClose={() => setVisualClueAsSeen("AddArtworkWithoutInsightsMessage_MyCTab")}
                 />
               )}
             </Flex>

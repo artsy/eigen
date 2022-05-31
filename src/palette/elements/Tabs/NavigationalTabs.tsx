@@ -1,10 +1,5 @@
 import { visualClueNames } from "app/store/config/visualClues"
-import {
-  removeClue,
-  setVisualClueAsSeen,
-  useSessionVisualClue,
-  useVisualClue,
-} from "app/store/GlobalStore"
+import { setVisualClueAsSeen, useSessionVisualClue, useVisualClue } from "app/store/GlobalStore"
 import { Box } from "palette"
 import { Tab, TabsProps } from "palette/elements/Tabs"
 import React, { useState } from "react"
@@ -41,7 +36,7 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
               onPress={() => {
                 if (visualClues) {
                   visualClues.forEach(({ visualClue: name }) => {
-                    visualClueNames.includes(name) ? setVisualClueAsSeen(name) : removeClue(name)
+                    setVisualClueAsSeen(name)
                   })
                 }
 
