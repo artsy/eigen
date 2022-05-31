@@ -438,9 +438,9 @@ describe("MyCollectionArtworkForm", () => {
       jest.clearAllMocks()
     })
 
-    describe("when ARShowMyCollectionInsights is enabled", () => {
+    describe("when AREnableMyCollectionInsights is enabled", () => {
       beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ ARShowMyCollectionInsights: true })
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionInsights: true })
       })
 
       it("displays the new saving artwork loading screen", async () => {
@@ -506,7 +506,7 @@ describe("MyCollectionArtworkForm", () => {
       })
     })
 
-    describe("when ARShowMyCollectionInsights is not enabled", () => {
+    describe("when AREnableMyCollectionInsights is not enabled", () => {
       it("displays normal loading screen", async () => {
         const assetCredentials = {
           signature: "some-signature",

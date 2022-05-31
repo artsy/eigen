@@ -101,25 +101,25 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableCascadingEndTimerLotPage: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable cascading end times on the lot page",
     showInAdminMenu: true,
     echoFlagKey: "AREnableCascadingEndTimerLotPage",
   },
   AREnableCascadingEndTimerSalePageDetails: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable cascading end times on the sale page details",
     showInAdminMenu: true,
     echoFlagKey: "AREnableCascadingEndTimerSalePageDetails",
   },
   AREnableCascadingEndTimerSalePageGrid: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable cascading end times on the sale page lot grid",
     showInAdminMenu: true,
     echoFlagKey: "AREnableCascadingEndTimerSalePageGrid",
   },
   AREnableCascadingEndTimerHomeSalesRail: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable cascading end times on the Sales Rail on Home screen",
     showInAdminMenu: true,
     echoFlagKey: "AREnableCascadingEndTimerHomeSalesRail",
@@ -189,22 +189,22 @@ export const features = defineFeatures({
     description: "Enable Collector Profile Complete Message",
     showInAdminMenu: true,
   },
-  ARShowMyCollectionInsights: {
+  AREnableMyCollectionInsights: {
     readyForRelease: false,
     description: "Enable My Collection insights tab",
     showInAdminMenu: true,
   },
-  ARShowMyCollectionInsightsPhase1Part1: {
+  AREnableMyCollectionInsightsPhase1Part1: {
     readyForRelease: false,
     description: "Enable MyC insights Ph 1 Pt 1",
     showInAdminMenu: true,
   },
-  ARShowMyCollectionInsightsPhase1Part2: {
+  AREnableMyCollectionInsightsPhase1Part2: {
     readyForRelease: false,
     description: "Enable MyC insights Ph 1 Pt 2",
     showInAdminMenu: true,
   },
-  ARShowMyCollectionInsightsPhase1Part3: {
+  AREnableMyCollectionInsightsPhase1Part3: {
     readyForRelease: false,
     description: "Enable MyC insights Ph 1 Pt 3",
     showInAdminMenu: true,
@@ -222,9 +222,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableArtworksFromNonArtsyArtists",
   },
   AREnableCreateArtworkAlert: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Create Alert on Artwork pages",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableCreateArtworkAlert",
   },
 })
 

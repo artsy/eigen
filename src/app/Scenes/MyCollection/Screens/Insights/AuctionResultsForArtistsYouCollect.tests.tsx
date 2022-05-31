@@ -20,7 +20,7 @@ describe("AuctionResultsForArtistsYouCollect", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARShowMyCollectionInsights: true })
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionInsights: true })
   })
 
   it("renders auction results", async () => {

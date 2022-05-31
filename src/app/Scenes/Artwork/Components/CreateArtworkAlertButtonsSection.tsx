@@ -95,7 +95,7 @@ const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps
       <Box accessible accessibilityLabel="Create artwork alert buttons section">
         <Text variant="lg">{isInClosedAuction ? "Bidding closed" : "Sold"}</Text>
         <Text variant="xs" color="black60">
-          Be notified when a similar piece is available
+          Be notified when a similar work is available
         </Text>
 
         <Spacer mt={2} />
@@ -104,7 +104,7 @@ const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps
           Create Alert
         </Button>
 
-        {!!isInquireable && (
+        {!!isInquireable && !isInClosedAuction && (
           <InquiryButtonsFragmentContainer artwork={artwork} variant="outline" mt={1} block />
         )}
       </Box>

@@ -97,7 +97,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
-  const [auctionTimerState, setAuctionTimerState] = useState(getInitialAuctionTimerState())
+  const [auctionTimerState, setAuctionTimerState] = useState<string | undefined>(
+    getInitialAuctionTimerState()
+  )
   const isInClosedAuction = isInAuction && auctionTimerState === AuctionTimerState.CLOSED
 
   const shouldRenderDetails = () => {
