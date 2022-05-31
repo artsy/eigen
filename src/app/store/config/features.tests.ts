@@ -5,7 +5,7 @@ import { devToggles, features } from "./features"
 
 Object.entries(features).forEach(([key, val]) => {
   describe(`The ${key} feature`, () => {
-    if (val.echoFlagKey) {
+    if (val.readyForRelease) {
       it(`uses an echo flag named ${key}`, () => {
         if (!echoLaunchJson().features.some((flag) => flag.name === val.echoFlagKey)) {
           throw new Error(
