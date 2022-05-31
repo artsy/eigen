@@ -29,7 +29,12 @@ To add a visual clue to the app, you will need to do the following:
     {
       title: "Tab Title",
       content: <TabContent />,
-+     visualClue: "NewVisualClue",
++     visualClues: [
++       {
++         superscript: <VisualClueText />,
++         visualClue: "NewVisualClue" as VisualClueName,
++       },
++     ],
     },
 
   ]}

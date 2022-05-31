@@ -20,8 +20,13 @@ export interface TabProps {
   title: string
   content: JSX.Element | ((tabIndex: number) => JSX.Element)
   superscript?: string
-  visualClue?: VisualClueName
+  visualClues?: TabVisualClues
 }
+
+export type TabVisualClues = Array<{
+  superscript: JSX.Element
+  visualClue: VisualClueName
+}>
 
 interface StickyTabPageProps {
   tabs: TabProps[]
@@ -113,7 +118,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
         headerOffsetY,
         tabLabels: tabs.map((tab) => tab.title),
         tabSuperscripts: tabs.map((tab) => tab.superscript),
-        tabVisualClues: tabs.map((tab) => tab.visualClue),
+        tabVisualClues: tabs.map((tab) => tab.visualClues),
         setActiveTabIndex(index) {
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)

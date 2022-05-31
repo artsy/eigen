@@ -3,11 +3,10 @@ import { useColor } from "palette/hooks"
 import React from "react"
 import { ViewProps } from "react-native"
 import { Pressable, View, ViewStyle } from "react-native"
-import { VisualClueText } from "../VisualClue"
 
 export interface TabProps {
   label: string
-  superscript?: string
+  superscript?: JSX.Element
   active: boolean
   style?: ViewStyle
   onPress: () => void
@@ -43,10 +42,11 @@ export const Tab: React.FC<TabProps> = ({
             style={{
               textDecorationLine: pressed ? "underline" : "none",
             }}
+            // backgroundColor="green"
           >
             {label}
           </Text>
-          {!!superscript && <VisualClueText>{superscript}</VisualClueText>}
+          {superscript}
         </View>
       )}
     </Pressable>

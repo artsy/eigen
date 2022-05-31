@@ -1,5 +1,5 @@
 import { Sans } from "palette"
-import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
+import { NavigationalTabs } from "palette/elements/Tabs"
 import React, { useEffect, useRef, useState } from "react"
 import {
   Animated,
@@ -49,7 +49,7 @@ export const StickyTabPageTabBar: React.FC<{
   const tabs = tabLabels.map((label, index) => ({
     label,
     superscript: tabSuperscripts[index],
-    visualClue: tabVisualClues[index],
+    visualClues: tabVisualClues[index],
   }))
 
   return (

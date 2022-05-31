@@ -24,7 +24,12 @@ export const visualClues = defineVisualClues({
   AddArtworkWithoutInsightsMessage_MyCTab: {
     description: "The message shown after addind an artwork without insights for the Insights tab",
   },
-  MyCollectionInsights9: {
+  MyCollectionInsights12: {
+    description: "The new My Collection insights tab",
+  },
+  Test1: {
     description: "The new My Collection insights tab",
   },
 })
+
+export const visualClueNames = Object.keys(visualClues) as VisualClueName[]

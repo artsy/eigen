@@ -1,5 +1,4 @@
 import { action, Action } from "easy-peasy"
-import { LayoutAnimation } from "react-native"
 import { VisualClueName } from "./config/visualClues"
 
 export interface VisualClueModel {
@@ -32,11 +31,6 @@ export const getVisualClueModel = (): VisualClueModel => ({
     if (state.seenVisualClues.includes(clueName)) {
       return
     }
-
-    LayoutAnimation.configureNext({
-      ...LayoutAnimation.Presets.easeInEaseOut,
-      duration: 500,
-    })
 
     state.seenVisualClues = [...state.seenVisualClues, clueName]
   }),

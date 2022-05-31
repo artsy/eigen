@@ -9,34 +9,40 @@ export const VisualClueText: React.FC<{ style?: StyleProp<ViewStyle> }> = ({ sty
   const colors = useColor()
 
   return (
-    <Flex
-      style={{
-        position: "absolute",
-        right: 0,
-        top: 0,
-        bottom: 0,
-        justifyContent: "center",
-      }}
-    >
-      <Flex style={{ width: WRAPPER_WIDTH, height: WRAPPER_HEIGHT }}>
+    <Flex width={0} overflow="visible" backgroundColor="green">
+      <Flex width={55} backgroundColor="yellow">
         <Flex
           style={{
             position: "absolute",
-            top: 14,
-            right: 26,
-            ...(style as object),
+            right: 0,
+            top: 0,
+            bottom: 0,
+            justifyContent: "center",
           }}
         >
-          <PopIn>
-            <Text
+          <Flex style={{ width: WRAPPER_WIDTH, height: WRAPPER_HEIGHT }}>
+            <Flex
               style={{
-                fontSize: 12,
-                color: colors("blue100"),
+                position: "absolute",
+                // top: 14,
+                // right: 26,
+                ...(style as object),
+                left: 0,
+                alignSelf: "flex-start",
               }}
             >
-              New
-            </Text>
-          </PopIn>
+              <PopIn>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: colors("blue100"),
+                  }}
+                >
+                  New
+                </Text>
+              </PopIn>
+            </Flex>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>

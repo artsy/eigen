@@ -1,4 +1,10 @@
-import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
+import { visualClueNames } from "app/store/config/visualClues"
+import {
+  removeClue,
+  setVisualClueAsSeen,
+  useSessionVisualClue,
+  useVisualClue,
+} from "app/store/GlobalStore"
 import { Box } from "palette"
 import { Tab, TabsProps } from "palette/elements/Tabs"
 import React, { useState } from "react"
@@ -18,10 +24,14 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
 
   return (
     <TabBarContainer scrollEnabled activeTabIndex={activeTab} tabLayouts={tabLayouts}>
-      {tabs.map(({ label, superscript: supercriptProp, visualClue }, index) => {
+      {tabs.map(({ label, visualClues }, index) => {
         const { showVisualClue } = useVisualClue()
+        const { showSessionVisualClue } = useSessionVisualClue()
 
-        const superscript = showVisualClue(visualClue) ? "new" : supercriptProp
+        const { superscript } =
+          visualClues?.find(({ visualClue: name }) =>
+            visualClueNames.includes(name) ? showVisualClue(name) : showSessionVisualClue(name)
+          ) ?? {}
 
         return (
           <Box minWidth={tabWidth} key={label + index}>
@@ -29,8 +39,10 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
               label={label}
               superscript={superscript}
               onPress={() => {
-                if (visualClue) {
-                  setVisualClueAsSeen(visualClue)
+                if (visualClues) {
+                  visualClues.forEach(({ visualClue: name }) => {
+                    visualClueNames.includes(name) ? setVisualClueAsSeen(name) : removeClue(name)
+                  })
                 }
 
                 onTabPress(label, index)

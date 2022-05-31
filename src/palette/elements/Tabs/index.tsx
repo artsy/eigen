@@ -1,3 +1,4 @@
+import { TabVisualClues } from "app/Components/StickyTabPage/StickyTabPage"
 import { VisualClueName } from "app/store/config/visualClues"
 import { ContentTabs } from "./ContentTabs"
 import { NavigationalTabs } from "./NavigationalTabs"
@@ -13,6 +14,7 @@ export type TabsType = Array<{
   superscript?: string
   visualClue?: VisualClueName
   completed?: boolean
+  visualClues?: TabVisualClues
 }>
 
 export interface TabsProps {
