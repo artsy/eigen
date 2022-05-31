@@ -29,10 +29,12 @@ export const setupTestWrapperTL = <T extends OperationType>({
         // tslint:disable-next-line: relay-operation-generics
         query={query}
         render={({ props, error }) => {
-          if (props) {
-            return <Component {...props} />
-          } else if (error) {
+          if (error) {
             console.error(error)
+            return null
+          }
+          if (props) {
+            return <Component {...(props as object)} />
           }
         }}
       />
@@ -66,10 +68,12 @@ export const setupTestWrapper = <T extends OperationType>({
         variables={variables}
         query={query}
         render={({ props, error }) => {
-          if (props !== null) {
-            return <Component {...props} />
-          } else if (error !== null) {
+          if (error) {
             console.error(error)
+            return null
+          }
+          if (props) {
+            return <Component {...(props as object)} />
           }
         }}
       />
