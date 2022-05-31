@@ -15,9 +15,6 @@ function defineVisualClues<T extends string>(visualClueMap: {
 }
 
 export const visualClues = defineVisualClues({
-  // ExampleClueName: {
-  //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-  // },
   ArtworkSubmissionMessage: {
     description: "The message shown after artwork submission with SWA flow",
   },
@@ -26,5 +23,8 @@ export const visualClues = defineVisualClues({
   },
   AddArtworkWithoutInsightsMessage_MyCTab: {
     description: "The message shown after addind an artwork without insights for the Insights tab",
+  },
+  MyCollectionInsights: {
+    description: "The new My Collection insights tab",
   },
 })

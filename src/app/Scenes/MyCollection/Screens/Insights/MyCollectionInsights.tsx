@@ -1,7 +1,7 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { setVisualClueAsSeen, useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { Flex, Spinner, useSpace } from "palette"
@@ -32,6 +32,10 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     return () => {
       RefreshEvents.removeListener(MY_COLLECTION_REFRESH_KEY, refresh)
     }
+  }, [])
+
+  useEffect(() => {
+    setVisualClueAsSeen("MyCollectionInsights")
   }, [])
 
   const refresh = () => {

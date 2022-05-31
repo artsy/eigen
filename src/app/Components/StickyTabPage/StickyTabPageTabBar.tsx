@@ -46,10 +46,11 @@ export const StickyTabPageTabBar: React.FC<{
     }
   }, [activeTabIndex.current])
 
-  const v3Tabs = tabLabels.map((label, index) => ({ label, superscript: tabSuperscripts[index] }))
+  const tabs = tabLabels.map((label, index) => ({ label, superscript: tabSuperscripts[index] }))
+
   return (
     <NavigationalTabs
-      tabs={v3Tabs}
+      tabs={tabs}
       onTabPress={(label, index) => {
         setActiveTabIndex(index)
         onTabPress?.({ label, index })

@@ -3,7 +3,7 @@ import { MyProfileHeaderMyCollectionAndSavedWorks_me } from "__generated__/MyPro
 import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { unsafe_getFeatureFlag, useVisualClue } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -29,6 +29,8 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   // inside the StickyTabPage
   const showMyCollectionInsights = unsafe_getFeatureFlag("AREnableMyCollectionInsights")
 
+  const { showVisualClue } = useVisualClue()
+
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -41,6 +43,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         !!showMyCollectionInsights && {
           title: Tab.insights,
           content: <MyCollectionInsightsQR />,
+          superscript: showVisualClue("MyCollectionInsights") ? "new" : undefined,
         },
         {
           title: Tab.savedWorks,

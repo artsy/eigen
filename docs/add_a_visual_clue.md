@@ -13,7 +13,7 @@ To add a visual clue to the app, you will need to do the following:
 +  },
 ```
 
-2. Add the visual clue dot to the correct bottom tab.
+2. Add the visual clue dot to the correct bottom tab in `BottomTabs.tsx`.
 
 ```diff
 -   <BottomTabsButton tab="home" />
