@@ -65,7 +65,7 @@ lane :ship_beta_ios do
   # in Eigen in order for sourcemaps to work correctly
   sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
 
-  build_ios_app(configuration: 'Release', silent: true)
+  build_ios_app(workspace: 'ios/Artsy.xcworkspace', configuration: 'Release', silent: true)
 
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: bundle_version, platform: "ios")
 
