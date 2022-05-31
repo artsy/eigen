@@ -19,7 +19,7 @@ import {
   setVisualClueAsSeen,
   useDevToggle,
   useFeatureFlag,
-  useSessionVisualClue,
+  useVisualClue,
 } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
@@ -53,7 +53,7 @@ const MyCollection: React.FC<{
   me: MyCollection_me
 }> = ({ relay, me }) => {
   const { trackEvent } = useTracking()
-  const { showSessionVisualClue } = useSessionVisualClue()
+  const { showVisualClue } = useVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
   const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
@@ -96,8 +96,8 @@ const MyCollection: React.FC<{
 
   const hasBeenShownBanner = async () => {
     const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
-    const shouldShowAddedArtworkHasNoInsightsMessage = showSessionVisualClue(
+    const shouldShowConsignments = showVisualClue("ArtworkSubmissionMessage")
+    const shouldShowAddedArtworkHasNoInsightsMessage = showVisualClue(
       "AddArtworkWithoutInsightsMessage_MyCTab"
     )
     return {

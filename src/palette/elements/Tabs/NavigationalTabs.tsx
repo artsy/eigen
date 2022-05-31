@@ -1,5 +1,4 @@
-import { visualClueNames } from "app/store/config/visualClues"
-import { setVisualClueAsSeen, useSessionVisualClue, useVisualClue } from "app/store/GlobalStore"
+import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
 import { Box } from "palette"
 import { Tab, TabsProps } from "palette/elements/Tabs"
 import React, { useState } from "react"
@@ -21,12 +20,9 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
     <TabBarContainer scrollEnabled activeTabIndex={activeTab} tabLayouts={tabLayouts}>
       {tabs.map(({ label, visualClues }, index) => {
         const { showVisualClue } = useVisualClue()
-        const { showSessionVisualClue } = useSessionVisualClue()
 
         const { superscript } =
-          visualClues?.find(({ visualClue: name }) =>
-            visualClueNames.includes(name) ? showVisualClue(name) : showSessionVisualClue(name)
-          ) ?? {}
+          visualClues?.find(({ visualClue: name }) => showVisualClue(name)) ?? {}
 
         return (
           <Box minWidth={tabWidth} key={label + index}>
