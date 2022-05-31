@@ -14,8 +14,6 @@ export function useInitialNotification() {
   )
 
   useEffect(() => {
-    // TODO: AppShell we should not have the platform check here and instead handle
-    // in a cross-platform manner if possible
     if (isLoggedIn && !hasHandledInitialNotification && Platform.OS === "android") {
       // initial notification is most recent and should be prioritised
       PushNotification.popInitialNotification((notification) => {
