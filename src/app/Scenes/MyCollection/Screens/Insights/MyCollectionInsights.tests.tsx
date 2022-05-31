@@ -9,7 +9,7 @@ import { MyCollectionInsights } from "./MyCollectionInsights"
 
 jest.unmock("react-relay")
 
-describe("MyCollectionInsights12", () => {
+describe("MyCollectionInsights", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => withStickyTabPage(MyCollectionInsights)

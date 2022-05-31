@@ -18,8 +18,7 @@ export const StickyTabPageTabBar: React.FC<{
   onTabPress?(tab: { label: string; index: number }): void
 }> = ({ onTabPress }) => {
   const screen = useScreenDimensions()
-  const { tabLabels, activeTabIndex, setActiveTabIndex, tabSuperscripts, tabVisualClues } =
-    useStickyTabPageContext()
+  const { tabLabels, activeTabIndex, setActiveTabIndex, tabVisualClues } = useStickyTabPageContext()
   activeTabIndex.useUpdates()
 
   const [tabLayouts] = useState<Array<LayoutRectangle | null>>(tabLabels.map(() => null))
@@ -48,7 +47,6 @@ export const StickyTabPageTabBar: React.FC<{
 
   const tabs = tabLabels.map((label, index) => ({
     label,
-    superscript: tabSuperscripts[index],
     visualClues: tabVisualClues[index],
   }))
 
