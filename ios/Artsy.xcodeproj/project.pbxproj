@@ -3452,6 +3452,7 @@
 					};
 					CB43268127E8FA6900B29DD6 = {
 						CreatedOnToolsVersion = 13.2.1;
+						DevelopmentTeam = 23KMWZ572J;
 					};
 					CB43271B27E8FE5400B29DD6 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -4174,6 +4175,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
@@ -4205,6 +4208,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
 				PRODUCT_NAME = Artsy;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SPRINGBOARD_DISPLAY_NAME = "Δrtsy";
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
@@ -4220,7 +4224,7 @@
 			};
 			name = Debug;
 		};
-		13B07F951A680F5B00A75B9A /* Release */ = {
+		13B07F951A680F5B00A75B9A /* Store */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DDA9792067E817001B8803BA /* Pods-Artsy.release.xcconfig */;
 			buildSettings = {
@@ -4230,6 +4234,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
@@ -4260,6 +4266,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
 				PRODUCT_NAME = Artsy;
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SPRINGBOARD_DISPLAY_NAME = Artsy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
@@ -4272,7 +4279,7 @@
 					"-Wobjc-missing-super-calls",
 				);
 			};
-			name = Release;
+			name = Store;
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4346,7 +4353,7 @@
 			};
 			name = Debug;
 		};
-		83CBBA211A601CBA00E9B192 /* Release */ = {
+		83CBBA211A601CBA00E9B192 /* Store */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -4404,7 +4411,7 @@
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
-			name = Release;
+			name = Store;
 		};
 		CB43266C27E8F39B00B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4416,6 +4423,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -4430,13 +4438,14 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		CB43266D27E8F39B00B29DD6 /* Release */ = {
+		CB43266D27E8F39B00B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
@@ -4446,7 +4455,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -4460,11 +4470,12 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.Artsy-Stickers";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = Release;
+			name = Store;
 		};
 		CB43267B27E8F6F900B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4475,6 +4486,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -4495,6 +4507,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -4504,7 +4517,7 @@
 			};
 			name = Debug;
 		};
-		CB43267C27E8F6F900B29DD6 /* Release */ = {
+		CB43267C27E8F6F900B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4513,7 +4526,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -4533,6 +4547,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.BrazePushServiceExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -4540,7 +4555,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = Release;
+			name = Store;
 		};
 		CB43269427E8FA6B00B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4553,10 +4568,11 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 23KMWZ572J;
+				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyWidget/Info.plist;
@@ -4573,6 +4589,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -4582,7 +4599,7 @@
 			};
 			name = Debug;
 		};
-		CB43269527E8FA6B00B29DD6 /* Release */ = {
+		CB43269527E8FA6B00B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -4593,7 +4610,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -4613,6 +4631,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.ArtsyWidget";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -4620,7 +4639,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = Release;
+			name = Store;
 		};
 		CB43272327E8FE5400B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4633,6 +4652,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -4660,6 +4681,8 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "ArtsyTests/Supporting_Files/Artsy-Tests-Bridging-Header.h";
@@ -4671,7 +4694,7 @@
 			};
 			name = Debug;
 		};
-		CB43272427E8FE5400B29DD6 /* Release */ = {
+		CB43272427E8FE5400B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 46687F9E977C7CE0F1B12B05 /* Pods-ArtsyTests.release.xcconfig */;
 			buildSettings = {
@@ -4682,6 +4705,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -4697,6 +4722,8 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "ArtsyTests/Supporting_Files/Artsy-Tests-Bridging-Header.h";
@@ -4707,7 +4734,7 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
 				VALIDATE_PRODUCT = NO;
 			};
-			name = Release;
+			name = Store;
 		};
 /* End XCBuildConfiguration section */
 
@@ -4716,7 +4743,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
-				13B07F951A680F5B00A75B9A /* Release */,
+				13B07F951A680F5B00A75B9A /* Store */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4725,7 +4752,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
-				83CBBA211A601CBA00E9B192 /* Release */,
+				83CBBA211A601CBA00E9B192 /* Store */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4734,7 +4761,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB43266C27E8F39B00B29DD6 /* Debug */,
-				CB43266D27E8F39B00B29DD6 /* Release */,
+				CB43266D27E8F39B00B29DD6 /* Store */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4743,7 +4770,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB43267B27E8F6F900B29DD6 /* Debug */,
-				CB43267C27E8F6F900B29DD6 /* Release */,
+				CB43267C27E8F6F900B29DD6 /* Store */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4752,7 +4779,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB43269427E8FA6B00B29DD6 /* Debug */,
-				CB43269527E8FA6B00B29DD6 /* Release */,
+				CB43269527E8FA6B00B29DD6 /* Store */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4761,7 +4788,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CB43272327E8FE5400B29DD6 /* Debug */,
-				CB43272427E8FE5400B29DD6 /* Release */,
+				CB43272427E8FE5400B29DD6 /* Store */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
