@@ -199,7 +199,6 @@ export const features = defineFeatures({
   },
   AREnableAuctionShareButton: {
     readyForRelease: true,
-    echoFlagKey: "AREnableAuctionShareButton",
     description: "Show share button in auction screen",
     showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionShareButton",
