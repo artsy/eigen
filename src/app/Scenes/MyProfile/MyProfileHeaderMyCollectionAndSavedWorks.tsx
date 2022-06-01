@@ -47,7 +47,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
               jsx: (
                 <VisualClueDot style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }} />
               ),
-              visualClueName: "AddArtworkWithInsights",
+              visualClueName: "AddedArtworkWithInsightsMessage_MyCTab",
             },
           ],
         },
