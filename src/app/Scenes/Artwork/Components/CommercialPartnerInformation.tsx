@@ -27,6 +27,7 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
 
   const shouldRenderLabels =
     avalaraPhase2 ||
+    !enableCreateArtworkAlert ||
     shouldRenderShipsFromLabel ||
     shouldRenderShippingInfoLabel ||
     shouldRenderPriceTaxLabel
