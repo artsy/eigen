@@ -176,7 +176,7 @@ const MyCollection: React.FC<{
       />
 
       <StickyTabPageScrollView
-        contentContainerStyle={{ paddingBottom: space(2) }}
+        contentContainerStyle={{ paddingBottom: space(2), flexGrow: 1, justifyContent: "center" }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
         innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"

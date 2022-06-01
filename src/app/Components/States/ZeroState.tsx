@@ -11,7 +11,7 @@ interface ZeroStateProps {
 export const ZeroState = (props: ZeroStateProps) => {
   const color = useColor()
   return (
-    <Flex py="6" px="1" alignItems="center">
+    <Flex px="1" alignItems="center">
       <Flex minHeight={30}>
         {!!props.title && (
           <>
