@@ -153,7 +153,6 @@ export const features = defineFeatures({
   },
   AREnablePlaceholderLayoutAnimation: {
     readyForRelease: true,
-    echoFlagKey: "AREnablePlaceholderLayoutAnimation",
     description: "Enable placeholder layout animation",
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
   },
