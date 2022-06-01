@@ -387,6 +387,9 @@ const addArtworkMessages = async ({
         ? "AddedArtworkWithInsightsMessage_MyCTab"
         : "AddedArtworkWithInsightsMessage_InsightsTab"
     )
+    if (sourceTab === Tab.collection) {
+      addClue("AddedArtworkWithInsightsVisualClueDot")
+    }
   } else {
     addClue(
       sourceTab === Tab.collection
