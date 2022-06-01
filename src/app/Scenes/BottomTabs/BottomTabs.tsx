@@ -35,7 +35,7 @@ export const BottomTabs: React.FC = () => {
         <BottomTabsButton tab="search" />
         <BottomTabsButton tab="inbox" badgeCount={unreadConversationCount} />
         <BottomTabsButton tab="sell" />
-        <BottomTabsButton tab="profile" />
+        <BottomTabsButton tab="profile" visualClue="MyCollectionInsights" />
       </Flex>
     </Flex>
   )

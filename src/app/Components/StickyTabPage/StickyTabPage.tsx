@@ -1,3 +1,4 @@
+import { VisualClueName } from "app/store/config/visualClues"
 import { useUpdateShouldHideBackButton } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasuredView"
@@ -18,8 +19,13 @@ export interface TabProps {
   initial?: boolean
   title: string
   content: JSX.Element | ((tabIndex: number) => JSX.Element)
-  superscript?: string
+  visualClues?: TabVisualClues
 }
+
+export type TabVisualClues = Array<{
+  jsx: JSX.Element
+  visualClueName: VisualClueName | string
+}>
 
 interface StickyTabPageProps {
   tabs: TabProps[]
@@ -110,7 +116,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
         stickyHeaderHeight,
         headerOffsetY,
         tabLabels: tabs.map((tab) => tab.title),
-        tabSuperscripts: tabs.map((tab) => tab.superscript),
+        tabVisualClues: tabs.map((tab) => tab.visualClues),
         setActiveTabIndex(index) {
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)

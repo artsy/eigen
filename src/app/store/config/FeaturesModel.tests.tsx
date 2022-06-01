@@ -26,7 +26,6 @@ jest.mock("app/store/config/features", () => {
     },
     FeatureB: {
       readyForRelease: false,
-      echoFlagKey: "FeatureBEchoKey",
     },
   }
   const mockDevToggles: { readonly [key: string]: DevToggleDescriptor } = {

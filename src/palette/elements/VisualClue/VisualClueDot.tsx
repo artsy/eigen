@@ -1,11 +1,11 @@
 import { Flex, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
-import { Animated } from "react-native"
+import { Animated, StyleProp, ViewStyle } from "react-native"
 
 const DOT_DIAMETER = 6
 const ANIMATION_DURATION = 1600
 
-export const VisualClueDot: React.FC = () => {
+export const VisualClueDot: React.FC<{ style?: StyleProp<ViewStyle> }> = ({ style }) => {
   const scaleAnimation = useRef(new Animated.Value(1))
   const opacityAnimation = useRef(new Animated.Value(1))
 
@@ -50,6 +50,7 @@ export const VisualClueDot: React.FC = () => {
         minWidth: DOT_DIAMETER,
         borderRadius: DOT_DIAMETER / 2,
         backgroundColor: color("blue100"),
+        ...(style as object),
       }}
     >
       <Animated.View

@@ -3,16 +3,17 @@ import { useColor } from "palette/hooks"
 import React from "react"
 import { ViewProps } from "react-native"
 import { Pressable, View, ViewStyle } from "react-native"
-export interface TabV3Props {
+
+export interface TabProps {
   label: string
-  superscript?: string
+  superscript?: JSX.Element
   active: boolean
   style?: ViewStyle
   onPress: () => void
   onLayout: ViewProps["onLayout"]
 }
 
-export const TabV3: React.FC<TabV3Props> = ({
+export const Tab: React.FC<TabProps> = ({
   label,
   superscript,
   active,
@@ -44,18 +45,7 @@ export const TabV3: React.FC<TabV3Props> = ({
           >
             {label}
           </Text>
-          {!!superscript && (
-            <Text
-              fontSize={12}
-              color={color("blue100")}
-              style={{
-                textDecorationLine: pressed ? "underline" : "none",
-                top: -3,
-              }}
-            >
-              {superscript}
-            </Text>
-          )}
+          {superscript}
         </View>
       )}
     </Pressable>

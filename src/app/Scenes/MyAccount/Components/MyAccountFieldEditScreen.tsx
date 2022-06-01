@@ -93,7 +93,11 @@ export const MyAccountFieldEditScreen = React.forwardRef<
         title={title}
         right={
           !(isSaveButtonVisible === false) && (
-            <TouchableOpacity disabled={!canSave} onPress={handleSave}>
+            <TouchableOpacity
+              disabled={!canSave}
+              onPress={handleSave}
+              accessibilityLabel="save-button"
+            >
               <Text variant="sm" opacity={canSave ? 1 : 0.3}>
                 Save
               </Text>

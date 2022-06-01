@@ -9565,6 +9565,8 @@ type Me implements Node {
     excludePurchasedArtworks: Boolean = false
     first: Int
     last: Int
+    page: Int
+    size: Int
     sort: MyCollectionArtworkSorts
   ): MyCollectionConnection
 
@@ -12413,8 +12415,10 @@ type RequestCredentialsForAssetUploadPayload {
 }
 
 type RequestLocation {
+  cached: Int
   country: String
   countryCode: String
+  id: ID!
 }
 
 type RequestPriceEstimatedMutationFailure {

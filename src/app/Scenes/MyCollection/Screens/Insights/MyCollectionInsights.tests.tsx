@@ -59,6 +59,44 @@ describe("MyCollectionInsights", () => {
     })
   })
 
+  // describe("no insights message", () => {
+  //   it("shows message if there are no market insights", async () => {
+  //     const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+  //     mockEnvironmentPayload(mockEnvironment, {
+  //       Me: () => ({ auctionResults: { totalCount: 0 } }),
+  //     })
+
+  //     await flushPromiseQueue()
+
+  //     expect(getByTestId("artworks-have-no-insights-message")).toBeTruthy()
+  //   })
+
+  //   it("doesn't show the message if there are market insights", async () => {
+  //     const { queryByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+  //     mockEnvironmentPayload(mockEnvironment, {
+  //       Me: () => ({ auctionResults: { totalCount: 1 } }),
+  //     })
+
+  //     await flushPromiseQueue()
+
+  //     expect(await queryByTestId("artworks-have-no-insights-message")).toBeFalsy()
+  //   })
+
+  //   it("doesn't show the message if there are market insights", async () => {
+  //     const { queryByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+  //     mockEnvironmentPayload(mockEnvironment, {
+  //       Me: () => ({ auctionResults: { totalCount: 1 } }),
+  //     })
+
+  //     await flushPromiseQueue()
+
+  //     expect(await queryByTestId("artworks-have-no-insights-message")).toBeFalsy()
+  //   })
+  // })
+
   describe("when the step 1 of phase 1 feature flag is disabled ", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({

@@ -1,14 +1,17 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
+import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { Flex, Spinner, useSpace } from "palette"
-import React, { Suspense, useEffect, useState } from "react"
+import React, { Suspense, useContext, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 import { useLazyLoadQuery } from "react-relay"
 import { fetchQuery, graphql } from "relay-runtime"
+import { MyCollectionArtworkUploadMessages } from "../ArtworkForm/MyCollectionArtworkUploadMessages"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
@@ -51,6 +54,21 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     })
   }
 
+  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+
+  const showMessages = async () => {
+    setJSX(
+      <MyCollectionArtworkUploadMessages
+        sourceTab={Tab.insights}
+        hasMarketSignals={hasMarketSignals}
+      />
+    )
+  }
+
+  useEffect(() => {
+    showMessages()
+  }, [data.me?.myCollectionInfo?.artworksCount])
+
   const renderContent = () => {
     return (
       <>
@@ -58,7 +76,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
         {hasMarketSignals && !!enablePhase1 && (
           <>
             <MarketSignalsSectionHeader />
-            <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+            <AuctionResultsForArtistsYouCollectRail me={data.me!} />
             {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
             <ActivateMoreMarketInsightsBanner />
           </>
@@ -103,10 +121,11 @@ export const MyCollectionInsightsScreenQuery = graphql`
   query MyCollectionInsightsQuery {
     me {
       ...AuctionResultsForArtistsYouCollectRail_me
-      auctionResults: myCollectionAuctionResults(first: 1) {
+      auctionResults: myCollectionAuctionResults(first: 3) {
         totalCount
       }
       myCollectionInfo {
+        artworksCount
         ...MyCollectionInsightsOverview_myCollectionInfo
       }
       myCollectionConnection(first: 1) {

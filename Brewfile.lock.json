@@ -1,0 +1,22 @@
+{
+  "entries": {
+    "brew": {
+      "detect_secrets": {
+        "version": "1.1.0",
+        "bottle": false
+      }
+    }
+  },
+  "system": {
+    "macos": {
+      "monterey": {
+        "HOMEBREW_VERSION": "3.3.12-19-g51da118",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "4c4ac53b27cfb2517b4982d8cc8b96ab44f527ca",
+        "CLT": "13.2.0.0.1.1638488800",
+        "Xcode": "13.2.1",
+        "macOS": "12.0.1"
+      }
+    }
+  }
+}
