@@ -8,8 +8,8 @@ export interface VisualClueModel {
     clues: Array<Omit<string, "positionIndex">>
   }
   addClue: Action<this, VisualClueName>
-  seenVisualClues: VisualClueName[]
-  setVisualClueAsSeen: Action<this, VisualClueName>
+  seenVisualClues: Array<VisualClueName | string>
+  setVisualClueAsSeen: Action<this, VisualClueName | string>
 }
 
 export const getVisualClueModel = (): VisualClueModel => ({

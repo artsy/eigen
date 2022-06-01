@@ -186,7 +186,7 @@ export const useVisualClue = () => {
   const seenVisualClues = GlobalStore.useAppState((state) => state.visualClue.seenVisualClues)
   const sessionVisualClues = GlobalStore.useAppState((state) => state.visualClue.sessionState.clues)
 
-  const showVisualClue = (clueName?: VisualClueName): boolean => {
+  const showVisualClue = (clueName?: VisualClueName | string): boolean => {
     if (!clueName) {
       return false
     }

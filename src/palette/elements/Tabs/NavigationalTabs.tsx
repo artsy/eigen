@@ -1,3 +1,4 @@
+import { VisualClueName } from "app/store/config/visualClues"
 import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
 import { Box } from "palette"
 import { Tab, TabsProps } from "palette/elements/Tabs"
@@ -21,17 +22,18 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
       {tabs.map(({ label, visualClues }, index) => {
         const { showVisualClue } = useVisualClue()
 
-        const { superscript } =
-          visualClues?.find(({ visualClue: name }) => showVisualClue(name)) ?? {}
+        const { jsx } =
+          visualClues?.find(({ visualClueName: name }) => showVisualClue(name as VisualClueName)) ??
+          {}
 
         return (
           <Box minWidth={tabWidth} key={label + index}>
             <Tab
               label={label}
-              superscript={superscript}
+              superscript={jsx}
               onPress={() => {
                 if (visualClues) {
-                  visualClues.forEach(({ visualClue: name }) => {
+                  visualClues.forEach(({ visualClueName: name }) => {
                     setVisualClueAsSeen(name)
                   })
                 }

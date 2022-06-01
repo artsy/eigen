@@ -38,4 +38,4 @@ export const visualClues = defineVisualClues({
   },
 })
 
-export const visualClueNames = Object.keys(visualClues) as VisualClueName[]
+export const visualClueNames = Object.keys(visualClues)

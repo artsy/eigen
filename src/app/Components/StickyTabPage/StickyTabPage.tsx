@@ -23,8 +23,8 @@ export interface TabProps {
 }
 
 export type TabVisualClues = Array<{
-  superscript: JSX.Element
-  visualClue: VisualClueName
+  jsx: JSX.Element
+  visualClueName: VisualClueName | string
 }>
 
 interface StickyTabPageProps {

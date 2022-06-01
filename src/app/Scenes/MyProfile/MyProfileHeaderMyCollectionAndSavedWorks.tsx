@@ -3,7 +3,6 @@ import { MyProfileHeaderMyCollectionAndSavedWorks_me } from "__generated__/MyPro
 import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { VisualClueName } from "app/store/config/visualClues"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -45,14 +44,14 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
           content: <MyCollectionInsightsQR />,
           visualClues: [
             {
-              superscript: <VisualClueText />,
-              visualClue: "Test1" as VisualClueName,
+              jsx: <VisualClueText />,
+              visualClueName: "Test1",
             },
             {
-              superscript: (
+              jsx: (
                 <VisualClueDot style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }} />
               ),
-              visualClue: "Test2" as VisualClueName,
+              visualClueName: "Test2",
             },
           ],
         },
