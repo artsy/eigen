@@ -7,7 +7,7 @@ export interface VisualClueModel {
     nextId: number
     clues: Array<Omit<string, "positionIndex">>
   }
-  addClue: Action<this, VisualClueName>
+  addClue: Action<this, VisualClueName | string>
   seenVisualClues: Array<VisualClueName | string>
   setVisualClueAsSeen: Action<this, VisualClueName | string>
 }

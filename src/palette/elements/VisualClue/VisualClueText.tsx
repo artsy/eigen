@@ -3,7 +3,7 @@ import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 
 const WRAPPER_WIDTH = 56
-const WRAPPER_HEIGHT = 52
+const WRAPPER_HEIGHT = 46
 
 export const VisualClueText: React.FC<{ style?: StyleProp<ViewStyle> }> = ({ style = {} }) => {
   const colors = useColor()

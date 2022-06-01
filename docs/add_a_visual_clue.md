@@ -59,3 +59,22 @@ return(
 + }, [])
 )
 ```
+
+# Session visual cues
+
+"Session visual cues" are visual cues that can be shown when an event happened. They are not supposed to be added to `visualClues.ts` and can show up multiple times. To show a "session visual clue" you can add them with `addClue("SessionClue")` anywhere in the code and mark them as seen with `setVisualClueAsSeen("SessionClue")`.
+
+```jsx
+  const { showVisualClue } = useVisualClue()
+
+  {!!showVisualClue("MyNewVisualClue") && <JSXComponent />}
+
+  // show visual cue
+  ...
+  addClue("MyNewVisualClue")
+  ...
+
+  // mark visual cue as seen
+  setVisualClueAsSeen("MyNewVisualClue")
+
+```
