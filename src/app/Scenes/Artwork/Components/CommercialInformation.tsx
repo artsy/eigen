@@ -15,7 +15,7 @@ import { Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
 import { capitalize } from "lodash"
-import { Box, ClassTheme, Flex, Sans, Spacer, Text } from "palette"
+import { Box, ClassTheme, Flex, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
@@ -155,26 +155,11 @@ export const SaleAvailability: React.FC<{ dotColor?: string; saleMessage: string
   dotColor,
   saleMessage,
 }) => {
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
-
-  if (enableCreateArtworkAlert) {
-    return (
-      <Flex flexWrap="nowrap" flexDirection="row" alignItems="center">
-        {!!dotColor && <ColoredDot dotColor={dotColor} />}
-        <Text variant="lg">{saleMessage}</Text>
-      </Flex>
-    )
-  }
-
   return (
-    <Box>
-      <Flex flexWrap="nowrap" flexDirection="row" width="100%">
-        {!!dotColor && <ColoredDot dotColor={dotColor} mt={7} />}
-        <Sans size="4t" weight="medium">
-          {saleMessage}
-        </Sans>
-      </Flex>
-    </Box>
+    <Flex flexWrap="nowrap" flexDirection="row" alignItems="center">
+      {!!dotColor && <ColoredDot dotColor={dotColor} />}
+      <Text variant="lg">{saleMessage}</Text>
+    </Flex>
   )
 }
 

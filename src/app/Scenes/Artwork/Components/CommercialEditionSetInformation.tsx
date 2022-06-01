@@ -1,8 +1,7 @@
 import { CommercialEditionSetInformation_artwork } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { Box, Flex, RadioButton, Sans, Spacer, Text } from "palette"
-import React, { FC } from "react"
+import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
@@ -12,7 +11,6 @@ type EditionSet = CommercialEditionSetInformation_artwork["editionSets"][0]
 
 interface Props {
   artwork: CommercialEditionSetInformation_artwork
-  enableCreateArtworkAlert?: boolean
   setEditionSetId: (editionSetID: string) => void
 }
 
@@ -50,7 +48,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
   }
 
   render() {
-    const { artwork, enableCreateArtworkAlert } = this.props
+    const { artwork } = this.props
     const { selectedEdition } = this.state
 
     const editionSets = artwork.editionSets
@@ -96,13 +94,7 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
           <>
             <Spacer mb={2} />
 
-            {enableCreateArtworkAlert ? (
-              <Text variant="lg">{selectedEdition.saleMessage}</Text>
-            ) : (
-              <Sans size="4" weight="medium" color="black100">
-                {selectedEdition.saleMessage}
-              </Sans>
-            )}
+            <Text variant="lg">{selectedEdition.saleMessage}</Text>
           </>
         )}
         <CommercialPartnerInformation artwork={artwork} />
@@ -111,19 +103,8 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
   }
 }
 
-const CommercialEditionSetInformationWithFeatureFlag: FC<Props> = (props) => {
-  const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
-
-  return (
-    <CommercialEditionSetInformation
-      {...props}
-      enableCreateArtworkAlert={enableCreateArtworkAlert}
-    />
-  )
-}
-
 export const CommercialEditionSetInformationFragmentContainer = createFragmentContainer(
-  CommercialEditionSetInformationWithFeatureFlag,
+  CommercialEditionSetInformation,
   {
     artwork: graphql`
       fragment CommercialEditionSetInformation_artwork on Artwork {

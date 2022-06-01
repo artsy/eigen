@@ -1,7 +1,7 @@
 import { CommercialPartnerInformation_artwork } from "__generated__/CommercialPartnerInformation_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { LinkText, Sans, Spacer, Text } from "palette"
+import { LinkText, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -25,61 +25,26 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
     return null
   }
 
-  if (enableCreateArtworkAlert) {
-    const shouldRenderLabels =
-      avalaraPhase2 ||
-      shouldRenderShipsFromLabel ||
-      shouldRenderShippingInfoLabel ||
-      shouldRenderPriceTaxLabel
+  const shouldRenderLabels =
+    avalaraPhase2 ||
+    shouldRenderShipsFromLabel ||
+    shouldRenderShippingInfoLabel ||
+    shouldRenderPriceTaxLabel
 
-    if (!shouldRenderLabels) {
-      return null
-    }
-
-    return (
-      <>
-        <Spacer mb={1} />
-        {avalaraPhase2 && (
-          <Text variant="xs" color="black60">
-            Taxes may apply at checkout.{" "}
-            <LinkText
-              onPress={() => {
-                navigate(
-                  "https://support.artsy.net/hc/en-us/articles/360047294733-How-is-sales-tax-and-VAT-handled-on-works-listed-with-secure-checkout-"
-                )
-              }}
-            >
-              Learn more.
-            </LinkText>
-          </Text>
-        )}
-        {shouldRenderShipsFromLabel && (
-          <Text variant="xs" color="black60">
-            Ships from {artwork.shippingOrigin}
-          </Text>
-        )}
-        {shouldRenderShippingInfoLabel && (
-          <Text variant="xs" color="black60">
-            {artwork.shippingInfo}
-          </Text>
-        )}
-        {shouldRenderPriceTaxLabel && (
-          <Text variant="xs" color="black60">
-            {artwork.priceIncludesTaxDisplay}
-          </Text>
-        )}
-      </>
-    )
+  if (!shouldRenderLabels) {
+    return null
   }
 
   return (
     <>
       <Spacer mb={1} />
-      <Sans size="3t" color="black60">
-        {availabilityDisplayText} {artwork.partner!.name}
-      </Sans>
+      {!enableCreateArtworkAlert && (
+        <Text variant="xs" color="black60">
+          {availabilityDisplayText} {artwork.partner!.name}
+        </Text>
+      )}
       {avalaraPhase2 && (
-        <Sans size="3t" color="black60">
+        <Text variant="xs" color="black60">
           Taxes may apply at checkout.{" "}
           <LinkText
             onPress={() => {
@@ -90,22 +55,22 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
           >
             Learn more.
           </LinkText>
-        </Sans>
+        </Text>
       )}
       {shouldRenderShipsFromLabel && (
-        <Sans size="3t" color="black60">
+        <Text variant="xs" color="black60">
           Ships from {artwork.shippingOrigin}
-        </Sans>
+        </Text>
       )}
       {shouldRenderShippingInfoLabel && (
-        <Sans size="3t" color="black60">
+        <Text variant="xs" color="black60">
           {artwork.shippingInfo}
-        </Sans>
+        </Text>
       )}
       {shouldRenderPriceTaxLabel && (
-        <Sans size="3t" color="black60">
+        <Text variant="xs" color="black60">
           {artwork.priceIncludesTaxDisplay}
-        </Sans>
+        </Text>
       )}
     </>
   )
