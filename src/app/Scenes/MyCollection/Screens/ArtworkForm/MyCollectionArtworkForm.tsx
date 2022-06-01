@@ -382,11 +382,12 @@ const addArtworkMessages = async ({
   setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_MyCTab")
 
   if (marketInsights) {
-    addClue(
-      sourceTab === Tab.collection
-        ? "AddedArtworkWithInsightsMessage_MyCTab"
-        : "AddedArtworkWithInsightsMessage_InsightsTab"
-    )
+    if (sourceTab === Tab.collection) {
+      addClue("AddedArtworkWithInsightsMessage_MyCTab")
+      addClue("AddArtworkWithInsights")
+    } else {
+      addClue("AddedArtworkWithInsightsMessage_InsightsTab")
+    }
   } else {
     addClue(
       sourceTab === Tab.collection

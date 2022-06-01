@@ -5,7 +5,7 @@ import { GlobalStore } from "../GlobalStore"
 interface FeatureDescriptorCommonTypes {
   /** Provide a short description for the admin menu. */
   readonly description?: string
-  
+
   /** Whether or not to show the feature flag in the admin menu. Consider also providing a description. */
   readonly showInAdminMenu?: boolean
 }
@@ -29,7 +29,7 @@ interface FeatureDescriptorNotReadyForRelease {
    * Set readyForRelease to `false` when the feature is still in progress.
    */
   readonly readyForRelease: false
-  
+
   readonly echoFlagKey?: string
 }
 
