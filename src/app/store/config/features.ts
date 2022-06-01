@@ -112,7 +112,6 @@ export const features = defineFeatures({
   },
   ARAllowLinkSocialAccountsOnSignUp: {
     readyForRelease: true,
-    echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
     description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
     echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
