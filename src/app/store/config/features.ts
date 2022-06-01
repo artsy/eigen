@@ -206,7 +206,6 @@ export const features = defineFeatures({
   },
   AREnableCompleteProfileMessage: {
     readyForRelease: true,
-    echoFlagKey: "AREnableCompleteProfileMessage",
     description: "Enable Collector Profile Complete Message",
     showInAdminMenu: true,
     echoFlagKey: "AREnableCompleteProfileMessage",
