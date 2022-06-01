@@ -167,7 +167,6 @@ export const features = defineFeatures({
   },
   ARShowRequestPriceEstimateBanner: {
     readyForRelease: true,
-    echoFlagKey: "ARShowRequestPriceEstimateBanner",
     description: "Show request price estimate banner",
     showInAdminMenu: true,
     echoFlagKey: "ARShowRequestPriceEstimateBanner",
