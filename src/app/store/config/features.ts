@@ -106,7 +106,6 @@ export const features = defineFeatures({
   },
   ARShowLinkedAccounts: {
     readyForRelease: true,
-    echoFlagKey: "ARShowLinkedAccounts",
     description: "Show linked social accounts",
     showInAdminMenu: true,
     echoFlagKey: "ARShowLinkedAccounts",
