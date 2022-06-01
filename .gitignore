@@ -24,7 +24,6 @@ config/releasenotes.txt
 Podfile.local
 chairs/
 Artsy.xcodeproj/project.xcworkspace/xcshareddata/
-Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 .vendor/
 compiler_commands.json
 .swiftpm
@@ -42,9 +41,7 @@ Preview.html
 fastlane/report.xml
 fastlane/Preview.html
 
-iOSInjectionProject/
 .vscode/.browse.VC.db
-Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 
 .vendor
 
