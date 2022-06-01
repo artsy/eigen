@@ -12,7 +12,7 @@ export const AddedArtworkHasNoInsightsMessage: React.FC<Partial<MessageProps>> =
   )
 }
 
-export const ArtworksHaveNoInsights: React.FC<Partial<MessageProps>> = (props) => {
+export const SomeArtworksHaveInsightsMessage: React.FC<Partial<MessageProps>> = (props) => {
   return (
     <Message
       variant="info"
