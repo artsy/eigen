@@ -4,6 +4,7 @@ import { NavigationContainer, NavigationContainerRef } from "@react-navigation/n
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
 import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
+import { MyCollectionArtworkFormInsightsQuery } from "__generated__/MyCollectionArtworkFormInsightsQuery.graphql"
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { goBack } from "app/navigation/navigate"
@@ -367,10 +368,14 @@ const addArtworkMessages = async ({
         }
       `
 
-      marketInsights = await fetchQuery(defaultEnvironment, insightsQuery, {
-        artistId,
-        medium,
-      }).toPromise()
+      marketInsights = await fetchQuery<MyCollectionArtworkFormInsightsQuery>(
+        defaultEnvironment,
+        insightsQuery,
+        {
+          artistId,
+          medium,
+        }
+      ).toPromise()
     } catch (error) {
       console.error(error)
     }
@@ -381,7 +386,7 @@ const addArtworkMessages = async ({
   setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_InsightsTab")
   setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_MyCTab")
 
-  if (marketInsights) {
+  if (marketInsights?.marketPriceInsights) {
     if (sourceTab === Tab.collection) {
       addClue("AddedArtworkWithInsightsMessage_MyCTab")
       addClue("AddedArtworkWithInsightsVisualClueDot")
