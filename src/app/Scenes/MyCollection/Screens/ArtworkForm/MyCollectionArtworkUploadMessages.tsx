@@ -1,5 +1,5 @@
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { removeClue, useSessionVisualClue } from "app/store/GlobalStore"
+import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
 import { Flex } from "palette"
 import React from "react"
 import {
@@ -16,14 +16,14 @@ interface MyCollectionArtworkUploadMessagesProps {
 export const MyCollectionArtworkUploadMessages: React.FC<
   MyCollectionArtworkUploadMessagesProps
 > = ({ sourceTab, hasMarketSignals }) => {
-  const { showSessionVisualClue } = useSessionVisualClue()
+  const { showVisualClue } = useVisualClue()
 
   const tabPrefix = sourceTab === Tab.collection ? "MyCTab" : "InsightsTab"
 
-  const showAddedArtworkWithInsightsMessage = showSessionVisualClue(
+  const showAddedArtworkWithInsightsMessage = showVisualClue(
     `AddedArtworkWithInsightsMessage_${tabPrefix}`
   )
-  const showAddedArtworkWithoutInsightsMessage = showSessionVisualClue(
+  const showAddedArtworkWithoutInsightsMessage = showVisualClue(
     `AddedArtworkWithoutInsightsMessage_${tabPrefix}`
   )
 
@@ -31,17 +31,17 @@ export const MyCollectionArtworkUploadMessages: React.FC<
     <Flex>
       {!!showAddedArtworkWithInsightsMessage && (
         <AddedArtworkWithInsightsMessage
-          onClose={() => removeClue(`AddedArtworkWithInsightsMessage_${tabPrefix}`)}
+          onClose={() => setVisualClueAsSeen(`AddedArtworkWithInsightsMessage_${tabPrefix}`)}
         />
       )}
       {!!showAddedArtworkWithoutInsightsMessage &&
         (hasMarketSignals ? (
           <AddedArtworkWithoutInsightsMessage
-            onClose={() => removeClue(`AddedArtworkWithoutInsightsMessage_${tabPrefix}`)}
+            onClose={() => setVisualClueAsSeen(`AddedArtworkWithoutInsightsMessage_${tabPrefix}`)}
           />
         ) : (
           <AddedArtworkWithoutAnyCollectionInsightsMessage
-            onClose={() => removeClue(`AddedArtworkWithoutInsightsMessage_${tabPrefix}`)}
+            onClose={() => setVisualClueAsSeen(`AddedArtworkWithoutInsightsMessage_${tabPrefix}`)}
           />
         ))}
     </Flex>

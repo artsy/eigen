@@ -16,10 +16,10 @@ import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import {
   GlobalStore,
-  removeClue,
+  setVisualClueAsSeen,
   useDevToggle,
   useFeatureFlag,
-  useSessionVisualClue,
+  useVisualClue,
 } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
@@ -59,7 +59,7 @@ const MyCollection: React.FC<{
   const space = useSpace()
   const toast = useToast()
   const { trackEvent } = useTracking()
-  const { showSessionVisualClue } = useSessionVisualClue()
+  const { showVisualClue } = useVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
   const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
@@ -99,7 +99,7 @@ const MyCollection: React.FC<{
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
   const showMessages = async () => {
-    const showConsignmentsMessage = showSessionVisualClue("ArtworkSubmissionMessage")
+    const showConsignmentsMessage = showVisualClue("ArtworkSubmissionMessage")
     const showNewWorksMessage =
       me.myCollectionInfo?.includesPurchasedArtworks &&
       !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
@@ -135,7 +135,9 @@ const MyCollection: React.FC<{
           />
         )}
         {!!showConsignmentsMessage && (
-          <SubmittedArtworkAddedMessage onClose={() => removeClue("ArtworkSubmissionMessage")} />
+          <SubmittedArtworkAddedMessage
+            onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
+          />
         )}
         {!!enableMyCollectionInsights && (
           <MyCollectionArtworkUploadMessages

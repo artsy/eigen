@@ -14,7 +14,7 @@ import {
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { addClue, GlobalStore, removeClue, useFeatureFlag } from "app/store/GlobalStore"
+import { addClue, GlobalStore, setVisualClueAsSeen, useFeatureFlag } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
@@ -376,10 +376,10 @@ const addArtworkMessages = async ({
     }
   }
 
-  removeClue("AddedArtworkWithInsightsMessage_InsightsTab")
-  removeClue("AddedArtworkWithInsightsMessage_MyCTab")
-  removeClue("AddedArtworkWithoutInsightsMessage_InsightsTab")
-  removeClue("AddedArtworkWithoutInsightsMessage_MyCTab")
+  setVisualClueAsSeen("AddedArtworkWithInsightsMessage_InsightsTab")
+  setVisualClueAsSeen("AddedArtworkWithInsightsMessage_MyCTab")
+  setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_InsightsTab")
+  setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_MyCTab")
 
   if (marketInsights) {
     addClue(
