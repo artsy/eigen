@@ -33,7 +33,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import { Button, Flex, Message, Separator, Spacer, useSpace } from "palette"
+import { Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -42,7 +42,11 @@ import { useScreenDimensions } from "shared/hooks"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
-import { AddedArtworkHasNoInsightsMessage } from "./Screens/Insights/MyCollectionInsightsMessages"
+import { MyCollectionArtworkUploadMessages } from "./Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
+import {
+  PurchasedArtworkAddedMessage,
+  SubmittedArtworkAddedMessage,
+} from "./Screens/Insights/MyCollectionMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
@@ -65,6 +69,7 @@ const MyCollection: React.FC<{
   const filtersCount = useSelectedFiltersCount()
 
   const artworks = extractNodes(me?.myCollectionConnection)
+  const hasMarketSignals = !!me?.auctionResults?.totalCount
 
   const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
@@ -95,8 +100,6 @@ const MyCollection: React.FC<{
 
   const showMessages = async () => {
     const showConsignmentsMessage = showSessionVisualClue("ArtworkSubmissionMessage")
-    const showAddedArtworkHasNoInsightsMessage =
-      enableMyCollectionInsights && showSessionVisualClue("AddArtworkWithoutInsightsMessage_MyCTab")
     const showNewWorksMessage =
       me.myCollectionInfo?.includesPurchasedArtworks &&
       !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
@@ -127,26 +130,17 @@ const MyCollection: React.FC<{
           </Button>
         </ArtworksFilterHeader>
         {!!showNewWorksMessage && (
-          <Message
-            variant="info"
-            title="Your collection is growing"
-            text="Based on your purchase history, we’ve added the following works."
-            showCloseButton
+          <PurchasedArtworkAddedMessage
             onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
           />
         )}
         {!!showConsignmentsMessage && (
-          <Message
-            variant="info"
-            title="Artwork added to My Collection"
-            text="The artwork you submitted for sale has been automatically added."
-            showCloseButton
-            onClose={() => removeClue("ArtworkSubmissionMessage")}
-          />
+          <SubmittedArtworkAddedMessage onClose={() => removeClue("ArtworkSubmissionMessage")} />
         )}
-        {!!showAddedArtworkHasNoInsightsMessage && (
-          <AddedArtworkHasNoInsightsMessage
-            onClose={() => removeClue("AddArtworkWithoutInsightsMessage_MyCTab")}
+        {!!enableMyCollectionInsights && (
+          <MyCollectionArtworkUploadMessages
+            sourceTab={Tab.collection}
+            hasMarketSignals={hasMarketSignals}
           />
         )}
       </Flex>
@@ -215,6 +209,9 @@ export const MyCollectionContainer = createPaginationContainer(
         id
         myCollectionInfo {
           includesPurchasedArtworks
+        }
+        auctionResults: myCollectionAuctionResults(first: 3) {
+          totalCount
         }
         myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
           @connection(key: "MyCollection_myCollectionConnection", filters: []) {

@@ -7,19 +7,21 @@ import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwo
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { goBack } from "app/navigation/navigate"
+import { defaultEnvironment } from "app/relay/createEnvironment"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import {
   cleanArtworkPayload,
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { addClue, GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { addClue, GlobalStore, removeClue, useFeatureFlag } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
+import { fetchQuery, graphql } from "relay-runtime"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
@@ -131,10 +133,11 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     } finally {
       if (props.mode === "add") {
-        if (props.source === Tab.collection /* and insights are not awailable */) {
-          // TODO: check Artwork insights ^^^ - blocked by the backend
-          addClue("AddArtworkWithoutInsightsMessage_MyCTab")
-        } // else - isAddedFromInsights - other tickets
+        addArtworkMessages({
+          artistId: values.artistSearchResult?.internalID,
+          medium: values.medium,
+          sourceTab: props.source,
+        })
       }
       setLoading(false)
       setIsArtworkSaved(false)
@@ -341,4 +344,54 @@ const tracks = {
   deleteCollectedArtwork: (internalID: string, slug: string) => {
     return deleteCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
   },
+}
+
+const addArtworkMessages = async ({
+  artistId,
+  medium,
+  sourceTab,
+}: {
+  artistId?: string
+  medium?: string
+  sourceTab: Tab
+}) => {
+  let marketInsights
+
+  if (artistId && medium) {
+    try {
+      const insightsQuery = graphql`
+        query MyCollectionArtworkFormInsightsQuery($artistId: ID!, $medium: String!) {
+          marketPriceInsights(artistId: $artistId, medium: $medium) {
+            annualLotsSold
+          }
+        }
+      `
+
+      marketInsights = await fetchQuery(defaultEnvironment, insightsQuery, {
+        artistId,
+        medium,
+      }).toPromise()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  removeClue("AddedArtworkWithInsightsMessage_InsightsTab")
+  removeClue("AddedArtworkWithInsightsMessage_MyCTab")
+  removeClue("AddedArtworkWithoutInsightsMessage_InsightsTab")
+  removeClue("AddedArtworkWithoutInsightsMessage_MyCTab")
+
+  if (marketInsights) {
+    addClue(
+      sourceTab === Tab.collection
+        ? "AddedArtworkWithInsightsMessage_MyCTab"
+        : "AddedArtworkWithInsightsMessage_InsightsTab"
+    )
+  } else {
+    addClue(
+      sourceTab === Tab.collection
+        ? "AddedArtworkWithoutInsightsMessage_MyCTab"
+        : "AddedArtworkWithoutInsightsMessage_InsightsTab"
+    )
+  }
 }
