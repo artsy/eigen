@@ -62,7 +62,7 @@ export const AddedArtworkWithoutAnyCollectionInsightsMessage: React.FC<Partial<M
   )
 }
 
-export const SomeArtworksHaveInsightsMessage: React.FC<Partial<MessageProps>> = (props) => {
+export const MyCollectionInsightsIncompleteMessage: React.FC<Partial<MessageProps>> = (props) => {
   return (
     <Message
       variant="info"

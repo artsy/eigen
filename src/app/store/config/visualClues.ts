@@ -24,6 +24,9 @@ export const visualClues = defineVisualClues({
   MyCollectionInsights: {
     description: "The new My Collection insights tab",
   },
+  MyCollectionInsightsIncompleteMessage: {
+    description: "The message that indicates that only some artworks have insights",
+  },
 })
 
 export const visualClueNames = Object.keys(visualClues)
