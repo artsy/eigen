@@ -5,10 +5,6 @@ import {
 } from "react-relay-network-modern/node8"
 import { rateLimitMiddleware } from "./rateLimitMiddleware"
 
-jest.mock("app/utils/loggers", () => ({
-  logOperation: true,
-}))
-
 describe("rateLimitMiddleware", () => {
   const relayResponse: RelayNetworkLayerResponse = {
     _res: null,

@@ -9,7 +9,7 @@ let metaflags = {
   logRoute: false,
   logRunningRequest: false,
 }
-if (__DEV__) {
+if (__DEV__ || __TEST__) {
   try {
     // tslint:disable-next-line:no-var-requires
     const fileContents = require("../../../metaflags.json")
