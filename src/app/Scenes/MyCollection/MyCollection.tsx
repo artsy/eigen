@@ -28,12 +28,16 @@ import {
   PlaceholderText,
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
-import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
+import {
+  MY_COLLECTION_REFRESH_KEY,
+  RefreshEvents,
+  refreshMyCollectionInsights,
+} from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import { Button, Flex, Separator, Spacer } from "palette"
+import { Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -56,6 +60,7 @@ const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me
 }> = ({ relay, me }) => {
+  const space = useSpace()
   const toast = useToast()
   const { trackEvent } = useTracking()
   const { showVisualClue } = useVisualClue()
@@ -73,6 +78,7 @@ const MyCollection: React.FC<{
   const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
+
   useEffect(() => {
     RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
     return () => {
@@ -90,8 +96,23 @@ const MyCollection: React.FC<{
     })
   }
 
+  const notifyMyCollectionInsightsTab = () => {
+    // Waiting until all artworks have been loaded to check whether all of them have insights or not,
+    // in order to show the message
+    // TODO: wait exactly until all artworks have been loaded
+    setTimeout(() => {
+      const artworksWithoutInsight = artworks.find((artwork) => !artwork._marketPriceInsights)
+
+      refreshMyCollectionInsights({
+        collectionHasArtworksWithoutInsights: !!(artworks.length && artworksWithoutInsight),
+      })
+    }, 3000)
+  }
+
   useEffect(() => {
     relay.loadMore(100)
+
+    notifyMyCollectionInsightsTab()
   }, [])
 
   // hack for tests. we should fix that.
@@ -177,7 +198,7 @@ const MyCollection: React.FC<{
       />
 
       <StickyTabPageScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+        contentContainerStyle={{ paddingBottom: space(2) }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
         innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"
@@ -233,6 +254,9 @@ export const MyCollectionContainer = createPaginationContainer(
               artist {
                 internalID
                 name
+              }
+              _marketPriceInsights: marketPriceInsights {
+                demandRank
               }
               consignmentSubmission {
                 displayText

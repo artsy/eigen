@@ -3,9 +3,13 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { useFeatureFlag } from "app/store/GlobalStore"
+import { setVisualClueAsSeen, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
+import {
+  MY_COLLECTION_INSIGHTS_REFRESH_KEY,
+  MY_COLLECTION_REFRESH_KEY,
+  RefreshEvents,
+} from "app/utils/refreshHelpers"
 import { Flex, Spinner, useSpace } from "palette"
 import React, { Suspense, useContext, useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
@@ -17,11 +21,14 @@ import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtis
 import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
+import { MyCollectionInsightsIncompleteMessage } from "./MyCollectionMessages"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
+  const { showVisualClue } = useVisualClue()
   const space = useSpace()
   const enablePhase1 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part1")
 
+  const [areInsightsIncomplete, setAreInsightsIncomplete] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const data = useLazyLoadQuery<MyCollectionInsightsQuery>(MyCollectionInsightsScreenQuery, {}, {})
@@ -31,11 +38,19 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const hasMarketSignals = !!data.me?.auctionResults?.totalCount
 
   useEffect(() => {
-    RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refresh)
+    RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, handleRefreshEvent)
+    RefreshEvents.addListener(MY_COLLECTION_INSIGHTS_REFRESH_KEY, handleRefreshEvent)
     return () => {
-      RefreshEvents.removeListener(MY_COLLECTION_REFRESH_KEY, refresh)
+      RefreshEvents.removeListener(MY_COLLECTION_REFRESH_KEY, handleRefreshEvent)
+      RefreshEvents.removeListener(MY_COLLECTION_INSIGHTS_REFRESH_KEY, handleRefreshEvent)
     }
   }, [])
+
+  const handleRefreshEvent = (...args: any[]) => {
+    refresh()
+
+    setAreInsightsIncomplete(args[0].collectionHasArtworksWithoutInsights)
+  }
 
   const refresh = () => {
     if (isRefreshing) {
@@ -57,17 +72,27 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
   const showMessages = async () => {
+    const showMyCollectionInsightsIncompleteMessage =
+      showVisualClue("MyCollectionInsightsIncompleteMessage") && areInsightsIncomplete
+
     setJSX(
-      <MyCollectionArtworkUploadMessages
-        sourceTab={Tab.insights}
-        hasMarketSignals={hasMarketSignals}
-      />
+      <Flex>
+        {!!showMyCollectionInsightsIncompleteMessage && (
+          <MyCollectionInsightsIncompleteMessage
+            onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
+          />
+        )}
+        <MyCollectionArtworkUploadMessages
+          sourceTab={Tab.insights}
+          hasMarketSignals={hasMarketSignals}
+        />
+      </Flex>
     )
   }
 
   useEffect(() => {
     showMessages()
-  }, [data.me?.myCollectionInfo?.artworksCount])
+  }, [data.me?.myCollectionInfo?.artworksCount, areInsightsIncomplete])
 
   const renderContent = () => {
     return (
