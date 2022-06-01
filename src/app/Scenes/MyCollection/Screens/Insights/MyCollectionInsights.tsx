@@ -49,7 +49,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const handleRefreshEvent = (...args: any[]) => {
     refresh()
 
-    setAreInsightsIncomplete(args[0].collectionHasArtworksWithoutInsights)
+    setAreInsightsIncomplete(!!args[0]?.collectionHasArtworksWithoutInsights)
   }
 
   const refresh = () => {
