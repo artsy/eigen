@@ -29,7 +29,7 @@ export const AddedArtworkWithInsightsMessage: React.FC<Partial<MessageProps>> = 
     <Message
       variant="info"
       title="New artwork successfully added"
-      text="Insights for your colletion have been updated."
+      text="Insights for your collection have been updated."
       showCloseButton
       {...props}
     />
