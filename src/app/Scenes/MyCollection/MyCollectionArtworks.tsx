@@ -165,7 +165,7 @@ const MyCollectionZeroState: React.FC = () => {
             }}
             block
           >
-            Add artwork
+            Upload Your Artwork
           </Button>
           <Flex flexDirection="row" justifyContent="center" alignItems="center" py={1}>
             <Image source={require("images/lock.webp")} />
