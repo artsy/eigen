@@ -173,7 +173,6 @@ export const features = defineFeatures({
   },
   ARShowMyCollectionDemandIndexHints: {
     readyForRelease: true,
-    echoFlagKey: "ARShowMyCollectionDemandIndexHints",
     description: "Show demand index hints",
     showInAdminMenu: true,
     echoFlagKey: "ARShowMyCollectionDemandIndexHints",
