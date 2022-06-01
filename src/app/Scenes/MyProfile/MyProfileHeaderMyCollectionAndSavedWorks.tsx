@@ -3,11 +3,13 @@ import { MyProfileHeaderMyCollectionAndSavedWorks_me } from "__generated__/MyPro
 import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { VisualClueName } from "app/store/config/visualClues"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
+import { VisualClueDot } from "palette/elements/VisualClue"
 import React from "react"
 import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -41,7 +43,14 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         !!showMyCollectionInsights && {
           title: Tab.insights,
           content: <MyCollectionInsightsQR />,
-          visualClue: "AddArtworkWithInsights",
+          visualClues: [
+            {
+              superscript: (
+                <VisualClueDot style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }} />
+              ),
+              visualClue: "AddArtworkWithInsights" as VisualClueName,
+            },
+          ],
         },
         {
           title: Tab.savedWorks,
