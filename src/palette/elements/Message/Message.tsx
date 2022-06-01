@@ -15,6 +15,7 @@ export interface MessageProps {
   titleStyle?: TextProps
   bodyTextStyle?: TextProps
   variant: MessageVariant
+  testID?: string
 }
 
 export const Message: React.FC<MessageProps> = ({
@@ -26,6 +27,7 @@ export const Message: React.FC<MessageProps> = ({
   titleStyle,
   bodyTextStyle,
   variant,
+  testID,
 }) => {
   const color = useColor()
 
@@ -78,6 +80,7 @@ export const Message: React.FC<MessageProps> = ({
 
   return (
     <Animated.View
+      testID={testID}
       style={{
         height: tempHeight,
         transform: [

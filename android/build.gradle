@@ -42,5 +42,15 @@ allprojects {
         maven { url 'https://www.jitpack.io' }
         maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
         jcenter()
+        maven {
+            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+            authentication {
+                basic(BasicAuthentication)
+            }
+            credentials {
+                username 'mapbox'
+                password = System.getenv("MAPBOX_DOWNLOAD_TOKEN")
+            }
+        }
     }
 }
