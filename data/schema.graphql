@@ -905,6 +905,12 @@ type Article implements Node {
     # Number of articles to return
     size: Int = 3
   ): [Article!]!
+
+  # Description to favor for meta description
+  searchDescription: String
+
+  # Title to favor for document titles
+  searchTitle: String
   sections: [ArticleSections!]!
   series: ArticleSeries
   seriesArticle: Article
@@ -912,6 +918,8 @@ type Article implements Node {
   sponsor: ArticleSponsor
   thumbnailImage: Image
   thumbnailTeaser: String
+
+  # Title to favor for links to article
   thumbnailTitle: String
   tier: Int
   title: String
