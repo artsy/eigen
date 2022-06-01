@@ -3,9 +3,9 @@ set -euxo pipefail
 
 
 aws s3 cp .env.shared s3://artsy-citadel/dev/.env.eigen
+aws s3 cp .env.e2e s3://artsy-citadel/dev/.env.eigen.e2e
 
 RED='\033[0;31m'
 RST='\033[0m'
 
 printf "${RED}Don't forget to update on 1Password and CircleCI too!${RST}\n"
-

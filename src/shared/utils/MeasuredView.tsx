@@ -25,7 +25,12 @@ export const MeasuredView: React.FC<Props> = ({ children, setMeasuredState, show
   }, [])
 
   return (
-    <Box {...offscreenStyle} backgroundColor="pink" onLayout={onLayout}>
+    <Box
+      testID="measured-view-off-screen"
+      {...offscreenStyle}
+      backgroundColor="pink"
+      onLayout={onLayout}
+    >
       {children}
     </Box>
   )

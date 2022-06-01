@@ -1,4 +1,4 @@
-import { expect as jestExpect } from '@jest/globals'
+import { expect as jestExpect } from "@jest/globals"
 import { getEnv } from "../helpers/env"
 import { forgotPassword } from "../helpers/forgotPassword"
 
@@ -8,7 +8,7 @@ console.log("email", email)
 describe("Forgot password", () => {
   beforeAll(async () => {
     await device.launchApp({
-      permissions: {notifications: "YES"}
+      permissions: { notifications: "YES" },
     })
   })
 

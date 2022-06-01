@@ -18,8 +18,7 @@
     "simulator": {
       "type": "ios.simulator",
       "device": {
-        "type": "iPhone 13 Pro",
-        "os": "iOS 15.4"
+        "type": "iPhone 13 Pro"
       }
     },
     "emulator": {
