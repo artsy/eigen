@@ -51,6 +51,14 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     })
   }
 
+  const showMessages = async () => {
+    // TODO: Add messages
+  }
+
+  useEffect(() => {
+    showMessages()
+  }, [data.me?.myCollectionInfo?.artworksCount])
+
   const renderContent = () => {
     return (
       <>
@@ -58,7 +66,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
         {hasMarketSignals && !!enablePhase1 && (
           <>
             <MarketSignalsSectionHeader />
-            <AuctionResultsForArtistsYouCollectRail auctionResults={data.me!} />
+            <AuctionResultsForArtistsYouCollectRail me={data.me!} />
             {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
             <ActivateMoreMarketInsightsBanner />
           </>
@@ -103,10 +111,11 @@ export const MyCollectionInsightsScreenQuery = graphql`
   query MyCollectionInsightsQuery {
     me {
       ...AuctionResultsForArtistsYouCollectRail_me
-      auctionResults: myCollectionAuctionResults(first: 1) {
+      auctionResults: myCollectionAuctionResults(first: 3) {
         totalCount
       }
       myCollectionInfo {
+        artworksCount
         ...MyCollectionInsightsOverview_myCollectionInfo
       }
       myCollectionConnection(first: 1) {
