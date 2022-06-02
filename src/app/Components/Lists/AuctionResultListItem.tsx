@@ -4,7 +4,7 @@ import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResu
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { bullet, Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
+import { bullet, Flex, NoArtworkIcon, Spacer, Text, Touchable, useColor } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { AuctionResultsMidEstimate } from "../AuctionResult/AuctionResultMidEstimate"
@@ -133,6 +133,8 @@ const AuctionResultListItem: React.FC<Props> = ({
     </Touchable>
   )
 }
+
+export const AuctionResultListSeparator = () => <Spacer px={2} />
 
 export const AuctionResultListItemFragmentContainer = createFragmentContainer(
   AuctionResultListItem,
