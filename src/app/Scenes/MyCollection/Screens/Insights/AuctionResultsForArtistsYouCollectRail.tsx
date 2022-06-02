@@ -32,11 +32,11 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
   return (
     <Flex pb={2} px={2}>
       <SectionTitle
-        title="Auction Results"
-        subtitle="Based on Auction Results for the Last 36 Months"
+        title="Recently Sold at Auction"
         onPress={() => {
           navigate("/auction-results-for-artists-you-collect")
         }}
+        mb={0}
       />
       <FlatList
         data={auctionResultsData}

@@ -44,7 +44,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
 
   const groupedAuctionResultSections: ReadonlyArray<SectionListData<any, SectionT>> =
     Object.entries(groupedAuctionResults).map(([date, data]) => {
-      const sectionTitle = moment(date).format("MMMM YYYY")
+      const sectionTitle = moment(date).format("MMMM, YYYY")
 
       return { sectionTitle, data }
     })
