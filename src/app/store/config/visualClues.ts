@@ -15,9 +15,6 @@ function defineVisualClues<T extends string>(visualClueMap: {
 }
 
 export const visualClues = defineVisualClues({
-  ArtworkSubmissionMessage: {
-    description: "The message shown after artwork submission with SWA flow",
-  },
   CompleteCollectorProfileMessage: {
     description: "The message shown if the collector profile is incomplete",
   },

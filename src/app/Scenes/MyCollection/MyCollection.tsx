@@ -117,7 +117,7 @@ const MyCollection: React.FC<{
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
   const showMessages = async () => {
-    const showConsignmentsMessage = showVisualClue("ArtworkSubmissionMessage")
+    const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
     const showNewWorksMessage =
       me.myCollectionInfo?.includesPurchasedArtworks &&
       !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
@@ -152,7 +152,7 @@ const MyCollection: React.FC<{
             onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
           />
         )}
-        {!!showConsignmentsMessage && (
+        {!!showSubmissionMessage && (
           <SubmittedArtworkAddedMessage
             onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
           />
