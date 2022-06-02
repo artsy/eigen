@@ -1,11 +1,14 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { AuctionResultsRail_me } from "__generated__/AuctionResultsRail_me.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
-import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
+import {
+  AuctionResultListItemFragmentContainer,
+  AuctionResultListSeparator,
+} from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Separator } from "palette"
+import { Flex } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -38,11 +41,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = ({ t
         keyExtractor={(_, index) => String(index)}
         horizontal={false}
         initialNumToRender={3}
-        ItemSeparatorComponent={() => (
-          <Flex px={2}>
-            <Separator borderColor="black10" />
-          </Flex>
-        )}
+        ItemSeparatorComponent={AuctionResultListSeparator}
         renderItem={({ item, index }) => {
           if (!item) {
             return <></>

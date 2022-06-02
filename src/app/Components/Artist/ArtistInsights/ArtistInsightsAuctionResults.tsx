@@ -14,7 +14,7 @@ import Spinner from "app/Components/Spinner"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { debounce } from "lodash"
-import { Box, bullet, Flex, Separator, Spacer, Text, useColor } from "palette"
+import { Box, bullet, Flex, Separator, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -22,7 +22,10 @@ import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
 import { DEBOUNCE_DELAY, KeywordFilter } from "../../ArtworkFilter/Filters/KeywordFilter"
-import { AuctionResultListItemFragmentContainer } from "../../Lists/AuctionResultListItem"
+import {
+  AuctionResultListItemFragmentContainer,
+  AuctionResultListSeparator,
+} from "../../Lists/AuctionResultListItem"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist
@@ -31,7 +34,6 @@ interface Props {
 }
 
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
-  const color = useColor()
   const tracking = useTracking()
 
   const auctionResults = extractNodes(artist.auctionResultsConnection)
@@ -183,11 +185,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
                 }}
               />
             )}
-            ItemSeparatorComponent={() => (
-              <Flex px={2}>
-                <Separator borderColor={color("black10")} />
-              </Flex>
-            )}
+            ItemSeparatorComponent={AuctionResultListSeparator}
             style={{ width: useScreenDimensions().width, left: -20 }}
             onEndReached={loadMoreAuctionResults}
             ListFooterComponent={

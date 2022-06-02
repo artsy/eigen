@@ -69,13 +69,11 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
         )}
         renderItem={({ item }) =>
           item ? (
-            <Flex>
-              <AuctionResultListItemFragmentContainer
-                auctionResult={item}
-                showArtistName
-                onPress={() => onItemPress(item)}
-              />
-            </Flex>
+            <AuctionResultListItemFragmentContainer
+              auctionResult={item}
+              showArtistName
+              onPress={() => onItemPress(item)}
+            />
           ) : (
             <></>
           )
