@@ -4,6 +4,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useFormik } from "formik"
 import { Button, Input, Screen, Spacer, Text, useColor } from "palette"
 import { useEffect, useRef } from "react"
+import { Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
@@ -82,7 +83,7 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ route
   return (
     <Screen>
       <Screen.FloatingHeader onBack={() => navigation.goBack()} />
-      <Screen.Body scroll>
+      <Screen.Body {...(Platform.OS === "ios" && { scroll: true })}>
         <Spacer y={insets.top + 44} />
 
         <Text variant="lg">Log In</Text>
