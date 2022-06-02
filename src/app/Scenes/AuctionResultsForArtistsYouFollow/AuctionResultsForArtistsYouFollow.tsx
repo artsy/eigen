@@ -3,15 +3,13 @@ import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResul
 import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
-import { PAGE_SIZE } from "app/Components/constants"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Flex, LinkText, Text } from "palette"
+import { Flex, LinkText, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -21,6 +19,8 @@ interface Props {
   me: AuctionResultsForArtistsYouFollow_me | null
   relay: RelayPaginationProp
 }
+
+const PAGE_SIZE = 20
 
 export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }) => {
   const { hasMore, isLoading, loadMore, refetchConnection } = relay
@@ -59,22 +59,25 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
         context_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
       })}
     >
-      <PageWithSimpleHeader title="Auction Results for Artists You Follow">
-        <ArtworkFiltersStoreProvider>
-          <AuctionResultsList
-            auctionResults={auctionResults}
-            refreshing={refreshing}
-            handleRefresh={handleRefresh}
-            onEndReached={loadMoreArtworks}
-            ListHeaderComponent={<ListHeader />}
-            onItemPress={(item: any) => {
-              trackEvent(tracks.tapAuctionGroup(item.internalID))
-              navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-            }}
-            isLoadingNext={loadingMoreData}
-          />
-        </ArtworkFiltersStoreProvider>
-      </PageWithSimpleHeader>
+      <ArtworkFiltersStoreProvider>
+        <Flex height="100%">
+          <Spacer mb={5} />
+          <Flex flex={1}>
+            <AuctionResultsList
+              auctionResults={auctionResults}
+              refreshing={refreshing}
+              handleRefresh={handleRefresh}
+              onEndReached={loadMoreArtworks}
+              onItemPress={(item: any) => {
+                trackEvent(tracks.tapAuctionGroup(item.internalID))
+                navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+              }}
+              ListHeaderComponent={ListHeader}
+              isLoadingNext={loadingMoreData}
+            />
+          </Flex>
+        </Flex>
+      </ArtworkFiltersStoreProvider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
@@ -82,9 +85,12 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
 export const ListHeader: React.FC = () => {
   const { trackEvent } = useTracking()
   return (
-    <Flex>
-      <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
-        The latest auction results for the {""}
+    <Flex mx={2}>
+      <Text variant="lg" mb={1}>
+        Auction Results for Artists You Follow
+      </Text>
+      <Text mb={2}>
+        Get all the latest prices achieved at auctions for the {""}
         <LinkText
           onPress={() => {
             trackEvent(tracks.tappedLink)
@@ -93,7 +99,7 @@ export const ListHeader: React.FC = () => {
         >
           artists you follow
         </LinkText>
-        . You can also look up more auction results on the insights tab on any artist’s page.
+        .
       </Text>
     </Flex>
   )
@@ -165,12 +171,7 @@ export const AuctionResultsForArtistsYouFollowQueryRenderer: React.FC = () => (
     render={renderWithPlaceholder({
       Container: AuctionResultsForArtistsYouFollowContainer,
       renderPlaceholder: () => {
-        return (
-          <LoadingSkeleton
-            title="Auction Results for Artists You Follow"
-            listHeader={<ListHeader />}
-          />
-        )
+        return <LoadingSkeleton title="Latest Auction Results" listHeader={<ListHeader />} />
       },
     })}
   />

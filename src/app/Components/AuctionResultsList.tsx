@@ -10,7 +10,6 @@ import React from "react"
 import { RefreshControl, SectionList, SectionListData } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { AuctionResultListItemFragmentContainer } from "./Lists/AuctionResultListItem"
-import { PageWithSimpleHeader } from "./PageWithSimpleHeader"
 import Spinner from "./Spinner"
 
 interface AuctionResultsListProps {
@@ -20,7 +19,7 @@ interface AuctionResultsListProps {
   refreshing: boolean
   handleRefresh: () => void
   onEndReached: () => void
-  ListHeaderComponent: React.ReactElement
+  ListHeaderComponent?: React.FC
   onItemPress: (item: AuctionResultListItem_auctionResult) => void
   isLoadingNext: boolean
 }
@@ -92,7 +91,6 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
 }
 
 export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactElement }> = ({
-  title,
   listHeader,
 }) => {
   const placeholderResults = []
@@ -130,16 +128,16 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
   }
   return (
     <ProvidePlaceholderContext>
-      <PageWithSimpleHeader title={title}>
-        {listHeader}
-        <Flex mx={2}>
-          <Spacer height={20} />
-          <PlaceholderText height={24} width={100 + Math.random() * 50} />
-          <Spacer height={10} />
-          <Separator borderColor="black10" />
-          {placeholderResults}
-        </Flex>
-      </PageWithSimpleHeader>
+      <Spacer mb={5} />
+
+      {listHeader}
+      <Flex mx={2}>
+        <Spacer height={20} />
+        <PlaceholderText height={24} width={100 + Math.random() * 50} />
+        <Spacer height={10} />
+        <Separator borderColor="black10" />
+        {placeholderResults}
+      </Flex>
     </ProvidePlaceholderContext>
   )
 }
