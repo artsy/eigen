@@ -14,6 +14,7 @@ interface Props {
   onPress: () => void
   showArtistName?: boolean
   withHorizontalPadding?: boolean
+  first?: boolean
 }
 
 const AuctionResultListItem: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const AuctionResultListItem: React.FC<Props> = ({
   onPress,
   showArtistName,
   withHorizontalPadding = true,
+  first,
 }) => {
   const color = useColor()
 
@@ -34,7 +36,7 @@ const AuctionResultListItem: React.FC<Props> = ({
 
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
-      <Flex px={withHorizontalPadding ? 2 : 0} py={1} flexDirection="row">
+      <Flex px={withHorizontalPadding ? 2 : 0} pb={1} pt={first ? 0 : 1} flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
@@ -107,7 +109,7 @@ const AuctionResultListItem: React.FC<Props> = ({
           <Flex alignItems="flex-end" pl={15}>
             {auctionResultHasPrice(auctionResult) ? (
               <Flex alignItems="flex-end">
-                <Text variant="xs" fontWeight="bold" testID="price">
+                <Text variant="xs" fontWeight="500" testID="price">
                   {auctionResult.priceRealized?.display}
                 </Text>
                 {!!showPriceUSD && (

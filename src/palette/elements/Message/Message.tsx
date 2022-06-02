@@ -96,10 +96,10 @@ export const Message: React.FC<MessageProps> = ({
       <Flex backgroundColor={color(colors[variant].backgroundColor)} {...containerStyle}>
         <Flex px={2} py={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={1}>
-            <Text fontSize="13px" color={color(colors[variant].titleColor)} {...titleStyle}>
+            <Text variant="xs" color={color(colors[variant].titleColor)} {...titleStyle}>
               {title}
             </Text>
-            <Text fontSize="13px" color={color(colors[variant].textColor)} {...bodyTextStyle}>
+            <Text variant="xs" color={color(colors[variant].textColor)} {...bodyTextStyle}>
               {text}
             </Text>
           </Flex>
