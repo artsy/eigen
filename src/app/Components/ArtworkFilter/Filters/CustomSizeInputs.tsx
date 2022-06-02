@@ -1,6 +1,6 @@
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { Box, Flex, Input, Join, Spacer, Text, useColor } from "palette"
-import React from "react"
+import React, { useState } from "react"
 import { TextStyle } from "react-native"
 import { Numeric, Range } from "./helpers"
 
@@ -12,8 +12,13 @@ export interface CustomSizeInputsProps {
   selectedMetric: Metric
 }
 
-// Constants
-const NUMBERS_REGEX = /^(|\d)+$/
+/**
+ * Acceptable values
+ * 123
+ * 123.
+ * 123.456
+ */
+const DECIMAL_REGEX = /^(\d+\.?(\d+)?)?$/
 
 // Helpers
 const getValue = (value: Numeric) => {
@@ -32,16 +37,20 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
   selectedMetric,
 }) => {
   const color = useColor()
+  const [localRange, setLocalRange] = useState(range)
+
   const handleInputChange = (field: keyof Range) => (text: string) => {
-    if (!NUMBERS_REGEX.test(text)) {
+    if (!DECIMAL_REGEX.test(text)) {
       return
     }
 
     const parsed = parseFloat(text)
     const value = isNaN(parsed) ? "*" : parsed
 
+    setLocalRange({ ...localRange, [field]: text })
     onChange({ ...range, [field]: value })
   }
+
   const inputTextStyle: TextStyle = {
     color: active ? color("black100") : color("black60"),
   }
@@ -61,7 +70,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
               onChangeText={handleInputChange("min")}
               fixedRightPlaceholder={selectedMetric}
               accessibilityLabel={`Minimum ${label} Input`}
-              value={getValue(range.min)}
+              value={getValue(localRange.min)}
               inputTextStyle={inputTextStyle}
             />
           </Flex>
@@ -73,7 +82,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
               onChangeText={handleInputChange("max")}
               fixedRightPlaceholder={selectedMetric}
               accessibilityLabel={`Maximum ${label} Input`}
-              value={getValue(range.max)}
+              value={getValue(localRange.max)}
               inputTextStyle={inputTextStyle}
             />
           </Flex>
