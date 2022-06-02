@@ -8,7 +8,7 @@ import {
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { useLayout } from "app/utils/useLayout"
-import { sortBy } from "lodash"
+import { compact, sortBy } from "lodash"
 import { Flex, useSpace } from "palette"
 import React from "react"
 import { ColorsSwatch } from "./ColorsSwatch"
@@ -74,14 +74,18 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
   })
 
   // Convert aggregations to filter options
-  const options: FilterData[] = (aggregation?.counts ?? []).map(({ value }) => {
-    return {
-      // names returned by Metaphysics are actually the slugs
-      displayText: COLORS_INDEXED_BY_VALUE[value].name,
-      paramValue: value,
-      paramName: FilterParamName.colors,
-    }
-  })
+  const options: FilterData[] = compact(
+    (aggregation?.counts ?? []).map(({ value }) => {
+      if (COLORS_INDEXED_BY_VALUE[value]?.name) {
+        return {
+          // names returned by Metaphysics are actually the slugs
+          displayText: COLORS_INDEXED_BY_VALUE[value].name,
+          paramValue: value,
+          paramName: FilterParamName.colors,
+        }
+      }
+    })
+  )
 
   // Sort according to order of COLORS constant
   const sortedOptions = sortBy(options, (option) => {
