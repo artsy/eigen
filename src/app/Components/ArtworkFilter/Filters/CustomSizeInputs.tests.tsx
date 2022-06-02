@@ -49,12 +49,12 @@ describe("CustomSizeInputs", () => {
     expect(onChangeMock).toBeCalledWith({ min: "*", max: 10 })
   })
 
-  it("should return default value if a non-numeric value is entered in the input", () => {
+  it("should NOT call `onChange` handler if a non-decimal value is entered in the input", () => {
     const onChangeMock = jest.fn()
     const { getByA11yLabel } = renderWithWrappersTL(<TestRenderer onChange={onChangeMock} />)
 
     fireEvent.changeText(getByA11yLabel("Maximum Label Input"), "hello")
 
-    expect(onChangeMock).toBeCalledWith({ min: "*", max: "*" })
+    expect(onChangeMock).toBeCalledTimes(0)
   })
 })
