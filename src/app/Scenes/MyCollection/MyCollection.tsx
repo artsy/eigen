@@ -110,8 +110,6 @@ const MyCollection: React.FC<{
       notifyMyCollectionInsightsTab()
     }
 
-    console.log("MyCollection.tsx: useEffect: relay.hasMore()", artworks.length)
-
     relay.loadMore(100)
   }, [me?.myCollectionConnection])
 
