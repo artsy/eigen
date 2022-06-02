@@ -354,7 +354,6 @@ export const modules = defineModules({
   AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
-    fullBleed: true,
   }),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   City: reactModule(CityView, { fullBleed: true }),
