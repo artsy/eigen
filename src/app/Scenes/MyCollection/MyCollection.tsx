@@ -37,7 +37,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import { Button, Flex, Separator, Spacer, useSpace } from "palette"
+import { Button, Flex, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -60,7 +60,6 @@ const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me
 }> = ({ relay, me }) => {
-  const space = useSpace()
   const toast = useToast()
   const { trackEvent } = useTracking()
   const { showVisualClue } = useVisualClue()
@@ -198,7 +197,11 @@ const MyCollection: React.FC<{
       />
 
       <StickyTabPageScrollView
-        contentContainerStyle={{ paddingBottom: space(2) }}
+        contentContainerStyle={{
+          // Extend the container flex when there are no artworks for accurate vertical centering
+          flexGrow: artworks.length ? undefined : 1,
+          justifyContent: artworks.length ? "flex-start" : "center",
+        }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
         innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"
