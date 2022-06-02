@@ -34,7 +34,7 @@ const AuctionResultListItem: React.FC<Props> = ({
 
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
-      <Flex px={withHorizontalPadding ? 2 : 0} py={2} flexDirection="row">
+      <Flex px={withHorizontalPadding ? 2 : 0} py={1} flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
