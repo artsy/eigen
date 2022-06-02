@@ -7,6 +7,7 @@ import {
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { Schema } from "app/utils/track"
 import { Flex } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
@@ -50,9 +51,10 @@ export const MyCollectionArtworkComparableWorks: React.FC<
         renderItem={({ item }) => (
           <AuctionResultListItemFragmentContainer
             auctionResult={item}
-            onPress={() =>
+            onPress={() => {
+              trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
               navigate(`/artist/${artwork?.artist?.slug!}/auction-result/${item.internalID}`)
-            }
+            }}
           />
         )}
         ItemSeparatorComponent={AuctionResultListSeparator}
@@ -84,6 +86,15 @@ const tracks = {
   tappedShowMore: (internalID: string, slug: string) => ({
     action: ActionType.tappedShowMore,
     context_module: ContextModule.myCollectionComparableWorks,
+    context_screen: Schema.PageNames.MyCollectionArtworkInsights,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+  }),
+  tappedAuctionResultGroup: (internalID: string, slug: string) => ({
+    action: ActionType.tappedAuctionResultGroup,
+    context_module: ContextModule.myCollectionComparableWorks,
+    context_screen: Schema.PageNames.MyCollectionArtworkInsights,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
