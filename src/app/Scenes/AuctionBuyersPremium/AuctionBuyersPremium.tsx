@@ -110,8 +110,8 @@ const AuctionBuyersPremiumLoadingPlaceholder = () => {
         <PlaceholderText height={25} width={200} marginBottom={20} />
         <PlaceholderRaggedText textHeight={15} numLines={12} />
 
-        <PlaceholderText height={25} width={200} marginTop={15} />
-        <PlaceholderText height={25} width={120} marginBottom={15} />
+        <PlaceholderText height={25} width={200} marginTop={20} />
+        <PlaceholderText height={25} width={120} marginBottom={10} />
         <PlaceholderRaggedText textHeight={15} numLines={5} />
       </Flex>
     </Flex>
