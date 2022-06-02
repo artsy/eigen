@@ -20,12 +20,13 @@ export const SectionTitle: React.FC<{
   subtitle?: React.ReactNode
   onPress?: () => any
   RightButtonContent?: React.FC
-}> = ({ title, subtitle, onPress, RightButtonContent = RightButton }) => {
+  mb?: number
+}> = ({ title, subtitle, onPress, RightButtonContent = RightButton, mb = 2 }) => {
   const { color, space } = useTheme()
 
   return (
     <Wrapper onPress={onPress}>
-      <Flex mb={2} flexDirection="row" alignItems="flex-start">
+      <Flex mb={mb} flexDirection="row" alignItems="flex-start">
         <View style={{ overflow: "hidden", flex: 1 }}>
           <Text lineHeight="20" variant="sm" ellipsizeMode="tail" numberOfLines={1} testID="title">
             {typeof title === "string" ? toTitleCase(String(title)) : title}
