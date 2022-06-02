@@ -31,6 +31,93 @@ describe("CustomSizeInputs", () => {
     expect(getByDisplayValue("10")).toBeTruthy()
   })
 
+  it("should allow to enter integer values", () => {
+    const mockOnChange = jest.fn()
+    const { getByDisplayValue, getByA11yLabel } = renderWithWrappersTL(
+      <TestRenderer onChange={mockOnChange} />
+    )
+
+    // Min input
+    fireEvent.changeText(getByA11yLabel("Minimum Label Input"), "5")
+    expect(getByDisplayValue("5")).toBeTruthy()
+    expect(mockOnChange).toBeCalledWith({
+      min: 5,
+      max: "*",
+    })
+
+    // Max input
+    fireEvent.changeText(getByA11yLabel("Maximum Label Input"), "10")
+    expect(getByDisplayValue("10")).toBeTruthy()
+    expect(mockOnChange).toBeCalledWith({
+      min: "*",
+      max: 10,
+    })
+  })
+
+  it("should allow to enter floating point values", () => {
+    const mockOnChange = jest.fn()
+    const { getByDisplayValue, getByA11yLabel } = renderWithWrappersTL(
+      <TestRenderer onChange={mockOnChange} />
+    )
+
+    // Min input
+    fireEvent.changeText(getByA11yLabel("Minimum Label Input"), "5.55")
+    expect(getByDisplayValue("5.55")).toBeTruthy()
+    expect(mockOnChange).toBeCalledWith({
+      min: 5.55,
+      max: "*",
+    })
+
+    // Max input
+    fireEvent.changeText(getByA11yLabel("Maximum Label Input"), "10.55")
+    expect(getByDisplayValue("10.55")).toBeTruthy()
+    expect(mockOnChange).toBeCalledWith({
+      min: "*",
+      max: 10.55,
+    })
+  })
+
+  it("should NOT allow to enter values with special chars", () => {
+    const mockOnChange = jest.fn()
+    const { getByDisplayValue, getByA11yLabel } = renderWithWrappersTL(
+      <TestRenderer onChange={mockOnChange} range={{ min: 1, max: 2 }} />
+    )
+
+    // Min input
+    fireEvent.changeText(getByA11yLabel("Minimum Label Input"), "#5.55")
+    expect(getByDisplayValue("1")).toBeTruthy()
+    expect(mockOnChange).toBeCalledTimes(0)
+
+    fireEvent.changeText(getByA11yLabel("Minimum Label Input"), "5,55")
+    expect(getByDisplayValue("1")).toBeTruthy()
+    expect(mockOnChange).toBeCalledTimes(0)
+
+    fireEvent.changeText(getByA11yLabel("Minimum Label Input"), "5#55")
+    expect(getByDisplayValue("1")).toBeTruthy()
+    expect(mockOnChange).toBeCalledTimes(0)
+
+    fireEvent.changeText(getByA11yLabel("Minimum Label Input"), "5.55%")
+    expect(getByDisplayValue("1")).toBeTruthy()
+    expect(mockOnChange).toBeCalledTimes(0)
+
+    // Max input
+    fireEvent.changeText(getByA11yLabel("Minimum Label Input"), "#5.55")
+    expect(getByDisplayValue("2")).toBeTruthy()
+    expect(mockOnChange).toBeCalledTimes(0)
+
+    fireEvent.changeText(getByA11yLabel("Minimum Label Input"), "5,55")
+    expect(getByDisplayValue("2")).toBeTruthy()
+    expect(mockOnChange).toBeCalledTimes(0)
+
+    fireEvent.changeText(getByA11yLabel("Minimum Label Input"), "5#55")
+    expect(getByDisplayValue("2")).toBeTruthy()
+    expect(mockOnChange).toBeCalledTimes(0)
+
+    fireEvent.changeText(getByA11yLabel("Minimum Label Input"), "5.55%")
+    expect(getByDisplayValue("2")).toBeTruthy()
+    expect(mockOnChange).toBeCalledTimes(0)
+  })
+
   it("should call handler when the minimum value is changed", () => {
     const onChangeMock = jest.fn()
     const { getByA11yLabel } = renderWithWrappersTL(<TestRenderer onChange={onChangeMock} />)
@@ -49,7 +136,7 @@ describe("CustomSizeInputs", () => {
     expect(onChangeMock).toBeCalledWith({ min: "*", max: 10 })
   })
 
-  it("should NOT call `onChange` handler if a non-decimal value is entered in the input", () => {
+  it("should NOT call `onChange` handler if a non-floating point or non-integer value is entered in the input", () => {
     const onChangeMock = jest.fn()
     const { getByA11yLabel } = renderWithWrappersTL(<TestRenderer onChange={onChangeMock} />)
 
