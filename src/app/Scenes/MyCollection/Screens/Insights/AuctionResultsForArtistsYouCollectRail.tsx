@@ -36,7 +36,7 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
         onPress={() => {
           navigate("/auction-results-for-artists-you-collect")
         }}
-        mb={0}
+        mb={1}
       />
       <FlatList
         data={auctionResultsData}
