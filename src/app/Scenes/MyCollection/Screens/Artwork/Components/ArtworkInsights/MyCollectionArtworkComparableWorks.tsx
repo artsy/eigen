@@ -50,9 +50,10 @@ export const MyCollectionArtworkComparableWorks: React.FC<
         renderItem={({ item }) => (
           <AuctionResultListItemFragmentContainer
             auctionResult={item}
-            onPress={() =>
+            onPress={() => {
+              trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
               navigate(`/artist/${artwork?.artist?.slug!}/auction-result/${item.internalID}`)
-            }
+            }}
           />
         )}
         ItemSeparatorComponent={AuctionResultListSeparator}
@@ -84,6 +85,15 @@ const tracks = {
   tappedShowMore: (internalID: string, slug: string) => ({
     action: ActionType.tappedShowMore,
     context_module: ContextModule.myCollectionComparableWorks,
+    context_screen: OwnerType.myCollectionArtworkInsights,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+  }),
+  tappedAuctionResultGroup: (internalID: string, slug: string) => ({
+    action: ActionType.tappedAuctionResultGroup,
+    context_module: ContextModule.myCollectionComparableWorks,
+    context_screen: OwnerType.myCollectionArtworkInsights,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,

@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistAuctionResults_artwork$key } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import {
   AuctionResultListItemFragmentContainer,
@@ -40,9 +40,7 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
       <SectionTitle
         title={`Auction Results for ${artwork?.artist?.name}`}
         onPress={() => {
-          trackEvent(
-            tracks.tappedShowMore(artwork?.internalID, artwork?.slug, "Explore auction results")
-          )
+          trackEvent(tracks.tappedShowMore(artwork?.internalID, artwork?.slug))
           navigate(`/artist/${artwork?.artist?.slug!}/auction-results`)
         }}
       />
@@ -55,7 +53,10 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
           <>
             <AuctionResultListItemFragmentContainer
               auctionResult={item}
-              onPress={() => navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)}
+              onPress={() => {
+                trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
+                navigate(`/artist/${artist?.slug!}/auction-result/${item.internalID}`)
+              }}
             />
           </>
         )}
@@ -87,20 +88,22 @@ const artworkFragment = graphql`
 `
 
 const tracks = {
-  tappedInfoBubble: (internalID: string, slug: string): TappedInfoBubble => ({
-    action: ActionType.tappedInfoBubble,
+  tappedAuctionResultGroup: (internalID: string, slug: string) /* : TappedInfoBubble  */ => ({
+    action: ActionType.tappedAuctionResultGroup,
     context_module: ContextModule.auctionResults,
+    context_screen: OwnerType.myCollectionArtworkInsights,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
-    subject: "auctionResults",
+    subject: "Auction Results for... [click on a specific result]",
   }),
-  tappedShowMore: (internalID: string, slug: string, subject: string) => ({
+  tappedShowMore: (internalID: string, slug: string) => ({
     action: ActionType.tappedShowMore,
     context_module: ContextModule.auctionResults,
+    context_screen: OwnerType.myCollectionArtworkInsights,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
-    subject,
+    subject: "Explore auction results",
   }),
 }

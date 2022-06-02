@@ -90,7 +90,8 @@ describe("RequestForPriceEstimateBanner", () => {
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedRequestPriceEstimate",
       context_module: "myCollectionArtworkInsights",
-      context_screen: "myCollectionArtwork",
+      context_screen: "MyCollectionArtworkInsights",
+      context_screen_owner_type: "myCollectionArtwork",
       context_screen_owner_id: "artwork-id",
       context_screen_owner_slug: "artwork-slug",
       demand_index: 7.5,
