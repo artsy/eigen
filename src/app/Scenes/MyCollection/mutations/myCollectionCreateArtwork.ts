@@ -19,6 +19,7 @@ export function myCollectionCreateArtwork(
                 artworkEdge {
                   __id
                   node {
+                    hasMarketPriceInsights
                     ...MyCollectionArtwork_sharedProps @relay(mask: false)
                     ...MyCollectionArtwork_sharedProps @relay(mask: false)
                   }
