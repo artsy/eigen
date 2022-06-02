@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType, TappedRequestPriceEstimate } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { RequestForPriceEstimateBanner_artwork$key } from "__generated__/RequestForPriceEstimateBanner_artwork.graphql"
 import { RequestForPriceEstimateBanner_marketPriceInsights$key } from "__generated__/RequestForPriceEstimateBanner_marketPriceInsights.graphql"
 import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPriceEstimateBanner_me.graphql"
@@ -116,7 +116,7 @@ const tracks = {
     artworkId: string,
     artworkSlug?: string,
     demandRank?: number
-  ): TappedRequestPriceEstimate => ({
+  ) => ({
     action: ActionType.tappedRequestPriceEstimate,
     context_module: ContextModule.myCollectionArtworkInsights,
     context_screen: Schema.PageNames.MyCollectionArtworkInsights,
