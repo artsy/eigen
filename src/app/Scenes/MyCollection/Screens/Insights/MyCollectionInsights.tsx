@@ -76,7 +76,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       showVisualClue("MyCollectionInsightsIncompleteMessage") && areInsightsIncomplete
 
     setJSX(
-      <Flex>
+      <>
         {!!showMyCollectionInsightsIncompleteMessage && (
           <MyCollectionInsightsIncompleteMessage
             onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
@@ -86,7 +86,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
           sourceTab={Tab.insights}
           hasMarketSignals={hasMarketSignals}
         />
-      </Flex>
+      </>
     )
   }
 
@@ -116,7 +116,12 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
         flex: 1,
       }}
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
-      contentContainerStyle={{ paddingTop: space("2"), justifyContent: "center" }}
+      contentContainerStyle={{
+        paddingTop: space("2"),
+        // Extend the container flex when there are no artworks for accurate vertical centering
+        flexGrow: myCollectionArtworksCount > 0 ? undefined : 1,
+        justifyContent: myCollectionArtworksCount > 0 ? "flex-start" : "center",
+      }}
       paddingHorizontal={0}
     >
       {myCollectionArtworksCount > 0 ? renderContent() : <MyCollectionInsightsEmptyState />}
