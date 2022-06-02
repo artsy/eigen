@@ -97,23 +97,23 @@ const MyCollection: React.FC<{
   }
 
   const notifyMyCollectionInsightsTab = () => {
-    const artworksWithoutInsight = artworks.find((artwork) => !artwork._marketPriceInsights)
+    // Waiting until all artworks have been loaded to check whether all of them have insights or not,
+    // in order to show the message
+    // TODO: wait exactly until all artworks have been loaded
+    setTimeout(() => {
+      const artworksWithoutInsight = artworks.find((artwork) => !artwork._marketPriceInsights)
 
-    refreshMyCollectionInsights({
-      collectionHasArtworksWithoutInsights: !!(artworks.length && artworksWithoutInsight),
-    })
+      refreshMyCollectionInsights({
+        collectionHasArtworksWithoutInsights: !!(artworks.length && artworksWithoutInsight),
+      })
+    }, 3000)
   }
 
-  // Load all artworks and then check whether all of them have insights
   useEffect(() => {
-    if (!relay.hasMore()) {
-      notifyMyCollectionInsightsTab()
-    }
-
-    console.log("MyCollection.tsx: useEffect: relay.hasMore()", artworks.length)
-
     relay.loadMore(100)
-  }, [me?.myCollectionConnection])
+
+    notifyMyCollectionInsightsTab()
+  }, [])
 
   // hack for tests. we should fix that.
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
