@@ -18,7 +18,7 @@ const NUMBERS_REGEX = /^(|\d)+$/
 // Helpers
 const getValue = (value: Numeric) => {
   if (value === "*" || value === 0) {
-    return
+    return ""
   }
 
   return value.toString()
