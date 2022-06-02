@@ -5,12 +5,10 @@ import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPr
 import { Toast } from "app/Components/Toast/Toast"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Schema } from "app/utils/track"
 import { Box, Button, CheckIcon, Text } from "palette"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-
 interface RequestForPriceEstimateProps {
   artwork: RequestForPriceEstimateBanner_artwork$key
   marketPriceInsights: RequestForPriceEstimateBanner_marketPriceInsights$key | null
@@ -119,7 +117,7 @@ const tracks = {
   ) => ({
     action: ActionType.tappedRequestPriceEstimate,
     context_module: ContextModule.myCollectionArtworkInsights,
-    context_screen: Schema.PageNames.MyCollectionArtworkInsights,
+    context_screen: OwnerType.myCollectionArtworkInsights,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: artworkId,
     context_screen_owner_slug: artworkSlug,

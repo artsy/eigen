@@ -7,7 +7,6 @@ import {
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Schema } from "app/utils/track"
 import { Flex } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
@@ -86,7 +85,7 @@ const tracks = {
   tappedShowMore: (internalID: string, slug: string) => ({
     action: ActionType.tappedShowMore,
     context_module: ContextModule.myCollectionComparableWorks,
-    context_screen: Schema.PageNames.MyCollectionArtworkInsights,
+    context_screen: OwnerType.myCollectionArtworkInsights,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
@@ -94,7 +93,7 @@ const tracks = {
   tappedAuctionResultGroup: (internalID: string, slug: string) => ({
     action: ActionType.tappedAuctionResultGroup,
     context_module: ContextModule.myCollectionComparableWorks,
-    context_screen: Schema.PageNames.MyCollectionArtworkInsights,
+    context_screen: OwnerType.myCollectionArtworkInsights,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
