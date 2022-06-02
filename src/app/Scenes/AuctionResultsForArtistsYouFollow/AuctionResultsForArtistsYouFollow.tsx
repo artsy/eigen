@@ -11,12 +11,9 @@ import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { groupBy } from "lodash"
-import moment from "moment"
 import { Flex, LinkText, Text } from "palette"
 import React, { useState } from "react"
-import { RelayPaginationProp } from "react-relay"
-import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Tab } from "../Favorites/Favorites"
 
@@ -31,18 +28,7 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
   const [refreshing, setRefreshing] = useState(false)
 
   const { trackEvent } = useTracking()
-  const allAuctionResults = extractNodes(me?.auctionResultsByFollowedArtists)
-  const groupedAuctionResults = groupBy(allAuctionResults, (item) =>
-    moment(item!.saleDate!).format("YYYY-MM")
-  )
-
-  const groupedAuctionResultSections = Object.entries(groupedAuctionResults).map(
-    ([date, auctionResults]) => {
-      const sectionTitle = moment(date).format("MMMM")
-
-      return { sectionTitle, data: auctionResults }
-    }
-  )
+  const auctionResults = extractNodes(me?.auctionResultsByFollowedArtists)
 
   const loadMoreArtworks = () => {
     if (!hasMore() || isLoading()) {
@@ -76,7 +62,7 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
       <PageWithSimpleHeader title="Auction Results for Artists You Follow">
         <ArtworkFiltersStoreProvider>
           <AuctionResultsList
-            sections={groupedAuctionResultSections}
+            auctionResults={auctionResults}
             refreshing={refreshing}
             handleRefresh={handleRefresh}
             onEndReached={loadMoreArtworks}

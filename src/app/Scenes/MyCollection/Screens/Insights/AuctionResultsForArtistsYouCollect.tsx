@@ -4,8 +4,6 @@ import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResul
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { groupBy } from "lodash"
-import moment from "moment"
 import { Flex, Text } from "palette"
 import React, { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -27,19 +25,7 @@ export const ListOfresults: React.FC<{}> = () => {
 
   const [refreshing, setRefreshing] = useState<boolean>(false)
 
-  const allAuctionResults = extractNodes(data.myCollectionAuctionResults)
-
-  const groupedAuctionResults = groupBy(allAuctionResults, (item) =>
-    moment(item!.saleDate!).format("YYYY-MM")
-  )
-
-  const groupedAuctionResultSections = Object.entries(groupedAuctionResults).map(
-    ([date, auctionResults]) => {
-      const sectionTitle = moment(date).format("MMMM")
-
-      return { sectionTitle, data: auctionResults }
-    }
-  )
+  const auctionResults = extractNodes(data.myCollectionAuctionResults)
 
   const handleRefresh = () => {
     setRefreshing(true)
@@ -58,7 +44,7 @@ export const ListOfresults: React.FC<{}> = () => {
   return (
     <PageWithSimpleHeader title="Auction Results for Artists You Collect">
       <AuctionResultsList
-        sections={groupedAuctionResultSections}
+        auctionResults={auctionResults}
         refreshing={refreshing}
         handleRefresh={handleRefresh}
         onEndReached={handleLoadMore}
