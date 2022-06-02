@@ -87,7 +87,7 @@ export const ListHeader: React.FC = () => {
   return (
     <Flex mx={2}>
       <Text variant="lg" mb={1}>
-        Auction Results for Artists You Follow
+        Latest Auction Results
       </Text>
       <Text mb={2}>
         Get all the latest prices achieved at auctions for the {""}
