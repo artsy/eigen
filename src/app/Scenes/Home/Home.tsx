@@ -121,7 +121,7 @@ const Home = (props: Props) => {
     },
     // Below-The-Fold Modules
     {
-      title: "Auction Results for Artists You Follow",
+      title: "Latest Auction Results",
       type: "auction-results",
       data: meBelow,
       prefetchUrl: "/auction-results-for-artists-you-follow",

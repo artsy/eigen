@@ -34,7 +34,7 @@ const AuctionResultListItem: React.FC<Props> = ({
 
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
-      <Flex px={withHorizontalPadding ? 2 : 0} py={2} flexDirection="row">
+      <Flex px={withHorizontalPadding ? 2 : 0} py={1} flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
@@ -68,15 +68,24 @@ const AuctionResultListItem: React.FC<Props> = ({
           <Flex flex={3}>
             <Flex>
               {!!showArtistName && !!auctionResult.artist?.name && (
-                <Text variant="xs" ellipsizeMode="middle" numberOfLines={2} fontWeight="bold">
+                <Text variant="xs" ellipsizeMode="middle" numberOfLines={2}>
                   {auctionResult.artist?.name}
                 </Text>
               )}
-              <Text variant="xs" ellipsizeMode="middle" numberOfLines={2} style={{ flexShrink: 1 }}>
+              <Text
+                variant="xs"
+                ellipsizeMode="middle"
+                color="black60"
+                numberOfLines={2}
+                italic
+                style={{ flexShrink: 1 }}
+              >
                 {auctionResult.title}
-                {!!auctionResult.dateText &&
-                  auctionResult.dateText !== "" &&
-                  `, ${auctionResult.dateText}`}
+                <Text variant="xs" color="black60">
+                  {!!auctionResult.dateText &&
+                    auctionResult.dateText !== "" &&
+                    `, ${auctionResult.dateText}`}
+                </Text>
               </Text>
             </Flex>
             {!!auctionResult.mediumText && (
