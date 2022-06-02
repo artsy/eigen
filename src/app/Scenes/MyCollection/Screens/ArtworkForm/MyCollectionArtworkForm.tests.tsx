@@ -412,6 +412,7 @@ describe("MyCollectionArtworkForm", () => {
                   title: null,
                   attributionClass: null,
                   consignmentSubmission: null,
+                  hasMarketPriceInsights: null,
                 },
               },
             },
