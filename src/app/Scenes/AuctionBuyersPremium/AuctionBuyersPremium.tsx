@@ -25,7 +25,7 @@ export const AuctionBuyersPremium: FC<AuctionBuyersPremiumProps> = ({ sale }) =>
 
   return (
     <Flex flex={1}>
-      <FancyModalHeader onLeftButtonPress={() => goBack()} />
+      <FancyModalHeader useXButton onLeftButtonPress={() => goBack()} />
 
       <ScrollView contentContainerStyle={{ padding: space("2"), paddingBottom: space("4") }}>
         <Text variant="lg" mb={1}>
