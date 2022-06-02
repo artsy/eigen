@@ -133,6 +133,7 @@ describe("MyCollectionWhySell", () => {
         expect(trackEvent).toHaveBeenCalledWith({
           action: "tappedSellArtwork",
           context_module: "myCollectionArtworkAbout",
+          context_screen: "MyCollectionArtworkAbout",
           context_screen_owner_type: "myCollectionArtwork",
           context_screen_owner_id: "someInternalId",
           context_screen_owner_slug: "someSlug",
@@ -159,6 +160,7 @@ describe("MyCollectionWhySell", () => {
         expect(trackEvent).toHaveBeenCalledWith({
           action: "tappedSellArtwork",
           context_module: "myCollectionArtworkInsights",
+          context_screen: "MyCollectionArtworkInsights",
           context_screen_owner_type: "myCollectionArtwork",
           context_screen_owner_id: "someInternalId",
           context_screen_owner_slug: "someSlug",
@@ -288,6 +290,7 @@ describe("MyCollectionWhySell", () => {
         expect(trackEvent).toHaveBeenCalledWith({
           action: "tappedLearnMore",
           context_module: "myCollectionArtworkAbout",
+          context_screen: "MyCollectionArtworkAbout",
           context_screen_owner_type: "myCollectionArtwork",
           context_screen_owner_id: "someInternalId",
           context_screen_owner_slug: "someSlug",
@@ -314,6 +317,7 @@ describe("MyCollectionWhySell", () => {
         expect(trackEvent).toHaveBeenCalledWith({
           action: "tappedLearnMore",
           context_module: "myCollectionArtworkInsights",
+          context_screen: "MyCollectionArtworkInsights",
           context_screen_owner_type: "myCollectionArtwork",
           context_screen_owner_id: "someInternalId",
           context_screen_owner_slug: "someSlug",

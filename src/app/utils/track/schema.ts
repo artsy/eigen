@@ -116,6 +116,8 @@ export enum PageNames {
   TagPage = "Tag",
   Home = "Home",
   InquiryPage = "Inquiry",
+  MyCollectionArtworkInsights = "MyCollectionArtworkInsights",
+  MyCollectionArtworkAbout = "MyCollectionArtworkAbout",
   PartnerPage = "PartnerPage",
   SavesAndFollows = "SavesAndFollows",
   Search = "Search",
