@@ -2275,6 +2275,9 @@ type AttributionClass {
   # Shortest form of attribution class display
   name: String
 
+  # Short descriptive phrase for attribution class without punctuation as array of strings
+  shortArrayDescription: [String]
+
   # Short descriptive phrase for attribution class without punctuation
   shortDescription: String
 }
