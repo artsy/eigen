@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType, tappedLink } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
 import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -9,11 +9,10 @@ import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Flex, LinkText, Spacer, Text } from "palette"
+import { Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { Tab } from "../Favorites/Favorites"
 
 interface Props {
   me: AuctionResultsForArtistsYouFollow_me | null
@@ -83,24 +82,12 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
 }
 
 export const ListHeader: React.FC = () => {
-  const { trackEvent } = useTracking()
   return (
     <Flex mx={2}>
       <Text variant="lg" mb={1}>
         Latest Auction Results
       </Text>
-      <Text mb={2}>
-        Get all the latest prices achieved at auctions for the {""}
-        <LinkText
-          onPress={() => {
-            trackEvent(tracks.tappedLink)
-            navigate("/favorites", { passProps: { initialTab: Tab.artists } })
-          }}
-        >
-          artists you follow
-        </LinkText>
-        .
-      </Text>
+      <Text mb={2}>Get all the latest prices achieved at auctions for the artists you follow.</Text>
     </Flex>
   )
 }
@@ -185,10 +172,5 @@ export const tracks = {
     destination_screen_owner_type: OwnerType.auctionResult,
     destination_screen_owner_id: auctionResultId,
     type: "thumbnail",
-  }),
-  tappedLink: tappedLink({
-    contextModule: ContextModule.auctionResultsForArtistsYouFollow,
-    contextScreenOwnerType: OwnerType.auctionResultsForArtistsYouFollow,
-    destinationPath: "/favorites",
   }),
 }
