@@ -6,7 +6,7 @@ import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import "moment-timezone"
-import { _test_THEMES, Sans, Theme } from "palette"
+import { _test_THEMES, Text, Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
@@ -289,7 +289,7 @@ describe("CommercialInformation", () => {
         />
       </Wrapper>
     )
-    expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"At I'm a Gallery"`)
+    expect(component.find(Text).at(1).render().text()).toMatchInlineSnapshot(`"At I'm a Gallery"`)
   })
 
   it("renders consign with Artsy text", () => {
@@ -303,7 +303,7 @@ describe("CommercialInformation", () => {
       </Wrapper>
     )
 
-    expect(component.find(Sans).at(2).render().text()).toMatchInlineSnapshot(
+    expect(component.find(Text).at(2).render().text()).toMatchInlineSnapshot(
       `"Want to sell a work by Santa Claus? Consign with Artsy."`
     )
   })

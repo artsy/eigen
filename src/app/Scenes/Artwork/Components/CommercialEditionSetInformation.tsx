@@ -1,6 +1,6 @@
 import { CommercialEditionSetInformation_artwork } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { Box, Flex, RadioButton, Sans, Spacer } from "palette"
+import { Box, Flex, RadioButton, Sans, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -82,27 +82,19 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
             )
           })}
         </Flex>
-        {!!selectedEdition! /* STRICTNESS_MIGRATION */.editionOf && (
+        {!!selectedEdition?.editionOf && (
           <>
             <Spacer mb={1} />
             <Sans size="3t" color="black30">
-              {
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                selectedEdition.editionOf
-              }
+              {selectedEdition.editionOf}
             </Sans>
           </>
         )}
-        {!!selectedEdition! /* STRICTNESS_MIGRATION */.saleMessage && (
+        {!!selectedEdition?.saleMessage && (
           <>
             <Spacer mb={2} />
 
-            <Sans size="4" weight="medium" color="black100">
-              {
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                selectedEdition.saleMessage
-              }
-            </Sans>
+            <Text variant="lg">{selectedEdition.saleMessage}</Text>
           </>
         )}
         <CommercialPartnerInformation artwork={artwork} />
