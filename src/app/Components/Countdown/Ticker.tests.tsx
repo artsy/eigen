@@ -87,6 +87,22 @@ describe("ModernTicker", () => {
       expect(timerText.props.color).toEqual("blue100")
     })
 
+    it("shows Bidding Starts In 7 Hours if Bidding is starting in 7 hours BUT NOT THE SAME DAY", () => {
+      const sevenHrs = 1000 * 60 * 60 * 7
+      const startAt = new Date(Date.now() + sevenHrs).toISOString()
+      const todayDuration = moment.duration(sevenHrs)
+      const { getByText } = render(
+        <Theme>
+          <ModernTicker duration={todayDuration} startAt={startAt} />
+        </Theme>
+      )
+
+      const timerText = getByText("Bidding Starts In 7 Hours")
+
+      expect(timerText).toBeTruthy()
+      expect(timerText.props.color).toEqual("blue100")
+    })
+
     it("renders 1 Day Until Bidding Starts in blue when start time is >24 hours but less than 2 days away", () => {
       // 28 hours
       const dayDuration = moment.duration(100800000)
