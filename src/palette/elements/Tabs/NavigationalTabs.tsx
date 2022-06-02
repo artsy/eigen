@@ -29,6 +29,7 @@ export const NavigationalTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, t
         return (
           <Box minWidth={tabWidth} key={label + index}>
             <Tab
+              variant="xs"
               label={label}
               superscript={jsx}
               onPress={() => {

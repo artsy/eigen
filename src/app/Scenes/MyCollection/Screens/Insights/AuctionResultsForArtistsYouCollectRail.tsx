@@ -32,6 +32,7 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
   return (
     <Flex pb={2} px={2}>
       <SectionTitle
+        capitalized={false}
         title="Recently Sold at Auction"
         onPress={() => {
           navigate("/auction-results-for-artists-you-collect")

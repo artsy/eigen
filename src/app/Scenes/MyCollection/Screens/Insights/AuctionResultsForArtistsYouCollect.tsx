@@ -3,7 +3,7 @@ import { AuctionResultsForArtistsYouCollectQuery } from "__generated__/AuctionRe
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Spacer, Text } from "palette"
+import { Flex, Text } from "palette"
 import React, { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -39,21 +39,18 @@ export const ListOfresults: React.FC<{}> = () => {
   }
 
   return (
-    <Flex height="100%">
-      <Spacer mb={5} />
-      <Flex flex={1}>
-        <AuctionResultsList
-          auctionResults={auctionResults}
-          refreshing={refreshing}
-          handleRefresh={handleRefresh}
-          onEndReached={handleLoadMore}
-          onItemPress={(item: any) => {
-            navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-          }}
-          ListHeaderComponent={ListHeader}
-          isLoadingNext={isLoadingNext}
-        />
-      </Flex>
+    <Flex flex={1}>
+      <AuctionResultsList
+        auctionResults={auctionResults}
+        refreshing={refreshing}
+        handleRefresh={handleRefresh}
+        onEndReached={handleLoadMore}
+        onItemPress={(item: any) => {
+          navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+        }}
+        ListHeaderComponent={ListHeader}
+        isLoadingNext={isLoadingNext}
+      />
     </Flex>
   )
 }
@@ -74,7 +71,7 @@ export const ListHeader: React.FC = () => {
       <Text variant="lg" mb={1}>
         Latest Auction Results
       </Text>
-      <Text mb={2}>Stay up-to-date on the prices your artists achieve at auctions.</Text>
+      <Text>Stay up-to-date on the prices your artists achieve at auctions.</Text>
     </Flex>
   )
 }

@@ -1,4 +1,4 @@
-import { Text } from "palette"
+import { Text, TextProps } from "palette"
 import { useColor } from "palette/hooks"
 import React from "react"
 import { ViewProps } from "react-native"
@@ -11,6 +11,7 @@ export interface TabProps {
   style?: ViewStyle
   onPress: () => void
   onLayout: ViewProps["onLayout"]
+  variant?: TextProps["variant"]
 }
 
 export const Tab: React.FC<TabProps> = ({
@@ -20,6 +21,7 @@ export const Tab: React.FC<TabProps> = ({
   onLayout,
   onPress,
   style,
+  variant,
 }) => {
   const color = useColor()
   return (
@@ -37,7 +39,7 @@ export const Tab: React.FC<TabProps> = ({
           }}
         >
           <Text
-            fontSize={16}
+            {...(variant ? { variant } : { fontSize: 16 })}
             color={active ? color("black100") : pressed ? color("blue100") : color("black60")}
             style={{
               textDecorationLine: pressed ? "underline" : "none",

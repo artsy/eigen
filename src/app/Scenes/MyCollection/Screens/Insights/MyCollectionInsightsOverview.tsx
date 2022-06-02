@@ -17,7 +17,7 @@ export const MyCollectionInsightsOverview: React.FC<MyCollectionInsightsOverview
   )
 
   return (
-    <Flex pt={1} px={2} pb={3} flexDirection="row">
+    <Flex pt={2} px={2} pb={3} flexDirection="row">
       <Flex flex={1} alignSelf="flex-start">
         <Text variant="sm">Total Artworks</Text>
         <Text color="blue100" variant="xl">

@@ -3,11 +3,12 @@ import {
   AuctionResultListItem_auctionResult$key,
 } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
+import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
 import { groupBy } from "lodash"
 import moment from "moment"
 import { Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
-import { RefreshControl, SectionList, SectionListData } from "react-native"
+import { Animated, RefreshControl, SectionListData } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { AuctionResultListItemFragmentContainer } from "./Lists/AuctionResultListItem"
 import Spinner from "./Spinner"
@@ -48,9 +49,19 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
       return { sectionTitle, data }
     })
 
+  const { headerElement, scrollProps } = useStickyScrollHeader({
+    header: (
+      <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
+        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
+          Latest Auction Results
+        </Text>
+      </Flex>
+    ),
+  })
+
   return (
-    <Flex flexDirection="column" justifyContent="space-between" height="100%">
-      <SectionList
+    <Flex flexDirection="column" justifyContent="space-between" pt={6}>
+      <Animated.SectionList
         testID="Results_Section_List"
         sections={groupedAuctionResultSections}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
@@ -63,12 +74,12 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
             <Text my="2" variant="md">
               {sectionTitle}
             </Text>
-            <Separator borderColor="black10" />
           </Flex>
         )}
-        renderItem={({ item }) =>
+        renderItem={({ item, index }) =>
           item ? (
             <AuctionResultListItemFragmentContainer
+              first={index === 0}
               auctionResult={item}
               showArtistName
               onPress={() => onItemPress(item)}
@@ -85,7 +96,10 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
           ) : null
         }
         style={{ width: useScreenDimensions().width, paddingBottom: 40 }}
+        {...scrollProps}
       />
+
+      {headerElement}
     </Flex>
   )
 }
