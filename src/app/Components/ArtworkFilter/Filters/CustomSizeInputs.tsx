@@ -18,7 +18,7 @@ export interface CustomSizeInputsProps {
  * 123.
  * 123.45
  */
-const DECIMAL_REGEX = /^(\d+\.?\d*)?$/
+const DECIMAL_REGEX = /^(\d+\.?\d{0,2})?$/
 
 // Helpers
 const getValue = (value: Numeric) => {

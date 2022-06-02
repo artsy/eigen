@@ -77,6 +77,23 @@ describe("CustomSizeInputs", () => {
     })
   })
 
+  it("should allow to enter only 2 digits after floating point", () => {
+    const mockOnChange = jest.fn()
+    const { getByDisplayValue, getByA11yLabel } = renderWithWrappersTL(
+      <TestRenderer onChange={mockOnChange} range={{ min: 1, max: 2 }} />
+    )
+
+    // Min input
+    fireEvent.changeText(getByA11yLabel("Minimum Label Input"), "5.5555")
+    expect(getByDisplayValue("1")).toBeTruthy()
+    expect(mockOnChange).toBeCalledTimes(0)
+
+    // Max input
+    fireEvent.changeText(getByA11yLabel("Maximum Label Input"), "10.5555")
+    expect(getByDisplayValue("2")).toBeTruthy()
+    expect(mockOnChange).toBeCalledTimes(0)
+  })
+
   it("should NOT allow to enter values with special chars", () => {
     const mockOnChange = jest.fn()
     const { getByDisplayValue, getByA11yLabel } = renderWithWrappersTL(
