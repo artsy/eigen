@@ -84,7 +84,7 @@ export const MyCollectionArtworkListItem: React.FC<{
           {!!title && (
             <Text variant="xs" italic color="black60" testID="artwork-title">
               {title}
-              <Text variant="xs" color="black60" testID="artwork-year">
+              <Text variant="xs" color="black60" testID="artwork-date">
                 {date ? `, ${date}` : ""}
               </Text>
             </Text>
