@@ -8663,11 +8663,37 @@ type IdentityVerification {
     timezone: String
   ): String
 
+  # The overrides associated with an identity verification
+  overrides: [IdentityVerificationOverride]
+
+  # The scan references (i.e., results) associated with an identity verification
+  scanReferences: [IdentityVerificationScanReference]
+
   # Where the identity verification is in its lifecycle
   state: String!
 
   # User ID of the identity verification's owner
-  userID: String!
+  userID: String
+}
+
+# A connection to a list of items.
+type IdentityVerificationConnection {
+  # A list of edges.
+  edges: [IdentityVerificationEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type IdentityVerificationEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: IdentityVerification
 }
 
 type IdentityVerificationEmail {
@@ -8695,6 +8721,56 @@ type IdentityVerificationEmailMutationSuccessType {
 union IdentityVerificationEmailMutationType =
     IdentityVerificationEmailMutationFailureType
   | IdentityVerificationEmailMutationSuccessType
+
+type IdentityVerificationOverride {
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Overridden state
+  newState: String!
+
+  # Un-overridden state
+  oldState: String!
+  reason: String!
+
+  # User ID of the override's creator
+  userID: String
+}
+
+type IdentityVerificationScanReference {
+  extractedFirstName: String
+  extractedIdFailReason: String
+  extractedLastName: String
+  extractedSimilarityFailReason: String
+  finishedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  jumioID: String!
+  result: String
+}
 
 type Image {
   aspectRatio: Float!
@@ -11962,6 +12038,18 @@ type Query {
 
   # Home screen content
   homePage: HomePage
+
+  # A connection of identity verifications.
+  identityVerificationsConnection(
+    after: String
+    before: String
+    email: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+    userId: String
+  ): IdentityVerificationConnection
   job(id: ID!): Job!
   jobs: [Job!]!
   marketingCategories: [MarketingCollectionCategory!]!
@@ -15198,6 +15286,18 @@ type Viewer {
 
   # Home screen content
   homePage: HomePage
+
+  # A connection of identity verifications.
+  identityVerificationsConnection(
+    after: String
+    before: String
+    email: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+    userId: String
+  ): IdentityVerificationConnection
   job(id: ID!): Job!
   jobs: [Job!]!
   marketingCollections(
