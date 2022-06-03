@@ -219,7 +219,7 @@ describe("extractPillsFromCriteria", () => {
 
   it("should correctly extract color pills", () => {
     const attributes: SearchCriteriaAttributes = {
-      colors: ["pink", "orange", "darkorange"],
+      colors: ["pink", "orange"],
     }
     const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
@@ -233,11 +233,6 @@ describe("extractPillsFromCriteria", () => {
         label: "Orange",
         paramName: SearchCriteria.colors,
         value: "orange",
-      },
-      {
-        label: "Dark Orange",
-        paramName: SearchCriteria.colors,
-        value: "darkorange",
       },
     ])
   })
