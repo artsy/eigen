@@ -507,7 +507,11 @@ describe("MyCollectionArtworkForm", () => {
       })
     })
 
-    describe("when AREnableMyCollectionInsights is not enabled", () => {
+    describe("when AREnableMyCollectionInsights is disabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionInsights: false })
+      })
+
       it("displays normal loading screen", async () => {
         const assetCredentials = {
           signature: "some-signature",
