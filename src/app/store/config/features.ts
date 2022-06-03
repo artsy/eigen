@@ -211,14 +211,16 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableCompleteProfileMessage",
   },
   AREnableMyCollectionInsights: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable My Collection insights tab",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionInsights",
   },
   AREnableMyCollectionInsightsPhase1Part1: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable MyC insights Ph 1 Pt 1",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part1",
   },
   AREnableMyCollectionInsightsPhase1Part2: {
     readyForRelease: false,
