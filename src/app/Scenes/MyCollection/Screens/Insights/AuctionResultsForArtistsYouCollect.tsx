@@ -69,9 +69,9 @@ export const ListHeader: React.FC = () => {
   return (
     <Flex mx={2}>
       <Text variant="lg" mb={0.5}>
-        Latest Auction Results
+        Recently Sold at Auction
       </Text>
-      <Text>Stay up-to-date on the prices your artists achieve at auctions.</Text>
+      <Text variant="xs">Stay up-to-date on the prices your artists achieve at auctions.</Text>
     </Flex>
   )
 }
