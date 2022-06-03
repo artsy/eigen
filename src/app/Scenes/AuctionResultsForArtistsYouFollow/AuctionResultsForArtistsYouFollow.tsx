@@ -9,7 +9,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Flex, Spacer, Text } from "palette"
+import { Flex, Text } from "palette"
 import React, { useState } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -59,22 +59,19 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
       })}
     >
       <ArtworkFiltersStoreProvider>
-        <Flex height="100%">
-          <Spacer mb={5} />
-          <Flex flex={1}>
-            <AuctionResultsList
-              auctionResults={auctionResults}
-              refreshing={refreshing}
-              handleRefresh={handleRefresh}
-              onEndReached={loadMoreArtworks}
-              onItemPress={(item: any) => {
-                trackEvent(tracks.tapAuctionGroup(item.internalID))
-                navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
-              }}
-              ListHeaderComponent={ListHeader}
-              isLoadingNext={loadingMoreData}
-            />
-          </Flex>
+        <Flex flex={1}>
+          <AuctionResultsList
+            auctionResults={auctionResults}
+            refreshing={refreshing}
+            handleRefresh={handleRefresh}
+            onEndReached={loadMoreArtworks}
+            onItemPress={(item: any) => {
+              trackEvent(tracks.tapAuctionGroup(item.internalID))
+              navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+            }}
+            ListHeaderComponent={ListHeader}
+            isLoadingNext={loadingMoreData}
+          />
         </Flex>
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTrackingWithCohesionSchema>
