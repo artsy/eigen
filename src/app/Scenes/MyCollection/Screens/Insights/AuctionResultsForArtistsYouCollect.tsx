@@ -50,6 +50,7 @@ export const ListOfresults: React.FC<{}> = () => {
         }}
         ListHeaderComponent={ListHeader}
         isLoadingNext={isLoadingNext}
+        floatingHeaderTitle="Recently Sold at Auctions"
       />
     </Flex>
   )
