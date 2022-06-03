@@ -1,4 +1,4 @@
-import { GlobalStore, useIsStaging } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag, useIsStaging } from "app/store/GlobalStore"
 import { Flex, Separator, useTheme } from "palette"
 import React, { useEffect } from "react"
 import useInterval from "react-use/lib/useInterval"
@@ -22,6 +22,7 @@ export const BottomTabs: React.FC = () => {
   }, 1000 * 60)
 
   const isStaging = useIsStaging()
+  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   return (
     <Flex>
@@ -35,7 +36,10 @@ export const BottomTabs: React.FC = () => {
         <BottomTabsButton tab="search" />
         <BottomTabsButton tab="inbox" badgeCount={unreadConversationCount} />
         <BottomTabsButton tab="sell" />
-        <BottomTabsButton tab="profile" visualClue="MyCollectionInsights" />
+        <BottomTabsButton
+          tab="profile"
+          visualClue={enableMyCollectionInsights ? "MyCollectionInsights" : undefined}
+        />
       </Flex>
     </Flex>
   )
