@@ -15,7 +15,7 @@ export const MarketSignalsSectionHeader: React.FC<{}> = () => {
       </Touchable>
       <InfoModal title="Market Signals" visible={isVisible} onDismiss={() => setIsVisible(false)}>
         <Flex mt={1}>
-          <Text caps>what are artsy insights</Text>
+          <Text caps>what are artsy insights?</Text>
           <Text>
             Artsy insights are free, at-a glance insights into the market and career of artists in
             your collection.
