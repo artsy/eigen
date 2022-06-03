@@ -71,6 +71,7 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
             }}
             ListHeaderComponent={ListHeader}
             isLoadingNext={loadingMoreData}
+            floatingHeaderTitle="Latest Auction Results"
           />
         </Flex>
       </ArtworkFiltersStoreProvider>

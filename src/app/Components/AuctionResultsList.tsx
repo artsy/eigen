@@ -23,6 +23,7 @@ interface AuctionResultsListProps {
   ListHeaderComponent?: React.FC
   onItemPress: (item: AuctionResultListItem_auctionResult) => void
   isLoadingNext: boolean
+  floatingHeaderTitle?: string
 }
 
 interface SectionT {
@@ -37,6 +38,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
   ListHeaderComponent,
   onItemPress,
   isLoadingNext,
+  floatingHeaderTitle,
 }) => {
   const groupedAuctionResults = groupBy(auctionResults, (item) =>
     moment(item!.saleDate!).format("YYYY-MM")
@@ -53,7 +55,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
     header: (
       <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
         <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
-          Latest Auction Results
+          {floatingHeaderTitle}
         </Text>
       </Flex>
     ),
