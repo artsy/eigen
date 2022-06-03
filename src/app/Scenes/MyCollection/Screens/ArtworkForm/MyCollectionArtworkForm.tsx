@@ -358,13 +358,15 @@ const addArtworkMessages = async ({
       addClue("AddedArtworkWithInsightsMessage_MyCTab")
       addClue("AddedArtworkWithInsightsVisualClueDot")
     } else {
+      setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
       addClue("AddedArtworkWithInsightsMessage_InsightsTab")
     }
   } else {
-    addClue(
-      sourceTab === Tab.collection
-        ? "AddedArtworkWithoutInsightsMessage_MyCTab"
-        : "AddedArtworkWithoutInsightsMessage_InsightsTab"
-    )
+    if (sourceTab === Tab.collection) {
+      addClue("AddedArtworkWithoutInsightsMessage_MyCTab")
+    } else {
+      setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
+      addClue("AddedArtworkWithoutInsightsMessage_InsightsTab")
+    }
   }
 }
