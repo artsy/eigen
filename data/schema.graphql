@@ -1122,7 +1122,6 @@ type ArticleSponsor {
 }
 
 type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Searchable {
-  activeSecondaryMarket: Boolean
   alternateNames: [String]
   articlesConnection(
     after: String
@@ -1485,13 +1484,13 @@ type ArtistHighlights {
 
 type ArtistInsight {
   # List of entities relevant to the insight.
-  entities: [String]
+  entities: [String!]!
 
   # Label to use when displaying the insight.
-  label: String
+  label: String!
 
   # The type of insight.
-  type: String
+  type: String!
 }
 
 type ArtistMeta {
