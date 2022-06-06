@@ -1,6 +1,8 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import { Fair_fair } from "__generated__/Fair_fair.graphql"
 import { FairQuery } from "__generated__/FairQuery.graphql"
+import { FairReverseImageSearchQuery } from "__generated__/FairReverseImageSearchQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -11,13 +13,18 @@ import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "a
 import { navigate } from "app/navigation/navigate"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { showPhotoActionSheet } from "app/utils/requestPhotos"
+import { resizeImage } from "app/utils/resizeImage"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { AddIcon, Box, Flex, Separator, Spacer } from "palette"
+import { ReactNativeFile } from "extract-files"
+import { AddIcon, Box, Flex, Separator, Spacer, Spinner } from "palette"
 import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, TouchableOpacity, View } from "react-native"
+import { Alert, FlatList, Platform, TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
+import { fetchQuery } from "relay-runtime"
+import RNFetchBlob from "rn-fetch-blob"
 import { useScreenDimensions } from "shared/hooks"
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
 import { FairCollectionsFragmentContainer } from "./Components/FairCollections"
@@ -60,7 +67,9 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
   const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [searchingByImage, setSearchingByImage] = useState(false)
   const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")
+  const { showActionSheetWithOptions } = useActionSheet()
 
   const sections = isActive
     ? [
@@ -168,6 +177,98 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
     handleFilterArtworksModal()
   }
 
+  const handleSeachByImage = async () => {
+    try {
+      const images = await showPhotoActionSheet(showActionSheetWithOptions, true, false)
+      const image = images[0]
+      let resizedWidth = image.width
+      let resizedHeight = image.height
+
+      /**
+       * For optimal performance of TinEye, image should be 600px in size in the smallest dimension
+       * For example, image with 1600x1200 size should be resized to 800x600
+       */
+      if (image.width > image.height) {
+        resizedHeight = 600
+      } else {
+        resizedWidth = 600
+      }
+
+      setSearchingByImage(true)
+
+      const resizedImage = await resizeImage({
+        uri: image.path,
+        width: resizedWidth,
+        height: resizedHeight,
+        quality: 85,
+        onlyScaleDown: true,
+      })
+
+      /**
+       * Images posted to server via fetch get their size inflated significantly for iOS.
+       * This is a small hack to solve this problem
+       *
+       * You can find more context here: https://github.com/facebook/react-native/issues/27099
+       */
+      if (Platform.OS === "ios") {
+        const updatedPath = replaceFilenameInValue(resizedImage.path, resizedImage.name)
+        const updatedURI = replaceFilenameInValue(resizedImage.uri, resizedImage.name)
+        const updatedFilename = replaceFilenameInValue(resizedImage.name, resizedImage.name)
+
+        await RNFetchBlob.fs.mv(resizedImage.path, updatedPath)
+
+        resizedImage.path = updatedPath
+        resizedImage.uri = updatedURI
+        resizedImage.name = updatedFilename
+      }
+
+      const fileImage = new ReactNativeFile({
+        uri: resizedImage.uri,
+        name: resizedImage.name,
+        type: "image/jpeg",
+      })
+
+      const execute = fetchQuery<FairReverseImageSearchQuery>(
+        defaultEnvironment,
+        graphql`
+          query FairReverseImageSearchQuery($file: Upload!) {
+            reverseImageSearch(image: $file) {
+              results {
+                matchPercent
+                artwork {
+                  href
+                }
+              }
+            }
+          }
+        `,
+        {
+          file: fileImage,
+        }
+      )
+      const response = await execute.toPromise()
+      const imageResults = response?.reverseImageSearch?.results ?? []
+
+      if (imageResults.length === 0) {
+        Alert.alert(
+          "Artwork Not Found",
+          "We couldn’t find an artwork based on your photo. Please try again"
+        )
+      }
+
+      const sortedImageResults = [...imageResults].sort(
+        (asc, desc) => desc!.matchPercent - asc!.matchPercent
+      )
+
+      navigate(sortedImageResults[0]!.artwork!.href!)
+    } catch (error) {
+      console.error(error)
+      Alert.alert("Something went wrong", (error as Error).message)
+    } finally {
+      setSearchingByImage(false)
+    }
+  }
+
   const hideBackButtonOnScroll = useHideBackButtonOnScroll()
 
   return (
@@ -268,7 +369,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       {!!isImageSearchEnabled && (
         <TouchableOpacity
           style={{ position: "absolute", top: 33, right: 12 }}
-          onPress={() => navigate("/reverse-search-image-results")}
+          onPress={handleSeachByImage}
+          disabled={searchingByImage}
         >
           <Box
             width={CAMERA_ICON_CONTAINER_SIZE}
@@ -278,7 +380,11 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
             justifyContent="center"
             alignItems="center"
           >
-            <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
+            {searchingByImage ? (
+              <Spinner size="small" />
+            ) : (
+              <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
+            )}
           </Box>
         </TouchableOpacity>
       )}
@@ -363,3 +469,7 @@ export const FairPlaceholder: React.FC = () => (
     <PlaceholderGrid />
   </Flex>
 )
+
+const replaceFilenameInValue = (value: string, filename: string) => {
+  return value.replace(filename, `${filename}.toUpload`)
+}
