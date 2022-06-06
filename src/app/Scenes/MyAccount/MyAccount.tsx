@@ -12,10 +12,11 @@ import { useGoogleLink } from "app/utils/LinkedAccounts/google"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Text } from "palette"
+import { Box, Button, Flex, Text } from "palette"
 import React from "react"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { color } from "styled-system"
 
 const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay }) => {
   const hasOnlyOneAuth = me.authentications.length + (me.hasPassword ? 1 : 0) < 2
@@ -186,6 +187,11 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
             )}
           </Flex>
         )}
+        <Flex alignItems="center">
+          <Button variant="text">
+            <Text color="red100">Delete My Account</Text>
+          </Button>
+        </Flex>
       </ScrollView>
     </PageWithSimpleHeader>
   )
