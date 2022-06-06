@@ -104,12 +104,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableQueriesPrefetching",
   },
-  ARShowLinkedAccounts: {
-    readyForRelease: true,
-    description: "Show linked social accounts",
-    showInAdminMenu: true,
-    echoFlagKey: "ARShowLinkedAccounts",
-  },
   ARAllowLinkSocialAccountsOnSignUp: {
     readyForRelease: true,
     description: "Allow linking of social accounts on sign up",
