@@ -18,6 +18,7 @@ import { fetchQuery, graphql } from "relay-runtime"
 import { MyCollectionArtworkUploadMessages } from "../ArtworkForm/MyCollectionArtworkUploadMessages"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
+import { AverageSalePriceRail } from "./AverageSalePriceRail"
 import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
@@ -97,6 +98,8 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const renderContent = () => {
     return (
       <>
+        <AverageSalePriceRail />
+
         <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
         {hasMarketSignals && !!enablePhase1 && (
           <>
