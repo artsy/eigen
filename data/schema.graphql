@@ -4555,6 +4555,7 @@ type CommerceOrderStateChangedEvent implements CommerceEventInterface {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
+  orderUpdateState: String
   state: CommerceOrderStateEnum!
   stateReason: String
 }
