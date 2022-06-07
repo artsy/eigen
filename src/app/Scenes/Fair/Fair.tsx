@@ -254,6 +254,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           "Artwork Not Found",
           "We couldn’t find an artwork based on your photo. Please try again"
         )
+        return
       }
 
       const sortedImageResults = [...imageResults].sort(
