@@ -3,7 +3,7 @@ import React from "react"
 
 interface AuctionResultsMidEstimateProps {
   value: string
-  shortDescription: string
+  shortDescription?: string
   textVariant?: TextProps["variant"]
 }
 
@@ -27,7 +27,8 @@ export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps>
         <DecreaseIcon height={10} fill={color} />
       )}
       <Text variant={textVariant} color={color}>
-        {new Intl.NumberFormat().format(Number(value.replace(/%|-/gm, "")))}% {shortDescription}
+        {new Intl.NumberFormat().format(Number(value.replace(/%|-/gm, "")))}%
+        {!!shortDescription && ` ${shortDescription}`}
       </Text>
     </Flex>
   )
