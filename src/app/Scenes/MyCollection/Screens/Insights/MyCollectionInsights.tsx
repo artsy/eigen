@@ -27,7 +27,8 @@ import { MyCollectionInsightsIncompleteMessage } from "./MyCollectionMessages"
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const { showVisualClue } = useVisualClue()
   const space = useSpace()
-  const enablePhase1 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part1")
+  const enablePhase1Part1 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part1")
+  const enablePhase1Part2 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part2")
 
   const [areInsightsIncomplete, setAreInsightsIncomplete] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -98,13 +99,12 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const renderContent = () => {
     return (
       <>
-        <AverageSalePriceRail />
-
         <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
-        {hasMarketSignals && !!enablePhase1 && (
+        {hasMarketSignals /* || average sale price data */ && (
           <>
             <MarketSignalsSectionHeader />
-            <AuctionResultsForArtistsYouCollectRail me={data.me!} />
+            {!!enablePhase1Part1 && <AuctionResultsForArtistsYouCollectRail me={data.me!} />}
+            {!!enablePhase1Part2 && <AverageSalePriceRail />}
             {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
             <ActivateMoreMarketInsightsBanner />
           </>
