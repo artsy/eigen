@@ -85,11 +85,6 @@ describe(MyAccountQueryRenderer, () => {
   })
 
   describe("When ShowLinkedAccounts", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ ARShowLinkedAccounts: true })
-    })
-    afterEach(() => jest.clearAllMocks())
-
     it("Shows linked accounts section when user does not have 2FA enabled AND has linked accounts", () => {
       const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
