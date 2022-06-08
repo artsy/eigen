@@ -8,6 +8,10 @@ import React from "react"
 import { CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
 describe("CommercialPartnerInformation", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
+  })
+
   it("renders all seller information when work is for sale and is not in a closed auction", () => {
     const component = mount(
       <GlobalStoreProvider>
