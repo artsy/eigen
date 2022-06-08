@@ -12787,6 +12787,7 @@ type Sale implements Node {
     # List of sale artwork internal IDs to fetch
     internalIDs: [ID]
     last: Int
+    status: SaleArtworkStatus
   ): SaleArtworkConnection
   saleType: String
 
@@ -13107,6 +13108,11 @@ type SaleArtworksConnection implements ArtworkConnectionInterface {
   # Information to aid in pagination.
   pageInfo: PageInfo!
   totalCount: Int
+}
+
+enum SaleArtworkStatus {
+  CLOSED
+  OPEN
 }
 
 type SaleCascadingEndTime {
