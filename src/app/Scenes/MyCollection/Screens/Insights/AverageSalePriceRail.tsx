@@ -11,7 +11,6 @@ const item2 = {
       url: "https://d2v80f5yrouhh2.cloudfront.net/EBrAWqoP97vgCzSdnlRKgg/thumbnail.jpg",
     },
   },
-  performance: { mid: "-12%" },
   priceRealized: { cents: 1100000, display: "€11,000", displayUSD: "US$11,806" },
   title: "Some title, 1234",
   medium: "Painting",

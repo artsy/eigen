@@ -85,9 +85,6 @@ export const AverageSalePriceListItem: React.FC<Props> = ({
               <Text variant="xs" fontWeight="500" testID="price">
                 {estimatedArtwork.priceRealized?.displayUSD}
               </Text>
-              {!!estimatedArtwork.performance?.mid && (
-                <AuctionResultsMidEstimate value={estimatedArtwork.performance.mid} />
-              )}
             </Flex>
           </Flex>
         </Flex>
