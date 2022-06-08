@@ -59,7 +59,7 @@ export const ListOfresults: React.FC<{}> = () => {
 export const AuctionResultsForArtistsYouCollect: React.FC = () => {
   return (
     <Suspense
-      fallback={<LoadingSkeleton title="Recently Sold At Auctions" listHeader={<ListHeader />} />}
+      fallback={<LoadingSkeleton title="Recently Sold at Auctions" listHeader={<ListHeader />} />}
     >
       <ListOfresults />
     </Suspense>
@@ -69,7 +69,7 @@ export const AuctionResultsForArtistsYouCollect: React.FC = () => {
 export const ListHeader: React.FC = () => {
   return (
     <Flex mx={2}>
-      <Text variant="lg" mb={1}>
+      <Text variant="lg" mb={0.5}>
         Recently Sold at Auction
       </Text>
       <Text variant="xs">Stay up-to-date on the prices your artists achieve at auctions.</Text>
