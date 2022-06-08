@@ -151,7 +151,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                 >
                   <Flex width={30} height={30} alignItems="center" justifyContent="center">
                     <ListViewIcon
-                      fill={viewOption === "list" ? "black" : "gray"}
+                      color={viewOption === "list" ? "black100" : "black30"}
                       width={18}
                       height={18}
                     />
@@ -164,7 +164,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
               >
                 <Flex width={30} height={30} alignItems="center" justifyContent="center">
                   <GridViewIcon
-                    fill={viewOption === "grid" ? "black" : "gray"}
+                    color={viewOption === "grid" ? "black100" : "black30"}
                     width={18}
                     height={18}
                   />

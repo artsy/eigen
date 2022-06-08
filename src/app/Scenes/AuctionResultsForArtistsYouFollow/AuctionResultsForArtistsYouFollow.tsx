@@ -82,10 +82,12 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
 export const ListHeader: React.FC = () => {
   return (
     <Flex mx={2}>
-      <Text variant="lg" mb={1}>
+      <Text variant="lg" mb={0.5}>
         Latest Auction Results
       </Text>
-      <Text mb={2}>Get all the latest prices achieved at auctions for the artists you follow.</Text>
+      <Text variant="xs">
+        Get all the latest prices achieved at auctions for the artists you follow.
+      </Text>
     </Flex>
   )
 }

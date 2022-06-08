@@ -12047,6 +12047,12 @@ type Query {
   # Home screen content
   homePage: HomePage
 
+  # An identity verification that the user has access to
+  identityVerification(
+    # ID of the IdentityVerification
+    id: String!
+  ): IdentityVerification
+
   # A connection of identity verifications.
   identityVerificationsConnection(
     after: String
@@ -15294,6 +15300,12 @@ type Viewer {
 
   # Home screen content
   homePage: HomePage
+
+  # An identity verification that the user has access to
+  identityVerification(
+    # ID of the IdentityVerification
+    id: String!
+  ): IdentityVerification
 
   # A connection of identity verifications.
   identityVerificationsConnection(

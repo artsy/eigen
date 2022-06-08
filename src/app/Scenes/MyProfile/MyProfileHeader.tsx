@@ -108,11 +108,11 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
       </Flex>
 
       <Flex px={2} mt={2}>
-        <Join separator={<Spacer my={0.5} />}>
+        <Join separator={<Spacer mb={0.5} />}>
           {!!me?.location?.display && (
             <Flex flexDirection="row" alignItems="center">
               <MapPinIcon width={ICON_SIZE} height={ICON_SIZE} />
-              <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
+              <Text variant="xs" color={color("black100")} px={0.5}>
                 {me.location.display}
               </Text>
             </Flex>
@@ -121,7 +121,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           {!!me?.profession && (
             <Flex flexDirection="row" alignItems="center">
               <BriefcaseIcon width={ICON_SIZE} height={ICON_SIZE} />
-              <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
+              <Text variant="xs" color={color("black100")} px={0.5}>
                 {me.profession}
               </Text>
             </Flex>
@@ -130,7 +130,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           {!!me?.otherRelevantPositions && (
             <Flex flexDirection="row" alignItems="center">
               <MuseumIcon width={ICON_SIZE} height={ICON_SIZE} />
-              <Text variant="xs" color={color("black100")} px={0.5} pb="1px">
+              <Text variant="xs" color={color("black100")} px={0.5}>
                 {me?.otherRelevantPositions}
               </Text>
             </Flex>
@@ -138,7 +138,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
         </Join>
       </Flex>
       {!!me?.bio && (
-        <Text variant="xs" color={color("black100")} px={2} pt={2}>
+        <Text variant="xs" color={color("black100")} px={2} pt={1}>
           {normalizeMyProfileBio(me?.bio)}
         </Text>
       )}
