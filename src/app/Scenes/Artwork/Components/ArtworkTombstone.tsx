@@ -2,11 +2,12 @@ import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
-import { Box, Flex, Sans, Spacer, Text } from "palette"
+import { ArtworkIcon, Box, CertificateIcon, Flex, Sans, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CascadingEndTimesBanner } from "./CascadingEndTimesBanner"
+import { CertificateAuthenticityModal } from "./CertificateAuthenticityModal"
 import { FollowArtistLinkFragmentContainer as FollowArtistLink } from "./FollowArtistLink"
 
 type Artist = NonNullable<NonNullable<ArtworkTombstone_artwork["artists"]>[0]>
@@ -17,6 +18,7 @@ export interface ArtworkTombstoneProps {
 
 export interface ArtworkTombstoneState {
   showingMoreArtists: boolean
+  showAuthenticityCertificateModal: boolean
 }
 
 @track()
@@ -26,6 +28,7 @@ export class ArtworkTombstone extends React.Component<
 > {
   state = {
     showingMoreArtists: false,
+    showAuthenticityCertificateModal: false,
   }
 
   @track(() => ({
@@ -52,6 +55,7 @@ export class ArtworkTombstone extends React.Component<
 
   showMoreArtists = () => {
     this.setState({
+      ...this.state,
       showingMoreArtists: !this.state.showingMoreArtists,
     })
   }
@@ -131,6 +135,7 @@ export class ArtworkTombstone extends React.Component<
       artwork.saleArtwork.lotLabel &&
       artwork.sale &&
       !artwork.sale.isClosed
+    const attributionClass = artwork.attributionClass
 
     return (
       <Box textAlign="left">
@@ -181,19 +186,49 @@ export class ArtworkTombstone extends React.Component<
             {artwork.edition_of}
           </Sans>
         )}
-        {!!artwork.attribution_class && (
-          <Sans color="black60" size="3" mt={1}>
-            <TouchableWithoutFeedback
-              onPress={() => this.handleClassificationTap("/artwork-classifications")}
-            >
-              <Text style={{ textDecorationLine: "underline" }}>
-                {artwork.attribution_class.shortDescription}
+        <Spacer my={1} />
+        {!!attributionClass?.shortArrayDescription &&
+          !!Array.isArray(attributionClass.shortArrayDescription) &&
+          attributionClass.shortArrayDescription.length > 0 && (
+            <Box mt={0.5} flexDirection="row">
+              <ArtworkIcon fill="black60" />
+              <Text color="black60" variant="xs" ml={1}>
+                {attributionClass.shortArrayDescription
+                  .slice(0, attributionClass.shortArrayDescription.length - 1)
+                  .join(" ") + " "}
+                <TouchableWithoutFeedback
+                  onPress={() => this.handleClassificationTap("/artwork-classifications")}
+                >
+                  <Text variant="xs" style={{ textDecorationLine: "underline" }}>
+                    {
+                      attributionClass.shortArrayDescription[
+                        attributionClass.shortArrayDescription.length - 1
+                      ]
+                    }
+                  </Text>
+                </TouchableWithoutFeedback>
+                .
               </Text>
-            </TouchableWithoutFeedback>
-            .
-          </Sans>
+            </Box>
+          )}
+        {!!artwork.certificateOfAuthenticity && (
+          <Box mt={0.5} flexDirection="row">
+            <CertificateIcon fill="black60" />
+            <Text color="black60" variant="xs" ml={1}>
+              This work includes a{" "}
+              <TouchableWithoutFeedback
+                onPress={() =>
+                  this.setState({ ...this.setState, showAuthenticityCertificateModal: true })
+                }
+              >
+                <Text variant="xs" style={{ textDecorationLine: "underline" }}>
+                  {"Certificate of Authenticity"}
+                </Text>
+              </TouchableWithoutFeedback>
+              .
+            </Text>
+          </Box>
         )}
-
         {!!artwork.isInAuction && !artwork.sale?.isClosed && (
           <>
             {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
@@ -215,6 +250,10 @@ export class ArtworkTombstone extends React.Component<
             )}
           </>
         )}
+        <CertificateAuthenticityModal
+          visible={this.state.showAuthenticityCertificateModal}
+          onClose={() => this.setState({ ...this.state, showAuthenticityCertificateModal: false })}
+        />
       </Box>
     )
   }
@@ -235,6 +274,9 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       partner {
         name
       }
+      certificateOfAuthenticity {
+        __typename
+      }
       sale {
         isClosed
         cascadingEndTimeIntervalMinutes
@@ -250,8 +292,8 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
         cm
       }
       edition_of: editionOf
-      attribution_class: attributionClass {
-        shortDescription
+      attributionClass {
+        shortArrayDescription
       }
     }
   `,

@@ -133,7 +133,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
             }}
           />
         </Flex>
-        <Spacer mb={2} />
+        <Spacer mb={4} />
         <Box px={2}>
           <ArtworkTombstone artwork={artwork} />
         </Box>
