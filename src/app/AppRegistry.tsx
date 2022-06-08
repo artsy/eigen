@@ -400,7 +400,7 @@ export const modules = defineModules({
   MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
   MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
-  MyAccountDeleteAccount: reactModule(MyAccountDeleteAccount, { hidesBackButton: true }),
+  MyAccountDeleteAccount: reactModule(MyAccountDeleteAccount),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }),
