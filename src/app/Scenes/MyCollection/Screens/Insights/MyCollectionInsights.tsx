@@ -100,10 +100,10 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     return (
       <>
         <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
-        {hasMarketSignals /* || average sale price data */ && (
+        {hasMarketSignals /* || average sale price data */ && enablePhase1Part1 && (
           <>
             <MarketSignalsSectionHeader />
-            {!!enablePhase1Part1 && <AuctionResultsForArtistsYouCollectRail me={data.me!} />}
+            <AuctionResultsForArtistsYouCollectRail me={data.me!} />
             {!!enablePhase1Part2 && <AverageSalePriceRail />}
             {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
             <ActivateMoreMarketInsightsBanner />
