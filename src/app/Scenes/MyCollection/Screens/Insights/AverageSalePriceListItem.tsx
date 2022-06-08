@@ -1,4 +1,3 @@
-import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
