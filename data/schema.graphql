@@ -2813,6 +2813,23 @@ type BackupSecondFactors {
 # A list of backup second factors or errors
 union BackupSecondFactorsOrErrorsUnion = BackupSecondFactors | Errors
 
+type BankAccount {
+  # Name on the bank account
+  accountHolderName: String
+
+  # Bank name
+  bankName: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Last four characters of the account identifier
+  last4: String!
+}
+
 type Bidder implements Node {
   createdAt(
     format: String
@@ -3377,6 +3394,7 @@ type CommerceBuyOrder implements CommerceOrder {
   orderHistory: [CommerceOrderEventUnion!]!
   orderUpdateState: String
   paymentMethod: CommercePaymentMethodEnum
+  paymentMethodDetails: PaymentMethodUnion
   requestedFulfillment: CommerceRequestedFulfillmentUnion
   seller: CommerceOrderPartyUnion!
   sellerDetails: OrderParty
@@ -4131,6 +4149,7 @@ type CommerceOfferOrder implements CommerceOrder {
   orderHistory: [CommerceOrderEventUnion!]!
   orderUpdateState: String
   paymentMethod: CommercePaymentMethodEnum
+  paymentMethodDetails: PaymentMethodUnion
   requestedFulfillment: CommerceRequestedFulfillmentUnion
   seller: CommerceOrderPartyUnion!
   sellerDetails: OrderParty
@@ -4333,6 +4352,7 @@ interface CommerceOrder {
   orderHistory: [CommerceOrderEventUnion!]!
   orderUpdateState: String
   paymentMethod: CommercePaymentMethodEnum
+  paymentMethodDetails: PaymentMethodUnion
   requestedFulfillment: CommerceRequestedFulfillmentUnion
   seller: CommerceOrderPartyUnion!
   sellerDetails: OrderParty
@@ -11140,6 +11160,8 @@ enum PartnersSortType {
 
 union PartnerTypes = ExternalPartner | Partner
 
+union PaymentMethodUnion = BankAccount | CreditCard | WireTransfer
+
 enum PhoneNumberErrors {
   INVALID_COUNTRY_CODE
   INVALID_NUMBER
@@ -11810,6 +11832,12 @@ type Query {
   # `LOGGED_IN` because we don't know whether or not the authentication is valid
   # (error could be something else).
   authenticationStatus: AuthenticationStatus!
+
+  # A user's bank account
+  bankAccount(
+    # The ID of the bank account
+    id: String!
+  ): BankAccount
   channel(id: ID!): Channel!
 
   # A list of cities
@@ -15169,6 +15197,12 @@ type Viewer {
   # `LOGGED_IN` because we don't know whether or not the authentication is valid
   # (error could be something else).
   authenticationStatus: AuthenticationStatus!
+
+  # A user's bank account
+  bankAccount(
+    # The ID of the bank account
+    id: String!
+  ): BankAccount
   channel(id: ID!): Channel!
 
   # A list of cities
@@ -15765,6 +15799,10 @@ input ViewingRoomSubsectionInput {
   delete: Boolean = false
   image: ARImageInput
   internalID: ID
+}
+
+type WireTransfer {
+  isManualPayment: Boolean!
 }
 
 type YearRange {
