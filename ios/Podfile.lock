@@ -1231,7 +1231,7 @@ SPEC CHECKSUMS:
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
   react-native-appboy-sdk: e4e36787766637d5c60da264b66f4389ed479867
   react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
-  react-native-config: a9b4c57e18a1322de74d052df887535228c9eac7
+  react-native-config: d622ebb3a7c42b072f3f24547badd43147cf84f9
   react-native-cookies: cd92f3824ed1e32a20802e8185101e14bb5b76da
   react-native-fbsdk-next: 19e974b071047b7ed1dad86a9dc3fe77dff76b8c
   react-native-flipper: 8d0ada062fbc2c7460cc0d343aded6fc3f9c90dc
