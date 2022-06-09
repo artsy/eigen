@@ -1,3 +1,4 @@
+import { ModalStack } from "app/navigation/ModalStack"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { postEventToProviders } from "app/utils/track/providers"
 import { isEqual } from "lodash"
@@ -39,7 +40,9 @@ describe("Artist", () => {
   }
 
   const TestWrapper = (props: Record<string, any>) => (
-    <ArtistQueryRenderer artistID="ignored" environment={mockEnvironment} {...props} />
+    <ModalStack>
+      <ArtistQueryRenderer artistID="ignored" environment={mockEnvironment} {...props} />
+    </ModalStack>
   )
 
   it("returns an empty state if artist has no artworks", async () => {

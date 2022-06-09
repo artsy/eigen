@@ -1,6 +1,7 @@
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState, Countdown } from "app/Components/Bidding/Components/Timer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
+import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -21,7 +22,9 @@ const Wrapper: React.FC<{}> = ({ children }) => {
   return (
     <SafeAreaProvider>
       <GlobalStoreProvider>
-        <Theme>{children}</Theme>
+        <ModalStack>
+          <Theme>{children}</Theme>
+        </ModalStack>
       </GlobalStoreProvider>
     </SafeAreaProvider>
   )
@@ -41,11 +44,13 @@ describe("CommercialInformation", () => {
     }
 
     const { queryByText } = renderWithWrappersTL(
-      <CommercialInformationTimerWrapper
-        artwork={ForSaleArtwork as any}
-        me={{ identityVerified: false } as any}
-        refetchArtwork={jest.fn()}
-      />
+      <Wrapper>
+        <CommercialInformationTimerWrapper
+          artwork={ForSaleArtwork as any}
+          me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
+        />
+      </Wrapper>
     )
 
     expect(queryByText("For sale")).toBeTruthy()
@@ -61,11 +66,13 @@ describe("CommercialInformation", () => {
     }
 
     const { queryByText } = renderWithWrappersTL(
-      <CommercialInformationTimerWrapper
-        artwork={ForSaleArtwork as any}
-        me={{ identityVerified: false } as any}
-        refetchArtwork={jest.fn()}
-      />
+      <Wrapper>
+        <CommercialInformationTimerWrapper
+          artwork={ForSaleArtwork as any}
+          me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
+        />
+      </Wrapper>
     )
 
     expect(queryByText("For sale")).toBeFalsy()
@@ -85,12 +92,14 @@ describe("CommercialInformation", () => {
     }
 
     const { queryByText } = renderWithWrappersTL(
-      <CommercialInformationTimerWrapper
-        artwork={Artwork as any}
-        me={{ identityVerified: false } as any}
-        timerState={AuctionTimerState.CLOSED}
-        refetchArtwork={jest.fn()}
-      />
+      <Wrapper>
+        <CommercialInformationTimerWrapper
+          artwork={Artwork as any}
+          me={{ identityVerified: false } as any}
+          timerState={AuctionTimerState.CLOSED}
+          refetchArtwork={jest.fn()}
+        />
+      </Wrapper>
     )
 
     expect(queryByText("For sale")).toBeFalsy()
@@ -207,11 +216,13 @@ describe("CommercialInformation", () => {
     }
 
     const { queryByText } = renderWithWrappersTL(
-      <CommercialInformationTimerWrapper
-        artwork={CommercialInformationArtworkClosedAuction as any}
-        me={{ identityVerified: false } as any}
-        refetchArtwork={jest.fn()}
-      />
+      <Wrapper>
+        <CommercialInformationTimerWrapper
+          artwork={CommercialInformationArtworkClosedAuction as any}
+          me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
+        />
+      </Wrapper>
     )
 
     expect(queryByText("Bidding closed")).toBeTruthy()

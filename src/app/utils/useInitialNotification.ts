@@ -1,5 +1,6 @@
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect, useState } from "react"
+import { Platform } from "react-native"
 import PushNotification from "react-native-push-notification"
 import { handlePendingNotification, handleReceivedNotification } from "./PushNotification"
 
@@ -13,7 +14,7 @@ export function useInitialNotification() {
   )
 
   useEffect(() => {
-    if (isLoggedIn && !hasHandledInitialNotification) {
+    if (isLoggedIn && !hasHandledInitialNotification && Platform.OS === "android") {
       // initial notification is most recent and should be prioritised
       PushNotification.popInitialNotification((notification) => {
         if (notification) {

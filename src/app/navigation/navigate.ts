@@ -1,7 +1,6 @@
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules, ViewOptions } from "app/AppRegistry"
-import { __unsafe_switchTab } from "app/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "app/store/GlobalStore"
@@ -11,6 +10,7 @@ import { visualize } from "app/utils/visualizer"
 import { EventEmitter } from "events"
 import { Linking, Platform } from "react-native"
 import { matchRoute } from "./routes"
+import { saveDevNavigationStateSelectedTab } from "./useReloadedDevNavigationState"
 
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
@@ -137,11 +137,8 @@ export function switchTab(tab: BottomTabType, props?: object) {
   if (props) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
   }
-  if (Platform.OS === "ios") {
-    GlobalStore.actions.bottomTabs.switchTab(tab)
-  } else {
-    __unsafe_switchTab(tab)
-  }
+  LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
+  saveDevNavigationStateSelectedTab(tab)
 }
 
 const tracks = {

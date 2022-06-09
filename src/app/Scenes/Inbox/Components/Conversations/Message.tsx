@@ -35,7 +35,7 @@ export class Message extends React.Component<Props> {
     // download progress bar on.
     const previewAttachment = (reactNodeHandle: number, attachmentID: string) => {
       const attachment = compact(attachments).find(({ internalID }) => internalID === attachmentID)!
-      LegacyNativeModules.ARScreenPresenterModule.presentMediaPreviewController(
+      LegacyNativeModules.ARTNativeScreenPresenterModule.presentMediaPreviewController(
         reactNodeHandle,
         attachment.downloadURL,
         attachment.contentType,

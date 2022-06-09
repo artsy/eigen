@@ -54,7 +54,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
   const viewInAR = () => {
     const [widthIn, heightIn] = [selectedArtwork.widthCm!, selectedArtwork.heightCm!].map(cm2in)
 
-    LegacyNativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(
+    LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
       selectedArtwork.image!.url!,
       widthIn,
       heightIn,

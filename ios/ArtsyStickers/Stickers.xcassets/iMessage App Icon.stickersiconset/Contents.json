@@ -1,0 +1,67 @@
+{
+  "images": [
+    {
+      "size": "60x45",
+      "idiom": "iphone",
+      "filename": "Messages-iPhone-60x45pt@2x.png",
+      "scale": "2x"
+    },
+    {
+      "size": "60x45",
+      "idiom": "iphone",
+      "filename": "Messages-iPhone-60x45pt@3x-1.png",
+      "scale": "3x"
+    },
+    {
+      "size": "67x50",
+      "idiom": "ipad",
+      "filename": "Messages-iPad-67x50pt@2x.png",
+      "scale": "2x"
+    },
+    {
+      "size": "74x55",
+      "idiom": "ipad",
+      "filename": "Messages-iPad-Pro-74x55pt@2x.png",
+      "scale": "2x"
+    },
+    {
+      "size": "27x20",
+      "idiom": "universal",
+      "filename": "Messages27x20pt@2x.png",
+      "scale": "2x",
+      "platform": "ios"
+    },
+    {
+      "size": "27x20",
+      "idiom": "universal",
+      "filename": "Messages27x20pt@3x.png",
+      "scale": "3x",
+      "platform": "ios"
+    },
+    {
+      "size": "32x24",
+      "idiom": "universal",
+      "filename": "Messages32x24pt@2x.png",
+      "scale": "2x",
+      "platform": "ios"
+    },
+    {
+      "size": "32x24",
+      "idiom": "universal",
+      "filename": "Messages32x24pt@3x.png",
+      "scale": "3x",
+      "platform": "ios"
+    },
+    {
+      "size": "1024x768",
+      "idiom": "ios-marketing",
+      "filename": "Messages-App-Store-1024x768pt.png",
+      "scale": "1x",
+      "platform": "ios"
+    }
+  ],
+  "info": {
+    "version": 1,
+    "author": "xcode"
+  }
+}

@@ -1,3 +1,4 @@
+import { ModalStack } from "app/navigation/ModalStack"
 import { switchTab } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
@@ -13,7 +14,9 @@ const trackEvent = useTracking().trackEvent
 const TestWrapper: React.FC<React.ComponentProps<typeof BottomTabsButton>> = (props) => {
   return (
     <GlobalStoreProvider>
-      <BottomTabsButton {...props} />
+      <ModalStack>
+        <BottomTabsButton {...props} />
+      </ModalStack>
     </GlobalStoreProvider>
   )
 }

@@ -48,8 +48,10 @@ static NSString *modalDismissed = @"MODAL_DISMISSED";
 static NSString *stateChanged = @"STATE_CHANGED";
 static NSString *reactStateChanged = @"STATE_CHANGED";
 static NSString *requestNavigation = @"REQUEST_NAVIGATION";
+static NSString *requestModalDismiss = @"REQUEST_MODAL_DISMISS";
 static NSString *eventTracking = @"EVENT_TRACKING";
 static NSString *identifyTracking = @"IDENTIFY_TRACKING";
+
 
 
 @implementation ARNotificationsManager
@@ -155,6 +157,11 @@ RCT_EXPORT_MODULE();
 {
     if (!route) return;
     [self dispatchAfterBootstrap:requestNavigation data:@{@"route": route, @"props": props}];
+}
+
+- (void)requestModalDismiss
+{
+    [self dispatchAfterBootstrap:requestModalDismiss data:@{}];
 }
 
 // Will be called when this module's first listener is added.

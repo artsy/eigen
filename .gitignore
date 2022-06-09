@@ -22,8 +22,7 @@ tmtags
 tmtagsHistory
 config/releasenotes.txt
 Podfile.local
-chairs/
-Artsy.xcodeproj/project.xcworkspace/xcshareddata/
+ios/Artsy.xcodeproj/project.xcworkspace/xcshareddata/
 .vendor/
 compiler_commands.json
 .swiftpm
@@ -33,8 +32,8 @@ net.artsy.artsy.dev.pem
 .clang-format
 
 # See note in Podfile
-Artsy/App/Echo.json
-Artsy/App/EchoNew.json
+ios/Artsy/App/Echo.json
+ios/Artsy/App/EchoNew.json
 
 # Fastlane
 Preview.html
@@ -42,6 +41,10 @@ fastlane/report.xml
 fastlane/Preview.html
 
 .vscode/.browse.VC.db
+<<<<<<< HEAD
+ios/Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+=======
+>>>>>>> origin/main
 
 .vendor
 
@@ -50,7 +53,7 @@ Pods
 
 # build artefacts
 derived_data
-Artsy/Networking/ARReactPackagerHost.m
+ios/Artsy/Networking/ARReactPackagerHost.m
 
 # COPIED FROM EMISSION
 
@@ -132,6 +135,7 @@ android-secret.json
 
 # Fonts
 android/app/src/main/assets/fonts/*
+ios/eigen/fonts/*
 
 
 # Firebase files

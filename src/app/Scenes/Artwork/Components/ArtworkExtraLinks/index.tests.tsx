@@ -2,8 +2,13 @@ import { fireEvent } from "@testing-library/react-native"
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { ModalStack } from "app/navigation/ModalStack"
 import { navigate } from "app/navigation/navigate"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import {
+  __globalStoreTestUtils__,
+  GlobalStoreProvider,
+  useSelectedTab,
+} from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -12,6 +17,14 @@ import { Sans, Theme } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { ArtworkExtraLinks } from "./index"
+
+jest.mock("app/store/GlobalStore", () => ({
+  __globalStoreTestUtils__: jest.requireActual("app/store/GlobalStore").__globalStoreTestUtils__,
+  GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,
+  useSelectedTab: jest.fn(() => "home"),
+  useFeatureFlag: jest.requireActual("app/store/GlobalStore").useFeatureFlag,
+  GlobalStore: jest.requireActual("app/store/GlobalStore").GlobalStore,
+}))
 
 function getWrapper({
   artwork,
@@ -22,9 +35,11 @@ function getWrapper({
 }) {
   return mount(
     <GlobalStoreProvider>
-      <Theme>
-        <ArtworkExtraLinks artwork={artwork} auctionState={auctionState!} />
-      </Theme>
+      <ModalStack>
+        <Theme>
+          <ArtworkExtraLinks artwork={artwork} auctionState={auctionState!} />
+        </Theme>
+      </ModalStack>
     </GlobalStoreProvider>
   )
 }
@@ -68,7 +83,8 @@ describe("ArtworkExtraLinks", () => {
       ],
     }
 
-    __globalStoreTestUtils__?.injectState({ bottomTabs: { sessionState: { selectedTab: "sell" } } })
+    ;(useSelectedTab as any).mockImplementation(() => "sell")
+
     const component = getWrapper({ artwork })
     const consignmentsLink = component.find(Text).at(1)
 
@@ -304,7 +320,13 @@ describe("ArtworkExtraLinks", () => {
     describe("Analytics", () => {
       const TestRenderer = () =>
         renderWithWrappersTL(
-          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+          <GlobalStoreProvider>
+            <ModalStack>
+              <Theme>
+                <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+              </Theme>
+            </ModalStack>
+          </GlobalStoreProvider>
         )
 
       it("posts proper event in when clicking Ask A Specialist", () => {
@@ -369,7 +391,13 @@ describe("ArtworkExtraLinks", () => {
 
       const TestRenderer = () =>
         renderWithWrappersTL(
-          <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+          <GlobalStoreProvider>
+            <ModalStack>
+              <Theme>
+                <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+              </Theme>
+            </ModalStack>
+          </GlobalStoreProvider>
         )
 
       it("should not show the FaqAndSpecialistSection component", () => {
