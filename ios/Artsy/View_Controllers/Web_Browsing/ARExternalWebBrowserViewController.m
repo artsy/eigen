@@ -176,23 +176,6 @@
 
 - (WKNavigationActionPolicy)shouldLoadNavigationAction:(WKNavigationAction *)navigationAction;
 {
-    // TODO: this is broken by the new force app shell anyway so I'm just commenting it out for now
-    // This method was used to intercept navigation requests and, in cases where we can show a native view, it would show that view by pushing
-    // it onto the current nav stack.
-    // Now that our code to decide whether to show a native view lives in TypeScript, we can't do that here.
-    // In the future we should either migrate to a react-native web view and figure it out there, or do some best-effort
-    // synchronous logic here. e.g. by handling well-known cases like Artwork, artist, etc.
-//    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
-//        NSURL *URL = navigationAction.request.URL;
-//        ARSwitchBoard *switchboard = ARSwitchBoard.sharedInstance;
-//        if ([switchboard canRouteURL:URL]) {
-//            UIViewController *controller = [switchboard loadURL:URL];
-//            if (controller) {
-//                [switchboard presentViewController:controller];
-//            }
-//            return WKNavigationActionPolicyCancel;
-//        }
-//    }
     return WKNavigationActionPolicyAllow;
 }
 

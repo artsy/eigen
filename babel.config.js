@@ -33,9 +33,7 @@ module.exports = (api) => {
       "@babel/plugin-transform-runtime",
       [
         "@babel/plugin-proposal-decorators",
-        {
-          legacy: true, // this is only needed for `ProvideScreenTracking` that is deprecated. once we dont have that anymore, we can remove this. probably the whole plugin actually.
-        },
+        { legacy: true }, // this is only needed for `ProvideScreenTracking` that is deprecated. once we dont have that anymore, we can remove this. probably the whole plugin actually.
       ],
       ["@babel/plugin-proposal-class-properties", { loose: true }],
       ["@babel/plugin-proposal-private-methods", { loose: true }],

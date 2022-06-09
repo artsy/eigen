@@ -153,10 +153,7 @@ static void *ARProgressContext = &ARProgressContext;
 
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         if ([self.shareValidator isSocialSharingURL:URL]) {
-            ARWindow *window = ARAppDelegate.sharedInstance.window;
-            CGPoint lastTouchPointInView = [window convertPoint:window.lastTouchPoint toView:self.view];
-            CGRect position = (CGRect){.origin = lastTouchPointInView, .size = CGSizeZero};
-            [self.shareValidator shareURL:URL inView:self.view frame:position];
+            [self.shareValidator shareURL:URL inView:self.view frame:self.view.frame];
 
             ARActionLog(@"Artsy URL: Denied - %@ - %@", URL, @(navigationAction.navigationType));
             return WKNavigationActionPolicyCancel;
