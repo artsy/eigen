@@ -44,6 +44,11 @@ describe("Colors options screen", () => {
           count: 145,
           value: "purple",
         },
+        {
+          name: "Brown",
+          count: 133,
+          value: "brown",
+        },
       ],
     },
   ]

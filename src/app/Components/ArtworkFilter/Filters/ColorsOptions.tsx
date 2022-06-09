@@ -27,6 +27,7 @@ export const COLORS = [
     backgroundColor: "#000",
     foregroundColor: "#f00",
   },
+  { value: "brown", name: "Brown", backgroundColor: "#7B5927", foregroundColor: "#fff" },
   { value: "gray", name: "Gray", backgroundColor: "#C2C2C2", foregroundColor: "#000" },
   { value: "pink", name: "Pink", backgroundColor: "#E1ADCD", foregroundColor: "#000" },
 ] as const
