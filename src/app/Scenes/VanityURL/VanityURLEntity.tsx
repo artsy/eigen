@@ -1,5 +1,6 @@
 import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
+import { ArtsyWebView } from "app/Components/ArtsyWebView"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -60,6 +61,10 @@ interface RendererProps {
 }
 
 export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugType, slug }) => {
+  if (slugType === undefined) {
+    return <ArtsyWebView url={`/${slug}`} />
+  }
+
   if (slugType === "fairID") {
     return <FairQueryRenderer fairID={slug} />
   } else {
