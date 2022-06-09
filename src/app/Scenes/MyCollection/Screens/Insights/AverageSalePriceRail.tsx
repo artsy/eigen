@@ -22,7 +22,7 @@ export const AverageSalePriceRail: React.FC = () => {
       <Flex mx={2}>
         <SectionTitle
           capitalized={false}
-          title="Average Sale Price at Auction"
+          title="Average Auction Price in the last 3 years"
           onPress={() => {
             return
           }}
