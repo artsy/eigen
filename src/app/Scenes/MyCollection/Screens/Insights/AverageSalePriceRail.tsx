@@ -1,4 +1,5 @@
 import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/navigation/navigate"
 import { Flex } from "palette"
 import React from "react"
 import { FlatList } from "react-native-gesture-handler"
@@ -18,13 +19,13 @@ const item2 = {
 const data = [item2, item2]
 export const AverageSalePriceRail: React.FC = () => {
   return (
-    <Flex pb={2}>
+    <Flex pb={2} pt={2}>
       <Flex mx={2}>
         <SectionTitle
           capitalized={false}
           title="Average Auction Price in the last 3 years"
           onPress={() => {
-            return
+            navigate("/average-sale-price-at-auction")
           }}
           mb={1}
         />
