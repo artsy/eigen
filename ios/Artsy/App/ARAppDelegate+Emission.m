@@ -15,7 +15,6 @@
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
-#import "ARInternalMobileWebViewController.h"
 #import "ARDefaults.h"
 #import "ARNavigationController.h"
 #import "ARAppStatus.h"
@@ -27,13 +26,11 @@
 #import "AREmission.h"
 #import "ARTemporaryAPIModule.h"
 #import "AREventsModule.h"
-#import "ARTakeCameraPhotoModule.h"
 #import <SDWebImage/SDImageCache.h>
 
 #import <React/RCTUtils.h>
 #import <React/RCTDevSettings.h>
 #import <objc/runtime.h>
-#import "ARAdminNetworkModel.h"
 #import "Artsy-Swift.h"
 
 @import Darwin.POSIX.sys.utsname;
@@ -41,7 +38,7 @@
 
 @implementation ARAppDelegate (Emission)
 
-- (AREmission *)setupEmission;
+- (AREmission *)setupEmission
 {
     BOOL isDebugMode;
 #if DEBUG

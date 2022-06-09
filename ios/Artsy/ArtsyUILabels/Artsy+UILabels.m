@@ -1,11 +1,8 @@
 #import "Artsy+UILabels.h"
 #import "UIView+ARDrawing.h"
-#import "NSNumberFormatter+ARCurrency.h"
+#import "UIColor+ArtsyColors.h"
+#import "UIFont+ArtsyFonts.h"
 
-#import "UIColor+ArtsyColors.h"
-#import "UIFont+ArtsyFonts.h"
-#import "UIColor+ArtsyColors.h"
-#import "UIFont+ArtsyFonts.h"
 
 static const CGSize ChevronSize = { 8, 13 };
 

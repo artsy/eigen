@@ -15,7 +15,6 @@
 #import "Artsy-Swift.h"
 
 #import "UIDevice-Hardware.h"
-#import "ARAdminNetworkModel.h"
 #import "ARAppNotificationsDelegate.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import "AREmission.h"

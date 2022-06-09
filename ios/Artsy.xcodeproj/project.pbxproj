@@ -27,11 +27,9 @@
 		1A4B97CD283CDD5A00878EAE /* AROpaqueImageViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97B9283CDD5900878EAE /* AROpaqueImageViewManager.m */; };
 		1A4B97CE283CDD5A00878EAE /* AROpaqueImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */; };
 		1A4B97D0283CFA1E00878EAE /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 1A4B97CF283CFA1E00878EAE /* fonts */; };
-		1A4E5118283F91BA0008EF35 /* NSNumberFormatter+ARCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E50FA283F91B90008EF35 /* NSNumberFormatter+ARCurrency.m */; };
 		1A4E5119283F91BA0008EF35 /* Artsy+UILabels.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */; };
 		1A4E511A283F91BA0008EF35 /* UIView+ARDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */; };
 		1A4E511B283F91BA0008EF35 /* ARSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5104283F91B90008EF35 /* ARSpinner.m */; };
-		1A4E511C283F91BA0008EF35 /* ARSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5107283F91B90008EF35 /* ARSwitchView.m */; };
 		1A4E511D283F91BA0008EF35 /* ARAnimationContinuation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5108283F91B90008EF35 /* ARAnimationContinuation.m */; };
 		1A4E511E283F91BA0008EF35 /* UILabel+Typography.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E510A283F91B90008EF35 /* UILabel+Typography.m */; };
 		1A4E511F283F91BA0008EF35 /* UIView+ARSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E510B283F91B90008EF35 /* UIView+ARSpinner.m */; };
@@ -339,7 +337,6 @@
 		CBE326E827E275A300395A93 /* ARLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252827E275A100395A93 /* ARLogger.m */; };
 		CBE326E927E275A300395A93 /* ARLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252927E275A100395A93 /* ARLogFormatter.m */; };
 		CBE326EA27E275A300395A93 /* ARTwoWayDictionaryTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3252B27E275A100395A93 /* ARTwoWayDictionaryTransformer.m */; };
-		CBE326EB27E275A300395A93 /* ARSignUpActiveUserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CBE3252F27E275A100395A93 /* ARSignUpActiveUserViewController.xib */; };
 		CBE326EC27E275A300395A93 /* ARSCNWallNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253327E275A100395A93 /* ARSCNWallNode.m */; };
 		CBE326ED27E275A300395A93 /* SCNArtworkNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253427E275A100395A93 /* SCNArtworkNode.m */; };
 		CBE326EE27E275A300395A93 /* ARAugmentedFloorBasedVIRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3253B27E275A100395A93 /* ARAugmentedFloorBasedVIRViewController.m */; };
@@ -358,14 +355,12 @@
 		CBE326FB27E275A300395A93 /* live_auctions_socket.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE3254D27E275A100395A93 /* live_auctions_socket.json */; };
 		CBE326FC27E275A300395A93 /* AREchoContentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3254F27E275A100395A93 /* AREchoContentsViewController.m */; };
 		CBE326FD27E275A300395A93 /* ARAdminSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3255027E275A100395A93 /* ARAdminSettingsViewController.m */; };
-		CBE326FE27E275A300395A93 /* ARAdminNetworkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3255327E275A100395A93 /* ARAdminNetworkModel.m */; };
 		CBE326FF27E275A300395A93 /* ARAdminTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3255427E275A100395A93 /* ARAdminTableViewController.m */; };
 		CBE3270027E275A300395A93 /* ARAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3255827E275A100395A93 /* ARAdminTableViewCell.m */; };
 		CBE3270127E275A300395A93 /* ARTickedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3255927E275A100395A93 /* ARTickedTableViewCell.m */; };
 		CBE3270227E275A300395A93 /* ARAnimatedTickView.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3255A27E275A100395A93 /* ARAnimatedTickView.m */; };
 		CBE3270427E275A300395A93 /* LiveAuctionCurrentLotCTAPositionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3256027E275A100395A93 /* LiveAuctionCurrentLotCTAPositionManager.swift */; };
 		CBE3270527E275A300395A93 /* LiveAuctionPlainLotCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3256127E275A100395A93 /* LiveAuctionPlainLotCollectionViewLayout.swift */; };
-		CBE3270627E275A300395A93 /* AREigenMapContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3256427E275A100395A93 /* AREigenMapContainerViewController.m */; };
 		CBE3270727E275A300395A93 /* ARSerifNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3256527E275A100395A93 /* ARSerifNavigationViewController.m */; };
 		CBE3270827E275A300395A93 /* StoryboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3256927E275A100395A93 /* StoryboardConstants.swift */; };
 		CBE3270927E275A300395A93 /* StoryboardImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3256A27E275A100395A93 /* StoryboardImages.swift */; };
@@ -610,18 +605,14 @@
 		1A4B97BA283CDD5900878EAE /* AROpaqueImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROpaqueImageView.m; sourceTree = "<group>"; };
 		1A4B97BB283CDD5900878EAE /* AROpaqueImageViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROpaqueImageViewManager.h; sourceTree = "<group>"; };
 		1A4B97CF283CFA1E00878EAE /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
-		1A4E50FA283F91B90008EF35 /* NSNumberFormatter+ARCurrency.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumberFormatter+ARCurrency.m"; sourceTree = "<group>"; };
 		1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Artsy+UILabels.m"; sourceTree = "<group>"; };
 		1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ARDrawing.m"; sourceTree = "<group>"; };
 		1A4E50FD283F91B90008EF35 /* Artsy+UILabels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Artsy+UILabels.h"; sourceTree = "<group>"; };
-		1A4E50FE283F91B90008EF35 /* NSNumberFormatter+ARCurrency.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumberFormatter+ARCurrency.h"; sourceTree = "<group>"; };
 		1A4E50FF283F91B90008EF35 /* UIView+ARDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ARDrawing.h"; sourceTree = "<group>"; };
-		1A4E5101283F91B90008EF35 /* ARSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSwitchView.h; sourceTree = "<group>"; };
 		1A4E5102283F91B90008EF35 /* ARAnimationContinuation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnimationContinuation.h; sourceTree = "<group>"; };
 		1A4E5103283F91B90008EF35 /* UILabel+Typography.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Typography.h"; sourceTree = "<group>"; };
 		1A4E5104283F91B90008EF35 /* ARSpinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpinner.m; sourceTree = "<group>"; };
 		1A4E5106283F91B90008EF35 /* UIView+ARSpinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ARSpinner.h"; sourceTree = "<group>"; };
-		1A4E5107283F91B90008EF35 /* ARSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSwitchView.m; sourceTree = "<group>"; };
 		1A4E5108283F91B90008EF35 /* ARAnimationContinuation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnimationContinuation.m; sourceTree = "<group>"; };
 		1A4E5109283F91B90008EF35 /* ARSpinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpinner.h; sourceTree = "<group>"; };
 		1A4E510A283F91B90008EF35 /* UILabel+Typography.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Typography.m"; sourceTree = "<group>"; };
@@ -1162,7 +1153,6 @@
 		CBE3252927E275A100395A93 /* ARLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLogFormatter.m; sourceTree = "<group>"; };
 		CBE3252A27E275A100395A93 /* ARHTTPRequestOperationLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHTTPRequestOperationLogger.h; sourceTree = "<group>"; };
 		CBE3252B27E275A100395A93 /* ARTwoWayDictionaryTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTwoWayDictionaryTransformer.m; sourceTree = "<group>"; };
-		CBE3252F27E275A100395A93 /* ARSignUpActiveUserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ARSignUpActiveUserViewController.xib; sourceTree = "<group>"; };
 		CBE3253027E275A100395A93 /* ARSerifNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSerifNavigationViewController.h; sourceTree = "<group>"; };
 		CBE3253327E275A100395A93 /* ARSCNWallNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSCNWallNode.m; sourceTree = "<group>"; };
 		CBE3253427E275A100395A93 /* SCNArtworkNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCNArtworkNode.m; sourceTree = "<group>"; };
@@ -1189,8 +1179,6 @@
 		CBE3254D27E275A100395A93 /* live_auctions_socket.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = live_auctions_socket.json; sourceTree = "<group>"; };
 		CBE3254F27E275A100395A93 /* AREchoContentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREchoContentsViewController.m; sourceTree = "<group>"; };
 		CBE3255027E275A100395A93 /* ARAdminSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAdminSettingsViewController.m; sourceTree = "<group>"; };
-		CBE3255227E275A100395A93 /* ARAdminNetworkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAdminNetworkModel.h; sourceTree = "<group>"; };
-		CBE3255327E275A100395A93 /* ARAdminNetworkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAdminNetworkModel.m; sourceTree = "<group>"; };
 		CBE3255427E275A100395A93 /* ARAdminTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAdminTableViewController.m; sourceTree = "<group>"; };
 		CBE3255527E275A100395A93 /* ARAdminSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAdminSettingsViewController.h; sourceTree = "<group>"; };
 		CBE3255627E275A100395A93 /* AREchoContentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREchoContentsViewController.h; sourceTree = "<group>"; };
@@ -1203,8 +1191,6 @@
 		CBE3255E27E275A100395A93 /* ARAdminTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAdminTableViewController.h; sourceTree = "<group>"; };
 		CBE3256027E275A100395A93 /* LiveAuctionCurrentLotCTAPositionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionCurrentLotCTAPositionManager.swift; sourceTree = "<group>"; };
 		CBE3256127E275A100395A93 /* LiveAuctionPlainLotCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionPlainLotCollectionViewLayout.swift; sourceTree = "<group>"; };
-		CBE3256327E275A100395A93 /* AREigenMapContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREigenMapContainerViewController.h; sourceTree = "<group>"; };
-		CBE3256427E275A100395A93 /* AREigenMapContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREigenMapContainerViewController.m; sourceTree = "<group>"; };
 		CBE3256527E275A100395A93 /* ARSerifNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSerifNavigationViewController.m; sourceTree = "<group>"; };
 		CBE3256927E275A100395A93 /* StoryboardConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardConstants.swift; sourceTree = "<group>"; };
 		CBE3256A27E275A100395A93 /* StoryboardImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardImages.swift; sourceTree = "<group>"; };
@@ -1542,12 +1528,12 @@
 				1A4B97A2283CDD5900878EAE /* ARCityComponentViewController.m */,
 				1A4B97A3283CDD5900878EAE /* ARComponentViewController.h */,
 				1A4B97A4283CDD5900878EAE /* ARMapContainerViewController.h */,
+				1A4B97AA283CDD5900878EAE /* ARMapContainerViewController.m */,
 				1A4B97A5283CDD5900878EAE /* ARMediaPreviewController.h */,
 				1A4B97A6283CDD5900878EAE /* ARMapComponentViewController.h */,
 				1A4B97A7283CDD5900878EAE /* ARCityPickerComponentViewController.m */,
 				1A4B97A8283CDD5900878EAE /* ARCityComponentViewController.h */,
 				1A4B97A9283CDD5900878EAE /* ARComponentViewController.m */,
-				1A4B97AA283CDD5900878EAE /* ARMapContainerViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -1590,11 +1576,9 @@
 		1A4E50F9283F91B90008EF35 /* ArtsyUILabels */ = {
 			isa = PBXGroup;
 			children = (
-				1A4E50FA283F91B90008EF35 /* NSNumberFormatter+ARCurrency.m */,
 				1A4E50FB283F91B90008EF35 /* Artsy+UILabels.m */,
 				1A4E50FC283F91B90008EF35 /* UIView+ARDrawing.m */,
 				1A4E50FD283F91B90008EF35 /* Artsy+UILabels.h */,
-				1A4E50FE283F91B90008EF35 /* NSNumberFormatter+ARCurrency.h */,
 				1A4E50FF283F91B90008EF35 /* UIView+ARDrawing.h */,
 			);
 			path = ArtsyUILabels;
@@ -1603,12 +1587,10 @@
 		1A4E5100283F91B90008EF35 /* Extraction */ = {
 			isa = PBXGroup;
 			children = (
-				1A4E5101283F91B90008EF35 /* ARSwitchView.h */,
 				1A4E5102283F91B90008EF35 /* ARAnimationContinuation.h */,
 				1A4E5103283F91B90008EF35 /* UILabel+Typography.h */,
 				1A4E5104283F91B90008EF35 /* ARSpinner.m */,
 				1A4E5106283F91B90008EF35 /* UIView+ARSpinner.h */,
-				1A4E5107283F91B90008EF35 /* ARSwitchView.m */,
 				1A4E5108283F91B90008EF35 /* ARAnimationContinuation.m */,
 				1A4E5109283F91B90008EF35 /* ARSpinner.h */,
 				1A4E510A283F91B90008EF35 /* UILabel+Typography.m */,
@@ -1717,9 +1699,9 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				3A4DC9C2497249B9ABD36DE3 /* Resources */,
 			);
-			indentWidth = 2;
+			indentWidth = 4;
 			sourceTree = "<group>";
-			tabWidth = 2;
+			tabWidth = 4;
 			usesTabs = 0;
 		};
 		83CBBA001A601CBA00E9B192 /* Products */ = {
@@ -2765,14 +2747,12 @@
 				CBE324F827E275A100395A93 /* Auction */,
 				CBE324FE27E275A100395A93 /* Core */,
 				CBE3250227E275A100395A93 /* Util */,
-				CBE3252C27E275A100395A93 /* Login_and_Onboarding */,
 				CBE3253027E275A100395A93 /* ARSerifNavigationViewController.h */,
 				CBE3253127E275A100395A93 /* ARVIR */,
 				CBE3254D27E275A100395A93 /* live_auctions_socket.json */,
 				CBE3254E27E275A100395A93 /* Admin */,
 				CBE3256027E275A100395A93 /* LiveAuctionCurrentLotCTAPositionManager.swift */,
 				CBE3256127E275A100395A93 /* LiveAuctionPlainLotCollectionViewLayout.swift */,
-				CBE3256227E275A100395A93 /* Map */,
 				CBE3256527E275A100395A93 /* ARSerifNavigationViewController.m */,
 			);
 			path = View_Controllers;
@@ -2975,30 +2955,6 @@
 			path = Logging;
 			sourceTree = "<group>";
 		};
-		CBE3252C27E275A100395A93 /* Login_and_Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				CBE3252D27E275A100395A93 /* Onboarding_stages */,
-			);
-			path = Login_and_Onboarding;
-			sourceTree = "<group>";
-		};
-		CBE3252D27E275A100395A93 /* Onboarding_stages */ = {
-			isa = PBXGroup;
-			children = (
-				CBE3252E27E275A100395A93 /* 2_-_Calls_to_Action */,
-			);
-			path = Onboarding_stages;
-			sourceTree = "<group>";
-		};
-		CBE3252E27E275A100395A93 /* 2_-_Calls_to_Action */ = {
-			isa = PBXGroup;
-			children = (
-				CBE3252F27E275A100395A93 /* ARSignUpActiveUserViewController.xib */,
-			);
-			path = "2_-_Calls_to_Action";
-			sourceTree = "<group>";
-		};
 		CBE3253127E275A100395A93 /* ARVIR */ = {
 			isa = PBXGroup;
 			children = (
@@ -3073,7 +3029,6 @@
 			children = (
 				CBE3254F27E275A100395A93 /* AREchoContentsViewController.m */,
 				CBE3255027E275A100395A93 /* ARAdminSettingsViewController.m */,
-				CBE3255127E275A100395A93 /* Networking */,
 				CBE3255427E275A100395A93 /* ARAdminTableViewController.m */,
 				CBE3255527E275A100395A93 /* ARAdminSettingsViewController.h */,
 				CBE3255627E275A100395A93 /* AREchoContentsViewController.h */,
@@ -3081,15 +3036,6 @@
 				CBE3255E27E275A100395A93 /* ARAdminTableViewController.h */,
 			);
 			path = Admin;
-			sourceTree = "<group>";
-		};
-		CBE3255127E275A100395A93 /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				CBE3255227E275A100395A93 /* ARAdminNetworkModel.h */,
-				CBE3255327E275A100395A93 /* ARAdminNetworkModel.m */,
-			);
-			path = Networking;
 			sourceTree = "<group>";
 		};
 		CBE3255727E275A100395A93 /* Views */ = {
@@ -3103,15 +3049,6 @@
 				CBE3255D27E275A100395A93 /* ARAdminTableViewCell.h */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		CBE3256227E275A100395A93 /* Map */ = {
-			isa = PBXGroup;
-			children = (
-				CBE3256327E275A100395A93 /* AREigenMapContainerViewController.h */,
-				CBE3256427E275A100395A93 /* AREigenMapContainerViewController.m */,
-			);
-			path = Map;
 			sourceTree = "<group>";
 		};
 		CBE3256727E275A100395A93 /* Tooling */ = {
@@ -3797,7 +3734,6 @@
 				CBE3272E27E275A400395A93 /* ViewInRoom_BaseNoBench@2x.png in Resources */,
 				CBE3273727E275A400395A93 /* navigation_more_arrow_vertical@2x.png in Resources */,
 				CBE3275327E275A400395A93 /* CircleCheckGreen@2x.png in Resources */,
-				CBE326EB27E275A300395A93 /* ARSignUpActiveUserViewController.xib in Resources */,
 				CBE3275727E275A400395A93 /* paddle@3x.png in Resources */,
 				CBE3274E27E275A400395A93 /* CloseButtonLarge@2x.png in Resources */,
 				CBE3278527E275A400395A93 /* InfoPlist.strings in Resources */,
@@ -4022,7 +3958,6 @@
 				CBE326B827E275A300395A93 /* LiveAuctionSaleViewController.swift in Sources */,
 				CBE326CA27E275A300395A93 /* SaleOnHoldOverlayView.swift in Sources */,
 				CBE3267127E275A300395A93 /* UITableViewController+Animations.swift in Sources */,
-				CBE3270627E275A300395A93 /* AREigenMapContainerViewController.m in Sources */,
 				CBE3279B27E275A400395A93 /* LiveBidder.m in Sources */,
 				CBE3278827E275A400395A93 /* Artwork.m in Sources */,
 				CBE3268827E275A300395A93 /* Interstellar+Artsy.swift in Sources */,
@@ -4044,7 +3979,6 @@
 				CBE326ED27E275A300395A93 /* SCNArtworkNode.m in Sources */,
 				CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */,
 				CBE3278927E275A400395A93 /* PartnerShow.m in Sources */,
-				1A4E5118283F91BA0008EF35 /* NSNumberFormatter+ARCurrency.m in Sources */,
 				CBE3269927E275A300395A93 /* SwiftExtensions.swift in Sources */,
 				CBE3271227E275A300395A93 /* AuctionColors.swift in Sources */,
 				CBE326AC27E275A300395A93 /* LiveAuctionSalesPerson.swift in Sources */,
@@ -4144,7 +4078,6 @@
 				1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */,
 				CBE3277127E275A400395A93 /* ArtsyAPI.m in Sources */,
 				CBE3267227E275A300395A93 /* NSString+StringBetweenStrings.m in Sources */,
-				CBE326FE27E275A300395A93 /* ARAdminNetworkModel.m in Sources */,
 				CBE326A427E275A300395A93 /* ARNavigationButtonsViewController.m in Sources */,
 				CBE326D427E275A300395A93 /* RefinementOptionsViewController.swift in Sources */,
 				CBE3267E27E275A300395A93 /* NSArray+Additions.m in Sources */,
@@ -4228,7 +4161,6 @@
 				CBE326A827E275A300395A93 /* LiveAuctionSaleLotsDataSource.swift in Sources */,
 				CBE3270A27E275A300395A93 /* ARDispatchManager.m in Sources */,
 				CBE326AA27E275A300395A93 /* LiveAuctionEventViewModel.swift in Sources */,
-				1A4E511C283F91BA0008EF35 /* ARSwitchView.m in Sources */,
 				1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */,
 				CBE326B227E275A300395A93 /* LiveAuctionLotSetViewController.swift in Sources */,
 				1A4B97C1283CDD5A00878EAE /* ARTemporaryAPIModule.m in Sources */,

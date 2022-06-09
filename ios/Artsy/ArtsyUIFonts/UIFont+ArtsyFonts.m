@@ -90,24 +90,6 @@ static BOOL useClosedFonts = YES;
   return [self ar_LoadAndReturnFont:@"Unica77LL-Italic" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Italic"];
 }
 
-+ (UIFont *)reactNativeSerifSemiBoldFontWithSize:(CGFloat)size
-{
-  static dispatch_once_t onceToken;
-  if (!useClosedFonts) {
-      return [UIFont fontWithName:@"Helvetica" size:size];
-  }
-  return [self ar_LoadAndReturnFont:@"Unica77LL-Medium" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Medium"];
-}
-
-+ (UIFont *)reactNativeSerifItalicFontWithSize:(CGFloat)size
-{
-  static dispatch_once_t onceToken;
-  if (!useClosedFonts) {
-      return [UIFont fontWithName:@"Helvetica" size:size];
-  }
-  return [self ar_LoadAndReturnFont:@"Unica77LL-Italic" extension:@"otf" size:size onceToken:&onceToken fontFileName:@"Unica77LL-Italic"];
-}
-
 + (UIFont *)sansSerifFontWithSize:(CGFloat)size
 {
     static dispatch_once_t onceToken;

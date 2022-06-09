@@ -10,71 +10,11 @@
 
 // Dotted border methods
 
-- (void)drawDottedBorders
-{
-    [self drawTopDottedBorder];
-    [self drawBottomDottedBorder];
-}
-
-- (void)drawTopDottedBorder
-{
-    [self drawTopDottedBorderWithColor:self.class.defaultBorderColor];
-}
-
-- (void)drawBottomDottedBorder
-{
-    [self drawBottomDottedBorderWithColor:self.class.defaultBorderColor];
-}
-
-- (void)drawDottedBordersWithColor:(UIColor *)color
-{
-    [self drawTopDottedBorderWithColor:color];
-    [self drawBottomDottedBorderWithColor:color];
-}
-
-- (void)drawTopDottedBorderWithColor:(UIColor *)color
-{
-    [self drawTopBorderWithColor:color dotted:YES];
-}
-
 - (void)drawBottomDottedBorderWithColor:(UIColor *)color
 {
     [self drawBottomBorderWithColor:color dotted:YES];
 }
 
-
-// Solid border methods
-
-- (void)drawSolidBorders{
-    [self drawTopSolidBorder];
-    [self drawBottomSolidBorder];
-}
-
-- (void)drawTopSolidBorder
-{
-    [self drawTopSolidBorderWithColor:self.class.defaultBorderColor];
-}
-
-- (void)drawBottomSolidBorder
-{
-    [self drawBottomSolidBorderWithColor:self.class.defaultBorderColor];
-}
-
-- (void)drawSolidBordersWithColor:(UIColor *)color
-{
-    [self drawTopSolidBorderWithColor:color];
-    [self drawBottomSolidBorderWithColor:color];
-}
-
-- (void)drawTopSolidBorderWithColor:(UIColor *)color
-{
-    [self drawTopBorderWithColor:color dotted:NO];
-}
-
-- (void)drawBottomSolidBorderWithColor:(UIColor *)color
-{
-    [self drawBottomBorderWithColor:color dotted:NO];
-}
 
 // Methods for general border-drawing
 

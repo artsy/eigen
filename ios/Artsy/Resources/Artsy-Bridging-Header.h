@@ -109,7 +109,7 @@
 #import "ARTNativeScreenPresenterModule.h"
 
 // CityGuide
-#import "AREigenMapContainerViewController.h"
+#import "ARMapContainerViewController.h"
 
 // Admin
 #import "ARAdminSettingsViewController.h"

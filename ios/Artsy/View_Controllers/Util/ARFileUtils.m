@@ -17,38 +17,15 @@ static NSString *_appSupportDirectory = nil;
     _appSupportDirectory = [[fm URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask][0] relativePath];
 }
 
-+ (NSString *)userDocumentsFolder
-{
-    if (![User currentUser]) return nil;
-    return [_userDocumentsDirectory stringByAppendingPathComponent:[User currentUser].userID];
-}
-
 + (NSString *)userDocumentsPathWithFile:(NSString *)filename
 {
     if (![User currentUser]) return nil;
     return [self pathWithFolder:_userDocumentsDirectory folderName:[User currentUser].userID filename:filename];
 }
 
-+ (NSString *)userDocumentsPathWithFolder:(NSString *)folderName filename:(NSString *)filename
-{
-    if (![User currentUser]) return nil;
-    folderName = [[User currentUser].userID stringByAppendingPathComponent:folderName];
-    return [self pathWithFolder:_userDocumentsDirectory folderName:folderName filename:filename];
-}
-
-+ (NSString *)cachesFolder
-{
-    return _cachesDirectory;
-}
-
 + (NSString *)cachesPathWithFolder:(NSString *)folderName filename:(NSString *)filename
 {
     return [self pathWithFolder:_cachesDirectory folderName:folderName filename:filename];
-}
-
-+ (NSString *)appDocumentsPathWithFolder:(NSString *)folderName filename:(NSString *)filename
-{
-    return [self pathWithFolder:_userDocumentsDirectory folderName:folderName filename:filename];
 }
 
 + (NSString *)appSupportFolder;
