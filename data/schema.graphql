@@ -8728,17 +8728,40 @@ type IdentityVerificationEdge {
 }
 
 type IdentityVerificationEmail {
+  created_at(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # Email of the identity verification's owner
+  email: String
+
   # A globally unique ID.
   id: ID!
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
 
+  # Name of the identity verification's owner
+  name: String
+
   # Identity verification lifecycle state
   state: String!
+  updated_at(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
 
   # User ID of the identity verification's owner
-  userID: String!
+  userID: String
 }
 
 type IdentityVerificationEmailMutationFailureType {
@@ -13564,6 +13587,11 @@ union SendFeedbackMutationType = SendFeedbackMutationFailure | SendFeedbackMutat
 
 input SendIdentityVerificationEmailMutationInput {
   clientMutationId: String
+
+  # The email for the user undergoing identity verificaiton
+  email: String
+
+  # The user Id for the user undergoing identity verificaiton
   userID: String
 }
 
