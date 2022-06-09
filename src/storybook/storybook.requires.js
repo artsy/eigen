@@ -38,6 +38,7 @@ const getStories = () => {
     require("../palette/elements/Histogram/Histogram.stories.tsx"),
     require("../palette/elements/Input/Input.stories.tsx"),
     require("../palette/elements/List/List.stories.tsx"),
+    require("../palette/elements/LineGraph/LineGraph.stories.tsx"),
     require("../palette/elements/Message/Message.stories.tsx"),
     require("../palette/elements/Pill/Pill.stories.tsx"),
     require("../palette/elements/ProgressBar/ProgressBar.stories.tsx"),
