@@ -68,7 +68,7 @@ export const MyCollectionSellingWithartsyFAQ: React.FC = () => {
                 </Text>
                 <Text>
                   Or get in touch with one of our specialists at
-                  {<Text underline> consign@artsymail.com.</Text>}
+                  {<Text underline> sell@artsymail.com.</Text>}
                 </Text>
               </Flex>
             </Join>
