@@ -74,6 +74,7 @@ export const AverageSalePriceListItem: React.FC<Props> = ({
           </Flex>
         </Flex>
         {/* Sale Artwork Medium */}
+        {/* TODO: adjust according to the design and agreed logic when the backend is ready */}
         <Flex pt={2} flexDirection="row" justifyContent="space-between">
           {!!estimatedArtwork.medium && (
             <Text variant="xs">{capitalize(estimatedArtwork.medium)}</Text>
