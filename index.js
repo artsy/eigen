@@ -13,6 +13,10 @@ if (__DEV__) {
   } catch {}
 }
 
+if (Platform.OS == "android") {
+  require("./src/app/utils/PushNotification").configure()
+}
+
 require("./src/app/errorReporting/sentrySetup").setupSentry({ environment: "bootstrap" })
 
 if (metaflags.startStorybook) {
@@ -22,7 +26,7 @@ if (metaflags.startStorybook) {
   const appName = require("./app.json").appName
   require("react-native-gesture-handler")
   require("react-native-screens").enableScreens()
-  const { AppRegistry } = require("react-native")
+  const { AppRegistry, Platform } = require("react-native")
   const { App } = require("./src/app/App")
   AppRegistry.registerComponent(appName, () => App)
 }
