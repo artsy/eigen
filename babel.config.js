@@ -13,6 +13,7 @@ module.exports = (api) => {
         },
       ],
     ],
+
     plugins: [
       ["module-resolver", { alias: moduleResolverAlias }],
       /**
