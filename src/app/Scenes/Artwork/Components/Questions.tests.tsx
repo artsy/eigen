@@ -39,7 +39,7 @@ describe("Questions", () => {
     mockEnvironmentPayloadAndEnsureUpdated(mockEnvironment, { Artwork: () => ({}) })
     await waitFor(() => expect(getByText("SusLoading")).toBeDefined())
 
-    expect(getByText("Questions about this piece?")).toBeDefined()
+    await waitFor(() => expect(getByText("Questions about this piece?")).toBeDefined())
     expect(getAllByText("Contact Gallery")).toHaveLength(2)
   })
 })

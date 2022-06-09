@@ -34,6 +34,7 @@ export const ArtworkFixture = {
   medium: "photograph",
   attributionClass: {
     name: "Unique",
+    shortArrayDescription: ["This is", "a unique work"],
   },
   editionOf: "",
   image: {
