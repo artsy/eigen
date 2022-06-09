@@ -1,10 +1,13 @@
+import { navigate } from "app/navigation/navigate"
 import { Box, BulletedItem, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
-import { ScrollView } from "react-native"
+import { Linking, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
 export const ArtworkSubmissionStatusFAQ: React.FC = () => {
   const { safeAreaInsets } = useScreenDimensions()
+  const article =
+    "https://support.artsy.net/hc/en-us/articles/360046646494-What-items-do-you-accept-"
 
   return (
     <ScrollView>
@@ -41,14 +44,24 @@ export const ArtworkSubmissionStatusFAQ: React.FC = () => {
                 <Text mb={1}>
                   For more information, see our Collector Help Center article{" "}
                   {
-                    <Text style={{ textDecorationLine: "underline" }}>
-                      What do we look for in consignment submissions?
+                    <Text
+                      style={{ textDecorationLine: "underline" }}
+                      onPress={() => navigate(article)}
+                    >
+                      What items do you accept?
                     </Text>
                   }
                 </Text>
                 <Text>
-                  Or get in touch with one of our specialists at
-                  {<Text style={{ textDecorationLine: "underline" }}> consign@artsymail.com.</Text>}
+                  Or get in touch with one of our specialists at{" "}
+                  {
+                    <Text
+                      style={{ textDecorationLine: "underline" }}
+                      onPress={() => Linking.openURL("mailto:consign@artsymail.com")}
+                    >
+                      consign@artsymail.com.
+                    </Text>
+                  }
                 </Text>
               </Flex>
             </Join>
