@@ -27,6 +27,7 @@ import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
 import { ArtworkQueryRenderer, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium"
+import { AuctionBuyersPremiumQueryRenderer } from "./Scenes/AuctionBuyersPremium/AuctionBuyersPremium"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import {
   AuctionResultsForArtistsYouFollowQueryRenderer,
@@ -93,7 +94,6 @@ import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
-import { ReverseSearchImageResults } from "./Scenes/ReverseSearchImageResults/ReverseSearchImageResults"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
@@ -342,6 +342,10 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
     fullBleed: true,
   }),
+  AuctionBuyersPremium: reactModule(AuctionBuyersPremiumQueryRenderer, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+  }),
   BottomTabs: reactModule(BottomTabs, { fullBleed: true }),
   City: reactModule(CityView, { fullBleed: true, ignoreTabs: true }),
   CityBMWList: reactModule(CityBMWListQueryRenderer, { fullBleed: true }),
@@ -416,7 +420,6 @@ export const modules = defineModules({
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
   RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
-  ReverseSearchImageResults: reactModule(ReverseSearchImageResults),
   Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell" }, [
     SellWithArtsyHomeScreenQuery,
   ]),

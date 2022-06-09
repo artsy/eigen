@@ -1,5 +1,4 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { TabV3 } from "palette/elements/Tabs/Tab"
 import React from "react"
 import { LayoutRectangle } from "react-native"
 import { TouchableOpacity } from "react-native"
@@ -28,7 +27,7 @@ const tabs = [{ label: "Tab one" }, { label: "Tab Two" }]
 describe("Tab", () => {
   it("renders without throwing a error", () => {
     renderWithWrappers(
-      <TabV3 onPress={() => null} label="Tab" active={false} onLayout={() => null} />
+      <Tab onPress={() => null} label="Tab" active={false} onLayout={() => null} />
     )
   })
 
@@ -36,7 +35,7 @@ describe("Tab", () => {
     const mockOnPress = jest.fn()
 
     const tree = renderWithWrappers(
-      <TabV3 onPress={mockOnPress} label="TabLabel" active={false} onLayout={() => null} />
+      <Tab onPress={mockOnPress} label="TabLabel" active={false} onLayout={() => null} />
     )
     tree.root.findAllByType(Pressable)[0].props.onPress()
     expect(mockOnPress).toHaveBeenCalled()

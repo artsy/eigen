@@ -22,6 +22,8 @@ export const MyCollectionArtworkListItem: React.FC<{
     restProps.artwork
   )
 
+  const { artist, date, image, internalID, medium, slug, title } = artwork
+
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
 
@@ -34,18 +36,15 @@ export const MyCollectionArtworkListItem: React.FC<{
       testID="list-item-touchable"
       underlayColor="black5"
       onPress={() => {
-        trackEvent(tracks.tappedCollectedArtwork(artwork.internalID, artwork.slug))
+        trackEvent(tracks.tappedCollectedArtwork(internalID, slug))
 
-        navigate(`/my-collection/artwork/${artwork.slug}`, {
-          passProps: {
-            medium: artwork.medium,
-            artistInternalID: artwork.artist?.internalID,
-          },
+        navigate(`/my-collection/artwork/${slug}`, {
+          passProps: { medium, artistInternalID: artist?.internalID },
         })
       }}
     >
       <Flex pb={1} flexDirection="row">
-        {!artwork.image?.url ? (
+        {!image?.url ? (
           <Flex
             testID="no-artwork-icon"
             width={ARTWORK_LIST_IMAGE_SIZE}
@@ -70,26 +69,29 @@ export const MyCollectionArtworkListItem: React.FC<{
             <OpaqueImageView
               width={ARTWORK_LIST_IMAGE_SIZE}
               height={ARTWORK_LIST_IMAGE_SIZE}
-              imageURL={artwork.image.url}
-              aspectRatio={artwork.image.aspectRatio}
+              imageURL={image.url}
+              aspectRatio={image.aspectRatio}
             />
           </Flex>
         )}
 
         <Flex pl={15} flex={1} style={{ marginTop: 3 }}>
-          {!!artwork.artist?.name && (
+          {!!artist?.name && (
             <Text variant="xs" testID="artist-name">
-              {artwork.artist?.name}
+              {artist?.name}
             </Text>
           )}
-          {!!artwork.title && (
-            <Text variant="xs" color="black60" testID="artwork-title">
-              {artwork.title}
+          {!!title && (
+            <Text variant="xs" italic color="black60" testID="artwork-title">
+              {title}
+              <Text variant="xs" color="black60" testID="artwork-date">
+                {date ? `, ${date}` : ""}
+              </Text>
             </Text>
           )}
-          {!!artwork.medium && (
+          {!!medium && (
             <Text variant="xs" color="black60" testID="artwork-medium">
-              {artwork.medium}
+              {medium}
             </Text>
           )}
         </Flex>

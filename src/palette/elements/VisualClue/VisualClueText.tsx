@@ -3,39 +3,24 @@ import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 
 const WRAPPER_WIDTH = 56
-const WRAPPER_HEIGHT = 52
+const WRAPPER_HEIGHT = 46
 
 export const VisualClueText: React.FC<{ style?: StyleProp<ViewStyle> }> = ({ style = {} }) => {
   const colors = useColor()
 
   return (
-    <Flex
-      style={{
-        position: "absolute",
-        right: 0,
-        top: 0,
-        bottom: 0,
-        justifyContent: "center",
-      }}
-    >
-      <Flex style={{ width: WRAPPER_WIDTH, height: WRAPPER_HEIGHT }}>
+    <Flex width={0} overflow="visible">
+      <Flex width={55} justifyContent="center">
         <Flex
           style={{
-            position: "absolute",
-            top: 14,
-            right: -48,
+            width: WRAPPER_WIDTH,
+            height: WRAPPER_HEIGHT,
             ...(style as object),
+            position: "absolute",
           }}
         >
           <PopIn>
-            <Text
-              style={{
-                fontSize: 12,
-                color: colors("blue100"),
-              }}
-            >
-              New
-            </Text>
+            <Text style={{ fontSize: 12, color: colors("blue100") }}>New</Text>
           </PopIn>
         </Flex>
       </Flex>

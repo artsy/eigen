@@ -65,6 +65,7 @@ describe("MyCollectionArtworkListItem", () => {
 
     expect(getByTestId("no-artwork-icon")).toBeTruthy()
     expect(getByTestId("artwork-title")).toBeTruthy()
+    expect(getByTestId("artwork-date")).toBeTruthy()
     expect(getByTestId("artwork-medium")).toBeTruthy()
   })
 

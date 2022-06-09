@@ -8,6 +8,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
+import { VisualClueDot, VisualClueText } from "palette/elements/VisualClue"
 import React from "react"
 import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -41,6 +42,18 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
         !!showMyCollectionInsights && {
           title: Tab.insights,
           content: <MyCollectionInsightsQR />,
+          visualClues: [
+            {
+              jsx: (
+                <VisualClueDot style={{ marginLeft: 5, alignSelf: "flex-start", marginTop: 1 }} />
+              ),
+              visualClueName: "AddedArtworkWithInsightsVisualClueDot",
+            },
+            {
+              jsx: <VisualClueText />,
+              visualClueName: "MyCollectionInsights",
+            },
+          ],
         },
         {
           title: Tab.savedWorks,

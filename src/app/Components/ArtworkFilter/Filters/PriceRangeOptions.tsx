@@ -44,7 +44,7 @@ export const getBarsFromAggregations = (aggregations?: Aggregations) => {
 }
 
 const NUMBERS_REGEX = /^(|\d)+$/
-const DEBOUNCE_DELAY = 500
+const DEBOUNCE_DELAY = 200
 const DEFAULT_PRICE_RANGE = DEFAULT_PRICE_OPTION.paramValue
 const DEFAULT_RANGE = [0, 50000]
 const RANGE_DOT_SIZE = 32

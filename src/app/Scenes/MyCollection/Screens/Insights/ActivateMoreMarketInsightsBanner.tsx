@@ -1,8 +1,10 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { Box, Button, Flex, Text } from "palette"
 import React from "react"
 import { ImageBackground } from "react-native"
+import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components"
 
@@ -13,6 +15,7 @@ const BackgroundImage = styled(ImageBackground)`
 `
 
 export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
+  const { trackEvent } = useTracking()
   const screenDimensions = useScreenDimensions()
 
   return (
@@ -34,6 +37,7 @@ export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
           position="absolute"
           testID="activate-more-market-insights-banner"
           onPress={() => {
+            trackEvent(tracks.tappedUploadAnotherArtwork())
             navigate("my-collection/artworks/new", {
               passProps: {
                 mode: "add",
@@ -48,4 +52,11 @@ export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
       </BackgroundImage>
     </Box>
   )
+}
+
+const tracks = {
+  tappedUploadAnotherArtwork: () => ({
+    action: ActionType.tappedUploadAnotherArtwork,
+    context_screen_owner_type: OwnerType.myCollectionInsights,
+  }),
 }

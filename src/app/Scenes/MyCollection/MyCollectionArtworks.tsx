@@ -7,7 +7,7 @@ import { ZeroState } from "app/Components/States/ZeroState"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { Button, Flex, Text } from "palette"
+import { Button, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import {
   FlatList,
@@ -138,6 +138,8 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           <FilteredArtworkGridZeroState hideClearButton />
         </Flex>
       )}
+
+      {filteredArtworks.length > 0 && <Spacer mb={2} />}
     </Flex>
   )
 }
@@ -165,7 +167,7 @@ const MyCollectionZeroState: React.FC = () => {
             }}
             block
           >
-            Add artwork
+            Upload Your Artwork
           </Button>
           <Flex flexDirection="row" justifyContent="center" alignItems="center" py={1}>
             <Image source={require("images/lock.webp")} />

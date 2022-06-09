@@ -23,8 +23,6 @@ tmtagsHistory
 config/releasenotes.txt
 Podfile.local
 ios/Artsy.xcodeproj/project.xcworkspace/xcshareddata/
-ios/Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
-
 .vendor/
 compiler_commands.json
 .swiftpm
@@ -42,9 +40,11 @@ Preview.html
 fastlane/report.xml
 fastlane/Preview.html
 
-iOSInjectionProject/
 .vscode/.browse.VC.db
+<<<<<<< HEAD
 ios/Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+=======
+>>>>>>> origin/main
 
 .vendor
 

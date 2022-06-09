@@ -1,29 +1,25 @@
-import { ActionType, ContextModule, OwnerType, tappedLink } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
 import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
-import { PAGE_SIZE } from "app/Components/constants"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { groupBy } from "lodash"
-import moment from "moment"
-import { Flex, LinkText, Text } from "palette"
+import { Flex, Text } from "palette"
 import React, { useState } from "react"
-import { RelayPaginationProp } from "react-relay"
-import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { Tab } from "../Favorites/Favorites"
 
 interface Props {
   me: AuctionResultsForArtistsYouFollow_me | null
   relay: RelayPaginationProp
 }
+
+const PAGE_SIZE = 20
 
 export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }) => {
   const { hasMore, isLoading, loadMore, refetchConnection } = relay
@@ -31,18 +27,7 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
   const [refreshing, setRefreshing] = useState(false)
 
   const { trackEvent } = useTracking()
-  const allAuctionResults = extractNodes(me?.auctionResultsByFollowedArtists)
-  const groupedAuctionResults = groupBy(allAuctionResults, (item) =>
-    moment(item!.saleDate!).format("YYYY-MM")
-  )
-
-  const groupedAuctionResultSections = Object.entries(groupedAuctionResults).map(
-    ([date, auctionResults]) => {
-      const sectionTitle = moment(date).format("MMMM")
-
-      return { sectionTitle, data: auctionResults }
-    }
-  )
+  const auctionResults = extractNodes(me?.auctionResultsByFollowedArtists)
 
   const loadMoreArtworks = () => {
     if (!hasMore() || isLoading()) {
@@ -73,41 +58,35 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
         context_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
       })}
     >
-      <PageWithSimpleHeader title="Auction Results for Artists You Follow">
-        <ArtworkFiltersStoreProvider>
+      <ArtworkFiltersStoreProvider>
+        <Flex flex={1}>
           <AuctionResultsList
-            sections={groupedAuctionResultSections}
+            auctionResults={auctionResults}
             refreshing={refreshing}
             handleRefresh={handleRefresh}
             onEndReached={loadMoreArtworks}
-            ListHeaderComponent={<ListHeader />}
             onItemPress={(item: any) => {
               trackEvent(tracks.tapAuctionGroup(item.internalID))
               navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
             }}
+            ListHeaderComponent={ListHeader}
             isLoadingNext={loadingMoreData}
+            floatingHeaderTitle="Latest Auction Results"
           />
-        </ArtworkFiltersStoreProvider>
-      </PageWithSimpleHeader>
+        </Flex>
+      </ArtworkFiltersStoreProvider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
 export const ListHeader: React.FC = () => {
-  const { trackEvent } = useTracking()
   return (
-    <Flex>
-      <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
-        The latest auction results for the {""}
-        <LinkText
-          onPress={() => {
-            trackEvent(tracks.tappedLink)
-            navigate("/favorites", { passProps: { initialTab: Tab.artists } })
-          }}
-        >
-          artists you follow
-        </LinkText>
-        . You can also look up more auction results on the insights tab on any artist’s page.
+    <Flex mx={2}>
+      <Text variant="lg" mb={0.5}>
+        Latest Auction Results
+      </Text>
+      <Text variant="xs">
+        Get all the latest prices achieved at auctions for the artists you follow.
       </Text>
     </Flex>
   )
@@ -179,12 +158,7 @@ export const AuctionResultsForArtistsYouFollowQueryRenderer: React.FC = () => (
     render={renderWithPlaceholder({
       Container: AuctionResultsForArtistsYouFollowContainer,
       renderPlaceholder: () => {
-        return (
-          <LoadingSkeleton
-            title="Auction Results for Artists You Follow"
-            listHeader={<ListHeader />}
-          />
-        )
+        return <LoadingSkeleton title="Latest Auction Results" listHeader={<ListHeader />} />
       },
     })}
   />
@@ -198,10 +172,5 @@ export const tracks = {
     destination_screen_owner_type: OwnerType.auctionResult,
     destination_screen_owner_id: auctionResultId,
     type: "thumbnail",
-  }),
-  tappedLink: tappedLink({
-    contextModule: ContextModule.auctionResultsForArtistsYouFollow,
-    contextScreenOwnerType: OwnerType.auctionResultsForArtistsYouFollow,
-    destinationPath: "/favorites",
   }),
 }

@@ -16,10 +16,10 @@ import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import {
   GlobalStore,
-  removeClue,
+  setVisualClueAsSeen,
   useDevToggle,
   useFeatureFlag,
-  useSessionVisualClue,
+  useVisualClue,
 } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
@@ -28,12 +28,16 @@ import {
   PlaceholderText,
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
-import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
+import {
+  MY_COLLECTION_REFRESH_KEY,
+  RefreshEvents,
+  refreshMyCollectionInsights,
+} from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
-import { Button, Flex, Message, Separator, Spacer, useSpace } from "palette"
+import { Button, Flex, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -42,7 +46,11 @@ import { useScreenDimensions } from "shared/hooks"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
-import { AddedArtworkHasNoInsightsMessage } from "./Screens/Insights/MyCollectionInsightsMessages"
+import { MyCollectionArtworkUploadMessages } from "./Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
+import {
+  PurchasedArtworkAddedMessage,
+  SubmittedArtworkAddedMessage,
+} from "./Screens/Insights/MyCollectionMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
@@ -52,21 +60,24 @@ const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me
 }> = ({ relay, me }) => {
+  const toast = useToast()
   const { trackEvent } = useTracking()
-  const { showSessionVisualClue } = useSessionVisualClue()
+  const { showVisualClue } = useVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
-  const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
+  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
   const filtersCount = useSelectedFiltersCount()
 
   const artworks = extractNodes(me?.myCollectionConnection)
+  const hasMarketSignals = !!me?.auctionResults?.totalCount
 
   const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
+
   useEffect(() => {
     RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
     return () => {
@@ -84,92 +95,80 @@ const MyCollection: React.FC<{
     })
   }
 
+  const notifyMyCollectionInsightsTab = () => {
+    const artworksWithoutInsight = artworks.find((artwork) => !artwork._marketPriceInsights)
+
+    refreshMyCollectionInsights({
+      collectionHasArtworksWithoutInsights: !!(artworks.length && artworksWithoutInsight),
+    })
+  }
+
+  // Load all artworks and then check whether all of them have insights
   useEffect(() => {
+    if (!relay.hasMore()) {
+      notifyMyCollectionInsightsTab()
+    }
+
     relay.loadMore(100)
-  }, [])
+  }, [me?.myCollectionConnection])
 
   // hack for tests. we should fix that.
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
-  const space = useSpace()
-  const toast = useToast()
+  const showMessages = async () => {
+    const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
+    const showNewWorksMessage =
+      me.myCollectionInfo?.includesPurchasedArtworks &&
+      !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
 
-  const hasBeenShownBanner = async () => {
-    const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
-    const shouldShowAddedArtworkHasNoInsightsMessage = showSessionVisualClue(
-      "AddArtworkWithoutInsightsMessage_MyCTab"
+    setJSX(
+      <Flex>
+        <ArtworksFilterHeader
+          selectedFiltersCount={filtersCount}
+          onFilterPress={() => setIsFilterModalVisible(true)}
+        >
+          <Button
+            data-test-id="add-artwork-button-non-zero-state"
+            size="small"
+            variant="fillDark"
+            onPress={async () => {
+              navigate("my-collection/artworks/new", {
+                passProps: {
+                  mode: "add",
+                  source: Tab.collection,
+                  onSuccess: popToRoot,
+                },
+              })
+              trackEvent(tracks.addCollectedArtwork())
+            }}
+            haptic
+          >
+            Add Works
+          </Button>
+        </ArtworksFilterHeader>
+        {!!showNewWorksMessage && (
+          <PurchasedArtworkAddedMessage
+            onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
+          />
+        )}
+        {!!showSubmissionMessage && (
+          <SubmittedArtworkAddedMessage
+            onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
+          />
+        )}
+        {!!enableMyCollectionInsights && (
+          <MyCollectionArtworkUploadMessages
+            sourceTab={Tab.collection}
+            hasMarketSignals={hasMarketSignals}
+          />
+        )}
+      </Flex>
     )
-    return {
-      hasSeenBanner: hasSeen === "true",
-      shouldShowConsignments: shouldShowConsignments === true,
-      shouldShowAddedArtworkHasNoInsightsMessage:
-        shouldShowAddedArtworkHasNoInsightsMessage === true && showMyCollectionInsights,
-    }
   }
 
   useEffect(() => {
     if (artworks.length) {
-      hasBeenShownBanner().then(
-        ({ hasSeenBanner, shouldShowConsignments, shouldShowAddedArtworkHasNoInsightsMessage }) => {
-          const showNewWorksBanner =
-            me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
-          const showConsignmentsBanner = shouldShowConsignments
-          const showAddedArtworkHasNoInsightsMessage = shouldShowAddedArtworkHasNoInsightsMessage
-          setJSX(
-            <Flex>
-              <ArtworksFilterHeader
-                selectedFiltersCount={filtersCount}
-                onFilterPress={() => setIsFilterModalVisible(true)}
-              >
-                <Button
-                  data-test-id="add-artwork-button-non-zero-state"
-                  size="small"
-                  variant="fillDark"
-                  onPress={async () => {
-                    navigate("my-collection/artworks/new", {
-                      passProps: {
-                        mode: "add",
-                        source: Tab.collection,
-                        onSuccess: popToRoot,
-                      },
-                    })
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                  haptic
-                >
-                  Add Works
-                </Button>
-              </ArtworksFilterHeader>
-              {!!showNewWorksBanner && (
-                <Message
-                  variant="info"
-                  title="Your collection is growing"
-                  text="Based on your purchase history, we’ve added the following works."
-                  showCloseButton
-                  onClose={() =>
-                    AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
-                  }
-                />
-              )}
-              {!!showConsignmentsBanner && (
-                <Message
-                  variant="info"
-                  title="Artwork added to My Collection"
-                  text="The artwork you submitted for sale has been automatically added."
-                  showCloseButton
-                  onClose={() => removeClue("ArtworkSubmissionMessage")}
-                />
-              )}
-              {!!showAddedArtworkHasNoInsightsMessage && (
-                <AddedArtworkHasNoInsightsMessage
-                  onClose={() => removeClue("AddArtworkWithoutInsightsMessage_MyCTab")}
-                />
-              )}
-            </Flex>
-          )
-        }
-      )
+      showMessages()
     } else {
       // remove already set JSX
       setJSX(null)
@@ -196,7 +195,11 @@ const MyCollection: React.FC<{
       />
 
       <StickyTabPageScrollView
-        contentContainerStyle={{ paddingBottom: space(2) }}
+        contentContainerStyle={{
+          // Extend the container flex when there are no artworks for accurate vertical centering
+          flexGrow: artworks.length ? undefined : 1,
+          justifyContent: artworks.length ? "flex-start" : "center",
+        }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
         innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"
@@ -230,6 +233,9 @@ export const MyCollectionContainer = createPaginationContainer(
         myCollectionInfo {
           includesPurchasedArtworks
         }
+        auctionResults: myCollectionAuctionResults(first: 3) {
+          totalCount
+        }
         myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
           @connection(key: "MyCollection_myCollectionConnection", filters: []) {
           edges {
@@ -249,6 +255,9 @@ export const MyCollectionContainer = createPaginationContainer(
               artist {
                 internalID
                 name
+              }
+              _marketPriceInsights: marketPriceInsights {
+                demandRank
               }
               consignmentSubmission {
                 displayText
@@ -311,7 +320,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 export const MyCollectionPlaceholder: React.FC = () => {
   const screenWidth = useScreenDimensions().width
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
-  const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
+  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   return (
     <Flex>
@@ -340,7 +349,7 @@ export const MyCollectionPlaceholder: React.FC = () => {
       <Spacer mb={2} mt={1} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        {!!showMyCollectionInsights ? (
+        {!!enableMyCollectionInsights ? (
           <>
             <PlaceholderText width="25%" height={22} />
             <PlaceholderText width="25%" height={22} />

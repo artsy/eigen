@@ -15,6 +15,7 @@ export interface MessageProps {
   titleStyle?: TextProps
   bodyTextStyle?: TextProps
   variant: MessageVariant
+  testID?: string
 }
 
 export const Message: React.FC<MessageProps> = ({
@@ -26,6 +27,7 @@ export const Message: React.FC<MessageProps> = ({
   titleStyle,
   bodyTextStyle,
   variant,
+  testID,
 }) => {
   const color = useColor()
 
@@ -78,6 +80,7 @@ export const Message: React.FC<MessageProps> = ({
 
   return (
     <Animated.View
+      testID={testID}
       style={{
         height: tempHeight,
         transform: [
@@ -93,10 +96,10 @@ export const Message: React.FC<MessageProps> = ({
       <Flex backgroundColor={color(colors[variant].backgroundColor)} {...containerStyle}>
         <Flex px={2} py={1} flexDirection="row" justifyContent="space-between">
           <Flex flex={1}>
-            <Text fontSize="13px" color={color(colors[variant].titleColor)} {...titleStyle}>
+            <Text variant="xs" color={color(colors[variant].titleColor)} {...titleStyle}>
               {title}
             </Text>
-            <Text fontSize="13px" color={color(colors[variant].textColor)} {...bodyTextStyle}>
+            <Text variant="xs" color={color(colors[variant].textColor)} {...bodyTextStyle}>
               {text}
             </Text>
           </Flex>

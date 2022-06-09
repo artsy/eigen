@@ -9,13 +9,13 @@ export const MarketSignalsSectionHeader: React.FC<{}> = () => {
     <Flex justifyContent="space-between" flexDirection="row" mb={2} alignItems="center" px={2}>
       <Text variant="lg">Market Signals</Text>
       <Touchable onPress={() => setIsVisible(true)} haptic>
-        <Text style={{ textDecorationLine: "underline" }} variant="sm" color="black60">
+        <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
           What is this?
         </Text>
       </Touchable>
       <InfoModal title="Market Signals" visible={isVisible} onDismiss={() => setIsVisible(false)}>
         <Flex mt={1}>
-          <Text caps>what are artsy insights</Text>
+          <Text caps>what are artsy insights?</Text>
           <Text>
             Artsy insights are free, at-a glance insights into the market and career of artists in
             your collection.

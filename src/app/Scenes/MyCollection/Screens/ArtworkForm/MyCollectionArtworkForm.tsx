@@ -13,7 +13,7 @@ import {
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { addClue, GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
+import { addClue, GlobalStore, setVisualClueAsSeen, useFeatureFlag } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
@@ -130,12 +130,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       }
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
     } finally {
-      if (props.mode === "add") {
-        if (props.source === Tab.collection /* and insights are not awailable */) {
-          // TODO: check Artwork insights ^^^ - blocked by the backend
-          addClue("AddArtworkWithoutInsightsMessage_MyCTab")
-        } // else - isAddedFromInsights - other tickets
-      }
       setLoading(false)
       setIsArtworkSaved(false)
     }
@@ -315,6 +309,10 @@ export const updateArtwork = async (
     if (slug) {
       storeLocalPhotos(slug, photos)
     }
+    const hasMarketPriceInsights =
+      response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.hasMarketPriceInsights
+
+    addArtworkMessages({ hasMarketPriceInsights, sourceTab: props.source })
   } else {
     const response = await myCollectionUpdateArtwork({
       artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
@@ -341,4 +339,34 @@ const tracks = {
   deleteCollectedArtwork: (internalID: string, slug: string) => {
     return deleteCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
   },
+}
+
+const addArtworkMessages = async ({
+  hasMarketPriceInsights,
+  sourceTab,
+}: {
+  hasMarketPriceInsights: boolean | null | undefined
+  sourceTab: Tab
+}) => {
+  setVisualClueAsSeen("AddedArtworkWithInsightsMessage_InsightsTab")
+  setVisualClueAsSeen("AddedArtworkWithInsightsMessage_MyCTab")
+  setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_InsightsTab")
+  setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_MyCTab")
+
+  if (hasMarketPriceInsights) {
+    if (sourceTab === Tab.collection) {
+      addClue("AddedArtworkWithInsightsMessage_MyCTab")
+      addClue("AddedArtworkWithInsightsVisualClueDot")
+    } else {
+      setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
+      addClue("AddedArtworkWithInsightsMessage_InsightsTab")
+    }
+  } else {
+    if (sourceTab === Tab.collection) {
+      addClue("AddedArtworkWithoutInsightsMessage_MyCTab")
+    } else {
+      setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
+      addClue("AddedArtworkWithoutInsightsMessage_InsightsTab")
+    }
+  }
 }

@@ -1,18 +1,13 @@
 import { AuctionResultsForArtistsYouCollect_me$key } from "__generated__/AuctionResultsForArtistsYouCollect_me.graphql"
 import { AuctionResultsForArtistsYouCollectQuery } from "__generated__/AuctionResultsForArtistsYouCollectQuery.graphql"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { groupBy } from "lodash"
-import moment from "moment"
 import { Flex, Text } from "palette"
 import React, { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-const articlesQueryVariables = {
-  count: 10,
-}
+const PAGE_SIZE = 20
 
 export const ListOfresults: React.FC<{}> = () => {
   const queryData = useLazyLoadQuery<AuctionResultsForArtistsYouCollectQuery>(
@@ -27,19 +22,7 @@ export const ListOfresults: React.FC<{}> = () => {
 
   const [refreshing, setRefreshing] = useState<boolean>(false)
 
-  const allAuctionResults = extractNodes(data.myCollectionAuctionResults)
-
-  const groupedAuctionResults = groupBy(allAuctionResults, (item) =>
-    moment(item!.saleDate!).format("YYYY-MM")
-  )
-
-  const groupedAuctionResultSections = Object.entries(groupedAuctionResults).map(
-    ([date, auctionResults]) => {
-      const sectionTitle = moment(date).format("MMMM")
-
-      return { sectionTitle, data: auctionResults }
-    }
-  )
+  const auctionResults = extractNodes(data.myCollectionAuctionResults)
 
   const handleRefresh = () => {
     setRefreshing(true)
@@ -56,31 +39,27 @@ export const ListOfresults: React.FC<{}> = () => {
   }
 
   return (
-    <PageWithSimpleHeader title="Auction Results for Artists You Collect">
+    <Flex flex={1}>
       <AuctionResultsList
-        sections={groupedAuctionResultSections}
+        auctionResults={auctionResults}
         refreshing={refreshing}
         handleRefresh={handleRefresh}
         onEndReached={handleLoadMore}
-        ListHeaderComponent={<ListHeader />}
         onItemPress={(item: any) => {
           navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
         }}
+        ListHeaderComponent={ListHeader}
         isLoadingNext={isLoadingNext}
+        floatingHeaderTitle="Recently Sold at Auctions"
       />
-    </PageWithSimpleHeader>
+    </Flex>
   )
 }
 
 export const AuctionResultsForArtistsYouCollect: React.FC = () => {
   return (
     <Suspense
-      fallback={
-        <LoadingSkeleton
-          title="Auction Results for Artists You Collect"
-          listHeader={<ListHeader />}
-        />
-      }
+      fallback={<LoadingSkeleton title="Recently Sold at Auctions" listHeader={<ListHeader />} />}
     >
       <ListOfresults />
     </Suspense>
@@ -89,10 +68,11 @@ export const AuctionResultsForArtistsYouCollect: React.FC = () => {
 
 export const ListHeader: React.FC = () => {
   return (
-    <Flex>
-      <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
-        The latest auction results for the artists you collect.
+    <Flex mx={2}>
+      <Text variant="lg" mb={0.5}>
+        Recently Sold at Auction
       </Text>
+      <Text variant="xs">Stay up-to-date on the prices your artists achieve at auctions.</Text>
     </Flex>
   )
 }
@@ -124,3 +104,7 @@ const AuctionResultsForArtistsYouCollectScreenQuery = graphql`
     }
   }
 `
+
+const articlesQueryVariables = {
+  count: PAGE_SIZE,
+}

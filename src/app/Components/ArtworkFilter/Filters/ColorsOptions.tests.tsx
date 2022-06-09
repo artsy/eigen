@@ -40,9 +40,9 @@ describe("Colors options screen", () => {
           value: "yellow",
         },
         {
-          name: "Violet",
+          name: "Purple",
           count: 145,
-          value: "violet",
+          value: "purple",
         },
       ],
     },
@@ -92,6 +92,36 @@ describe("Colors options screen", () => {
     )
 
     expect(tree.root.findAllByType(ColorsSwatch)).toHaveLength(aggregation!.counts.length)
+  })
+
+  describe("with unrecognized colors", () => {
+    const updatedMockAggregations: Aggregations = [
+      {
+        ...mockAggregations[0],
+        counts: [
+          ...mockAggregations[0].counts,
+          {
+            name: "Stanky Bean",
+            count: 197,
+            value: "stanky-bean",
+          },
+        ],
+      },
+    ]
+    const updatedAggregation = aggregationForFilter(FilterParamName.colors, updatedMockAggregations)
+
+    it("it does not try to render swatches for them", () => {
+      const tree = renderWithWrappers(
+        <MockColorScreen
+          aggregations={updatedMockAggregations}
+          {...getEssentialProps()}
+          initialData={initialState}
+        />
+      )
+
+      const expectedSwatchCount = updatedAggregation!.counts.length
+      expect(tree.root.findAllByType(ColorsSwatch)).toHaveLength(expectedSwatchCount - 1)
+    })
   })
 
   describe("selecting a color filter", () => {

@@ -3,11 +3,15 @@ import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalS
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
-import { Sans, Theme } from "palette"
+import { Text, Theme } from "palette"
 import React from "react"
 import { CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
 describe("CommercialPartnerInformation", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
+  })
+
   it("renders all seller information when work is for sale and is not in a closed auction", () => {
     const component = mount(
       <GlobalStoreProvider>
@@ -16,14 +20,14 @@ describe("CommercialPartnerInformation", () => {
         </Theme>
       </GlobalStoreProvider>
     )
-    expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
-    expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(
+    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
+    expect(component.find(Text).at(1).render().text()).toMatchInlineSnapshot(
       `"Ships from Brooklyn"`
     )
-    expect(component.find(Sans).at(2).render().text()).toMatchInlineSnapshot(
+    expect(component.find(Text).at(2).render().text()).toMatchInlineSnapshot(
       `"Ships within the continental USA"`
     )
-    expect(component.find(Sans).at(3).render().text()).toMatchInlineSnapshot(
+    expect(component.find(Text).at(3).render().text()).toMatchInlineSnapshot(
       `"VAT included in price"`
     )
   })
@@ -54,8 +58,8 @@ describe("CommercialPartnerInformation", () => {
         </Theme>
       </GlobalStoreProvider>
     )
-    expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"At Bob's Gallery"`)
-    expect(component.find(Sans).length).toEqual(1)
+    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"At Bob's Gallery"`)
+    expect(component.find(Text).length).toEqual(1)
   })
 
   it("hides shipping information for sold works", () => {
@@ -75,8 +79,8 @@ describe("CommercialPartnerInformation", () => {
         </Theme>
       </GlobalStoreProvider>
     )
-    expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
-    expect(component.find(Sans).length).toEqual(1)
+    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
+    expect(component.find(Text).length).toEqual(1)
   })
 
   it("Hides shipping/tax information if the work is not enabled for buy now or make offer", () => {
@@ -94,8 +98,8 @@ describe("CommercialPartnerInformation", () => {
       </GlobalStoreProvider>
     )
 
-    expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
-    expect(component.find(Sans).length).toEqual(1)
+    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
+    expect(component.find(Text).length).toEqual(1)
   })
 
   it("Says 'At Gallery Name' instead of 'From Gallery Name' and hides shipping info for non-commercial works", () => {
@@ -115,8 +119,8 @@ describe("CommercialPartnerInformation", () => {
         </Theme>
       </GlobalStoreProvider>
     )
-    expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"At Bob's Gallery"`)
-    expect(component.find(Sans).length).toEqual(1)
+    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"At Bob's Gallery"`)
+    expect(component.find(Text).length).toEqual(1)
   })
 })
 
