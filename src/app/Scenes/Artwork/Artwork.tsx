@@ -24,6 +24,7 @@ import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { ResponsiveValue } from "styled-system"
+import { OfferSubmittedModal } from "../Inbox/Components/Conversations/OfferSubmittedModal"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
@@ -445,6 +446,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
           />
         )}
         <QAInfo />
+        <OfferSubmittedModal />
       </AuctionWebsocketContextProvider>
     </ProvideScreenTracking>
   )
