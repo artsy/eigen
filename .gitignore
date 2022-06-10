@@ -41,7 +41,6 @@ fastlane/report.xml
 fastlane/Preview.html
 
 .vscode/.browse.VC.db
-ios/Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 
 
 .vendor
