@@ -3,7 +3,6 @@ import { SavedSearchesList_me$data } from "__generated__/SavedSearchesList_me.gr
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { GoBackProps, navigate, navigationEvents } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -93,7 +92,6 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
   const prevSelectedSortValue = usePrevious(selectedSortValue)
   const [fetchingMore, setFetchingMore] = useState(false)
   const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
-  const enableSortByForAlerts = useFeatureFlag("AREnableSortByOnAlertsList")
 
   const handleCloseModal = () => {
     setModalVisible(false)
@@ -185,16 +183,14 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
           onRefresh={onRefresh}
           onLoadMore={handleLoadMore}
         />
-        {!!enableSortByForAlerts && (
-          <SortByModal
-            visible={modalVisible}
-            options={SORT_OPTIONS}
-            selectedValue={selectedSortValue}
-            onCloseModal={handleCloseModal}
-            onSelectOption={handleSelectOption}
-            onModalFinishedClosing={handleSortByModalClosed}
-          />
-        )}
+        <SortByModal
+          visible={modalVisible}
+          options={SORT_OPTIONS}
+          selectedValue={selectedSortValue}
+          onCloseModal={handleCloseModal}
+          onSelectOption={handleSelectOption}
+          onModalFinishedClosing={handleSortByModalClosed}
+        />
       </PageWithSimpleHeader>
     </ProvideScreenTracking>
   )
