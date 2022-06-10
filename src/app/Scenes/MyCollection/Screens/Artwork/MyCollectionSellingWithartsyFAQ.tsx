@@ -1,7 +1,8 @@
 import { navigate } from "app/navigation/navigate"
+import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { Box, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
-import { Linking, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
 export const MyCollectionSellingWithartsyFAQ: React.FC = () => {
@@ -76,7 +77,10 @@ export const MyCollectionSellingWithartsyFAQ: React.FC = () => {
                 <Text>
                   Or get in touch with one of our specialists at{" "}
                   {
-                    <Text underline onPress={() => Linking.openURL("mailto:sell@artsymail.com")}>
+                    <Text
+                      underline
+                      onPress={() => sendEmailWithMailTo("mailto:sell@artsymail.com")}
+                    >
                       sell@artsymail.com.
                     </Text>
                   }

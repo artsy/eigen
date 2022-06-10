@@ -1,7 +1,8 @@
 import { navigate } from "app/navigation/navigate"
+import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { Box, BulletedItem, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
-import { Linking, ScrollView } from "react-native"
+import { ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
 export const ArtworkSubmissionStatusFAQ: React.FC = () => {
@@ -57,7 +58,7 @@ export const ArtworkSubmissionStatusFAQ: React.FC = () => {
                   {
                     <Text
                       style={{ textDecorationLine: "underline" }}
-                      onPress={() => Linking.openURL("mailto:consign@artsymail.com")}
+                      onPress={() => sendEmailWithMailTo("mailto:consign@artsymail.com")}
                     >
                       consign@artsymail.com.
                     </Text>
