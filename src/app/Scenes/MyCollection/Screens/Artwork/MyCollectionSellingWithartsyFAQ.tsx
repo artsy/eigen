@@ -1,10 +1,12 @@
+import { navigate } from "app/navigation/navigate"
 import { Box, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
-import { ScrollView } from "react-native"
+import { Linking, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
 export const MyCollectionSellingWithartsyFAQ: React.FC = () => {
   const { safeAreaInsets } = useScreenDimensions()
+  const article = "https://support.artsy.net/hc/en-us/sections/360008311913-Sell-with-Artsy"
 
   return (
     <ScrollView>
@@ -64,11 +66,20 @@ export const MyCollectionSellingWithartsyFAQ: React.FC = () => {
               </Flex>
               <Flex flexDirection="column">
                 <Text mb={2}>
-                  For more information, see our {<Text underline> Collector Help Center</Text>}
+                  For more information, see our{" "}
+                  {
+                    <Text underline onPress={() => navigate(article)}>
+                      Collector Help Center
+                    </Text>
+                  }
                 </Text>
                 <Text>
-                  Or get in touch with one of our specialists at
-                  {<Text underline> sell@artsymail.com.</Text>}
+                  Or get in touch with one of our specialists at{" "}
+                  {
+                    <Text underline onPress={() => Linking.openURL("mailto:sell@artsymail.com")}>
+                      sell@artsymail.com.
+                    </Text>
+                  }
                 </Text>
               </Flex>
             </Join>
