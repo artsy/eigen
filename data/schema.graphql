@@ -12754,6 +12754,9 @@ type Sale implements Node {
     after: String
     before: String
 
+    # When this is true and there is no access token present, allow a loader that caches to be used.
+    cached: Boolean = true
+
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
     first: Int
@@ -12836,6 +12839,9 @@ type Sale implements Node {
   isGalleryAuction: Boolean
   isLiveOpen: Boolean
   isLotConditionsReportEnabled: Boolean
+
+  # True for a cascading-end-time enabled sale where lots have started closing
+  isLotsClosing: Boolean!
   isOpen: Boolean
   isPreliminary: Boolean
   isPreview: Boolean
