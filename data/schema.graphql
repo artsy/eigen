@@ -12741,6 +12741,7 @@ type Sale implements Node {
     exclude: [String]
     first: Int
     last: Int
+    status: SaleArtworkStatus
   ): ArtworkConnection
   associatedSale: Sale
   bidder: Bidder
