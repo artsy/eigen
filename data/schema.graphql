@@ -10346,6 +10346,16 @@ enum MyCollectionArtworkSorts {
 type MyCollectionConnection {
   artistsCount: Int!
   artworksCount: Int!
+
+  # A connection of artists in the users' collection
+  collectedArtistsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): ArtistConnection
   default: Boolean!
   description: String!
 
@@ -10418,6 +10428,16 @@ type MyCollectionEdge {
 type MyCollectionInfo {
   artistsCount: Int!
   artworksCount: Int!
+
+  # A connection of artists in the users' collection
+  collectedArtistsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): ArtistConnection
   default: Boolean!
   description: String!
   includesPurchasedArtworks: Boolean!
