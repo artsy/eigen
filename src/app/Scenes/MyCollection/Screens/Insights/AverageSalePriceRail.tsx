@@ -25,7 +25,7 @@ export const AverageSalePriceRail: React.FC = () => {
           capitalized={false}
           title="Average Auction Price in the last 3 years"
           onPress={() => {
-            navigate("/average-sale-price-at-auction")
+            navigate("/my-collection/average-sale-price-at-auction")
           }}
           mb={1}
         />

@@ -89,6 +89,7 @@
                 <data android:pathPrefix="/make-offer" />
                 <data android:pathPrefix="/purchase" />
                 <data android:pathPrefix="/my-account" />
+                <data android:pathPrefix="/my-collection" />
                 <data android:pathPrefix="/my-profile" />
                 <data android:pathPrefix="/my-profile/saved-addresses" />
                 <data android:pathPrefix="/orders" />

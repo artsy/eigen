@@ -81,7 +81,7 @@ import { MyCollectionArtworkScreen } from "./Scenes/MyCollection/Screens/Artwork
 import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
-import { AverageAuctionPrice } from "./Scenes/MyCollection/Screens/Insights/AverageAuctionPrice"
+import { AverageSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights/AverageSalePriceAtAuction"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "./Scenes/MyProfile/MyProfile"
 import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -341,7 +341,7 @@ export const modules = defineModules({
     [AuctionResultsForArtistsYouFollowScreenQuery]
   ),
   AuctionResultsForArtistsYouCollect: reactModule(AuctionResultsForArtistsYouCollect),
-  AverageAuctionPrice: reactModule(AverageAuctionPrice),
+  AverageSalePriceAtAuction: reactModule(AverageSalePriceAtAuction),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
