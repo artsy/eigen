@@ -41,10 +41,7 @@ fastlane/report.xml
 fastlane/Preview.html
 
 .vscode/.browse.VC.db
-<<<<<<< HEAD
-ios/Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
-=======
->>>>>>> origin/main
+
 
 .vendor
 
