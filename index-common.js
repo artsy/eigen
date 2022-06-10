@@ -20,8 +20,6 @@ if (metaflags.startStorybook) {
   require("./src/storybook")
 } else {
   const appName = require("./app.json").appName
-  require("react-native-gesture-handler")
-  require("react-native-screens").enableScreens()
   const { AppRegistry } = require("react-native")
   const { App } = require("./src/app/App")
   AppRegistry.registerComponent(appName, () => App)

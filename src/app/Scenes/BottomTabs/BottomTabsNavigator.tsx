@@ -10,39 +10,37 @@ const TabContent = ({
   route,
 }: {
   route: { params: { tabName: BottomTabType; rootModuleName: AppModule } }
-}) => {
+}) => (
   // TODO: simplify this, we probably can get rid of NavStack
-  return <NavStack id={route.params.tabName} rootModuleName={route.params.rootModuleName} />
-}
+  <NavStack id={route.params.tabName} rootModuleName={route.params.rootModuleName} />
+)
 
-export const BottomTabsNavigator = () => {
-  return (
-    <Tab.Navigator tabBar={() => <BottomTabs />} backBehavior="firstRoute">
-      <Tab.Screen
-        name="home"
-        component={TabContent}
-        initialParams={{ tabName: "home", rootModuleName: "Home" }}
-      />
-      <Tab.Screen
-        name="search"
-        component={TabContent}
-        initialParams={{ tabName: "search", rootModuleName: "Search" }}
-      />
-      <Tab.Screen
-        name="inbox"
-        component={TabContent}
-        initialParams={{ tabName: "inbox", rootModuleName: "Inbox" }}
-      />
-      <Tab.Screen
-        name="sell"
-        component={TabContent}
-        initialParams={{ tabName: "sell", rootModuleName: "Sales" }}
-      />
-      <Tab.Screen
-        name="profile"
-        component={TabContent}
-        initialParams={{ tabName: "profile", rootModuleName: "MyProfile" }}
-      />
-    </Tab.Navigator>
-  )
-}
+export const BottomTabsNavigator = () => (
+  <Tab.Navigator tabBar={() => <BottomTabs />} backBehavior="firstRoute">
+    <Tab.Screen
+      name="home"
+      component={TabContent}
+      initialParams={{ tabName: "home", rootModuleName: "Home" }}
+    />
+    <Tab.Screen
+      name="search"
+      component={TabContent}
+      initialParams={{ tabName: "search", rootModuleName: "Search" }}
+    />
+    <Tab.Screen
+      name="inbox"
+      component={TabContent}
+      initialParams={{ tabName: "inbox", rootModuleName: "Inbox" }}
+    />
+    <Tab.Screen
+      name="sell"
+      component={TabContent}
+      initialParams={{ tabName: "sell", rootModuleName: "Sales" }}
+    />
+    <Tab.Screen
+      name="profile"
+      component={TabContent}
+      initialParams={{ tabName: "profile", rootModuleName: "MyProfile" }}
+    />
+  </Tab.Navigator>
+)

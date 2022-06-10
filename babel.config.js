@@ -6,15 +6,16 @@ module.exports = (api) => {
   return {
     // plugins run first
     plugins: [
-      ["module-resolver", { alias: moduleResolverAlias }],
+      "@babel/plugin-transform-flow-strip-types",
+      "import-graphql", // to enable import syntax for .graphql and .gql files.
+      "relay",
       [
         "@babel/plugin-proposal-decorators",
         {
           legacy: true, // this is only needed for `ProvideScreenTracking` that is deprecated. once we dont have that anymore, we can remove this. probably the whole plugin actually.
         },
       ],
-      "relay",
-      "import-graphql", // to enable import syntax for .graphql and .gql files.
+      ["module-resolver", { alias: moduleResolverAlias }],
       "react-native-reanimated/plugin", // has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin
     ],
 

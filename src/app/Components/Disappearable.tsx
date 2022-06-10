@@ -13,7 +13,7 @@ export const Disappearable = React.forwardRef<
   const opacity = useAnimatedValue(1)
   const scale = animateScale
     ? useMemo(() => {
-        return Animated.interpolate(opacity, {
+        return Animated.interpolateNode(opacity, {
           inputRange: [0, 1],
           outputRange: [0.92, 1],
         })

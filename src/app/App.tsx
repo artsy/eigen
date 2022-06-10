@@ -64,7 +64,7 @@ const useRageShakeAdminMenu = () => {
   }, [userIsDev])
 }
 
-const Main: React.FC = () => {
+const Main = () => {
   useRageShakeAdminMenu()
   useDebugging()
   useEffect(() => {

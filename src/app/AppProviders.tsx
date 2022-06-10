@@ -1,6 +1,7 @@
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { Spinner, Theme } from "palette"
 import { Component, Suspense } from "react"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { ProvideScreenDimensions } from "shared/hooks"
@@ -20,6 +21,7 @@ export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
     [
       // order matters here, be careful!
       // if Provider A is using another Provider B, then A needs to appear below B.
+      GestureHandlerProvider,
       TrackingProvider,
       GlobalStoreProvider,
       UnleashProvider, // uses: GlobalStoreProvider
@@ -39,6 +41,10 @@ export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
   )
 
 // Providers with preset props
+
+const GestureHandlerProvider = (props: { children?: React.ReactNode }) => (
+  <GestureHandlerRootView style={{ flex: 1 }} {...props} />
+)
 
 // relay needs the default environment
 const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => (
