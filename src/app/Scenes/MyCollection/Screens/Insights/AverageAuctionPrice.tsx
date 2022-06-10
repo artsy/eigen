@@ -1,7 +1,7 @@
 import { Flex, Text } from "palette"
 import React from "react"
 
-export const AverageAucitionPrice: React.FC = () => {
+export const AverageAuctionPrice: React.FC = () => {
   return (
     <Flex mx={2} pt={6}>
       <Text variant="lg" mb={0.5} testID="Average_Auction_Price_title">

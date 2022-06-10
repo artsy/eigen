@@ -1,10 +1,10 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
-import { AverageAucitionPrice } from "./AverageAucitionPrice"
+import { AverageAuctionPrice } from "./AverageAuctionPrice"
 
-describe("AverageAucitionPrice", () => {
-  const TestRenderer = () => <AverageAucitionPrice />
+describe("AverageAuctionPrice", () => {
+  const TestRenderer = () => <AverageAuctionPrice />
 
   it("renders title", async () => {
     const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
