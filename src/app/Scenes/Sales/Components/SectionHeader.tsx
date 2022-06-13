@@ -11,7 +11,7 @@ const Header = styled.View`
 `
 
 const Title = styled.Text`
-  font-family: "ReactNativeAGaramondPro-Regular";
+  font-family: "Unica77LL-Regular";
   font-size: 30px;
   text-align: left;
 `

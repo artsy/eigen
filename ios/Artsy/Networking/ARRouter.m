@@ -27,7 +27,7 @@
 #import <AFNetworking/AFURLSessionManager.h>
 #import <AFNetworking/AFHTTPSessionManager.h>
 
-#import <AREmission.h>
+#import "AREmission.h"
 
 static AFHTTPSessionManager *staticHTTPClient = nil;
 static NSSet *artsyHosts = nil;
@@ -286,27 +286,6 @@ static NSString *hostFromString(NSString *string)
 #pragma mark User
 
 
-+ (NSURLRequest *)newUserInfoRequest
-{
-    return [self requestWithMethod:@"GET" path:ARMyInfoURL parameters:nil];
-}
-
-+ (NSURLRequest *)newMeHEADRequest
-{
-    return [self requestWithMethod:@"HEAD" path:ARMyInfoURL parameters:nil];
-}
-
-+ (NSURLRequest *)newUserEditRequestWithParams:(NSDictionary *)params
-{
-    return [self requestWithMethod:@"PUT" path:ARMyInfoURL parameters:params];
-}
-
-+ (NSURLRequest *)newCheckFollowingProfileHeadRequest:(NSString *)profileID
-{
-    NSString *path = NSStringWithFormat(ARFollowingProfileURLFormat, profileID);
-    return [self requestWithMethod:@"GET" path:path parameters:nil];
-}
-
 + (NSURLRequest *)newMyFollowProfileRequest:(NSString *)profileID
 {
     return [self requestWithMethod:@"POST" path:ARFollowProfileURL parameters:@{ @"profile_id" : profileID }];
@@ -499,16 +478,6 @@ static NSString *hostFromString(NSString *string)
     return [self requestWithMethod:@"GET" path:ARNewArtistSearchURL parameters:params];
 }
 
-+ (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)genesToExclude
-{
-    NSArray *geneIDsToExclude = [genesToExclude valueForKey:@"uuid"];
-
-    NSDictionary *params = @{ @"term" : query,
-                              @"exclude_ids" : geneIDsToExclude };
-
-    return [self requestWithMethod:@"GET" path:ARNewGeneSearchURL parameters:params];
-}
-
 #pragma mark -
 #pragma mark Fairs
 
@@ -537,11 +506,6 @@ static NSString *hostFromString(NSString *string)
 #pragma mark -
 #pragma mark Misc Site
 
-+ (NSURLRequest *)newForgotPasswordRequestWithEmail:(NSString *)email
-{
-    NSDictionary *params = @{ @"email" : email };
-    return [self requestWithMethod:@"POST" path:ARForgotPasswordURL parameters:params];
-}
 
 + (NSURLRequest *)newSetDeviceAPNTokenRequest:(NSString *)token forDevice:(NSString *)device
 {
@@ -559,13 +523,6 @@ static NSString *hostFromString(NSString *string)
 + (NSURLRequest *)newDeleteDeviceRequest:(NSString *)token
 {
     return [self requestWithMethod:@"DELETE" path:[NSString stringWithFormat:ARDeleteDeviceURL, token]];
-}
-
-+ (NSURLRequest *)liveSaleStateRequest:(NSString *)saleID host:(NSString *)host
-{
-    // Note that we're relying on the host to specify the domain for the request.
-    NSString *url = [NSString stringWithFormat:ARLiveSaleStateFormat, host, saleID];
-    return [self requestWithMethod:@"GET" URLString:url parameters:nil];
 }
 
 + (NSURLRequest *)graphQLRequestForQuery:(NSString *)query
@@ -644,12 +601,6 @@ static NSString *hostFromString(NSString *string)
 {
     NSString *url = [NSString stringWithFormat:ARPageURLFormat, slug];
     return [self requestWithMethod:@"GET" path:url parameters:nil];
-}
-
-+ (NSURLRequest *)newHEADRequestForPath:(NSString *)path
-{
-    NSString *fullPath = [[NSURL URLWithString:path relativeToURL:[ARRouter baseWebURL]] absoluteString];
-    return [self requestWithMethod:@"HEAD" URLString:fullPath parameters:nil];
 }
 
 @end

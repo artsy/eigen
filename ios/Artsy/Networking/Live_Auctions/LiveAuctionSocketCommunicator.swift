@@ -2,7 +2,7 @@ import Foundation
 import Interstellar
 import Starscream
 
-protocol SocketType: class {
+protocol SocketType: AnyObject {
     var onText: ((String) -> Void)? { get set }
     var onConnect: (() -> Void)? { get set }
     var onDisconnect: ((Error?) -> Void)? { get set }

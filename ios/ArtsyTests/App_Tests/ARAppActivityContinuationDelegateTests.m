@@ -3,7 +3,7 @@
 #import "ARAppDelegate+Analytics.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 SpecBegin(ARAppActivityContinuationDelegate);
 
@@ -52,7 +52,7 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
         emissionMock = [OCMockObject partialMockForObject:[AREmission sharedInstance]];
         [[emissionMock expect] navigate:@"/artwork/andy-warhol-tree-frog"];
 
-        appDelegateMock = [OCMockObject partialMockForObject:[ARAppDelegate sharedInstance]];
+        appDelegateMock = [OCMockObject partialMockForObject:[JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate];
         [[appDelegateMock expect] trackDeeplinkWithTarget:URL referrer:nil];
 
         apiMock = [OCMockObject mockForClass:ArtsyAPI.class];

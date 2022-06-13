@@ -11,7 +11,7 @@
 
 #import <MessageUI/MFMailComposeViewController.h>
 #import "ARDispatchManager.h"
-#import <Emission/ARMediaPreviewController.h>
+#import "ARMediaPreviewController.h"
 
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
@@ -165,7 +165,7 @@ RCT_EXPORT_METHOD(presentEmailComposerWithSubject:(NSString *)subject toAddress:
 
 + (UIViewController *)currentlyPresentedVC
 {
-    UIViewController *vc = [[ARAppDelegate sharedInstance] window].rootViewController;
+    UIViewController *vc = [(ARAppDelegate *)[JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate window].rootViewController;
 
     while ([vc presentedViewController] && [[vc presentedViewController] isKindOfClass:ARModalViewController.class]) {
         vc = [vc presentedViewController];

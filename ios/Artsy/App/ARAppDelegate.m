@@ -35,6 +35,14 @@
 #import "ARDispatchManager.h"
 #import "ARLogger.h"
 
+#import "AREmission.h"
+#import "AREventsModule.h"
+#import "ARTemporaryAPIModule.h"
+#import "ARTakeCameraPhotoModule.h"
+#import "ARPHPhotoPickerModule.h"
+#import "ARNotificationsManager.h"
+#import "ARCocoaConstantsModule.h"
+
 #import "UIDevice-Hardware.h"
 #import "ArtsyEcho.h"
 
@@ -43,9 +51,11 @@
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <React/RCTDevSettings.h>
+#import <React/RCTBridge.h>
+#import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import <Emission/AREmission.h>
-#import <Emission/ARNotificationsManager.h>
+#import "AREmission.h"
+#import "ARNotificationsManager.h"
 
 #if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
 #import <FlipperKit/FlipperClient.h>
@@ -55,14 +65,15 @@
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
+
 static void InitializeFlipper(UIApplication *application) {
-  FlipperClient *client = [FlipperClient sharedClient];
-  SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
-  [client addPlugin:[[FlipperKitLayoutPlugin alloc] initWithRootNode:application withDescriptorMapper:layoutDescriptorMapper]];
-  [client addPlugin:[[FKUserDefaultsPlugin alloc] initWithSuiteName:nil]];
-  [client addPlugin:[FlipperKitReactPlugin new]];
-  [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
-  [client start];
+    FlipperClient *client = [FlipperClient sharedClient];
+    SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
+    [client addPlugin:[[FlipperKitLayoutPlugin alloc] initWithRootNode:application withDescriptorMapper:layoutDescriptorMapper]];
+    [client addPlugin:[[FKUserDefaultsPlugin alloc] initWithSuiteName:nil]];
+    [client addPlugin:[FlipperKitReactPlugin new]];
+    [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
+    [client start];
 }
 #endif
 
@@ -77,23 +88,12 @@ static void InitializeFlipper(UIApplication *application) {
 
 @implementation ARAppDelegate
 
-static ARAppDelegate *_sharedInstance = nil;
-
 + (void)load
 {
-    _sharedInstance = [[self alloc] init];
-    [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = _sharedInstance;
-    [JSDecoupledAppDelegate sharedAppDelegate].appDefaultOrientationDelegate = (id)_sharedInstance;
-
-    // TODO Until we drop iOS 8 support, we can’t really conform to the `JSApplicationURLResourceOpeningDelegate`
-    // protocol, as it means we would have to implement `application:openURL:options:` which seems tricky if we still
-    // have to implement `application:openURL:sourceApplication:annotation:` as well.
-    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
-}
-
-+ (ARAppDelegate *)sharedInstance
-{
-    return _sharedInstance;
+    ARAppDelegate *d = [[self alloc] init];
+    [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = d;
+    [JSDecoupledAppDelegate sharedAppDelegate].appDefaultOrientationDelegate = (id)d;
+    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)d;
 }
 
 // Because we‘ve locked the launch screen on iPhone to portrait mode, we now have to unlock all of them again such that
@@ -119,10 +119,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    [self setupForAppLaunch];
+    [self setupForAppLaunch:nil];
 }
 
-- (void)setupForAppLaunch
+- (void)setupForAppLaunch:(NSDictionary *)launchOptions
 {
     // In case everything's already set up
     if (self.window) {
@@ -142,37 +142,42 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[ARLogger sharedLogger] startLogging];
 
-    AREmission *emission = [self setupEmission];
+    AREmission *emission = [self setupSharedEmission];
 
-    RCTRootView *rootView = [[RCTRootView alloc]
-                              initWithBridge:emission.bridge
-                              moduleName:@"eigen"
-                              initialProperties:nil];
+    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+    [emission setBridge:bridge];
+    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+                                                     moduleName:@"eigen"
+                                              initialProperties:nil];
 
-   self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-   UIViewController *rootViewController = [UIViewController new];
-   rootViewController.view = rootView;
-   self.window.rootViewController = rootViewController;
-   [self.window makeKeyAndVisible];
+    if (@available(iOS 13.0, *)) {
+        rootView.backgroundColor = [UIColor systemBackgroundColor];
+    } else {
+        rootView.backgroundColor = [UIColor whiteColor];
+    }
 
-  if (@available(iOS 13.0, *)) {
-    // prevent dark mode
-    self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
-  }
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    UIViewController *rootViewController = [UIViewController new];
+    rootViewController.view = rootView;
+    self.window.rootViewController = rootViewController;
+    [self.window makeKeyAndVisible];
 
+    if (@available(iOS 13.0, *)) {
+        // prevent dark mode
+        self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+    }
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];
 }
 
-/// This is called when the app is almost done launching
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 #if defined(FB_SONARKIT_ENABLED) && __has_include(<FlipperKit/FlipperClient.h>)
     InitializeFlipper(application);
 #endif
 
-    [self setupForAppLaunch];
+    [self setupForAppLaunch:launchOptions];
 
     [self setupAnalytics:application withLaunchOptions:launchOptions];
 
@@ -195,9 +200,9 @@ static ARAppDelegate *_sharedInstance = nil;
     NSMutableDictionary *appboyOptions = [NSMutableDictionary dictionary];
     appboyOptions[ABKEndpointKey] = brazeSDKEndPoint;
     [Appboy startWithApiKey:brazeAppKey
-      inApplication:application
-      withLaunchOptions:launchOptions
-      withAppboyOptions:appboyOptions];
+              inApplication:application
+          withLaunchOptions:launchOptions
+          withAppboyOptions:appboyOptions];
 
     NSString *segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
     if (![ARAppStatus isDev]) {
@@ -217,11 +222,10 @@ static ARAppDelegate *_sharedInstance = nil;
 - (void)registerNewSessionOpened
 {
     // TODO: Customise APPBOY Sessions
-    //A session is started when you call [[Appboy sharedInstance] startWithApiKey:inApplication:withLaunchOptions:withAppboyOptions]
+    // A session is started when you call [[Appboy sharedInstance] startWithApiKey:inApplication:withLaunchOptions:withAppboyOptions]
 }
 
-/// This happens every time we come _back_ to the app from the background
-
+// This happens every time we come _back_ to the app from the background
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     [self registerNewSessionOpened];
@@ -245,13 +249,10 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)forceCacheCustomFonts
 {
-    __unused UIFont *font = [UIFont serifBoldItalicFontWithSize:12];
-    font = [UIFont serifBoldFontWithSize:12];
-    font = [UIFont serifSemiBoldFontWithSize:12];
+    __unused UIFont *font = [UIFont serifSemiBoldFontWithSize:12];
     font = [UIFont serifFontWithSize:12];
     font = [UIFont serifItalicFontWithSize:12];
     font = [UIFont sansSerifFontWithSize:12];
-    font = [UIFont smallCapsSerifFontWithSize:12];
 }
 
 - (void)setupAdminTools
@@ -263,19 +264,6 @@ static ARAppDelegate *_sharedInstance = nil;
     }];
 }
 
-// For pre-iOS 10
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation
-{
-    return [self application:application openURL:url options: @{
-        UIApplicationOpenURLOptionsSourceApplicationKey: sourceApplication ?: @"",
-        UIApplicationOpenURLOptionsAnnotationKey: annotation  ?: @""
-    }];
-}
-
-// For iOS 10
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
     NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
@@ -365,18 +353,25 @@ static ARAppDelegate *_sharedInstance = nil;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-@end
-
-
-@implementation ARWindow
-
-- (void)sendEvent:(UIEvent *)event
+- (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
-    [super sendEvent:event];
+#if DEBUG
+    return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+#else
+    return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+#endif
+}
 
-    if (event.type == UIEventTypeTouches) {
-        self.lastTouchPoint = [[[event allTouches] anyObject] locationInView:self];
-    }
+- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge
+{
+    return @[
+        [[AREmission sharedInstance] eventsModule],
+        [[AREmission sharedInstance] APIModule],
+        [ARTakeCameraPhotoModule new],
+        [ARPHPhotoPickerModule new],
+        [[AREmission sharedInstance] notificationsManagerModule],
+        [ARCocoaConstantsModule new],
+    ];
 }
 
 @end

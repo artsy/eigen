@@ -1,6 +1,6 @@
 import UIKit
 
-func cacheColoredImageForURL(_ url: URL?, color: UIColor = UIColor.debugColourPurple()) {
+func cacheColoredImageForURL(_ url: URL?, color: UIColor = UIColor.purple()) {
     precondition(url != nil)
 
     let image = UIImage(from: color, with: CGSize(width: 500, height: 500))

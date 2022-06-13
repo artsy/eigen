@@ -41,7 +41,6 @@ export interface NativeState {
   authenticationToken: string
   launchCount: number
   userAgent: string
-  deviceId: string
 }
 
 export interface NativeModel {

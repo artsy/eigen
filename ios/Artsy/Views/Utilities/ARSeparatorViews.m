@@ -1,7 +1,7 @@
 #import "ARSeparatorViews.h"
 
 #import "ARFonts.h"
-#import <Artsy+UILabels/UIView+ARDrawing.h>
+#import "UIView+ARDrawing.h"
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 
 @implementation ARSeparatorView

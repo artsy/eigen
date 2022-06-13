@@ -1,7 +1,7 @@
 import UIKit
 
 class CityGuideView: UIView {
-  weak var mapContainerViewController: AREigenMapContainerViewController?
+  weak var mapContainerViewController: ARMapContainerViewController?
 
   override func layoutSubviews() {
       super.layoutSubviews()
@@ -20,7 +20,7 @@ class CityGuideView: UIView {
           return
       }
 
-      let vc = AREigenMapContainerViewController()
+      let vc = ARMapContainerViewController()
       parentVC.addChild(vc)
       addSubview(vc.view)
       vc.view.frame = bounds

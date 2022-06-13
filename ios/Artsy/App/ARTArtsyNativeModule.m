@@ -1,6 +1,6 @@
 #import "ARTArtsyNativeModule.h"
 #import "ARAppStatus.h"
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 #import "ARRouter.h"
 #import "ARFileUtils.h"
 #import "User.h"

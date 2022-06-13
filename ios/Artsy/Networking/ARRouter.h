@@ -36,10 +36,6 @@
 
 #pragma mark - User
 
-+ (NSURLRequest *)newMeHEADRequest;
-+ (NSURLRequest *)newUserInfoRequest;
-+ (NSURLRequest *)newUserEditRequestWithParams:(NSDictionary *)params;
-+ (NSURLRequest *)newCheckFollowingProfileHeadRequest:(NSString *)profileID;
 + (NSURLRequest *)newMyFollowProfileRequest:(NSString *)profileID;
 + (NSURLRequest *)newMyUnfollowProfileRequest:(NSString *)profileID;
 + (NSURLRequest *)newFollowingProfilesRequestWithFair:(Fair *)fair;
@@ -81,15 +77,12 @@
 #pragma mark - Search (Onboarding)
 
 + (NSURLRequest *)newArtistSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)artistsToExclude;
-+ (NSURLRequest *)newGeneSearchRequestWithQuery:(NSString *)query excluding:(NSArray *)genesToExclude;
 
 #pragma mark - Fairs
 
 + (NSURLRequest *)newFollowArtistRequest;
 
 #pragma mark - Auctions
-
-+ (NSURLRequest *)liveSaleStateRequest:(NSString *)saleID host:(NSString *)host;
 
 // Send in role as nil for when a user is logged out
 + (NSURLRequest *)liveSaleStaticDataRequest:(NSString *)saleID role:(NSString *)role;
@@ -105,7 +98,6 @@
 
 #pragma mark - Misc Site
 
-+ (NSURLRequest *)newForgotPasswordRequestWithEmail:(NSString *)email;
 + (NSURLRequest *)newSetDeviceAPNTokenRequest:(NSString *)token forDevice:(NSString *)device;
 + (NSURLRequest *)newDeleteDeviceRequest:(NSString *)token;
 + (NSURLRequest *)newSystemTimeRequest;
@@ -114,9 +106,5 @@
 
 + (NSURLRequest *)newRequestForPageContent:(NSString *)slug;
 
-
-#pragma mark - Misc
-
-+ (NSURLRequest *)newHEADRequestForPath:(NSString *)path;
 
 @end

@@ -19,8 +19,8 @@ static NSString *CellIdentifier = @"Cell";
 
 @property (nonatomic, strong) ArtsyEcho *echo;
 @property (nonatomic, strong) NSArrayOf(Message *) *messages; // Cache messages to ensure deterministic ordering
-@property (nonatomic, strong) NSArrayOf(NSString *) * routeKeys;
-@property (nonatomic, strong) NSArrayOf(NSString *) * featureKeys;
+@property (nonatomic, strong) NSArrayOf(NSString *) *routeKeys;
+@property (nonatomic, strong) NSArrayOf(NSString *) *featureKeys;
 
 @end
 
@@ -41,7 +41,7 @@ static NSString *CellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-    self.echo = [[ARAppDelegate sharedInstance] echo];
+    self.echo = [(ARAppDelegate *)[JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate echo];
     self.messages = self.echo.messages.allValues;
     self.routeKeys = [self.echo.routes.allKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     self.featureKeys = [self.echo.features.allKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];

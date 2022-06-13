@@ -4,7 +4,7 @@ import Interstellar
 /// Something to pretend to either be a network model or whatever
 /// for now it can just parse the embedded json, and move it to obj-c when we're doing real networking
 
-protocol LiveAuctionsSalesPersonType: class {
+protocol LiveAuctionsSalesPersonType: AnyObject {
     var currentLotSignal: Observable<LiveAuctionLotViewModelType?> { get }
     var initialStateLoadedSignal: Observable<Void> { get }
 

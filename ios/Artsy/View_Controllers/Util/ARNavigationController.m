@@ -19,12 +19,12 @@
 #import "ARMacros.h"
 #import "UIDevice-Hardware.h"
 
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import "ARButtonSubclasses.h"
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <MultiDelegate/AIMultiDelegate.h>
-#import <Emission/ARComponentViewController.h>
+#import "ARComponentViewController.h"
 
 static void *ARNavigationControllerButtonStateContext = &ARNavigationControllerButtonStateContext;
 static void *ARNavigationControllerScrollingChiefContext = &ARNavigationControllerScrollingChiefContext;

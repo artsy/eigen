@@ -15,25 +15,21 @@
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"
-#import "ARInternalMobileWebViewController.h"
 #import "ARDefaults.h"
 #import "ARNavigationController.h"
 #import "ARAppStatus.h"
 #import "ARRouter.h"
-#import "ARReactPackagerHost.h"
 #import "AROptions.h"
 
 #import <react-native-config/ReactNativeConfig.h>
-#import <Emission/AREmission.h>
-#import <Emission/ARTemporaryAPIModule.h>
-#import <Emission/AREventsModule.h>
-#import <Emission/ARTakeCameraPhotoModule.h>
+#import "AREmission.h"
+#import "ARTemporaryAPIModule.h"
+#import "AREventsModule.h"
 #import <SDWebImage/SDImageCache.h>
 
 #import <React/RCTUtils.h>
 #import <React/RCTDevSettings.h>
 #import <objc/runtime.h>
-#import "ARAdminNetworkModel.h"
 #import "Artsy-Swift.h"
 
 @import Darwin.POSIX.sys.utsname;
@@ -41,57 +37,7 @@
 
 @implementation ARAppDelegate (Emission)
 
-- (AREmission *)setupEmission;
-{
-    BOOL isDebugMode;
-#if DEBUG
-    isDebugMode = YES;
-#else
-    isDebugMode = NO;
-#endif
-    if (isDebugMode) {
-        NSString *bundleUrlString = [NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios&dev=true", [ARReactPackagerHost hostname]];
-        NSURL *packagerURL = [NSURL URLWithString:bundleUrlString];
-        return [self setupSharedEmissionWithPackagerURL:packagerURL];
-    } else {
-        // The normal flow for users
-        return [self setupSharedEmissionWithPackagerURL:nil];
-    }
-}
-
-/*
-deviceId taken from https://github.com/react-native-community/react-native-device-info/blob/d08f7f6db0407de5dc5252ebf2aa2ec58bd78dfc/ios/RNDeviceInfo/RNDeviceInfo.m
-The MIT License (MIT)
-Copyright (c) 2015 Rebecca Hughes
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-- (NSString *)deviceId;
-{
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    NSString *deviceId = [NSString stringWithCString:systemInfo.machine
-                                            encoding:NSUTF8StringEncoding];
-    if ([deviceId isEqualToString:@"i386"] || [deviceId isEqualToString:@"x86_64"]) {
-        deviceId = [NSString stringWithFormat:@"%s", getenv("SIMULATOR_MODEL_IDENTIFIER")];
-    }
-    return deviceId;
-}
-
-- (AREmission *)setupSharedEmissionWithPackagerURL:(NSURL *)packagerURL;
+- (AREmission *)setupSharedEmission
 {
     NSString *userID = [[[ARUserManager sharedManager] currentUser] userID];
     NSString *userEmail = [[[ARUserManager sharedManager] currentUser] email];
@@ -106,13 +52,12 @@ SOFTWARE.
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
 
     AREmission *emission = [[AREmission alloc] initWithState:@{
-                                                                 [ARStateKey userID] : (userID ?: [NSNull null]),
-                                                                 [ARStateKey userEmail] : (userEmail ?: [NSNull null]),
-                                                                 [ARStateKey authenticationToken] : (authenticationToken ?: [NSNull null]),
-                                                                 [ARStateKey launchCount] : @(launchCount),
-                                                                 [ARStateKey userAgent] : ARRouter.userAgent,
-                                                                 [ARStateKey deviceId] : self.deviceId,
-    } packagerURL:packagerURL];
+        [ARStateKey userID] : (userID ?: [NSNull null]),
+        [ARStateKey userEmail] : (userEmail ?: [NSNull null]),
+        [ARStateKey authenticationToken] : (authenticationToken ?: [NSNull null]),
+        [ARStateKey launchCount] : @(launchCount),
+        [ARStateKey userAgent] : ARRouter.userAgent,
+    }];
 
     [emission.notificationsManagerModule afterBootstrap:^{
         [ARRouter setup];
@@ -169,7 +114,7 @@ SOFTWARE.
         }
     };
 
-  return emission;
+    return emission;
 }
 
 @end

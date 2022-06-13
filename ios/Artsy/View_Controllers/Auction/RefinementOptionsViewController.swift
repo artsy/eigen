@@ -1,6 +1,7 @@
 import UIKit
 
-protocol RefinementOptionsViewControllerDelegate: class {
+
+protocol RefinementOptionsViewControllerDelegate: AnyObject {
     associatedtype R: RefinableType
 
     func userDidCancel(_ controller: RefinementOptionsViewController<R>)

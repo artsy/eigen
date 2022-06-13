@@ -3,7 +3,7 @@
 #import "ARAppConstants.h"
 
 #import <FLKAutoLayout/FLKAutoLayout.h>
-#import <Artsy+UIFonts/UIFont+ArtsyFonts.h>
+#import "UIFont+ArtsyFonts.h"
 #import <ORStackView/ORStackView.h>
 #import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 

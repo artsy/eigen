@@ -5,7 +5,7 @@
 #import "ArtsyAPI.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 #import <Adjust/Adjust.h>
 
 static  NSString *SailthruLinkDomain = @"link.artsy.net";
@@ -33,7 +33,7 @@ static  NSString *SailthruLinkDomain = @"link.artsy.net";
 
     DecodeURL(URL, ^(NSURL *decodedURL) {
         // Always let analytics know there's a URL being received
-        [[ARAppDelegate sharedInstance] trackDeeplinkWithTarget:decodedURL referrer:userActivity.referrerURL.absoluteString];
+        [(ARAppDelegate *)[JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate trackDeeplinkWithTarget:decodedURL referrer:userActivity.referrerURL.absoluteString];
 
         // Show the screen they clicked on
         if ([[ARUserManager sharedManager] hasExistingAccount]) {

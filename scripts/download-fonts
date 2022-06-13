@@ -14,6 +14,8 @@ cp ./fonts/android/* android/app/src/main/assets/fonts
 
 # iOS
 cp ./fonts/ios/* ios/Artsy/fonts
+cp ./fonts/ios/* ios/Artsy/View_Controllers/Live_Auctions/Resources/Artsy/fonts
+
 
 # Cleanup
 rm -rf ./fonts.tar.gz
