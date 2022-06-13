@@ -19,7 +19,6 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
   error,
   navigation,
 }) => {
-  const isiOS = Platform.OS === "ios"
   return (
     <Touchable haptic onPress={() => setChecked(!checked)}>
       <Flex flexDirection="row" alignItems="flex-start">
@@ -27,9 +26,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
           <Text variant="xs">
             By checking this box, you consent to our{" "}
             <Text
-              onPress={() =>
-                isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms")
-              }
+              onPress={() => navigation.navigate("Terms")}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
@@ -37,9 +34,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
             </Text>
             ,{" "}
             <Text
-              onPress={() =>
-                isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy")
-              }
+              onPress={() => navigation.navigate("Privacy")}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
@@ -47,11 +42,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
             </Text>
             , and{" "}
             <Text
-              onPress={() =>
-                isiOS
-                  ? navigate("/conditions-of-sale", { modal: true })
-                  : navigation.navigate("ConditionsOfSale")
-              }
+              onPress={() => navigation.navigate("ConditionsOfSale")}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
