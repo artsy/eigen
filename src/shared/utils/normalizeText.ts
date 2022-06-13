@@ -142,7 +142,8 @@ const defaultDiacriticsRemovalMap = [
   },
   {
     base: "d",
-    letters: "\u0064\u24D3\uFF44\u1E0B\u010F\u1E0D\u1E11\u1E13\u1E0F\u0111\u018C\u0256\u0257\uA77A",
+    letters:
+      "\u0064\u24D3\uFF44\u1E0B\u010F\u1E0D\u1E11\u1E13\u1E0F\u0111\u018C\u0256\u0257\uA77A\u00F0",
   },
   { base: "dz", letters: "\u01F3\u01C6" },
   {

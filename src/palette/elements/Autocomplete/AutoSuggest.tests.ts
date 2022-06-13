@@ -41,10 +41,10 @@ describe("AutoSuggest", () => {
       expect(suggestions.join()).toEqual(word.toLowerCase())
     })
 
-    it("ignores ", () => {
+    it("correctly maps diacritics ", () => {
       const word = "Ragnar Sigurð"
       const suggestions = autoSuggest.getSuggestionsForWord(word)
-      expect(suggestions.join()).toEqual("ragnar sigurosson")
+      expect(suggestions.join()).toEqual("ragnar sigurdsson")
     })
   })
 
