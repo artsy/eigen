@@ -1,5 +1,6 @@
-import { PartnerLocations_partner } from "__generated__/PartnerLocations_partner.graphql"
+import { PartnerLocations_partner$data } from "__generated__/PartnerLocations_partner.graphql"
 import { renderRelayTree } from "app/tests/renderRelayTree"
+import { CleanRelayFragment } from "app/utils/relayHelpers"
 import React from "react"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { PartnerLocationsFixture } from "./__fixtures__/PartnerLocations-fixture"
@@ -8,7 +9,7 @@ import { PartnerLocationsContainer as PartnerLocations } from "./PartnerLocation
 jest.unmock("react-relay")
 
 describe("PartnerLocations", () => {
-  const getWrapper = async (partner: Omit<PartnerLocations_partner, " $fragmentRefs">) =>
+  const getWrapper = async (partner: CleanRelayFragment<PartnerLocations_partner$data>) =>
     await renderRelayTree({
       Component: (props: any) => {
         return (

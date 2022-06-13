@@ -1,4 +1,4 @@
-import { ClosedLotStanding_saleArtwork } from "__generated__/ClosedLotStanding_saleArtwork.graphql"
+import { ClosedLotStanding_saleArtwork$data } from "__generated__/ClosedLotStanding_saleArtwork.graphql"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { merge } from "lodash"
@@ -29,7 +29,7 @@ const defaultSaleArtwork = {
 }
 
 const saleArtworkFixture = (overrides = {}) => {
-  return merge({}, defaultSaleArtwork, overrides) as unknown as ClosedLotStanding_saleArtwork
+  return merge({}, defaultSaleArtwork, overrides) as unknown as ClosedLotStanding_saleArtwork$data
 }
 
 describe(ClosedLotStanding, () => {

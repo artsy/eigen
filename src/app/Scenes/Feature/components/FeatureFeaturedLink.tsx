@@ -1,4 +1,4 @@
-import { FeatureFeaturedLink_featuredLink } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
+import { FeatureFeaturedLink_featuredLink$data } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Sans } from "palette"
@@ -9,7 +9,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { FeatureMarkdown } from "./FeatureMarkdown"
 
 export interface FeatureFeaturedLinkProps {
-  featuredLink: FeatureFeaturedLink_featuredLink
+  featuredLink: FeatureFeaturedLink_featuredLink$data
   width: number
 }
 

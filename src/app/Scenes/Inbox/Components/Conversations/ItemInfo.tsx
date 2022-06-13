@@ -1,11 +1,11 @@
-import { ItemInfo_item } from "__generated__/ItemInfo_item.graphql"
+import { ItemInfo_item$data } from "__generated__/ItemInfo_item.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ItemArtworkFragmentContainer } from "./ItemArtwork"
 import { ItemShowFragmentContainer } from "./ItemShow"
 
 interface ItemInfoProps {
-  item: ItemInfo_item
+  item: ItemInfo_item$data
 }
 
 export const ItemInfo: React.FC<ItemInfoProps> = ({ item }) => {

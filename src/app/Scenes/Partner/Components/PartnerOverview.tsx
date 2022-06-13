@@ -1,4 +1,4 @@
-import { PartnerOverview_partner } from "__generated__/PartnerOverview_partner.graphql"
+import { PartnerOverview_partner$data } from "__generated__/PartnerOverview_partner.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { ReadMore } from "app/Components/ReadMore"
 import Spinner from "app/Components/Spinner"
@@ -14,7 +14,7 @@ import { PartnerLocationSectionContainer as PartnerLocationSection } from "./Par
 const PAGE_SIZE = 10
 
 export const PartnerOverview: React.FC<{
-  partner: PartnerOverview_partner
+  partner: PartnerOverview_partner$data
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)

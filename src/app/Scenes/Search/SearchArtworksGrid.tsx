@@ -1,4 +1,4 @@
-import { SearchArtworksGrid_viewer } from "__generated__/SearchArtworksGrid_viewer.graphql"
+import { SearchArtworksGrid_viewer$data } from "__generated__/SearchArtworksGrid_viewer.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
   useArtworkFilters,
@@ -18,7 +18,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { useTracking } from "react-tracking"
 
 export interface SearchArtworksGridProps {
-  viewer: SearchArtworksGrid_viewer
+  viewer: SearchArtworksGrid_viewer$data
   relay: RelayPaginationProp
   keyword: string
 }

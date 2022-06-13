@@ -1,7 +1,7 @@
 import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
-import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
+import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
+import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -58,7 +58,7 @@ export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_N
 
 const MyCollection: React.FC<{
   relay: RelayPaginationProp
-  me: MyCollection_me
+  me: MyCollection_me$data
 }> = ({ relay, me }) => {
   const toast = useToast()
   const { trackEvent } = useTracking()
@@ -404,5 +404,5 @@ const tracks = {
 }
 
 export type MyCollectionArtworkEdge = NonNullable<
-  NonNullable<InfiniteScrollArtworksGrid_myCollectionConnection["edges"]>[0]
+  NonNullable<InfiniteScrollArtworksGrid_myCollectionConnection$data["edges"]>[0]
 >["node"]

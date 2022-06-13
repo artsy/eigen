@@ -1,15 +1,11 @@
-import {
-  myCollectionUpdateArtworkMutation,
-  myCollectionUpdateArtworkMutationResponse,
-  myCollectionUpdateArtworkMutationVariables,
-} from "__generated__/myCollectionUpdateArtworkMutation.graphql"
+import { myCollectionUpdateArtworkMutation } from "__generated__/myCollectionUpdateArtworkMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
 export function myCollectionUpdateArtwork(
-  input: myCollectionUpdateArtworkMutationVariables["input"]
+  input: myCollectionUpdateArtworkMutation["variables"]["input"]
 ) {
-  return new Promise<myCollectionUpdateArtworkMutationResponse>((resolve, reject) => {
+  return new Promise<myCollectionUpdateArtworkMutation["response"]>((resolve, reject) => {
     commitMutation<myCollectionUpdateArtworkMutation>(defaultEnvironment, {
       mutation: graphql`
         mutation myCollectionUpdateArtworkMutation($input: MyCollectionUpdateArtworkInput!) {

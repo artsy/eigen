@@ -1,4 +1,4 @@
-import { Show_show } from "__generated__/Show_show.graphql"
+import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
@@ -30,7 +30,7 @@ interface ShowQueryRendererProps {
 }
 
 interface ShowProps {
-  show: Show_show
+  show: Show_show$data
 }
 
 export interface ViewableItems {

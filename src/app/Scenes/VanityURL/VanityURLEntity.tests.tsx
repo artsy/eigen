@@ -1,5 +1,4 @@
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
 import { PartnerContainer } from "app/Scenes/Partner"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -29,10 +28,11 @@ const TestRenderer: React.FC<{
 }
 
 describe("VanityURLEntity", () => {
-  const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
+  let env: ReturnType<typeof createMockEnvironment>
 
-  afterEach(() => {
-    env.mockClear()
+  beforeEach(() => {
+    require("app/relay/createEnvironment").reset()
+    env = require("app/relay/createEnvironment").defaultEnvironment
   })
 
   it("renders a VanityURLPossibleRedirect when 404", () => {
@@ -95,6 +95,8 @@ describe("VanityURLEntity", () => {
             Query: () => ({
               vanityURLEntity: {
                 __typename: "Partner",
+                id: "some-gallery",
+                name: "Some Gallery",
                 cities: [],
               },
             }),
@@ -105,8 +107,7 @@ describe("VanityURLEntity", () => {
       expect(partnerComponent).toBeDefined()
     })
 
-    // TODO: Passes in isolation, but not with other specs
-    xit("renders a fair when a fair is returned", () => {
+    it("renders a fair when a fair is returned", () => {
       const tree = renderWithWrappers(
         <TestRenderer entity="fair" slugType="profileID" slug="some-fair" />
       )
@@ -119,6 +120,8 @@ describe("VanityURLEntity", () => {
             Query: () => ({
               vanityURLEntity: {
                 __typename: "Fair",
+                id: "some-fair",
+                slug: "some-fair",
               },
             }),
           })
@@ -141,6 +144,8 @@ describe("VanityURLEntity", () => {
           data: {
             vanityURLEntity: {
               __typename: "UnknownType",
+              id: "some-unknown",
+              slug: "some-unknown",
             },
           },
         })

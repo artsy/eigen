@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
-import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
-import { SaleLotsList_unfilteredSaleArtworksConnection } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
+import { SaleLotsList_saleArtworksConnection$data } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
+import { SaleLotsList_unfilteredSaleArtworksConnection$data } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
 import {
   filterArtworksParams,
   FilterParamName,
@@ -22,8 +22,8 @@ import styled from "styled-components/native"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
-  saleArtworksConnection: SaleLotsList_saleArtworksConnection
-  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection | null
+  saleArtworksConnection: SaleLotsList_saleArtworksConnection$data
+  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection$data | null
   relay: RelayPaginationProp
   saleID: string
   saleSlug: string

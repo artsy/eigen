@@ -10,8 +10,8 @@ import { FakeNavigator } from "../Helpers/FakeNavigator"
 import Spinner from "app/Components/Spinner"
 import { Button } from "palette"
 
-import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
-import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
+import { SelectMaxBid_me$data } from "__generated__/SelectMaxBid_me.graphql"
+import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 import { ActivityIndicator } from "react-native"
 import { SelectMaxBid } from "./SelectMaxBid"
 
@@ -19,7 +19,7 @@ jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
 const Me = {
   has_qualified_credit_cards: true,
-} as any as SelectMaxBid_me
+} as any as SelectMaxBid_me$data
 
 const SaleArtwork = {
   id: "sale-artwork-id",
@@ -58,7 +58,7 @@ const SaleArtwork = {
       cents: 5500000,
     },
   ],
-} as any as SelectMaxBid_sale_artwork
+} as any as SelectMaxBid_sale_artwork$data
 
 let fakeNavigator: FakeNavigator
 let fakeRelay: {

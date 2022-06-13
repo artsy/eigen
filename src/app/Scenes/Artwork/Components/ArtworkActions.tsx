@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
+import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
@@ -27,7 +27,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 import styled from "styled-components/native"
 
 interface ArtworkActionsProps {
-  artwork: ArtworkActions_artwork
+  artwork: ArtworkActions_artwork$data
   relay?: RelayProp
   shareOnPress: () => void
 }
@@ -35,7 +35,7 @@ interface ArtworkActionsProps {
 export const shareContent = (
   title: string,
   href: string,
-  artists: ArtworkActions_artwork["artists"]
+  artists: ArtworkActions_artwork$data["artists"]
 ) => {
   let computedTitle: string | null
   if (artists && artists.length) {

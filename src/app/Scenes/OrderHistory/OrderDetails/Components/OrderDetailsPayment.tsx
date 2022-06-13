@@ -1,10 +1,10 @@
-import { OrderDetailsPayment_order } from "__generated__/OrderDetailsPayment_order.graphql"
+import { OrderDetailsPayment_order$data } from "__generated__/OrderDetailsPayment_order.graphql"
 import { Box, CreditCardIcon, Flex, Text, useSpace } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface OrderDetailsPaymentProps {
-  order: OrderDetailsPayment_order
+  order: OrderDetailsPayment_order$data
 }
 
 const CreditCardDetails: React.FC<OrderDetailsPaymentProps> = ({ order }) => {

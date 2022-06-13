@@ -1,4 +1,4 @@
-import { FairExhibitors_fair } from "__generated__/FairExhibitors_fair.graphql"
+import { FairExhibitors_fair$data } from "__generated__/FairExhibitors_fair.graphql"
 import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
 import Spinner from "app/Components/Spinner"
 import { extractNodes } from "app/utils/extractNodes"
@@ -9,7 +9,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { FairExhibitorRailFragmentContainer } from "./FairExhibitorRail"
 
 interface FairExhibitorsProps {
-  fair: FairExhibitors_fair
+  fair: FairExhibitors_fair$data
   relay: RelayPaginationProp
 }
 

@@ -1,11 +1,5 @@
-import {
-  ArtistAboveTheFoldQuery,
-  ArtistAboveTheFoldQueryVariables,
-} from "__generated__/ArtistAboveTheFoldQuery.graphql"
-import {
-  ArtistBelowTheFoldQuery,
-  ArtistBelowTheFoldQueryVariables,
-} from "__generated__/ArtistBelowTheFoldQuery.graphql"
+import { ArtistAboveTheFoldQuery } from "__generated__/ArtistAboveTheFoldQuery.graphql"
+import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
@@ -124,13 +118,12 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   )
 }
 
-interface ArtistQueryRendererProps
-  extends ArtistAboveTheFoldQueryVariables,
-    ArtistBelowTheFoldQueryVariables {
+interface ArtistQueryRendererProps {
   environment?: RelayModernEnvironment
   initialTab?: string
   searchCriteriaID?: string
   search_criteria_id?: string
+  artistID: string
 }
 
 export const ArtistScreenQuery = graphql`

@@ -7,7 +7,7 @@ import { ZeroState } from "app/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "app/Components/constants"
 
-import { FavoriteArtists_me } from "__generated__/FavoriteArtists_me.graphql"
+import { FavoriteArtists_me$data } from "__generated__/FavoriteArtists_me.graphql"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
@@ -18,7 +18,7 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ClassTheme, Spacer } from "palette"
 
 interface Props {
-  me: FavoriteArtists_me
+  me: FavoriteArtists_me$data
   relay: RelayPaginationProp
 }
 

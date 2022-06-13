@@ -1,9 +1,6 @@
-import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
-import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
-import {
-  RequestConditionReportMutation,
-  RequestConditionReportMutationResponse,
-} from "__generated__/RequestConditionReportMutation.graphql"
+import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
+import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
+import { RequestConditionReportMutation } from "__generated__/RequestConditionReportMutation.graphql"
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
 import { Modal } from "app/Components/Modal"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -21,8 +18,8 @@ import {
 import { PayloadError } from "relay-runtime"
 
 interface RequestConditionReportProps {
-  artwork: RequestConditionReport_artwork
-  me: RequestConditionReport_me
+  artwork: RequestConditionReport_artwork$data
+  me: RequestConditionReport_me$data
   relay: RelayProp
 }
 
@@ -47,7 +44,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
 
   requestConditionReport = () => {
     const { artwork, relay } = this.props
-    return new Promise<RequestConditionReportMutationResponse>(async (resolve, reject) => {
+    return new Promise<RequestConditionReportMutation["response"]>(async (resolve, reject) => {
       commitMutation<RequestConditionReportMutation>(relay.environment, {
         onCompleted: resolve,
         onError: reject,

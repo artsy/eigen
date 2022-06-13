@@ -2,7 +2,7 @@ import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { ArtworkModuleRail_rail } from "__generated__/ArtworkModuleRail_rail.graphql"
+import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rail.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -12,7 +12,7 @@ import { useTracking } from "react-tracking"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
-export function getViewAllUrl(rail: ArtworkModuleRail_rail) {
+export function getViewAllUrl(rail: ArtworkModuleRail_rail$data) {
   const context = rail.context
   const key = rail.key
 
@@ -33,7 +33,7 @@ export function getViewAllUrl(rail: ArtworkModuleRail_rail) {
 
 interface ArtworkModuleRailProps {
   title: string
-  rail: ArtworkModuleRail_rail
+  rail: ArtworkModuleRail_rail$data
   mb?: number
 }
 

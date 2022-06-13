@@ -1,4 +1,4 @@
-import { PartnerHeader_partner } from "__generated__/PartnerHeader_partner.graphql"
+import { PartnerHeader_partner$data } from "__generated__/PartnerHeader_partner.graphql"
 import { PartnerBanner } from "app/Components/PartnerBanner"
 import { Stack } from "app/Components/Stack"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
@@ -8,7 +8,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerFollowButton"
 
 const PartnerHeader: React.FC<{
-  partner: PartnerHeader_partner
+  partner: PartnerHeader_partner$data
 }> = ({ partner }) => {
   const eligibleArtworks = partner.counts?.eligibleArtworks ?? 0
 

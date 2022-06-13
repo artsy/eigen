@@ -1,9 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.graphql"
-import {
-  MakeOfferModalQuery,
-  MakeOfferModalQueryResponse,
-} from "__generated__/MakeOfferModalQuery.graphql"
+import { MakeOfferModal_artwork$data } from "__generated__/MakeOfferModal_artwork.graphql"
+import { MakeOfferModalQuery } from "__generated__/MakeOfferModalQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -19,7 +16,7 @@ import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } fro
 import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
 
 interface MakeOfferModalProps {
-  artwork: MakeOfferModal_artwork
+  artwork: MakeOfferModal_artwork$data
   conversationID: string
 }
 
@@ -127,7 +124,7 @@ export const MakeOfferModalQueryRenderer: React.FC<{
         variables={{
           artworkID,
         }}
-        render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
+        render={renderWithLoadProgress<MakeOfferModalQuery["response"]>(({ artwork }) => (
           <MakeOfferModalFragmentContainer artwork={artwork!} conversationID={conversationID} />
         ))}
       />

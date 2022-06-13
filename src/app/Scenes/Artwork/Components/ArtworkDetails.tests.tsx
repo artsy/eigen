@@ -1,4 +1,4 @@
-import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
+import { ArtworkDetails_artwork$data } from "__generated__/ArtworkDetails_artwork.graphql"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
@@ -9,7 +9,7 @@ import { ArtworkDetails } from "./ArtworkDetails"
 jest.unmock("react-relay")
 
 describe("Artwork Details", () => {
-  const mountArtworkDetails = (artwork: ArtworkDetails_artwork) =>
+  const mountArtworkDetails = (artwork: ArtworkDetails_artwork$data) =>
     mount(
       <GlobalStoreProvider>
         <Theme>
@@ -19,7 +19,7 @@ describe("Artwork Details", () => {
     )
 
   it("renders the data if available", () => {
-    const testArtwork: ArtworkDetails_artwork = {
+    const testArtwork: ArtworkDetails_artwork$data = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       " $refType": null,
       category: "Oil on canvas",
@@ -48,7 +48,7 @@ describe("Artwork Details", () => {
   })
 
   it("hides certificate of authenticity, framed, and signature fields if null", () => {
-    const testArtwork: ArtworkDetails_artwork = {
+    const testArtwork: ArtworkDetails_artwork$data = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       " $refType": null,
       category: "Oil on canvas",
@@ -75,7 +75,7 @@ describe("Artwork Details", () => {
   })
 
   it("shows condition description if present and lot condition report disabled", () => {
-    const testArtwork: ArtworkDetails_artwork = {
+    const testArtwork: ArtworkDetails_artwork$data = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       " $refType": null,
       category: "Oil on canvas",
@@ -106,7 +106,7 @@ describe("Artwork Details", () => {
   it("shows request condition report if lot condition report enabled and feature flag is enabled", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: true })
 
-    const testArtwork: ArtworkDetails_artwork = {
+    const testArtwork: ArtworkDetails_artwork$data = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       " $refType": null,
       category: "Oil on canvas",
@@ -139,7 +139,7 @@ describe("Artwork Details", () => {
   it("does not show request condition report if lot condition report enabled and feature flag is disabled", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: false })
 
-    const testArtwork: ArtworkDetails_artwork = {
+    const testArtwork: ArtworkDetails_artwork$data = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       " $refType": null,
       category: "Oil on canvas",

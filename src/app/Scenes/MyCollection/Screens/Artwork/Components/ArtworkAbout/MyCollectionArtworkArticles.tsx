@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
-  MyCollectionArtworkArticles_article,
+  MyCollectionArtworkArticles_article$data,
   MyCollectionArtworkArticles_article$key,
 } from "__generated__/MyCollectionArtworkArticles_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
@@ -56,7 +56,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
         </Flex>
       </TouchableOpacity>
 
-      <FlatList<MyCollectionArtworkArticles_article[number]>
+      <FlatList<MyCollectionArtworkArticles_article$data[number]>
         testID="test-articles-flatlist"
         horizontal
         ItemSeparatorComponent={() => <Spacer ml="2" />}

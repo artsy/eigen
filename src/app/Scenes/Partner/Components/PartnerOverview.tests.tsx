@@ -1,7 +1,4 @@
-import {
-  PartnerOverviewTestsQuery,
-  PartnerOverviewTestsQueryRawResponse,
-} from "__generated__/PartnerOverviewTestsQuery.graphql"
+import { PartnerOverviewTestsQuery } from "__generated__/PartnerOverviewTestsQuery.graphql"
 import { ArtistListItem } from "app/Components/ArtistListItem"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { extractText } from "app/tests/extractText"
@@ -14,7 +11,7 @@ import { PartnerOverviewFragmentContainer as PartnerOverview } from "./PartnerOv
 
 jest.unmock("react-relay")
 
-const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQueryRawResponse["partner"]> = {
+const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQuery["rawResponse"]["partner"]> = {
   id: "293032r423",
   slug: "gagosian",
   internalID: "4d8b92c44eb68a1b2c0004cb",
@@ -144,7 +141,7 @@ describe("PartnerOverview", () => {
 })
 
 const artists: NonNullable<
-  NonNullable<PartnerOverviewTestsQueryRawResponse["partner"]>["artists"]
+  NonNullable<PartnerOverviewTestsQuery["rawResponse"]["partner"]>["artists"]
 >["edges"] = [
   {
     cursor: "a",

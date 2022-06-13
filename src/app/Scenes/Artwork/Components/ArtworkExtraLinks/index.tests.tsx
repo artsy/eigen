@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
+import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ModalStack } from "app/navigation/ModalStack"
@@ -11,6 +11,7 @@ import {
 } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { CleanRelayFragment } from "app/utils/relayHelpers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Sans, Theme } from "palette"
@@ -30,14 +31,14 @@ function getWrapper({
   artwork,
   auctionState,
 }: {
-  artwork: ArtworkExtraLinks_artwork
+  artwork: CleanRelayFragment<ArtworkExtraLinks_artwork$data>
   auctionState?: AuctionTimerState
 }) {
   return mount(
     <GlobalStoreProvider>
       <ModalStack>
         <Theme>
-          <ArtworkExtraLinks artwork={artwork} auctionState={auctionState!} />
+          <ArtworkExtraLinks artwork={artwork as any} auctionState={auctionState!} />
         </Theme>
       </ModalStack>
     </GlobalStoreProvider>
@@ -231,7 +232,7 @@ describe("ArtworkExtraLinks", () => {
   })
 
   describe("FAQ and specialist Auction links", () => {
-    const artwork: ArtworkExtraLinks_artwork = {
+    const artwork = {
       ...ArtworkFixture,
       isForSale: true,
       isInAuction: true,
@@ -323,7 +324,10 @@ describe("ArtworkExtraLinks", () => {
           <GlobalStoreProvider>
             <ModalStack>
               <Theme>
-                <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+                <ArtworkExtraLinks
+                  artwork={artwork as any}
+                  auctionState={AuctionTimerState.CLOSING}
+                />
               </Theme>
             </ModalStack>
           </GlobalStoreProvider>
@@ -394,7 +398,10 @@ describe("ArtworkExtraLinks", () => {
           <GlobalStoreProvider>
             <ModalStack>
               <Theme>
-                <ArtworkExtraLinks artwork={artwork} auctionState={AuctionTimerState.CLOSING} />
+                <ArtworkExtraLinks
+                  artwork={artwork as any}
+                  auctionState={AuctionTimerState.CLOSING}
+                />
               </Theme>
             </ModalStack>
           </GlobalStoreProvider>

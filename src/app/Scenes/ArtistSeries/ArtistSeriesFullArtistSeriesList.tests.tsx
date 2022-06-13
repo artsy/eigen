@@ -1,7 +1,4 @@
-import {
-  ArtistSeriesFullArtistSeriesListTestsQuery,
-  ArtistSeriesFullArtistSeriesListTestsQueryRawResponse,
-} from "__generated__/ArtistSeriesFullArtistSeriesListTestsQuery.graphql"
+import { ArtistSeriesFullArtistSeriesListTestsQuery } from "__generated__/ArtistSeriesFullArtistSeriesListTestsQuery.graphql"
 import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { extractText } from "app/tests/extractText"
@@ -90,7 +87,7 @@ describe("Full Artist Series List", () => {
   })
 })
 
-const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListTestsQueryRawResponse =
+const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListTestsQuery["rawResponse"] =
   {
     artist: {
       id: "yayoi-kusama",

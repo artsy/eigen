@@ -1,6 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import {
-  ArtworkRailCard_artwork,
+  ArtworkRailCard_artwork$data,
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
@@ -90,7 +90,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 }
 
 export interface ArtworkRailCardImageProps {
-  image: ArtworkRailCard_artwork["image"]
+  image: ArtworkRailCard_artwork$data["image"]
   size: ArtworkCardSize
   urgencyTag?: string | null
 }

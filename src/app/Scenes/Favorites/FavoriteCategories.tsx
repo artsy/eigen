@@ -7,7 +7,7 @@ import { SavedItemRow } from "app/Components/Lists/SavedItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
-import { FavoriteCategories_me } from "__generated__/FavoriteCategories_me.graphql"
+import { FavoriteCategories_me$data } from "__generated__/FavoriteCategories_me.graphql"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
@@ -18,7 +18,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 
 interface Props {
-  me: FavoriteCategories_me
+  me: FavoriteCategories_me$data
   relay: RelayPaginationProp
 }
 

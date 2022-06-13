@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { AuctionResultsRail_me } from "__generated__/AuctionResultsRail_me.graphql"
+import { AuctionResultsRail_me$data } from "__generated__/AuctionResultsRail_me.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import {
   AuctionResultListItemFragmentContainer,
@@ -18,7 +18,11 @@ interface Props {
   mb?: number
 }
 
-const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = ({ title, me, mb }) => {
+const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me$data } & Props> = ({
+  title,
+  me,
+  mb,
+}) => {
   const { trackEvent } = useTracking()
   const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
   const navigateToAuctionResultsForArtistsYouFollow = () => {

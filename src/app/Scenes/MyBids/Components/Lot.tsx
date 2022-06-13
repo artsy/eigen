@@ -1,11 +1,11 @@
-import { Lot_saleArtwork } from "__generated__/Lot_saleArtwork.graphql"
+import { Lot_saleArtwork$data } from "__generated__/Lot_saleArtwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Box, Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  saleArtwork: Lot_saleArtwork
+  saleArtwork: Lot_saleArtwork$data
   /** Something to display below the artist name - defaults to lot number */
   subtitle?: string
   /** An optional 20px^2 badge to display in the upper-left corner of the artwork thumbnail */

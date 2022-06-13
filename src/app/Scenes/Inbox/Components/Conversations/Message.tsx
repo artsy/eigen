@@ -1,4 +1,4 @@
-import { Message_message } from "__generated__/Message_message.graphql"
+import { Message_message$data } from "__generated__/Message_message.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
@@ -21,7 +21,7 @@ const AttachmentContainer = styled(View)`
 `
 
 interface Props extends Omit<BoxProps, "color"> {
-  message: Message_message
+  message: Message_message$data
   showTimeSince?: boolean
   conversationId: string
 }

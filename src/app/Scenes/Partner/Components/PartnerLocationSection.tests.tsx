@@ -1,6 +1,7 @@
-import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
+import { PartnerLocationSection_partner$data } from "__generated__/PartnerLocationSection_partner.graphql"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { renderRelayTree } from "app/tests/renderRelayTree"
+import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
@@ -20,7 +21,7 @@ const PartnerLocationSectionFixture = {
 }
 
 describe("PartnerLoationSection", () => {
-  const getWrapper = async (partner: Omit<PartnerLocationSection_partner, " $fragmentRefs">) =>
+  const getWrapper = async (partner: CleanRelayFragment<PartnerLocationSection_partner$data>) =>
     await renderRelayTree({
       Component: (props: any) => {
         return (

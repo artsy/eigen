@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { Fair_fair } from "__generated__/Fair_fair.graphql"
+import { Fair_fair$data } from "__generated__/Fair_fair.graphql"
 import { FairQuery } from "__generated__/FairQuery.graphql"
 import { FairReverseImageSearchQuery } from "__generated__/FairReverseImageSearchQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -39,7 +39,7 @@ interface FairQueryRendererProps {
 }
 
 interface FairProps {
-  fair: Fair_fair
+  fair: Fair_fair$data
 }
 
 const tabs: TabsType = [

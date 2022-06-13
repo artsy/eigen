@@ -1,4 +1,4 @@
-import { SaleActiveBids_me } from "__generated__/SaleActiveBids_me.graphql"
+import { SaleActiveBids_me$data } from "__generated__/SaleActiveBids_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { Flex, Separator } from "palette"
 import React, { useEffect, useRef } from "react"
@@ -8,7 +8,7 @@ import useInterval from "react-use/lib/useInterval"
 import { SaleActiveBidItemContainer } from "./SaleActiveBidItem"
 
 interface SaleActiveBidsProps {
-  me: SaleActiveBids_me
+  me: SaleActiveBids_me$data
   saleID: string
   relay: RelayRefetchProp
 }

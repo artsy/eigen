@@ -1,4 +1,4 @@
-import { MarketStats_priceInsightsConnection } from "__generated__/MarketStats_priceInsightsConnection.graphql"
+import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { extractText } from "app/tests/extractText"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
@@ -58,7 +58,7 @@ describe("MarketStats", () => {
   describe("median sale over estimate icons", () => {
     function renderWithOnePriceInsightNode(
       nodeSpecs: Partial<
-        NonNullable<NonNullable<MarketStats_priceInsightsConnection["edges"]>[0]>["node"]
+        NonNullable<NonNullable<MarketStats_priceInsightsConnection$data["edges"]>[0]>["node"]
       >
     ) {
       const tree = renderWithWrappers(<TestWrapper />).root

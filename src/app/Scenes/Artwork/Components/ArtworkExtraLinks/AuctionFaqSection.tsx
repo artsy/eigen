@@ -1,4 +1,4 @@
-import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
+import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
@@ -10,7 +10,7 @@ import { useTracking } from "react-tracking"
 import { partnerName } from "./partnerName"
 
 interface AuctionFaqSectionProps {
-  artwork: ArtworkExtraLinks_artwork
+  artwork: ArtworkExtraLinks_artwork$data
   auctionState: AuctionTimerState
 }
 

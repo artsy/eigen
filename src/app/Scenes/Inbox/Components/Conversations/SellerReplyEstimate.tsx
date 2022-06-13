@@ -1,11 +1,11 @@
-import { SellerReplyEstimate_order } from "__generated__/SellerReplyEstimate_order.graphql"
+import { SellerReplyEstimate_order$data } from "__generated__/SellerReplyEstimate_order.graphql"
 import { track as _track } from "app/utils/track"
 import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface SellerReplyEstimateProps {
-  order: SellerReplyEstimate_order
+  order: SellerReplyEstimate_order$data
 }
 
 const getDeliveryEstimateMessage = (displayName: string) => {

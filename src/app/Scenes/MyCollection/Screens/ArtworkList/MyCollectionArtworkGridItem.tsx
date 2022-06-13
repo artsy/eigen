@@ -1,6 +1,6 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
-import { MyCollectionArtworkGridItem_artwork } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
+import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
@@ -16,7 +16,7 @@ import styled from "styled-components/native"
 import { MyCollectionImageView } from "../../Components/MyCollectionImageView"
 
 interface MyCollectionArtworkGridItemProps {
-  artwork: MyCollectionArtworkGridItem_artwork
+  artwork: MyCollectionArtworkGridItem_artwork$data
 }
 
 const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {

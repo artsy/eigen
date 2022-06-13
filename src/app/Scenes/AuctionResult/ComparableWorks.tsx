@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ComparableWorks_auctionResult } from "__generated__/ComparableWorks_auctionResult.graphql"
+import { ComparableWorks_auctionResult$data } from "__generated__/ComparableWorks_auctionResult.graphql"
 import {
   AuctionResultListItemFragmentContainer,
   AuctionResultListSeparator,
@@ -14,7 +14,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ComparableWorks {
-  auctionResult: ComparableWorks_auctionResult
+  auctionResult: ComparableWorks_auctionResult$data
 }
 const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
   const { trackEvent } = useTracking()

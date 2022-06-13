@@ -1,7 +1,4 @@
-import {
-  RequestForPriceEstimateScreenMutation,
-  RequestForPriceEstimateScreenMutationResponse,
-} from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
+import { RequestForPriceEstimateScreenMutation } from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -36,7 +33,7 @@ const ValidationSchema = Yup.object().shape({
 
 export const requestForPriceEstimateMutation = (
   environment: Environment,
-  onCompleted: (response: RequestForPriceEstimateScreenMutationResponse) => void,
+  onCompleted: (response: RequestForPriceEstimateScreenMutation["response"]) => void,
   onError: () => void,
   input: RequestForPriceEstimateFormikSchema & { artworkId: string }
 ) => {
@@ -80,7 +77,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
     },
     onSubmit: async ({ requesterEmail, requesterName, requesterPhoneNumber }) => {
       const input = { artworkId: artworkID, requesterEmail, requesterName, requesterPhoneNumber }
-      const onCompleted = (response: RequestForPriceEstimateScreenMutationResponse) => {
+      const onCompleted = (response: RequestForPriceEstimateScreenMutation["response"]) => {
         const myCollectionArtworkId =
           response.requestPriceEstimate?.priceEstimateParamsOrError?.submittedPriceEstimateParams
             ?.artworkId

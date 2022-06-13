@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { NewWorksForYou_me } from "__generated__/NewWorksForYou_me.graphql"
+import { NewWorksForYou_me$data } from "__generated__/NewWorksForYou_me.graphql"
 import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -17,7 +17,7 @@ const PAGE_SIZE = 10
 
 interface NewWorksForYouProps {
   relay: RelayPaginationProp
-  me: NewWorksForYou_me
+  me: NewWorksForYou_me$data
 }
 
 const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {

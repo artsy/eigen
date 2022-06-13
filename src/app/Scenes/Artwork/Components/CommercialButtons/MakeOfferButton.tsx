@@ -1,5 +1,5 @@
 import { ActionType, OwnerType, TappedMakeOffer } from "@artsy/cohesion"
-import { MakeOfferButton_artwork } from "__generated__/MakeOfferButton_artwork.graphql"
+import { MakeOfferButton_artwork$data } from "__generated__/MakeOfferButton_artwork.graphql"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
@@ -10,7 +10,7 @@ import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export interface MakeOfferButtonProps {
-  artwork: MakeOfferButton_artwork
+  artwork: MakeOfferButton_artwork$data
   relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null

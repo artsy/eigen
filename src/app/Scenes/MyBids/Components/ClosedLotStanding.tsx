@@ -11,7 +11,7 @@ import { TimelySale } from "../helpers/timely"
 import { Lost, Passed, Won } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
-import { ClosedLotStanding_saleArtwork } from "../../../../__generated__/ClosedLotStanding_saleArtwork.graphql"
+import { ClosedLotStanding_saleArtwork$data } from "../../../../__generated__/ClosedLotStanding_saleArtwork.graphql"
 
 type BidderResult = "won" | "lost" | "passed"
 
@@ -34,7 +34,7 @@ export const ClosedLotStanding = ({
   inActiveSale = false,
   testID,
 }: {
-  saleArtwork: ClosedLotStanding_saleArtwork
+  saleArtwork: ClosedLotStanding_saleArtwork$data
   withTimelyInfo?: boolean
   inActiveSale?: boolean
   testID?: string

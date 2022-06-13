@@ -1,4 +1,4 @@
-import { ArtworkAutosuggestResults_viewer } from "__generated__/ArtworkAutosuggestResults_viewer.graphql"
+import { ArtworkAutosuggestResults_viewer$data } from "__generated__/ArtworkAutosuggestResults_viewer.graphql"
 import { ArtworkAutosuggestResultsContainerQuery } from "__generated__/ArtworkAutosuggestResultsContainerQuery.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -12,7 +12,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import { useScreenDimensions } from "shared/hooks"
 
 export interface ArtworkAutosuggestResultsProps {
-  viewer: ArtworkAutosuggestResults_viewer
+  viewer: ArtworkAutosuggestResults_viewer$data
   relay: RelayPaginationProp
   keyword: string
   onPress?: (artworkID: string) => void

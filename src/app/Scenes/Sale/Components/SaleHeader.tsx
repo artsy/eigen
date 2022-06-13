@@ -1,5 +1,5 @@
 import Clipboard from "@react-native-community/clipboard"
-import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
+import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -20,7 +20,7 @@ export const COVER_IMAGE_HEIGHT = 260
 const SHARE_ICON_SIZE = 23
 
 interface Props {
-  sale: SaleHeader_sale
+  sale: SaleHeader_sale$data
   scrollAnim: Animated.Value
 }
 

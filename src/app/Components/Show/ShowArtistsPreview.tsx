@@ -1,4 +1,4 @@
-import { ShowArtistsPreview_show } from "__generated__/ShowArtistsPreview_show.graphql"
+import { ShowArtistsPreview_show$data } from "__generated__/ShowArtistsPreview_show.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { navigate } from "app/navigation/navigate"
@@ -10,7 +10,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  show: ShowArtistsPreview_show
+  show: ShowArtistsPreview_show$data
   onViewAllArtistsPressed: () => void
   Component?: any
 }

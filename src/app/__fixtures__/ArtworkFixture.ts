@@ -1,6 +1,8 @@
 export const ArtworkFixture = {
+  " $fragmentType": null as any,
   " $refType": null as any,
   " $fragmentRefs": null as any,
+  " $fragmentSpreads": null as any,
   id: "abbas-kiarostami-untitled-7",
   internalID: "5b2b745e9c18db204fc32e11",
   _id: "5b2b745e9c18db204fc32e11",

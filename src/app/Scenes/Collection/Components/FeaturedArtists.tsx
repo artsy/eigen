@@ -1,4 +1,4 @@
-import { FeaturedArtists_collection } from "__generated__/FeaturedArtists_collection.graphql"
+import { FeaturedArtists_collection$data } from "__generated__/FeaturedArtists_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { navigate } from "app/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
@@ -11,7 +11,7 @@ import { TrackingProp } from "react-tracking"
 import styled from "styled-components/native"
 
 interface FeaturedArtistsProps {
-  collection: FeaturedArtists_collection
+  collection: FeaturedArtists_collection$data
   tracking?: TrackingProp
 }
 
@@ -21,7 +21,7 @@ const track: Track<FeaturedArtistsProps, {}> = _track
 export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
   getFeaturedArtistEntityCollection = (
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    artists: FeaturedArtists_collection["artworksConnection"]["merchandisableArtists"]
+    artists: FeaturedArtists_collection$data["artworksConnection"]["merchandisableArtists"]
   ) => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     return artists.map((artist) => {

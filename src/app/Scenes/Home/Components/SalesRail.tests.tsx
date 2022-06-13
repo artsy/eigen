@@ -1,4 +1,4 @@
-import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
+import { SalesRail_salesModule$data } from "__generated__/SalesRail_salesModule.graphql"
 import { CardRailCard } from "app/Components/Home/CardRailCard"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -6,6 +6,7 @@ import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { cloneDeep } from "lodash"
 import { first, last } from "lodash"
 import React from "react"
@@ -22,7 +23,7 @@ const artworkNode = {
     },
   },
 }
-const salesModule: Omit<SalesRail_salesModule, " $refType"> = {
+const salesModule: CleanRelayFragment<SalesRail_salesModule$data> = {
   results: [
     {
       id: "the-sale",

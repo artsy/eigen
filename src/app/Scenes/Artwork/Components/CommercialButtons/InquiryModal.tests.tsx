@@ -3,10 +3,7 @@ jest.mock("app/utils/googleMaps", () => ({
   getLocationDetails: jest.fn(),
 }))
 
-import {
-  InquiryModalTestsQuery,
-  InquiryModalTestsQueryResponse,
-} from "__generated__/InquiryModalTestsQuery.graphql"
+import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
@@ -32,7 +29,7 @@ const toggleVisibility = jest.fn()
 const onMutationSuccessful = jest.fn()
 
 // An app shell that holds modal visibility properties
-const FakeApp = (props: InquiryModalTestsQueryResponse) => {
+const FakeApp = (props: InquiryModalTestsQuery["response"]) => {
   const [modalIsVisible, setModalIsVisible] = React.useState(true)
   toggleVisibility.mockImplementation(() => setModalIsVisible(!modalIsVisible))
   const modalProps = {
@@ -52,7 +49,7 @@ const FakeApp = (props: InquiryModalTestsQueryResponse) => {
 }
 
 interface RenderComponentProps {
-  props: InquiryModalTestsQueryResponse | null
+  props: InquiryModalTestsQuery["response"] | null
   error: Error | null
 }
 

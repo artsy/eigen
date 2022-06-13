@@ -1,5 +1,5 @@
 import { tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
-import { SellWithArtsyHome_targetSupply } from "__generated__/SellWithArtsyHome_targetSupply.graphql"
+import { SellWithArtsyHome_targetSupply$data } from "__generated__/SellWithArtsyHome_targetSupply.graphql"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -18,7 +18,7 @@ import { HowItWorks } from "./Components/HowItWorks"
 import { RecentlySoldFragmentContainer as RecentlySold } from "./Components/RecentlySold"
 
 interface Props {
-  targetSupply: SellWithArtsyHome_targetSupply
+  targetSupply: SellWithArtsyHome_targetSupply$data
   isLoading?: boolean
 }
 

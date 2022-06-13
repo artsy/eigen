@@ -1,6 +1,6 @@
 import { ContextModule, CustomService, OwnerType, share } from "@artsy/cohesion"
 import Clipboard from "@react-native-community/clipboard"
-import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
+import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
 import { useToast } from "app/Components/Toast/toastHook"
 import { unsafe__getEnvironment, useDevToggle } from "app/store/GlobalStore"
@@ -30,7 +30,7 @@ import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
 import { InstagramStoryViewShot } from "./InstagramStoryViewShot"
 
 interface ArtworkHeaderProps {
-  artwork: ArtworkHeader_artwork
+  artwork: ArtworkHeader_artwork$data
 }
 
 export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {

@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Conversations_me } from "__generated__/Conversations_me.graphql"
+import { Conversations_me$data } from "__generated__/Conversations_me.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -15,7 +15,7 @@ import ConversationSnippet from "./ConversationSnippet"
 import { NoMessages } from "./NoMessages"
 
 interface Props {
-  me: Conversations_me
+  me: Conversations_me$data
   relay: RelayPaginationProp
   headerView?: JSX.Element
   onRefresh?: () => any
@@ -23,7 +23,7 @@ interface Props {
 }
 
 type Item = NonNullable<
-  NonNullable<NonNullable<Conversations_me["conversations"]>["edges"]>[0]
+  NonNullable<NonNullable<Conversations_me$data["conversations"]>["edges"]>[0]
 >["node"]
 
 // @track()

@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { FairExhibitorRail_show } from "__generated__/FairExhibitorRail_show.graphql"
+import { FairExhibitorRail_show$data } from "__generated__/FairExhibitorRail_show.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -10,7 +10,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface FairExhibitorRailProps {
-  show: FairExhibitorRail_show
+  show: FairExhibitorRail_show$data
 }
 
 const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
@@ -89,7 +89,7 @@ export const FairExhibitorRailFragmentContainer = createFragmentContainer(FairEx
 
 const tracks = {
   tappedArtwork: (
-    show: FairExhibitorRail_show,
+    show: FairExhibitorRail_show$data,
     artworkID: string,
     artworkSlug: string,
     position: number
@@ -105,7 +105,7 @@ const tracks = {
     horizontal_slide_position: position,
     type: "thumbnail",
   }),
-  tappedShow: (show: FairExhibitorRail_show) => ({
+  tappedShow: (show: FairExhibitorRail_show$data) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.galleryBoothRail,
     context_screen_owner_type: OwnerType.fair,

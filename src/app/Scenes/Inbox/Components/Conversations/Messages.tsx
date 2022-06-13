@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 
 import { PAGE_SIZE } from "app/Components/constants"
 
-import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
+import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 
 import { ToastComponent } from "app/Components/Toast/ToastComponent"
@@ -18,7 +18,7 @@ import { ConversationItem, groupConversationItems } from "./utils/groupConversat
 const isPad = Dimensions.get("window").width > 700
 
 interface Props {
-  conversation: Messages_conversation
+  conversation: Messages_conversation$data
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
   onRefresh?: () => void

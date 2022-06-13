@@ -1,4 +1,4 @@
-import { SalesRail_salesModule } from "__generated__/SalesRail_salesModule.graphql"
+import { SalesRail_salesModule$data } from "__generated__/SalesRail_salesModule.graphql"
 import {
   CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
   CardRailArtworkImageContainer as ArtworkImageContainer,
@@ -25,11 +25,11 @@ import { RailScrollProps } from "./types"
 interface Props {
   title: string
   subtitle?: string
-  salesModule: SalesRail_salesModule
+  salesModule: SalesRail_salesModule$data
   mb?: number
 }
 
-type Sale = SalesRail_salesModule["results"][0]
+type Sale = SalesRail_salesModule$data["results"][0]
 
 const SalesRail: React.FC<Props & RailScrollProps> = ({
   title,

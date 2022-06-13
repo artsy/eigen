@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
-import { myCollectionCreateArtworkMutationResponse } from "__generated__/myCollectionCreateArtworkMutation.graphql"
+import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
+import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
@@ -374,7 +374,7 @@ describe("MyCollectionArtworkForm", () => {
         )
 
         const artworkSlug = "some-slug"
-        const artworkResponse: myCollectionCreateArtworkMutationResponse = {
+        const artworkResponse: myCollectionCreateArtworkMutation["response"] = {
           myCollectionCreateArtwork: {
             artworkOrError: {
               artworkEdge: {
@@ -612,7 +612,7 @@ const mockArtworkSearchResult = {
   },
 }
 
-const mockArtistSearchResult: AutosuggestResultsQueryRawResponse = {
+const mockArtistSearchResult: AutosuggestResultsQuery["rawResponse"] = {
   results: {
     edges: [
       {

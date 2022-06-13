@@ -3,7 +3,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
-import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
+import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { goBack } from "app/navigation/navigate"
@@ -72,7 +72,7 @@ export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
   | {
       mode: "edit"
       onDelete: () => void
-      artwork: Omit<MyCollectionArtwork_sharedProps, " $refType">
+      artwork: Omit<MyCollectionArtwork_sharedProps$data, " $refType">
     }
 )
 
