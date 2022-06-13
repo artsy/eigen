@@ -17,10 +17,7 @@ export const MyCollectionArtworkListItem: React.FC<{
 }> = ({ ...restProps }) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<MyCollectionArtworkListItem_artwork$key>(
-    artworkFragment,
-    restProps.artwork
-  )
+  const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const { artist, date, image, internalID, medium, slug, title } = artwork
 

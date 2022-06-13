@@ -17,7 +17,7 @@ interface MyCollectionWhySellProps {
 export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) => {
   const { contextModule } = props
   const { trackEvent } = useTracking()
-  const artwork = useFragment<MyCollectionWhySell_artwork$key>(artworkFragment, props.artwork)
+  const artwork = useFragment(artworkFragment, props.artwork)
 
   const isInProgress = artwork.consignmentSubmission?.inProgress
   const isSold = artwork.consignmentSubmission?.isSold
