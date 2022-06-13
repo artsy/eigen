@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
@@ -124,5 +124,19 @@ describe("SavedSearches", () => {
 
     expect(getByText("Recently Added")).toBeTruthy()
     expect(getByText("Name (A-Z)")).toBeTruthy()
+  })
+
+  it("should pass selected sort option to query variables", async () => {
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment)
+
+    fireEvent.press(getByText("Sort By"))
+    fireEvent.press(getByText("Name (A-Z)"))
+
+    await waitFor(() => {
+      const operation = mockEnvironment.mock.getMostRecentOperation()
+      expect(operation.fragment.variables.sort).toBe("NAME_ASC")
+    })
   })
 })
