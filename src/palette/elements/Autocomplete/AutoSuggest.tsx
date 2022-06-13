@@ -46,9 +46,17 @@ function initializeRoot(data: AutoSuggestData) {
 }
 
 /**
- * AutoSuggest is similar to the AutoComplete in pallette but this is best suitable for Input suggestions/completion
- * as it can return the next best string for input completion
- * AutoSuggest is implemented with Trie
+ * AutoSuggest is similar to the AutoComplete in palette but this is suitable for Input
+ * suggestions/completion or when you are dealing with only strings
+ * and for when you want to rank suggestions based on closest to a real word
+ * rather than by predetermined importance.
+ *
+ * AutoSuggest is implemented with Trie.
+ *
+ *  While initialization, insertion and getting suggestions are significantly faster than
+ * uncached Autocomplete, AutoSuggest will use more memory to hold the suggestion data because
+ *  each node can point to many nodes.
+ *
  * @param data
  * @returns AutoSuggestHookReturnType
  */
@@ -63,8 +71,8 @@ export class AutoSuggest {
   }
 
   /**
-   * A little helper to help check if a word can be suggested
-   * When matchExact is true, it returns true if word being checked is in the data. Eg
+   * A little helper method to help check if a word can possibly be suggested.
+   * When matchExact is true, it returns true if word that is being checked is in the data. Eg
    * when matchExact is true and word "myword" is in the data, "mywor" will return false and
    * "myword" will return true. Else if matchExact is false "mywor" as well as "myword" will
    * return true.
@@ -102,6 +110,7 @@ export class AutoSuggest {
     return suggestedWords
   }
 
+  /** For a given word, returns a list of the next best suggestions */
   getSuggestionsForWord = (word: string) => {
     word = this.normalizeWord(word)
     let suggestedWords: string[] = []
@@ -119,10 +128,10 @@ export class AutoSuggest {
     return suggestedWords
   }
 
+  /** For a given word, returns the next best suggestion or null */
   getNextSuggestionForWord = (word: string) => {
     word = this.normalizeWord(word)
     const suggestions = this.getSuggestionsForWord(word)
-    console.log("Sugg", suggestions)
     let nextSuggestion: string | null = null
     let i = 0
     while (i < suggestions.length && !nextSuggestion) {
@@ -148,7 +157,9 @@ interface AutoSuggestHookReturnType {
  * rather than by predetermined importance.
  *
  * AutoSuggest is implemented with Trie.
- * Insertion and get
+ *  While initialization, insertion and getting suggestions are significantly faster than
+ * uncached Autocomplete, AutoSuggest will use more memory to hold the suggestion data because
+ *  each node can point to many nodes.
  *
  * @param data
  * @returns AutoSuggestHookReturnType
