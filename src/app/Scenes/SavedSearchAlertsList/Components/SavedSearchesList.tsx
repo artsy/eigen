@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { SavedSearchesList_me$data } from "__generated__/SavedSearchesList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
+import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { GoBackProps, navigate, navigationEvents } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -12,6 +13,8 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { EmptyMessage } from "./EmptyMessage"
 import { SavedSearchAlertsListPlaceholder } from "./SavedSearchAlertsListPlaceholder"
 import { SavedSearchListItem } from "./SavedSearchListItem"
+import { SortButton } from "./SortButton"
+import { SortByModal, SortOption } from "./SortByModal"
 
 interface SavedSearchesListProps {
   me: SavedSearchesList_me$data
@@ -19,6 +22,11 @@ interface SavedSearchesListProps {
 }
 
 type RefreshType = "default" | "delete"
+
+const SORT_OPTIONS: SortOption[] = [
+  { value: "CREATED_AT_DESC", text: "Recently Added" },
+  { value: "NAME_ASC", text: "Name (A-Z)" },
+]
 
 export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   const { me, relay } = props
@@ -108,6 +116,18 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
 }
 
 export const SavedSearchesListWrapper: React.FC<SavedSearchesListProps> = (props) => {
+  const [modalVisible, setModalVisible] = useState(false)
+  const [selectedSortValue, setSelectedSortValue] = useState("CREATED_AT_DESC")
+
+  const handleCloseModal = () => {
+    setModalVisible(false)
+  }
+
+  const handleSelectOption = (option: SortOption) => {
+    setSelectedSortValue(option.value)
+    handleCloseModal()
+  }
+
   return (
     <ProvideScreenTracking
       info={{
@@ -115,12 +135,24 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchesListProps> = (props
         context_screen_owner_type: OwnerType.savedSearch,
       }}
     >
-      <SavedSearchesList {...props} />
+      <PageWithSimpleHeader
+        title="Saved Alerts"
+        right={<SortButton onPress={() => setModalVisible(true)} />}
+      >
+        <SavedSearchesList {...props} />
+        <SortByModal
+          visible={modalVisible}
+          options={SORT_OPTIONS}
+          selectedValue={selectedSortValue}
+          onCloseModal={handleCloseModal}
+          onSelectOption={handleSelectOption}
+        />
+      </PageWithSimpleHeader>
     </ProvideScreenTracking>
   )
 }
 
-export const SavedSearchesListContainer = createPaginationContainer(
+export const SavedSearchesListPaginationContainer = createPaginationContainer(
   SavedSearchesListWrapper,
   {
     me: graphql`
