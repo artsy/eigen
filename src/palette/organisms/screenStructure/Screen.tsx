@@ -163,7 +163,11 @@ const Body = ({
               contentInset={{ bottom: options.bottomViewHeight - insets.bottom }}
             >
               <Wrap.Content>
-                <Flex flex={1} px={fullwidth ? undefined : SCREEN_HORIZONTAL_PADDING}>
+                <Flex
+                  background="green"
+                  flex={1}
+                  px={fullwidth ? undefined : SCREEN_HORIZONTAL_PADDING}
+                >
                   {childrenExceptBottomView}
                 </Flex>
               </Wrap.Content>

@@ -2,9 +2,8 @@ import { useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFormik } from "formik"
-import { Button, Input, Screen, Spacer, Text, useColor } from "palette"
-import { useEffect, useRef } from "react"
-import { Platform } from "react-native"
+import { Button, Flex, Input, Screen, Spacer, Text, useColor } from "palette"
+import React, { useEffect, useRef } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
@@ -83,90 +82,96 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ route
   return (
     <Screen>
       <Screen.FloatingHeader onBack={() => navigation.goBack()} />
-      <Screen.Body {...(Platform.OS === "ios" && { scroll: true })}>
-        <Spacer y={insets.top + 44} />
+      <Screen.Body>
+        <Flex flex={1} background="red">
+          <Spacer y={insets.top + 44} />
 
-        <Text variant="lg">Log In</Text>
+          <Text variant="lg">Log In</Text>
 
-        <Spacer y="6" />
-
-        <Input
-          ref={emailInputRef}
-          autoCapitalize="none"
-          autoComplete="email"
-          // There is no need to autofocus here if we are getting
-          // the email already from the navigation params
-          autoFocus={!route.params?.email}
-          keyboardType="email-address"
-          onChangeText={(text) => f.handleChange("email")(text.trim())}
-          onSubmitEditing={() => {
-            f.validateForm()
-            passwordInputRef.current?.focus()
-          }}
-          onBlur={() => f.validateForm()}
-          blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
-          placeholder="Email address"
-          placeholderTextColor={color("black30")}
-          title="Email"
-          value={f.values.email}
-          returnKeyType="next"
-          spellCheck={false}
-          autoCorrect={false}
-          // We need to to set textContentType to username (instead of emailAddress) here
-          // enable autofill of login details from the device keychain.
-          textContentType="username"
-          error={f.errors.email}
-        />
-
-        <Spacer y="2" />
-
-        <Input
-          autoCapitalize="none"
-          autoComplete="password"
-          autoCorrect={false}
-          // If we have the email already prefilled from the navigation params
-          // we want the autoFocus to be on the password
-          autoFocus={!!route.params?.email}
-          onChangeText={(text) => {
-            // Hide error when the user starts to type again
-            if (f.errors.password) {
-              f.setErrors({
-                password: undefined,
-              })
+          <Spacer y="6" />
+          {/* tried out flex so when scroll is off to have a maxheight that doesnt stretch everything out but can go as small as possible in smaller screens */}
+          <Input
+            ref={emailInputRef}
+            autoCapitalize="none"
+            autoComplete="email"
+            // There is no need to autofocus here if we are getting
+            // the email already from the navigation params
+            autoFocus={!route.params?.email}
+            keyboardType="email-address"
+            onChangeText={(text) => f.handleChange("email")(text.trim())}
+            onSubmitEditing={() => {
               f.validateForm()
-            }
-            f.handleChange("password")(text)
-          }}
-          onSubmitEditing={f.handleSubmit}
-          onBlur={() => f.validateForm()}
-          placeholder="Password"
-          placeholderTextColor={color("black30")}
-          ref={passwordInputRef}
-          secureTextEntry
-          title="Password"
-          returnKeyType="done"
-          // We need to to set textContentType to password here
-          // enable autofill of login details from the device keychain.
-          textContentType="password"
-          value={f.values.password}
-          error={f.errors.password}
-        />
+              passwordInputRef.current?.focus()
+            }}
+            onBlur={() => f.validateForm()}
+            blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
+            placeholder="Email address"
+            placeholderTextColor={color("black30")}
+            title="Email"
+            value={f.values.email}
+            returnKeyType="next"
+            spellCheck={false}
+            autoCorrect={false}
+            // We need to to set textContentType to username (instead of emailAddress) here
+            // enable autofill of login details from the device keychain.
+            textContentType="username"
+            error={f.errors.email}
+          />
 
-        <Spacer y="4" />
+          <Spacer y="2" />
+          <Flex flex={1} overflow="hidden" background="purple">
+            <Input />
+            <Input />
+          </Flex>
 
-        <Text
-          variant="sm"
-          color="black60"
-          underline
-          onPress={() => navigation.navigate("ForgotPassword")}
-          testID="forgot-password"
-        >
-          Forgot password?
-        </Text>
+          <Input
+            autoCapitalize="none"
+            autoComplete="password"
+            autoCorrect={false}
+            // If we have the email already prefilled from the navigation params
+            // we want the autoFocus to be on the password
+            autoFocus={!!route.params?.email}
+            onChangeText={(text) => {
+              // Hide error when the user starts to type again
+              if (f.errors.password) {
+                f.setErrors({
+                  password: undefined,
+                })
+                f.validateForm()
+              }
+              f.handleChange("password")(text)
+            }}
+            onSubmitEditing={f.handleSubmit}
+            onBlur={() => f.validateForm()}
+            placeholder="Password"
+            placeholderTextColor={color("black30")}
+            ref={passwordInputRef}
+            secureTextEntry
+            title="Password"
+            returnKeyType="done"
+            // We need to to set textContentType to password here
+            // enable autofill of login details from the device keychain.
+            textContentType="password"
+            value={f.values.password}
+            error={f.errors.password}
+          />
 
-        <Spacer y="4" />
+          <Spacer y="4" />
 
-        <Screen.BottomView>
+          <Text
+            variant="sm"
+            color="black60"
+            underline
+            onPress={() => navigation.navigate("ForgotPassword")}
+            testID="forgot-password"
+          >
+            Forgot password?
+          </Text>
+
+          <Spacer y="4" />
+        </Flex>
+
+        {/* <Screen.BottomView>
           <Button
             onPress={f.handleSubmit}
             block
@@ -178,7 +183,7 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ route
           >
             Log in
           </Button>
-        </Screen.BottomView>
+        </Screen.BottomView> */}
       </Screen.Body>
     </Screen>
   )
