@@ -45,7 +45,7 @@ fastlane/Preview.html
 
 .vendor
 
-# regular Pods. No longer a submodule
+# Cocoa Pods
 Pods
 
 # build artefacts
@@ -55,7 +55,7 @@ derived_data
 xcode_build_raw.log
 
 ## Build generated
-dist
+dist/*
 
 # Custom
 
