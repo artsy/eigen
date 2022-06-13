@@ -1,10 +1,6 @@
 {
   "entries": {
     "brew": {
-      "detect_secrets": {
-        "version": "1.1.0",
-        "bottle": false
-      },
       "artsy/formulas/detect_secrets": {
         "version": "1.1.0",
         "bottle": false
