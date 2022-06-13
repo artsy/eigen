@@ -23,10 +23,7 @@ interface MyCollectionArtworkArticlesProps {
 export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesProps> = (props) => {
   const { trackEvent } = useTracking()
 
-  const articles = useFragment<MyCollectionArtworkArticles_article$key>(
-    articleFragment,
-    props.articles
-  )
+  const articles = useFragment(articleFragment, props.articles)
 
   if (!articles.length) {
     return null

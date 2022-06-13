@@ -12,10 +12,7 @@ interface MyCollectionArtworkPurchaseDetailsProps {
 export const MyCollectionArtworkPurchaseDetails: React.FC<
   MyCollectionArtworkPurchaseDetailsProps
 > = (props) => {
-  const artwork = useFragment<MyCollectionArtworkPurchaseDetails_artwork$key>(
-    artworkFragment,
-    props.artwork
-  )
+  const artwork = useFragment(artworkFragment, props.artwork)
 
   const { pricePaid } = artwork
 

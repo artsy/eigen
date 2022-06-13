@@ -26,10 +26,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 }) => {
   const { trackEvent } = useTracking()
 
-  const { newWorksByInterestingArtists } = useFragment<NewWorksForYouRail_me$key>(
-    artworksFragment,
-    me
-  )
+  const { newWorksByInterestingArtists } = useFragment(artworksFragment, me)
 
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)

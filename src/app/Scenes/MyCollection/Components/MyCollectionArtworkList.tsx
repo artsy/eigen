@@ -25,10 +25,7 @@ export const MyCollectionArtworkList: React.FC<{
   scrollEventThrottle,
   ...restProps
 }) => {
-  const artworkConnection = useFragment<MyCollectionArtworkList_myCollectionConnection$key>(
-    artworkConnectionFragment,
-    restProps.myCollectionConnection
-  )
+  const artworkConnection = useFragment(artworkConnectionFragment, restProps.myCollectionConnection)
 
   const artworks = extractNodes(artworkConnection)
   const preprocessedArtworks = localSortAndFilterArtworks?.(artworks) ?? artworks

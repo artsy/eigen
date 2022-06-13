@@ -27,7 +27,7 @@ import { normalizeMyProfileBio } from "./utils"
 const ICON_SIZE = 14
 
 export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props) => {
-  const me = useFragment<MyProfileHeader_me$key>(myProfileHeaderFragment, props.me)
+  const me = useFragment(myProfileHeaderFragment, props.me)
 
   const color = useColor()
   const navigation = useNavigation()

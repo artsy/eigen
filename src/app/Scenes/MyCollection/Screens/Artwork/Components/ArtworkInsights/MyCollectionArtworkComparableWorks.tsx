@@ -23,10 +23,7 @@ export const MyCollectionArtworkComparableWorks: React.FC<
 > = (props) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<MyCollectionArtworkComparableWorks_artwork$key>(
-    artworkFragment,
-    props.artwork
-  )
+  const artwork = useFragment(artworkFragment, props.artwork)
 
   const comparableWorks = extractNodes(artwork?.comparableAuctionResults)
 

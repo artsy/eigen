@@ -11,10 +11,7 @@ interface MyCollectionInsightsOverviewProps {
 export const MyCollectionInsightsOverview: React.FC<MyCollectionInsightsOverviewProps> = (
   props
 ) => {
-  const myCollectionInfo = useFragment<MyCollectionInsightsOverview_myCollectionInfo$key>(
-    fragment,
-    props.myCollectionInfo
-  )
+  const myCollectionInfo = useFragment(fragment, props.myCollectionInfo)
 
   return (
     <Flex pt={2} px={2} pb={3} flexDirection="row">
