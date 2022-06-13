@@ -6,15 +6,11 @@ import { Bid } from "app/Components/Bidding/types"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 
-import { PriceSummary_calculatedCost } from "__generated__/PriceSummary_calculatedCost.graphql"
-import {
-  PriceSummaryQuery,
-  PriceSummaryQueryResponse,
-  PriceSummaryQueryVariables,
-} from "__generated__/PriceSummaryQuery.graphql"
+import { PriceSummary_calculatedCost$data } from "__generated__/PriceSummary_calculatedCost.graphql"
+import { PriceSummaryQuery } from "__generated__/PriceSummaryQuery.graphql"
 
 interface PriceSummaryViewProps {
-  calculatedCost: PriceSummary_calculatedCost
+  calculatedCost: PriceSummary_calculatedCost$data
   bid: Bid
 }
 
@@ -70,7 +66,7 @@ const PriceSummaryFragmentContainer = createFragmentContainer(_PriceSummary, {
   `,
 })
 
-interface PriceSummaryProps extends Partial<PriceSummaryQueryVariables> {
+interface PriceSummaryProps extends Partial<PriceSummaryQuery["variables"]> {
   bid: Bid
 }
 
@@ -93,9 +89,11 @@ export const PriceSummary = ({ saleArtworkId, bid }: PriceSummaryProps) => (
       saleArtworkId,
       bidAmountMinor: bid.cents,
     }}
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    render={renderWithLoadProgress<PriceSummaryQueryResponse>(({ node: { calculatedCost } }) => (
-      <PriceSummaryFragmentContainer bid={bid} calculatedCost={calculatedCost} />
-    ))}
+    render={renderWithLoadProgress<PriceSummaryQuery["response"]>(
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      ({ node: { calculatedCost } }) => (
+        <PriceSummaryFragmentContainer bid={bid} calculatedCost={calculatedCost} />
+      )
+    )}
   />
 )

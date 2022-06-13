@@ -3,7 +3,7 @@ import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
-import { MyBids_me } from "__generated__/MyBids_me.graphql"
+import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
 import { OwnerType } from "@artsy/cohesion"
@@ -17,7 +17,7 @@ import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
 import { NoBids } from "./Components/NoBids"
 
 export interface MyBidsProps {
-  me: MyBids_me
+  me: MyBids_me$data
   isActiveTab: boolean
   relay: RelayRefetchProp
 }

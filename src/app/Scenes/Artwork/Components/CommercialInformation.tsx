@@ -1,5 +1,5 @@
-import { CommercialInformation_artwork } from "__generated__/CommercialInformation_artwork.graphql"
-import { CommercialInformation_me } from "__generated__/CommercialInformation_me.graphql"
+import { CommercialInformation_artwork$data } from "__generated__/CommercialInformation_artwork.graphql"
+import { CommercialInformation_me$data } from "__generated__/CommercialInformation_me.graphql"
 import {
   AuctionTimerState,
   Countdown,
@@ -28,8 +28,8 @@ import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInfor
 import { CreateArtworkAlertButtonsSectionFragmentContainer as CreateArtworkAlertButtonsSection } from "./CreateArtworkAlertButtonsSection"
 
 interface CommercialInformationProps extends CountdownTimerProps {
-  artwork: CommercialInformation_artwork
-  me: CommercialInformation_me
+  artwork: CommercialInformation_artwork$data
+  me: CommercialInformation_me$data
   hasStarted?: boolean
   tracking?: TrackingProp
   biddingEndAt?: string

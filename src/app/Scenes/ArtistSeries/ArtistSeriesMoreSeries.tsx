@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
-import { ArtistSeriesMoreSeries_artist } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
+import { ArtistSeriesMoreSeries_artist$data } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
 import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { Flex, FlexProps, Sans } from "palette"
@@ -9,11 +9,11 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 export type ArtistSeriesConnectionEdge = NonNullable<
-  NonNullable<ArtistSeriesMoreSeries_artist["artistSeriesConnection"]>["edges"]
+  NonNullable<ArtistSeriesMoreSeries_artist$data["artistSeriesConnection"]>["edges"]
 >[0]
 
 interface ArtistSeriesMoreSeriesProps extends FlexProps {
-  artist: ArtistSeriesMoreSeries_artist | null | undefined
+  artist: ArtistSeriesMoreSeries_artist$data | null | undefined
   artistSeriesHeader: string
   contextScreenOwnerType: ScreenOwnerType
   contextScreenOwnerId: string

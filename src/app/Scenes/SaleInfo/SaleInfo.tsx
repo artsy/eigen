@@ -1,5 +1,5 @@
-import { SaleInfo_me } from "__generated__/SaleInfo_me.graphql"
-import { SaleInfo_sale } from "__generated__/SaleInfo_sale.graphql"
+import { SaleInfo_me$data } from "__generated__/SaleInfo_me.graphql"
+import { SaleInfo_sale$data } from "__generated__/SaleInfo_sale.graphql"
 import { SaleInfoQueryRendererQuery } from "__generated__/SaleInfoQueryRendererQuery.graphql"
 import { MenuItem } from "app/Components/MenuItem"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -23,8 +23,8 @@ import { RegisterToBidButtonContainer } from "../Sale/Components/RegisterToBidBu
 import { saleStatus } from "../Sale/helpers"
 
 interface Props {
-  sale: SaleInfo_sale
-  me: SaleInfo_me
+  sale: SaleInfo_sale$data
+  me: SaleInfo_me$data
 }
 
 const AuctionSupport = () => {
@@ -134,14 +134,14 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
 
 const makePercent = (value: number) => parseFloat((value * 100).toFixed(5))
 
-const createPremiumDisplay = (props: { sale: SaleInfo_sale }) => {
+const createPremiumDisplay = (props: { sale: SaleInfo_sale$data }) => {
   return props.sale.buyersPremium?.map((item, index) => (
     <BuyersPremiumItem sale={props.sale} currentValue={item} index={index} key={index} />
   ))
 }
 
 interface BuyersPremiumItemProps {
-  sale: SaleInfo_sale
+  sale: SaleInfo_sale$data
   currentValue: {
     amount: string | null
     percent: number | null
@@ -173,7 +173,7 @@ const BuyersPremiumItem: React.FC<BuyersPremiumItemProps> = (props) => {
   )
 }
 
-const BuyersPremium: React.FC<{ sale: SaleInfo_sale }> = (props) => {
+const BuyersPremium: React.FC<{ sale: SaleInfo_sale$data }> = (props) => {
   let premiumDisplay
 
   const buyersPremium = props.sale.buyersPremium

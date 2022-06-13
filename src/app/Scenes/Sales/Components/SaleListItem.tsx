@@ -5,13 +5,13 @@ import { createFragmentContainer, graphql } from "react-relay"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 
-import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
+import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
 import { formatDisplayTimelyAt } from "app/Scenes/Sale/helpers"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Sans } from "palette"
 
 interface Props {
-  sale: SaleListItem_sale
+  sale: SaleListItem_sale$data
   containerWidth: number
   index: number
   columnCount: number

@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { FairArtworks_fair } from "__generated__/FairArtworks_fair.graphql"
+import { FairArtworks_fair$data } from "__generated__/FairArtworks_fair.graphql"
 import {
   aggregationsType,
   aggregationsWithFollowedArtists,
@@ -18,7 +18,7 @@ import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 
 interface FairArtworksProps {
-  fair: FairArtworks_fair
+  fair: FairArtworks_fair$data
   relay: RelayPaginationProp
   initiallyAppliedFilter?: FilterArray
   aggregations?: aggregationsType

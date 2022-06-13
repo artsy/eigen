@@ -1,5 +1,5 @@
-import { CitySavedList_city } from "__generated__/CitySavedList_city.graphql"
-import { CitySavedList_me } from "__generated__/CitySavedList_me.graphql"
+import { CitySavedList_city$data } from "__generated__/CitySavedList_city.graphql"
+import { CitySavedList_me$data } from "__generated__/CitySavedList_me.graphql"
 import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -12,8 +12,8 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import { EventList } from "./Components/EventList"
 
 interface Props {
-  me: CitySavedList_me
-  city: CitySavedList_city
+  me: CitySavedList_me$data
+  city: CitySavedList_city$data
   relay: RelayPaginationProp
   citySlug: string
 }

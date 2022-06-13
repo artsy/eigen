@@ -1,11 +1,11 @@
 import {
   CommerceOrderStateEnum,
-  OrderDetailsHeader_info,
+  OrderDetailsHeader_info$data,
 } from "__generated__/OrderDetailsHeader_info.graphql"
 import { OrderHistoryRowLineItem } from "./getTrackingUrl"
 
 export type OrderDetailsHeaderLineItem = NonNullable<
-  NonNullable<NonNullable<OrderDetailsHeader_info["lineItems"]>["edges"]>[0]
+  NonNullable<NonNullable<OrderDetailsHeader_info$data["lineItems"]>["edges"]>[0]
 >["node"]
 
 export type OrderState = Exclude<

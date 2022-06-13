@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
+import { AuctionResultsForArtistsYouFollow_me$data } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
 import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
@@ -15,7 +15,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import { useTracking } from "react-tracking"
 
 interface Props {
-  me: AuctionResultsForArtistsYouFollow_me | null
+  me: AuctionResultsForArtistsYouFollow_me$data | null
   relay: RelayPaginationProp
 }
 

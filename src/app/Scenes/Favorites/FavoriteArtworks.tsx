@@ -1,4 +1,4 @@
-import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
+import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.graphql"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { PAGE_SIZE } from "app/Components/constants"
@@ -17,7 +17,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import { useScreenDimensions } from "shared/hooks"
 
 interface Props {
-  me: FavoriteArtworks_me
+  me: FavoriteArtworks_me$data
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
 }

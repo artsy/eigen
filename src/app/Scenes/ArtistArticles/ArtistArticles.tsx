@@ -1,4 +1,4 @@
-import { ArtistArticles_artist } from "__generated__/ArtistArticles_artist.graphql"
+import { ArtistArticles_artist$data } from "__generated__/ArtistArticles_artist.graphql"
 import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -13,7 +13,7 @@ import { ArticlesList, ArticlesPlaceholder } from "../Articles/ArticlesList"
 const PAGE_SIZE = 10
 
 interface ArticlesProps {
-  artist: ArtistArticles_artist
+  artist: ArtistArticles_artist$data
   relay: RelayPaginationProp
 }
 

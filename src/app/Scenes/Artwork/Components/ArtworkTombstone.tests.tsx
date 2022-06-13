@@ -1,4 +1,4 @@
-import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
+import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
@@ -319,7 +319,7 @@ describe("ArtworkTombstone", () => {
   })
 })
 
-const artworkTombstoneArtwork: ArtworkTombstone_artwork = {
+const artworkTombstoneArtwork: ArtworkTombstone_artwork$data = {
   ...ArtworkFixture,
   title: "Hello im a title",
   medium: "Painting",
@@ -328,27 +328,27 @@ const artworkTombstoneArtwork: ArtworkTombstone_artwork = {
     {
       name: "Andy Warhol",
       href: "/artist/andy-warhol",
-      " $fragmentRefs": null as any,
+      " $fragmentSpreads": null as any,
     },
     {
       name: "Alex Katz",
       href: "/artist/alex-katz",
-      " $fragmentRefs": null as any,
+      " $fragmentSpreads": null as any,
     },
     {
       name: "Pablo Picasso",
       href: "/artist/pablo-picasso",
-      " $fragmentRefs": null as any,
+      " $fragmentSpreads": null as any,
     },
     {
       name: "Banksy",
       href: "/artist/banksy",
-      " $fragmentRefs": null as any,
+      " $fragmentSpreads": null as any,
     },
     {
       name: "Barbara Kruger",
       href: "/artist/barbara-kruger",
-      " $fragmentRefs": null as any,
+      " $fragmentSpreads": null as any,
     },
   ],
   cultural_maker: null,
@@ -361,9 +361,10 @@ const artworkTombstoneArtwork: ArtworkTombstone_artwork = {
     shortArrayDescription: ["This work is part of", "a limited edition set"],
   },
   certificateOfAuthenticity: {
-    __typename: "Certificate",
+    label: "A Certificate",
+    __typename: "ArtworkInfoRow",
   },
-  " $refType": null as any,
+  " $fragmentType": "ArtworkTombstone_artwork",
 }
 
 const artworkTombstoneAuctionArtwork = {

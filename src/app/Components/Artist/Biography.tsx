@@ -4,13 +4,13 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import removeMarkdown from "remove-markdown"
 
-import { Biography_artist } from "__generated__/Biography_artist.graphql"
+import { Biography_artist$data } from "__generated__/Biography_artist.graphql"
 import { Sans } from "palette"
 import { SectionTitle } from "../SectionTitle"
 import { Stack } from "../Stack"
 
 interface Props {
-  artist: Biography_artist
+  artist: Biography_artist$data
 }
 
 class Biography extends React.Component<Props> {

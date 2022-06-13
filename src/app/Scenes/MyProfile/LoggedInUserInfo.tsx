@@ -1,4 +1,4 @@
-import { LoggedInUserInfo_me } from "__generated__/LoggedInUserInfo_me.graphql"
+import { LoggedInUserInfo_me$data } from "__generated__/LoggedInUserInfo_me.graphql"
 import { LoggedInUserInfoQuery } from "__generated__/LoggedInUserInfoQuery.graphql"
 import Spinner from "app/Components/Spinner"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -7,7 +7,7 @@ import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface UserProfileProps {
-  me: LoggedInUserInfo_me
+  me: LoggedInUserInfo_me$data
 }
 
 class UserProfile extends React.Component<UserProfileProps> {

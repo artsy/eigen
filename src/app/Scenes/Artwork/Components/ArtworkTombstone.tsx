@@ -1,4 +1,4 @@
-import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
+import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
@@ -10,10 +10,10 @@ import { CascadingEndTimesBanner } from "./CascadingEndTimesBanner"
 import { CertificateAuthenticityModal } from "./CertificateAuthenticityModal"
 import { FollowArtistLinkFragmentContainer as FollowArtistLink } from "./FollowArtistLink"
 
-type Artist = NonNullable<NonNullable<ArtworkTombstone_artwork["artists"]>[0]>
+type Artist = NonNullable<NonNullable<ArtworkTombstone_artwork$data["artists"]>[0]>
 
 export interface ArtworkTombstoneProps {
-  artwork: ArtworkTombstone_artwork
+  artwork: ArtworkTombstone_artwork$data
 }
 
 export interface ArtworkTombstoneState {
@@ -275,6 +275,7 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
         name
       }
       certificateOfAuthenticity {
+        label
         __typename
       }
       sale {

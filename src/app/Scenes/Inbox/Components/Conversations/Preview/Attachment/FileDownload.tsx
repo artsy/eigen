@@ -4,7 +4,7 @@ import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
-import { FileDownload_attachment } from "__generated__/FileDownload_attachment.graphql"
+import { FileDownload_attachment$data } from "__generated__/FileDownload_attachment.graphql"
 import { DownloadIcon } from "palette"
 import styled from "styled-components/native"
 import { AttachmentContainer, AttachmentTextContainer } from "./PDFPreview"
@@ -15,12 +15,12 @@ export const NoBorderContainer = styled.View`
 `
 
 interface Props extends AttachmentProps {
-  attachment: FileDownload_attachment
+  attachment: FileDownload_attachment$data
   tiny?: boolean
   Icon?: React.FC<IconProps>
 }
 
-const downloadFile = (attachment: FileDownload_attachment) => {
+const downloadFile = (attachment: FileDownload_attachment$data) => {
   Linking.openURL(attachment.downloadURL)
 }
 

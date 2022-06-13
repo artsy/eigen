@@ -1,4 +1,4 @@
-import { AboutArtist_artwork } from "__generated__/AboutArtist_artwork.graphql"
+import { AboutArtist_artwork$data } from "__generated__/AboutArtist_artwork.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
@@ -8,7 +8,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AboutArtistProps {
-  artwork: AboutArtist_artwork
+  artwork: AboutArtist_artwork$data
 }
 
 export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {

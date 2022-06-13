@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
+import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
 import React from "react"
@@ -15,7 +15,7 @@ import Biography from "../Biography"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
 interface Props {
-  artist: ArtistAbout_artist
+  artist: ArtistAbout_artist$data
 }
 
 export const ArtistAbout: React.FC<Props> = ({ artist }) => {

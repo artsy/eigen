@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedShowMore } from "@artsy/cohesion"
-import { MyCollectionArtworkArtistArticles_artwork } from "__generated__/MyCollectionArtworkArtistArticles_artwork.graphql"
+import { MyCollectionArtworkArtistArticles_artwork$data } from "__generated__/MyCollectionArtworkArtistArticles_artwork.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { navigate } from "app/navigation/navigate"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
@@ -11,7 +11,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface MyCollectionArtworkArtistArticlesProps {
-  artwork: MyCollectionArtworkArtistArticles_artwork
+  artwork: MyCollectionArtworkArtistArticles_artwork$data
 }
 
 const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArticlesProps> = (

@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
-import { OnboardingPersonalizationModal_artists } from "__generated__/OnboardingPersonalizationModal_artists.graphql"
+import { OnboardingPersonalizationModal_artists$data } from "__generated__/OnboardingPersonalizationModal_artists.graphql"
 import { OnboardingPersonalizationModalQuery } from "__generated__/OnboardingPersonalizationModalQuery.graphql"
 import { SearchInput } from "app/Components/SearchInput"
 import { BackButton } from "app/navigation/BackButton"
@@ -24,7 +24,7 @@ interface OnboardingPersonalizationModalNavigationProps
   > {}
 
 interface OnboardingPersonalizationListProps extends OnboardingPersonalizationModalNavigationProps {
-  artists: OnboardingPersonalizationModal_artists
+  artists: OnboardingPersonalizationModal_artists$data
   relay: RelayPaginationProp
 }
 

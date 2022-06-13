@@ -1,4 +1,4 @@
-import { TagQuery, TagQueryResponse } from "__generated__/TagQuery.graphql"
+import { TagQuery } from "__generated__/TagQuery.graphql"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import About from "app/Components/Tag/About"
 import { TagArtworksPaginationContainer } from "app/Components/Tag/TagArtworks"
@@ -23,7 +23,7 @@ const TABS = {
 
 interface TagProps {
   tagID?: string
-  tag: NonNullable<TagQueryResponse["tag"]>
+  tag: NonNullable<TagQuery["response"]["tag"]>
 }
 
 interface TagQueryRendererProps {

@@ -1,6 +1,6 @@
 import MapboxGL, { MapViewProps, OnPressEvent } from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
-import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import { Pin } from "app/Icons/Pin"
 import PinFairSelected from "app/Icons/PinFairSelected"
 import PinSavedSelected from "app/Icons/PinSavedSelected"
@@ -70,7 +70,7 @@ interface Props {
   /** Should the map buttons be hidden...  */
   hideMapButtons: boolean
   /** The map API entry-point */
-  viewer?: GlobalMap_viewer
+  viewer?: GlobalMap_viewer$data
   /** API stuff */
   relay?: RelayProp
   /** Tracking */

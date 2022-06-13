@@ -1,7 +1,4 @@
-import {
-  FeaturedCollectionsRailTestsQuery,
-  FeaturedCollectionsRailTestsQueryRawResponse,
-} from "__generated__/FeaturedCollectionsRailTestsQuery.graphql"
+import { FeaturedCollectionsRailTestsQuery } from "__generated__/FeaturedCollectionsRailTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import {
   FeaturedCollectionsRail,
@@ -150,7 +147,7 @@ describe("Featured Collections Rail", () => {
   })
 })
 
-const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQueryRawResponse = {
+const FeaturedCollectionsFixture: FeaturedCollectionsRailTestsQuery["rawResponse"] = {
   marketingCollection: {
     id: "hub-collection",
     slug: "hub-collection-slug",

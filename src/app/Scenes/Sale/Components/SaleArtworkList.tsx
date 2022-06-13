@@ -1,5 +1,5 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { SaleArtworkList_connection } from "__generated__/SaleArtworkList_connection.graphql"
+import { SaleArtworkList_connection$data } from "__generated__/SaleArtworkList_connection.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
@@ -11,7 +11,7 @@ import { extractNodes } from "../../../utils/extractNodes"
 import { SaleArtworkListItemContainer as SaleArtworkListItem } from "./SaleArtworkListItem"
 
 interface Props {
-  connection: SaleArtworkList_connection
+  connection: SaleArtworkList_connection$data
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
   isLoading: RelayPaginationProp["isLoading"]

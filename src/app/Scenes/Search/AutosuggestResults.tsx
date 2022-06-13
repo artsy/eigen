@@ -1,9 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
-import { AutosuggestResults_results } from "__generated__/AutosuggestResults_results.graphql"
-import {
-  AutosuggestResultsQuery,
-  AutosuggestResultsQueryVariables,
-} from "__generated__/AutosuggestResultsQuery.graphql"
+import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
+import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
@@ -23,7 +20,9 @@ import {
 import { AutosuggestResultsPlaceholder } from "./components/placeholders/AutosuggestResultsPlaceholder"
 
 export type AutosuggestResult = NonNullable<
-  NonNullable<NonNullable<NonNullable<AutosuggestResults_results["results"]>["edges"]>[0]>["node"]
+  NonNullable<
+    NonNullable<NonNullable<AutosuggestResults_results$data["results"]>["edges"]>[0]
+  >["node"]
 >
 
 const INITIAL_BATCH_SIZE = 32
@@ -32,7 +31,7 @@ const SUBSEQUENT_BATCH_SIZE = 64
 const AutosuggestResultsFlatList: React.FC<{
   query: string
   // if results are null that means we are waiting on a response from MP
-  results: AutosuggestResults_results | null
+  results: AutosuggestResults_results$data | null
   relay: RelayPaginationProp
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
@@ -259,7 +258,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
 
 export const AutosuggestResults: React.FC<{
   query: string
-  entities?: AutosuggestResultsQueryVariables["entities"]
+  entities?: AutosuggestResultsQuery["variables"]["entities"]
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
   showOnRetryErrorMessage?: boolean

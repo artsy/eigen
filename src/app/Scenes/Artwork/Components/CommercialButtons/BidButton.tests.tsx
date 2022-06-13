@@ -1,4 +1,7 @@
-import { BidButtonTestsQueryRawResponse } from "__generated__/BidButtonTestsQuery.graphql"
+import {
+  BidButtonTestsQuery,
+  BidButtonTestsQuery$data,
+} from "__generated__/BidButtonTestsQuery.graphql"
 import {
   ArtworkFromAuctionPreview,
   ArtworkFromClosedAuction,
@@ -30,7 +33,7 @@ const merge: (...args: object[]) => any = _merge
 const realNow = Settings.now
 const realDefaultZone = Settings.defaultZone
 
-const meFixture: BidButtonTestsQueryRawResponse["me"] = {
+const meFixture: BidButtonTestsQuery["rawResponse"]["me"] = {
   id: "id",
   identityVerified: false,
 }
@@ -68,7 +71,7 @@ describe("BidButton", () => {
           }
         }
       `,
-      mockData: { artwork, me } as BidButtonTestsQueryRawResponse,
+      mockData: { artwork, me } as BidButtonTestsQuery$data,
     })
   }
 

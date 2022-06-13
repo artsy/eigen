@@ -1,9 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { PurchaseModal_artwork } from "__generated__/PurchaseModal_artwork.graphql"
-import {
-  PurchaseModalQuery,
-  PurchaseModalQueryResponse,
-} from "__generated__/PurchaseModalQuery.graphql"
+import { PurchaseModal_artwork$data } from "__generated__/PurchaseModal_artwork.graphql"
+import { PurchaseModalQuery } from "__generated__/PurchaseModalQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -19,7 +16,7 @@ import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
 import { InquiryPurchaseButtonFragmentContainer } from "./InquiryPurchaseButton"
 
 interface PurchaseModalProps {
-  artwork: PurchaseModal_artwork
+  artwork: PurchaseModal_artwork$data
   conversationID: string
 }
 
@@ -126,7 +123,7 @@ export const PurchaseModalQueryRenderer: React.FC<{
         variables={{
           artworkID,
         }}
-        render={renderWithLoadProgress<PurchaseModalQueryResponse>(({ artwork }) => (
+        render={renderWithLoadProgress<PurchaseModalQuery["response"]>(({ artwork }) => (
           <PurchaseModalFragmentContainer artwork={artwork!} conversationID={conversationID} />
         ))}
       />

@@ -2,7 +2,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import Clipboard from "@react-native-community/clipboard"
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
-import { LocationMap_location } from "__generated__/LocationMap_location.graphql"
+import { LocationMap_location$data } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "app/Icons/Pin"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
 import { Box, Flex, Text } from "palette"
@@ -20,7 +20,7 @@ const MapWrapper = styled(Flex)`
 `
 
 interface Props {
-  location: LocationMap_location
+  location: LocationMap_location$data
   partnerName: string | null
 }
 

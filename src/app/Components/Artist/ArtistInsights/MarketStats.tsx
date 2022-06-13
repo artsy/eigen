@@ -12,11 +12,12 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { useScreenDimensions } from "shared/hooks"
-import { MarketStats_priceInsightsConnection } from "../../../../__generated__/MarketStats_priceInsightsConnection.graphql"
 import { extractNodes } from "../../../utils/extractNodes"
 
+import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
+
 interface MarketStatsProps {
-  priceInsightsConnection: MarketStats_priceInsightsConnection
+  priceInsightsConnection: MarketStats_priceInsightsConnection$data
 }
 
 const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) => {

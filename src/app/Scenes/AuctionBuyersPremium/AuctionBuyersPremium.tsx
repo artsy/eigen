@@ -1,4 +1,4 @@
-import { AuctionBuyersPremium_sale } from "__generated__/AuctionBuyersPremium_sale.graphql"
+import { AuctionBuyersPremium_sale$data } from "__generated__/AuctionBuyersPremium_sale.graphql"
 import { AuctionBuyersPremiumQuery } from "__generated__/AuctionBuyersPremiumQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/navigation/navigate"
@@ -12,7 +12,7 @@ import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface AuctionBuyersPremiumProps {
-  sale: AuctionBuyersPremium_sale
+  sale: AuctionBuyersPremium_sale$data
 }
 
 interface AuctionBuyersPremiumQueryRendererProps {

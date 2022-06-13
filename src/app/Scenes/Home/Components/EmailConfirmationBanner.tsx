@@ -1,4 +1,4 @@
-import { EmailConfirmationBanner_me } from "__generated__/EmailConfirmationBanner_me.graphql"
+import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { verifyEmail } from "app/utils/verifyEmail"
 import { Flex, Sans, SansProps, Spinner, useColor } from "palette"
 import React, { useState } from "react"
@@ -8,7 +8,7 @@ import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 const Text: React.FC<Partial<SansProps>> = (props) => <Sans color="white100" size="3t" {...props} />
 
 export interface Props {
-  me: EmailConfirmationBanner_me
+  me: EmailConfirmationBanner_me$data
   relay: RelayProp
 }
 

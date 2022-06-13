@@ -1,7 +1,4 @@
-import {
-  ArtworksInSeriesRailTestsQuery,
-  ArtworksInSeriesRailTestsQueryRawResponse,
-} from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
+import { ArtworksInSeriesRailTestsQuery } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { navigate } from "app/navigation/navigate"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
@@ -111,7 +108,7 @@ describe("ArtworksInSeriesRail", () => {
     })
   })
 
-  const ArtworksInSeriesRailFixture: ArtworksInSeriesRailTestsQueryRawResponse = {
+  const ArtworksInSeriesRailFixture: ArtworksInSeriesRailTestsQuery["rawResponse"] = {
     artwork: {
       id: "asdf123",
       internalID: "artwork124",

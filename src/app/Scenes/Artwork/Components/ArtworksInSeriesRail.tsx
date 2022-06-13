@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import {
-  ArtworksInSeriesRail_artwork,
+  ArtworksInSeriesRail_artwork$data,
   ArtworksInSeriesRail_artwork$key,
 } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
@@ -74,7 +74,7 @@ const artworkFragment = graphql`
 
 const tracks = {
   tappedHeader: (
-    sourceArtwork: ArtworksInSeriesRail_artwork,
+    sourceArtwork: ArtworksInSeriesRail_artwork$data,
     destination: { internalID: string; slug: string }
   ) => ({
     action: ActionType.tappedArtworkGroup,
@@ -88,7 +88,7 @@ const tracks = {
     type: "viewAll",
   }),
   tappedArtwork: (
-    sourceArtwork: ArtworksInSeriesRail_artwork,
+    sourceArtwork: ArtworksInSeriesRail_artwork$data,
     destination: { internalID: string; slug: string }
   ) => ({
     action: ActionType.tappedArtworkGroup,

@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArticleCard_article } from "__generated__/ArticleCard_article.graphql"
+import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import {
   PlaceholderBox,
@@ -15,7 +15,7 @@ import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
 interface ArticlesListProps {
-  articles: ArticleCard_article[]
+  articles: ArticleCard_article$data[]
   isLoading: () => boolean
   hasMore: () => boolean
   refreshing: boolean

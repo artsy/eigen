@@ -7,7 +7,7 @@ import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator, RelayMockEnvironment } from "relay-test-utils"
 import { CurrentlyRunningAuctions } from "./CurrentlyRunningAuctions"
-import { Sales } from "./index"
+import { Sales } from "./Sales"
 import { UpcomingAuctions } from "./UpcomingAuctions"
 
 jest.unmock("react-relay")

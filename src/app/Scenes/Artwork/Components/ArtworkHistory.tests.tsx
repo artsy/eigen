@@ -1,4 +1,4 @@
-import { ArtworkHistory_artwork } from "__generated__/ArtworkHistory_artwork.graphql"
+import { ArtworkHistory_artwork$data } from "__generated__/ArtworkHistory_artwork.graphql"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
@@ -22,7 +22,7 @@ describe("Artwork History", () => {
       <GlobalStoreProvider>
         <Theme>
           <div>
-            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork} />
+            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork$data} />
           </div>
         </Theme>
       </GlobalStoreProvider>
@@ -46,7 +46,7 @@ describe("Artwork History", () => {
       <GlobalStoreProvider>
         <Theme>
           <div>
-            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork} />
+            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork$data} />
           </div>
         </Theme>
       </GlobalStoreProvider>
@@ -69,7 +69,7 @@ describe("Artwork History", () => {
       <GlobalStoreProvider>
         <Theme>
           <div>
-            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork} />
+            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork$data} />
           </div>
         </Theme>
       </GlobalStoreProvider>

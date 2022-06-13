@@ -1,4 +1,4 @@
-import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
+import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
 import { dismissModal, navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -15,7 +15,7 @@ const mockNavigator = { popToTop }
 const refreshBidderInfoMock = jest.fn()
 const refreshSaleArtworkInfoMock = jest.fn()
 
-const saleArtwork: BidResult_sale_artwork = {
+const saleArtwork: BidResult_sale_artwork$data = {
   increments: [
     {
       display: "$10,000",
@@ -48,7 +48,7 @@ const saleArtwork: BidResult_sale_artwork = {
     end_at: "2022-05-01T00:03:00+00:00",
     slug: "sale-id",
   },
-} as any as BidResult_sale_artwork
+} as any as BidResult_sale_artwork$data
 
 describe("BidResult component", () => {
   Date.now = jest.fn(() => 1525983752116)

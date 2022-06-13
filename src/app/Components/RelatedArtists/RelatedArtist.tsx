@@ -1,4 +1,4 @@
-import { RelatedArtist_artist } from "__generated__/RelatedArtist_artist.graphql"
+import { RelatedArtist_artist$data } from "__generated__/RelatedArtist_artist.graphql"
 import { navigate } from "app/navigation/navigate"
 import { ClassTheme, Sans, Spacer } from "palette"
 import React, { Component } from "react"
@@ -7,7 +7,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import ImageView from "../OpaqueImageView/OpaqueImageView"
 
 interface Props {
-  artist: RelatedArtist_artist
+  artist: RelatedArtist_artist$data
   imageSize: {
     width: number
   }
@@ -46,7 +46,7 @@ class RelatedArtist extends Component<Props> {
     )
   }
 
-  artworksString(counts: RelatedArtist_artist["counts"]) {
+  artworksString(counts: RelatedArtist_artist$data["counts"]) {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const totalWorks = counts.artworks
       ? // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

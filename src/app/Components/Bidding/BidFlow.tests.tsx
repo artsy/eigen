@@ -25,7 +25,7 @@ jest.mock("tipsi-stripe", () => ({
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 
-import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
+import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
 import { extractText } from "app/tests/extractText"
 import { waitUntil } from "app/tests/waitUntil"
 import { Select } from "palette/elements/Select"
@@ -245,6 +245,6 @@ const mockRequestResponses = {
           position: {},
         },
       },
-    } as BidderPositionQueryResponse,
+    } as BidderPositionQuery$data,
   },
 }

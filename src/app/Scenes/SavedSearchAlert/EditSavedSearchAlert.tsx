@@ -1,9 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
-import { EditSavedSearchAlert_artists } from "__generated__/EditSavedSearchAlert_artists.graphql"
-import { EditSavedSearchAlert_artworksConnection } from "__generated__/EditSavedSearchAlert_artworksConnection.graphql"
-import { EditSavedSearchAlert_viewer } from "__generated__/EditSavedSearchAlert_viewer.graphql"
+import { EditSavedSearchAlert_artists$data } from "__generated__/EditSavedSearchAlert_artists.graphql"
+import { EditSavedSearchAlert_artworksConnection$data } from "__generated__/EditSavedSearchAlert_artworksConnection.graphql"
+import { EditSavedSearchAlert_viewer$data } from "__generated__/EditSavedSearchAlert_viewer.graphql"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
-import { SavedSearchAlertQueryResponse } from "__generated__/SavedSearchAlertQuery.graphql"
+import { SavedSearchAlertQuery } from "__generated__/SavedSearchAlertQuery.graphql"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
@@ -27,11 +27,11 @@ interface EditSavedSearchAlertBaseProps {
 }
 
 interface EditSavedSearchAlertProps {
-  me: SavedSearchAlertQueryResponse["me"]
-  viewer: EditSavedSearchAlert_viewer
-  artists: EditSavedSearchAlert_artists
+  me: SavedSearchAlertQuery["response"]["me"]
+  viewer: EditSavedSearchAlert_viewer$data
+  artists: EditSavedSearchAlert_artists$data
   savedSearchAlertId: string
-  artworksConnection: EditSavedSearchAlert_artworksConnection
+  artworksConnection: EditSavedSearchAlert_artworksConnection$data
   relay: RelayRefetchProp
 }
 
@@ -163,7 +163,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
     <SavedSearchAlertQueryRenderer
       savedSearchAlertId={savedSearchAlertId}
       render={renderWithPlaceholder({
-        render: (relayProps: SavedSearchAlertQueryResponse) => (
+        render: (relayProps: SavedSearchAlertQuery["response"]) => (
           <QueryRenderer<EditSavedSearchAlertQuery>
             environment={defaultEnvironment}
             query={graphql`

@@ -6,7 +6,7 @@ import styled from "styled-components/native"
 
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
-import { PDFPreview_attachment } from "__generated__/PDFPreview_attachment.graphql"
+import { PDFPreview_attachment$data } from "__generated__/PDFPreview_attachment.graphql"
 
 export const AttachmentContainer = styled(Flex)`
   flex: 1;
@@ -27,7 +27,7 @@ const Icon = styled(Image)`
 `
 
 interface Props extends AttachmentProps {
-  attachment: PDFPreview_attachment
+  attachment: PDFPreview_attachment$data
 }
 
 export const PDFPreview: React.FC<Props> = ({ attachment, onSelected }) => (

@@ -1,4 +1,4 @@
-import { CollectionHeaderTestsQueryRawResponse } from "__generated__/CollectionHeaderTestsQuery.graphql"
+import { CollectionHeaderTestsQuery } from "__generated__/CollectionHeaderTestsQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
@@ -29,7 +29,10 @@ it("renders without throwing an error", async () => {
         }
       }
     `,
-    mockData: { marketingCollection: CollectionFixture } as CollectionHeaderTestsQueryRawResponse,
+    // @ts-ignore-error
+    mockData: {
+      marketingCollection: CollectionFixture,
+    } as CollectionHeaderTestsQuery,
   })
 })
 

@@ -1,13 +1,10 @@
 import { UserAddressAttributes } from "__generated__/addNewAddressMutation.graphql"
-import {
-  updateUserAddressMutation,
-  updateUserAddressMutationResponse,
-} from "__generated__/updateUserAddressMutation.graphql"
+import { updateUserAddressMutation } from "__generated__/updateUserAddressMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
 export const updateUserAddress = (userAddressID: string, address: UserAddressAttributes) => {
-  return new Promise<updateUserAddressMutationResponse>((resolve, reject) => {
+  return new Promise<updateUserAddressMutation["response"]>((resolve, reject) => {
     commitMutation<updateUserAddressMutation>(defaultEnvironment, {
       variables: {
         input: {

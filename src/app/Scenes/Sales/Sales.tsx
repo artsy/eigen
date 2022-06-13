@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { SalesQuery, SalesQueryResponse } from "__generated__/SalesQuery.graphql"
+import { SalesQuery } from "__generated__/SalesQuery.graphql"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { Stack } from "app/Components/Stack"
@@ -30,7 +30,7 @@ export const SalesScreenQuery = graphql`
   }
 `
 
-export const Sales: React.FC<{ data: SalesQueryResponse }> = ({ data }) => {
+export const Sales: React.FC<{ data: SalesQuery["response"] }> = ({ data }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   // using max_value because we want CurrentlyRunningAuctions & UpcomingAuctions

@@ -1,4 +1,4 @@
-import { OrderDetailsHeader_info } from "__generated__/OrderDetailsHeader_info.graphql"
+import { OrderDetailsHeader_info$data } from "__generated__/OrderDetailsHeader_info.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
 import { DateTime } from "luxon"
@@ -7,7 +7,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  info: OrderDetailsHeader_info
+  info: OrderDetailsHeader_info$data
 }
 
 export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {

@@ -1,4 +1,4 @@
-import { TagArtworks_tag } from "__generated__/TagArtworks_tag.graphql"
+import { TagArtworks_tag$data } from "__generated__/TagArtworks_tag.graphql"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -15,7 +15,7 @@ import { StickyTabPageFlatListContext } from "../StickyTabPage/StickyTabPageFlat
 import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
 interface TagArtworksContainerProps {
-  tag: TagArtworks_tag
+  tag: TagArtworks_tag$data
   relay: RelayPaginationProp
 }
 

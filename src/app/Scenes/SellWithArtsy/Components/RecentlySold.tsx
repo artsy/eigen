@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupply.graphql"
+import { RecentlySold_targetSupply$data } from "__generated__/RecentlySold_targetSupply.graphql"
 import {
   SmallArtworkRail,
   SmallArtworkRailPlaceholder,
@@ -15,7 +15,7 @@ import { useTracking } from "react-tracking"
 
 interface RecentlySoldProps {
   isLoading?: boolean
-  targetSupply: RecentlySold_targetSupply
+  targetSupply: RecentlySold_targetSupply$data
 }
 
 const trackingArgs: TappedEntityGroupArgs = {

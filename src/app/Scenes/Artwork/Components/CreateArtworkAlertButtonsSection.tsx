@@ -5,7 +5,7 @@ import {
   ScreenOwnerType,
   TappedCreateAlert,
 } from "@artsy/cohesion"
-import { CreateArtworkAlertButtonsSection_artwork } from "__generated__/CreateArtworkAlertButtonsSection_artwork.graphql"
+import { CreateArtworkAlertButtonsSection_artwork$data } from "__generated__/CreateArtworkAlertButtonsSection_artwork.graphql"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
@@ -22,7 +22,7 @@ import { useTracking } from "react-tracking"
 import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
 
 export interface CreateArtworkAlertButtonsSectionProps {
-  artwork: CreateArtworkAlertButtonsSection_artwork
+  artwork: CreateArtworkAlertButtonsSection_artwork$data
   // FIXME:- state manager can return a string different from AuctionTimerState
   // Check CountdownTimer.tsx
   auctionState?: AuctionTimerState | string

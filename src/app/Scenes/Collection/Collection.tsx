@@ -4,9 +4,9 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box, Spacer } from "palette"
 import React, { Component, createRef } from "react"
-import { Animated, Dimensions, FlatList, View } from "react-native"
+import { Animated, FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { Collection_collection } from "../../../__generated__/Collection_collection.graphql"
+import { Collection_collection$data } from "../../../__generated__/Collection_collection.graphql"
 import { CollectionArtworksFilterFragmentContainer as CollectionArtworksFilter } from "../../../app/Scenes/Collection/Components/CollectionArtworksFilter"
 import { CollectionArtworksFragmentContainer as CollectionArtworks } from "../../../app/Scenes/Collection/Screens/CollectionArtworks"
 import { CollectionHeaderContainer as CollectionHeader } from "../../../app/Scenes/Collection/Screens/CollectionHeader"
@@ -15,7 +15,7 @@ import { CollectionsHubRailsContainer as CollectionHubsRails } from "./Component
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./Components/FeaturedArtists"
 
 interface CollectionProps {
-  collection: Collection_collection
+  collection: Collection_collection$data
 }
 
 @screenTrack((props: CollectionProps) => ({
@@ -103,8 +103,7 @@ export class Collection extends Component<CollectionProps> {
 
 export const CollectionContainer = createFragmentContainer(Collection, {
   collection: graphql`
-    fragment Collection_collection on MarketingCollection
-    @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
+    fragment Collection_collection on MarketingCollection {
       id
       slug
       isDepartment
@@ -131,15 +130,14 @@ export const CollectionQueryRenderer: React.FC<CollectionQueryRendererProps> = (
   <QueryRenderer<CollectionQuery>
     environment={defaultEnvironment}
     query={graphql`
-      query CollectionQuery($collectionID: String!, $screenWidth: Int) {
+      query CollectionQuery($collectionID: String!) {
         collection: marketingCollection(slug: $collectionID) {
-          ...Collection_collection @arguments(screenWidth: $screenWidth)
+          ...Collection_collection
         }
       }
     `}
     variables={{
       collectionID,
-      screenWidth: Dimensions.get("screen").width,
     }}
     cacheConfig={{
       // Bypass Relay cache on retries.

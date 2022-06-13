@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
+import { ArtistInsightsAuctionResults_artist$data } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import {
   filterArtworksParams,
   FilterParamName,
@@ -28,7 +28,7 @@ import {
 } from "../../Lists/AuctionResultListItem"
 
 interface Props {
-  artist: ArtistInsightsAuctionResults_artist
+  artist: ArtistInsightsAuctionResults_artist$data
   relay: RelayPaginationProp
   scrollToTop: () => void
 }

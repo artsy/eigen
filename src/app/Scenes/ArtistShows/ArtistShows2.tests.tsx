@@ -22,7 +22,7 @@ describe("ArtistShows2", () => {
         query ArtistShows2TestsQuery($artistID: String!) @relay_test_operation {
           artist(id: $artistID) {
             slug
-            ...ArtistShows2_artist @arguments(artistID: $artistID)
+            ...ArtistShows2_artist
           }
         }
       `}

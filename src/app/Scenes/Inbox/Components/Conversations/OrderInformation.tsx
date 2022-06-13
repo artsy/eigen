@@ -1,13 +1,13 @@
-import { OrderInformation_artwork } from "__generated__/OrderInformation_artwork.graphql"
-import { OrderInformation_order } from "__generated__/OrderInformation_order.graphql"
+import { OrderInformation_artwork$data } from "__generated__/OrderInformation_artwork.graphql"
+import { OrderInformation_order$data } from "__generated__/OrderInformation_order.graphql"
 import { track as _track } from "app/utils/track"
 import { Flex, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface OrderInformationProps {
-  artwork: OrderInformation_artwork
-  order: OrderInformation_order
+  artwork: OrderInformation_artwork$data
+  order: OrderInformation_order$data
 }
 
 export const OrderInformation: React.FC<OrderInformationProps> = ({ artwork, order }) => {

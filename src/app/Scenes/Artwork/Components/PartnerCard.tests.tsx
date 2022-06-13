@@ -1,5 +1,5 @@
-import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
-import { PartnerCardTestsQueryRawResponse } from "__generated__/PartnerCardTestsQuery.graphql"
+import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
+import { PartnerCardTestsQuery$data } from "__generated__/PartnerCardTestsQuery.graphql"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderRelayTree } from "app/tests/renderRelayTree"
@@ -145,7 +145,7 @@ describe("PartnerCard", () => {
   })
 
   it("does not render when the partner is an auction house", () => {
-    const PartnerCardArtworkAuctionHouse: PartnerCard_artwork = {
+    const PartnerCardArtworkAuctionHouse: PartnerCard_artwork$data = {
       ...PartnerCardArtwork,
       partner: {
         ...PartnerCardArtwork.partner!,
@@ -224,7 +224,7 @@ describe("PartnerCard", () => {
             }
           }
         `,
-        mockData: { artwork: mockArtworkData } as PartnerCardTestsQueryRawResponse,
+        mockData: { artwork: mockArtworkData } as PartnerCardTestsQuery$data,
         mockMutationResults: { followProfile: mockFollowResults },
       })
     }
@@ -302,7 +302,7 @@ describe("PartnerCard", () => {
             }
           }
         `,
-        mockData: { artwork: PartnerCardArtwork }, // Enable/fix this when making large change to these components/fixtures: as PartnerCardTestsErrorQueryRawResponse,
+        mockData: { artwork: PartnerCardArtwork }, // Enable/fix this when making large change to these components/fixtures: as PartnerCardTestsErrorQuery,
         mockMutationResults: {
           PartnerCardFragmentContainer: () => {
             return Promise.reject(new Error("failed to fetch"))
@@ -324,7 +324,7 @@ describe("PartnerCard", () => {
   })
 })
 
-const PartnerCardArtwork: PartnerCard_artwork = {
+const PartnerCardArtwork: PartnerCard_artwork$data = {
   sale: {
     isBenefit: false,
     isGalleryAuction: false,
@@ -347,5 +347,5 @@ const PartnerCardArtwork: PartnerCard_artwork = {
     },
     cities: ["Miami", "New York", "Hong Kong", "London", "Boston"],
   },
-  " $refType": null as any,
+  " $fragmentType": "PartnerCard_artwork",
 }

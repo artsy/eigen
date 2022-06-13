@@ -1,4 +1,4 @@
-import { ArticleCard_article } from "__generated__/ArticleCard_article.graphql"
+import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Spacer, Text } from "palette"
@@ -9,7 +9,7 @@ const WIDTH = 295
 const HEIGHT = 230
 
 interface ArticleCardProps extends ViewProps {
-  article: ArticleCard_article
+  article: ArticleCard_article$data
   isFluid?: boolean
   onPress?(event: GestureResponderEvent): void
 }

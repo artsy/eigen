@@ -5,14 +5,16 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Input } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
-import { MyAccountEditName_me } from "../../../__generated__/MyAccountEditName_me.graphql"
+import { MyAccountEditName_me$data } from "../../../__generated__/MyAccountEditName_me.graphql"
 import {
   MyAccountFieldEditScreen,
   MyAccountFieldEditScreenPlaceholder,
 } from "./Components/MyAccountFieldEditScreen"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
-const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }> = ({ me }) => {
+const MyAccountEditName: React.FC<{ me: MyAccountEditName_me$data; relay: RelayProp }> = ({
+  me,
+}) => {
   const [name, setName] = useState<string>(me.name ?? "")
   const [receivedErrors, setReceivedErrors] = useState<string | undefined>(undefined)
   const inputRef = useRef(null)

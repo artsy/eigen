@@ -1,5 +1,5 @@
 import { ActionType } from "@artsy/cohesion"
-import { Inbox_me } from "__generated__/Inbox_me.graphql"
+import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
@@ -66,7 +66,7 @@ interface State {
 }
 
 interface Props {
-  me: Inbox_me
+  me: Inbox_me$data
   relay: RelayRefetchProp
   isVisible: boolean
 }

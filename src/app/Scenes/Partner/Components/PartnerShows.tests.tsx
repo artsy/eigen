@@ -1,7 +1,4 @@
-import {
-  PartnerShowsTestsQuery,
-  PartnerShowsTestsQueryRawResponse,
-} from "__generated__/PartnerShowsTestsQuery.graphql"
+import { PartnerShowsTestsQuery } from "__generated__/PartnerShowsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
@@ -96,7 +93,7 @@ describe("PartnerShows", () => {
   })
 })
 
-const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
+const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
   id: "gagosian-id",
   slug: "gagosian",
   internalID: "4d8b92c44eb68a1b2c0004cb",

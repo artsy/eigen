@@ -1,5 +1,5 @@
 import * as Analytics from "@artsy/cohesion"
-import { WorksForYou_me } from "__generated__/WorksForYou_me.graphql"
+import { WorksForYou_me$data } from "__generated__/WorksForYou_me.graphql"
 import { WorksForYouQuery } from "__generated__/WorksForYouQuery.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -18,7 +18,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 
 interface Props {
   relay: RelayPaginationProp
-  me: WorksForYou_me
+  me: WorksForYou_me$data
 }
 
 interface State {

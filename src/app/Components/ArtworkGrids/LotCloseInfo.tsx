@@ -1,12 +1,12 @@
-import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
+import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { getTimerInfo } from "app/utils/saleTime"
 import { Time, useTimer } from "app/utils/useTimer"
 import { Text } from "palette"
 import { CountdownTimerProps } from "../Countdown/CountdownTimer"
 
 interface LotCloseInfoProps {
-  saleArtwork: NonNullable<ArtworkGridItem_artwork["saleArtwork"]>
-  sale: NonNullable<ArtworkGridItem_artwork["sale"]>
+  saleArtwork: NonNullable<ArtworkGridItem_artwork$data["saleArtwork"]>
+  sale: NonNullable<ArtworkGridItem_artwork$data["sale"]>
   duration: CountdownTimerProps["duration"]
 
   /** Specific time lot sale ends, taking into account the current

@@ -1,4 +1,4 @@
-import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
+import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
 
 import { navigate } from "app/navigation/navigate"
 import {
@@ -16,7 +16,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { TimeSince } from "./TimeSince"
 
 export interface OrderUpdateProps {
-  event: OrderUpdate_event
+  event: OrderUpdate_event$data
   conversationId: string
 }
 

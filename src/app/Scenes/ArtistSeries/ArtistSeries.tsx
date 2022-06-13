@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeries.graphql"
+import { ArtistSeries_artistSeries$data } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
@@ -24,7 +24,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesProps {
-  artistSeries: ArtistSeries_artistSeries
+  artistSeries: ArtistSeries_artistSeries$data
 }
 
 export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {

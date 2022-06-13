@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { EditionSelectBox_editionSet } from "__generated__/EditionSelectBox_editionSet.graphql"
+import { EditionSelectBox_editionSet$data } from "__generated__/EditionSelectBox_editionSet.graphql"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { BorderBox, Flex, Text, Touchable } from "palette"
 import { RadioButton } from "palette/elements/Radio"
@@ -17,7 +17,7 @@ const UnavailableIndicator = styled(View)`
 `
 
 interface Props {
-  editionSet: EditionSelectBox_editionSet
+  editionSet: EditionSelectBox_editionSet$data
   selected: boolean
   onPress: (editionSetId: string, isAvailable: boolean) => void
 }

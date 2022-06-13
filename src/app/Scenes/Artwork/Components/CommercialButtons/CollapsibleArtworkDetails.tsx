@@ -1,4 +1,4 @@
-import { CollapsibleArtworkDetails_artwork } from "__generated__/CollapsibleArtworkDetails_artwork.graphql"
+import { CollapsibleArtworkDetails_artwork$data } from "__generated__/CollapsibleArtworkDetails_artwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import ChevronIcon from "app/Icons/ChevronIcon"
 import { ArtworkDetailsRow } from "app/Scenes/Artwork/Components/ArtworkDetailsRow"
@@ -9,11 +9,11 @@ import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface CollapsibleArtworkDetailsProps {
-  artwork: CollapsibleArtworkDetails_artwork
+  artwork: CollapsibleArtworkDetails_artwork$data
   hasSeparator?: boolean
 }
 
-const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork) => {
+const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork$data) => {
   const items = [
     { title: "Price", value: artwork.saleMessage },
     { title: "Medium", value: artwork.category },

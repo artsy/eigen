@@ -1,6 +1,6 @@
 import React from "react"
 
-import { ActiveLotStanding_saleArtwork } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
+import { ActiveLotStanding_saleArtwork$data } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { merge } from "lodash"
@@ -29,7 +29,7 @@ const defaultSaleArtwork = {
 }
 
 const saleArtworkFixture = (overrides = {}) => {
-  return merge({}, defaultSaleArtwork, overrides) as unknown as ActiveLotStanding_saleArtwork
+  return merge({}, defaultSaleArtwork, overrides) as unknown as ActiveLotStanding_saleArtwork$data
 }
 
 describe(ActiveLotStanding, () => {

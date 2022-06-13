@@ -1,5 +1,5 @@
 import { addCollectedArtwork } from "@artsy/cohesion"
-import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
+import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -26,7 +26,7 @@ import { MyCollectionArtworkEdge } from "./MyCollection"
 import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
 
 interface MyCollectionArtworksProps {
-  me: MyCollection_me
+  me: MyCollection_me$data
   relay: RelayPaginationProp
   innerFlatlistRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
 }

@@ -1,7 +1,4 @@
-import {
-  MakeOfferModalTestsQuery,
-  MakeOfferModalTestsQueryResponse,
-} from "__generated__/MakeOfferModalTestsQuery.graphql"
+import { MakeOfferModalTestsQuery } from "__generated__/MakeOfferModalTestsQuery.graphql"
 import { CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
@@ -18,7 +15,7 @@ jest.unmock("react-relay")
 
 let env: ReturnType<typeof createMockEnvironment>
 
-const FakeApp = (props: MakeOfferModalTestsQueryResponse) => {
+const FakeApp = (props: MakeOfferModalTestsQuery["response"]) => {
   return (
     <MakeOfferModalFragmentContainer
       artwork={props!.artwork!}
@@ -28,7 +25,7 @@ const FakeApp = (props: MakeOfferModalTestsQueryResponse) => {
 }
 
 interface RenderComponentProps {
-  props: MakeOfferModalTestsQueryResponse | null
+  props: MakeOfferModalTestsQuery["response"] | null
   error: Error | null
 }
 

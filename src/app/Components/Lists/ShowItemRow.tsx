@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
+import { ShowItemRow_show$data } from "__generated__/ShowItemRow_show.graphql"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Pin } from "app/Icons/Pin"
@@ -15,7 +15,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 import styled from "styled-components/native"
 
 interface Props {
-  show: ShowItemRow_show
+  show: ShowItemRow_show$data
   relay?: RelayProp
   onSaveStarted?: () => void
   onSaveEnded?: () => void
