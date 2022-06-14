@@ -91,6 +91,11 @@ export const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectAr
             placeholder="Search Artist from Your Collection"
             value={query}
             onChangeText={setQuery}
+            error={
+              filteredArtists.length === 0 && query.length > 0
+                ? "Please select from the list of artists in your collection with insights available."
+                : ""
+            }
           />
         </Flex>
 
