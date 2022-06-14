@@ -1,4 +1,4 @@
-import { ShowHeader_show } from "__generated__/ShowHeader_show.graphql"
+import { ShowHeader_show$data } from "__generated__/ShowHeader_show.graphql"
 import { useEventTiming } from "app/utils/useEventTiming"
 import { DateTime } from "luxon"
 import { Box, BoxProps, Text } from "palette"
@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface ShowHeaderProps extends BoxProps {
-  show: ShowHeader_show
+  show: ShowHeader_show$data
 }
 
 export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {

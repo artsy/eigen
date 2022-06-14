@@ -1,7 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
-import { CssTransition } from "app/Components/Bidding/Components/Animation/CssTransition"
 import { Flex, FlexProps } from "app/Components/Bidding/Elements/Flex"
-import { Text, useTheme } from "palette"
+import { CssTransition, Text, useTheme } from "palette"
 import React from "react"
 import {
   PixelRatio,
@@ -21,6 +20,7 @@ export interface RadioButtonProps extends TouchableWithoutFeedbackProps, FlexPro
   error?: boolean
   text?: React.ReactElement | string
   subtitle?: React.ReactElement | string
+  accessibilityState?: { checked: boolean }
 }
 
 export const RadioButton: React.FC<RadioButtonProps> = ({
@@ -32,6 +32,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
   text,
   subtitle,
   children,
+  accessibilityState,
   ...restProps
 }) => {
   const { color, space } = useTheme()
@@ -74,6 +75,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
   return (
     <TouchableWithoutFeedback
+      accessibilityState={accessibilityState}
       onPress={(event) => {
         if (disabled) {
           return

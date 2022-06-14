@@ -1,9 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.graphql"
-import {
-  MakeOfferModalQuery,
-  MakeOfferModalQueryResponse,
-} from "__generated__/MakeOfferModalQuery.graphql"
+import { MakeOfferModal_artwork$data } from "__generated__/MakeOfferModal_artwork.graphql"
+import { MakeOfferModalQuery } from "__generated__/MakeOfferModalQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -16,10 +13,10 @@ import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 
-import { EditionSelectBox } from "./EditionSelectBox"
+import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
 
 interface MakeOfferModalProps {
-  artwork: MakeOfferModal_artwork
+  artwork: MakeOfferModal_artwork$data
   conversationID: string
 }
 
@@ -45,21 +42,15 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
       </FancyModalHeader>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Flex p={1.5}>
-          <Text variant="lg">Confirm Artwork</Text>
-          <Text variant="xs" color="black60">
-            Make sure the artwork below matches the intended work you're making an offer on.
-          </Text>
+          <Text variant="lg">Select edition set</Text>
           <BorderBox p={0} my={2}>
             <CollapsibleArtworkDetails hasSeparator={false} artwork={artwork} />
           </BorderBox>
           {!!artwork.isEdition && artwork.editionSets!.length > 1 && (
-            <Flex mb={1}>
-              <Text color="black100" mb={1}>
-                Which edition are you interested in?
-              </Text>
+            <Flex mb={2}>
               {artwork.editionSets?.map((edition) => (
-                <EditionSelectBox
-                  edition={edition!}
+                <EditionSelectBoxFragmentContainer
+                  editionSet={edition!}
                   selected={edition!.internalID === selectedEdition}
                   onPress={selectEdition}
                   key={`edition-set-${edition?.internalID}`}
@@ -69,12 +60,13 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           )}
           <InquiryMakeOfferButton
             variant="fillDark"
-            buttonText="Confirm"
             artwork={artwork}
             disabled={!!artwork.isEdition && !selectedEdition}
             editionSetID={selectedEdition ? selectedEdition : null}
             conversationID={conversationID}
-          />
+          >
+            Confirm
+          </InquiryMakeOfferButton>
           <Button
             mt={1}
             size="large"
@@ -87,12 +79,6 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           >
             Cancel
           </Button>
-          <Flex bg="black5" p={1} mt={1} mb={6}>
-            <Text variant="xs">
-              Making an offer doesn’t guarantee you the work, as the seller might be receiving
-              competing offers.
-            </Text>
-          </Flex>
         </Flex>
       </ScrollView>
     </View>
@@ -107,21 +93,8 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
       internalID
       isEdition
       editionSets {
+        ...EditionSelectBox_editionSet
         internalID
-        editionOf
-        isOfferableFromInquiry
-        listPrice {
-          ... on Money {
-            display
-          }
-          ... on PriceRange {
-            display
-          }
-        }
-        dimensions {
-          cm
-          in
-        }
       }
     }
   `,
@@ -151,7 +124,7 @@ export const MakeOfferModalQueryRenderer: React.FC<{
         variables={{
           artworkID,
         }}
-        render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
+        render={renderWithLoadProgress<MakeOfferModalQuery["response"]>(({ artwork }) => (
           <MakeOfferModalFragmentContainer artwork={artwork!} conversationID={conversationID} />
         ))}
       />

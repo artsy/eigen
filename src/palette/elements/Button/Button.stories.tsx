@@ -1,10 +1,10 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { Wrap } from "app/utils/Wrap"
 import { BellIcon, Box, Flex, LinkIcon, Spacer } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { Button as RNButton } from "react-native"
-import { withHooks, withScreenDimensions, withTheme } from "storybook/decorators"
+import { Wrap } from "shared/utils"
+import { withHooks, withScreenDimensions } from "storybook/decorators"
 import { DataList, List } from "storybook/helpers"
 import { Button, ButtonProps, CTAButton, FollowButton, LinkButton } from "."
 import { _test_DisplayState } from "./Button"
@@ -14,6 +14,7 @@ const variants: Array<ButtonProps["variant"]> = [
   "fillDark",
   "fillLight",
   "fillGray",
+  "fillSuccess",
   "outline",
   "outlineGray",
   "outlineLight",
@@ -28,7 +29,6 @@ const states: Array<_test_DisplayState | undefined> = [
 ]
 
 storiesOf("Button", module)
-  .addDecorator(withTheme)
   .addDecorator(withScreenDimensions)
   .addDecorator(withHooks)
   .add("Sizes", () => (

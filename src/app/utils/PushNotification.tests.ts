@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
@@ -148,6 +148,7 @@ describe("Push Notification Tests", () => {
       Push.handleReceivedNotification(notification)
       expect(navigate).toHaveBeenNthCalledWith(1, notification.data.url, {
         passProps: notification.data,
+        ignoreDebounce: true,
       })
     })
 

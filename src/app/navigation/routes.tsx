@@ -116,6 +116,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const artsyDotNet: RouteMatcher[] = compact([
     addRoute("/", "Home"),
     addRoute("/sales", "Sales"),
+    addRoute("/map", "NewMap"),
     addRoute("/search", "Search"),
     addRoute("/inbox", "Inbox"),
     addRoute("/my-profile", "MyProfile"),
@@ -142,6 +143,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/auction/:saleID/info", "AuctionInfo"),
     addRoute("/auction-faq", "AuctionFAQ"),
     addRoute("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
+    addRoute("/auction/:saleID/buyers-premium", "AuctionBuyersPremium"),
     addRoute("/gene/:geneID", "Gene"),
     addRoute("/tag/:tagID", "Tag"),
     addRoute("/show/:showID", "Show"),
@@ -150,6 +152,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/inquiry/:artworkID", "Inquiry"),
     addRoute("/viewing-rooms", "ViewingRooms"),
     addRoute("/auction-results-for-artists-you-follow", "AuctionResultsForArtistsYouFollow"),
+    addRoute("/auction-results-for-artists-you-collect", "AuctionResultsForArtistsYouCollect"),
+    addRoute("/my-collection/average-sale-price-at-auction", "AverageSalePriceAtAuction"),
     addRoute("/viewing-room/:viewing_room_id", "ViewingRoom"),
     addRoute("/viewing-room/:viewing_room_id/artworks", "ViewingRoomArtworks"),
     addRoute("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
@@ -186,21 +190,22 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     addRoute("/my-collection", "MyCollection"),
     addRoute("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
-    addRoute("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
     addRoute("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
     addRoute("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
+    addRoute(
+      "/my-collection/artwork/:artworkID/request-for-price-estimate",
+      "RequestForPriceEstimateScreen"
+    ),
 
     // TODO: Follow-up about below route names
-    addRoute(
-      "/collections/my-collection/artworks/new/submissions/new",
-      "ConsignmentsSubmissionForm"
-    ),
-    addRoute("/consign/submission", "ConsignmentsSubmissionForm"),
+    addRoute("/collections/my-collection/artworks/new/submissions/new", "SubmitArtwork"),
+    addRoute("/consign/submission", "SubmitArtwork"),
     addRoute("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
     addWebViewRoute("/conditions-of-sale"),
     addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
     addRoute("/artwork-submission-status", "ArtworkSubmissionStatusFAQ"),
+    addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
 
     addRoute("/partner/:partnerID", "Partner"),
     addRoute("/partner/:partnerID/works", "Partner"),
@@ -233,6 +238,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     addRoute("/city-bmw-list/:citySlug", "CityBMWList"),
     addRoute("/make-offer/:artworkID", "MakeOfferModal"),
+    addRoute("/purchase/:artworkID", "PurchaseModal"),
     addRoute("/user/purchases/:orderID", "OrderDetails"),
     addRoute("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
     addRoute("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
@@ -240,7 +246,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       mimicBrowserBackButton: true,
       useRightCloseButton: true,
     }),
-    __DEV__ && addRoute("/storybook", "Storybook"),
+    // __DEV__ && addRoute("/storybook", "Storybook"),
 
     // Every other route needs to go above
     addRoute("/:slug", "VanityURLEntity"),

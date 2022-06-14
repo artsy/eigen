@@ -1,18 +1,17 @@
-import { TrackOrderSection_section } from "__generated__/TrackOrderSection_section.graphql"
+import { TrackOrderSection_section$data } from "__generated__/TrackOrderSection_section.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
 import { DateTime } from "luxon"
 import { Button, Flex, Text } from "palette"
-import React, { FC } from "react"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  section: TrackOrderSection_section
+  section: TrackOrderSection_section$data
 }
 
-export const TrackOrderSection: FC<Props> = ({ section }) => {
+export const TrackOrderSection: React.FC<Props> = ({ section }) => {
   if (!section.lineItems) {
     return null
   }

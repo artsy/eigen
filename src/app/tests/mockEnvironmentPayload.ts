@@ -1,3 +1,4 @@
+import { act } from "@testing-library/react-hooks"
 import { takeRight } from "lodash"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
@@ -47,12 +48,18 @@ export const DefaultMockResolvers: MockResolvers = {
   String: (ctx) => goodMockResolver(ctx),
 }
 
-export const mockEnvironmentPayload = (
+export function mockEnvironmentPayload(
   mockEnvironment: ReturnType<typeof createMockEnvironment>,
   mockResolvers?: MockResolvers
-) => {
+) {
   reset()
   mockEnvironment.mock.resolveMostRecentOperation((operation) =>
     MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
   )
+}
+
+export function mockEnvironmentPayloadAndEnsureUpdated(
+  ...args: Parameters<typeof mockEnvironmentPayload>
+) {
+  act(() => mockEnvironmentPayload(...args))
 }

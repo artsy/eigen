@@ -1,11 +1,11 @@
 import {
   CommerceOrderStateEnum,
-  OrderDetailsHeader_info,
+  OrderDetailsHeader_info$data,
 } from "__generated__/OrderDetailsHeader_info.graphql"
 import { OrderHistoryRowLineItem } from "./getTrackingUrl"
 
 export type OrderDetailsHeaderLineItem = NonNullable<
-  NonNullable<NonNullable<OrderDetailsHeader_info["lineItems"]>["edges"]>[0]
+  NonNullable<NonNullable<OrderDetailsHeader_info$data["lineItems"]>["edges"]>[0]
 >["node"]
 
 export type OrderState = Exclude<
@@ -49,12 +49,14 @@ const orderStatusesMap = {
   CANCELED: SHIPMENT_STATUSES.Canceled,
 }
 
+type OrderStatus = keyof typeof orderStatusesMap
+
 export function getOrderStatus(
   orderState: OrderState,
   orderLineItem?: OrderHistoryRowLineItem | OrderDetailsHeaderLineItem
 ): string {
   if (orderState === "CANCELED" || orderState === "REFUNDED" || !orderLineItem?.shipment?.status) {
-    return orderStatusesMap[orderState].toLowerCase()
+    return orderStatusesMap[orderState as OrderStatus].toLowerCase()
   }
 
   const shipment: ShipmentStatus = orderLineItem.shipment.status.toUpperCase() as ShipmentStatus

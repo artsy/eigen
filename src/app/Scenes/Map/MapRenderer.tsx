@@ -1,10 +1,9 @@
 import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import { useTheme } from "palette"
-import React from "react"
 import { View } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import { SafeAreaInsets } from "shared/hooks"
 import { GlobalMapContainer as GlobalMap } from "./GlobalMap"
 
 // Are you seeing "cannot read .fairs of null"? You might need to set your simulator location.

@@ -1,9 +1,15 @@
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
+  SavedSearchEntityArtist,
   SearchCriteria,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { extractPillFromAggregation, extractPills, extractSizeLabel } from "./pillExtractors"
+import {
+  extractArtistPills,
+  extractPillFromAggregation,
+  extractPillsFromCriteria,
+  extractSizeLabel,
+} from "./pillExtractors"
 
 describe("extractPillFromAggregation", () => {
   it("returns pills", () => {
@@ -50,23 +56,27 @@ describe("extractPillFromAggregation", () => {
 
 describe("extractSizeLabel", () => {
   it("returns correcly label when full range is specified", () => {
-    expect(extractSizeLabel("w", "5-10")).toBe("w: 5-10 in")
+    expect(extractSizeLabel({ prefix: "w", value: "5-10", unit: "in" })).toBe("w: 5-10 in")
+    expect(extractSizeLabel({ prefix: "w", value: "5-10", unit: "cm" })).toBe("w: 12.7-25.4 cm")
   })
 
   it("returns correcly label when only min value is specified", () => {
-    expect(extractSizeLabel("w", "5-*")).toBe("w: from 5 in")
+    expect(extractSizeLabel({ prefix: "w", value: "5-*", unit: "in" })).toBe("w: from 5 in")
+    expect(extractSizeLabel({ prefix: "w", value: "5-*", unit: "cm" })).toBe("w: from 12.7 cm")
   })
 
   it("returns correcly label when only max value is specified", () => {
-    expect(extractSizeLabel("w", "*-10")).toBe("w: to 10 in")
+    expect(extractSizeLabel({ prefix: "w", value: "*-10", unit: "in" })).toBe("w: to 10 in")
+    expect(extractSizeLabel({ prefix: "w", value: "*-10", unit: "cm" })).toBe("w: to 25.4 cm")
   })
 
   it("returns specified prefix", () => {
-    expect(extractSizeLabel("h", "5-10")).toBe("h: 5-10 in")
+    expect(extractSizeLabel({ prefix: "h", value: "5-10", unit: "in" })).toBe("h: 5-10 in")
+    expect(extractSizeLabel({ prefix: "h", value: "5-10", unit: "cm" })).toBe("h: 12.7-25.4 cm")
   })
 })
 
-describe("extractPills", () => {
+describe("extractPillsFromCriteria", () => {
   it("should correctly extract pills", () => {
     const attributes: SearchCriteriaAttributes = {
       materialsTerms: ["acrylic", "canvas"],
@@ -78,7 +88,7 @@ describe("extractPills", () => {
       colors: ["unknown-color"],
     }
 
-    const result = extractPills(attributes, aggregations)
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     const pills = [
       {
@@ -131,7 +141,7 @@ describe("extractPills", () => {
       offerable: true,
       atAuction: true,
     }
-    const result = extractPills(attributes, aggregations)
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     const pills = [
       {
@@ -153,9 +163,11 @@ describe("extractPills", () => {
     const attributes: SearchCriteriaAttributes = {
       sizes: ["SMALL", "LARGE"],
     }
-    const result = extractPills(attributes, aggregations)
 
-    expect(result).toEqual([
+    // with unit inches
+    const inResult = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
+
+    expect(inResult).toEqual([
       {
         label: "Small (under 16in)",
         paramName: SearchCriteria.sizes,
@@ -167,13 +179,29 @@ describe("extractPills", () => {
         value: "LARGE",
       },
     ])
+
+    // with unit centimeters
+    const cmResult = extractPillsFromCriteria({ attributes, aggregations, unit: "cm" })
+
+    expect(cmResult).toEqual([
+      {
+        label: "Small (under 40cm)",
+        paramName: SearchCriteria.sizes,
+        value: "SMALL",
+      },
+      {
+        label: "Large (over 100cm)",
+        paramName: SearchCriteria.sizes,
+        value: "LARGE",
+      },
+    ])
   })
 
   it("should correctly extract time period pills", () => {
     const attributes: SearchCriteriaAttributes = {
       majorPeriods: ["2020", "2010"],
     }
-    const result = extractPills(attributes, aggregations)
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -191,9 +219,9 @@ describe("extractPills", () => {
 
   it("should correctly extract color pills", () => {
     const attributes: SearchCriteriaAttributes = {
-      colors: ["pink", "orange", "red"],
+      colors: ["pink", "orange"],
     }
-    const result = extractPills(attributes, aggregations)
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -206,11 +234,6 @@ describe("extractPills", () => {
         paramName: SearchCriteria.colors,
         value: "orange",
       },
-      {
-        label: "Red",
-        paramName: SearchCriteria.colors,
-        value: "red",
-      },
     ])
   })
 
@@ -218,7 +241,7 @@ describe("extractPills", () => {
     const attributes: SearchCriteriaAttributes = {
       attributionClass: ["unique", "unknown edition"],
     }
-    const result = extractPills(attributes, aggregations)
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -238,7 +261,7 @@ describe("extractPills", () => {
     const attributes: SearchCriteriaAttributes = {
       priceRange: "1000-1500",
     }
-    const result = extractPills(attributes, aggregations)
+    const result = extractPillsFromCriteria({ attributes, aggregations, unit: "in" })
 
     expect(result).toEqual([
       {
@@ -249,6 +272,53 @@ describe("extractPills", () => {
     ])
   })
 })
+
+describe("artistPills", () => {
+  it("should return empty array", () => {
+    const result = extractArtistPills([])
+
+    expect(result).toEqual([])
+  })
+
+  it("should correctly extract single artist", () => {
+    const result = extractArtistPills([firstArtist])
+
+    expect(result).toEqual([
+      {
+        label: "firstArtistName",
+        value: "firstArtistId",
+        paramName: SearchCriteria.artistID,
+      },
+    ])
+  })
+
+  it("should correctly extract single artist", () => {
+    const result = extractArtistPills([firstArtist, secondArtist])
+
+    expect(result).toEqual([
+      {
+        label: "firstArtistName",
+        value: "firstArtistId",
+        paramName: SearchCriteria.artistID,
+      },
+      {
+        label: "secondArtistName",
+        value: "secondArtistId",
+        paramName: SearchCriteria.artistID,
+      },
+    ])
+  })
+})
+
+const firstArtist: SavedSearchEntityArtist = {
+  id: "firstArtistId",
+  name: "firstArtistName",
+}
+
+const secondArtist: SavedSearchEntityArtist = {
+  id: "secondArtistId",
+  name: "secondArtistName",
+}
 
 const aggregations: Aggregations = [
   {

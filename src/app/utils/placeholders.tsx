@@ -4,7 +4,7 @@ import { Flex, useColor } from "palette"
 import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { LayoutAnimation, Platform, View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
-import { useScreenDimensions } from "./useScreenDimensions"
+import { useScreenDimensions } from "shared/hooks"
 
 const PlaceholderContext = React.createContext<{ clock: Animated.Clock }>(null as any)
 
@@ -53,7 +53,7 @@ const useLayoutAnimation = () => {
   }, [])
 }
 
-export const ProvidePlaceholderContext: React.FC<{}> = ({ children }) => {
+export const ProvidePlaceholderContext: React.FC = ({ children }) => {
   useLayoutAnimation()
 
   const clock = useCurrentTime()

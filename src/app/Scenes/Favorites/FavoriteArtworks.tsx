@@ -1,23 +1,23 @@
-import React, { Component } from "react"
-import { RefreshControl } from "react-native"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-
+import { FavoriteArtworks_me$data } from "__generated__/FavoriteArtworks_me.graphql"
+import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { PAGE_SIZE } from "app/Components/constants"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ZeroState } from "app/Components/States/ZeroState"
-
-import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
-import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Button, ClassTheme } from "palette"
+import React, { Component } from "react"
+import { RefreshControl } from "react-native"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 
 interface Props {
-  me: FavoriteArtworks_me
+  me: FavoriteArtworks_me$data
   relay: RelayPaginationProp
   onDataFetching?: (loading: boolean) => void
 }
@@ -31,6 +31,14 @@ export class SavedWorks extends Component<Props, State> {
   state = {
     fetchingMoreData: false,
     refreshingFromPull: false,
+  }
+
+  componentDidMount = () => {
+    RefreshEvents.addListener(FAVORITE_ARTWORKS_REFRESH_KEY, this.handleRefresh)
+  }
+
+  componentWillUnmount = () => {
+    RefreshEvents.removeListener(FAVORITE_ARTWORKS_REFRESH_KEY, this.handleRefresh)
   }
 
   loadMore = () => {
@@ -72,35 +80,31 @@ export class SavedWorks extends Component<Props, State> {
 
     if (artworks.length === 0) {
       return (
-        <ClassTheme>
-          {({ space }) => (
-            <StickyTabPageScrollView
-              refreshControl={
-                <RefreshControl
-                  refreshing={this.state.refreshingFromPull}
-                  onRefresh={this.handleRefresh}
-                />
-              }
-              contentContainerStyle={{ paddingBottom: space(2) }}
-            >
-              <ZeroState
-                title="You haven’t saved any works yet"
-                subtitle="Tap the heart on an artwork to save for later."
-                callToAction={
-                  <Button
-                    size="large"
-                    onPress={() => {
-                      navigate("/")
-                    }}
-                    block
-                  >
-                    Browse works for you
-                  </Button>
-                }
-              />
-            </StickyTabPageScrollView>
-          )}
-        </ClassTheme>
+        <StickyTabPageScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshingFromPull}
+              onRefresh={this.handleRefresh}
+            />
+          }
+          contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
+        >
+          <ZeroState
+            title="You haven’t saved any works yet"
+            subtitle="Tap the heart on an artwork to save for later."
+            callToAction={
+              <Button
+                size="large"
+                onPress={() => {
+                  navigate("/")
+                }}
+                block
+              >
+                Browse works for you
+              </Button>
+            }
+          />
+        </StickyTabPageScrollView>
       )
     }
 
@@ -185,18 +189,20 @@ const FavoriteArtworksContainer = createPaginationContainer(
   }
 )
 
+export const FavoriteArtworksScreenQuery = graphql`
+  query FavoriteArtworksQuery {
+    me {
+      ...FavoriteArtworks_me
+    }
+  }
+`
+
 export const FavoriteArtworksQueryRenderer = () => {
   const screen = useScreenDimensions()
   return (
     <QueryRenderer<FavoriteArtworksQuery>
       environment={defaultEnvironment}
-      query={graphql`
-        query FavoriteArtworksQuery {
-          me {
-            ...FavoriteArtworks_me
-          }
-        }
-      `}
+      query={FavoriteArtworksScreenQuery}
       variables={{
         count: 10,
       }}
@@ -209,6 +215,9 @@ export const FavoriteArtworksQueryRenderer = () => {
             </StickyTabPageScrollView>
           )
         },
+        renderFallback: ({ retry }) => (
+          <LoadFailureView onRetry={retry!} justifyContent="flex-end" />
+        ),
       })}
     />
   )

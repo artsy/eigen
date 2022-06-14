@@ -7,8 +7,8 @@
 // 4. Update height of grid to encompass all items.
 
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
-import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
+import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
+import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { extractNodes } from "app/utils/extractNodes"
@@ -19,6 +19,8 @@ import {
   ActivityIndicator,
   Dimensions,
   LayoutChangeEvent,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
   Platform,
   ScrollView,
   StyleSheet,
@@ -93,6 +95,8 @@ export interface Props {
 
   itemComponentProps?: Partial<ArtworkProps>
 
+  onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void
+  scrollEventThrottle?: number
   /** Show Lot Label  */
   showLotLabel?: boolean
 
@@ -102,7 +106,9 @@ export interface Props {
   /** Allows to use MyCollectionArtworkGridItem */
   isMyCollection?: boolean
 
-  /** Whether to use `ParentAwareScrollView` or `ScrollView` (defaults to true) */
+  /** Whether to use `ParentAwareScrollView` or `ScrollView`
+   * (defaults to true on android, undefined on iOS )
+   */
   useParentAwareScrollView?: boolean
 
   /** Wether to show a loading spinner (defaults to false) */
@@ -116,15 +122,16 @@ export interface Props {
 
 interface PrivateProps {
   connection:
-    | InfiniteScrollArtworksGrid_connection
-    | InfiniteScrollArtworksGrid_myCollectionConnection
+    | InfiniteScrollArtworksGrid_connection$data
+    | InfiniteScrollArtworksGrid_myCollectionConnection$data
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
+  isLoading?: RelayPaginationProp["isLoading"]
 }
 
 interface MapperProps extends Omit<PrivateProps, "connection"> {
-  connection?: InfiniteScrollArtworksGrid_connection
-  myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection
+  connection?: InfiniteScrollArtworksGrid_connection$data
+  myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection$data
 }
 
 const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMyCollection">> = ({
@@ -135,9 +142,9 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
   ...otherProps
 }) => {
   const theConnectionProp = !!connection ? connection : myCollectionConnection
-  type TheConnectionType<T> = T extends InfiniteScrollArtworksGrid_connection
-    ? InfiniteScrollArtworksGrid_connection
-    : InfiniteScrollArtworksGrid_myCollectionConnection
+  type TheConnectionType<T> = T extends InfiniteScrollArtworksGrid_connection$data
+    ? InfiniteScrollArtworksGrid_connection$data
+    : InfiniteScrollArtworksGrid_myCollectionConnection$data
   const isMyCollection = !!myCollectionConnection && !connection
 
   if (!theConnectionProp) {
@@ -172,7 +179,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     pageSize: PAGE_SIZE,
     hidePartner: false,
     isMyCollection: false,
-    useParentAwareScrollView: true,
+    useParentAwareScrollView: Platform.OS === "android",
     showLoadingSpinner: false,
     updateRecentSearchesOnTap: false,
   }
@@ -183,7 +190,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   }
 
   fetchNextPage = () => {
-    if (!this.props.hasMore() || this.state.isLoading) {
+    if (!this.props.hasMore() || this.state.isLoading || this.props.isLoading?.()) {
       return
     }
 
@@ -374,20 +381,29 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, hasMore, stickyHeaderIndices, useParentAwareScrollView } = this.props
+    const {
+      shouldAddPadding,
+      hasMore,
+      stickyHeaderIndices,
+      useParentAwareScrollView,
+      onScroll,
+      scrollEventThrottle,
+    } = this.props
+
     const boxPadding = shouldAddPadding ? 2 : 0
 
-    const ScrollViewWrapper = useParentAwareScrollView ? ParentAwareScrollView : ScrollView
+    const ScrollViewWrapper = !!useParentAwareScrollView ? ParentAwareScrollView : ScrollView
 
     return (
       <>
         <ScrollViewWrapper
           onScroll={(ev) => {
+            onScroll?.(ev)
             if (this.props.autoFetch) {
               this.handleFetchNextPageOnScroll(ev)
             }
           }}
-          scrollEventThrottle={50}
+          scrollEventThrottle={scrollEventThrottle ?? 50}
           onLayout={this.onLayout}
           scrollsToTop={false}
           accessibilityLabel="Artworks ScrollView"

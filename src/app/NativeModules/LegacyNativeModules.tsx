@@ -1,4 +1,5 @@
 import type { ViewDescriptor } from "app/navigation/navigate"
+import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import type { NativeState } from "app/store/NativeModel"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { NativeModules as AllNativeModules, Platform } from "react-native"
@@ -57,22 +58,7 @@ interface LegacyNativeModules {
     UIApplicationOpenSettingsURLString: string
     LocalTimeZone: string
   }
-  ARScreenPresenterModule: {
-    pushView(currentTabStackID: string, descriptor: ViewDescriptor): void
-    presentModal(descriptor: ViewDescriptor): void
-    dismissModal(): void
-    goBack(currentTabStackID: string): void
-    popStack(stackID: string): void
-    popToRootOrScrollToTop(stackID: string): void
-    popToRootAndScrollToTop(stackID: string): Promise<void>
-    presentMediaPreviewController(
-      reactTag: number,
-      route: string,
-      mimeType: string,
-      cacheKey: string
-    ): void
-    presentEmailComposerWithBody(body: string, subject: string, toAddress: string): void
-    presentEmailComposerWithSubject(subject: string, toAddress: string): void
+  ARTNativeScreenPresenterModule: {
     presentAugmentedRealityVIR(
       imgUrl: string,
       widthInches: number,
@@ -80,6 +66,24 @@ interface LegacyNativeModules {
       artworkSlug: string,
       artworkId: string
     ): void
+    presentEmailComposerWithBody(body: string, subject: string, toAddress: string): void
+    presentEmailComposerWithSubject(subject: string, toAddress: string): void
+    presentMediaPreviewController(
+      reactTag: number,
+      route: string,
+      mimeType: string,
+      cacheKey: string
+    ): void
+  }
+  ARScreenPresenterModule: {
+    switchTab(tab: BottomTabType): void
+    pushView(currentTabStackID: string, descriptor: ViewDescriptor): void
+    presentModal(descriptor: ViewDescriptor): void
+    dismissModal(): void
+    goBack(currentTabStackID: string): void
+    popStack(stackID: string): void
+    popToRootOrScrollToTop(stackID: string): void
+    popToRootAndScrollToTop(stackID: string): Promise<void>
     updateShouldHideBackButton(shouldHideBackButton: boolean, currentTabStackID: string): void
   }
   ARTakeCameraPhotoModule: {
@@ -95,56 +99,88 @@ interface LegacyNativeModules {
     requestAppStoreRating(): void
   }
 }
-const LegacyNativeModulesIOS: LegacyNativeModules = AllNativeModules as any
 
-export const LegacyNativeModules: LegacyNativeModules =
-  Platform.OS === "ios"
-    ? LegacyNativeModulesIOS
-    : {
-        ARTakeCameraPhotoModule: {
-          errorCodes: {
-            cameraNotAvailable: "cameraNotAvailable",
-            imageMediaNotAvailable: "imageMediaNotAvailable",
-            cameraAccessDenied: "cameraAccessDenied",
-            saveFailed: "saveFailed",
-          },
-          triggerCameraModal: noop("triggerCameraModal"),
-        },
+const LegacyNativeModulesAndroid = {
+  ARTNativeScreenPresenterModule: {
+    presentAugmentedRealityVIR: () => {
+      noop("view in room not yet supported on android")
+    },
+    presentEmailComposerWithBody: () => {
+      noop("presentEmailComposer not yet supported on android")
+    },
+    presentEmailComposerWithSubject: () => {
+      noop("presentEmailComposer not yet supported on android")
+    },
+    presentMediaPreviewController: () => {
+      noop("presentMediaPreviewController not yet supported on android")
+    },
+  },
+  ARTakeCameraPhotoModule: {
+    errorCodes: {
+      cameraNotAvailable: "cameraNotAvailable",
+      imageMediaNotAvailable: "imageMediaNotAvailable",
+      cameraAccessDenied: "cameraAccessDenied",
+      saveFailed: "saveFailed",
+    },
+    triggerCameraModal: noop("triggerCameraModal"),
+  },
 
-        ARCocoaConstantsModule: {
-          UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
-          AREnabled: false,
-          CurrentLocale: getLocales()[0].languageTag,
-          LocalTimeZone: getTimeZone(),
-        },
+  ARCocoaConstantsModule: {
+    UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+    AREnabled: false,
+    CurrentLocale: getLocales()[0].languageTag,
+    LocalTimeZone: getTimeZone(),
+  },
 
-        ArtsyNativeModule: {
-          updateAuthState: noop("updateAuthState"),
-          clearUserData: () => Promise.resolve(),
-        },
+  ArtsyNativeModule: {
+    updateAuthState: noop("updateAuthState"),
+    clearUserData: () => Promise.resolve(),
+  },
 
-        ARNotificationsManager: {
-          nativeState: null as any,
-          postNotificationName: noop("postNotificationName"),
-          didFinishBootstrapping: () => null,
-          reactStateUpdated: () => null,
-        },
+  ARNotificationsManager: {
+    nativeState: null as any,
+    postNotificationName: noop("postNotificationName"),
+    didFinishBootstrapping: () => null,
+    reactStateUpdated: () => null,
+  },
 
-        ARTemporaryAPIModule: {
-          requestPrepromptNotificationPermissions: noop("requestPrepromptNotificationPermissions"),
-          requestDirectNotificationPermissions: noop("requestDirectNotificationPermissions"),
-          fetchNotificationPermissions: noop("fetchNotificationPermissions"),
-          markNotificationsRead: noop("markNotificationsRead"),
-          setApplicationIconBadgeNumber: () => {
-            console.log("TODO: make app icon badge work on android")
-          },
-          getUserEmail: () => "",
-        },
-        ARPHPhotoPickerModule: {
-          requestPhotos: noop("requestPhotos"),
-        },
-        ARScreenPresenterModule,
-        AREventsModule: {
-          requestAppStoreRating: noop("requestAppStoreRating"),
-        },
-      }
+  ARTemporaryAPIModule: {
+    requestPrepromptNotificationPermissions: noop("requestPrepromptNotificationPermissions"),
+    requestDirectNotificationPermissions: noop("requestDirectNotificationPermissions"),
+    fetchNotificationPermissions: noop("fetchNotificationPermissions"),
+    markNotificationsRead: noop("markNotificationsRead"),
+    setApplicationIconBadgeNumber: () => {
+      console.log("TODO: make app icon badge work on android")
+    },
+    getUserEmail: () => "",
+  },
+  ARPHPhotoPickerModule: {
+    requestPhotos: noop("requestPhotos"),
+  },
+  ARScreenPresenterModule,
+  AREventsModule: {
+    requestAppStoreRating: noop("requestAppStoreRating"),
+  },
+}
+
+const LegacyNativeModulesIOS: LegacyNativeModules = {
+  ARScreenPresenterModule,
+  ARTNativeScreenPresenterModule: AllNativeModules.ARTNativeScreenPresenterModule,
+  ARTakeCameraPhotoModule: AllNativeModules.ARTakeCameraPhotoModule,
+  ARCocoaConstantsModule: AllNativeModules.ARCocoaConstantsModule,
+  ArtsyNativeModule: AllNativeModules.ArtsyNativeModule,
+  ARNotificationsManager: AllNativeModules.ARNotificationsManager,
+  ARTemporaryAPIModule: AllNativeModules.ARTemporaryAPIModule,
+  ARPHPhotoPickerModule: AllNativeModules.ARPHPhotoPickerModule,
+  AREventsModule: AllNativeModules.AREventsModule,
+}
+
+const nativeModules = () => {
+  if (Platform.OS === "android") {
+    return LegacyNativeModulesAndroid
+  } else {
+    return LegacyNativeModulesIOS
+  }
+}
+
+export const LegacyNativeModules: LegacyNativeModules = nativeModules()

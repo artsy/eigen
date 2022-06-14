@@ -1,5 +1,5 @@
-import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
-import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
+import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
+import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
 import { Modal } from "app/Components/Modal"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
@@ -9,7 +9,7 @@ import { Button, Theme } from "palette"
 import React from "react"
 import { RequestConditionReport } from "./RequestConditionReport"
 
-const artwork: RequestConditionReport_artwork = {
+const artwork: RequestConditionReport_artwork$data = {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $refType": null,
   internalID: "some-internal-id",
@@ -18,7 +18,7 @@ const artwork: RequestConditionReport_artwork = {
     internalID: "some-sale-internal-id",
   },
 }
-const me: RequestConditionReport_me = {
+const me: RequestConditionReport_me$data = {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $refType": null,
   email: "someemail@testerino.net",

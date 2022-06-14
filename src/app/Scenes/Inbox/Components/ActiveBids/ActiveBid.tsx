@@ -7,7 +7,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { BodyText, MetadataText } from "../Typography"
 
-import { ActiveBid_bid } from "__generated__/ActiveBid_bid.graphql"
+import { ActiveBid_bid$data } from "__generated__/ActiveBid_bid.graphql"
 
 const isPad = Dimensions.get("window").width > 700
 
@@ -62,7 +62,7 @@ const StatusLabel = styled(MetadataText)`
 type BidStatus = "winning" | "reserve" | "losing" | "live_auction"
 
 interface Props {
-  bid: ActiveBid_bid
+  bid: ActiveBid_bid$data
 }
 
 interface State {

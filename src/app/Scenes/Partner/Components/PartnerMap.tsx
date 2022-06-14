@@ -1,7 +1,7 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
-import { PartnerMap_location } from "__generated__/PartnerMap_location.graphql"
+import { PartnerMap_location$data } from "__generated__/PartnerMap_location.graphql"
 import { cityAndPostalCode, tappedOnMap } from "app/Components/LocationMap/LocationMap"
 import { Pin } from "app/Icons/Pin"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
@@ -15,7 +15,7 @@ import styled from "styled-components/native"
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
 const PartnerMap: React.FC<{
-  location: PartnerMap_location
+  location: PartnerMap_location$data
 }> = ({ location }) => {
   const { address, address2, city, postalCode, internalID } = location
   let { lat, lng } = location.coordinates ?? { lat: null, lng: null }

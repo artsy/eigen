@@ -8,6 +8,8 @@ import Keychain from "react-native-keychain"
 import { AuthError } from "./AuthError"
 import { __globalStoreTestUtils__, GlobalStore } from "./GlobalStore"
 
+jest.unmock("app/NativeModules/LegacyNativeModules")
+
 const mockFetch = jest.fn()
 ;(global as any).fetch = mockFetch
 

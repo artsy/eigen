@@ -1,6 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
-import { RecommendedArtistsRail_me } from "__generated__/RecommendedArtistsRail_me.graphql"
+import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
+import { RecommendedArtistsRail_me$data } from "__generated__/RecommendedArtistsRail_me.graphql"
 import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedArtistsRailFollowMutation.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -28,7 +28,7 @@ interface RecommendedArtistsRailProps extends ViewProps {
   title: string
   subtitle?: string
   relay: RelayPaginationProp
-  me: RecommendedArtistsRail_me
+  me: RecommendedArtistsRail_me$data
   mb?: number
 }
 
@@ -72,7 +72,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
     return null
   }
 
-  const handleFollowChange = (artist: ArtistCard_artist) => {
+  const handleFollowChange = (artist: ArtistCard_artist$data) => {
     trackEvent(
       tracks.tapFollowOrUnfollowArtist(!!artist.isFollowed, artist.internalID, artist.slug)
     )
@@ -85,7 +85,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
       <Flex pl="2" pr="2">
         <SectionTitle title={title} subtitle={subtitle} />
       </Flex>
-      <CardRailFlatList<ArtistCard_artist>
+      <CardRailFlatList<ArtistCard_artist$data>
         listRef={listRef}
         prefetchUrlExtractor={(item) => item?.href!}
         prefetchVariablesExtractor={defaultArtistVariables}
@@ -179,7 +179,7 @@ export const tracks = {
   }),
 }
 
-const followOrUnfollowArtist = (followArtist: ArtistCard_artist) => {
+const followOrUnfollowArtist = (followArtist: ArtistCard_artist$data) => {
   return new Promise<void>((resolve, reject) => {
     commitMutation<RecommendedArtistsRailFollowMutation>(defaultEnvironment, {
       mutation: graphql`

@@ -1,8 +1,6 @@
+import { ActionType, ContextModule, OwnerType, TappedSkip } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
-import {
-  MyCollectionArtworkFormArtworkQuery,
-  MyCollectionArtworkFormArtworkQueryResponse,
-} from "__generated__/MyCollectionArtworkFormArtworkQuery.graphql"
+import { MyCollectionArtworkFormArtworkQuery } from "__generated__/MyCollectionArtworkFormArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -11,6 +9,7 @@ import { omit, pickBy } from "lodash"
 import { Spacer } from "palette"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
+import { useTracking } from "react-tracking"
 import { fetchQuery, graphql } from "relay-runtime"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArtistSearchResult } from "../Components/ArtistSearchResult"
@@ -24,6 +23,7 @@ export const MyCollectionArtworkFormArtwork: React.FC<
   const [loading, setLoading] = useState(false)
 
   const { formik } = useArtworkForm()
+  const { trackEvent } = useTracking()
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
@@ -76,6 +76,14 @@ export const MyCollectionArtworkFormArtwork: React.FC<
   }
 
   const onSkip = () => {
+    trackEvent(
+      tracks.tappedOnSkip(
+        formik.values.artistSearchResult?.internalID!,
+        formik.values.artistSearchResult?.slug!,
+        "Skip choosing artwork"
+      )
+    )
+
     requestAnimationFrame(() => {
       GlobalStore.actions.myCollection.artwork.updateFormValues({
         metric: preferredMetric,
@@ -92,6 +100,7 @@ export const MyCollectionArtworkFormArtwork: React.FC<
       <FancyModalHeader
         onLeftButtonPress={route.params.onHeaderBackButtonPress}
         rightButtonText="Skip"
+        rightButtonTestId="my-collection-artwork-form-artwork-skip-button"
         onRightButtonPress={onSkip}
         hideBottomDivider
       >
@@ -113,7 +122,7 @@ export const MyCollectionArtworkFormArtwork: React.FC<
 
 const fetchArtwork = async (
   artworkID: string
-): Promise<MyCollectionArtworkFormArtworkQueryResponse["artwork"] | undefined> => {
+): Promise<MyCollectionArtworkFormArtworkQuery["response"]["artwork"] | undefined> => {
   const result = await fetchQuery<MyCollectionArtworkFormArtworkQuery>(
     defaultEnvironment,
     graphql`
@@ -143,4 +152,18 @@ const fetchArtwork = async (
   ).toPromise()
 
   return result?.artwork
+}
+
+const tracks = {
+  tappedOnSkip: (internalID: string, slug: string, subject: string) => {
+    const tappedOnSkip: TappedSkip = {
+      action: ActionType.tappedSkip,
+      context_screen_owner_type: OwnerType.myCollectionAddArtworkArtist,
+      context_module: ContextModule.myCollectionAddArtworkAddArtist,
+      context_screen_owner_id: internalID,
+      context_screen_owner_slug: slug,
+      subject,
+    }
+    return tappedOnSkip
+  },
 }

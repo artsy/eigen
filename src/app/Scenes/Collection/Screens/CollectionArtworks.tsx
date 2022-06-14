@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
+import { CollectionArtworks_collection$data } from "__generated__/CollectionArtworks_collection.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -13,7 +13,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface CollectionArtworksProps {
-  collection: CollectionArtworks_collection
+  collection: CollectionArtworks_collection$data
   relay: RelayPaginationProp
   scrollToTop: () => void
 }

@@ -1,12 +1,11 @@
 import { ContextModule, CustomService, OwnerType, share } from "@artsy/cohesion"
 import Clipboard from "@react-native-community/clipboard"
-import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
+import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
 import { useToast } from "app/Components/Toast/toastHook"
 import { unsafe__getEnvironment, useDevToggle } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import {
   Box,
   Flex,
@@ -24,13 +23,14 @@ import Share from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from "./ArtworkActions"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
 import { InstagramStoryViewShot } from "./InstagramStoryViewShot"
 
 interface ArtworkHeaderProps {
-  artwork: ArtworkHeader_artwork
+  artwork: ArtworkHeader_artwork$data
 }
 
 export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
@@ -133,7 +133,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
             }}
           />
         </Flex>
-        <Spacer mb={2} />
+        <Spacer mb={4} />
         <Box px={2}>
           <ArtworkTombstone artwork={artwork} />
         </Box>

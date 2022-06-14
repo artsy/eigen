@@ -1,4 +1,4 @@
-import { OldMyCollectionArtwork_sharedProps } from "__generated__/OldMyCollectionArtwork_sharedProps.graphql"
+import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
@@ -19,6 +19,7 @@ export interface Image {
 export interface ArtworkFormValues {
   artist: string
   artistIds: string[]
+  artistDisplayName?: string
   artistSearchResult: AutosuggestResult | null
   category: string // this refers to "materials" in UI
   pricePaidDollars: string
@@ -42,6 +43,7 @@ export interface ArtworkFormValues {
 export const initialFormValues: ArtworkFormValues = {
   artist: "",
   artistIds: [],
+  artistDisplayName: undefined,
   artistSearchResult: null,
   category: "",
   pricePaidDollars: "",
@@ -83,7 +85,7 @@ export interface MyCollectionArtworkModel {
 
   startEditingArtwork: Thunk<
     MyCollectionArtworkModel,
-    Partial<OldMyCollectionArtwork_sharedProps> & {
+    Partial<MyCollectionArtwork_sharedProps$data> & {
       internalID: string
       id: string
       artist: { internalID: string }

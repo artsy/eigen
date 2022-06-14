@@ -1,6 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { themeGet } from "@styled-system/theme-get"
-import { SavedAddresses_me } from "__generated__/SavedAddresses_me.graphql"
+import { SavedAddresses_me$data } from "__generated__/SavedAddresses_me.graphql"
 import { SavedAddressesQuery } from "__generated__/SavedAddressesQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -36,7 +36,7 @@ const NUM_ADDRESSES_TO_FETCH = 10
 // tslint:disable-next-line:no-empty
 export const util = { onRefresh: () => {} }
 
-const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({
+const SavedAddresses: React.FC<{ me: SavedAddresses_me$data; relay: RelayRefetchProp }> = ({
   me,
   relay,
 }) => {

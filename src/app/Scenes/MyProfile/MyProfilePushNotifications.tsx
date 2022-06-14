@@ -1,3 +1,5 @@
+import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
+import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -21,8 +23,6 @@ import {
   View,
 } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
-import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
 const INSTRUCTIONS = Platform.select({
@@ -41,6 +41,7 @@ export type UserPushNotificationSettings =
   | "receivePromotionNotification"
   | "receivePurchaseNotification"
   | "receiveSaleOpeningClosingNotification"
+  | "receiveOrderNotification"
 
 export const OpenSettingsBanner = () => (
   <>
@@ -108,14 +109,14 @@ const NotificationPermissionsBox = ({
 )
 
 export const MyProfilePushNotifications: React.FC<{
-  me: MyProfilePushNotifications_me
+  me: MyProfilePushNotifications_me$data
   relay: RelayRefetchProp
   isLoading: boolean
 }> = ({ me, relay, isLoading = false }) => {
   const [notificationAuthorizationStatus, setNotificationAuthorizationStatus] =
     useState<PushAuthorizationStatus>(PushAuthorizationStatus.NotDetermined)
   const [userNotificationSettings, setUserNotificationSettings] =
-    useState<MyProfilePushNotifications_me>(me)
+    useState<MyProfilePushNotifications_me$data>(me)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
   useEffect(() => {
@@ -160,7 +161,7 @@ export const MyProfilePushNotifications: React.FC<{
   )
 
   const updateNotificationPermissions = useCallback(
-    debounce(async (updatedPermissions: MyProfilePushNotifications_me) => {
+    debounce(async (updatedPermissions: MyProfilePushNotifications_me$data) => {
       await updateMyUserProfile(updatedPermissions)
     }, 500),
     []
@@ -194,6 +195,15 @@ export const MyProfilePushNotifications: React.FC<{
             disabled={isLoading}
             onChange={(value) => {
               handleUpdateUserNotificationSettings("receiveOutbidNotification", value)
+            }}
+          />
+          <SwitchMenu
+            title="Order Updates"
+            description="An order you've placed has an update"
+            value={!!userNotificationSettings.receiveOrderNotification}
+            disabled={isLoading}
+            onChange={(value) => {
+              handleUpdateUserNotificationSettings("receiveOrderNotification", value)
             }}
           />
         </NotificationPermissionsBox>
@@ -281,6 +291,7 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
         receivePromotionNotification
         receivePurchaseNotification
         receiveSaleOpeningClosingNotification
+        receiveOrderNotification
       }
     `,
   },

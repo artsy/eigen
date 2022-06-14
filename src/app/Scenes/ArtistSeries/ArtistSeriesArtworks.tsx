@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { ArtistSeriesArtworks_artistSeries } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
+import { ArtistSeriesArtworks_artistSeries$data } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
@@ -12,7 +12,7 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesArtworksProps {
-  artistSeries: ArtistSeriesArtworks_artistSeries
+  artistSeries: ArtistSeriesArtworks_artistSeries$data
   relay: RelayPaginationProp
 }
 
@@ -98,7 +98,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
         slug
         internalID
         artistSeriesArtworks: filterArtworksConnection(
-          first: 20
+          first: $count
           after: $cursor
           aggregations: [
             COLOR
@@ -109,6 +109,7 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
             MEDIUM
             PARTNER
             PRICE_RANGE
+            SIMPLE_PRICE_HISTOGRAM
           ]
           input: $input
         ) @connection(key: "ArtistSeries_artistSeriesArtworks") {

@@ -21,7 +21,17 @@ jest.mock("react-native-device-info", () => ({
   hasNotch: jest.fn(),
 }))
 
+const mockCallWebViewEventCallback = jest.fn()
+jest.mock("app/utils/useWebViewEvent", () => ({
+  useWebViewCallback: () => ({
+    callWebViewEventCallback: mockCallWebViewEventCallback,
+  }),
+}))
+
 describe(ArtsyReactWebViewPage, () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
   const render = (props: Partial<React.ComponentProps<typeof ArtsyReactWebViewPage>> = {}) =>
     renderWithWrappers(<ArtsyReactWebViewPage url="https://staging.artsy.net/hello" {...props} />)
   const webViewProps = (tree: ReturnType<typeof render>) =>
@@ -96,6 +106,20 @@ describe(ArtsyReactWebViewPage, () => {
     expect(tree.root.findByType(WebView).props.userAgent).toBe(
       `Artsy-Mobile ios Artsy-Mobile/${appJson().version} Eigen/build-number/${appJson().version}`
     )
+  })
+  it("receives messages from the browser", () => {
+    const tree = render()
+    act(() =>
+      tree.root
+        .findByType(WebView)
+        .props.onMessage({ nativeEvent: { data: '{"event":"event data"}' } })
+    )
+    expect(mockCallWebViewEventCallback).toHaveBeenCalledWith({ event: "event data" })
+  })
+  it("doesn't call the event hook given onMessage data in the wrong format", () => {
+    const tree = render()
+    act(() => tree.root.findByType(WebView).props.onMessage({ nativeEvent: { data: "some text" } }))
+    expect(mockCallWebViewEventCallback).not.toHaveBeenCalled()
   })
 
   describe("mimicBrowserBackButton", () => {

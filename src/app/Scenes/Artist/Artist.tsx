@@ -1,11 +1,5 @@
-import {
-  ArtistAboveTheFoldQuery,
-  ArtistAboveTheFoldQueryVariables,
-} from "__generated__/ArtistAboveTheFoldQuery.graphql"
-import {
-  ArtistBelowTheFoldQuery,
-  ArtistBelowTheFoldQueryVariables,
-} from "__generated__/ArtistBelowTheFoldQuery.graphql"
+import { ArtistAboveTheFoldQuery } from "__generated__/ArtistAboveTheFoldQuery.graphql"
+import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
@@ -17,12 +11,11 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
-import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Flex, Message } from "palette"
+import { Flex } from "palette"
 import React, { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
@@ -79,12 +72,10 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     })
   }
 
-  if (!!artistAboveTheFold.statuses?.artworks) {
-    tabs.push({
-      title: "Artworks",
-      content: <ArtistArtworks artist={artistAboveTheFold} searchCriteria={searchCriteria} />,
-    })
-  }
+  tabs.push({
+    title: "Artworks",
+    content: <ArtistArtworks artist={artistAboveTheFold} searchCriteria={searchCriteria} />,
+  })
 
   if (!!artistAboveTheFold?.statuses?.auctionLots) {
     tabs.push({
@@ -95,20 +86,6 @@ export const Artist: React.FC<ArtistProps> = (props) => {
         )
       ) : (
         <LoadingPage />
-      ),
-    })
-  }
-
-  if (tabs.length === 0) {
-    tabs.push({
-      title: "Artworks",
-      content: (
-        <StickyTabPageScrollView>
-          <Message>
-            There aren’t any works available by the artist at this time. Follow to receive
-            notifications when new works are added.
-          </Message>
-        </StickyTabPageScrollView>
       ),
     })
   }
@@ -141,13 +118,12 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   )
 }
 
-interface ArtistQueryRendererProps
-  extends ArtistAboveTheFoldQueryVariables,
-    ArtistBelowTheFoldQueryVariables {
+interface ArtistQueryRendererProps {
   environment?: RelayModernEnvironment
   initialTab?: string
   searchCriteriaID?: string
   search_criteria_id?: string
+  artistID: string
 }
 
 export const ArtistScreenQuery = graphql`
@@ -164,7 +140,6 @@ export const ArtistScreenQuery = graphql`
       ...ArtistArtworks_artist @arguments(input: $input)
       ...ArtistHeaderFloatingButtons_artist
       statuses {
-        artworks
         auctionLots
         articles
       }

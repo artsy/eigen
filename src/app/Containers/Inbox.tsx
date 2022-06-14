@@ -1,7 +1,6 @@
 import { ActionType } from "@artsy/cohesion"
-import { Inbox_me } from "__generated__/Inbox_me.graphql"
+import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
-import { CssTransition } from "app/Components/Bidding/Components/Animation/CssTransition"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
@@ -10,7 +9,7 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { track } from "app/utils/track"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import { Flex, Separator, Spacer, Text } from "palette"
+import { CssTransition, Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { EmitterSubscription, View, ViewProps } from "react-native"
 // @ts-expect-error @types file generates duplicate declaration problems
@@ -22,9 +21,9 @@ interface TabWrapperProps extends ViewProps {
   tabLabel: string
 }
 
-const TabWrapper: React.FC<TabWrapperProps> = (props) => <View {...props} />
+const TabWrapper = (props: TabWrapperProps) => <View {...props} />
 
-const InboxTabs: React.FC<TabBarProps> = (props) => (
+const InboxTabs = (props: TabBarProps) => (
   <>
     <Flex flexDirection="row" px={1.5} mb={2}>
       {props.tabs?.map((name: JSX.Element, page: number) => {
@@ -41,8 +40,8 @@ const InboxTabs: React.FC<TabBarProps> = (props) => (
               color="black100"
               variant="lg"
               onPress={() => {
-                if (!!props.goToPage) {
-                  props.goToPage(page)
+                if (!__TEST__) {
+                  props.goToPage?.(page)
                 }
               }}
             >
@@ -67,7 +66,7 @@ interface State {
 }
 
 interface Props {
-  me: Inbox_me
+  me: Inbox_me$data
   relay: RelayRefetchProp
   isVisible: boolean
 }
@@ -100,7 +99,7 @@ export class Inbox extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.listener?.remove()
+    this.listener?.remove?.()
   }
 
   @track((_props, _state, args) => {

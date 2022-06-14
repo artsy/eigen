@@ -1,9 +1,8 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
-import { Sale_me } from "__generated__/Sale_me.graphql"
-import { Sale_sale } from "__generated__/Sale_sale.graphql"
+import { Sale_me$data } from "__generated__/Sale_me.graphql"
+import { Sale_sale$data } from "__generated__/Sale_sale.graphql"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
-import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
@@ -19,6 +18,7 @@ import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import _, { times } from "lodash"
 import { DateTime } from "luxon"
 import { Box, Flex, Join, Spacer } from "palette"
@@ -29,7 +29,8 @@ import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { SaleBelowTheFoldQueryResponse } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
+import { SaleBelowTheFoldQuery } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
+import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
@@ -40,9 +41,9 @@ import { saleStatus } from "./helpers"
 
 interface Props {
   relay: RelayRefetchProp
-  me: Sale_me
-  sale: Sale_sale
-  below: SaleBelowTheFoldQueryResponse
+  me: Sale_me$data
+  sale: Sale_sale$data
+  below: SaleBelowTheFoldQuery["response"]
 }
 
 interface SaleSection {
@@ -52,6 +53,7 @@ interface SaleSection {
 
 const SALE_HEADER = "header"
 const SALE_REGISTER_TO_BID = "registerToBid"
+const SALE_CASCADING_END_TIMES_BANNER = "cascadingEndTimesBanner"
 const SALE_ACTIVE_BIDS = "saleActiveBids"
 const SALE_ARTWORKS_RAIL = "saleArtworksRail"
 const BUY_NOW_ARTWORKS_RAIL = "buyNowArtworksRail"
@@ -70,6 +72,9 @@ interface ViewToken {
   section?: any
 }
 
+// tslint:disable-next-line:no-empty
+const NOOP = () => {}
+
 export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const tracking = useTracking()
 
@@ -81,12 +86,20 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const prevIsLive = usePrevious(isLive)
 
   const scrollAnim = useRef(new Animated.Value(0)).current
+  const artworksRefetchRef = useRef(NOOP)
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
-    relay.refetch(() => {
-      setIsRefreshing(false)
-    })
+
+    artworksRefetchRef.current()
+    relay.refetch(
+      {},
+      null,
+      () => {
+        setIsRefreshing(false)
+      },
+      { force: true }
+    )
   }, [])
 
   // poll every .5 seconds to check if sale has gone live
@@ -168,6 +181,16 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
         </Flex>
       ),
     },
+    sale.cascadingEndTimeIntervalMinutes &&
+      !sale.isClosed && {
+        key: SALE_CASCADING_END_TIMES_BANNER,
+        content: (
+          <CascadingEndTimesBanner
+            cascadingEndTimeInterval={sale.cascadingEndTimeIntervalMinutes}
+            extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
+          />
+        ),
+      },
     {
       key: SALE_ACTIVE_BIDS,
       content: <SaleActiveBidsContainer me={me} saleID={sale.internalID} />,
@@ -189,6 +212,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
           saleID={sale.internalID}
           saleSlug={sale.slug}
           scrollToTop={scrollToTop}
+          artworksRefetchRef={artworksRefetchRef}
         />
       ) : (
         // Since most likely this part of the screen will be already loaded when the user
@@ -200,45 +224,55 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     },
   ])
 
+  const websocketEnabled = !!sale.extendedBiddingIntervalMinutes
+
   return (
     <ArtworkFiltersStoreProvider>
-      <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
-        <Animated.FlatList
-          ref={flatListRef}
-          data={saleSectionsData}
-          viewabilityConfig={viewConfigRef.current}
-          onViewableItemsChanged={viewableItemsChangedRef.current}
-          contentContainerStyle={{ paddingBottom: 40 }}
-          renderItem={({ item }: { item: SaleSection }) => item.content}
-          keyExtractor={(item: SaleSection) => item.key}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: { y: scrollAnim },
+      <AuctionWebsocketContextProvider
+        channelInfo={{
+          channel: "SalesChannel",
+          sale_id: sale.internalID,
+        }}
+        enabled={websocketEnabled}
+      >
+        <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
+          <Animated.FlatList
+            ref={flatListRef}
+            data={saleSectionsData}
+            viewabilityConfig={viewConfigRef.current}
+            onViewableItemsChanged={viewableItemsChangedRef.current}
+            contentContainerStyle={{ paddingBottom: 40 }}
+            renderItem={({ item }: { item: SaleSection }) => item.content}
+            keyExtractor={(item: SaleSection) => item.key}
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: { y: scrollAnim },
+                  },
                 },
-              },
-            ],
-            {
-              useNativeDriver: true,
-            }
-          )}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-          scrollEventThrottle={16}
-        />
-        <ArtworkFilterNavigator
-          visible={isFilterArtworksModalVisible}
-          id={sale.internalID}
-          slug={sale.slug}
-          mode={FilterModalMode.SaleArtworks}
-          exitModal={closeFilterArtworksModal}
-          closeModal={closeFilterArtworksModal}
-        />
-        <AnimatedArtworkFilterButton
-          isVisible={isArtworksGridVisible}
-          onPress={openFilterArtworksModal}
-        />
-      </ProvideScreenTracking>
+              ],
+              {
+                useNativeDriver: true,
+              }
+            )}
+            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+            scrollEventThrottle={16}
+          />
+          <ArtworkFilterNavigator
+            visible={isFilterArtworksModalVisible}
+            id={sale.internalID}
+            slug={sale.slug}
+            mode={FilterModalMode.SaleArtworks}
+            exitModal={closeFilterArtworksModal}
+            closeModal={closeFilterArtworksModal}
+          />
+          <AnimatedArtworkFilterButton
+            isVisible={isArtworksGridVisible}
+            onPress={openFilterArtworksModal}
+          />
+        </ProvideScreenTracking>
+      </AuctionWebsocketContextProvider>
     </ArtworkFiltersStoreProvider>
   )
 }
@@ -331,6 +365,9 @@ export const SaleContainer = createRefetchContainer(
         startAt
         registrationEndsAt
         slug
+        cascadingEndTimeIntervalMinutes
+        extendedBiddingIntervalMinutes
+        isClosed
       }
     `,
   },
@@ -369,7 +406,7 @@ export const SaleQueryRenderer: React.FC<{
 
   return (
     <RetryErrorBoundaryLegacy
-      render={({ isRetry }) => {
+      render={() => {
         return (
           <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
             environment={environment || defaultEnvironment}
@@ -412,9 +449,9 @@ export const SaleQueryRenderer: React.FC<{
               )
             }}
             cacheConfig={{
-              // Bypass Relay cache on retries.
-              ...(isRetry && { force: true }),
+              force: true,
             }}
+            fetchPolicy="store-and-network"
           />
         )
       }}

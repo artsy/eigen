@@ -5,6 +5,7 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import React, { Suspense } from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleQueryRenderer } from "./Sale"
 
@@ -32,7 +33,7 @@ describe("Sale", () => {
     jest.clearAllMocks()
   })
 
-  it("switches to live auction view when sale goes live", () => {
+  it("switches to live auction view when sale goes live", async () => {
     renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -52,16 +53,15 @@ describe("Sale", () => {
     )
 
     expect(navigate).toHaveBeenCalledTimes(0)
-    waitFor(() => {
-      expect(navigate).toHaveBeenCalledTimes(1)
+    await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
+    await waitFor(() =>
       expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
-      expect(popParentViewController).toHaveBeenCalledTimes(1)
-    })
+    )
+    await waitFor(() => expect(popParentViewController).toHaveBeenCalledTimes(1))
   })
 
-  it("switches to live auction view when sale goes live with no endAt", () => {
+  it("switches to live auction view when sale goes live with no endAt", async () => {
     renderWithWrappers(<TestRenderer />)
-
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
@@ -80,15 +80,14 @@ describe("Sale", () => {
     )
 
     expect(navigate).toHaveBeenCalledTimes(0)
-
-    waitFor(() => {
-      expect(navigate).toHaveBeenCalledTimes(1)
+    await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
+    await waitFor(() =>
       expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug")
-      expect(popParentViewController).toHaveBeenCalledTimes(1)
-    })
+    )
+    await waitFor(() => expect(popParentViewController).toHaveBeenCalledTimes(1))
   })
 
-  it("doesn't switch to live auction view when sale is closed", () => {
+  it("doesn't switch to live auction view when sale is closed", async () => {
     renderWithWrappers(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -106,7 +105,7 @@ describe("Sale", () => {
 
     expect(navigate).toHaveBeenCalledTimes(0)
 
-    waitFor(() => {
+    await waitFor(() => {
       expect(navigate).toHaveBeenCalledTimes(0)
       expect(popParentViewController).toHaveBeenCalledTimes(0)
     })
@@ -166,5 +165,65 @@ describe("Sale", () => {
     )
 
     expect(tree.findAllByType(RegisterToBidButtonContainer)).toHaveLength(0)
+  })
+
+  it("renders the banner when the sale has cascading end times", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          slug: "cascading-sale-slug",
+          startAt: DateTime.now().minus({ days: 3 }).toISO(),
+          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+          endAt: DateTime.now().plus({ day: 1 }).toISO(),
+          name: "Cascading Sale",
+          cascadingEndTimeIntervalMinutes: 1,
+          isClosed: false,
+        }),
+      })
+    )
+
+    expect(tree.findAllByType(CascadingEndTimesBanner)).toHaveLength(1)
+  })
+
+  it("doesn't render the banner when the sale does not have cascading end times", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          slug: "non-cascading-sale-slug",
+          startAt: DateTime.now().minus({ days: 3 }).toISO(),
+          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+          endAt: DateTime.now().plus({ day: 1 }).toISO(),
+          name: "Non Cascading Sale",
+          cascadingEndTimeIntervalMinutes: null,
+          isClosed: false,
+        }),
+      })
+    )
+
+    expect(tree.findAllByType(CascadingEndTimesBanner)).toHaveLength(0)
+  })
+
+  it("doesn't render the banner when the sale has cascading end times but the sale is closed", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Sale: () => ({
+          slug: "closed-cascading-sale-slug",
+          startAt: DateTime.now().minus({ days: 3 }).toISO(),
+          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+          endAt: DateTime.now().minus({ day: 1 }).toISO(),
+          name: "Closed Cascading Sale",
+          cascadingEndTimeIntervalMinutes: 1,
+          isClosed: true,
+        }),
+      })
+    )
+
+    expect(tree.findAllByType(CascadingEndTimesBanner)).toHaveLength(0)
   })
 })

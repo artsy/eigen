@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
+import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
@@ -22,14 +22,14 @@ import {
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "app/utils/track"
-import { Box, Spacer } from "palette"
+import { Box, Message, Spacer } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SavedSearchButtonV2 } from "./SavedSearchButtonV2"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
-  artist: ArtistArtworks_artist
+  artist: ArtistArtworks_artist$data
   searchCriteria: SearchCriteriaAttributes | null
   relay: RelayPaginationProp
 }
@@ -73,7 +73,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 
   return (
     <ArtworkFiltersStoreProvider>
-      <StickyTabPageScrollView>
+      <StickyTabPageScrollView keyboardShouldPersistTaps="handled">
         <ArtistArtworksContainer
           {...props}
           artist={artist}
@@ -200,6 +200,19 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     }
   }
 
+  if (!artist.statuses?.artworks) {
+    return (
+      <Message
+        variant="default"
+        title="No works available by the artist at this time"
+        text="Create an Alert to receive notifications when new works are added"
+        bodyTextStyle={{
+          color: "black60",
+        }}
+      />
+    )
+  }
+
   return artist.artworks ? filteredArtworks() : null
 }
 
@@ -228,6 +241,7 @@ export default createPaginationContainer(
             MEDIUM
             PARTNER
             PRICE_RANGE
+            SIMPLE_PRICE_HISTOGRAM
           ]
         ) {
           aggregations {
@@ -250,6 +264,9 @@ export default createPaginationContainer(
             total
           }
           ...InfiniteScrollArtworksGrid_connection
+        }
+        statuses {
+          artworks
         }
       }
     `,

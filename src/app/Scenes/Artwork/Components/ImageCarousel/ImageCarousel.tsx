@@ -1,12 +1,12 @@
 import { captureMessage } from "@sentry/react-native"
-import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
+import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.graphql"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { isPad } from "app/utils/hardware"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex } from "palette"
 import React, { useMemo } from "react"
 import { PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { fitInside } from "./geometry"
 import {
@@ -17,15 +17,6 @@ import {
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
 
-export interface ImageCarouselProps {
-  /** CarouselImageDescriptor for when you want to display local images */
-  images: ImageCarousel_images | CarouselImageDescriptor[]
-  cardHeight: number
-  onImageIndexChange?: (imageIndex: number) => void
-  paginationIndicatorType?: IndicatorType
-  onImagePressed?: () => void
-}
-
 export interface CarouselImageDescriptor extends ImageDescriptor {
   imageVersions?: string[]
 }
@@ -35,13 +26,15 @@ interface MappedImageDescriptor extends Pick<ImageDescriptor, "deepZoom"> {
   url: string
 }
 
-export const isALocalImage = (imageUrl?: string | null) => {
-  if (!imageUrl) {
-    return false
-  }
-  const regex = new RegExp("^[.|/|asset://|file:///].*.[/.](gif|jpg|jpeg|bmp|webp|png)$")
-  return regex.test(imageUrl)
+export interface ImageCarouselProps {
+  /** CarouselImageDescriptor for when you want to display local images */
+  images: ImageCarousel_images$data | CarouselImageDescriptor[]
+  cardHeight: number
+  onImageIndexChange?: (imageIndex: number) => void
+  paginationIndicatorType?: IndicatorType
+  onImagePressed?: () => void
 }
+
 /**
  * ImageCarousel
  * NOTE: This component currently assumes it is being rendered at the full width of the screen.
@@ -145,6 +138,14 @@ export const ImageCarouselFragmentContainer = createFragmentContainer(ImageCarou
 
 const imageVersionsSortedBySize = ["normalized", "larger", "large", "medium", "small"] as const
 
+export const isALocalImage = (imageUrl?: string | null) => {
+  if (!imageUrl) {
+    return false
+  }
+  const regex = new RegExp("^[.|/|asset://|file:///].*.[/.](gif|jpg|jpeg|bmp|webp|png)$")
+  return regex.test(imageUrl)
+}
+
 // we used to rely on there being a "normalized" version of every image, but that
 // turns out not to be the case, so in those rare situations we order the image versions
 // by size and pick the largest avaialable. These large images will then be resized by
@@ -168,6 +169,6 @@ function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
   return "normalized"
 }
 
-const imageHasVersions = (image: CarouselImageDescriptor | ImageCarousel_images[number]) => {
+const imageHasVersions = (image: CarouselImageDescriptor | ImageCarousel_images$data[number]) => {
   return image.imageVersions && image.imageVersions.length
 }

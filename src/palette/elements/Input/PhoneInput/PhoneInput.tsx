@@ -1,7 +1,6 @@
-import { TriangleDown } from "app/Icons/TriangleDown"
 import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
-import { Flex, Input, InputProps, Sans, Spacer, Touchable, useColor } from "palette"
+import { Flex, Input, InputProps, Sans, Spacer, Touchable, TriangleDown, useColor } from "palette"
 import { useEffect, useRef, useState } from "react"
 import React from "react"
 import { Platform } from "react-native"
@@ -104,14 +103,14 @@ export const PhoneInput = React.forwardRef<
     }, [phoneNumber, dialCode])
 
     return (
-      <Flex style={{ height: 70 }}>
+      <Flex style={{ height: 50 }}>
         <Input
+          style={{ flex: 1 }}
           {...rest}
           ref={(ref) => {
             if (typeof outerRef === "function") {
               outerRef(ref)
             } else if (outerRef && "current" in outerRef) {
-              // @ts-expect-error
               outerRef.current = ref
             } else if (outerRef != null) {
               console.error("bad ref given to PhoneInput")

@@ -1,4 +1,4 @@
-import { ContextCard_artwork } from "__generated__/ContextCard_artwork.graphql"
+import { ContextCard_artwork$data } from "__generated__/ContextCard_artwork.graphql"
 import { ContextCardFollowMutation } from "__generated__/ContextCardFollowMutation.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
@@ -8,7 +8,7 @@ import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface ContextCardProps {
-  artwork: ContextCard_artwork
+  artwork: ContextCard_artwork$data
   relay: RelayProp
 }
 
@@ -16,7 +16,7 @@ interface ContextCardState {
   isSaving: boolean
 }
 
-type Show = Extract<NonNullable<ContextCard_artwork["context"]>, { __typename: "Show" }>
+type Show = Extract<NonNullable<ContextCard_artwork$data["context"]>, { __typename: "Show" }>
 
 const track: Track<ContextCardProps, ContextCardState> = _track as any
 

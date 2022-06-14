@@ -1,4 +1,4 @@
-import { PartnerShowRailItem_show } from "__generated__/PartnerShowRailItem_show.graphql"
+import { PartnerShowRailItem_show$data } from "__generated__/PartnerShowRailItem_show.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
@@ -17,7 +17,7 @@ const ImageView = styled(OpaqueImageView)`
 `
 
 interface Props {
-  show: PartnerShowRailItem_show
+  show: PartnerShowRailItem_show$data
 }
 
 @track()

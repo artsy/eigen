@@ -1,11 +1,11 @@
-import { PaymentMethod_order } from "__generated__/PaymentMethod_order.graphql"
+import { PaymentMethod_order$data } from "__generated__/PaymentMethod_order.graphql"
 import { track as _track } from "app/utils/track"
 import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface PaymentMethodProps {
-  order: PaymentMethod_order
+  order: PaymentMethod_order$data
 }
 
 export const PaymentMethod: React.FC<PaymentMethodProps> = ({ order }) => {

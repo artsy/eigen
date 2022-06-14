@@ -1,4 +1,4 @@
-import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
+import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignSubmissionMutation.graphql"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { Select } from "palette/elements/Select"
@@ -19,6 +19,7 @@ export const MediumPicker: React.FC = () => {
       title="Medium"
       placeholder="Select"
       testID="MediumSelect"
+      required
       options={artworkMediumCategories}
     />
   )

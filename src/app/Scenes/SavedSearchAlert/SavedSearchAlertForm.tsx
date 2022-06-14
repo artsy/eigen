@@ -1,8 +1,5 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
-import {
-  SearchCriteria,
-  SearchCriteriaAttributes,
-} from "app/Components/ArtworkFilter/SavedSearch/types"
+import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { goBack, navigate } from "app/navigation/navigate"
 import { FormikProvider, useFormik } from "formik"
 import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
@@ -14,23 +11,22 @@ import { Form } from "./Components/Form"
 import {
   checkOrRequestPushPermissions,
   clearDefaultAttributes,
-  getNamePlaceholder,
   showWarningMessageForDuplicateAlert,
 } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
-import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
+import { updateNotificationPreferences } from "./mutations/updateNotificationPreferences"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
 import { getSavedSearchIdByCriteria } from "./queries/getSavedSearchIdByCriteria"
 import {
-  SavedSearchAlertFormPropsBase,
   SavedSearchAlertFormValues,
   SavedSearchAlertMutationResult,
   SavedSearchPill,
 } from "./SavedSearchAlertModel"
 import { SavedSearchStore } from "./SavedSearchStore"
+import { useSavedSearchPills } from "./useSavedSearchPills"
 
-export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
+export interface SavedSearchAlertFormProps {
   initialValues: SavedSearchAlertFormValues
   savedSearchAlertId?: string
   userAllowsEmails: boolean
@@ -45,8 +41,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const {
     initialValues,
     savedSearchAlertId,
-    artistId,
-    artistName,
     userAllowsEmails,
     contentContainerStyle,
     onComplete,
@@ -55,18 +49,13 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   } = props
   const isUpdateForm = !!savedSearchAlertId
   const isFirstRender = useFirstMountState()
-  const savedSearchPills = SavedSearchStore.useStoreState((state) => state.pills)
+  const pills = useSavedSearchPills()
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
+  const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (actions) => actions.removeValueFromAttributesByKeyAction
   )
-  const artistPill: SavedSearchPill = {
-    label: artistName,
-    value: artistId,
-    paramName: SearchCriteria.artistID,
-  }
-  const pills = [artistPill, ...savedSearchPills]
   const tracking = useTracking()
   const { space } = useTheme()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
@@ -81,7 +70,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       let alertName = values.name
 
       if (alertName.length === 0) {
-        alertName = getNamePlaceholder(artistName, pills)
+        alertName = entity.placeholder
       }
 
       const userAlertSettings: SavedSearchAlertFormValues = {
@@ -101,7 +90,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
          *  - the user previously opted out of all marketing emails
          */
         if (!userAllowsEmails && !initialValues.email && values.email) {
-          await updateEmailFrequency("alerts_only")
+          await updateNotificationPreferences([{ name: "custom_alerts", status: "SUBSCRIBED" }])
         }
 
         /**
@@ -258,8 +247,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         <Form
           pills={pills}
           savedSearchAlertId={savedSearchAlertId}
-          artistId={artistId}
-          artistName={artistName}
           hasChangedFilters={hasChangedFilters}
           onDeletePress={handleDeletePress}
           onSubmitPress={formik.handleSubmit}

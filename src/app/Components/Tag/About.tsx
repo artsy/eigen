@@ -1,4 +1,4 @@
-import { About_tag } from "__generated__/About_tag.graphql"
+import { About_tag$data } from "__generated__/About_tag.graphql"
 import { Text } from "palette"
 import React from "react"
 import { View } from "react-native"
@@ -8,7 +8,7 @@ import removeMarkdown from "remove-markdown"
 import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
 interface AboutProps {
-  tag: About_tag
+  tag: About_tag$data
 }
 
 const sideMargin = DeviceInfo.getDeviceType() === "Handset" ? 0 : 50

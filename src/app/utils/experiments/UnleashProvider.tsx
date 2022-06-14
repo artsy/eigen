@@ -1,7 +1,7 @@
-import { useDevToggle } from "app/store/GlobalStore"
-import React, { createContext, ReactNode, useCallback, useEffect, useState } from "react"
+import { createContext, useCallback, useEffect, useState } from "react"
 import useAppState from "../useAppState"
 import { forceFetchToggles } from "./helpers"
+import { useUnleashEnvironment } from "./hooks"
 import { getUnleashClient } from "./unleashClient"
 
 interface UnleashContext {
@@ -10,9 +10,9 @@ interface UnleashContext {
 
 export const UnleashContext = createContext<UnleashContext>({ lastUpdate: null })
 
-export function UnleashProvider({ children }: { children?: ReactNode }) {
+export function UnleashProvider({ children }: { children?: React.ReactNode }) {
   const [lastUpdate, setLastUpdate] = useState<UnleashContext["lastUpdate"]>(null)
-  const unleashEnv = useDevToggle("DTUseProductionUnleash") || !__DEV__ ? "production" : "staging"
+  const { unleashEnv } = useUnleashEnvironment()
 
   useEffect(() => {
     const client = getUnleashClient(unleashEnv)

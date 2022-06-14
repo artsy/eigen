@@ -6,7 +6,7 @@ import { Flex, Input, INPUT_HEIGHT, InputTitle, Separator, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
 
-export type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
+type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
 
 export const Rarity: React.FC = () => {
   const { formik } = useArtworkForm()

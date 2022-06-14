@@ -8,13 +8,13 @@
 
 ## Meandering Around
 
-- [Best_practices](best_practices.md)
+- [Best Practices](best_practices.md)
 
 ## Documentation about different work flows
 
 - [Pull Request template](pull_request_template.md)
 - [Storybook](storybook.md)
-- [FeatureFlags](developing_a_feature.md)
+- [Feature Flags](developing_a_feature.md)
 - [Metaflags](metaflags.md)
 - [Hide loggers](metaflags.md/#hide-loggers)
 - [Debugging](debugging.md)
@@ -29,6 +29,8 @@
 - [Analytics and Tracking](analytics_and_tracking.md)
 - [Certificates](certs.md)
 - [Test on a real device: create a beta](deploy_to_beta.md)
+- [Generate a Release build for local testing](generate_a_release_build_for_local_testing.md)
+- [Testing](testing.md)
 
 ### Beta
 
@@ -49,7 +51,7 @@
 
 - [palette v3 migration guide](palette_v3_migration_guide.md)
 
-#### Thanks to our (contributors)[thanks.md] 🎉
+#### Thanks to our [contributors](thanks.md) 🎉
 
 ### Can these be removed?
 

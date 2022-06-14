@@ -1,12 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Button, Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 
@@ -54,7 +54,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
               <Input
                 ref={inputRef}
                 autoCapitalize="none"
-                autoCompleteType="email"
+                autoComplete="email"
                 enableClearButton
                 keyboardType="email-address"
                 onChangeText={(text) => {

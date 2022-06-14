@@ -2,8 +2,13 @@ name: Trigger beta iOS release
 
 on: workflow_dispatch
 
+permissions:
+  contents: read
+
 jobs:
   build:
+    permissions:
+      contents: none
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

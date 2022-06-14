@@ -1,9 +1,10 @@
-import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
+import { OnboardingPersonalization_highlights$data } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationTestsQuery } from "__generated__/OnboardingPersonalizationTestsQuery.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
+import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import React from "react"
@@ -12,8 +13,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingPersonalizationList } from "./OnboardingPersonalization"
 
 jest.unmock("react-relay")
-
-const navigateMock = jest.fn()
 
 describe("OnboardingPersonalizationList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -37,9 +36,9 @@ describe("OnboardingPersonalizationList", () => {
         if (props?.highlights) {
           return (
             <OnboardingPersonalizationList
-              // no need to redeclare the OnboardingPersonalization_highlights fragment here
-              highlights={props.highlights as OnboardingPersonalization_highlights}
-              navigation={{ navigate: navigateMock } as any}
+              // no need to redeclare the OnboardingPersonalization_highlights$data fragment here
+              highlights={props.highlights as OnboardingPersonalization_highlights$data}
+              navigation={{ navigate: mockNavigate } as any}
               route={null as any}
             />
           )
@@ -60,7 +59,7 @@ describe("OnboardingPersonalizationList", () => {
 
       const searchInput = tree.root.findByProps({ testID: "searchArtistButton" })
       searchInput.props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingPersonalizationModal")
+      expect(mockNavigate).toHaveBeenCalledWith("OnboardingPersonalizationModal")
     })
   })
 

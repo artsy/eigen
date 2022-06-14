@@ -1,7 +1,4 @@
-import {
-  SavedSearchAlertQuery,
-  SavedSearchAlertQueryResponse,
-} from "__generated__/SavedSearchAlertQuery.graphql"
+import { SavedSearchAlertQuery } from "__generated__/SavedSearchAlertQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -10,7 +7,7 @@ interface SearchCriteriaAlertBaseProps {
   savedSearchAlertId: string
   render: (renderProps: {
     error: Error | null
-    props: SavedSearchAlertQueryResponse | null
+    props: SavedSearchAlertQuery["response"] | null
     retry: (() => void) | null
   }) => React.ReactNode
 }

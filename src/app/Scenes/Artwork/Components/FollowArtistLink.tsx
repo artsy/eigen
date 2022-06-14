@@ -1,4 +1,4 @@
-import { FollowArtistLink_artist } from "__generated__/FollowArtistLink_artist.graphql"
+import { FollowArtistLink_artist$data } from "__generated__/FollowArtistLink_artist.graphql"
 import { FollowArtistLinkMutation } from "__generated__/FollowArtistLinkMutation.graphql"
 import { Schema, track } from "app/utils/track"
 import { Sans, Touchable } from "palette"
@@ -6,7 +6,7 @@ import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
-  artist: FollowArtistLink_artist
+  artist: FollowArtistLink_artist$data
   relay: RelayProp
   contextModule?: string
 }

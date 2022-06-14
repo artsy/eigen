@@ -6,7 +6,7 @@ import {
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
-import { SaleArtworkTileRailCard_saleArtwork } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
+import { SaleArtworkTileRailCard_saleArtwork$data } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
 import { Box, Flex, Text, useColor } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -24,7 +24,7 @@ const SaleArtworkCard = styled.TouchableHighlight.attrs(() => ({
 
 export interface SaleArtworkTileRailCardProps {
   onPress: () => void
-  saleArtwork: SaleArtworkTileRailCard_saleArtwork
+  saleArtwork: SaleArtworkTileRailCard_saleArtwork$data
   useCustomSaleMessage?: boolean
   useSquareAspectRatio?: boolean
   contextScreenOwnerType?: ScreenOwnerType
@@ -171,6 +171,7 @@ export const SaleArtworkTileRailCardContainer = createFragmentContainer(SaleArtw
         isAuction
         isClosed
         displayTimelyAt
+        cascadingEndTimeIntervalMinutes
       }
     }
   `,

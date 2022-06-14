@@ -34,16 +34,19 @@ export const List = ({
   children,
   contentContainerStyle,
   style,
+  horizontal,
 }: {
   children: React.ReactElement[] | React.ReactElement
   contentContainerStyle?: StyleProp<ViewStyle>
   style?: StyleProp<ViewStyle>
+  horizontal?: boolean
 }) => (
   <FlatList
+    horizontal={horizontal}
     data={Array.isArray(children) ? children : [children]}
     keyExtractor={(_, index) => `${index}`}
     renderItem={({ item: child }) => child}
-    ItemSeparatorComponent={() => <Spacer mb="4" />}
+    ItemSeparatorComponent={() => <Spacer x="4" y="4" />}
     contentContainerStyle={[
       {
         flexGrow: 1,

@@ -1,15 +1,12 @@
-import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
-import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
-import {
-  RequestConditionReportMutation,
-  RequestConditionReportMutationResponse,
-} from "__generated__/RequestConditionReportMutation.graphql"
+import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
+import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
+import { RequestConditionReportMutation } from "__generated__/RequestConditionReportMutation.graphql"
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
 import { Modal } from "app/Components/Modal"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Schema, track } from "app/utils/track"
 import { Button, Flex } from "palette"
-import React from "react"
+import { Component } from "react"
 import { View } from "react-native"
 import {
   commitMutation,
@@ -21,8 +18,8 @@ import {
 import { PayloadError } from "relay-runtime"
 
 interface RequestConditionReportProps {
-  artwork: RequestConditionReport_artwork
-  me: RequestConditionReport_me
+  artwork: RequestConditionReport_artwork$data
+  me: RequestConditionReport_me$data
   relay: RelayProp
 }
 
@@ -37,7 +34,7 @@ interface State {
   action_name: Schema.ActionNames.RequestConditionReport,
   context_module: Schema.ContextModules.ArtworkDetails,
 })
-export class RequestConditionReport extends React.Component<RequestConditionReportProps, State> {
+export class RequestConditionReport extends Component<RequestConditionReportProps, State> {
   state: State = {
     requestingConditionReport: false,
     showConditionReportRequestedModal: false,
@@ -47,7 +44,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
 
   requestConditionReport = () => {
     const { artwork, relay } = this.props
-    return new Promise<RequestConditionReportMutationResponse>(async (resolve, reject) => {
+    return new Promise<RequestConditionReportMutation["response"]>(async (resolve, reject) => {
       commitMutation<RequestConditionReportMutation>(relay.environment, {
         onCompleted: resolve,
         onError: reject,
@@ -119,6 +116,8 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
       showConditionReportRequestedModal,
     } = this.state
 
+    const conditionReportText = `We have received your request.\nThe condition report will be sent to ${me?.email}.\nFor questions contact [specialist@artsy.net](mailto:specialist@artsy.net).`
+
     return (
       <View>
         <Button
@@ -142,9 +141,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
             textAlign="center"
             visible={showConditionReportRequestedModal}
             headerText="Condition Report Requested"
-            detailText={`We have received your request.\nThe condition report will be sent to ${
-              me && me.email
-            }.\nFor questions contact specialist@artsy.net.`}
+            detailText={conditionReportText}
             closeModal={this.closeModals.bind(this)}
           />
         </Flex>

@@ -1,6 +1,9 @@
+import { getTimerInfo } from "app/utils/saleTime"
+import { Time } from "app/utils/useTimer"
 import { Duration } from "moment"
-import { Flex, Sans } from "palette"
+import { Flex, Sans, Text } from "palette"
 import React from "react"
+import { CountdownTimerProps } from "./CountdownTimer"
 
 interface TimeSectionProps {
   textProps: ExtractProps<typeof Sans>
@@ -40,7 +43,7 @@ const LabeledTimeSection: React.FC<TimeSectionProps> = ({ time, label, textProps
 )
 
 interface LabeledTickerProps {
-  duration: Duration
+  duration: CountdownTimerProps["duration"]
   renderSeparator: () => React.ReactElement<any>
   textProps?: ExtractProps<typeof Sans>
 }
@@ -50,7 +53,7 @@ export const LabeledTicker: React.FC<LabeledTickerProps> = ({
   renderSeparator,
   textProps,
 }) => {
-  const sections = durationSections(duration, ["d", "h", "m", "s"])
+  const sections = duration ? durationSections(duration, ["d", "h", "m", "s"]) : []
   return (
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {sections.map((section, idx) => (
@@ -68,12 +71,12 @@ export const LabeledTicker: React.FC<LabeledTickerProps> = ({
 }
 
 interface SimpleTickerProps extends ExtractProps<typeof Sans> {
-  duration: Duration
+  duration: CountdownTimerProps["duration"]
   separator: string
 }
 
 export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator, ...rest }) => {
-  const sections = durationSections(duration, ["d", "h", "m", "s"])
+  const sections = duration ? durationSections(duration, ["d", "h", "m", "s"]) : []
   return (
     <Sans {...rest}>
       {sections
@@ -83,4 +86,33 @@ export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator,
         .join("")}
     </Sans>
   )
+}
+
+interface ModernTickerProps {
+  duration: CountdownTimerProps["duration"]
+  hasStarted?: boolean
+  isExtended?: boolean
+  startAt?: string | null
+}
+
+export const ModernTicker: React.FC<ModernTickerProps> = ({
+  duration,
+  hasStarted,
+  isExtended,
+  startAt,
+}) => {
+  if (!duration) {
+    return null
+  }
+  const time: Time = {
+    days: duration.asDays().toString(),
+    hours: duration.hours().toString(),
+    minutes: duration.minutes().toString(),
+    seconds: duration.seconds().toString(),
+    startAt: startAt ?? "",
+    endDate: "",
+  }
+  const timerInfo = getTimerInfo(time, { hasStarted, isExtended })
+
+  return <Text color={timerInfo.color}>{timerInfo.copy}</Text>
 }

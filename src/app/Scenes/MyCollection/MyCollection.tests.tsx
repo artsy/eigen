@@ -5,26 +5,26 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
-import { GridViewIcon } from "app/Icons/GridViewIcon"
-import { ListViewIcon } from "app/Icons/ListViewIcon"
+
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
-import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
+import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionContainer } from "./MyCollection"
 
 jest.unmock("react-relay")
 
 describe("MyCollection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
   const TestRenderer = () => (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionTestsQuery>
@@ -41,10 +41,9 @@ describe("MyCollection", () => {
           if (props?.me) {
             return (
               <StickyTabPage
-                staticHeaderContent={<></>}
                 tabs={[
                   {
-                    title: "My Collection",
+                    title: "test",
                     content: <MyCollectionContainer me={props.me} />,
                   },
                 ]}
@@ -59,6 +58,10 @@ describe("MyCollection", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableMyCollectionInsights: true,
+    })
   })
 
   afterEach(() => {
@@ -92,9 +95,9 @@ describe("MyCollection", () => {
     })
 
     it("shows zerostate", () => {
-      expect(extractText(tree.root)).toContain("Your art collection in your pocket.")
+      expect(extractText(tree.root)).toContain("Primed and ready for artworks.")
       expect(extractText(tree.root)).toContain(
-        "Keep track of your collection all in one place and get market insights"
+        "Add works from your collection to access price and market insights."
       )
     })
 
@@ -104,7 +107,9 @@ describe("MyCollection", () => {
 
       expect(navigate).toHaveBeenCalledWith(
         "my-collection/artworks/new",
-        expect.objectContaining({ passProps: { mode: "add", onSuccess: expect.anything() } })
+        expect.objectContaining({
+          passProps: { mode: "add", onSuccess: expect.anything(), source: Tab.collection },
+        })
       )
     })
 
@@ -129,46 +134,16 @@ describe("MyCollection", () => {
     })
   })
 
-  describe("search bar", () => {
-    let tree: ReactTestRenderer
-
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionSearchBar: true })
-
-      tree = getWrapper()
-    })
-
-    it("user can switch between grid and list view when search the bar is visible", async () => {
-      const scrollView = tree.root.findByType(StickyTabPageScrollView)
-
-      scrollView.props.onScrollBeginDrag()
-
-      await flushPromiseQueue()
-
-      expect(tree.root.findByType(MyCollectionSearchBar)).toBeDefined()
-
-      act(() => fireEvent.press(tree.root.findByType(GridViewIcon)))
-
-      expect(MyCollectionArtworkList).toBeDefined()
-
-      act(() => fireEvent.press(tree.root.findByType(ListViewIcon)))
-
-      expect(MyCollectionArtworkList).toBeDefined()
-    })
-  })
-
   describe("sorting and filtering", () => {
     it("filters and sorts without crashing", async () => {
       const renderApi = renderWithWrappersTL(<TestRenderer />)
 
       act(() => {
-        mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            Me: () => ({
-              myCollectionConnection: mockArtworkConnection,
-            }),
-          })
-        )
+        mockEnvironmentPayload(mockEnvironment, {
+          Me: () => ({
+            myCollectionConnection,
+          }),
+        })
       })
 
       await applyFilter(renderApi, "Sort By", "Price Paid (High to Low)")
@@ -189,7 +164,7 @@ const applyFilter = async (renderApi: RenderAPI, filterName: string, filterOptio
   act(() => fireEvent.press(renderApi.getByText("Show Results")))
 }
 
-const mockArtworkConnection = {
+const myCollectionConnection = {
   edges: [
     {
       node: {

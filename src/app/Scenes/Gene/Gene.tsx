@@ -1,4 +1,4 @@
-import { FilterArtworksInput, GeneQuery, GeneQueryResponse } from "__generated__/GeneQuery.graphql"
+import { FilterArtworksInput, GeneQuery } from "__generated__/GeneQuery.graphql"
 import { getParamsForInputByFilterType } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import About from "app/Components/Gene/About"
 import { GeneArtworksPaginationContainer } from "app/Components/Gene/GeneArtworks"
@@ -22,7 +22,7 @@ const TABS = {
 
 interface GeneProps {
   geneID: string
-  gene: NonNullable<GeneQueryResponse["gene"]>
+  gene: NonNullable<GeneQuery["response"]["gene"]>
 }
 
 interface GeneQueryRendererProps {

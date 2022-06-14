@@ -1,8 +1,8 @@
-import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import { sortBy, uniq } from "lodash"
 import moment from "moment"
 
-export const bucketCityResults = (viewer: GlobalMap_viewer) => {
+export const bucketCityResults = (viewer: GlobalMap_viewer$data) => {
   // The saved shows needs to be sorted by end_date_asc
   const now = moment()
   const oneWeekFromNow = moment(new Date()).add(7, "days")

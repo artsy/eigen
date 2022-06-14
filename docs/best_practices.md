@@ -1,8 +1,8 @@
 # :world_map: Our Best Practices
 
-**Last update: February 2022**
+**Last update: March 2022**
 
-This is a living document, expected to be updated regularly, with a broad overview of the history and how we prefere to do things on eigen.
+This is a living document, expected to be updated regularly, with a broad overview of the history and how we prefer to do things on eigen.
 Here you can find links to the tools we use, examples, pull requests with interesting discussions & blog posts.
 
 _Please note: Links should point to specific commits, and not a branch (in case the branch or file is deleted, these links should always work). But it's possible that a file is outdated, that our understanding has moved on since it was linked to; in that case, please update this document._
@@ -12,7 +12,10 @@ _Please note: Links should point to specific commits, and not a branch (in case 
 - [Examples and Hacks](#examples-and-hacks)
 - [History](#history)
 - [File Structure Organization](#file-structure-organization)
-- [Styling](#styling)
+- [When committing code](#When-committing-code)
+- [Frontend](#frontend)
+  - [Storybook](#storybook)
+  - [Styling](#styling)
 - [TypeScript](#TypeScript)
 - [Relay](#relay)
 - [Testing](#testing)
@@ -91,11 +94,25 @@ However, if we have a `Button` folder which exports only one button component, w
 
 `Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
 
-### Styling
+#### When committing code
 
-We use [palette](src/palette) as our reusable component toolkit, which uses `styled-system` under the hood. [Here](palette.artsy.net) you can see palette in action!
+- Use the [semantic commit message](https://seesparkbox.com/foundry/semantic_commit_messages) format in the title of your PR (eg. feat, fix, style, test, refactor, docs)
+- When merging a PR, choose "Squash and merge" (unless you have good reason not to)
+- Do not use "Squash and merge" on a new version deployment PR
 
-For styling we use custom inline elements like `Flex`, `Box`, `Text`. `Separator` and `Spacer` are also useful elements.
+### Frontend
+
+#### Storybook
+
+When developing new components you are strongly encouraged to add them to [Storybook](./storybook.md).
+
+#### Styling
+
+[palette](src/palette) is our reusable component toolkit, which uses [styled-system](https://styled-system.com/getting-started/) under the hood.
+[Here](palette.artsy.net) you can see palette in action.
+Some of our most used elements are `Flex`, `Box`, `Text`. `Separator` and `Spacer`.
+
+We want to move towards an [atomic design](https://bradfrost.com/blog/post/atomic-web-design/) and have all our UI elements in palette. Please do not add components there without consulting with **@pvinis** first.
 
 ### TypeScript
 
@@ -133,9 +150,10 @@ But we also use `test-renderer` and `enzyme` (in order of preference), that we'd
 
 - For setting up a test environment and mocking requests:
 
-  - [`relay-test-utils`](https://relay.dev/docs/guides/testing-relay-components/) is the preferred way
-  - [`MockRelayRenderer`](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/tests/MockRelayRenderer.tsx) and
-  - [`renderRelayTree`](https://github.com/artsy/eigen/blob/164a2aaace3f018cdc472fdf19950163ff2b198d/src/lib/tests/renderRelayTree.tsx) are also being used but should gradually be removed.
+  - [`relay-test-utils`](https://relay.dev/docs/guides/testing-relay-components/) is the preferred toolset
+  - [`MockRelayRenderer`](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/tests/MockRelayRenderer.tsx) is being gradually removed
+  - [`renderRelayTree`](https://github.com/artsy/eigen/blob/164a2aaace3f018cdc472fdf19950163ff2b198d/src/lib/tests/renderRelayTree.tsx) is also being gradually removed
+  - [`flushPromiseQueue`](https://github.com/artsy/eigen/blob/476c3a280a8126056b1d093b51db3e4eba5dbeb2/src/app/tests/flushPromiseQueue.ts) may be necessary to force mocked Relay responses to resolve in synchronous test cases
 
 - We write native unit tests when we work with native code
 - We don’t use snapshot tests; they produce too much churn for too little value. It’s okay to test that a component doesn’t throw when rendered, but use [`extractText`](https://github.com/artsy/eigen/blob/4c7c9be69ab1c2095f4d2fed11a040b1bde6eba8/src/lib/tests/extractText.ts) (or similar) to test the actual component tree.

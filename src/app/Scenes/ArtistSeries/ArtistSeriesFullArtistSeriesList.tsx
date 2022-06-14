@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtistSeriesFullArtistSeriesList_artist } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
+import { ArtistSeriesFullArtistSeriesList_artist$data } from "__generated__/ArtistSeriesFullArtistSeriesList_artist.graphql"
 import { ArtistSeriesFullArtistSeriesListQuery } from "__generated__/ArtistSeriesFullArtistSeriesListQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
@@ -12,7 +12,7 @@ import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface FullArtistSeriesListProps {
-  artist: ArtistSeriesFullArtistSeriesList_artist
+  artist: ArtistSeriesFullArtistSeriesList_artist$data
 }
 
 export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ artist }) => {

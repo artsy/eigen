@@ -1,6 +1,6 @@
-import { useNavigation } from "@react-navigation/native"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
+import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Platform } from "react-native"
@@ -8,17 +8,7 @@ import { OnboardingSocialPick } from "../OnboardingSocialPick"
 
 jest.mock("@react-navigation/native")
 
-const navigateMock = jest.fn()
-
 describe("OnboardingSocialPick", () => {
-  beforeEach(() => {
-    ;(useNavigation as jest.Mock).mockReturnValue({
-      setParams: jest.fn(),
-      goBack: jest.fn(),
-      navigate: navigateMock,
-    })
-  })
-
   describe("login", () => {
     afterAll(() => {
       jest.clearAllMocks()
@@ -26,7 +16,7 @@ describe("OnboardingSocialPick", () => {
     it("navigates to log in with email when the user presses on continue with email", () => {
       const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
       tree.root.findByProps({ testID: "continueWithEmail" }).props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingLoginWithEmail")
+      expect(mockNavigate).toHaveBeenCalledWith("OnboardingLoginWithEmail")
     })
 
     it("logs in using facebook when the user presses on continue with facebook", async () => {
@@ -61,7 +51,7 @@ describe("OnboardingSocialPick", () => {
     it("navigates to sign up with email when the user presses on continue with email", () => {
       const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
       tree.root.findByProps({ testID: "continueWithEmail" }).props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingCreateAccountWithEmail")
+      expect(mockNavigate).toHaveBeenCalledWith("OnboardingCreateAccountWithEmail")
     })
 
     it("signs up using facebook when the user presses on continue with facebook", async () => {
@@ -96,21 +86,18 @@ describe("webView links ", () => {
   describe("on Android", () => {
     beforeEach(() => {
       Platform.OS = "android"
-      ;(useNavigation as jest.Mock).mockReturnValue({
-        navigate: navigateMock,
-      })
     })
 
     it("opens terms webView", () => {
       const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
       tree.root.findByProps({ testID: "openTerms" }).props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("Terms")
+      expect(mockNavigate).toHaveBeenCalledWith("Terms")
     })
 
     it("opens privacy webView", () => {
       const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
       tree.root.findByProps({ testID: "openPrivacy" }).props.onPress()
-      expect(navigateMock).toHaveBeenCalledWith("Privacy")
+      expect(mockNavigate).toHaveBeenCalledWith("Privacy")
     })
   })
 })

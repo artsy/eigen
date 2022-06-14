@@ -1,4 +1,6 @@
 import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
+import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -25,10 +27,21 @@ describe("ArtistAbout", () => {
       `}
       variables={{ artistID: "artist-id" }}
       render={({ props }) => {
-        if (props?.artist) {
-          return <ArtistAboutContainer artist={props.artist} />
+        if (!props?.artist) {
+          return null
         }
-        return null
+        return (
+          <ModalStack>
+            <StickyTabPage
+              tabs={[
+                {
+                  title: "test",
+                  content: <ArtistAboutContainer artist={props.artist} />,
+                },
+              ]}
+            />
+          </ModalStack>
+        )
       }}
     />
   )

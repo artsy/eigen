@@ -1,16 +1,16 @@
-import { FeatureHeader_feature } from "__generated__/FeatureHeader_feature.graphql"
+import { FeatureHeader_feature$data } from "__generated__/FeatureHeader_feature.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "app/Components/Stack"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, FlexProps, Sans } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { FeatureMarkdown } from "./FeatureMarkdown"
 
 export interface FeatureHeaderProps extends FlexProps {
-  feature: FeatureHeader_feature
+  feature: FeatureHeader_feature$data
 }
 
 export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {

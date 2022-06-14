@@ -2,12 +2,12 @@ import React from "react"
 import { View } from "react-native"
 import styled from "styled-components/native"
 
-import { Message_message } from "__generated__/Message_message.graphql"
-import { Messages_conversation } from "__generated__/Messages_conversation.graphql"
+import { Message_message$data } from "__generated__/Message_message.graphql"
+import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import moment from "moment"
 import { Flex, Spacer } from "palette"
 
-import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
+import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Message } from "./Message"
 import { OrderUpdateFragmentContainer } from "./OrderUpdate"
@@ -19,9 +19,9 @@ const SubjectContainer = styled(Flex)`
   flex-direction: row;
   justify-content: flex-end;
 `
-type Item = NonNullable<NonNullable<Messages_conversation["items"]>[0]>["item"]
+type Item = NonNullable<NonNullable<Messages_conversation$data["items"]>[0]>["item"]
 
-export type DisplayableMessage = OrderUpdate_event | Message_message
+export type DisplayableMessage = OrderUpdate_event$data | Message_message$data
 interface MessageGroupProps {
   group: DisplayableMessage[]
   conversationId: string
@@ -29,12 +29,12 @@ interface MessageGroupProps {
   isLastMessage: boolean
 }
 
-const isMessageArray = (items: DisplayableMessage[]): items is Message_message[] => {
+const isMessageArray = (items: DisplayableMessage[]): items is Message_message$data[] => {
   return items[0].__typename === "Message"
 }
 
 const relevantEvents = ["CommerceOfferSubmittedEvent", "CommerceOrderStateChangedEvent"]
-const isRelevantEventArray = (items: DisplayableMessage[]): items is OrderUpdate_event[] => {
+const isRelevantEventArray = (items: DisplayableMessage[]): items is OrderUpdate_event$data[] => {
   const firstItem = items[0]
   return firstItem?.__typename !== "Message" && relevantEvents.includes(firstItem.__typename)
 }
@@ -42,8 +42,8 @@ const isRelevantEventArray = (items: DisplayableMessage[]): items is OrderUpdate
 const IndividualMessage: React.FC<{
   isLastMessage: boolean
   conversationId: string
-  message: Message_message
-  nextMessage?: Message_message
+  message: Message_message$data
+  nextMessage?: Message_message$data
   isSameDay: boolean
 }> = ({ message, nextMessage, conversationId, isLastMessage, isSameDay }) => {
   const senderChanges = !!nextMessage && nextMessage.isFromUser !== message.isFromUser
@@ -108,7 +108,7 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
             {!isLastMessage && (
               <TimeSince style={{ alignSelf: "center" }} time={firstItem.createdAt} exact mb={1} />
             )}
-            {[...group].reverse().map((message: Message_message, messageIndex: number) => {
+            {[...group].reverse().map((message: Message_message$data, messageIndex: number) => {
               const messageKey = `message-${messageIndex}`
               return (
                 <IndividualMessage

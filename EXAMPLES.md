@@ -29,7 +29,7 @@ Look at https://github.com/artsy/relay-workshop for a great tutorial of how we u
 Links:
 
 - [Search.tests.tsx](src/app/Scenes/Search/Search.tests.tsx)
-- [ArtistSavedSearch.tests.tsx](src/app/Scenes/Artist/ArtistSavedSearch.tests.tsx)7
+- [ArtistSavedSearch.tests.tsx](src/app/Scenes/Artist/ArtistSavedSearch.tests.tsx)
 
 ## I want to add some global state, doesn't need to be persisted.
 
@@ -76,4 +76,27 @@ You can easily add a new one, and it will appear in the Dev Menu. Then you can u
 
 Links:
 
-- [features.ts](src/app/store/config/features.ts).
+- [features.ts](src/app/store/config/features.ts)
+
+## I want to make a new screen.
+
+We use `Screen` and friends for that. They come from palette. Some of the building blocks are: `Screen`, `Screen.Body`, `Screen.Header`, `Screen.FloatingHeader`, `Screen.Background`, `Screen.BottomView`, `Screen.BodyXPadding`, `Screen.SafeBottomPadding`.
+
+You can find examples in [Screen.stories.tsx](src/palette/organisms/screenStructure/Screen.stories.tsx). You can also find actual screens using these, like [OnboardingWelcome.tsx](src/app/Scenes/Onboarding/OnboardingWelcome.tsx), [OnboardingSocialPick.tsx](src/app/Scenes/Onboarding/OnboardingSocialPick.tsx), [OnboardingLogin.tsx](src/app/Scenes/Onboarding/OnboardingLogin.tsx).
+
+Links:
+
+- [Screen.stories.tsx](src/palette/organisms/screenStructure/Screen.stories.tsx)
+- [OnboardingWelcome.tsx](src/app/Scenes/Onboarding/OnboardingWelcome.tsx)
+- [OnboardingSocialPick.tsx](src/app/Scenes/Onboarding/OnboardingSocialPick.tsx)
+- [OnboardingLogin.tsx](src/app/Scenes/Onboarding/OnboardingLogin.tsx)
+
+## I want to make a form.
+
+We use formik for forms.
+
+One good example is in [OnboardingLogin.tsx](src/app/Scenes/Onboarding/OnboardingLogin.tsx). You can use `useFormik` with all the props and options, and then use the returned `f` to assign to values and props of your inputs and buttons.
+
+Links:
+
+- [OnboardingLogin.tsx](src/app/Scenes/Onboarding/OnboardingLogin.tsx)

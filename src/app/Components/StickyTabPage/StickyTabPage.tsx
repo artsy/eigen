@@ -1,16 +1,17 @@
+import { VisualClueName } from "app/store/config/visualClues"
 import { useUpdateShouldHideBackButton } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasuredView"
 import { useGlobalState } from "app/utils/useGlobalState"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box } from "palette"
 import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
-import { LayoutAnimation, View } from "react-native"
+import { View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { useAnimatedValue } from "./reanimatedHelpers"
-import { StickyTabPageContext, useStickyTabPageContext } from "./SitckyTabPageContext"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
+import { StickyTabPageContext, useStickyTabPageContext } from "./StickyTabPageContext"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 
@@ -18,12 +19,17 @@ export interface TabProps {
   initial?: boolean
   title: string
   content: JSX.Element | ((tabIndex: number) => JSX.Element)
-  superscript?: string
+  visualClues?: TabVisualClues
 }
+
+export type TabVisualClues = Array<{
+  jsx: JSX.Element
+  visualClueName: VisualClueName | string
+}>
 
 interface StickyTabPageProps {
   tabs: TabProps[]
-  staticHeaderContent: JSX.Element
+  staticHeaderContent?: JSX.Element
   stickyHeaderContent?: JSX.Element
   bottomContent?: JSX.Element
   // disableBackButtonUpdate allows the original BackButton visibility state. Useful when using StickyTabPage
@@ -42,7 +48,7 @@ interface StickyTabPageProps {
  */
 export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   tabs,
-  staticHeaderContent,
+  staticHeaderContent = <></>,
   stickyHeaderContent = <StickyTabPageTabBar />,
   bottomContent,
   disableBackButtonUpdate,
@@ -61,18 +67,17 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<
     Array<JSX.Element | null>
   >([])
-  const [isStaticHeaderVisible, setIsStaticHeaderVisible] = useState(true)
 
-  const { jsx: staticHeader, nativeHeight: staticHeaderHeight } = useAutoCollapsingMeasuredView(
-    isStaticHeaderVisible ? staticHeaderContent : null
-  )
+  const { jsx: staticHeader, nativeHeight: staticHeaderHeight } =
+    useAutoCollapsingMeasuredView(staticHeaderContent)
 
   const stickyRailRef = useRef<SnappyHorizontalRail>(null)
 
-  // This breaks the rules of hooks - you're not supposed to call them inside loops. We're doing it anyway because
-  // useAutoCollapsingMeasuredView is a pure function and all we're doing with tabSpecificStickyHeaderContentArray is
-  // rendering; it's not involved in any conditionals. We're reasonably confident it will be deterministic, and
-  // the alternative (making the hook take in an array of tabs) gets very complicated very quickly
+  // This breaks the rules of hooks - you're not supposed to call them inside loops.
+  // We're doing it anyway because useAutoCollapsingMeasuredView is a pure function and all we're
+  // doing with tabSpecificStickyHeaderContentArray is rendering.
+  // It's not involved in any conditionals. We're reasonably confident it will be deterministic, and
+  // the alternative (making the hook take in an array of tabs) gets very complicated very quickly.
   const tabSpecificStickyHeaderContentArray = tabs.map((_, i) => {
     return useAutoCollapsingMeasuredView(tabSpecificStickyHeaderContent[i])
   })
@@ -83,11 +88,6 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   const tracking = useTracking()
 
   const headerOffsetY = useAnimatedValue(0)
-
-  // We need to set the header offset to 0 after hiding or showing the static header.
-  useEffect(() => {
-    requestAnimationFrame(() => headerOffsetY.setValue(0))
-  }, [isStaticHeaderVisible])
 
   const railRef = useRef<SnappyHorizontalRail>(null)
 
@@ -116,15 +116,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
         stickyHeaderHeight,
         headerOffsetY,
         tabLabels: tabs.map((tab) => tab.title),
-        tabSuperscripts: tabs.map((tab) => tab.superscript),
-        hideStaticHeader() {
-          LayoutAnimation.spring()
-          setIsStaticHeaderVisible(false)
-        },
-        showStaticHeader() {
-          LayoutAnimation.spring()
-          setIsStaticHeaderVisible(true)
-        },
+        tabVisualClues: tabs.map((tab) => tab.visualClues),
         setActiveTabIndex(index) {
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)

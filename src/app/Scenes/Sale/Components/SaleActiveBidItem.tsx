@@ -1,4 +1,4 @@
-import { SaleActiveBidItem_lotStanding } from "__generated__/SaleActiveBidItem_lotStanding.graphql"
+import { SaleActiveBidItem_lotStanding$data } from "__generated__/SaleActiveBidItem_lotStanding.graphql"
 import { navigate } from "app/navigation/navigate"
 import { HighestBid, Outbid, ReserveNotMet } from "app/Scenes/MyBids/Components/BiddingStatuses"
 import { LotFragmentContainer } from "app/Scenes/MyBids/Components/Lot"
@@ -9,7 +9,7 @@ import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface SaleActiveBidItemProps {
-  lotStanding: SaleActiveBidItem_lotStanding
+  lotStanding: SaleActiveBidItem_lotStanding$data
 }
 
 export const SaleActiveBidItem: React.FC<SaleActiveBidItemProps> = ({ lotStanding }) => {

@@ -1,4 +1,4 @@
-import { ShowArtworksPreview_show } from "__generated__/ShowArtworksPreview_show.graphql"
+import { ShowArtworksPreview_show$data } from "__generated__/ShowArtworksPreview_show.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { extractNodes } from "app/utils/extractNodes"
@@ -8,7 +8,7 @@ import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
   onViewAllArtworksPressed: () => void
-  show: ShowArtworksPreview_show
+  show: ShowArtworksPreview_show$data
   title?: string
   relay: RelayProp
 }

@@ -1,11 +1,11 @@
-import { SummarySection_section } from "__generated__/SummarySection_section.graphql"
+import { SummarySection_section$data } from "__generated__/SummarySection_section.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  section: SummarySection_section
+  section: SummarySection_section$data
 }
 
 export const SummarySection: React.FC<Props> = ({ section }) => {

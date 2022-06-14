@@ -2,7 +2,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import { ArtworkPreview_artwork } from "__generated__/ArtworkPreview_artwork.graphql"
+import { ArtworkPreview_artwork$data } from "__generated__/ArtworkPreview_artwork.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ClassTheme, Flex, Text, Touchable } from "palette"
 
@@ -39,7 +39,7 @@ const TitleAndDate = styled.View`
   justify-content: flex-start;
 `
 interface Props {
-  artwork: ArtworkPreview_artwork
+  artwork: ArtworkPreview_artwork$data
   onSelected?: () => void
 }
 

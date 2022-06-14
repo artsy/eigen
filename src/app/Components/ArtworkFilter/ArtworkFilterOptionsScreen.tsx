@@ -18,7 +18,6 @@ import { FilterIcon, Flex, Sans } from "palette"
 import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { FilterConfigTypes } from "."
 import { AnimatableHeader } from "../AnimatableHeader/AnimatableHeader"
 import { AnimatableHeaderFlatList } from "../AnimatableHeader/AnimatableHeaderFlatList"
 import { AnimatableHeaderProvider } from "../AnimatableHeader/AnimatableHeaderProvider"
@@ -26,7 +25,7 @@ import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 import { ArtworkFilterOptionCheckboxItem } from "./components/ArtworkFilterOptionCheckboxItem"
 import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
-import { FilterDisplayConfig, FilterScreen } from "./types"
+import { FilterConfigTypes, FilterDisplayConfig, FilterScreen } from "./types"
 
 export enum FilterModalMode {
   ArtistArtworks = "ArtistArtworks",
@@ -83,6 +82,10 @@ export const ArtworkFilterOptionsScreen: React.FC<
 
   const aggregateFilterOptions: FilterDisplayConfig[] = _.compact(
     concreteAggregations.map((aggregation) => {
+      if (aggregation?.counts?.length === 0) {
+        return null
+      }
+
       const filterOption = filterKeyFromAggregation[aggregation.slice]
       return filterOption ? filterOptionToDisplayConfigMap[filterOption] : null
     })

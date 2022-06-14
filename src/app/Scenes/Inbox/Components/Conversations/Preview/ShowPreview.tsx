@@ -7,7 +7,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import styled from "styled-components/native"
 
 import { themeGet } from "@styled-system/theme-get"
-import { ShowPreview_show } from "__generated__/ShowPreview_show.graphql"
+import { ShowPreview_show$data } from "__generated__/ShowPreview_show.graphql"
 
 const Container = styled.View`
   background-color: ${themeGet("colors.black100")};
@@ -34,7 +34,7 @@ const TextContainer = styled(VerticalLayout)`
 `
 
 interface Props {
-  show: ShowPreview_show
+  show: ShowPreview_show$data
   onSelected?: () => void
 }
 

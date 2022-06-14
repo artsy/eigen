@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { SaleArtworksRail_me } from "__generated__/SaleArtworksRail_me.graphql"
+import { SaleArtworksRail_me$data } from "__generated__/SaleArtworksRail_me.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -10,7 +10,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  me: SaleArtworksRail_me
+  me: SaleArtworksRail_me$data
 }
 
 export const INITIAL_NUMBER_TO_RENDER = 4

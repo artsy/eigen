@@ -1,8 +1,9 @@
+import { OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
 import {
-  ArtworkFiltersState,
-  ArtworkFiltersStoreProvider,
-} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+  SavedSearchEntity,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "app/navigation/navigate"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertMutationResult } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
@@ -19,25 +20,26 @@ import {
 
 jest.unmock("react-relay")
 
-const defaultProps: CreateSavedSearchModalProps = {
-  visible: true,
-  artistId: "artistId",
-  artistName: "artistName",
-  artistSlug: "artistSlug",
-  closeModal: jest.fn,
+const savedSearchEntity: SavedSearchEntity = {
+  placeholder: "Placeholder",
+  artists: [{ id: "artistId", name: "artistName" }],
+  owner: {
+    type: OwnerType.artist,
+    id: "ownerId",
+    slug: "ownerSlug",
+  },
 }
 
-const initialData: ArtworkFiltersState = {
-  selectedFilters: [],
-  appliedFilters: [],
-  previouslyAppliedFilters: [],
-  applyFilters: false,
+const attributes: SearchCriteriaAttributes = {
+  artistIDs: ["artistId"],
+}
+
+const defaultProps: CreateSavedSearchModalProps = {
+  visible: true,
+  entity: savedSearchEntity,
+  attributes,
   aggregations: [],
-  filterType: "artwork",
-  counts: {
-    total: null,
-    followedArtists: null,
-  },
+  closeModal: jest.fn,
 }
 
 const mockedMutationResult: SavedSearchAlertMutationResult = {
@@ -46,11 +48,7 @@ const mockedMutationResult: SavedSearchAlertMutationResult = {
 
 describe("CreateSavedSearchModal", () => {
   const TestRenderer = (props?: Partial<CreateSavedSearchModalProps>) => {
-    return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
-        <CreateSavedSearchModal {...defaultProps} {...props} />
-      </ArtworkFiltersStoreProvider>
-    )
+    return <CreateSavedSearchModal {...defaultProps} {...props} />
   }
 
   it("renders without throwing an error", () => {
@@ -90,7 +88,7 @@ describe("CreateSavedSearchModal", () => {
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      tracks.toggleSavedSearch(true, "artistId", "artistSlug", "savedSearchAlertId")
+      tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "savedSearchAlertId")
     )
   })
 })

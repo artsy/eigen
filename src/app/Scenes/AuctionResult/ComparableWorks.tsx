@@ -1,17 +1,20 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ComparableWorks_auctionResult } from "__generated__/ComparableWorks_auctionResult.graphql"
-import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
+import { ComparableWorks_auctionResult$data } from "__generated__/ComparableWorks_auctionResult.graphql"
+import {
+  AuctionResultListItemFragmentContainer,
+  AuctionResultListSeparator,
+} from "app/Components/Lists/AuctionResultListItem"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
-import { Flex, Separator, Text } from "palette"
+import { Flex, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ComparableWorks {
-  auctionResult: ComparableWorks_auctionResult
+  auctionResult: ComparableWorks_auctionResult$data
 }
 const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
   const { trackEvent } = useTracking()
@@ -32,7 +35,7 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
             Comparable Works
           </Text>
         }
-        ItemSeparatorComponent={() => <Separator borderColor="black10" />}
+        ItemSeparatorComponent={AuctionResultListSeparator}
         renderItem={({ item, index }) => {
           return (
             <AuctionResultListItemFragmentContainer

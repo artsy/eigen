@@ -1,7 +1,4 @@
-import {
-  ArtistSeriesMetaTestsQuery,
-  ArtistSeriesMetaTestsQueryRawResponse,
-} from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
+import { ArtistSeriesMetaTestsQuery } from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import {
   ArtistSeriesMeta,
@@ -113,7 +110,7 @@ describe("Artist Series Meta", () => {
   })
 })
 
-const ArtistSeriesFixture: ArtistSeriesMetaTestsQueryRawResponse = {
+const ArtistSeriesFixture: ArtistSeriesMetaTestsQuery["rawResponse"] = {
   artistSeries: {
     internalID: "as1234",
     slug: "cool-artist-series",

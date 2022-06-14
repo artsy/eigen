@@ -73,4 +73,22 @@ describe("GlobalStoreModel", () => {
     // @ts-expect-error
     expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual([])
   })
+
+  it("can have feature flags changed/injected", () => {
+    expect(
+      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.adminOverrides
+    ).toStrictEqual({})
+    expect(
+      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.flags.ARDarkModeSupport
+    ).toStrictEqual(false)
+
+    __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
+
+    expect(
+      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.adminOverrides
+    ).toStrictEqual({ ARDarkModeSupport: true })
+    expect(
+      __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.flags.ARDarkModeSupport
+    ).toStrictEqual(true)
+  })
 })

@@ -1,7 +1,6 @@
 import React from "react"
 
 import { Flex, Sans, useColor } from "palette"
-
 interface ZeroStateProps {
   title?: string
   subtitle?: string
@@ -12,7 +11,7 @@ interface ZeroStateProps {
 export const ZeroState = (props: ZeroStateProps) => {
   const color = useColor()
   return (
-    <Flex py="6" px="2" justifyContent="center">
+    <Flex px="1" alignItems="center">
       <Flex minHeight={30}>
         {!!props.title && (
           <>
@@ -30,6 +29,7 @@ export const ZeroState = (props: ZeroStateProps) => {
               size="3"
               maxWidth={props.title ? "100%" : "80%"}
               lineHeight="20"
+              textAlign="center"
               color={props.title ? color("black60") : color("black100")}
             >
               {props.subtitle}

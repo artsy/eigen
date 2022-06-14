@@ -1,22 +1,17 @@
-import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwork.graphql"
-import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
+import { CommercialButtons_artwork$data } from "__generated__/CommercialButtons_artwork.graphql"
+import { CommercialButtons_me$data } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { navigate } from "app/navigation/navigate"
-import { useFeatureFlag } from "app/store/GlobalStore"
-import { InquiryOptions } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { Schema } from "app/utils/track"
-import { Button, Spacer } from "palette"
+import { Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { useTracking } from "react-tracking"
 import { BidButtonFragmentContainer } from "./BidButton"
 import { BuyNowButtonFragmentContainer } from "./BuyNowButton"
 import { InquiryButtonsFragmentContainer } from "./InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "./MakeOfferButton"
 
 export interface CommercialButtonProps {
-  artwork: CommercialButtons_artwork
-  me: CommercialButtons_me
+  artwork: CommercialButtons_artwork$data
+  me: CommercialButtons_me$data
   // EditionSetID is passed down from the edition selected by the user
   editionSetID?: string
   auctionState: AuctionTimerState
@@ -28,18 +23,6 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
   auctionState,
   editionSetID,
 }) => {
-  const { trackEvent } = useTracking()
-  const newFirstInquiry = useFeatureFlag("AROptionsNewFirstInquiry")
-
-  const handleInquiry = () => {
-    trackEvent({
-      action_name: Schema.ActionNames.ContactGallery,
-      action_type: Schema.ActionTypes.Tap,
-      context_module: Schema.ContextModules.CommercialButtons,
-    })
-    navigate(`/inquiry/${artwork.slug}`)
-  }
-
   const {
     isBuyNowable,
     isAcquireable,
@@ -93,33 +76,18 @@ export const CommercialButtons: React.FC<CommercialButtonProps> = ({
     return (
       <>
         <MakeOfferButtonFragmentContainer artwork={artwork} editionSetID={editionSetID ?? null} />
-        {isInquireable && <Spacer my={0.5} />}
-        {isInquireable && !newFirstInquiry && (
-          <Button onPress={handleInquiry} size="large" variant="outline" block width={100} haptic>
-            {InquiryOptions.ContactGallery}
-          </Button>
-        )}
-        {isInquireable && newFirstInquiry && (
-          <InquiryButtonsFragmentContainer
-            artwork={artwork}
-            editionSetID={editionSetID}
-            variant="outline"
-          />
+        {isInquireable && (
+          <>
+            <Spacer my={0.5} />
+            <InquiryButtonsFragmentContainer artwork={artwork} variant="outline" block />
+          </>
         )}
       </>
     )
   }
 
-  if (isInquireable && !newFirstInquiry) {
-    return (
-      <Button onPress={handleInquiry} size="large" block width={100} haptic>
-        {InquiryOptions.ContactGallery}
-      </Button>
-    )
-  }
-
-  if (isInquireable && newFirstInquiry) {
-    return <InquiryButtonsFragmentContainer artwork={artwork} editionSetID={editionSetID} />
+  if (isInquireable) {
+    return <InquiryButtonsFragmentContainer artwork={artwork} block />
   }
 
   return null

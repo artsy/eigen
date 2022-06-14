@@ -1,9 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
-import { AutosuggestResults_results } from "__generated__/AutosuggestResults_results.graphql"
-import {
-  AutosuggestResultsQuery,
-  AutosuggestResultsQueryVariables,
-} from "__generated__/AutosuggestResultsQuery.graphql"
+import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
+import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
@@ -11,8 +8,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Flex, quoteLeft, quoteRight, Spacer, Text, useSpace } from "palette"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import React from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
@@ -24,7 +20,9 @@ import {
 import { AutosuggestResultsPlaceholder } from "./components/placeholders/AutosuggestResultsPlaceholder"
 
 export type AutosuggestResult = NonNullable<
-  NonNullable<NonNullable<NonNullable<AutosuggestResults_results["results"]>["edges"]>[0]>["node"]
+  NonNullable<
+    NonNullable<NonNullable<AutosuggestResults_results$data["results"]>["edges"]>[0]
+  >["node"]
 >
 
 const INITIAL_BATCH_SIZE = 32
@@ -33,12 +31,13 @@ const SUBSEQUENT_BATCH_SIZE = 64
 const AutosuggestResultsFlatList: React.FC<{
   query: string
   // if results are null that means we are waiting on a response from MP
-  results: AutosuggestResults_results | null
+  results: AutosuggestResults_results$data | null
   relay: RelayPaginationProp
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
   onResultPress?: OnResultPress
   trackResultPress?: TrackResultPress
+  ListEmptyComponent?: React.ComponentType<any>
 }> = ({
   query,
   results: latestResults,
@@ -47,6 +46,7 @@ const AutosuggestResultsFlatList: React.FC<{
   showQuickNavigationButtons,
   onResultPress,
   trackResultPress,
+  ListEmptyComponent = EmptyList,
 }) => {
   const space = useSpace()
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
@@ -146,25 +146,7 @@ const AutosuggestResultsFlatList: React.FC<{
       ListFooterComponent={ListFooterComponent}
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={
-        noResults
-          ? () => {
-              return (
-                <>
-                  <Spacer mt={1} />
-                  <Spacer mt={2} />
-                  <Text variant="md" textAlign="center">
-                    Sorry, we couldn’t find anything for {quoteLeft}
-                    {query}.{quoteRight}
-                  </Text>
-                  <Text variant="md" color="black60" textAlign="center">
-                    Please try searching again with a different spelling.
-                  </Text>
-                </>
-              )
-            }
-          : null
-      }
+      ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
       renderItem={({ item, index }) => {
         return (
           <Flex mb={2}>
@@ -183,6 +165,22 @@ const AutosuggestResultsFlatList: React.FC<{
       onScrollBeginDrag={onScrollBeginDrag}
       onEndReached={onEndReached}
     />
+  )
+}
+
+const EmptyList: React.FC<{ query: string }> = ({ query }) => {
+  return (
+    <>
+      <Spacer mt={1} />
+      <Spacer mt={2} />
+      <Text variant="md" textAlign="center">
+        Sorry, we couldn’t find anything for {quoteLeft}
+        {query}.{quoteRight}
+      </Text>
+      <Text variant="md" color="black60" textAlign="center">
+        Please try searching again with a different spelling.
+      </Text>
+    </>
   )
 }
 
@@ -260,12 +258,13 @@ const AutosuggestResultsContainer = createPaginationContainer(
 
 export const AutosuggestResults: React.FC<{
   query: string
-  entities?: AutosuggestResultsQueryVariables["entities"]
+  entities?: AutosuggestResultsQuery["variables"]["entities"]
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
   showOnRetryErrorMessage?: boolean
   onResultPress?: OnResultPress
   trackResultPress?: TrackResultPress
+  ListEmptyComponent?: React.ComponentType<any>
 }> = React.memo(
   ({
     query,
@@ -275,6 +274,7 @@ export const AutosuggestResults: React.FC<{
     showOnRetryErrorMessage,
     onResultPress,
     trackResultPress,
+    ListEmptyComponent,
   }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
@@ -308,6 +308,7 @@ export const AutosuggestResults: React.FC<{
               showQuickNavigationButtons={showQuickNavigationButtons}
               onResultPress={onResultPress}
               trackResultPress={trackResultPress}
+              ListEmptyComponent={ListEmptyComponent}
             />
           )
         }}

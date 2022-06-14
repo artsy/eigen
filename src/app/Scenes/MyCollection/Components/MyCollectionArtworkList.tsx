@@ -1,6 +1,6 @@
 import { MyCollectionArtworkList_myCollectionConnection$key } from "__generated__/MyCollectionArtworkList_myCollectionConnection.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
-import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
+import { PrefetchFlatList, PrefetchFlatListProps } from "app/Components/PrefetchFlatList"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Spinner } from "palette"
 import React, { useState } from "react"
@@ -14,11 +14,18 @@ export const MyCollectionArtworkList: React.FC<{
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
   isLoading: RelayPaginationProp["isLoading"]
-}> = ({ localSortAndFilterArtworks, isLoading, loadMore, hasMore, ...restProps }) => {
-  const artworkConnection = useFragment<MyCollectionArtworkList_myCollectionConnection$key>(
-    artworkConnectionFragment,
-    restProps.myCollectionConnection
-  )
+  onScroll?: PrefetchFlatListProps<any>["onScroll"]
+  scrollEventThrottle?: PrefetchFlatListProps<any>["scrollEventThrottle"]
+}> = ({
+  localSortAndFilterArtworks,
+  isLoading,
+  loadMore,
+  hasMore,
+  onScroll,
+  scrollEventThrottle,
+  ...restProps
+}) => {
+  const artworkConnection = useFragment(artworkConnectionFragment, restProps.myCollectionConnection)
 
   const artworks = extractNodes(artworkConnection)
   const preprocessedArtworks = localSortAndFilterArtworks?.(artworks) ?? artworks
@@ -62,6 +69,8 @@ export const MyCollectionArtworkList: React.FC<{
             </Flex>
           ) : null
         }
+        onScroll={onScroll}
+        scrollEventThrottle={scrollEventThrottle}
       />
     </Flex>
   )

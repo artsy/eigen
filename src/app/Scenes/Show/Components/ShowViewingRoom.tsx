@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedViewingRoomCard } from "@artsy/cohesion"
-import { ShowViewingRoom_show } from "__generated__/ShowViewingRoom_show.graphql"
+import { ShowViewingRoom_show$data } from "__generated__/ShowViewingRoom_show.graphql"
 import { navigate } from "app/navigation/navigate"
 import { tagForStatus } from "app/Scenes/ViewingRoom/Components/ViewingRoomsListItem"
 import { Box, BoxProps, MediumCard } from "palette"
@@ -9,7 +9,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 export interface ShowViewingRoomProps extends BoxProps {
-  show: ShowViewingRoom_show
+  show: ShowViewingRoom_show$data
 }
 
 export const ShowViewingRoom: React.FC<ShowViewingRoomProps> = ({ show, ...rest }) => {

@@ -1,28 +1,37 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
-import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
+import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import {
   CarouselImageDescriptor,
   ImageCarousel,
   ImageCarouselFragmentContainer,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
-import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { retrieveLocalImages } from "app/utils/LocalImageStore"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Flex, NoImageIcon, Spacer, Text, useColor } from "palette"
+import { Flex, Join, NoImageIcon, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { imageIsProcessing, isImage } from "../../ArtworkForm/MyCollectionImageUtil"
+import { MyCollectionArtworkSubmissionStatus } from "./MyCollectionArtworkSubmissionStatus"
+
+const NO_ARTIST_NAMES_TEXT = "-"
 
 interface MyCollectionArtworkHeaderProps {
-  artwork: MyCollectionArtworkHeader_artwork
+  artwork: MyCollectionArtworkHeader_artwork$key
 }
 
 export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
+  const artwork = useFragment(myCollectionArtworkHeaderFragment, props.artwork)
   const {
-    artwork: { artistNames, date, images, internalID, title, slug },
-  } = props
-
+    artistNames,
+    date,
+    images,
+    internalID,
+    title,
+    slug,
+    consignmentSubmission,
+    submissionId,
+  } = artwork
   const [imagesToDisplay, setImagesToDisplay] = useState<
     typeof images | CarouselImageDescriptor[] | null
   >(images)
@@ -39,74 +48,90 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
     if (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized")) {
       // fallback to local images for this collection artwork
-      retrieveLocalImages(slug).then((localImages) => {
+      ;(async () => {
+        const [localVanillaArtworkImages, localSubmissionArtworkImages] = await Promise.all([
+          retrieveLocalImages(slug),
+          submissionId ? retrieveLocalImages(submissionId) : undefined,
+        ])
+
         const mappedLocalImages =
-          localImages?.map((localImage) => ({
+          (localVanillaArtworkImages || localSubmissionArtworkImages)?.map((localImage) => ({
             url: localImage.path,
             width: localImage.width,
             height: localImage.height,
             deepZoom: null,
           })) ?? null
         setImagesToDisplay(mappedLocalImages)
-        setIsDisplayingLocalImages(!!localImages?.length)
-      })
+        setIsDisplayingLocalImages(
+          !!localVanillaArtworkImages?.length || !!localSubmissionArtworkImages?.length
+        )
+      })()
     }
-  }, [])
+  }, [submissionId])
 
   const ImagesToDisplayCarousel = isDisplayingLocalImages
     ? ImageCarousel
     : ImageCarouselFragmentContainer
 
   return (
-    <>
-      <ScreenMargin>
-        <Text variant="lg">{artistNames}</Text>
-        <Text variant="md" color="black60">
-          {formattedTitleAndYear}
-        </Text>
-      </ScreenMargin>
-      <Spacer my={1} />
+    <Join separator={<Spacer my={1} />}>
+      {/* ImageCarousel */}
       {!!imagesToDisplay ? (
         <ImagesToDisplayCarousel
           images={imagesToDisplay as any}
-          cardHeight={dimensions.height / 2.5}
-          paginationIndicatorType="scrollBar"
+          cardHeight={dimensions.height / 3.5}
           onImagePressed={() => trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
         />
       ) : (
         <Flex
           testID="Fallback-image-mycollection-header"
           bg={color("black5")}
-          height={dimensions.height / 2.5}
+          height={dimensions.height / 3.5}
           justifyContent="center"
           mx={20}
         >
           <NoImageIcon fill="black60" mx="auto" />
         </Flex>
       )}
-    </>
+
+      {/* Image Meta */}
+      <Flex px={2}>
+        <Text variant="lg">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
+        <Text variant="lg" color="black60" italic>
+          {formattedTitleAndYear}
+        </Text>
+      </Flex>
+
+      {!!consignmentSubmission?.displayText && (
+        <Flex px={2} mt={2}>
+          <MyCollectionArtworkSubmissionStatus displayText={consignmentSubmission?.displayText} />
+        </Flex>
+      )}
+
+      {/* Extra Bottom Space */}
+      <></>
+    </Join>
   )
 }
 
-export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContainer(
-  MyCollectionArtworkHeader,
-  {
-    artwork: graphql`
-      fragment MyCollectionArtworkHeader_artwork on Artwork {
-        artistNames
-        date
-        images {
-          ...ImageCarousel_images
-          imageVersions
-          isDefault
-        }
-        internalID
-        slug
-        title
-      }
-    `,
+const myCollectionArtworkHeaderFragment = graphql`
+  fragment MyCollectionArtworkHeader_artwork on Artwork {
+    artistNames
+    date
+    images {
+      ...ImageCarousel_images
+      imageVersions
+      isDefault
+    }
+    internalID
+    slug
+    title
+    consignmentSubmission {
+      displayText
+    }
+    submissionId
   }
-)
+`
 
 const tracks = {
   tappedCollectedArtworkImages: (internalID: string, slug: string) => {

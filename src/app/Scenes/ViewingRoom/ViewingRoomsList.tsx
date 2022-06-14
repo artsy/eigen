@@ -7,13 +7,13 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import _ from "lodash"
 import { Flex, Spacer, useSpace } from "palette"
-import React, { FC, Suspense, useRef, useState } from "react"
+import React, { Suspense, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { graphql, useFragment } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { RailScrollRef } from "../Home/Components/types"
 import { featuredFragment, FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
@@ -56,7 +56,7 @@ const useNumColumns = () => {
   return orientation === "portrait" ? 2 : 3
 }
 
-export const ViewingRoomsList: FC = () => {
+export const ViewingRoomsList: React.FC = () => {
   const queryData = useLazyLoadQuery<ViewingRoomsListQuery>(
     ViewingRoomsListScreenQuery,
     viewingRoomsDefaultVariables

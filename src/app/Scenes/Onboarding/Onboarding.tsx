@@ -4,13 +4,13 @@ import {
   createStackNavigator,
   TransitionPresets,
 } from "@react-navigation/stack"
-import { ArtsyKeyboardAvoidingViewContext } from "app/Components/ArtsyKeyboardAvoidingView"
+import { OAuthProvider } from "app/auth/types"
 import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "app/Components/ArtsyReactWebViewPolicy"
 import { FPSCounter } from "app/Components/FPSCounter"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
-import React from "react"
 import { Platform, View } from "react-native"
+import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { ForgotPassword } from "./ForgotPassword"
 import {
@@ -39,8 +39,8 @@ export type OnboardingNavigationStack = {
   OnboardingSocialLink: {
     email: string
     name: string
-    providers: string[]
-    providerToBeLinked: string
+    providers: OAuthProvider[]
+    providerToBeLinked: OAuthProvider
     tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
   }
   ForgotPassword: undefined

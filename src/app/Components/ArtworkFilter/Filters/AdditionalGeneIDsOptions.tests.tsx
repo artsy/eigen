@@ -38,6 +38,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       total: null,
       followedArtists: null,
     },
+    sizeMetric: "cm",
   }
 
   const MockAdditionalGeneIDsOptionsScreen = ({
@@ -85,6 +86,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
@@ -110,6 +112,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getAllByA11yState } = renderWithWrappersTL(
@@ -140,6 +143,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
         total: null,
         followedArtists: null,
       },
+      sizeMetric: "cm",
     }
 
     const { getByText, queryAllByA11yState } = renderWithWrappersTL(

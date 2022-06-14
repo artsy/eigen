@@ -1,6 +1,7 @@
 import { MyCollectionArtworkAboutWork_artwork$key } from "__generated__/MyCollectionArtworkAboutWork_artwork.graphql"
 import { MyCollectionArtworkAboutWork_marketPriceInsights$key } from "__generated__/MyCollectionArtworkAboutWork_marketPriceInsights.graphql"
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { capitalize } from "lodash"
 import { Flex, Text } from "palette"
 import React from "react"
@@ -25,14 +26,10 @@ interface MyCollectionArtworkAboutWorkProps {
 export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWorkProps> = (
   props
 ) => {
-  const artwork = useFragment<MyCollectionArtworkAboutWork_artwork$key>(
-    artworkFragment,
-    props.artwork
-  )
-  const marketPriceInsights = useFragment<MyCollectionArtworkAboutWork_marketPriceInsights$key>(
-    marketPriceInsightsFragment,
-    props.marketPriceInsights
-  )
+  const artwork = useFragment(artworkFragment, props.artwork)
+  const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
+
+  const enablePriceEstimateRange = useFeatureFlag("AREnablePriceEstimateRange")
 
   const { category, medium, dimensions, date, provenance } = artwork
 
@@ -49,9 +46,9 @@ export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWork
         About the work
       </Text>
 
-      <Field label="Estimate Range" value={estimatePrice} />
-      <Field label="Medium" value={capitalize(category!)} />
-      <Field label="Materials" value={capitalize(medium!)} />
+      {!!enablePriceEstimateRange && <Field label="Estimate Range" value={estimatePrice} />}
+      <Field label="Medium" value={capitalize(medium!)} />
+      <Field label="Materials" value={capitalize(category!)} />
       <Field label="Dimensions" value={dimensionsText} />
       <Field label="Year created" value={date} />
       <Field label="Provenance" value={provenance} />

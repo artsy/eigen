@@ -1,0 +1,19 @@
+diff --git a/node_modules/react-native-config/react-native-config.podspec b/node_modules/react-native-config/react-native-config.podspec
+index 54985dd..d9fac08 100644
+--- a/node_modules/react-native-config/react-native-config.podspec
++++ b/node_modules/react-native-config/react-native-config.podspec
+@@ -21,6 +21,14 @@ Pod::Spec.new do |s|
+     name: 'Config codegen',
+     script: %(
+ set -ex
++# Use CI or shared env file.
++if [ -z ${CI+x} ]; then
++  echo "Not running on CI, using shared env file";
++  export ENVFILE=".env.shared";
++else
++  echo "Running on CI, using CI env file";
++  export ENVFILE=".env.ci";
++fi
+ HOST_PATH="$SRCROOT/../.."
+ "${PODS_TARGET_SRCROOT}/ios/ReactNativeConfig/BuildDotenvConfig.rb" "$HOST_PATH" "${PODS_TARGET_SRCROOT}/ios/ReactNativeConfig"
+ ),

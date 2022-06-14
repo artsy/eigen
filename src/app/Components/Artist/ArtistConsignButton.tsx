@@ -5,13 +5,13 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
-import { ArtistConsignButton_artist } from "__generated__/ArtistConsignButton_artist.graphql"
+import { ArtistConsignButton_artist$data } from "__generated__/ArtistConsignButton_artist.graphql"
 import { navigate } from "app/navigation/navigate"
 import { useSelectedTab } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 
 export interface ArtistConsignButtonProps {
-  artist: ArtistConsignButton_artist
+  artist: ArtistConsignButton_artist$data
 }
 
 export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) => {

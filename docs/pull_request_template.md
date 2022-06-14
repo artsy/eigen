@@ -1,31 +1,29 @@
-The type of this PR is: **TYPE**
+<!--
 
-<!-- Bugfix/Feature/Enhancement/Documentation -->
+➡️ Use a PR title in the form of  `type(PROJECT-XXXX): what changed`
+➡️ Provide the Jira ticket in square brackets like [PROJECT-XXXX]
 
-<!-- If applicable, write the Jira ticket number in square brackets e.g. [PROJECT-XXXX]
-     The Jira integration will turn it into a clickable link for you. -->
+❗️ If this is a work in progress, remember to prefix it with [WIP] and/or open a draft PR instead of normal PR
+
+-->
 
 This PR resolves []
 
 ### Description
 
-<!-- Implementation description -->
+<!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
-### PR Checklist (tick all before merging)
+### PR Checklist
 
-<!-- 💡 This checklist is experimental. CX warmly welcomes any feedback about the list or how it impacts your workflow -->
-
-- [ ] I have included screenshots or videos to illustrate my changes, or I have not changed anything that impacts the UI.
-- [ ] I have tested my changes on **iOS** and **Android**.
-- [ ] I have added tests/stories for my changes, or my changes don't require testing/stories, or I have included a link to a separate Jira ticket covering the tests.
-- [ ] I have added a feature flag, or my changes don't require a feature flag. ([How do I add one?](https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md))
-- [ ] I have documented any follow-up work that this PR will require, or it does not require any.
-- [ ] I have added an app state migration, or my changes do not require one. ([What are migrations?](https://github.com/artsy/eigen/blob/main/docs/adding_state_migrations.md))
-- [ ] I have added a changelog entry below or my changes do not require one.
+- [ ] I tested my changes on **iOS** / **Android**.
+- [ ] I added screenshots or videos to illustrate my changes.
+- [ ] I added Tests and Stories for my changes.
+- [ ] I added an [app state migration].
+- [ ] I hid my changes behind a [feature flag].
 
 ### To the reviewers 👀
 
-- [ ] I would like at least one of the reviewers to run this PR on the simulator or device.
+- [ ] I would like **at least one** of the reviewers to run this PR on the simulator or device.
 
 <details><summary>Changelog updates</summary>
 
@@ -57,3 +55,9 @@ This PR resolves []
 <!-- end_changelog_updates -->
 
 </details>
+
+Need help with something? Have a look at our [docs], or get in touch with us.
+
+[app state migration]: ../blob/main/docs/adding_state_migrations.md
+[feature flag]: ../blob/main/docs/developing_a_feature.md
+[docs]: ../blob/main/docs/README.md

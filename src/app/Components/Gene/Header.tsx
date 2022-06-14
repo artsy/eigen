@@ -1,4 +1,4 @@
-import { Header_gene } from "__generated__/Header_gene.graphql"
+import { Header_gene$data } from "__generated__/Header_gene.graphql"
 import { HeaderFollowGeneMutation } from "__generated__/HeaderFollowGeneMutation.graphql"
 import { Box, FollowButton, Sans } from "palette"
 import React from "react"
@@ -6,7 +6,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 import { Schema, Track, track as _track } from "../../utils/track"
 
 interface Props {
-  gene: Header_gene
+  gene: Header_gene$data
   shortForm: boolean
   relay: RelayProp
 }
@@ -23,11 +23,13 @@ class Header extends React.Component<Props, State> {
 
   render() {
     const { gene } = this.props
+    const title = gene.displayName || gene.name || ""
+
     return (
       <>
         <Box marginTop={60} justifyContent="center">
           <Sans size="8" numberOfLines={2}>
-            {gene.name || ""}
+            {title}
           </Sans>
         </Box>
         {this.renderFollowButton()}
@@ -155,6 +157,7 @@ export default createFragmentContainer(Header, {
       id
       isFollowed
       name
+      displayName
     }
   `,
 })

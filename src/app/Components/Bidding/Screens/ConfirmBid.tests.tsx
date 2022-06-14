@@ -1,8 +1,8 @@
-import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
-import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
-import { ConfirmBidCreateBidderPositionMutationResponse } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
-import { ConfirmBidCreateCreditCardMutationResponse } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
-import { ConfirmBidUpdateUserMutationResponse } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
+import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
+import { ConfirmBid_sale_artwork$data } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
+import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
+import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { FakeNavigator } from "app/Components/Bidding/Helpers/FakeNavigator"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { Modal } from "app/Components/Modal"
@@ -10,7 +10,7 @@ import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { waitUntil } from "app/tests/waitUntil"
 import { merge } from "lodash"
 import { Button, LinkText, Sans, Serif, Text } from "palette"
@@ -28,6 +28,8 @@ import { BillingAddress } from "./BillingAddress"
 import { ConfirmBid, ConfirmBidProps } from "./ConfirmBid"
 import { CreditCardForm } from "./CreditCardForm"
 import { SelectMaxBid } from "./SelectMaxBid"
+
+Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
 jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
@@ -578,9 +580,11 @@ describe("polling to verify bid position", () => {
             },
             status: "RESERVE_NOT_MET",
           },
+          biddingEndAt: expect.anything(),
           refreshBidderInfo: expect.anything(),
           refreshSaleArtwork: expect.anything(),
           sale_artwork: {
+            endAt: null,
             id: "node-id",
             internalID: "internal-id",
             " $fragmentRefs": null,
@@ -596,7 +600,10 @@ describe("polling to verify bid position", () => {
             },
             lot_label: "538",
             sale: {
+              start_at: "2018-05-08T20:22:42+00:00",
+              cascadingEndTimeIntervalMinutes: null,
               end_at: "2018-05-10T20:22:42+00:00",
+              internalID: "internal-id",
               isBenefit: false,
               live_start_at: "2018-05-09T20:22:42+00:00",
               partner: {
@@ -721,9 +728,9 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
-      "Your card's security code is incorrect."
-    )
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+      "Your card's security code is incorrect.",
+    ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
 
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
@@ -745,9 +752,9 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
-      "There was a problem processing your information. Check your payment details and try again."
-    )
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+      "There was a problem processing your information. Check your payment details and try again.",
+    ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
 
     // it dismisses the modal
@@ -768,9 +775,9 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual(
-      "There was a problem processing your information. Check your payment details and try again."
-    )
+    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+      "There was a problem processing your information. Check your payment details and try again.",
+    ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
 
     expect(component.root.findByType(Modal).props.visible).toEqual(false)
@@ -905,6 +912,43 @@ describe("ConfirmBid for unqualified user", () => {
   })
 })
 
+describe("cascading end times", () => {
+  beforeEach(() => {
+    Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
+  })
+
+  describe("with cacsading end time feature enabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
+    })
+
+    it("sale endtime defaults to extendedBiddingEndtime", () => {
+      const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
+      const timerText = getByText("00d 00h 00m 10s")
+      expect(timerText).toBeTruthy()
+    })
+
+    it("shows the sale's end time if the sale does not have cascading end times", () => {
+      const { getByText } = renderWithWrappersTL(
+        <ConfirmBid {...initialPropsForNonCascadingSale} />
+      )
+      const timerText = getByText("00d 00h 00m 10s")
+      expect(timerText).toBeTruthy()
+    })
+  })
+
+  describe("with cacsading end time feature disabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
+    })
+    it("shows the sale's end time", () => {
+      const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
+      const timerText = getByText("00d 00h 00m 10s")
+      expect(timerText).toBeTruthy()
+    })
+  })
+})
+
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const serifChildren = (comp) =>
   comp.root
@@ -913,7 +957,7 @@ const serifChildren = (comp) =>
     .map((c) => (c.props.children.join ? c.props.children.join("") : c.props.children))
     .join(" ")
 
-const saleArtwork: ConfirmBid_sale_artwork = {
+const baseSaleArtwork = {
   id: "node-id",
   internalID: "internal-id",
   artwork: {
@@ -926,8 +970,9 @@ const saleArtwork: ConfirmBid_sale_artwork = {
     },
   },
   sale: {
+    internalID: "internal-id",
     slug: "best-art-sale-in-town",
-    live_start_at: "2018-05-09T20:22:42+00:00",
+    start_at: "2018-05-08T20:22:42+00:00",
     end_at: "2018-05-10T20:22:42+00:00",
     isBenefit: false,
     partner: {
@@ -935,9 +980,49 @@ const saleArtwork: ConfirmBid_sale_artwork = {
     },
   },
   lot_label: "538",
+}
+
+const saleArtwork: ConfirmBid_sale_artwork$data = {
+  ...baseSaleArtwork,
+  endAt: null,
+  sale: {
+    ...baseSaleArtwork.sale,
+    live_start_at: "2018-05-09T20:22:42+00:00",
+    cascadingEndTimeIntervalMinutes: null,
+  },
+
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $fragmentRefs": null, // needs this to keep TS happy
+  " $refType": null, // needs this to keep TS happy
+}
+
+const nonCascadeSaleArtwork: ConfirmBid_sale_artwork$data = {
+  ...baseSaleArtwork,
+  endAt: null,
+  sale: {
+    ...baseSaleArtwork.sale,
+    end_at: new Date(Date.now() + 10000).toISOString(),
+    live_start_at: null,
+    cascadingEndTimeIntervalMinutes: null,
+  },
+
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  " $fragmentRefs": null, // needs this to keep TS happy
+  " $refType": null, // needs this to keep TS happy
+}
+
+const cascadingEndTimeSaleArtwork: ConfirmBid_sale_artwork$data = {
+  ...saleArtwork,
+  endAt: "2018-05-13T20:22:42+00:00",
+  extendedBiddingEndAt: new Date(Date.now() + 10000).toISOString(),
+  sale: {
+    ...baseSaleArtwork.sale,
+    live_start_at: null,
+    cascadingEndTimeIntervalMinutes: 1,
+  },
+
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  " $fragmentRefs": null, // needs this to keep TS happy
   " $refType": null, // needs this to keep TS happy
 }
 
@@ -948,7 +1033,7 @@ const mockRequestResponses = {
         phone: "111 222 4444",
       },
     },
-  } as ConfirmBidUpdateUserMutationResponse,
+  } as ConfirmBidUpdateUserMutation["response"],
   creatingCreditCardSuccess: {
     createCreditCard: {
       creditCardOrError: {
@@ -962,7 +1047,7 @@ const mockRequestResponses = {
         },
       },
     },
-  } as ConfirmBidCreateCreditCardMutationResponse,
+  } as ConfirmBidCreateCreditCardMutation["response"],
   creatingCreditCardEmptyError: {
     createCreditCard: {
       creditCardOrError: {
@@ -973,7 +1058,7 @@ const mockRequestResponses = {
         },
       },
     },
-  } as ConfirmBidCreateCreditCardMutationResponse,
+  } as ConfirmBidCreateCreditCardMutation["response"],
   creatingCreditCardError: {
     createCreditCard: {
       creditCardOrError: {
@@ -984,7 +1069,7 @@ const mockRequestResponses = {
         },
       },
     },
-  } as ConfirmBidCreateCreditCardMutationResponse,
+  } as ConfirmBidCreateCreditCardMutation["response"],
   placingBid: {
     bidAccepted: {
       createBidderPosition: {
@@ -997,7 +1082,7 @@ const mockRequestResponses = {
           },
         },
       },
-    } as ConfirmBidCreateBidderPositionMutationResponse,
+    } as ConfirmBidCreateBidderPositionMutation["response"],
     bidRejected: {
       createBidderPosition: {
         result: {
@@ -1006,7 +1091,7 @@ const mockRequestResponses = {
           message_description_md: "Some markdown description",
         },
       },
-    } as ConfirmBidCreateBidderPositionMutationResponse,
+    } as ConfirmBidCreateBidderPositionMutation["response"],
   },
   pollingForBid: {
     highestBidder: {
@@ -1018,7 +1103,7 @@ const mockRequestResponses = {
           },
         },
       },
-    } as BidderPositionQueryResponse,
+    } as BidderPositionQuery$data,
     outbid: {
       me: {
         bidder_position: {
@@ -1028,7 +1113,7 @@ const mockRequestResponses = {
           },
         },
       },
-    } as BidderPositionQueryResponse,
+    } as BidderPositionQuery$data,
     pending: {
       me: {
         bidder_position: {
@@ -1038,7 +1123,7 @@ const mockRequestResponses = {
           status: "PENDING",
         },
       },
-    } as BidderPositionQueryResponse,
+    } as BidderPositionQuery$data,
     reserveNotMet: {
       me: {
         bidder_position: {
@@ -1048,7 +1133,7 @@ const mockRequestResponses = {
           status: "RESERVE_NOT_MET",
         },
       },
-    } as BidderPositionQueryResponse,
+    } as BidderPositionQuery$data,
   },
 }
 
@@ -1114,3 +1199,13 @@ const initialPropsForRegisteredUser = {
     bidders: [{ qualified_for_bidding: true }],
   },
 } as any
+
+const initialPropsForCascadingSale = {
+  ...initialProps,
+  sale_artwork: cascadingEndTimeSaleArtwork,
+}
+
+const initialPropsForNonCascadingSale = {
+  ...initialProps,
+  sale_artwork: nonCascadeSaleArtwork,
+}

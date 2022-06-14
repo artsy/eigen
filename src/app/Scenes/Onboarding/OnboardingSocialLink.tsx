@@ -1,4 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { OAuthProvider } from "app/auth/types"
 import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
@@ -8,7 +9,7 @@ import { FormikProvider, useFormik } from "formik"
 import { capitalize } from "lodash"
 import { Button, Flex, Input, Spacer, Spinner, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
-import { Alert, Image, Platform } from "react-native"
+import { Alert, Image, ImageSourcePropType, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useRelayEnvironment } from "react-relay"
 import * as Yup from "yup"
@@ -72,7 +73,7 @@ export const OnboardingSocialLink: React.FC<
     [navigation, showPasswordForm, providers, permittedProviders]
   )
 
-  const onSignIn = (provider: string, token: GoogleOrFacebookToken | AppleToken) => {
+  const onSignIn = (provider: OAuthProvider, token: GoogleOrFacebookToken | AppleToken) => {
     if ((provider === "facebook" || provider === "google") && typeof token !== "string") {
       console.warn(`Incompatible Type of Token provided for ${provider}`)
       return
@@ -89,7 +90,7 @@ export const OnboardingSocialLink: React.FC<
     }
   }
 
-  const linkWithSocialAccount = async (provider: string) => {
+  const linkWithSocialAccount = async (provider: OAuthProvider) => {
     const { authFacebook, authApple, authGoogle } = GlobalStore.actions.auth
     const FBOrGoogProvider: { [key: string]: typeof authFacebook } = {
       facebook: authFacebook,
@@ -178,7 +179,7 @@ export const OnboardingSocialLink: React.FC<
               secureTextEntry
               autoFocus
               autoCapitalize="none"
-              autoCompleteType="password"
+              autoComplete="password"
               autoCorrect={false}
               onChangeText={(text) => {
                 setErrors({ password: undefined })
@@ -268,17 +269,18 @@ export const OnboardingSocialLink: React.FC<
   )
 }
 
-export const LinkAccountButton: React.FC<{
+interface LinkAccountButtonProps {
   onPress: () => void
-  provider: string
+  provider: OAuthProvider
   loading: boolean
-}> = ({ onPress, provider, loading }) => {
+}
+export function LinkAccountButton({ onPress, provider, loading }: LinkAccountButtonProps) {
   const titleizedProvider = capitalize(provider)
-  const imageSources: { [key: string]: NodeRequire } = {
-    facebook: require(`@images/facebook.webp`),
-    google: require(`@images/google.webp`),
-    email: require(`@images/email.webp`),
-    apple: require(`@images/apple.webp`),
+  const imageSources: Record<OAuthProvider, ImageSourcePropType> = {
+    facebook: require(`images/facebook.webp`),
+    google: require(`images/google.webp`),
+    email: require(`images/email.webp`),
+    apple: require(`images/apple.webp`),
   }
   return (
     <Button

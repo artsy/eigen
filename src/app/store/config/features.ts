@@ -2,27 +2,42 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { echoLaunchJson } from "app/utils/jsonFiles"
 import { GlobalStore } from "../GlobalStore"
 
-export interface FeatureDescriptor {
-  /**
-   * Set readyForRelease to `true` when the feature is ready to be exposed outside of dev mode.
-   * If an echo flag key is specified, the echo flag's value will be used after this is set to `true`.
-   * If this is set to `false`, the feature will never be shown except if overridden in the admin menu.
-   */
-  readonly readyForRelease: boolean
-  /**
-   * Provide an echo feature flag key to allow this feature to be toggled globally via echo.
-   * Make sure to add the flag to echo before setting this value. Then run ./scripts/update-echo
-   */
-  readonly echoFlagKey?: string
-  /**
-   * Provide a short description for the admin menu
-   */
+interface FeatureDescriptorCommonTypes {
+  /** Provide a short description for the admin menu. */
   readonly description?: string
-  /**
-   * Whether or not to show the feature flag in the admin menu. Consider also providing a description.
-   */
+
+  /** Whether or not to show the feature flag in the admin menu. Consider also providing a description. */
   readonly showInAdminMenu?: boolean
 }
+
+export interface FeatureDescriptorReadyForRelease {
+  /**
+   * Set readyForRelease to `true` when the feature is ready to be exposed outside of dev mode.
+   * If an echo flag key is specified, the echo flag's value will be used after this
+   * is set to `true`.
+   */
+  readonly readyForRelease: true
+  /**
+   * Provide an echo feature flag key to allow this feature to be toggled globally via echo.
+   * Make sure to add the flag to echo before setting this value. Then run `./scripts/update-echo`.
+   */
+  readonly echoFlagKey: string
+}
+
+interface FeatureDescriptorNotReadyForRelease {
+  /**
+   * Set readyForRelease to `false` when the feature is still in progress.
+   */
+  readonly readyForRelease: false
+
+  readonly echoFlagKey?: string
+}
+
+export type FeatureDescriptor = (
+  | FeatureDescriptorReadyForRelease
+  | FeatureDescriptorNotReadyForRelease
+) &
+  FeatureDescriptorCommonTypes
 
 // Helper function to get good typings and intellisense
 function defineFeatures<T extends string>(featureMap: {
@@ -34,40 +49,14 @@ function defineFeatures<T extends string>(featureMap: {
 export type FeatureName = keyof typeof features
 
 export const features = defineFeatures({
-  AROptionsNewFirstInquiry: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsNewFirstInquiry",
-  },
-  AROptionsInquiryCheckout: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsInquiryCheckout",
-    description: "Enable inquiry checkout",
-  },
   AROptionsPriceTransparency: {
     readyForRelease: true,
     echoFlagKey: "AROptionsPriceTransparency",
     description: "Price Transparency",
   },
-  ARDisableReactNativeBidFlow: {
-    readyForRelease: true,
-    echoFlagKey: "ARDisableReactNativeBidFlow",
-  },
-  AREnableNewPartnerView: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableNewPartnerView",
-  },
   AROptionsLotConditionReport: {
     readyForRelease: true,
     echoFlagKey: "AROptionsLotConditionReport",
-  },
-  AREnableViewingRooms: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableViewingRooms",
-  },
-  ARHomeAuctionResultsByFollowedArtists: {
-    readyForRelease: true,
-    echoFlagKey: "ARHomeAuctionResultsByFollowedArtists",
-    description: "Enable home auction results",
   },
   AREnableOrderHistoryOption: {
     readyForRelease: true,
@@ -77,11 +66,6 @@ export const features = defineFeatures({
   AREnableSavedAddresses: {
     readyForRelease: false,
     description: "Enable Saved Addresses",
-  },
-  AREnableImprovedSearchPills: {
-    readyForRelease: false,
-    description: "Enable improved search pills",
-    echoFlagKey: "AREnableImprovedSearchPills",
   },
   AREnableTrove: {
     readyForRelease: true,
@@ -99,7 +83,7 @@ export const features = defineFeatures({
     echoFlagKey: "ARShowNetworkUnavailableModal",
   },
   ARGoogleAuth: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Google authentication",
     showInAdminMenu: true,
     echoFlagKey: "ARGoogleAuth",
@@ -109,21 +93,11 @@ export const features = defineFeatures({
     description: "Enable Improved Alerts flow",
     echoFlagKey: "AREnableImprovedAlertsFlow",
   },
-  AREnableSplitIOABTesting: {
-    readyForRelease: true,
-    description: "Enable Split.io A/B testing",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableSplitIOABTesting",
-  },
   AREnableExampleExperiments: {
     // we can remove this as soon as we have a real experiment on Unleash
     readyForRelease: false,
     description: "Show example Unleash experiments",
     showInAdminMenu: true,
-  },
-  AREnableArtistRecommendations: {
-    readyForRelease: false,
-    description: "Enable new artist recommendations",
   },
   AREnableQueriesPrefetching: {
     readyForRelease: true,
@@ -131,30 +105,45 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableQueriesPrefetching",
   },
-  AREnableAccordionNavigationOnSubmitArtwork: {
-    readyForRelease: true,
-    description: "Enable New Artwork Submission Flow with Accordion",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableAccordionNavigationOnSubmitArtwork",
-  },
   ARShowLinkedAccounts: {
     readyForRelease: true,
     description: "Show linked social accounts",
     showInAdminMenu: true,
+    echoFlagKey: "ARShowLinkedAccounts",
   },
   ARAllowLinkSocialAccountsOnSignUp: {
     readyForRelease: true,
     description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
+    echoFlagKey: "ARAllowLinkSocialAccountsOnSignUp",
+  },
+  AREnableCascadingEndTimerLotPage: {
+    readyForRelease: true,
+    description: "Enable cascading end times on the lot page",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCascadingEndTimerLotPage",
+  },
+  AREnableCascadingEndTimerSalePageDetails: {
+    readyForRelease: true,
+    description: "Enable cascading end times on the sale page details",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCascadingEndTimerSalePageDetails",
+  },
+  AREnableCascadingEndTimerSalePageGrid: {
+    readyForRelease: true,
+    description: "Enable cascading end times on the sale page lot grid",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCascadingEndTimerSalePageGrid",
+  },
+  AREnableCascadingEndTimerHomeSalesRail: {
+    readyForRelease: true,
+    description: "Enable cascading end times on the Sales Rail on Home screen",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCascadingEndTimerHomeSalesRail",
   },
   AREnableImageSearch: {
     readyForRelease: false,
     description: "Enable search with image",
-    showInAdminMenu: true,
-  },
-  AREnableCollectorProfile: {
-    readyForRelease: true,
-    description: "Enable collector profile",
     showInAdminMenu: true,
   },
   AREnableMyCollectionSearchBar: {
@@ -162,25 +151,10 @@ export const features = defineFeatures({
     description: "Enable My Collection search bar",
     showInAdminMenu: true,
   },
-  ARShowConsignmentsInMyCollection: {
-    readyForRelease: false,
-    description: "Show consignments in My Collection",
-    showInAdminMenu: true,
-  },
   AREnablePlaceholderLayoutAnimation: {
     readyForRelease: true,
     description: "Enable placeholder layout animation",
-  },
-  AREnableNewMyCollectionArtwork: {
-    readyForRelease: false,
-    description: "Enable new my collection artwork page",
-    showInAdminMenu: true,
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
-  },
-  AREnableShowOnlySubmittedMyCollectionArtworkFilter: {
-    readyForRelease: false,
-    description: "Enable Show Only Submitted MyCollection Artwork Filter",
-    showInAdminMenu: true,
   },
   AREnableAvalaraPhase2: {
     readyForRelease: false,
@@ -193,14 +167,88 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   ARShowRequestPriceEstimateBanner: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Show request price estimate banner",
     showInAdminMenu: true,
+    echoFlagKey: "ARShowRequestPriceEstimateBanner",
   },
-  ARShowDemandIndexHints: {
-    readyForRelease: false,
+  ARShowMyCollectionDemandIndexHints: {
+    readyForRelease: true,
     description: "Show demand index hints",
     showInAdminMenu: true,
+    echoFlagKey: "ARShowMyCollectionDemandIndexHints",
+  },
+  AREnablePriceEstimateRange: {
+    readyForRelease: false,
+    description: "Enable My Collection Price Estimate Range",
+    showInAdminMenu: false,
+  },
+  AREnableHomeScreenArtworkRecommendations: {
+    readyForRelease: true,
+    description: "Enable Home Screen Artwork Recommendations",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableHomeScreenArtworkRecommendations",
+  },
+  AREnableMapScreen: {
+    readyForRelease: false,
+    description: "Enable Crossplatform Map Screen",
+    showInAdminMenu: true,
+  },
+  AREnableAuctionShareButton: {
+    readyForRelease: true,
+    description: "Show share button in auction screen",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableAuctionShareButton",
+  },
+  AREnableConversationalBuyNow: {
+    readyForRelease: false,
+    description: "Conversational Buy Now",
+    showInAdminMenu: true,
+  },
+  AREnableCompleteProfileMessage: {
+    readyForRelease: true,
+    description: "Enable Collector Profile Complete Message",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCompleteProfileMessage",
+  },
+  AREnableMyCollectionInsights: {
+    readyForRelease: true,
+    description: "Enable My Collection insights tab",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionInsights",
+  },
+  AREnableMyCollectionInsightsPhase1Part1: {
+    readyForRelease: true,
+    description: "Enable MyC insights Ph 1 Pt 1",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionInsightsPhase1Part1",
+  },
+  AREnableMyCollectionInsightsPhase1Part2: {
+    readyForRelease: false,
+    description: "Enable MyC insights Ph 1 Pt 2",
+    showInAdminMenu: true,
+  },
+  AREnableMyCollectionInsightsPhase1Part3: {
+    readyForRelease: false,
+    description: "Enable MyC insights Ph 1 Pt 3",
+    showInAdminMenu: true,
+  },
+  AREnableNotFoundFailureView: {
+    readyForRelease: true,
+    description: "Enable Not Found Failure View",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableNotFoundFailureView",
+  },
+  AREnableArtworksFromNonArtsyArtists: {
+    readyForRelease: false,
+    description: "Enable My Collection artworks from non-Artsy artists",
+    showInAdminMenu: true,
+  },
+  AREnableCreateArtworkAlert: {
+    readyForRelease: true,
+    description: "Enable Create Alert on Artwork pages",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableCreateArtworkAlert",
   },
 })
 
@@ -241,6 +289,9 @@ export const devToggles = defineDevToggles({
   DTShowAnalyticsVisualiser: {
     description: "Analytics visualiser",
   },
+  DTShowNavigationVisualiser: {
+    description: "Navigation visualiser",
+  },
   DTEasyMyCollectionArtworkCreation: {
     description: "MyCollection artworks easy add",
   },
@@ -258,6 +309,9 @@ export const devToggles = defineDevToggles({
   },
   DTUseProductionUnleash: {
     description: "Use Production Unleash",
+  },
+  DTShowErrorInLoadFailureView: {
+    description: "Show error in load failure view",
   },
 })
 

@@ -1,12 +1,12 @@
 # Getting Started
 
-## Prerequisites
+### Prerequisites
 
 You'll need [Node](https://nodejs.org/en/), [Yarn](https://yarnpkg.com/en/) and Watchman installed (`brew install watchman`).
 
 > The Node version should match [the `engine` version here](https://github.com/artsy/eigen/blob/main/package.json).
 
-### Setting up iOS
+### Set up iOS
 
 Download Xcode version 13. You can find all available versions of Xcode at [Apple's Developer Portal 🔐](http://developer.apple.com/download/more/).
 
@@ -19,39 +19,46 @@ Check that Command Line Tools version is added in the Locations tab. Xcode>Prefe
 
 </details>
 
-### Setting up Android
+### Set up Android
 
-1. Android development environment:
+1. Android development environment: Follow the [official docs](https://reactnative.dev/docs/environment-setup). Select "React Native CLI Quickstart" tab
 
-Follow the official docs [here](https://reactnative.dev/docs/environment-setup). Select "React Native CLI Quickstart" tab
+1. [Create a virtual device](https://developer.android.com/studio/run/managing-avds) on which to run the Android app.
 
-2. Create a virtual device:
+## Run Eigen
 
-[Create a virtual device](https://developer.android.com/studio/run/managing-avds) on which to run the Android app.
-
-### Clone
+### Get eigen
 
 ```
 git clone https://github.com/artsy/eigen.git
 cd eigen
 ```
 
-### Install dependencies
+### Install the dependencies
 
 <details><summary>Work at Artsy?</summary>
 
-1. Instead of `yarn setup:oss` below, run `yarn setup:artsy`. You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
+1. Run
 
-2. The file `Artsy/App/EchoNew.json`, which is used to toggle features, is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `EchoNew.json` file will be downloaded for you.
+```
+yarn setup:artsy
+yarn install:all
+```
+
+You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
+
+1. `Artsy/App/EchoNew.json` is used to toggle features and it is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `EchoNew.json` file will be downloaded for you.
 </details>
 
+<details><summary>Independent Contributor?</summary>
+
 ```sh
-
-yarn setup:oss # or `yarn setup:artsy` if you're working at Artsy
-
+yarn setup:oss # this is `yarn setup:artsy` if you're working at Artsy
 yarn install:all
 
 ```
+
+</details>
 
 **Note**: `yarn pod-install` (which is included in `yarn install:all`) may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
 
@@ -76,7 +83,7 @@ Ask for your apple developer account to be added on the project and login with y
 Open the app in Xcode:
 
 ```sh
-open Artsy.xcworkspace
+open ios/Artsy.xcworkspace
 ```
 
 From Xcode, run the app by hitting `Product > Run` (or ⌘R). This will start the Artsy app in an iOS simulator, pointed at Artsy's staging environment.

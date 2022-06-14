@@ -175,6 +175,16 @@ There are two hacks here:
 - We hack the output of the compiler to provide clickable links for error messages. Relay assumes that you put your `__generated__` folder in the root of your project, but we put it in `src`.
 - We make sure that files which do not change are not overwritten. This prevents excessive reloading by metro.
 
+## react-relay-network-modern (upload middleware patch)
+
+#### When can we remove this:
+
+We can remove this hack when we can pass Blob/File with specified `name` field to `fetch()` and we won't get an error on Android
+
+#### Explanation/Context:
+
+If we try to pass Blob/File with specified `name` field (if we forgot to specify this field, Metaphysics will assume that no file was passed) to `fetch()`, we will get an error on Android. For this reason, support for these data formats is extracted from `upload` middleware.
+
 ## react-native-credit-card-input
 
 #### When can we remove this:
@@ -240,16 +250,6 @@ This is happening because react-native-push-notification requires @react-native-
 adding this dependency at this time because it is unnecessary and we do not use react-native-push-notification on iOS. Also,
 we do not want unnecessary conflicts between our native push notification implementation and @react-native-community/push-notification-ios's.
 
-## `@storybook/client-api` patch-package
-
-#### When can we remove this:
-
-Once storybook is upgraded to a version that does not use the removed `Cancellable` from `lodash` in that file.
-
-#### Explanation/Context:
-
-We get an error like here, and that is the solution. https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47166#issuecomment-685738545
-
 # `PropsStore` pass functions as props inside navigate() on iOS
 
 #### When can we remove this:
@@ -263,6 +263,16 @@ React native is not able to convert js functions so this is passed as null to th
 See what can be converted: https://github.com/facebook/react-native/blob/main/React/Base/RCTConvert.h
 
 PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
+
+# `ORStackView` pod postinstall modification (add UIKit import)
+
+#### When can we remove this:
+
+Once we remove ORStackView or the upstream repo adds the import. May want to proactively open a PR for this.
+
+#### Explanation/Context:
+
+The Pod does not compile when imported as is without hack due to missing symbols from UIKit.
 
 # `Map` manual prop update in `PageWrapper`
 
@@ -285,3 +295,68 @@ When we fix the actual issue. https://artsyproduct.atlassian.net/browse/MOPLAT-1
 #### Explanation/Context:
 
 The app restarts when the user takes a picture to pass to `react-native-image-crop-picker` (https://github.com/ivpusic/react-native-image-crop-picker/issues/1704). We do not know exactly why this is happening. And it seems to happen on random devices, but mostly on android-10 and android-11s. This hack silently clears the cache on android before taking the photo.
+
+## @react-native-async-storage/async-storage patch
+
+#### When can we remove this:
+
+When https://github.com/react-native-async-storage/async-storage/issues/746 is solved.
+
+#### Explanation/Context:
+
+The types in this package are not correct, and there is a type error that comes up when we try to use it.
+It's a type error on the mock declaration, so we don't really care for it, so we just add a ts-ignore instruction to that declaration.
+
+## @wojtekmaj/enzyme-adapter-react-17 patch
+
+#### When can we remove this:
+
+When we remove enzyme from eigen.
+
+#### Explanation/Context:
+
+Enzyme is missing types and this package is importing enzyme, so typescript is sad.
+We ignore enzyme types in our tests in eigen too. Once we remove enzyme, we can get rid of this and everything connected to enzyme.
+
+## rn-async-storage-flipper patch
+
+#### When can we remove this:
+
+Unsure.
+
+#### Explanation/Context:
+
+The types in this package are not correct, and there is a type error that comes up when we try to use it.
+It is a helper package only used for developing, so we are not afraid of wrong types causing issues to users.
+
+## ParentAwareScrollView
+
+#### When can we remove this:
+
+To remove this, we need to change our InfiniteScrollArtworksGrid to use a FlatList or any VirtualizedList. We haven't done that yet, because we need the masonry layout.
+We either need to find a library that gives us masonry layout using a VirtualizedList, or we need to make our own version of this.
+
+#### Explanation/Context:
+
+Currently our masonry layout (in InfiniteScrollArtworksGrid `render()`) is using a ScrollView, which is not a VirtualizedList.
+Also, currently, the parent that is the FlatList, comes from StickyTabPageFlatList.
+
+## react-native-scrollable-tab-view pointing to a commit hash
+
+#### When we can remove this:
+
+When the fix is in a release in the library or when we stop using this library.
+
+#### Explanation/Context
+
+With updated react native version (66) this library causes an error calling the now non-existent getNode() function, it is fixed on the main branch in the library but has not yet been released on npm.
+
+## @storybook/react-native patch
+
+#### When we can remove this:
+
+When [this](https://github.com/storybookjs/react-native/pull/345) is merged, or when storybook supports rendering outside the safe area.
+
+#### Explanation/Context
+
+Storybook does not render outside the safe area, so for `Screen` and friends, we can't really use storybook otherwise. With this patch, we can now render outside the safe area, by adding `parameters: { noSafeArea: true }` in the new form of stories.

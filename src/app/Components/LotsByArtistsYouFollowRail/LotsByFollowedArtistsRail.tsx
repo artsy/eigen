@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { LotsByFollowedArtistsRail_me } from "__generated__/LotsByFollowedArtistsRail_me.graphql"
+import { LotsByFollowedArtistsRail_me$data } from "__generated__/LotsByFollowedArtistsRail_me.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -14,7 +14,7 @@ export const PAGE_SIZE = 6
 
 interface Props {
   title: string
-  me: LotsByFollowedArtistsRail_me
+  me: LotsByFollowedArtistsRail_me$data
   relay: RelayPaginationProp
   mb?: number
 }

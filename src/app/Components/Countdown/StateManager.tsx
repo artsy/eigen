@@ -1,11 +1,15 @@
 import React from "react"
-import { CountdownProps } from "./CountdownTimer"
+import { CountdownProps } from "../Bidding/Components/Timer"
+
 import { DurationProvider } from "./DurationProvider"
 
 export interface TickerState {
   label?: string
   date?: string
+  hasStarted?: boolean
   state: string
+  biddingEndAt?: string
+  hasBeenExtended?: boolean
 }
 
 interface Props {
@@ -25,6 +29,7 @@ export class StateManager extends React.Component<Props, State> {
   static getDerivedStateFromProps(props, state) {
     // If this component receives a new tickerState as props,
     // update to use the new props.
+
     if (props.onCurrentTickerState().date !== state.previousTickerState.date) {
       return {
         tickerState: props.onCurrentTickerState(),
@@ -47,21 +52,21 @@ export class StateManager extends React.Component<Props, State> {
   render() {
     const { CountdownComponent, timeOffsetInMilliseconds, ...props } = this.props
     const {
-      tickerState: { label, date, state },
+      tickerState: { label, date, state, hasStarted, hasBeenExtended, biddingEndAt },
     } = this.state
-
     return (
       <DurationProvider
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         startAt={date}
         timeOffsetInMilliseconds={timeOffsetInMilliseconds}
         onDurationEnd={this.handleDurationEnd}
       >
         <CountdownComponent
           label={label}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           duration={null}
+          hasStarted={hasStarted}
           timerState={state}
+          hasBeenExtended={hasBeenExtended}
+          biddingEndAt={biddingEndAt}
           {...props}
         />
       </DurationProvider>

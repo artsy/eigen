@@ -1,10 +1,10 @@
-import { ShowArtworksEmptyState_show } from "__generated__/ShowArtworksEmptyState_show.graphql"
-import { Box, BoxProps, Message } from "palette"
+import { ShowArtworksEmptyState_show$data } from "__generated__/ShowArtworksEmptyState_show.graphql"
+import { Box, BoxProps, SimpleMessage } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface ShowArtworksEmptyStateProps extends BoxProps {
-  show: ShowArtworksEmptyState_show
+  show: ShowArtworksEmptyState_show$data
 }
 
 export const ShowArtworksEmptyState: React.FC<ShowArtworksEmptyStateProps> = ({
@@ -25,7 +25,7 @@ export const ShowArtworksEmptyState: React.FC<ShowArtworksEmptyStateProps> = ({
 
   return (
     <Box {...rest}>
-      <Message>{message}</Message>
+      <SimpleMessage>{message}</SimpleMessage>
     </Box>
   )
 }

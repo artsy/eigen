@@ -1,5 +1,4 @@
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React, { ReactNode } from "react"
 import { View } from "react-native"
 import { combineProviders } from "./combineProviders"
 
@@ -11,7 +10,7 @@ const ProviderC = (props: any) => <ProviderCSpecial needed="special" {...props} 
 
 describe("combineProviders", () => {
   it("works", () => {
-    const Providers = ({ children }: { children?: ReactNode }) =>
+    const Providers = ({ children }: { children?: React.ReactNode }) =>
       combineProviders([ProviderA, ProviderB, ProviderC], children)
 
     const { toJSON } = renderWithWrappersTL(

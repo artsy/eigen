@@ -2,6 +2,7 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import {
+  Aggregations,
   FilterDisplayName,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -9,8 +10,9 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { debounce } from "lodash"
-import { Flex, Input, Spacer, Text, useColor } from "palette"
+import { useExperimentFlag } from "app/utils/experiments/hooks"
+import { debounce, sortBy } from "lodash"
+import { Flex, Histogram, HistogramBarEntity, Input, Spacer, Text, useColor } from "palette"
 import React, { useMemo, useState } from "react"
 import { ScrollView, useWindowDimensions } from "react-native"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
@@ -27,9 +29,26 @@ const DEFAULT_PRICE_OPTION = {
   paramName: PARAM_NAME,
 }
 
-const DEBOUNCE_DELAY = 500
+export const getBarsFromAggregations = (aggregations?: Aggregations) => {
+  const histogramAggregation = aggregations?.find(
+    (aggregation) => aggregation.slice === "SIMPLE_PRICE_HISTOGRAM"
+  )
+  const counts = histogramAggregation?.counts ?? []
+  const bars: HistogramBarEntity[] = counts.map((entity) => ({
+    count: entity.count,
+    value: Number(entity.value),
+  }))
+  const sortedBars = sortBy(bars, "value")
+
+  return sortedBars
+}
+
+const NUMBERS_REGEX = /^(|\d)+$/
+const DEBOUNCE_DELAY = 200
 const DEFAULT_PRICE_RANGE = DEFAULT_PRICE_OPTION.paramValue
 const DEFAULT_RANGE = [0, 50000]
+const RANGE_DOT_SIZE = 32
+const SLIDER_STEP_VALUE = 100
 
 type CustomRange = Numeric[]
 
@@ -69,6 +88,9 @@ const getInputValue = (value: CustomRange[number]) => {
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const { width } = useWindowDimensions()
   const color = useColor()
+
+  const enableHistogram = useExperimentFlag("eigen-enable-price-histogram")
+
   const [defaultMinValue, defaultMaxValue] = DEFAULT_RANGE
 
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
@@ -97,6 +119,13 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_OPTION.paramValue
 
   const handleTextChange = (changedIndex: number) => (value: string) => {
+    // Early exit the input update if the value is not a number
+    // This was added for the android number-pad keyboard that
+    // includes some special characters
+    if (!NUMBERS_REGEX.test(value)) {
+      return
+    }
+
     const updatedRange = range.map((rangeValue, index) => {
       if (index === changedIndex) {
         if (value === "" || value === "0") {
@@ -129,6 +158,10 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     })
   }
 
+  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
+  const histogramBars = getBarsFromAggregations(aggregations)
+  const shouldDisplayHistogram = enableHistogram && histogramBars.length > 0
+
   return (
     <Flex flexGrow={1}>
       <ArtworkFilterBackHeader
@@ -137,14 +170,15 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
         {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
       />
       <Flex flexGrow={1}>
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView scrollEnabled={false} keyboardShouldPersistTaps="handled">
           <Flex m={2}>
             <Text variant="md">Choose Your Price Range</Text>
           </Flex>
-          <Flex flexDirection="row" alignItems="center" mb={1} mx={2}>
+          <Flex flexDirection="row" mx={2}>
             <Input
+              containerStyle={{ flex: 1 }}
               description="Min"
-              placeholder="$USD"
+              fixedRightPlaceholder="$USD"
               enableClearButton
               keyboardType="number-pad"
               value={getInputValue(minValue)}
@@ -154,8 +188,9 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
             />
             <Spacer mx={2} />
             <Input
+              containerStyle={{ flex: 1 }}
               description="Max"
-              placeholder="$USD"
+              fixedRightPlaceholder="$USD"
               enableClearButton
               keyboardType="number-pad"
               value={getInputValue(maxValue)}
@@ -164,16 +199,21 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
               descriptionColor="black100"
             />
           </Flex>
-          <Spacer mx={2} my={2} />
-          <Flex mx={2}>
+          <Spacer m={2} />
+          <Flex mx={`${20 + RANGE_DOT_SIZE / 2}px`}>
+            {!!shouldDisplayHistogram && (
+              <Flex mb={2}>
+                <Histogram bars={histogramBars} selectedRange={[sliderRange[0], sliderRange[1]]} />
+              </Flex>
+            )}
             <Flex alignItems="center" testID="slider">
               <MultiSlider
                 min={defaultMinValue}
                 max={defaultMaxValue}
-                step={5}
+                step={SLIDER_STEP_VALUE}
                 snapped
                 // 40 here is the horizontal padding of the slider container
-                sliderLength={width - 40}
+                sliderLength={width - 40 - RANGE_DOT_SIZE}
                 onValuesChange={handleSliderValueChange}
                 allowOverlap={false}
                 values={sliderRange}
@@ -184,9 +224,9 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
                   backgroundColor: color("blue100"),
                 }}
                 markerStyle={{
-                  height: 32,
-                  width: 32,
-                  borderRadius: 16,
+                  height: RANGE_DOT_SIZE,
+                  width: RANGE_DOT_SIZE,
+                  borderRadius: RANGE_DOT_SIZE / 2,
                   backgroundColor: color("white100"),
                   borderColor: color("black10"),
                   borderWidth: 1,
@@ -194,8 +234,8 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
                   elevation: 5,
                 }}
                 pressedMarkerStyle={{
-                  height: 32,
-                  width: 32,
+                  height: RANGE_DOT_SIZE,
+                  width: RANGE_DOT_SIZE,
                   borderRadius: 16,
                 }}
               />

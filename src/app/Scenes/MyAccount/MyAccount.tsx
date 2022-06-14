@@ -1,4 +1,4 @@
-import { MyAccount_me } from "__generated__/MyAccount_me.graphql"
+import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MenuItem } from "app/Components/MenuItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -17,7 +17,7 @@ import React from "react"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 
-const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay }) => {
+const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, relay }) => {
   const hasOnlyOneAuth = me.authentications.length + (me.hasPassword ? 1 : 0) < 2
 
   const onlyExistingAuthFor = (provider: "FACEBOOK" | "GOOGLE" | "APPLE") => {
@@ -111,7 +111,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
                     <Image
-                      source={require(`@images/facebook.webp`)}
+                      source={require(`images/facebook.webp`)}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -139,7 +139,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
-                        source={require(`@images/google.webp`)}
+                        source={require(`images/google.webp`)}
                         resizeMode="contain"
                         style={{ marginRight: 10 }}
                       />
@@ -167,7 +167,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
-                        source={require(`@images/apple.webp`)}
+                        source={require(`images/apple.webp`)}
                         resizeMode="contain"
                         style={{ marginRight: 10, tintColor: "black" }}
                       />

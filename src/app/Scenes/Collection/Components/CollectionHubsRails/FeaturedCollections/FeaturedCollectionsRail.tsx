@@ -1,6 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
-import { FeaturedCollectionsRail_collection } from "__generated__/FeaturedCollectionsRail_collection.graphql"
-import { FeaturedCollectionsRail_collectionGroup } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
+import { FeaturedCollectionsRail_collection$data } from "__generated__/FeaturedCollectionsRail_collection.graphql"
+import { FeaturedCollectionsRail_collectionGroup$data } from "__generated__/FeaturedCollectionsRail_collectionGroup.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
@@ -14,11 +14,11 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface FeaturedCollectionsRailProps {
-  collectionGroup: FeaturedCollectionsRail_collectionGroup
-  collection: FeaturedCollectionsRail_collection
+  collectionGroup: FeaturedCollectionsRail_collectionGroup$data
+  collection: FeaturedCollectionsRail_collection$data
 }
 
-type FeaturedCollection = FeaturedCollectionsRail_collectionGroup["members"][0]
+type FeaturedCollection = FeaturedCollectionsRail_collectionGroup$data["members"][0]
 
 export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (props) => {
   const color = useColor()

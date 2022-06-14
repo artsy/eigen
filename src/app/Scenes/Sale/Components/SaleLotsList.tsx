@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
-import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
-import { SaleLotsList_unfilteredSaleArtworksConnection } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
+import { SaleLotsList_saleArtworksConnection$data } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
+import { SaleLotsList_unfilteredSaleArtworksConnection$data } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
 import {
   filterArtworksParams,
   FilterParamName,
@@ -15,19 +15,20 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "app/utils/track"
 import { Box, Flex, Sans } from "palette"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { MutableRefObject, useCallback, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
-  saleArtworksConnection: SaleLotsList_saleArtworksConnection
-  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection | null
+  saleArtworksConnection: SaleLotsList_saleArtworksConnection$data
+  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection$data | null
   relay: RelayPaginationProp
   saleID: string
   saleSlug: string
   scrollToTop: () => void
+  artworksRefetchRef?: MutableRefObject<() => void>
 }
 
 export const SaleLotsListSortMode = ({
@@ -67,6 +68,7 @@ export const SaleLotsList: React.FC<Props> = ({
   relay,
   saleID,
   saleSlug,
+  artworksRefetchRef,
   scrollToTop,
 }) => {
   const [totalCount, setTotalCount] = useState<number | null>(null)
@@ -101,6 +103,7 @@ export const SaleLotsList: React.FC<Props> = ({
     componentPath: "Sale/SaleLotsList",
     refetchVariables,
     onApply: () => scrollToTop(),
+    refetchRef: artworksRefetchRef,
   })
 
   useEffect(() => {
@@ -167,6 +170,7 @@ export const SaleLotsList: React.FC<Props> = ({
             contextScreenOwnerSlug={saleSlug}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
+            isLoading={relay.isLoading}
             showLotLabel
             hidePartner
             hideUrgencyTags

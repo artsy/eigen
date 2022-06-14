@@ -1,4 +1,115 @@
 import moment from "moment-timezone"
+import { useState } from "react"
+import useInterval from "react-use/lib/useInterval"
+import { Time, useTimer } from "./useTimer"
+
+interface TimerInfo {
+  copy: string
+  color: string
+}
+
+export interface SaleTimeFeature {
+  startAt: string | null
+  endAt: string | null
+  endedAt: string | null
+  timeZone: string | null
+}
+
+const isNotStartingToday = (startDate: string) => {
+  if (!startDate.length) {
+    return false
+  }
+  const todayDay = moment().toObject().date
+  const startDateDay = moment(startDate).toObject().date
+  return todayDay !== startDateDay
+}
+
+export const getTimerInfo = (
+  time: Time,
+  options: {
+    hasStarted?: boolean
+    lotsAreClosing?: boolean
+    isSaleInfo?: boolean
+    saleHasEnded?: boolean
+    urgencyIntervalMinutes?: number | null
+    isExtended?: boolean
+  }
+): TimerInfo => {
+  const { days, hours, minutes, seconds, startAt } = time
+  const { hasStarted, isSaleInfo, saleHasEnded, isExtended } = options
+
+  const parsedDays = parseInt(days, 10)
+  const parsedHours = parseInt(hours, 10)
+  const parsedMinutes = parseInt(minutes, 10)
+  const parsedSeconds = parseInt(seconds, 10)
+
+  let copy = ""
+  let color = "blue100"
+
+  // Sale has not yet started
+  if (!hasStarted) {
+    if (parsedDays < 1) {
+      if (isNotStartingToday(startAt)) {
+        // then it is starting in a few hours or minutes, but tomorrow.
+        // For example, a bidding that starts around 1A.M the next day and my current time is 11P.M
+        if (parsedHours >= 1) {
+          copy = `Bidding Starts In ${parsedHours} ${parsedHours > 1 ? "Hours" : "Hour"}`
+        } else {
+          copy = `Bidding Starts In ${parsedMinutes}m ${parsedSeconds}s`
+        }
+      } else {
+        copy = "Bidding Starts Today"
+      }
+    } else {
+      copy = `${parsedDays} Day${parsedDays > 1 ? "s" : ""} Until Bidding Starts`
+    }
+  } else if (isExtended) {
+    copy = `Extended: ${parsedMinutes}m ${parsedSeconds}s`
+    color = "red100"
+  } else {
+    // When the time is on the sale:
+    if (isSaleInfo) {
+      if (saleHasEnded) {
+        copy = "Lots are closing"
+        color = "red100"
+        // More than 24 hours until close
+      } else if (parsedDays >= 1) {
+        copy = `${parsedDays} Day${parsedDays > 1 ? "s" : ""} Until Lots Start Closing`
+      }
+      // 1-24 hours until close
+      else if (parsedDays < 1 && parsedHours >= 1) {
+        copy = `${parsedHours}h ${parsedMinutes}m Until Lots Start Closing`
+        color = "red100"
+      }
+
+      // <60 mins until close
+      else if (parsedDays < 1 && parsedHours < 1) {
+        copy = `${parsedMinutes}m ${parsedSeconds}s Until Lots Start Closing`
+        color = "red100"
+      }
+
+      // When the timer is on the lot:
+    } else {
+      // More than 24 hours until close
+      if (parsedDays >= 1) {
+        copy = `${parsedDays}d ${parsedHours}h`
+      }
+
+      // 1-24 hours until close
+      else if (parsedDays < 1 && parsedHours >= 1) {
+        copy = `${parsedHours}h ${parsedMinutes}m`
+      }
+
+      // <60 mins until close
+      else if (parsedDays < 1 && parsedHours < 1) {
+        copy = `${parsedMinutes}m ${parsedSeconds}s`
+        color = "red100"
+      }
+    }
+  }
+
+  return { copy, color }
+}
 
 export const saleTime = (sale: {
   startAt: string | null
@@ -133,4 +244,63 @@ const ends = (now: moment.Moment, endDate: moment.Moment): string | null => {
   } else {
     return null
   }
+}
+
+const getMomentForDate = (date: string, timeZone: string): moment.Moment => {
+  const userTimeZone = moment.tz.guess()
+  return moment.tz(date, moment.ISO_8601, timeZone).tz(userTimeZone)
+}
+
+export const getAbsoluteTimeOfSale = (sale: SaleTimeFeature): string | null => {
+  if (!sale.timeZone) {
+    return null
+  }
+  const startDateMoment = sale.startAt ? getMomentForDate(sale.startAt, sale.timeZone) : null
+  const endDateMoment = sale.endAt ? getMomentForDate(sale.endAt, sale.timeZone) : null
+  const endedDateMoment = sale.endedAt ? getMomentForDate(sale.endedAt, sale.timeZone) : null
+  const thisMoment = moment.tz(moment(), moment.tz.guess())
+
+  if (startDateMoment && thisMoment.isBefore(startDateMoment)) {
+    return `${startDateMoment.format("MMM D, YYYY")} • ${startDateMoment.format("h:mma z")}`
+  } else if (endedDateMoment && thisMoment.isAfter(endedDateMoment)) {
+    return `Closed ${endedDateMoment.format("MMM D, YYYY")} • ${endedDateMoment.format("h:mma z")}`
+  } else if (endDateMoment) {
+    return `${endDateMoment.format("MMM D, YYYY")} • ${endDateMoment.format("h:mma z")}`
+  } else {
+    return null
+  }
+}
+
+export const useRelativeTimeOfSale = (
+  sale: SaleTimeFeature,
+  /** in millisecs */
+  updateDelay: number = 1000
+) => {
+  const [relativeTime, setRelativeTime] = useState<TimerInfo | null>(null)
+
+  const saleHasEnded = !!sale.endedAt
+  if (saleHasEnded || !(sale.endAt && sale.startAt)) {
+    return null
+  }
+
+  const callback = () => {
+    if (!sale.endAt || !sale.startAt) {
+      return
+    }
+    const { hasEnded, time, hasStarted } = useTimer(sale.endAt, sale.startAt)
+    const relativeTimeInfo = getTimerInfo(time, {
+      hasStarted,
+      saleHasEnded: hasEnded,
+      isSaleInfo: true,
+    })
+
+    if (relativeTimeInfo?.copy !== relativeTime?.copy) {
+      // prevent unnecessary updates
+      setRelativeTime(relativeTimeInfo)
+    }
+  }
+
+  useInterval(callback, updateDelay)
+
+  return relativeTime
 }

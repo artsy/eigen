@@ -1,15 +1,16 @@
 import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AppModule, modules, ViewOptions } from "app/AppRegistry"
-import { __unsafe_switchTab } from "app/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "app/store/GlobalStore"
 import { propsStore } from "app/store/PropsStore"
 import { postEventToProviders } from "app/utils/track/providers"
+import { visualize } from "app/utils/visualizer"
 import { EventEmitter } from "events"
 import { Linking, Platform } from "react-native"
 import { matchRoute } from "./routes"
+import { saveDevNavigationStateSelectedTab } from "./useReloadedDevNavigationState"
 
 export interface ViewDescriptor extends ViewOptions {
   type: "react" | "native"
@@ -32,14 +33,25 @@ export interface NavigateOptions {
   replace?: boolean
   // Only when onlyShowInTabName specified
   popToRootTabView?: boolean
+  ignoreDebounce?: boolean
   showInTabName?: BottomTabType
 }
 
 let lastInvocation = { url: "", timestamp: 0 }
 
 export async function navigate(url: string, options: NavigateOptions = {}) {
+  // handle artsy:// urls, we can just remove it
+  url = url.replace("artsy://", "")
+
+  visualize("NAV", url, { url, options }, "DTShowNavigationVisualiser")
+
   // Debounce double taps
-  if (lastInvocation.url === url && Date.now() - lastInvocation.timestamp < 1000) {
+  const ignoreDebounce = options.ignoreDebounce ?? false
+  if (
+    lastInvocation.url === url &&
+    Date.now() - lastInvocation.timestamp < 1000 &&
+    !ignoreDebounce
+  ) {
     return
   }
 
@@ -125,11 +137,8 @@ export function switchTab(tab: BottomTabType, props?: object) {
   if (props) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
   }
-  if (Platform.OS === "ios") {
-    GlobalStore.actions.bottomTabs.switchTab(tab)
-  } else {
-    __unsafe_switchTab(tab)
-  }
+  LegacyNativeModules.ARScreenPresenterModule.switchTab(tab)
+  saveDevNavigationStateSelectedTab(tab)
 }
 
 const tracks = {

@@ -5,18 +5,15 @@
     "baseUrl": "src",
     "experimentalDecorators": true,
     "incremental": true,
-    "lib": ["es2015"],
-    "jsx": "react",
+    "lib": ["es2017"],
+    "jsx": "react-native",
     "module": "commonjs",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "build",
-    "plugins": [
-      {
-        "name": "typescript-styled-plugin"
-      }
-    ],
+    "plugins": [{ "name": "typescript-styled-plugin" }],
+    "allowSyntheticDefaultImports": true,
     "pretty": true,
     "resolveJsonModule": true,
     "strict": true,
@@ -24,22 +21,17 @@
     "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
     "strictFunctionTypes": true,
-    "target": "es6",
+    "target": "esnext",
     "types": ["jest", "react", "react-native"],
     "noEmit": true
   },
-  "include": [
-    "typings/*.d.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "scripts/changelog/**/*.ts",
-    "scripts/check-flags/**/*.ts",
-    "dangerfile.ts"
-  ],
+  "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts", "dangerfile.ts"],
   "exclude": [
     "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js",
     "emission/Pod/Assets",
-    "externals",
     "build",
     "index.ios.js",
     "index.android.js",

@@ -1,7 +1,4 @@
-import {
-  InfiniteScrollArtworksGridTestsQuery,
-  InfiniteScrollArtworksGridTestsQueryResponse,
-} from "__generated__/InfiniteScrollArtworksGridTestsQuery.graphql"
+import { InfiniteScrollArtworksGridTestsQuery } from "__generated__/InfiniteScrollArtworksGridTestsQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Button } from "palette"
@@ -86,7 +83,7 @@ describe("Artist Series Artworks", () => {
   })
 })
 
-const artworksConnection: InfiniteScrollArtworksGridTestsQueryResponse = {
+const artworksConnection: InfiniteScrollArtworksGridTestsQuery["response"] = {
   artworksConnection: {
     pageInfo: {
       hasNextPage: true,
@@ -101,7 +98,7 @@ const artworksConnection: InfiniteScrollArtworksGridTestsQueryResponse = {
           image: {
             aspectRatio: 1.0,
           },
-          " $fragmentRefs": null as any,
+          " $fragmentSpreads": null as any,
         },
       },
       {
@@ -111,7 +108,7 @@ const artworksConnection: InfiniteScrollArtworksGridTestsQueryResponse = {
           image: {
             aspectRatio: 1.0,
           },
-          " $fragmentRefs": null as any,
+          " $fragmentSpreads": null as any,
         },
       },
       {
@@ -121,7 +118,7 @@ const artworksConnection: InfiniteScrollArtworksGridTestsQueryResponse = {
           image: {
             aspectRatio: 1.0,
           },
-          " $fragmentRefs": null as any,
+          " $fragmentSpreads": null as any,
         },
       },
       {
@@ -131,7 +128,7 @@ const artworksConnection: InfiniteScrollArtworksGridTestsQueryResponse = {
           image: {
             aspectRatio: 1.0,
           },
-          " $fragmentRefs": null as any,
+          " $fragmentSpreads": null as any,
         },
       },
       {
@@ -141,7 +138,7 @@ const artworksConnection: InfiniteScrollArtworksGridTestsQueryResponse = {
           image: {
             aspectRatio: 1.0,
           },
-          " $fragmentRefs": null as any,
+          " $fragmentSpreads": null as any,
         },
       },
       {
@@ -151,7 +148,7 @@ const artworksConnection: InfiniteScrollArtworksGridTestsQueryResponse = {
           image: {
             aspectRatio: 1.0,
           },
-          " $fragmentRefs": null as any,
+          " $fragmentSpreads": null as any,
         },
       },
       {
@@ -161,7 +158,7 @@ const artworksConnection: InfiniteScrollArtworksGridTestsQueryResponse = {
           image: {
             aspectRatio: 1.0,
           },
-          " $fragmentRefs": null as any,
+          " $fragmentSpreads": null as any,
         },
       },
       {
@@ -171,7 +168,7 @@ const artworksConnection: InfiniteScrollArtworksGridTestsQueryResponse = {
           image: {
             aspectRatio: 1.0,
           },
-          " $fragmentRefs": null as any,
+          " $fragmentSpreads": null as any,
         },
       },
       {
@@ -181,7 +178,7 @@ const artworksConnection: InfiniteScrollArtworksGridTestsQueryResponse = {
           image: {
             aspectRatio: 1.0,
           },
-          " $fragmentRefs": null as any,
+          " $fragmentSpreads": null as any,
         },
       },
       {
@@ -191,7 +188,7 @@ const artworksConnection: InfiniteScrollArtworksGridTestsQueryResponse = {
           image: {
             aspectRatio: 1.0,
           },
-          " $fragmentRefs": null as any,
+          " $fragmentSpreads": null as any,
         },
       },
     ],

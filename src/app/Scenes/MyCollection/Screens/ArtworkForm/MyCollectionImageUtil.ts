@@ -1,8 +1,8 @@
-import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
+import { MyCollectionArtworkHeader_artwork$data } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { getMeasurements, Size } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { deleteLocalImages, LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
-import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
+import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
 import { ArtworkFormValues, Image } from "../../State/MyCollectionArtworkModel"
 
 export const storeLocalPhotos = (slug: string, photos: Image[]) => {
@@ -69,7 +69,7 @@ export const isImage = (toCheck: any): toCheck is Image => !!toCheck
 
 export const hasImagesStillProcessing = (
   mainImage: any,
-  imagesToCheck: MyCollectionArtworkHeader_artwork["images"]
+  imagesToCheck: MyCollectionArtworkHeader_artwork$data["images"]
 ) => {
   if (!isImage(mainImage) || imageIsProcessing(mainImage, "normalized")) {
     return true

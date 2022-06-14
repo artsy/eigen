@@ -1,6 +1,8 @@
 import { captureMessage } from "@sentry/react-native"
-import React, { FC, ReactNode } from "react"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import React, { Component } from "react"
 import { LoadFailureView } from "./LoadFailureView"
+import { NotFoundFailureView } from "./NotFoundFailureView"
 
 enum ErrorState {
   Okay,
@@ -18,7 +20,7 @@ interface State {
 
 /// Catches any errors and shows a failure screen. The user can tap a button to retry the render, which is indicated to
 /// the render prop with a parameter value of `true`.
-export class RetryErrorBoundaryLegacy extends React.Component<Props, State> {
+export class RetryErrorBoundaryLegacy extends Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   static getDerivedStateFromError(error) {
     console.error(error)
@@ -45,14 +47,18 @@ export class RetryErrorBoundaryLegacy extends React.Component<Props, State> {
 
 // Taken from https://relay.dev/docs/guided-tour/rendering/error-states/#when-using-uselazyloadquery
 interface RetryErrorBoundaryProps {
-  failureView?: FC<{ error: Error; retry: () => void }>
-  children: ReactNode
+  failureView?: React.FC<{ error: Error; retry: () => void }>
+  notFoundTitle?: string
+  notFoundText?: string
+  notFoundBackButtonText?: string
+  notFoundOnBackPress?: () => void
+  children: React.ReactNode
 }
 interface RetryErrorBoundaryState {
   error: Error | null
 }
 
-export class RetryErrorBoundary extends React.Component<
+export class RetryErrorBoundary extends Component<
   RetryErrorBoundaryProps,
   RetryErrorBoundaryState
 > {
@@ -67,16 +73,37 @@ export class RetryErrorBoundary extends React.Component<
   }
 
   render() {
-    const { children, failureView } = this.props
+    const { children, failureView, notFoundTitle, notFoundText, notFoundBackButtonText } =
+      this.props
     const { error } = this.state
+
+    const enableNotFoundFailureView = unsafe_getFeatureFlag("AREnableNotFoundFailureView")
 
     if (error) {
       if (failureView) {
         return failureView({ error, retry: this._retry })
       }
+
+      const isNotFoundError = getErrorHttpStatusCodes(error).includes(404)
+
+      if (isNotFoundError && enableNotFoundFailureView) {
+        return (
+          <NotFoundFailureView
+            title={notFoundTitle}
+            text={notFoundText}
+            backButtonText={notFoundBackButtonText}
+            error={error}
+          />
+        )
+      }
+
       return <LoadFailureView error={error} onRetry={this._retry} />
     }
 
     return children
   }
+}
+
+export const getErrorHttpStatusCodes = (error: any) => {
+  return error?.res?.json?.errors?.[0]?.extensions?.httpStatusCodes || []
 }

@@ -10,7 +10,7 @@ updates:
       - "brainbicycle"
       - "pvinis"
     reviewers:
-      - "artsy/collector-experience"
+      - "artsy/mobile-platform"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
@@ -21,7 +21,7 @@ updates:
       - "brainbicycle"
       - "pvinis"
     reviewers:
-      - "artsy/collector-experience"
+      - "artsy/mobile-platform"
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
@@ -32,4 +32,14 @@ updates:
       - "brainbicycle"
       - "pvinis"
     reviewers:
-      - "artsy/collector-experience"
+      - "artsy/mobile-platform"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 0
+    assignees:
+     - brainbicycle
+     - pvinis
+    reviewers:
+     - artsy/mobile-platform

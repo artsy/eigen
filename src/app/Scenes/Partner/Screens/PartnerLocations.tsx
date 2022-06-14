@@ -1,4 +1,4 @@
-import { PartnerLocations_partner } from "__generated__/PartnerLocations_partner.graphql"
+import { PartnerLocations_partner$data } from "__generated__/PartnerLocations_partner.graphql"
 import { PartnerLocationsQuery } from "__generated__/PartnerLocationsQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -13,7 +13,7 @@ import { PartnerMapContainer as PartnerMap } from "../Components/PartnerMap"
 const PAGE_SIZE = 4
 
 const PartnerLocations: React.FC<{
-  partner: PartnerLocations_partner
+  partner: PartnerLocations_partner$data
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)

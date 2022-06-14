@@ -1,19 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
-import { ImageSearchModal } from "app/Scenes/Search/components/ImageSearchModal"
-import { MeasuredView } from "app/utils/MeasuredView"
-import { useImageSearch } from "app/utils/useImageSearch"
 import { EventEmitter } from "events"
 import _ from "lodash"
-import {
-  CameraIcon,
-  Color,
-  EyeOpenedIcon,
-  Flex,
-  Spinner,
-  Text,
-  useTheme,
-  XCircleIcon,
-} from "palette"
+import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
@@ -25,10 +13,12 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native"
+import { MeasuredView } from "shared/utils"
 import styled from "styled-components/native"
 import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
 
+const DEFAULT_FONT_SIZE = 16
 export const INPUT_HEIGHT = 50
 export const INPUT_HEIGHT_MULTILINE = 100
 
@@ -50,6 +40,11 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   required?: boolean
   title?: string
   showLimit?: boolean
+  fontSize?: number
+  /**
+   * This placeholder is fixed to the right side of the input
+   */
+  fixedRightPlaceholder?: string
   /**
    * The placeholder can be an array of string, specifically for android, because of a bug.
    * On ios, the longest string will always be picked, as ios can add ellipsis.
@@ -75,7 +70,6 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   canHidePassword?: boolean
   inputTextStyle?: TextStyle
   addClearListener?: boolean
-  showCamera?: boolean
   onClear?(): void
   renderLeftHandSection?(): JSX.Element
 }
@@ -103,19 +97,18 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       textContentType,
       canHidePassword,
       inputTextStyle,
+      fixedRightPlaceholder,
       placeholder,
       multiline,
       maxLength,
       showLimit,
-      showCamera,
       addClearListener = false,
+      fontSize = DEFAULT_FONT_SIZE,
       ...rest
     },
     ref
   ) => {
     const { color, theme } = useTheme()
-    const { capturePhoto, isModalVisible, setIsModalVisible, errorMessage, isLoading } =
-      useImageSearch()
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
@@ -161,6 +154,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             onPress={() => {
               setShowPassword(!showPassword)
             }}
+            accessibilityLabel={showPassword ? "hide password button" : "show password button"}
             hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
           >
             {!showPassword ? <EyeClosedIcon fill="black30" /> : <EyeOpenedIcon fill="black60" />}
@@ -237,14 +231,6 @@ export const Input = React.forwardRef<TextInput, InputProps>(
 
     return (
       <Flex flexGrow={1} style={containerStyle}>
-        {!!showCamera && (
-          <ImageSearchModal
-            onDismiss={() => setIsModalVisible(false)}
-            isVisible={isModalVisible}
-            isLoading={isLoading}
-            errorMessage={errorMessage}
-          />
-        )}
         <Flex flexDirection="row" alignItems="center">
           <InputTitle optional={optional} required={required}>
             {title}
@@ -298,7 +284,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 }}
                 ref={input}
                 placeholderTextColor={color("black60")}
-                style={{ flex: 1, fontSize: 16, ...inputTextStyle }}
+                style={{ flex: 1, fontSize, ...inputTextStyle }}
                 numberOfLines={multiline ? undefined : 1}
                 secureTextEntry={!showPassword}
                 textAlignVertical={multiline ? "top" : "center"}
@@ -326,14 +312,11 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 }}
               />
             </Flex>
-            {!!showCamera && (
-              <Flex pr="1" justifyContent="center" alignItems="center" flexGrow={0}>
-                <TouchableOpacity
-                  onPress={capturePhoto}
-                  hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
-                >
-                  <CameraIcon fill="black100" />
-                </TouchableOpacity>
+            {!!fixedRightPlaceholder && value === "" && (
+              <Flex pr={1} justifyContent="center" alignItems="center">
+                <Text variant="sm" color="black60">
+                  {fixedRightPlaceholder}
+                </Text>
               </Flex>
             )}
             {renderShowPasswordIcon()}

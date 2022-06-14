@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { ViewingRoomViewWorksButton_viewingRoom } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
+import { ViewingRoomViewWorksButton_viewingRoom$data } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import { navigate } from "app/navigation/navigate"
 import { Schema } from "app/utils/track"
@@ -11,7 +11,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface ViewingRoomViewWorksButtonProps {
-  viewingRoom: ViewingRoomViewWorksButton_viewingRoom
+  viewingRoom: ViewingRoomViewWorksButton_viewingRoom$data
   isVisible: boolean
 }
 

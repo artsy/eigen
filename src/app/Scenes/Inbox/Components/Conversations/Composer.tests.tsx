@@ -86,27 +86,7 @@ describe("regarding the send button", () => {
   })
 })
 
-it("doesn't render the inquiry make offer button if the feature is disabled", () => {
-  __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: false })
-  const tree = getWrapper({
-    Conversation: () => ({
-      items: [
-        {
-          item: {
-            __typename: "Artwork",
-          },
-        },
-      ],
-    }),
-  })
-  expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0) // submit button only
-})
-
-describe("inquiry offer enabled", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsInquiryCheckout: true })
-  })
-
+describe("inquiry offer", () => {
   it("renders the inquiry make offer button if inquiry item is an offerable artwork and no active orders", () => {
     const tree = getWrapper({
       Conversation: () => ({
@@ -148,7 +128,7 @@ describe("inquiry offer enabled", () => {
     expect(tree.root.findAllByType(OpenInquiryModalButton).length).toEqual(0)
   })
 
-  it("does not render a CTA when the keyboard is visible", () => {
+  it("does not render a CTA when the keyboard is visible", async () => {
     const tree = getWrapper({
       Conversation: () => ({
         items: [
@@ -165,7 +145,7 @@ describe("inquiry offer enabled", () => {
 
     input.props.onFocus()
 
-    waitFor(() => expect(tree.root.findAllByType(CTAPopUp)[0]).not.toBeDefined())
+    await waitFor(() => expect(tree.root.findAllByType(CTAPopUp)[0]).not.toBeDefined())
   })
 
   describe("with associated orders (OrderCTAs)", () => {

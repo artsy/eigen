@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { AuctionResult_artist } from "__generated__/AuctionResult_artist.graphql"
-import { AuctionResult_auctionResult } from "__generated__/AuctionResult_auctionResult.graphql"
+import { AuctionResult_artist$data } from "__generated__/AuctionResult_artist.graphql"
+import { AuctionResult_auctionResult$data } from "__generated__/AuctionResult_auctionResult.graphql"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
@@ -27,8 +27,8 @@ import { auctionResultHasPrice, AuctionResultHelperData, auctionResultText } fro
 const CONTAINER_HEIGHT = 80
 
 interface Props {
-  artist: AuctionResult_artist
-  auctionResult: AuctionResult_auctionResult
+  artist: AuctionResult_artist$data
+  auctionResult: AuctionResult_auctionResult$data
 }
 
 export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {

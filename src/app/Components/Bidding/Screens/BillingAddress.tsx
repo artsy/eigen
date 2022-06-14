@@ -1,12 +1,12 @@
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Stack } from "app/Components/Stack"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { ScreenDimensionsContext } from "app/utils/useScreenDimensions"
-import { Button, Flex, Input, Sans, Theme } from "palette"
+import { Button, Flex, Input, Sans } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
+import { ScreenDimensionsContext } from "shared/hooks"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { Schema, screenTrack, track } from "../../../utils/track"
 import { Address } from "../types"
 import { findCountryNameByCountryCode } from "../Utils/findCountryNameByCountryCode"
@@ -108,11 +108,9 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
 
   return (
     <ArtsyKeyboardAvoidingView>
-      <Theme>
-        <FancyModalHeader onLeftButtonPress={() => navigator?.pop()}>
-          Add billing address
-        </FancyModalHeader>
-      </Theme>
+      <FancyModalHeader onLeftButtonPress={() => navigator?.pop()}>
+        Add billing address
+      </FancyModalHeader>
       <ScrollView
         ref={scrollViewRef}
         contentContainerStyle={{ padding: 20, paddingBottom: 50 }}

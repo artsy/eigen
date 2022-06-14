@@ -1,4 +1,4 @@
-import { Partner_partner } from "__generated__/Partner_partner.graphql"
+import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
@@ -17,7 +17,7 @@ import { PartnerShowsFragmentContainer as PartnerShows } from "./Components/Part
 import { PartnerSubscriberBannerFragmentContainer as PartnerSubscriberBanner } from "./Components/PartnerSubscriberBanner"
 
 interface Props {
-  partner: Partner_partner
+  partner: Partner_partner$data
   relay: RelayRefetchProp
 }
 

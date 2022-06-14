@@ -1,4 +1,9 @@
-import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  SavedSearchEntity,
+  SearchCriteria,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 
 export interface SavedSearchAlertFormValues {
   name: string
@@ -6,17 +11,15 @@ export interface SavedSearchAlertFormValues {
   email: boolean
 }
 
-export interface SavedSearchAlertFormPropsBase {
-  artistId: string
-  artistName: string
-}
-
 export interface SavedSearchAlertMutationResult {
   id: string
 }
 
 // Navigation
-export interface CreateSavedSearchAlertParams extends SavedSearchAlertFormPropsBase {
+export interface CreateSavedSearchAlertParams {
+  aggregations: Aggregations
+  attributes: SearchCriteriaAttributes
+  entity: SavedSearchEntity
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
 }

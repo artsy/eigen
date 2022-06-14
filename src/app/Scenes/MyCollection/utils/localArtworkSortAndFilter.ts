@@ -1,4 +1,3 @@
-import { FilterConfigTypes } from "app/Components/ArtworkFilter"
 import {
   FilterArray,
   FilterData,
@@ -6,23 +5,19 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
-import { useFeatureFlag } from "app/store/GlobalStore"
-import { normalizeText } from "app/utils/normalizeText"
+import { FilterConfigTypes, FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
 import { compact, filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { useEffect } from "react"
+import { normalizeText } from "shared/utils"
 import { MyCollectionArtworkEdge } from "../MyCollection"
 
-export const useLocalArtworkFilter = (artworks: any[]) => {
+export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
   const setFilterType = ArtworksFiltersStore.useStoreActions((s) => s.setFilterTypeAction)
   const setSortOptions = ArtworksFiltersStore.useStoreActions((s) => s.setSortOptions)
   const setFilterOptions = ArtworksFiltersStore.useStoreActions((s) => s.setFilterOptions)
-  const allowOnlySubmittedArtworks = useFeatureFlag(
-    "AREnableShowOnlySubmittedMyCollectionArtworkFilter"
-  )
 
-  useEffect(() => {
+  const initLocalArtworkFilter = (artworks: any[]) => {
     setFilterType("local")
     setSortOptions([
       {
@@ -34,9 +29,9 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
           orderBy(
             artworks,
             (a) => {
-              return a.pricePaid?.minor
+              return a.pricePaid?.minor ?? 0
             },
-            "asc"
+            "desc"
           ),
       },
       {
@@ -48,9 +43,9 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
           orderBy(
             artworks,
             (a) => {
-              return a.pricePaid?.minor
+              return a.pricePaid?.minor ?? 0
             },
-            "desc"
+            "asc"
           ),
       },
       {
@@ -97,10 +92,26 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "desc"),
       },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Demand Index (High to Low)",
+        paramValue: "demand-index-high-to-low",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) =>
+          orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "desc"),
+      },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Demand Index (Low to High)",
+        paramValue: "demand-index-low-to-high",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) =>
+          orderBy(artworks, (a) => a.marketPriceInsights?.demandRank ?? 0, "asc"),
+      },
     ])
     setFilterOptions(
       compact([
-        allowOnlySubmittedArtworks && {
+        {
           configType: FilterConfigTypes.FilterScreenCheckboxItem,
           displayText: "Show Only Submitted Artworks",
           filterType: "showOnlySubmittedArtworks",
@@ -134,7 +145,7 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
           ),
           // tslint:disable-next-line: no-shadowed-variable
           localSortAndFilter: (artworks, artistIDs: string[]) =>
-            filter(artworks, (a) => artistIDs.includes(a.artist.internalID)),
+            filter(artworks, (a) => artistIDs.includes(a.artist?.internalID)),
         },
         {
           displayText: FilterDisplayName.attributionClass,
@@ -143,8 +154,13 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
           // tslint:disable-next-line: no-shadowed-variable
           localSortAndFilter: (artworks, attributionClasses: string[]) => {
             return filter(artworks, (a) => {
+              const formattedAttributionClasses = attributionClasses.map((value) =>
+                value.toLocaleLowerCase()
+              )
               if (a.attributionClass && a.attributionClass.name) {
-                return attributionClasses.includes(a.attributionClass.name)
+                return formattedAttributionClasses.includes(
+                  a.attributionClass.name.toLocaleLowerCase()
+                )
               }
               return false
             })
@@ -250,7 +266,14 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
         },
       ])
     )
+  }
+  useEffect(() => {
+    if (artworksList) {
+      initLocalArtworkFilter(artworksList)
+    }
   }, [])
+
+  return { reInitializeLocalArtworkFilter: initLocalArtworkFilter }
 }
 
 export const localSortAndFilterArtworks = (

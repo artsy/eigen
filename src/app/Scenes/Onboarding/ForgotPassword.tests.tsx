@@ -1,13 +1,12 @@
+import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Input } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"
 import { ForgotPasswordForm } from "./ForgotPassword"
 
-const navigateMock = jest.fn()
-
 const navigationPropsMock = {
-  navigate: navigateMock,
+  navigate: mockNavigate,
   goBack: jest.fn(),
 }
 

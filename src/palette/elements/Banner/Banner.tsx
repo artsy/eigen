@@ -1,7 +1,6 @@
-import { Image } from "app/Components/Bidding/Elements/Image"
 import { Flex, FlexProps, Text, TextProps, useColor } from "palette"
 import React, { useRef, useState } from "react"
-import { Animated, Easing, TouchableOpacity } from "react-native"
+import { Animated, Easing, Image, TouchableOpacity } from "react-native"
 
 export interface BannerProps {
   title: string
@@ -74,7 +73,7 @@ export const Banner: React.FC<BannerProps> = ({
                 hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}
               >
                 <Image
-                  source={require("../../../../images/close-x.webp")}
+                  source={require("images/close-x.webp")}
                   style={{ tintColor: color("black100") }}
                 />
               </TouchableOpacity>

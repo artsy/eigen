@@ -33,9 +33,14 @@ export const Versions = {
   AddArtworkViewOption: 21,
   RenameModelsAndAddDarkModeSupport: 22,
   AddUserPrefsMetricsUnit: 23,
+  AddSourceAndMyCollectionArtworkIDToSubmission: 24,
+  AddSourceInitialPhotosToSubmission: 25,
+  RequestedPriceEstimates: 26,
+  AddZipCodeAndCountryCodeInSubmissionArtworkDetails: 27,
+  AddDirtyFormValuesToSubmissionState: 28,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddUserPrefsMetricsUnit
+export const CURRENT_APP_VERSION = Versions.AddDirtyFormValuesToSubmissionState
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -181,6 +186,51 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddUserPrefsMetricsUnit]: (state) => {
     state.userPrefs.metric = "in"
+  },
+  [Versions.AddSourceAndMyCollectionArtworkIDToSubmission]: (state) => {
+    state.artworkSubmission.submission.artworkDetails.source = null
+    state.artworkSubmission.submission.artworkDetails.myCollectionArtworkID = null
+  },
+  [Versions.AddSourceInitialPhotosToSubmission]: (state) => {
+    state.artworkSubmission.submission.photos.initialPhotos = []
+    state.artworkSubmission.submission.photosForMyCollection.initialPhotos = []
+  },
+  [Versions.RequestedPriceEstimates]: (state) => {
+    state.requestedPriceEstimates = { requestedPriceEstimates: {} }
+  },
+  [Versions.AddZipCodeAndCountryCodeInSubmissionArtworkDetails]: (state) => {
+    state.artworkSubmission.submission.artworkDetails.location.zipCode = ""
+    state.artworkSubmission.submission.artworkDetails.location.countryCode = ""
+  },
+  [Versions.AddDirtyFormValuesToSubmissionState]: (state) => {
+    state.artworkSubmission.submission.dirtyArtworkDetailsValues = {
+      artist: "",
+      artistId: "",
+      title: "",
+      year: "",
+      medium: "",
+      myCollectionArtworkID: null,
+      attributionClass: null,
+      editionNumber: "",
+      editionSizeFormatted: "",
+      dimensionsMetric: "in",
+      height: "",
+      width: "",
+      depth: "",
+      provenance: "",
+      source: null,
+      state: "DRAFT",
+      utmMedium: "",
+      utmSource: "",
+      utmTerm: "",
+      location: {
+        city: "",
+        state: "",
+        country: "",
+        countryCode: "",
+        zipCode: "",
+      },
+    }
   },
 }
 

@@ -1,4 +1,4 @@
-import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.graphql"
+import { PartnerArtwork_partner$data } from "__generated__/PartnerArtwork_partner.graphql"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
@@ -14,7 +14,7 @@ import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export const PartnerArtwork: React.FC<{
-  partner: PartnerArtwork_partner
+  partner: PartnerArtwork_partner$data
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   useArtworkFilters({

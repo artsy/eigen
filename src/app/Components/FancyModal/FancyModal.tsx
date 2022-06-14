@@ -1,11 +1,8 @@
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { Modal, Platform } from "react-native"
+import { InteractionManager, Modal, Platform } from "react-native"
 import { useSafeAreaFrame } from "react-native-safe-area-context"
-import {
-  ArtsyKeyboardAvoidingView,
-  ArtsyKeyboardAvoidingViewContext,
-} from "../ArtsyKeyboardAvoidingView"
+import { useScreenDimensions } from "shared/hooks"
+import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import {
   CARD_STACK_OVERLAY_HEIGHT,
   CARD_STACK_OVERLAY_Y_OFFSET,
@@ -88,20 +85,27 @@ export const FancyModal: React.FC<{
   })
 
   useEffect(() => {
+    let interactionManagerPromise: ReturnType<
+      typeof InteractionManager.runAfterInteractions
+    > | null = null
     if (visible) {
       setShowingUnderlyingModal(true)
-      requestAnimationFrame(card.show)
+      // We need to wait until the animation is over before showing the underlying modal
+      interactionManagerPromise = InteractionManager.runAfterInteractions(card.show)
     } else {
       if (!firstMount.current) {
         card.hide().then(() => {
           setShowingUnderlyingModal(false)
           if (onModalFinishedClosing) {
-            requestAnimationFrame(onModalFinishedClosing)
+            interactionManagerPromise =
+              // We need to wait until the animation is over before executing the callback
+              InteractionManager.runAfterInteractions(onModalFinishedClosing)
           }
         })
       }
     }
     firstMount.current = false
+    return interactionManagerPromise?.cancel
   }, [visible])
 
   return (

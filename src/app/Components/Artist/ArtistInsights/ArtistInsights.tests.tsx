@@ -1,4 +1,5 @@
 import { ArtistInsightsTestsQuery } from "__generated__/ArtistInsightsTestsQuery.graphql"
+import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
@@ -28,10 +29,21 @@ describe("ArtistInsights", () => {
       `}
       variables={{}}
       render={({ props }) => {
-        if (props?.artist) {
-          return <ArtistInsightsFragmentContainer artist={props.artist} tabIndex={tabIndex} />
+        if (!props?.artist) {
+          return null
         }
-        return null
+        return (
+          <StickyTabPage
+            tabs={[
+              {
+                title: "test",
+                content: (
+                  <ArtistInsightsFragmentContainer artist={props.artist} tabIndex={tabIndex} />
+                ),
+              },
+            ]}
+          />
+        )
       }}
     />
   )

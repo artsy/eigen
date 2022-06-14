@@ -1,5 +1,5 @@
-import { CommercialButtonsTestsMutationQueryRawResponse } from "__generated__/CommercialButtonsTestsMutationQuery.graphql"
-import { CommercialButtonsTestsRenderQueryRawResponse } from "__generated__/CommercialButtonsTestsRenderQuery.graphql"
+import { CommercialButtonsTestsMutationQuery$data } from "__generated__/CommercialButtonsTestsMutationQuery.graphql"
+import { CommercialButtonsTestsRenderQuery$data } from "__generated__/CommercialButtonsTestsRenderQuery.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
@@ -9,6 +9,7 @@ import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquirySt
 import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Button, Theme } from "palette"
 import React from "react"
+import { SafeAreaProvider } from "react-native-safe-area-context"
 import { FragmentRef, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { CommercialButtonsFragmentContainer } from "./CommercialButtons"
@@ -34,7 +35,7 @@ const componentWithQuery = async ({
         }
       }
     `,
-    mockData: { artwork: mockArtworkData } as CommercialButtonsTestsMutationQueryRawResponse,
+    mockData: { artwork: mockArtworkData } as CommercialButtonsTestsMutationQuery$data,
     mockMutationResults: {
       commerceCreateOrderWithArtwork: mockOrderMutationResults,
       commerceCreateOfferOrderWithArtwork: mockOfferMutationResults,
@@ -50,19 +51,21 @@ const state: ArtworkInquiryContextState = {
 }
 
 const wrapper = (mockArtwork: FragmentRef<"CommercialButtons_artwork">): JSX.Element => (
-  <GlobalStoreProvider>
-    <Theme>
-      <ArtworkInquiryContext.Provider
-        value={{
-          state,
-          dispatch: jest.fn(),
-        }}
-      >
-        {/* @ts-ignore */}
-        <CommercialButtonsFragmentContainer artwork={mockArtwork} />
-      </ArtworkInquiryContext.Provider>
-    </Theme>
-  </GlobalStoreProvider>
+  <SafeAreaProvider>
+    <GlobalStoreProvider>
+      <Theme>
+        <ArtworkInquiryContext.Provider
+          value={{
+            state,
+            dispatch: jest.fn(),
+          }}
+        >
+          {/* @ts-ignore */}
+          <CommercialButtonsFragmentContainer artwork={mockArtwork} />
+        </ArtworkInquiryContext.Provider>
+      </Theme>
+    </GlobalStoreProvider>
+  </SafeAreaProvider>
 )
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -77,30 +80,11 @@ const relayComponent = async ({ artwork }) => {
         }
       }
     `,
-    mockData: { artwork } as CommercialButtonsTestsRenderQueryRawResponse,
+    mockData: { artwork } as CommercialButtonsTestsRenderQuery$data,
   })
 }
 
 describe("CommercialButtons", () => {
-  it("renders button for Contact Gallery button if isInquireable and not newFirstInquiry", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsNewFirstInquiry: false })
-    const artwork = {
-      ...ArtworkFixture,
-      isAcquireable: false,
-      isOfferable: false,
-      isInquireable: true,
-      isForSale: true,
-      isPriceHidden: false,
-    }
-
-    const commercialButtons = await relayComponent({
-      artwork,
-    })
-    commercialButtons.find(Button).at(0).props().onPress()
-    expect(commercialButtons.text()).toContain("Contact Gallery")
-    expect(navigate).toHaveBeenCalledWith(`/inquiry/${ArtworkFixture.slug}`)
-  })
-
   it("renders Make Offer button if isOfferable", async () => {
     const artwork = {
       ...ArtworkFixture,

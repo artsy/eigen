@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { NewWorksForYou_me } from "__generated__/NewWorksForYou_me.graphql"
+import { NewWorksForYou_me$data } from "__generated__/NewWorksForYou_me.graphql"
 import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -8,7 +8,7 @@ import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholde
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { Box, Message, Spacer } from "palette"
+import { Box, SimpleMessage, Spacer } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
@@ -17,7 +17,7 @@ const PAGE_SIZE = 10
 
 interface NewWorksForYouProps {
   relay: RelayPaginationProp
-  me: NewWorksForYou_me
+  me: NewWorksForYou_me$data
 }
 
 const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
@@ -42,7 +42,7 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
               useParentAwareScrollView={false}
             />
           ) : (
-            <Message m={2}>Nothing yet. Please check back later.</Message>
+            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
           )}
         </Box>
       </PageWithSimpleHeader>

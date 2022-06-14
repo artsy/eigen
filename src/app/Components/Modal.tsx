@@ -1,14 +1,15 @@
-import { TextAlignProperty } from "csstype"
-import { Button, ClassTheme, Sans } from "palette"
+import { defaultRules, MarkdownRules } from "app/utils/renderMarkdown"
+import { Button, Sans, SansProps } from "palette"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
+import { Markdown } from "./Markdown"
 
 interface ModalProps extends ViewProps {
   headerText: string
   detailText: string
   visible?: boolean
-  textAlign?: TextAlignProperty
+  textAlign?: SansProps["textAlign"]
   closeModal?: () => void
 }
 
@@ -27,6 +28,8 @@ const ModalInnerView = styled.View`
   opacity: 1;
   border-radius: 2px;
 `
+
+const DEFAULT_MARKDOWN_RULES = defaultRules({})
 
 export class Modal extends React.Component<ModalProps, any> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -52,44 +55,51 @@ export class Modal extends React.Component<ModalProps, any> {
 
   render() {
     const { headerText, detailText } = this.props
+    const markdownRules = {
+      ...DEFAULT_MARKDOWN_RULES,
+      paragraph: {
+        ...DEFAULT_MARKDOWN_RULES.paragraph,
+        react: (node, output, state) => {
+          return (
+            <Sans size="3" color="black60" key={state.key} textAlign={this.props.textAlign}>
+              {output(node.content, state)}
+            </Sans>
+          )
+        },
+      },
+    } as MarkdownRules
 
     return (
-      <ClassTheme>
-        {({ color }) => (
-          <View style={{ marginTop: 22 }}>
-            <RNModal animationType="fade" transparent visible={this.state.modalVisible}>
-              <TouchableWithoutFeedback onPress={() => this.closeModal()}>
-                <ModalBackgroundView>
-                  <TouchableWithoutFeedback>
-                    <ModalInnerView>
-                      <View style={{ paddingBottom: 10 }}>
-                        <Sans size="3" weight="medium" textAlign={this.props.textAlign}>
-                          {headerText}
-                        </Sans>
-                      </View>
-                      <View style={{ paddingBottom: 30 }}>
-                        <Sans size="3" color={color("black60")} textAlign={this.props.textAlign}>
-                          {detailText}
-                        </Sans>
-                      </View>
-                      <Button
-                        onPress={() => {
-                          this.closeModal()
-                        }}
-                        block
-                        width={100}
-                        variant="outline"
-                      >
-                        Ok
-                      </Button>
-                    </ModalInnerView>
-                  </TouchableWithoutFeedback>
-                </ModalBackgroundView>
+      <View style={{ marginTop: 22 }}>
+        <RNModal animationType="fade" transparent visible={this.state.modalVisible}>
+          <TouchableWithoutFeedback onPress={() => this.closeModal()}>
+            <ModalBackgroundView>
+              <TouchableWithoutFeedback>
+                <ModalInnerView>
+                  <View style={{ paddingBottom: 10 }}>
+                    <Sans size="3" weight="medium" textAlign={this.props.textAlign}>
+                      {headerText}
+                    </Sans>
+                  </View>
+                  <Markdown rules={markdownRules} pb={15}>
+                    {detailText}
+                  </Markdown>
+                  <Button
+                    onPress={() => {
+                      this.closeModal()
+                    }}
+                    block
+                    width={100}
+                    variant="outline"
+                  >
+                    Ok
+                  </Button>
+                </ModalInnerView>
               </TouchableWithoutFeedback>
-            </RNModal>
-          </View>
-        )}
-      </ClassTheme>
+            </ModalBackgroundView>
+          </TouchableWithoutFeedback>
+        </RNModal>
+      </View>
     )
   }
 }

@@ -1,8 +1,8 @@
-import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
+import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { partnerName } from "./partnerName"
 
 describe("partnerName", () => {
-  const sale = { isBenefit: false, partner: null } as ArtworkExtraLinks_artwork["sale"]
+  const sale = { isBenefit: false, partner: null } as ArtworkExtraLinks_artwork$data["sale"]
 
   it(`returns "Artsy's" if the sale is a benefit auction`, () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

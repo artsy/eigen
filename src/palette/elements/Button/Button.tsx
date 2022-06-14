@@ -1,13 +1,13 @@
-import { MeasuredView, ViewMeasurements } from "app/utils/MeasuredView"
 import { Spacer } from "palette"
 import { useColor } from "palette/hooks"
-import React, { ReactNode, useState } from "react"
+import { useState } from "react"
 import { PressableProps, TextStyle } from "react-native"
 import { GestureResponderEvent, Pressable } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { config } from "react-spring"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native"
+import { MeasuredView, ViewMeasurements } from "shared/utils"
 import styled from "styled-components/native"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
@@ -15,20 +15,21 @@ import { Spinner } from "../Spinner"
 import { Text, useTextStyleForPalette } from "../Text"
 
 export interface ButtonProps extends BoxProps {
-  children: ReactNode
+  children: React.ReactNode
 
   size?: "small" | "large"
   variant?:
     | "fillDark"
     | "fillLight"
     | "fillGray"
+    | "fillSuccess"
     | "outline"
     | "outlineGray"
     | "outlineLight"
     | "text"
   onPress?: PressableProps["onPress"]
 
-  icon?: ReactNode
+  icon?: React.ReactNode
   iconPosition?: "left" | "left-start" | "right"
 
   /**
@@ -306,6 +307,27 @@ const useStyleForVariantAndState = (
           retval.backgroundColor = color("blue100")
           retval.borderColor = color("blue100")
           retval.textColor = color("white100")
+          retval.textDecorationLine = "underline"
+          break
+        default:
+          assertNever(state)
+      }
+      break
+
+    case "fillSuccess":
+      retval.textColor = color("white100")
+      switch (state) {
+        case DisplayState.Enabled:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          break
+        case DisplayState.Disabled:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          break
+        case DisplayState.Pressed:
+          retval.backgroundColor = color("blue10")
+          retval.borderColor = color("blue10")
           retval.textDecorationLine = "underline"
           break
         default:
