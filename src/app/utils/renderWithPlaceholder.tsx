@@ -26,7 +26,7 @@ export function renderWithPlaceholder<Props>({
   renderFallback?: FallbackRenderer
   initialProps?: object
   placeholderProps?: object
-  showNotFoundView: boolean
+  showNotFoundView?: boolean
 }): (readyState: ReadyState) => React.ReactElement | null {
   if (!Container && !render) {
     throw new Error("Please supply one of `render` or `Component` to renderWithPlaceholder")

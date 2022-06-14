@@ -1,4 +1,3 @@
-import { ArtsyWebView } from "app/Components/ArtsyWebView"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
 import { PartnerContainer } from "app/Scenes/Partner"
@@ -34,14 +33,15 @@ describe("VanityURLEntity", () => {
     env = require("app/relay/createEnvironment").defaultEnvironment
   })
 
-  it("renders an ArtsyWebViewPage when 404", () => {
+  it("renders an VanityURLPossibleRedirect when 404", () => {
     if (__renderWithPlaceholderTestUtils__) {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
     }
     const { UNSAFE_getAllByType } = renderWithWrappersTL(
       <TestRenderer entity="unknown" slug="a-cool-new-url" />
     )
-    expect(UNSAFE_getAllByType(ArtsyWebView)).toHaveLength(1)
+    env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })
+    expect(UNSAFE_getAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
   })
 
   it("renders a fairQueryRenderer when given a fair id", () => {
