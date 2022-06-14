@@ -105,12 +105,12 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             }}
           />
         )}
-        {/* <FeatureFlagMenuItem
+        <FeatureFlagMenuItem
           title="Go to Storybook"
           onPress={() => {
             navigate("/storybook")
           }}
-        /> */}
+        />
         <Flex mx="2">
           <Separator my="1" />
         </Flex>
