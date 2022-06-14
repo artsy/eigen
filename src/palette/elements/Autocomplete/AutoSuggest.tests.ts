@@ -13,37 +13,37 @@ describe("AutoSuggest", () => {
 
   const autoSuggest = new AutoSuggest(data)
 
-  describe(autoSuggest.getNextSuggestionForWord, () => {
+  describe(autoSuggest.getNextSuggestion, () => {
     it("gets the next if available", () => {
       let word = "Julian"
-      let next = autoSuggest.getNextSuggestionForWord(word)
+      let next = autoSuggest.getNextSuggestion(word)
       expect(next).toEqual("julian opie")
 
       // next word is not same as current word
       expect(next).not.toEqual("julian")
 
       word = "julian notInList"
-      next = autoSuggest.getNextSuggestionForWord(word)
+      next = autoSuggest.getNextSuggestion(word)
       expect(next).toBeNull()
     })
 
     it("allows for space in between words", () => {
       const wordWithSpace = "Julian "
-      const next = autoSuggest.getNextSuggestionForWord(wordWithSpace)
+      const next = autoSuggest.getNextSuggestion(wordWithSpace)
       expect(next).toEqual("julian opie")
     })
   })
 
-  describe(autoSuggest.getSuggestionsForWord, () => {
+  describe(autoSuggest.getSuggestions, () => {
     it("suggestions include the current word", () => {
       const word = "Banksy"
-      const suggestions = autoSuggest.getSuggestionsForWord(word)
+      const suggestions = autoSuggest.getSuggestions(word)
       expect(suggestions.join()).toEqual(word.toLowerCase())
     })
 
     it("correctly maps diacritics ", () => {
       const word = "Ragnar Sigurð"
-      const suggestions = autoSuggest.getSuggestionsForWord(word)
+      const suggestions = autoSuggest.getSuggestions(word)
       expect(suggestions.join()).toEqual("ragnar sigurdsson")
     })
   })

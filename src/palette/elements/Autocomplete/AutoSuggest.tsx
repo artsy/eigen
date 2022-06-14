@@ -38,9 +38,7 @@ type AutoSuggestData = string[]
 function initializeRoot(data: AutoSuggestData) {
   const root = new CharNode()
   for (const word of data) {
-    if (word) {
-      root.insertWord(word)
-    }
+    root.insertWord(word)
   }
   return root
 }
@@ -57,8 +55,21 @@ function initializeRoot(data: AutoSuggestData) {
  * uncached Autocomplete, AutoSuggest will use more memory to hold the suggestion data because
  *  each node can point to many nodes.
  *
- * @param data
- * @returns AutoSuggestHookReturnType
+ * @constructor data
+ *
+ * @example <caption>Usage of AutoSuggest</caption>
+ * const autoSuggest = new AutoSuggest(["Banksy", "Bankzy N", "Andy Warhol"])
+ * autoSuggest.isSuggestible("bank", false) // returns true
+ * autoSuggest.isSuggestible("bank", true) // returns false
+ * autoSuggest.isSuggestible("Banksy", true) // returns true
+ * autoSuggest.isSuggestible("Banksyyyy", false) // returns false
+ *
+ * autoSuggest.getNextSuggestion("bank") // returns "banksy"
+ * autoSuggest.getNextSuggestion("banksy") // returns null
+ *
+ * autoSuggest.getSuggestions("bank") // returns ["banksy", "bankzy n"]
+ * autoSuggest.getSuggestions("banksy") // returns ["banksy"]
+ *
  */
 export class AutoSuggest {
   private root: CharNode
@@ -110,8 +121,8 @@ export class AutoSuggest {
     return suggestedWords
   }
 
-  /** For a given word, returns a list of the next best suggestions */
-  getSuggestionsForWord = (word: string) => {
+  /** For a given string, returns a list of the next best suggestions based on data initialised with */
+  getSuggestions = (word: string) => {
     word = this.normalizeWord(word)
     let suggestedWords: string[] = []
     let lastCharNode = this.root
@@ -128,10 +139,10 @@ export class AutoSuggest {
     return suggestedWords
   }
 
-  /** For a given word, returns the next best suggestion or null */
-  getNextSuggestionForWord = (word: string) => {
+  /** For a given string, returns the next best suggestion or null if there is no next best suggestion to return */
+  getNextSuggestion = (word: string) => {
     word = this.normalizeWord(word)
-    const suggestions = this.getSuggestionsForWord(word)
+    const suggestions = this.getSuggestions(word)
     let nextSuggestion: string | null = null
     let i = 0
     while (i < suggestions.length && !nextSuggestion) {
@@ -145,9 +156,21 @@ export class AutoSuggest {
 }
 
 interface AutoSuggestHookReturnType {
+  /**
+   * A little helper method to help check if a word can possibly be suggested.
+   * When matchExact is true, it returns true if word that is being checked is in the data. Eg
+   * when matchExact is true and word "myword" is in the data, "mywor" will return false and
+   * "myword" will return true. Else if matchExact is false "mywor" as well as "myword" will
+   * return true.
+   * @param word
+   * @param matchExact
+   * @returns boolean
+   */
   isSuggestible: (word: string, matchExact?: boolean) => boolean
-  getNextSuggestionForWord: (word: string) => string | null
-  getSuggestionsForWord: (word: string) => string[]
+  /** For a given string, returns the next best suggestion or null if there is no next best suggestion to return */
+  getNextSuggestion: (word: string) => string | null
+  /** For a given string, returns a list of the next best suggestions based on data initialised with */
+  getSuggestions: (word: string) => string[]
 }
 
 /**
@@ -163,12 +186,25 @@ interface AutoSuggestHookReturnType {
  *
  * @param data
  * @returns AutoSuggestHookReturnType
+ *
+ * @example <caption>Usage of useAutoSuggest</caption>
+ * const { isSuggestible, getNextSuggestion, getSuggestions} = useAutoSuggest(["Banksy", "Bankzy N", "Andy Warhol"])
+ * isSuggestible("bank", false) // returns true
+ * isSuggestible("bank", true) // returns false
+ * isSuggestible("Banksy", true) // returns true
+ * isSuggestible("Banksyyyy", false) // returns false
+ *
+ * getNextSuggestion("bank") // returns "banksy"
+ * getNextSuggestion("banksy") // returns null
+ *
+ * getSuggestions("bank") // returns ["banksy", "bankzy n"]
+ * getSuggestions("banksy") // returns ["banksy"]
  */
 export const useAutoSuggest = (data: AutoSuggestData): AutoSuggestHookReturnType => {
   const autoSuggest = useMemo(() => new AutoSuggest(data), [data])
   return {
     isSuggestible: autoSuggest.isSuggestible,
-    getNextSuggestionForWord: autoSuggest.getNextSuggestionForWord,
-    getSuggestionsForWord: autoSuggest.getSuggestionsForWord,
+    getNextSuggestion: autoSuggest.getNextSuggestion,
+    getSuggestions: autoSuggest.getSuggestions,
   }
 }
