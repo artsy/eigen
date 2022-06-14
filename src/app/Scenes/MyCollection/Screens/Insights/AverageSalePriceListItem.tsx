@@ -32,7 +32,7 @@ export const AverageSalePriceListItem: React.FC<Props> = ({
       <Flex px={withHorizontalPadding ? 2 : 0} pb={1} pt={first ? 0 : 1} flexDirection="column">
         {/* Sale Artwork Thumbnail Image */}
         <Flex flexDirection="row">
-          {!estimatedArtwork.images?.thumbnail?.url ? (
+          {!estimatedArtwork.artist?.imageUrl ? (
             <Flex
               width={40}
               height={40}
@@ -54,23 +54,21 @@ export const AverageSalePriceListItem: React.FC<Props> = ({
               // To align the image with the text we have to add top margin to compensate the line height.
               style={{ marginTop: 3 }}
             >
-              <OpaqueImageView
-                width={40}
-                height={40}
-                imageURL={estimatedArtwork.images.thumbnail.url}
-              />
+              <OpaqueImageView width={40} height={40} imageURL={estimatedArtwork.artist.imageUrl} />
             </Flex>
           )}
-          {/* Sale Artwork Artist Name and Title */}
-          <Flex pl={15}>
+          {/* Sale Artwork Artist Name, Birthday and Nationality */}
+          <Flex justifyContent="center" pl={15}>
             {!!showArtistName && !!estimatedArtwork.artist?.name && (
               <Text variant="xs" ellipsizeMode="middle" numberOfLines={2}>
                 {estimatedArtwork.artist?.name}
               </Text>
             )}
-            <Text variant="xs" ellipsizeMode="middle" color="black60" numberOfLines={2} italic>
-              {estimatedArtwork.title}
-            </Text>
+            {!!estimatedArtwork.artist?.formattedNationalityAndBirthday && (
+              <Text variant="xs" ellipsizeMode="middle" color="black60">
+                {estimatedArtwork.artist?.formattedNationalityAndBirthday}
+              </Text>
+            )}
           </Flex>
         </Flex>
         {/* Sale Artwork Medium */}
