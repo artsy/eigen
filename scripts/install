@@ -3,6 +3,6 @@ set -euxo pipefail
 
 
 bundle check || bundle install
-brew bundle
+bundle exec brew bundle
 yarn install
 yarn pod-install
