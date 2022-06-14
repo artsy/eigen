@@ -8,9 +8,8 @@ import { refreshFavoriteArtworks } from "app/utils/refreshHelpers"
 import { Schema, track } from "app/utils/track"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
 import { take } from "lodash"
+import LottieView from "lottie-react-native"
 import {
-  BellFillIcon,
-  BellIcon,
   Box,
   ClassTheme,
   EyeOpenedIcon,
@@ -22,7 +21,7 @@ import {
   Touchable,
 } from "palette"
 import React from "react"
-import { StyleSheet, TouchableWithoutFeedback } from "react-native"
+import { Animated, Easing, StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -54,8 +53,21 @@ export const shareContent = (
   }
 }
 
+interface State {
+  animationProgress: Animated.Value
+}
+
+// Until design gets us a better way to do this, we're using a hacky way to start the animation
+const ANIMATION_INITIAL_VALUE = 0.35
 @track()
-export class ArtworkActions extends React.Component<ArtworkActionsProps> {
+export class ArtworkActions extends React.Component<ArtworkActionsProps, State> {
+  constructor(props: ArtworkActionsProps) {
+    super(props)
+    this.state = {
+      animationProgress: new Animated.Value(!props.artwork.is_saved ? ANIMATION_INITIAL_VALUE : 1),
+    }
+  }
+
   @track((props: ArtworkActionsProps) => {
     return {
       action_name: props.artwork.is_saved
@@ -67,6 +79,20 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   })
   handleArtworkSave() {
     const { artwork, relay } = this.props
+    const { animationProgress } = this.state
+
+    if (!artwork.is_saved) {
+      Animated.timing(animationProgress, {
+        toValue: !artwork.is_saved ? 1 : 0,
+        duration: 2000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }).start()
+    } else {
+      // Do not animate the save button when unsaving
+      this.setState({ animationProgress: new Animated.Value(ANIMATION_INITIAL_VALUE) })
+    }
+
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     commitMutation<ArtworkActionsSaveMutation>(relay.environment, {
       mutation: graphql`
@@ -123,6 +149,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
       artwork: { is_saved, is_hangable, sale },
     } = this.props
 
+    const { animationProgress } = this.state
     const isOpenSale = sale && sale.isAuction && !sale.isClosed
 
     return (
@@ -130,11 +157,11 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
         {isOpenSale ? (
           <Touchable haptic onPress={() => this.handleArtworkSave()}>
             <UtilButton pr={2}>
-              {is_saved ? (
-                <BellFillIcon accessibilityLabel="unwatch lot icon" mr={0.5} fill="blue100" />
-              ) : (
-                <BellIcon accessibilityLabel="watch lot icon" mr={0.5} />
-              )}
+              <LottieView
+                style={{ marginRight: 5, height: 15, width: 15 }}
+                source={require("animations/bell.json")}
+                progress={animationProgress}
+              />
               <ClassTheme>
                 {({ color }) => (
                   <Text variant="sm" color={is_saved ? color("blue100") : color("black100")}>
