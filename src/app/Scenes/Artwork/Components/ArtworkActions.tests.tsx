@@ -1,22 +1,24 @@
-import { ArtworkActionsTestsQueryRawResponse } from "__generated__/ArtworkActionsTestsQuery.graphql"
+import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
+import { ArtworkActionsTestsQuery$data } from "__generated__/ArtworkActionsTestsQuery.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderRelayTree } from "app/tests/renderRelayTree"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { BellIcon, Sans, Theme } from "palette"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql } from "react-relay"
 import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from "./ArtworkActions"
 
 jest.unmock("react-relay")
+jest.unmock("app/NativeModules/LegacyNativeModules")
 
 describe("ArtworkActions", () => {
   beforeEach(() => {
     __globalStoreTestUtils__?.setProductionMode()
   })
+
   describe("share button message", () => {
     it("displays only 3 artists when there are more than 3 artist", async () => {
       const content = shareContent("Title 1", "/artwork/title-1", [
@@ -62,21 +64,15 @@ describe("ArtworkActions", () => {
 
   describe("with AR enabled", () => {
     it("renders buttons correctly", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-            <ArtworkActions artwork={artworkActionsArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { queryByText, getByText } = renderWithWrappersTL(
+        <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtwork} />
       )
-      expect(component.find(Sans).length).toEqual(3)
 
-      expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"Save"`)
-
-      expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"View in Room"`)
-
-      expect(component.find(Sans).at(2).render().text()).toMatchInlineSnapshot(`"Share"`)
+      expect(queryByText("Save")).toBeTruthy()
+      expect(queryByText("Saved")).toBeTruthy()
+      expect(getByText("Saved")).toHaveProp("color", "transparent")
+      expect(queryByText("View in Room")).toBeTruthy()
+      expect(queryByText("Share")).toBeTruthy()
     })
 
     it("does not show the View in Room option if the artwork is not hangable", () => {
@@ -84,19 +80,14 @@ describe("ArtworkActions", () => {
         ...artworkActionsArtwork,
         is_hangable: false,
       }
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-            <ArtworkActions artwork={artworkActionsArtworkNotHangable} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { getByText, queryByText } = renderWithWrappersTL(
+        <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtworkNotHangable} />
       )
-      expect(component.find(Sans).length).toEqual(2)
 
-      expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"Save"`)
-
-      expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"Share"`)
+      expect(queryByText("Save")).toBeTruthy()
+      expect(queryByText("Share")).toBeTruthy()
+      expect(getByText("Saved")).toHaveProp("color", "transparent")
+      expect(queryByText("View in Room")).toBeFalsy()
     })
   })
 
@@ -108,37 +99,27 @@ describe("ArtworkActions", () => {
         isClosed: false,
       },
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <ArtworkActions artwork={artworkActionsArtworkInAuction} />
-        </Theme>
-      </GlobalStoreProvider>
+    const { queryByText, queryByA11yLabel } = renderWithWrappersTL(
+      <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtworkInAuction} />
     )
-    expect(component.find(Sans).length).toEqual(3)
+    expect(queryByText("Watch lot")).toBeTruthy()
+    expect(queryByA11yLabel("watch lot icon")).toBeTruthy()
+    expect(queryByText("Share")).toBeTruthy()
 
-    expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"Watch lot"`)
-
-    expect(component.find(BellIcon).length).toEqual(1)
+    expect(queryByText("Save")).toBeFalsy()
+    expect(queryByText("Saved")).toBeFalsy()
   })
 
   describe("without AR enabled", () => {
     it("does not show the View in Room option if the phone does not have AREnabled", () => {
       LegacyNativeModules.ARCocoaConstantsModule.AREnabled = false
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-            <ArtworkActions artwork={artworkActionsArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { queryByText } = renderWithWrappersTL(
+        <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtwork} />
       )
-      expect(component.find(Sans).length).toEqual(2)
 
-      expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"Save"`)
-
-      expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"Share"`)
+      expect(queryByText("Watch lot")).toBeFalsy()
+      expect(queryByText("Save")).toBeTruthy()
+      expect(queryByText("Share")).toBeTruthy()
     })
   })
 
@@ -154,7 +135,7 @@ describe("ArtworkActions", () => {
             }
           }
         `,
-        mockData: { artwork: mockArtworkData } as ArtworkActionsTestsQueryRawResponse,
+        mockData: { artwork: mockArtworkData } as ArtworkActionsTestsQuery$data,
         mockMutationResults: { saveArtwork: mockSaveResults },
       })
     }
@@ -177,7 +158,7 @@ describe("ArtworkActions", () => {
         mockSaveResults: unsaveResponse,
       })
 
-      const saveButton = artworkActions.find(Sans).at(0)
+      const saveButton = artworkActions.find(Text).at(1)
       expect(saveButton.text()).toMatchInlineSnapshot(`"Saved"`)
       expect(saveButton.props().color).toMatchInlineSnapshot(`"#1023D7"`)
 
@@ -186,7 +167,7 @@ describe("ArtworkActions", () => {
       await flushPromiseQueue()
       artworkActions.update()
 
-      const updatedSaveButton = artworkActions.find(Sans).at(0)
+      const updatedSaveButton = artworkActions.find(Text).at(1)
       expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Saved"`)
       expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#1023D7"`)
     })
@@ -199,7 +180,7 @@ describe("ArtworkActions", () => {
         mockSaveResults: saveResponse,
       })
 
-      const saveButton = artworkActions.find(Sans).at(0)
+      const saveButton = artworkActions.find(Text).at(1)
       expect(saveButton.text()).toMatchInlineSnapshot(`"Save"`)
       expect(saveButton.props().color).toMatchInlineSnapshot(`"#000000"`)
 
@@ -208,13 +189,13 @@ describe("ArtworkActions", () => {
       await flushPromiseQueue()
       artworkActions.update()
 
-      const updatedSaveButton = artworkActions.find(Sans).at(0)
+      const updatedSaveButton = artworkActions.find(Text).at(1)
       expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Save"`)
       expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#000000"`)
     })
 
     // TODO: Update once we can use relay's new facilities for testing
-    xit("handles errors in saving gracefully", async () => {
+    it("handles errors in saving gracefully", async () => {
       const artworkActions = await renderRelayTree({
         Component: ArtworkActionsFragmentContainer,
         query: graphql`
@@ -224,7 +205,7 @@ describe("ArtworkActions", () => {
             }
           }
         `,
-        mockData: { artwork: artworkActionsArtwork }, // Enable/fix this when making large change to these components/fixtures: as ArtworkActionsTestsErrorQueryRawResponse,
+        mockData: { artwork: artworkActionsArtwork }, // Enable/fix this when making large change to these components/fixtures: as ArtworkActionsTestsErrorQuery,
         mockMutationResults: {
           saveArtwork: () => {
             return Promise.reject(new Error("failed to fetch"))
@@ -232,23 +213,23 @@ describe("ArtworkActions", () => {
         },
       })
 
-      const saveButton = artworkActions.find(Sans).at(0)
+      const saveButton = artworkActions.find(Text).at(1)
       expect(saveButton.text()).toMatchInlineSnapshot(`"Save"`)
-      expect(saveButton.props().color).toMatchInlineSnapshot(`"#000"`)
+      expect(saveButton.props().color).toMatchInlineSnapshot(`"#000000"`)
 
       await artworkActions.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
       artworkActions.update()
 
-      const updatedSaveButton = artworkActions.find(Sans).at(0)
+      const updatedSaveButton = artworkActions.find(Text).at(1)
       expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Save"`)
-      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#000"`)
+      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#000000"`)
     })
   })
 })
 
-const artworkActionsArtwork = {
+const artworkActionsArtwork: ArtworkActions_artwork$data = {
   id: "artwork12345",
   internalID: "12345",
   title: "test title",
@@ -273,5 +254,5 @@ const artworkActionsArtwork = {
   is_hangable: true,
   heightCm: 10,
   widthCm: 10,
-  " $refType": null,
+  " $fragmentType": "ArtworkActions_artwork",
 }

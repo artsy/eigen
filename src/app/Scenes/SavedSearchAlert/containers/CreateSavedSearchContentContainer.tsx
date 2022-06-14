@@ -1,7 +1,7 @@
 import { useFocusEffect } from "@react-navigation/core"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
-import { CreateSavedSearchContentContainer_viewer } from "__generated__/CreateSavedSearchContentContainer_viewer.graphql"
+import { CreateSavedSearchContentContainer_viewer$data } from "__generated__/CreateSavedSearchContentContainer_viewer.graphql"
 import { CreateSavedSearchContentContainerQuery } from "__generated__/CreateSavedSearchContentContainerQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -16,23 +16,19 @@ import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from
 import { SavedSearchAlertForm } from "../SavedSearchAlertForm"
 import {
   CreateSavedSearchAlertNavigationStack,
-  SavedSearchAlertFormPropsBase,
   SavedSearchAlertMutationResult,
 } from "../SavedSearchAlertModel"
 
 interface CreateSavedSearchAlertContentQueryRendererProps {
   navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
-  artistId: string
-  artistName: string
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
 }
 
 interface CreateSavedSearchAlertContentProps
-  extends CreateSavedSearchAlertContentQueryRendererProps,
-    SavedSearchAlertFormPropsBase {
+  extends CreateSavedSearchAlertContentQueryRendererProps {
   relay: RelayRefetchProp
-  viewer?: CreateSavedSearchContentContainer_viewer | null
+  viewer?: CreateSavedSearchContentContainer_viewer$data | null
   loading: boolean
 }
 
@@ -41,12 +37,14 @@ const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps
   const isPreviouslyFocused = useRef(false)
   const [refetching, setRefetching] = useState(false)
   const [enablePushNotifications, setEnablePushNotifications] = useState(true)
-  const userAllowsEmails =
-    viewer === null
-      ? false
-      : Object.values(viewer!.notificationPreferences).some(
-          (preference) => preference.status === "SUBSCRIBED"
-        )
+  const isCustomAlertsNotificationsEnabled = viewer?.notificationPreferences.some((preference) => {
+    return (
+      preference.channel === "email" &&
+      preference.name === "custom_alerts" &&
+      preference.status === "SUBSCRIBED"
+    )
+  })
+  const userAllowsEmails = isCustomAlertsNotificationsEnabled ?? false
 
   const handleUpdateEmailPreferencesPress = () => {
     navigation.navigate("EmailPreferences")
@@ -111,6 +109,8 @@ const CreateSavedSearchContentContainer = createRefetchContainer(
       fragment CreateSavedSearchContentContainer_viewer on Viewer {
         notificationPreferences {
           status
+          name
+          channel
         }
       }
     `,

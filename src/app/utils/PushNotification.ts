@@ -216,9 +216,6 @@ export async function configure() {
   PushNotification.configure({
     // (optional) Called when Token is generated (iOS and Android)
     onRegister: (token) => {
-      if (__DEV__) {
-        console.log("TOKEN:", token)
-      }
       saveToken(token.token)
     },
 

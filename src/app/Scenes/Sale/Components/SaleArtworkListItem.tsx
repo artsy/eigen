@@ -5,7 +5,7 @@ import {
   tappedEntityGroup,
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
-import { SaleArtworkListItem_artwork } from "__generated__/SaleArtworkListItem_artwork.graphql"
+import { SaleArtworkListItem_artwork$data } from "__generated__/SaleArtworkListItem_artwork.graphql"
 import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
@@ -16,7 +16,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface Props {
-  artwork: SaleArtworkListItem_artwork
+  artwork: SaleArtworkListItem_artwork$data
   contextScreenOwnerType?: ScreenOwnerType
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string

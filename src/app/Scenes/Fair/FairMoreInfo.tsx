@@ -1,4 +1,4 @@
-import { FairMoreInfo_fair } from "__generated__/FairMoreInfo_fair.graphql"
+import { FairMoreInfo_fair$data } from "__generated__/FairMoreInfo_fair.graphql"
 import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
 import { Markdown } from "app/Components/Markdown"
@@ -18,7 +18,7 @@ interface FairMoreInfoQueryRendererProps {
 }
 
 interface FairMoreInfoProps {
-  fair: FairMoreInfo_fair
+  fair: FairMoreInfo_fair$data
 }
 
 interface LocationCoordinates {

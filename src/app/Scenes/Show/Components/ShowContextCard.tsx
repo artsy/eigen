@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ShowContextCard_show } from "__generated__/ShowContextCard_show.graphql"
+import { ShowContextCard_show$data } from "__generated__/ShowContextCard_show.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -10,7 +10,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 export interface ShowContextCardProps extends BoxProps {
-  show: ShowContextCard_show
+  show: ShowContextCard_show$data
 }
 
 export const ShowContextCard: React.FC<ShowContextCardProps> = ({ show, ...rest }) => {
@@ -193,7 +193,7 @@ export const ShowContextCardFragmentContainer = createFragmentContainer(ShowCont
   `,
 })
 
-const extractPropsFromFair = (fair: ShowContextCard_show["fair"]): ContextCardProps => ({
+const extractPropsFromFair = (fair: ShowContextCard_show$data["fair"]): ContextCardProps => ({
   sectionTitle: `Part of ${fair?.name}`,
   imageUrls: [fair?.image?.imageUrl ?? ""],
   iconUrl: fair?.profile?.icon?.imageUrl ?? "",
@@ -203,7 +203,9 @@ const extractPropsFromFair = (fair: ShowContextCard_show["fair"]): ContextCardPr
 })
 
 // TODO: confirm against bestiary of Show types? (regular, reference, online, stub)
-const extractPropsFromPartner = (partner: ShowContextCard_show["partner"]): ContextCardProps => ({
+const extractPropsFromPartner = (
+  partner: ShowContextCard_show$data["partner"]
+): ContextCardProps => ({
   sectionTitle: `Presented by ${partner?.name}`,
   imageUrls: partner?.artworksConnection?.edges?.map((edge) => edge?.node?.image?.url!) || [],
   title: partner?.name ?? "",

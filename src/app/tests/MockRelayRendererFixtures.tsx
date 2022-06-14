@@ -1,6 +1,5 @@
-import { MockRelayRendererFixtures_artist } from "__generated__/MockRelayRendererFixtures_artist.graphql"
-import { MockRelayRendererFixtures_artwork } from "__generated__/MockRelayRendererFixtures_artwork.graphql"
-import { MockRelayRendererFixtures_artworkMetadata } from "__generated__/MockRelayRendererFixtures_artworkMetadata.graphql"
+import { MockRelayRendererFixtures_artist$data } from "__generated__/MockRelayRendererFixtures_artist.graphql"
+import { MockRelayRendererFixtures_artwork$data } from "__generated__/MockRelayRendererFixtures_artwork.graphql"
 import { MockRelayRendererFixturesArtistQuery } from "__generated__/MockRelayRendererFixturesArtistQuery.graphql"
 import { ContextConsumer } from "app/utils/Context"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -12,9 +11,7 @@ import { Image, Text, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 const Metadata = createFragmentContainer(
-  (props: { artworkMetadata: MockRelayRendererFixtures_artworkMetadata }) => (
-    <Text>{props.artworkMetadata.title}</Text>
-  ),
+  (props: { artworkMetadata: any }) => <Text>{props.artworkMetadata.title}</Text>,
   {
     artworkMetadata: graphql`
       fragment MockRelayRendererFixtures_artworkMetadata on Artwork {
@@ -25,7 +22,7 @@ const Metadata = createFragmentContainer(
 )
 
 export const Artwork = createFragmentContainer(
-  (props: { artwork: MockRelayRendererFixtures_artwork }) => (
+  (props: { artwork: MockRelayRendererFixtures_artwork$data }) => (
     <View>
       <Image
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -52,7 +49,7 @@ export const Artwork = createFragmentContainer(
 )
 
 const Artist = createFragmentContainer(
-  (props: { artist: MockRelayRendererFixtures_artist }) => <Text>{props.artist.name}</Text>,
+  (props: { artist: MockRelayRendererFixtures_artist$data }) => <Text>{props.artist.name}</Text>,
   {
     artist: graphql`
       fragment MockRelayRendererFixtures_artist on Artist {

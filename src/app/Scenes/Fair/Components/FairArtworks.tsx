@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { FairArtworks_fair } from "__generated__/FairArtworks_fair.graphql"
+import { FairArtworks_fair$data } from "__generated__/FairArtworks_fair.graphql"
 import {
   aggregationsType,
   aggregationsWithFollowedArtists,
@@ -11,14 +11,14 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FAIR2_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
 import { Schema } from "app/utils/track"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box } from "palette"
 import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 
 interface FairArtworksProps {
-  fair: FairArtworks_fair
+  fair: FairArtworks_fair$data
   relay: RelayPaginationProp
   initiallyAppliedFilter?: FilterArray
   aggregations?: aggregationsType

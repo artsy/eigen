@@ -1,7 +1,7 @@
-import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
+import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
 import { dismissModal, navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
 import { Button } from "palette"
@@ -15,7 +15,7 @@ const mockNavigator = { popToTop }
 const refreshBidderInfoMock = jest.fn()
 const refreshSaleArtworkInfoMock = jest.fn()
 
-const saleArtwork: BidResult_sale_artwork = {
+const saleArtwork: BidResult_sale_artwork$data = {
   increments: [
     {
       display: "$10,000",
@@ -48,7 +48,7 @@ const saleArtwork: BidResult_sale_artwork = {
     end_at: "2022-05-01T00:03:00+00:00",
     slug: "sale-id",
   },
-} as any as BidResult_sale_artwork
+} as any as BidResult_sale_artwork$data
 
 describe("BidResult component", () => {
   Date.now = jest.fn(() => 1525983752116)
@@ -195,42 +195,6 @@ describe("BidResult component", () => {
       })
     })
   })
-
-  describe("cascading end times", () => {
-    describe("with cascading end times turned on", () => {
-      beforeEach(() => {
-        Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
-      })
-
-      it("shows the sale artwork's end time if the sale has cascading end times", () => {
-        const { getByText } = renderWithWrappersTL(<BidResult {...propsForCascadingSale} />)
-        // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
-
-        const timerText = getByText("03d 00h 00m 10s")
-        expect(timerText).toBeTruthy()
-      })
-
-      it("shows the sale's end time if the sale does not have cascading end times", () => {
-        const { getByText } = renderWithWrappersTL(<BidResult {...propsForNonCascadingSale} />)
-        // Today is May 10. Sale artwork's end time null. Sale's end day is May 10.
-        const timerText = getByText("00d 00h 00m 10s")
-        expect(timerText).toBeTruthy()
-      })
-    })
-
-    describe("with cacsading end time feature disabled", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
-      })
-      it("shows the sale's end time", () => {
-        const { getByText } = renderWithWrappersTL(<BidResult {...propsForCascadingSale} />)
-        // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
-        const timerText = getByText("00d 00h 00m 10s")
-        expect(timerText).toBeTruthy()
-      })
-    })
-  })
 })
 
 const Statuses = {
@@ -260,44 +224,4 @@ const Statuses = {
     `,
     position: null,
   } as BidderPositionResult,
-}
-
-const cascadingSaleArtwork: BidResult_sale_artwork = {
-  endAt: "2018-05-13T20:22:42+00:00",
-  sale: {
-    liveStartAt: null,
-    endAt: "2018-05-10T20:22:42+00:00",
-    slug: "sale-id",
-    cascadingEndTimeIntervalMinutes: 1,
-  },
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  " $refType": null, // needs this to keep TS happy
-}
-
-const nonCascadingSaleArtwork: BidResult_sale_artwork = {
-  endAt: null,
-  sale: {
-    liveStartAt: null,
-    endAt: "2018-05-10T20:22:42+00:00",
-    slug: "sale-id",
-    cascadingEndTimeIntervalMinutes: null,
-  },
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  " $refType": null, // needs this to keep TS happy
-}
-
-const propsForCascadingSale = {
-  refreshBidderInfo: refreshBidderInfoMock,
-  refreshSaleArtwork: refreshSaleArtworkInfoMock,
-  bidderPositionResult: Statuses.outbid,
-  sale_artwork: cascadingSaleArtwork,
-  navigator: jest.fn() as any,
-}
-
-const propsForNonCascadingSale = {
-  refreshBidderInfo: refreshBidderInfoMock,
-  refreshSaleArtwork: refreshSaleArtworkInfoMock,
-  bidderPositionResult: Statuses.outbid,
-  sale_artwork: nonCascadingSaleArtwork,
-  navigator: jest.fn() as any,
 }

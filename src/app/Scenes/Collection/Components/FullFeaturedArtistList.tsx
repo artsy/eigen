@@ -1,4 +1,4 @@
-import { FullFeaturedArtistList_collection } from "__generated__/FullFeaturedArtistList_collection.graphql"
+import { FullFeaturedArtistList_collection$data } from "__generated__/FullFeaturedArtistList_collection.graphql"
 import { FullFeaturedArtistListQuery } from "__generated__/FullFeaturedArtistListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -6,11 +6,11 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box } from "palette"
 import React from "react"
-import { Dimensions, FlatList, ViewProps } from "react-native"
+import { FlatList, ViewProps } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface Props extends ViewProps {
-  collection: FullFeaturedArtistList_collection
+  collection: FullFeaturedArtistList_collection$data
 }
 
 export class FullFeaturedArtistList extends React.Component<Props> {
@@ -63,8 +63,7 @@ export class FullFeaturedArtistList extends React.Component<Props> {
 
 export const CollectionFeaturedArtistsContainer = createFragmentContainer(FullFeaturedArtistList, {
   collection: graphql`
-    fragment FullFeaturedArtistList_collection on MarketingCollection
-    @argumentDefinitions(screenWidth: { type: "Int", defaultValue: 500 }) {
+    fragment FullFeaturedArtistList_collection on MarketingCollection {
       artworksConnection(aggregations: [MERCHANDISABLE_ARTISTS], size: 0, sort: "-decayed_merch") {
         merchandisableArtists {
           internalID
@@ -85,15 +84,14 @@ export const CollectionFullFeaturedArtistListQueryRenderer: React.FC<{ collectio
   <QueryRenderer<FullFeaturedArtistListQuery>
     environment={defaultEnvironment}
     query={graphql`
-      query FullFeaturedArtistListQuery($collectionID: String!, $screenWidth: Int) {
+      query FullFeaturedArtistListQuery($collectionID: String!) {
         collection: marketingCollection(slug: $collectionID) {
-          ...FullFeaturedArtistList_collection @arguments(screenWidth: $screenWidth)
+          ...FullFeaturedArtistList_collection
         }
       }
     `}
     variables={{
       collectionID,
-      screenWidth: Dimensions.get("screen").width,
     }}
     cacheConfig={{
       // Bypass Relay cache on retries.

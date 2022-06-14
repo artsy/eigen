@@ -1,4 +1,5 @@
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
+import { useToast } from "app/Components/Toast/toastHook"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -6,14 +7,17 @@ import { Input } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"
-import { MyAccountEditEmail_me } from "../../../__generated__/MyAccountEditEmail_me.graphql"
+import { MyAccountEditEmail_me$data } from "../../../__generated__/MyAccountEditEmail_me.graphql"
 import {
   MyAccountFieldEditScreen,
   MyAccountFieldEditScreenPlaceholder,
 } from "./Components/MyAccountFieldEditScreen"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
-const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp }> = ({ me }) => {
+const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: RelayProp }> = ({
+  me,
+  relay,
+}) => {
   const [email, setEmail] = useState<string>(me.email ?? "")
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
 
@@ -25,6 +29,8 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
 
   const editScreenRef = useRef<MyAccountFieldEditScreen>(null)
 
+  const toast = useToast()
+
   return (
     <MyAccountFieldEditScreen
       ref={editScreenRef}
@@ -32,7 +38,14 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
       canSave={isEmailValid}
       onSave={async (dismiss) => {
         try {
-          await updateMyUserProfile({ email })
+          await updateMyUserProfile({ email }, relay.environment)
+
+          if (email !== me.email) {
+            toast.show("Please confirm your new email for this update to take effect", "middle", {
+              duration: "long",
+            })
+          }
+
           dismiss()
         } catch (e: any) {
           setReceivedError(e)
@@ -40,6 +53,7 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
       }}
     >
       <Input
+        accessibilityLabel="email-input"
         enableClearButton
         value={email}
         onChangeText={setEmail}
@@ -66,7 +80,7 @@ const MyAccountEditEmailPlaceholder: React.FC<{}> = ({}) => {
   )
 }
 
-const MyAccountEditEmailContainer = createFragmentContainer(MyAccountEditEmail, {
+export const MyAccountEditEmailContainer = createFragmentContainer(MyAccountEditEmail, {
   me: graphql`
     fragment MyAccountEditEmail_me on Me {
       email

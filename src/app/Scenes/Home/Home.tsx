@@ -1,10 +1,10 @@
-import { Home_articlesConnection } from "__generated__/Home_articlesConnection.graphql"
-import { Home_featured } from "__generated__/Home_featured.graphql"
-import { Home_homePageAbove } from "__generated__/Home_homePageAbove.graphql"
-import { Home_homePageBelow } from "__generated__/Home_homePageBelow.graphql"
-import { Home_meAbove } from "__generated__/Home_meAbove.graphql"
-import { Home_meBelow } from "__generated__/Home_meBelow.graphql"
-import { Home_showsByFollowedArtists } from "__generated__/Home_showsByFollowedArtists.graphql"
+import { Home_articlesConnection$data } from "__generated__/Home_articlesConnection.graphql"
+import { Home_featured$data } from "__generated__/Home_featured.graphql"
+import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
+import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
+import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
+import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
+import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
@@ -60,14 +60,14 @@ interface HomeModule {
 }
 
 interface Props extends ViewProps {
-  articlesConnection: Home_articlesConnection | null
-  showsByFollowedArtists: Home_showsByFollowedArtists | null
-  featured: Home_featured | null
-  homePageAbove: Home_homePageAbove | null
-  homePageBelow: Home_homePageBelow | null
+  articlesConnection: Home_articlesConnection$data | null
+  showsByFollowedArtists: Home_showsByFollowedArtists$data | null
+  featured: Home_featured$data | null
+  homePageAbove: Home_homePageAbove$data | null
+  homePageBelow: Home_homePageBelow$data | null
   loading: boolean
-  meAbove: Home_meAbove | null
-  meBelow: Home_meBelow | null
+  meAbove: Home_meAbove$data | null
+  meBelow: Home_meBelow$data | null
   relay: RelayRefetchProp
 }
 
@@ -121,7 +121,7 @@ const Home = (props: Props) => {
     },
     // Below-The-Fold Modules
     {
-      title: "Auction Results for Artists You Follow",
+      title: "Latest Auction Results",
       type: "auction-results",
       data: meBelow,
       prefetchUrl: "/auction-results-for-artists-you-follow",
@@ -337,7 +337,9 @@ const Home = (props: Props) => {
   )
 }
 
-const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove | null }> = ({ homePageAbove }) => (
+const HomeHeader: React.FC<{ homePageAbove: Home_homePageAbove$data | null }> = ({
+  homePageAbove,
+}) => (
   <Box mb={1} mt={2}>
     <Flex alignItems="center">
       <ArtsyLogoIcon scale={0.75} />

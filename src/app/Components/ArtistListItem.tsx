@@ -1,4 +1,4 @@
-import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
+import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { navigate } from "app/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
@@ -10,7 +10,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 interface Props {
-  artist: ArtistListItem_artist
+  artist: ArtistListItem_artist$data
   relay: RelayProp
   Component?: any
   contextModule?: string

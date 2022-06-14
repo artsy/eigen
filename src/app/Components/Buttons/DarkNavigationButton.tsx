@@ -22,7 +22,7 @@ export default class DarkNavigationButton extends React.Component<Props, any> {
                   {this.props.title}
                 </Serif>
                 {!!showNavArrow && (
-                  <Image source={require("../../../../images/horizontal_chevron_white.webp")} />
+                  <Image source={require("images/horizontal_chevron_white.webp")} />
                 )}
               </Flex>
             </TouchableWithoutFeedback>

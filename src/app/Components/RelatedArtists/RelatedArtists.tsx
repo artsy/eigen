@@ -5,13 +5,13 @@ import { LayoutChangeEvent, View } from "react-native"
 
 import RelatedArtist from "./RelatedArtist"
 
-import { RelatedArtists_artists } from "__generated__/RelatedArtists_artists.graphql"
+import { RelatedArtists_artists$data } from "__generated__/RelatedArtists_artists.graphql"
 import { chunk } from "lodash"
 import { SectionTitle } from "../SectionTitle"
 import { Stack } from "../Stack"
 
 interface Props {
-  artists: RelatedArtists_artists
+  artists: RelatedArtists_artists$data
 }
 
 interface State {

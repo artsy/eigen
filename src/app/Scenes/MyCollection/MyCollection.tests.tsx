@@ -11,17 +11,20 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionContainer } from "./MyCollection"
 
 jest.unmock("react-relay")
 
 describe("MyCollection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
   const TestRenderer = () => (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionTestsQuery>
@@ -55,6 +58,10 @@ describe("MyCollection", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableMyCollectionInsights: true,
+    })
   })
 
   afterEach(() => {
@@ -100,7 +107,9 @@ describe("MyCollection", () => {
 
       expect(navigate).toHaveBeenCalledWith(
         "my-collection/artworks/new",
-        expect.objectContaining({ passProps: { mode: "add", onSuccess: expect.anything() } })
+        expect.objectContaining({
+          passProps: { mode: "add", onSuccess: expect.anything(), source: Tab.collection },
+        })
       )
     })
 
@@ -130,13 +139,11 @@ describe("MyCollection", () => {
       const renderApi = renderWithWrappersTL(<TestRenderer />)
 
       act(() => {
-        mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            Me: () => ({
-              myCollectionConnection: mockArtworkConnection,
-            }),
-          })
-        )
+        mockEnvironmentPayload(mockEnvironment, {
+          Me: () => ({
+            myCollectionConnection,
+          }),
+        })
       })
 
       await applyFilter(renderApi, "Sort By", "Price Paid (High to Low)")
@@ -157,7 +164,7 @@ const applyFilter = async (renderApi: RenderAPI, filterName: string, filterOptio
   act(() => fireEvent.press(renderApi.getByText("Show Results")))
 }
 
-const mockArtworkConnection = {
+const myCollectionConnection = {
   edges: [
     {
       node: {

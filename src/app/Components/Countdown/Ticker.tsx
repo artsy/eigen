@@ -1,6 +1,9 @@
+import { getTimerInfo } from "app/utils/saleTime"
+import { Time } from "app/utils/useTimer"
 import { Duration } from "moment"
 import { Flex, Sans, Text } from "palette"
 import React from "react"
+import { CountdownTimerProps } from "./CountdownTimer"
 
 interface TimeSectionProps {
   textProps: ExtractProps<typeof Sans>
@@ -40,7 +43,7 @@ const LabeledTimeSection: React.FC<TimeSectionProps> = ({ time, label, textProps
 )
 
 interface LabeledTickerProps {
-  duration: Duration
+  duration: CountdownTimerProps["duration"]
   renderSeparator: () => React.ReactElement<any>
   textProps?: ExtractProps<typeof Sans>
 }
@@ -50,7 +53,7 @@ export const LabeledTicker: React.FC<LabeledTickerProps> = ({
   renderSeparator,
   textProps,
 }) => {
-  const sections = durationSections(duration, ["d", "h", "m", "s"])
+  const sections = duration ? durationSections(duration, ["d", "h", "m", "s"]) : []
   return (
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {sections.map((section, idx) => (
@@ -68,12 +71,12 @@ export const LabeledTicker: React.FC<LabeledTickerProps> = ({
 }
 
 interface SimpleTickerProps extends ExtractProps<typeof Sans> {
-  duration: Duration
+  duration: CountdownTimerProps["duration"]
   separator: string
 }
 
 export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator, ...rest }) => {
-  const sections = durationSections(duration, ["d", "h", "m", "s"])
+  const sections = duration ? durationSections(duration, ["d", "h", "m", "s"]) : []
   return (
     <Sans {...rest}>
       {sections
@@ -86,58 +89,30 @@ export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator,
 }
 
 interface ModernTickerProps {
-  duration: Duration
+  duration: CountdownTimerProps["duration"]
   hasStarted?: boolean
+  isExtended?: boolean
+  startAt?: string | null
 }
 
-export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted }) => {
-  const timerInfo = getTimerInfo(duration, hasStarted)
+export const ModernTicker: React.FC<ModernTickerProps> = ({
+  duration,
+  hasStarted,
+  isExtended,
+  startAt,
+}) => {
+  if (!duration) {
+    return null
+  }
+  const time: Time = {
+    days: duration.asDays().toString(),
+    hours: duration.hours().toString(),
+    minutes: duration.minutes().toString(),
+    seconds: duration.seconds().toString(),
+    startAt: startAt ?? "",
+    endDate: "",
+  }
+  const timerInfo = getTimerInfo(time, { hasStarted, isExtended })
 
   return <Text color={timerInfo.color}>{timerInfo.copy}</Text>
-}
-
-interface TimerInfo {
-  copy: string
-  color: string
-}
-
-export const getTimerInfo = (duration: Duration, hasStarted?: boolean): TimerInfo => {
-  const days = duration.asDays()
-  const hours = duration.hours()
-  const minutes = duration.minutes()
-  const seconds = duration.seconds()
-
-  const parsedDays = parseInt(days.toString(), 10)
-  const parsedHours = parseInt(hours.toString(), 10)
-  const parsedMinutes = parseInt(minutes.toString(), 10)
-  const parsedSeconds = parseInt(seconds.toString(), 10)
-
-  let copy = ""
-  let color = "blue100"
-
-  // // Sale has not yet started
-  if (!hasStarted) {
-    if (parsedDays < 1) {
-      copy = "Bidding Starts Today"
-    } else {
-      copy = `${parsedDays} Day${parsedDays > 1 ? "s" : ""} Until Bidding Starts`
-    }
-  } else {
-    // More than 24 hours until close
-    if (parsedDays >= 1) {
-      copy = `${parsedDays}d ${parsedHours}h`
-    }
-
-    // 1-24 hours until close
-    else if (parsedDays < 1 && parsedHours >= 1) {
-      copy = `${parsedHours}h ${parsedMinutes}m`
-    }
-
-    // <60 mins until close
-    else if (parsedDays < 1 && parsedHours < 1) {
-      copy = `${parsedMinutes}m ${parsedSeconds}s`
-      color = "red100"
-    }
-  }
-  return { copy, color }
 }

@@ -1,6 +1,7 @@
 import { useNavigationState } from "@react-navigation/native"
 import { __unsafe_mainModalStackRef } from "app/NativeModules/ARScreenPresenterModule"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { switchTab } from "app/navigation/navigate"
 import { loadDevNavigationStateCache } from "app/navigation/useReloadedDevNavigationState"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { logAction } from "app/utils/loggers"
@@ -13,7 +14,7 @@ import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
 import { DevToggleName, FeatureName, features } from "./config/features"
 import { FeatureMap } from "./config/FeaturesModel"
-import { VisualClueName } from "./config/visualClues"
+import { VisualClueName, visualClueNames } from "./config/visualClues"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { persistenceMiddleware, unpersist } from "./persistence"
 
@@ -55,7 +56,7 @@ function createGlobalStore() {
 
   if (!__TEST__) {
     unpersist().then(async (state) => {
-      await loadDevNavigationStateCache(store.getActions().bottomTabs.switchTab)
+      await loadDevNavigationStateCache(switchTab)
       store.getActions().rehydrate(state)
     })
   }
@@ -109,10 +110,6 @@ export const GlobalStoreProvider: React.FC<{}> = ({ children }) => {
 }
 
 export function useSelectedTab(): BottomTabType {
-  if (Platform.OS === "ios") {
-    return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
-  }
-
   const tabState = useNavigationState(
     (state) => state.routes.find((r) => r.state?.type === "tab")?.state
   )
@@ -184,26 +181,23 @@ export function unsafe_getDevToggle(key: DevToggleName) {
 
 export const useVisualClue = () => {
   const seenVisualClues = GlobalStore.useAppState((state) => state.visualClue.seenVisualClues)
+  const sessionVisualClues = GlobalStore.useAppState((state) => state.visualClue.sessionState.clues)
 
-  const showVisualClue = (clueName?: VisualClueName): boolean => {
-    return !!clueName && !seenVisualClues.includes(clueName)
+  const showVisualClue = (clueName?: VisualClueName | string): boolean => {
+    if (!clueName) {
+      return false
+    }
+
+    if (visualClueNames.includes(clueName)) {
+      return !seenVisualClues.includes(clueName)
+    }
+    return sessionVisualClues.includes(clueName)
   }
 
   return { seenVisualClues, showVisualClue }
 }
 
-export const useSessionVisualClue = () => {
-  const sessionVisualClues = GlobalStore.useAppState((state) => state.visualClue.sessionState.clues)
-
-  const showSessionVisualClue = (clueName?: VisualClueName): boolean =>
-    !!clueName && sessionVisualClues.includes(clueName)
-
-  return { showSessionVisualClue }
-}
-
 export const addClue = GlobalStore.actions.visualClue.addClue
-
-export const removeClue = GlobalStore.actions.visualClue.removeClue
 
 export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
 
@@ -254,9 +248,6 @@ export function getCurrentEmissionState() {
  * react components.
  */
 export function unsafe__getSelectedTab(): BottomTabType {
-  if (Platform.OS === "ios") {
-    return globalStoreInstance().getState().bottomTabs.sessionState.selectedTab
-  }
   const tabState = __unsafe_mainModalStackRef.current
     ?.getRootState()
     .routes.find((r) => r.state?.type === "tab")?.state

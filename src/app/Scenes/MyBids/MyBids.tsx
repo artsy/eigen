@@ -3,7 +3,7 @@ import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
-import { MyBids_me } from "__generated__/MyBids_me.graphql"
+import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
 import { OwnerType } from "@artsy/cohesion"
@@ -11,13 +11,13 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
+import { useScreenDimensions } from "shared/hooks"
 import { MyBidsPlaceholder, SaleCardFragmentContainer } from "./Components"
 import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
 import { NoBids } from "./Components/NoBids"
 
 export interface MyBidsProps {
-  me: MyBids_me
+  me: MyBids_me$data
   isActiveTab: boolean
   relay: RelayRefetchProp
 }

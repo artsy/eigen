@@ -1,4 +1,4 @@
-import { ArtistShows2_artist } from "__generated__/ArtistShows2_artist.graphql"
+import { ArtistShows2_artist$data } from "__generated__/ArtistShows2_artist.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -14,7 +14,7 @@ import { ArtistShows2Query } from "../../../__generated__/ArtistShows2Query.grap
 import { ArtistShowFragmentContainer } from "../../Components/Artist/ArtistShows/ArtistShow"
 
 interface Props {
-  artist: ArtistShows2_artist
+  artist: ArtistShows2_artist$data
   relay: RelayPaginationProp
 }
 
@@ -101,7 +101,6 @@ export const ArtistShows2PaginationContainer = createPaginationContainer(
         count: { type: "Int", defaultValue: 10 }
         status: { type: "String", defaultValue: "closed" }
         cursor: { type: "String" }
-        artistID: { type: "String!" }
       ) {
         slug
         name
@@ -140,8 +139,7 @@ export const ArtistShows2PaginationContainer = createPaginationContainer(
         $status: String!
       ) {
         artist(id: $artistID) {
-          ...ArtistShows2_artist
-            @arguments(count: $count, cursor: $cursor, artistID: $artistID, status: $status)
+          ...ArtistShows2_artist @arguments(count: $count, cursor: $cursor, status: $status)
         }
       }
     `,
@@ -157,7 +155,7 @@ export const ArtistShows2QueryRenderer: React.FC<{ artistID: string }> = ({ arti
         query ArtistShows2Query($artistID: String!) {
           artist(id: $artistID) {
             slug
-            ...ArtistShows2_artist @arguments(artistID: $artistID)
+            ...ArtistShows2_artist
           }
         }
       `}

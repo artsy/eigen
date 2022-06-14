@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
+import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
@@ -17,26 +17,25 @@ import {
   Flex,
   HeartFillIcon,
   HeartIcon,
-  Sans,
   ShareIcon,
+  Text,
   Touchable,
 } from "palette"
 import React from "react"
-import { TouchableWithoutFeedback, View } from "react-native"
+import { StyleSheet, TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
 interface ArtworkActionsProps {
-  artwork: ArtworkActions_artwork
+  artwork: ArtworkActions_artwork$data
   relay?: RelayProp
-
   shareOnPress: () => void
 }
 
 export const shareContent = (
   title: string,
   href: string,
-  artists: ArtworkActions_artwork["artists"]
+  artists: ArtworkActions_artwork$data["artists"]
 ) => {
   let computedTitle: string | null
   if (artists && artists.length) {
@@ -110,7 +109,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const heightIn = cm2in(heightCm!)
     const widthIn = cm2in(widthCm!)
 
-    LegacyNativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(
+    LegacyNativeModules.ARTNativeScreenPresenterModule.presentAugmentedRealityVIR(
       image?.url!,
       widthIn,
       heightIn,
@@ -127,56 +126,63 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const isOpenSale = sale && sale.isAuction && !sale.isClosed
 
     return (
-      <View>
-        <Flex flexDirection="row">
-          {isOpenSale ? (
-            <Touchable haptic onPress={() => this.handleArtworkSave()}>
-              <UtilButton pr={2}>
-                <Box mr={0.5}>{is_saved ? <BellFillIcon fill="blue100" /> : <BellIcon />}</Box>
-                <ClassTheme>
-                  {({ color }) => (
-                    <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
-                      Watch lot
-                    </Sans>
-                  )}
-                </ClassTheme>
-              </UtilButton>
-            </Touchable>
-          ) : (
-            <Touchable haptic onPress={() => this.handleArtworkSave()}>
-              <UtilButton pr={2}>
-                <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />}</Box>
-                <ClassTheme>
-                  {({ color }) => (
-                    <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
-                      {is_saved ? "Saved" : "Save"}
-                    </Sans>
-                  )}
-                </ClassTheme>
-              </UtilButton>
-            </Touchable>
-          )}
-
-          {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
-            <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
-              <UtilButton pr={2}>
-                <Box mr={0.5}>
-                  <EyeOpenedIcon />
-                </Box>
-                <Sans size="3">View in Room</Sans>
-              </UtilButton>
-            </TouchableWithoutFeedback>
-          )}
-          <Touchable haptic onPress={() => this.props.shareOnPress()}>
-            <UtilButton>
-              <Box mr={0.5}>
-                <ShareIcon />
-              </Box>
-              <Sans size="3">Share</Sans>
+      <Flex justifyContent="center" flexDirection="row" width="100%">
+        {isOpenSale ? (
+          <Touchable haptic onPress={() => this.handleArtworkSave()}>
+            <UtilButton pr={2}>
+              {is_saved ? (
+                <BellFillIcon accessibilityLabel="unwatch lot icon" mr={0.5} fill="blue100" />
+              ) : (
+                <BellIcon accessibilityLabel="watch lot icon" mr={0.5} />
+              )}
+              <ClassTheme>
+                {({ color }) => (
+                  <Text variant="sm" color={is_saved ? color("blue100") : color("black100")}>
+                    Watch lot
+                  </Text>
+                )}
+              </ClassTheme>
             </UtilButton>
           </Touchable>
-        </Flex>
-      </View>
+        ) : (
+          <Touchable haptic onPress={() => this.handleArtworkSave()}>
+            <UtilButton pr={2}>
+              {is_saved ? <HeartFillIcon mr={0.5} fill="blue100" /> : <HeartIcon mr={0.5} />}
+              <Box position="relative">
+                {/* Longest text transparent to prevent changing text pushing elements on the right */}
+                <Text variant="sm" color="transparent">
+                  Saved
+                </Text>
+
+                <Box {...StyleSheet.absoluteFillObject}>
+                  <ClassTheme>
+                    {({ color }) => (
+                      <Text variant="sm" color={is_saved ? color("blue100") : color("black100")}>
+                        {is_saved ? "Saved" : "Save"}
+                      </Text>
+                    )}
+                  </ClassTheme>
+                </Box>
+              </Box>
+            </UtilButton>
+          </Touchable>
+        )}
+
+        {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && is_hangable) && (
+          <TouchableWithoutFeedback onPress={() => this.openViewInRoom()}>
+            <UtilButton pr={2}>
+              <EyeOpenedIcon mr={0.5} />
+              <Text variant="sm">View in Room</Text>
+            </UtilButton>
+          </TouchableWithoutFeedback>
+        )}
+        <Touchable haptic onPress={() => this.props.shareOnPress()}>
+          <UtilButton>
+            <ShareIcon mr={0.5} />
+            <Text variant="sm">Share</Text>
+          </UtilButton>
+        </Touchable>
+      </Flex>
     )
   }
 }

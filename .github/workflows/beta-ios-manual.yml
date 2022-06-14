@@ -7,7 +7,7 @@ permissions:
 
 jobs:
   build:
-      permissions:
+    permissions:
       contents: none
     runs-on: ubuntu-latest
     steps:

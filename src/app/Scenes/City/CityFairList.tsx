@@ -1,8 +1,5 @@
-import { CityFairList_city } from "__generated__/CityFairList_city.graphql"
-import {
-  CityFairListQuery,
-  CityFairListQueryVariables,
-} from "__generated__/CityFairListQuery.graphql"
+import { CityFairList_city$data } from "__generated__/CityFairList_city.graphql"
+import { CityFairListQuery } from "__generated__/CityFairListQuery.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import Spinner from "app/Components/Spinner"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -15,8 +12,8 @@ import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { TabFairItemRow } from "./Components/TabFairItemRow"
 
-interface Props extends Pick<CityFairListQueryVariables, "citySlug"> {
-  city: CityFairList_city
+interface Props extends Pick<CityFairListQuery["variables"], "citySlug"> {
+  city: CityFairList_city$data
   relay: RelayPaginationProp
 }
 

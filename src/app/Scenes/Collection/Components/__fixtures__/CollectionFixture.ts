@@ -1,4 +1,4 @@
-import { FullFeaturedArtistListTestsQueryRawResponse } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
+import { FullFeaturedArtistListTestsQuery$rawResponse } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
 
 export const CollectionFixture = {
   " $fragmentRefs": null,
@@ -272,7 +272,7 @@ export const ZeroStateCollectionFixture = {
     counts: { total: 0 },
   },
 }
-export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTestsQueryRawResponse["marketingCollection"] =
+export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTestsQuery$rawResponse["marketingCollection"] =
   {
     id: "some-id",
     artworksConnection: {

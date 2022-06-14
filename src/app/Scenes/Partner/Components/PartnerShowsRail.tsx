@@ -1,4 +1,4 @@
-import { PartnerShowsRail_partner } from "__generated__/PartnerShowsRail_partner.graphql"
+import { PartnerShowsRail_partner$data } from "__generated__/PartnerShowsRail_partner.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
 import { Sans, Spacer } from "palette"
@@ -10,7 +10,7 @@ import { PartnerShowRailItemContainer as RailItem } from "./PartnerShowRailItem"
 const PAGE_SIZE = 6
 
 const PartnerShowsRail: React.FC<{
-  partner: PartnerShowsRail_partner
+  partner: PartnerShowsRail_partner$data
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)

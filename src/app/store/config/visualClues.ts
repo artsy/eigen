@@ -15,13 +15,15 @@ function defineVisualClues<T extends string>(visualClueMap: {
 }
 
 export const visualClues = defineVisualClues({
-  // ExampleClueName: {
-  //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-  // },
-  ArtworkSubmissionMessage: {
-    description: "The message shown after artwork submission with SWA flow",
-  },
   CompleteCollectorProfileMessage: {
     description: "The message shown if the collector profile is incomplete",
   },
+  MyCollectionInsights: {
+    description: "The new My Collection insights tab",
+  },
+  MyCollectionInsightsIncompleteMessage: {
+    description: "The message that indicates that only some artworks have insights",
+  },
 })
+
+export const visualClueNames = Object.keys(visualClues)

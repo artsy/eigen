@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
+import { OnboardingPersonalization_highlights$data } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
 import {
   ArtistListItemContainer as ArtistListItem,
@@ -58,7 +58,7 @@ interface OnboardingPersonalizationListNavigationProps
   > {}
 
 interface OnboardingPersonalizationListProps extends OnboardingPersonalizationListNavigationProps {
-  highlights: OnboardingPersonalization_highlights
+  highlights: OnboardingPersonalization_highlights$data
 }
 
 const OnboardingPersonalizationListHeader = ({

@@ -83,7 +83,7 @@ export class CityView extends Component<Props, State> {
       },
       () => {
         LegacyNativeModules.ARNotificationsManager.postNotificationName(
-          "ARLocalDiscoveryQueryResponseReceived",
+          "ARLocalDiscoveryQueryReceived",
           {}
         )
       }
@@ -94,7 +94,7 @@ export class CityView extends Component<Props, State> {
     // We have a Relay error; post a notification so that the ARMapContainerViewController can finalize the native UI (ie: show the drawer partially).
     this.setState({ relayErrorState }, () => {
       LegacyNativeModules.ARNotificationsManager.postNotificationName(
-        "ARLocalDiscoveryQueryResponseReceived",
+        "ARLocalDiscoveryQueryReceived",
         {}
       )
     })

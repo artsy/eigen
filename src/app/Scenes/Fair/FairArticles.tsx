@@ -1,4 +1,4 @@
-import { FairArticles_fair } from "__generated__/FairArticles_fair.graphql"
+import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"
 import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
@@ -19,7 +19,7 @@ interface FairArticlesQueryRendererProps {
 }
 
 interface FairArticlesProps {
-  fair: FairArticles_fair
+  fair: FairArticles_fair$data
   relay: RelayPaginationProp
 }
 

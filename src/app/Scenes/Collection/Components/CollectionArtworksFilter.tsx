@@ -1,4 +1,4 @@
-import { CollectionArtworks_collection } from "__generated__/CollectionArtworks_collection.graphql"
+import { CollectionArtworks_collection$data } from "__generated__/CollectionArtworks_collection.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { Schema } from "app/utils/track"
@@ -8,7 +8,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface FilterProps {
-  collection: CollectionArtworks_collection
+  collection: CollectionArtworks_collection$data
   animationValue: Animated.Value
 }
 
@@ -64,8 +64,7 @@ export const CollectionArtworksFilterFragmentContainer = createFragmentContainer
   CollectionArtworksFilter,
   {
     collection: graphql`
-      fragment CollectionArtworksFilter_collection on MarketingCollection
-      @argumentDefinitions(input: { type: "FilterArtworksInput" }) {
+      fragment CollectionArtworksFilter_collection on MarketingCollection {
         slug
         id
       }

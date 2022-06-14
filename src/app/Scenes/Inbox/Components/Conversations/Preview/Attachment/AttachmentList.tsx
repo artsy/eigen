@@ -1,4 +1,4 @@
-import { AttachmentList_conversation } from "__generated__/AttachmentList_conversation.graphql"
+import { AttachmentList_conversation$data } from "__generated__/AttachmentList_conversation.graphql"
 import { Box, DocumentIcon, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
@@ -6,7 +6,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { FileDownloadFragmentContainer as FileDownload } from "./FileDownload"
 
 interface Props {
-  conversation: AttachmentList_conversation
+  conversation: AttachmentList_conversation$data
 }
 
 const AttachmentList: React.FC<Props> = ({ conversation }) => {

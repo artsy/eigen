@@ -1,12 +1,12 @@
-import { OrderHistoryRow_order } from "__generated__/OrderHistoryRow_order.graphql"
-import { TrackOrderSection_section } from "__generated__/TrackOrderSection_section.graphql"
+import { OrderHistoryRow_order$data } from "__generated__/OrderHistoryRow_order.graphql"
+import { TrackOrderSection_section$data } from "__generated__/TrackOrderSection_section.graphql"
 
 export type OrderHistoryRowLineItem = NonNullable<
-  NonNullable<NonNullable<OrderHistoryRow_order["lineItems"]>["edges"]>[0]
+  NonNullable<NonNullable<OrderHistoryRow_order$data["lineItems"]>["edges"]>[0]
 >["node"]
 
 export type OrderDetailsTrackOrderSectionLineItem = NonNullable<
-  NonNullable<NonNullable<TrackOrderSection_section["lineItems"]>["edges"]>[0]
+  NonNullable<NonNullable<TrackOrderSection_section$data["lineItems"]>["edges"]>[0]
 >["node"]
 
 export function getTrackingUrl(

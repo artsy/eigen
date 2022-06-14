@@ -10,7 +10,7 @@ import {
   useEnvironment,
 } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
+import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { Flex, Text } from "palette"
 import { parse as parseQueryString } from "query-string"
 import React, { useEffect, useRef, useState } from "react"
@@ -18,8 +18,9 @@ import { Platform } from "react-native"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { parse as parseURL } from "url"
-import { ArtsyKeyboardAvoidingView } from "./ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
 export interface ArtsyWebViewConfig {
@@ -162,6 +163,7 @@ export const ArtsyReactWebView = React.forwardRef<
     ref
   ) => {
     const userAgent = getCurrentEmissionState().userAgent
+    const { callWebViewEventCallback } = useWebViewCallback()
 
     const [loadProgress, setLoadProgress] = useState<number | null>(null)
     const showIndicator = useDevToggle("DTShowWebviewIndicator")
@@ -180,6 +182,15 @@ export const ArtsyReactWebView = React.forwardRef<
           source={{ uri }}
           style={{ flex: 1 }}
           userAgent={userAgent}
+          onMessage={({ nativeEvent }) => {
+            const data = nativeEvent.data
+            try {
+              const jsonData = JSON.parse(data)
+              callWebViewEventCallback(jsonData)
+            } catch (e) {
+              console.log("error parsing webview message data", e, data)
+            }
+          }}
           onLoadStart={() => setLoadProgress((p) => Math.max(0.02, p ?? 0))}
           onLoadEnd={() => setLoadProgress(null)}
           onLoadProgress={(e) => {

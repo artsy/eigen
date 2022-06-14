@@ -1,4 +1,5 @@
 import { getDefaultNormalizer, render } from "@testing-library/react-native"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import { Theme } from "palette"
 import React from "react"
@@ -81,6 +82,22 @@ describe("ModernTicker", () => {
       )
 
       const timerText = getByText("Bidding Starts Today")
+
+      expect(timerText).toBeTruthy()
+      expect(timerText.props.color).toEqual("blue100")
+    })
+
+    it("shows Bidding Starts In 7 Hours if Bidding is starting in 7 hours BUT NOT THE SAME DAY", () => {
+      const sevenHrs = 1000 * 60 * 60 * 7
+      const startAt = new Date(Date.now() + sevenHrs).toISOString()
+      const todayDuration = moment.duration(sevenHrs)
+      const { getByText } = render(
+        <Theme>
+          <ModernTicker duration={todayDuration} startAt={startAt} />
+        </Theme>
+      )
+
+      const timerText = getByText("Bidding Starts In 7 Hours")
 
       expect(timerText).toBeTruthy()
       expect(timerText.props.color).toEqual("blue100")
@@ -176,6 +193,19 @@ describe("ModernTicker", () => {
 
       expect(timerText).toBeTruthy()
       expect(timerText.props.color).toEqual("red100")
+    })
+
+    it('prefixes "Extended: " when when sale is extended', () => {
+      const momentDuration = moment.duration(1000 * 90) // 1m 30s
+      const { getByText } = renderWithWrappersTL(
+        <Theme>
+          <ModernTicker duration={momentDuration} hasStarted isExtended />
+        </Theme>
+      )
+      const timerTextBlock = getByText("Extended: 1m 30s")
+
+      expect(timerTextBlock).toBeTruthy()
+      expect(timerTextBlock.props.color).toEqual("red100")
     })
   })
 })

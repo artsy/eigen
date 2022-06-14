@@ -1,11 +1,10 @@
 import MapboxGL, { MapViewProps, OnPressEvent } from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
-import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import { Pin } from "app/Icons/Pin"
 import PinFairSelected from "app/Icons/PinFairSelected"
 import PinSavedSelected from "app/Icons/PinSavedSelected"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import {
   convertCityToGeoJSON,
   fairToGeoCityFairs,
@@ -21,6 +20,7 @@ import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
+import { SafeAreaInsets } from "shared/hooks"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { cityTabs } from "../City/cityTabs"
@@ -70,7 +70,7 @@ interface Props {
   /** Should the map buttons be hidden...  */
   hideMapButtons: boolean
   /** The map API entry-point */
-  viewer?: GlobalMap_viewer
+  viewer?: GlobalMap_viewer$data
   /** API stuff */
   relay?: RelayProp
   /** Tracking */
@@ -565,7 +565,7 @@ export class GlobalMap extends React.Component<Props, State> {
         {({ color }) => (
           <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("black5") }}>
             <LoadingScreen
-              source={require("../../../../images/map-bg.webp")}
+              source={require("images/map-bg.webp")}
               resizeMode="cover"
               style={{ ...this.backgroundImageSize }}
             />

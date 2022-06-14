@@ -1,11 +1,13 @@
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { Countdown } from "app/Components/Bidding/Components/Timer"
+import { AuctionTimerState, Countdown } from "app/Components/Bidding/Components/Timer"
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
+import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import "moment-timezone"
-import { _test_THEMES, Sans, Theme } from "palette"
+import { _test_THEMES, Text, Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
@@ -20,13 +22,20 @@ const Wrapper: React.FC<{}> = ({ children }) => {
   return (
     <SafeAreaProvider>
       <GlobalStoreProvider>
-        <Theme>{children}</Theme>
+        <ModalStack>
+          <Theme>{children}</Theme>
+        </ModalStack>
       </GlobalStoreProvider>
     </SafeAreaProvider>
   )
 }
 
 describe("CommercialInformation", () => {
+  beforeEach(() => {
+    // TODO: Remove it when AREnableCreateArtworkAlert flag is true in Echo
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
+  })
+
   it("renders all information when the data is present", () => {
     const ForSaleArtwork = {
       ...CommercialInformationArtwork,
@@ -34,18 +43,67 @@ describe("CommercialInformation", () => {
       availability: "for sale",
     }
 
-    const component = mount(
+    const { queryByText } = renderWithWrappersTL(
       <Wrapper>
         <CommercialInformationTimerWrapper
           artwork={ForSaleArtwork as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
 
-    expect(component.text()).toContain("For sale")
-    expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"From I'm a Gallery"`)
-    expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
+    expect(queryByText("For sale")).toBeTruthy()
+    expect(queryByText("From I'm a Gallery")).toBeTruthy()
+    expect(queryByText("Consign with Artsy")).toBeTruthy()
+  })
+
+  it("returns correct information with ff true and artworks is sold", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+    const ForSaleArtwork = {
+      ...CommercialInformationArtwork,
+      isSold: true,
+    }
+
+    const { queryByText } = renderWithWrappersTL(
+      <Wrapper>
+        <CommercialInformationTimerWrapper
+          artwork={ForSaleArtwork as any}
+          me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
+        />
+      </Wrapper>
+    )
+
+    expect(queryByText("For sale")).toBeFalsy()
+    expect(queryByText("Sold")).toBeTruthy()
+  })
+
+  it("returns correct information for auction works when the auction has ended and ff true", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
+    const Artwork = {
+      ...CommercialInformationArtwork,
+      isInAuction: true,
+      sale: {
+        ...CommercialInformationArtwork.sale,
+        isClosed: true,
+        isAuction: true,
+      },
+    }
+
+    const { queryByText } = renderWithWrappersTL(
+      <Wrapper>
+        <CommercialInformationTimerWrapper
+          artwork={Artwork as any}
+          me={{ identityVerified: false } as any}
+          timerState={AuctionTimerState.CLOSED}
+          refetchArtwork={jest.fn()}
+        />
+      </Wrapper>
+    )
+
+    expect(queryByText("For sale")).toBeFalsy()
+    expect(queryByText("Bidding closed")).toBeTruthy()
   })
 
   it("renders yellow indicator and correct message when artwork is on hold", () => {
@@ -60,6 +118,7 @@ describe("CommercialInformation", () => {
         <CommercialInformationTimerWrapper
           artwork={OnHoldArtwork as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
@@ -82,6 +141,7 @@ describe("CommercialInformation", () => {
         <CommercialInformationTimerWrapper
           artwork={SoldArtwork as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
@@ -104,6 +164,7 @@ describe("CommercialInformation", () => {
         <CommercialInformationTimerWrapper
           artwork={ForSaleArtwork as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
@@ -132,6 +193,7 @@ describe("CommercialInformation", () => {
         <CommercialInformationTimerWrapper
           artwork={workInEndedAuction as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
@@ -153,18 +215,20 @@ describe("CommercialInformation", () => {
       },
     }
 
-    const component = mount(
+    const { queryByText } = renderWithWrappersTL(
       <Wrapper>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkClosedAuction as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
-    expect(component.text()).toContain("Bidding closed")
-    expect(component.text()).not.toContain("I'm a Gallery")
-    expect(component.text()).not.toContain("Shipping, tax, and service quoted by seller")
-    expect(component.find(ArtworkExtraLinks).text()).toContain("Consign with Artsy.")
+
+    expect(queryByText("Bidding closed")).toBeTruthy()
+    expect(queryByText("I'm a Gallery")).toBeNull()
+    expect(queryByText("Shipping, tax, and service quoted by seller")).toBeNull()
+    expect(queryByText("Consign with Artsy")).toBeTruthy()
   })
 
   it("doesn't render information when the data is not present", () => {
@@ -212,6 +276,7 @@ describe("CommercialInformation", () => {
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkNoData as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
@@ -231,10 +296,11 @@ describe("CommercialInformation", () => {
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkNonCommercial as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
-    expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"At I'm a Gallery"`)
+    expect(component.find(Text).at(1).render().text()).toMatchInlineSnapshot(`"At I'm a Gallery"`)
   })
 
   it("renders consign with Artsy text", () => {
@@ -243,11 +309,12 @@ describe("CommercialInformation", () => {
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtwork as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
 
-    expect(component.find(Sans).at(2).render().text()).toMatchInlineSnapshot(
+    expect(component.find(Text).at(2).render().text()).toMatchInlineSnapshot(
       `"Want to sell a work by Santa Claus? Consign with Artsy."`
     )
   })
@@ -290,6 +357,7 @@ describe("CommercialInformation", () => {
         <CommercialInformationTimerWrapper
           artwork={artworkWithEditionSets as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
@@ -334,6 +402,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
             artwork={CommercialInformationArtworkInAuction as any}
             me={{ identityVerified: false } as any}
             tracking={{ trackEvent: jest.fn() } as any}
+            refetchArtwork={jest.fn()}
           />
         </Wrapper>
       )
@@ -348,6 +417,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
             artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
             me={{ identityVerified: false } as any}
             tracking={{ trackEvent: jest.fn() } as any}
+            refetchArtwork={jest.fn()}
             hasStarted
           />
         </Wrapper>
@@ -374,6 +444,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
             artwork={CommercialInformationSoldArtworkInAuction as any}
             me={{ identityVerified: false } as any}
             tracking={{ trackEvent: jest.fn() } as any}
+            refetchArtwork={jest.fn()}
           />
         </Wrapper>
       )
@@ -388,6 +459,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationAcquierableArtwork as any}
             me={{ identityVerified: false } as any}
+            refetchArtwork={jest.fn()}
           />
         </Wrapper>
       )
@@ -403,6 +475,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
             artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
             me={{ identityVerified: false } as any}
             tracking={{ trackEvent: jest.fn() } as any}
+            refetchArtwork={jest.fn()}
             hasStarted
           />
         </Wrapper>
@@ -429,14 +502,15 @@ describe("CommercialInformation buttons and coundtown timer", () => {
             artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
             me={{ identityVerified: false } as any}
             tracking={{ trackEvent: jest.fn() } as any}
+            refetchArtwork={jest.fn()}
             hasStarted
           />
         </Wrapper>
       )
 
       expect(component.find(SimpleTicker).length).toEqual(1)
-      // This would say 03d 07h 00m 00s if the countdown timer was looking at the sale's end at time (instead of the sale artwork's end at time)
-      expect(component.html()).toInclude("01d  07h  58m  00s")
+      // This would say 01d  07h  58m  00s if the countdown timer was looking at the sale's end at time (instead of the sale artwork's end at time)
+      expect(component.html()).toInclude("03d  07h  58m  00s")
       expect(component.find(Countdown).length).toEqual(1)
       expect(component.find(BidButton).length).toEqual(1)
     })
@@ -469,6 +543,7 @@ describe("ArtworkExtraLinks", () => {
         <CommercialInformationTimerWrapper
           artwork={inquireableArtwork as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
@@ -492,6 +567,7 @@ describe("ArtworkExtraLinks", () => {
         <CommercialInformationTimerWrapper
           artwork={acquireableArtwork as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
@@ -515,6 +591,7 @@ describe("ArtworkExtraLinks", () => {
         <CommercialInformationTimerWrapper
           artwork={offerableArtwork as any}
           me={{ identityVerified: false } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )
@@ -533,6 +610,7 @@ describe("ArtworkExtraLinks", () => {
           artwork={nonConsignableBiddableArtwork as any}
           me={{ identityVerified: false } as any}
           tracking={{ trackEvent: jest.fn() } as any}
+          refetchArtwork={jest.fn()}
         />
       </Wrapper>
     )

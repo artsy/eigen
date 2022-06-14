@@ -1,4 +1,4 @@
-import { ImageCarouselTestsQueryRawResponse } from "__generated__/ImageCarouselTestsQuery.graphql"
+import { ImageCarouselTestsQuery } from "__generated__/ImageCarouselTestsQuery.graphql"
 import { renderRelayTree } from "app/tests/renderRelayTree"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import React from "react"
@@ -18,7 +18,7 @@ jest.unmock("react-relay")
 
 const deepZoomFixture: NonNullable<
   NonNullable<
-    NonNullable<NonNullable<ImageCarouselTestsQueryRawResponse["artwork"]>["images"]>[0]
+    NonNullable<NonNullable<ImageCarouselTestsQuery["rawResponse"]["artwork"]>["images"]>[0]
   >["deepZoom"]
 > = {
   image: {
@@ -32,7 +32,7 @@ const deepZoomFixture: NonNullable<
   },
 }
 
-const artworkFixture: ImageCarouselTestsQueryRawResponse["artwork"] = {
+const artworkFixture: ImageCarouselTestsQuery["rawResponse"]["artwork"] = {
   id: "artwork-id",
   images: [
     {
@@ -111,7 +111,7 @@ describe("ImageCarouselFragmentContainer", () => {
       `,
       mockData: {
         artwork,
-      }, // Enable/fix this when making large change to these components/fixtures: as ImageCarouselTestsQueryRawResponse,
+      }, // Enable/fix this when making large change to these components/fixtures: as ImageCarouselTestsQuery,
     })
   }
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

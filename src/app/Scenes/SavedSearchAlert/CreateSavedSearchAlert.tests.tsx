@@ -1,9 +1,11 @@
+import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { FilterData, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
@@ -46,9 +48,23 @@ const initialData: ArtworkFiltersState = {
   sizeMetric: "cm",
 }
 
+const savedSearchEntity: SavedSearchEntity = {
+  placeholder: "Placeholder",
+  artists: [],
+  owner: {
+    type: OwnerType.artist,
+    id: "ownerId",
+    slug: "ownerSlug",
+  },
+}
+
 const defaultParams: CreateSavedSearchAlertParams = {
-  artistId: "artistID",
-  artistName: "artistName",
+  aggregations: [],
+  attributes: {
+    attributionClass: ["open edition"],
+    atAuction: true,
+  },
+  entity: savedSearchEntity,
   onComplete: jest.fn(),
   onClosePress: jest.fn(),
 }
@@ -142,15 +158,18 @@ describe("CreateSavedSearchAlert", () => {
   })
 
   describe("Notification toggles", () => {
-    it("email toggle is disabled by default if the user has allowed email notifications", async () => {
+    it("email toggle is enabled by default if the user has allowed email notifications", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
       mockEnvironmentPayload(mockEnvironment, {
         Viewer: () => ({
-          notificationPreferences: [{ status: "SUBSCRIBED" }, { status: "UNSUBSCRIBED" }],
+          notificationPreferences: [
+            { status: "SUBSCRIBED", name: "custom_alerts", channel: "email" },
+          ],
         }),
       })
+
       await flushPromiseQueue()
 
       const toggles = await findAllByA11yState({ selected: true })
@@ -163,9 +182,12 @@ describe("CreateSavedSearchAlert", () => {
 
       mockEnvironmentPayload(mockEnvironment, {
         Viewer: () => ({
-          notificationPreferences: [{ status: "UNSUBSCRIBED" }],
+          notificationPreferences: [
+            { status: "UNSUBSCRIBED", name: "custom_alerts", channel: "email" },
+          ],
         }),
       })
+
       await flushPromiseQueue()
 
       const toggles = await findAllByA11yState({ selected: false })
@@ -176,16 +198,8 @@ describe("CreateSavedSearchAlert", () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
-        Viewer: () => ({
-          notificationPreferences: [{ status: "SUBSCRIBED" }],
-        }),
-      })
-      await flushPromiseQueue()
-
       const toggles = await findAllByA11yState({ selected: true })
-
-      expect(toggles).toHaveLength(2)
+      expect(toggles).toHaveLength(1)
     })
 
     it("push toggle is disabled by default when push permissions are denied", async () => {

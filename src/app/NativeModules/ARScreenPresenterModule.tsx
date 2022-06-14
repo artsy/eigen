@@ -9,7 +9,6 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import immer from "immer-peasy"
 import { last } from "lodash"
 import { NativeModules } from "react-native"
-
 /**
  * Here we maintain references to all the navigators in the main app navigation hierarchy, which are:
  * - tab nav stacks
@@ -73,16 +72,10 @@ function getCurrentlyPresentedModalNavStackKey() {
   return key
 }
 
-/**
- * This is marked as unsafe because, at the time of writing, it does not work on iOS.
- * You might want the switchTab function in navigate.ts
- * @param tab
- */
-export function __unsafe_switchTab(tab: BottomTabType) {
-  __unsafe_mainModalStackRef.current?.dispatch(TabActions.jumpTo(tab))
-}
-
 export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterModule"] = {
+  switchTab(tab: BottomTabType) {
+    __unsafe_mainModalStackRef.current?.dispatch(TabActions.jumpTo(tab))
+  },
   presentModal(viewDescriptor: ViewDescriptor) {
     if (viewDescriptor.replace) {
       __unsafe_mainModalStackRef.current?.dispatch(
@@ -149,15 +142,6 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
       state.routes.pop()
       state.index -= 1
     })
-  },
-  presentAugmentedRealityVIR: () => {
-    console.warn("presentAugmentedRealityVIR not yet supported")
-  },
-  presentEmailComposer: () => {
-    console.warn("presentEmailComposer not yet supported")
-  },
-  presentMediaPreviewController: () => {
-    console.warn("presentMediaPreviewController not yet supported")
   },
   updateShouldHideBackButton: () => {
     console.warn("updateShouldHideBackButton not yet supported")

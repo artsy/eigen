@@ -1,4 +1,4 @@
-import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
+import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.graphql"
 import Spinner from "app/Components/Spinner"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -9,7 +9,7 @@ import { Stack } from "../Stack"
 import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
 interface Props {
-  artworks: GenericGrid_artworks
+  artworks: GenericGrid_artworks$data
   sectionDirection?: "column" // FIXME: We don’t actually support more options atm
   sectionMargin?: number
   itemMargin?: number
@@ -28,7 +28,7 @@ interface State {
 
 type PropsForArtwork = Omit<ArtworkProps, "artwork">
 
-type GenericArtworkType = GenericGrid_artworks extends ReadonlyArray<infer GenericArtwork>
+type GenericArtworkType = GenericGrid_artworks$data extends ReadonlyArray<infer GenericArtwork>
   ? GenericArtwork
   : never
 

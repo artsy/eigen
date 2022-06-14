@@ -1,4 +1,4 @@
-import { InquiryPurchaseButton_artwork } from "__generated__/InquiryPurchaseButton_artwork.graphql"
+import { InquiryPurchaseButton_artwork$data } from "__generated__/InquiryPurchaseButton_artwork.graphql"
 import { InquiryPurchaseButtonOrderMutation } from "__generated__/InquiryPurchaseButtonOrderMutation.graphql"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -8,7 +8,7 @@ import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql } from "react-relay"
 
 export interface InquiryPurchaseButtonProps {
-  artwork: InquiryPurchaseButton_artwork
+  artwork: InquiryPurchaseButton_artwork$data
   editionSetID: string | null
   conversationID: string
   replaceModalView?: boolean

@@ -1,6 +1,10 @@
+import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
+import {
+  SavedSearchEntity,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -9,7 +13,6 @@ import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
-import { bullet } from "palette"
 import React from "react"
 import { Alert } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
@@ -36,7 +39,7 @@ const withoutDuplicateAlert = async () => {
 
 const TestRenderer = (props: Partial<SavedSearchAlertFormProps>) => {
   return (
-    <SavedSearchStoreProvider initialData={{ attributes, aggregations }}>
+    <SavedSearchStoreProvider initialData={{ attributes, aggregations, entity: savedSearchEntity }}>
       <SavedSearchAlertForm {...baseProps} {...props} />
     </SavedSearchStoreProvider>
   )
@@ -55,12 +58,10 @@ describe("Saved search alert form", () => {
     renderWithWrappersTL(<TestRenderer />)
   })
 
-  it("correctly renders placeholder for input name", () => {
+  it("correctly renders default placeholder for input name", () => {
     const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
-    expect(getByTestId("alert-input-name").props.placeholder).toEqual(
-      `artistName ${bullet} 5 filters`
-    )
+    expect(getByTestId("alert-input-name").props.placeholder).toEqual("Placeholder")
   })
 
   it("calls onComplete when mutation is completed", async () => {
@@ -117,7 +118,7 @@ describe("Saved search alert form", () => {
           input: {
             attributes,
             userAlertSettings: {
-              name: "artistName • 5 filters",
+              name: "Placeholder",
             },
           },
         })
@@ -126,12 +127,12 @@ describe("Saved search alert form", () => {
   })
 
   describe("Update flow", () => {
-    it("should show a warning message if a user has set email frequency to None", async () => {
+    it("should show a warning message if a user has disabled `Custom Alerts`", async () => {
       const { getByText } = renderWithWrappersTL(
         <TestRenderer savedSearchAlertId="savedSearchAlertId" userAllowsEmails={false} />
       )
 
-      expect(getByText("Change your email frequency")).toBeTruthy()
+      expect(getByText("Change your email preferences")).toBeTruthy()
       expect(
         getByText("To receive Email Alerts, please update your email preferences.")
       ).toBeTruthy()
@@ -152,7 +153,7 @@ describe("Saved search alert form", () => {
         expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
           input: {
             userAlertSettings: {
-              name: `artistName ${bullet} 5 filters`,
+              name: `Placeholder`,
             },
           },
         })
@@ -778,6 +779,15 @@ describe("Checking for a duplicate alert", () => {
   })
 })
 
+const savedSearchEntity: SavedSearchEntity = {
+  placeholder: "Placeholder",
+  artists: [{ id: "artistID", name: "artistName" }],
+  owner: {
+    type: OwnerType.artist,
+    id: "ownerId",
+    slug: "ownerSlug",
+  },
+}
 const attributes: SearchCriteriaAttributes = {
   artistIDs: ["artistID"],
   attributionClass: ["limited edition"],
@@ -852,7 +862,5 @@ const baseProps: SavedSearchAlertFormProps = {
     email: true,
     push: true,
   },
-  artistId: "artistID",
-  artistName: "artistName",
   userAllowsEmails: true,
 }

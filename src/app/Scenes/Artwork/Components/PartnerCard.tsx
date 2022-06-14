@@ -1,4 +1,4 @@
-import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
+import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardFollowMutation } from "__generated__/PartnerCardFollowMutation.graphql"
 import { navigateToPartner } from "app/navigation/navigate"
 import { get } from "app/utils/get"
@@ -10,7 +10,7 @@ import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
-  artwork: PartnerCard_artwork
+  artwork: PartnerCard_artwork$data
   relay: RelayProp
 }
 

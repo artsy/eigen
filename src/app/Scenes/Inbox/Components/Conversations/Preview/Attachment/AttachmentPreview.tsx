@@ -3,7 +3,7 @@ import { findNodeHandle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-import { AttachmentPreview_attachment } from "__generated__/AttachmentPreview_attachment.graphql"
+import { AttachmentPreview_attachment$data } from "__generated__/AttachmentPreview_attachment.graphql"
 import { ClassTheme, Touchable } from "palette"
 
 const Container = styled.View`
@@ -19,7 +19,7 @@ export interface AttachmentProps {
 }
 
 interface Props extends AttachmentProps {
-  attachment: AttachmentPreview_attachment
+  attachment: AttachmentPreview_attachment$data
 }
 
 export class AttachmentPreview extends React.Component<Props> {

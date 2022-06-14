@@ -21,7 +21,7 @@ export const BMWSponsorship: React.FC<BMWSponsorshipProps> = ({
     <Flex flexDirection="row" alignItems="center" mb={2}>
       <Logo
         resizeMode="contain"
-        source={require("@images/bmw-logo.webp")}
+        source={require("images/bmw-logo.webp")}
         style={{ marginRight: 10 }}
       />
       <Text color="black60">{logoText}</Text>

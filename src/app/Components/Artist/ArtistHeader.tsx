@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
+import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
@@ -14,7 +14,7 @@ import { Schema } from "../../utils/track"
 export const ARTIST_HEADER_HEIGHT = 156
 
 interface Props {
-  artist: ArtistHeader_artist
+  artist: ArtistHeader_artist$data
   relay: RelayProp
 }
 

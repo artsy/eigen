@@ -3,7 +3,7 @@ import { cloneDeep } from "lodash"
 import React from "react"
 import "react-native"
 
-import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
+import { FairsRail_fairsModule$data } from "__generated__/FairsRail_fairsModule.graphql"
 import { extractText } from "app/tests/extractText"
 import { FairsRailFragmentContainer } from "./FairsRail"
 
@@ -11,6 +11,7 @@ import { CardRailCard } from "app/Components/Home/CardRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { Text } from "palette"
 import HomeAnalytics from "../homeAnalytics"
 
@@ -21,10 +22,10 @@ const artworkNode = {
   },
 }
 
-const emptyFairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
+const emptyFairsModule: CleanRelayFragment<FairsRail_fairsModule$data> = {
   results: [],
 }
-const fairsModule: Omit<FairsRail_fairsModule, " $refType"> = {
+const fairsModule: CleanRelayFragment<FairsRail_fairsModule$data> = {
   results: [
     {
       id: "the-fair",

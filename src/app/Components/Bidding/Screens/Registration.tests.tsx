@@ -1,6 +1,4 @@
 import { RenderAPI } from "@testing-library/react-native"
-import { Registration_me } from "__generated__/Registration_me.graphql"
-import { Registration_sale } from "__generated__/Registration_sale.graphql"
 import {
   RegistrationResult,
   RegistrationStatus,
@@ -21,6 +19,8 @@ import { BillingAddress } from "./BillingAddress"
 import { CreditCardForm } from "./CreditCardForm"
 import { Registration } from "./Registration"
 
+import { Registration_me$data } from "__generated__/Registration_me.graphql"
+import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")
 
@@ -698,7 +698,7 @@ const stripeToken = {
   extra: null,
 }
 
-const sale: Partial<Registration_sale> = {
+const sale: Partial<Registration_sale$data> = {
   slug: "sale-id",
   liveStartAt: "2029-06-11T01:00:00+00:00",
   endAt: null,
@@ -751,7 +751,7 @@ const initialProps = {
   navigator: mockNavigator,
 } as any
 
-const me: Partial<Registration_me> = {
+const me: Partial<Registration_me$data> = {
   hasCreditCards: false,
   identityVerified: false,
   phoneNumber: {

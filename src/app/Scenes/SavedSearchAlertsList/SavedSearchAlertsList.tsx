@@ -1,4 +1,4 @@
-import { SavedSearchAlertsList_me } from "__generated__/SavedSearchAlertsList_me.graphql"
+import { SavedSearchAlertsList_me$data } from "__generated__/SavedSearchAlertsList_me.graphql"
 import { SavedSearchAlertsListQuery } from "__generated__/SavedSearchAlertsListQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -9,7 +9,7 @@ import { SavedSearchAlertsListPlaceholder } from "./Components/SavedSearchAlerts
 import { SavedSearchesListContainer as SavedSearchesList } from "./Components/SavedSearchesList"
 
 interface SavedSearchAlertsListProps {
-  me: SavedSearchAlertsList_me
+  me: SavedSearchAlertsList_me$data
 }
 
 export const SavedSearchAlertsList: React.FC<SavedSearchAlertsListProps> = (props) => {

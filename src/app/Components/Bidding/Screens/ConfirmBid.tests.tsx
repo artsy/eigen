@@ -1,8 +1,8 @@
-import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
-import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
-import { ConfirmBidCreateBidderPositionMutationResponse } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
-import { ConfirmBidCreateCreditCardMutationResponse } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
-import { ConfirmBidUpdateUserMutationResponse } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
+import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
+import { ConfirmBid_sale_artwork$data } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
+import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
+import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { FakeNavigator } from "app/Components/Bidding/Helpers/FakeNavigator"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { Modal } from "app/Components/Modal"
@@ -580,6 +580,7 @@ describe("polling to verify bid position", () => {
             },
             status: "RESERVE_NOT_MET",
           },
+          biddingEndAt: expect.anything(),
           refreshBidderInfo: expect.anything(),
           refreshSaleArtwork: expect.anything(),
           sale_artwork: {
@@ -602,6 +603,7 @@ describe("polling to verify bid position", () => {
               start_at: "2018-05-08T20:22:42+00:00",
               cascadingEndTimeIntervalMinutes: null,
               end_at: "2018-05-10T20:22:42+00:00",
+              internalID: "internal-id",
               isBenefit: false,
               live_start_at: "2018-05-09T20:22:42+00:00",
               partner: {
@@ -920,10 +922,9 @@ describe("cascading end times", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
     })
 
-    it("shows the sale artwork's end time if the sale has cascading end times", () => {
+    it("sale endtime defaults to extendedBiddingEndtime", () => {
       const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
-      // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
-      const timerText = getByText("03d 00h 00m 10s")
+      const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
 
@@ -931,7 +932,6 @@ describe("cascading end times", () => {
       const { getByText } = renderWithWrappersTL(
         <ConfirmBid {...initialPropsForNonCascadingSale} />
       )
-      // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
       const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
@@ -943,7 +943,6 @@ describe("cascading end times", () => {
     })
     it("shows the sale's end time", () => {
       const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
-      // Today is May 10. Sale artwork's end time is May 13. Sale's end day is May 10.
       const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
@@ -971,6 +970,7 @@ const baseSaleArtwork = {
     },
   },
   sale: {
+    internalID: "internal-id",
     slug: "best-art-sale-in-town",
     start_at: "2018-05-08T20:22:42+00:00",
     end_at: "2018-05-10T20:22:42+00:00",
@@ -982,7 +982,7 @@ const baseSaleArtwork = {
   lot_label: "538",
 }
 
-const saleArtwork: ConfirmBid_sale_artwork = {
+const saleArtwork: ConfirmBid_sale_artwork$data = {
   ...baseSaleArtwork,
   endAt: null,
   sale: {
@@ -993,28 +993,28 @@ const saleArtwork: ConfirmBid_sale_artwork = {
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $fragmentRefs": null, // needs this to keep TS happy
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $refType": null, // needs this to keep TS happy
 }
 
-const nonCascadeSaleArtwork: ConfirmBid_sale_artwork = {
+const nonCascadeSaleArtwork: ConfirmBid_sale_artwork$data = {
   ...baseSaleArtwork,
   endAt: null,
   sale: {
     ...baseSaleArtwork.sale,
+    end_at: new Date(Date.now() + 10000).toISOString(),
     live_start_at: null,
     cascadingEndTimeIntervalMinutes: null,
   },
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $fragmentRefs": null, // needs this to keep TS happy
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $refType": null, // needs this to keep TS happy
 }
 
-const cascadingEndTimeSaleArtwork: ConfirmBid_sale_artwork = {
+const cascadingEndTimeSaleArtwork: ConfirmBid_sale_artwork$data = {
   ...saleArtwork,
   endAt: "2018-05-13T20:22:42+00:00",
+  extendedBiddingEndAt: new Date(Date.now() + 10000).toISOString(),
   sale: {
     ...baseSaleArtwork.sale,
     live_start_at: null,
@@ -1023,7 +1023,6 @@ const cascadingEndTimeSaleArtwork: ConfirmBid_sale_artwork = {
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $fragmentRefs": null, // needs this to keep TS happy
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   " $refType": null, // needs this to keep TS happy
 }
 
@@ -1034,7 +1033,7 @@ const mockRequestResponses = {
         phone: "111 222 4444",
       },
     },
-  } as ConfirmBidUpdateUserMutationResponse,
+  } as ConfirmBidUpdateUserMutation["response"],
   creatingCreditCardSuccess: {
     createCreditCard: {
       creditCardOrError: {
@@ -1048,7 +1047,7 @@ const mockRequestResponses = {
         },
       },
     },
-  } as ConfirmBidCreateCreditCardMutationResponse,
+  } as ConfirmBidCreateCreditCardMutation["response"],
   creatingCreditCardEmptyError: {
     createCreditCard: {
       creditCardOrError: {
@@ -1059,7 +1058,7 @@ const mockRequestResponses = {
         },
       },
     },
-  } as ConfirmBidCreateCreditCardMutationResponse,
+  } as ConfirmBidCreateCreditCardMutation["response"],
   creatingCreditCardError: {
     createCreditCard: {
       creditCardOrError: {
@@ -1070,7 +1069,7 @@ const mockRequestResponses = {
         },
       },
     },
-  } as ConfirmBidCreateCreditCardMutationResponse,
+  } as ConfirmBidCreateCreditCardMutation["response"],
   placingBid: {
     bidAccepted: {
       createBidderPosition: {
@@ -1083,7 +1082,7 @@ const mockRequestResponses = {
           },
         },
       },
-    } as ConfirmBidCreateBidderPositionMutationResponse,
+    } as ConfirmBidCreateBidderPositionMutation["response"],
     bidRejected: {
       createBidderPosition: {
         result: {
@@ -1092,7 +1091,7 @@ const mockRequestResponses = {
           message_description_md: "Some markdown description",
         },
       },
-    } as ConfirmBidCreateBidderPositionMutationResponse,
+    } as ConfirmBidCreateBidderPositionMutation["response"],
   },
   pollingForBid: {
     highestBidder: {
@@ -1104,7 +1103,7 @@ const mockRequestResponses = {
           },
         },
       },
-    } as BidderPositionQueryResponse,
+    } as BidderPositionQuery$data,
     outbid: {
       me: {
         bidder_position: {
@@ -1114,7 +1113,7 @@ const mockRequestResponses = {
           },
         },
       },
-    } as BidderPositionQueryResponse,
+    } as BidderPositionQuery$data,
     pending: {
       me: {
         bidder_position: {
@@ -1124,7 +1123,7 @@ const mockRequestResponses = {
           status: "PENDING",
         },
       },
-    } as BidderPositionQueryResponse,
+    } as BidderPositionQuery$data,
     reserveNotMet: {
       me: {
         bidder_position: {
@@ -1134,7 +1133,7 @@ const mockRequestResponses = {
           status: "RESERVE_NOT_MET",
         },
       },
-    } as BidderPositionQueryResponse,
+    } as BidderPositionQuery$data,
   },
 }
 

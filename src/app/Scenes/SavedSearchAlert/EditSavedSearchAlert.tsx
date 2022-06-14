@@ -1,11 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
-import { EditSavedSearchAlert_artist } from "__generated__/EditSavedSearchAlert_artist.graphql"
-import { EditSavedSearchAlert_artworksConnection } from "__generated__/EditSavedSearchAlert_artworksConnection.graphql"
-import { EditSavedSearchAlert_user } from "__generated__/EditSavedSearchAlert_user.graphql"
+import { EditSavedSearchAlert_artists$data } from "__generated__/EditSavedSearchAlert_artists.graphql"
+import { EditSavedSearchAlert_artworksConnection$data } from "__generated__/EditSavedSearchAlert_artworksConnection.graphql"
+import { EditSavedSearchAlert_viewer$data } from "__generated__/EditSavedSearchAlert_viewer.graphql"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
-import { SavedSearchAlertQueryResponse } from "__generated__/SavedSearchAlertQuery.graphql"
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
+import { SavedSearchAlertQuery } from "__generated__/SavedSearchAlertQuery.graphql"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  SavedSearchEntity,
+  SavedSearchEntityArtist,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { goBack, GoBackProps, navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -13,6 +16,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertQueryRenderer } from "./SavedSearchAlert"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
@@ -23,18 +27,40 @@ interface EditSavedSearchAlertBaseProps {
 }
 
 interface EditSavedSearchAlertProps {
-  me: SavedSearchAlertQueryResponse["me"]
-  user: EditSavedSearchAlert_user
-  artist: EditSavedSearchAlert_artist
+  me: SavedSearchAlertQuery["response"]["me"]
+  viewer: EditSavedSearchAlert_viewer$data
+  artists: EditSavedSearchAlert_artists$data
   savedSearchAlertId: string
-  artworksConnection: EditSavedSearchAlert_artworksConnection
+  artworksConnection: EditSavedSearchAlert_artworksConnection$data
   relay: RelayRefetchProp
 }
 
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
-  const { me, user, artist, artworksConnection, savedSearchAlertId, relay } = props
+  const { me, viewer, artists, artworksConnection, savedSearchAlertId, relay } = props
   const aggregations = (artworksConnection.aggregations ?? []) as Aggregations
   const { userAlertSettings, internalID, ...attributes } = me?.savedSearch ?? {}
+  const isCustomAlertsNotificationsEnabled = viewer.notificationPreferences.some((preference) => {
+    return (
+      preference.channel === "email" &&
+      preference.name === "custom_alerts" &&
+      preference.status === "SUBSCRIBED"
+    )
+  })
+  const userAllowsEmails = isCustomAlertsNotificationsEnabled ?? false
+
+  const formattedArtists: SavedSearchEntityArtist[] = artists.map((artist) => ({
+    id: artist.internalID,
+    name: artist.name!,
+  }))
+  const entity: SavedSearchEntity = {
+    placeholder: formattedArtists[0].name ?? "",
+    artists: formattedArtists,
+    owner: {
+      type: OwnerType.savedSearch,
+      id: savedSearchAlertId,
+      slug: "",
+    },
+  }
 
   const onComplete = () => {
     goBack({
@@ -69,17 +95,15 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     >
       <ArtsyKeyboardAvoidingView>
         <PageWithSimpleHeader title="Edit your Alert">
-          <SavedSearchStoreProvider initialData={{ attributes, aggregations }}>
+          <SavedSearchStoreProvider initialData={{ attributes, aggregations, entity }}>
             <SavedSearchAlertForm
               initialValues={{
                 name: userAlertSettings?.name ?? "",
                 email: userAlertSettings?.email ?? false,
                 push: userAlertSettings?.push ?? false,
               }}
-              artistId={artist.internalID}
-              artistName={artist.name!}
               savedSearchAlertId={savedSearchAlertId}
-              userAllowsEmails={user?.emailFrequency !== "none"}
+              userAllowsEmails={userAllowsEmails}
               onComplete={onComplete}
               onDeleteComplete={onComplete}
             />
@@ -93,13 +117,17 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
 export const EditSavedSearchAlertRefetchContainer = createRefetchContainer(
   EditSavedSearchAlert,
   {
-    user: graphql`
-      fragment EditSavedSearchAlert_user on Me {
-        emailFrequency
+    viewer: graphql`
+      fragment EditSavedSearchAlert_viewer on Viewer {
+        notificationPreferences {
+          status
+          name
+          channel
+        }
       }
     `,
-    artist: graphql`
-      fragment EditSavedSearchAlert_artist on Artist {
+    artists: graphql`
+      fragment EditSavedSearchAlert_artists on Artist @relay(plural: true) {
         internalID
         name
       }
@@ -119,8 +147,8 @@ export const EditSavedSearchAlertRefetchContainer = createRefetchContainer(
   },
   graphql`
     query EditSavedSearchAlertRefetchQuery {
-      user: me {
-        ...EditSavedSearchAlert_user
+      viewer {
+        ...EditSavedSearchAlert_viewer
       }
     }
   `
@@ -135,27 +163,27 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
     <SavedSearchAlertQueryRenderer
       savedSearchAlertId={savedSearchAlertId}
       render={renderWithPlaceholder({
-        render: (relayProps: SavedSearchAlertQueryResponse) => (
+        render: (relayProps: SavedSearchAlertQuery["response"]) => (
           <QueryRenderer<EditSavedSearchAlertQuery>
             environment={defaultEnvironment}
             query={graphql`
-              query EditSavedSearchAlertQuery($artistID: String!) {
-                user: me {
-                  ...EditSavedSearchAlert_user
+              query EditSavedSearchAlertQuery($artistIDs: [String]) {
+                viewer {
+                  ...EditSavedSearchAlert_viewer
                 }
-                artist(id: $artistID) {
-                  ...EditSavedSearchAlert_artist
+                artists(ids: $artistIDs) {
+                  ...EditSavedSearchAlert_artists
                 }
                 artworksConnection(
                   first: 0
-                  artistID: $artistID
+                  artistIDs: $artistIDs
                   aggregations: [ARTIST, LOCATION_CITY, MATERIALS_TERMS, MEDIUM, PARTNER, COLOR]
                 ) {
                   ...EditSavedSearchAlert_artworksConnection
                 }
               }
             `}
-            variables={{ artistID: relayProps.me?.savedSearch?.artistIDs?.[0]! }}
+            variables={{ artistIDs: relayProps.me?.savedSearch?.artistIDs as string[] }}
             render={renderWithPlaceholder({
               Container: EditSavedSearchAlertRefetchContainer,
               renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,

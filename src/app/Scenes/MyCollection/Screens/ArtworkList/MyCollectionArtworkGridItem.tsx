@@ -1,22 +1,22 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
-import { MyCollectionArtworkGridItem_artwork } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
+import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { isPad } from "app/utils/hardware"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Flex, Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
 import { MyCollectionImageView } from "../../Components/MyCollectionImageView"
 
 interface MyCollectionArtworkGridItemProps {
-  artwork: MyCollectionArtworkGridItem_artwork
+  artwork: MyCollectionArtworkGridItem_artwork$data
 }
 
 const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {

@@ -1,12 +1,12 @@
 import { captureMessage } from "@sentry/react-native"
-import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
+import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.graphql"
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { isPad } from "app/utils/hardware"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex } from "palette"
 import React, { useMemo } from "react"
 import { PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { fitInside } from "./geometry"
 import {
@@ -28,7 +28,7 @@ interface MappedImageDescriptor extends Pick<ImageDescriptor, "deepZoom"> {
 
 export interface ImageCarouselProps {
   /** CarouselImageDescriptor for when you want to display local images */
-  images: ImageCarousel_images | CarouselImageDescriptor[]
+  images: ImageCarousel_images$data | CarouselImageDescriptor[]
   cardHeight: number
   onImageIndexChange?: (imageIndex: number) => void
   paginationIndicatorType?: IndicatorType
@@ -169,6 +169,6 @@ function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
   return "normalized"
 }
 
-const imageHasVersions = (image: CarouselImageDescriptor | ImageCarousel_images[number]) => {
+const imageHasVersions = (image: CarouselImageDescriptor | ImageCarousel_images$data[number]) => {
   return image.imageVersions && image.imageVersions.length
 }

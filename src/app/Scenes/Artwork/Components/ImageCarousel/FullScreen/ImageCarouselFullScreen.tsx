@@ -1,4 +1,3 @@
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import {
   Animated,
@@ -8,6 +7,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 import { useAnimatedValue } from "../useAnimatedValue"
 import { ImageCarouselCloseButton } from "./ImageCarouselCloseButton"

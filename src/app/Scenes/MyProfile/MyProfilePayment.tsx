@@ -1,4 +1,4 @@
-import { MyProfilePayment_me } from "__generated__/MyProfilePayment_me.graphql"
+import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { CreditCardDetailsContainer } from "app/Components/CreditCardDetails"
@@ -37,7 +37,7 @@ const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 
 // tslint:disable-next-line:variable-name
 export let __triggerRefresh: null | (() => Promise<void>) = null
 
-const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginationProp }> = ({
+const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPaginationProp }> = ({
   relay,
   me,
 }) => {

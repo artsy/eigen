@@ -10,7 +10,6 @@ import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
-jest.unmock("app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx")
 
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery" | "SearchCriteriaQuery"
 

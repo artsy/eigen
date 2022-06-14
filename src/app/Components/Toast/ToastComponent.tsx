@@ -1,10 +1,10 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Text, Touchable, useColor } from "palette"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
+import { useScreenDimensions } from "shared/hooks"
 import { ToastDetails, ToastDuration } from "./types"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
@@ -13,6 +13,7 @@ const MIDDLE_TOAST_SIZE = 120
 const EDGE_TOAST_HEIGHT = 60
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
+const TABBAR_HEIGHT = 50
 
 export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
   short: 2500,
@@ -32,7 +33,8 @@ export const ToastComponent: React.FC<ToastDetails> = ({
   const toastDuration = TOAST_DURATION_MAP[duration]
   const color = useColor()
   const { width, height } = useScreenDimensions()
-  const { top: topSafeAreaInset } = useScreenDimensions().safeAreaInsets
+  const { top: topSafeAreaInset, bottom: bottomSafeAreaInset } =
+    useScreenDimensions().safeAreaInsets
   const [opacityAnim] = useState(new Animated.Value(0))
 
   const { showActionSheetWithOptions } = useActionSheet()
@@ -108,7 +110,10 @@ export const ToastComponent: React.FC<ToastDetails> = ({
       height={EDGE_TOAST_HEIGHT}
       bottom={
         placement === "bottom"
-          ? EDGE_TOAST_PADDING + positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
+          ? bottomSafeAreaInset +
+            TABBAR_HEIGHT +
+            EDGE_TOAST_PADDING +
+            positionIndex * (EDGE_TOAST_HEIGHT + EDGE_TOAST_PADDING)
           : undefined
       }
       top={

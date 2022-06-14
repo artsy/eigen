@@ -37,7 +37,7 @@ xdescribe("GlobalMap", () => {
         viewer: {
           city: CityFixture,
         },
-      }, // Enable/fix this when making large change to these components/fixtures: as GlobalMapTestsQueryRawResponse,
+      }, // Enable/fix this when making large change to these components/fixtures: as GlobalMapTestsQuery,
       variables: {
         citySlug: "new-york-ny-usa",
         maxInt: 42,

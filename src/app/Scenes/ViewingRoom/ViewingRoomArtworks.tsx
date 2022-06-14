@@ -1,4 +1,4 @@
-import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
+import { ViewingRoomArtworks_viewingRoom$data } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
@@ -18,7 +18,7 @@ import { useTracking } from "react-tracking"
 const PAGE_SIZE = 5
 interface ViewingRoomArtworksProps {
   relay: RelayPaginationProp
-  viewingRoom: ViewingRoomArtworks_viewingRoom
+  viewingRoom: ViewingRoomArtworks_viewingRoom$data
 }
 
 interface ArtworkSection {

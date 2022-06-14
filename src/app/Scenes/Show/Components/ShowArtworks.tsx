@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Show_show } from "__generated__/Show_show.graphql"
-import { ShowArtworks_show } from "__generated__/ShowArtworks_show.graphql"
+import { Show_show$data } from "__generated__/Show_show.graphql"
+import { ShowArtworks_show$data } from "__generated__/ShowArtworks_show.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { aggregationsType, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -13,13 +13,13 @@ import React, { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 interface Props {
-  show: ShowArtworks_show
+  show: ShowArtworks_show$data
   relay: RelayPaginationProp
   initiallyAppliedFilter?: FilterArray
 }
 
 interface ArtworkProps {
-  show: Show_show
+  show: Show_show$data
   visible: boolean
   toggleFilterArtworksModal: () => void
 }
@@ -110,7 +110,7 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
         slug
         internalID
         showArtworks: filterArtworksConnection(
-          first: 30
+          first: $count
           after: $cursor
           aggregations: [
             ARTIST

@@ -1,6 +1,6 @@
 import React from "react"
 import { View } from "react-native"
-import { ArtsyKeyboardAvoidingView } from "../ArtsyKeyboardAvoidingView"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 
 export interface BottomAlignedProps extends React.Props<JSX.Element> {
   onPress?: () => void

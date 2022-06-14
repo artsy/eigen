@@ -478,8 +478,8 @@ describe("Search Screen", () => {
                 },
                 {
                   displayName: "Collection",
-                  key: "kaws_collection",
-                  name: "KawsCollection_staging",
+                  key: "marketing_collection",
+                  name: "MarketingCollection_staging",
                 },
                 {
                   displayName: "Fair",

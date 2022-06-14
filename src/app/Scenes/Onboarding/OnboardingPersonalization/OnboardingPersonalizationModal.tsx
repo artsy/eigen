@@ -1,16 +1,16 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
-import { OnboardingPersonalizationModal_artists } from "__generated__/OnboardingPersonalizationModal_artists.graphql"
+import { OnboardingPersonalizationModal_artists$data } from "__generated__/OnboardingPersonalizationModal_artists.graphql"
 import { OnboardingPersonalizationModalQuery } from "__generated__/OnboardingPersonalizationModalQuery.graphql"
 import { SearchInput } from "app/Components/SearchInput"
 import { BackButton } from "app/navigation/BackButton"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { isEqual } from "lodash"
 import { Flex, Spinner, Text, useSpace } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
+import { useScreenDimensions } from "shared/hooks"
 import { LoadFailureView } from "../../../Components/LoadFailureView"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { extractNodes } from "../../../utils/extractNodes"
@@ -24,7 +24,7 @@ interface OnboardingPersonalizationModalNavigationProps
   > {}
 
 interface OnboardingPersonalizationListProps extends OnboardingPersonalizationModalNavigationProps {
-  artists: OnboardingPersonalizationModal_artists
+  artists: OnboardingPersonalizationModal_artists$data
   relay: RelayPaginationProp
 }
 

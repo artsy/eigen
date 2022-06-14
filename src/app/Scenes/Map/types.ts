@@ -1,4 +1,4 @@
-import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import Supercluster from "supercluster"
 import { BucketKey, BucketResults } from "./bucketCityResults"
 
@@ -14,12 +14,12 @@ export interface City {
 
 export type Show = NonNullable<
   NonNullable<
-    NonNullable<NonNullable<NonNullable<GlobalMap_viewer["city"]>["shows"]>["edges"]>[0]
+    NonNullable<NonNullable<NonNullable<GlobalMap_viewer$data["city"]>["shows"]>["edges"]>[0]
   >["node"]
 >
 export type Fair = NonNullable<
   NonNullable<
-    NonNullable<NonNullable<NonNullable<GlobalMap_viewer["city"]>["fairs"]>["edges"]>[0]
+    NonNullable<NonNullable<NonNullable<GlobalMap_viewer$data["city"]>["fairs"]>["edges"]>[0]
   >["node"]
 > & { type?: string }
 export type FilterTypes = BucketKey | "all"

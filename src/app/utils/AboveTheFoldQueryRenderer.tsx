@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { QueryRenderer } from "react-relay"
-import { CacheConfig, GraphQLTaggedNode, OperationType } from "relay-runtime"
+import { CacheConfig, FetchPolicy, GraphQLTaggedNode, OperationType } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { renderWithPlaceholder } from "./renderWithPlaceholder"
 
@@ -30,6 +30,7 @@ interface AboveTheFoldQueryRendererProps<
         renderPlaceholder: () => React.ReactChild
       }
   cacheConfig?: CacheConfig | null
+  fetchPolicy?: FetchPolicy
   /** Fire below-the-fold query after the given timeout or when the above-the-fold query returns. */
   /** If 'belowTheFoldTimeout' is not set, the below-the-fold query will be fired when the above-the-fold query returns */
   belowTheFoldTimeout?: number
@@ -122,6 +123,7 @@ export function AboveTheFoldQueryRenderer<
               })
             : null
         }}
+        fetchPolicy={props.fetchPolicy}
         cacheConfig={props.cacheConfig || null}
       />
       {(renderBelowTheFold || aboveArgs?.props) && (
@@ -139,6 +141,7 @@ export function AboveTheFoldQueryRenderer<
             }
             return null
           }}
+          fetchPolicy={props.fetchPolicy}
           cacheConfig={props.cacheConfig || null}
         />
       )}

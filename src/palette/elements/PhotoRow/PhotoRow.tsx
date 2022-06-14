@@ -48,7 +48,7 @@ const PhotoRowPlaceholder = ({ progress }: { progress: number }) => (
           justifyContent="space-around"
           marginLeft={0.5}
         >
-          <ProgressBar progress={progress} />
+          <ProgressBar progress={progress * 100} />
         </Flex>
       </Flex>
     </ProvidePlaceholderContext>

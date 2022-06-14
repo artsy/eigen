@@ -1,25 +1,30 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { AuctionResultsForArtistsYouCollectRail_me$key } from "__generated__/AuctionResultsForArtistsYouCollectRail_me.graphql"
-import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
+import {
+  AuctionResultListItemFragmentContainer,
+  AuctionResultListSeparator,
+} from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Flex, Separator } from "palette"
+import { Schema } from "app/utils/track"
+import { Flex } from "palette"
 import React from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 
 interface AuctionResultsForArtistsYouCollectRailProps {
-  auctionResults: AuctionResultsForArtistsYouCollectRail_me$key
+  me: AuctionResultsForArtistsYouCollectRail_me$key
 }
 
 export const AuctionResultsForArtistsYouCollectRail: React.FC<
   AuctionResultsForArtistsYouCollectRailProps
-> = ({ auctionResults }) => {
-  const fragmentData = useFragment<AuctionResultsForArtistsYouCollectRail_me$key>(
-    auctionResultsForArtistsYouCollectRailFragment,
-    auctionResults
-  )
+> = ({ me }) => {
+  const { trackEvent } = useTracking()
+
+  const fragmentData = useFragment(auctionResultsForArtistsYouCollectRailFragment, me)
   const auctionResultsData = extractNodes(fragmentData.myCollectionAuctionResults)
 
   if (!auctionResultsData.length) {
@@ -27,25 +32,29 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
   }
 
   return (
-    <Flex pb={3}>
+    <Flex pb={2} px={2}>
       <SectionTitle
-        title="Auction Results"
-        subtitle="Recent Auction Results from the Artists You Collect"
+        capitalized={false}
+        title="Recently Sold at Auction"
         onPress={() => {
           navigate("/auction-results-for-artists-you-collect")
         }}
+        mb={1}
       />
       <FlatList
         data={auctionResultsData}
         listKey="artist-auction-results"
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <AuctionResultListItemFragmentContainer
             auctionResult={item}
             showArtistName
-            onPress={() => navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)}
+            onPress={() => {
+              trackEvent(tracks.tappedAuctionResultGroup(index))
+              navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
+            }}
           />
         )}
-        ItemSeparatorComponent={() => <Separator px={2} />}
+        ItemSeparatorComponent={AuctionResultListSeparator}
         style={{ width: useScreenDimensions().width, left: -20 }}
       />
     </Flex>
@@ -67,3 +76,14 @@ const auctionResultsForArtistsYouCollectRailFragment = graphql`
     }
   }
 `
+
+const tracks = {
+  tappedAuctionResultGroup: (index: number) => ({
+    context_screen: Schema.PageNames.MyCollectionInsights,
+    context_screen_owner_type: OwnerType.myCollectionInsights,
+    action: ActionType.tappedAuctionResultGroup,
+    context_module: ContextModule.myCollectionMarketSignals,
+    destination_screen_owner_type: OwnerType.auctionResult,
+    position: index,
+  }),
+}

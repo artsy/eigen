@@ -5,6 +5,9 @@ export interface Time {
   hours: string
   minutes: string
   seconds: string
+  // also return the original args for further manipulation
+  endDate: string
+  startAt: string
 }
 
 interface Timer {
@@ -22,10 +25,10 @@ const extractTime = (time: number) => {
 }
 
 export const useTimer = (endDate: string, startAt: string = ""): Timer => {
-  const currentTime = DateTime.local().toString()
+  const currentTime = DateTime.now().toISO()
 
   const timeBeforeEnd = Duration.fromISO(
-    DateTime.fromISO(endDate).diff(DateTime.fromISO(currentTime)).toString()
+    DateTime.fromISO(endDate).diff(DateTime.fromISO(currentTime)).toISO()
   )
   const hasEnded = Math.floor(timeBeforeEnd.seconds) <= 0
 
@@ -49,6 +52,8 @@ export const useTimer = (endDate: string, startAt: string = ""): Timer => {
     hours,
     minutes,
     seconds,
+    startAt,
+    endDate,
   }
 
   return { hasEnded, time, hasStarted }

@@ -7,8 +7,8 @@
 // 4. Update height of grid to encompass all items.
 
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
-import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
+import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
+import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { extractNodes } from "app/utils/extractNodes"
@@ -18,8 +18,9 @@ import React from "react"
 import {
   ActivityIndicator,
   Dimensions,
-  LayoutAnimation,
   LayoutChangeEvent,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
   Platform,
   ScrollView,
   StyleSheet,
@@ -94,6 +95,8 @@ export interface Props {
 
   itemComponentProps?: Partial<ArtworkProps>
 
+  onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void
+  scrollEventThrottle?: number
   /** Show Lot Label  */
   showLotLabel?: boolean
 
@@ -115,23 +118,20 @@ export interface Props {
   updateRecentSearchesOnTap?: boolean
 
   localSortAndFilterArtworks?: (artworks: any[]) => any[]
-
-  /** Hide the header initially when rendered. Default is false */
-  hideHeaderInitially?: boolean
 }
 
 interface PrivateProps {
   connection:
-    | InfiniteScrollArtworksGrid_connection
-    | InfiniteScrollArtworksGrid_myCollectionConnection
+    | InfiniteScrollArtworksGrid_connection$data
+    | InfiniteScrollArtworksGrid_myCollectionConnection$data
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
   isLoading?: RelayPaginationProp["isLoading"]
 }
 
 interface MapperProps extends Omit<PrivateProps, "connection"> {
-  connection?: InfiniteScrollArtworksGrid_connection
-  myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection
+  connection?: InfiniteScrollArtworksGrid_connection$data
+  myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection$data
 }
 
 const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMyCollection">> = ({
@@ -142,9 +142,9 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
   ...otherProps
 }) => {
   const theConnectionProp = !!connection ? connection : myCollectionConnection
-  type TheConnectionType<T> = T extends InfiniteScrollArtworksGrid_connection
-    ? InfiniteScrollArtworksGrid_connection
-    : InfiniteScrollArtworksGrid_myCollectionConnection
+  type TheConnectionType<T> = T extends InfiniteScrollArtworksGrid_connection$data
+    ? InfiniteScrollArtworksGrid_connection$data
+    : InfiniteScrollArtworksGrid_myCollectionConnection$data
   const isMyCollection = !!myCollectionConnection && !connection
 
   if (!theConnectionProp) {
@@ -164,8 +164,6 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
 interface State {
   sectionDimension: number
   isLoading: boolean
-  headerHeight: number
-  marginTop: number
 }
 
 export const DEFAULT_SECTION_MARGIN = 20
@@ -184,14 +182,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     useParentAwareScrollView: Platform.OS === "android",
     showLoadingSpinner: false,
     updateRecentSearchesOnTap: false,
-    hideHeaderInitially: false,
   }
 
   state = {
     sectionDimension: this.getSectionDimension(this.props.width),
     isLoading: false,
-    headerHeight: 0,
-    marginTop: 0,
   }
 
   fetchNextPage = () => {
@@ -252,13 +247,6 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   onLayout = (event: LayoutChangeEvent) => {
     this.setState({
       sectionDimension: this.getSectionDimension(event.nativeEvent.layout.width),
-    })
-  }
-
-  onHeaderLayout = (event: LayoutChangeEvent) => {
-    this.setState({
-      headerHeight: event.nativeEvent.layout.height,
-      marginTop: event.nativeEvent.layout.height,
     })
   }
 
@@ -384,13 +372,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       return null
     }
 
-    return React.isValidElement(HeaderComponent) ? (
-      <View onLayout={this.onHeaderLayout}>{HeaderComponent}</View>
-    ) : (
-      <View onLayout={this.onHeaderLayout}>
-        <HeaderComponent />
-      </View>
-    )
+    return React.isValidElement(HeaderComponent) ? HeaderComponent : <HeaderComponent />
   }
 
   renderFooter() {
@@ -409,11 +391,10 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       hasMore,
       stickyHeaderIndices,
       useParentAwareScrollView,
-      autoFetch,
-      hideHeaderInitially,
-      showLoadingSpinner,
+      onScroll,
+      scrollEventThrottle,
     } = this.props
-    const { isLoading, headerHeight, marginTop } = this.state
+
     const boxPadding = shouldAddPadding ? 2 : 0
 
     const ScrollViewWrapper = !!useParentAwareScrollView ? ParentAwareScrollView : ScrollView
@@ -422,25 +403,12 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       <>
         <ScrollViewWrapper
           onScroll={(ev) => {
-            if (autoFetch) {
+            onScroll?.(ev)
+            if (this.props.autoFetch) {
               this.handleFetchNextPageOnScroll(ev)
             }
-            // [Android ContentOffset Bug]: See Hacks.MD
-            if (Platform.OS === "android" && ev.nativeEvent.contentOffset.y - 0 === 0) {
-              LayoutAnimation.configureNext({
-                ...LayoutAnimation.Presets.linear,
-                duration: 200,
-              })
-              this.setState({ marginTop: 0 })
-            }
           }}
-          // [Android ContentOffset Bug]: See Hacks.MD for why we are using marginTop here to hide header
-          contentContainerStyle={
-            Platform.OS === "android" && hideHeaderInitially ? { marginTop: -marginTop } : undefined
-          }
-          // [Android ContentOffset Bug]: contentOffset not working on android. This will only apply to iOS. See Hacks.MD
-          contentOffset={hideHeaderInitially ? { x: 0, y: headerHeight } : undefined}
-          scrollEventThrottle={50}
+          scrollEventThrottle={scrollEventThrottle ?? 50}
           onLayout={this.onLayout}
           scrollsToTop={false}
           accessibilityLabel="Artworks ScrollView"
@@ -455,7 +423,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             </View>
           </Box>
 
-          {!autoFetch && !!hasMore() && (
+          {!this.props.autoFetch && !!hasMore() && (
             <Button
               mt={5}
               mb={3}
@@ -468,14 +436,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               Show more
             </Button>
           )}
-          {!!showLoadingSpinner && !!isLoading && (
+          {!!this.props.showLoadingSpinner && !!this.state.isLoading && (
             <Flex mt={2} mb={4} flexDirection="row" justifyContent="center">
               <Spinner />
             </Flex>
           )}
         </ScrollViewWrapper>
 
-        {isLoading && hasMore() && (
+        {this.state.isLoading && hasMore() && (
           <Flex
             alignItems="center"
             justifyContent="center"
@@ -483,7 +451,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             pb="9"
             style={{ opacity: this.state.isLoading && hasMore() ? 1 : 0 }}
           >
-            {!!autoFetch && (
+            {!!this.props.autoFetch && (
               <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
             )}
           </Flex>

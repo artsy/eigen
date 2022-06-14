@@ -32,7 +32,7 @@ describe("ArtworkDetailsForm", () => {
     it("renders input correctly with correct placeholder", () => {
       const { getByTestId, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
       expect(getByTestId("Submission_LocationInput")).toBeTruthy()
-      expect(getByPlaceholderText("Enter City Where Artwork Is Located")).toBeTruthy()
+      expect(getByPlaceholderText("Enter city where artwork is located")).toBeTruthy()
     })
 
     it("has input's value empty initially", () => {

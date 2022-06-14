@@ -264,6 +264,16 @@ See what can be converted: https://github.com/facebook/react-native/blob/main/Re
 
 PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
 
+# `ORStackView` pod postinstall modification (add UIKit import)
+
+#### When can we remove this:
+
+Once we remove ORStackView or the upstream repo adds the import. May want to proactively open a PR for this.
+
+#### Explanation/Context:
+
+The Pod does not compile when imported as is without hack due to missing symbols from UIKit.
+
 # `Map` manual prop update in `PageWrapper`
 
 #### When can we remove this:
@@ -340,14 +350,3 @@ When [this](https://github.com/storybookjs/react-native/pull/345) is merged, or 
 #### Explanation/Context
 
 Storybook does not render outside the safe area, so for `Screen` and friends, we can't really use storybook otherwise. With this patch, we can now render outside the safe area, by adding `parameters: { noSafeArea: true }` in the new form of stories.
-
-## [Android ContentOffset Bug]: Using marginTop: -headerHeight to initially hide HeaderComponent in MyCollectionArtworksList.tsx and InfiniteScrollArtworkGrid.tsx
-
-#### When we can remove this:
-
-When we upgrade to a react native version that contentOffset works for android
-
-#### Explanation/Context
-
-contentOffset for vertical scrollviews appear to be broken on v0.66.4 (current version). We need the contentOffset to initially hide the HeaderComponent. The workaround currently is to use contentContainerStyle and set the marginTop to -HeightOfHeaderComponent and then remove this when a user scrolls to the top.
-Caveat/Introduced bug: User has to scroll to an offset of any number > 0 to revert the marginTop to 0.

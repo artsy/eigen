@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedCollectionGroup } from "@artsy/cohesion"
-import { FairCollections_fair } from "__generated__/FairCollections_fair.graphql"
+import { FairCollections_fair$data } from "__generated__/FairCollections_fair.graphql"
 import { CARD_WIDTH } from "app/Components/Home/CardRailCard"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/navigation/navigate"
@@ -9,10 +9,10 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
-type Collection = FairCollections_fair["marketingCollections"][number]
+type Collection = FairCollections_fair$data["marketingCollections"][number]
 
 interface FairCollectionsProps extends BoxProps {
-  fair: FairCollections_fair
+  fair: FairCollections_fair$data
 }
 
 export const FairCollections: React.FC<FairCollectionsProps> = ({ fair, ...rest }) => {

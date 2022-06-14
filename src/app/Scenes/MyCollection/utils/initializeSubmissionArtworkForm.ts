@@ -1,8 +1,8 @@
-import { MyCollectionWhySell_artwork } from "__generated__/MyCollectionWhySell_artwork.graphql"
+import { MyCollectionWhySell_artwork$data } from "__generated__/MyCollectionWhySell_artwork.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 
-export const initializeSubmissionArtworkForm = (artwork: MyCollectionWhySell_artwork) => {
+export const initializeSubmissionArtworkForm = (artwork: MyCollectionWhySell_artwork$data) => {
   GlobalStore.actions.artworkSubmission.submission.resetSessionState()
 
   GlobalStore.actions.artworkSubmission.submission.initializeArtworkDetailsForm({

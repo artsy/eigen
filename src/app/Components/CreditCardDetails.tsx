@@ -1,13 +1,13 @@
 import React from "react"
 
-import { CreditCardDetails_card } from "__generated__/CreditCardDetails_card.graphql"
+import { CreditCardDetails_card$data } from "__generated__/CreditCardDetails_card.graphql"
 import { bullet, CreditCardIcon, Flex, Sans } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 const CreditCardDetails = ({
   card: { brand, lastDigits, expirationMonth, expirationYear },
 }: {
-  card: CreditCardDetails_card
+  card: CreditCardDetails_card$data
 }) => (
   <Flex alignItems="center" flexDirection="row">
     <CreditCardIcon type={brand as any} width={30} height={20} />

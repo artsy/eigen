@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { MyCollectionWhySell_artwork$key } from "__generated__/MyCollectionWhySell_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { initializeSubmissionArtworkForm } from "app/Scenes/MyCollection/utils/initializeSubmissionArtworkForm"
+import { Schema } from "app/utils/track"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React from "react"
 import { useFragment } from "react-relay"
@@ -16,7 +17,7 @@ interface MyCollectionWhySellProps {
 export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) => {
   const { contextModule } = props
   const { trackEvent } = useTracking()
-  const artwork = useFragment<MyCollectionWhySell_artwork$key>(artworkFragment, props.artwork)
+  const artwork = useFragment(artworkFragment, props.artwork)
 
   const isInProgress = artwork.consignmentSubmission?.inProgress
   const isSold = artwork.consignmentSubmission?.isSold
@@ -27,10 +28,13 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
     return null
   }
   let setContextModule = ContextModule.sellFooter
+  let setContextScreen: Schema.PageNames
   if (contextModule === "insights") {
     setContextModule = ContextModule.myCollectionArtworkInsights
+    setContextScreen = Schema.PageNames.MyCollectionArtworkInsights
   } else if (contextModule === "about") {
     setContextModule = ContextModule.myCollectionArtworkAbout
+    setContextScreen = Schema.PageNames.MyCollectionArtworkAbout
   }
 
   return (
@@ -55,9 +59,10 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
             onPress={() => {
               trackEvent(
                 tracks.tappedSellArtwork(
+                  setContextModule,
                   artwork.internalID,
                   artwork.slug,
-                  setContextModule,
+                  setContextScreen,
                   "Submit This Artwork to Sell"
                 )
               )
@@ -98,6 +103,7 @@ export const MyCollectionWhySell: React.FC<MyCollectionWhySellProps> = (props) =
                   artwork.internalID,
                   artwork.slug,
                   setContextModule,
+                  setContextScreen,
                   "Learn More"
                 )
               )
@@ -151,9 +157,10 @@ const artworkFragment = graphql`
 `
 const tracks = {
   tappedSellArtwork: (
+    module: ContextModule,
     internalID: string,
     slug: string,
-    module: ContextModule,
+    setContextScreen: Schema.PageNames,
     subject: string
   ) => ({
     action: ActionType.tappedSellArtwork,
@@ -161,6 +168,7 @@ const tracks = {
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
+    context_screen: setContextScreen,
     subject,
   }),
   tappedShowMore: (internalID: string, slug: string, subject: string) => ({
@@ -171,12 +179,19 @@ const tracks = {
     context_screen_owner_slug: slug,
     subject,
   }),
-  tappedLearnMore: (internalID: string, slug: string, module: ContextModule, subject: string) => ({
+  tappedLearnMore: (
+    internalID: string,
+    slug: string,
+    module: ContextModule,
+    setContextScreen: Schema.PageNames,
+    subject: string
+  ) => ({
     action: ActionType.tappedLearnMore,
     context_module: module,
     context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: internalID,
     context_screen_owner_slug: slug,
+    context_screen: setContextScreen,
     subject,
   }),
 }

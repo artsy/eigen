@@ -1,9 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
-import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.graphql"
-import {
-  MakeOfferModalQuery,
-  MakeOfferModalQueryResponse,
-} from "__generated__/MakeOfferModalQuery.graphql"
+import { MakeOfferModal_artwork$data } from "__generated__/MakeOfferModal_artwork.graphql"
+import { MakeOfferModalQuery } from "__generated__/MakeOfferModalQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -16,10 +13,10 @@ import { ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { InquiryMakeOfferButtonFragmentContainer as InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 
-import { EditionSelectBox } from "./EditionSelectBox"
+import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
 
 interface MakeOfferModalProps {
-  artwork: MakeOfferModal_artwork
+  artwork: MakeOfferModal_artwork$data
   conversationID: string
 }
 
@@ -52,8 +49,8 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           {!!artwork.isEdition && artwork.editionSets!.length > 1 && (
             <Flex mb={2}>
               {artwork.editionSets?.map((edition) => (
-                <EditionSelectBox
-                  edition={edition!}
+                <EditionSelectBoxFragmentContainer
+                  editionSet={edition!}
                   selected={edition!.internalID === selectedEdition}
                   onPress={selectEdition}
                   key={`edition-set-${edition?.internalID}`}
@@ -96,22 +93,8 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
       internalID
       isEdition
       editionSets {
+        ...EditionSelectBox_editionSet
         internalID
-        editionOf
-        isAcquireable
-        isOfferableFromInquiry
-        listPrice {
-          ... on Money {
-            display
-          }
-          ... on PriceRange {
-            display
-          }
-        }
-        dimensions {
-          cm
-          in
-        }
       }
     }
   `,
@@ -141,7 +124,7 @@ export const MakeOfferModalQueryRenderer: React.FC<{
         variables={{
           artworkID,
         }}
-        render={renderWithLoadProgress<MakeOfferModalQueryResponse>(({ artwork }) => (
+        render={renderWithLoadProgress<MakeOfferModalQuery["response"]>(({ artwork }) => (
           <MakeOfferModalFragmentContainer artwork={artwork!} conversationID={conversationID} />
         ))}
       />

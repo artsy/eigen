@@ -48,4 +48,4 @@ OUTPUT=$(cat << EOF
 @end
 EOF)
 
-echo "$OUTPUT" > Artsy/Networking/ARReactPackagerHost.m
+echo "$OUTPUT" > $PROJECT_DIR/Artsy/Networking/ARReactPackagerHost.m

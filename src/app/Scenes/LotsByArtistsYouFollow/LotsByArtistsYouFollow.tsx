@@ -1,4 +1,4 @@
-import { LotsByArtistsYouFollow_me } from "__generated__/LotsByArtistsYouFollow_me.graphql"
+import { LotsByArtistsYouFollow_me$data } from "__generated__/LotsByArtistsYouFollow_me.graphql"
 import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -11,7 +11,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 
 const SCREEN_TITLE = "Auction Lots for You"
 interface LotsByArtistsYouFollowProps {
-  me: LotsByArtistsYouFollow_me
+  me: LotsByArtistsYouFollow_me$data
   relay: RelayPaginationProp
 }
 

@@ -86,21 +86,15 @@ const checkBundlerExists = () => {
   }
 }
 
-const checkPythonExists = () => {
-  try {
-    exec("python --version")
-    YES(`Your ${g`python`} is ready to go.`)
-  } catch (e) {
-    NO(`You don't have ${r`python`}.`, `Install ${g`python`} first.`)
-  }
-}
-
 const checkBundlerDependenciesAreUpToDate = () => {
   try {
     exec("bundle check")
     YES(`Your ${g`bundler dependencies`} are ready to go.`)
   } catch (e) {
-    NO(`Your ${r`bundle dependencies`} are out of sync.`, `Run ${g`yarn install:all`} or ${g`bundle install`} first.`)
+    NO(
+      `Your ${r`bundle dependencies`} are out of sync.`,
+      `Run ${g`yarn install:all`} or ${g`bundle install`} first.`
+    )
   }
 }
 
@@ -108,7 +102,10 @@ const checkNodeDependenciesAreUpToDate = async () => {
   const res = await checkDependencies()
 
   if (res.error.length > 0) {
-    NO(`Your ${r`node dependencies`} are out of sync.`, `Run ${g`yarn install:all`} or ${g`yarn install`} first.`)
+    NO(
+      `Your ${r`node dependencies`} are out of sync.`,
+      `Run ${g`yarn install:all`} or ${g`yarn install`} first.`
+    )
   } else {
     YES(`Your ${g`node dependencies`} match the ones specifed in package.json.`)
   }
@@ -123,18 +120,6 @@ const checkPodDependenciesAreUpToDate = () => {
       `Your ${r`pod dependencies`} are out of sync.`,
       `Run ${g`yarn install:all`} or ${g`bundle exec pod install`} first.`
     )
-  }
-}
-
-const checkPythonDependenciesAreUpToDate = () => {
-  const output = exec("pip freeze -r requirements.txt 2>&1") // the `2>&1` part is so that we bring stderr output to stdout. pip sends errors to stderr, and we need to read them.
-  if (output.includes("is not installed")) {
-    NO(
-      `Your ${r`python dependencies`} are out of sync.`,
-      `Run ${g`yarn install:all`} or ${g`pip install -r requirements.txt`} first.`
-    )
-  } else {
-    YES(`Your ${g`python dependencies`} are ready to go.`)
   }
 }
 
@@ -157,12 +142,10 @@ const main = async () => {
   checkYarnExists()
   checkRubyExists()
   checkBundlerExists()
-  checkPythonExists()
 
   checkBundlerDependenciesAreUpToDate()
   await checkNodeDependenciesAreUpToDate()
   // checkPodDependenciesAreUpToDate() // this is broken right now.. pod check is always reporting an error.
-  checkPythonDependenciesAreUpToDate()
 
   checkDetectSecretsExists()
 }

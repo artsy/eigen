@@ -93,8 +93,9 @@ expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
 // MARK: - External deps mocks
 
-jest.mock("react-native-screens/native-stack", () => ({
-  createNativeStackNavigator: require("@react-navigation/stack").createStackNavigator,
+jest.mock("react-native-screens", () => ({
+  ...jest.requireActual("react-native-screens"),
+  enableScreens: jest.fn(),
 }))
 
 // @ts-expect-error typescript doesn't see this for some reason
@@ -353,13 +354,19 @@ jest.mock("react-native-keychain", () => ({
 // Native modules
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
+import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
 
 function getNativeModules(): OurNativeModules {
   return {
+    ARTNativeScreenPresenterModule: {
+      presentAugmentedRealityVIR: jest.fn(),
+      presentEmailComposerWithBody: jest.fn(),
+      presentEmailComposerWithSubject: jest.fn(),
+      presentMediaPreviewController: jest.fn(),
+    },
     ARTakeCameraPhotoModule: {
       errorCodes: {
         cameraNotAvailable: "cameraNotAvailable",
@@ -390,7 +397,6 @@ function getNativeModules(): OurNativeModules {
       didFinishBootstrapping: jest.fn(),
       reactStateUpdated: jest.fn(),
     },
-
     ARTemporaryAPIModule: {
       requestPrepromptNotificationPermissions: jest.fn(),
       requestDirectNotificationPermissions: jest.fn(),
@@ -403,14 +409,11 @@ function getNativeModules(): OurNativeModules {
       requestPhotos: jest.fn(),
     },
     ARScreenPresenterModule: {
-      presentMediaPreviewController: jest.fn(),
+      switchTab: jest.fn(),
       dismissModal: jest.fn(),
       pushView: jest.fn(),
       goBack: jest.fn(),
       updateShouldHideBackButton: jest.fn(),
-      presentAugmentedRealityVIR: jest.fn(),
-      presentEmailComposerWithBody: jest.fn(),
-      presentEmailComposerWithSubject: jest.fn(),
       popStack: jest.fn(),
       popToRootAndScrollToTop: jest.fn(),
       popToRootOrScrollToTop: jest.fn(),
@@ -434,6 +437,86 @@ function getNativeModules(): OurNativeModules {
   }
 }
 
+// ARScreenPresenterModule is no longer a native module on either platform
+// so we must mock differently
+jest.mock("app/NativeModules/LegacyNativeModules", () => ({
+  LegacyNativeModules: {
+    ARTNativeScreenPresenterModule: {
+      presentAugmentedRealityVIR: jest.fn(),
+      presentEmailComposerWithBody: jest.fn(),
+      presentEmailComposerWithSubject: jest.fn(),
+      presentMediaPreviewController: jest.fn(),
+    },
+    ARTakeCameraPhotoModule: {
+      errorCodes: {
+        cameraNotAvailable: "cameraNotAvailable",
+        imageMediaNotAvailable: "imageMediaNotAvailable",
+        cameraAccessDenied: "cameraAccessDenied",
+        saveFailed: "saveFailed",
+      },
+      triggerCameraModal: jest.fn(),
+    },
+
+    ARCocoaConstantsModule: {
+      UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+      AREnabled: true,
+      CurrentLocale: "en_US",
+      LocalTimeZone: "",
+    },
+
+    ARNotificationsManager: {
+      nativeState: {
+        userAgent: "Jest Unit Tests",
+        authenticationToken: "authenticationToken",
+        launchCount: 1,
+        deviceId: "testDevice",
+        userID: "userID",
+        userEmail: "user@example.com",
+      },
+      postNotificationName: jest.fn(),
+      didFinishBootstrapping: jest.fn(),
+      reactStateUpdated: jest.fn(),
+    },
+    ARTemporaryAPIModule: {
+      requestPrepromptNotificationPermissions: jest.fn(),
+      requestDirectNotificationPermissions: jest.fn(),
+      fetchNotificationPermissions: jest.fn(),
+      markNotificationsRead: jest.fn(),
+      setApplicationIconBadgeNumber: jest.fn(),
+      getUserEmail: jest.fn(),
+    },
+    ARPHPhotoPickerModule: {
+      requestPhotos: jest.fn(),
+    },
+    ARScreenPresenterModule: {
+      switchTab: jest.fn(),
+      dismissModal: jest.fn(),
+      pushView: jest.fn(),
+      goBack: jest.fn(),
+      updateShouldHideBackButton: jest.fn(),
+      popStack: jest.fn(),
+      popToRootAndScrollToTop: jest.fn(),
+      popToRootOrScrollToTop: jest.fn(),
+      presentModal: jest.fn(),
+    },
+    AREventsModule: {
+      requestAppStoreRating: jest.fn(),
+    },
+    ArtsyNativeModule: {
+      launchCount: 3,
+      setAppStyling: jest.fn(),
+      setNavigationBarColor: jest.fn(),
+      setAppLightContrast: jest.fn(),
+      navigationBarHeight: 11,
+      lockActivityScreenOrientation: jest.fn(),
+      gitCommitShortHash: "de4dc0de",
+      isBetaOrDev: true,
+      updateAuthState: jest.fn(),
+      clearUserData: jest.fn(),
+    },
+  },
+}))
+
 Object.assign(NativeModules, getNativeModules())
 
 beforeEach(() => {
@@ -456,7 +539,6 @@ beforeEach(() => {
 
 const mockedModule = (path: string, mockModuleName: string) => jest.mock(path, () => mockModuleName)
 mockedModule("./app/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
-mockedModule("./app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
 mockedModule("./app/Components/Gene/Header.tsx", "Header")
 
 jest.mock("app/utils/track/providers", () => ({
@@ -466,12 +548,13 @@ jest.mock("app/utils/track/providers", () => ({
 
 jest.mock("app/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+  createEnvironment: require("relay-test-utils").createMockEnvironment,
   reset(this: { defaultEnvironment: any }) {
     this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
   },
 }))
 
-jest.mock("app/utils/useScreenDimensions", () => {
+jest.mock("shared/hooks", () => {
   const React = require("react")
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,
@@ -495,6 +578,7 @@ jest.mock("app/utils/useScreenDimensions", () => {
       return React.createElement(React.Fragment, null, children)
     },
     useScreenDimensions: () => screenDimensions,
+    useOffscreenStyle: () => ({}),
   }
 })
 

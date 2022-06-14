@@ -1,4 +1,4 @@
-import { FullFeaturedArtistListTestsQueryRawResponse } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
+import { FullFeaturedArtistListTestsQuery } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockTracking } from "app/tests/mockTracking"
 import { renderRelayTree } from "app/tests/renderRelayTree"
@@ -10,7 +10,9 @@ import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from 
 jest.unmock("react-relay")
 
 describe("FullFeaturedArtistList", () => {
-  const render = (collection: FullFeaturedArtistListTestsQueryRawResponse["marketingCollection"]) =>
+  const render = (
+    collection: FullFeaturedArtistListTestsQuery["rawResponse"]["marketingCollection"]
+  ) =>
     renderRelayTree({
       Component: mockTracking(({ marketingCollection }) => (
         <GlobalStoreProvider>

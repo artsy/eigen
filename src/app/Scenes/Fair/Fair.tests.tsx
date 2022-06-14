@@ -2,7 +2,6 @@ import { FairTestsQuery } from "__generated__/FairTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { NavigationalTabs, Tab } from "palette/elements/Tabs"
-import { TabV3 } from "palette/elements/Tabs/Tab"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -211,7 +210,7 @@ describe("Fair", () => {
           },
         }),
       })
-      const tabs = wrapper.root.findAllByType(TabV3)
+      const tabs = wrapper.root.findAllByType(Tab)
       const exhibitorsTab = tabs[0]
       const artworksTab = tabs[1]
 

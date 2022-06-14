@@ -1,6 +1,6 @@
 import { captureException } from "@sentry/react-native"
-import { Registration_me } from "__generated__/Registration_me.graphql"
-import { Registration_sale } from "__generated__/Registration_sale.graphql"
+import { Registration_me$data } from "__generated__/Registration_me.graphql"
+import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
 import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
 import { RegistrationQuery } from "__generated__/RegistrationQuery.graphql"
@@ -35,8 +35,8 @@ import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 export interface RegistrationProps extends ViewProps {
-  sale: Registration_sale
-  me: Registration_me
+  sale: Registration_sale$data
+  me: Registration_me$data
   relay: RelayProp
   navigator?: NavigatorIOS
 }

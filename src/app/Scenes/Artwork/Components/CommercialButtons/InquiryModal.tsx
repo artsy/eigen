@@ -1,4 +1,4 @@
-import { InquiryModal_artwork } from "__generated__/InquiryModal_artwork.graphql"
+import { InquiryModal_artwork$data } from "__generated__/InquiryModal_artwork.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import ChevronIcon from "app/Icons/ChevronIcon"
@@ -19,7 +19,7 @@ import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtwork
 import { ShippingModal } from "./ShippingModal"
 
 interface InquiryModalProps {
-  artwork: InquiryModal_artwork
+  artwork: InquiryModal_artwork$data
   closeModal?: () => void
   exitModal?: () => void
   toggleVisibility: () => void

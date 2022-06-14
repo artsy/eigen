@@ -5,62 +5,65 @@ import { createFragmentContainer, graphql } from "react-relay"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 
-import { SaleListItem_sale } from "__generated__/SaleListItem_sale.graphql"
+import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
 import { formatDisplayTimelyAt } from "app/Scenes/Sale/helpers"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Sans } from "palette"
 
 interface Props {
-  sale: SaleListItem_sale
+  sale: SaleListItem_sale$data
   containerWidth: number
   index: number
   columnCount: number
 }
 
-export class SaleListItem extends React.Component<Props> {
-  handleTap = () => {
+export const SaleListItem: React.FC<Props> = (props) => {
+  const isCascadingEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageGrid")
+
+  const handleTap = () => {
     const {
       sale: { liveURLIfOpen, href },
-    } = this.props
+    } = props
     const url = (liveURLIfOpen || href) as string
     navigate(url)
   }
 
-  render() {
-    const { sale, containerWidth, index, columnCount } = this.props
-    const image = sale.coverImage
-    const timestamp = formatDisplayTimelyAt(sale.displayTimelyAt)
-    const isFirstItemInRow = index === 0 || index % columnCount === 0
-    const marginLeft = isFirstItemInRow ? 0 : 20
+  const { sale, containerWidth, index, columnCount } = props
+  const image = sale.coverImage
+  const timestamp = isCascadingEnabled
+    ? sale.formattedStartDateTime
+    : formatDisplayTimelyAt(sale.displayTimelyAt)
+  const isFirstItemInRow = index === 0 || index % columnCount === 0
+  const marginLeft = isFirstItemInRow ? 0 : 20
 
-    return (
-      <TouchableOpacity onPress={this.handleTap}>
-        <View
+  return (
+    <TouchableOpacity onPress={handleTap}>
+      <View
+        style={{
+          width: containerWidth,
+          marginBottom: 20,
+          marginLeft,
+        }}
+      >
+        <OpaqueImageView
           style={{
             width: containerWidth,
-            marginBottom: 20,
-            marginLeft,
+            height: containerWidth,
+            borderRadius: 2,
+            overflow: "hidden",
+            marginBottom: 5,
           }}
-        >
-          <OpaqueImageView
-            style={{
-              width: containerWidth,
-              height: containerWidth,
-              borderRadius: 2,
-              overflow: "hidden",
-              marginBottom: 5,
-            }}
-            imageURL={image && image.url}
-          />
-          <Sans size="3t" numberOfLines={2} weight="medium">
-            {sale.name}
-          </Sans>
-          <Sans size="3" color="black60">
-            {timestamp}
-          </Sans>
-        </View>
-      </TouchableOpacity>
-    )
-  }
+          imageURL={image && image.url}
+        />
+        <Sans size="3t" numberOfLines={2} weight="medium">
+          {sale.name}
+        </Sans>
+        <Sans size="3" color="black60">
+          {timestamp}
+        </Sans>
+      </View>
+    </TouchableOpacity>
+  )
 }
 
 export default createFragmentContainer(SaleListItem, {
@@ -71,6 +74,7 @@ export default createFragmentContainer(SaleListItem, {
       liveURLIfOpen
       liveStartAt
       displayTimelyAt
+      formattedStartDateTime
       coverImage {
         url(version: "large")
       }

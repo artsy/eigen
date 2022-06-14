@@ -1,4 +1,4 @@
-import { ViewingRoomHeader_viewingRoom } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
+import { ViewingRoomHeader_viewingRoom$data } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
 import { durationSections } from "app/Components/Countdown"
 import { CountdownTimer, CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
@@ -12,7 +12,7 @@ import styled from "styled-components/native"
 import { ViewingRoomStatus } from "../ViewingRoom"
 
 interface ViewingRoomHeaderProps {
-  viewingRoom: ViewingRoomHeader_viewingRoom
+  viewingRoom: ViewingRoomHeader_viewingRoom$data
 }
 
 export const BackgroundImage = styled(OpaqueImageView)<{ height: number; width: number }>`
@@ -44,7 +44,7 @@ const Overlay = styled(LinearGradient)`
 
 const CountdownText: React.FC<CountdownTimerProps> = ({ duration }) => {
   const separator = "  "
-  const sections = durationSections(duration, ["d", "h", "m", "s"])
+  const sections = duration ? durationSections(duration, ["d", "h", "m", "s"]) : []
   return (
     <Text variant="xs" fontWeight={500} color="white100">
       {sections

@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
+import { PartnerShows_partner$data } from "__generated__/PartnerShows_partner.graphql"
 import { useNativeValue } from "app/Components/StickyTabPage/reanimatedHelpers"
 import {
   StickyTabPageFlatList,
@@ -20,7 +20,9 @@ const PAGE_SIZE = 32
 
 interface ShowGridItemProps {
   show: NonNullable<
-    NonNullable<NonNullable<NonNullable<PartnerShows_partner["pastShows"]>["edges"]>[0]>["node"]
+    NonNullable<
+      NonNullable<NonNullable<PartnerShows_partner$data["pastShows"]>["edges"]>[0]
+    >["node"]
   >
   itemIndex: number
 }
@@ -70,7 +72,7 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
 }
 
 export const PartnerShows: React.FC<{
-  partner: PartnerShows_partner
+  partner: PartnerShows_partner$data
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [isLoadingMore, setIsLoadingMore] = useState(false)

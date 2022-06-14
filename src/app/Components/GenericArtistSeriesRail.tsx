@@ -1,6 +1,6 @@
-import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
-import { ArtistCollectionsRail_collections } from "__generated__/ArtistCollectionsRail_collections.graphql"
-import { CollectionArtistSeriesRail_collectionGroup } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
+import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
+import { ArtistCollectionsRail_collections$data } from "__generated__/ArtistCollectionsRail_collections.graphql"
+import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import {
   CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
   CardRailArtworkImageContainer as ArtworkImageContainer,
@@ -21,16 +21,16 @@ import styled from "styled-components/native"
 
 interface GenericArtistSeriesRailProps {
   collections:
-    | CollectionArtistSeriesRail_collectionGroup["members"]
-    | ArtistAbout_artist["iconicCollections"]
+    | CollectionArtistSeriesRail_collectionGroup$data["members"]
+    | ArtistAbout_artist$data["iconicCollections"]
   contextScreenOwnerType: Schema.OwnerEntityTypes.Collection | Schema.OwnerEntityTypes.Artist
   contextScreenOwnerId: string
   contextScreenOwnerSlug: string
 }
 
 type GenericArtistSeriesItem =
-  | CollectionArtistSeriesRail_collectionGroup["members"][0]
-  | ArtistCollectionsRail_collections[0]
+  | CollectionArtistSeriesRail_collectionGroup$data["members"][0]
+  | ArtistCollectionsRail_collections$data[0]
 
 export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (props) => {
   const color = useColor()

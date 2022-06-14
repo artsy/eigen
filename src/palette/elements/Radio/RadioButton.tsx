@@ -1,7 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
-import { CssTransition } from "app/Components/Bidding/Components/Animation/CssTransition"
 import { Flex, FlexProps } from "app/Components/Bidding/Elements/Flex"
-import { Text, useTheme } from "palette"
+import { CssTransition, Text, useTheme } from "palette"
 import React from "react"
 import {
   PixelRatio,

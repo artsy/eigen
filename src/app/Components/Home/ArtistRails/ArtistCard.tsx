@@ -1,4 +1,4 @@
-import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
+import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -19,7 +19,7 @@ import {
 const ARTIST_CARD_WIDTH = 295
 
 interface ArtistCardProps {
-  artist: ArtistCard_artist
+  artist: ArtistCard_artist$data
   onDismiss?: () => void
   onFollow?: () => void
   onPress?: () => void

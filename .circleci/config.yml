@@ -135,7 +135,7 @@ commands:
       - save_cache:
           key: v4-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
-            - vendor/bundle
+            - .vendor
   install-cocoapods:
     steps:
       - restore_cache:
@@ -143,27 +143,24 @@ commands:
             - v9-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
-          command: bundle exec pod check --ignore-dev-pods || bundle exec pod install
-      - run:
-          name: Update echo
-          command: ls Artsy/App/EchoNew.json || ./scripts/update-echo
+          command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
           key: v9-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
-            - Pods
-            # this changes after pod install because we don't instal dev tools on CI
+            - ios/Pods
+            # this changes after pod install because we don't install dev tools on CI
             # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
-            - Podfile.lock
+            - ios/Podfile.lock
   build-app-ios:
     steps:
       - restore_cache:
           keys:
-            - v5-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v6-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Build App
           command: ./scripts/ci-ios
       - save_cache:
-          key: v5-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v6-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -225,7 +222,7 @@ jobs:
 
   deploy-nightly-beta:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -269,7 +266,7 @@ jobs:
 
   check-flags:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -285,7 +282,7 @@ jobs:
 
   check-if-app-has-been-approved-for-release:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -296,7 +293,7 @@ jobs:
       - install-gems
       - run:
           name: Check flags
-          command: ./scripts/check-if-app-has-been-approved-for-release
+          command: ./scripts/check-if-app-has-been-approved-for-release.sh
 
   check-metaphysics-freshness:
     executor:
@@ -366,7 +363,7 @@ jobs:
 
   build-test-app-ios:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
       xcode: 13.2.1
@@ -376,7 +373,7 @@ jobs:
           at: ../workspace
       - restore_cache:
           keys:
-            - v6-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v7-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -413,7 +410,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci-test-ios
       - save_cache:
-          key: v6-test-success-{{ checksum ".manifests/native_code" }}
+          key: v7-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
 
@@ -438,7 +435,7 @@ jobs:
 
   build-test-app-android:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
     docker:
       - image: circleci/android:api-29-node
     resource_class: large
@@ -465,7 +462,7 @@ jobs:
 
   promote-beta-to-app-store:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
       xcode: 13.2.1
     steps:
@@ -479,7 +476,7 @@ jobs:
 
   promote-beta-to-play-store:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     docker:
       - image: circleci/android:api-29-node
@@ -512,7 +509,7 @@ jobs:
           path: .manifests
   release-ios-app:
     environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
     macos:
       xcode: 13.2.1
     steps:
@@ -555,7 +552,6 @@ workflows:
                 - main
     jobs:
       - check-if-app-has-been-approved-for-release
-
 
   update-changelog-workflow:
     jobs:

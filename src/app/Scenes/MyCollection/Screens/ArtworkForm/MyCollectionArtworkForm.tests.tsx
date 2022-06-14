@@ -1,7 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
-import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
-import { myCollectionCreateArtworkMutationResponse } from "__generated__/myCollectionCreateArtworkMutation.graphql"
+import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
+import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
@@ -87,7 +88,7 @@ describe("MyCollectionArtworkForm", () => {
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
         const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappersTL(
-          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
+          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
         )
 
         // Select Artist Screen
@@ -95,7 +96,7 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByText("Select an Artist")).toBeTruthy()
 
         act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for Artists on Artsy"), "banksy")
+          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
         )
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -144,7 +145,9 @@ describe("MyCollectionArtworkForm", () => {
 
         await flushPromiseQueue()
 
-        const updatePreferencesOperation = mockEnvironment.mock.getMostRecentOperation()
+        const mockOperations = mockEnvironment.mock.getAllOperations()
+
+        const updatePreferencesOperation = mockOperations[0]
         expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
           Object {
             "input": Object {
@@ -154,12 +157,7 @@ describe("MyCollectionArtworkForm", () => {
           }
         `)
 
-        mockEnvironment.mock.resolveMostRecentOperation(() => ({
-          data: {},
-        }))
-        await flushPromiseQueue()
-
-        const createArtworkOperation = mockEnvironment.mock.getMostRecentOperation()
+        const createArtworkOperation = mockOperations[1]
         expect(createArtworkOperation.request.variables).toMatchInlineSnapshot(`
           Object {
             "input": Object {
@@ -192,7 +190,7 @@ describe("MyCollectionArtworkForm", () => {
       it("leaves the form empty", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappersTL(
           <RelayEnvironmentProvider environment={mockEnvironment}>
-            <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
+            <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
           </RelayEnvironmentProvider>
         )
 
@@ -201,7 +199,7 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByText("Select an Artist")).toBeTruthy()
 
         act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for Artists on Artsy"), "banksy")
+          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
         )
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -242,7 +240,7 @@ describe("MyCollectionArtworkForm", () => {
       it("displays the artist display name input", async () => {
         const { getByText, getByTestId } = renderWithWrappersTL(
           <RelayEnvironmentProvider environment={mockEnvironment}>
-            <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />
+            <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
           </RelayEnvironmentProvider>
         )
 
@@ -368,6 +366,7 @@ describe("MyCollectionArtworkForm", () => {
         const props: MyCollectionArtworkFormProps = {
           onSuccess: jest.fn(),
           mode: "add",
+          source: Tab.collection,
         }
         const uploadPhotosMock = jest.spyOn(photoUtil, "uploadPhotos")
         uploadPhotosMock.mockImplementation(() =>
@@ -375,7 +374,7 @@ describe("MyCollectionArtworkForm", () => {
         )
 
         const artworkSlug = "some-slug"
-        const artworkResponse: myCollectionCreateArtworkMutationResponse = {
+        const artworkResponse: myCollectionCreateArtworkMutation["response"] = {
           myCollectionCreateArtwork: {
             artworkOrError: {
               artworkEdge: {
@@ -413,6 +412,7 @@ describe("MyCollectionArtworkForm", () => {
                   title: null,
                   attributionClass: null,
                   consignmentSubmission: null,
+                  hasMarketPriceInsights: null,
                 },
               },
             },
@@ -429,6 +429,149 @@ describe("MyCollectionArtworkForm", () => {
         expect(uploadPhotosMock).toBeCalledWith(fakePhotos)
         expect(addArtworkMock).toBeCalled()
         expect(storeLocalPhotosMock).toBeCalledWith(expect.anything(), fakePhotos)
+      })
+    })
+  })
+
+  describe("loading screens", () => {
+    afterEach(() => {
+      mockEnvironment.mockClear()
+      jest.clearAllMocks()
+    })
+
+    describe("when AREnableMyCollectionInsights is enabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionInsights: true })
+      })
+
+      it("displays the new saving artwork loading screen", async () => {
+        const assetCredentials = {
+          signature: "some-signature",
+          credentials: "some-credentials",
+          policyEncoded: "some-policy-encoded",
+          policyDocument: {
+            expiration: "some-expiration",
+            conditions: {
+              acl: "some-acl",
+              bucket: "some-bucket",
+              geminiKey: "some-gemini-key",
+              successActionStatus: "some-success-action-status",
+            },
+          },
+        }
+        getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
+        uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
+
+        const { getByTestId, getByPlaceholderText } = renderWithWrappersTL(
+          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
+        )
+
+        // Select Artist Screen
+        act(() =>
+          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
+        )
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtistSearchResult,
+          })
+        )
+        await flushPromiseQueue()
+
+        act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
+
+        await flushPromiseQueue()
+
+        // Select Artwork Screen
+        act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtworkSearchResult,
+          })
+        )
+        act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
+
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
+        )
+
+        await flushPromiseQueue()
+
+        // Complete Form
+        act(() => fireEvent.press(getByTestId("CompleteButton")))
+
+        await flushPromiseQueue()
+
+        expect(getByTestId("saving-artwork-modal").props.visible).toBe(true)
+      })
+    })
+
+    describe("when AREnableMyCollectionInsights is disabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionInsights: false })
+      })
+
+      it("displays normal loading screen", async () => {
+        const assetCredentials = {
+          signature: "some-signature",
+          credentials: "some-credentials",
+          policyEncoded: "some-policy-encoded",
+          policyDocument: {
+            expiration: "some-expiration",
+            conditions: {
+              acl: "some-acl",
+              bucket: "some-bucket",
+              geminiKey: "some-gemini-key",
+              successActionStatus: "some-success-action-status",
+            },
+          },
+        }
+        getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
+        uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
+
+        const { getByTestId, getByPlaceholderText } = renderWithWrappersTL(
+          <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
+        )
+
+        // Select Artist Screen
+        act(() =>
+          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
+        )
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtistSearchResult,
+          })
+        )
+        await flushPromiseQueue()
+
+        act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
+
+        await flushPromiseQueue()
+
+        // Select Artwork Screen
+        act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtworkSearchResult,
+          })
+        )
+        act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
+
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
+        )
+
+        await flushPromiseQueue()
+
+        // Complete Form
+        act(() => fireEvent.press(getByTestId("CompleteButton")))
+
+        await flushPromiseQueue()
+
+        expect(getByTestId("loading-modal").props.visible).toBe(true)
       })
     })
   })
@@ -469,7 +612,7 @@ const mockArtworkSearchResult = {
   },
 }
 
-const mockArtistSearchResult: AutosuggestResultsQueryRawResponse = {
+const mockArtistSearchResult: AutosuggestResultsQuery["rawResponse"] = {
   results: {
     edges: [
       {

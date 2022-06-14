@@ -1,108 +1,163 @@
-import { MyCollectionInsightsTestsQuery } from "__generated__/MyCollectionInsightsTestsQuery.graphql"
-import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { withStickyTabPage } from "app/Components/StickyTabPage/testHelpers"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
-import { useLazyLoadQuery } from "react-relay"
-import { act } from "react-test-renderer"
-import { graphql } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
-import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
+import { MyCollectionInsights } from "./MyCollectionInsights"
 
 jest.unmock("react-relay")
 
 describe("MyCollectionInsights", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
+  const TestRenderer = () => withStickyTabPage(MyCollectionInsights)
+
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARShowMyCollectionInsights: true })
   })
-  const TestRenderer: React.FC = () => {
-    const queryData = useLazyLoadQuery<MyCollectionInsightsTestsQuery>(
-      graphql`
-        query MyCollectionInsightsTestsQuery @raw_response_type {
-          me {
-            ...AuctionResultsForArtistsYouCollectRail_me
-          }
-        }
-      `,
-      {}
-    )
-    return (
-      <StickyTabPage
-        tabs={[
-          {
-            title: "test",
-            content: <AuctionResultsForArtistsYouCollectRail auctionResults={queryData.me!} />,
-          },
-        ]}
-      />
-    )
-  }
-  const getWrapper = async () => {
-    const tree = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({
-        errors: [],
-        data: { me: mockData },
+  describe("when the step 1 of phase 1 feature flag is enabled ", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableMyCollectionInsightsPhase1Part1: true,
       })
+    })
+
+    it("shows market signal when they're available", async () => {
+      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      mockEnvironmentPayload(mockEnvironment, {
+        Me: () => ({
+          myCollectionConnection: myCollectionConnectionMock,
+          myCollectionAuctionResults: myCollectionAuctionResultsMock,
+          myCollectionInfo: myCollectionInfoMock,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(getByText("Market Signals")).toBeTruthy()
+    })
+
+    it("shows insights overview", async () => {
+      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      mockEnvironmentPayload(mockEnvironment, {
+        Me: () => ({
+          myCollectionConnection: myCollectionConnectionMock,
+          myCollectionAuctionResults: myCollectionAuctionResultsMock,
+          myCollectionInfo: myCollectionInfoMock,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(getByText("Total Artworks")).toBeTruthy()
+      expect(getByText("24")).toBeTruthy()
+      expect(getByText("Total Artists")).toBeTruthy()
+      expect(getByText("13")).toBeTruthy()
+    })
+  })
+
+  // describe("no insights message", () => {
+  //   it("shows message if there are no market insights", async () => {
+  //     const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+  //     mockEnvironmentPayload(mockEnvironment, {
+  //       Me: () => ({ auctionResults: { totalCount: 0 } }),
+  //     })
+
+  //     await flushPromiseQueue()
+
+  //     expect(getByTestId("artworks-have-no-insights-message")).toBeTruthy()
+  //   })
+
+  //   it("doesn't show the message if there are market insights", async () => {
+  //     const { queryByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+  //     mockEnvironmentPayload(mockEnvironment, {
+  //       Me: () => ({ auctionResults: { totalCount: 1 } }),
+  //     })
+
+  //     await flushPromiseQueue()
+
+  //     expect(await queryByTestId("artworks-have-no-insights-message")).toBeFalsy()
+  //   })
+
+  //   it("doesn't show the message if there are market insights", async () => {
+  //     const { queryByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+  //     mockEnvironmentPayload(mockEnvironment, {
+  //       Me: () => ({ auctionResults: { totalCount: 1 } }),
+  //     })
+
+  //     await flushPromiseQueue()
+
+  //     expect(await queryByTestId("artworks-have-no-insights-message")).toBeFalsy()
+  //   })
+  // })
+
+  describe("when the step 1 of phase 1 feature flag is disabled ", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableMyCollectionInsightsPhase1Part1: false,
+      })
+    })
+
+    it("shows market signal when they're available", async () => {
+      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+      mockEnvironmentPayload(mockEnvironment, {
+        Me: () => ({
+          myCollectionConnection: myCollectionConnectionMock,
+          myCollectionAuctionResults: myCollectionAuctionResultsMock,
+          myCollectionInfo: myCollectionInfoMock,
+        }),
+      })
+
+      await flushPromiseQueue()
+
+      expect(() => getByText("Market Signals")).toThrow()
+    })
+  })
+
+  it("shows empty state when the user has no artworks in their collection", async () => {
+    const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        myCollectionConnection: { edges: [] },
+        myCollectionAuctionResults: myCollectionAuctionResultsMock,
+        myCollectionInfo: myCollectionInfoMock,
+      }),
     })
 
     await flushPromiseQueue()
 
-    return tree
-  }
-
-  it("displayes the Auction Results section", async () => {
-    const { queryByText } = await getWrapper()
-
-    expect(queryByText("Auction Results")).toBeTruthy()
+    expect(getByTestId("my-collection-insights-empty-state")).toBeTruthy()
   })
 })
 
-const mockData = {
-  myCollectionAuctionResults: {
-    totalCount: 1,
-    edges: [
-      {
-        node: {
-          id: "QXVjdGlvblJlc3VsdDozMzM5NTI=",
-          internalID: "333952",
-          artistID: "4d8b92bb4eb68a1b2c000452",
-          currency: "HKD",
-          dateText: "2015",
-          artist: {
-            name: "Takashi Murakami",
-          },
-          images: {
-            thumbnail: {
-              url: "https://d2v80f5yrouhh2.cloudfront.net/OTJxNHuhGDnPi8wQcvXvxA/thumbnail.jpg",
-              height: 120,
-              width: 120,
-              aspectRatio: 1,
-            },
-          },
-          estimate: {
-            low: 123,
-          },
-          mediumText: "acrylic on canvas mounted on aluminum frame",
-          organization: "Phillips",
-          boughtIn: false,
-          performance: {
-            mid: "70%",
-          },
-          priceRealized: {
-            cents: 315000000,
-            display: "HK$3,150,000",
-            displayUSD: "$30,000",
-          },
-          saleDate: "2021-06-01T03:00:00+03:00",
-          title: "A Comparable Auction Result",
-        },
+const myCollectionConnectionMock = {
+  edges: [
+    {
+      node: {
+        id: "random-id",
       },
-    ],
-  },
+    },
+  ],
+}
+
+const myCollectionAuctionResultsMock = {
+  totalCount: 1,
+  edges: [
+    {
+      node: {
+        id: "random-id",
+      },
+    },
+  ],
+}
+
+const myCollectionInfoMock = {
+  artworksCount: 24,
+  artistsCount: 13,
 }

@@ -1,5 +1,5 @@
-import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
-import { ArtistCollectionsRail_artist } from "__generated__/ArtistCollectionsRail_artist.graphql"
+import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
+import { ArtistCollectionsRail_artist$data } from "__generated__/ArtistCollectionsRail_artist.graphql"
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { Schema } from "app/utils/track"
@@ -9,8 +9,8 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 interface ArtistCollectionsRailProps {
-  collections: ArtistAbout_artist["iconicCollections"]
-  artist: ArtistCollectionsRail_artist
+  collections: ArtistAbout_artist$data["iconicCollections"]
+  artist: ArtistCollectionsRail_artist$data
 }
 
 export const ArtistCollectionsRail: React.FC<ArtistCollectionsRailProps> = (props) => {

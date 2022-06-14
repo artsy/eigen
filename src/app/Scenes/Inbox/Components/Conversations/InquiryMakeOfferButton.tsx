@@ -1,4 +1,4 @@
-import { InquiryMakeOfferButton_artwork } from "__generated__/InquiryMakeOfferButton_artwork.graphql"
+import { InquiryMakeOfferButton_artwork$data } from "__generated__/InquiryMakeOfferButton_artwork.graphql"
 import { InquiryMakeOfferButtonOrderMutation } from "__generated__/InquiryMakeOfferButtonOrderMutation.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Button, ButtonProps } from "palette"
@@ -7,7 +7,7 @@ import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export interface InquiryMakeOfferButtonProps extends ButtonProps {
-  artwork: InquiryMakeOfferButton_artwork
+  artwork: InquiryMakeOfferButton_artwork$data
   relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null

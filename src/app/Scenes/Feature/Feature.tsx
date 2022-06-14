@@ -1,4 +1,4 @@
-import { Feature_feature } from "__generated__/Feature_feature.graphql"
+import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
@@ -8,11 +8,11 @@ import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { chunk, flattenDeep } from "lodash"
 import { Flex, Sans, Separator, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
 import {
   FeatureHeaderFragmentContainer,
@@ -48,7 +48,7 @@ function addSeparatorBetweenAllSections(
 }
 
 interface FeatureAppProps {
-  feature: Feature_feature
+  feature: Feature_feature$data
 }
 
 const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {

@@ -1,8 +1,4 @@
-import {
-  RequestForPriceEstimateScreenMutation,
-  RequestForPriceEstimateScreenMutationResponse,
-} from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
-import { ArtsyKeyboardAvoidingViewContext } from "app/Components/ArtsyKeyboardAvoidingView"
+import { RequestForPriceEstimateScreenMutation } from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -11,6 +7,7 @@ import { FormikProvider, useFormik } from "formik"
 import React from "react"
 import { Environment } from "react-relay"
 import { commitMutation, graphql } from "relay-runtime"
+import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import * as Yup from "yup"
 import { RequestForPriceEstimateForm } from "./RequestForPriceEstimateForm"
 
@@ -36,7 +33,7 @@ const ValidationSchema = Yup.object().shape({
 
 export const requestForPriceEstimateMutation = (
   environment: Environment,
-  onCompleted: (response: RequestForPriceEstimateScreenMutationResponse) => void,
+  onCompleted: (response: RequestForPriceEstimateScreenMutation["response"]) => void,
   onError: () => void,
   input: RequestForPriceEstimateFormikSchema & { artworkId: string }
 ) => {
@@ -80,7 +77,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
     },
     onSubmit: async ({ requesterEmail, requesterName, requesterPhoneNumber }) => {
       const input = { artworkId: artworkID, requesterEmail, requesterName, requesterPhoneNumber }
-      const onCompleted = (response: RequestForPriceEstimateScreenMutationResponse) => {
+      const onCompleted = (response: RequestForPriceEstimateScreenMutation["response"]) => {
         const myCollectionArtworkId =
           response.requestPriceEstimate?.priceEstimateParamsOrError?.submittedPriceEstimateParams
             ?.artworkId

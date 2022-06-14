@@ -13,20 +13,21 @@ import { Markdown } from "../../Markdown"
 import { Container } from "../Components/Containers"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
-import { BidderPositionResult } from "../types"
 
-import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
+import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { BidderPositionResult } from "../types"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
 interface BidResultProps {
-  sale_artwork: BidResult_sale_artwork
+  sale_artwork: BidResult_sale_artwork$data
   bidderPositionResult: BidderPositionResult
   navigator: NavigatorIOS
   refreshBidderInfo?: () => void
   refreshSaleArtwork?: () => void
+  biddingEndAt?: string
 }
 
 const messageForPollingTimeout = {
@@ -39,8 +40,8 @@ const messageForPollingTimeout = {
 }
 
 const Icons = {
-  WINNING: require("../../../../../images/circle-check-green.webp"),
-  PENDING: require("../../../../../images/circle-exclamation.webp"),
+  WINNING: require("images/circle-check-green.webp"),
+  PENDING: require("images/circle-exclamation.webp"),
 }
 
 export class BidResult extends React.Component<BidResultProps> {
@@ -95,12 +96,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   render() {
     const { sale_artwork, bidderPositionResult } = this.props
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { liveStartAt, endAt: saleEndAt, cascadingEndTimeIntervalMinutes } = sale_artwork.sale
     const { status, message_header, message_description_md } = bidderPositionResult
-
-    const casacadingEndTimeFeatureEnabled =
-      unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage") && cascadingEndTimeIntervalMinutes
 
     return (
       <View style={{ flex: 1 }}>
@@ -113,7 +109,7 @@ export class BidResult extends React.Component<BidResultProps> {
               <Icon20
                 source={
                   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  Icons[status] || require("../../../../../images/circle-x-red.webp")
+                  Icons[status] || require("images/circle-x-red.webp")
                 }
               />
               <Title mt={2} mb={5}>
@@ -130,8 +126,9 @@ export class BidResult extends React.Component<BidResultProps> {
               )}
               {!!this.shouldDisplayTimer(status) && (
                 <Timer
-                  liveStartsAt={liveStartAt}
-                  endsAt={casacadingEndTimeFeatureEnabled ? sale_artwork.endAt : saleEndAt}
+                  liveStartsAt={sale_artwork.sale?.liveStartAt ?? undefined}
+                  lotEndAt={sale_artwork.endAt}
+                  biddingEndAt={this.props.biddingEndAt}
                 />
               )}
             </Flex>
@@ -163,6 +160,7 @@ export const BidResultScreen = createFragmentContainer(BidResult, {
   sale_artwork: graphql`
     fragment BidResult_sale_artwork on SaleArtwork {
       endAt
+      extendedBiddingEndAt
       sale {
         liveStartAt
         endAt
