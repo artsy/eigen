@@ -23,10 +23,7 @@ export const ArtworkRecommendationsRail: React.FC<
 > = ({ title, me, scrollRef, mb }) => {
   const { trackEvent } = useTracking()
 
-  const { artworkRecommendations } = useFragment<ArtworkRecommendationsRail_me$key>(
-    artworksFragment,
-    me
-  )
+  const { artworkRecommendations } = useFragment(artworksFragment, me)
 
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)

@@ -19,16 +19,13 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
 }) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<RequestForPriceEstimateBanner_artwork$key>(
-    artworkFragment,
-    otherProps.artwork
-  )
-  const marketPriceInsights = useFragment<RequestForPriceEstimateBanner_marketPriceInsights$key>(
+  const artwork = useFragment(artworkFragment, otherProps.artwork)
+  const marketPriceInsights = useFragment(
     marketPriceInsightsFragment,
     otherProps.marketPriceInsights
   )
 
-  const me = useFragment<RequestForPriceEstimateBanner_me$key>(meFragment, otherProps.me)
+  const me = useFragment(meFragment, otherProps.me)
 
   const requestedPriceEstimates = GlobalStore.useAppState(
     (state) => state.requestedPriceEstimates.requestedPriceEstimates
