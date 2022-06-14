@@ -10,7 +10,7 @@
 
 - [Best Practices](best_practices.md)
 
-## Documentation about different work flows
+## Documentation about different workflows
 
 - [Fetching data](fetching_data.md)
 - [Testing](testing.md)
