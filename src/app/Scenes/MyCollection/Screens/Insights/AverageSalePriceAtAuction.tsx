@@ -1,20 +1,19 @@
+import { AverageSalePriceSelectArtistItem_artist$data } from "__generated__/AverageSalePriceSelectArtistItem_artist.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React, { useState } from "react"
-import {
-  AverageSalePriceArtist,
-  AverageSalePriceSelectArtistModal,
-} from "./AverageSalePriceSelectArtist"
+import { AverageSalePriceSelectArtistModal } from "./AverageSalePriceSelectArtist"
 
 interface AverageSalePriceAtAuctionProps {
-  artistData: AverageSalePriceArtist
+  artistData: AverageSalePriceSelectArtistItem_artist$data
 }
 
 export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps> = ({
   artistData,
 }) => {
   const [isVisible, setVisible] = useState<boolean>(false)
-  const [selectedArtist, setSelectedArtist] = useState<AverageSalePriceArtist>(artistData)
+  const [selectedArtist, setSelectedArtist] =
+    useState<AverageSalePriceSelectArtistItem_artist$data>(artistData)
 
   return (
     <Flex mx={2} pt={6}>
