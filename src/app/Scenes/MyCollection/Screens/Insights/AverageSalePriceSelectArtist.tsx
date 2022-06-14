@@ -1,101 +1,86 @@
+import {
+  AverageSalePriceSelectArtistModal_myCollectionInfo$data,
+  AverageSalePriceSelectArtistModal_myCollectionInfo$key,
+} from "__generated__/AverageSalePriceSelectArtistModal_myCollectionInfo.graphql"
+import { AverageSalePriceSelectArtistQuery } from "__generated__/AverageSalePriceSelectArtistQuery.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SearchInput } from "app/Components/SearchInput"
+import Spinner from "app/Components/Spinner"
+import { extractNodes } from "app/utils/extractNodes"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { groupBy, sortBy } from "lodash"
 import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { Suspense, useEffect, useState } from "react"
 import { FlatList, SectionList, SectionListData } from "react-native"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
+
+const PAGE_SIZE = 20
+
+export type AverageSalePriceArtist = ExtractNodeType<
+  NonNullable<
+    NonNullable<AverageSalePriceSelectArtistModal_myCollectionInfo$data["me"]>["myCollectionInfo"]
+  >["collectedArtistsConnection"]
+>
 
 interface AverageSalePriceSelectArtistModalProps {
   visible: boolean
   closeModal?: () => void
-  onItemPress: (artist: AverageSalePriceArtist) => void
+  onItemPress: (artist: any) => void
 }
 
-export interface AverageSalePriceArtist {
-  name: string
-  initials?: string
-  formattedNationalityAndBirthday: string
-  imageUrl: string
-}
-
-const data: AverageSalePriceArtist[] = [
-  {
-    name: "Andy Warhol",
-    initials: "AW",
-    formattedNationalityAndBirthday: "American, 1928–1987",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/E-k-uLoQADM8AjadsSKHrA/square.jpg",
-  },
-  {
-    name: "Banksy",
-    initials: "B",
-    formattedNationalityAndBirthday: "British, b. 1974",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/X9vVvod7QY73ZwLDSZzljw/square.jpg",
-  },
-  {
-    name: "Fabio Coruzzi",
-    initials: "FC",
-    formattedNationalityAndBirthday: "Italian, b. 1975",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/7r-P0YKji2dWcb_qrTY24w/square.jpg",
-  },
-  {
-    name: "Khadim Ali & Sher Ali",
-    initials: "KAS",
-    formattedNationalityAndBirthday: "",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/I6B5jxExQMlGxBnrVd5Qjw/square.jpg",
-  },
-  {
-    name: "Shaik Azghar Ali",
-    initials: "SAA",
-    formattedNationalityAndBirthday: "",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/SVLAPSAXQmJ06T5TprEkoA/square.jpg",
-  },
-  {
-    name: "Amoako Boafo",
-    initials: "AB",
-    formattedNationalityAndBirthday: "Ghanaian, b. 1984",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/bBBIgjEwR2o9C_7BqJ6YPw/square.jpg",
-  },
-  {
-    name: "Rose Frisenda",
-    initials: "RF",
-    formattedNationalityAndBirthday: "American",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/WQ0SvpI9TG9JWOhFYxBnfw/square.jpg",
-  },
-]
-
-const groupAndSortArtists = (artistsList: AverageSalePriceArtist[]) => {
+const groupAndSortArtists = (artistsList: any) => {
   const sorted = sortBy(artistsList, (artist) => artist.initials?.slice(-1))
 
   return groupBy(sorted, (artist) => artist.initials?.slice(-1))
 }
 
-const groupedSortedArtists = groupAndSortArtists([...data, ...data])
+export const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectArtistModalProps> = ({
+  visible,
+  closeModal,
+  onItemPress,
+}) => {
+  const queryData = useLazyLoadQuery<AverageSalePriceSelectArtistQuery>(
+    AverageSalePriceSelectArtistScreenQuery,
+    artistsQueryVariables
+  )
 
-export const AverageSalePriceSelectArtistModal: React.FC<
-  AverageSalePriceSelectArtistModalProps
-> = ({ visible, closeModal, onItemPress }) => {
+  const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
+    AverageSalePriceSelectArtistQuery,
+    AverageSalePriceSelectArtistModal_myCollectionInfo$key
+  >(collectedArtistsConnectionFragment, queryData)
+
   const [query, setQuery] = useState<string>("")
-  const [filteredArtists, setFilteredArtists] = useState<AverageSalePriceArtist[]>([])
+  const [filteredArtists, setFilteredArtists] = useState<any>([])
 
   const {
-    safeAreaInsets: { bottom },
     width,
+    safeAreaInsets: { bottom },
   } = useScreenDimensions()
+
+  const artistsList = extractNodes(data?.me?.myCollectionInfo?.collectedArtistsConnection)
+
+  const handleLoadMore = () => {
+    if (!hasNext || isLoadingNext) {
+      return
+    }
+
+    loadNext(artistsQueryVariables.count)
+  }
 
   useEffect(() => {
     if (query.length > 0) {
-      const filtered = data.filter((artist) =>
-        artist.name.toLowerCase().includes(query.toLowerCase())
+      const filtered = artistsList.filter(
+        (artist) => artist?.name?.toLowerCase().includes(query.toLowerCase()) || false
       )
       setFilteredArtists(filtered)
     }
   }, [query])
 
   const groupedArtistsSections: ReadonlyArray<SectionListData<any, { [key: string]: any }>> =
-    Object.entries(groupedSortedArtists).map(([initial, artistData]) => {
+    Object.entries(groupAndSortArtists(artistsList)).map(([initial, artistData]) => {
       const sectionTitle = initial
 
       return { sectionTitle, data: artistData }
@@ -126,6 +111,7 @@ export const AverageSalePriceSelectArtistModal: React.FC<
         {query.length > 0 ? (
           <FlatList
             data={filteredArtists}
+            keyExtractor={(item) => item.internalID}
             renderItem={({ item }) => (
               <ArtistSectionItem artist={item} onPress={() => onItemPress(item)} />
             )}
@@ -134,6 +120,8 @@ export const AverageSalePriceSelectArtistModal: React.FC<
           <SectionList
             sections={groupedArtistsSections}
             stickySectionHeadersEnabled={false}
+            onEndReached={handleLoadMore}
+            keyExtractor={(item) => item.internalID}
             ListHeaderComponent={() => (
               <>
                 <Text variant="md">Artists You Collect</Text>
@@ -159,6 +147,13 @@ export const AverageSalePriceSelectArtistModal: React.FC<
               ) : (
                 <></>
               )
+            }
+            ListFooterComponent={
+              isLoadingNext ? (
+                <Flex my={3} flexDirection="row" justifyContent="center">
+                  <Spinner />
+                </Flex>
+              ) : null
             }
             style={{ width, marginBottom: bottom }}
           />
@@ -230,4 +225,52 @@ const ArtistSectionItem: React.FC<ArtistSectionItemProps> = ({ artist, first, on
       </Flex>
     </Touchable>
   )
+}
+
+export const AverageSalePriceSelectArtistModal: React.FC<
+  AverageSalePriceSelectArtistModalProps
+> = ({ visible, closeModal, onItemPress }) => {
+  return (
+    <Suspense fallback={<Text>Sup</Text>}>
+      <AverageSalePriceSelectArtistList
+        visible={visible}
+        onItemPress={onItemPress}
+        closeModal={closeModal}
+      />
+    </Suspense>
+  )
+}
+
+const collectedArtistsConnectionFragment = graphql`
+  fragment AverageSalePriceSelectArtistModal_myCollectionInfo on Query
+  @refetchable(queryName: "AverageSalePriceSelectArtistModal_myCollectionInfoRefetch")
+  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
+    me {
+      myCollectionInfo {
+        collectedArtistsConnection(first: $count, after: $after)
+          @connection(key: "AverageSalePriceSelectArtistModal_collectedArtistsConnection") {
+          edges {
+            node {
+              id
+              internalID
+              name
+              initials
+              formattedNationalityAndBirthday
+              imageUrl
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+const AverageSalePriceSelectArtistScreenQuery = graphql`
+  query AverageSalePriceSelectArtistQuery($count: Int, $after: String) {
+    ...AverageSalePriceSelectArtistModal_myCollectionInfo @arguments(count: $count, after: $after)
+  }
+`
+
+const artistsQueryVariables = {
+  count: PAGE_SIZE,
 }
