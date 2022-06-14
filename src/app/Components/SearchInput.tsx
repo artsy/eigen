@@ -3,6 +3,7 @@ import {
   emitInputClearEvent,
   Flex,
   Input,
+  INPUT_HEIGHT,
   InputProps,
   Sans,
   SpacingUnitV2,
@@ -82,6 +83,7 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
         {!!enableCancelButton && (
           <Animated.View
             style={{
+              maxHeight: INPUT_HEIGHT,
               alignItems: "center",
               justifyContent: "center",
               flexDirection: "row",
