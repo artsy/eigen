@@ -4,28 +4,33 @@ import { normalizeText } from "shared/utils"
 class CharNode {
   public children: Record<string, CharNode>
   public char: string | null = null
+  public originalChar: string | null = null
   public isAWord: boolean = false
 
-  constructor(char?: string) {
+  constructor(char?: string, originalChar?: string) {
     if (char) {
       this.char = char
+    }
+    if (originalChar) {
+      this.originalChar = originalChar
     }
     this.children = {}
   }
 
   insertWord = (word: string) => {
-    word = normalizeText(word, false)
-    if (!word.length) {
+    const normalizedWord = normalizeText(word, false)
+    if (!normalizedWord.length) {
       return
     }
-    const firstChar = word[0]
+    const firstChar = normalizedWord[0]
+    const firstOriginalChar = word[0]
     let child = this.children[firstChar]
     if (!child) {
-      child = new CharNode(firstChar)
+      child = new CharNode(firstChar, firstOriginalChar)
       this.children[firstChar] = child
     }
 
-    if (word.length > 1) {
+    if (normalizedWord.length > 1) {
       child.insertWord(word.substring(1))
     } else {
       child.isAWord = true
@@ -64,11 +69,11 @@ function initializeRoot(data: AutoSuggestData) {
  * autoSuggest.isSuggestible("Banksy", true) // returns true
  * autoSuggest.isSuggestible("Banksyyyy", false) // returns false
  *
- * autoSuggest.getNextSuggestion("bank") // returns "banksy"
+ * autoSuggest.getNextSuggestion("bank") // returns "Banksy"
  * autoSuggest.getNextSuggestion("banksy") // returns null
  *
- * autoSuggest.getSuggestions("bank") // returns ["banksy", "bankzy n"]
- * autoSuggest.getSuggestions("banksy") // returns ["banksy"]
+ * autoSuggest.getSuggestions("bank") // returns ["Banksy", "Bankzy N"]
+ * autoSuggest.getSuggestions("banksy") // returns ["Banksy"]
  *
  */
 export class AutoSuggest {
@@ -115,7 +120,7 @@ export class AutoSuggest {
     for (const key of keys) {
       const child = node.children[key]
       if (child) {
-        this._buildSuggestions(child, suggestedWords, currWord + child.char)
+        this._buildSuggestions(child, suggestedWords, currWord + child.originalChar ?? child.char)
       }
     }
     return suggestedWords
@@ -133,7 +138,7 @@ export class AutoSuggest {
       if (!lastCharNode) {
         return suggestedWords
       }
-      currentWord = currentWord + lastCharNode.char
+      currentWord = currentWord + lastCharNode.originalChar ?? lastCharNode.char
     }
     suggestedWords = this._buildSuggestions(lastCharNode, suggestedWords, currentWord)
     return suggestedWords
@@ -141,12 +146,11 @@ export class AutoSuggest {
 
   /** For a given string, returns the next best suggestion or null if there is no next best suggestion to return */
   getNextSuggestion = (word: string) => {
-    word = this.normalizeWord(word)
     const suggestions = this.getSuggestions(word)
     let nextSuggestion: string | null = null
     let i = 0
     while (i < suggestions.length && !nextSuggestion) {
-      if (word !== suggestions[i]) {
+      if (this.normalizeWord(word) !== this.normalizeWord(suggestions[i])) {
         nextSuggestion = suggestions[i]
       }
       i++
@@ -194,11 +198,11 @@ interface AutoSuggestHookReturnType {
  * isSuggestible("Banksy", true) // returns true
  * isSuggestible("Banksyyyy", false) // returns false
  *
- * getNextSuggestion("bank") // returns "banksy"
+ * getNextSuggestion("bank") // returns "Banksy"
  * getNextSuggestion("banksy") // returns null
  *
- * getSuggestions("bank") // returns ["banksy", "bankzy n"]
- * getSuggestions("banksy") // returns ["banksy"]
+ * getSuggestions("bank") // returns ["Banksy", "Bankzy N"]
+ * getSuggestions("banksy") // returns ["Banksy"]
  */
 export const useAutoSuggest = (data: AutoSuggestData): AutoSuggestHookReturnType => {
   const autoSuggest = useMemo(() => new AutoSuggest(data), [data])
