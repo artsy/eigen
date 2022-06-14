@@ -32,31 +32,23 @@ export const AverageSalePriceListItem: React.FC<Props> = ({
       <Flex px={withHorizontalPadding ? 2 : 0} pb={1} pt={first ? 0 : 1} flexDirection="column">
         {/* Sale Artwork Thumbnail Image */}
         <Flex flexDirection="row">
-          {!estimatedArtwork.artist?.imageUrl ? (
-            <Flex
-              width={40}
-              height={40}
-              borderRadius={20}
-              backgroundColor="black10"
-              alignItems="center"
-              justifyContent="center"
-            >
+          <Flex
+            width={40}
+            height={40}
+            borderRadius={20}
+            backgroundColor="black10"
+            alignItems="center"
+            justifyContent="center"
+            overflow="hidden"
+            // To align the image with the text we have to add top margin to compensate the line height.
+            style={{ marginTop: 3 }}
+          >
+            {!estimatedArtwork.artist?.imageUrl ? (
               <NoArtworkIcon width={28} height={28} opacity={0.3} />
-            </Flex>
-          ) : (
-            <Flex
-              width={40}
-              height={40}
-              borderRadius={20}
-              alignItems="center"
-              justifyContent="center"
-              overflow="hidden"
-              // To align the image with the text we have to add top margin to compensate the line height.
-              style={{ marginTop: 3 }}
-            >
+            ) : (
               <OpaqueImageView width={40} height={40} imageURL={estimatedArtwork.artist.imageUrl} />
-            </Flex>
-          )}
+            )}
+          </Flex>
           {/* Sale Artwork Artist Name, Birthday and Nationality */}
           <Flex justifyContent="center" pl={15}>
             {!!showArtistName && !!estimatedArtwork.artist?.name && (

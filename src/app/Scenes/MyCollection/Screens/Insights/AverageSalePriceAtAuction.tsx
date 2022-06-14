@@ -26,32 +26,23 @@ export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps>
 
       {/* Artists Info */}
       <Flex py={2} flexDirection="row" justifyContent="space-between" alignItems="center">
-        {!selectedArtist.imageUrl ? (
-          <Flex
-            width={40}
-            height={40}
-            borderRadius={20}
-            backgroundColor="black10"
-            alignItems="center"
-            justifyContent="center"
-            style={{ marginTop: 3 }}
-          >
+        <Flex
+          width={40}
+          height={40}
+          borderRadius={20}
+          backgroundColor="black10"
+          alignItems="center"
+          justifyContent="center"
+          overflow="hidden"
+          // To align the image with the text we have to add top margin to compensate the line height.
+          style={{ marginTop: 3 }}
+        >
+          {!selectedArtist.imageUrl ? (
             <NoArtworkIcon width={28} height={28} opacity={0.3} />
-          </Flex>
-        ) : (
-          <Flex
-            width={40}
-            height={40}
-            borderRadius={20}
-            alignItems="center"
-            justifyContent="center"
-            overflow="hidden"
-            // To align the image with the text we have to add top margin to compensate the line height.
-            style={{ marginTop: 3 }}
-          >
+          ) : (
             <OpaqueImageView width={40} height={40} imageURL={selectedArtist.imageUrl} />
-          </Flex>
-        )}
+          )}
+        </Flex>
         {/* Sale Artwork Artist Name, Birthday and Nationality */}
         <Flex flex={1} pl={1}>
           {!!selectedArtist.name && (
