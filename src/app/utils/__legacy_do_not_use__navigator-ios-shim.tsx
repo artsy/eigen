@@ -1,7 +1,7 @@
 import { NavigationContainer, NavigationContainerRef, StackActions } from "@react-navigation/native"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import React from "react"
 import { View } from "react-native"
-import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 const Stack = createNativeStackNavigator()
 interface ScreenProps {

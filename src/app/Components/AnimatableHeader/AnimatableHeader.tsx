@@ -40,7 +40,7 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
       </TouchableOpacity>
 
       <Flex flex={1} height={headerHeight} justifyContent="center" ml={space("0.5") + space("1")}>
-        {titleShown && (
+        {!!titleShown && (
           <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
             <Text variant="sm" numberOfLines={2}>
               {title}

@@ -7,12 +7,12 @@ import {
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { Schema } from "app/utils/track"
 import { Flex } from "palette"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
-import { Schema } from "app/utils/track"
 
 interface AuctionResultsForArtistsYouCollectRailProps {
   me: AuctionResultsForArtistsYouCollectRail_me$key

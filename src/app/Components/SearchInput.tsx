@@ -77,7 +77,7 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
           />
         </Animated.View>
         <Flex alignItems="center" justifyContent="center">
-          {!!enableCancelButton && cancelButtonShown && (
+          {!!enableCancelButton && !!cancelButtonShown && (
             <Animated.View
               entering={FadeInRight.duration(CANCEL_BUTTON_DURATION)}
               exiting={FadeOutRight.duration(CANCEL_BUTTON_DURATION)}
