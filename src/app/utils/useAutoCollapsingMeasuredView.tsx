@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
 
@@ -10,6 +10,7 @@ export function useAutoCollapsingMeasuredView(content: React.ReactChild | null) 
   return {
     nativeHeight,
     jsx: (
+      // @ts-expect-error
       <Animated.View style={{ height: nativeHeight!, overflow: "hidden" }}>
         <View
           // on initial render this elem should dictate the parent's height

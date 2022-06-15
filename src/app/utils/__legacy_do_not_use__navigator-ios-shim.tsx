@@ -47,7 +47,7 @@ class NavigatorIOS extends React.Component<{
     }
     return (
       <NavigationContainer ref={(ref) => (this.navigator = ref)} independent>
-        <Stack.Navigator screenOptions={{ headerShown: false, stackAnimation: "slide_from_right" }}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen
             component={ScreenWrapper}
             name="screen"

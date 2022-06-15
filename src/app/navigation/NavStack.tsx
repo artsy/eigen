@@ -1,6 +1,5 @@
 import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { AppModule, modules } from "app/AppRegistry"
-import { isPad } from "app/utils/hardware"
 import React, { useState } from "react"
 import { View } from "react-native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -86,9 +85,7 @@ export const NavStack: React.FC<{
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        stackAnimation: rootModuleProps?.isPresentedModally ? "slide_from_right" : undefined,
         contentStyle: { backgroundColor: "white" },
-        screenOrientation: isPad() ? "default" : "portrait",
       }}
     >
       <Stack.Screen name={"screen:" + id} component={ScreenWrapper} initialParams={initialParams} />
