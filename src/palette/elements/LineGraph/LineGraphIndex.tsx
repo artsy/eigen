@@ -2,6 +2,7 @@ import { pluralise } from "app/utils/pluralise"
 import { DateTime } from "luxon"
 import { Flex, Text } from "palette"
 import React from "react"
+import { ColoredDot } from "./ColoredDot"
 import { Duration, LineGraphStore } from "./LineGraphStore"
 
 // tslint:disable-next-line:no-empty-interface
@@ -47,7 +48,7 @@ export const LineGraphIndex: React.FC<LineGraphIndexProps> = () => {
         {hasSelectedValue ? activeIndex.averagePrice : averagePrice}
       </Text>
       <Flex flexDirection="row" alignItems="center">
-        <ColoredDot color="red" />
+        <ColoredDot selectedMedium={selectedMedium} />
         <Text variant="xs" color="black60">
           {selectedMedium || "All"}
         </Text>
@@ -58,16 +59,3 @@ export const LineGraphIndex: React.FC<LineGraphIndexProps> = () => {
     </Flex>
   )
 }
-
-const DOT_DIAMETER = 8
-
-const ColoredDot = ({ color }: { color: string }) => (
-  <Flex
-    backgroundColor={color}
-    width={DOT_DIAMETER}
-    height={DOT_DIAMETER}
-    borderRadius={DOT_DIAMETER / 2}
-    marginTop="2px"
-    marginRight={0.5}
-  />
-)
