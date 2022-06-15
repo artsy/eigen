@@ -1,6 +1,3 @@
-// keep this import of storybook first, otherwise it might produce errors when debugging
-// import { StorybookUIRoot } from "../storybook/storybook-ui"
-
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
