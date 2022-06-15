@@ -1,5 +1,5 @@
-import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
-import { ArtworkActionsTestsQueryRawResponse } from "__generated__/ArtworkActionsTestsQuery.graphql"
+import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
+import { ArtworkActionsTestsQuery$data } from "__generated__/ArtworkActionsTestsQuery.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
@@ -12,6 +12,7 @@ import { graphql } from "react-relay"
 import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from "./ArtworkActions"
 
 jest.unmock("react-relay")
+jest.unmock("app/NativeModules/LegacyNativeModules")
 
 describe("ArtworkActions", () => {
   beforeEach(() => {
@@ -134,7 +135,7 @@ describe("ArtworkActions", () => {
             }
           }
         `,
-        mockData: { artwork: mockArtworkData } as ArtworkActionsTestsQueryRawResponse,
+        mockData: { artwork: mockArtworkData } as ArtworkActionsTestsQuery$data,
         mockMutationResults: { saveArtwork: mockSaveResults },
       })
     }
@@ -204,7 +205,7 @@ describe("ArtworkActions", () => {
             }
           }
         `,
-        mockData: { artwork: artworkActionsArtwork }, // Enable/fix this when making large change to these components/fixtures: as ArtworkActionsTestsErrorQueryRawResponse,
+        mockData: { artwork: artworkActionsArtwork }, // Enable/fix this when making large change to these components/fixtures: as ArtworkActionsTestsErrorQuery,
         mockMutationResults: {
           saveArtwork: () => {
             return Promise.reject(new Error("failed to fetch"))
@@ -228,7 +229,7 @@ describe("ArtworkActions", () => {
   })
 })
 
-const artworkActionsArtwork: ArtworkActions_artwork = {
+const artworkActionsArtwork: ArtworkActions_artwork$data = {
   id: "artwork12345",
   internalID: "12345",
   title: "test title",
@@ -253,5 +254,5 @@ const artworkActionsArtwork: ArtworkActions_artwork = {
   is_hangable: true,
   heightCm: 10,
   widthCm: 10,
-  " $refType": "ArtworkActions_artwork",
+  " $fragmentType": "ArtworkActions_artwork",
 }

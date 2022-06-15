@@ -7,8 +7,8 @@
 // 4. Update height of grid to encompass all items.
 
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
-import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
+import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
+import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { extractNodes } from "app/utils/extractNodes"
@@ -122,16 +122,16 @@ export interface Props {
 
 interface PrivateProps {
   connection:
-    | InfiniteScrollArtworksGrid_connection
-    | InfiniteScrollArtworksGrid_myCollectionConnection
+    | InfiniteScrollArtworksGrid_connection$data
+    | InfiniteScrollArtworksGrid_myCollectionConnection$data
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
   isLoading?: RelayPaginationProp["isLoading"]
 }
 
 interface MapperProps extends Omit<PrivateProps, "connection"> {
-  connection?: InfiniteScrollArtworksGrid_connection
-  myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection
+  connection?: InfiniteScrollArtworksGrid_connection$data
+  myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection$data
 }
 
 const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMyCollection">> = ({
@@ -142,9 +142,9 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
   ...otherProps
 }) => {
   const theConnectionProp = !!connection ? connection : myCollectionConnection
-  type TheConnectionType<T> = T extends InfiniteScrollArtworksGrid_connection
-    ? InfiniteScrollArtworksGrid_connection
-    : InfiniteScrollArtworksGrid_myCollectionConnection
+  type TheConnectionType<T> = T extends InfiniteScrollArtworksGrid_connection$data
+    ? InfiniteScrollArtworksGrid_connection$data
+    : InfiniteScrollArtworksGrid_myCollectionConnection$data
   const isMyCollection = !!myCollectionConnection && !connection
 
   if (!theConnectionProp) {

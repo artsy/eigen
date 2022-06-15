@@ -1,9 +1,8 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
-import { Sale_me } from "__generated__/Sale_me.graphql"
-import { Sale_sale } from "__generated__/Sale_sale.graphql"
+import { Sale_me$data } from "__generated__/Sale_me.graphql"
+import { Sale_sale$data } from "__generated__/Sale_sale.graphql"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
-import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
@@ -30,7 +29,7 @@ import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { SaleBelowTheFoldQueryResponse } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
+import { SaleBelowTheFoldQuery } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
 import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
@@ -42,9 +41,9 @@ import { saleStatus } from "./helpers"
 
 interface Props {
   relay: RelayRefetchProp
-  me: Sale_me
-  sale: Sale_sale
-  below: SaleBelowTheFoldQueryResponse
+  me: Sale_me$data
+  sale: Sale_sale$data
+  below: SaleBelowTheFoldQuery["response"]
 }
 
 interface SaleSection {

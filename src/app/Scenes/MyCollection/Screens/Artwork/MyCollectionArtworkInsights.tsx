@@ -23,17 +23,14 @@ interface MyCollectionArtworkInsightsProps {
 export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = ({
   ...restProps
 }) => {
-  const artwork = useFragment<MyCollectionArtworkInsights_artwork$key>(
-    artworkFragment,
-    restProps.artwork
-  )
+  const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const marketPriceInsights = useFragment<MyCollectionArtworkInsights_marketPriceInsights$key>(
+  const marketPriceInsights = useFragment(
     marketPriceInsightsFragment,
     restProps.marketPriceInsights
   )
 
-  const me = useFragment<MyCollectionArtworkInsights_me$key>(meFragment, restProps.me)
+  const me = useFragment(meFragment, restProps.me)
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
 

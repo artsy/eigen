@@ -2,7 +2,7 @@
  * This file is an exact copy of /Users/mounirdhahri/work/eigen/src/app/Components/ArtistListItem.tsx
  * We needed it because relay still do not support named fragment spreads for search
  */
-import { OnboardingPersonalizationModal_artists } from "__generated__/OnboardingPersonalizationModal_artists.graphql"
+import { OnboardingPersonalizationModal_artists$data } from "__generated__/OnboardingPersonalizationModal_artists.graphql"
 import { followArtistMutation } from "app/Components/ArtistListItem"
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
@@ -16,7 +16,7 @@ interface Props {
     NonNullable<
       NonNullable<
         NonNullable<
-          NonNullable<OnboardingPersonalizationModal_artists["searchConnection"]>["edges"]
+          NonNullable<OnboardingPersonalizationModal_artists$data["searchConnection"]>["edges"]
         >[0]
       >
     >["node"]

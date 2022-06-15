@@ -1,4 +1,4 @@
-import { TrackOrderSection_section } from "__generated__/TrackOrderSection_section.graphql"
+import { TrackOrderSection_section$data } from "__generated__/TrackOrderSection_section.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus, OrderState } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
@@ -8,7 +8,7 @@ import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  section: TrackOrderSection_section
+  section: TrackOrderSection_section$data
 }
 
 export const TrackOrderSection: React.FC<Props> = ({ section }) => {

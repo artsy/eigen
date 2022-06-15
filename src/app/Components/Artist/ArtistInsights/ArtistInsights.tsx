@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
+import { ArtistInsights_artist$data } from "__generated__/ArtistInsights_artist.graphql"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
@@ -21,7 +21,7 @@ import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsight
 import { MarketStatsQueryRenderer } from "./MarketStats"
 
 interface ArtistInsightsProps {
-  artist: ArtistInsights_artist
+  artist: ArtistInsights_artist$data
   relay: RelayProp
   tabIndex: number
 }

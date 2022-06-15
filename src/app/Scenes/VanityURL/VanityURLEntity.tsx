@@ -1,4 +1,4 @@
-import { VanityURLEntity_fairOrPartner } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
+import { VanityURLEntity_fairOrPartner$data } from "__generated__/VanityURLEntity_fairOrPartner.graphql"
 import { VanityURLEntityQuery } from "__generated__/VanityURLEntityQuery.graphql"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -14,13 +14,18 @@ import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
 interface EntityProps {
   originalSlug: string
-  fairOrPartner: VanityURLEntity_fairOrPartner
+  fairOrPartner: VanityURLEntity_fairOrPartner$data
 }
 
 const VanityURLEntity: React.FC<EntityProps> = ({ fairOrPartner, originalSlug }) => {
-  if (fairOrPartner.__typename === "Fair") {
+  // Because `__typename` is not allowed in fragments anymore, we need to check for the existance of `slug` or `id` in the fragment
+  // https://github.com/facebook/relay/commit/ed53bb095ddd494092819884cb4f46df94b45b79#diff-4e3d961b12253787bd61506608bc366be34ab276c09690de7df17203de7581e8
+  const isFair = fairOrPartner.__typename === "Fair" || "slug" in fairOrPartner
+  const isPartner = fairOrPartner.__typename === "Partner" || "id" in fairOrPartner
+
+  if (isFair) {
     return <FairFragmentContainer fair={fairOrPartner} />
-  } else if (fairOrPartner.__typename === "Partner") {
+  } else if (isPartner) {
     const { safeAreaInsets } = useScreenDimensions()
     return (
       <View style={{ flex: 1, paddingTop: safeAreaInsets.top ?? 0 }}>
@@ -41,6 +46,7 @@ const VanityURLEntityFragmentContainer = createFragmentContainer(VanityURLEntity
         ...Fair_fair
       }
       ... on Partner {
+        id
         ...Partner_partner
       }
     }
@@ -70,6 +76,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
         `}
         variables={{ id: slug }}
         render={renderWithPlaceholder({
+          showNotFoundView: false,
           renderFallback: () => <VanityURLPossibleRedirect slug={slug} />,
           renderPlaceholder: () => {
             switch (entity) {

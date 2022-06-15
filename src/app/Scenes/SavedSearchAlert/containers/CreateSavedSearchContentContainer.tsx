@@ -1,7 +1,7 @@
 import { useFocusEffect } from "@react-navigation/core"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
-import { CreateSavedSearchContentContainer_viewer } from "__generated__/CreateSavedSearchContentContainer_viewer.graphql"
+import { CreateSavedSearchContentContainer_viewer$data } from "__generated__/CreateSavedSearchContentContainer_viewer.graphql"
 import { CreateSavedSearchContentContainerQuery } from "__generated__/CreateSavedSearchContentContainerQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -28,7 +28,7 @@ interface CreateSavedSearchAlertContentQueryRendererProps {
 interface CreateSavedSearchAlertContentProps
   extends CreateSavedSearchAlertContentQueryRendererProps {
   relay: RelayRefetchProp
-  viewer?: CreateSavedSearchContentContainer_viewer | null
+  viewer?: CreateSavedSearchContentContainer_viewer$data | null
   loading: boolean
 }
 

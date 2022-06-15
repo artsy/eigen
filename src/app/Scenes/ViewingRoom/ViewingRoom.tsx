@@ -1,4 +1,4 @@
-import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
+import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { navigate } from "app/navigation/navigate"
@@ -21,7 +21,7 @@ import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsect
 import { ViewingRoomViewWorksButtonContainer } from "./Components/ViewingRoomViewWorksButton"
 
 interface ViewingRoomProps {
-  viewingRoom: ViewingRoom_viewingRoom
+  viewingRoom: ViewingRoom_viewingRoom$data
 }
 
 interface ViewingRoomSection {

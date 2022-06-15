@@ -1,4 +1,4 @@
-import { CommercialPartnerInformation_artwork } from "__generated__/CommercialPartnerInformation_artwork.graphql"
+import { CommercialPartnerInformation_artwork$data } from "__generated__/CommercialPartnerInformation_artwork.graphql"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -8,6 +8,10 @@ import React from "react"
 import { CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
 describe("CommercialPartnerInformation", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
+  })
+
   it("renders all seller information when work is for sale and is not in a closed auction", () => {
     const component = mount(
       <GlobalStoreProvider>
@@ -120,7 +124,7 @@ describe("CommercialPartnerInformation", () => {
   })
 })
 
-const CommercialPartnerInformationArtwork: CommercialPartnerInformation_artwork = {
+const CommercialPartnerInformationArtwork: CommercialPartnerInformation_artwork$data = {
   availability: "for sale",
   isAcquireable: true,
   isForSale: true,
@@ -131,5 +135,5 @@ const CommercialPartnerInformationArtwork: CommercialPartnerInformation_artwork 
     name: "Bob's Gallery",
   },
   priceIncludesTaxDisplay: "VAT included in price",
-  " $refType": "CommercialPartnerInformation_artwork",
+  " $fragmentType": "CommercialPartnerInformation_artwork",
 }

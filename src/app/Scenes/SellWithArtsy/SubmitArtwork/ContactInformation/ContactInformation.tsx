@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import { ContactInformation_me } from "__generated__/ContactInformation_me.graphql"
+import { ContactInformation_me$data } from "__generated__/ContactInformation_me.graphql"
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { ErrorView } from "app/Components/ErrorView/ErrorView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -16,7 +16,7 @@ import { ContactInformationFormModel, contactInformationValidationSchema } from 
 
 export const ContactInformation: React.FC<{
   handlePress: (submissionId: string) => void
-  me: ContactInformation_me | null
+  me: ContactInformation_me$data | null
 }> = ({ handlePress, me }) => {
   const { userID } = GlobalStore.useAppState((store) => store.auth)
   const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)

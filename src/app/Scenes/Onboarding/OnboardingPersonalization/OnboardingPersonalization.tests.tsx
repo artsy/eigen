@@ -1,4 +1,4 @@
-import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
+import { OnboardingPersonalization_highlights$data } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationTestsQuery } from "__generated__/OnboardingPersonalizationTestsQuery.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -36,8 +36,8 @@ describe("OnboardingPersonalizationList", () => {
         if (props?.highlights) {
           return (
             <OnboardingPersonalizationList
-              // no need to redeclare the OnboardingPersonalization_highlights fragment here
-              highlights={props.highlights as OnboardingPersonalization_highlights}
+              // no need to redeclare the OnboardingPersonalization_highlights$data fragment here
+              highlights={props.highlights as OnboardingPersonalization_highlights$data}
               navigation={{ navigate: mockNavigate } as any}
               route={null as any}
             />

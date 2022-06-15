@@ -13,8 +13,7 @@ tar -xvzf fonts.tar.gz -C ./fonts
 cp ./fonts/android/* android/app/src/main/assets/fonts
 
 # iOS
-mkdir -p ./Pods/Artsy+UIFonts/Pod/Assets
-cp ./fonts/ios/* Pods/Artsy+UIFonts/Pod/Assets
+cp ./fonts/ios/* ios/Artsy/fonts
 
 # Cleanup
 rm -rf ./fonts.tar.gz

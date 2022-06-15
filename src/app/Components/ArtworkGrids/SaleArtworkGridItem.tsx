@@ -1,5 +1,5 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
-import { SaleArtworkGridItem_saleArtwork } from "__generated__/SaleArtworkGridItem_saleArtwork.graphql"
+import { SaleArtworkGridItem_saleArtwork$data } from "__generated__/SaleArtworkGridItem_saleArtwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
@@ -17,7 +17,7 @@ import { navigate } from "../../navigation/navigate"
 import { saleMessageOrBidInfo } from "./ArtworkGridItem"
 
 export interface ArtworkProps {
-  saleArtwork: SaleArtworkGridItem_saleArtwork
+  saleArtwork: SaleArtworkGridItem_saleArtwork$data
   // If it's not provided, then it will push just the one artwork
   // to the switchboard.
   onPress?: (artworkID: string) => void

@@ -1,9 +1,8 @@
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
 import { PartnerContainer } from "app/Scenes/Partner"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import { Spinner } from "palette"
 import React from "react"
@@ -14,35 +13,35 @@ import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
 jest.unmock("react-relay")
 
-jest.mock("./VanityURLPossibleRedirect", () => {
-  return {
-    VanityURLPossibleRedirect: () => null,
-  }
-})
+jest.mock("./VanityURLPossibleRedirect", () => ({
+  VanityURLPossibleRedirect: () => null,
+}))
 
 const TestRenderer: React.FC<{
   entity: "fair" | "partner" | "unknown"
   slugType?: "profileID" | "fairID"
   slug: string
-}> = ({ entity, slugType, slug }) => {
-  return <VanityURLEntityRenderer entity={entity} slugType={slugType} slug={slug} />
-}
+}> = ({ entity, slugType, slug }) => (
+  <VanityURLEntityRenderer entity={entity} slugType={slugType} slug={slug} />
+)
 
 describe("VanityURLEntity", () => {
-  const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
+  let env: ReturnType<typeof createMockEnvironment>
 
-  afterEach(() => {
-    env.mockClear()
+  beforeEach(() => {
+    require("app/relay/createEnvironment").reset()
+    env = require("app/relay/createEnvironment").defaultEnvironment
   })
 
   it("renders a VanityURLPossibleRedirect when 404", () => {
     if (__renderWithPlaceholderTestUtils__) {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
     }
-    const tree = renderWithWrappers(<TestRenderer entity="unknown" slug="some-fair" />)
-    expect(tree.root.findAllByType(VanityURLPossibleRedirect)).toHaveLength(0)
+    const { UNSAFE_getAllByType } = renderWithWrappersTL(
+      <TestRenderer entity="unknown" slug="a-cool-new-url" />
+    )
     env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })
-    expect(tree.root.findAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
+    expect(UNSAFE_getAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
   })
 
   it("renders a fairQueryRenderer when given a fair id", () => {
@@ -95,6 +94,8 @@ describe("VanityURLEntity", () => {
             Query: () => ({
               vanityURLEntity: {
                 __typename: "Partner",
+                id: "some-gallery",
+                name: "Some Gallery",
                 cities: [],
               },
             }),
@@ -105,8 +106,7 @@ describe("VanityURLEntity", () => {
       expect(partnerComponent).toBeDefined()
     })
 
-    // TODO: Passes in isolation, but not with other specs
-    xit("renders a fair when a fair is returned", () => {
+    it("renders a fair when a fair is returned", () => {
       const tree = renderWithWrappers(
         <TestRenderer entity="fair" slugType="profileID" slug="some-fair" />
       )
@@ -119,6 +119,8 @@ describe("VanityURLEntity", () => {
             Query: () => ({
               vanityURLEntity: {
                 __typename: "Fair",
+                id: "some-fair",
+                slug: "some-fair",
               },
             }),
           })
@@ -141,6 +143,8 @@ describe("VanityURLEntity", () => {
           data: {
             vanityURLEntity: {
               __typename: "UnknownType",
+              id: "some-unknown",
+              slug: "some-unknown",
             },
           },
         })

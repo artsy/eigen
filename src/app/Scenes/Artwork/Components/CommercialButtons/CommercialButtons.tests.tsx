@@ -1,5 +1,5 @@
-import { CommercialButtonsTestsMutationQueryRawResponse } from "__generated__/CommercialButtonsTestsMutationQuery.graphql"
-import { CommercialButtonsTestsRenderQueryRawResponse } from "__generated__/CommercialButtonsTestsRenderQuery.graphql"
+import { CommercialButtonsTestsMutationQuery$data } from "__generated__/CommercialButtonsTestsMutationQuery.graphql"
+import { CommercialButtonsTestsRenderQuery$data } from "__generated__/CommercialButtonsTestsRenderQuery.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
@@ -35,7 +35,7 @@ const componentWithQuery = async ({
         }
       }
     `,
-    mockData: { artwork: mockArtworkData } as CommercialButtonsTestsMutationQueryRawResponse,
+    mockData: { artwork: mockArtworkData } as CommercialButtonsTestsMutationQuery$data,
     mockMutationResults: {
       commerceCreateOrderWithArtwork: mockOrderMutationResults,
       commerceCreateOfferOrderWithArtwork: mockOfferMutationResults,
@@ -80,7 +80,7 @@ const relayComponent = async ({ artwork }) => {
         }
       }
     `,
-    mockData: { artwork } as CommercialButtonsTestsRenderQueryRawResponse,
+    mockData: { artwork } as CommercialButtonsTestsRenderQuery$data,
   })
 }
 

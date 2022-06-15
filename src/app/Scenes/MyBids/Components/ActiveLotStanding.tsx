@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ActiveLotStanding_saleArtwork } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
+import { ActiveLotStanding_saleArtwork$data } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Text } from "palette"
 import React from "react"
@@ -14,7 +14,7 @@ import { LotFragmentContainer as Lot } from "./Lot"
 export const ActiveLotStanding = ({
   saleArtwork,
 }: {
-  saleArtwork: ActiveLotStanding_saleArtwork
+  saleArtwork: ActiveLotStanding_saleArtwork$data
 }) => {
   const timelySale = TimelySale.create(saleArtwork?.sale!)
 

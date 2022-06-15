@@ -1,4 +1,4 @@
-import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
+import { FairHeader_fair$data } from "__generated__/FairHeader_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/navigation/navigate"
@@ -12,7 +12,7 @@ import { shouldShowFairBMWArtActivationLink } from "../FairBMWArtActivation"
 import { FairTimingFragmentContainer as FairTiming } from "./FairTiming"
 
 interface FairHeaderProps {
-  fair: FairHeader_fair
+  fair: FairHeader_fair$data
 }
 
 export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {

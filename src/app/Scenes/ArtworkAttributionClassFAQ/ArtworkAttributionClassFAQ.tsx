@@ -1,4 +1,4 @@
-import { ArtworkAttributionClassFAQ_artworkAttributionClasses } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
+import { ArtworkAttributionClassFAQ_artworkAttributionClasses$data } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributionClassFAQQuery.graphql"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -10,7 +10,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
 interface Props {
-  artworkAttributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses
+  artworkAttributionClasses: ArtworkAttributionClassFAQ_artworkAttributionClasses$data
 }
 
 export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttributionClasses }) => {

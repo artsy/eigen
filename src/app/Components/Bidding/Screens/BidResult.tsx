@@ -13,16 +13,16 @@ import { Markdown } from "../../Markdown"
 import { Container } from "../Components/Containers"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
-import { BidderPositionResult } from "../types"
 
-import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
+import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { BidderPositionResult } from "../types"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
 interface BidResultProps {
-  sale_artwork: BidResult_sale_artwork
+  sale_artwork: BidResult_sale_artwork$data
   bidderPositionResult: BidderPositionResult
   navigator: NavigatorIOS
   refreshBidderInfo?: () => void

@@ -1,8 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import {
-  ArtistSeriesMoreSeriesTestsQuery,
-  ArtistSeriesMoreSeriesTestsQueryRawResponse,
-} from "__generated__/ArtistSeriesMoreSeriesTestsQuery.graphql"
+import { ArtistSeriesMoreSeriesTestsQuery } from "__generated__/ArtistSeriesMoreSeriesTestsQuery.graphql"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import {
   ArtistSeriesMoreSeries,
@@ -136,7 +133,7 @@ describe("ArtistSeriesMoreSeries", () => {
   })
 })
 
-const ArtistSeriesMoreSeriesNoSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse = {
+const ArtistSeriesMoreSeriesNoSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawResponse"] = {
   artistSeries: {
     artist: [
       {
@@ -152,7 +149,7 @@ const ArtistSeriesMoreSeriesNoSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRaw
   },
 }
 
-const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse = {
+const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawResponse"] = {
   artistSeries: {
     artist: [
       {
@@ -229,7 +226,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse
   },
 }
 
-const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse =
+const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeriesTestsQuery["rawResponse"] =
   {
     artistSeries: {
       artist: [

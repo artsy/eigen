@@ -1,5 +1,5 @@
 import { AppModule } from "app/AppRegistry"
-import { ArtsyWebViewConfig } from "app/Components/ArtsyReactWebView"
+import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
@@ -143,6 +143,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/auction/:saleID/info", "AuctionInfo"),
     addRoute("/auction-faq", "AuctionFAQ"),
     addRoute("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
+    addRoute("/auction/:saleID/buyers-premium", "AuctionBuyersPremium"),
     addRoute("/gene/:geneID", "Gene"),
     addRoute("/tag/:tagID", "Tag"),
     addRoute("/show/:showID", "Show"),
@@ -152,6 +153,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/viewing-rooms", "ViewingRooms"),
     addRoute("/auction-results-for-artists-you-follow", "AuctionResultsForArtistsYouFollow"),
     addRoute("/auction-results-for-artists-you-collect", "AuctionResultsForArtistsYouCollect"),
+    addRoute("/my-collection/average-sale-price-at-auction", "AverageSalePriceAtAuction"),
     addRoute("/viewing-room/:viewing_room_id", "ViewingRoom"),
     addRoute("/viewing-room/:viewing_room_id/artworks", "ViewingRoomArtworks"),
     addRoute("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
@@ -241,7 +243,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/user/purchases/:orderID", "OrderDetails"),
     addRoute("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
     addRoute("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
-    addRoute("/reverse-search-image-results", "ReverseSearchImageResults"),
     addWebViewRoute("/orders/:orderID", {
       mimicBrowserBackButton: true,
       useRightCloseButton: true,

@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { WatchedLot_saleArtwork } from "__generated__/WatchedLot_saleArtwork.graphql"
+import { WatchedLot_saleArtwork$data } from "__generated__/WatchedLot_saleArtwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Text } from "palette"
 import React from "react"
@@ -11,7 +11,7 @@ import { Watching } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
 interface WatchedLotProps {
-  saleArtwork: WatchedLot_saleArtwork
+  saleArtwork: WatchedLot_saleArtwork$data
 }
 
 export const WatchedLot: React.FC<WatchedLotProps> = ({ saleArtwork }) => {

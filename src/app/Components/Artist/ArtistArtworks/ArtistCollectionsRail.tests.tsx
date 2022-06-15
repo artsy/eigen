@@ -1,4 +1,4 @@
-import { ArtistCollectionsRailTestsQueryRawResponse } from "__generated__/ArtistCollectionsRailTestsQuery.graphql"
+import { ArtistCollectionsRailTestsQuery } from "__generated__/ArtistCollectionsRailTestsQuery.graphql"
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { CardRailCard } from "app/Components/Home/CardRailCard"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
@@ -72,125 +72,126 @@ describe("Artist Series Rail", () => {
   })
 })
 
-const artistMockData: ArtistCollectionsRailTestsQueryRawResponse["artist"] = {
+const artistMockData: ArtistCollectionsRailTestsQuery["rawResponse"]["artist"] = {
   id: "sdfsdfsdfsdf",
   internalID: "artist0",
   slug: "david-hockney",
 }
 
-const collectionsMockData: ArtistCollectionsRailTestsQueryRawResponse["marketingCollections"] = [
-  {
-    id: "coll0",
-    slug: "cindy-sherman-untitled-film-stills",
-    title: "Cindy Sherman: Untitled Film Stills",
-    priceGuidance: 20000,
-    artworksConnection: {
-      id: "conn0",
-      edges: [
-        {
-          node: {
-            id: "artwork0",
-            title: "Untitled (Film Still) Tray",
-            image: {
-              url: "https://cindy-sherman-untitled-film-stills/medium.jpg",
+const collectionsMockData: ArtistCollectionsRailTestsQuery["rawResponse"]["marketingCollections"] =
+  [
+    {
+      id: "coll0",
+      slug: "cindy-sherman-untitled-film-stills",
+      title: "Cindy Sherman: Untitled Film Stills",
+      priceGuidance: 20000,
+      artworksConnection: {
+        id: "conn0",
+        edges: [
+          {
+            node: {
+              id: "artwork0",
+              title: "Untitled (Film Still) Tray",
+              image: {
+                url: "https://cindy-sherman-untitled-film-stills/medium.jpg",
+              },
             },
           },
-        },
-        {
-          node: {
-            id: "artwork1",
-            title: "Untitled (Film Still) Tray 2",
-            image: {
-              url: "https://cindy-sherman-untitled-film-stills-2/medium.jpg",
+          {
+            node: {
+              id: "artwork1",
+              title: "Untitled (Film Still) Tray 2",
+              image: {
+                url: "https://cindy-sherman-untitled-film-stills-2/medium.jpg",
+              },
             },
           },
-        },
-        {
-          node: {
-            id: "artwork2",
-            title: "Untitled (Film Still) Tray 3",
-            image: {
-              url: "https://cindy-sherman-untitled-film-stills-3/medium.jpg",
+          {
+            node: {
+              id: "artwork2",
+              title: "Untitled (Film Still) Tray 3",
+              image: {
+                url: "https://cindy-sherman-untitled-film-stills-3/medium.jpg",
+              },
             },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-  {
-    id: "coll2",
-    slug: "damien-hirst-butterflies",
-    title: "Damien Hirst: Butterflies",
-    priceGuidance: 7500,
-    artworksConnection: {
-      id: "conn2",
-      edges: [
-        {
-          node: {
-            id: "artwork0",
-            title: "Untitled (Film Still) Tray",
-            image: {
-              url: "https://damien-hirst-butterflies/larger.jpg",
+    {
+      id: "coll2",
+      slug: "damien-hirst-butterflies",
+      title: "Damien Hirst: Butterflies",
+      priceGuidance: 7500,
+      artworksConnection: {
+        id: "conn2",
+        edges: [
+          {
+            node: {
+              id: "artwork0",
+              title: "Untitled (Film Still) Tray",
+              image: {
+                url: "https://damien-hirst-butterflies/larger.jpg",
+              },
             },
           },
-        },
-        {
-          node: {
-            id: "artwork1",
-            title: "Untitled (Film Still) Tray 2",
-            image: {
-              url: "https://damien-hirst-butterflies-2/larger.jpg",
+          {
+            node: {
+              id: "artwork1",
+              title: "Untitled (Film Still) Tray 2",
+              image: {
+                url: "https://damien-hirst-butterflies-2/larger.jpg",
+              },
             },
           },
-        },
-        {
-          node: {
-            id: "artwork2",
-            title: "Untitled (Film Still) Tray 3",
-            image: {
-              url: "https://damien-hirst-butterflies-3/larger.jpg",
+          {
+            node: {
+              id: "artwork2",
+              title: "Untitled (Film Still) Tray 3",
+              image: {
+                url: "https://damien-hirst-butterflies-3/larger.jpg",
+              },
             },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-  {
-    id: "coll1",
-    slug: "hunt-slonem-bunnies",
-    title: "Hunt Slonem: Bunnies",
-    priceGuidance: 2000,
-    artworksConnection: {
-      id: "conn1",
-      edges: [
-        {
-          node: {
-            id: "artwork0",
-            title: "Untitled",
-            image: {
-              url: "https://hunt-slonem-bunnies/medium.jpg",
+    {
+      id: "coll1",
+      slug: "hunt-slonem-bunnies",
+      title: "Hunt Slonem: Bunnies",
+      priceGuidance: 2000,
+      artworksConnection: {
+        id: "conn1",
+        edges: [
+          {
+            node: {
+              id: "artwork0",
+              title: "Untitled",
+              image: {
+                url: "https://hunt-slonem-bunnies/medium.jpg",
+              },
             },
           },
-        },
-        {
-          node: {
-            id: "artwork1",
-            title: "Untitled2",
-            image: {
-              url: "https://hunt-slonem-bunnies-2/medium.jpg",
+          {
+            node: {
+              id: "artwork1",
+              title: "Untitled2",
+              image: {
+                url: "https://hunt-slonem-bunnies-2/medium.jpg",
+              },
             },
           },
-        },
-        {
-          node: {
-            id: "artwork2",
-            title: "Untitled3",
-            image: {
-              url: "https://hunt-slonem-bunnies-3/medium.jpg",
+          {
+            node: {
+              id: "artwork2",
+              title: "Untitled3",
+              image: {
+                url: "https://hunt-slonem-bunnies-3/medium.jpg",
+              },
             },
           },
-        },
-      ],
+        ],
+      },
     },
-  },
-]
+  ]

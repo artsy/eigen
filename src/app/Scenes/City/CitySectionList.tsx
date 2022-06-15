@@ -1,7 +1,6 @@
-import { CitySectionList_city } from "__generated__/CitySectionList_city.graphql"
+import { CitySectionList_city$data } from "__generated__/CitySectionList_city.graphql"
 import {
   CitySectionListQuery,
-  CitySectionListQueryVariables,
   EventStatus,
   PartnerShowPartnerType,
   ShowSorts,
@@ -17,8 +16,8 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import { BucketKey } from "../Map/bucketCityResults"
 import { EventList } from "./Components/EventList"
 
-interface Props extends Pick<CitySectionListQueryVariables, "dayThreshold" | "status"> {
-  city: CitySectionList_city
+interface Props extends Pick<CitySectionListQuery["variables"], "dayThreshold" | "status"> {
+  city: CitySectionList_city$data
   citySlug: string
   section: BucketKey
   relay: RelayPaginationProp

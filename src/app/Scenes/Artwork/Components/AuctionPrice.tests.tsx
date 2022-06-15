@@ -1,4 +1,4 @@
-import { AuctionPriceTestsQueryRawResponse } from "__generated__/AuctionPriceTestsQuery.graphql"
+import { AuctionPriceTestsQuery$data } from "__generated__/AuctionPriceTestsQuery.graphql"
 import {
   AuctionPreview,
   AuctionPreviewNoStartingBid,
@@ -43,7 +43,7 @@ describe("AuctionPrice", () => {
       `,
       mockData: {
         artwork: response,
-      } as AuctionPriceTestsQueryRawResponse,
+      } as AuctionPriceTestsQuery$data,
     })
   }
 

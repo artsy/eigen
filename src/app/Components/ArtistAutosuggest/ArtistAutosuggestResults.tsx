@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import { ArtistAutosuggestResults_results } from "__generated__/ArtistAutosuggestResults_results.graphql"
+import { ArtistAutosuggestResults_results$data } from "__generated__/ArtistAutosuggestResults_results.graphql"
 import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -16,7 +16,7 @@ import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
 
 export type ArtistAutosuggestResult = NonNullable<
   NonNullable<
-    NonNullable<NonNullable<ArtistAutosuggestResults_results["results"]>["edges"]>[0]
+    NonNullable<NonNullable<ArtistAutosuggestResults_results$data["results"]>["edges"]>[0]
   >["node"]
 >
 
@@ -24,7 +24,7 @@ const INITIAL_BATCH_SIZE = 32
 
 const ArtistAutosuggestResultsFlatList: React.FC<{
   query: string
-  results: ArtistAutosuggestResults_results | null
+  results: ArtistAutosuggestResults_results$data | null
   onResultPress: (result: ArtistAutosuggestResult) => void
   relay: RelayPaginationProp
 }> = ({ query, results: latestResults, onResultPress }) => {

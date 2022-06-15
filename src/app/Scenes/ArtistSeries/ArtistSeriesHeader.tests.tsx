@@ -1,7 +1,4 @@
-import {
-  ArtistSeriesHeaderTestsQuery,
-  ArtistSeriesHeaderTestsQueryRawResponse,
-} from "__generated__/ArtistSeriesHeaderTestsQuery.graphql"
+import { ArtistSeriesHeaderTestsQuery } from "__generated__/ArtistSeriesHeaderTestsQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -60,7 +57,7 @@ describe("Artist Series Header", () => {
   })
 })
 
-const ArtistSeriesHeaderFixture: ArtistSeriesHeaderTestsQueryRawResponse = {
+const ArtistSeriesHeaderFixture: ArtistSeriesHeaderTestsQuery["rawResponse"] = {
   artistSeries: {
     image: {
       url: "https://www.imagesofpumpkins.cloudfront.net/primary/square.jpg",

@@ -286,6 +286,16 @@ If it is still an issue with old native navigation gone this can either be remov
 City Guide is a mixture of native components and react components, prop updates from the native side are not updating the component on the react native side without this manual check and update. See the PR here for the change in the AppRegistry:
 https://github.com/artsy/eigen/pull/6348
 
+# `React-Native-Image-Crop-Picker` App restarting when photo is taken. Fix is in `ArtsyNativeModule.clearCache`.
+
+#### When can we remove this:
+
+When we fix the actual issue. https://artsyproduct.atlassian.net/browse/MOPLAT-196
+
+#### Explanation/Context:
+
+The app restarts when the user takes a picture to pass to `react-native-image-crop-picker` (https://github.com/ivpusic/react-native-image-crop-picker/issues/1704). We do not know exactly why this is happening. And it seems to happen on random devices, but mostly on android-10 and android-11s. This hack silently clears the cache on android before taking the photo.
+
 ## @react-native-async-storage/async-storage patch
 
 #### When can we remove this:

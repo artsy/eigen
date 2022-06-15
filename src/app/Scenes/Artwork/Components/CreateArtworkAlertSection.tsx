@@ -5,7 +5,7 @@ import {
   ScreenOwnerType,
   TappedCreateAlert,
 } from "@artsy/cohesion"
-import { CreateArtworkAlertSection_artwork } from "__generated__/CreateArtworkAlertSection_artwork.graphql"
+import { CreateArtworkAlertSection_artwork$data } from "__generated__/CreateArtworkAlertSection_artwork.graphql"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
@@ -20,7 +20,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface CreateArtworkAlertSectionProps {
-  artwork: CreateArtworkAlertSection_artwork | null
+  artwork: CreateArtworkAlertSection_artwork$data | null
 }
 
 export const CreateArtworkAlertSection: FC<CreateArtworkAlertSectionProps> = ({ artwork }) => {

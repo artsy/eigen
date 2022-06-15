@@ -1,4 +1,4 @@
-import { CommercialEditionSetInformation_artwork } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
+import { CommercialEditionSetInformation_artwork$data } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { Box, Flex, RadioButton, Sans, Spacer, Text } from "palette"
 import React from "react"
@@ -7,10 +7,10 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { CommercialPartnerInformationFragmentContainer as CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-type EditionSet = CommercialEditionSetInformation_artwork["editionSets"][0]
+type EditionSet = CommercialEditionSetInformation_artwork$data["editionSets"][0]
 
 interface Props {
-  artwork: CommercialEditionSetInformation_artwork
+  artwork: CommercialEditionSetInformation_artwork$data
   setEditionSetId: (editionSetID: string) => void
 }
 

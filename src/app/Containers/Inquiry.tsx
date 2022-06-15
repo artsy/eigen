@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Inquiry_artwork } from "__generated__/Inquiry_artwork.graphql"
+import { Inquiry_artwork$data } from "__generated__/Inquiry_artwork.graphql"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
 import { dismissModal } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -121,7 +121,7 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
 )
 
 interface Props {
-  artwork: Inquiry_artwork
+  artwork: Inquiry_artwork$data
 }
 
 interface State {

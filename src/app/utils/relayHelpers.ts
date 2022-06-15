@@ -1,6 +1,11 @@
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Record } from "relay-runtime/lib/store/RelayStoreTypes"
 
+export type CleanRelayFragment<T> = Omit<
+  T,
+  "$refType" | " $fragmentRefs" | " $fragmentSpreads" | " $fragmentType"
+>
+
 const getStore = () => defaultEnvironment.getStore()
 
 /**

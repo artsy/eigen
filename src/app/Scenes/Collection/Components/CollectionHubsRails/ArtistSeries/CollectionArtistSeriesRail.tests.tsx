@@ -3,10 +3,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-import {
-  CollectionArtistSeriesRailTestsQuery,
-  CollectionArtistSeriesRailTestsQueryRawResponse,
-} from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
+import { CollectionArtistSeriesRailTestsQuery } from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
 import {
   GenericArtistSeriesMeta,
   GenericArtistSeriesRail,
@@ -240,7 +237,7 @@ describe("Artist Series Rail", () => {
   })
 })
 
-const CollectionHubRailsArtistSeriesFixture: CollectionArtistSeriesRailTestsQueryRawResponse = {
+const CollectionHubRailsArtistSeriesFixture: CollectionArtistSeriesRailTestsQuery["rawResponse"] = {
   marketingCollection: {
     id: "collection0",
     slug: "cool-collection",

@@ -5,14 +5,14 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { MyAccountEditPhone_me } from "../../../__generated__/MyAccountEditPhone_me.graphql"
+import { MyAccountEditPhone_me$data } from "../../../__generated__/MyAccountEditPhone_me.graphql"
 import {
   MyAccountFieldEditScreen,
   MyAccountFieldEditScreenPlaceholder,
 } from "./Components/MyAccountFieldEditScreen"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
-const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => {
+const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$data }> = ({ me }) => {
   const [phone, setPhone] = useState<string>(me.phone ?? "")
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [isValidNumber, setIsValidNumber] = useState<boolean>(false)

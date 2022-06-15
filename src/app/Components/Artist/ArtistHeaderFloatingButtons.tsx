@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArtistHeaderFloatingButtons_artist } from "__generated__/ArtistHeaderFloatingButtons_artist.graphql"
+import { ArtistHeaderFloatingButtons_artist$data } from "__generated__/ArtistHeaderFloatingButtons_artist.graphql"
 import { ArtistHeaderButton } from "app/Components/Artist/ArtistHeaderButton"
 import { ShareSheet } from "app/Components/ShareSheet/ShareSheet"
 import { useStickyTabPageContext } from "app/Components/StickyTabPage/StickyTabPageContext"
@@ -25,7 +25,7 @@ import Animated, {
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtistHeaderFloatingButtonsProps {
-  artist: ArtistHeaderFloatingButtons_artist
+  artist: ArtistHeaderFloatingButtons_artist$data
 }
 
 // Constants

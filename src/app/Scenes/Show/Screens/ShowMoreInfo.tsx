@@ -1,4 +1,4 @@
-import { ShowMoreInfo_show } from "__generated__/ShowMoreInfo_show.graphql"
+import { ShowMoreInfo_show$data } from "__generated__/ShowMoreInfo_show.graphql"
 import { ShowMoreInfoQuery } from "__generated__/ShowMoreInfoQuery.graphql"
 import { PartnerEntityHeaderFragmentContainer as PartnerEntityHeader } from "app/Components/PartnerEntityHeader"
 import { ReadMore } from "app/Components/ReadMore"
@@ -24,7 +24,7 @@ interface Section {
 }
 
 export interface ShowMoreInfoProps {
-  show: ShowMoreInfo_show
+  show: ShowMoreInfo_show$data
 }
 
 export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {

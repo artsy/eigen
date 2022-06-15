@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
+import { AuctionResultsForArtistsYouFollow_me$data } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
 import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
@@ -15,7 +15,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import { useTracking } from "react-tracking"
 
 interface Props {
-  me: AuctionResultsForArtistsYouFollow_me | null
+  me: AuctionResultsForArtistsYouFollow_me$data | null
   relay: RelayPaginationProp
 }
 
@@ -82,10 +82,12 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
 export const ListHeader: React.FC = () => {
   return (
     <Flex mx={2}>
-      <Text variant="lg" mb={1}>
+      <Text variant="lg" mb={0.5}>
         Latest Auction Results
       </Text>
-      <Text mb={2}>Get all the latest prices achieved at auctions for the artists you follow.</Text>
+      <Text variant="xs">
+        Get all the latest prices achieved at auctions for the artists you follow.
+      </Text>
     </Flex>
   )
 }

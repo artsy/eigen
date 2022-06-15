@@ -1,4 +1,4 @@
-import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
+import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
 import { Metric } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
@@ -85,7 +85,7 @@ export interface MyCollectionArtworkModel {
 
   startEditingArtwork: Thunk<
     MyCollectionArtworkModel,
-    Partial<MyCollectionArtwork_sharedProps> & {
+    Partial<MyCollectionArtwork_sharedProps$data> & {
       internalID: string
       id: string
       artist: { internalID: string }

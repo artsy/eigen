@@ -1,4 +1,4 @@
-import { PartnerLocationSection_partner } from "__generated__/PartnerLocationSection_partner.graphql"
+import { PartnerLocationSection_partner$data } from "__generated__/PartnerLocationSection_partner.graphql"
 import { navigate } from "app/navigation/navigate"
 import { get } from "app/utils/get"
 import { Button, Sans, Spacer } from "palette"
@@ -6,10 +6,10 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  partner: PartnerLocationSection_partner
+  partner: PartnerLocationSection_partner$data
 }
 
-const createLocationsString = (partner: PartnerLocationSection_partner) => {
+const createLocationsString = (partner: PartnerLocationSection_partner$data) => {
   const locationsCount = partner.locations?.totalCount
   let lastUniqCity
   const uniqCities = (partner.cities || []).slice(0)

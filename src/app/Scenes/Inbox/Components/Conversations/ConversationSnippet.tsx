@@ -8,7 +8,7 @@ import { Schema, Track, track as _track } from "app/utils/track"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import styled from "styled-components/native"
 
-import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
+import { ConversationSnippet_conversation$data } from "__generated__/ConversationSnippet_conversation.graphql"
 import { ClassTheme, Flex, Sans, Touchable } from "palette"
 
 const Unread = styled(Flex)`
@@ -38,7 +38,7 @@ const ImageView = styled(OpaqueImageView)`
 `
 
 export interface Props {
-  conversation: ConversationSnippet_conversation
+  conversation: ConversationSnippet_conversation$data
   onSelected?: () => void
 }
 

@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Artwork_artworkAboveTheFold } from "__generated__/Artwork_artworkAboveTheFold.graphql"
-import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
-import { Artwork_me } from "__generated__/Artwork_me.graphql"
+import { Artwork_artworkAboveTheFold$data } from "__generated__/Artwork_artworkAboveTheFold.graphql"
+import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
+import { Artwork_me$data } from "__generated__/Artwork_me.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
@@ -24,6 +24,7 @@ import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { ResponsiveValue } from "styled-system"
+import { OfferSubmittedModal } from "../Inbox/Components/Conversations/OfferSubmittedModal"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
@@ -44,9 +45,9 @@ import { PartnerCardFragmentContainer as PartnerCard } from "./Components/Partne
 import { Questions } from "./Components/Questions"
 
 interface ArtworkProps {
-  artworkAboveTheFold: Artwork_artworkAboveTheFold | null
-  artworkBelowTheFold: Artwork_artworkBelowTheFold | null
-  me: Artwork_me | null
+  artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null
+  artworkBelowTheFold: Artwork_artworkBelowTheFold$data | null
+  me: Artwork_me$data | null
   isVisible: boolean
   relay: RelayRefetchProp
   tracking?: TrackingProp
@@ -445,6 +446,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
           />
         )}
         <QAInfo />
+        <OfferSubmittedModal />
       </AuctionWebsocketContextProvider>
     </ProvideScreenTracking>
   )

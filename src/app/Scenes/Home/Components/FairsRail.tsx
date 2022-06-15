@@ -1,4 +1,4 @@
-import { FairsRail_fairsModule } from "__generated__/FairsRail_fairsModule.graphql"
+import { FairsRail_fairsModule$data } from "__generated__/FairsRail_fairsModule.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { bullet, Flex, Text } from "palette"
@@ -24,11 +24,11 @@ import { RailScrollProps } from "./types"
 interface Props {
   title: string
   subtitle?: string
-  fairsModule: FairsRail_fairsModule
+  fairsModule: FairsRail_fairsModule$data
   mb?: number
 }
 
-type FairItem = FairsRail_fairsModule["results"][0]
+type FairItem = FairsRail_fairsModule$data["results"][0]
 
 const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()

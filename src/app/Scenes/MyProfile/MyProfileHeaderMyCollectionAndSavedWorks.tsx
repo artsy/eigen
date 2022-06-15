@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { MyProfileHeaderMyCollectionAndSavedWorks_me } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
+import { MyProfileHeaderMyCollectionAndSavedWorks_me$data } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
 import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -24,7 +24,7 @@ export enum Tab {
 }
 
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
-  me: MyProfileHeaderMyCollectionAndSavedWorks_me
+  me: MyProfileHeaderMyCollectionAndSavedWorks_me$data
 }> = ({ me }) => {
   // We are using unsafe_getfeatureflag here because we want to avoid breaking the rule of hooks
   // inside the StickyTabPage

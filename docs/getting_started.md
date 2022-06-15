@@ -37,25 +37,27 @@ cd eigen
 ### Install the dependencies
 
 <details><summary>Work at Artsy?</summary>
- 
+
 1. Run
-  ```
-  yarn setup:artsy
-  yarn install:all
-  ```
-  You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
+
+```
+yarn setup:artsy
+yarn install:all
+```
+
+You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV vars.
 
 1. `Artsy/App/EchoNew.json` is used to toggle features and it is not checked in (a sample file is included for OSS contributors). When you run `pod install`, the latest `EchoNew.json` file will be downloaded for you.
 </details>
 
 <details><summary>Independent Contributor?</summary>
 
-
 ```sh
 yarn setup:oss # this is `yarn setup:artsy` if you're working at Artsy
 yarn install:all
 
 ```
+
 </details>
 
 **Note**: `yarn pod-install` (which is included in `yarn install:all`) may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
@@ -81,7 +83,7 @@ Ask for your apple developer account to be added on the project and login with y
 Open the app in Xcode:
 
 ```sh
-open Artsy.xcworkspace
+open ios/Artsy.xcworkspace
 ```
 
 From Xcode, run the app by hitting `Product > Run` (or ⌘R). This will start the Artsy app in an iOS simulator, pointed at Artsy's staging environment.

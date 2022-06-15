@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
-  MyCollectionArtworkArticles_article,
+  MyCollectionArtworkArticles_article$data,
   MyCollectionArtworkArticles_article$key,
 } from "__generated__/MyCollectionArtworkArticles_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
@@ -23,10 +23,7 @@ interface MyCollectionArtworkArticlesProps {
 export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesProps> = (props) => {
   const { trackEvent } = useTracking()
 
-  const articles = useFragment<MyCollectionArtworkArticles_article$key>(
-    articleFragment,
-    props.articles
-  )
+  const articles = useFragment(articleFragment, props.articles)
 
   if (!articles.length) {
     return null
@@ -56,7 +53,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
         </Flex>
       </TouchableOpacity>
 
-      <FlatList<MyCollectionArtworkArticles_article[number]>
+      <FlatList<MyCollectionArtworkArticles_article$data[number]>
         testID="test-articles-flatlist"
         horizontal
         ItemSeparatorComponent={() => <Spacer ml="2" />}

@@ -1,4 +1,4 @@
-import { AuctionPrice_artwork } from "__generated__/AuctionPrice_artwork.graphql"
+import { AuctionPrice_artwork$data } from "__generated__/AuctionPrice_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { get } from "app/utils/get"
@@ -8,7 +8,7 @@ import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AuctionPriceProps {
-  artwork: AuctionPrice_artwork
+  artwork: AuctionPrice_artwork$data
   auctionState: AuctionTimerState
 }
 
@@ -67,7 +67,6 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     const myMaxBid = get(myMostRecent, (bid) => bid.maxBid.display)
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const bidsCount = get(artwork, (a) => a.saleArtwork.counts.bidderPositions)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const bidsPresent = bidsCount > 0
     const bidText = this.bidText(bidsPresent, bidsCount)
       ? this.bidText(bidsPresent, bidsCount)

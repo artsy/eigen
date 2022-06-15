@@ -7,6 +7,7 @@ import { LegacyNativeModules } from "./LegacyNativeModules"
  * All new artsy-specific native bridge code should be exposed here.
  * Any legacy iOS native bridge code that is made cross-platform should also be exposed here.
  */
+
 export const ArtsyNativeModule = {
   launchCount:
     Platform.OS === "ios"
@@ -42,6 +43,12 @@ export const ArtsyNativeModule = {
           console.error("lockActivityScreenOrientation is unsupported on iOS")
         }
       : NativeModules.ArtsyNativeModule.lockActivityScreenOrientation,
+  clearCache:
+    Platform.OS === "ios"
+      ? () => {
+          console.error("clearCache is not needed on iOS. See HACKS.md.")
+        }
+      : NativeModules.ArtsyNativeModule.clearCache,
   gitCommitShortHash: NativeModules.ArtsyNativeModule.gitCommitShortHash,
   isBetaOrDev:
     Platform.OS === "ios"

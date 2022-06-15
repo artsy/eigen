@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { SavedSearchesList_me } from "__generated__/SavedSearchesList_me.graphql"
+import { SavedSearchesList_me$data } from "__generated__/SavedSearchesList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
 import { GoBackProps, navigate, navigationEvents } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -14,7 +14,7 @@ import { SavedSearchAlertsListPlaceholder } from "./SavedSearchAlertsListPlaceho
 import { SavedSearchListItem } from "./SavedSearchListItem"
 
 interface SavedSearchesListProps {
-  me: SavedSearchesList_me
+  me: SavedSearchesList_me$data
   relay: RelayPaginationProp
 }
 

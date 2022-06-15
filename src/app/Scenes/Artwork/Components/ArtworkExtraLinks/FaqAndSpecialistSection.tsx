@@ -1,4 +1,4 @@
-import { FaqAndSpecialistSection_artwork } from "__generated__/FaqAndSpecialistSection_artwork.graphql"
+import { FaqAndSpecialistSection_artwork$data } from "__generated__/FaqAndSpecialistSection_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
@@ -9,7 +9,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface FaqAndSpecialistSectionProps {
-  artwork: FaqAndSpecialistSection_artwork
+  artwork: FaqAndSpecialistSection_artwork$data
 }
 
 const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = ({ artwork }) => {

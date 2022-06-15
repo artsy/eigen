@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { ArtistList_targetSupply } from "__generated__/ArtistList_targetSupply.graphql"
+import { ArtistList_targetSupply$data } from "__generated__/ArtistList_targetSupply.graphql"
 import { navigate } from "app/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { chunk, shuffle } from "lodash"
@@ -11,7 +11,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtistListProps {
-  targetSupply: ArtistList_targetSupply
+  targetSupply: ArtistList_targetSupply$data
   isLoading?: boolean
 }
 

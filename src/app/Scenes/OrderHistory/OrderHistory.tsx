@@ -1,4 +1,4 @@
-import { OrderHistory_me } from "__generated__/OrderHistory_me.graphql"
+import { OrderHistory_me$data } from "__generated__/OrderHistory_me.graphql"
 import { OrderHistoryQuery } from "__generated__/OrderHistoryQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -14,7 +14,7 @@ import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 
 const NUM_ORDERS_TO_FETCH = 10
 
-export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginationProp }> = ({
+export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPaginationProp }> = ({
   relay,
   me,
 }) => {

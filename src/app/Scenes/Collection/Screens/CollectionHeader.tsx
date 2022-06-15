@@ -1,4 +1,4 @@
-import { CollectionHeader_collection } from "__generated__/CollectionHeader_collection.graphql"
+import { CollectionHeader_collection$data } from "__generated__/CollectionHeader_collection.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { Schema } from "app/utils/track"
@@ -8,7 +8,7 @@ import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface CollectionHeaderProps {
-  collection: CollectionHeader_collection
+  collection: CollectionHeader_collection$data
 }
 
 const HEADER_IMAGE_HEIGHT = 204

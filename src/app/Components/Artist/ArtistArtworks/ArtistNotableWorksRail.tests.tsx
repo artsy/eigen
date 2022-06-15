@@ -1,4 +1,4 @@
-import { ArtistNotableWorksRailTestsQueryRawResponse } from "__generated__/ArtistNotableWorksRailTestsQuery.graphql"
+import { ArtistNotableWorksRailTestsQuery } from "__generated__/ArtistNotableWorksRailTestsQuery.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
@@ -67,7 +67,7 @@ describe("Notable Works Rail", () => {
   })
 })
 
-const artistMockData: ArtistNotableWorksRailTestsQueryRawResponse["artist"] = {
+const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] = {
   id: "an-id",
   internalID: "an-id",
   slug: "a-slug",

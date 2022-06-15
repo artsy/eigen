@@ -5,10 +5,11 @@ import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
-import { EmailConfirmationBanner_me } from "__generated__/EmailConfirmationBanner_me.graphql"
+import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { EmailConfirmationBannerFragmentContainer } from "./EmailConfirmationBanner"
 
 jest.unmock("react-relay")
@@ -38,7 +39,7 @@ describe("EmailConfirmationBanner", () => {
     />
   )
 
-  const mount = (data: { me: Omit<EmailConfirmationBanner_me, " $refType"> }) => {
+  const mount = (data: { me: CleanRelayFragment<EmailConfirmationBanner_me$data> }) => {
     const component = renderWithWrappers(<TestRenderer />)
     env.mock.resolveMostRecentOperation({ data, errors: [] })
     return component

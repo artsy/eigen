@@ -1,10 +1,7 @@
-import { BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
-import { ConfirmBid_me } from "__generated__/ConfirmBid_me.graphql"
-import { ConfirmBid_sale_artwork } from "__generated__/ConfirmBid_sale_artwork.graphql"
-import {
-  ConfirmBidCreateBidderPositionMutation,
-  ConfirmBidCreateBidderPositionMutationResponse,
-} from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
+import { BidderPositionQuery } from "__generated__/BidderPositionQuery.graphql"
+import { ConfirmBid_me$data } from "__generated__/ConfirmBid_me.graphql"
+import { ConfirmBid_sale_artwork$data } from "__generated__/ConfirmBid_sale_artwork.graphql"
+import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
@@ -35,12 +32,12 @@ import { PayloadError } from "relay-runtime"
 import stripe from "tipsi-stripe"
 
 type BidderPositionResult = NonNullable<
-  NonNullable<ConfirmBidCreateBidderPositionMutationResponse["createBidderPosition"]>["result"]
+  NonNullable<ConfirmBidCreateBidderPositionMutation["response"]["createBidderPosition"]>["result"]
 >
 
 export interface ConfirmBidProps extends ViewProps {
-  sale_artwork: ConfirmBid_sale_artwork
-  me: ConfirmBid_me
+  sale_artwork: ConfirmBid_sale_artwork$data
+  me: ConfirmBid_me$data
   relay: RelayRefetchProp
   navigator?: NavigatorIOS
   refreshSaleArtwork?: () => void
@@ -317,7 +314,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     })
   }
 
-  verifyBidderPosition(results: ConfirmBidCreateBidderPositionMutationResponse) {
+  verifyBidderPosition(results: ConfirmBidCreateBidderPositionMutation["response"]) {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { result } = results.createBidderPosition
 
@@ -338,7 +335,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       .catch((error) => this.presentErrorResult(error))
   }
 
-  checkBidderPosition(data: BidderPositionQueryResponse | undefined) {
+  checkBidderPosition(data: BidderPositionQuery["response"] | undefined) {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { bidder_position } = data.me
 

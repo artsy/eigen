@@ -1,5 +1,4 @@
-import { FollowArtistLinkTestsErrorQueryRawResponse } from "__generated__/FollowArtistLinkTestsErrorQuery.graphql"
-import { FollowArtistLinkTestsQueryRawResponse } from "__generated__/FollowArtistLinkTestsQuery.graphql"
+import { FollowArtistLinkTestsQuery$data } from "__generated__/FollowArtistLinkTestsQuery.graphql"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderRelayTree } from "app/tests/renderRelayTree"
@@ -51,7 +50,7 @@ describe("FollowArtistLink", () => {
             }
           }
         `,
-        mockData: { artist: mockArtistData } as FollowArtistLinkTestsQueryRawResponse,
+        mockData: { artist: mockArtistData } as FollowArtistLinkTestsQuery$data,
         mockMutationResults: { followArtist: mockFollowResults },
       })
     }
@@ -117,7 +116,9 @@ describe("FollowArtistLink", () => {
             }
           }
         `,
-        mockData: { artist: followArtistLinkArtist } as FollowArtistLinkTestsErrorQueryRawResponse,
+        mockData: {
+          artist: followArtistLinkArtist,
+        } as any,
         mockMutationResults: {
           FollowArtistLinkFragmentContainer: () => {
             return Promise.reject(new Error("failed to fetch"))

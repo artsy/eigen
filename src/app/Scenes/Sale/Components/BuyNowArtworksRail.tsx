@@ -1,4 +1,4 @@
-import { BuyNowArtworksRail_sale } from "__generated__/BuyNowArtworksRail_sale.graphql"
+import { BuyNowArtworksRail_sale$data } from "__generated__/BuyNowArtworksRail_sale.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -10,7 +10,7 @@ import { createFragmentContainer } from "react-relay"
 import { graphql } from "react-relay"
 
 interface BuyNowArtworksRailProps {
-  sale: BuyNowArtworksRail_sale
+  sale: BuyNowArtworksRail_sale$data
 }
 
 export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) => {

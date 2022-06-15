@@ -5,7 +5,7 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack"
 import { OAuthProvider } from "app/auth/types"
-import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "app/Components/ArtsyReactWebViewPolicy"
+import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "app/Components/ArtsyWebViewScreens"
 import { FPSCounter } from "app/Components/FPSCounter"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"

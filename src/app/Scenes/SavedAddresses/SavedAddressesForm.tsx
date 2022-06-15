@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import { SavedAddressesForm_me } from "__generated__/SavedAddressesForm_me.graphql"
+import { SavedAddressesForm_me$data } from "__generated__/SavedAddressesForm_me.graphql"
 import { SavedAddressesFormQuery } from "__generated__/SavedAddressesFormQuery.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -84,10 +84,10 @@ const useStore = createComponentStore<Store>({
   }),
 })
 
-export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId?: string }> = ({
-  me,
-  addressId,
-}) => {
+export const SavedAddressesForm: React.FC<{
+  me: SavedAddressesForm_me$data
+  addressId?: string
+}> = ({ me, addressId }) => {
   const isEditForm = !!addressId
   const toast = useToast()
   const [isValidNumber, setIsValidNumber] = useState<boolean>(false)

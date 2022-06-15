@@ -1,4 +1,4 @@
-import { OtherCollectionsRail_collectionGroup } from "__generated__/OtherCollectionsRail_collectionGroup.graphql"
+import { OtherCollectionsRail_collectionGroup$data } from "__generated__/OtherCollectionsRail_collectionGroup.graphql"
 import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/navigation/navigate"
 import { Sans, SansProps, Spacer } from "palette"
@@ -7,7 +7,7 @@ import { TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface OtherCollectionsRailProps {
-  collectionGroup: OtherCollectionsRail_collectionGroup
+  collectionGroup: OtherCollectionsRail_collectionGroup$data
 }
 
 export const CollectionGroupMemberPill: React.FC<Partial<SansProps>> = (props) => (

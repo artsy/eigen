@@ -91,7 +91,10 @@ const checkBundlerDependenciesAreUpToDate = () => {
     exec("bundle check")
     YES(`Your ${g`bundler dependencies`} are ready to go.`)
   } catch (e) {
-    NO(`Your ${r`bundle dependencies`} are out of sync.`, `Run ${g`yarn install:all`} or ${g`bundle install`} first.`)
+    NO(
+      `Your ${r`bundle dependencies`} are out of sync.`,
+      `Run ${g`yarn install:all`} or ${g`bundle install`} first.`
+    )
   }
 }
 
@@ -99,7 +102,10 @@ const checkNodeDependenciesAreUpToDate = async () => {
   const res = await checkDependencies()
 
   if (res.error.length > 0) {
-    NO(`Your ${r`node dependencies`} are out of sync.`, `Run ${g`yarn install:all`} or ${g`yarn install`} first.`)
+    NO(
+      `Your ${r`node dependencies`} are out of sync.`,
+      `Run ${g`yarn install:all`} or ${g`yarn install`} first.`
+    )
   } else {
     YES(`Your ${g`node dependencies`} match the ones specifed in package.json.`)
   }

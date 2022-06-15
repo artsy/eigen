@@ -1,5 +1,5 @@
-import { CityBMWList_city } from "__generated__/CityBMWList_city.graphql"
-import { CityBMWListQuery, CityBMWListQueryVariables } from "__generated__/CityBMWListQuery.graphql"
+import { CityBMWList_city$data } from "__generated__/CityBMWList_city.graphql"
+import { CityBMWListQuery } from "__generated__/CityBMWListQuery.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -10,8 +10,8 @@ import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { EventList } from "./Components/EventList"
 
-interface Props extends Pick<CityBMWListQueryVariables, "citySlug"> {
-  city: CityBMWList_city
+interface Props extends Pick<CityBMWListQuery["variables"], "citySlug"> {
+  city: CityBMWList_city$data
   relay: RelayPaginationProp
 }
 

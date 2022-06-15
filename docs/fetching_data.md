@@ -14,7 +14,6 @@ and replace `<secret>` with the value of `Metaphysics INTROSPECT_TOKEN` in 1Pass
 
 ## Example request
 
-
 <img width="701" alt="Screen Shot 2022-05-24 at 18 33 10" src="https://user-images.githubusercontent.com/36475005/170086939-86194875-c866-4a71-a508-5fd356a35d32.png">
 
 note that in some of the requests you may need to use something like `(first: $some-number-here)` (or last) but some requests work without it as well.

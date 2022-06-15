@@ -1,4 +1,4 @@
-import { CollectionsRail_collectionsModule } from "__generated__/CollectionsRail_collectionsModule.graphql"
+import { CollectionsRail_collectionsModule$data } from "__generated__/CollectionsRail_collectionsModule.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -24,11 +24,11 @@ import { RailScrollProps } from "./types"
 interface Props {
   title: string
   subtitle?: string
-  collectionsModule: CollectionsRail_collectionsModule
+  collectionsModule: CollectionsRail_collectionsModule$data
   mb?: number
 }
 
-type Collection = CollectionsRail_collectionsModule["results"][0]
+type Collection = CollectionsRail_collectionsModule$data["results"][0]
 
 const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()

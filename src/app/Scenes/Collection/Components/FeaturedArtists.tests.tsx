@@ -1,4 +1,4 @@
-import { FeaturedArtistsTestsQueryRawResponse } from "__generated__/FeaturedArtistsTestsQuery.graphql"
+import { FeaturedArtistsTestsQuery } from "__generated__/FeaturedArtistsTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockTracking } from "app/tests/mockTracking"
@@ -11,7 +11,7 @@ import { CollectionFeaturedArtistsContainer as FeaturedArtists, ViewAll } from "
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
 
-const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQueryRawResponse["marketingCollection"] =
+const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"]["marketingCollection"] =
   {
     id: "some-id",
     slug: "some-collection",
@@ -103,7 +103,7 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQueryRawResponse["mar
   }
 
 describe("FeaturedArtists", () => {
-  const render = (collection: FeaturedArtistsTestsQueryRawResponse["marketingCollection"]) =>
+  const render = (collection: FeaturedArtistsTestsQuery["rawResponse"]["marketingCollection"]) =>
     renderRelayTree({
       Component: mockTracking(({ marketingCollection }) => (
         <GlobalStoreProvider>

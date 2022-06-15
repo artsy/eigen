@@ -8,4 +8,4 @@ bundle exec fastlane update_plugins
 
 ./scripts/setup-awscli
 
-aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist GoogleService-Info.plist
+aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist ios/Artsy/GoogleService-Info.plist

@@ -1,5 +1,5 @@
 import {
-  AuctionResultListItem_auctionResult,
+  AuctionResultListItem_auctionResult$data,
   AuctionResultListItem_auctionResult$key,
 } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -21,7 +21,7 @@ interface AuctionResultsListProps {
   handleRefresh: () => void
   onEndReached: () => void
   ListHeaderComponent?: React.FC
-  onItemPress: (item: AuctionResultListItem_auctionResult) => void
+  onItemPress: (item: AuctionResultListItem_auctionResult$data) => void
   isLoadingNext: boolean
   floatingHeaderTitle?: string
 }

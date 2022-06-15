@@ -3,12 +3,12 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { View, ViewProps } from "react-native"
 
-import { Metadata_show } from "__generated__/Metadata_show.graphql"
+import { Metadata_show$data } from "__generated__/Metadata_show.graphql"
 import { capitalize } from "lodash"
 import { Sans } from "palette"
 
 interface Props extends ViewProps {
-  show: Metadata_show
+  show: Metadata_show$data
 }
 
 class Metadata extends React.Component<Props> {

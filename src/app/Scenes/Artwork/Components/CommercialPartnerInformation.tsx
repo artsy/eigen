@@ -1,4 +1,4 @@
-import { CommercialPartnerInformation_artwork } from "__generated__/CommercialPartnerInformation_artwork.graphql"
+import { CommercialPartnerInformation_artwork$data } from "__generated__/CommercialPartnerInformation_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { LinkText, Spacer, Text } from "palette"
@@ -6,7 +6,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  artwork: CommercialPartnerInformation_artwork
+  artwork: CommercialPartnerInformation_artwork$data
 }
 
 export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {

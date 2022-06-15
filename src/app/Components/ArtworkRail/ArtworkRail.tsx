@@ -1,5 +1,5 @@
-import { LargeArtworkRail_artworks } from "__generated__/LargeArtworkRail_artworks.graphql"
-import { SmallArtworkRail_artworks } from "__generated__/SmallArtworkRail_artworks.graphql"
+import { LargeArtworkRail_artworks$data } from "__generated__/LargeArtworkRail_artworks.graphql"
+import { SmallArtworkRail_artworks$data } from "__generated__/SmallArtworkRail_artworks.graphql"
 import { ArtworkCardSize, ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { Spacer } from "palette"
@@ -9,11 +9,11 @@ import { FlatList } from "react-native"
 const MAX_NUMBER_OF_ARTWORKS = 30
 
 export interface ArtworkRailProps {
-  artworks: LargeArtworkRail_artworks | SmallArtworkRail_artworks
+  artworks: LargeArtworkRail_artworks$data | SmallArtworkRail_artworks$data
   listRef?: React.RefObject<FlatList<any>>
   size: ArtworkCardSize
   onPress?: (
-    artwork: LargeArtworkRail_artworks[0] | SmallArtworkRail_artworks[0],
+    artwork: LargeArtworkRail_artworks$data[0] | SmallArtworkRail_artworks$data[0],
     index: number
   ) => void
   onEndReached?: () => void

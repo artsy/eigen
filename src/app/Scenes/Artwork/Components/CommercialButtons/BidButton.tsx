@@ -1,6 +1,6 @@
 import { ActionType } from "@artsy/cohesion"
-import { BidButton_artwork } from "__generated__/BidButton_artwork.graphql"
-import { BidButton_me } from "__generated__/BidButton_me.graphql"
+import { BidButton_artwork$data } from "__generated__/BidButton_artwork.graphql"
+import { BidButton_me$data } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { bidderNeedsIdentityVerification } from "app/utils/auction"
@@ -14,8 +14,8 @@ import track from "react-tracking"
 export const PREDICTION_URL = "https://live.artsy.net"
 
 export interface BidButtonProps {
-  artwork: BidButton_artwork
-  me: BidButton_me
+  artwork: BidButton_artwork$data
+  me: BidButton_me$data
   auctionState: AuctionTimerState
   relay: RelayProp
 }
@@ -100,7 +100,7 @@ export class BidButton extends React.Component<BidButtonProps> {
 
   renderIsPreview(
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    registrationStatus: BidButton_artwork["sale"]["registrationStatus"],
+    registrationStatus: BidButton_artwork$data["sale"]["registrationStatus"],
     needsIdentityVerification: boolean
   ) {
     return (

@@ -23,10 +23,7 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
 > = (props) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<MyCollectionArtworkArtistAuctionResults_artwork$key>(
-    artworkFragment,
-    props.artwork
-  )
+  const artwork = useFragment(artworkFragment, props.artwork)
 
   const artist = artwork.artist
   const auctionResults = extractNodes(artist?.auctionResultsConnection)

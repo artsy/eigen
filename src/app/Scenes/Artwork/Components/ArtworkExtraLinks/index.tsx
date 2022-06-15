@@ -1,4 +1,4 @@
-import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
+import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag, useSelectedTab } from "app/store/GlobalStore"
@@ -12,7 +12,7 @@ import { AuctionFaqSection } from "./AuctionFaqSection"
 import { FaqAndSpecialistSectionFragmentContainer as FaqAndSpecialistSection } from "./FaqAndSpecialistSection"
 
 export interface ArtworkExtraLinksProps {
-  artwork: ArtworkExtraLinks_artwork
+  artwork: ArtworkExtraLinks_artwork$data
   auctionState: AuctionTimerState
 }
 
