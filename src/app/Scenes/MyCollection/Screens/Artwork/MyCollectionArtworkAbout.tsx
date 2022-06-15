@@ -19,11 +19,8 @@ interface MyCollectionArtworkAboutProps {
 
 export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
   const { space } = useTheme()
-  const artwork = useFragment<MyCollectionArtworkAbout_artwork$key>(artworkFragment, props.artwork)
-  const marketPriceInsights = useFragment<MyCollectionArtworkAbout_marketPriceInsights$key>(
-    marketPriceInsightsFragment,
-    props.marketPriceInsights
-  )
+  const artwork = useFragment(artworkFragment, props.artwork)
+  const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
 
   const articles = extractNodes(artwork.artist?.articles)
   const Wrapper = props.renderWithoutScrollView ? Flex : StickyTabPageScrollView

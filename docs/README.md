@@ -10,27 +10,30 @@
 
 - [Best Practices](best_practices.md)
 
-## Documentation about different work flows
+## Documentation about different workflows
 
-- [Pull Request template](pull_request_template.md)
-- [Storybook](storybook.md)
+- [Fetching data](fetching_data.md)
+- [Testing](testing.md)
 - [Feature Flags](developing_a_feature.md)
-- [Metaflags](metaflags.md)
-- [Hide loggers](metaflags.md/#hide-loggers)
 - [Debugging](debugging.md)
-- [Visual Clues](add_a_visual_clue.md)
-- [Unleash - Experiments](add_an_experiment.md)
 - [Navigation](adding_a_new_route.md) & adding a new route
-- [Notifications](push_notifications.md)
-- [Updating Emission](updating_emission.md)
 - [Add a new component](adding_new_components.md)
-- [Secret keys](adding_new_keys.md)
 - [State Migrations](adding_state_migrations.md)
 - [Analytics and Tracking](analytics_and_tracking.md)
+
+- [Storybook](storybook.md)
+- [Metaflags](metaflags.md)
+- [Hide loggers](metaflags.md/#hide-loggers)
+- [Visual Clues](add_a_visual_clue.md)
+- [Unleash - Experiments](add_an_experiment.md)
+- [Notifications](push_notifications.md)
+- [Updating Emission](updating_emission.md)
+- [Secret keys](adding_new_keys.md)
 - [Certificates](certs.md)
 - [Test on a real device: create a beta](deploy_to_beta.md)
 - [Generate a Release build for local testing](generate_a_release_build_for_local_testing.md)
-- [Testing](testing.md)
+- [Pull Request template](pull_request_template.md)
+
 
 ### Beta
 

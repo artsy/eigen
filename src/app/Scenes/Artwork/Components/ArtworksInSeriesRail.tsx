@@ -19,7 +19,7 @@ interface ArtworksInSeriesRailProps {
 export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<ArtworksInSeriesRail_artwork$key>(artworkFragment, props.artwork)
+  const artwork = useFragment(artworkFragment, props.artwork)
 
   const firstArtistSeries = extractNodes(artwork?.artistSeriesConnection)[0]
   const artworks = extractNodes(firstArtistSeries?.filterArtworksConnection)

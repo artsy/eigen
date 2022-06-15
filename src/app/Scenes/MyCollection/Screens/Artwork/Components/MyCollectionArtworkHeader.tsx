@@ -21,10 +21,7 @@ interface MyCollectionArtworkHeaderProps {
 }
 
 export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
-  const artwork = useFragment<MyCollectionArtworkHeader_artwork$key>(
-    myCollectionArtworkHeaderFragment,
-    props.artwork
-  )
+  const artwork = useFragment(myCollectionArtworkHeaderFragment, props.artwork)
   const {
     artistNames,
     date,

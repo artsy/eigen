@@ -432,6 +432,7 @@ function getNativeModules(): OurNativeModules {
       isBetaOrDev: true,
       updateAuthState: jest.fn(),
       clearUserData: jest.fn(),
+      clearCache: jest.fn(),
     },
   }
 }

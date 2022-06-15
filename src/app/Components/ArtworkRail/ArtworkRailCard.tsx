@@ -39,7 +39,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   hideArtistName = false,
   ...restProps
 }) => {
-  const artwork = useFragment<ArtworkRailCard_artwork$key>(artworkFragment, restProps.artwork)
+  const artwork = useFragment(artworkFragment, restProps.artwork)
 
   const { artistNames, date, partner, title, image } = artwork
 
