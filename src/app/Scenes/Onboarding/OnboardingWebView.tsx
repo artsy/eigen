@@ -6,6 +6,8 @@ import { OnboardingNavigationStack } from "./Onboarding"
 export interface OnboardingWebViewProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingWebView"> {}
 
+export type OnboardingWebViewRoute = "/privacy" | "/terms" | "/conditions-of-sale"
+
 export const OnboardingWebView: React.FC<OnboardingWebViewProps> = ({ route, navigation }) => {
   return (
     <Flex flex={1} style={{ backgroundColor: "white" }}>

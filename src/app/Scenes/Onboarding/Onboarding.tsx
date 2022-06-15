@@ -20,7 +20,7 @@ import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
 import { OnboardingLoginWithOTP, OTPMode } from "./OnboardingLoginWithOTP"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
-import { OnboardingWebView } from "./OnboardingWebView"
+import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
 // tslint:disable-next-line:interface-over-type-literal
@@ -44,10 +44,8 @@ export type OnboardingNavigationStack = {
     tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
   }
   ForgotPassword: undefined
-  OnboardingWebView: { url: WebViewRoute }
+  OnboardingWebView: { url: OnboardingWebViewRoute }
 }
-
-type WebViewRoute = "/privacy" | "/terms" | "/conditions-of-sale"
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
