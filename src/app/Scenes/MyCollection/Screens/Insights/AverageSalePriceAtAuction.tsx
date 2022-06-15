@@ -43,7 +43,7 @@ export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps>
             <OpaqueImageView width={40} height={40} imageURL={selectedArtist.imageUrl} />
           )}
         </Flex>
-        {/* Sale Artwork Artist Name, Birthday and Nationality */}
+        {/* Sale Artwork Artist Name */}
         <Flex flex={1} pl={1}>
           {!!selectedArtist.name && (
             <Text variant="md" ellipsizeMode="middle" numberOfLines={2}>
@@ -52,7 +52,7 @@ export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps>
           )}
         </Flex>
 
-        <Touchable onPress={() => setVisible(true)} haptic>
+        <Touchable testID="change-artist-touchable" onPress={() => setVisible(true)} haptic>
           <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
             Change Artist
           </Text>

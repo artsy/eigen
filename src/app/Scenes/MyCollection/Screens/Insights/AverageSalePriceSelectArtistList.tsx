@@ -30,6 +30,7 @@ export const ArtistSectionList: React.FC<ArtistSectionListProps> = ({
 
   return (
     <SectionList
+      testID="average-sale-price-select-artist-section-list"
       sections={groupedArtistsSections}
       stickySectionHeadersEnabled={false}
       onEndReached={onEndReached}

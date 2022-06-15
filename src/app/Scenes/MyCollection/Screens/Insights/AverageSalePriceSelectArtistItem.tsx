@@ -27,7 +27,12 @@ export const ArtistSectionItem: React.FC<ArtistSectionItemProps> = ({
   )
 
   return (
-    <Touchable underlayColor={color("black5")} onPress={() => onPress(artist)} haptic>
+    <Touchable
+      testID={`artist-section-item-${artist.name}`}
+      underlayColor={color("black5")}
+      onPress={() => onPress(artist)}
+      haptic
+    >
       <Flex
         pt={first ? 0 : 1}
         pb={1}

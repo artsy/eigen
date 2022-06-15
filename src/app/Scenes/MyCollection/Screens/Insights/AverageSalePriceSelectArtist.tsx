@@ -74,6 +74,7 @@ export const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectAr
 
   return (
     <FancyModal
+      testID="average-sale-price-select-artist-modal"
       visible={visible}
       onBackgroundPressed={closeModal}
       fullScreen
@@ -86,6 +87,7 @@ export const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectAr
       <Flex flex={1} px={2}>
         <Flex pt={1} pb={2}>
           <SearchInput
+            testID="select-artists-search-input"
             enableCancelButton
             onCancelPress={() => setQuery("")}
             placeholder="Search Artist from Your Collection"
@@ -101,6 +103,7 @@ export const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectAr
 
         {query.length > 0 ? (
           <FlatList
+            testID="average-sale-price-select-artist-flatlist"
             data={filteredArtists}
             keyExtractor={(item) => item.internalID}
             renderItem={({ item }) => <ArtistSectionItem artist={item} onPress={handleSelect} />}
@@ -142,7 +145,6 @@ const collectedArtistsConnectionFragment = graphql`
           @connection(key: "AverageSalePriceSelectArtistModal_collectedArtistsConnection") {
           edges {
             node {
-              id
               internalID
               name
               initials
@@ -155,7 +157,7 @@ const collectedArtistsConnectionFragment = graphql`
   }
 `
 
-const AverageSalePriceSelectArtistScreenQuery = graphql`
+export const AverageSalePriceSelectArtistScreenQuery = graphql`
   query AverageSalePriceSelectArtistQuery($count: Int, $after: String) {
     ...AverageSalePriceSelectArtistModal_myCollectionInfo @arguments(count: $count, after: $after)
   }
