@@ -23,7 +23,7 @@ type SmallArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & {
 const IMAGE_WIDTH = 155
 
 export const SmallArtworkRail: React.FC<SmallArtworkRailProps> = ({ artworks, ...restProps }) => {
-  const artworksData = useFragment<SmallArtworkRail_artworks$key>(smallArtworksFragment, artworks)
+  const artworksData = useFragment(smallArtworksFragment, artworks)
 
   return <ArtworkRail artworks={artworksData} {...restProps} size="small" />
 }

@@ -19,15 +19,9 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 ) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<MyCollectionArtworkArtistMarket_artwork$key>(
-    artworkFragment,
-    props.artwork
-  )
+  const artwork = useFragment(artworkFragment, props.artwork)
 
-  const marketPriceInsights = useFragment<MyCollectionArtworkArtistMarket_marketPriceInsights$key>(
-    marketPriceInsightsFragment,
-    props.marketPriceInsights
-  )
+  const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
 
   if (!artwork || !marketPriceInsights) {
     return null
