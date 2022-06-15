@@ -21,7 +21,7 @@ class OldAdminView: UIView {
       }
 
       let vc = ARAdminSettingsViewController(style: .grouped)!
-      vc.view.backgroundColor = UIColor.purple
+      vc.view.backgroundColor = UIColor.artsyPurpleRegular()
       parentVC.addChild(vc)
       addSubview(vc.view)
       vc.view.frame = bounds
