@@ -5,7 +5,6 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack"
 import { OAuthProvider } from "app/auth/types"
-import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "app/Components/ArtsyWebViewScreens"
 import { FPSCounter } from "app/Components/FPSCounter"
 import { GlobalStore, useDevToggle } from "app/store/GlobalStore"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
@@ -21,6 +20,7 @@ import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
 import { OnboardingLoginWithOTP, OTPMode } from "./OnboardingLoginWithOTP"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
+import { OnboardingWebView } from "./OnboardingWebView"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
 // tslint:disable-next-line:interface-over-type-literal
@@ -44,8 +44,7 @@ export type OnboardingNavigationStack = {
     tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
   }
   ForgotPassword: undefined
-  Terms: undefined
-  Privacy: undefined
+  OnboardingWebView: { url: string }
 }
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
@@ -95,13 +94,8 @@ export const OnboardingWelcomeScreens = () => {
           component={OnboardingCreateAccountWithEmail}
         />
         <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
-        <StackNavigator.Screen
-          name="ForgotPassword"
-          component={ForgotPassword}
-          options={{ headerShown: false }}
-        />
-        <StackNavigator.Screen name="Terms" component={ArtsyWebViewTerms} />
-        <StackNavigator.Screen name="Privacy" component={ArtsyWebViewPrivacy} />
+        <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
+        <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
       </StackNavigator.Navigator>
     </NavigationContainer>
   )

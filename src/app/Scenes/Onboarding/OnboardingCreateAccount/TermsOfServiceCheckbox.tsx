@@ -26,7 +26,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
           <Text variant="xs">
             By checking this box, you consent to our{" "}
             <Text
-              onPress={() => navigation.navigate("Terms")}
+              onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
@@ -34,7 +34,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
             </Text>
             ,{" "}
             <Text
-              onPress={() => navigation.navigate("Privacy")}
+              onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
@@ -42,7 +42,9 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
             </Text>
             , and{" "}
             <Text
-              onPress={() => navigation.navigate("ConditionsOfSale")}
+              onPress={() =>
+                navigation.navigate("OnboardingWebView", { url: "/conditions-of-sale" })
+              }
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
