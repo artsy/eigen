@@ -7,7 +7,7 @@ import { GraphQLTaggedNode } from "relay-runtime"
 import { SafeAreaInsets, useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import { AppProviders } from "./AppProviders"
-import { ArtsyReactWebViewPage } from "./Components/ArtsyReactWebView"
+import { ArtsyWebViewPage } from "./Components/ArtsyWebView"
 import { FadeIn } from "./Components/FadeIn"
 import { BidFlow } from "./Containers/BidFlow"
 import { InboxQueryRenderer, InboxScreenQuery } from "./Containers/Inbox"
@@ -379,7 +379,7 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   LocalDiscovery: reactModule(CityGuideView, { fullBleed: true }),
-  ReactWebView: reactModule(ArtsyReactWebViewPage, {
+  ReactWebView: reactModule(ArtsyWebViewPage, {
     fullBleed: true,
     hasOwnModalCloseButton: true,
     hidesBackButton: true,

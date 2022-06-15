@@ -4,7 +4,7 @@ import {
   ArtsyWebViewConditionsOfSale,
   ArtsyWebViewPrivacy,
   ArtsyWebViewTerms,
-} from "app/Components/ArtsyReactWebViewPolicy"
+} from "app/Components/ArtsyWebViewScreens"
 import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
