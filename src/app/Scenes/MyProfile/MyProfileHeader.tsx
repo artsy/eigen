@@ -148,6 +148,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           size="small"
           flex={1}
           onPress={() => {
+            // @ts-expect-error
             navigation.navigate("MyProfileEditForm")
           }}
         >

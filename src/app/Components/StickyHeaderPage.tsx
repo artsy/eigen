@@ -91,6 +91,7 @@ export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
         )}
       >
         {staticHeader}
+        {/* @ts-expect-error */}
         <Animated.View style={{ width: screenWidth, height: stickyHeaderHeightRendered }} />
         {children}
         {!!footerContent && (

@@ -64,6 +64,7 @@ const runTiming = (clock: Clock, value: Animated.Value<number>) => {
       startClock(clock),
     ]),
     // we run the step here that is going to update position
+    // @ts-expect-error
     timing(clock, state, config),
     cond(state.finished, stopClock(clock)),
     // we made the block return the updated position

@@ -9,13 +9,7 @@ import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { Button, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import {
-  FlatList,
-  Image,
-  LayoutAnimation,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-} from "react-native"
+import { Image, LayoutAnimation, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -28,7 +22,6 @@ import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
 interface MyCollectionArtworksProps {
   me: MyCollection_me$data
   relay: RelayPaginationProp
-  innerFlatlistRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
   showSearchBar: boolean
   setShowSearchBar: (show: boolean) => void
 }
@@ -36,7 +29,6 @@ interface MyCollectionArtworksProps {
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   me,
   relay,
-  innerFlatlistRef,
   showSearchBar,
   setShowSearchBar,
 }) => {
@@ -93,7 +85,6 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           <MyCollectionSearchBar
             searchString={keywordFilter}
             onChangeText={setKeywordFilter}
-            innerFlatListRef={innerFlatlistRef}
             onIsFocused={(isFocused) => {
               setMinHeight(isFocused ? screenHeight : undefined)
             }}

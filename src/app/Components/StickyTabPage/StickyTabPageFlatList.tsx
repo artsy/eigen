@@ -71,13 +71,12 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
             // white space before allowing the scroll offset to affect the header position
             Animated.cond(
               Animated.greaterThan(Animated.multiply(-1, headerOffsetY), scrollOffsetY),
-              Animated.call([headerOffsetY], ([y]) => {
+              Animated.call([headerOffsetY], () => {
                 if (!flatListRef.current) {
                   throw new Error(
                     "Please make sure that tab content is wrapped with a StickyTabPageFlatList or a StickyTabPageScrollView"
                   )
                 }
-                flatListRef.current.getNode().scrollToOffset({ offset: -y, animated: false })
                 lockHeaderPosition.setValue(0)
               }),
               Animated.set(lockHeaderPosition, 0)
