@@ -1393,7 +1393,17 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   image: Image
   imageUrl: String
   initials(length: Int = 3): String
-  insights: [ArtistInsight]
+  insights(
+    # The specific insights to return.
+    kind: [ArtistInsightKind] = [
+      SOLO_SHOW
+      GROUP_SHOW
+      COLLECTED
+      REVIEWED
+      BIENNIAL
+      ACTIVE_SECONDARY_MARKET
+    ]
+  ): [ArtistInsight!]!
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -1568,14 +1578,28 @@ type ArtistHighlights {
 }
 
 type ArtistInsight {
+  description: String
+
   # List of entities relevant to the insight.
   entities: [String!]!
+
+  # The type of insight.
+  kind: ArtistInsightKind
 
   # Label to use when displaying the insight.
   label: String!
 
   # The type of insight.
-  type: String!
+  type: String! @deprecated(reason: "Use `kind` instead.")
+}
+
+enum ArtistInsightKind {
+  ACTIVE_SECONDARY_MARKET
+  BIENNIAL
+  COLLECTED
+  GROUP_SHOW
+  REVIEWED
+  SOLO_SHOW
 }
 
 type ArtistMeta {
