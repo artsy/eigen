@@ -107,7 +107,7 @@ export const ArtsyWebViewPage: React.FC<
   }
 
   return (
-    <Flex flex={1} pt={paddingTop}>
+    <Flex flex={1} pt={paddingTop} backgroundColor="white">
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           rightCloseButton={useRightCloseButton}
