@@ -335,3 +335,13 @@ When [this](https://github.com/storybookjs/react-native/pull/345) is merged, or 
 #### Explanation/Context
 
 Storybook does not render outside the safe area, so for `Screen` and friends, we can't really use storybook otherwise. With this patch, we can now render outside the safe area, by adding `parameters: { noSafeArea: true }` in the new form of stories.
+
+## react-native-reanimated patch-package
+
+#### When can we remove this:
+
+Once we can remove it and have `yarn type-check` pass. They have some broken types and they are messing with our typechecking, so we will ignore until they are fixed, maybe in a future version.
+
+#### Explanation/Context:
+
+Types failing because of broken types in the package.
