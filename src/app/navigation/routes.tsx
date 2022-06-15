@@ -1,5 +1,5 @@
 import { AppModule } from "app/AppRegistry"
-import { ArtsyWebViewConfig } from "app/Components/ArtsyReactWebView"
+import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"

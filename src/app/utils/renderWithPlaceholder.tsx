@@ -99,9 +99,7 @@ export function renderWithPlaceholder<Props>({
 
 // tslint:disable-next-line:variable-name
 export const __renderWithPlaceholderTestUtils__ = __TEST__
-  ? {
-      allowFallbacksAtTestTime: false,
-    }
+  ? { allowFallbacksAtTestTime: false }
   : undefined
 
 if (__TEST__) {

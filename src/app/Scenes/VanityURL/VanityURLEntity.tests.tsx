@@ -33,7 +33,7 @@ describe("VanityURLEntity", () => {
     env = require("app/relay/createEnvironment").defaultEnvironment
   })
 
-  it("renders an VanityURLPossibleRedirect when 404", () => {
+  it("renders a VanityURLPossibleRedirect when 404", () => {
     if (__renderWithPlaceholderTestUtils__) {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
     }
