@@ -44,8 +44,10 @@ export type OnboardingNavigationStack = {
     tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
   }
   ForgotPassword: undefined
-  OnboardingWebView: { url: string }
+  OnboardingWebView: { url: WebViewRoute }
 }
+
+type WebViewRoute = "/privacy" | "/terms" | "/conditions-of-sale"
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
