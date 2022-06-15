@@ -1,11 +1,9 @@
-// keep this import of storybook first, otherwise it might produce errors when debugging
-// import { StorybookUIRoot } from "../storybook/storybook-ui"
-
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { SafeAreaInsets, useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
+import { StorybookUIRoot } from "storybook/StorybookUI"
 import { AppProviders } from "./AppProviders"
 import { ArtsyWebViewPage } from "./Components/ArtsyWebView"
 import { FadeIn } from "./Components/FadeIn"
@@ -308,7 +306,7 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
-  // Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
+  Storybook: reactModule(StorybookUIRoot),
   Admin: reactModule(Admin, { alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
