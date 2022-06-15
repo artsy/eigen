@@ -52,6 +52,7 @@ export const ArtsyWebViewPage: React.FC<
     url: string
     isPresentedModally?: boolean
     backProps?: GoBackProps
+    backAction?: () => void
   } & ArtsyWebViewConfig
 > = ({
   url,
@@ -62,6 +63,7 @@ export const ArtsyWebViewPage: React.FC<
   useRightCloseButton = false,
   showShareButton,
   backProps,
+  backAction,
 }) => {
   const paddingTop = useScreenDimensions().safeAreaInsets.top
 
@@ -89,7 +91,11 @@ export const ArtsyWebViewPage: React.FC<
   }
 
   const handleGoBack = () => {
-    goBack(backProps)
+    if (backAction) {
+      backAction()
+    } else {
+      goBack(backProps)
+    }
   }
 
   const onRightButtonPress = () => {
