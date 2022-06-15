@@ -2,12 +2,12 @@
 set -euxo pipefail
 
 
-SWIFT_FILE=Pods/Nimble-Snapshots/HaveValidSnapshot.swift
+SWIFT_FILE=ios/Pods/Nimble-Snapshots/HaveValidSnapshot.swift
 
-OBJ_H_FILE=Pods/Expecta+Snapshots/EXPMatchers+FBSnapshotTest.h
-OBJ_M_FILE=Pods/Expecta+Snapshots/EXPMatchers+FBSnapshotTest.m
+OBJ_H_FILE=ios/Pods/Expecta+Snapshots/EXPMatchers+FBSnapshotTest.h
+OBJ_M_FILE=ios/Pods/Expecta+Snapshots/EXPMatchers+FBSnapshotTest.m
 
-OUR_FILE=Artsy_Tests/Extensions/ARExpectaExtensions.m
+OUR_FILE=ios/ArtsyTests/Extensions/ARExpectaExtensions.m
 
 TEMP_FILE=.recordingSnapshots
 

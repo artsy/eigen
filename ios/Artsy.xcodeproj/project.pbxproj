@@ -159,7 +159,6 @@
 		CB4328B427E8FEE500B29DD6 /* LiveAuctionSocketCommunicatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43279127E8FEE400B29DD6 /* LiveAuctionSocketCommunicatorSpec.swift */; };
 		CB4328B527E8FEE500B29DD6 /* LiveAuctionStaticDataFetcherSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43279227E8FEE400B29DD6 /* LiveAuctionStaticDataFetcherSpec.swift */; };
 		CB4328B627E8FEE500B29DD6 /* LiveAuctionStateReconcilerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43279327E8FEE400B29DD6 /* LiveAuctionStateReconcilerSpec.swift */; };
-		CB4328B727E8FEE500B29DD6 /* ARSystemTimeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43279427E8FEE400B29DD6 /* ARSystemTimeTests.m */; };
 		CB4328B827E8FEE500B29DD6 /* ARUserManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43279627E8FEE400B29DD6 /* ARUserManagerTests.m */; };
 		CB4328B927E8FEE500B29DD6 /* ArtsyAPI+ErrorHandlers.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43279727E8FEE400B29DD6 /* ArtsyAPI+ErrorHandlers.m */; };
 		CB4328BA27E8FEE500B29DD6 /* ArtsyAPI+GraphQLTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43279827E8FEE400B29DD6 /* ArtsyAPI+GraphQLTests.m */; };
@@ -771,7 +770,6 @@
 		CB43279127E8FEE400B29DD6 /* LiveAuctionSocketCommunicatorSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionSocketCommunicatorSpec.swift; sourceTree = "<group>"; };
 		CB43279227E8FEE400B29DD6 /* LiveAuctionStaticDataFetcherSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionStaticDataFetcherSpec.swift; sourceTree = "<group>"; };
 		CB43279327E8FEE400B29DD6 /* LiveAuctionStateReconcilerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionStateReconcilerSpec.swift; sourceTree = "<group>"; };
-		CB43279427E8FEE400B29DD6 /* ARSystemTimeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSystemTimeTests.m; sourceTree = "<group>"; };
 		CB43279627E8FEE400B29DD6 /* ARUserManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserManagerTests.m; sourceTree = "<group>"; };
 		CB43279727E8FEE400B29DD6 /* ArtsyAPI+ErrorHandlers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+ErrorHandlers.m"; sourceTree = "<group>"; };
 		CB43279827E8FEE400B29DD6 /* ArtsyAPI+GraphQLTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ArtsyAPI+GraphQLTests.m"; sourceTree = "<group>"; };
@@ -2046,7 +2044,6 @@
 			isa = PBXGroup;
 			children = (
 				CB43279027E8FEE400B29DD6 /* Live_Auctions */,
-				CB43279427E8FEE400B29DD6 /* ARSystemTimeTests.m */,
 				CB43279527E8FEE400B29DD6 /* API_Modules */,
 				CB43279B27E8FEE400B29DD6 /* LiveAuctionLotViewModelSpecs.swift */,
 				CB43279C27E8FEE400B29DD6 /* ARRouterTests.m */,
@@ -3109,8 +3106,8 @@
 			children = (
 				CBE3258627E275A100395A93 /* Buttons */,
 				CBE3258C27E275A100395A93 /* ARTextView.h */,
-				CBE3258D27E275A100395A93 /* StyledSubclasses.h */,
 				CBE3258E27E275A100395A93 /* ARTextView.m */,
+				CBE3258D27E275A100395A93 /* StyledSubclasses.h */,
 			);
 			path = Styled_Subclasses;
 			sourceTree = "<group>";
@@ -3118,10 +3115,10 @@
 		CBE3258627E275A100395A93 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				CBE3258A27E275A100395A93 /* ARBidButton.h */,
 				CBE3258727E275A100395A93 /* ARBidButton.m */,
 				CBE3258827E275A100395A93 /* ARNvagiationButton+Swift.swift */,
 				CBE3258927E275A100395A93 /* ARNavigationButton.h */,
-				CBE3258A27E275A100395A93 /* ARBidButton.h */,
 				CBE3258B27E275A100395A93 /* ARNavigationButton.m */,
 			);
 			path = Buttons;
@@ -4280,7 +4277,6 @@
 				CB43295327E8FEE600B29DD6 /* NSDate+RangeTests.m in Sources */,
 				CB43286F27E8FEE500B29DD6 /* AuctionLotMetadataStackScrollViewTests.swift in Sources */,
 				CB43295627E8FEE600B29DD6 /* SaleArtwork+Extensions.m in Sources */,
-				CB4328B727E8FEE500B29DD6 /* ARSystemTimeTests.m in Sources */,
 				CB43295C27E90BD000B29DD6 /* Schedule.swift in Sources */,
 				CB43287327E8FEE500B29DD6 /* ARValueTransformerTests.m in Sources */,
 				CB4328BB27E8FEE500B29DD6 /* ArtsyAPI+PrivateTests.m in Sources */,

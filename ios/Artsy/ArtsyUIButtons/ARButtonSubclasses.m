@@ -56,17 +56,6 @@ const CGFloat ARButtonAnimationDuration = 0.15;
 @end
 
 
-@implementation ARUppercaseButton
-
-- (void)setTitle:(NSString *)title forState:(UIControlState)state
-{
-    title = [title uppercaseString];
-    [super setTitle:title forState:state];
-}
-
-@end
-
-
 @interface ARFlatButton ()
 @property (nonatomic, strong) NSMutableDictionary *backgroundColors;
 @property (nonatomic, strong) NSMutableDictionary *borderColors;
