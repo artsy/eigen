@@ -203,10 +203,10 @@ export const SubmitArtwork = () => {
   return (
     <NavigationContainer independent>
       <StackNavigator.Navigator
-        headerMode="screen"
         detachInactiveScreens={false}
         screenOptions={{
           headerShown: false,
+          headerMode: "screen",
           cardStyle: { backgroundColor: "white" },
         }}
       >

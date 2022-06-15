@@ -13,7 +13,7 @@ interface FlatListRequiredContext {
 
 export const StickyTabPageFlatListContext = createContext<FlatListRequiredContext>(null as any)
 
-const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 
 export interface StickyTabSection {
   key: string // must be unique per-tab

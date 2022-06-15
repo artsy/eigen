@@ -16,7 +16,11 @@ const TabContent = ({
 )
 
 export const BottomTabsNavigator = () => (
-  <Tab.Navigator tabBar={() => <BottomTabs />} backBehavior="firstRoute">
+  <Tab.Navigator
+    tabBar={() => <BottomTabs />}
+    backBehavior="firstRoute"
+    screenOptions={{ headerShown: false }}
+  >
     <Tab.Screen
       name="home"
       component={TabContent}

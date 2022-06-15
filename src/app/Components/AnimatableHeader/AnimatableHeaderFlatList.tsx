@@ -4,11 +4,11 @@ import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 import { AnimatableHeaderLargeTitle } from "./AnimatableHeaderLargeTitle"
 import { AnimatableHeaderShadow } from "./AnimatableHeaderShadow"
 
-const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList)
 
 export const AnimatableHeaderFlatList = <T extends any>(props: FlatListProps<T>) => {
   const { ListHeaderComponent, ...other } = props
-  const { scrollOffsetY } = useAnimatableHeaderContext()
+  const { onScrollForAnimation } = useAnimatableHeaderContext()
 
   return (
     <>
@@ -21,13 +21,7 @@ export const AnimatableHeaderFlatList = <T extends any>(props: FlatListProps<T>)
             {ListHeaderComponent}
           </>
         }
-        onScroll={Animated.event([
-          {
-            nativeEvent: {
-              contentOffset: { y: scrollOffsetY },
-            },
-          },
-        ])}
+        onScroll={onScrollForAnimation}
       />
       <AnimatableHeaderShadow />
     </>

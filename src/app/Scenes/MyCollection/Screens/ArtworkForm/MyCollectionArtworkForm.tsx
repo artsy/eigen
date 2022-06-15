@@ -76,7 +76,7 @@ export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
     }
 )
 
-const navContainerRef = { current: null as NavigationContainerRef | null }
+const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
   const { trackEvent } = useTracking()

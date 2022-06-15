@@ -1,7 +1,7 @@
 import { NavigationContainer, NavigationContainerRef, StackActions } from "@react-navigation/native"
 import React from "react"
 import { View } from "react-native"
-import { createNativeStackNavigator } from "react-native-screens/native-stack"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 const Stack = createNativeStackNavigator()
 interface ScreenProps {
@@ -24,7 +24,7 @@ const ScreenWrapper: React.FC<{ route: { params: ScreenProps } }> = (props) => {
 class NavigatorIOS extends React.Component<{
   initialRoute: { component: React.ComponentType<any>; passProps?: object }
 }> {
-  navigator: NavigationContainerRef | null = null
+  navigator: NavigationContainerRef<any> | null = null
   push(args: { component: React.ComponentType<any>; title?: string; passProps?: object }) {
     const props: ScreenProps = {
       Component: args.component,

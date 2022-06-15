@@ -21,7 +21,7 @@ import { NativeModules } from "react-native"
  */
 
 // tslint:disable-next-line:variable-name
-export const __unsafe_mainModalStackRef = { current: null as NavigationContainerRef | null }
+export const __unsafe_mainModalStackRef = { current: null as NavigationContainerRef<any> | null }
 
 type Mutable<T> = T extends object
   ? {

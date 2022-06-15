@@ -82,11 +82,6 @@ export const PlaceholderBox: React.FC<ViewStyle> = ({ children, ...styles }) => 
     <Animated.View
       ref={ref}
       style={[{ borderRadius: 2 }, { opacity, backgroundColor: color("black10") }, styles] as any}
-      onLayout={() => {
-        ref.current?.getNode().measureInWindow((_w, h, _x, y) => {
-          verticalOffset.setValue(-y + h / 2)
-        })
-      }}
       children={children}
     />
   )

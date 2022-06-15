@@ -122,9 +122,9 @@ export interface AuthPromiseRejectType {
   message: string
   meta?: {
     email: string
-    provider: string
+    provider: OAuthProvider
     name?: string
-    existingProviders?: string[]
+    existingProviders?: OAuthProvider[]
     oauthToken?: string
     idToken?: string
     appleUid?: string
