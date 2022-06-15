@@ -1,23 +1,22 @@
+import { AverageSalePriceRail_me$key } from "__generated__/AverageSalePriceRail_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
+import { extractNodes } from "app/utils/extractNodes"
 import { Flex } from "palette"
 import React from "react"
 import { FlatList } from "react-native-gesture-handler"
+import { useFragment } from "react-relay"
+import { graphql } from "relay-runtime"
 import { AverageSalePriceListItem, AverageSalePriceListSeparator } from "./AverageSalePriceListItem"
-
-const item2 = {
-  artist: { name: "Andy Warhol" },
-  images: {
-    thumbnail: {
-      url: "https://d2v80f5yrouhh2.cloudfront.net/EBrAWqoP97vgCzSdnlRKgg/thumbnail.jpg",
-    },
-  },
-  priceRealized: { cents: 1100000, display: "€11,000", displayUSD: "US$11,806" },
-  title: "Some title, 1234",
-  medium: "Painting",
+interface AverageSalePriceRailProps {
+  me: AverageSalePriceRail_me$key
 }
-const data = [item2, item2]
-export const AverageSalePriceRail: React.FC = () => {
+
+export const AverageSalePriceRail: React.FC<AverageSalePriceRailProps> = (props) => {
+  const me = useFragment(fragment, props.me)
+
+  const artworks = extractNodes(me.averageSalePriceUpdates)
+
   return (
     <Flex pb={2} pt={2}>
       <Flex mx={2}>
@@ -31,11 +30,11 @@ export const AverageSalePriceRail: React.FC = () => {
         />
       </Flex>
       <FlatList
-        data={data}
+        data={artworks}
         listKey="average-sale-prices"
-        renderItem={(item) => (
+        renderItem={({ item }) => (
           <AverageSalePriceListItem
-            estimatedArtwork={item.item}
+            artwork={item}
             withHorizontalPadding
             showArtistName
             onPress={() => {
@@ -48,3 +47,16 @@ export const AverageSalePriceRail: React.FC = () => {
     </Flex>
   )
 }
+
+const fragment = graphql`
+  fragment AverageSalePriceRail_me on Me {
+    averageSalePriceUpdates: myCollectionConnection(first: 3) {
+      edges {
+        node {
+          internalID
+          ...AverageSalePriceListItem_artwork
+        }
+      }
+    }
+  }
+`
