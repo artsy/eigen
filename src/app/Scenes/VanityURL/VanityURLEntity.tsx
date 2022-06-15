@@ -76,6 +76,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
         `}
         variables={{ id: slug }}
         render={renderWithPlaceholder({
+          showNotFoundView: false,
           renderFallback: () => <VanityURLPossibleRedirect slug={slug} />,
           renderPlaceholder: () => {
             switch (entity) {

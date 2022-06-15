@@ -2,7 +2,7 @@ import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlacehold
 import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
 import { PartnerContainer } from "app/Scenes/Partner"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import { Spinner } from "palette"
 import React from "react"
@@ -13,19 +13,17 @@ import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
 jest.unmock("react-relay")
 
-jest.mock("./VanityURLPossibleRedirect", () => {
-  return {
-    VanityURLPossibleRedirect: () => null,
-  }
-})
+jest.mock("./VanityURLPossibleRedirect", () => ({
+  VanityURLPossibleRedirect: () => null,
+}))
 
 const TestRenderer: React.FC<{
   entity: "fair" | "partner" | "unknown"
   slugType?: "profileID" | "fairID"
   slug: string
-}> = ({ entity, slugType, slug }) => {
-  return <VanityURLEntityRenderer entity={entity} slugType={slugType} slug={slug} />
-}
+}> = ({ entity, slugType, slug }) => (
+  <VanityURLEntityRenderer entity={entity} slugType={slugType} slug={slug} />
+)
 
 describe("VanityURLEntity", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -35,14 +33,15 @@ describe("VanityURLEntity", () => {
     env = require("app/relay/createEnvironment").defaultEnvironment
   })
 
-  it("renders a VanityURLPossibleRedirect when 404", () => {
+  it("renders an VanityURLPossibleRedirect when 404", () => {
     if (__renderWithPlaceholderTestUtils__) {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
     }
-    const tree = renderWithWrappers(<TestRenderer entity="unknown" slug="some-fair" />)
-    expect(tree.root.findAllByType(VanityURLPossibleRedirect)).toHaveLength(0)
+    const { UNSAFE_getAllByType } = renderWithWrappersTL(
+      <TestRenderer entity="unknown" slug="a-cool-new-url" />
+    )
     env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })
-    expect(tree.root.findAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
+    expect(UNSAFE_getAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
   })
 
   it("renders a fairQueryRenderer when given a fair id", () => {
