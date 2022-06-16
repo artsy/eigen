@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { captureMessage } from "@sentry/react-native"
 import { SavedSearchesList_me$data } from "__generated__/SavedSearchesList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -104,8 +105,13 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
     setFetchingMore(true)
     relay.loadMore(SAVED_SERCHES_PAGE_SIZE, (error) => {
       if (error) {
-        console.log(error.message)
+        if (__DEV__) {
+          console.error(error)
+        } else {
+          captureMessage(error.stack!)
+        }
       }
+
       setFetchingMore(false)
     })
   }
