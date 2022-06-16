@@ -36,7 +36,7 @@ podspec = Pod::Spec.new do |s|
   s.dependency 'Pulley'
 
   # To ensure a consistent image cache between app/lib
-  s.dependency 'SDWebImage', '5.8.3'
+  s.dependency 'SDWebImage', '5.11.1'
 
   # For custom animations in DeepZoomOverlay
   s.dependency 'INTUAnimationEngine'

@@ -34,7 +34,6 @@
 - [Generate a Release build for local testing](generate_a_release_build_for_local_testing.md)
 - [Pull Request template](pull_request_template.md)
 
-
 ### Beta
 
 - [Welcome to eigen beta](welcome_to_eigen_beta.md)

@@ -239,7 +239,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       const { shouldAddPadding } = this.props
       const artworkPadding = shouldAddPadding ? 40 : 0
 
-      return (width - sectionMargins) / (this.props.sectionCount! - artworkPadding)
+      return (width - sectionMargins - artworkPadding) / this.props.sectionCount!
     }
     return 0
   }
@@ -314,6 +314,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
           ? MyCollectionArtworkGridItemFragmentContainer
           : Artwork
 
+        const aspectRatio = artwork.image?.aspectRatio ?? 1
+        const imgWidth = this.state.sectionDimension
+        const imgHeight = imgWidth / aspectRatio
         artworkComponents.push(
           <ItemComponent
             contextScreenOwnerType={this.props.contextScreenOwnerType}
@@ -329,6 +332,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             itemIndex={itemIndex}
             updateRecentSearchesOnTap={this.props.updateRecentSearchesOnTap}
             {...this.props.itemComponentProps}
+            height={imgHeight}
+            width={imgWidth}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
