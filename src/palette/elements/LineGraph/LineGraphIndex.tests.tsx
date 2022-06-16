@@ -3,6 +3,7 @@ import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { LineGraphIndex } from "./LineGraphIndex"
 import { LineGraphStore, LineGraphStoreProvider } from "./LineGraphStore"
+import { _AVAILABLE_MEDIUMS } from "./testHelpers"
 
 jest.unmock("react-relay")
 
@@ -16,7 +17,13 @@ describe("LineGraphIndex", () => {
 
   const getWrapper = () => {
     return (
-      <LineGraphStoreProvider initialData={{ totalLots: 50, averagePrice: "USD $12,586" }}>
+      <LineGraphStoreProvider
+        initialData={{
+          totalLots: 50,
+          averagePrice: "USD $12,586",
+          availableMediums: _AVAILABLE_MEDIUMS,
+        }}
+      >
         <LineGraphIndex />
         {/* Since we can't use hooks inside the tests because they need to be inside
         a functional component, we are using this trick to get an instance of the store */}

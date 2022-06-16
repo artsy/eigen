@@ -5,12 +5,13 @@ const DOT_DIAMETER = 8
 
 interface Props {
   selectedMedium: string | null
+  disabled?: boolean
 }
 
-export const ColoredDot: React.FC<Props> = ({ selectedMedium }) => {
+export const ColoredDot: React.FC<Props> = ({ selectedMedium, disabled = false }) => {
   return (
     <Flex
-      backgroundColor={getColorByMedium(selectedMedium)}
+      backgroundColor={!disabled ? getColorByMedium(selectedMedium) : "#707070"}
       width={DOT_DIAMETER}
       height={DOT_DIAMETER}
       borderRadius={DOT_DIAMETER / 2}
@@ -22,7 +23,7 @@ export const ColoredDot: React.FC<Props> = ({ selectedMedium }) => {
 }
 
 const getColorByMedium = (medium: string | null) => {
-  if (!medium) {
+  if (!medium || medium === "All") {
     return ALL_COLOR
   }
   return (mediumToColor as any)[medium] || getRandomColor()

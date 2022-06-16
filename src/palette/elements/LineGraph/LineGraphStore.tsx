@@ -13,20 +13,25 @@ export enum Duration {
 
 interface LineGraphStoreState {
   activeIndex: ActiveIndex
+  availableMediums: string[]
   averagePrice: string
-  selectedMedium: string | null
+  selectedMedium: string
   totalLots: number
   selectedDuration: Duration
 }
 
 export interface LineGraphStoreModel extends LineGraphStoreState {
-  setSelectedMedium: Action<this, string | null>
+  setSelectedMedium: Action<this, string>
   setActiveIndex: Action<this, ActiveIndex>
 }
 
-type StoreInitialState = Pick<LineGraphStoreState, "averagePrice" | "totalLots">
+type StoreInitialState = Pick<
+  LineGraphStoreState,
+  "averagePrice" | "availableMediums" | "totalLots"
+>
 
 export const getToastStoreModel = ({
+  availableMediums,
   averagePrice,
   totalLots,
 }: StoreInitialState): LineGraphStoreModel => ({
@@ -36,8 +41,9 @@ export const getToastStoreModel = ({
     numberOfLots: null,
     year: null,
   },
+  availableMediums,
   averagePrice,
-  selectedMedium: null,
+  selectedMedium: "All",
   totalLots,
   selectedDuration: Duration.Last3Years,
 

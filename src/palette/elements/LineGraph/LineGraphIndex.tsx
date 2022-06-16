@@ -50,7 +50,7 @@ export const LineGraphIndex: React.FC<LineGraphIndexProps> = () => {
       <Flex flexDirection="row" alignItems="center">
         <ColoredDot selectedMedium={selectedMedium} />
         <Text variant="xs" color="black60">
-          {selectedMedium || "All"}
+          {selectedMedium}
         </Text>
       </Flex>
       <Text variant="xs" color="black60">

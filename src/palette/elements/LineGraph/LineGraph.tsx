@@ -1,9 +1,10 @@
 import { Flex } from "palette"
 import React from "react"
 import { LineGraphIndex } from "./LineGraphIndex"
+import { LineGraphMediumPicker } from "./LineGraphMediumPicker"
 import { LineGraphStoreProvider } from "./LineGraphStore"
+import { _AVAILABLE_MEDIUMS } from "./testHelpers"
 
-// tslint:disable-next-line:no-empty-interface
 interface Props {
   // Number of lots sold in the entire selected period
   totalLots: number
@@ -13,10 +14,13 @@ interface Props {
 
 export const LineGraph: React.FC<Props> = ({ totalLots = 50, averagePrice = "USD $12,586" }) => {
   return (
-    <LineGraphStoreProvider initialData={{ totalLots, averagePrice }}>
-      <Flex>
+    <Flex mt={5}>
+      <LineGraphStoreProvider
+        initialData={{ totalLots, averagePrice, availableMediums: _AVAILABLE_MEDIUMS }}
+      >
         <LineGraphIndex />
-      </Flex>
-    </LineGraphStoreProvider>
+        <LineGraphMediumPicker />
+      </LineGraphStoreProvider>
+    </Flex>
   )
 }
