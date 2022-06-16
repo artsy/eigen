@@ -92,15 +92,9 @@ interface ModernTickerProps {
   duration: CountdownTimerProps["duration"]
   hasStarted?: boolean
   isExtended?: boolean
-  startAt?: string | null
 }
 
-export const ModernTicker: React.FC<ModernTickerProps> = ({
-  duration,
-  hasStarted,
-  isExtended,
-  startAt,
-}) => {
+export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted, isExtended }) => {
   if (!duration) {
     return null
   }
@@ -109,8 +103,6 @@ export const ModernTicker: React.FC<ModernTickerProps> = ({
     hours: duration.hours().toString(),
     minutes: duration.minutes().toString(),
     seconds: duration.seconds().toString(),
-    startAt: startAt ?? "",
-    endDate: "",
   }
   const timerInfo = getTimerInfo(time, { hasStarted, isExtended })
 
