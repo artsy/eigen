@@ -7,9 +7,8 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { GlobalStore } from "app/store/GlobalStore"
 import { CURRENCIES } from "app/utils/currencies"
-import { withSuspense } from "app/utils/withSuspense"
-import { Flex, RadioButton, Select, Text, Touchable } from "palette"
-import React, { useState } from "react"
+import { Flex, RadioButton, Select, Spinner, Text, Touchable } from "palette"
+import React, { Suspense, useState } from "react"
 import { Alert } from "react-native"
 import { useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -17,7 +16,7 @@ import { Separator } from "../../../palette/elements/Separator/Separator"
 import { Currency, Metric } from "../Search/UserPrefsModel"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
-export const MyAccountPreferencesQueryRenderer = withSuspense(() => {
+const MyAccountPreferencesScreen = () => {
   const data = useLazyLoadQuery<MyAccountPreferencesQuery>(MyAccountPreferencesScreenQuery, {}, {})
 
   const [currency, setCurrency] = useState(data.me?.currencyPreference as Currency)
@@ -100,7 +99,7 @@ export const MyAccountPreferencesQueryRenderer = withSuspense(() => {
       </Flex>
     </PageWithSimpleHeader>
   )
-})
+}
 
 const MyAccountPreferencesScreenQuery = graphql`
   query MyAccountPreferencesQuery {
@@ -110,3 +109,9 @@ const MyAccountPreferencesScreenQuery = graphql`
     }
   }
 `
+
+export const MyAccountPreferencesQueryRenderer = () => (
+  <Suspense fallback={<Spinner />}>
+    <MyAccountPreferencesScreen />
+  </Suspense>
+)
