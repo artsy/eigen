@@ -11,11 +11,16 @@ interface AverageSalePriceAtAuctionProps {
   artistData: ArtistData
 }
 
-export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps> = ({
-  artistData,
-}) => {
+const mockArtist: ArtistData = {
+  name: "Andy Warhol",
+  initials: "AW",
+  formattedNationalityAndBirthday: "American, 1928–1987",
+  imageUrl: "https://d32dm0rphc51dk.cloudfront.net/E-k-uLoQADM8AjadsSKHrA/square.jpg",
+}
+
+export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps> = () => {
   const [isVisible, setVisible] = useState<boolean>(false)
-  const [selectedArtist, setSelectedArtist] = useState<ArtistData>(artistData)
+  const [selectedArtist, setSelectedArtist] = useState<ArtistData>(mockArtist)
 
   return (
     <Flex mx={2} pt={6}>

@@ -6,11 +6,7 @@ import { FlatList } from "react-native-gesture-handler"
 import { AverageSalePriceListItem, AverageSalePriceListSeparator } from "./AverageSalePriceListItem"
 
 const item2 = {
-  artist: {
-    name: "Andy Warhol",
-    formattedNationalityAndBirthday: "American, 1928–1987",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/E-k-uLoQADM8AjadsSKHrA/square.jpg",
-  },
+  artist: { name: "Andy Warhol" },
   images: {
     thumbnail: {
       url: "https://d2v80f5yrouhh2.cloudfront.net/EBrAWqoP97vgCzSdnlRKgg/thumbnail.jpg",
@@ -29,9 +25,7 @@ export const AverageSalePriceRail: React.FC = () => {
           capitalized={false}
           title="Average Auction Price in the last 3 years"
           onPress={() => {
-            navigate("/my-collection/average-sale-price-at-auction", {
-              passProps: { artistData: data[0]?.artist },
-            })
+            navigate("/my-collection/average-sale-price-at-auction")
           }}
           mb={1}
         />
@@ -39,15 +33,13 @@ export const AverageSalePriceRail: React.FC = () => {
       <FlatList
         data={data}
         listKey="average-sale-prices"
-        renderItem={({ item }) => (
+        renderItem={(item) => (
           <AverageSalePriceListItem
-            estimatedArtwork={item}
+            estimatedArtwork={item.item}
             withHorizontalPadding
             showArtistName
             onPress={() => {
-              navigate("/my-collection/average-sale-price-at-auction", {
-                passProps: { artistData: item.artist },
-              })
+              return
             }}
           />
         )}
