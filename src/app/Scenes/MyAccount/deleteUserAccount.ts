@@ -9,10 +9,12 @@ import { commitMutation, graphql } from "relay-runtime"
 export const deleteUserAccount = async (
   input: DeleteAccountInput = {},
   environment: Environment = defaultEnvironment
-) => {
-  await new Promise((resolve, reject) =>
+): Promise<deleteUserAccountMutation["response"]> => {
+  return new Promise<deleteUserAccountMutation["response"]>((resolve, reject) =>
     commitMutation<deleteUserAccountMutation>(environment, {
-      onCompleted: resolve,
+      onCompleted: (response) => {
+        resolve(response)
+      },
       mutation: graphql`
         mutation deleteUserAccountMutation($input: DeleteAccountInput!) {
           deleteMyAccountMutation(input: $input) {
@@ -32,8 +34,8 @@ export const deleteUserAccount = async (
         }
       `,
       variables: { input },
-      onError: (e) => {
-        reject("Something went wrong")
+      onError: (error) => {
+        reject(error)
       },
     })
   )

@@ -1,12 +1,16 @@
+import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.graphql"
 import { AuctionIcon, Box, Button, Flex, GenomeIcon, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
 import { color } from "styled-system"
+import { deleteUserAccount } from "./deleteUserAccount"
 
 const ICON_SIZE = 14
 
 export const MyAccountDeleteAccount: React.FC = () => {
-  const [reason, setReason] = useState<string>("")
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string>("")
+  const [explanation, setExplanation] = useState<string>("")
   const [password, setPassword] = useState<string>("")
 
   return (
@@ -41,7 +45,7 @@ export const MyAccountDeleteAccount: React.FC = () => {
         <Input
           multiline
           placeholder="Please share with us why you are leaving"
-          onChangeText={setReason}
+          onChangeText={setExplanation}
         />
         <Spacer mt="3" />
         <Text variant="xs" color={color("black100")} pb="1px">
@@ -54,9 +58,35 @@ export const MyAccountDeleteAccount: React.FC = () => {
           secureTextEntry
           placeholder="Enter your password to continue"
           onChangeText={setPassword}
+          error={error}
         />
         <Spacer mt="2" />
-        <Button block disabled={reason.length === 0 || password.length === 0}>
+        <Button
+          block
+          disabled={explanation.length === 0 || password.length === 0}
+          loading={loading}
+          onPress={async () => {
+            try {
+              setLoading(true)
+              setError("")
+              const input: DeleteAccountInput = {
+                explanation,
+                password,
+              }
+              const result = await deleteUserAccount(input)
+              const mutationError =
+                result.deleteMyAccountMutation?.userAccountOrError?.mutationError
+              if (mutationError?.message) {
+                setError(mutationError?.message)
+              }
+
+              setLoading(false)
+            } catch (e: any) {
+              setError("Something went wrong")
+              setLoading(false)
+            }
+          }}
+        >
           Delete My Account
         </Button>
         <Spacer mt="1" />
