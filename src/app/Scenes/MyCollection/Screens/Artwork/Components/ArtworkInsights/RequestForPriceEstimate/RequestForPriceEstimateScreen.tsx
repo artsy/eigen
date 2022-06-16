@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, SentRequestPriceEstimate } from "@artsy/cohesion"
 import { RequestForPriceEstimateScreenMutation } from "__generated__/RequestForPriceEstimateScreenMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
 import { goBack } from "app/navigation/navigate"
@@ -6,6 +7,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik } from "formik"
 import React from "react"
 import { Environment } from "react-relay"
+import { useTracking } from "react-tracking"
 import { commitMutation, graphql } from "relay-runtime"
 import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import * as Yup from "yup"
@@ -13,6 +15,8 @@ import { RequestForPriceEstimateForm } from "./RequestForPriceEstimateForm"
 
 interface RequestForPriceEstimateScreenProps {
   artworkID: string
+  artworkSlug: string
+  demandRank?: number
   email: string
   name: string
   phone: string
@@ -64,10 +68,14 @@ export const requestForPriceEstimateMutation = (
 
 export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScreenProps> = ({
   artworkID,
+  artworkSlug,
+  demandRank,
   email,
   name,
   phone,
 }) => {
+  const { trackEvent } = useTracking()
+
   const formik = useFormik<RequestForPriceEstimateFormikSchema>({
     validateOnChange: true,
     initialValues: {
@@ -94,6 +102,13 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
               duration: "long",
             }
           )
+          trackEvent(
+            tracks.trackSentRequestPriceEstimate(
+              myCollectionArtworkId,
+              artworkSlug,
+              demandRank ?? undefined
+            )
+          )
           goBack()
         }
       }
@@ -116,4 +131,20 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
       </ArtsyKeyboardAvoidingViewContext.Provider>
     </FormikProvider>
   )
+}
+
+const tracks = {
+  trackSentRequestPriceEstimate: (
+    artworkId: string,
+    artworkSlug: string,
+    demandRank?: number
+  ): SentRequestPriceEstimate => ({
+    action: ActionType.sentRequestPriceEstimate,
+    context_module: ContextModule.myCollectionArtworkInsights,
+    context_screen: OwnerType.myCollectionArtworkInsights,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: artworkId,
+    context_screen_owner_slug: artworkSlug,
+    demand_index: demandRank,
+  }),
 }
