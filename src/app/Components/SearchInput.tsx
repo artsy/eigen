@@ -82,12 +82,14 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
         </Animated.View>
         {!!enableCancelButton && (
           <Animated.View
-            style={{
-              maxHeight: INPUT_HEIGHT,
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "row",
-            }}
+            style={[
+              {
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "row",
+              },
+              props.error ? { maxHeight: INPUT_HEIGHT } : {},
+            ]}
             onLayout={Animated.event([{ nativeEvent: { layout: { width: cancelWidth } } }])}
           >
             <TouchableOpacity
