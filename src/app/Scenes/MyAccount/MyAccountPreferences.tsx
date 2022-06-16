@@ -4,6 +4,7 @@ import {
   MyAccountPreferencesQuery,
 } from "__generated__/MyAccountPreferencesQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { SectionTitle } from "app/Components/SectionTitle"
 import { GlobalStore } from "app/store/GlobalStore"
 import { CURRENCIES } from "app/utils/currencies"
 import { withSuspense } from "app/utils/withSuspense"
@@ -56,10 +57,8 @@ export const MyAccountPreferencesQueryRenderer = withSuspense(() => {
 
   return (
     <PageWithSimpleHeader title="Preferences">
-      <Flex px={2} pt={1}>
-        <Text variant="md" mb={1}>
-          Currency
-        </Text>
+      <Flex px={2} pt={2}>
+        <SectionTitle title="Currency" />
         <Select
           title="Currency"
           placeholder="Currency"
@@ -73,17 +72,14 @@ export const MyAccountPreferencesQueryRenderer = withSuspense(() => {
           testID="CurrencyPicker"
         />
 
-        <Separator my={1} />
+        <Separator my={4} />
 
-        <Text variant="md" mb={1}>
-          Inches or Centimeters
-        </Text>
+        <SectionTitle title="Length Unit" />
         <Flex flexDirection="row">
           <Touchable
             haptic
             onPress={() => handleMetricChange("CM")}
             hitSlop={{ top: 10, left: 30, right: 10, bottom: 10 }}
-            style={{ width: 80 }}
           >
             <Flex flexDirection="row">
               <RadioButton selected={metric === "CM"} />
@@ -94,7 +90,6 @@ export const MyAccountPreferencesQueryRenderer = withSuspense(() => {
             haptic
             onPress={() => handleMetricChange("IN")}
             hitSlop={{ top: 10, left: 30, right: 10, bottom: 10 }}
-            style={{ width: 80 }}
           >
             <Flex flexDirection="row">
               <RadioButton selected={metric === "IN"} />
