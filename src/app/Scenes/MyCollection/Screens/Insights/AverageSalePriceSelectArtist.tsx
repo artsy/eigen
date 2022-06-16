@@ -18,7 +18,7 @@ import { ArtistSectionList } from "./AverageSalePriceSelectArtistList"
 
 const PAGE_SIZE = 20
 
-export type AverageSalePriceArtist = ExtractNodeType<
+export type AverageSalePriceArtistType = ExtractNodeType<
   NonNullable<
     NonNullable<AverageSalePriceSelectArtistModal_myCollectionInfo$data["me"]>["myCollectionInfo"]
   >["collectedArtistsConnection"]

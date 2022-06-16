@@ -7,16 +7,16 @@ import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
 import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { AverageSalePriceArtist } from "./AverageSalePriceSelectArtist"
+import { AverageSalePriceArtistType } from "./AverageSalePriceSelectArtist"
 
 interface ArtistSectionItemProps {
-  artist: AverageSalePriceArtist
+  artist: AverageSalePriceArtistType
   onPress: (artist: AverageSalePriceSelectArtistItem_artist$data) => void
-  first?: boolean
+  isFirst?: boolean
 }
 
 export const ArtistSectionItem: React.FC<ArtistSectionItemProps> = ({
-  first,
+  isFirst,
   onPress,
   ...restProps
 }) => {
@@ -34,7 +34,7 @@ export const ArtistSectionItem: React.FC<ArtistSectionItemProps> = ({
       haptic
     >
       <Flex
-        pt={first ? 0 : 1}
+        pt={isFirst ? 0 : 1}
         pb={1}
         flexDirection="row"
         justifyContent="space-between"

@@ -4,11 +4,11 @@ import { groupBy, sortBy } from "lodash"
 import { Flex, Text } from "palette"
 import { SectionList, SectionListData } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-import { AverageSalePriceArtist } from "./AverageSalePriceSelectArtist"
+import { AverageSalePriceArtistType } from "./AverageSalePriceSelectArtist"
 import { ArtistSectionItem } from "./AverageSalePriceSelectArtistItem"
 
 interface ArtistSectionListProps {
-  artistsList: AverageSalePriceArtist[]
+  artistsList: AverageSalePriceArtistType[]
   isLoadingNext: boolean
   onEndReached: () => void
   onItemPress: (item: AverageSalePriceSelectArtistItem_artist$data) => void
@@ -51,7 +51,11 @@ export const ArtistSectionList: React.FC<ArtistSectionListProps> = ({
         </Flex>
       )}
       renderItem={({ item, index }) =>
-        item ? <ArtistSectionItem first={index === 0} artist={item} onPress={onItemPress} /> : <></>
+        item ? (
+          <ArtistSectionItem isFirst={index === 0} artist={item} onPress={onItemPress} />
+        ) : (
+          <></>
+        )
       }
       ListFooterComponent={
         isLoadingNext ? (
@@ -66,7 +70,7 @@ export const ArtistSectionList: React.FC<ArtistSectionListProps> = ({
 }
 
 // Sorts the artists by last name initial and groups them
-const groupAndSortArtists = (artistsList: AverageSalePriceArtist[]) => {
+const groupAndSortArtists = (artistsList: AverageSalePriceArtistType[]) => {
   const sorted = sortBy(artistsList, (artist) => artist?.initials?.slice(-1))
 
   return groupBy(sorted, (artist) => artist?.initials?.slice(-1))
