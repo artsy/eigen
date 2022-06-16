@@ -1,11 +1,14 @@
 import { AuctionIcon, Box, Button, Flex, GenomeIcon, Input, Spacer, Text } from "palette"
-import React from "react"
+import React, { useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
 import { color } from "styled-system"
 
 const ICON_SIZE = 14
 
 export const MyAccountDeleteAccount: React.FC = () => {
+  const [reason, setReason] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+
   return (
     <ScrollView>
       <Box pr="2" pl="2">
@@ -35,7 +38,11 @@ export const MyAccountDeleteAccount: React.FC = () => {
           </Text>
         </Flex>
         <Spacer mt="3" />
-        <Input multiline placeholder="Please share with us why you are leaving" />
+        <Input
+          multiline
+          placeholder="Please share with us why you are leaving"
+          onChangeText={setReason}
+        />
         <Spacer mt="3" />
         <Text variant="xs" color={color("black100")} pb="1px">
           {
@@ -43,7 +50,15 @@ export const MyAccountDeleteAccount: React.FC = () => {
           }
         </Text>
         <Spacer mt="2" />
-        <Button block>Delete My Account</Button>
+        <Input
+          secureTextEntry
+          placeholder="Enter your password to continue"
+          onChangeText={setPassword}
+        />
+        <Spacer mt="2" />
+        <Button block disabled={reason.length === 0 || password.length === 0}>
+          Delete My Account
+        </Button>
         <Spacer mt="1" />
         <Button block variant="outline">
           Cancel
