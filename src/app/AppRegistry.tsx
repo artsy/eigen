@@ -63,7 +63,7 @@ import {
 import { MapContainer } from "./Scenes/Map"
 import { NewMapScreen } from "./Scenes/Map/NewMap"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
-import { MyAccountDeleteAccount } from "./Scenes/MyAccount/MyAccountDeleteAccount"
+import { MyAccountDeleteAccountQueryRenderer } from "./Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
 import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
@@ -398,7 +398,7 @@ export const modules = defineModules({
   MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
   MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
-  MyAccountDeleteAccount: reactModule(MyAccountDeleteAccount),
+  MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }),

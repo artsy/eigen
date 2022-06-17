@@ -1,13 +1,22 @@
 import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.graphql"
+import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
+import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { AuctionIcon, Box, Button, Flex, GenomeIcon, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { color } from "styled-system"
 import { deleteUserAccount } from "./deleteUserAccount"
 
 const ICON_SIZE = 14
 
-export const MyAccountDeleteAccount: React.FC = () => {
+interface MyAccountDeleteAccountProps {
+  me: MyAccountDeleteAccount_me$data
+}
+
+const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { hasPassword } }) => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string>("")
   const [explanation, setExplanation] = useState<string>("")
@@ -54,13 +63,17 @@ export const MyAccountDeleteAccount: React.FC = () => {
           }
         </Text>
         <Spacer mt="2" />
-        <Input
-          secureTextEntry
-          placeholder="Enter your password to continue"
-          onChangeText={setPassword}
-          error={error}
-        />
-        <Spacer mt="2" />
+        {!!hasPassword && (
+          <>
+            <Input
+              secureTextEntry
+              placeholder="Enter your password to continue"
+              onChangeText={setPassword}
+              error={error}
+            />
+            <Spacer mt="2" />
+          </>
+        )}
         <Button
           block
           disabled={explanation.length === 0 || password.length === 0}
@@ -95,5 +108,33 @@ export const MyAccountDeleteAccount: React.FC = () => {
         </Button>
       </Box>
     </ScrollView>
+  )
+}
+
+export const MyAccountDeleteAccountFragmentContainer = createFragmentContainer(
+  MyAccountDeleteAccount,
+  {
+    me: graphql`
+      fragment MyAccountDeleteAccount_me on Me {
+        hasPassword
+      }
+    `,
+  }
+)
+
+export const MyAccountDeleteAccountQueryRenderer: React.FC = () => {
+  return (
+    <QueryRenderer<MyAccountDeleteAccountQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query MyAccountDeleteAccountQuery {
+          me {
+            ...MyAccountDeleteAccount_me
+          }
+        }
+      `}
+      variables={{}}
+      render={renderWithLoadProgress(MyAccountDeleteAccountFragmentContainer)}
+    />
   )
 }
