@@ -2299,6 +2299,10 @@ type ArtworkPriceInsights {
   annualLotsSold: Int
   annualValueSoldCents: FormattedNumber
   artistId: String
+  averageSalePriceDisplayText(
+    # Passes in to numeral, such as `'0.00'`
+    format: String = ""
+  ): String
   demandRank: Float
   lastAuctionResultDate: String
   medium: String
