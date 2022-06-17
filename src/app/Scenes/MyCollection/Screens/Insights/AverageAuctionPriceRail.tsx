@@ -1,4 +1,4 @@
-import { AverageSalePriceUpdatesRail_me$key } from "__generated__/AverageSalePriceUpdatesRail_me.graphql"
+import { AverageAuctionPriceRail_me$key } from "__generated__/AverageAuctionPriceRail_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -8,19 +8,19 @@ import React from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { AverageSalePriceUpdateListItem } from "./AverageSalePriceUpdateListItem"
+import { AverageAuctionPriceListItem } from "./AverageAuctionPriceListItem"
 
-interface AverageSalePriceUpdatesRailProps {
-  me: AverageSalePriceUpdatesRail_me$key
+interface AverageAuctionPriceRailProps {
+  me: AverageAuctionPriceRail_me$key
 }
 
-export const AverageSalePriceUpdatesRail: React.FC<AverageSalePriceUpdatesRailProps> = (props) => {
+export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (props) => {
   const me = useFragment(fragment, props.me)
-  const artworks = extractNodes(me.averageSalePriceUpdates)
+  const artworks = extractNodes(me.priceInsightUpdates)
   const groupedArtworks = Object.values(groupBy(artworks, (artwork) => artwork?.artist?.name))
 
   return (
-    <Flex mx={2} my={2}>
+    <Flex mx={2} mb={4}>
       <Flex>
         <SectionTitle
           capitalized={false}
@@ -35,23 +35,22 @@ export const AverageSalePriceUpdatesRail: React.FC<AverageSalePriceUpdatesRailPr
         data={groupedArtworks}
         listKey="average-sale-prices"
         renderItem={({ item }) => (
-          <AverageSalePriceUpdateListItem
+          <AverageAuctionPriceListItem
             artworks={item}
-            showArtistName
             onPress={() => {
               return
             }}
           />
         )}
-        ItemSeparatorComponent={() => <Spacer py={2} />}
+        ItemSeparatorComponent={() => <Spacer py={1} />}
       />
     </Flex>
   )
 }
 
 const fragment = graphql`
-  fragment AverageSalePriceUpdatesRail_me on Me {
-    averageSalePriceUpdates: myCollectionConnection(first: 3, sortByLastAuctionResultDate: true) {
+  fragment AverageAuctionPriceRail_me on Me {
+    priceInsightUpdates: myCollectionConnection(first: 3, sortByLastAuctionResultDate: true) {
       edges {
         node {
           internalID

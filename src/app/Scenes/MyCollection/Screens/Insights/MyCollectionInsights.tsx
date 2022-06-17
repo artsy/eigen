@@ -18,7 +18,7 @@ import { fetchQuery, graphql } from "relay-runtime"
 import { MyCollectionArtworkUploadMessages } from "../ArtworkForm/MyCollectionArtworkUploadMessages"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
-import { AverageSalePriceUpdatesRail } from "./AverageSalePriceUpdatesRail"
+import { AverageAuctionPriceRail } from "./AverageAuctionPriceRail"
 import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
@@ -104,7 +104,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
           <>
             <MarketSignalsSectionHeader />
             <AuctionResultsForArtistsYouCollectRail me={data.me!} />
-            {!!enablePhase1Part2 && <AverageSalePriceUpdatesRail me={data.me} />}
+            {!!enablePhase1Part2 && <AverageAuctionPriceRail me={data.me} />}
             {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
             <ActivateMoreMarketInsightsBanner />
           </>
@@ -154,7 +154,7 @@ export const MyCollectionInsightsScreenQuery = graphql`
   query MyCollectionInsightsQuery {
     me {
       ...AuctionResultsForArtistsYouCollectRail_me
-      ...AverageSalePriceUpdatesRail_me
+      ...AverageAuctionPriceRail_me
       auctionResults: myCollectionAuctionResults(first: 3) {
         totalCount
       }
