@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native"
 import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
@@ -21,6 +22,8 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
   const [error, setError] = useState<string>("")
   const [explanation, setExplanation] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+
+  const navigation = useNavigation()
 
   return (
     <ScrollView>
@@ -108,7 +111,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           Delete My Account
         </Button>
         <Spacer mt="1" />
-        <Button block variant="outline">
+        <Button block variant="outline" onPress={() => navigation.goBack()}>
           Cancel
         </Button>
       </Box>
