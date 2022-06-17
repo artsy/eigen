@@ -185,7 +185,7 @@ export const OpaqueImageView: React.FC<Props> = ({
       {!!isStaging && (
         <View style={{ position: "absolute", zIndex: 1000, top: "50%" }}>
           <Text weight="medium" italic variant="xl" color="devpurple">
-            NewImageView
+            NewImg
           </Text>
         </View>
       )}
