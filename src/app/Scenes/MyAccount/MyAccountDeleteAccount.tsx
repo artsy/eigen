@@ -64,7 +64,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
         <Spacer mt="3" />
         <Text variant="xs" color={color("black100")} pb="1px">
           {
-            "After you submit your request, we will disable your account. It may take up to 7 days to fully delete and remove all of our data."
+            "After you submit your request, we will disable your account. It may take up to 7 days to fully delete and remove all of your data."
           }
         </Text>
         <Spacer mt="2" />
