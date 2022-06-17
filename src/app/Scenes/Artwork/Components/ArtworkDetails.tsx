@@ -1,11 +1,12 @@
 import { ArtworkDetails_artwork$data } from "__generated__/ArtworkDetails_artwork.graphql"
-import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { Box, Join, Spacer, Text } from "palette"
+import React, { useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkDetailsRow } from "./ArtworkDetailsRow"
+import { ArtworkMediumModalFragmentContainer } from "./ArtworkMediumModal"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 interface ArtworkDetailsProps {
@@ -14,12 +15,13 @@ interface ArtworkDetailsProps {
 
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
   const enableLotConditionReport = useFeatureFlag("AROptionsLotConditionReport")
+  const [showArtworkMediumModal, setShowArtworkMediumModal] = useState(false)
 
   const listItems = [
     {
       title: "Medium",
       value: !!artwork.mediumType ? (
-        <TouchableWithoutFeedback onPress={() => navigate(`/artwork/${artwork.slug}/medium`)}>
+        <TouchableWithoutFeedback onPress={() => setShowArtworkMediumModal(true)}>
           <Text color="black60" style={{ textDecorationLine: "underline" }}>
             {artwork.category}
           </Text>
@@ -69,6 +71,11 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
           />
         ))}
       </Join>
+      <ArtworkMediumModalFragmentContainer
+        artwork={artwork}
+        visible={showArtworkMediumModal}
+        onClose={() => setShowArtworkMediumModal(false)}
+      />
     </Box>
   )
 }
@@ -76,6 +83,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
 export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDetails, {
   artwork: graphql`
     fragment ArtworkDetails_artwork on Artwork {
+      ...ArtworkMediumModal_artwork
       slug
       category
       conditionDescription {

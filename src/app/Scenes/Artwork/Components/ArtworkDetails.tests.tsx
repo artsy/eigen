@@ -6,6 +6,10 @@ import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 jest.unmock("react-relay")
 
+jest.mock("app/Scenes/Artwork/Components/ArtworkMediumModal", () => ({
+  ArtworkMediumModalFragmentContainer: () => null,
+}))
+
 describe("Artwork Details", () => {
   it("renders the data if available", () => {
     const testArtwork: ArtworkDetails_artwork$data = {

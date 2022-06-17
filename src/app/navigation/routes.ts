@@ -126,7 +126,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/artist/:artistID", "Artist"),
     addRoute("/artist/:artistID/shows", "ArtistShows"),
     addRoute("/artwork/:artworkID", "Artwork"),
-    addRoute("/artwork/:artworkID/medium", "ArtworkMedium"),
     addRoute("/artist/:artistID/auction-results", "Artist", (params) => ({
       ...params,
       initialTab: "Insights",
@@ -204,7 +203,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
     addWebViewRoute("/conditions-of-sale"),
-    addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
     addRoute("/artwork-submission-status", "ArtworkSubmissionStatusFAQ"),
     addRoute("/selling-with-artsy", "MyCollectionSellingWithartsyFAQ"),
 

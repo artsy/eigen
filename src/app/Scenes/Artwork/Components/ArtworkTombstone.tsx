@@ -6,6 +6,7 @@ import { ArtworkIcon, Box, CertificateIcon, comma, Flex, Sans, Spacer, Text } fr
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { ArtworkAttributionClassFAQModal } from "./ArtworkAttributionClassFAQModal"
 import { CascadingEndTimesBanner } from "./CascadingEndTimesBanner"
 import { CertificateAuthenticityModal } from "./CertificateAuthenticityModal"
 import { FollowArtistLinkFragmentContainer as FollowArtistLink } from "./FollowArtistLink"
@@ -19,6 +20,7 @@ export interface ArtworkTombstoneProps {
 export interface ArtworkTombstoneState {
   showingMoreArtists: boolean
   showAuthenticityCertificateModal: boolean
+  showAttributionClassFAQModal: boolean
 }
 
 @track()
@@ -29,6 +31,7 @@ export class ArtworkTombstone extends React.Component<
   state = {
     showingMoreArtists: false,
     showAuthenticityCertificateModal: false,
+    showAttributionClassFAQModal: false,
   }
 
   @track(() => ({
@@ -49,9 +52,9 @@ export class ArtworkTombstone extends React.Component<
     navigate(href)
   }
 
-  showAttributionClassFAQ() {
-    navigate("/artwork-classifications")
-  }
+  // showAttributionClassFAQ() {
+  //   navigate("/artwork-classifications")
+  // }
 
   showMoreArtists = () => {
     this.setState({
@@ -183,7 +186,9 @@ export class ArtworkTombstone extends React.Component<
                   .slice(0, attributionClass.shortArrayDescription.length - 1)
                   .join(" ") + " "}
                 <TouchableWithoutFeedback
-                  onPress={() => this.handleClassificationTap("/artwork-classifications")}
+                  onPress={() =>
+                    this.setState({ ...this.state, showAttributionClassFAQModal: true })
+                  }
                 >
                   <Text variant="xs" style={{ textDecorationLine: "underline" }}>
                     {
@@ -239,6 +244,10 @@ export class ArtworkTombstone extends React.Component<
         <CertificateAuthenticityModal
           visible={this.state.showAuthenticityCertificateModal}
           onClose={() => this.setState({ ...this.state, showAuthenticityCertificateModal: false })}
+        />
+        <ArtworkAttributionClassFAQModal
+          visible={this.state.showAttributionClassFAQModal}
+          onClose={() => this.setState({ ...this.state, showAttributionClassFAQModal: false })}
         />
       </Box>
     )

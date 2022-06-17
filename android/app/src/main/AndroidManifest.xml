@@ -60,7 +60,6 @@
                 <data android:pathPrefix="/articles" />
                 <data android:pathPrefix="/artist" />
                 <data android:pathPrefix="/artists" />
-                <data android:pathPrefix="/artwork-classifications" />
                 <data android:pathPrefix="/artwork" />
                 <data android:pathPrefix="/artworks" />
                 <data android:pathPrefix="/auction-faq" />
