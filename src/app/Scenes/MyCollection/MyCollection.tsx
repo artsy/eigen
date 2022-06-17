@@ -69,6 +69,8 @@ const MyCollection: React.FC<{
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
+  const [showSearchBar, setShowSearchBar] = useState(false)
+
   const filtersCount = useSelectedFiltersCount()
 
   const artworks = extractNodes(me?.myCollectionConnection)
@@ -127,6 +129,7 @@ const MyCollection: React.FC<{
         <ArtworksFilterHeader
           selectedFiltersCount={filtersCount}
           onFilterPress={() => setIsFilterModalVisible(true)}
+          showSeparator={!showSearchBar}
         >
           <Button
             data-test-id="add-artwork-button-non-zero-state"
@@ -174,7 +177,7 @@ const MyCollection: React.FC<{
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length, filtersCount])
+  }, [artworks.length, filtersCount, showSearchBar])
 
   useEffect(() => {
     reInitializeLocalArtworkFilter(artworks)
@@ -206,7 +209,13 @@ const MyCollection: React.FC<{
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
-        <MyCollectionArtworks innerFlatlistRef={innerFlatListRef} me={me} relay={relay} />
+        <MyCollectionArtworks
+          innerFlatlistRef={innerFlatListRef}
+          me={me}
+          relay={relay}
+          showSearchBar={showSearchBar}
+          setShowSearchBar={setShowSearchBar}
+        />
         {!!showDevAddButton && (
           <Button
             onPress={async () => {
