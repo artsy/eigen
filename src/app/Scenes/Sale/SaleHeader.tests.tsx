@@ -228,7 +228,7 @@ describe("SaleHeader", () => {
       })
 
       describe("relative date label", () => {
-        it("shows Bidding Starts Today if the sale is starting today", () => {
+        it("shows minutes and seconds left until bidding starts", () => {
           const { getByText } = renderWithWrappersTL(<TestRenderer />)
           jest.useFakeTimers()
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -246,34 +246,11 @@ describe("SaleHeader", () => {
 
           jest.advanceTimersByTime(1000)
 
-          const relativeTime = getByText("Bidding Starts Today")
+          const relativeTime = getByText("10m 0s Until Bidding Starts")
           expect(relativeTime).toBeTruthy()
         })
 
-        it("shows Bidding Starts In 7 Hours if the sale is starting in 7 hours BUT NOT THE SAME DAY", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
-          jest.useFakeTimers()
-          mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-            MockPayloadGenerator.generate(operation, {
-              Sale: () => ({
-                endAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3).toISOString(),
-                // Date.now is mocked to 8:22:32 PM. Set startAt at early hours of the next day
-                startAt: new Date(Date.now() + 1000 * 60 * 60 * 7).toISOString(),
-                endedAt: null,
-                slug: "the weird one",
-                cascadingEndTimeIntervalMinutes: 1,
-                ...baseSale,
-              }),
-            })
-          )
-
-          jest.advanceTimersByTime(1000)
-
-          const relativeTime = getByText("Bidding Starts In 7 Hours")
-          expect(relativeTime).toBeTruthy()
-        })
-
-        it("shows 3 Days Until Bidding Starts if the sale is starting 3 days away", () => {
+        it("shows Days left until bidding starts", () => {
           const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>

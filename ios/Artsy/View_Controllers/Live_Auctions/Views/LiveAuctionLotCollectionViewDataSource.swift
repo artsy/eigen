@@ -7,7 +7,7 @@ class LiveAuctionLotCollectionViewDataSource: NSObject {
     static let CellClass = LiveAuctionLotImageCollectionViewCell.self
 
     let salesPerson: LiveAuctionsSalesPersonType
-    let imagePrefetcher = SDWebImagePrefetcher.shared;
+    let imagePrefetcher = SDWebImagePrefetcher.shared
     init(salesPerson: LiveAuctionsSalesPersonType) {
         self.salesPerson = salesPerson
         super.init()

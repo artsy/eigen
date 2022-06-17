@@ -43,10 +43,12 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
     return null
   }
 
-  const { lastTransactionFailed, state, lastOffer } = activeOrder
+  const { lastTransactionFailed, state, lastOffer, mode } = activeOrder
   let kind: ReviewOfferCTAKind | null = null
 
-  if (lastTransactionFailed) {
+  if (mode === "BUY") {
+    kind = null
+  } else if (lastTransactionFailed) {
     kind = "PAYMENT_FAILED"
   } else if (state === "SUBMITTED" && lastOffer?.fromParticipant === "SELLER") {
     if (lastOffer.definesTotal) {
@@ -109,6 +111,7 @@ export const ConversationCTAFragmentContainer = createFragmentContainer(Conversa
         edges {
           node {
             internalID
+            mode
             state
             stateReason
             stateExpiresAt
