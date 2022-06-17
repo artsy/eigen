@@ -50,24 +50,11 @@ export const AverageAuctionPriceListItem: React.FC<Props> = ({ artworks }) => {
           </Flex>
           <Flex alignItems="flex-end">
             <Text variant="xs" weight="medium">
-              {formattedAverageSalePrice(
-                artwork?.marketPriceInsights?.annualLotsSold,
-                artwork?.marketPriceInsights?.annualValueSoldCents
-              )}
+              {artwork?.marketPriceInsights?.averageSalePriceDisplayText}
             </Text>
           </Flex>
         </Flex>
       ))}
     </Flex>
   )
-}
-
-const formattedAverageSalePrice = (
-  annualLotsSold: number | null | undefined,
-  annualValueSoldCents: number
-) => {
-  const averageSalePrice = Math.floor(
-    (annualValueSoldCents as number) / 100 / (annualLotsSold || 1)
-  )
-  return `US$${averageSalePrice.toLocaleString()}`
 }

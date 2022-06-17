@@ -70,8 +70,7 @@ const fragment = graphql`
             formattedNationalityAndBirthday
           }
           marketPriceInsights {
-            annualLotsSold
-            annualValueSoldCents
+            averageSalePriceDisplayText
           }
         }
       }
