@@ -10,7 +10,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { color } from "styled-system"
 import { deleteUserAccount } from "./deleteUserAccount"
 
-const ICON_SIZE = 14
+const ICON_SIZE = 16
 
 interface MyAccountDeleteAccountProps {
   me: MyAccountDeleteAccount_me$data
@@ -34,7 +34,9 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
         <Text>If you delete your account:</Text>
         <Spacer mt="2" />
         <Flex flexDirection="row" alignItems="center" pr="1">
-          <GenomeIcon width={ICON_SIZE} height={ICON_SIZE} />
+          <Flex pb={1}>
+            <GenomeIcon width={ICON_SIZE} height={ICON_SIZE} />
+          </Flex>
           <Text variant="xs" color={color("black100")} px="1" pb="1px">
             {
               "You will lose all data on Artsy including all existing offers, inquiries and mesages with Galleries"
@@ -43,7 +45,9 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
         </Flex>
         <Spacer mt="2" />
         <Flex flexDirection="row" alignItems="center" pr="1">
-          <AuctionIcon width={ICON_SIZE} height={ICON_SIZE} />
+          <Flex pb={1}>
+            <AuctionIcon width={ICON_SIZE} height={ICON_SIZE} />
+          </Flex>
           <Text variant="xs" color={color("black100")} px="1" pb="1px">
             {
               "You won’t have access to any exclusive Artsy benefits, such as Artsy Curated Auctions, Private Sales, etc"
@@ -55,6 +59,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           multiline
           placeholder="Please share with us why you are leaving"
           onChangeText={setExplanation}
+          error={!hasPassword ? error : undefined}
         />
         <Spacer mt="3" />
         <Text variant="xs" color={color("black100")} pb="1px">
