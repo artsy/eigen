@@ -2942,6 +2942,35 @@ type BankAccount {
   last4: String!
 }
 
+# A connection to a list of items.
+type BankAccountConnection {
+  # A list of edges.
+  edges: [BankAccountEdge]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+}
+
+# An edge in a connection.
+type BankAccountEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: BankAccount
+}
+
+type BankAccountMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type BankAccountMutationSuccess {
+  bankAccount: BankAccount
+  bankAccountEdge: BankAccountEdge
+}
+
+union BankAccountMutationType = BankAccountMutationFailure | BankAccountMutationSuccess
+
 type Bidder implements Node {
   createdAt(
     format: String
@@ -7031,6 +7060,17 @@ type DeleteArtworkImagePayload {
   clientMutationId: String
 }
 
+input DeleteBankAccountInput {
+  clientMutationId: String
+  id: String!
+}
+
+type DeleteBankAccountPayload {
+  bankAccountOrError: BankAccountMutationType
+  clientMutationId: String
+  me: Me
+}
+
 input DeleteCreditCardInput {
   clientMutationId: String
   id: String!
@@ -9745,6 +9785,9 @@ type Me implements Node {
   # A list of authenticated external services
   authentications: [AuthenticationType!]!
 
+  # A list of the current user's bank accounts
+  bankAccounts(after: String, before: String, first: Int, last: Int): BankAccountConnection
+
   # Returns a single bidder position
   bidderPosition(id: String!): BidderPositionResult
 
@@ -10402,6 +10445,9 @@ type Mutation {
 
   # Deletes an image from an artwork in my collection
   deleteArtworkImage(input: DeleteArtworkImageInput!): DeleteArtworkImagePayload
+
+  # Remove a bank account
+  deleteBankAccount(input: DeleteBankAccountInput!): DeleteBankAccountPayload
 
   # Remove a credit card
   deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
