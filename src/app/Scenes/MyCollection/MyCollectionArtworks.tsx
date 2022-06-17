@@ -29,18 +29,21 @@ interface MyCollectionArtworksProps {
   me: MyCollection_me$data
   relay: RelayPaginationProp
   innerFlatlistRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
+  showSearchBar: boolean
+  setShowSearchBar: (show: boolean) => void
 }
 
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   me,
   relay,
   innerFlatlistRef,
+  showSearchBar,
+  setShowSearchBar,
 }) => {
   const { height: screenHeight } = useScreenDimensions()
   const enabledSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
 
   const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
-  const [showSearchBar, setShowSearchBar] = useState(false)
   const [initialScrollPosition, setInitialScrollPosition] = useState(-1)
 
   const [keywordFilter, setKeywordFilter] = useState("")
@@ -62,6 +65,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     return <MyCollectionZeroState />
   }
 
+  // Make Search Bar visible when user scrolls to top
   const handleScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (showSearchBar) {
       return
@@ -75,7 +79,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     if (nativeEvent.contentOffset.y < initialScrollPosition) {
       LayoutAnimation.configureNext({
         ...LayoutAnimation.Presets.easeInEaseOut,
-        duration: 150,
+        duration: 200,
       })
 
       setShowSearchBar(true)
