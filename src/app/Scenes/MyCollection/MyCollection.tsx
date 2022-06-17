@@ -107,6 +107,7 @@ const MyCollection: React.FC<{
   useEffect(() => {
     if (!relay.hasMore()) {
       notifyMyCollectionInsightsTab()
+      return
     }
 
     relay.loadMore(100)
