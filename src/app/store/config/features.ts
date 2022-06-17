@@ -195,9 +195,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableAuctionShareButton",
   },
   AREnableNewOpaqueImageView: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable New Opaque Image View",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableNewOpaqueImageView",
   },
   AREnableConversationalBuyNow: {
     readyForRelease: false,
