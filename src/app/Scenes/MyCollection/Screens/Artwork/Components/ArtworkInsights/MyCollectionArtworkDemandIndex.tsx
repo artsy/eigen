@@ -20,15 +20,9 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 ) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<MyCollectionArtworkDemandIndex_artwork$key>(
-    artworkFragment,
-    props.artwork
-  )
+  const artwork = useFragment(artworkFragment, props.artwork)
 
-  const marketPriceInsights = useFragment<MyCollectionArtworkDemandIndex_marketPriceInsights$key>(
-    marketPriceInsightsFragment,
-    props.marketPriceInsights
-  )
+  const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
 
   if (!artwork || !marketPriceInsights?.demandRank) {
     return null

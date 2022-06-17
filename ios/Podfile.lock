@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.29.6):
-    - Adjust/Core (= 4.29.6)
-  - Adjust/Core (4.29.6)
+  - Adjust (4.29.7):
+    - Adjust/Core (= 4.29.7)
+  - Adjust/Core (4.29.7)
   - Aerodramus (2.0.0):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
@@ -90,7 +90,7 @@ PODS:
     - React-RCTText (= 0.66.4)
     - RNSentry (= 3.2.13)
     - RNSVG (= 9.13.3)
-    - SDWebImage (= 5.8.3)
+    - SDWebImage (= 5.11.1)
     - tipsi-stripe (= 7.5.0)
   - Expecta (1.0.6)
   - "Expecta+Snapshots (3.1.1)":
@@ -269,6 +269,15 @@ PODS:
   - JSDecoupledAppDelegate (1.2.0)
   - JWTDecode (2.0.0)
   - libevent (2.1.12)
+  - libwebp (1.2.1):
+    - libwebp/demux (= 1.2.1)
+    - libwebp/mux (= 1.2.1)
+    - libwebp/webp (= 1.2.1)
+  - libwebp/demux (1.2.1):
+    - libwebp/webp
+  - libwebp/mux (1.2.1):
+    - libwebp/demux
+  - libwebp/webp (1.2.1)
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
   - Mantle/extobjc (1.5.6)
@@ -651,6 +660,10 @@ PODS:
     - React-Core
   - RNDeviceInfo (8.1.2):
     - React-Core
+  - RNFastImage (8.5.11):
+    - React-Core
+    - SDWebImage (~> 5.11.1)
+    - SDWebImageWebPCoder (~> 0.8.4)
   - RNGestureHandler (1.8.0):
     - React
   - RNGoogleSignin (6.0.0):
@@ -683,9 +696,12 @@ PODS:
     - React-Core
   - RNSVG (9.13.3):
     - React
-  - SDWebImage (5.8.3):
-    - SDWebImage/Core (= 5.8.3)
-  - SDWebImage/Core (5.8.3)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
+  - SDWebImageWebPCoder (0.8.4):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.10)
   - Segment-Adjust (3.1.4):
     - Adjust (~> 4.29.3)
     - Analytics
@@ -843,6 +859,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
+  - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
@@ -854,7 +871,7 @@ DEPENDENCIES:
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - SDWebImage (= 5.8.3)
+  - SDWebImage (= 5.11.1)
   - Segment-Adjust
   - Segment-Appboy
   - Specta
@@ -918,6 +935,7 @@ SPEC REPOS:
     - JSDecoupledAppDelegate
     - JWTDecode
     - libevent
+    - libwebp
     - Mantle
     - Mapbox-iOS-SDK
     - MapboxMobileEvents
@@ -937,6 +955,7 @@ SPEC REPOS:
     - PromisesObjC
     - Quick
     - SDWebImage
+    - SDWebImageWebPCoder
     - Segment-Adjust
     - Segment-Appboy
     - Sentry
@@ -1086,6 +1105,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
+  RNFastImage:
+    :path: "../node_modules/react-native-fast-image"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
@@ -1137,7 +1158,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/Pulley.git
 
 SPEC CHECKSUMS:
-  Adjust: 94f1c99429fb2a7ebe530294fd66a88d63a54922
+  Adjust: 91a06a01e4bb35b432e26b5d5bb8995b95fc381c
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
@@ -1158,7 +1179,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   EDColor: 91d127cd67d7c1d3862846fb11ef4b3851151bfa
-  Emission: ce472ad11d5dcd1e332938722aef6e97945e4efb
+  Emission: 088d3673dbe47d492d6613bae28994f263ed0018
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -1198,6 +1219,7 @@ SPEC CHECKSUMS:
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
+  libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   Mapbox-iOS-SDK: f870f83cbdc7aa4a74afcee143aafb0dae390c82
   MapboxMobileEvents: 5a172cc9bbf8ac0e45ba86095cbee685ede248cc
@@ -1268,6 +1290,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDateTimePicker: 6f1f0b4cf7c71b6e2aea7a3aa62969111084bbd1
   RNDeviceInfo: 3266783bcb6aa4b0c785d6080a407f8a5fc68326
+  RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNGoogleSignin: 111fd4792913208f338fe3178005f7a22e490ff9
   RNImageCropPicker: 16951bc02411f50c4d197488ed6406a23dc3b5f1
@@ -1279,7 +1302,8 @@ SPEC CHECKSUMS:
   RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
   RNShare: b955e66f1af2849711f13c193debda72b94f8aa0
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
-  SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
+  SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
   Segment-Adjust: 1a12861ab2e9372fc70af949057490858666cd37
   Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
   Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
@@ -1296,6 +1320,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: a813d8e9cd6f7d80fd7c105a0c2a80e8898e9f5f
+PODFILE CHECKSUM: 8ec2cd3dbd1ae9a20b1b689e81f3a8dd0952f735
 
 COCOAPODS: 1.11.3

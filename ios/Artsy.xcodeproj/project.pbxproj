@@ -167,9 +167,9 @@
 		CB43296A27EA285800B29DD6 /* User_v1.data in Resources */ = {isa = PBXBuildFile; fileRef = CB43276D27E8FEE400B29DD6 /* User_v1.data */; };
 		CB43296B27EA285800B29DD6 /* User_v0.data in Resources */ = {isa = PBXBuildFile; fileRef = CB43276E27E8FEE400B29DD6 /* User_v0.data */; };
 		CB43296C27EA28DE00B29DD6 /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBE324DA27E275A100395A93 /* LiveAuctionsAssets.xcassets */; };
-		CB43298627FDFDF800B29DD6 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43298527FDFDF800B29DD6 /* AdServices.framework */; };
+		CB43298627FDFDF800B29DD6 /* AdServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43298527FDFDF800B29DD6 /* AdServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CB43298827FDFE0000B29DD6 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43298727FDFE0000B29DD6 /* AdSupport.framework */; };
-		CB43298A27FDFE0A00B29DD6 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43298927FDFE0A00B29DD6 /* AppTrackingTransparency.framework */; };
+		CB43298A27FDFE0A00B29DD6 /* AppTrackingTransparency.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43298927FDFE0A00B29DD6 /* AppTrackingTransparency.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CB43298C27FDFE1700B29DD6 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43298B27FDFE1700B29DD6 /* ARKit.framework */; };
 		CB43298E27FDFE2700B29DD6 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43298D27FDFE2700B29DD6 /* CoreServices.framework */; };
 		CB43299027FDFE3F00B29DD6 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB43298F27FDFE3E00B29DD6 /* CoreSpotlight.framework */; };

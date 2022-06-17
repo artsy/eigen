@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedRequestPriceEstimate } from "@artsy/cohesion"
 import { RequestForPriceEstimateBanner_artwork$key } from "__generated__/RequestForPriceEstimateBanner_artwork.graphql"
 import { RequestForPriceEstimateBanner_marketPriceInsights$key } from "__generated__/RequestForPriceEstimateBanner_marketPriceInsights.graphql"
 import { RequestForPriceEstimateBanner_me$key } from "__generated__/RequestForPriceEstimateBanner_me.graphql"
@@ -19,16 +19,13 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
 }) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<RequestForPriceEstimateBanner_artwork$key>(
-    artworkFragment,
-    otherProps.artwork
-  )
-  const marketPriceInsights = useFragment<RequestForPriceEstimateBanner_marketPriceInsights$key>(
+  const artwork = useFragment(artworkFragment, otherProps.artwork)
+  const marketPriceInsights = useFragment(
     marketPriceInsightsFragment,
     otherProps.marketPriceInsights
   )
 
-  const me = useFragment<RequestForPriceEstimateBanner_me$key>(meFragment, otherProps.me)
+  const me = useFragment(meFragment, otherProps.me)
 
   const requestedPriceEstimates = GlobalStore.useAppState(
     (state) => state.requestedPriceEstimates.requestedPriceEstimates
@@ -63,6 +60,8 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
               name: me.name,
               email: me.email,
               phone: me.phone,
+              demandRank: marketPriceInsights?.demandRank ?? undefined,
+              artworkSlug: artwork.slug,
             },
           })
         }}
@@ -114,7 +113,7 @@ const tracks = {
     artworkId: string,
     artworkSlug?: string,
     demandRank?: number
-  ) => ({
+  ): TappedRequestPriceEstimate => ({
     action: ActionType.tappedRequestPriceEstimate,
     context_module: ContextModule.myCollectionArtworkInsights,
     context_screen: OwnerType.myCollectionArtworkInsights,

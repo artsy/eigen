@@ -69,7 +69,7 @@ export interface ViewingRoomsListItemProps {
 }
 
 export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props) => {
-  const item = useFragment<ViewingRoomsListItem_item$key>(fragmentSpec, props.item)
+  const item = useFragment(fragmentSpec, props.item)
   const { slug, internalID, heroImage, title, status, distanceToClose, distanceToOpen } = item
   const { trackEvent } = useTracking()
 

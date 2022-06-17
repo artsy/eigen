@@ -1,10 +1,8 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
-import { navigate } from "app/navigation/navigate"
 import { Flex, Text, Touchable } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
-import { Platform } from "react-native"
 
 interface TermsOfServiceCheckboxProps {
   checked: boolean
@@ -19,7 +17,6 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
   error,
   navigation,
 }) => {
-  const isiOS = Platform.OS === "ios"
   return (
     <Touchable haptic onPress={() => setChecked(!checked)}>
       <Flex flexDirection="row" alignItems="flex-start">
@@ -27,9 +24,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
           <Text variant="xs">
             By checking this box, you consent to our{" "}
             <Text
-              onPress={() =>
-                isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms")
-              }
+              onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
@@ -37,9 +32,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
             </Text>
             ,{" "}
             <Text
-              onPress={() =>
-                isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy")
-              }
+              onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
@@ -48,9 +41,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
             , and{" "}
             <Text
               onPress={() =>
-                isiOS
-                  ? navigate("/conditions-of-sale", { modal: true })
-                  : navigation.navigate("ConditionsOfSale")
+                navigation.navigate("OnboardingWebView", { url: "/conditions-of-sale" })
               }
               variant="xs"
               style={{ textDecorationLine: "underline" }}

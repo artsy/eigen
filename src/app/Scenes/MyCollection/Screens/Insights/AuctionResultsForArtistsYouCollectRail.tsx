@@ -24,10 +24,7 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
 > = ({ me }) => {
   const { trackEvent } = useTracking()
 
-  const fragmentData = useFragment<AuctionResultsForArtistsYouCollectRail_me$key>(
-    auctionResultsForArtistsYouCollectRailFragment,
-    me
-  )
+  const fragmentData = useFragment(auctionResultsForArtistsYouCollectRailFragment, me)
   const auctionResultsData = extractNodes(fragmentData.myCollectionAuctionResults)
 
   if (!auctionResultsData.length) {

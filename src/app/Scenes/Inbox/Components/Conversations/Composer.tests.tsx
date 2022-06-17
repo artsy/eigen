@@ -163,6 +163,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "SUBMITTED",
                   lastOffer: {
                     fromParticipant: "BUYER",
@@ -197,6 +198,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "SUBMITTED",
                   lastOffer: {
                     fromParticipant: "SELLER",
@@ -237,6 +239,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "APPROVED",
                   lastOffer: {
                     fromParticipant: "BUYER",
@@ -278,6 +281,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "CANCELED",
                   stateReason: "seller_rejected",
                   lastOffer: {
@@ -315,6 +319,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "SUBMITTED",
                   lastTransactionFailed: true,
                   lastOffer: {
@@ -356,6 +361,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "CANCELED",
                   stateReason: "buyer_lapsed",
                   lastOffer: {
