@@ -1,6 +1,7 @@
 import { AverageAuctionPriceRail_me$key } from "__generated__/AverageAuctionPriceRail_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { groupBy } from "lodash"
 import { Flex, Spacer } from "palette"
@@ -15,6 +16,9 @@ interface AverageAuctionPriceRailProps {
 }
 
 export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (props) => {
+  const enableMyCollectionInsightsPhase1Part3 = useFeatureFlag(
+    "AREnableMyCollectionInsightsPhase1Part3"
+  )
   const me = useFragment(fragment, props.me)
   const artworks = extractNodes(me.priceInsightUpdates)
   const groupedArtworks = Object.values(groupBy(artworks, (artwork) => artwork?.artist?.name))
@@ -25,9 +29,13 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
         <SectionTitle
           capitalized={false}
           title="Average Auction Price in the last 3 years"
-          onPress={() => {
-            navigate("/my-collection/average-sale-price-at-auction")
-          }}
+          onPress={
+            enableMyCollectionInsightsPhase1Part3
+              ? () => {
+                  navigate("/my-collection/average-sale-price-at-auction")
+                }
+              : undefined
+          }
           mb={2}
         />
       </Flex>
