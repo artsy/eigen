@@ -12,7 +12,7 @@ import { useGoogleLink } from "app/utils/LinkedAccounts/google"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Button, Flex, Text } from "palette"
+import { Box, Button, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
@@ -186,11 +186,10 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
             )}
           </Flex>
         )}
-        <Flex alignItems="center">
-          <Button variant="text" onPress={() => navigate("my-account/delete-account")}>
-            <Text color="red100">Delete My Account</Text>
-          </Button>
-        </Flex>
+        <Spacer mt={2} />
+        <Button variant="text" block onPress={() => navigate("my-account/delete-account")}>
+          <Text color="red100">Delete My Account</Text>
+        </Button>
       </ScrollView>
     </PageWithSimpleHeader>
   )
