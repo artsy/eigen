@@ -103,7 +103,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
             }
           )
           trackEvent(
-            tracks.trackSentRequestPriceEstimate(
+            tracks.sentRequestPriceEstimate(
               myCollectionArtworkId,
               artworkSlug,
               demandRank ?? undefined
@@ -134,7 +134,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
 }
 
 const tracks = {
-  trackSentRequestPriceEstimate: (
+  sentRequestPriceEstimate: (
     artworkId: string,
     artworkSlug: string,
     demandRank?: number
