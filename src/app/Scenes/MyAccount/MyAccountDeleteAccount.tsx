@@ -25,6 +25,10 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
 
   const navigation = useNavigation()
 
+  const enableDelete = hasPassword
+    ? password.length > 0 && explanation.length > 0
+    : explanation.length > 0
+
   return (
     <ScrollView>
       <Box pr="2" pl="2">
@@ -84,7 +88,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
         )}
         <Button
           block
-          disabled={explanation.length === 0 || password.length === 0}
+          disabled={!enableDelete}
           loading={loading}
           onPress={async () => {
             try {
