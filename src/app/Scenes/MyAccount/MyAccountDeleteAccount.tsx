@@ -3,9 +3,11 @@ import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.grap
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { GlobalStore } from "app/store/GlobalStore"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { AuctionIcon, Box, Button, Flex, GenomeIcon, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
+import { Alert } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { color } from "styled-system"
@@ -103,8 +105,16 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
                 result.deleteMyAccountMutation?.userAccountOrError?.mutationError
               if (mutationError?.message) {
                 setError(mutationError?.message)
+              } else {
+                Alert.alert("Profile deleted successfully.", "You will now be logged out.", [
+                  {
+                    text: "OK",
+                    onPress: () => {
+                      GlobalStore.actions.auth.signOut()
+                    },
+                  },
+                ])
               }
-
               setLoading(false)
             } catch (e: any) {
               setError("Something went wrong")
