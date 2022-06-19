@@ -73,31 +73,31 @@ describe("LabeledTicker", () => {
 
 describe("ModernTicker", () => {
   describe("when the sale has not started", () => {
-    it("renders Bidding Starts Today in blue when start time is < 1 day away", () => {
-      const todayDuration = moment.duration(2000)
+    it("When Bidding in less than 1 day: it shows hours and minutes left", () => {
+      const twentyHrsFiveMins = 1000 * 60 * 60 * 20 + 1000 * 60 * 5
+      const todayDuration = moment.duration(twentyHrsFiveMins)
       const { getByText } = render(
         <Theme>
           <ModernTicker duration={todayDuration} />
         </Theme>
       )
 
-      const timerText = getByText("Bidding Starts Today")
+      const timerText = getByText("20h 5m Until Bidding Starts")
 
       expect(timerText).toBeTruthy()
       expect(timerText.props.color).toEqual("blue100")
     })
 
-    it("shows Bidding Starts In 7 Hours if Bidding is starting in 7 hours BUT NOT THE SAME DAY", () => {
-      const sevenHrs = 1000 * 60 * 60 * 7
-      const startAt = new Date(Date.now() + sevenHrs).toISOString()
-      const todayDuration = moment.duration(sevenHrs)
+    it("When Bidding in less than 1 hour: it shows minutes and seconds left", () => {
+      const twentyMinsTenSecs = 1000 * 60 * 20 + 1000 * 10
+      const todayDuration = moment.duration(twentyMinsTenSecs)
       const { getByText } = render(
         <Theme>
-          <ModernTicker duration={todayDuration} startAt={startAt} />
+          <ModernTicker duration={todayDuration} />
         </Theme>
       )
 
-      const timerText = getByText("Bidding Starts In 7 Hours")
+      const timerText = getByText("20m 10s Until Bidding Starts")
 
       expect(timerText).toBeTruthy()
       expect(timerText.props.color).toEqual("blue100")

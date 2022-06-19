@@ -173,6 +173,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/my-account/edit-password", "MyAccountEditPassword"),
     addRoute("/my-account/edit-email", "MyAccountEditEmail"),
     addRoute("/my-account/edit-phone", "MyAccountEditPhone"),
+    addRoute("/my-account/delete-account", "MyAccountDeleteAccount"),
     addRoute("/my-profile/payment", "MyProfilePayment"),
     addRoute("/my-profile/payment/new-card", "MyProfilePaymentNewCreditCard"),
     addRoute("/my-profile/push-notifications", "MyProfilePushNotifications"),
@@ -246,7 +247,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
       mimicBrowserBackButton: true,
       useRightCloseButton: true,
     }),
-    // __DEV__ && addRoute("/storybook", "Storybook"),
+    addRoute("/storybook", "Storybook"),
 
     // Every other route needs to go above
     addRoute("/:slug", "VanityURLEntity"),

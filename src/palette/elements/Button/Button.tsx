@@ -415,8 +415,6 @@ const useStyleForVariantAndState = (
           retval.textColor = color("black30")
           break
         case DisplayState.Pressed:
-          retval.backgroundColor = color("black10")
-          retval.borderColor = color("black10")
           retval.textColor = color("blue100")
           retval.textDecorationLine = "underline"
           break

@@ -7,6 +7,7 @@ interface FilterHeaderProps {
   selectedFiltersCount: number
   title?: string
   childrenPosition?: "left" | "right"
+  showSeparator?: boolean
 }
 
 const HEADER_HEIGHT = 50
@@ -17,6 +18,7 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
   selectedFiltersCount,
   title,
   childrenPosition = "right",
+  showSeparator = true,
 }) => {
   return (
     <Flex>
@@ -48,7 +50,7 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
         />
         {childrenPosition === "right" && children}
       </Flex>
-      <Separator />
+      {!!showSeparator && <Separator />}
     </Flex>
   )
 }

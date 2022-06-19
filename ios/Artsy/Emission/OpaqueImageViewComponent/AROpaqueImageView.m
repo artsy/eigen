@@ -90,15 +90,15 @@ LoadImage(UIImage *image, CGSize destinationSize, CGFloat scaleFactor, UIColor *
 
   SDWebImageManager *manager = [SDWebImageManager sharedManager];
   SDImageCache *imageCache = [SDImageCache sharedImageCache];
-    
+
   // Applying a global disabling of the decode feature
   manager.optionsProcessor = [SDWebImageOptionsProcessor optionsProcessorWithBlock:^SDWebImageOptionsResult * _Nullable(NSURL * _Nullable url, SDWebImageOptions options, SDWebImageContext * _Nullable context) {
      // Global disable force decode feature
      options |= SDWebImageAvoidDecodeImage;
- 
+
      return [[SDWebImageOptionsResult alloc] initWithOptions:options context:context];
   }];
-    
+
   __weak typeof(self) weakSelf = self;
   [imageCache diskImageExistsWithKey:self.imageURL.absoluteString completion:^(BOOL isInCache) {
     if (!isInCache) {

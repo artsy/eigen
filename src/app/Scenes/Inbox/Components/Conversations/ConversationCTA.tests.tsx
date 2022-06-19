@@ -8,6 +8,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ConversationCTA, ConversationCTAFragmentContainer } from "./ConversationCTA"
+import { CTAPopUp } from "./CTAPopUp"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
 import { ReviewOfferButton } from "./ReviewOfferButton"
 jest.unmock("react-relay")
@@ -117,7 +118,7 @@ describe("ConversationCTA", () => {
     })
 
     it("renders the payment failed message if the payment failed", () => {
-      const wrapper = getWrapperWithOrders({ lastTransactionFailed: true })
+      const wrapper = getWrapperWithOrders({ lastTransactionFailed: true, mode: "OFFER" })
 
       expectReviewOfferButton(wrapper, {
         bg: "red100",
@@ -131,6 +132,7 @@ describe("ConversationCTA", () => {
 
     it("doesn't render when the last offer is from a buyer and it has not been accepted or rejected by the seller", () => {
       const wrapper = getWrapperWithOrders({
+        mode: "OFFER",
         state: "SUBMITTED",
         lastOffer: {
           fromParticipant: "BUYER",
@@ -141,6 +143,7 @@ describe("ConversationCTA", () => {
 
     it("renders the pending offer when the last offer is from the seller", () => {
       const wrapper = getWrapperWithOrders({
+        mode: "OFFER",
         state: "SUBMITTED",
         lastOffer: {
           fromParticipant: "SELLER",
@@ -156,6 +159,7 @@ describe("ConversationCTA", () => {
 
     it("shows correct message for an offer accepted by the buyer", () => {
       const wrapper = getWrapperWithOrders({
+        mode: "OFFER",
         state: "APPROVED",
         lastOffer: { fromParticipant: "BUYER" },
       })
@@ -169,6 +173,7 @@ describe("ConversationCTA", () => {
 
     it("shows correct message for an offer accepted by the seller that does not define total (change amount)", () => {
       const wrapper = getWrapperWithOrders({
+        mode: "OFFER",
         state: "APPROVED",
         lastOffer: { fromParticipant: "SELLER", definesTotal: false },
       })
@@ -182,6 +187,7 @@ describe("ConversationCTA", () => {
 
     it("shows counter received - confirm total when offer defines total and amount changes", () => {
       const wrapper = getWrapperWithOrders({
+        mode: "OFFER",
         state: "SUBMITTED",
         lastOffer: { fromParticipant: "SELLER", offerAmountChanged: true, definesTotal: true },
       })
@@ -195,6 +201,7 @@ describe("ConversationCTA", () => {
 
     it("shows the 'approved' banner for fulfilled offers", () => {
       const wrapper = getWrapperWithOrders({
+        mode: "OFFER",
         state: "FULFILLED",
         lastOffer: { fromParticipant: "BUYER" },
       })
@@ -208,6 +215,7 @@ describe("ConversationCTA", () => {
 
     it("shows accepted  - confirm total when offer defines total and amount stays the same", () => {
       const wrapper = getWrapperWithOrders({
+        mode: "OFFER",
         state: "SUBMITTED",
         lastOffer: { fromParticipant: "SELLER", offerAmountChanged: false, definesTotal: true },
       })
@@ -221,6 +229,7 @@ describe("ConversationCTA", () => {
 
     it("shows offer accepted when buyer also approves the provisional offer", () => {
       const wrapper = getWrapperWithOrders({
+        mode: "OFFER",
         state: "APPROVED",
         lastOffer: { fromParticipant: "SELLER", definesTotal: true },
       })
@@ -229,6 +238,16 @@ describe("ConversationCTA", () => {
         bg: "green100",
         strings: ["Offer Accepted"],
         Icon: MoneyFillIcon,
+      })
+    })
+
+    describe("given BUY mode", () => {
+      it("doesn't render anything", () => {
+        const wrapper = getWrapperWithOrders({
+          mode: "BUY",
+        })
+
+        expect(wrapper.root.findAllByType(CTAPopUp)).toHaveLength(0)
       })
     })
   })

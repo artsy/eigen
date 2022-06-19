@@ -1,10 +1,5 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-import {
-  ArtsyWebViewConditionsOfSale,
-  ArtsyWebViewPrivacy,
-  ArtsyWebViewTerms,
-} from "app/Components/ArtsyWebViewScreens"
 import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
@@ -16,6 +11,7 @@ import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingSocialPick } from "../OnboardingSocialPick"
+import { OnboardingWebView, OnboardingWebViewRoute } from "../OnboardingWebView"
 import {
   OnboardingCreateAccountEmail,
   OnboardingCreateAccountEmailParams,
@@ -33,9 +29,7 @@ export type OnboardingCreateAccountNavigationStack = {
   OnboardingCreateAccountEmail: OnboardingCreateAccountEmailParams
   OnboardingCreateAccountPassword: undefined
   OnboardingCreateAccountName: undefined
-  Terms: undefined
-  Privacy: undefined
-  ConditionsOfSale: undefined
+  OnboardingWebView: { url: OnboardingWebViewRoute }
 }
 
 const StackNavigator = createStackNavigator<OnboardingCreateAccountNavigationStack>()
@@ -178,12 +172,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
                 name="OnboardingCreateAccountName"
                 component={OnboardingCreateAccountName}
               />
-              <StackNavigator.Screen name="Terms" component={ArtsyWebViewTerms} />
-              <StackNavigator.Screen name="Privacy" component={ArtsyWebViewPrivacy} />
-              <StackNavigator.Screen
-                name="ConditionsOfSale"
-                component={ArtsyWebViewConditionsOfSale}
-              />
+              <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
             </StackNavigator.Navigator>
             <OnboardingCreateAccountButton
               navigateToLoginWithEmail={() => {

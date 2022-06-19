@@ -126,6 +126,10 @@ src/__generated__
 # jest circleci reports
 reports
 
+# Homebrew lock file
+Brewfile.lock.json
+
+
 #########################################################
 # Keep this rule last.
 # Keep these, so we can keep the folders these appear in.

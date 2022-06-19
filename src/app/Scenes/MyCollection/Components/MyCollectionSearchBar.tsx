@@ -14,6 +14,7 @@ import {
   NativeSyntheticEvent,
   TextInput,
   TextInputFocusEventData,
+  TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native"
 import Animated from "react-native-reanimated"
@@ -110,19 +111,26 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             fontSize={14}
           />
 
-          <TouchableWithoutFeedback
+          <TouchableOpacity
             testID="MyCollectionSearchBarInputCancelButton"
             onPress={() => {
               setValue("")
               hasRunFocusedAnimation.setValue(new Animated.Value(0))
+
+              LayoutAnimation.configureNext({
+                ...LayoutAnimation.Presets.easeInEaseOut,
+                duration: 100,
+              })
+
               onIsFocused?.(false)
               setIsFocused(false)
             }}
+            hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
           >
             <Text ml={1} color="black60" variant="xs">
               Cancel
             </Text>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         </Flex>
       ) : (
         <Flex>
@@ -134,6 +142,12 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
                   hasRunFocusedAnimation.setValue(new Animated.Value(0))
                   setIsFocused(true)
                   onIsFocused?.(true)
+
+                  LayoutAnimation.configureNext({
+                    ...LayoutAnimation.Presets.easeInEaseOut,
+                    duration: 100,
+                  })
+
                   requestAnimationFrame(() => inputRef.current?.focus())
                 }}
                 hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}

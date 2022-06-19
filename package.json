@@ -93,7 +93,7 @@
     "cheerio": "0.22.0"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.52.0",
+    "@artsy/cohesion": "4.53.0",
     "@artsy/palette-tokens": "2.6.0",
     "@artsy/to-title-case": "1.1.0",
     "@expo/react-native-action-sheet": "3.8.0",
@@ -155,6 +155,7 @@
     "react-native-config": "https://github.com/artsy/react-native-config.git#v1.5.0",
     "react-native-credit-card-input": "0.4.1",
     "react-native-device-info": "8.1.2",
+    "react-native-fast-image": "8.5.11",
     "react-native-fbsdk-next": "4.3.0",
     "react-native-gesture-handler": "1.8.0",
     "react-native-haptic-feedback": "1.13.0",
