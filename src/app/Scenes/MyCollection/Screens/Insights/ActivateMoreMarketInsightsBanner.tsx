@@ -13,6 +13,7 @@ const BackgroundImage = styled(ImageBackground)``
 export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
   const { trackEvent } = useTracking()
   const screenDimensions = useScreenDimensions()
+  const isIPad = screenDimensions.width > 700
 
   return (
     <Flex width={screenDimensions.width} flexDirection="row">
@@ -23,10 +24,10 @@ export const ActivateMoreMarketInsightsBanner: React.FC<{}> = () => {
         backgroundColor="black5"
       >
         <Flex mx={2}>
-          <Text variant="md" color="black100" mt={2}>
+          <Text variant={isIPad ? "lg" : "md"} color="black100" mt={2}>
             Unlock More Insights
           </Text>
-          <Text mt={1} mb={2} variant="xs" color="black60">
+          <Text mt={1} mb={2} variant={isIPad ? "md" : "xs"} color="black60">
             Add your artworks and get more market insights about your collection.
           </Text>
           <Button
