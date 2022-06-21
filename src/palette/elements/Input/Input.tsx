@@ -16,6 +16,8 @@ import {
 import { MeasuredView } from "shared/utils"
 import styled from "styled-components/native"
 import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
+import { useAutoSuggest } from "../Autocomplete"
+import { AutoSuggestInputSuffix } from "./AutoSuggestInputSuffix"
 import { InputTitle } from "./InputTitle"
 
 const DEFAULT_FONT_SIZE = 16
@@ -70,6 +72,8 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   canHidePassword?: boolean
   inputTextStyle?: TextStyle
   addClearListener?: boolean
+  autoSuggestInputData?: string[]
+  enableAutoSuggestInput?: boolean
   onClear?(): void
   renderLeftHandSection?(): JSX.Element
 }
@@ -104,6 +108,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       showLimit,
       addClearListener = false,
       fontSize = DEFAULT_FONT_SIZE,
+      enableAutoSuggestInput = false,
+      autoSuggestInputData = [],
       ...rest
     },
     ref
@@ -229,6 +235,10 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       return placeholder[placeholder.length - 1]
     }
 
+    const { getNextSuggestion } = useAutoSuggest(autoSuggestInputData)
+    const nextSuggestion = getNextSuggestion(value)
+    const allowAutoSuggestionSuffix = enableAutoSuggestInput && !!autoSuggestInputData.length
+
     return (
       <Flex flexGrow={1} style={containerStyle}>
         <Flex flexDirection="row" alignItems="center">
@@ -268,49 +278,68 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             )}
             <Flex flex={1}>
               {placeholderMeasuringHack}
-              <StyledInput
-                multiline={multiline}
-                // we need this one to make RN focus on the input with the keyboard. https://github.com/facebook/react-native/issues/16826#issuecomment-940126791
-                scrollEnabled={multiline ? false : undefined}
-                maxLength={maxLength}
-                editable={!disabled}
-                onLayout={(event) => {
-                  const newWidth = event.nativeEvent.layout.width
-                  if (newWidth > inputWidth) {
-                    requestAnimationFrame(() => setInputWidth(newWidth))
-                  } else {
-                    setInputWidth(newWidth)
-                  }
-                }}
-                ref={input}
-                placeholderTextColor={color("black60")}
-                style={{ flex: 1, fontSize, ...inputTextStyle }}
-                numberOfLines={multiline ? undefined : 1}
-                secureTextEntry={!showPassword}
-                textAlignVertical={multiline ? "top" : "center"}
-                placeholder={actualPlaceholder()}
-                value={value}
-                {...(rest as any)}
-                onChangeText={localOnChangeText}
-                onFocus={(e) => {
-                  if (Platform.OS === "android") {
-                    LayoutAnimation.configureNext(
-                      LayoutAnimation.create(60, "easeInEaseOut", "opacity")
-                    )
-                  }
-                  setFocused(true)
-                  rest.onFocus?.(e)
-                }}
-                onBlur={(e) => {
-                  if (Platform.OS === "android") {
-                    LayoutAnimation.configureNext(
-                      LayoutAnimation.create(60, "easeInEaseOut", "opacity")
-                    )
-                  }
-                  setFocused(false)
-                  rest.onBlur?.(e)
-                }}
-              />
+              <Flex flex={1} flexDirection="row">
+                <StyledInput
+                  multiline={multiline}
+                  // we need this one to make RN focus on the input with the keyboard. https://github.com/facebook/react-native/issues/16826#issuecomment-940126791
+                  scrollEnabled={multiline ? false : undefined}
+                  maxLength={maxLength}
+                  editable={!disabled}
+                  onLayout={(event) => {
+                    const newWidth = event.nativeEvent.layout.width
+                    if (newWidth > inputWidth) {
+                      requestAnimationFrame(() => setInputWidth(newWidth))
+                    } else {
+                      setInputWidth(newWidth)
+                    }
+                  }}
+                  ref={input}
+                  placeholderTextColor={color("black60")}
+                  style={{
+                    flex: allowAutoSuggestionSuffix ? undefined : 1,
+                    fontSize,
+                    ...inputTextStyle,
+                  }}
+                  numberOfLines={multiline ? undefined : 1}
+                  secureTextEntry={!showPassword}
+                  textAlignVertical={multiline ? "top" : "center"}
+                  placeholder={actualPlaceholder()}
+                  value={value}
+                  {...(rest as any)}
+                  onChangeText={localOnChangeText}
+                  onFocus={(e) => {
+                    if (Platform.OS === "android") {
+                      LayoutAnimation.configureNext(
+                        LayoutAnimation.create(60, "easeInEaseOut", "opacity")
+                      )
+                    }
+                    setFocused(true)
+                    rest.onFocus?.(e)
+                  }}
+                  onBlur={(e) => {
+                    if (Platform.OS === "android") {
+                      LayoutAnimation.configureNext(
+                        LayoutAnimation.create(60, "easeInEaseOut", "opacity")
+                      )
+                    }
+                    setFocused(false)
+                    rest.onBlur?.(e)
+                  }}
+                />
+                {!!allowAutoSuggestionSuffix && (
+                  <AutoSuggestInputSuffix
+                    inputValue={value}
+                    inputTextStyle={inputTextStyle}
+                    nextSuggestion={nextSuggestion}
+                    onPress={localOnChangeText}
+                    containerStyle={{
+                      minHeight: multiline ? INPUT_HEIGHT_MULTILINE : INPUT_HEIGHT,
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  />
+                )}
+              </Flex>
             </Flex>
             {!!fixedRightPlaceholder && value === "" && (
               <Flex pr={1} justifyContent="center" alignItems="center">
