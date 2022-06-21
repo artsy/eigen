@@ -1,17 +1,16 @@
-import { AverageSalePriceSelectArtistItem_artist$data } from "__generated__/AverageSalePriceSelectArtistItem_artist.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React, { useState } from "react"
-import { AverageSalePriceSelectArtistModal } from "./AverageSalePriceSelectArtist"
-
-type ArtistData = CleanRelayFragment<AverageSalePriceSelectArtistItem_artist$data>
+import {
+  AverageSalePriceArtistType,
+  AverageSalePriceSelectArtistModal,
+} from "./AverageSalePriceSelectArtist"
 
 interface AverageSalePriceAtAuctionProps {
-  artistData: ArtistData
+  artistData: AverageSalePriceArtistType
 }
 
-const mockArtist: ArtistData = {
+const mockArtist: AverageSalePriceArtistType = {
   name: "Andy Warhol",
   initials: "AW",
   formattedNationalityAndBirthday: "American, 1928–1987",
@@ -20,7 +19,7 @@ const mockArtist: ArtistData = {
 
 export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps> = () => {
   const [isVisible, setVisible] = useState<boolean>(false)
-  const [selectedArtist, setSelectedArtist] = useState<ArtistData>(mockArtist)
+  const [selectedArtist, setSelectedArtist] = useState<AverageSalePriceArtistType>(mockArtist)
 
   return (
     <Flex mx={2} pt={6}>
@@ -57,11 +56,14 @@ export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps>
           )}
         </Flex>
 
-        <Touchable testID="change-artist-touchable" onPress={() => setVisible(true)} haptic>
-          <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
-            Change Artist
-          </Text>
-        </Touchable>
+        {/* check if artist is more than 1 */}
+        {!!true && (
+          <Touchable testID="change-artist-touchable" onPress={() => setVisible(true)} haptic>
+            <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
+              Change Artist
+            </Text>
+          </Touchable>
+        )}
       </Flex>
 
       <AverageSalePriceSelectArtistModal

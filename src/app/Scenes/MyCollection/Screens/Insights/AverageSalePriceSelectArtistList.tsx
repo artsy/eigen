@@ -1,4 +1,3 @@
-import { AverageSalePriceSelectArtistItem_artist$data } from "__generated__/AverageSalePriceSelectArtistItem_artist.graphql"
 import Spinner from "app/Components/Spinner"
 import { groupBy, sortBy } from "lodash"
 import { Flex, Text } from "palette"
@@ -11,7 +10,7 @@ interface ArtistSectionListProps {
   artistsList: AverageSalePriceArtistType[]
   isLoadingNext: boolean
   onEndReached: () => void
-  onItemPress: (item: AverageSalePriceSelectArtistItem_artist$data) => void
+  onItemPress: (item: AverageSalePriceArtistType) => void
 }
 
 export const ArtistSectionList: React.FC<ArtistSectionListProps> = ({

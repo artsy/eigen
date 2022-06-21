@@ -1,33 +1,29 @@
-import { AverageSalePriceSelectArtistItem_artist$data } from "__generated__/AverageSalePriceSelectArtistItem_artist.graphql"
 import {
-  AverageSalePriceSelectArtistModal_myCollectionInfo$data,
-  AverageSalePriceSelectArtistModal_myCollectionInfo$key,
-} from "__generated__/AverageSalePriceSelectArtistModal_myCollectionInfo.graphql"
+  AverageSalePriceSelectArtistItem_artist$data,
+  AverageSalePriceSelectArtistItem_artist$key,
+} from "__generated__/AverageSalePriceSelectArtistItem_artist.graphql"
+import { AverageSalePriceSelectArtistModal_myCollectionInfo$key } from "__generated__/AverageSalePriceSelectArtistModal_myCollectionInfo.graphql"
 import { AverageSalePriceSelectArtistQuery } from "__generated__/AverageSalePriceSelectArtistQuery.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SearchInput } from "app/Components/SearchInput"
 import { extractNodes } from "app/utils/extractNodes"
-import { ExtractNodeType } from "app/utils/relayHelpers"
+import { CleanRelayFragment } from "app/utils/relayHelpers"
+import { trim } from "lodash"
 import { Flex, Text } from "palette"
 import React, { Suspense, useEffect, useState } from "react"
-import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import { ArtistSectionItem } from "./AverageSalePriceSelectArtistItem"
-import { ArtistSectionList } from "./AverageSalePriceSelectArtistList"
+import { SelectArtistList } from "./Components/MyCollectionSelectArtist"
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 50
 
-export type AverageSalePriceArtistType = ExtractNodeType<
-  NonNullable<
-    NonNullable<AverageSalePriceSelectArtistModal_myCollectionInfo$data["me"]>["myCollectionInfo"]
-  >["collectedArtistsConnection"]
->
+export type AverageSalePriceArtistType =
+  CleanRelayFragment<AverageSalePriceSelectArtistItem_artist$data>
 
 interface AverageSalePriceSelectArtistModalProps {
   visible: boolean
   closeModal?: () => void
-  onItemPress: (artist: any) => void
+  onItemPress: (artist: AverageSalePriceArtistType) => void
 }
 
 export const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectArtistModalProps> = ({
@@ -46,14 +42,12 @@ export const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectAr
   >(collectedArtistsConnectionFragment, queryData)
 
   const [query, setQuery] = useState<string>("")
-  const [filteredArtists, setFilteredArtists] = useState<any>([])
+  const [filteredArtists, setFilteredArtists] = useState<
+    AverageSalePriceSelectArtistItem_artist$key[]
+  >([])
 
   const artistsList = extractNodes(data?.me?.myCollectionInfo?.collectedArtistsConnection)
-
-  const handleSelect = (artist: AverageSalePriceSelectArtistItem_artist$data) => {
-    onItemPress(artist)
-    setQuery("")
-  }
+  const trimmedQuery = trim(query)
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -64,9 +58,9 @@ export const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectAr
   }
 
   useEffect(() => {
-    if (query.length > 0) {
+    if (trimmedQuery) {
       const filtered = artistsList.filter((artist) =>
-        artist?.name?.toLowerCase().includes(query.toLowerCase())
+        artist?.name?.toLowerCase().includes(trimmedQuery.toLowerCase())
       )
       setFilteredArtists(filtered)
     }
@@ -94,28 +88,19 @@ export const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectAr
             value={query}
             onChangeText={setQuery}
             error={
-              filteredArtists.length === 0 && query.length > 0
+              filteredArtists.length === 0 && trimmedQuery
                 ? "Please select from the list of artists in your collection with insights available."
                 : ""
             }
           />
         </Flex>
 
-        {query.length > 0 ? (
-          <FlatList
-            testID="average-sale-price-select-artist-flatlist"
-            data={filteredArtists}
-            keyExtractor={(item) => item.internalID}
-            renderItem={({ item }) => <ArtistSectionItem artist={item} onPress={handleSelect} />}
-          />
-        ) : (
-          <ArtistSectionList
-            artistsList={artistsList}
-            onEndReached={handleLoadMore}
-            isLoadingNext={isLoadingNext}
-            onItemPress={onItemPress}
-          />
-        )}
+        <SelectArtistList
+          artistsList={trimmedQuery ? filteredArtists : artistsList}
+          onEndReached={handleLoadMore}
+          isLoadingNext={isLoadingNext}
+          onItemPress={onItemPress}
+        />
       </Flex>
     </FancyModal>
   )
@@ -147,7 +132,6 @@ const collectedArtistsConnectionFragment = graphql`
             node {
               internalID
               name
-              initials
               ...AverageSalePriceSelectArtistItem_artist
             }
           }
