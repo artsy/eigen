@@ -13970,6 +13970,9 @@ input SendIdentityVerificationEmailMutationInput {
   # The email for the user undergoing identity verificaiton
   email: String
 
+  # The name to be used for the user undergoing identity verification
+  name: String
+
   # The user Id for the user undergoing identity verificaiton
   userID: String
 }
