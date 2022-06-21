@@ -15,15 +15,6 @@ export interface SaleTimeFeature {
   timeZone: string | null
 }
 
-const isNotStartingToday = (startDate: string) => {
-  if (!startDate.length) {
-    return false
-  }
-  const todayDay = moment().toObject().date
-  const startDateDay = moment(startDate).toObject().date
-  return todayDay !== startDateDay
-}
-
 export const getTimerInfo = (
   time: Time,
   options: {
@@ -35,7 +26,7 @@ export const getTimerInfo = (
     isExtended?: boolean
   }
 ): TimerInfo => {
-  const { days, hours, minutes, seconds, startAt } = time
+  const { days, hours, minutes, seconds } = time
   const { hasStarted, isSaleInfo, saleHasEnded, isExtended } = options
 
   const parsedDays = parseInt(days, 10)
@@ -49,16 +40,10 @@ export const getTimerInfo = (
   // Sale has not yet started
   if (!hasStarted) {
     if (parsedDays < 1) {
-      if (isNotStartingToday(startAt)) {
-        // then it is starting in a few hours or minutes, but tomorrow.
-        // For example, a bidding that starts around 1A.M the next day and my current time is 11P.M
-        if (parsedHours >= 1) {
-          copy = `Bidding Starts In ${parsedHours} ${parsedHours > 1 ? "Hours" : "Hour"}`
-        } else {
-          copy = `Bidding Starts In ${parsedMinutes}m ${parsedSeconds}s`
-        }
+      if (parsedHours >= 1) {
+        copy = `${parsedHours}h ${parsedMinutes}m Until Bidding Starts`
       } else {
-        copy = "Bidding Starts Today"
+        copy = `${parsedMinutes}m ${parsedSeconds}s Until Bidding Starts`
       }
     } else {
       copy = `${parsedDays} Day${parsedDays > 1 ? "s" : ""} Until Bidding Starts`

@@ -32,7 +32,7 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
   }
 
   return (
-    <Flex pb={2} px={2}>
+    <Flex mb={4} px={2}>
       <SectionTitle
         capitalized={false}
         title="Recently Sold at Auction"

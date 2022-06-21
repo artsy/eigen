@@ -16,13 +16,17 @@ export const MyCollectionInsightsOverview: React.FC<MyCollectionInsightsOverview
   return (
     <Flex pt={2} px={2} pb={3} flexDirection="row">
       <Flex flex={1} alignSelf="flex-start">
-        <Text variant="sm">Total Artworks</Text>
+        <Text variant="sm" mb={1}>
+          Total Artworks
+        </Text>
         <Text color="blue100" variant="xl">
           {myCollectionInfo.artworksCount}
         </Text>
       </Flex>
       <Flex flex={1} alignSelf="flex-start">
-        <Text variant="sm">Total Artists</Text>
+        <Text variant="sm" mb={1}>
+          Total Artists
+        </Text>
         <Text color="blue100" variant="xl">
           {myCollectionInfo.artistsCount}
         </Text>

@@ -1,13 +1,11 @@
-// keep this import of storybook first, otherwise it might produce errors when debugging
-// import { StorybookUIRoot } from "../storybook/storybook-ui"
-
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { SafeAreaInsets, useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
+import { StorybookUIRoot } from "storybook/StorybookUI"
 import { AppProviders } from "./AppProviders"
-import { ArtsyReactWebViewPage } from "./Components/ArtsyReactWebView"
+import { ArtsyWebViewPage } from "./Components/ArtsyWebView"
 import { FadeIn } from "./Components/FadeIn"
 import { BidFlow } from "./Containers/BidFlow"
 import { InboxQueryRenderer, InboxScreenQuery } from "./Containers/Inbox"
@@ -63,6 +61,7 @@ import {
 import { MapContainer } from "./Scenes/Map"
 import { NewMapScreen } from "./Scenes/Map/NewMap"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
+import { MyAccountDeleteAccountQueryRenderer } from "./Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
 import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
@@ -308,7 +307,7 @@ function defineModules<T extends string>(obj: Record<T, ModuleDescriptor>) {
 export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
-  // Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
+  Storybook: reactModule(StorybookUIRoot),
   Admin: reactModule(Admin, { alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
@@ -379,7 +378,7 @@ export const modules = defineModules({
     modalPresentationStyle: "fullScreen",
   }),
   LocalDiscovery: reactModule(CityGuideView, { fullBleed: true }),
-  ReactWebView: reactModule(ArtsyReactWebViewPage, {
+  ReactWebView: reactModule(ArtsyWebViewPage, {
     fullBleed: true,
     hasOwnModalCloseButton: true,
     hidesBackButton: true,
@@ -397,6 +396,7 @@ export const modules = defineModules({
   MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
   MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
+  MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }),

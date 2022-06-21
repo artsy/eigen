@@ -26,6 +26,10 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
   let Icon: React.FC<IconProps> = MoneyFillIcon
   let action: { label?: string; onPress?: () => void } = {}
 
+  if (event.__typename === "%other") {
+    return null
+  }
+
   if (event.__typename === "CommerceOfferSubmittedEvent") {
     const { offer } = event
     const isCounter = offer.respondsTo !== null
@@ -53,22 +57,30 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
       return null
     }
   } else if (event.__typename === "CommerceOrderStateChangedEvent") {
-    const { state, stateReason } = event
-    if (state === "APPROVED") {
+    const { orderUpdateState } = event
+    if (orderUpdateState === "offer_approved") {
       color = "green100"
       message = `Offer Accepted`
-    } else if (state === "CANCELED" && stateReason?.includes("_rejected")) {
+    } else if (orderUpdateState === "offer_rejected") {
       color = "red100"
       message = `Offer Declined`
-    } else if (state === "CANCELED" && stateReason?.includes("_lapsed")) {
+    } else if (orderUpdateState === "offer_lapsed") {
       color = "black60"
       message = `Offer Expired`
+    } else if (orderUpdateState === "buy_submitted") {
+      color = "black100"
+      message = `You purchased this artwork`
+      action = {
+        label: "See details",
+        onPress: () => navigate(`/conversation/${conversationId}/details`),
+      }
     } else {
       return null
     }
   } else {
     return null
   }
+
   return (
     <Flex>
       <TimeSince style={{ alignSelf: "center" }} time={event.createdAt} exact mb={1} />
@@ -99,8 +111,7 @@ export const OrderUpdateFragmentContainer = createFragmentContainer(OrderUpdate,
       __typename
       ... on CommerceOrderStateChangedEvent {
         createdAt
-        stateReason
-        state
+        orderUpdateState
       }
       ... on CommerceOfferSubmittedEvent {
         createdAt

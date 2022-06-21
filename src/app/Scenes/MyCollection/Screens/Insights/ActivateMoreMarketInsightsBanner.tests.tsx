@@ -12,7 +12,7 @@ describe("MyCollectionInsights banner", () => {
   it("renders", async () => {
     const { findByText } = renderWithWrappersTL(<TestRenderer />)
 
-    expect(await findByText("Activate More Market Insights")).toBeTruthy()
+    expect(await findByText("Unlock More Insights")).toBeTruthy()
   })
 
   it("navigates to MyCollectionArtworkForm when Upload Another Artwork is pressed", () => {
