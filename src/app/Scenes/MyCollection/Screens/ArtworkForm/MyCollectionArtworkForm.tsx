@@ -100,9 +100,9 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const handleSubmit = async (values: ArtworkFormValues) => {
-    setLoading(true)
-
     try {
+      setLoading(true)
+
       await Promise.all([
         // This is to satisfy showing the insights modal for 2500 ms
         __TEST__ || !showMyCollectionInsights
@@ -119,9 +119,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
         // simulate requesting market data
         await new Promise((resolve) => setTimeout(resolve, 2000))
       }
-
-      refreshMyCollection()
-      props.onSuccess?.()
     } catch (e) {
       if (__DEV__) {
         console.error(e)
@@ -132,6 +129,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     } finally {
       setLoading(false)
       setIsArtworkSaved(false)
+      props.onSuccess?.()
     }
   }
 
@@ -333,6 +331,7 @@ export const updateArtwork = async (
       removeLocalPhotos(slug)
     }
   }
+  refreshMyCollection()
 }
 
 const tracks = {
