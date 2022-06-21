@@ -10027,7 +10027,8 @@ type Me implements Node {
     size: Int
     sort: MyCollectionArtworkSorts
 
-    # Sort by most recent price insight updates and filter out artworks without insights.
+    # Sort by most recent price insight updates, filter out artworks without
+    # insights and return artworks uniq by artist & medium.
     sortByLastAuctionResultDate: Boolean = false
   ): MyCollectionConnection
 
