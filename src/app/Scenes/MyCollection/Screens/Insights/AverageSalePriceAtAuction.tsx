@@ -1,26 +1,24 @@
+import { AverageAuctionPriceRail_me$data } from "__generated__/AverageAuctionPriceRail_me.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React, { useState } from "react"
-import {
-  AverageSalePriceArtistType,
-  AverageSalePriceSelectArtistModal,
-} from "./AverageSalePriceSelectArtist"
+import { AverageSalePriceSelectArtistModal } from "./AverageSalePriceSelectArtist"
 
+type ArtistData = ExtractNodeType<AverageAuctionPriceRail_me$data["priceInsightUpdates"]>["artist"]
 interface AverageSalePriceAtAuctionProps {
-  artistData: AverageSalePriceArtistType
+  artistData: ArtistData
+  collectorArtists?: number
 }
 
-const mockArtist: AverageSalePriceArtistType = {
-  name: "Andy Warhol",
-  initials: "AW",
-  formattedNationalityAndBirthday: "American, 1928–1987",
-  imageUrl: "https://d32dm0rphc51dk.cloudfront.net/E-k-uLoQADM8AjadsSKHrA/square.jpg",
-}
-
-export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps> = () => {
+export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps> = ({
+  artistData,
+  collectorArtists,
+}) => {
   const [isVisible, setVisible] = useState<boolean>(false)
-  const [selectedArtist, setSelectedArtist] = useState<AverageSalePriceArtistType>(mockArtist)
+  const [selectedArtist, setSelectedArtist] = useState<ArtistData>(artistData)
 
+  const enableChangeArtist = collectorArtists && collectorArtists > 1
   return (
     <Flex mx={2} pt={6}>
       <Text variant="lg" mb={0.5} testID="Average_Auction_Price_title">
@@ -41,23 +39,22 @@ export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps>
           // To align the image with the text we have to add top margin to compensate the line height.
           style={{ marginTop: 3 }}
         >
-          {!selectedArtist.imageUrl ? (
-            <NoArtworkIcon width={28} height={28} opacity={0.3} />
-          ) : (
+          {!!selectedArtist?.imageUrl ? (
             <OpaqueImageView width={40} height={40} imageURL={selectedArtist.imageUrl} />
+          ) : (
+            <NoArtworkIcon width={28} height={28} opacity={0.3} />
           )}
         </Flex>
         {/* Sale Artwork Artist Name */}
         <Flex flex={1} pl={1}>
-          {!!selectedArtist.name && (
+          {!!selectedArtist?.name && (
             <Text variant="md" ellipsizeMode="middle" numberOfLines={2}>
               {selectedArtist.name}
             </Text>
           )}
         </Flex>
 
-        {/* check if artist is more than 1 */}
-        {!!true && (
+        {!!enableChangeArtist && (
           <Touchable testID="change-artist-touchable" onPress={() => setVisible(true)} haptic>
             <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
               Change Artist

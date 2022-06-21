@@ -24,15 +24,20 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
   const groupedArtworks = Object.values(groupBy(artworks, (artwork) => artwork?.artist?.name))
 
   return (
-    <Flex mx={2} mb={4}>
-      <Flex>
+    <Flex mb={4}>
+      <Flex mx={2}>
         <SectionTitle
           capitalized={false}
           title="Average Auction Price in the last 3 years"
           onPress={
             enableMyCollectionInsightsPhase1Part3
               ? () => {
-                  navigate("/my-collection/average-sale-price-at-auction")
+                  navigate("/my-collection/average-sale-price-at-auction", {
+                    passProps: {
+                      artistData: artworks[0]?.artist,
+                      collectorArtists: groupedArtworks.length,
+                    },
+                  })
                 }
               : undefined
           }
@@ -45,9 +50,18 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
         renderItem={({ item }) => (
           <AverageAuctionPriceListItem
             artworks={item}
-            onPress={() => {
-              return
-            }}
+            onPress={
+              enableMyCollectionInsightsPhase1Part3
+                ? () => {
+                    navigate("/my-collection/average-sale-price-at-auction", {
+                      passProps: {
+                        artistData: item[0].artist,
+                        collectorArtists: groupedArtworks.length,
+                      },
+                    })
+                  }
+                : undefined
+            }
           />
         )}
         ItemSeparatorComponent={() => <Spacer py={1} />}
