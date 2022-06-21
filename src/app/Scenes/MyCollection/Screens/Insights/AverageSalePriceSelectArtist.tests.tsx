@@ -42,9 +42,7 @@ describe("AverageSalePriceSelectArtist", () => {
 
       // Modal is visible and the list is populated
       expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(true)
-      expect(
-        getByTestId("average-sale-price-select-artist-section-list").props.data.length
-      ).toBeGreaterThan(0)
+      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Press on Banksy
       fireEvent.press(getByTestId("artist-section-item-Banksy"))
@@ -65,9 +63,7 @@ describe("AverageSalePriceSelectArtist", () => {
 
       // Modal is visible and the section list is populated
       expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(true)
-      expect(
-        getByTestId("average-sale-price-select-artist-section-list").props.data.length
-      ).toBeGreaterThan(0)
+      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Search for "Boafo"
       const searchInput = getByTestId("select-artists-search-input")
@@ -76,8 +72,8 @@ describe("AverageSalePriceSelectArtist", () => {
       fireEvent(searchInput, "changeText", "Boafo")
 
       // Flatlist is showing
-      expect(getByTestId("average-sale-price-select-artist-flatlist")).toBeTruthy()
-      expect(getByTestId("average-sale-price-select-artist-flatlist").props.data.length).toBe(1)
+      expect(getByTestId("select-artist-flatlist")).toBeTruthy()
+      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(1)
 
       // Amoako Boafo is in the results list
       expect(getByTestId("artist-section-item-Amoako Boafo")).toBeTruthy()
@@ -99,9 +95,7 @@ describe("AverageSalePriceSelectArtist", () => {
 
       // Modal is visible and the section list is populated
       expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(true)
-      expect(
-        getByTestId("average-sale-price-select-artist-section-list").props.data.length
-      ).toBeGreaterThan(0)
+      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
       // Search for "Artist doesn't exist"
       const searchInput = getByTestId("select-artists-search-input")
@@ -110,8 +104,8 @@ describe("AverageSalePriceSelectArtist", () => {
       fireEvent(searchInput, "changeText", "Artist doesn't exist")
 
       // Flatlist is showing
-      expect(getByTestId("average-sale-price-select-artist-flatlist")).toBeTruthy()
-      expect(getByTestId("average-sale-price-select-artist-flatlist").props.data.length).toBe(0)
+      expect(getByTestId("select-artist-flatlist")).toBeTruthy()
+      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(0)
 
       // Error message is displayed
       expect(
