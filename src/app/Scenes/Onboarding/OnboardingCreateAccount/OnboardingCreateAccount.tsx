@@ -78,9 +78,9 @@ const EMAIL_EXISTS_ERROR_MESSAGE = "We found an account with this email"
 export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountProps> = ({
   navigation,
 }) => {
-  const [currentRoute, setCurrentRoute] = useState<
-    keyof OnboardingCreateAccountNavigationStack | undefined
-  >(undefined)
+  const [currentRoute, setCurrentRoute] = useState<keyof OnboardingCreateAccountNavigationStack>(
+    "OnboardingCreateAccountEmail"
+  )
 
   const formik = useFormik<FormikSchema>({
     enableReinitialize: true,
