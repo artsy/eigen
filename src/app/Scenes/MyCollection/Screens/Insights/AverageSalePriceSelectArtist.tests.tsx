@@ -16,7 +16,14 @@ describe("AverageSalePriceSelectArtist", () => {
       count: 10,
     })
 
-    return <AverageSalePriceAtAuction artistData={initialArtist} />
+    return (
+      <AverageSalePriceAtAuction
+        collectorArtists={
+          mockArtistsResult.me.myCollectionInfo.collectedArtistsConnection.edges.length
+        }
+        artistData={initialArtist}
+      />
+    )
   }
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
