@@ -40,7 +40,7 @@ export const SectionTitle: React.FC<{
   return (
     <Wrapper onPress={onPress}>
       <Flex mb={mb} flexDirection="row" alignItems="flex-start">
-        <View style={{ overflow: "hidden", flex: 1 }}>
+        <Flex flex={1} overflow="hidden">
           <Text lineHeight="20" variant="sm" ellipsizeMode="tail" numberOfLines={1} testID="title">
             {typeof title === "string" ? titleText : title}
           </Text>
@@ -49,11 +49,11 @@ export const SectionTitle: React.FC<{
               {subtitle}
             </Text>
           )}
-        </View>
+        </Flex>
         {!!onPress && (
-          <View style={{ flexShrink: 0, paddingLeft: space(1) }}>
+          <Flex flexShrink={0} pl={space(1)}>
             <RightButtonContent />
-          </View>
+          </Flex>
         )}
       </Flex>
     </Wrapper>
@@ -61,7 +61,7 @@ export const SectionTitle: React.FC<{
 }
 
 const RightButton = () => (
-  <Flex flexDirection="row" alignContent="center">
+  <Flex flexDirection="row" flex={1}>
     <Flex my="auto">
       <ArrowRightIcon width={12} fill="black60" ml={0.5} />
     </Flex>
