@@ -118,12 +118,26 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
   },
   pushView(selectedTab: BottomTabType, viewDescriptor: ViewDescriptor) {
     const stackKey = getCurrentlyPresentedModalNavStackKey() ?? selectedTab
-    __unsafe_mainModalStackRef.current?.dispatch(
-      StackActions.push("screen:" + stackKey, {
-        moduleName: viewDescriptor.moduleName,
-        props: viewDescriptor.props,
+
+    if (!__unsafe_mainModalStackRef.current) {
+      // modal stack has not yet been instantiated
+      // try to delay nav to after animations
+      requestAnimationFrame(() => {
+        __unsafe_mainModalStackRef.current?.dispatch(
+          StackActions.push("screen:" + stackKey, {
+            moduleName: viewDescriptor.moduleName,
+            props: viewDescriptor.props,
+          })
+        )
       })
-    )
+    } else {
+      __unsafe_mainModalStackRef.current?.dispatch(
+        StackActions.push("screen:" + stackKey, {
+          moduleName: viewDescriptor.moduleName,
+          props: viewDescriptor.props,
+        })
+      )
+    }
   },
   popStack(selectedTab: BottomTabType) {
     updateTabStackState(selectedTab, (state) => {
