@@ -27,7 +27,7 @@ export const AutoSuggestInputSuffix: React.FC<AutoSuggestInputType> = ({
     return (
       <TouchableWithoutFeedback onPress={() => onPress(nextSuggestion)}>
         <View style={containerStyle}>
-          <Text style={{ ...inputTextStyle, marginLeft: -10 }} color="black60">
+          <Text style={{ ...inputTextStyle, marginLeft: -10, marginTop: -1.5 }} color="black60">
             {inputSuffix}
           </Text>
         </View>
