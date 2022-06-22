@@ -5,40 +5,40 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 import Config from "react-native-config"
 
 interface GravityWebsocketContextValueType {
-  cable: any | null
-  channelsHolder: any | null
+  cable: any
+  channelsHolder: any
 }
 
-const initialValues = {
-  cable: null,
-  channelsHolder: null,
-}
-
-const WebsocketContext = createContext<GravityWebsocketContextValueType>(initialValues)
+const WebsocketContext = createContext<GravityWebsocketContextValueType>(null!)
 
 export const GravityWebsocketContextProvider: React.FC = ({ children }) => {
-  const [actionCable, setActionCable] = useState<any | null>(null)
-  const [channelsHolder, setChannelsHolder] = useState<any | null>(null)
+  const [actionCable, setActionCable] = useState<any>(null)
+  const [channelsHolder, setChannelsHolder] = useState<any>(null)
 
   const isStaging = useIsStaging()
   const wssUrl = isStaging ? Config.GRAVITY_STAGING_WEBSOCKET_URL : Config.GRAVITY_WEBSOCKET_URL
 
   useEffect(() => {
-    if (!actionCable) {
+    if (__DEV__) {
+      ActionCable.startDebugging()
+    }
+
+    try {
       const cable = ActionCable.createConsumer(wssUrl)
       setChannelsHolder(new Cable({}))
       setActionCable(cable)
-      if (__DEV__) {
-        ActionCable.startDebugging()
-      }
+    } catch (e) {
+      console.log("actioncable error:", e)
     }
+
     return () => {
       actionCable?.disconnect()
+
       if (__DEV__) {
         ActionCable.stopDebugging()
       }
     }
-  }, [isStaging])
+  }, [wssUrl])
 
   return (
     <WebsocketContext.Provider value={{ cable: actionCable, channelsHolder }}>
@@ -48,6 +48,9 @@ export const GravityWebsocketContextProvider: React.FC = ({ children }) => {
 }
 
 export const useCable = () => {
-  const websocketContext = useContext(WebsocketContext) ?? {}
-  return websocketContext
+  const context = useContext(WebsocketContext)
+  if (!context) {
+    throw new Error("useCable must be used within a WebsocketContext")
+  }
+  return context
 }
