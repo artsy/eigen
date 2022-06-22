@@ -7714,6 +7714,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # Are we currently in the fair's active period?
   isActive: Boolean
   isPublished: Boolean
+
+  # Have we indexed this fair's artworks to tineye?
+  isReverseImageSearchEnabled: Boolean!
   links(format: Format): String
   location: Location
   marketingCollections(size: Int): [MarketingCollection]!
@@ -14173,6 +14176,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 
   # Is it a show provided for historical reference?
   isReference: Boolean
+
+  # Have we indexed this show's artworks to tineye?
+  isReverseImageSearchEnabled: Boolean!
 
   # Is it an outsourced local discovery stub show?
   isStubShow: Boolean
