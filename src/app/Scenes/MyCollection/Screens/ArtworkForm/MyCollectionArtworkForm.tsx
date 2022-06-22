@@ -18,7 +18,7 @@ import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
-import { Alert } from "react-native"
+import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
@@ -121,7 +121,11 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       }
 
       refreshMyCollection()
-      props.onSuccess?.()
+      setLoading(false)
+      // Go back to my collection screen after the loading modal is hidden
+      InteractionManager.runAfterInteractions(() => {
+        props.onSuccess?.()
+      })
     } catch (e) {
       if (__DEV__) {
         console.error(e)
@@ -129,8 +133,8 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
         captureException(e)
       }
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
-    } finally {
       setLoading(false)
+    } finally {
       setIsArtworkSaved(false)
     }
   }
