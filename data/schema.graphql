@@ -7714,6 +7714,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # Are we currently in the fair's active period?
   isActive: Boolean
   isPublished: Boolean
+
+  # Have we indexed this fair's artworks to tineye?
+  isReverseImageSearchEnabled: Boolean!
   links(format: Format): String
   location: Location
   marketingCollections(size: Int): [MarketingCollection]!
@@ -13970,6 +13973,9 @@ input SendIdentityVerificationEmailMutationInput {
   # The email for the user undergoing identity verificaiton
   email: String
 
+  # The name to be used for the user undergoing identity verification
+  name: String
+
   # The user Id for the user undergoing identity verificaiton
   userID: String
 }
@@ -14170,6 +14176,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 
   # Is it a show provided for historical reference?
   isReference: Boolean
+
+  # Have we indexed this show's artworks to tineye?
+  isReverseImageSearchEnabled: Boolean!
 
   # Is it an outsourced local discovery stub show?
   isStubShow: Boolean

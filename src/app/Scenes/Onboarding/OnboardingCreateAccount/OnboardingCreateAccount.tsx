@@ -4,7 +4,7 @@ import { BackButton } from "app/navigation/BackButton"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Alert, Animated, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
@@ -78,6 +78,10 @@ const EMAIL_EXISTS_ERROR_MESSAGE = "We found an account with this email"
 export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountProps> = ({
   navigation,
 }) => {
+  const [currentRoute, setCurrentRoute] = useState<keyof OnboardingCreateAccountNavigationStack>(
+    "OnboardingCreateAccountEmail"
+  )
+
   const formik = useFormik<FormikSchema>({
     enableReinitialize: true,
     validateOnChange: false,
@@ -94,7 +98,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
       { email, password, name, agreedToReceiveEmails, acceptedTerms },
       { setErrors }
     ) => {
-      switch (getCurrentRoute()) {
+      switch (currentRoute) {
         case "OnboardingCreateAccountEmail":
           const userExists = await GlobalStore.actions.auth.userExists({ email })
 
@@ -134,7 +138,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
       }
     },
     validationSchema: () => {
-      switch (getCurrentRoute()) {
+      switch (currentRoute) {
         case "OnboardingCreateAccountEmail":
           return emailSchema
         case "OnboardingCreateAccountPassword":
@@ -151,7 +155,17 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
     <Flex flex={1} backgroundColor="white" flexGrow={1} paddingBottom={10}>
       <ArtsyKeyboardAvoidingView>
         <FormikProvider value={formik}>
-          <NavigationContainer ref={__unsafe__createAccountNavigationRef} independent>
+          <NavigationContainer
+            onStateChange={(state) => {
+              const routes = state?.routes
+              const index = state?.index
+              if (index && routes) {
+                setCurrentRoute(routes[index].name as any)
+              }
+            }}
+            ref={__unsafe__createAccountNavigationRef}
+            independent
+          >
             <StackNavigator.Navigator
               headerMode="screen"
               screenOptions={{
@@ -174,14 +188,16 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
               />
               <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
             </StackNavigator.Navigator>
-            <OnboardingCreateAccountButton
-              navigateToLoginWithEmail={() => {
-                navigation.replace("OnboardingLoginWithEmail", {
-                  withFadeAnimation: true,
-                  email: formik.values.email,
-                })
-              }}
-            />
+            {currentRoute !== "OnboardingWebView" && (
+              <OnboardingCreateAccountButton
+                navigateToLoginWithEmail={() => {
+                  navigation.replace("OnboardingLoginWithEmail", {
+                    withFadeAnimation: true,
+                    email: formik.values.email,
+                  })
+                }}
+              />
+            )}
           </NavigationContainer>
         </FormikProvider>
       </ArtsyKeyboardAvoidingView>
