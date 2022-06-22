@@ -22,7 +22,7 @@ class LiveAuctionViewControllerTests: QuickSpec {
         }
 
         beforeEach {
-            setNimbleTolerance(0.2)
+            setNimbleTolerance(0.3)
             OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/sale/los-angeles-modern-auctions-march-2015", withResponse:[
                 ["id": "1234"]
             ])
