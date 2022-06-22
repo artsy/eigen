@@ -65,7 +65,7 @@ export const useImageSearch = () => {
         type: "image/jpeg",
       })
 
-      const execute = fetchQuery<useImageSearchQuery>(
+      const response = await fetchQuery<useImageSearchQuery>(
         defaultEnvironment,
         graphql`
           query useImageSearchQuery($file: Upload!) {
@@ -82,8 +82,7 @@ export const useImageSearch = () => {
         {
           file: fileImage,
         }
-      )
-      const response = await execute.toPromise()
+      ).toPromise()
       const imageResults = response?.reverseImageSearch?.results ?? []
 
       if (imageResults.length === 0) {
