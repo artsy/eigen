@@ -1,7 +1,8 @@
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
 import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -99,5 +100,78 @@ describe("Show", () => {
   it("renders artworks filter header", () => {
     const wrapper = getWrapper()
     expect(wrapper.root.findAllByType(HeaderArtworksFilterWithTotalArtworks)).toHaveLength(1)
+  })
+
+  describe("search image button", () => {
+    describe("with AREnableImageSearch feature flag disabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImageSearch: false })
+      })
+
+      it("should not be rendered", () => {
+        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+        expect(queryByA11yLabel("Search images")).toBeNull()
+      })
+    })
+
+    describe("with AREnableImageSearch feature flag enabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImageSearch: true })
+      })
+
+      it("should not be rendered when show is NOT active", () => {
+        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+        act(() => {
+          env.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              Show: () => ({
+                isActive: false,
+                slug: "a-non-active-show",
+                isReverseImageSearchEnabled: true,
+              }),
+            })
+          )
+        })
+
+        expect(queryByA11yLabel("Search by image")).toBeNull()
+      })
+
+      it("should not be rendered when show doesn't have any indexed artworks", () => {
+        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+        act(() => {
+          env.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              Show: () => ({
+                isActive: true,
+                slug: "an-active-show-without-indexed-artworks",
+                isReverseImageSearchEnabled: false,
+              }),
+            })
+          )
+        })
+
+        expect(queryByA11yLabel("Search by image")).toBeNull()
+      })
+
+      it("should be rendered when show has indexed artworks, is active and feature flag is enabled", () => {
+        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+        act(() => {
+          env.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              Show: () => ({
+                isActive: true,
+                slug: "an-active-show-with-indexed-artworks",
+                isReverseImageSearchEnabled: true,
+              }),
+            })
+          )
+        })
+
+        expect(queryByA11yLabel("Search by image")).toBeTruthy()
+      })
+    })
   })
 })

@@ -1,6 +1,7 @@
 import { FairTestsQuery } from "__generated__/FairTestsQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { NavigationalTabs, Tab } from "palette/elements/Tabs"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -232,6 +233,79 @@ describe("Fair", () => {
         context_screen_owner_slug: "art-basel-hong-kong-2020",
         context_screen_owner_id: "fair1244",
         subject: "Exhibitors",
+      })
+    })
+  })
+
+  describe("search image button", () => {
+    describe("with AREnableImageSearch feature flag disabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImageSearch: false })
+      })
+
+      it("should not be rendered", () => {
+        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+        expect(queryByA11yLabel("Search images")).toBeNull()
+      })
+    })
+
+    describe("with AREnableImageSearch feature flag enabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImageSearch: true })
+      })
+
+      it("should not be rendered when fair is not active", () => {
+        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+        act(() => {
+          env.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              Fair: () => ({
+                isActive: false,
+                slug: "a-non-active-fair",
+                isReverseImageSearchEnabled: true,
+              }),
+            })
+          )
+        })
+
+        expect(queryByA11yLabel("Search by image")).toBeNull()
+      })
+
+      it("should not be rendered when fair doesn't have any indexed artworks", () => {
+        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+        act(() => {
+          env.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              Fair: () => ({
+                isActive: true,
+                slug: "an-active-fair-without-indexed-artworks",
+                isReverseImageSearchEnabled: false,
+              }),
+            })
+          )
+        })
+
+        expect(queryByA11yLabel("Search by image")).toBeNull()
+      })
+
+      it("should be rendered when fair has indexed artworks, is active and feature flag is enabled", () => {
+        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+        act(() => {
+          env.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              Fair: () => ({
+                isActive: true,
+                slug: "an-active-fair-with-indexed-artworks",
+                isReverseImageSearchEnabled: true,
+              }),
+            })
+          )
+        })
+
+        expect(queryByA11yLabel("Search by image")).toBeTruthy()
       })
     })
   })
