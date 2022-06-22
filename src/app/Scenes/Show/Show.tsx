@@ -2,6 +2,7 @@ import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
+import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -47,6 +48,7 @@ interface ViewToken {
 
 export const Show: React.FC<ShowProps> = ({ show }) => {
   const [visible, setVisible] = useState(false)
+  const shouldShowImageSearchButton = show.isReverseImageSearchEnabled && !!show.isActive
 
   const filterComponentAnimationValue = new Animated.Value(0)
 
@@ -137,6 +139,8 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           keyboardShouldPersistTaps="handled"
         />
       </ArtworkFiltersStoreProvider>
+
+      <SearchImageHeaderButton isImageSearchButtonVisible={shouldShowImageSearchButton} />
     </ProvideScreenTracking>
   )
 }
@@ -146,6 +150,8 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
     fragment Show_show on Show {
       internalID
       slug
+      isReverseImageSearchEnabled
+      isActive
       ...ShowHeader_show
       ...ShowInstallShots_show
       ...ShowInfo_show

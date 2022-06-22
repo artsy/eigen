@@ -1,4 +1,4 @@
-import { act } from "@testing-library/react-hooks"
+import { act } from "@testing-library/react-native"
 import { takeRight } from "lodash"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
