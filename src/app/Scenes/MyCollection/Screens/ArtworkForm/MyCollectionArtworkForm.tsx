@@ -95,14 +95,15 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const [loading, setLoading] = useState<boolean>(false)
   const [isArtworkSaved, setIsArtworkSaved] = useState<boolean>(false)
   const [displayText, setDisplayText] = useState<string>("")
+
   const { showActionSheetWithOptions } = useActionSheet()
 
   const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const handleSubmit = async (values: ArtworkFormValues) => {
-    try {
-      setLoading(true)
+    setLoading(true)
 
+    try {
       await Promise.all([
         // This is to satisfy showing the insights modal for 2500 ms
         __TEST__ || !showMyCollectionInsights
@@ -122,6 +123,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
         await new Promise((resolve) => setTimeout(resolve, 2000))
       }
       refreshMyCollection()
+      props.onSuccess?.()
     } catch (e) {
       if (__DEV__) {
         console.error(e)
@@ -132,7 +134,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     } finally {
       setLoading(false)
       setIsArtworkSaved(false)
-      props.onSuccess?.()
     }
   }
 
