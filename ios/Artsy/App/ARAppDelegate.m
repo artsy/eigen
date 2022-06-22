@@ -1,6 +1,5 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
 #import <AFOAuth1Client/AFOAuth1Client.h>
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <Firebase.h>
@@ -48,7 +47,6 @@
 
 #import <react-native-config/ReactNativeConfig.h>
 
-#import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <React/RCTDevSettings.h>
 #import <React/RCTBridge.h>
@@ -133,8 +131,6 @@ static void InitializeFlipper(UIApplication *application) {
     [self forceCacheCustomFonts];
 
     [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
-
-    [self setupAdminTools];
 
     [self countNumberOfRuns];
 
@@ -255,15 +251,6 @@ static void InitializeFlipper(UIApplication *application) {
     font = [UIFont sansSerifFontWithSize:12];
 }
 
-- (void)setupAdminTools
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rageShakeNotificationRecieved) name:DHCSHakeNotificationName object:nil];
-
-    [ORKeyboardReactingApplication registerForCallbackOnKeyDown:ORTildeKey:^{
-        [self rageShakeNotificationRecieved];
-    }];
-}
-
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
     NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
@@ -327,22 +314,6 @@ static void InitializeFlipper(UIApplication *application) {
     [[AREmission sharedInstance] navigate:[url absoluteString]];
 
     return YES;
-}
-
-- (void)rageShakeNotificationRecieved
-{
-    if (![[AREmission sharedInstance] reactStateBoolForKey:[ARReactStateKey userIsDev]]) {
-        return;
-    }
-
-    if (![UIDevice isPad]) {
-        // For some reason the supported orientation isn’t respected when this is pushed on top
-        // of a landscape VIR view.
-        //
-        // Since this is a debug/admin only issue, it’s safe to use private API here.
-        [[UIDevice currentDevice] setValue:@(UIInterfaceOrientationPortrait) forKey:@"orientation"];
-    }
-    [[AREmission sharedInstance] navigate:@"/admin2"];
 }
 
 - (void)countNumberOfRuns

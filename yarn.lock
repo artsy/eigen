@@ -11650,6 +11650,11 @@ react-native-scrollable-tab-view@ptomasroos/react-native-scrollable-tab-view#a7f
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
+react-native-shake@5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-shake/-/react-native-shake-5.1.1.tgz#733657764b0395b26f26576bba51e2dcbcecfe89"
+  integrity sha512-h6O8LnFd3LkvoYx7O0afM6rO9fDKomZ1EyomGgKRDyFhinxYIU7Z4uPYtwA4Z1Cd3frEEKTLNKHI1Eu0MOI3Yw==
+
 react-native-share@7.3.6:
   version "7.3.6"
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.6.tgz#cab3e4e485cecee662ae5dd8a757fc6ec7c5140a"

@@ -63,12 +63,6 @@
         [ARRouter setup];
     }];
 
-    // Disable default React Native dev menu shake motion handler
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        RCTSwapInstanceMethods([UIWindow class], @selector(RCT_motionEnded:withEvent:), @selector(motionEnded:withEvent:));
-    });
-
     [AREmission setSharedInstance:emission];
 
 #pragma mark - Native Module: Push Notification Permissions

@@ -73,11 +73,9 @@ target 'Artsy' do
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView', '1.6.4'
   pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
-  pod 'JLRoutes', git: 'https://github.com/artsy/JLRoutes.git'
   pod 'JSDecoupledAppDelegate'
   pod 'Mantle', '1.5.6'
   pod 'MMMarkdown', '0.4'
-  pod 'NPKeyboardLayoutGuide'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
   pod 'EDColor', '1.0.1'
@@ -106,10 +104,6 @@ target 'Artsy' do
   # Analytics
   pod 'Segment-Appboy'
   pod 'Segment-Adjust'
-
-  # Developer Pods
-  pod 'DHCShakeNotifier', '0.2.0'
-  pod 'ORKeyboardReactingApplication', '0.5.3'
 
   # Swift pods 🎉
   pod 'Then', '2.3.0'
