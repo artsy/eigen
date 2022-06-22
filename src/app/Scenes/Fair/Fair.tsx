@@ -4,18 +4,17 @@ import { FairQuery } from "__generated__/FairQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { useFeatureFlag } from "app/store/GlobalStore"
 import { useHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
 
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
+import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useImageSearch } from "app/utils/useImageSearch"
-import { AddIcon, Box, Flex, Separator, Spacer, Spinner } from "palette"
+import { Box, Flex, Separator, Spacer } from "palette"
 import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useCallback, useRef, useState } from "react"
-import { FlatList, TouchableOpacity, View } from "react-native"
+import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -44,9 +43,6 @@ const tabs: TabsType = [
   },
 ]
 
-const CAMERA_ICON_CONTAINER_SIZE = 38
-const CAMERA_ICON_SIZE = 20
-
 export const Fair: React.FC<FairProps> = ({ fair }) => {
   const { isActive, isReverseImageSearchEnabled } = fair
   const hasArticles = !!fair.articles?.edges?.length
@@ -56,12 +52,10 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   const hasFollowedArtistArtworks = !!(fair.followedArtistArtworks?.edges?.length ?? 0 > 0)
 
   const tracking = useTracking()
-  const { searchingByImage, handleSeachByImage } = useImageSearch()
   const [activeTab, setActiveTab] = useState(0)
 
   const flatListRef = useRef<FlatList>(null)
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const isImageSearchEnabled = isReverseImageSearchEnabled && useFeatureFlag("AREnableImageSearch")
 
   const sections = isActive
     ? [
@@ -266,28 +260,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         />
       </ArtworkFiltersStoreProvider>
 
-      {!!isImageSearchEnabled && (
-        <TouchableOpacity
-          style={{ position: "absolute", top: 33, right: 12 }}
-          onPress={handleSeachByImage}
-          disabled={searchingByImage}
-        >
-          <Box
-            width={CAMERA_ICON_CONTAINER_SIZE}
-            height={CAMERA_ICON_CONTAINER_SIZE}
-            borderRadius={CAMERA_ICON_CONTAINER_SIZE / 2}
-            bg="white"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {searchingByImage ? (
-              <Spinner size="small" />
-            ) : (
-              <AddIcon width={CAMERA_ICON_SIZE} height={CAMERA_ICON_SIZE} />
-            )}
-          </Box>
-        </TouchableOpacity>
-      )}
+      <SearchImageHeaderButton isReverseImageSearchEnabled={isReverseImageSearchEnabled} />
     </ProvideScreenTracking>
   )
 }
