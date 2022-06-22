@@ -1,14 +1,14 @@
-import { AverageSalePriceSelectArtistItem_artist$key } from "__generated__/AverageSalePriceSelectArtistItem_artist.graphql"
+import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
 import { isPad } from "app/utils/hardware"
 import { Flex, Text } from "palette"
 import { useScreenDimensions } from "shared/hooks"
-import { AverageSalePriceArtistType } from "../AverageSalePriceSelectArtist"
-import { ArtistSectionItem } from "../AverageSalePriceSelectArtistItem"
+import { ArtistItem } from "../ArtistItem"
+import { AverageSalePriceArtistType } from "../AverageSalePriceSelectArtistModal"
 
 interface SelectArtistListProps {
-  artistsList: AverageSalePriceSelectArtistItem_artist$key[]
+  artistsList: ArtistItem_artist$key[]
   isLoadingNext: boolean
   onItemPress: (artist: AverageSalePriceArtistType) => void
   onEndReached: () => void
@@ -19,7 +19,7 @@ export const SelectArtistList: React.FC<SelectArtistListProps> = (props) => {
   const { width, safeAreaInsets } = useScreenDimensions()
 
   return (
-    <AboveTheFoldFlatList<AverageSalePriceSelectArtistItem_artist$key>
+    <AboveTheFoldFlatList<ArtistItem_artist$key>
       testID="select-artist-flatlist"
       initialNumToRender={isPad() ? 24 : 12}
       style={{ width, marginBottom: safeAreaInsets.bottom }}
@@ -37,7 +37,7 @@ export const SelectArtistList: React.FC<SelectArtistListProps> = (props) => {
       keyboardDismissMode="on-drag"
       keyboardShouldPersistTaps="handled"
       renderItem={({ item, index }) => (
-        <ArtistSectionItem isFirst={index === 0} artist={item} onPress={onItemPress} />
+        <ArtistItem isFirst={index === 0} artist={item} onPress={onItemPress} />
       )}
       ListFooterComponent={
         isLoadingNext ? (

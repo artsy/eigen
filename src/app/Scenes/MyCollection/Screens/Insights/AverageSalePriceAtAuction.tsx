@@ -3,7 +3,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React, { useState } from "react"
-import { AverageSalePriceSelectArtistModal } from "./AverageSalePriceSelectArtist"
+import { AverageSalePriceSelectArtistModal } from "./AverageSalePriceSelectArtistModal"
 
 type ArtistData = ExtractNodeType<AverageAuctionPriceRail_me$data["priceInsightUpdates"]>["artist"]
 interface AverageSalePriceAtAuctionProps {
@@ -39,7 +39,7 @@ export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps>
           // To align the image with the text we have to add top margin to compensate the line height.
           style={{ marginTop: 3 }}
         >
-          {!!selectedArtist?.imageUrl ? (
+          {selectedArtist?.imageUrl ? (
             <OpaqueImageView width={40} height={40} imageURL={selectedArtist.imageUrl} />
           ) : (
             <NoArtworkIcon width={28} height={28} opacity={0.3} />

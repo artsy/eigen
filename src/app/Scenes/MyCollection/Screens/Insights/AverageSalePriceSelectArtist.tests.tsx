@@ -1,20 +1,23 @@
 import { fireEvent } from "@testing-library/react-native"
-import { AverageSalePriceSelectArtistQuery } from "__generated__/AverageSalePriceSelectArtistQuery.graphql"
+import { AverageSalePriceSelectArtistModalQuery } from "__generated__/AverageSalePriceSelectArtistModalQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AverageSalePriceAtAuction } from "./AverageSalePriceAtAuction"
-import { AverageSalePriceSelectArtistScreenQuery } from "./AverageSalePriceSelectArtist"
+import { AverageSalePriceSelectArtistScreenQuery } from "./AverageSalePriceSelectArtistModal"
 
 jest.unmock("react-relay")
 
 describe("AverageSalePriceSelectArtist", () => {
   const TestRenderer = () => {
-    useLazyLoadQuery<AverageSalePriceSelectArtistQuery>(AverageSalePriceSelectArtistScreenQuery, {
-      count: 10,
-    })
+    useLazyLoadQuery<AverageSalePriceSelectArtistModalQuery>(
+      AverageSalePriceSelectArtistScreenQuery,
+      {
+        count: 10,
+      }
+    )
 
     return (
       <AverageSalePriceAtAuction

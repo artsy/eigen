@@ -1,21 +1,17 @@
-import { AverageSalePriceSelectArtistItem_artist$key } from "__generated__/AverageSalePriceSelectArtistItem_artist.graphql"
+import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
 import React from "react"
 import { graphql, useFragment } from "react-relay"
-import { AverageSalePriceArtistType } from "./AverageSalePriceSelectArtist"
+import { AverageSalePriceArtistType } from "./AverageSalePriceSelectArtistModal"
 
-interface ArtistSectionItemProps {
-  artist: AverageSalePriceSelectArtistItem_artist$key
+interface ArtistItemProps {
+  artist: ArtistItem_artist$key
   onPress: (artist: AverageSalePriceArtistType) => void
   isFirst?: boolean
 }
 
-export const ArtistSectionItem: React.FC<ArtistSectionItemProps> = ({
-  isFirst,
-  onPress,
-  ...restProps
-}) => {
+export const ArtistItem: React.FC<ArtistItemProps> = ({ isFirst, onPress, ...restProps }) => {
   const color = useColor()
   const artist = useFragment(CollectedArtistsFragment, restProps.artist)
 
@@ -70,7 +66,7 @@ export const ArtistSectionItem: React.FC<ArtistSectionItemProps> = ({
 }
 
 const CollectedArtistsFragment = graphql`
-  fragment AverageSalePriceSelectArtistItem_artist on Artist {
+  fragment ArtistItem_artist on Artist {
     name
     initials
     formattedNationalityAndBirthday
