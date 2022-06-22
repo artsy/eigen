@@ -21,6 +21,7 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
   if (isImageSearchEnabled) {
     return (
       <TouchableOpacity
+        accessibilityLabel="Search by image"
         style={{
           position: "absolute",
           top: 13 + useScreenDimensions().safeAreaInsets.top,
