@@ -260,7 +260,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         />
       </ArtworkFiltersStoreProvider>
 
-      <SearchImageHeaderButton isReverseImageSearchEnabled={isReverseImageSearchEnabled} />
+      <SearchImageHeaderButton isImageSearchButtonVisible={isReverseImageSearchEnabled} />
     </ProvideScreenTracking>
   )
 }

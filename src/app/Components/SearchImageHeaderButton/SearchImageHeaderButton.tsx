@@ -8,13 +8,13 @@ const CAMERA_ICON_CONTAINER_SIZE = 38
 const CAMERA_ICON_SIZE = 20
 
 interface SearchImageHeaderButtonProps {
-  isReverseImageSearchEnabled: boolean
+  isImageSearchButtonVisible: boolean
 }
 
 export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = ({
-  isReverseImageSearchEnabled,
+  isImageSearchButtonVisible,
 }) => {
-  const isImageSearchEnabled = isReverseImageSearchEnabled && useFeatureFlag("AREnableImageSearch")
+  const isImageSearchEnabled = isImageSearchButtonVisible && useFeatureFlag("AREnableImageSearch")
   const { searchingByImage, handleSeachByImage } = useImageSearch()
 
   if (isImageSearchEnabled) {
