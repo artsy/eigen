@@ -18,7 +18,6 @@ export const useImageSearch = () => {
     try {
       const images = await showPhotoActionSheet(showActionSheetWithOptions, true, false)
       const image = images[0]
-      console.warn({ image })
       let resizedWidth = image.width
       let resizedHeight = image.height
 
