@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.29.6):
-    - Adjust/Core (= 4.29.6)
-  - Adjust/Core (4.29.6)
+  - Adjust (4.29.7):
+    - Adjust/Core (= 4.29.7)
+  - Adjust/Core (4.29.7)
   - Aerodramus (2.0.0):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
@@ -23,24 +23,25 @@ PODS:
     - AFNetworking/NSURLSession (~> 2.5)
     - AFNetworking/Serialization (~> 2.5)
   - Analytics (4.1.6)
-  - AppAuth (1.4.0):
-    - AppAuth/Core (= 1.4.0)
-    - AppAuth/ExternalUserAgent (= 1.4.0)
-  - AppAuth/Core (1.4.0)
-  - AppAuth/ExternalUserAgent (1.4.0)
-  - Appboy-iOS-SDK (4.4.3):
-    - Appboy-iOS-SDK/UI (= 4.4.3)
-  - Appboy-iOS-SDK/ContentCards (4.4.3):
+  - AppAuth (1.5.0):
+    - AppAuth/Core (= 1.5.0)
+    - AppAuth/ExternalUserAgent (= 1.5.0)
+  - AppAuth/Core (1.5.0)
+  - AppAuth/ExternalUserAgent (1.5.0):
+    - AppAuth/Core
+  - Appboy-iOS-SDK (4.4.4):
+    - Appboy-iOS-SDK/UI (= 4.4.4)
+  - Appboy-iOS-SDK/ContentCards (4.4.4):
     - Appboy-iOS-SDK/Core
     - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/Core (4.4.3)
-  - Appboy-iOS-SDK/InAppMessage (4.4.3):
+  - Appboy-iOS-SDK/Core (4.4.4)
+  - Appboy-iOS-SDK/InAppMessage (4.4.4):
     - Appboy-iOS-SDK/Core
     - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/NewsFeed (4.4.3):
+  - Appboy-iOS-SDK/NewsFeed (4.4.4):
     - Appboy-iOS-SDK/Core
     - SDWebImage (< 6, >= 5.8.2)
-  - Appboy-iOS-SDK/UI (4.4.3):
+  - Appboy-iOS-SDK/UI (4.4.4):
     - Appboy-iOS-SDK/ContentCards
     - Appboy-iOS-SDK/Core
     - Appboy-iOS-SDK/InAppMessage
@@ -174,9 +175,9 @@ PODS:
     - OCMock
   - FXBlurView (1.6.4)
   - glog (0.3.5)
-  - GoogleDataTransport (9.1.2):
-    - GoogleUtilities/Environment (~> 7.2)
-    - nanopb (~> 2.30908.0)
+  - GoogleDataTransport (9.1.4):
+    - GoogleUtilities/Environment (~> 7.7)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
   - GoogleSignIn (5.0.2):
     - AppAuth (~> 1.2)
@@ -639,7 +640,7 @@ PODS:
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
-  - SDWebImageWebPCoder (0.8.4):
+  - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
   - Segment-Adjust (3.1.4):
@@ -1077,14 +1078,14 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/Pulley.git
 
 SPEC CHECKSUMS:
-  Adjust: 94f1c99429fb2a7ebe530294fd66a88d63a54922
+  Adjust: 91a06a01e4bb35b432e26b5d5bb8995b95fc381c
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
   AFOAuth1Client: 155a6237e57987cac18dac2ccd17cea5d324ad1a
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
-  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  Appboy-iOS-SDK: a634f5160d4d8a1f08b8817165733af7336fa255
+  AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
+  Appboy-iOS-SDK: b05b957ab645d0a9a43d3f35195ad69202b89edc
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
@@ -1119,7 +1120,7 @@ SPEC CHECKSUMS:
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
   glog: 5337263514dd6f09803962437687240c5dc39aa4
-  GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
+  GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
@@ -1213,7 +1214,7 @@ SPEC CHECKSUMS:
   RNShare: b955e66f1af2849711f13c193debda72b94f8aa0
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
-  SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
+  SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   Segment-Adjust: 1a12861ab2e9372fc70af949057490858666cd37
   Segment-Appboy: 3ccf7ffd34701e11029e1d013e57eae0756a8eb1
   Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
