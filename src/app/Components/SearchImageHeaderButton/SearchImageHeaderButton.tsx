@@ -3,8 +3,9 @@ import { useImageSearch } from "app/utils/useImageSearch"
 import { AddIcon, Box, Spinner } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 
-const CAMERA_ICON_CONTAINER_SIZE = 38
+const CAMERA_ICON_CONTAINER_SIZE = 40
 const CAMERA_ICON_SIZE = 20
 
 interface SearchImageHeaderButtonProps {
@@ -20,7 +21,11 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
   if (isImageSearchEnabled) {
     return (
       <TouchableOpacity
-        style={{ position: "absolute", top: 33, right: 12 }}
+        style={{
+          position: "absolute",
+          top: 13 + useScreenDimensions().safeAreaInsets.top,
+          right: 12,
+        }}
         onPress={handleSeachByImage}
         disabled={searchingByImage}
       >
