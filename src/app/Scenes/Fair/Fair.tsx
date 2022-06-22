@@ -45,6 +45,7 @@ const tabs: TabsType = [
 
 export const Fair: React.FC<FairProps> = ({ fair }) => {
   const { isActive, isReverseImageSearchEnabled } = fair
+  const shouldShowImageSearchButton = isReverseImageSearchEnabled && !!isActive
   const hasArticles = !!fair.articles?.edges?.length
   const hasCollections = !!fair.marketingCollections.length
   const hasArtworks = !!(fair.counts?.artworks ?? 0 > 0)
@@ -260,7 +261,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         />
       </ArtworkFiltersStoreProvider>
 
-      <SearchImageHeaderButton isImageSearchButtonVisible={isReverseImageSearchEnabled} />
+      <SearchImageHeaderButton isImageSearchButtonVisible={shouldShowImageSearchButton} />
     </ProvideScreenTracking>
   )
 }

@@ -48,7 +48,7 @@ interface ViewToken {
 
 export const Show: React.FC<ShowProps> = ({ show }) => {
   const [visible, setVisible] = useState(false)
-  const shouldShowImageSearchButton = show.isReverseImageSearchEnabled
+  const shouldShowImageSearchButton = show.isReverseImageSearchEnabled && !!show.isActive
 
   const filterComponentAnimationValue = new Animated.Value(0)
 
@@ -151,6 +151,7 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
       internalID
       slug
       isReverseImageSearchEnabled
+      isActive
       ...ShowHeader_show
       ...ShowInstallShots_show
       ...ShowInfo_show
