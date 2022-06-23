@@ -243,10 +243,10 @@
     lodash.isnumber "^3.0.3"
     lodash.upperfirst "^4.3.1"
 
-"@artsy/update-repo@0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.5.0.tgz#9beb3fb574a2e039e8912fde3309a564e3f8270a"
-  integrity sha512-DaKQAfcnUtAH4cQabm7gBJEJFAImESRQBoKaNyiH/z1jX7XL1x81NO6iLVeHX7RQbfQJ7hC+VjF+JHR/kM949g==
+"@artsy/update-repo@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@artsy/update-repo/-/update-repo-0.6.0.tgz#e2666ebc553b2d2f8d500e5b1fd63b806cefe815"
+  integrity sha512-qEmiOXQLYAryQRxs6QDZrx4tuD7br5pDpPJcdip4VE1ICBymc38HUaiJ/oj+pD0LWo5wKrEhPX6FuzmHP7+zCA==
   dependencies:
     "@octokit/rest" "^17.2.0"
     kleur "^3.0.3"
