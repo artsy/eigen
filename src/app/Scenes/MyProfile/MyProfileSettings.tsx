@@ -46,9 +46,10 @@ export const MyProfileSettings: React.FC<{}> = () => {
         <>
           <Separator my={1} borderColor={separatorColor} />
           <MenuItem title="Preferences" onPress={() => navigate("/my-account/preferences")} />
-          <Separator my={1} borderColor={separatorColor} />
         </>
       )}
+
+      <Separator my={1} borderColor={separatorColor} />
 
       {!!showOrderHistory && (
         <>
