@@ -54,6 +54,9 @@ export function mockEnvironmentPayload(
 ) {
   reset()
   act(() => {
+    // Wrapping in act will ensure that components
+    // are fully updated to their final state.
+    // https://relay.dev/docs/guides/testing-relay-components/
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
     )
