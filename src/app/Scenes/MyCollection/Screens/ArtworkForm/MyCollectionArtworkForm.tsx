@@ -94,7 +94,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const [loading, setLoading] = useState<boolean>(false)
   const [isArtworkSaved, setIsArtworkSaved] = useState<boolean>(false)
-  const [displayText, setDisplayText] = useState<string>("")
+  const [savingArtworkModalDisplayText, setSavingArtworkModalDisplayText] = useState<string>("")
 
   const { showActionSheetWithOptions } = useActionSheet()
 
@@ -114,7 +114,9 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
         }),
         updateArtwork(values, dirtyFormCheckValues, props).then((hasMarketPriceInsights) => {
-          setDisplayText(hasMarketPriceInsights ? "Generating market data" : "Saving artwork")
+          setSavingArtworkModalDisplayText(
+            hasMarketPriceInsights ? "Generating market data" : "Saving artwork"
+          )
         }),
       ])
       if (showMyCollectionInsights) {
@@ -262,7 +264,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           <SavingArtworkModal
             testID="saving-artwork-modal"
             isVisible={loading}
-            loadingText={isArtworkSaved ? displayText : "Saving artwork"}
+            loadingText={isArtworkSaved ? savingArtworkModalDisplayText : "Saving artwork"}
           />
         ) : (
           <LoadingModal testID="loading-modal" isVisible={loading} />
