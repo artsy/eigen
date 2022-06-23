@@ -14,12 +14,13 @@ Links:
 
 ## I want to write a test.
 
-We use `@testing-library/react-native` and our helper `renderWithWrappersTL`.
-We try to use `testID` to find elements.
+- We use `@testing-library/react-native` and our helper `renderWithWrappersTL`.
+- We refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/) from `@testing-library/react-native` for querying components
 
-Links:
-
-- [Dialog.tests.tsx](src/palette/elements/Dialog/Dialog.tests.tsx)
+Example Links:
+- [Search.tests.tsx](src/app/Scenes/Search/Search.tests.tsx)
+- [CustomSizeInputs.tests.tsx](src/app/Components/ArtworkFilter/Filters/CustomSizeInputs.tests.tsx)
+- [SizesOptionsScreen.tests.tsx](src/app/Components/ArtworkFilter/Filters/SizesOptionsScreen.tests.tsx)
 
 ## I want to write a test with relay.
 
