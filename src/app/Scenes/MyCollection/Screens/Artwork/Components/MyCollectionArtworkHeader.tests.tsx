@@ -1,8 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
 import { MyCollectionArtworkHeaderTestQuery } from "__generated__/MyCollectionArtworkHeaderTestQuery.graphql"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -35,7 +35,7 @@ describe("MyCollectionArtworkHeader", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const renderer = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(mockEnvironment, mockResolvers)
+    resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
     return renderer
   }
 

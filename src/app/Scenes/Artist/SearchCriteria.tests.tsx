@@ -1,6 +1,6 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { SearchCriteriaQueryRenderer } from "./SearchCriteria"
@@ -40,7 +40,7 @@ describe("SearchCriteria", () => {
       />
     )
 
-    mockEnvironmentPayload(mockEnvironment)
+    resolveMostRecentRelayOperation(mockEnvironment)
 
     expect(mockRenderComponent).toBeCalledWith({
       fetchCriteriaError: null,

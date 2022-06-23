@@ -3,8 +3,8 @@ import { RecentSearch } from "app/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { isPad } from "app/utils/hardware"
 import { Pill } from "palette"
@@ -77,7 +77,7 @@ describe("Search Screen", () => {
       <TestRenderer />
     )
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         system: {
           algolia: {
@@ -114,7 +114,7 @@ describe("Search Screen", () => {
     isPadMock.mockImplementationOnce(() => true)
     const { queryByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         system: {
           algolia: {
@@ -139,7 +139,7 @@ describe("Search Screen", () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         system: {
           algolia: {
@@ -157,7 +157,7 @@ describe("Search Screen", () => {
 
   it('the "Top" pill should be selected by default', async () => {
     const { getByA11yState, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         system: {
           algolia: {
@@ -182,7 +182,7 @@ describe("Search Screen", () => {
       <TestRenderer />
     )
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         system: {
           algolia: {
@@ -225,7 +225,7 @@ describe("Search Screen", () => {
       it("are displayed when the user has typed the minimum allowed number of characters", async () => {
         const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 
-        mockEnvironmentPayload(mockEnvironment, {
+        resolveMostRecentRelayOperation(mockEnvironment, {
           Query: () => ({
             system: {
               algolia: {
@@ -258,7 +258,7 @@ describe("Search Screen", () => {
       it("have top pill selected and disabled at the same time", async () => {
         const { getByPlaceholderText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
-        mockEnvironmentPayload(mockEnvironment, {
+        resolveMostRecentRelayOperation(mockEnvironment, {
           Query: () => ({
             system: {
               algolia: {
@@ -280,7 +280,7 @@ describe("Search Screen", () => {
 
       it("are enabled when they have results", async () => {
         const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithWrappersTL(<TestRenderer />)
-        mockEnvironmentPayload(mockEnvironment, {
+        resolveMostRecentRelayOperation(mockEnvironment, {
           Query: () => ({
             system: {
               algolia: {
@@ -307,7 +307,7 @@ describe("Search Screen", () => {
 
     it("are displayed when the user has typed the minimum allowed number of characters", async () => {
       const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
           system: {
             algolia: {
@@ -341,7 +341,7 @@ describe("Search Screen", () => {
     it("hide keyboard when selecting other pill", async () => {
       const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
           system: {
             algolia: {
@@ -365,7 +365,7 @@ describe("Search Screen", () => {
     it("should track event when a pill is tapped", async () => {
       const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
           system: {
             algolia: {
@@ -400,7 +400,7 @@ describe("Search Screen", () => {
     it("should correctly track the previously applied pill context module", async () => {
       const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
           system: {
             algolia: {
@@ -449,7 +449,7 @@ describe("Search Screen", () => {
     it("should render all allowed algolia indices", async () => {
       const { getByPlaceholderText, getByText } = renderWithWrappersTL(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
           system: {
             algolia: {
@@ -522,7 +522,7 @@ describe("Search Screen", () => {
         <TestRenderer />
       )
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Query: () => ({
           system: {
             algolia: {
@@ -567,7 +567,7 @@ describe("Search Screen", () => {
     beforeEach(async () => {
       tree = renderWithWrappersTL(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Algolia: () => ({
           appID: "",
           apiKey: "",

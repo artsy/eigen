@@ -1,6 +1,6 @@
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
@@ -20,7 +20,7 @@ describe("My Collection Artwork", () => {
       mockEnvironment
     )
 
-    mockEnvironmentPayload(mockEnvironment)
+    resolveMostRecentRelayOperation(mockEnvironment)
     expect(() => getByTestId("my-collection-artwork")).toBeTruthy()
     expect(() => getByTestId("old-my-collection-artwork")).toThrowError(
       "Unable to find an element with testID: old-my-collection-artwork"
@@ -39,7 +39,7 @@ describe("My Collection Artwork", () => {
           mockEnvironment
         )
 
-        mockEnvironmentPayload(mockEnvironment, {
+        resolveMostRecentRelayOperation(mockEnvironment, {
           Artwork: () => ({
             consignmentSubmission: null,
           }),
@@ -60,7 +60,7 @@ describe("My Collection Artwork", () => {
           mockEnvironment
         )
 
-        mockEnvironmentPayload(mockEnvironment, {
+        resolveMostRecentRelayOperation(mockEnvironment, {
           Artwork: () => ({
             consignmentSubmission: "some-consignmentSubmission",
           }),

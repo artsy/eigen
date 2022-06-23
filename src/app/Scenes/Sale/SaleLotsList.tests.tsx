@@ -7,8 +7,8 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -106,7 +106,7 @@ describe("SaleLotsListContainer", () => {
       }),
     }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(tree.toJSON()).toBeNull()
   })
@@ -124,7 +124,7 @@ describe("SaleLotsListContainer", () => {
       }),
     }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
   })
@@ -141,7 +141,7 @@ describe("SaleLotsListContainer", () => {
       }),
     }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(tree.root.findAllByType(SaleArtworkListContainer)).toHaveLength(1)
   })

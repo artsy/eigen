@@ -1,7 +1,7 @@
 import { OnboardingPersonalizationModalTestsQuery } from "__generated__/OnboardingPersonalizationModalTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -53,7 +53,7 @@ describe("OnboardingPersonalizationModal", () => {
       }),
     }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     const searchInput = tree.root.findByProps({ testID: "searchInput" })
 
@@ -77,7 +77,7 @@ describe("OnboardingPersonalizationModal", () => {
       }),
     }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     const searchInput = tree.root.findByProps({ testID: "searchInput" })
 
@@ -85,7 +85,7 @@ describe("OnboardingPersonalizationModal", () => {
       searchInput.props.onChangeText("artist with no results")
     })
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     const noResults = tree.root.findByProps({ testID: "noResults" })
 

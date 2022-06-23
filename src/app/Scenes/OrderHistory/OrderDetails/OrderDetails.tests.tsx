@@ -1,7 +1,7 @@
 import { OrderDetailsTestsQuery } from "__generated__/OrderDetailsTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -63,7 +63,7 @@ describe(OrderDetailsQueryRender, () => {
 
   it("renders without throwing an error", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
-    mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
     expect(tree.findByType(SectionList)).toBeTruthy()
     expect(tree.findByType(OrderDetailsHeaderFragmentContainer)).toBeTruthy()
     expect(tree.findByType(ArtworkInfoSectionFragmentContainer)).toBeTruthy()
@@ -77,7 +77,7 @@ describe(OrderDetailsQueryRender, () => {
   it("not render ShipsToSection when CommercePickup", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     order.requestedFulfillment.__typename = "CommercePickup"
-    mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
     const sections: SectionListItem[] = tree.findByType(SectionList).props.sections
     expect(sections.filter(({ key }) => key === "ShipTo_Section")).toHaveLength(0)
   })
@@ -85,14 +85,14 @@ describe(OrderDetailsQueryRender, () => {
   it("not render TrackOrderSection when CommercePickup", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     order.requestedFulfillment.__typename = "CommercePickup"
-    mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
     const sections: SectionListItem[] = tree.findByType(SectionList).props.sections
     expect(sections.filter(({ key }) => key === "TrackOrder_Section")).toHaveLength(0)
   })
 
   it("not render SoldBySection when partnerName null", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         ...order,
         lineItems: { edges: [{ node: { artwork: { partner: null } } }] },

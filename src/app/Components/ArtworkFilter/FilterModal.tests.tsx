@@ -14,9 +14,9 @@ import {
 import { CollectionFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Theme } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -503,7 +503,7 @@ describe("Applying filters on Artworks", () => {
 
   beforeEach(() => {
     env = createMockEnvironment()
-    mockEnvironmentPayload(env)
+    resolveMostRecentRelayOperation(env)
   })
 
   const TestRenderer = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
@@ -557,7 +557,7 @@ describe("Applying filters on Artworks", () => {
 
     renderWithWrappersTL(<TestRenderer initialData={injectedState} />)
 
-    mockEnvironmentPayload(env, {
+    resolveMostRecentRelayOperation(env, {
       MarketingCollection: () => ({
         slug: "street-art-now",
       }),
@@ -624,7 +624,7 @@ describe("Applying filters on Artworks", () => {
       <MockFilterModalNavigator initialData={injectedState} />
     )
 
-    mockEnvironmentPayload(env)
+    resolveMostRecentRelayOperation(env)
 
     fireEvent.press(getByText("Show Results"))
 

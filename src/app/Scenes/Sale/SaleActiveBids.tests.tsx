@@ -1,6 +1,6 @@
 import { SaleActiveBidsTestsQuery } from "__generated__/SaleActiveBidsTestsQuery.graphql"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -45,7 +45,7 @@ describe("SaleActiveBids", () => {
         lotStandings: [],
       }),
     }
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(tree.root.findAllByType(FlatList)).toHaveLength(0)
   })
@@ -58,7 +58,7 @@ describe("SaleActiveBids", () => {
         lotStandings,
       }),
     }
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(tree.root.findAllByType(FlatList)).toHaveLength(1)
     expect(tree.root.findAllByType(SaleActiveBidItemContainer)).toHaveLength(10)

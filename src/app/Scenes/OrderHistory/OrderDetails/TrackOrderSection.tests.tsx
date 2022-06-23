@@ -1,7 +1,7 @@
 import { TrackOrderSectionTestsQuery } from "__generated__/TrackOrderSectionTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -84,7 +84,7 @@ describe("TrackOrderSection", () => {
   describe("when CommerceShip", () => {
     it("renders section", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => CommerceShipOrder })
+      resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => CommerceShipOrder })
 
       expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("pending")
       expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
@@ -102,7 +102,7 @@ describe("TrackOrderSection", () => {
 
     it("not renders fields without data", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...CommerceShipOrder,
           lineItems: { edges: [{ node: { shipment: null, fulfillments: null } }] },
@@ -123,7 +123,9 @@ describe("TrackOrderSection", () => {
   describe("when CommerceShipArta", () => {
     it("renders section", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => CommerceShipArtaOrder })
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        CommerceOrder: () => CommerceShipArtaOrder,
+      })
 
       expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("in transit")
       expect(extractText(tree.findByProps({ testID: "trackingNumber" }))).toContain("12345678910")
@@ -139,7 +141,7 @@ describe("TrackOrderSection", () => {
 
     it("not renders fields without data", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...CommerceShipArtaOrder,
           lineItems: {
@@ -174,7 +176,7 @@ describe("TrackOrderSection", () => {
 
     it("when delivered", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...CommerceShipArtaOrder,
           lineItems: {
@@ -198,7 +200,7 @@ describe("TrackOrderSection", () => {
   describe("when CommercePickup", () => {
     it("not renders section", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...CommerceShipOrder,
           requestedFulfillment: { __typename: "CommercePickup" },

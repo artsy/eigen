@@ -9,9 +9,9 @@ import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import React from "react"
 import { Alert } from "react-native"
@@ -30,7 +30,7 @@ const withoutDuplicateAlert = async () => {
   })
 
   // No duplicate alert
-  mockEnvironmentPayload(mockEnvironment, {
+  resolveMostRecentRelayOperation(mockEnvironment, {
     Me: () => ({
       savedSearch: null,
     }),
@@ -74,7 +74,7 @@ describe("Saved search alert form", () => {
     fireEvent.press(getByTestId("save-alert-button"))
 
     await waitFor(() => {
-      mockEnvironmentPayload(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment)
     })
 
     expect(onCompleteMock).toHaveBeenCalled()
@@ -195,7 +195,7 @@ describe("Saved search alert form", () => {
       fireEvent.press(getByTestId("dialog-primary-action-button"))
 
       await waitFor(() => {
-        mockEnvironmentPayload(mockEnvironment)
+        resolveMostRecentRelayOperation(mockEnvironment)
       })
 
       expect(mockTrackEvent).toHaveBeenCalledWith(tracks.deletedSavedSearch("savedSearchAlertId"))
@@ -210,7 +210,7 @@ describe("Saved search alert form", () => {
       fireEvent.press(getByTestId("save-alert-button"))
 
       await waitFor(() => {
-        mockEnvironmentPayload(mockEnvironment)
+        resolveMostRecentRelayOperation(mockEnvironment)
       })
 
       expect(mockTrackEvent).toHaveBeenCalledWith(
@@ -247,7 +247,7 @@ describe("Saved search alert form", () => {
       )
 
       await waitFor(() => {
-        mockEnvironmentPayload(mockEnvironment)
+        resolveMostRecentRelayOperation(mockEnvironment)
       })
 
       expect(onDeletePressMock).toHaveBeenCalled()
@@ -654,7 +654,7 @@ describe("Checking for a duplicate alert", () => {
       })
 
       // No duplicate alert
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Me: () => ({
           savedSearch: null,
         }),
@@ -676,7 +676,7 @@ describe("Checking for a duplicate alert", () => {
         expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
       })
 
-      mockEnvironmentPayload(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment)
 
       await waitFor(() => expect(spyAlert.mock.calls[0][0]).toBe("Duplicate Alert"))
     })
@@ -694,7 +694,7 @@ describe("Checking for a duplicate alert", () => {
         expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
       })
 
-      mockEnvironmentPayload(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment)
 
       await waitFor(() => {
         const mutation = mockEnvironment.mock.getMostRecentOperation()
@@ -718,7 +718,7 @@ describe("Checking for a duplicate alert", () => {
       })
 
       // No duplicate alert
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Me: () => ({
           savedSearch: null,
         }),
@@ -746,7 +746,7 @@ describe("Checking for a duplicate alert", () => {
         expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
       })
 
-      mockEnvironmentPayload(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment)
 
       await waitFor(() => expect(spyAlert.mock.calls[0][0]).toBe("Duplicate Alert"))
 
@@ -769,7 +769,7 @@ describe("Checking for a duplicate alert", () => {
         expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
       })
 
-      mockEnvironmentPayload(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment)
 
       await waitFor(() => {
         const mutation = mockEnvironment.mock.getMostRecentOperation()

@@ -5,8 +5,8 @@ import { createMockEnvironment } from "relay-test-utils"
 
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Button, Sans } from "palette"
 
 jest.unmock("react-relay")
@@ -41,7 +41,7 @@ describe("ArtistHeader", () => {
   it("renders properly", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => mockArtist,
     })
 
@@ -51,7 +51,7 @@ describe("ArtistHeader", () => {
   it("displays follow button for artist", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => mockArtist,
     })
 
@@ -63,7 +63,7 @@ describe("ArtistHeader", () => {
 
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => mockArtist,
     })
 

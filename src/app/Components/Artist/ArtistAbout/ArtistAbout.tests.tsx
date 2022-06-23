@@ -2,8 +2,8 @@ import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graph
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -54,7 +54,7 @@ describe("ArtistAbout", () => {
     it("is shown when the artist has metadata", () => {
       const tree = renderWithWrappers(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Boolean: (context) => {
           if (context.name === "hasMetadata") {
             return true
@@ -68,7 +68,7 @@ describe("ArtistAbout", () => {
     it("is hidden when the artist has metadata", () => {
       const tree = renderWithWrappers(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Boolean: (context) => {
           if (context.name === "hasMetadata") {
             return false
@@ -84,7 +84,7 @@ describe("ArtistAbout", () => {
     it("is rendered by default", () => {
       const tree = renderWithWrappers(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment)
 
       expect(tree.root.findAllByType(ArtistAboutShowsFragmentContainer).length).toEqual(1)
     })

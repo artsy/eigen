@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { MyAccountEditEmailTestsQuery } from "__generated__/MyAccountEditEmailTestsQuery.graphql"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -52,7 +52,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
   it("shows confirm email toast when email is changed", async () => {
     const { getByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => ({
         email: "old-email@test.com",
       }),
@@ -71,7 +71,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
     const saveButton = getByLabelText("save-button")
     fireEvent.press(saveButton)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => ({
         email: "new-email@test.com",
       }),
@@ -91,7 +91,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
   it("does not show confirm email toast when email did not change", async () => {
     const { getByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => ({
         email: "old-email@test.com",
       }),
@@ -110,7 +110,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
     const saveButton = getByLabelText("save-button")
     fireEvent.press(saveButton)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => ({
         email: "old-email@test.com",
       }),

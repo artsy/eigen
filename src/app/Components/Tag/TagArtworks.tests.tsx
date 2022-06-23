@@ -1,8 +1,8 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { TagArtworksTestsQuery } from "__generated__/TagArtworksTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -54,19 +54,19 @@ describe("TagArtworks", () => {
 
   it("renders without throwing an error", () => {
     renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(environment)
+    resolveMostRecentRelayOperation(environment)
   })
 
   it("renders filter header", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(environment)
+    resolveMostRecentRelayOperation(environment)
 
     await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
   })
 
   it("renders artworks grid", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(environment, {
+    resolveMostRecentRelayOperation(environment, {
       FilterArtworksConnection() {
         return {
           counts: {
@@ -82,7 +82,7 @@ describe("TagArtworks", () => {
 
   it("renders empty artworks grid view", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(environment, {
+    resolveMostRecentRelayOperation(environment, {
       FilterArtworksConnection() {
         return {
           counts: {
@@ -99,7 +99,7 @@ describe("TagArtworks", () => {
     fireEvent.press(getByText("Recently Added"))
     fireEvent.press(getByText("Show Results"))
 
-    mockEnvironmentPayload(environment, {
+    resolveMostRecentRelayOperation(environment, {
       FilterArtworksConnection() {
         return {
           counts: {
@@ -114,7 +114,7 @@ describe("TagArtworks", () => {
 
   it("renders empty message when artworks is empty", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(environment, {
+    resolveMostRecentRelayOperation(environment, {
       Tag() {
         return {
           artworks: {

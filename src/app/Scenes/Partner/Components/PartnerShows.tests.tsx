@@ -1,7 +1,7 @@
 import { PartnerShowsTestsQuery } from "__generated__/PartnerShowsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { cloneDeep } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -51,7 +51,7 @@ describe("PartnerShows", () => {
   it("renders the shows correctly", async () => {
     const { getByText } = await renderWithWrappersTL(<TestWrapper />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Partner: () => PartnerShowsFixture,
     })
 
@@ -76,7 +76,7 @@ describe("PartnerShows", () => {
 
     const { queryByText } = renderWithWrappersTL(<TestWrapper />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Partner: () => fixture,
     })
 

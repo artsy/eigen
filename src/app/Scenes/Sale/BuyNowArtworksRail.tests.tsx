@@ -1,6 +1,6 @@
 import { BuyNowArtworksRailTestsQuery } from "__generated__/BuyNowArtworksRailTestsQuery.graphql"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -34,7 +34,7 @@ describe("BuyNowArtworksRail", () => {
   })
   it(`renders title "Buy now"`, () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
     expect(getByText("Artworks Available to Buy Now")).toBeDefined()
   })
 
@@ -47,7 +47,7 @@ describe("BuyNowArtworksRail", () => {
         },
       }),
     }
-    mockEnvironmentPayload(mockEnvironment, noArtworksProps)
+    resolveMostRecentRelayOperation(mockEnvironment, noArtworksProps)
     expect(queryAllByTestId("bnmo-rail-wrapper")).toHaveLength(0)
   })
 })
