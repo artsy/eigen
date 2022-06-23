@@ -16,6 +16,7 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
+import { isEmpty } from "lodash"
 import { Box, LinkText, Separator, Text } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
@@ -276,7 +277,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (enableCreateArtworkAlert && !artworkAboveTheFold?.isSold && !isInClosedAuction) {
+    if (
+      enableCreateArtworkAlert &&
+      !isEmpty(artworkAboveTheFold?.artists) &&
+      !artworkAboveTheFold?.isSold &&
+      !isInClosedAuction
+    ) {
       sections.push({
         key: "createAlertSection",
         element: <CreateArtworkAlertSection artwork={artworkAboveTheFold} />,
@@ -479,6 +485,9 @@ export const ArtworkContainer = createRefetchContainer(
         isSold
         isInAuction
         availability
+        artists {
+          name
+        }
         sale {
           isClosed
           isPreview

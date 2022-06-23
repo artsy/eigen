@@ -541,11 +541,32 @@ describe("Artwork", () => {
           isSold: false,
           isInAuction: false,
           sale: null,
+          artists: [
+            {
+              name: "Test Artist",
+            },
+          ],
         }),
       })
 
       expect(queryByA11yLabel("Create artwork alert section")).toBeTruthy()
       expect(queryByA11yLabel("Create artwork alert buttons section")).toBeFalsy()
+    })
+
+    it("should not display create artwork alert button section when artwork doesn't have any artist", () => {
+      const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          isSold: false,
+          isInAuction: false,
+          sale: null,
+          artists: [],
+        }),
+      })
+
+      expect(queryByA11yLabel("Create artwork alert section")).toBeNull()
+      expect(queryByA11yLabel("Create artwork alert buttons section")).toBeNull()
     })
 
     it("should display create artwork alert buttons section when artwork is sold", () => {
