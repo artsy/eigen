@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/react-native"
 import { Questions_Test_Query } from "__generated__/Questions_Test_Query.graphql"
-import { mockEnvironmentPayloadAndEnsureUpdated } from "app/tests/mockEnvironmentPayload"
+import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Suspense } from "react"
 import { Text } from "react-native"
@@ -36,7 +36,7 @@ describe("Questions", () => {
         </Suspense>
       </RelayEnvironmentProvider>
     )
-    mockEnvironmentPayloadAndEnsureUpdated(mockEnvironment, { Artwork: () => ({}) })
+    mockEnvironmentPayload(mockEnvironment, { Artwork: () => ({}) })
     await waitFor(() => expect(getByText("SusLoading")).toBeDefined())
 
     await waitFor(() => expect(getByText("Questions about this piece?")).toBeDefined())

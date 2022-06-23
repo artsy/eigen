@@ -53,13 +53,9 @@ export function mockEnvironmentPayload(
   mockResolvers?: MockResolvers
 ) {
   reset()
-  mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-    MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
-  )
-}
-
-export function mockEnvironmentPayloadAndEnsureUpdated(
-  ...args: Parameters<typeof mockEnvironmentPayload>
-) {
-  act(() => mockEnvironmentPayload(...args))
+  act(() => {
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
+    )
+  })
 }
