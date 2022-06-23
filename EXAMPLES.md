@@ -14,8 +14,8 @@ Links:
 
 ## I want to write a test.
 
-We use `@testing-library/react-native` and our helper `renderWithWrappersTL`.
-We try to use `testID` to find elements.
+- We use `@testing-library/react-native` and our helper `renderWithWrappersTL`.
+- We refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/) from `@testing-library/react-native` for querying components
 
 Links:
 
