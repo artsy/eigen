@@ -141,9 +141,10 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableMyCollectionSearchBar: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable My Collection search bar",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionSearchBar",
   },
   AREnablePlaceholderLayoutAnimation: {
     readyForRelease: true,
