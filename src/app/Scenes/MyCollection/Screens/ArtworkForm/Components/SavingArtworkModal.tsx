@@ -12,7 +12,7 @@ export const SavingArtworkModal: React.FC<SavingArtworkModalProps & ModalProps> 
   loadingText = "",
   ...rest
 }) => (
-  <Modal animationType="fade" visible={isVisible} {...rest} statusBarTranslucent>
+  <Modal animationType="fade" visible={isVisible} {...rest} transparent statusBarTranslucent>
     <ImageBackground
       style={{ height: "100%", width: "100%", ...StyleSheet.absoluteFillObject }}
       source={require("images/InsightsLoadingImage.webp")}
