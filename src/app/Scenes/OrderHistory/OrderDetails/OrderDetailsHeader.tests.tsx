@@ -1,7 +1,7 @@
 import { OrderDetailsHeaderTestsQuery } from "__generated__/OrderDetailsHeaderTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -44,7 +44,7 @@ describe("OrderDetailsHeader", () => {
 
   it("renders date, code, status, fulfillment fields", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
-    mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => mockInfo })
+    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => mockInfo })
 
     expect(extractText(tree.findByProps({ testID: "date" }))).toBe("Jun 2, 2021")
     expect(extractText(tree.findByProps({ testID: "code" }))).toBe("075381384")
@@ -57,7 +57,7 @@ describe("OrderDetailsHeader", () => {
       describe("CommerceShip", () => {
         it("SUBMITTED state", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => mockInfo })
+          resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => mockInfo })
 
           expect(extractText(tree.findByProps({ testID: "status" }))).toBe("pending")
           expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
@@ -65,7 +65,7 @@ describe("OrderDetailsHeader", () => {
 
         it("APPROVED state", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, {
+          resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({ ...mockInfo, state: "APPROVED" }),
           })
 
@@ -75,7 +75,7 @@ describe("OrderDetailsHeader", () => {
 
         it("FULFILLED state", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, {
+          resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({ ...mockInfo, state: "FULFILLED" }),
           })
 
@@ -87,7 +87,7 @@ describe("OrderDetailsHeader", () => {
       describe("CommerceShipArtA", () => {
         it("PENDING status", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, {
+          resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "pending" } } }] },
@@ -100,7 +100,7 @@ describe("OrderDetailsHeader", () => {
 
         it("CONFIRMED status", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, {
+          resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "confirmed" } } }] },
@@ -113,7 +113,7 @@ describe("OrderDetailsHeader", () => {
 
         it("COLLECTED status", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, {
+          resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "collected" } } }] },
@@ -126,7 +126,7 @@ describe("OrderDetailsHeader", () => {
 
         it("IN_TRANSIT status", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, {
+          resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "in_transit" } } }] },
@@ -139,7 +139,7 @@ describe("OrderDetailsHeader", () => {
 
         it("COMPLETED status", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, {
+          resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "completed" } } }] },
@@ -152,7 +152,7 @@ describe("OrderDetailsHeader", () => {
 
         it("CANCELED status", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, {
+          resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "canceled" } } }] },
@@ -167,7 +167,7 @@ describe("OrderDetailsHeader", () => {
       describe("CommercePickup", () => {
         it("SUBMITTED state", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, {
+          resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
               requestedFulfillment: { __typename: "CommercePickup" },
@@ -180,7 +180,7 @@ describe("OrderDetailsHeader", () => {
 
         it("APPROVED state", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, {
+          resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
               state: "APPROVED",
@@ -194,7 +194,7 @@ describe("OrderDetailsHeader", () => {
 
         it("FULFILLED state", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, {
+          resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
               state: "FULFILLED",

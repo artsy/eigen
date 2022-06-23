@@ -1,6 +1,6 @@
 import { SummarySectionTestsQuery } from "__generated__/SummarySectionTestsQuery.graphql"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -35,7 +35,7 @@ describe("SummarySection", () => {
 
   it("Render Order Summary Section ", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         mode: "BUY",
         buyerTotal: "€11,200",
@@ -54,7 +54,7 @@ describe("SummarySection", () => {
 
   it("Render correct shipping name if shipping quote selected", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         lineItems: {
           edges: [
@@ -77,7 +77,7 @@ describe("SummarySection", () => {
 
   it("Render correct shipping name if shipping quote not selected", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         lineItems: {
           edges: [
@@ -99,7 +99,7 @@ describe("SummarySection", () => {
   describe("if offer order", () => {
     it("Render correct price", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           mode: "OFFER",
           buyerTotal: "€10,400",
@@ -119,7 +119,7 @@ describe("SummarySection", () => {
 
     it("Render counteroffer", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           mode: "OFFER",
           buyerTotal: "€10,400",

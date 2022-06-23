@@ -1,8 +1,8 @@
 import { ArtistShows2TestsQuery } from "__generated__/ArtistShows2TestsQuery.graphql"
 import { ArtistShowFragmentContainer } from "app/Components/Artist/ArtistShows/ArtistShow"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
@@ -43,7 +43,7 @@ describe("ArtistShows2", () => {
   it("Renders artist name", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         name: "Andy Warhol",
       }),
@@ -56,7 +56,7 @@ describe("ArtistShows2", () => {
   it("Renders list of shows", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       // ShowsConnection is named as ShowConnection
       ShowConnection: () => ({
         edges: [{ node: { id: "show1" } }, { node: { id: "show2" } }, { node: { id: "show3" } }],

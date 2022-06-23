@@ -2,9 +2,9 @@ import { fireEvent, waitFor } from "@testing-library/react-native"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
@@ -30,10 +30,10 @@ describe("EditSavedSearchAlert", () => {
   it("renders without throwing an error", () => {
     const { getAllByTestId, getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
     })
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
       Viewer: () => viewerMocked,
     })
@@ -45,10 +45,10 @@ describe("EditSavedSearchAlert", () => {
   it("should navigate go back if the update mutation is successful", async () => {
     const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
     })
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
       Viewer: () => viewerMocked,
     })
@@ -57,7 +57,7 @@ describe("EditSavedSearchAlert", () => {
     fireEvent.press(getByTestId("save-alert-button"))
 
     await waitFor(() => {
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => ({
           userAlertSettings: {
             name: "updated-name",
@@ -72,11 +72,11 @@ describe("EditSavedSearchAlert", () => {
   it("should pass updated criteria to update mutation when pills are removed", async () => {
     const { getByText, getAllByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
       Viewer: () => viewerMocked,
     })
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         internalID: "artistID",
         slug: "artistSlug",
@@ -92,7 +92,7 @@ describe("EditSavedSearchAlert", () => {
       expect(operation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
     })
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => ({
         savedSearch: null,
       }),
@@ -118,7 +118,7 @@ describe("EditSavedSearchAlert", () => {
   it("should display artist name as placeholder for input name", async () => {
     const { getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteria: () => ({
         ...searchCriteria,
         userAlertSettings: {
@@ -127,7 +127,7 @@ describe("EditSavedSearchAlert", () => {
         },
       }),
     })
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         internalID: "artistID",
         name: "Artist Name",
@@ -144,10 +144,10 @@ describe("EditSavedSearchAlert", () => {
     it("email and push toggles are enabled", async () => {
       const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => searchCriteria,
       })
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         FilterArtworksConnection: () => filterArtworks,
         Viewer: () => ({
           notificationPreferences: [
@@ -166,7 +166,7 @@ describe("EditSavedSearchAlert", () => {
     it("email and push toggles are disabled", async () => {
       const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => ({
           ...searchCriteria,
           userAlertSettings: {
@@ -176,7 +176,7 @@ describe("EditSavedSearchAlert", () => {
           },
         }),
       })
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         FilterArtworksConnection: () => filterArtworks,
         Viewer: () => viewerMocked,
       })
@@ -187,7 +187,7 @@ describe("EditSavedSearchAlert", () => {
     it("push toggle is enabled, email toggle is disabled", async () => {
       const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => ({
           ...searchCriteria,
           userAlertSettings: {
@@ -196,7 +196,7 @@ describe("EditSavedSearchAlert", () => {
           },
         }),
       })
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         FilterArtworksConnection: () => filterArtworks,
         Viewer: () => viewerMocked,
       })
@@ -207,7 +207,7 @@ describe("EditSavedSearchAlert", () => {
     it("email toggle is enabled, push toggle is disabled", async () => {
       const { getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         SearchCriteria: () => ({
           ...searchCriteria,
           userAlertSettings: {
@@ -216,7 +216,7 @@ describe("EditSavedSearchAlert", () => {
           },
         }),
       })
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         FilterArtworksConnection: () => filterArtworks,
         Viewer: () => ({
           notificationPreferences: [

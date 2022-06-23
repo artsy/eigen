@@ -123,7 +123,7 @@ Not really needed to be removed, unless it causes problems.
 
 #### Explanation/Context:
 
-We use this type in out code for our tests and the `mockEnvironmentPayload`, so we exported it.
+We use this type in out code for our tests and the `resolveMostRecentRelayOperation`, so we exported it.
 
 ## Delay modal display after LoadingModal is dismissed
 

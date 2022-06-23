@@ -1,6 +1,6 @@
 import { AuctionResultsForArtistsYouFollowTestsQuery } from "__generated__/AuctionResultsForArtistsYouFollowTestsQuery.graphql"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -39,7 +39,7 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
   it("Renders list of auction results for artists you follow", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => ({
         id: "test-id",
         auctionResultsByFollowedArtists: {

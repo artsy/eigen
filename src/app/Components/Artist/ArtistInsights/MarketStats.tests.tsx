@@ -1,8 +1,8 @@
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { DecreaseIcon, IncreaseIcon } from "palette"
 import React from "react"
 import { ReactTestInstance } from "react-test-renderer"
@@ -24,7 +24,7 @@ describe("MarketStats", () => {
 
   it("renders market stats", () => {
     const tree = renderWithWrappers(<TestWrapper />).root
-    mockEnvironmentPayload(environment)
+    resolveMostRecentRelayOperation(environment)
     expect(tree.findAllByType(MarketStatsFragmentContainer).length).toEqual(1)
   })
 
@@ -39,7 +39,7 @@ describe("MarketStats", () => {
         ],
       }
 
-      mockEnvironmentPayload(environment, {
+      resolveMostRecentRelayOperation(environment, {
         PriceInsightConnection: () => priceInsights,
       })
     })
@@ -72,7 +72,7 @@ describe("MarketStats", () => {
         ],
       }
 
-      mockEnvironmentPayload(environment, {
+      resolveMostRecentRelayOperation(environment, {
         PriceInsightConnection: () => priceInsights,
       })
 
@@ -108,7 +108,7 @@ describe("MarketStats", () => {
   describe("tracking", () => {
     it("tracks the correct event when info bubble is tapped", () => {
       const tree = renderWithWrappers(<TestWrapper />).root
-      mockEnvironmentPayload(environment)
+      resolveMostRecentRelayOperation(environment)
 
       const infoBubble = tree.findByType(InfoButton)
       infoBubble.props.trackEvent()

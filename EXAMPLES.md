@@ -24,7 +24,7 @@ Example Links:
 
 ## I want to write a test with relay.
 
-Similar to above. For `relay` testing we use `mockEnvironmentPayload` to mock the most recent operation.
+Similar to above. For `relay` testing we use `resolveMostRecentRelayOperation` to mock the most recent operation.
 Look at https://github.com/artsy/relay-workshop for a great tutorial of how we use relay and test with it.
 
 Links:

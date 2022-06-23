@@ -2,8 +2,8 @@ import { SaleActiveBidItemTestsQuery } from "__generated__/SaleActiveBidItemTest
 import { navigate } from "app/navigation/navigate"
 import { HighestBid, Outbid, ReserveNotMet } from "app/Scenes/MyBids/Components/BiddingStatuses"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { DateTime } from "luxon"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -89,7 +89,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     const button = tree.root.findAllByType(TouchableOpacity)[0]
     button.props.onPress()
@@ -111,7 +111,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(tree.root.findAllByType(HighestBid)).toHaveLength(1)
   })
@@ -137,7 +137,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(tree.root.findAllByType(ReserveNotMet)).toHaveLength(1)
   })
@@ -157,7 +157,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(tree.root.findAllByType(Outbid)).toHaveLength(1)
   })
@@ -183,7 +183,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(extractText(tree.root)).toContain("1 bid")
   })
@@ -209,7 +209,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(extractText(tree.root)).toContain("5 bids")
   })

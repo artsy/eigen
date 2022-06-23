@@ -1,7 +1,7 @@
 import { SaleArtworkTileRailCardTestsQuery } from "__generated__/SaleArtworkTileRailCardTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -56,7 +56,7 @@ describe("SaleArtworkTileRailCard", () => {
   it("renders sale artwork without throwing an error", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     // Render the sale artwork fields
     expect(extractText(tree.root)).toContain("Banksy")
@@ -73,14 +73,14 @@ describe("SaleArtworkTileRailCard", () => {
   it("renders custom sale artwork message when useCustomSaleMessage is set to true", () => {
     const tree = renderWithWrappers(<TestRenderer useCustomSaleMessage />)
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
     expect(extractText(tree.root)).toContain("Bidding closed")
   })
 
   it("renders square image when useSquareAspectRatio is set to true ", () => {
     const tree = renderWithWrappers(<TestRenderer useSquareAspectRatio />)
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     const image = tree.root.findAllByType(OpaqueImageView)
     expect(image.length).toBe(1)

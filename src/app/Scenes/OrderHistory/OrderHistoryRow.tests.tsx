@@ -1,7 +1,7 @@
 import { OrderHistoryRowTestsQuery } from "__generated__/OrderHistoryRowTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -65,7 +65,7 @@ describe("Order history row", () => {
   describe("Render Order", () => {
     it("with all fields", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => mockOrder })
+      resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => mockOrder })
 
       expect(extractText(tree.findByProps({ testID: "artist-names" }))).toBe("Torbjørn Rødland")
       expect(extractText(tree.findByProps({ testID: "partner-name" }))).toBe(
@@ -86,7 +86,7 @@ describe("Order history row", () => {
     describe("Offer mode", () => {
       it("View Offer button when SUBMITTED state", () => {
         const tree = renderWithWrappers(<TestRenderer />).root
-        mockEnvironmentPayload(mockEnvironment, {
+        resolveMostRecentRelayOperation(mockEnvironment, {
           CommerceOrder: () => ({ ...mockOrder, mode: "OFFER" }),
         })
 
@@ -97,7 +97,7 @@ describe("Order history row", () => {
 
       it("View Order button when APPROVED state", () => {
         const tree = renderWithWrappers(<TestRenderer />).root
-        mockEnvironmentPayload(mockEnvironment, {
+        resolveMostRecentRelayOperation(mockEnvironment, {
           CommerceOrder: () => ({ ...mockOrder, state: "APPROVED", mode: "OFFER" }),
         })
 
@@ -125,7 +125,7 @@ describe("Order history row", () => {
         },
       }
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+      resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
 
       expect(
         tree.findByProps({ testID: "image-container" }).findByProps({ testID: "image-box" })
@@ -136,14 +136,14 @@ describe("Order history row", () => {
   describe("Orders without shipment status", () => {
     it("SUBMITTED order", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => mockOrder })
+      resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => mockOrder })
 
       expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("pending")
     })
 
     it("APPROVED order", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({ ...mockOrder, state: "APPROVED" }),
       })
 
@@ -152,7 +152,7 @@ describe("Order history row", () => {
 
     it("FULFILLED order", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({ ...mockOrder, state: "FULFILLED" }),
       })
 
@@ -161,7 +161,7 @@ describe("Order history row", () => {
 
     it("CANCELED order", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({ ...mockOrder, state: "CANCELED" }),
       })
 
@@ -186,7 +186,7 @@ describe("Order history row", () => {
       }
       it("CANCELED order without trackingId", () => {
         const tree = renderWithWrappers(<TestRenderer />).root
-        mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+        resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
 
         expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("canceled")
         expect(tree.findByProps({ testID: "view-order-button-box" })).not.toContain(Button)
@@ -194,7 +194,7 @@ describe("Order history row", () => {
 
       it("REFUNDED order without trackingId", () => {
         const tree = renderWithWrappers(<TestRenderer />).root
-        mockEnvironmentPayload(mockEnvironment, {
+        resolveMostRecentRelayOperation(mockEnvironment, {
           CommerceOrder: () => ({ ...order, state: "REFUNDED" }),
         })
 
@@ -222,14 +222,14 @@ describe("Order history row", () => {
 
     it("PENDING shipment status", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+      resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
 
       expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("processing")
     })
 
     it("CONFIRMED shipment status", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...order,
           lineItems: {
@@ -250,7 +250,7 @@ describe("Order history row", () => {
 
     it("COLLECTED shipment status", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...order,
           lineItems: {
@@ -271,7 +271,7 @@ describe("Order history row", () => {
 
     it("IN_TRANSIT shipment status", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...order,
           lineItems: {
@@ -292,7 +292,7 @@ describe("Order history row", () => {
 
     it("COMPLETE shipment status", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...order,
           lineItems: {
@@ -313,7 +313,7 @@ describe("Order history row", () => {
 
     it("CANCELED shipment status", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...order,
           lineItems: {

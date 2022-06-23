@@ -11,8 +11,8 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
@@ -139,7 +139,7 @@ describe("MyCollection", () => {
       const renderApi = renderWithWrappersTL(<TestRenderer />)
 
       act(() => {
-        mockEnvironmentPayload(mockEnvironment, {
+        resolveMostRecentRelayOperation(mockEnvironment, {
           Me: () => ({
             myCollectionConnection,
           }),

@@ -1,8 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
 import { CreateArtworkAlertSectionTestsQuery } from "__generated__/CreateArtworkAlertSectionTestsQuery.graphql"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CreateArtworkAlertSectionFragmentContainer } from "./CreateArtworkAlertSection"
@@ -46,7 +46,7 @@ describe("CreateArtworkAlertSection", () => {
     const placeholder = "Artworks like: Some artwork title"
     const { getAllByText, getAllByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => Artwork,
     })
 
@@ -58,7 +58,7 @@ describe("CreateArtworkAlertSection", () => {
   it("should correctly render pills", () => {
     const { getAllByText, getByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => Artwork,
     })
 
@@ -72,7 +72,7 @@ describe("CreateArtworkAlertSection", () => {
   it("should not render `Rarity` pill if needed data is missing", () => {
     const { getAllByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
         ...Artwork,
         attributionClass: null,
@@ -87,7 +87,7 @@ describe("CreateArtworkAlertSection", () => {
   it("should not render `Medium` pill if needed data is missing", () => {
     const { getAllByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
         ...Artwork,
         mediumType: null,
@@ -102,7 +102,7 @@ describe("CreateArtworkAlertSection", () => {
   it("should correctly track event when `Create Alert` button is pressed", () => {
     const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => Artwork,
     })
 

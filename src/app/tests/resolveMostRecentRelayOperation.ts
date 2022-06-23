@@ -48,18 +48,17 @@ export const DefaultMockResolvers: MockResolvers = {
   String: (ctx) => goodMockResolver(ctx),
 }
 
-export function mockEnvironmentPayload(
+export function resolveMostRecentRelayOperation(
   mockEnvironment: ReturnType<typeof createMockEnvironment>,
   mockResolvers?: MockResolvers
 ) {
   reset()
-  mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-    MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
-  )
-}
-
-export function mockEnvironmentPayloadAndEnsureUpdated(
-  ...args: Parameters<typeof mockEnvironmentPayload>
-) {
-  act(() => mockEnvironmentPayload(...args))
+  act(() => {
+    // Wrapping in act will ensure that components
+    // are fully updated to their final state.
+    // https://relay.dev/docs/guides/testing-relay-components/
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
+    )
+  })
 }

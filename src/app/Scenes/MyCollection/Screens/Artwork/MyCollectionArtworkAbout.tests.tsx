@@ -1,8 +1,8 @@
 import { MyCollectionArtworkAboutTestsQuery } from "__generated__/MyCollectionArtworkAboutTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -60,7 +60,7 @@ describe("MyCollectionArtworkAbout", () => {
 
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         artwork: {
           category: "Oil on Canvas",
@@ -100,7 +100,7 @@ describe("MyCollectionArtworkAbout", () => {
 
     const { queryByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         artwork: {
           category: "Oil on Canvas",
@@ -126,7 +126,7 @@ describe("MyCollectionArtworkAbout", () => {
   it("renders purchase details section", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         artwork: {
           pricePaid: { display: "€224,000" },
@@ -144,7 +144,7 @@ describe("MyCollectionArtworkAbout", () => {
   it("renders articles section", () => {
     const { getByText, getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         artwork: {
           artistNames: "Banksy",

@@ -1,8 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
@@ -24,7 +24,7 @@ describe("SearchArtworks", () => {
   it("should render without throwing an error", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
         artistNames: "Artist Name",
       }),
@@ -54,7 +54,7 @@ describe("SearchArtworks", () => {
   it("should track event when an artwork is tapped", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
         internalID: "internalID",
         slug: "artworkSlug",
