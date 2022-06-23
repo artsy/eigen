@@ -49,6 +49,7 @@ export type OnboardingNavigationStack = {
 
 declare global {
   namespace ReactNavigation {
+    // tslint:disable-next-line: no-empty-interface
     interface RootParamList extends OnboardingNavigationStack {}
   }
 }
