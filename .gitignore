@@ -28,6 +28,7 @@ xcode_build_raw.log
 
 # Artsy Development APN certificate
 net.artsy.artsy.dev.pem
+.clang-format
 
 # See note in Podfile
 ios/Artsy/App/Echo.json
