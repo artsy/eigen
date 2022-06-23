@@ -15,9 +15,11 @@ export const FancyModal: React.FC<{
   maxHeight?: number
   fullScreen?: boolean
   animationPosition?: FancyModalAnimationPosition
+  testID?: string
   onBackgroundPressed?(): void
   onModalFinishedClosing?(): void
 }> = ({
+  testID,
   visible,
   children,
   maxHeight,
@@ -110,6 +112,7 @@ export const FancyModal: React.FC<{
 
   return (
     <Modal
+      testID={testID}
       transparent
       animated={false}
       visible={showingUnderlyingModal}
