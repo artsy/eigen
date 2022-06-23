@@ -196,7 +196,7 @@
     "zustand": "3.6.9"
   },
   "devDependencies": {
-    "@artsy/update-repo": "0.5.0",
+    "@artsy/update-repo": "0.6.0",
     "@babel/core": "7.16.12",
     "@babel/plugin-proposal-class-properties": "7.16.7",
     "@babel/plugin-proposal-decorators": "7.16.7",
