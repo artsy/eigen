@@ -90,11 +90,11 @@ export const __globalStoreTestUtils__ = __TEST__
     }
   : undefined
 
-if (__TEST__) {
+/* if (__TEST__) {
   beforeEach(() => {
     __globalStoreTestUtils__?.reset()
   })
-}
+} */
 
 const hooks = createTypedHooks<GlobalStoreModel>()
 

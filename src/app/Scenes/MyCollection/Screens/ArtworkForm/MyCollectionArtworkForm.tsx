@@ -348,7 +348,7 @@ const tracks = {
   },
 }
 
-const addArtworkMessages = async ({
+export const addArtworkMessages = ({
   hasMarketPriceInsights,
   sourceTab,
 }: {

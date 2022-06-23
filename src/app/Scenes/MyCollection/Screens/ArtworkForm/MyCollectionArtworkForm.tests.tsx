@@ -19,6 +19,7 @@ import { createMockEnvironment } from "relay-test-utils"
 import * as artworkMutations from "../../mutations/myCollectionCreateArtwork"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import {
+  addArtworkMessages,
   MyCollectionArtworkForm,
   MyCollectionArtworkFormProps,
   updateArtwork,
@@ -573,6 +574,37 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByTestId("loading-modal").props.visible).toBe(true)
       })
+    })
+  })
+
+  describe("adds correct visual clues", () => {
+    it("hasMarketPriceInsights: true, sourceTab: Tab.collection", () => {
+      addArtworkMessages({ hasMarketPriceInsights: true, sourceTab: Tab.collection })
+      expect(__globalStoreTestUtils__?.getCurrentState().visualClue.sessionState.clues).toEqual([
+        "AddedArtworkWithInsightsMessage_MyCTab",
+        "AddedArtworkWithInsightsVisualClueDot",
+      ])
+    })
+
+    it("hasMarketPriceInsights: false, sourceTab: Tab.collection", () => {
+      addArtworkMessages({ hasMarketPriceInsights: true, sourceTab: Tab.insights })
+      expect(__globalStoreTestUtils__?.getCurrentState().visualClue.sessionState.clues).toEqual([
+        "AddedArtworkWithInsightsMessage_InsightsTab",
+      ])
+    })
+
+    it("hasMarketPriceInsights: false, sourceTab: Tab.collection", () => {
+      addArtworkMessages({ hasMarketPriceInsights: false, sourceTab: Tab.collection })
+      expect(__globalStoreTestUtils__?.getCurrentState().visualClue.sessionState.clues).toEqual([
+        "AddedArtworkWithoutInsightsMessage_MyCTab",
+      ])
+    })
+
+    it("hasMarketPriceInsights: false, sourceTab: Tab.insights", () => {
+      addArtworkMessages({ hasMarketPriceInsights: false, sourceTab: Tab.insights })
+      expect(__globalStoreTestUtils__?.getCurrentState().visualClue.sessionState.clues).toEqual([
+        "AddedArtworkWithoutInsightsMessage_InsightsTab",
+      ])
     })
   })
 })
