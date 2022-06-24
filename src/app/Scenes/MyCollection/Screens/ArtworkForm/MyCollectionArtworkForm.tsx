@@ -94,6 +94,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const [loading, setLoading] = useState<boolean>(false)
   const [isArtworkSaved, setIsArtworkSaved] = useState<boolean>(false)
+  const [savingArtworkModalDisplayText, setSavingArtworkModalDisplayText] = useState<string>("")
 
   const { showActionSheetWithOptions } = useActionSheet()
 
@@ -112,14 +113,17 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           currencyPreference: preferredCurrency,
           lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
         }),
-        updateArtwork(values, dirtyFormCheckValues, props),
+        updateArtwork(values, dirtyFormCheckValues, props).then((hasMarketPriceInsights) => {
+          setSavingArtworkModalDisplayText(
+            hasMarketPriceInsights ? "Generating market data" : "Saving artwork"
+          )
+        }),
       ])
       if (showMyCollectionInsights) {
         setIsArtworkSaved(true)
         // simulate requesting market data
         await new Promise((resolve) => setTimeout(resolve, 2000))
       }
-
       refreshMyCollection()
       setLoading(false)
       // Go back to my collection screen after the loading modal is hidden
@@ -260,7 +264,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           <SavingArtworkModal
             testID="saving-artwork-modal"
             isVisible={loading}
-            loadingText={isArtworkSaved ? "Generating market data" : "Saving artwork"}
+            loadingText={isArtworkSaved ? savingArtworkModalDisplayText : "Saving artwork"}
           />
         ) : (
           <LoadingModal testID="loading-modal" isVisible={loading} />
@@ -317,6 +321,7 @@ export const updateArtwork = async (
       response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.hasMarketPriceInsights
 
     addArtworkMessages({ hasMarketPriceInsights, sourceTab: props.source })
+    return hasMarketPriceInsights
   } else {
     const response = await myCollectionUpdateArtwork({
       artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
