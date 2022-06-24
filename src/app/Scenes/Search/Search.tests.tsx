@@ -1,4 +1,4 @@
-import { act, fireEvent, RenderAPI, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, render, waitFor } from "@testing-library/react-native"
 import { RecentSearch } from "app/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
@@ -562,7 +562,8 @@ describe("Search Screen", () => {
   })
 
   describe("the top pill is selected by default", () => {
-    let tree: RenderAPI
+    // https://github.com/callstack/react-native-testing-library/issues/999 to be changed with RenderAPI type after this issue is resolved
+    let tree: ReturnType<typeof render>
 
     beforeEach(async () => {
       tree = renderWithWrappersTL(<TestRenderer />)
@@ -608,12 +609,12 @@ describe("Search Screen", () => {
     })
 
     it("when clear button is pressed", () => {
-      const { queryByA11yState, getByPlaceholderText, getByText, getByA11yLabel } = tree
+      const { queryByA11yState, getByPlaceholderText, getByText, getByLabelText } = tree
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       fireEvent(searchInput, "changeText", "prev value")
       fireEvent(getByText("Artists"), "press")
-      fireEvent(getByA11yLabel("Clear input button"), "press")
+      fireEvent(getByLabelText("Clear input button"), "press")
       fireEvent(searchInput, "changeText", "new value")
 
       expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")

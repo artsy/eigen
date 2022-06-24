@@ -1,4 +1,4 @@
-import { RenderAPI } from "@testing-library/react-native"
+import { render } from "@testing-library/react-native"
 import {
   RegistrationResult,
   RegistrationStatus,
@@ -54,7 +54,8 @@ it("renders properly for a user without a credit card", () => {
 })
 
 describe("User does not have a valid phone number", () => {
-  let rendered: RenderAPI
+  // https://github.com/callstack/react-native-testing-library/issues/999 to be changed with RenderAPI type after this issue is resolved
+  let rendered: ReturnType<typeof render>
 
   beforeEach(() => {
     rendered = renderWithWrappersTL(<Registration {...initialPropsForUserWithoutPhone} />)

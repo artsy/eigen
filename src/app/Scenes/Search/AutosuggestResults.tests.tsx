@@ -300,17 +300,17 @@ describe("AutosuggestResults", () => {
   })
 
   it("should show the loading placeholder ", () => {
-    const { getByA11yLabel } = renderWithWrappersTL(<TestWrapper query="michael" />)
+    const { getByLabelText } = renderWithWrappersTL(<TestWrapper query="michael" />)
 
-    expect(getByA11yLabel("Autosuggest results are loading")).toBeTruthy()
+    expect(getByLabelText("Autosuggest results are loading")).toBeTruthy()
   })
 
   it("should hide the loading placeholder when results are received", () => {
-    const { queryByA11yLabel } = renderWithWrappersTL(<TestWrapper query="michael" />)
+    const { queryByLabelText } = renderWithWrappersTL(<TestWrapper query="michael" />)
 
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
 
-    expect(queryByA11yLabel("Autosuggest results are loading")).toBeFalsy()
+    expect(queryByLabelText("Autosuggest results are loading")).toBeFalsy()
   })
 
   it("should show the default error message", async () => {

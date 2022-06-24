@@ -519,11 +519,11 @@ describe("Artwork", () => {
     })
 
     it("should not render the partner section when the partner has no name", () => {
-      const { queryByA11yLabel, queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByLabelText, queryByTestId } = renderWithWrappersTL(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
 
-      expect(queryByA11yLabel("Visit Test Partner page")).toBeFalsy()
+      expect(queryByLabelText("Visit Test Partner page")).toBeFalsy()
       expect(queryByTestId("non linkable partner")).toBeFalsy()
     })
   })
@@ -534,7 +534,7 @@ describe("Artwork", () => {
     })
 
     it("should display create artwork alert section by default", () => {
-      const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
@@ -544,12 +544,12 @@ describe("Artwork", () => {
         }),
       })
 
-      expect(queryByA11yLabel("Create artwork alert section")).toBeTruthy()
-      expect(queryByA11yLabel("Create artwork alert buttons section")).toBeFalsy()
+      expect(queryByLabelText("Create artwork alert section")).toBeTruthy()
+      expect(queryByLabelText("Create artwork alert buttons section")).toBeFalsy()
     })
 
     it("should display create artwork alert buttons section when artwork is sold", () => {
-      const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
@@ -559,12 +559,12 @@ describe("Artwork", () => {
         }),
       })
 
-      expect(queryByA11yLabel("Create artwork alert section")).toBeFalsy()
-      expect(queryByA11yLabel("Create artwork alert buttons section")).toBeTruthy()
+      expect(queryByLabelText("Create artwork alert section")).toBeFalsy()
+      expect(queryByLabelText("Create artwork alert buttons section")).toBeTruthy()
     })
 
     it("should display create artwork alert buttons section when artwork is in closed auction", () => {
-      const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
@@ -582,8 +582,8 @@ describe("Artwork", () => {
         }),
       })
 
-      expect(queryByA11yLabel("Create artwork alert section")).toBeFalsy()
-      expect(queryByA11yLabel("Create artwork alert buttons section")).toBeTruthy()
+      expect(queryByLabelText("Create artwork alert section")).toBeFalsy()
+      expect(queryByLabelText("Create artwork alert buttons section")).toBeTruthy()
     })
   })
 })

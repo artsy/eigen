@@ -54,10 +54,10 @@ describe("SearchInput", () => {
   })
 
   it("track event when the text is cleared", () => {
-    const { getByPlaceholderText, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
     fireEvent.changeText(getByPlaceholderText("Placeholder"), "text")
-    fireEvent.press(getByA11yLabel("Clear input button"))
+    fireEvent.press(getByLabelText("Clear input button"))
 
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
       Array [
