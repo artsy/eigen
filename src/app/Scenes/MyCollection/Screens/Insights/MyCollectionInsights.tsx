@@ -3,7 +3,7 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { setVisualClueAsSeen, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   MY_COLLECTION_INSIGHTS_REFRESH_KEY,
@@ -81,7 +81,11 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       <>
         {!!showMyCollectionInsightsIncompleteMessage && (
           <MyCollectionInsightsIncompleteMessage
-            onClose={() => setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")}
+            onClose={() =>
+              GlobalStore.actions.visualClue.setVisualClueAsSeen(
+                "MyCollectionInsightsIncompleteMessage"
+              )
+            }
           />
         )}
         <MyCollectionArtworkUploadMessages

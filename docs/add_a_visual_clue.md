@@ -55,14 +55,14 @@ return(
 ```diff
   // The component that renders the new feature
 + useEffect(() => {
-+    setVisualClueAsSeen("NewVisualClue")
++    GlobalStore.actions.visualClue.setVisualClueAsSeen("NewVisualClue")
 + }, [])
 )
 ```
 
 # Session Clues
 
-Session clues are visual cues that can be shown when an event happened. They are not supposed to be added to `visualClues.ts` and can show up multiple times. To show a session clue you can add them with `addClue("SessionClue")` anywhere in the code and mark them as seen with `setVisualClueAsSeen("SessionClue")`.
+Session clues are visual cues that can be shown when an event happened. They are not supposed to be added to `visualClues.ts` and can show up multiple times. To show a session clue you can add them with `GlobalStore.actions.visualClue.addClue("SessionClue")` anywhere in the code and mark them as seen with `GlobalStore.actions.visualClue.setVisualClueAsSeen("SessionClue")`.
 
 ```jsx
   const { showVisualClue } = useVisualClue()
@@ -71,17 +71,17 @@ Session clues are visual cues that can be shown when an event happened. They are
 
   // show visual cue
   ...
-  addClue("MyNewVisualClue")
+  GlobalStore.actions.visualClue.addClue("MyNewVisualClue")
   ...
 
   // mark visual cue as seen
-  setVisualClueAsSeen("MyNewVisualClue")
+  GlobalStore.actions.visualClue.setVisualClueAsSeen("MyNewVisualClue")
 
 ```
 
 # Testing Clues
 
-When testing visual clues, instead of using `addClue`/`setVisualClueAsSeen`/.. methods, please, use GlobalStore directly.
+When testing GlobalStore state, please, use GlobalStore directly.
 Othervise the tests will fail due to the way JS works
 
 Method to test:

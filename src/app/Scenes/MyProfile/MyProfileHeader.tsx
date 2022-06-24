@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import { MyProfileHeader_me$key } from "__generated__/MyProfileHeader_me.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { navigate } from "app/navigation/navigate"
-import { setVisualClueAsSeen, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
 import {
   Avatar,
   Box,
@@ -44,7 +44,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
   )
 
   useEffect(() => {
-    setVisualClueAsSeen("CompleteCollectorProfileMessage")
+    GlobalStore.actions.visualClue.setVisualClueAsSeen("CompleteCollectorProfileMessage")
   }, [])
 
   const isCollectorProfileCompleted = !!(

@@ -13,7 +13,7 @@ import {
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { GlobalStore, setVisualClueAsSeen, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
@@ -355,10 +355,12 @@ export const addArtworkMessages = ({
   hasMarketPriceInsights: boolean | null | undefined
   sourceTab: Tab
 }) => {
-  setVisualClueAsSeen("AddedArtworkWithInsightsMessage_InsightsTab")
-  setVisualClueAsSeen("AddedArtworkWithInsightsMessage_MyCTab")
-  setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_InsightsTab")
-  setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_MyCTab")
+  GlobalStore.actions.visualClue.setVisualClueAsSeen("AddedArtworkWithInsightsMessage_InsightsTab")
+  GlobalStore.actions.visualClue.setVisualClueAsSeen("AddedArtworkWithInsightsMessage_MyCTab")
+  GlobalStore.actions.visualClue.setVisualClueAsSeen(
+    "AddedArtworkWithoutInsightsMessage_InsightsTab"
+  )
+  GlobalStore.actions.visualClue.setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_MyCTab")
 
   if (hasMarketPriceInsights) {
     if (sourceTab === Tab.collection) {
@@ -366,14 +368,14 @@ export const addArtworkMessages = ({
       GlobalStore.actions.visualClue.addClue("AddedArtworkWithInsightsMessage_MyCTab")
       GlobalStore.actions.visualClue.addClue("AddedArtworkWithInsightsVisualClueDot")
     } else {
-      setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
+      GlobalStore.actions.visualClue.setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
       GlobalStore.actions.visualClue.addClue("AddedArtworkWithInsightsMessage_InsightsTab")
     }
   } else {
     if (sourceTab === Tab.collection) {
       GlobalStore.actions.visualClue.addClue("AddedArtworkWithoutInsightsMessage_MyCTab")
     } else {
-      setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
+      GlobalStore.actions.visualClue.setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
       GlobalStore.actions.visualClue.addClue("AddedArtworkWithoutInsightsMessage_InsightsTab")
     }
   }

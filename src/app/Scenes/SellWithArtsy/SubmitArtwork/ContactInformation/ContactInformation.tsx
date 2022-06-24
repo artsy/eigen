@@ -4,7 +4,7 @@ import { ContactInformationQueryRendererQuery } from "__generated__/ContactInfor
 import { ErrorView } from "app/Components/ErrorView/ErrorView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { consignmentSubmittedEvent } from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
-import { addClue, GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
@@ -42,7 +42,7 @@ export const ContactInformation: React.FC<{
         trackEvent(consignmentSubmittedEvent(updatedSubmissionId, formValues.userEmail, userID))
 
         GlobalStore.actions.artworkSubmission.submission.resetSessionState()
-        addClue("ArtworkSubmissionMessage")
+        GlobalStore.actions.visualClue.addClue("ArtworkSubmissionMessage")
         handlePress(submissionId)
       }
     } catch (error) {

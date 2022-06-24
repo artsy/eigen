@@ -1,5 +1,5 @@
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
+import { GlobalStore, useVisualClue } from "app/store/GlobalStore"
 import { Flex } from "palette"
 import React from "react"
 import {
@@ -31,17 +31,29 @@ export const MyCollectionArtworkUploadMessages: React.FC<
     <Flex>
       {!!showAddedArtworkWithInsightsMessage && (
         <AddedArtworkWithInsightsMessage
-          onClose={() => setVisualClueAsSeen(`AddedArtworkWithInsightsMessage_${tabPrefix}`)}
+          onClose={() =>
+            GlobalStore.actions.visualClue.setVisualClueAsSeen(
+              `AddedArtworkWithInsightsMessage_${tabPrefix}`
+            )
+          }
         />
       )}
       {!!showAddedArtworkWithoutInsightsMessage &&
         (hasMarketSignals ? (
           <AddedArtworkWithoutInsightsMessage
-            onClose={() => setVisualClueAsSeen(`AddedArtworkWithoutInsightsMessage_${tabPrefix}`)}
+            onClose={() =>
+              GlobalStore.actions.visualClue.setVisualClueAsSeen(
+                `AddedArtworkWithoutInsightsMessage_${tabPrefix}`
+              )
+            }
           />
         ) : (
           <AddedArtworkWithoutAnyCollectionInsightsMessage
-            onClose={() => setVisualClueAsSeen(`AddedArtworkWithoutInsightsMessage_${tabPrefix}`)}
+            onClose={() =>
+              GlobalStore.actions.visualClue.setVisualClueAsSeen(
+                `AddedArtworkWithoutInsightsMessage_${tabPrefix}`
+              )
+            }
           />
         ))}
     </Flex>

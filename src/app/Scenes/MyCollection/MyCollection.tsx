@@ -14,13 +14,7 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { useToast } from "app/Components/Toast/toastHook"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import {
-  GlobalStore,
-  setVisualClueAsSeen,
-  useDevToggle,
-  useFeatureFlag,
-  useVisualClue,
-} from "app/store/GlobalStore"
+import { GlobalStore, useDevToggle, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -157,7 +151,9 @@ const MyCollection: React.FC<{
         )}
         {!!showSubmissionMessage && (
           <SubmittedArtworkAddedMessage
-            onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
+            onClose={() =>
+              GlobalStore.actions.visualClue.setVisualClueAsSeen("ArtworkSubmissionMessage")
+            }
           />
         )}
         {!!enableMyCollectionInsights && (
