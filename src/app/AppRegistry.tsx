@@ -66,6 +66,7 @@ import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEdi
 import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
 import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
+import { MyAccountPreferencesQueryRenderer } from "./Scenes/MyAccount/MyAccountPreferences"
 import { MyBidsQueryRenderer } from "./Scenes/MyBids"
 import {
   MyCollectionQueryRenderer,
@@ -397,6 +398,7 @@ export const modules = defineModules({
   MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
   MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),
+  MyAccountPreferences: reactModule(MyAccountPreferencesQueryRenderer),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }),

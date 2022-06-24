@@ -2,11 +2,12 @@ import { UserPrefsModelQuery } from "__generated__/UserPrefsModelQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
+import { CURRENCIES } from "app/utils/currencies"
 import { Action, action, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { getCurrencies } from "react-native-localize"
 import { fetchQuery, graphql } from "relay-runtime"
 
-const currencies = ["USD", "EUR", "GBP"] as const
+const currencies = Object.values(CURRENCIES).map((currencyObj) => currencyObj.value)
 const metrics = ["in", "cm"] as const
 
 export type Currency = typeof currencies[number]

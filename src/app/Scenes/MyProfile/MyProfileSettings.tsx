@@ -11,6 +11,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
   const darkModeSupport = useFeatureFlag("ARDarkModeSupport")
+  const showAccountPreferences = useFeatureFlag("ARShowAccountPreferences")
 
   const color = useColor()
   const separatorColor = color("black5")
@@ -41,7 +42,14 @@ export const MyProfileSettings: React.FC<{}> = () => {
       <SectionHeading title="ACCOUNT SETTINGS" />
       <Spacer my={1} />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
-      <Separator my={1} borderColor={separatorColor} />
+      {!!showAccountPreferences && (
+        <>
+          <Separator my={1} borderColor={separatorColor} />
+          <MenuItem title="Preferences" onPress={() => navigate("/my-account/preferences")} />
+          <Separator my={1} borderColor={separatorColor} />
+        </>
+      )}
+
       {!!showOrderHistory && (
         <>
           <MenuItem title="Order History" onPress={() => navigate("/orders")} />

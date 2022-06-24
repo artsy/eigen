@@ -252,6 +252,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableCreateArtworkAlert",
   },
+  ARShowAccountPreferences: {
+    readyForRelease: false,
+    description: "Enable Account preferences",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

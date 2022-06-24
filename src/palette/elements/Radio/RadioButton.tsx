@@ -73,8 +73,10 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
   const textColor = error ? color("red100") : disabled ? color("black30") : color("black100")
   const subtitleColor = error ? color("red100") : color("black30")
 
+  const Wrapper = disabled || !onPress ? Flex : TouchableWithoutFeedback
+
   return (
-    <TouchableWithoutFeedback
+    <Wrapper
       accessibilityState={accessibilityState}
       onPress={(event) => {
         if (disabled) {
@@ -122,7 +124,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
           )}
         </Flex>
       </Flex>
-    </TouchableWithoutFeedback>
+    </Wrapper>
   )
 }
 

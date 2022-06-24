@@ -3,6 +3,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { CURRENCIES } from "app/utils/currencies"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import { Box, Button, Flex, Input, Join, Sans, Separator, Spacer, Text } from "palette"
@@ -148,7 +149,7 @@ export const MyCollectionArtworkFormMain: React.FC<
               <Select
                 title="Currency"
                 placeholder="Currency"
-                options={pricePaidCurrencySelectOptions}
+                options={CURRENCIES}
                 value={formikValues.pricePaidCurrency}
                 enableSearch={false}
                 showTitleLabel={false}
@@ -249,15 +250,6 @@ export const MyCollectionArtworkFormMain: React.FC<
     </>
   )
 }
-
-const pricePaidCurrencySelectOptions: Array<{
-  label: string
-  value: Currency
-}> = [
-  { label: "$ USD", value: "USD" },
-  { label: "€ EUR", value: "EUR" },
-  { label: "£ GBP", value: "GBP" },
-]
 
 const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPress, testID }) => {
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
