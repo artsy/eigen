@@ -38,7 +38,7 @@ describe("Input", () => {
       queryByDisplayValue,
       getByPlaceholderText,
       getByText,
-      getByA11yLabel,
+      getByLabelText,
     } = renderWithWrappersTL(<Input description="Input" placeholder="USD" enableClearButton />)
     // placeholder is rendered
     getByPlaceholderText("USD")
@@ -50,32 +50,32 @@ describe("Input", () => {
 
     getByDisplayValue("Banksy")
 
-    getByA11yLabel("Clear input button")
+    getByLabelText("Clear input button")
 
-    fireEvent.press(getByA11yLabel("Clear input button"))
+    fireEvent.press(getByLabelText("Clear input button"))
 
     expect(queryByDisplayValue("Banksy")).toBeFalsy()
   })
 
   it("should show the correct show/hide password icon", () => {
-    const { getByText, getByPlaceholderText, queryByA11yLabel, getByA11yLabel } =
+    const { getByText, getByPlaceholderText, queryByLabelText, getByLabelText } =
       renderWithWrappersTL(<Input description="Password" placeholder="password" secureTextEntry />)
 
     getByText("Password")
     getByPlaceholderText("password")
 
-    getByA11yLabel("show password button")
+    getByLabelText("show password button")
 
     fireEvent(getByPlaceholderText("password"), "onChangeText", "123456")
 
-    fireEvent.press(getByA11yLabel("show password button"))
+    fireEvent.press(getByLabelText("show password button"))
 
-    expect(queryByA11yLabel("show password button")).toBeFalsy()
-    getByA11yLabel("hide password button")
+    expect(queryByLabelText("show password button")).toBeFalsy()
+    getByLabelText("hide password button")
 
-    fireEvent.press(getByA11yLabel("hide password button"))
+    fireEvent.press(getByLabelText("hide password button"))
 
-    expect(queryByA11yLabel("hide password button")).toBeFalsy()
-    getByA11yLabel("show password button")
+    expect(queryByLabelText("hide password button")).toBeFalsy()
+    getByLabelText("show password button")
   })
 })

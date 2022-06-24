@@ -292,9 +292,9 @@ describe("Notification toggles", () => {
   })
 
   it("state of email toggle should be passed to mutation", async () => {
-    const { getByTestId, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
-    fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+    fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
     fireEvent.press(getByTestId("save-alert-button"))
 
     await withoutDuplicateAlert()
@@ -314,9 +314,9 @@ describe("Notification toggles", () => {
   })
 
   it("state of push toggle should be passed to mutation", async () => {
-    const { getByTestId, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
-    fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", false)
+    fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", false)
     fireEvent.press(getByTestId("save-alert-button"))
 
     await withoutDuplicateAlert()
@@ -339,11 +339,11 @@ describe("Notification toggles", () => {
     notificationPermissions.mockReset()
     notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Denied))
 
-    const { getByA11yLabel, queryAllByA11yState } = renderWithWrappersTL(
+    const { getByLabelText, queryAllByA11yState } = renderWithWrappersTL(
       <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
     )
 
-    await fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", true)
+    await fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", true)
 
     expect(spyAlert).toBeCalled()
     expect(queryAllByA11yState({ selected: true })).toHaveLength(0)
@@ -355,22 +355,22 @@ describe("Notification toggles", () => {
       cb(null, PushAuthorizationStatus.NotDetermined)
     )
 
-    const { getByA11yLabel, queryAllByA11yState } = renderWithWrappersTL(
+    const { getByLabelText, queryAllByA11yState } = renderWithWrappersTL(
       <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
     )
 
-    await fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", true)
+    await fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", true)
 
     expect(spyAlert).toBeCalled()
     expect(queryAllByA11yState({ selected: true })).toHaveLength(0)
   })
 
   it("push toggle turns on when push permissions are enabled", async () => {
-    const { getByA11yLabel, queryAllByA11yState } = renderWithWrappersTL(
+    const { getByLabelText, queryAllByA11yState } = renderWithWrappersTL(
       <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
     )
 
-    await fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", true)
+    await fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", true)
 
     expect(spyAlert).not.toBeCalled()
     expect(queryAllByA11yState({ selected: true })).toHaveLength(1)
@@ -383,14 +383,14 @@ describe("Allow to send emails modal", () => {
   })
 
   it("should display modal when the user enables email toggle", async () => {
-    const { getByA11yLabel } = renderWithWrappersTL(
+    const { getByLabelText } = renderWithWrappersTL(
       <TestRenderer
         initialValues={{ ...baseProps.initialValues, push: false, email: false }}
         userAllowsEmails={false}
       />
     )
 
-    await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+    await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
 
     expect(spyAlert).toBeCalled()
   })
@@ -399,26 +399,26 @@ describe("Allow to send emails modal", () => {
     // @ts-ignore
     spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Accept" button
 
-    const { getByA11yLabel } = renderWithWrappersTL(
+    const { getByLabelText } = renderWithWrappersTL(
       <TestRenderer
         initialValues={{ ...baseProps.initialValues, push: false, email: false }}
         userAllowsEmails={false}
       />
     )
 
-    await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
-    await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
-    await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+    await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
+    await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
+    await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
 
     expect(spyAlert).toBeCalledTimes(1)
   })
 
   it("should not display modal if email toggle off and then back on", async () => {
-    const { getByA11yLabel } = renderWithWrappersTL(<TestRenderer userAllowsEmails={false} />)
+    const { getByLabelText } = renderWithWrappersTL(<TestRenderer userAllowsEmails={false} />)
 
-    await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
-    await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
-    await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+    await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
+    await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
+    await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
 
     expect(spyAlert).toBeCalledTimes(0)
   })
@@ -427,14 +427,14 @@ describe("Allow to send emails modal", () => {
     // @ts-ignore
     spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Accept" button
 
-    const { getByA11yLabel, getByTestId } = renderWithWrappersTL(
+    const { getByLabelText, getByTestId } = renderWithWrappersTL(
       <TestRenderer
         initialValues={{ ...baseProps.initialValues, push: false, email: false }}
         userAllowsEmails={false}
       />
     )
 
-    await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+    await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
     await fireEvent.press(getByTestId("save-alert-button"))
 
     await waitFor(() => {
@@ -500,22 +500,22 @@ describe("Save alert button", () => {
     })
 
     it("should be enabled if selected at least one of toggles", () => {
-      const { getByTestId, getByA11yLabel } = renderWithWrappersTL(
+      const { getByTestId, getByLabelText } = renderWithWrappersTL(
         <TestRenderer
           initialValues={{ ...baseProps.initialValues, name: "name", push: false, email: false }}
         />
       )
 
-      fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+      fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
 
       expect(getByTestId("save-alert-button")).not.toBeDisabled()
     })
 
     it("should be disabled if none of toggles have been selected", () => {
-      const { getByTestId, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
-      fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", false)
-      fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+      fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", false)
+      fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
 
       expect(getByTestId("save-alert-button")).toBeDisabled()
     })
@@ -542,12 +542,12 @@ describe("Save alert button", () => {
     })
 
     it("should be disabled if none of toggles have been selected", () => {
-      const { getByTestId, getByA11yLabel } = renderWithWrappersTL(
+      const { getByTestId, getByLabelText } = renderWithWrappersTL(
         <TestRenderer savedSearchAlertId="savedSearchAlertId" />
       )
 
-      fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", false)
-      fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+      fireEvent(getByLabelText("Mobile Alerts Toggler"), "valueChange", false)
+      fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
 
       expect(getByTestId("save-alert-button")).toBeDisabled()
     })
@@ -587,14 +587,14 @@ describe("Save alert button", () => {
     })
 
     it("should be enabled if selected at least one of toggles", () => {
-      const { getByTestId, getByA11yLabel } = renderWithWrappersTL(
+      const { getByTestId, getByLabelText } = renderWithWrappersTL(
         <TestRenderer
           savedSearchAlertId="savedSearchAlertId"
           initialValues={{ ...baseProps.initialValues, name: "name", push: false, email: false }}
         />
       )
 
-      fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+      fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", true)
 
       expect(getByTestId("save-alert-button")).not.toBeDisabled()
     })
@@ -603,10 +603,10 @@ describe("Save alert button", () => {
 
 describe("Email preferences", () => {
   it("should display email `Update email preferences` link only when email toggle is enabled", async () => {
-    const { queryByText, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
     expect(queryByText("Update email preferences")).toBeTruthy()
-    await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+    await fireEvent(getByLabelText("Email Alerts Toggler"), "valueChange", false)
     expect(queryByText("Update email preferences")).toBeFalsy()
   })
 

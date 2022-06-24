@@ -55,11 +55,11 @@ describe("AnimatableHeader", () => {
 
   it('should call "onLeftButtonPress" handler when back button is pressed', () => {
     const onLeftButtonPressMock = jest.fn()
-    const { getByA11yLabel } = renderWithWrappersTL(
+    const { getByLabelText } = renderWithWrappersTL(
       <TestWrapper onLeftButtonPress={onLeftButtonPressMock} />
     )
 
-    fireEvent.press(getByA11yLabel("Header back button"))
+    fireEvent.press(getByLabelText("Header back button"))
 
     expect(onLeftButtonPressMock).toBeCalled()
   })

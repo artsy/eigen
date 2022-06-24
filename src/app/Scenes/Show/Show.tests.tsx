@@ -109,8 +109,8 @@ describe("Show", () => {
       })
 
       it("should not be rendered", () => {
-        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
-        expect(queryByA11yLabel("Search images")).toBeNull()
+        const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
+        expect(queryByLabelText("Search images")).toBeNull()
       })
     })
 
@@ -120,7 +120,7 @@ describe("Show", () => {
       })
 
       it("should not be rendered when show is NOT active", () => {
-        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+        const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
         act(() => {
           env.mock.resolveMostRecentOperation((operation) =>
@@ -134,11 +134,11 @@ describe("Show", () => {
           )
         })
 
-        expect(queryByA11yLabel("Search by image")).toBeNull()
+        expect(queryByLabelText("Search by image")).toBeNull()
       })
 
       it("should not be rendered when show doesn't have any indexed artworks", () => {
-        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+        const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
         act(() => {
           env.mock.resolveMostRecentOperation((operation) =>
@@ -152,11 +152,11 @@ describe("Show", () => {
           )
         })
 
-        expect(queryByA11yLabel("Search by image")).toBeNull()
+        expect(queryByLabelText("Search by image")).toBeNull()
       })
 
       it("should be rendered when show has indexed artworks, is active and feature flag is enabled", () => {
-        const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+        const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
         act(() => {
           env.mock.resolveMostRecentOperation((operation) =>
@@ -170,7 +170,7 @@ describe("Show", () => {
           )
         })
 
-        expect(queryByA11yLabel("Search by image")).toBeTruthy()
+        expect(queryByLabelText("Search by image")).toBeTruthy()
       })
     })
   })

@@ -99,11 +99,11 @@ describe("ArtworkActions", () => {
         isClosed: false,
       },
     }
-    const { queryByText, queryByA11yLabel } = renderWithWrappersTL(
+    const { queryByText, queryByLabelText } = renderWithWrappersTL(
       <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtworkInAuction} />
     )
     expect(queryByText("Watch lot")).toBeTruthy()
-    expect(queryByA11yLabel("watch lot icon")).toBeTruthy()
+    expect(queryByLabelText("watch lot icon")).toBeTruthy()
     expect(queryByText("Share")).toBeTruthy()
 
     expect(queryByText("Save")).toBeFalsy()

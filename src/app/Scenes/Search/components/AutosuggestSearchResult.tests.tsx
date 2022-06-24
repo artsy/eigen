@@ -74,16 +74,16 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it("does not render delete button when onDelete callback is not passed", async () => {
-    const { queryByA11yLabel } = renderWithWrappersTL(<TestWrapper result={result} />)
-    expect(queryByA11yLabel("Remove recent search item")).toBeFalsy()
+    const { queryByLabelText } = renderWithWrappersTL(<TestWrapper result={result} />)
+    expect(queryByLabelText("Remove recent search item")).toBeFalsy()
   })
 
   it("calls onDelete calback when pressing on delete button", async () => {
-    const { getByA11yLabel } = renderWithWrappersTL(
+    const { getByLabelText } = renderWithWrappersTL(
       <TestWrapper result={result} onDelete={onDeleteMock} />
     )
 
-    fireEvent.press(getByA11yLabel("Remove recent search item"))
+    fireEvent.press(getByLabelText("Remove recent search item"))
     expect(onDeleteMock).toHaveBeenCalled()
   })
 

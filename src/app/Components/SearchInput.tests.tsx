@@ -78,23 +78,23 @@ describe("SearchInput", () => {
   })
 
   it(`hides "x" button when pressing "Cancel"`, () => {
-    const { getByText, getByA11yLabel, queryAllByA11yLabel, getByPlaceholderText } =
+    const { getByText, getByLabelText, queryAllByLabelText, getByPlaceholderText } =
       renderWithWrappersTL(<TestWrapper enableCancelButton />)
     const searchInput = getByPlaceholderText("Type something...")
     fireEvent(searchInput, "changeText", "text")
-    expect(getByA11yLabel("Clear input button")).toBeTruthy()
+    expect(getByLabelText("Clear input button")).toBeTruthy()
     fireEvent.press(getByText("Cancel"))
-    expect(queryAllByA11yLabel("Clear input button")).toHaveLength(0)
+    expect(queryAllByLabelText("Clear input button")).toHaveLength(0)
   })
 
   it('should hide "Cancel" when it is pressed', () => {
-    const { queryAllByA11yLabel, getByText, findAllByA11yLabel, getByPlaceholderText } =
+    const { queryAllByLabelText, getByText, findAllByLabelText, getByPlaceholderText } =
       renderWithWrappersTL(<TestWrapper enableCancelButton />)
 
     fireEvent.changeText(getByPlaceholderText("Type something..."), "text")
-    expect(findAllByA11yLabel("Cancel")).toBeTruthy()
+    expect(findAllByLabelText("Cancel")).toBeTruthy()
 
     fireEvent.press(getByText("Cancel"))
-    expect(queryAllByA11yLabel("Cancel")).toHaveLength(0)
+    expect(queryAllByLabelText("Cancel")).toHaveLength(0)
   })
 })

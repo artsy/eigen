@@ -3200,10 +3200,10 @@
     "@types/react-test-renderer" ">=16.9.0"
     react-error-boundary "^3.1.0"
 
-"@testing-library/react-native@9.1.0":
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-9.1.0.tgz#500698b4ae5ade98211cdea0ffd97d823c61c3ac"
-  integrity sha512-YBCSOIMYlh8gI0VG7ExRe80hNpfhC+i7j0cvpwiopUYtbpft8bMJXO35A4zEk7BkiWXEq6bYZ7VDJR3muSLhyQ==
+"@testing-library/react-native@10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-10.0.0.tgz#fe8539c09c62df522b21528a5796dbecad3e34a2"
+  integrity sha512-aFq2BQReP9ijZsQ83XMLJthGyffFS7vv0YN3ZAvgIgxEfAQ78v0GOMLyoTNyZEM+wDGb4cn1yorHXYUWs8krwA==
   dependencies:
     pretty-format "^27.0.0"
 
