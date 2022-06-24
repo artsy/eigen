@@ -554,7 +554,7 @@ describe("Artwork", () => {
     })
 
     it("should not display create artwork alert button section when artwork doesn't have any artist", () => {
-      const { queryByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
@@ -565,8 +565,8 @@ describe("Artwork", () => {
         }),
       })
 
-      expect(queryByA11yLabel("Create artwork alert section")).toBeNull()
-      expect(queryByA11yLabel("Create artwork alert buttons section")).toBeNull()
+      expect(queryByLabelText("Create artwork alert section")).toBeNull()
+      expect(queryByLabelText("Create artwork alert buttons section")).toBeNull()
     })
 
     it("should display create artwork alert buttons section when artwork is sold", () => {

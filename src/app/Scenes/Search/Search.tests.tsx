@@ -1,4 +1,4 @@
-import { act, fireEvent, render, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, RenderAPI, waitFor } from "@testing-library/react-native"
 import { RecentSearch } from "app/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
@@ -562,8 +562,7 @@ describe("Search Screen", () => {
   })
 
   describe("the top pill is selected by default", () => {
-    // https://github.com/callstack/react-native-testing-library/issues/999 to be changed with RenderAPI type after this issue is resolved
-    let tree: ReturnType<typeof render>
+    let tree: RenderAPI
 
     beforeEach(async () => {
       tree = renderWithWrappersTL(<TestRenderer />)

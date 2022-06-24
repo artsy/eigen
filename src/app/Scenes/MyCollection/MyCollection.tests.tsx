@@ -1,5 +1,5 @@
 import { addCollectedArtwork } from "@artsy/cohesion"
-import { fireEvent, render } from "@testing-library/react-native"
+import { fireEvent, RenderAPI } from "@testing-library/react-native"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -156,12 +156,7 @@ describe("MyCollection", () => {
   })
 })
 
-// https://github.com/callstack/react-native-testing-library/issues/999 to be changed with RenderAPI type after this issue is resolved
-const applyFilter = async (
-  renderApi: ReturnType<typeof render>,
-  filterName: string,
-  filterOption: string
-) => {
+const applyFilter = async (renderApi: RenderAPI, filterName: string, filterOption: string) => {
   await flushPromiseQueue()
   act(() => fireEvent.press(renderApi.getByTestId("sort-and-filter-button")))
   act(() => fireEvent.press(renderApi.getByText(filterName)))
