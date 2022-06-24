@@ -61,6 +61,20 @@ describe("CreateArtworkAlertButtonsSection", () => {
     expect(getByText("Prints")).toBeTruthy()
   })
 
+  it("should not render create alert button and description text if artwork doesn't have any associated artists", () => {
+    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        ...Artwork,
+        artists: [],
+      }),
+    })
+
+    expect(queryByText("Be notified when a similar work is available")).toBeNull()
+    expect(queryByText("Create Alert")).toBeNull()
+  })
+
   it("should not render `Rarity` pill if needed data is missing", () => {
     const { getAllByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 

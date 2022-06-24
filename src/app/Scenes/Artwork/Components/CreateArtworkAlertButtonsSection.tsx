@@ -14,7 +14,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { compact } from "lodash"
+import { compact, isEmpty } from "lodash"
 import { Box, Button, Spacer, Text } from "palette"
 import { FC, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -94,15 +94,18 @@ const CreateArtworkAlertButtonsSection: FC<CreateArtworkAlertButtonsSectionProps
     <>
       <Box accessible accessibilityLabel="Create artwork alert buttons section">
         <Text variant="lg">{isInClosedAuction ? "Bidding closed" : "Sold"}</Text>
-        <Text variant="xs" color="black60">
-          Be notified when a similar work is available
-        </Text>
+        {!isEmpty(artists) && (
+          <>
+            <Text variant="xs" color="black60">
+              Be notified when a similar work is available
+            </Text>
+            <Spacer mt={2} />
 
-        <Spacer mt={2} />
-
-        <Button block onPress={handleCreateAlertPress}>
-          Create Alert
-        </Button>
+            <Button block onPress={handleCreateAlertPress}>
+              Create Alert
+            </Button>
+          </>
+        )}
 
         {!!isInquireable && !isInClosedAuction && (
           <InquiryButtonsFragmentContainer artwork={artwork} variant="outline" mt={1} block />
