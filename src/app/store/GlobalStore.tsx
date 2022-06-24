@@ -197,6 +197,8 @@ export const useVisualClue = () => {
   return { seenVisualClues, showVisualClue }
 }
 
+export const addClue = GlobalStore.actions.visualClue.addClue
+
 export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
 
 export function unsafe_getUserAccessToken() {
