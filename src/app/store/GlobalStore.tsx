@@ -197,6 +197,8 @@ export const useVisualClue = () => {
   return { seenVisualClues, showVisualClue }
 }
 
+// when using visualClue and there is a need to test the visualClue model state, do not use this export
+// instead use GlobalStore directly
 export const addClue = GlobalStore.actions.visualClue.addClue
 
 export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen

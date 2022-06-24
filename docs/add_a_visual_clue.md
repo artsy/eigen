@@ -78,3 +78,24 @@ Session clues are visual cues that can be shown when an event happened. They are
   setVisualClueAsSeen("MyNewVisualClue")
 
 ```
+
+# Testing Clues
+
+When testing visual clues, instead of using `addClue`/`setVisualClueAsSeen`/.. methods, please, use GlobalStore directly.
+Othervise the tests will fail due to the way JS works
+
+Method to test:
+
+```jsx
+GlobalStore.actions.visualClue.addClue("MyNewVisualClue")
+```
+
+The test:
+
+```jsx
+it("tests that MyNewVisualClue was added to the array of clues", () => {
+  expect(__globalStoreTestUtils__?.getCurrentState().visualClue.sessionState.clues).toEqual([
+    "MyNewVisualClue",
+  ])
+})
+```
