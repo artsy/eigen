@@ -88,11 +88,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARGoogleAuth",
   },
-  AREnableImprovedAlertsFlow: {
-    readyForRelease: true,
-    description: "Enable Improved Alerts flow",
-    echoFlagKey: "AREnableImprovedAlertsFlow",
-  },
   AREnableExampleExperiments: {
     // we can remove this as soon as we have a real experiment on Unleash
     readyForRelease: false,
