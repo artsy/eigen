@@ -1,5 +1,6 @@
 import { Flex } from "palette"
 import React from "react"
+import { LineGraphChart } from "./LineGraphChart"
 import { LineGraphIndex } from "./LineGraphIndex"
 import { LineGraphMediumPicker } from "./LineGraphMediumPicker"
 import { LineGraphStoreProvider } from "./LineGraphStore"
@@ -19,6 +20,7 @@ export const LineGraph: React.FC<Props> = ({ totalLots = 50, averagePrice = "USD
         initialData={{ totalLots, averagePrice, availableMediums: _AVAILABLE_MEDIUMS }}
       >
         <LineGraphIndex />
+        <LineGraphChart />
         <LineGraphMediumPicker />
       </LineGraphStoreProvider>
     </Flex>
