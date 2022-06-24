@@ -13,7 +13,7 @@ import {
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { addClue, GlobalStore, setVisualClueAsSeen, useFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore, setVisualClueAsSeen, useFeatureFlag } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
@@ -362,18 +362,19 @@ export const addArtworkMessages = ({
 
   if (hasMarketPriceInsights) {
     if (sourceTab === Tab.collection) {
-      addClue("AddedArtworkWithInsightsMessage_MyCTab")
-      addClue("AddedArtworkWithInsightsVisualClueDot")
+      // We need to call GlobalStore.actions here directly for tests to work correctly
+      GlobalStore.actions.visualClue.addClue("AddedArtworkWithInsightsMessage_MyCTab")
+      GlobalStore.actions.visualClue.addClue("AddedArtworkWithInsightsVisualClueDot")
     } else {
       setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
-      addClue("AddedArtworkWithInsightsMessage_InsightsTab")
+      GlobalStore.actions.visualClue.addClue("AddedArtworkWithInsightsMessage_InsightsTab")
     }
   } else {
     if (sourceTab === Tab.collection) {
-      addClue("AddedArtworkWithoutInsightsMessage_MyCTab")
+      GlobalStore.actions.visualClue.addClue("AddedArtworkWithoutInsightsMessage_MyCTab")
     } else {
       setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
-      addClue("AddedArtworkWithoutInsightsMessage_InsightsTab")
+      GlobalStore.actions.visualClue.addClue("AddedArtworkWithoutInsightsMessage_InsightsTab")
     }
   }
 }

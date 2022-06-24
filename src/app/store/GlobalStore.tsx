@@ -90,11 +90,11 @@ export const __globalStoreTestUtils__ = __TEST__
     }
   : undefined
 
-/* if (__TEST__) {
+if (__TEST__) {
   beforeEach(() => {
     __globalStoreTestUtils__?.reset()
   })
-} */
+}
 
 const hooks = createTypedHooks<GlobalStoreModel>()
 
@@ -196,8 +196,6 @@ export const useVisualClue = () => {
 
   return { seenVisualClues, showVisualClue }
 }
-
-export const addClue = GlobalStore.actions.visualClue.addClue
 
 export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
 
