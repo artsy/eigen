@@ -39,7 +39,6 @@ import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { Button, Flex, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -204,7 +203,8 @@ const MyCollection: React.FC<{
           flexGrow: artworks.length ? undefined : 1,
           justifyContent: artworks.length ? "flex-start" : "center",
         }}
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
+        refresh={refetch}
+        isRefreshing={isRefreshing}
         innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"

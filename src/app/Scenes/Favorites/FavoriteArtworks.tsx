@@ -12,7 +12,6 @@ import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshH
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Button, ClassTheme } from "palette"
 import React, { Component } from "react"
-import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -81,12 +80,8 @@ export class SavedWorks extends Component<Props, State> {
     if (artworks.length === 0) {
       return (
         <StickyTabPageScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshingFromPull}
-              onRefresh={this.handleRefresh}
-            />
-          }
+          refresh={this.handleRefresh}
+          isRefreshing={this.state.refreshingFromPull}
           contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
         >
           <ZeroState
@@ -114,12 +109,8 @@ export class SavedWorks extends Component<Props, State> {
           <StickyTabPageScrollView
             contentContainerStyle={{ paddingVertical: space(2) }}
             onEndReached={this.loadMore}
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.refreshingFromPull}
-                onRefresh={this.handleRefresh}
-              />
-            }
+            refresh={this.handleRefresh}
+            isRefreshing={this.state.refreshingFromPull}
           >
             <GenericGrid
               artworks={artworks}

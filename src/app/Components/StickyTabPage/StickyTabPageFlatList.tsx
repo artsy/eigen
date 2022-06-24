@@ -1,6 +1,6 @@
 import { useSpace } from "palette"
 import React, { createContext, useContext, useRef, useState } from "react"
-import { FlatList, FlatListProps } from "react-native"
+import { FlatList, FlatListProps, RefreshControl } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { useStickyTabPageContext } from "./StickyTabPageContext"
@@ -27,11 +27,14 @@ export interface StickyTabFlatListProps
   data: StickyTabSection[]
   paddingHorizontal?: number
   innerRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
+  refresh?: (() => void) | null | undefined
+  isRefreshing?: boolean
 }
 
 export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) => {
   const space = useSpace()
-  const { staticHeaderHeight, stickyHeaderHeight, headerOffsetY } = useStickyTabPageContext()
+  const { staticHeaderHeight, stickyHeaderHeight, headerOffsetY, refreshControllPadding } =
+    useStickyTabPageContext()
   if (!staticHeaderHeight) {
     throw new Error("invalid state, mounted flat list before staticHeaderHeight was determined")
   }
@@ -93,11 +96,19 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
   // to avoid jumping content in situations where certain items have fixed height.
   // This doesn't make a lot of sense but sometimes you just go with what works ¯\_(ツ)_/¯
   const [headerDidMount, setHeaderDidMount] = useState(__TEST__)
-  const { data, style, ...otherProps } = props
+  const { data, style, refresh, isRefreshing, ...otherProps } = props
 
   return (
     <Animated.View style={{ flex: 1, paddingTop: totalStickyHeaderHeight }}>
       <AnimatedFlatList
+        refreshControl={
+          <RefreshControl
+            progressViewOffset={refreshControllPadding ?? 0}
+            refreshing={!!isRefreshing}
+            onRefresh={refresh || null || undefined}
+            style={{ zIndex: 1 }}
+          />
+        }
         style={[
           {
             flex: 1,

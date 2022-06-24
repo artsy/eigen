@@ -3,7 +3,16 @@ import { StickyTabFlatListProps, StickyTabPageFlatList } from "./StickyTabPageFl
 
 export const StickyTabPageScrollView: React.FC<Omit<StickyTabFlatListProps, "data">> = ({
   children,
+  isRefreshing,
+  refresh,
   ...others
 }) => {
-  return <StickyTabPageFlatList data={[{ key: "content", content: <>{children}</> }]} {...others} />
+  return (
+    <StickyTabPageFlatList
+      isRefreshing={isRefreshing}
+      refresh={refresh}
+      data={[{ key: "content", content: <>{children}</> }]}
+      {...others}
+    />
+  )
 }
