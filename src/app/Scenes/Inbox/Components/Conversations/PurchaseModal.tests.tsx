@@ -2,7 +2,6 @@ import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
-import React from "react"
 import { graphql } from "react-relay"
 import { PurchaseModalFragmentContainer } from "./PurchaseModal"
 
@@ -29,7 +28,7 @@ describe("PurchaseModal", () => {
   it("renders edition sets radio buttons", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
 
-    const { getAllByText } = renderWithRelay({
+    const { getByText } = renderWithRelay({
       Artwork: () => ({
         internalID: "test-id",
         isEdition: true,
@@ -52,14 +51,14 @@ describe("PurchaseModal", () => {
       }),
     })
 
-    expect(getAllByText("Confirm")[0]).toBeDisabled()
-    expect(getAllByText("Cancel")[0]).toBeEnabled()
+    expect(getByText("Confirm")).toBeDisabled()
+    expect(getByText("Cancel")).toBeEnabled()
   })
 
   it("doesn't allow edition set selection when it's not isAcquireable", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
 
-    const { getAllByText, getByText } = renderWithRelay({
+    const { getByText } = renderWithRelay({
       Artwork: () => ({
         internalID: "test-id",
         isEdition: true,
@@ -82,15 +81,15 @@ describe("PurchaseModal", () => {
       }),
     })
 
-    expect(getAllByText("Confirm")[0]).toBeDisabled()
+    expect(getByText("Confirm")).toBeDisabled()
     fireEvent.press(getByText("in1 x in1 x in1"))
-    expect(getAllByText("Confirm")[0]).toBeDisabled()
+    expect(getByText("Confirm")).toBeDisabled()
   })
 
   it("enables confirm button when an edition set is selected", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
 
-    const { getAllByText, getByText } = renderWithRelay({
+    const { getByText } = renderWithRelay({
       Artwork: () => ({
         internalID: "test-id",
         isEdition: true,
@@ -115,8 +114,8 @@ describe("PurchaseModal", () => {
       }),
     })
 
-    expect(getAllByText("Confirm")[0]).toBeDisabled()
+    expect(getByText("Confirm")).toBeDisabled()
     fireEvent.press(getByText("in1 x in1 x in1"))
-    expect(getAllByText("Confirm")[0]).toBeEnabled()
+    expect(getByText("Confirm")).toBeEnabled()
   })
 })

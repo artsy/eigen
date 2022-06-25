@@ -4,8 +4,6 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
-import "react-native"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
 import { updateConsignSubmission } from "../../mutations"
@@ -39,7 +37,7 @@ describe("ContactInformationForm", () => {
   })
 
   it("Happy path: User can submit information", async () => {
-    const { getAllByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText, getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
     updateConsignSubmissionMock.mockResolvedValue("adsfasd")
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -66,9 +64,9 @@ describe("ContactInformationForm", () => {
     expect(inputs.phoneInput).toBeTruthy()
     expect(inputs.phoneInput).toHaveProp("value", "(202) 555-0174")
 
-    expect(getAllByText("Submit Artwork")).toBeTruthy()
+    expect(queryByText("Submit Artwork")).toBeTruthy()
 
-    fireEvent(getAllByText("Submit Artwork")[0], "press")
+    fireEvent.press(getByText("Submit Artwork"))
 
     await flushPromiseQueue()
 
@@ -81,7 +79,7 @@ describe("ContactInformationForm", () => {
   })
 
   it("Keeps Submit button deactivated when something is missing/not properly filled out. Gets enabled if everything is filled out.", async () => {
-    const { getAllByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
     updateConsignSubmissionMock.mockResolvedValue("adsfasd")
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -96,7 +94,7 @@ describe("ContactInformationForm", () => {
       phoneInput: getByPlaceholderText("(000) 000-0000"),
     }
 
-    const submitButton = getAllByText("Submit Artwork")[0]
+    const submitButton = getByText("Submit Artwork")
 
     await flushPromiseQueue()
 
@@ -206,7 +204,7 @@ describe("ContactInformationForm", () => {
     })
 
     it("tracks consignmentSubmitted event on save", async () => {
-      const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText } = renderWithWrappersTL(<TestRenderer />)
       updateConsignSubmissionMock.mockResolvedValue("54321")
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
@@ -218,7 +216,7 @@ describe("ContactInformationForm", () => {
 
       await flushPromiseQueue()
 
-      fireEvent(getAllByText("Submit Artwork")[0], "press")
+      fireEvent.press(getByText("Submit Artwork"))
 
       await flushPromiseQueue()
 
