@@ -127,14 +127,14 @@ describe("CreateSavedSearchAlert", () => {
     const onCompleteMock = jest.fn()
 
     setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-    const { getByTestId, getAllByText } = renderWithWrappersTL(
+    const { getByTestId, getByText } = renderWithWrappersTL(
       <TestRenderer onComplete={onCompleteMock} />
     )
 
     resolveMostRecentRelayOperation(mockEnvironment)
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
-    fireEvent.press(getAllByText("Save Alert")[1])
+    fireEvent.press(getByText("Save Alert"))
 
     // Check alert duplicate
     await mockOperationByName("getSavedSearchIdByCriteriaQuery", {
