@@ -25,7 +25,7 @@ describe("EntityList", () => {
   })
 
   it("correctly renders multiple items", () => {
-    const { debug, queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappersTL(
       <EntityList
         prefix="Works by"
         list={[
