@@ -46,8 +46,10 @@ describe("EntityList", () => {
         displayedItems={2}
       />
     )
-    debug()
-    expect(queryByText("Works by")).toBeTruthy()
-    expect(queryByText("Zarouhie Abdalian, Derya Akay and 18 others")).toBeTruthy()
+
+    const textArr = ["Works by", "Zarouhie Abdalian,", "Derya Akay", "and", "18 others"]
+    textArr.forEach((text) => {
+      expect(queryByText(text)).toBeTruthy()
+    })
   })
 })
