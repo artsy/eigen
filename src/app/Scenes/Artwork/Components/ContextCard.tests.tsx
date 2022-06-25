@@ -88,9 +88,7 @@ describe("ContextCard", () => {
       )
       expect(component.find(Button)).toHaveLength(1)
 
-      expect(component.find(Button).at(0).render().text()).toMatchInlineSnapshot(
-        `"FollowingFollow"`
-      )
+      expect(component.find(Button).at(0).render().text()).toMatchInlineSnapshot(`"Follow"`)
     })
   })
 
