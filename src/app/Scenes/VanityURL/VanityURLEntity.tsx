@@ -4,7 +4,6 @@ import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlacehold
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Flex, Spinner } from "palette"
-import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"

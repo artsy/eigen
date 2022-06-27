@@ -1,7 +1,6 @@
 import { DecoratorFunction } from "@storybook/addons"
 import { storiesOf } from "@storybook/react-native"
 import { Flex } from "palette"
-import React from "react"
 import { withHooks } from "storybook/decorators"
 import { ArtworkFiltersStoreProvider } from "../ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "../ArtworkFilter/useArtworkFilters"

@@ -1,5 +1,4 @@
 import { bullet } from "palette/helpers"
-import React from "react"
 import { SpacerProps } from "../../atoms/Spacer"
 import { Avatar } from "../Avatar"
 import { Flex } from "../Flex"

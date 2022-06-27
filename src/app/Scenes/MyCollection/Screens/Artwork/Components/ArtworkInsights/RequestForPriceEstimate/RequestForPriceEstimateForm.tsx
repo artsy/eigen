@@ -1,6 +1,5 @@
 import { useFormikContext } from "formik"
 import { Box, Button, Input, PhoneInput, Spacer, Text } from "palette"
-import React from "react"
 import { Platform, ScrollView } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"

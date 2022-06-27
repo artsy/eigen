@@ -2,7 +2,6 @@ import { SoldBySection_soldBy$data } from "__generated__/SoldBySection_soldBy.gr
 import { extractNodes } from "app/utils/extractNodes"
 import { DateTime } from "luxon"
 import { Box, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {

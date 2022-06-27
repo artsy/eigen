@@ -9,7 +9,6 @@ import { navigate } from "app/navigation/navigate"
 import { PlaceholderText } from "app/utils/placeholders"
 import { compact, shuffle } from "lodash"
 import { Box, Flex, Spacer } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

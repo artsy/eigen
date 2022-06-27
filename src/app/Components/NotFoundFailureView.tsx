@@ -2,7 +2,6 @@ import { BackButton } from "app/navigation/BackButton"
 import { goBack } from "app/navigation/navigate"
 import { useDevToggle } from "app/store/GlobalStore"
 import { Button, Flex, Text } from "palette"
-import React from "react"
 
 interface NotFoundFailureViewProps {
   error?: Error

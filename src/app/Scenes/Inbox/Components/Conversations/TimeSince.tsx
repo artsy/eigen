@@ -1,6 +1,5 @@
 import moment from "moment"
 import { Box, BoxProps, Text, TextProps } from "palette"
-import React from "react"
 import { ViewStyle } from "react-native"
 
 const exactDate = (time: string) => {

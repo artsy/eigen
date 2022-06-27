@@ -13,7 +13,6 @@ import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { Sans, Spacer, useColor } from "palette"
-import React from "react"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore

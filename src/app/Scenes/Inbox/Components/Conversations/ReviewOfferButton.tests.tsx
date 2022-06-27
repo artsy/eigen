@@ -5,7 +5,6 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import { AlertCircleFillIcon } from "palette"
 import { MoneyFillIcon } from "palette/svgs/MoneyFillIcon"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 
 import { ReviewOfferButton, ReviewOfferButtonProps, ReviewOfferCTAKind } from "./ReviewOfferButton"

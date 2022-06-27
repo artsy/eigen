@@ -1,6 +1,5 @@
 import { navigate } from "app/navigation/navigate"
 import { Box, Button, Flex, quoteLeft, quoteRight, Spacer, Text } from "palette"
-import React from "react"
 import { ScrollView } from "react-native"
 
 export const EmptyMessage: React.FC = () => {

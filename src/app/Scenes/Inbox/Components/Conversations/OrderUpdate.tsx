@@ -11,7 +11,6 @@ import {
   Spacer,
   Text,
 } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TimeSince } from "./TimeSince"
 

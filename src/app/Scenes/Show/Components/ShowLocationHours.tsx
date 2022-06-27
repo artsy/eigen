@@ -2,7 +2,6 @@ import { ShowLocationHours_location$data } from "__generated__/ShowLocationHours
 import { Markdown } from "app/Components/Markdown"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { Box, BoxProps, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 const MARKDOWN_RULES = defaultRules({ useNewTextStyles: true })

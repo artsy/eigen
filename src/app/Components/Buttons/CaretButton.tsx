@@ -1,6 +1,5 @@
 import ChevronIcon from "app/Icons/ChevronIcon"
 import { Box, Flex, Sans } from "palette"
-import React from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
 
 interface Props {

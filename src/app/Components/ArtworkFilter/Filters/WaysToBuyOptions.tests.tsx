@@ -6,7 +6,6 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { getEssentialProps } from "./helper"
 import { WaysToBuyOptionsScreen } from "./WaysToBuyOptions"
 

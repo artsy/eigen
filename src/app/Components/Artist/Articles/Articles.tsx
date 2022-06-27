@@ -3,7 +3,7 @@ import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { Spacer } from "palette"
-import React, { Component } from "react"
+import { Component } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

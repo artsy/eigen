@@ -1,5 +1,4 @@
 import moment from "moment"
-import React from "react"
 import "react-native"
 
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"

@@ -6,7 +6,7 @@
     "experimentalDecorators": true,
     "incremental": true,
     "lib": ["es2017"],
-    "jsx": "react-native",
+    "jsx": "react-jsx", // This is for vscode not to suggest importing React, after react17.
     "module": "commonjs",
     "moduleResolution": "node",
     "noUnusedLocals": true,

@@ -1,7 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { shallow } from "enzyme"
 import moment from "moment"
-import React from "react"
 import { DurationProvider } from "./DurationProvider"
 
 describe("DurationProvider", () => {

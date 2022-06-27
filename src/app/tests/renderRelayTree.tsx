@@ -3,7 +3,6 @@ import { LoadingTestID } from "app/utils/renderWithLoadProgress"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, RenderUntilPredicate } from "enzyme"
 import { Theme } from "palette"
-import React from "react"
 import { Variables } from "relay-runtime"
 import { MockRelayRenderer, MockRelayRendererProps } from "./MockRelayRenderer"
 

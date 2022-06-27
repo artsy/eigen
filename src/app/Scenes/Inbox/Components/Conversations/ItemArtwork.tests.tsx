@@ -2,7 +2,6 @@ import { fireEvent } from "@testing-library/react-native"
 import * as navigation from "app/navigation/navigate"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
-import React from "react"
 import { graphql } from "react-relay"
 import { ItemArtworkFragmentContainer } from "./ItemArtwork"
 

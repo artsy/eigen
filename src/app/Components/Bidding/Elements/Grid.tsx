@@ -1,4 +1,3 @@
-import React from "react"
 import { Flex } from "../Elements/Flex"
 
 export const Row = (props: any /* STRICTNESS_MIGRATION */) => (

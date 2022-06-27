@@ -1,5 +1,3 @@
-import React from "react"
-
 import { CreditCardDetails_card$data } from "__generated__/CreditCardDetails_card.graphql"
 import { bullet, CreditCardIcon, Flex, Sans } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"

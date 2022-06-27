@@ -1,7 +1,6 @@
 import { toTitleCase } from "@artsy/to-title-case"
 import { navigate } from "app/navigation/navigate"
 import { Box, Flex, Text, Touchable } from "palette"
-import React from "react"
 
 // TODO:- We are using displayText for Statuses for now. Consider changing the logic when proper statuses are made available on Metaphysics.
 // See https://artsyproduct.atlassian.net/browse/SWA-217

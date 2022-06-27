@@ -1,5 +1,4 @@
 import { Sans } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 
 export interface Item {

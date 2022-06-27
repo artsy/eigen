@@ -3,7 +3,6 @@ import { OpenInquiryModalButton_artwork$data } from "__generated__/OpenInquiryMo
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Button, Flex, ShieldIcon, Spacer, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ShadowSeparator } from "../ShadowSeparator"

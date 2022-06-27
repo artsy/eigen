@@ -5,7 +5,6 @@ import { navigate } from "app/navigation/navigate"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { Theme } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { ArtworkTombstone } from "./ArtworkTombstone"

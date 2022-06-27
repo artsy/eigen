@@ -10,7 +10,6 @@ import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useAr
 import { useLayout } from "app/utils/useLayout"
 import { compact, sortBy } from "lodash"
 import { Flex, useSpace } from "palette"
-import React from "react"
 import { ColorsSwatch } from "./ColorsSwatch"
 import { useMultiSelect } from "./useMultiSelect"
 

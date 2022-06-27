@@ -3,7 +3,6 @@ import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, OpaqueImageView, Spacer, Text, useTheme } from "palette"
-import React from "react"
 import {
   GestureResponderEvent,
   TouchableWithoutFeedback,

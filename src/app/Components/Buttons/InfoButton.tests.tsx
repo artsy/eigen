@@ -2,7 +2,6 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { InfoCircleIcon, Text } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import { InfoButton } from "./InfoButton"
 

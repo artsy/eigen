@@ -1,6 +1,5 @@
 import { navigate } from "app/navigation/navigate"
 import { ClassTheme, Flex, Spacer, Text, Touchable } from "palette"
-import React from "react"
 import { Image } from "react-native"
 
 export const CityGuideCTANew = () => {

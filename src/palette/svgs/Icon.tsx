@@ -1,5 +1,4 @@
 import { Color } from "palette/Theme"
-import React from "react"
 import { PixelRatio } from "react-native"
 import Svg, { SvgProps } from "react-native-svg"
 import styled from "styled-components"

@@ -17,7 +17,6 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { renderRelayTree } from "app/tests/renderRelayTree"
 import { CheckCircleIcon, CloseCircleIcon, Sans, Theme } from "palette"
-import React from "react"
 import { graphql } from "react-relay"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 

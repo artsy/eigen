@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { LayoutChangeEvent, StyleSheet, View } from "react-native"

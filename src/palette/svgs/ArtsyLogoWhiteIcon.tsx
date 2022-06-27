@@ -1,4 +1,3 @@
-import React from "react"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 export const ArtsyLogoWhiteIcon: React.FC<IconProps> = (props) => {

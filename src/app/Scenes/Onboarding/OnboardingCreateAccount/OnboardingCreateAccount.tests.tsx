@@ -3,7 +3,6 @@ import { fetchMockResponseOnce } from "app/tests/fetchMockHelpers"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Checkbox } from "palette/elements/Checkbox"
-import React from "react"
 import { OnboardingCreateAccountWithEmail } from "./OnboardingCreateAccount"
 
 const goBackMock = jest.fn()

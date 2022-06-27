@@ -1,6 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
 import { Button, Flex, Input, Spacer, Text } from "palette"
-import React from "react"
 import { ScrollView } from "react-native"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 

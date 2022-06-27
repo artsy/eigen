@@ -1,6 +1,5 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import "react-native"
 
 import { LoadFailureView } from "./LoadFailureView"

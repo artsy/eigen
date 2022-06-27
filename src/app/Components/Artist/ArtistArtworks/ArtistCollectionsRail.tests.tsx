@@ -5,7 +5,6 @@ import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderRelayTree } from "app/tests/renderRelayTree"
 import { Theme } from "palette"
-import React from "react"
 import { graphql } from "react-relay"
 import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
 

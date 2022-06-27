@@ -2,7 +2,6 @@ import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { debounce } from "lodash"
 import { Input } from "palette"
-import React from "react"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
 import { KeywordFilter } from "./KeywordFilter"
 

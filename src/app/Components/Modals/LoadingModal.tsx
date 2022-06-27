@@ -1,5 +1,4 @@
 import { Flex, Spinner } from "palette"
-import React from "react"
 import { Modal, ModalProps } from "react-native"
 
 interface LoadingModalProps {

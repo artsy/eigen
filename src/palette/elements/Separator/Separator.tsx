@@ -1,6 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
 // @ts-ignore
-import React from "react"
 import styled from "styled-components/native"
 import { border, BorderProps, space, SpaceProps, width, WidthProps } from "styled-system"
 

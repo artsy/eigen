@@ -1,5 +1,4 @@
 import { Flex, Sans, Separator } from "palette"
-import React from "react"
 import { View } from "react-native"
 
 export const PageWithSimpleHeader: React.FC<{

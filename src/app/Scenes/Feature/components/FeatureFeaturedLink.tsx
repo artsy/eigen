@@ -2,7 +2,6 @@ import { FeatureFeaturedLink_featuredLink$data } from "__generated__/FeatureFeat
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Sans } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"

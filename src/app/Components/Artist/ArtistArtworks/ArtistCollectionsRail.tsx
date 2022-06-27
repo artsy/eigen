@@ -4,7 +4,6 @@ import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { Schema } from "app/utils/track"
 import { Box } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 

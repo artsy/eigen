@@ -1,5 +1,4 @@
 import { Color, useColor } from "palette"
-import React from "react"
 import Svg, { Path } from "react-native-svg"
 
 interface GridViewIconProps extends React.ComponentProps<typeof Svg> {

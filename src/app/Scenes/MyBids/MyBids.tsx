@@ -1,5 +1,4 @@
 import { Flex, Join, Separator, Spacer, Text } from "palette"
-import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
@@ -11,6 +10,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
+import { useEffect, useState } from "react"
 import { useScreenDimensions } from "shared/hooks"
 import { MyBidsPlaceholder, SaleCardFragmentContainer } from "./Components"
 import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
@@ -23,7 +23,7 @@ export interface MyBidsProps {
 }
 
 const MyBids: React.FC<MyBidsProps> = (props) => {
-  const [isFetching, setIsFetching] = React.useState<boolean>(false)
+  const [isFetching, setIsFetching] = useState<boolean>(false)
   const { relay, isActiveTab, me } = props
   const { isSmallScreen } = useScreenDimensions()
 
@@ -40,7 +40,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
     })
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isActiveTab) {
       refreshMyBids()
     }

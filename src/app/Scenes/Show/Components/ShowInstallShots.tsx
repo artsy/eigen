@@ -2,7 +2,6 @@ import { ShowInstallShots_show$data } from "__generated__/ShowInstallShots_show.
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { compact } from "lodash"
 import { Box, BoxProps, Spacer, Text } from "palette"
-import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

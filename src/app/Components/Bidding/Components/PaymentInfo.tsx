@@ -1,5 +1,4 @@
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import React from "react"
 import { View } from "react-native"
 
 import { BillingAddress } from "../Screens/BillingAddress"
@@ -9,6 +8,7 @@ import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
 
 import { bullet } from "palette"
+import React from "react"
 import { FlexProps } from "../Elements/Flex"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 

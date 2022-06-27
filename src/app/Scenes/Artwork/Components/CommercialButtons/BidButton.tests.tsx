@@ -19,7 +19,6 @@ import { renderRelayTree } from "app/tests/renderRelayTree"
 import { merge as _merge } from "lodash"
 import { Settings } from "luxon"
 import { Button, Theme } from "palette"
-import React from "react"
 import { View } from "react-native"
 import { graphql } from "react-relay"
 

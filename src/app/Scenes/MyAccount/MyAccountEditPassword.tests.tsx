@@ -1,5 +1,4 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
 import { MyAccountEditPassword } from "./MyAccountEditPassword"
 

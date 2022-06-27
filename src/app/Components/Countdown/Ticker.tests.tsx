@@ -2,7 +2,6 @@ import { getDefaultNormalizer, render } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import { Theme } from "palette"
-import React from "react"
 import { Text } from "react-native"
 import { LabeledTicker, ModernTicker, SimpleTicker } from "./Ticker"
 

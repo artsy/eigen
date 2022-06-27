@@ -1,6 +1,5 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
 import { Box, Button, Flex, Sans, Spacer } from "palette"
-import React from "react"
 import styled from "styled-components/native"
 import { TextContainer } from "./TextContainer"
 

@@ -1,7 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Dialog } from "./Dialog"
 
 describe("Dialog", () => {

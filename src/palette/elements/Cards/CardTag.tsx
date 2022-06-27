@@ -1,4 +1,3 @@
-import React from "react"
 import { View } from "react-native"
 import { StyleProp, ViewStyle } from "react-native"
 import { PositionProps } from "styled-system"

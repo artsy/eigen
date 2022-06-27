@@ -1,6 +1,5 @@
 import { PlaceholderButton, PlaceholderGrid } from "app/utils/placeholders"
 import { Flex, Separator } from "palette"
-import React from "react"
 
 export const SearchArtworksGridPlaceholder: React.FC = () => (
   <Flex accessibilityLabel="Artwork results are loading">

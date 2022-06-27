@@ -4,7 +4,6 @@ import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsT
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { capitalize } from "lodash"
 import { Flex, Text } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { Field } from "../Field"
 

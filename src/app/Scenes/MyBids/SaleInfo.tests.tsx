@@ -4,7 +4,6 @@ import { merge } from "lodash"
 import { DateTime, Settings } from "luxon"
 import { Text } from "palette"
 import { BoltFill, Stopwatch } from "palette/svgs/sf"
-import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
 import { SaleInfo } from "./Components/SaleInfo"
 

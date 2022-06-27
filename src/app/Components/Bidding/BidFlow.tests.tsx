@@ -3,7 +3,6 @@ jest.mock("app/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
 }))
 
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import "react-native"
 
 import { Button } from "palette"

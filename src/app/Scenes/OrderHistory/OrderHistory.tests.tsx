@@ -2,7 +2,6 @@ import { OrderHistoryTestsQuery } from "__generated__/OrderHistoryTestsQuery.gra
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

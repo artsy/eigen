@@ -7,7 +7,6 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { Box, Flex, Sans } from "palette"
-import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 

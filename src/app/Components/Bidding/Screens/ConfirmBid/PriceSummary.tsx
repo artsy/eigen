@@ -1,5 +1,4 @@
 import { Box, Flex, Sans, Serif } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { Bid } from "app/Components/Bidding/types"

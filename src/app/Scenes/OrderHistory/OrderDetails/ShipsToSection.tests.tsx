@@ -2,7 +2,6 @@ import { ShipsToSectionTestsQuery } from "__generated__/ShipsToSectionTestsQuery
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ShipsToSectionFragmentContainer } from "./Components/ShipsToSection"

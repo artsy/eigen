@@ -1,4 +1,3 @@
-import React from "react"
 import { ScrollView, ScrollViewProps } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"

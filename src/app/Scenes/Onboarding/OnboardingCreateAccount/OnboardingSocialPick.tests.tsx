@@ -1,7 +1,6 @@
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { OnboardingSocialPick } from "../OnboardingSocialPick"
 
 jest.mock("@react-navigation/native")

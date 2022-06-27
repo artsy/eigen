@@ -2,7 +2,6 @@ import { FairEditorialTestsQuery } from "__generated__/FairEditorialTestsQuery.g
 import { FairEditorialFragmentContainer } from "app/Scenes/Fair/Components/FairEditorial"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text, Touchable } from "palette"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"

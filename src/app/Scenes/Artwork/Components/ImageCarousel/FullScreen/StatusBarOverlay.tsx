@@ -1,4 +1,3 @@
-import React from "react"
 import { Animated } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { useSpringFade } from "./useSpringFade"

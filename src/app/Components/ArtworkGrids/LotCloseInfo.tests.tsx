@@ -1,6 +1,5 @@
 import { render } from "@testing-library/react-native"
 import { Theme } from "palette"
-import React from "react"
 import { DurationProvider } from "../Countdown"
 import { LotCloseInfo } from "./LotCloseInfo"
 

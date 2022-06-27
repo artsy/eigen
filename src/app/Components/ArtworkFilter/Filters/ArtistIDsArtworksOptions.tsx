@@ -13,7 +13,6 @@ import {
 
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import { sortBy } from "lodash"
-import React from "react"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 

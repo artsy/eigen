@@ -1,5 +1,4 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { LayoutRectangle } from "react-native"
 import { TouchableOpacity } from "react-native"
 import { Pressable } from "react-native"

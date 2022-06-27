@@ -1,7 +1,6 @@
 import { ShowLocation_show$data } from "__generated__/ShowLocation_show.graphql"
 import { LocationMapContainer as LocationMap } from "app/Components/LocationMap/LocationMap"
 import { Box, BoxProps } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface ShowLocationProps extends BoxProps {

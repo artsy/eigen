@@ -1,7 +1,6 @@
 import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { AverageSalePriceArtistType } from "./AverageSalePriceSelectArtistModal"
 

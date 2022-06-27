@@ -1,5 +1,4 @@
 import { Box, Flex, Text, Touchable, useColor } from "palette"
-import React from "react"
 import { Animated } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { usePopoverMessage } from "./popoverMessageHooks"

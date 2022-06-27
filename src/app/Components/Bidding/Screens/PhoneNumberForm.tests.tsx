@@ -1,6 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { FakeNavigator } from "../Helpers/FakeNavigator"
 
 import { PhoneNumberForm } from "./PhoneNumberForm"

@@ -4,7 +4,7 @@ import { navigate } from "app/navigation/navigate"
 import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow"
 import { isEqual } from "lodash"
 import { Box, ClassTheme, Text } from "palette"
-import React, { Component } from "react"
+import { Component } from "react"
 import {
   Dimensions,
   FlatList,

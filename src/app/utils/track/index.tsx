@@ -191,8 +191,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *       ```ts
  *      import { shallow } from "enzyme"
  *      import Event from "app/NativeModules/Events"
- *      import React from "react"
- *
+ *       *
  *      // Unmock react-tracking so that it will wrap our code
  *      jest.unmock("react-tracking")
  *      import Overview from "../Overview"

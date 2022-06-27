@@ -1,11 +1,11 @@
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { dismissModal, navigate } from "app/navigation/navigate"
 
 import { Button, Theme } from "palette"
+import React from "react"
 import { Icon20 } from "../Components/Icon"
 import { Flex } from "../Elements/Flex"
 

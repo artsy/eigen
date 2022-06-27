@@ -1,5 +1,4 @@
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { RecommendedArtistsRail } from "./RecommendedArtistsRail"
 
 jest.unmock("react-relay")

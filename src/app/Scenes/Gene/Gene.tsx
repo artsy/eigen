@@ -8,7 +8,6 @@ import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React from "react"
 import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 

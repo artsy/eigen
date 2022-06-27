@@ -1,4 +1,3 @@
-import React from "react"
 import { Text as RNText, TextInput as RNTextInput } from "react-native"
 import { extractText } from "./extractText"
 import { renderWithWrappersTL } from "./renderWithWrappers"

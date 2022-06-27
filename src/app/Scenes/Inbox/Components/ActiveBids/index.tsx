@@ -1,4 +1,3 @@
-import React from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import styled from "styled-components/native"
 
@@ -6,6 +5,7 @@ import { LargeHeadline } from "../Typography"
 import ActiveBid from "./ActiveBid"
 
 import { ActiveBids_me$data } from "__generated__/ActiveBids_me.graphql"
+import React from "react"
 
 const Container = styled.View`
   margin-top: 20px;

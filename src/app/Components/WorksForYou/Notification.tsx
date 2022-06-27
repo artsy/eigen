@@ -1,4 +1,3 @@
-import React from "react"
 import {
   Image,
   ImageStyle,
@@ -15,6 +14,7 @@ import { Notification_notification$data } from "__generated__/Notification_notif
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ClassTheme, Sans } from "palette"
+import React from "react"
 
 interface Props {
   // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks.

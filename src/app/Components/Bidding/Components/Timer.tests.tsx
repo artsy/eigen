@@ -3,7 +3,6 @@ import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWr
 import { mount } from "enzyme"
 import moment from "moment"
 import { Sans, Theme } from "palette"
-import React from "react"
 import "react-native"
 
 import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
