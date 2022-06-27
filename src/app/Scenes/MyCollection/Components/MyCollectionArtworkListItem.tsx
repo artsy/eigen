@@ -66,7 +66,6 @@ export const MyCollectionArtworkListItem: React.FC<{
             borderRadius={2}
             alignItems="center"
             justifyContent="center"
-            // overflow="hidden"
             // To align the image with the text we have to add top margin to compensate the line height.
             style={{ marginTop: 3 }}
           >
