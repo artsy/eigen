@@ -36,8 +36,7 @@ rm -rf .jest
 rm -rf "$TMPDIR"/metro* .metro
 
 echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
-rm -rf emission/Pod/Assets/Emission*
-rm -rf emission/Pod/Assets/assets
+rm -rf dist
 
 echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 yarn install:all

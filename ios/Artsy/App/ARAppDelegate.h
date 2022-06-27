@@ -1,16 +1,16 @@
 #import <JSDecoupledAppDelegate/JSDecoupledAppDelegate.h>
+#import <React/RCTBridgeDelegate.h>
 #import <UserNotifications/UNUserNotificationCenter.h>
 
 @class ARWindow, ArtsyEcho;
 
-// This class, and infact the complete JSDecoupledAppDelegate class, is not used during testing.
+// This class, and in fact the complete JSDecoupledAppDelegate class, is not used during testing.
 // The test app delegate class is ARTestHelper and is responsible for seting up the test env.
 //
 // When testing the various decoupled app delegate classes, simply use the shared app delegate
 // (`[JSDecoupledAppDelegate sharedAppDelegate]`) to perform your tests on.
 
-
-@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate>
+@interface ARAppDelegate : UIResponder <JSApplicationStateDelegate, RCTBridgeDelegate>
 
 + (ARAppDelegate *)sharedInstance;
 
@@ -25,10 +25,7 @@
 
 @end
 
-/// Here because it's intrinsically related to using the ARAppDelegate shared instance.
-@interface ARWindow : UIWindow
 
-/// Used to refer to the last touch coordinates for iPad popovers from martsy views.
+@interface ARWindow : UIWindow // look in HACKS.md. We use this for a patch to react-native-image-crop-picker for now.
 @property (nonatomic, assign) CGPoint lastTouchPoint;
-
 @end

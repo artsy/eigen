@@ -1,15 +1,6 @@
-#import <Artsy-UIButtons/ARButtonSubclasses.h>
+#import "ARButtonSubclasses.h"
 
 #import "SaleArtwork.h"
-
-extern NSString *const ARBidButtonRegisterStateTitle;
-extern NSString *const ARBidButtonRegisteredStateTitle;
-extern NSString *const ARBidBUttonBidStateTitle;
-extern NSString *const ARBidButtonBiddingOpenStateTitle;
-extern NSString *const ARBidButtonBiddingClosedStateTitle;
-extern NSString *const ARBidButtonRegistionPendingStateTitle;
-extern NSString *const ARBidButtonRegistionClosedStateTitle;
-
 
 typedef enum : NSUInteger {
     ARBidButtonIntentRegister,

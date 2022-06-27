@@ -78,6 +78,8 @@ class LiveAuctionViewControllerTests: QuickSpec {
         }
 
         it("shows a socket disconnect screen when socket fails") {
+            setNimbleTolerance(0.3) // looser tolerance, because of https://artsy.slack.com/archives/C02NAJ2CGLW/p1655913103639929
+
             setupViewControllerForPhone(true)
 
             fakeSalesPerson.socketConnectionSignal.update(false)
@@ -96,6 +98,8 @@ class LiveAuctionViewControllerTests: QuickSpec {
         }
 
         it("shows an operator disconnect screen when operator disconnects") {
+            setNimbleTolerance(0.3) // looser tolerance, because of https://artsy.slack.com/archives/C02NAJ2CGLW/p1655913103639929
+
             setupViewControllerForPhone(true)
 
             fakeSalesPerson.operatorConnectedSignal.update(false)

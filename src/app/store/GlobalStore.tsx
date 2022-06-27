@@ -233,7 +233,6 @@ export function getCurrentEmissionState() {
 
   const data: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken || "",
-    deviceId: `${Platform.OS} ${getModel()}`,
     launchCount: ArtsyNativeModule.launchCount,
     userAgent,
     userID: state?.auth.userID!,

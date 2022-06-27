@@ -8,7 +8,7 @@
 #import "ARLogger.h"
 
 // For a number formatter
-#import <Artsy+UILabels/Artsy+UILabels.h>
+#import "Artsy+UILabels.h"
 
 static NSMutableDictionary <NSString *, NSNumberFormatter *> *formattersPerCurrency;
 

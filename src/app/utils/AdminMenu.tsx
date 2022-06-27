@@ -56,6 +56,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
   const server = GlobalStore.useAppState((s) => s.artsyPrefs.environment.strings.webURL).slice(
     "https://".length
   )
+  const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
 
   useEffect(
     React.useCallback(() => {
@@ -96,6 +97,9 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
       >
         <Text variant="xs" color="grey" mx="2">
           eigen v{getVersion()}, build {getBuildNumber()} ({ArtsyNativeModule.gitCommitShortHash})
+        </Text>
+        <Text variant="xs" color="grey" mx="2">
+          {userEmail}
         </Text>
         {Platform.OS === "ios" && (
           <FeatureFlagMenuItem

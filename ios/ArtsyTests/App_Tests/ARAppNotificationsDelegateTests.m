@@ -3,7 +3,7 @@
 #import "ARNotificationView.h"
 #import "ARSerifNavigationViewController.h"
 #import "UIApplicationStateEnum.h"
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 #import <Analytics/SEGAnalytics.h>
 
 static NSDictionary *

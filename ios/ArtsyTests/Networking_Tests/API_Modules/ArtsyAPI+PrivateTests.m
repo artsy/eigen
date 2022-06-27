@@ -4,7 +4,7 @@
 #import "MutableNSURLResponse.h"
 #import "AFHTTPRequestOperation+JSON.h"
 
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 @interface ArtsyAPI (TestsPrivate)
 + (ArtsyAPI *)sharedAPI;

@@ -15,8 +15,6 @@ export { SansV1, SansV1Props, SansV1Props as SansProps }
 import { Serif as SerifV1, SerifProps as SerifV1Props } from "./Serif"
 export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
 
-// TODO-PALETTE-V3 remove all `garamond` references from the app
-
 // V1 handler
 
 /**

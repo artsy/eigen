@@ -15,18 +15,3 @@ def remove_mapbox_creds
 end
 
 remove_mapbox_creds
-
-
-def fix_fonts_in_uifonts_pod
-  # inspired by https://github.com/artsy/Artsy-OSSUIFonts/blob/master/Pod/Scripts/ArtsySetup.rb while we still use that pod
-
-  system("./scripts/download-fonts")
-
-  font_file = "ios/Pods/Artsy+UIFonts/Pod/Classes/UIFont+ArtsyFonts.m"
-  system("chmod +w #{font_file}")
-  contents = File.read(font_file)
-  changed = contents.gsub(/static BOOL useClosedFonts = false;/, "static BOOL useClosedFonts = true;")
-  File.write(font_file, changed)
-end
-
-fix_fonts_in_uifonts_pod

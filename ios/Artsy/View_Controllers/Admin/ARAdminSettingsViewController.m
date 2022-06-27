@@ -15,10 +15,9 @@
 #import "Artsy-Swift.h"
 
 #import "UIDevice-Hardware.h"
-#import "ARAdminNetworkModel.h"
 #import "ARAppNotificationsDelegate.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 #import <Sentry/SentrySDK.h>
 #import <React/RCTBridge.h>
 #import <React/RCTDevSettings.h>
@@ -38,26 +37,7 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
     ARTableViewData *tableViewData = [[ARTableViewData alloc] init];
 
-    NSString *name = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-    NSString *build = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSString *gitCommitShortHash = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitShortHash"];
-    NSString *userEmail = [[[ARUserManager sharedManager] currentUser] email];
-
-    ARSectionData *userSectionData = [[ARSectionData alloc] init];
-    userSectionData.headerTitle = [NSString stringWithFormat:@"%@ v%@, build %@ (%@), %@", name, version, build, gitCommitShortHash, userEmail];
-
-    [userSectionData addCellDataFromArray:@[
-        [self generateRestart],
-    ]];
-    [tableViewData addSectionData:userSectionData];
-
     ARSectionData *launcherSections = [[ARSectionData alloc] initWithCellDataArray:@[
-        [self generateFair2],
-        [self generateArtistSeries],
-        [self generateFeaturePage],
-        [self generateShowAllLiveAuctions],
-        [self showConsignmentsFlow],
         [self generateEchoContents],
     ]];
 
@@ -73,9 +53,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     toggleSections.headerTitle = @"Options";
     [tableViewData addSectionData:toggleSections];
 
-    ARSectionData *developerSection = [self createDeveloperSection];
-    [tableViewData addSectionData:developerSection];
-
     self.tableViewData = tableViewData;
 }
 
@@ -83,35 +60,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 {
     // Let's keep this light-on-dark since it's an admin-only view.
     return UIStatusBarStyleLightContent;
-}
-
-
-- (ARCellData *)generateFeaturePage
-{
-    return [self tappableCellDataWithTitle:@"→ Feature Page" selection:^{
-        [[AREmission sharedInstance] navigate:@"/feature/milan-gallery-community"];
-    }];
-}
-
-- (ARCellData *)generateArtistSeries
-{
-    return [self tappableCellDataWithTitle:@"→ Artist Series" selection:^{
-        [[AREmission sharedInstance] navigate:@"/artist-series/alex-katz-ada"];
-    }];
-}
-
-- (ARCellData *)generateFair2
-{
-    return [self tappableCellDataWithTitle:@"→ Fair" selection:^{
-        [[AREmission sharedInstance] navigate:@"/fair/frieze-new-york-2019"];
-    }];
-}
-
-- (ARCellData *)generateRestart
-{
-    return [self tappableCellDataWithTitle:@"Restart" selection:^{
-        exit(0);
-    }];
 }
 
 - (ARCellData *)generateRemoteDebug
@@ -146,23 +94,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
     return [self tappableCellDataWithTitle:@"Show React Native Dev Menu" selection:^{
         // It'd be nice to use the constant here, but it won't compile on CI
         [[NSNotificationCenter defaultCenter] postNotificationName:@"RCTShowDevMenuNotification" object:nil];
-    }];
-}
-
-- (ARCellData *)generateShowAllLiveAuctions
-{
-    return [self tappableCellDataWithTitle:@"→ All Live Auctions" selection:^{
-
-        NSURL *url = [NSURL URLWithString:@"https://live-staging.artsy.net"];
-        ARInternalMobileWebViewController *webVC = [[ARInternalMobileWebViewController alloc] initWithURL:url];
-        [self.navigationController pushViewController:webVC animated:YES];
-    }];
-}
-
-- (ARCellData *)showConsignmentsFlow
-{
-    return [self tappableCellDataWithTitle:@"→ Consignments Flow" selection:^{
-        [[AREmission sharedInstance] navigate:@"/consign/submission"];
     }];
 }
 
@@ -229,14 +160,6 @@ NSString *const ARRecordingScreen = @"ARRecordingScreen";
 
         [labsSectionData addCellData:cellData];
     }
-    return labsSectionData;
-}
-
-- (ARSectionData *)createDeveloperSection
-{
-    ARSectionData *labsSectionData = [[ARSectionData alloc] init];
-    labsSectionData.headerTitle = @"Developer";
-
     return labsSectionData;
 }
 

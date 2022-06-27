@@ -4,13 +4,13 @@
 
 #import <EDColor/EDColor.h>
 
-NSString *const ARBidButtonRegisterStateTitle = @"REGISTER TO BID";
-NSString *const ARBidButtonRegisteredStateTitle = @"YOU ARE REGISTERED TO BID";
-NSString *const ARBidBUttonBidStateTitle = @"BID";
+NSString *const ARBidButtonRegisterStateTitle = @"Register to bid";
+NSString *const ARBidButtonRegisteredStateTitle = @"You are registered to bid";
+NSString *const ARBidBUttonBidStateTitle = @"Bid";
 NSString *const ARBidButtonBiddingOpenStateTitle = ARBidBUttonBidStateTitle;
-NSString *const ARBidButtonBiddingClosedStateTitle = @"BIDDING CLOSED";
-NSString *const ARBidButtonRegistionPendingStateTitle = @"REGISTRATION PENDING";
-NSString *const ARBidButtonRegistionClosedStateTitle = @"REGISTRATION CLOSED";
+NSString *const ARBidButtonBiddingClosedStateTitle = @"Bidding closed";
+NSString *const ARBidButtonRegistionPendingStateTitle = @"Registration pending";
+NSString *const ARBidButtonRegistionClosedStateTitle = @"Registration closed";
 
 
 @implementation ARBidButton

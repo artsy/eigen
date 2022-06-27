@@ -12,15 +12,10 @@ NSString *const ARXappHeader = @"X-Xapp-Token";
 
 NSString *const ARXappURL = @"/api/v1/xapp_token";
 
-NSString *const ARForgotPasswordURL = @"/api/v1/users/send_reset_password_instructions";
-
-NSString *const ARMyInfoURL = @"/api/v1/me";
-
 NSString *const ARAddArtworkToFavoritesURLFormat = @"/api/v1/collection/saved-artwork/artwork/%@";
 NSString *const ARFavoritesURL = @"/api/v1/collection/saved-artwork/artworks";
 NSString *const ARMyBiddersURL = @"/api/v1/me/bidders";
 NSString *const ARSaleURLFormat = @"/api/v1/sale/%@";
-NSString *const ARLiveSaleStateFormat = @"%@/state/%@";
 
 NSString *const ARRelatedArtistsURL = @"/api/v1/me/suggested/artists";
 NSString *const ARRelatedGeneURLFormat = @"/api/v1/gene/%@/similar";
@@ -35,14 +30,12 @@ NSString *const ARUnfollowGeneURLFormat = @"/api/v1/me/follow/gene/%@";
 NSString *const ARFollowGenesURL = @"/api/v1/me/follow/genes";
 
 NSString *const ARFollowProfileURL = @"/api/v1/me/follow/profile";
-NSString *const ARFollowingProfileURLFormat = @"/api/v1/me/follow/profile/%@";
 NSString *const ARUnfollowProfileURLFormat = @"/api/v1/me/follow/profile/%@";
 NSString *const ARFollowProfilesURL = @"/api/v1/me/follow/profiles";
 
 NSString *const ARProfileInformationURLFormat = @"/api/v1/profile/%@";
 
 NSString *const ARNewArtistSearchURL = @"/api/v1/match/artists";
-NSString *const ARNewGeneSearchURL = @"/api/v1/match/genes";
 
 NSString *const ARNotificationsURL = @"/api/v1/me/notifications";
 

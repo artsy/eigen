@@ -6,7 +6,7 @@
 #import "ARInternalShareValidator.h"
 #import "ARAppDelegate.h"
 #import "AROptions.h"
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 static void *ARProgressContext = &ARProgressContext;
 

@@ -1,6 +1,8 @@
 import NetInfo from "@react-native-community/netinfo"
-import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { throttle } from "lodash"
+import { Platform } from "react-native"
+import { getModel } from "react-native-device-info"
 import { logDatadog } from "./loggers"
 
 const URLS = {
@@ -111,7 +113,7 @@ class VolleyClient {
 }
 
 function getDeviceTag() {
-  const deviceId = getCurrentEmissionState().deviceId
+  const deviceId = `${Platform.OS} ${getModel()}`
   return `device:${deviceId}`
 }
 

@@ -23,7 +23,7 @@
 #import "ARDispatchManager.h"
 #import "ARTNativeScreenPresenterModule.h"
 
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 #import "RNCAsyncStorage.h"
 

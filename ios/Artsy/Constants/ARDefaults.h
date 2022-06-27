@@ -18,11 +18,6 @@ extern NSString *const ARPushNotificationFollowArtist;
 extern NSString *const ARPushNotificationsDialogueLastSeenDate;
 
 #pragma mark -
-#pragma mark admin features
-
-extern NSString *const AREmissionHeadVersionDefault;
-
-#pragma mark -
 #pragma mark user permissions
 
 /// Has given access to the camera for AR? nil when they've not been asked yet
