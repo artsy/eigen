@@ -41,7 +41,7 @@ static NSString *CellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-    self.echo = [(ARAppDelegate *)[JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate echo];
+    self.echo = [[ARAppDelegate sharedInstance] echo];
     self.messages = self.echo.messages.allValues;
     self.routeKeys = [self.echo.routes.allKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     self.featureKeys = [self.echo.features.allKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];

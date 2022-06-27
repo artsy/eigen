@@ -86,12 +86,19 @@ static void InitializeFlipper(UIApplication *application) {
 
 @implementation ARAppDelegate
 
+static ARAppDelegate *_sharedInstance = nil;
+
 + (void)load
 {
-    ARAppDelegate *d = [[self alloc] init];
-    [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = d;
-    [JSDecoupledAppDelegate sharedAppDelegate].appDefaultOrientationDelegate = (id)d;
-    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)d;
+    _sharedInstance = [[self alloc] init];
+    [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = _sharedInstance;
+    [JSDecoupledAppDelegate sharedAppDelegate].appDefaultOrientationDelegate = (id)_sharedInstance;
+    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
+}
+
++ (ARAppDelegate *)sharedInstance
+{
+    return _sharedInstance;
 }
 
 // Because we‘ve locked the launch screen on iPhone to portrait mode, we now have to unlock all of them again such that
