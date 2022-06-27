@@ -24,10 +24,10 @@ describe(PrivacyRequest, () => {
   })
 
   it("handles CCPA button presses", () => {
-    const { debug, getAllByText } = renderWithWrappersTL(<PrivacyRequest />)
+    const { getByText } = renderWithWrappersTL(<PrivacyRequest />)
 
-    fireEvent.press(getAllByText("Do not sell my personal information")[0])
-    debug()
+    fireEvent.press(getByText("Do not sell my personal information"))
+
     expect(
       LegacyNativeModules.ARTNativeScreenPresenterModule.presentEmailComposerWithBody
     ).toHaveBeenCalledWith(
