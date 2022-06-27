@@ -159,7 +159,7 @@ static ARAppDelegate *_sharedInstance = nil;
         rootView.backgroundColor = [UIColor whiteColor];
     }
 
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController *rootViewController = [UIViewController new];
     rootViewController.view = rootView;
     self.window.rootViewController = rootViewController;
@@ -350,6 +350,20 @@ static ARAppDelegate *_sharedInstance = nil;
         [[AREmission sharedInstance] notificationsManagerModule],
         [ARCocoaConstantsModule new],
     ];
+}
+
+@end
+
+
+@implementation ARWindow
+
+- (void)sendEvent:(UIEvent *)event
+{
+    [super sendEvent:event];
+
+    if (event.type == UIEventTypeTouches) {
+        self.lastTouchPoint = [[[event allTouches] anyObject] locationInView:self];
+    }
 }
 
 @end
