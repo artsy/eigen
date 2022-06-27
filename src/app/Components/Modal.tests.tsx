@@ -21,11 +21,11 @@ describe("Modal", () => {
 
   it("should call `closeModal` when `Ok` button is pressed", () => {
     const closeModalMock = jest.fn()
-    const { getAllByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappersTL(
       <Modal visible headerText="Header" detailText="Detail" closeModal={closeModalMock} />
     )
 
-    fireEvent.press(getAllByText("Ok")[1])
+    fireEvent.press(getByText("Ok"))
 
     expect(closeModalMock).toBeCalled()
   })

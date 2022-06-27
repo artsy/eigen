@@ -73,7 +73,7 @@ describe("Artist Series Artworks", () => {
     expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
     expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
     expect(extractText(tree.root)).toContain(
-      "No results found\nPlease try another search.Clear filtersClear filters"
+      "No results found\nPlease try another search.Clear filters"
     )
   })
 })

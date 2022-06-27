@@ -48,17 +48,17 @@ describe("CreateArtworkAlertButtonsSection", () => {
   }
 
   it("should correctly 'Create Alert' modal", () => {
-    const { getAllByText, getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText, getByText } = renderWithWrappersTL(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => Artwork,
     })
 
-    fireEvent.press(getAllByText("Create Alert")[0])
+    fireEvent.press(getByText("Create Alert"))
 
-    expect(getByText("Banksy")).toBeTruthy()
-    expect(getByText("Limited Edition")).toBeTruthy()
-    expect(getByText("Prints")).toBeTruthy()
+    expect(queryByText("Banksy")).toBeTruthy()
+    expect(queryByText("Limited Edition")).toBeTruthy()
+    expect(queryByText("Prints")).toBeTruthy()
   })
 
   it("should not render create alert button and description text if artwork doesn't have any associated artists", () => {
@@ -76,7 +76,7 @@ describe("CreateArtworkAlertButtonsSection", () => {
   })
 
   it("should not render `Rarity` pill if needed data is missing", () => {
-    const { getAllByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
@@ -85,13 +85,13 @@ describe("CreateArtworkAlertButtonsSection", () => {
       }),
     })
 
-    fireEvent.press(getAllByText("Create Alert")[0])
+    fireEvent.press(getByText("Create Alert"))
 
     expect(queryByText("Limited Edition")).toBeFalsy()
   })
 
   it("should not render `Medium` pill if needed data is missing", () => {
-    const { getAllByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
@@ -100,7 +100,7 @@ describe("CreateArtworkAlertButtonsSection", () => {
       }),
     })
 
-    fireEvent.press(getAllByText("Create Alert")[0])
+    fireEvent.press(getByText("Create Alert"))
 
     expect(queryByText("Prints")).toBeFalsy()
   })
