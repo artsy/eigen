@@ -68,6 +68,7 @@ export const MyCollectionArtworkListItem: React.FC<{
               height={ARTWORK_LIST_IMAGE_SIZE}
               imageURL={image.url}
               aspectRatio={image.aspectRatio}
+              resizeMode="contain"
             />
           </Flex>
         )}
