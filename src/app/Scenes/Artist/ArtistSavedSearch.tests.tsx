@@ -56,7 +56,7 @@ describe("Saved search banner on artist screen", () => {
     )
   }
 
-  it("should convert the criteria attributes to the filter params format", async () => {
+  it.skip("should convert the criteria attributes to the filter params format", async () => {
     const { getByText } = getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
