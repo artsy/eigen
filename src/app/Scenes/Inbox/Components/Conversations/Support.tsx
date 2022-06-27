@@ -1,7 +1,6 @@
 import { navigate } from "app/navigation/navigate"
 import { track as _track } from "app/utils/track"
 import { Flex, QuestionCircleIcon, Text, Touchable } from "palette"
-import React from "react"
 
 export const Support = () => {
   return (

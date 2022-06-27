@@ -3,7 +3,7 @@ import { ImageCarousel_images$data } from "__generated__/ImageCarousel_images.gr
 import { createGeminiUrl } from "app/Components/OpaqueImageView/createGeminiUrl"
 import { isPad } from "app/utils/hardware"
 import { Flex } from "palette"
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"

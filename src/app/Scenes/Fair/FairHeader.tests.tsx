@@ -5,7 +5,6 @@ import { FairHeader, FairHeaderFragmentContainer } from "app/Scenes/Fair/Compone
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Spacer } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

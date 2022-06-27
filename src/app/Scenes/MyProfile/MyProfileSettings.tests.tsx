@@ -1,7 +1,6 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Platform } from "react-native"
 import { MyProfileSettings } from "./MyProfileSettings"
 

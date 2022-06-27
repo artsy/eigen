@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import React, { ImgHTMLAttributes } from "react"
+import { ImgHTMLAttributes } from "react"
 import { Image } from "react-native"
 import styled from "styled-components/native"
 import { borderRadius } from "styled-system"

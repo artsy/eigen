@@ -1,6 +1,5 @@
 import { ShowHours_show$data } from "__generated__/ShowHours_show.graphql"
 import { BoxProps } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ShowLocationHoursFragmentContainer as ShowLocationHours } from "./ShowLocationHours"
 

@@ -1,5 +1,5 @@
 import { CloseIcon } from "palette"
-import React, { useContext } from "react"
+import { useContext } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 import { ImageCarouselContext } from "../ImageCarouselContext"

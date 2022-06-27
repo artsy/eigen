@@ -1,7 +1,6 @@
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Button, Flex, Spacer, Text } from "palette"
-import React from "react"
 
 interface Props {
   title: string

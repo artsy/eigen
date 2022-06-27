@@ -1,4 +1,3 @@
-import React from "react"
 import Svg, { Circle, G, Path } from "react-native-svg"
 
 export const SellIcon = (props: any /* STRICTNESS_MIGRATION */) => (

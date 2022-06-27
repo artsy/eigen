@@ -1,6 +1,5 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Input, Touchable } from "palette"
-import React from "react"
 import { OnboardingLoginWithEmailForm } from "./OnboardingLogin"
 
 const navigateMock = jest.fn()

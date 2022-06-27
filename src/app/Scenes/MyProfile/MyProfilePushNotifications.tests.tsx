@@ -5,7 +5,6 @@ import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificatio
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { Sans } from "palette"
-import React from "react"
 import { Platform, Switch } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"

@@ -1,5 +1,4 @@
 import { CircularSpinner, Flex, Spacer, Text } from "palette"
-import React from "react"
 import { ImageBackground, Modal, ModalProps, StyleSheet } from "react-native"
 
 interface SavingArtworkModalProps {

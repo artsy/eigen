@@ -3,7 +3,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionInsights } from "./MyCollectionInsights"
 

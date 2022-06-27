@@ -1,7 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import * as input from "palette/elements/Input/Input"
-import React from "react"
 import { TextInput } from "react-native"
 import Animated, { Easing } from "react-native-reanimated"
 import { SearchInput, SearchInputProps } from "./SearchInput"

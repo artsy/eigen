@@ -6,7 +6,6 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Box, SimpleMessage, Spacer } from "palette"
-import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const SCREEN_TITLE = "Auction Lots for You"

@@ -1,7 +1,6 @@
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeatureQueryRenderer } from "./Feature"
 

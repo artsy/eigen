@@ -5,7 +5,6 @@ import { CardRailFlatList } from "app/Components/Home/CardRailFlatList"
 import { navigate } from "app/navigation/navigate"
 import { compact } from "lodash"
 import { Box, BoxProps, SmallCard, Text, TouchableWithScale } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

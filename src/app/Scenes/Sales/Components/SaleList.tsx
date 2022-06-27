@@ -1,5 +1,4 @@
 import { isEmpty } from "lodash"
-import React from "react"
 import { View } from "react-native"
 
 import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"

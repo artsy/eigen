@@ -1,6 +1,5 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Linking } from "react-native"
 
 import { Modal } from "./Modal"

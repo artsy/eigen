@@ -3,7 +3,6 @@ import { SavedAddressesTestsQuery } from "__generated__/SavedAddressesTestsQuery
 import { navigate, navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "./SavedAddresses"

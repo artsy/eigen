@@ -1,6 +1,5 @@
 import { useColor } from "palette/hooks"
 import { Color } from "palette/Theme"
-import React from "react"
 import { Icon, IconProps, Path } from "./Icon"
 
 type ShieldIconProps = IconProps & {

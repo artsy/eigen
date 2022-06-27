@@ -1,5 +1,4 @@
 import { Box, Sans } from "palette"
-import React from "react"
 
 export const TabEmptyState: React.FC<{
   text: string

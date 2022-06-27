@@ -4,7 +4,6 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { useFormikContext } from "formik"
-import React from "react"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { mockFormValues } from "./utils/testUtils"
 

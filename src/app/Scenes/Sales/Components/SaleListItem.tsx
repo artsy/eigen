@@ -1,4 +1,3 @@
-import React from "react"
 import { TouchableOpacity, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

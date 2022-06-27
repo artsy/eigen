@@ -1,7 +1,6 @@
 import match from "autosuggest-highlight/match"
 import parse from "autosuggest-highlight/parse"
 import { Text } from "palette"
-import React from "react"
 
 export const ResultWithHighlight = ({
   displayLabel,

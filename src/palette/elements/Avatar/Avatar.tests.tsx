@@ -1,5 +1,4 @@
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Image } from "react-native"
 import { Avatar, InitialsHolder } from ".."
 

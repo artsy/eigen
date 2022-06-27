@@ -1,7 +1,6 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useTheme } from "palette/Theme"
-import React from "react"
 import LinearGradient from "react-native-linear-gradient"
 import { Spacer } from "../../atoms"
 import { Box, BoxProps } from "../Box"

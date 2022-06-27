@@ -1,7 +1,6 @@
 import { SummarySectionTestsQuery } from "__generated__/SummarySectionTestsQuery.graphql"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SummarySectionFragmentContainer } from "./OrderDetails/Components/SummarySection"

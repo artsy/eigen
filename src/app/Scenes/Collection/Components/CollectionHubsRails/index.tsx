@@ -3,7 +3,6 @@ import { CollectionHubsRails_linkedCollections$data } from "__generated__/Collec
 import { CollectionArtistSeriesRailContainer as TrendingArtistSeriesRail } from "app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
 import { FeaturedCollectionsRailContainer as FeaturedCollectionsRail } from "app/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
 import { Box } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { OtherCollectionsRailContainer as OtherCollectionsRail } from "./OtherCollections/OtherCollectionsRail"
 

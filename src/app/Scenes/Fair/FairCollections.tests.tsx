@@ -2,7 +2,6 @@ import { FairCollectionsTestsQuery } from "__generated__/FairCollectionsTestsQue
 import { FairCollectionsFragmentContainer } from "app/Scenes/Fair/Components/FairCollections"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text, TouchableWithScale } from "palette"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"

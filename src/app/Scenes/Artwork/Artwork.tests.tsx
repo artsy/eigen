@@ -20,7 +20,7 @@ import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWr
 import { merge } from "lodash"
 import _ from "lodash"
 import { Touchable } from "palette"
-import React, { Suspense } from "react"
+import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

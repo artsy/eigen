@@ -1,5 +1,4 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 
 import { Button, LinkText } from "palette"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"

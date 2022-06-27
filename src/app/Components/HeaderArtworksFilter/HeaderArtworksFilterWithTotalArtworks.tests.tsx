@@ -5,7 +5,6 @@ import {
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { HeaderArtworksFilterWithTotalArtworks } from "./HeaderArtworksFilterWithTotalArtworks"
 
 describe("HeaderArtworksFilterWithTotalArtworks", () => {

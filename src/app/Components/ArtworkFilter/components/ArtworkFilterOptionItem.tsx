@@ -1,6 +1,5 @@
 import { TouchableRow } from "app/Components/TouchableRow"
 import { ArrowRightIcon, bullet, Flex, Text } from "palette"
-import React from "react"
 import { FilterDisplayConfig } from "../types"
 
 export interface ArtworkFilterOptionItemProps {

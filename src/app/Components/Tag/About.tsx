@@ -1,6 +1,5 @@
 import { About_tag$data } from "__generated__/About_tag.graphql"
 import { Text } from "palette"
-import React from "react"
 import { View } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"

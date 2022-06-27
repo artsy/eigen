@@ -2,7 +2,6 @@ import { SaleArtworkTileRailCardTestsQuery } from "__generated__/SaleArtworkTile
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CONTAINER_HEIGHT, SaleArtworkTileRailCardContainer } from "."

@@ -2,7 +2,6 @@ import { FairMoreInfoTestsQuery } from "__generated__/FairMoreInfoTestsQuery.gra
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { LinkText, Text } from "palette"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

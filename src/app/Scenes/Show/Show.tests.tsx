@@ -3,7 +3,6 @@ import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtw
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

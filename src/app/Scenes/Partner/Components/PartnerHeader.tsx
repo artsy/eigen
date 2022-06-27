@@ -3,7 +3,6 @@ import { PartnerBanner } from "app/Components/PartnerBanner"
 import { Stack } from "app/Components/Stack"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
 import { Box, Flex, Sans } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerFollowButton"
 

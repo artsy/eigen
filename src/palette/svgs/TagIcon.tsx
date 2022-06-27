@@ -1,5 +1,4 @@
 import { useColor } from "palette/hooks"
-import React from "react"
 import { Circle, Icon, IconProps, Path } from "./Icon"
 
 export const TagIcon: React.FC<IconProps> = (props) => {

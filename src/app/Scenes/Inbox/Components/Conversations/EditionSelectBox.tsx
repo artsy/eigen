@@ -3,7 +3,6 @@ import { EditionSelectBox_editionSet$data } from "__generated__/EditionSelectBox
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { BorderBox, Flex, Text, Touchable } from "palette"
 import { RadioButton } from "palette/elements/Radio"
-import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"

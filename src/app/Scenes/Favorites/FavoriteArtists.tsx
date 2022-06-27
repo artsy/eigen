@@ -1,4 +1,3 @@
-import React from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
@@ -16,6 +15,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ClassTheme, Spacer } from "palette"
+import React from "react"
 
 interface Props {
   me: FavoriteArtists_me$data

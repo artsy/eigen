@@ -1,7 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, shallow } from "enzyme"
 import { Sans, Text, Theme } from "palette"
-import React from "react"
 import { Header } from "./OtherWorks/Header"
 import { OtherWorksFragmentContainer as OtherWorks } from "./OtherWorks/OtherWorks"
 

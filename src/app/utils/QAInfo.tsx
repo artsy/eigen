@@ -2,7 +2,6 @@ import Clipboard from "@react-native-community/clipboard"
 import { useToast } from "app/Components/Toast/toastHook"
 import { useDevToggle } from "app/store/GlobalStore"
 import { Flex, FlexProps, Text, Touchable, useColor } from "palette"
-import React from "react"
 
 export const QAInfoPanel: React.FC<
   Omit<FlexProps, "children"> & { info: Array<[string, string]> }

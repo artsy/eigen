@@ -1,5 +1,3 @@
-import React from "react"
-
 import { Flex, Sans, useColor } from "palette"
 interface ZeroStateProps {
   title?: string

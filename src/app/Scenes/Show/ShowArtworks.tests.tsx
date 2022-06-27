@@ -3,7 +3,6 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ShowArtworksPaginationContainer as ShowArtworks } from "app/Scenes/Show/Components/ShowArtworks"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 

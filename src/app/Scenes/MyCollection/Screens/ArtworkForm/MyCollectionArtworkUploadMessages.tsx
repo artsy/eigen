@@ -1,7 +1,6 @@
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
 import { Flex } from "palette"
-import React from "react"
 import {
   AddedArtworkWithInsightsMessage,
   AddedArtworkWithoutAnyCollectionInsightsMessage,

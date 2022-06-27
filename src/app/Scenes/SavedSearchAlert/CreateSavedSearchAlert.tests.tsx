@@ -13,7 +13,6 @@ import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificatio
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
-import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { CreateSavedSearchAlert } from "./CreateSavedSearchAlert"

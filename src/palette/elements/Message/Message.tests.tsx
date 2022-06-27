@@ -1,6 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Message } from "./Message"
 
 describe("Message", () => {

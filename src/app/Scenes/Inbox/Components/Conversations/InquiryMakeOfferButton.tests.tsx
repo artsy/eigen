@@ -2,7 +2,6 @@ import { InquiryMakeOfferButtonTestsQuery } from "__generated__/InquiryMakeOffer
 import { navigate } from "app/navigation/navigate"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Button } from "palette"
-import React from "react"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"

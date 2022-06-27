@@ -3,7 +3,6 @@ import { ShowViewingRoom_show$data } from "__generated__/ShowViewingRoom_show.gr
 import { navigate } from "app/navigation/navigate"
 import { tagForStatus } from "app/Scenes/ViewingRoom/Components/ViewingRoomsListItem"
 import { Box, BoxProps, MediumCard } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"

@@ -3,7 +3,6 @@ import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { merge } from "lodash"
 import { StarCircleFill } from "palette/svgs/sf"
-import React from "react"
 import { ClosedLotStanding } from "./Components/ClosedLotStanding"
 
 const defaultSaleArtwork = {

@@ -1,5 +1,4 @@
 import { Sans } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"

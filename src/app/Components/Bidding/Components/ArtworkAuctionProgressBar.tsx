@@ -1,6 +1,5 @@
 import { useTimer } from "app/utils/useTimer"
 import { ProgressBar } from "palette"
-import React from "react"
 
 export interface ArtworkAuctionProgressBarProps {
   startAt?: string | null

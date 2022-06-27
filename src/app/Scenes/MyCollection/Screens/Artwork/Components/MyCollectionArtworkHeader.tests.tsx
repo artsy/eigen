@@ -3,7 +3,6 @@ import { MyCollectionArtworkHeaderTestQuery } from "__generated__/MyCollectionAr
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkHeader } from "./MyCollectionArtworkHeader"

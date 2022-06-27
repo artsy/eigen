@@ -4,7 +4,6 @@ import { PartnerFollowButtonFragmentContainer as PartnerFollowButton } from "app
 import { limitWithCount } from "app/utils/limitWithCount"
 import { compact } from "lodash"
 import { Box, BoxProps, EntityHeader } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

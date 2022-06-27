@@ -6,7 +6,6 @@ import { Toast } from "app/Components/Toast/Toast"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Box, Button, CheckIcon, Text } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 interface RequestForPriceEstimateProps {

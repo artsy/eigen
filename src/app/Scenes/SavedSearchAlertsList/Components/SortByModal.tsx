@@ -2,7 +2,6 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
 import { Flex, RadioDot, Text } from "palette"
-import React, { FC } from "react"
 
 export interface SortOption {
   value: string
@@ -18,7 +17,7 @@ export interface SortByModalProps {
   onModalFinishedClosing: () => void
 }
 
-export const SortByModal: FC<SortByModalProps> = (props) => {
+export const SortByModal: React.FC<SortByModalProps> = (props) => {
   const { visible, options, selectedValue, onCloseModal, onSelectOption, onModalFinishedClosing } =
     props
 

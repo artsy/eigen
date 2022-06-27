@@ -1,7 +1,6 @@
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { CityGuideCTA } from "./CityGuideCTA"
 

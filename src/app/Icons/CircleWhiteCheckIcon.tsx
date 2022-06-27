@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import { Component } from "react"
 import { Ellipse, G, Path, Svg } from "react-native-svg"
 
 interface CircleWhiteCheckIconProps {

@@ -1,5 +1,4 @@
 import { Spacer } from "palette"
-import React from "react"
 import { View } from "react-native"
 import { AboveTheFoldFlatList, AboveTheFoldFlatListProps } from "../AboveTheFoldFlatList"
 import Spinner from "../Spinner"

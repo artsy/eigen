@@ -1,4 +1,3 @@
-import React from "react"
 import { ViewStyle } from "react-native"
 import styled from "styled-components/native"
 import { height, position, space, textAlign, width } from "styled-system"

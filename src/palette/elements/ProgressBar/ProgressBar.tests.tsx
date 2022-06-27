@@ -1,6 +1,5 @@
 import { waitFor } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { ProgressBar, ProgressBarProps } from "./ProgressBar"
 
 describe("ProgressBar", () => {

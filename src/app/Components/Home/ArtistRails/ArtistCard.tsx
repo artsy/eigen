@@ -1,5 +1,4 @@
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 

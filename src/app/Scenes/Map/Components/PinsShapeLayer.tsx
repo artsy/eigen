@@ -4,7 +4,7 @@ import MapboxGL, {
   SymbolLayerStyle,
 } from "@react-native-mapbox-gl/maps"
 import { isEqual } from "lodash"
-import React, { Component } from "react"
+import { Component } from "react"
 import { Animated, StyleProp } from "react-native"
 import { BucketKey } from "../bucketCityResults"
 import { FilterData } from "../types"

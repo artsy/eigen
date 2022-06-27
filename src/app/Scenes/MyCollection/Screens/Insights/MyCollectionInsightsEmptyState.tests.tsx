@@ -2,7 +2,6 @@ import { fireEvent } from "@testing-library/react-native"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 
 describe("MyCollectionInsightsEmptyState", () => {

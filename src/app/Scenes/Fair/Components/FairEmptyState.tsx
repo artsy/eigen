@@ -1,6 +1,5 @@
 import { FairEmptyState_fair$data } from "__generated__/FairEmptyState_fair.graphql"
 import { SimpleMessage } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface FairEmptyStateProps {

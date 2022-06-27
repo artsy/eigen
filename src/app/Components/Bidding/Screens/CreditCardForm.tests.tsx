@@ -1,6 +1,5 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Button, Sans } from "palette"
-import React from "react"
 
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { CreditCardForm } from "./CreditCardForm"

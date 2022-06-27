@@ -1,7 +1,6 @@
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useImageSearch } from "app/utils/useImageSearch"
 import { AddIcon, Box, Spinner } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 

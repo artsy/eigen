@@ -2,7 +2,6 @@ import { CommercialButtons_artwork$data } from "__generated__/CommercialButtons_
 import { CommercialButtons_me$data } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { Spacer } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { BidButtonFragmentContainer } from "./BidButton"
 import { BuyNowButtonFragmentContainer } from "./BuyNowButton"

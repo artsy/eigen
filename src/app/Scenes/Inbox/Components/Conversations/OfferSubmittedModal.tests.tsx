@@ -1,7 +1,6 @@
 import { act, fireEvent } from "@testing-library/react-native"
 import { goBack, navigate } from "app/navigation/navigate"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { OfferSubmittedModal } from "./OfferSubmittedModal"
 
 jest.mock("app/navigation/navigate", () => ({

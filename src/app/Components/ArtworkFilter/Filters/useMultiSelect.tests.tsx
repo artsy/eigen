@@ -7,7 +7,6 @@ import {
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { Text, TouchableHighlight, TouchableWithoutFeedback, View } from "react-native"
 import { getEssentialProps } from "./helper"
 import { useMultiSelect } from "./useMultiSelect"

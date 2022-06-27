@@ -2,7 +2,6 @@ import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsLi
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { MediumCard } from "palette"
-import React from "react"
 import { graphql, QueryRenderer, RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeaturedRail } from "./ViewingRoomsListFeatured"

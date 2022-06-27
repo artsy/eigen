@@ -1,7 +1,6 @@
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Button, Flex, ProgressBar, Spacer, Text } from "palette"
-import React from "react"
 import { Image } from "react-native"
 
 interface PhotoRowContainerProps {

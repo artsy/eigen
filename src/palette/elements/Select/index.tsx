@@ -1,5 +1,3 @@
-import React from "react"
-
 // v3
 import { Select as SelectV3, SelectOption, SelectProps as SelectV3Props } from "./Select"
 export { SelectV3, SelectV3Props, SelectOption }

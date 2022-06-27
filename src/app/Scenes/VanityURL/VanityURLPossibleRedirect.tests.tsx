@@ -7,7 +7,6 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import fetchMock from "jest-fetch-mock"
 import { Button, Spinner } from "palette"
-import React from "react"
 import { Linking } from "react-native"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 

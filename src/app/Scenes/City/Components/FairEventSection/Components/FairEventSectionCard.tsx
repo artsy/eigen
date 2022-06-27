@@ -3,7 +3,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Fair } from "app/Scenes/Map/types"
 import { Box, Flex, Sans } from "palette"
-import React, { Component } from "react"
+import { Component } from "react"
 import { Dimensions, Image, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 

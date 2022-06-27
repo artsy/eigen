@@ -2,7 +2,6 @@ import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createCo
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { Select } from "palette/elements/Select"
-import React from "react"
 
 export const MediumPicker: React.FC = () => {
   const { formik } = useArtworkForm()

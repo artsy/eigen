@@ -1,6 +1,5 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
 import { Box, Button, Sans, Spacer } from "palette"
-import React from "react"
 
 const consignArgs: TappedConsignArgs = {
   contextModule: ContextModule.sellHeader,

@@ -1,4 +1,3 @@
-import React from "react"
 import "react-native"
 
 import { renderWithLayout } from "app/tests/renderWithLayout"

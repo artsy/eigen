@@ -1,6 +1,5 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Box, CheckIcon } from "palette"
-import React from "react"
 import { ColorsSwatch } from "./ColorsSwatch"
 
 describe("Colors swatch", () => {

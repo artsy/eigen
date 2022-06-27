@@ -1,7 +1,6 @@
 import { SectionTitle } from "app/Components/SectionTitle"
 import { GlobalStore } from "app/store/GlobalStore"
 import { SimpleMessage } from "palette"
-import React from "react"
 import { LayoutAnimation } from "react-native"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 import { SearchResultList } from "./components/SearchResultList"

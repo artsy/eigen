@@ -1,9 +1,9 @@
 import { themeGet } from "@styled-system/theme-get"
-import React from "react"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 
 import { Box, ClassTheme, Sans } from "palette"
+import React from "react"
 
 /**
  * Nearly all props are given by the ScrollableTabView,

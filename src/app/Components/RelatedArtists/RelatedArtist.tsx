@@ -1,7 +1,7 @@
 import { RelatedArtist_artist$data } from "__generated__/RelatedArtist_artist.graphql"
 import { navigate } from "app/navigation/navigate"
 import { ClassTheme, Sans, Spacer } from "palette"
-import React, { Component } from "react"
+import { Component } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import ImageView from "../OpaqueImageView/OpaqueImageView"

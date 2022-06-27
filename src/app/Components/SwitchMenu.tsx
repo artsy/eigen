@@ -1,5 +1,4 @@
 import { Flex, Sans, useColor } from "palette"
-import React from "react"
 import { Switch } from "react-native"
 
 interface SwitchMenuProps {

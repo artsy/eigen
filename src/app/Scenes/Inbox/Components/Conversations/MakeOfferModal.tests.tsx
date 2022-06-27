@@ -3,7 +3,6 @@ import { CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/Commerc
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

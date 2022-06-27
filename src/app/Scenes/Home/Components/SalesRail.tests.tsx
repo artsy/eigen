@@ -9,7 +9,6 @@ import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWr
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { cloneDeep } from "lodash"
 import { first, last } from "lodash"
-import React from "react"
 import "react-native"
 import HomeAnalytics from "../homeAnalytics"
 import { SalesRailFragmentContainer } from "./SalesRail"

@@ -3,7 +3,6 @@ import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/Autosug
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Box, Button, Flex, Input, Text } from "palette"
-import React from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 
 interface ArtistAutosuggestProps {

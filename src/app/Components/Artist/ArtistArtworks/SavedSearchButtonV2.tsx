@@ -1,6 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { BellIcon, Box, Flex, Text, TouchableHighlightColor } from "palette"
-import React from "react"
 import { useTracking } from "react-tracking"
 
 export interface SavedSearchButtonV2Props {

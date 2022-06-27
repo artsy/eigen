@@ -1,5 +1,4 @@
 import { Color, Spinner as PaletteSpinner } from "palette"
-import React from "react"
 import { StyleSheet, View, ViewProps } from "react-native"
 
 interface Props extends ViewProps {

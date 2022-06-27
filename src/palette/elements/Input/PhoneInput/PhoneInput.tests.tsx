@@ -2,7 +2,6 @@ import { extractText } from "app/tests/extractText"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Input, Text } from "palette"
 import { Select } from "palette/elements/Select"
-import React from "react"
 import { act } from "react-test-renderer"
 import { PhoneInput } from "./PhoneInput"
 

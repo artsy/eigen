@@ -7,7 +7,6 @@ import { uploadPhotosCompletedEvent } from "app/Scenes/SellWithArtsy/utils/Track
 import { GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
 import { BulletedItem, CTAButton, Flex, Spacer } from "palette"
-import React from "react"
 import { useTracking } from "react-tracking"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"

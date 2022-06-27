@@ -2,7 +2,6 @@ import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
-import React from "react"
 import { graphql } from "relay-runtime"
 import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
 

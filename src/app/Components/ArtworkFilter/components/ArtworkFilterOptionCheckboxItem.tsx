@@ -1,5 +1,4 @@
 import { Checkbox } from "palette"
-import React from "react"
 import { FilterParamName, getUnitedSelectedAndAppliedFilters } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "../ArtworkFilterStore"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"

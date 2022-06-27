@@ -1,5 +1,4 @@
 import { ArrowRightIcon, Box, Flex } from "palette"
-import React from "react"
 
 export const ArrowDetails: React.FC = ({ children }) => {
   return (

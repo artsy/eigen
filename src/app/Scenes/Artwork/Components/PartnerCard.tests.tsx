@@ -6,7 +6,6 @@ import { renderRelayTree } from "app/tests/renderRelayTree"
 // @ts-ignore
 import { mount } from "enzyme"
 import { Button, Sans, Theme } from "palette"
-import React from "react"
 import { Image } from "react-native"
 import { graphql, RelayProp } from "react-relay"
 import { PartnerCard, PartnerCardFragmentContainer } from "./PartnerCard"

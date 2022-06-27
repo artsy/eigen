@@ -1,6 +1,6 @@
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Flex, Text } from "palette"
-import React, { useMemo, useRef } from "react"
+import { useMemo, useRef } from "react"
 import { Animated, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 
 const DEFAULT_FADE_IN_START = 90

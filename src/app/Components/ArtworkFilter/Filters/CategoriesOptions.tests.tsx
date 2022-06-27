@@ -4,7 +4,6 @@ import {
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { CategoriesOptionsScreen } from "./CategoriesOptions"
 import { getEssentialProps } from "./helper"
 

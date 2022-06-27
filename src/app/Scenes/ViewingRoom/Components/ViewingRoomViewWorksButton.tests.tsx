@@ -2,7 +2,6 @@ import { ViewingRoomViewWorksButtonTestsQuery } from "__generated__/ViewingRoomV
 import { navigate } from "app/navigation/navigate"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import React from "react"
 import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"

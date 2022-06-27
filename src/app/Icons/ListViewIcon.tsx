@@ -1,5 +1,4 @@
 import { Color, useColor } from "palette"
-import React from "react"
 import Svg, { Rect } from "react-native-svg"
 
 interface ListViewIconProps extends React.ComponentProps<typeof Svg> {
