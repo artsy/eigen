@@ -220,9 +220,7 @@ jobs:
     working_directory: /usr/src/app
     steps:
       - checkout
-      - run: ./scripts/secrets-check-all
-      - run: git status
-      - run: git diff
+      - run: ./scripts/secrets-check-all; git status; git diff
 
   deploy-nightly-beta:
     environment:
