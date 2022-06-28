@@ -219,7 +219,6 @@ jobs:
       - image: lirantal/detect-secrets
     working_directory: /usr/src/app
     steps:
-      - run: apt-get update && apt-get install -y openssh-client git
       - run:
          name: "Make CircleCI happy" # this comes from https://support.circleci.com/hc/en-us/articles/360046718853-Checkout-Code-Step-Outputs-Either-git-or-ssh-required-by-git-to-clone-through-SSH-is-not-installed-in-the-image-
          command: apt-get update && apt-get install -y openssh-client git
