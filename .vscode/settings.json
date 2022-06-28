@@ -4,10 +4,8 @@
     "Podfile": "ruby",
     "*.h": "objective-c",
     "*.js": "javascriptreact",
-    "yarn.lock": "text",
-    "tslint.json": "jsonc"
+    "yarn.lock": "text"
   },
-  "eslint.enable": false,
   "editor.formatOnSave": true,
   "files.trimTrailingWhitespace": true,
   "prettier.singleQuote": false,
@@ -53,7 +51,6 @@
   "cSpell.diagnosticLevel": "Hint",
   "typescript.tsdk": "./node_modules/typescript/lib",
   "todohighlight.exclude": ["node_modules/**", ".vscode/**", "externals/**"],
-  "tslint.autoFixOnSave": true,
   "typescript.format.enable": false,
   "[json]": {
     "editor.formatOnSave": false
