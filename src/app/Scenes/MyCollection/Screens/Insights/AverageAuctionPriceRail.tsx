@@ -31,12 +31,9 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
           onPress={
             enableMyCollectionInsightsPhase1Part3
               ? () => {
-                  navigate("/my-collection/average-sale-price-at-auction", {
-                    passProps: {
-                      artistData: artworks[0]?.artist,
-                      collectorArtists: groupedArtworks.length,
-                    },
-                  })
+                  navigate(
+                    `/my-collection/average-sale-price-at-auction/${artworks[0].artist?.internalID}`
+                  )
                 }
               : undefined
           }
@@ -52,12 +49,9 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
             onPress={
               enableMyCollectionInsightsPhase1Part3
                 ? () => {
-                    navigate("/my-collection/average-sale-price-at-auction", {
-                      passProps: {
-                        artistData: item[0].artist,
-                        collectorArtists: groupedArtworks.length,
-                      },
-                    })
+                    navigate(
+                      `/my-collection/average-sale-price-at-auction/${item[0].artist?.internalID}`
+                    )
                   }
                 : undefined
             }
@@ -78,6 +72,7 @@ const fragment = graphql`
           medium
           title
           artist {
+            internalID
             name
             imageUrl
             formattedNationalityAndBirthday
