@@ -219,6 +219,7 @@ jobs:
       - image: lirantal/detect-secrets
     working_directory: /usr/src/app
     steps:
+      - run: apt-get update && apt-get install -y openssh-client git
       - checkout
       - run: ./scripts/secrets-check-all
 
