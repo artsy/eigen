@@ -10,6 +10,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
@@ -20,7 +21,6 @@ import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
 import { ComparableWorksFragmentContainer } from "./ComparableWorks"
 import { auctionResultHasPrice, AuctionResultHelperData, auctionResultText } from "./helpers"
 
@@ -47,7 +47,7 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   useEffect(() => {
     if (auctionResult.images?.thumbnail?.url) {
       Image.getSize(auctionResult.images.thumbnail.url, (width, height) => {
-        const imageDimensions = getImageDimensions(height, width, CONTAINER_HEIGHT)
+        const imageDimensions = getImageSquareDimensions(height, width, CONTAINER_HEIGHT)
         setImageHeight(imageDimensions.height)
         setImageWidth(imageDimensions.width)
       })

@@ -9,6 +9,7 @@ import { SaleArtworkListItem_artwork$data } from "__generated__/SaleArtworkListI
 import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
+import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { Flex, Sans } from "palette"
 import { Touchable } from "palette"
 import React, { useRef } from "react"
@@ -52,7 +53,7 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
     artwork,
   })
 
-  const imageDimensions = getImageDimensions(
+  const imageDimensions = getImageSquareDimensions(
     artwork.image?.height,
     artwork.image?.width,
     CONTAINER_HEIGHT
@@ -103,30 +104,6 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
       </Flex>
     </Touchable>
   )
-}
-
-// Get image accurate square dimensions while keeping the same aspect ratio
-export const getImageDimensions = (
-  height: number | null | undefined,
-  width: number | null | undefined,
-  containerHeight: number
-) => {
-  if (height && width) {
-    if (height > width) {
-      return {
-        height: containerHeight,
-        width: (width * containerHeight) / height,
-      }
-    }
-    return {
-      height: (height * containerHeight) / width,
-      width: containerHeight,
-    }
-  }
-  return {
-    height: containerHeight,
-    width: containerHeight,
-  }
 }
 
 export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkListItem, {

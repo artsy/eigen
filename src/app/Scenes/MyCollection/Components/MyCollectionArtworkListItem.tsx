@@ -3,8 +3,8 @@ import { MyCollectionArtworkListItem_artwork$key } from "__generated__/MyCollect
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
-import { getImageDimensions } from "app/Scenes/Sale/Components/SaleArtworkListItem"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React from "react"
 import { useFragment } from "react-relay"
@@ -29,7 +29,7 @@ export const MyCollectionArtworkListItem: React.FC<{
 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
-  const imageDimensions = getImageDimensions(
+  const imageDimensions = getImageSquareDimensions(
     artwork.image?.height,
     artwork.image?.width,
     ARTWORK_LIST_IMAGE_SIZE
