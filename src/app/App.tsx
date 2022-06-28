@@ -35,7 +35,9 @@ import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
 // don't open dev menu with shake. we use it for out own admin menu.
-NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
+if (__DEV__) {
+  NativeModules.DevSettings.setIsShakeToShowDevMenuEnabled(false)
+}
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
