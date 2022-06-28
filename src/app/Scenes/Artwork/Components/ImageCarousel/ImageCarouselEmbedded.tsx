@@ -136,6 +136,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
       onScroll={onScroll}
       scrollEventThrottle={50}
       onResponderRelease={onResponderRelease}
+      accessibilityLabel="Image Carousel"
       initialNumToRender={Math.min(images.length, 20)}
       renderItem={({ item, index }) => {
         const { cumulativeScrollOffset, ...styles } = measurements[index]

@@ -28,7 +28,7 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
     const { width, height, imageURL, onPress } = props
 
     return (
-      <TouchableWithoutFeedback onPress={onPress} testID="image-with-loading-state">
+      <TouchableWithoutFeedback onPress={onPress} accessibilityLabel="Image with Loading State">
         <View style={[{ width, height }, props.style]} ref={ref}>
           <OpaqueImageView
             useRawURL
