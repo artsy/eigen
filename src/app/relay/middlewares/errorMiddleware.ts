@@ -1,6 +1,7 @@
 import {
   createRequestError,
   formatGraphQLErrors,
+  GraphQLResponseErrors,
   MiddlewareNextFn,
   RelayNetworkLayerResponse,
 } from "react-relay-network-modern/node8"
@@ -26,13 +27,31 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
 
     const sentryFormattedError = createRequestError(req, res)
 
-    // All errors returned by createRequestError are ttled "RRNLRequestError", this makes it hard to identify which
+    // All errors returned by createRequestError are titled "RRNLRequestError", this makes it hard to identify which
     // issues we should pay attention to in the issues list until we open the issue page separately
     // We want to fix that by changing that title into a properly formatted error
-    sentryFormattedError.name = formatGraphQLErrors(req, res.errors!)
+    sentryFormattedError.name = formatName(req, res.errors!)
     Sentry.captureException(sentryFormattedError)
   })
   throw createRequestError(req, res)
+}
+
+const formatName = (req: GraphQLRequest, errors: GraphQLResponseErrors) => {
+  const queryName = req.operation.name
+  const errorName = shortError(errors)
+  const name = queryName + " - " + errorName
+  return name
+}
+
+const shortError = (errors: GraphQLResponseErrors) => {
+  const firstError = errors[0]
+  const errorRegex = /{"error":"(?<Message>.+)"}/
+  const found = firstError.message.match(errorRegex)
+  if (found && found.groups) {
+    return found.groups.Message
+  } else {
+    return "Generic Error - see metadata"
+  }
 }
 
 const trackError = (
