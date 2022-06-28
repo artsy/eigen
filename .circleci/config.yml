@@ -221,6 +221,8 @@ jobs:
     steps:
       - checkout
       - run: ./scripts/secrets-check-all
+      - run: git status
+      - run: git diff
 
   deploy-nightly-beta:
     environment:
