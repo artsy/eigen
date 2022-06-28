@@ -216,7 +216,7 @@ commands:
 jobs:
   detect-secrets:
     docker:
-      - image: lirantal/detect-secrets
+      - image: artsy/detect-secrets
     working_directory: /usr/src/app
     steps:
       - checkout
