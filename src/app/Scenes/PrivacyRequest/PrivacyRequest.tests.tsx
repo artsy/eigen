@@ -2,7 +2,6 @@ import { fireEvent } from "@testing-library/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
 import { PrivacyRequest } from "./PrivacyRequest"
 
 describe(PrivacyRequest, () => {
