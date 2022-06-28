@@ -4,6 +4,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -26,6 +27,12 @@ export const MyCollectionArtworkListItem: React.FC<{
   const showDemandIndexHints = useFeatureFlag("ARShowMyCollectionDemandIndexHints")
 
   const showHighDemandIcon = isP1Artist && isHighDemand
+
+  const imageDimensions = getImageSquareDimensions(
+    artwork.image?.height,
+    artwork.image?.width,
+    ARTWORK_LIST_IMAGE_SIZE
+  )
 
   return (
     <Touchable
@@ -58,14 +65,14 @@ export const MyCollectionArtworkListItem: React.FC<{
             borderRadius={2}
             alignItems="center"
             justifyContent="center"
-            overflow="hidden"
             // To align the image with the text we have to add top margin to compensate the line height.
             style={{ marginTop: 3 }}
           >
             <OpaqueImageView
-              width={ARTWORK_LIST_IMAGE_SIZE}
-              height={ARTWORK_LIST_IMAGE_SIZE}
               imageURL={image.url}
+              width={imageDimensions.width}
+              height={imageDimensions.height}
+              resizeMode="contain"
               aspectRatio={image.aspectRatio}
             />
           </Flex>
@@ -121,6 +128,8 @@ const artworkFragment = graphql`
     image {
       url(version: "small")
       aspectRatio
+      width
+      height
     }
     artistNames
     medium
