@@ -2,6 +2,7 @@ import { Home_articlesConnection$data } from "__generated__/Home_articlesConnect
 import { Home_featured$data } from "__generated__/Home_featured.graphql"
 import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphql"
 import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
+import { Home_artworksForUser$data } from "__generated__/Home_artworksForUser.graphql"
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
 import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
@@ -66,6 +67,7 @@ interface Props extends ViewProps {
   homePageAbove: Home_homePageAbove$data | null
   homePageBelow: Home_homePageBelow$data | null
   loading: boolean
+  artworksForUser: Home_artworksForUser$data | null
   meAbove: Home_meAbove$data | null
   meBelow: Home_meBelow$data | null
   relay: RelayRefetchProp
@@ -281,7 +283,7 @@ const Home = (props: Props) => {
                 return (
                   <NewWorksForYouRail
                     title={item.title}
-                    me={item.data}
+                    viewer={item.data}
                     scrollRef={scrollRefs.current[index]}
                     mb={MODULE_SEPARATOR_HEIGHT}
                   />
@@ -375,6 +377,7 @@ const useHandleRefresh = (relay: RelayRefetchProp, modules: any[]) => {
   return { scrollRefs, isRefreshing, handleRefresh }
 }
 
+// this is the refetch
 export const HomeFragmentContainer = createRefetchContainer(
   Home,
   {
@@ -426,7 +429,6 @@ export const HomeFragmentContainer = createRefetchContainer(
       fragment Home_meAbove on Me {
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
-        ...NewWorksForYouRail_me
       }
     `,
     meBelow: graphql`
@@ -446,6 +448,11 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...ShowsRail_showsConnection
       }
     `,
+    artworksForUser: graphql`
+      fragment Home_artworksForUser on Viewer {
+        ...NewWorksForYouRail_viewer
+      }
+    `,
     featured: graphql`
       fragment Home_featured on ViewingRoomConnection {
         ...ViewingRoomsListFeatured_featured
@@ -460,11 +467,13 @@ export const HomeFragmentContainer = createRefetchContainer(
       homePageBelow: homePage @optionalField {
         ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
       }
+      artworksForUser: viewer {
+        ...Home_newWorksForYouRail
+      }
       me @optionalField {
         ...Home_meAbove
         ...AuctionResultsRail_me
         ...RecommendedArtistsRail_me
-        ...NewWorksForYouRail_me
         showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
           ...Home_showsByFollowedArtists
         }
@@ -595,6 +604,7 @@ const messages = {
   },
 }
 
+// not refetch
 export const HomeQueryRenderer: React.FC = () => {
   const { flash_message } = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.tabProps.home ?? {}
@@ -624,12 +634,14 @@ export const HomeQueryRenderer: React.FC = () => {
       above={{
         query: graphql`
           query HomeAboveTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+            artworksForUser: viewer {
+              ...NewWorksForYouRail_viewer
+            }
             homePage @optionalField {
               ...Home_homePageAbove @arguments(heroImageVersion: $heroImageVersion)
             }
             me @optionalField {
               ...Home_meAbove
-              ...NewWorksForYouRail_me
             }
             articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
               @optionalField {
@@ -673,6 +685,7 @@ export const HomeQueryRenderer: React.FC = () => {
               featured={below ? below.featured : null}
               homePageAbove={above.homePage}
               homePageBelow={below ? below.homePage : null}
+              artworksForUser={artworksForUser}
               meAbove={above.me}
               meBelow={below ? below.me : null}
               loading={!below}
