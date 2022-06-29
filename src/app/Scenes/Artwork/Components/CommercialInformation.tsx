@@ -15,11 +15,10 @@ import { Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
 import { capitalize } from "lodash"
-import { Box, ClassTheme, Flex, Spacer, Text } from "palette"
+import { Box, Flex, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { TrackingProp, useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 import { CommercialButtonsFragmentContainer as CommercialButtons } from "./CommercialButtons/CommercialButtons"
@@ -137,21 +136,9 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
   }
 }
 
-const ColoredDot = styled(Box)<{ dotColor: string }>`
-  background-color: ${({ dotColor }: any) => dotColor};
-  width: 8px;
-  height: 8px;
-  border-radius: 8px;
-  margin-right: 8px;
-`
-
-export const SaleAvailability: React.FC<{ dotColor?: string; saleMessage: string }> = ({
-  dotColor,
-  saleMessage,
-}) => {
+export const SaleAvailability: React.FC<{ saleMessage: string }> = ({ saleMessage }) => {
   return (
     <Flex flexWrap="nowrap" flexDirection="row" alignItems="center">
-      {!!dotColor && <ColoredDot dotColor={dotColor} />}
       <Text variant="lg">{saleMessage}</Text>
     </Flex>
   )
@@ -206,6 +193,7 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   }, [timerState])
 
   const renderSingleEditionArtwork = () => {
+    let newSaleMessage
     const artworkIsInClosedAuction = artwork.isInAuction && timerState === AuctionTimerState.CLOSED
     const saleMessage = artwork.saleMessage
       ? artwork.saleMessage === "Contact For Price"
@@ -213,43 +201,17 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
         : artwork.saleMessage
       : capitalize(artwork.availability || undefined)
 
+    if (artworkIsInClosedAuction) {
+      newSaleMessage = "Bidding closed"
+    } else if (artwork.saleMessage?.toLowerCase() === "contact for price" && artwork.isForSale) {
+      newSaleMessage = "For sale"
+    }
+
     return (
-      <ClassTheme>
-        {({ color }) => {
-          let indicatorColor
-          let newSaleMessage
-
-          if (
-            artwork.availability?.toLowerCase() === "on loan" ||
-            artwork.availability?.toLowerCase() === "on hold"
-          ) {
-            indicatorColor = color("yellow100")
-          } else if (
-            artwork.availability?.toLowerCase() === "sold" ||
-            artwork.availability?.toLowerCase() === "not for sale"
-          ) {
-            indicatorColor = color("red100")
-          } else if (artworkIsInClosedAuction) {
-            newSaleMessage = "Bidding closed"
-          } else if (
-            artwork.saleMessage?.toLowerCase() === "contact for price" &&
-            artwork.isForSale
-          ) {
-            newSaleMessage = "For sale"
-            indicatorColor = color("green100")
-          }
-
-          return (
-            <>
-              <SaleAvailability
-                dotColor={indicatorColor}
-                saleMessage={newSaleMessage ? newSaleMessage : saleMessage}
-              />
-              {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
-            </>
-          )
-        }}
-      </ClassTheme>
+      <>
+        <SaleAvailability saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
+        {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
+      </>
     )
   }
 

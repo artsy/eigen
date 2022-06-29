@@ -7,7 +7,7 @@ import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import "moment-timezone"
-import { _test_THEMES, Text, Theme } from "palette"
+import { Text, Theme } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
@@ -15,7 +15,7 @@ import { BidButton } from "./CommercialButtons/BidButton"
 import { BuyNowButton } from "./CommercialButtons/BuyNowButton"
 import { CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
-import { CommercialInformationTimerWrapper, SaleAvailability } from "./CommercialInformation"
+import { CommercialInformationTimerWrapper } from "./CommercialInformation"
 
 const Wrapper: React.FC<{}> = ({ children }) => {
   return (
@@ -105,7 +105,7 @@ describe("CommercialInformation", () => {
     expect(queryByText("Bidding closed")).toBeTruthy()
   })
 
-  it("renders yellow indicator and correct message when artwork is on hold", () => {
+  it("renders correct message when artwork is on hold", () => {
     const OnHoldArtwork = {
       ...CommercialInformationArtwork,
       availability: "on hold",
@@ -123,12 +123,9 @@ describe("CommercialInformation", () => {
     )
 
     expect(component.text()).toContain("On hold")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(
-      _test_THEMES.v2.colors.yellow100
-    ) // we dont have a v3 yellow yet, so we are keeping the v2 for now.
   })
 
-  it("renders red indicator and correct message when artwork is sold", () => {
+  it("renders correct message when artwork is sold", () => {
     const SoldArtwork = {
       ...CommercialInformationArtwork,
       availability: "sold",
@@ -146,12 +143,9 @@ describe("CommercialInformation", () => {
     )
 
     expect(component.text()).toContain("Sold")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(
-      _test_THEMES.v3.colors.red100
-    )
   })
 
-  it("renders green indicator and correct message when artwork is for sale", () => {
+  it("renders correct message when artwork is for sale", () => {
     const ForSaleArtwork = {
       ...CommercialInformationArtwork,
       availability: "for sale",
@@ -169,9 +163,6 @@ describe("CommercialInformation", () => {
     )
 
     expect(component.text()).toContain("For sale")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(
-      _test_THEMES.v3.colors.green100
-    )
   })
 
   it("renders Bidding Closed and no CommercialButtons for auction works when the auction has ended", () => {
