@@ -24,8 +24,7 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
     queryArgs.options
   )
 
-  const enableChangeArtist =
-    data.me?.myCollectionInfo?.artistsCount && data.me?.myCollectionInfo?.artistsCount > 0
+  const enableChangeArtist = !!data.me?.myCollectionInfo?.artistsCount
 
   return (
     <Flex mx={2} pt={6}>
@@ -91,10 +90,12 @@ export const AverageSalePriceAtAuction: React.FC<{ artistID: string }> = ({ arti
   })
 
   const refetch = useCallback((newArtistID) => {
-    setQueryArgs((prev) => ({
-      options: { fetchKey: (prev?.options.fetchKey ?? 0) + 1 },
-      variables: { ...artistsQueryVariables, artistID: newArtistID },
-    }))
+    if (newArtistID !== queryArgs.variables.artistID) {
+      setQueryArgs((prev) => ({
+        options: { fetchKey: (prev?.options.fetchKey ?? 0) + 1 },
+        variables: { ...artistsQueryVariables, artistID: newArtistID },
+      }))
+    }
   }, [])
 
   return (

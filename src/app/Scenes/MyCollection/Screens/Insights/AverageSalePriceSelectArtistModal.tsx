@@ -90,6 +90,7 @@ export const AverageSalePriceSelectArtistModal: React.FC<
 
         <SelectArtistList
           artistsList={trimmedQuery ? filteredArtists : artistsList}
+          ListHeaderComponent={!trimmedQuery ? ListHeaderComponent : undefined}
           onEndReached={handleLoadMore}
           isLoadingNext={isLoadingNext}
           onItemPress={onItemPress}
@@ -98,6 +99,15 @@ export const AverageSalePriceSelectArtistModal: React.FC<
     </FancyModal>
   )
 }
+
+const ListHeaderComponent = (
+  <Flex mb={2}>
+    <Text variant="md">Artists You Collect</Text>
+    <Text variant="xs" color="black60">
+      With insights currently available
+    </Text>
+  </Flex>
+)
 
 const collectedArtistsConnectionFragment = graphql`
   fragment AverageSalePriceSelectArtistModal_myCollectionInfo on Query
