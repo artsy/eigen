@@ -121,7 +121,7 @@ describe("ArtworkActions", () => {
     })
   })
 
-  fdescribe("Saving an artwork", () => {
+  describe("Saving an artwork", () => {
     let env: ReturnType<typeof createMockEnvironment>
 
     beforeEach(() => {
