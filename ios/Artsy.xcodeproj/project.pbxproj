@@ -37,12 +37,8 @@
 		1A4E5123283F91BA0008EF35 /* UIFont+ArtsyFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5114283F91B90008EF35 /* UIFont+ArtsyFonts.m */; };
 		1A4E5124283F91BA0008EF35 /* ARButtonSubclasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */; };
 		1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */; };
-		4A9190A1CCE54CE09384C9FC /* Unica77LL-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CC557644CEE44511A73431D7 /* Unica77LL-MediumItalic.otf */; };
 		50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */; };
 		91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */; };
-		9DE2CA6EF6024B2DAF877CB2 /* Unica77LL-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = CE0D8AAD95934C28AF35D2A3 /* Unica77LL-Regular.otf */; };
-		B3EFFC7412D94886B32A2B10 /* Unica77LL-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5BD7635D052B48579073DECC /* Unica77LL-Italic.otf */; };
-		B7F9E6E6D6604CC691827F1D /* Unica77LL-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = DC9FFF92F0574260A5300F1B /* Unica77LL-Medium.otf */; };
 		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
 		CB43266A27E8F39B00B29DD6 /* ArtsyStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB43267627E8F6F900B29DD6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43267527E8F6F900B29DD6 /* NotificationService.swift */; };
@@ -213,7 +209,6 @@
 		CB43299C27FE0D7F00B29DD6 /* stubbed_image.png in Resources */ = {isa = PBXBuildFile; fileRef = CB43278D27E8FEE400B29DD6 /* stubbed_image.png */; };
 		CB43299D27FE0D9000B29DD6 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE325DD27E275A200395A93 /* CloseButtonLargeHighlighted@2x.png */; };
 		CB43299E27FE0DB100B29DD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB43278427E8FEE400B29DD6 /* InfoPlist.strings */; };
-		CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B85327B585F00007922D /* GoogleService-Info.plist */; };
 		CBE3211C27D9615000395A93 /* OldAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210827D9615000395A93 /* OldAdminView.swift */; };
 		CBE3211D27D9615000395A93 /* ARTCityGuideViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */; };
 		CBE3211E27D9615000395A93 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3210C27D9615000395A93 /* ARTLiveAuctionViewManager.m */; };
@@ -626,7 +621,6 @@
 		41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		46687F9E977C7CE0F1B12B05 /* Pods-ArtsyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.release.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.release.xcconfig"; sourceTree = "<group>"; };
 		4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5BD7635D052B48579073DECC /* Unica77LL-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Italic.otf"; path = "Artsy/fonts/Unica77LL-Italic.otf"; sourceTree = "<group>"; };
 		775AB16F96387B70AABE4731 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9B51BBF7C1BD09CD9EA76699 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
@@ -954,7 +948,6 @@
 		CB43299527FDFE5C00B29DD6 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		CB43299727FDFE6400B29DD6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CB43299927FDFE6B00B29DD6 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		CB61B85327B585F00007922D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
 		CBE3210827D9615000395A93 /* OldAdminView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldAdminView.swift; sourceTree = "<group>"; };
 		CBE3210927D9615000395A93 /* ARTCityGuideViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideViewManager.m; sourceTree = "<group>"; };
@@ -1416,9 +1409,6 @@
 		CBE3266B27E275A300395A93 /* LiveAuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveAuctionLot.h; sourceTree = "<group>"; };
 		CBE3266D27E275A300395A93 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		CBE3266E27E275A300395A93 /* ARPostAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPostAttachment.h; sourceTree = "<group>"; };
-		CC557644CEE44511A73431D7 /* Unica77LL-MediumItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-MediumItalic.otf"; path = "Artsy/fonts/Unica77LL-MediumItalic.otf"; sourceTree = "<group>"; };
-		CE0D8AAD95934C28AF35D2A3 /* Unica77LL-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Regular.otf"; path = "Artsy/fonts/Unica77LL-Regular.otf"; sourceTree = "<group>"; };
-		DC9FFF92F0574260A5300F1B /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Medium.otf"; path = "Artsy/fonts/Unica77LL-Medium.otf"; sourceTree = "<group>"; };
 		DDA9792067E817001B8803BA /* Pods-Artsy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.release.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EF8AF6797C9A1A0E84BB9DDC /* libPods-Artsy-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2549,7 +2539,6 @@
 				CBE3256727E275A100395A93 /* Tooling */,
 				CBE324BF27E275A100395A93 /* View_Controllers */,
 				CBE3256F27E275A100395A93 /* Views */,
-				CB61B85327B585F00007922D /* GoogleService-Info.plist */,
 				CBE3210727D9615000395A93 /* NativeModules */,
 				CBE3211427D9615000395A93 /* Images.xcassets */,
 			);
@@ -2805,10 +2794,6 @@
 			children = (
 				CBE324DA27E275A100395A93 /* LiveAuctionsAssets.xcassets */,
 				CBE324DB27E275A100395A93 /* LiveAuctions.storyboard */,
-				5BD7635D052B48579073DECC /* Unica77LL-Italic.otf */,
-				DC9FFF92F0574260A5300F1B /* Unica77LL-Medium.otf */,
-				CC557644CEE44511A73431D7 /* Unica77LL-MediumItalic.otf */,
-				CE0D8AAD95934C28AF35D2A3 /* Unica77LL-Regular.otf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -3671,7 +3656,6 @@
 				CBE3276227E275A400395A93 /* full_logo_black_large@2x.png in Resources */,
 				CBE3275827E275A400395A93 /* paddle@2x.png in Resources */,
 				CBE3272927E275A400395A93 /* ViewInRoom_Wall@2x.png in Resources */,
-				CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */,
 				CBE3273F27E275A400395A93 /* Hash@2x.png in Resources */,
 				CBE326B527E275A300395A93 /* LiveAuctionsAssets.xcassets in Resources */,
 				CBE3272727E275A400395A93 /* Images.xcassets in Resources */,
@@ -3741,10 +3725,6 @@
 				CBE3275027E275A400395A93 /* Artsy_Logo.png in Resources */,
 				CBE3276327E275A400395A93 /* BackArrow_Highlighted@2x.png in Resources */,
 				CBE326F227E275A300395A93 /* ARVIRTick.png in Resources */,
-				B3EFFC7412D94886B32A2B10 /* Unica77LL-Italic.otf in Resources */,
-				B7F9E6E6D6604CC691827F1D /* Unica77LL-Medium.otf in Resources */,
-				4A9190A1CCE54CE09384C9FC /* Unica77LL-MediumItalic.otf in Resources */,
-				9DE2CA6EF6024B2DAF877CB2 /* Unica77LL-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
