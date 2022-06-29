@@ -9,11 +9,6 @@ jest.mock("@sentry/react-native", () => ({
   captureException: jest.fn(),
 }))
 
-// jest.mock("app/store/GlobalStore", () => ({
-//   GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,
-//   GlobalStore: jest.requireActual("app/store/GlobalStore").GlobalStore,
-//   useSelectedTab: jest.fn(() => "home"),
-// }))
 
 describe(errorMiddleware, () => {
   const middleware = errorMiddleware()
