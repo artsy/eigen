@@ -20,7 +20,7 @@ export const AnimatableHeaderContext = createContext<AnimatableHeaderContextType
 export function useAnimatableHeaderContext() {
   const context = useContext(AnimatableHeaderContext)
   if (!context) {
-    throw new Error("You are using useAnimatableHeaderContext outside of AnimatableHeaderContext")
+    throw new Error("You are using useAnimatableHeaderContext outside of AnimatableHeaderProvider")
   }
   return context
 }

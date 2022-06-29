@@ -6,13 +6,14 @@ import { AnimatableHeaderContext } from "./AnimatableHeaderContext"
 
 export const AnimatableHeaderProvider: React.FC = ({ children }) => {
   const space = useSpace()
-  const headerHeight = space(6)
   const largeTitleVerticalOffset = space(1)
   const [largeTitleHeight, setLargeTitleHeight] = useState(-1)
   const largeTitleEndEdge = largeTitleHeight - largeTitleVerticalOffset - 10
   const scrollOffsetY = useSharedValue(0)
   const [title, setTitle] = useState("")
   const [titleShown, setTitleShown] = useState(false)
+
+  const headerHeight = space(6)
 
   const onScrollForAnimation = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     scrollOffsetY.value = event.nativeEvent.contentOffset.y

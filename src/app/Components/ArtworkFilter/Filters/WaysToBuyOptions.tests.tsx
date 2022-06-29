@@ -43,7 +43,7 @@ describe("Ways to Buy Options Screen", () => {
     expect(getByText("Inquire")).toBeTruthy()
   })
 
-  it.skip("does not display the default text when no filter selected on the filter modal screen", () => {
+  it("does not display the default text when no filter selected on the filter modal screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [],
@@ -63,7 +63,7 @@ describe("Ways to Buy Options Screen", () => {
     expect(getByText("Ways to Buy")).toBeTruthy()
   })
 
-  it.skip("displays the number of the selected filters on the filter modal screen", () => {
+  it("displays the number of the selected filters on the filter modal screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -128,7 +128,7 @@ describe("Ways to Buy Options Screen", () => {
     expect(options[0]).toHaveTextContent("Buy Now")
   })
 
-  it.skip("it toggles applied filters 'ON' and unapplied filters 'OFF", () => {
+  it("it toggles applied filters 'ON' and unapplied filters 'OFF", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [

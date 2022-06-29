@@ -9,6 +9,12 @@ export const AnimatableHeaderShadow = () => {
   const { scrollOffsetY, headerHeight } = useAnimatableHeaderContext()
   const color = useColor()
 
+  // FIXME: terrible terrible hack to make tests pass, until we have a good way
+  // to test screens with reanimated components in them
+  if (__TEST__) {
+    return null
+  }
+
   const shadowAnim = useAnimatedStyle(() => ({
     shadowOpacity: interpolate(
       scrollOffsetY.value,

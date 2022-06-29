@@ -12,7 +12,7 @@ export interface AnimatableHeaderProps {
   onRightButtonPress?: () => void
 }
 
-export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
+export const AnimatableHeader = (props: AnimatableHeaderProps) => {
   const { title, rightButtonDisabled, rightButtonText, onRightButtonPress } = props
   const { space } = useTheme()
   const { headerHeight, setTitle, titleShown } = useAnimatableHeaderContext()
@@ -42,7 +42,7 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
       <Flex flex={1} height={headerHeight} justifyContent="center" ml={space("0.5") + space("1")}>
         {!!titleShown && (
           <Animated.View entering={FadeInLeft} exiting={FadeOutLeft}>
-            <Text variant="sm" numberOfLines={2}>
+            <Text testID="animated-header-title" variant="sm" numberOfLines={2}>
               {title}
             </Text>
           </Animated.View>

@@ -12,30 +12,15 @@ describe(LocationCitiesOptionsScreen, () => {
       {
         slice: "LOCATION_CITY",
         counts: [
-          {
-            count: 44,
-            name: "Paris, France",
-            value: "Paris, France",
-          },
-          {
-            count: 30,
-            name: "London, United Kingdom",
-            value: "London, United Kingdom",
-          },
-          {
-            count: 26,
-            name: "Milan, Italy",
-            value: "Milan, Italy",
-          },
+          { count: 44, name: "Paris, France", value: "Paris, France" },
+          { count: 30, name: "London, United Kingdom", value: "London, United Kingdom" },
+          { count: 26, name: "Milan, Italy", value: "Milan, Italy" },
         ],
       },
     ],
     appliedFilters: [],
     applyFilters: false,
-    counts: {
-      total: null,
-      followedArtists: null,
-    },
+    counts: { total: null, followedArtists: null },
     sizeMetric: "cm",
     filterType: "artwork",
     previouslyAppliedFilters: [],
@@ -46,13 +31,11 @@ describe(LocationCitiesOptionsScreen, () => {
     initialData = initialState,
   }: {
     initialData?: ArtworkFiltersState
-  }) => {
-    return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
-        <LocationCitiesOptionsScreen {...getEssentialProps()} />
-      </ArtworkFiltersStoreProvider>
-    )
-  }
+  }) => (
+    <ArtworkFiltersStoreProvider initialData={initialData}>
+      <LocationCitiesOptionsScreen {...getEssentialProps()} />
+    </ArtworkFiltersStoreProvider>
+  )
 
   describe("no filters are selected", () => {
     it("renders all options present in the aggregation", () => {

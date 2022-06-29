@@ -85,9 +85,17 @@ class PureWrapper extends Component {
  * by using @testing-library/react-native
  * @param component
  */
-export const renderWithWrappersTL = (component: ReactElement) => {
+export const renderWithWrappersTL = (component: ReactElement, Wrapper?: any) => {
+  let LocalWrapper = Wrappers
+  if (Wrapper !== undefined) {
+    LocalWrapper = ({ children }) => (
+      <Wrappers>
+        <Wrapper>{children}</Wrapper>
+      </Wrappers>
+    )
+  }
   try {
-    return render(component, { wrapper: Wrappers })
+    return render(component, { wrapper: LocalWrapper })
   } catch (error: any) {
     if (error.message.includes("Element type is invalid")) {
       throw new Error(
