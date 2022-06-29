@@ -22,7 +22,7 @@ export type AverageSalePriceArtistType = CleanRelayFragment<ArtistItem_artist$da
 interface AverageSalePriceSelectArtistModalProps {
   visible: boolean
   closeModal?: () => void
-  onItemPress: (artist: AverageSalePriceArtistType) => void
+  onItemPress: (artistID: string) => void
 }
 
 const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectArtistModalProps> = ({

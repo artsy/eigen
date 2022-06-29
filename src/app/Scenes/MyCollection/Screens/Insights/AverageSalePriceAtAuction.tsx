@@ -1,24 +1,29 @@
-import { AverageAuctionPriceRail_me$data } from "__generated__/AverageAuctionPriceRail_me.graphql"
+import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
-import React, { useState } from "react"
+import React, { Suspense, useCallback, useState } from "react"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { AverageSalePriceSelectArtistModal } from "./AverageSalePriceSelectArtistModal"
-
-type ArtistData = ExtractNodeType<AverageAuctionPriceRail_me$data["priceInsightUpdates"]>["artist"]
 interface AverageSalePriceAtAuctionProps {
-  artistData: ArtistData
-  collectorArtists?: number
+  refetch: (newArtistID: string) => void
+  queryArgs: { options: { fetchKey: number }; variables: { artistID: string } }
 }
 
-export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps> = ({
-  artistData,
-  collectorArtists,
+const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> = ({
+  refetch,
+  queryArgs,
 }) => {
   const [isVisible, setVisible] = useState<boolean>(false)
-  const [selectedArtist, setSelectedArtist] = useState<ArtistData>(artistData)
 
-  const enableChangeArtist = collectorArtists && collectorArtists > 1
+  const data = useLazyLoadQuery<AverageSalePriceAtAuctionQuery>(
+    AverageSalePriceAtAuctionScreenQuery,
+    queryArgs.variables,
+    queryArgs.options
+  )
+
+  const enableChangeArtist =
+    data.me?.myCollectionInfo?.artistsCount && data.me?.myCollectionInfo?.artistsCount > 0
+
   return (
     <Flex mx={2} pt={6}>
       <Text variant="lg" mb={0.5} testID="Average_Auction_Price_title">
@@ -39,17 +44,17 @@ export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps>
           // To align the image with the text we have to add top margin to compensate the line height.
           style={{ marginTop: 3 }}
         >
-          {selectedArtist?.imageUrl ? (
-            <OpaqueImageView width={40} height={40} imageURL={selectedArtist.imageUrl} />
+          {data.artist?.imageUrl ? (
+            <OpaqueImageView width={40} height={40} imageURL={data.artist.imageUrl} />
           ) : (
             <NoArtworkIcon width={28} height={28} opacity={0.3} />
           )}
         </Flex>
         {/* Sale Artwork Artist Name */}
         <Flex flex={1} pl={1}>
-          {!!selectedArtist?.name && (
+          {!!data.artist?.name && (
             <Text variant="md" ellipsizeMode="middle" numberOfLines={2}>
-              {selectedArtist.name}
+              {data.artist.name}
             </Text>
           )}
         </Flex>
@@ -66,11 +71,46 @@ export const AverageSalePriceAtAuction: React.FC<AverageSalePriceAtAuctionProps>
       <AverageSalePriceSelectArtistModal
         visible={isVisible}
         closeModal={() => setVisible(false)}
-        onItemPress={(artist) => {
-          setSelectedArtist(artist)
+        onItemPress={(artistId) => {
+          refetch(artistId)
           setVisible(false)
         }}
       />
     </Flex>
   )
 }
+
+export const AverageSalePriceAtAuction: React.FC<{ artistID: string }> = ({ artistID }) => {
+  const [queryArgs, setQueryArgs] = useState({
+    options: { fetchKey: 0 },
+    variables: { artistID },
+  })
+
+  const refetch = useCallback((newArtistID) => {
+    setQueryArgs((prev) => ({
+      options: { fetchKey: (prev?.options.fetchKey ?? 0) + 1 },
+      variables: { artistID: newArtistID },
+    }))
+  }, [])
+
+  return (
+    <Suspense fallback={null}>
+      <AverageSalePriceAtAuctionScreen refetch={refetch} queryArgs={queryArgs} />
+    </Suspense>
+  )
+}
+
+const AverageSalePriceAtAuctionScreenQuery = graphql`
+  query AverageSalePriceAtAuctionQuery($artistID: String!) {
+    artist(id: $artistID) {
+      internalID
+      name
+      imageUrl
+    }
+    me {
+      myCollectionInfo {
+        artistsCount
+      }
+    }
+  }
+`

@@ -5,12 +5,11 @@ import { isPad } from "app/utils/hardware"
 import { Flex, Text } from "palette"
 import { useScreenDimensions } from "shared/hooks"
 import { ArtistItem } from "../ArtistItem"
-import { AverageSalePriceArtistType } from "../AverageSalePriceSelectArtistModal"
 
 interface SelectArtistListProps {
   artistsList: ArtistItem_artist$key[]
   isLoadingNext: boolean
-  onItemPress: (artist: AverageSalePriceArtistType) => void
+  onItemPress: (artistID: string) => void
   onEndReached: () => void
 }
 
