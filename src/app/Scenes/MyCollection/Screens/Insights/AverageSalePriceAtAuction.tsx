@@ -4,9 +4,12 @@ import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React, { Suspense, useCallback, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AverageSalePriceSelectArtistModal } from "./AverageSalePriceSelectArtistModal"
+
+const PAGE_SIZE = 50
+
 interface AverageSalePriceAtAuctionProps {
   refetch: (newArtistID: string) => void
-  queryArgs: { options: { fetchKey: number }; variables: { artistID: string } }
+  queryArgs: Record<string, any>
 }
 
 const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> = ({
@@ -69,6 +72,7 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
       </Flex>
 
       <AverageSalePriceSelectArtistModal
+        queryData={data}
         visible={isVisible}
         closeModal={() => setVisible(false)}
         onItemPress={(artistId) => {
@@ -83,13 +87,13 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
 export const AverageSalePriceAtAuction: React.FC<{ artistID: string }> = ({ artistID }) => {
   const [queryArgs, setQueryArgs] = useState({
     options: { fetchKey: 0 },
-    variables: { artistID },
+    variables: { ...artistsQueryVariables, artistID },
   })
 
   const refetch = useCallback((newArtistID) => {
     setQueryArgs((prev) => ({
       options: { fetchKey: (prev?.options.fetchKey ?? 0) + 1 },
-      variables: { artistID: newArtistID },
+      variables: { ...artistsQueryVariables, artistID: newArtistID },
     }))
   }, [])
 
@@ -100,8 +104,9 @@ export const AverageSalePriceAtAuction: React.FC<{ artistID: string }> = ({ arti
   )
 }
 
-const AverageSalePriceAtAuctionScreenQuery = graphql`
-  query AverageSalePriceAtAuctionQuery($artistID: String!) {
+export const AverageSalePriceAtAuctionScreenQuery = graphql`
+  query AverageSalePriceAtAuctionQuery($artistID: String!, $count: Int, $after: String) {
+    ...AverageSalePriceSelectArtistModal_myCollectionInfo @arguments(count: $count, after: $after)
     artist(id: $artistID) {
       internalID
       name
@@ -114,3 +119,7 @@ const AverageSalePriceAtAuctionScreenQuery = graphql`
     }
   }
 `
+
+export const artistsQueryVariables = {
+  count: PAGE_SIZE,
+}

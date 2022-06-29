@@ -2,8 +2,11 @@ import {
   ArtistItem_artist$data,
   ArtistItem_artist$key,
 } from "__generated__/ArtistItem_artist.graphql"
+import {
+  AverageSalePriceAtAuctionQuery,
+  AverageSalePriceAtAuctionQuery$data,
+} from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
 import { AverageSalePriceSelectArtistModal_myCollectionInfo$key } from "__generated__/AverageSalePriceSelectArtistModal_myCollectionInfo.graphql"
-import { AverageSalePriceSelectArtistModalQuery } from "__generated__/AverageSalePriceSelectArtistModalQuery.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { SearchInput } from "app/Components/SearchInput"
@@ -11,32 +14,25 @@ import { extractNodes } from "app/utils/extractNodes"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { trim } from "lodash"
 import { Flex, Text } from "palette"
-import React, { Suspense, useEffect, useState } from "react"
-import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import React, { useEffect, useState } from "react"
+import { graphql, usePaginationFragment } from "react-relay"
+import { artistsQueryVariables } from "./AverageSalePriceAtAuction"
 import { SelectArtistList } from "./Components/MyCollectionSelectArtist"
-
-const PAGE_SIZE = 50
 
 export type AverageSalePriceArtistType = CleanRelayFragment<ArtistItem_artist$data>
 
 interface AverageSalePriceSelectArtistModalProps {
+  queryData: AverageSalePriceAtAuctionQuery$data
   visible: boolean
   closeModal?: () => void
   onItemPress: (artistID: string) => void
 }
 
-const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectArtistModalProps> = ({
-  visible,
-  closeModal,
-  onItemPress,
-}) => {
-  const queryData = useLazyLoadQuery<AverageSalePriceSelectArtistModalQuery>(
-    AverageSalePriceSelectArtistScreenQuery,
-    artistsQueryVariables
-  )
-
+export const AverageSalePriceSelectArtistModal: React.FC<
+  AverageSalePriceSelectArtistModalProps
+> = ({ visible, closeModal, onItemPress, queryData }) => {
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
-    AverageSalePriceSelectArtistModalQuery,
+    AverageSalePriceAtAuctionQuery,
     AverageSalePriceSelectArtistModal_myCollectionInfo$key
   >(collectedArtistsConnectionFragment, queryData)
 
@@ -103,20 +99,6 @@ const AverageSalePriceSelectArtistList: React.FC<AverageSalePriceSelectArtistMod
   )
 }
 
-export const AverageSalePriceSelectArtistModal: React.FC<
-  AverageSalePriceSelectArtistModalProps
-> = ({ visible, closeModal, onItemPress }) => {
-  return (
-    <Suspense fallback={null}>
-      <AverageSalePriceSelectArtistList
-        visible={visible}
-        onItemPress={onItemPress}
-        closeModal={closeModal}
-      />
-    </Suspense>
-  )
-}
-
 const collectedArtistsConnectionFragment = graphql`
   fragment AverageSalePriceSelectArtistModal_myCollectionInfo on Query
   @refetchable(queryName: "AverageSalePriceSelectArtistModal_myCollectionInfoRefetch")
@@ -137,13 +119,3 @@ const collectedArtistsConnectionFragment = graphql`
     }
   }
 `
-
-export const AverageSalePriceSelectArtistScreenQuery = graphql`
-  query AverageSalePriceSelectArtistModalQuery($count: Int, $after: String) {
-    ...AverageSalePriceSelectArtistModal_myCollectionInfo @arguments(count: $count, after: $after)
-  }
-`
-
-const artistsQueryVariables = {
-  count: PAGE_SIZE,
-}
