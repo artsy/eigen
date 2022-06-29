@@ -94,6 +94,14 @@ However, if we have a `Button` folder which exports only one button component, w
 
 `Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
 
+##### index.ts files
+
+We try to avoid the use of `index.ts` files to prevent noise in the file structure and circular dependencies and make it easier to navigate between files.
+
+Some cases where we still use `index.ts` files for shorter and easier imports are:
+
+- `src/palette`
+
 #### When committing code
 
 - Use the [semantic commit message](https://seesparkbox.com/foundry/semantic_commit_messages) format in the title of your PR (eg. feat, fix, style, test, refactor, docs)
