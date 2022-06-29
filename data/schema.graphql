@@ -10171,6 +10171,29 @@ type MergeArtistsFailure {
   mutationError: GravityMutationError
 }
 
+# A map describing the field-level overrides that should be part of this merge.
+# - Each **key** is a field name such as `nationality`
+# - Each **value** is a BSON ID that indicates the artist record from which we will _prefer_ the value for the given field
+input MergeArtistsFieldOverrides {
+  # ID of the artist record that contains the `birthday` value that we want to preserve.
+  birthday: ID
+
+  # ID of the artist record that contains the `deathday` value that we want to preserve.
+  deathday: ID
+
+  # ID of the artist record that contains the `gender` value that we want to preserve.
+  gender: ID
+
+  # ID of the artist record that contains the `hometown` value that we want to preserve.
+  hometown: ID
+
+  # ID of the artist record that contains the `location` value that we want to preserve.
+  location: ID
+
+  # ID of the artist record that contains the `nationality` value that we want to preserve.
+  nationality: ID
+}
+
 input MergeArtistsMutationInput {
   # The database ID of the "bad" artist record(s), which will be **discarded** after the merge
   badIds: [String!]!
@@ -10179,6 +10202,9 @@ input MergeArtistsMutationInput {
   # The database ID of the "good" artist record, which will be **kept** after the
   # merge. Relevant fields and associations from the bad records will be merged into this one.
   goodId: String!
+
+  # A map describing the field-level overrides that should be part of this merge.
+  overrides: MergeArtistsFieldOverrides
 }
 
 type MergeArtistsMutationPayload {
