@@ -20,7 +20,11 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
     scope.setExtra("kind", req.operation.operationKind)
     scope.setExtra("query-name", req.operation.name)
     scope.setExtra("query-text", req.operation.text)
-    scope.setExtra("formatted-error", formatGraphQLErrors(req, res.errors!))
+
+    if (res.errors) {
+      scope.setExtra("formatted-error", formatGraphQLErrors(req, res.errors))
+    }
+
     if (req.variables) {
       scope.setExtra("variables", req.variables as any)
     }
@@ -30,15 +34,18 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
     // All errors returned by createRequestError are titled "RRNLRequestError", this makes it hard to identify which
     // issues we should pay attention to in the issues list until we open the issue page separately
     // We want to fix that by changing that title into a properly formatted error
-    sentryFormattedError.name = formatName(req, res.errors!)
+    sentryFormattedError.name = formatName(req, res.errors)
     Sentry.captureException(sentryFormattedError)
   })
   throw createRequestError(req, res)
 }
 
-const formatName = (req: GraphQLRequest, errors: GraphQLResponseErrors) => {
+const formatName = (req: GraphQLRequest, errors?: GraphQLResponseErrors) => {
+  let errorName = "Generic Error - see metadata"
+  if (errors) {
+    errorName = shortError(errors)
+  }
   const queryName = req.operation.name
-  const errorName = shortError(errors)
   const name = queryName + " - " + errorName
   return name
 }
