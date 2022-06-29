@@ -1,53 +1,72 @@
+import { act, fireEvent } from "@testing-library/react-native"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
-import { PartnerCardTestsQuery$data } from "__generated__/PartnerCardTestsQuery.graphql"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderRelayTree } from "app/tests/renderRelayTree"
-// @ts-ignore
-import { mount } from "enzyme"
-import { Button, Sans, Theme } from "palette"
-import { Image } from "react-native"
-import { graphql, RelayProp } from "react-relay"
-import { PartnerCard, PartnerCardFragmentContainer } from "./PartnerCard"
+import { PartnerCardTestsQuery } from "__generated__/PartnerCardTestsQuery.graphql"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
+import { PartnerCardFragmentContainer } from "./PartnerCard"
 
 jest.unmock("react-relay")
 
 describe("PartnerCard", () => {
-  it("renders partner name correctly", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Button).length).toEqual(1)
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-    expect(component.text()).toContain(`Test Gallery`)
+  const TestWrapper = () => {
+    return (
+      <QueryRenderer<PartnerCardTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query PartnerCardTestsQuery @relay_test_operation @raw_response_type {
+            artwork(id: "artworkID") {
+              ...PartnerCard_artwork
+            }
+          }
+        `}
+        variables={{}}
+        render={({ props }) => {
+          if (props?.artwork) {
+            return <PartnerCardFragmentContainer artwork={props.artwork} />
+          }
+
+          return null
+        }}
+      />
+    )
+  }
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
+  it("renders partner name correctly", () => {
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => PartnerCardArtwork,
+    })
+
+    expect(getByText("Test Gallery")).toBeTruthy()
   })
 
   it("renders partner image", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    const { getByLabelText } = renderWithWrappersTL(<TestWrapper />)
 
-    expect(component.find(Image)).toHaveLength(1)
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => PartnerCardArtwork,
+    })
+
+    expect(getByLabelText("Avatar")).toBeTruthy()
   })
 
   it("renders partner type", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
 
-    expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"At gallery"`)
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => PartnerCardArtwork,
+    })
+
+    expect(getByText("At gallery")).toBeTruthy()
   })
 
   it("renders partner type correctly for institutional sellers", () => {
@@ -58,18 +77,14 @@ describe("PartnerCard", () => {
         type: "Institutional Seller",
       },
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <PartnerCard
-            relay={{ environment: {} } as RelayProp}
-            artwork={PartnerCardArtworkInstitutionalSeller}
-          />
-        </Theme>
-      </GlobalStoreProvider>
-    )
 
-    expect(component.find(Sans).at(0).text()).toMatchInlineSnapshot(`"At institution"`)
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => PartnerCardArtworkInstitutionalSeller,
+    })
+
+    expect(getByText("At institution")).toBeTruthy()
   })
 
   it("doesn't render partner type for partners that aren't institutions or galleries", () => {
@@ -80,19 +95,14 @@ describe("PartnerCard", () => {
         type: "Some Other Partner Type",
       },
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <PartnerCard
-            relay={{ environment: {} } as RelayProp}
-            artwork={PartnerCardArtworkOtherType}
-          />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
 
-    expect(component.find(Sans).at(0).text()).not.toEqual("At institution")
-    expect(component.find(Sans).at(0).text()).not.toEqual("At gallery")
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => PartnerCardArtworkOtherType,
+    })
+
+    expect(queryByText("At institution")).toBeFalsy()
+    expect(queryByText("At gallery")).toBeFalsy()
   })
 
   it("renders partner initials when no image is present", () => {
@@ -103,44 +113,34 @@ describe("PartnerCard", () => {
         profile: null,
       },
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <PartnerCard
-            relay={{ environment: {} } as RelayProp}
-            artwork={PartnerCardArtworkWithoutImage}
-          />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    const { getByText, queryByLabelText } = renderWithWrappersTL(<TestWrapper />)
 
-    expect(component.find(Image)).toHaveLength(0)
-    expect(component.text()).toContain(`TG`)
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => PartnerCardArtworkWithoutImage,
+    })
+
+    expect(getByText("TG")).toBeTruthy()
+    expect(queryByLabelText("Avatar")).toBeFalsy()
   })
-  it("truncates partner locations correctly", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Button).length).toEqual(1)
 
-    expect(component.text()).toContain(`Miami, New York, +3 more`)
+  it("truncates partner locations correctly", () => {
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => PartnerCardArtwork,
+    })
+
+    expect(getByText("Miami, New York, +3 more")).toBeTruthy()
   })
 
   it("renders button text correctly", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Button)).toHaveLength(1)
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
 
-    expect(component.find(Button).at(0).render().text()).toMatchInlineSnapshot(`"Follow"`)
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => PartnerCardArtwork,
+    })
+
+    expect(getByText("Follow")).toBeTruthy()
   })
 
   it("does not render when the partner is an auction house", () => {
@@ -151,17 +151,13 @@ describe("PartnerCard", () => {
         type: "Auction House",
       },
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <PartnerCard
-            relay={{ environment: {} } as RelayProp}
-            artwork={PartnerCardArtworkAuctionHouse}
-          />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.html()).toBe(null)
+    const { toJSON } = renderWithWrappersTL(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => PartnerCardArtworkAuctionHouse,
+    })
+
+    expect(toJSON()).toBeNull()
   })
 
   it("does not render when the artwork is in a benefit or gallery auction", () => {
@@ -172,17 +168,13 @@ describe("PartnerCard", () => {
         isGalleryAuction: true,
       },
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <PartnerCard
-            relay={{ environment: {} } as RelayProp}
-            artwork={PartnerCardArtworkAuction}
-          />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.html()).toBe(null)
+    const { toJSON } = renderWithWrappersTL(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => PartnerCardArtworkAuction,
+    })
+
+    expect(toJSON()).toBeNull()
   })
 
   it("does not render follow button when the partner has no profile info", () => {
@@ -193,42 +185,18 @@ describe("PartnerCard", () => {
         profile: null,
       },
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <PartnerCard
-            relay={{ environment: {} } as RelayProp}
-            artwork={PartnerCardArtworkNoProfile}
-          />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Button)).toHaveLength(0)
+    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => PartnerCardArtworkNoProfile,
+    })
+
+    expect(queryByText("Follow")).toBeFalsy()
+    expect(queryByText("Following")).toBeFalsy()
   })
 
   describe("Following a partner", () => {
-    const getWrapper = async ({ mockArtworkData, mockFollowResults }: any) => {
-      return await renderRelayTree({
-        Component: (props: any) => (
-          <GlobalStoreProvider>
-            <Theme>
-              <PartnerCardFragmentContainer {...props} />
-            </Theme>
-          </GlobalStoreProvider>
-        ),
-        query: graphql`
-          query PartnerCardTestsQuery @raw_response_type {
-            artwork(id: "artworkID") {
-              ...PartnerCard_artwork
-            }
-          }
-        `,
-        mockData: { artwork: mockArtworkData } as PartnerCardTestsQuery$data,
-        mockMutationResults: { followProfile: mockFollowResults },
-      })
-    }
-
-    it("correctly displays when the artist is already followed, and allows unfollowing", async () => {
+    it("correctly displays when the artist is already followed, and allows unfollowing", () => {
       const PartnerCardArtworkFollowed = {
         ...PartnerCardArtwork,
         partner: {
@@ -240,85 +208,70 @@ describe("PartnerCard", () => {
         },
       }
 
-      const unfollowResponse = {
-        profile: {
+      const { getByText, queryByText } = renderWithWrappersTL(<TestWrapper />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => PartnerCardArtworkFollowed,
+      })
+
+      expect(getByText("Following")).toBeTruthy()
+      expect(queryByText("Follow")).toBeFalsy()
+
+      fireEvent.press(getByText("Following"))
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Profile: () => ({
           is_followed: false,
+          id: PartnerCardArtwork.partner!.id,
           slug: PartnerCardArtwork.partner!.slug,
           internalID: PartnerCardArtwork.partner!.profile!.internalID,
-        },
-      }
-
-      const partnerCard = await getWrapper({
-        mockArtworkData: PartnerCardArtworkFollowed,
-        mockFollowResults: unfollowResponse,
+        }),
       })
 
-      const followButton = partnerCard.find(Button)
-      expect(followButton.text()).toMatchInlineSnapshot(`"Following"`)
-
-      await partnerCard.find(Button).at(0).props().onPress()
-
-      await flushPromiseQueue()
-      partnerCard.update()
-
-      const updatedFollowButton = partnerCard.find(Button).at(0)
-      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      expect(getByText("Follow")).toBeTruthy()
+      expect(queryByText("Following")).toBeFalsy()
     })
 
-    it("correctly displays when the work is not followed, and allows following", async () => {
-      const followResponse = {
-        profile: {
+    it("correctly displays when the work is not followed, and allows following", () => {
+      const { getByText, queryByText } = renderWithWrappersTL(<TestWrapper />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => PartnerCardArtwork,
+      })
+
+      expect(getByText("Follow")).toBeTruthy()
+      expect(queryByText("Following")).toBeFalsy()
+
+      fireEvent.press(getByText("Follow"))
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Profile: () => ({
           is_followed: true,
+          id: PartnerCardArtwork.partner!.id,
           slug: PartnerCardArtwork.partner!.slug,
           internalID: PartnerCardArtwork.partner!.profile!.internalID,
-        },
-      }
-      const partnerCard = await getWrapper({
-        mockArtworkData: PartnerCardArtwork,
-        mockFollowResults: followResponse,
+        }),
       })
 
-      const followButton = partnerCard.find(Button).at(0)
-      expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
-
-      await partnerCard.find(Button).at(0).props().onPress()
-
-      await flushPromiseQueue()
-      partnerCard.update()
-
-      const updatedFollowButton = partnerCard.find(Button).at(0)
-      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Following"`)
+      expect(getByText("Following")).toBeTruthy()
+      expect(queryByText("Follow")).toBeFalsy()
     })
 
-    // TODO Update once we can use relay's new facilities for testing
-    xit("handles errors in saving gracefully", async () => {
-      const partnerCard = await renderRelayTree({
-        Component: PartnerCardFragmentContainer,
-        query: graphql`
-          query PartnerCardTestsErrorQuery @raw_response_type {
-            artwork(id: "artworkID") {
-              ...PartnerCard_artwork
-            }
-          }
-        `,
-        mockData: { artwork: PartnerCardArtwork }, // Enable/fix this when making large change to these components/fixtures: as PartnerCardTestsErrorQuery,
-        mockMutationResults: {
-          PartnerCardFragmentContainer: () => {
-            return Promise.reject(new Error("failed to fetch"))
-          },
-        },
+    it("handles errors in saving gracefully", () => {
+      const { getByText, queryByText } = renderWithWrappersTL(<TestWrapper />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => PartnerCardArtwork,
       })
 
-      const followButton = partnerCard.find(Button).at(0)
-      expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      fireEvent.press(getByText("Follow"))
 
-      await partnerCard.find(Button).at(0).props().onPress()
+      act(() => {
+        mockEnvironment.mock.rejectMostRecentOperation(new Error())
+      })
 
-      await flushPromiseQueue()
-      partnerCard.update()
-
-      const updatedFollowButton = partnerCard.find(Button).at(0)
-      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      expect(getByText("Follow")).toBeTruthy()
+      expect(queryByText("Following")).toBeFalsy()
     })
   })
 })

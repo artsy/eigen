@@ -305,7 +305,12 @@ export const ImageZoomView =
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the
     // current zoomable image in place of the other images we just render a blank box
     if (fullScreenState.current !== "entered" && index !== imageIndex.current) {
-      return <View style={{ width: screenDimensions.width, height: screenDimensions.height }} />
+      return (
+        <View
+          accessibilityLabel="Full Screen Image Blank Box"
+          style={{ width: screenDimensions.width, height: screenDimensions.height }}
+        />
+      )
     }
 
     return (
@@ -336,6 +341,7 @@ export const ImageZoomView =
           centerContent
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
+          accessibilityLabel="Full Screen Image"
           contentContainerStyle={{
             width: imageFittedWithinScreen.width,
             height: imageFittedWithinScreen.height,

@@ -1,90 +1,73 @@
-import { CommercialButtonsTestsMutationQuery$data } from "__generated__/CommercialButtonsTestsMutationQuery.graphql"
-import { CommercialButtonsTestsRenderQuery$data } from "__generated__/CommercialButtonsTestsRenderQuery.graphql"
+import { fireEvent } from "@testing-library/react-native"
+import {
+  CommercialButtonsTestsRenderQuery,
+  CommercialButtonsTestsRenderQuery$rawResponse,
+} from "__generated__/CommercialButtonsTestsRenderQuery.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
+import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderRelayTree } from "app/tests/renderRelayTree"
+import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { Button, Theme } from "palette"
-import { SafeAreaProvider } from "react-native-safe-area-context"
-import { FragmentRef, graphql } from "react-relay"
-import { useTracking } from "react-tracking"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
 import { CommercialButtonsFragmentContainer } from "./CommercialButtons"
 
 jest.unmock("react-relay")
 
-const trackEvent = useTracking().trackEvent
-
-const componentWithQuery = async ({
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  mockArtworkData,
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  mockOrderMutationResults,
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  mockOfferMutationResults,
-}) => {
-  return await renderRelayTree({
-    Component: CommercialButtonsFragmentContainer,
-    query: graphql`
-      query CommercialButtonsTestsMutationQuery @raw_response_type {
-        artwork(id: "artworkID") {
-          ...CommercialButtons_artwork
-        }
-      }
-    `,
-    mockData: { artwork: mockArtworkData } as CommercialButtonsTestsMutationQuery$data,
-    mockMutationResults: {
-      commerceCreateOrderWithArtwork: mockOrderMutationResults,
-      commerceCreateOfferOrderWithArtwork: mockOfferMutationResults,
-    },
-  })
-}
-
-const state: ArtworkInquiryContextState = {
-  shippingLocation: null,
-  inquiryType: null,
-  message: null,
-  inquiryQuestions: [],
-}
-
-const wrapper = (mockArtwork: FragmentRef<"CommercialButtons_artwork">): JSX.Element => (
-  <SafeAreaProvider>
-    <GlobalStoreProvider>
-      <Theme>
-        <ArtworkInquiryContext.Provider
-          value={{
-            state,
-            dispatch: jest.fn(),
-          }}
-        >
-          {/* @ts-ignore */}
-          <CommercialButtonsFragmentContainer artwork={mockArtwork} />
-        </ArtworkInquiryContext.Provider>
-      </Theme>
-    </GlobalStoreProvider>
-  </SafeAreaProvider>
-)
-
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const relayComponent = async ({ artwork }) => {
-  return await renderRelayTree({
-    // @ts-ignore
-    Component: () => wrapper(artwork),
-    query: graphql`
-      query CommercialButtonsTestsRenderQuery @raw_response_type {
-        artwork(id: "artworkID") {
-          ...CommercialButtons_artwork
-        }
-      }
-    `,
-    mockData: { artwork } as CommercialButtonsTestsRenderQuery$data,
-  })
+interface WrapperProps {
+  auctionState?: AuctionTimerState
 }
 
 describe("CommercialButtons", () => {
-  it("renders Make Offer button if isOfferable", async () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
+  const TestWrapper = (props: WrapperProps) => {
+    return (
+      <ArtworkInquiryContext.Provider
+        value={{
+          state,
+          dispatch: jest.fn(),
+        }}
+      >
+        <QueryRenderer<CommercialButtonsTestsRenderQuery>
+          environment={mockEnvironment}
+          query={graphql`
+            query CommercialButtonsTestsRenderQuery @relay_test_operation @raw_response_type {
+              artwork(id: "artworkID") {
+                ...CommercialButtons_artwork
+              }
+              me {
+                ...CommercialButtons_me
+              }
+            }
+          `}
+          variables={{}}
+          render={({ props: relayProps }) => {
+            if (relayProps?.artwork && relayProps.me) {
+              return (
+                <CommercialButtonsFragmentContainer
+                  {...props}
+                  artwork={relayProps.artwork}
+                  me={relayProps.me}
+                  auctionState={props.auctionState as any}
+                />
+              )
+            }
+            return null
+          }}
+        />
+      </ArtworkInquiryContext.Provider>
+    )
+  }
+
+  it("renders Make Offer button if isOfferable", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,
@@ -93,13 +76,17 @@ describe("CommercialButtons", () => {
       isForSale: true,
       isPriceHidden: false,
     }
-    const commercialButtons = await relayComponent({
-      artwork,
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => artwork,
+      Me: () => meFixture,
     })
-    expect(commercialButtons.text()).toContain("Make an Offer")
+
+    expect(getByText("Make an Offer")).toBeTruthy()
   })
 
-  it("renders Buy Now button if isAcquireable", async () => {
+  it("renders Buy Now button if isAcquireable", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: true,
@@ -108,13 +95,17 @@ describe("CommercialButtons", () => {
       isForSale: true,
       isPriceHidden: false,
     }
-    const commercialButtons = await relayComponent({
-      artwork,
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => artwork,
+      Me: () => meFixture,
     })
-    expect(commercialButtons.text()).toContain("Purchase")
+
+    expect(getByText("Purchase")).toBeTruthy()
   })
 
-  it("renders Bid button if isInAuction & isBiddable", async () => {
+  it("renders Bid button if isInAuction & isBiddable", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,
@@ -144,13 +135,19 @@ describe("CommercialButtons", () => {
         ],
       },
     }
-    const commercialButtons = await relayComponent({
-      artwork,
+    const { getByText } = renderWithWrappersTL(
+      <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+    )
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => artwork,
+      Me: () => meFixture,
     })
-    expect(commercialButtons.text()).toContain("Bid")
+
+    expect(getByText("Bid")).toBeTruthy()
   })
 
-  it("renders both Buy Now and Make Offer buttons when isOfferable and isAcquireable", async () => {
+  it("renders both Buy Now and Make Offer buttons when isOfferable and isAcquireable", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: true,
@@ -159,14 +156,18 @@ describe("CommercialButtons", () => {
       isForSale: true,
       isPriceHidden: false,
     }
-    const commercialButtons = await relayComponent({
-      artwork,
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => artwork,
+      Me: () => meFixture,
     })
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Purchase")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Make an Offer")
+
+    expect(getByText("Purchase")).toBeTruthy()
+    expect(getByText("Make an Offer")).toBeTruthy()
   })
 
-  it("commits the Buy Now mutation", async () => {
+  it("commits the Buy Now mutation", () => {
     const artwork = {
       ...ArtworkFixture,
       isForSale: true,
@@ -176,27 +177,33 @@ describe("CommercialButtons", () => {
       isPriceHidden: false,
     }
 
-    const commercialButtons = await componentWithQuery({
-      mockArtworkData: artwork,
-      mockOrderMutationResults: {
-        orderOrError: {
-          __typename: "CommerceOrderWithMutationSuccess",
-          order: { internalID: "buyNowID", __typename: "CommerceBuyOrder", mode: "BUY" },
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => artwork,
+      Me: () => meFixture,
+    })
+
+    fireEvent.press(getByText("Purchase"))
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      CommerceOrderWithMutationSuccess: () => ({
+        order: {
+          internalID: "buyNowID",
+          mode: "BUY",
         },
-      },
-      mockOfferMutationResults: {},
+      }),
     })
 
-    const BuyNowButton = commercialButtons.find(Button).at(0)
-    BuyNowButton.props().onPress()
-    await flushPromiseQueue()
     expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", {
       modal: true,
-      passProps: { title: "Buy Now" },
+      passProps: {
+        title: "Buy Now",
+      },
     })
   })
 
-  it("commits the Make Offer mutation", async () => {
+  it("commits the Make Offer mutation", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: true,
@@ -206,20 +213,23 @@ describe("CommercialButtons", () => {
       isPriceHidden: false,
     }
 
-    const commercialButtons = await componentWithQuery({
-      mockArtworkData: artwork,
-      mockOrderMutationResults: {},
-      mockOfferMutationResults: {
-        orderOrError: {
-          __typename: "CommerceOrderWithMutationSuccess",
-          order: { internalID: "makeOfferID", __typename: "CommerceOfferOrder", mode: "OFFER" },
-        },
-      },
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => artwork,
+      Me: () => meFixture,
     })
 
-    const MakeOfferButton = commercialButtons.find(Button).at(1)
-    MakeOfferButton.props().onPress()
-    await flushPromiseQueue()
+    fireEvent.press(getByText("Make an Offer"))
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      CommerceOrderWithMutationSuccess: () => ({
+        order: {
+          internalID: "makeOfferID",
+          mode: "OFFER",
+        },
+      }),
+    })
 
     expect(navigate).toHaveBeenCalledWith("/orders/makeOfferID", {
       modal: true,
@@ -230,7 +240,7 @@ describe("CommercialButtons", () => {
     })
   })
 
-  it("renders both Buy Now and Bid buttons when isInAuction and isBuyNowable", async () => {
+  it("renders both Buy Now and Bid buttons when isInAuction and isBuyNowable", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: true,
@@ -255,14 +265,20 @@ describe("CommercialButtons", () => {
         increments: [{ cents: 320000, display: "€3,200" }],
       },
     }
-    const commercialButtons = await relayComponent({
-      artwork,
+    const { getByText } = renderWithWrappersTL(
+      <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+    )
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => artwork,
+      Me: () => meFixture,
     })
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Bid")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Purchase $8000")
+
+    expect(getByText("Bid")).toBeTruthy()
+    expect(getByText("Purchase $8000")).toBeTruthy()
   })
 
-  it("doesn't render the Buy Now or Bid buttons when isInAuction and isBuyNowable but has sold via buy now", async () => {
+  it("doesn't render the Buy Now or Bid buttons when isInAuction and isBuyNowable but has sold via buy now", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,
@@ -286,13 +302,21 @@ describe("CommercialButtons", () => {
         increments: [{ cents: 320000, display: "€3,200" }],
       },
     }
-    const commercialButtons = await relayComponent({
-      artwork,
+    const { queryByText } = renderWithWrappersTL(
+      <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+    )
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => artwork,
+      Me: () => meFixture,
     })
-    expect(commercialButtons.find(Button).length).toEqual(0)
+
+    expect(queryByText("Bid")).toBeFalsy()
+    expect(queryByText("Increase max bid")).toBeFalsy()
+    expect(queryByText("Purchase")).toBeFalsy()
   })
 
-  it("renders both Make an Offer and Contact Gallery buttons when isOfferable and isInquiriable", async () => {
+  it("renders both Make an Offer and Contact Gallery buttons when isOfferable and isInquiriable", () => {
     const artwork = {
       ...ArtworkFixture,
       isOfferable: true,
@@ -300,15 +324,22 @@ describe("CommercialButtons", () => {
       isInquireable: true,
       isPriceHidden: false,
     }
-    const commercialButtons = await relayComponent({
-      artwork,
+
+    const { getByText } = renderWithWrappersTL(
+      <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+    )
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => artwork,
+      Me: () => meFixture,
     })
-    expect(commercialButtons.find(Button).at(0).text()).toContain("Make an Offer")
-    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact Gallery")
+
+    expect(getByText("Make an Offer")).toBeTruthy()
+    expect(getByText("Contact Gallery")).toBeTruthy()
   })
 
   describe("tracking", () => {
-    it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", async () => {
+    it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", () => {
       const artwork = {
         ...ArtworkFixture,
         isOfferable: true,
@@ -316,20 +347,30 @@ describe("CommercialButtons", () => {
         isInquireable: true,
         isPriceHidden: false,
       }
-      const commercialButtons = await relayComponent({
-        artwork,
-      })
-      commercialButtons.find(Button).at(1).props().onPress()
+      const { getByText } = renderWithWrappersTL(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+      )
 
-      expect(trackEvent).toHaveBeenCalledWith({
-        action: "tappedContactGallery",
-        context_owner_id: artwork.internalID,
-        context_owner_slug: artwork.slug,
-        context_owner_type: "artwork",
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artwork,
+        Me: () => meFixture,
       })
+
+      fireEvent.press(getByText("Contact Gallery"))
+
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action": "tappedContactGallery",
+            "context_owner_id": "5b2b745e9c18db204fc32e11",
+            "context_owner_slug": "andreas-rod-prinzknecht",
+            "context_owner_type": "artwork",
+          },
+        ]
+      `)
     })
 
-    it("trackEvent called when Contact Gallery pressed given Inquireable artwork", async () => {
+    it("trackEvent called when Contact Gallery pressed given Inquireable artwork", () => {
       const artwork = {
         ...ArtworkFixture,
         isOfferable: true,
@@ -337,17 +378,39 @@ describe("CommercialButtons", () => {
         isInquireable: true,
         isPriceHidden: false,
       }
-      const commercialButtons = await relayComponent({
-        artwork,
-      })
-      commercialButtons.find(Button).at(1).props().onPress()
+      const { getByText } = renderWithWrappersTL(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
+      )
 
-      expect(trackEvent).toHaveBeenCalledWith({
-        action: "tappedContactGallery",
-        context_owner_id: artwork.internalID,
-        context_owner_slug: artwork.slug,
-        context_owner_type: "artwork",
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artwork,
+        Me: () => meFixture,
       })
+
+      fireEvent.press(getByText("Contact Gallery"))
+
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action": "tappedContactGallery",
+            "context_owner_id": "5b2b745e9c18db204fc32e11",
+            "context_owner_slug": "andreas-rod-prinzknecht",
+            "context_owner_type": "artwork",
+          },
+        ]
+      `)
     })
   })
 })
+
+const state: ArtworkInquiryContextState = {
+  shippingLocation: null,
+  inquiryType: null,
+  message: null,
+  inquiryQuestions: [],
+}
+
+const meFixture: CommercialButtonsTestsRenderQuery$rawResponse["me"] = {
+  id: "id",
+  identityVerified: true,
+}
