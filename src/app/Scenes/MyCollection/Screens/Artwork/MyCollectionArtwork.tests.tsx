@@ -6,9 +6,11 @@ import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
 
 jest.unmock("react-relay")
 
-const mockEnvironment = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
+let mockEnvironment = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
 
 describe("My Collection Artwork", () => {
+  beforeEach(() => (mockEnvironment = createMockEnvironment()))
+
   it("show new artwork screen ", () => {
     const { getByTestId } = renderWithHookWrappersTL(
       <MyCollectionArtworkScreen

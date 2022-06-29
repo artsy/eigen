@@ -52,10 +52,6 @@ export class ArtworkTombstone extends React.Component<
     navigate(href)
   }
 
-  // showAttributionClassFAQ() {
-  //   navigate("/artwork-classifications")
-  // }
-
   showMoreArtists = () => {
     this.setState({
       ...this.state,

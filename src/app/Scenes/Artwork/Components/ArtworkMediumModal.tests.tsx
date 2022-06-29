@@ -1,7 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { setupTestWrapperTL } from "app/tests/setupTestWrapper"
 import { Theme } from "palette"
-import React from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
 import { ArtworkMediumModalFragmentContainer } from "./ArtworkMediumModal"

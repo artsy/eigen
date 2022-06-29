@@ -875,16 +875,6 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to ArtworkAttributionClassFAQ", () => {
-    expect(matchRoute("/artwork-classifications")).toMatchInlineSnapshot(`
-      Object {
-        "module": "ArtworkAttributionClassFAQ",
-        "params": Object {},
-        "type": "match",
-      }
-    `)
-  })
-
   it("routes to Partner", () => {
     expect(matchRoute("/partner/:partnerID")).toMatchInlineSnapshot(`
       Object {

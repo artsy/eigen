@@ -21,7 +21,7 @@ import { merge } from "lodash"
 import _ from "lodash"
 import { Touchable } from "palette"
 import { Suspense } from "react"
-import { ActivityIndicator } from "react-native"
+import { ActivityIndicator, Text } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
@@ -62,6 +62,14 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   }
   return { TimeOffsetProvider }
 })
+
+const ArtworkAttributionClassFAQModal: React.FC<{ visible: boolean }> = ({ visible }) => {
+  return visible ? <Text>Artwork classifications</Text> : null
+}
+
+jest.mock("app/Scenes/Artwork/Components/ArtworkAttributionClassFAQModal", () => ({
+  ArtworkAttributionClassFAQModal,
+}))
 
 describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>

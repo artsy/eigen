@@ -1,8 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkAttributionClassFAQModal } from "./ArtworkAttributionClassFAQModal"
 
@@ -23,7 +22,7 @@ describe("ArtworkAttributionClassFAQModal", () => {
       mockEnvironment
     )
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         artworkAttributionClasses: [
           { name: "first", longDescription: "first long description" },
@@ -47,7 +46,7 @@ describe("ArtworkAttributionClassFAQModal", () => {
       <ArtworkAttributionClassFAQModal visible onClose={onClose} />,
       mockEnvironment
     )
-    mockEnvironmentPayload(mockEnvironment, {})
+    resolveMostRecentRelayOperation(mockEnvironment, {})
     await flushPromiseQueue()
 
     fireEvent.press(getAllByText("OK")[0])

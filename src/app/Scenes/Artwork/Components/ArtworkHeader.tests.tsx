@@ -1,11 +1,20 @@
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { Text } from "react-native"
 import { ArtworkActions } from "./ArtworkActions"
 import { ArtworkHeader } from "./ArtworkHeader"
 import { ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarousel } from "./ImageCarousel/ImageCarousel"
 
 jest.mock("react-native-view-shot", () => ({}))
+
+const ArtworkAttributionClassFAQModal: React.FC<{ visible: boolean }> = ({ visible }) => {
+  return visible ? <Text>Artwork classifications</Text> : null
+}
+
+jest.mock("app/Scenes/Artwork/Components/ArtworkAttributionClassFAQModal", () => ({
+  ArtworkAttributionClassFAQModal,
+}))
 
 const TestRenderer: React.FC = () => {
   return <ArtworkHeader artwork={ArtworkFixture} />

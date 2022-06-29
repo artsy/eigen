@@ -2,7 +2,7 @@ import { ArtworkDetails_artwork$data } from "__generated__/ArtworkDetails_artwor
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { Box, Join, Spacer, Text } from "palette"
-import React, { useState } from "react"
+import { useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkDetailsRow } from "./ArtworkDetailsRow"
