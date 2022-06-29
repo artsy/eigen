@@ -1,7 +1,4 @@
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { FairEventSection } from "./index"
 
 const data = [
@@ -20,14 +17,10 @@ const data = [
 
 describe("FairEventSection", () => {
   it("renders properly", () => {
-    const comp = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <FairEventSection data={data} citySlug="tefaf-new-york-fall-2019" />
-        </Theme>
-      </GlobalStoreProvider>
+    const { queryByText } = renderWithWrappersTL(
+      <FairEventSection data={data} citySlug="tefaf-new-york-fall-2019" />
     )
 
-    expect(comp.text()).toContain("TEFAF New York Fall 2019")
+    expect(queryByText("TEFAF New York Fall 2019")).toBeTruthy()
   })
 })

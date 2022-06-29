@@ -94,6 +94,9 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           contextOwnerSlug: artwork.slug,
         })
       },
+      onError: () => {
+        refreshFavoriteArtworks()
+      },
     })
   }
 
@@ -150,9 +153,12 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
               {is_saved ? <HeartFillIcon mr={0.5} fill="blue100" /> : <HeartIcon mr={0.5} />}
               <Box position="relative">
                 {/* Longest text transparent to prevent changing text pushing elements on the right */}
-                <Text variant="sm" color="transparent">
-                  Saved
-                </Text>
+                {/* Hiding it in the testing environment since it is not visible to the users */}
+                {!__TEST__ && (
+                  <Text variant="sm" color="transparent">
+                    Saved
+                  </Text>
+                )}
 
                 <Box {...StyleSheet.absoluteFillObject}>
                   <ClassTheme>

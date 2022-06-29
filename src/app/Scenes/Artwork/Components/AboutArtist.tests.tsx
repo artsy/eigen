@@ -1,21 +1,13 @@
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { ArtistListItem } from "app/Components/ArtistListItem"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Text, Theme } from "palette"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { AboutArtist } from "./AboutArtist"
 
 describe("AboutArtist", () => {
   it("renders about artist correctly for one artist", () => {
-    const component = mount(
-      <Theme>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <AboutArtist artwork={ArtworkFixture} />
-      </Theme>
-    )
+    const { queryByText } = renderWithWrappersTL(<AboutArtist artwork={ArtworkFixture as any} />)
 
-    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"About the artist"`)
-    expect(component.find(ArtistListItem).length).toEqual(1)
+    expect(queryByText("About the artist")).toBeTruthy()
+    expect(queryByText("Abbas Kiarostami")).toBeTruthy()
   })
 
   it("renders about artist correctly for more than one artists", () => {
@@ -23,14 +15,11 @@ describe("AboutArtist", () => {
       ...ArtworkFixture,
       artists: ArtworkFixture.artists.concat(ArtworkFixture.artists),
     }
-    const component = mount(
-      <Theme>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <AboutArtist artwork={artworkMultipleArtists} />
-      </Theme>
+    const { queryAllByText, queryByText } = renderWithWrappersTL(
+      <AboutArtist artwork={artworkMultipleArtists as any} />
     )
 
-    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"About the artists"`)
-    expect(component.find(ArtistListItem).length).toEqual(2)
+    expect(queryByText("About the artists")).toBeTruthy()
+    expect(queryAllByText("Abbas Kiarostami")).toHaveLength(2)
   })
 })
