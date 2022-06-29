@@ -12,6 +12,7 @@ import { ActionNames, ActionTypes } from "app/utils/track/schema"
 import { CssTransition, Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { EmitterSubscription, View, ViewProps } from "react-native"
+// @ts-expect-error @types file generates duplicate declaration problems
 import ScrollableTabView, { TabBarProps } from "react-native-scrollable-tab-view"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 

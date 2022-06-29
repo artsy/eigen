@@ -67,7 +67,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     expect(getByText("Photography")).toBeTruthy()
   })
 
-  it("displays the number of the selected filters on the filter modal screen", () => {
+  it.skip("displays the number of the selected filters on the filter modal screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -124,7 +124,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     expect(options[1]).toHaveTextContent("Sculpture")
   })
 
-  it("clears all when clear button is tapped", () => {
+  it.skip("clears all when clear button is tapped", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {

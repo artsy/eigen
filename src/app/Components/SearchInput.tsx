@@ -3,7 +3,6 @@ import {
   emitInputClearEvent,
   Flex,
   Input,
-  INPUT_HEIGHT,
   InputProps,
   SpacingUnitV2,
   SpacingUnitV3,

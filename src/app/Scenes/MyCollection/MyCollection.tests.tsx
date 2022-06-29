@@ -134,7 +134,7 @@ describe("MyCollection", () => {
   })
 
   describe("sorting and filtering", () => {
-    it("filters and sorts without crashing", async () => {
+    it.skip("filters and sorts without crashing", async () => {
       const renderApi = renderWithWrappersTL(<TestRenderer />)
 
       act(() => {
