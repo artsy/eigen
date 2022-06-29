@@ -59,14 +59,14 @@ describe("MyCollectionArtworkHeader", () => {
   })
 
   it("fires the analytics tracking event when image is pressed", () => {
-    const { getByTestId } = getWrapper({
+    const { getByLabelText } = getWrapper({
       Artwork: () => ({
         internalID: "someInternalId",
         slug: "someSlug",
       }),
     })
 
-    const carouselImage = getByTestId("image-with-loading-state")
+    const carouselImage = getByLabelText("Image with Loading State")
     fireEvent(carouselImage, "Press")
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith({

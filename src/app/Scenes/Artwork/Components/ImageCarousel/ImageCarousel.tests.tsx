@@ -1,8 +1,9 @@
+import { fireEvent } from "@testing-library/react-native"
 import { ImageCarouselTestsQuery } from "__generated__/ImageCarouselTestsQuery.graphql"
-import { renderRelayTree } from "app/tests/renderRelayTree"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Animated, FlatList } from "react-native"
-import { graphql } from "react-relay"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
 import { getMeasurements } from "./geometry"
 import {
   CarouselImageDescriptor,
@@ -10,8 +11,6 @@ import {
   ImageCarouselFragmentContainer,
   ImageCarouselProps,
 } from "./ImageCarousel"
-import { PaginationDot, ScrollBar } from "./ImageCarouselPaginationIndicator"
-import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 jest.unmock("react-relay")
 
@@ -94,153 +93,271 @@ const localImages: CarouselImageDescriptor[] = [
 ]
 
 describe("ImageCarouselFragmentContainer", () => {
-  const getWrapper = async (artwork = artworkFixture) => {
-    return await renderRelayTree({
-      Component: ({ artwork: { images } }) => (
-        <ImageCarouselFragmentContainer images={images} cardHeight={275} />
-      ),
-      query: graphql`
-        query ImageCarouselTestsQuery @raw_response_type {
-          artwork(id: "unused") {
-            images {
-              ...ImageCarousel_images
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  const TestWrapper = () => {
+    return (
+      <QueryRenderer<ImageCarouselTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query ImageCarouselTestsQuery @raw_response_type {
+            artwork(id: "unused") {
+              images {
+                ...ImageCarousel_images
+              }
             }
           }
-        }
-      `,
-      mockData: {
-        artwork,
-      }, // Enable/fix this when making large change to these components/fixtures: as ImageCarouselTestsQuery,
-    })
+        `}
+        variables={{}}
+        render={({ props }) => {
+          if (props?.artwork) {
+            return (
+              <ImageCarouselFragmentContainer
+                images={props.artwork.images as any}
+                cardHeight={275}
+              />
+            )
+          }
+        }}
+      />
+    )
   }
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const getDotOpacity = (dot) => dot.find(Animated.View).props().style.opacity._value
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
   describe("with five images", () => {
     beforeEach(() => {
       jest.useFakeTimers()
     })
+
     afterEach(() => {
       jest.clearAllMocks()
       jest.useRealTimers()
     })
-    it("renders a flat list with five entries", async () => {
-      const wrapper = await getWrapper()
-      expect(wrapper.find(FlatList)).toHaveLength(1)
-      expect(wrapper.find(FlatList).props().data).toHaveLength(5)
+
+    it("renders a flat list with five entries", () => {
+      const { getByLabelText, getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artworkFixture,
+      })
+
+      expect(getByLabelText("Image Carousel")).toBeTruthy()
+      expect(getAllByLabelText("Image with Loading State")).toHaveLength(5)
     })
 
-    it("shows five pagination dots", async () => {
-      const wrapper = await getWrapper()
-      expect(wrapper.find(PaginationDot)).toHaveLength(5)
+    it("shows five pagination dots", () => {
+      const { getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artworkFixture,
+      })
+
+      expect(getAllByLabelText("Image Pagination Indicator")).toHaveLength(5)
     })
 
-    it("shows the first pagination dot as being selected and the rest as not selected", async () => {
-      const wrapper = await getWrapper()
-      expect(wrapper.find(PaginationDot).map(getDotOpacity)).toMatchObject([1, 0.1, 0.1, 0.1, 0.1])
+    it("shows the first pagination dot as being selected and the rest as not selected", () => {
+      const { getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artworkFixture,
+      })
+
+      const indicators = getAllByLabelText("Image Pagination Indicator")
+
+      expect(indicators[0]).toHaveStyle({ opacity: 1 })
+      expect(indicators[1]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[2]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[3]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[4]).toHaveStyle({ opacity: 0.1 })
     })
 
     it("'selects' subsequent pagination dots as a result of scrolling", async () => {
-      const wrapper = await getWrapper()
+      const { getByLabelText, getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
 
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artworkFixture,
+      })
+
+      const container = getByLabelText("Image Carousel")
       const measurements = getMeasurements({
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        images: artworkFixture.images,
-        boundingBox: { width: 375, height: 275 },
+        images: artworkFixture.images as any,
+        boundingBox: {
+          width: 375,
+          height: 275,
+        },
       })
 
-      wrapper
-        .find(FlatList)
-        .props()
-        .onScroll({ nativeEvent: { contentOffset: { x: 0 } } })
+      // Dimensions of the scrollable content
+      const contentSize = {
+        height: 275,
+        width: measurements[measurements.length - 1].cumulativeScrollOffset,
+      }
+
+      // Dimensions of the device
+      const layoutMeasurement = {
+        height: 550,
+        width: 380,
+      }
+
+      fireEvent.scroll(container, {
+        nativeEvent: {
+          contentSize,
+          layoutMeasurement,
+          contentOffset: {
+            x: 0,
+          },
+        },
+      })
       jest.advanceTimersByTime(5000)
-      wrapper.update()
 
-      expect(wrapper.find(PaginationDot).map(getDotOpacity)).toMatchObject([1, 0.1, 0.1, 0.1, 0.1])
+      const indicators = getAllByLabelText("Image Pagination Indicator")
 
-      wrapper
-        .find(FlatList)
-        .props()
-        .onScroll({ nativeEvent: { contentOffset: { x: measurements[1].cumulativeScrollOffset } } })
+      expect(indicators[0]).toHaveStyle({ opacity: 1 })
+      expect(indicators[1]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[2]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[3]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[4]).toHaveStyle({ opacity: 0.1 })
 
+      // Scroll to the second image
+      fireEvent.scroll(container, {
+        nativeEvent: {
+          contentSize,
+          layoutMeasurement,
+          contentOffset: {
+            x: measurements[1].cumulativeScrollOffset,
+          },
+        },
+      })
       jest.advanceTimersByTime(500)
-      wrapper.update()
 
-      expect(wrapper.find(PaginationDot).map(getDotOpacity)).toMatchObject([0.1, 1, 0.1, 0.1, 0.1])
+      expect(indicators[0]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[1]).toHaveStyle({ opacity: 1 })
+      expect(indicators[2]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[3]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[4]).toHaveStyle({ opacity: 0.1 })
 
-      wrapper
-        .find(FlatList)
-        .props()
-        .onScroll({ nativeEvent: { contentOffset: { x: measurements[4].cumulativeScrollOffset } } })
-
+      // Scroll to the last image
+      fireEvent.scroll(container, {
+        nativeEvent: {
+          contentSize,
+          layoutMeasurement,
+          contentOffset: {
+            x: measurements[4].cumulativeScrollOffset,
+          },
+        },
+      })
       jest.advanceTimersByTime(500)
-      wrapper.update()
 
-      expect(wrapper.find(PaginationDot).map(getDotOpacity)).toMatchObject([0.1, 0.1, 0.1, 0.1, 1])
+      expect(indicators[0]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[1]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[2]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[3]).toHaveStyle({ opacity: 0.1 })
+      expect(indicators[4]).toHaveStyle({ opacity: 1 })
     })
 
-    it(`does not show images that have no deep zoom`, async () => {
-      const wrapper = await getWrapper({
-        ...artworkFixture,
+    it(`does not show images that have no deep zoom`, () => {
+      const { getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const images = artworkFixture.images!.map((image, index) => {
         // delete two of the images' deepZoom
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        images: [
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          ...artworkFixture.images.slice(0, 2).map((image) => ({ ...image, deepZoom: null })),
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          ...artworkFixture.images.slice(2),
-        ],
+        if (index < 2) {
+          return {
+            ...image,
+            deepZoom: null,
+          }
+        }
+
+        return image
       })
 
-      expect(wrapper.find(PaginationDot)).toHaveLength(3)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          ...artworkFixture,
+          images,
+        }),
+      })
+
+      expect(getAllByLabelText("Image Pagination Indicator")).toHaveLength(3)
     })
 
-    it(`only shows one image when none of the images have deep zoom`, async () => {
-      const wrapper = await getWrapper({
-        ...artworkFixture,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        images: artworkFixture.images.map((image) => ({ ...image, deepZoom: null })),
+    it("only shows one image when none of the images have deep zoom", () => {
+      const { getByLabelText, queryAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const images = artworkFixture.images!.map((image) => ({
+        ...image,
+        deepZoom: null,
+      }))
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ({
+          ...artworkFixture,
+          images,
+        }),
       })
 
-      expect(wrapper.find(PaginationDot)).toHaveLength(0)
-      expect(wrapper.find(FlatList).props().scrollEnabled).toBe(false)
+      expect(queryAllByLabelText("Image Pagination Indicator")).toHaveLength(0)
+      expect(getByLabelText("Image Carousel")).toHaveProp("scrollEnabled", false)
     })
   })
 
   describe("with one image", () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const artwork = { ...artworkFixture, images: [artworkFixture.images[0]] }
+    const artwork = {
+      ...artworkFixture,
+      images: [artworkFixture.images![0]],
+    }
+
     it("shows no pagination dots", async () => {
-      const wrapper = await getWrapper(artwork)
-      expect(wrapper.find(PaginationDot)).toHaveLength(0)
+      const { queryAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artwork,
+      })
+
+      expect(queryAllByLabelText("Image Pagination Indicator")).toHaveLength(0)
     })
 
     it("disables scrolling", async () => {
-      const wrapper = await getWrapper(artwork)
-      expect(wrapper.find(FlatList).props().scrollEnabled).toBe(false)
+      const { getByLabelText } = renderWithWrappersTL(<TestWrapper />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => artwork,
+      })
+
+      expect(getByLabelText("Image Carousel")).toHaveProp("scrollEnabled", false)
     })
   })
 })
 
 describe("Local Images and PaginationIndicator", () => {
-  const getWrapper = (props: ImageCarouselProps) => renderWithWrappers(<ImageCarousel {...props} />)
+  const TestWrapper = (props: ImageCarouselProps) => {
+    return <ImageCarousel {...props} />
+  }
 
   it("can display local images", () => {
-    const wrapper = getWrapper({ images: localImages, cardHeight: 275 })
-    expect(wrapper.root.findAllByType(ImageWithLoadingState).length).toEqual(localImages.length)
+    const { getAllByLabelText } = renderWithWrappersTL(
+      <TestWrapper images={localImages} cardHeight={275} />
+    )
+
+    expect(getAllByLabelText("Image with Loading State")).toHaveLength(localImages.length)
   })
 
   it("defaults to paginationDots", () => {
-    const wrapper = getWrapper({ images: localImages, cardHeight: 275 })
-    expect(wrapper.root.findAllByType(PaginationDot).length).toEqual(localImages.length)
-    expect(wrapper.root.findAllByType(ScrollBar).length).toBe(0)
+    const { getAllByLabelText, queryByLabelText } = renderWithWrappersTL(
+      <TestWrapper images={localImages} cardHeight={275} />
+    )
+
+    expect(getAllByLabelText("Image with Loading State")).toHaveLength(localImages.length)
+    expect(getAllByLabelText("Image Pagination Indicator")).toHaveLength(localImages.length)
+    expect(queryByLabelText("Image Pagination Scroll Bar")).toBeFalsy()
   })
+
   it("Indicator can be a scrollbar", () => {
-    const wrapper = getWrapper({
-      paginationIndicatorType: "scrollBar",
-      images: localImages,
-      cardHeight: 275,
-    })
-    expect(wrapper.root.findAllByType(PaginationDot).length).toBe(0)
-    expect(wrapper.root.findByType(ScrollBar)).toBeDefined()
+    const { queryAllByLabelText, queryByLabelText } = renderWithWrappersTL(
+      <TestWrapper images={localImages} cardHeight={275} paginationIndicatorType="scrollBar" />
+    )
+
+    expect(queryByLabelText("Image Pagination Scroll Bar")).toBeTruthy()
+    expect(queryAllByLabelText("Image Pagination Indicator")).toHaveLength(0)
   })
 })

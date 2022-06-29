@@ -1,3 +1,4 @@
+import { captureMessage } from "@sentry/react-native"
 import { FollowArtistLink_artist$data } from "__generated__/FollowArtistLink_artist.graphql"
 import { FollowArtistLinkMutation } from "__generated__/FollowArtistLinkMutation.graphql"
 import { Schema, track } from "app/utils/track"
@@ -53,6 +54,15 @@ export class FollowArtistLink extends React.Component<Props> {
             is_followed: !artist.is_followed,
           },
         },
+      },
+      onError: (error) => {
+        if (__TEST__) {
+          return
+        } else if (__DEV__) {
+          console.error(error)
+        } else {
+          captureMessage(error.stack!)
+        }
       },
     })
   }
