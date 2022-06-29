@@ -1,15 +1,12 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { shallow } from "enzyme"
-import "react-native"
-
+import { render } from "@testing-library/react-native"
 import { Subtitle } from "./"
 
 it("passes on props to subtitle", () => {
-  const text = shallow(
+  const { getByText } = render(
     <Subtitle numberOfLines={1} ellipsizeMode="middle">
       My Subtitle
     </Subtitle>
-  ).dive()
-  expect(text.props().numberOfLines).toBe(1)
-  expect(text.props().ellipsizeMode).toBe("middle")
+  )
+  expect(getByText(/My Subtitle/)).toHaveProp("numberOfLines", 1)
+  expect(getByText(/My Subtitle/)).toHaveProp("ellipsizeMode", "middle")
 })
