@@ -62,13 +62,12 @@ describe("ArtworkActions", () => {
 
   describe("with AR enabled", () => {
     it("renders buttons correctly", () => {
-      const { queryByText, getByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappersTL(
         <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtwork} />
       )
 
       expect(queryByText("Save")).toBeTruthy()
-      expect(queryByText("Saved")).toBeTruthy()
-      expect(getByText("Saved")).toHaveProp("color", "transparent")
+
       expect(queryByText("View in Room")).toBeTruthy()
       expect(queryByText("Share")).toBeTruthy()
     })
@@ -78,13 +77,12 @@ describe("ArtworkActions", () => {
         ...artworkActionsArtwork,
         is_hangable: false,
       }
-      const { getByText, queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappersTL(
         <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtworkNotHangable} />
       )
 
       expect(queryByText("Save")).toBeTruthy()
       expect(queryByText("Share")).toBeTruthy()
-      expect(getByText("Saved")).toHaveProp("color", "transparent")
       expect(queryByText("View in Room")).toBeFalsy()
     })
   })
