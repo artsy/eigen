@@ -44,6 +44,7 @@ export const Avatar = ({ src, initials, size = DEFAULT_SIZE }: AvatarProps) => {
     return (
       <Image
         resizeMode="cover"
+        accessibilityLabel="Avatar"
         style={{
           width: diameter,
           height: diameter,
