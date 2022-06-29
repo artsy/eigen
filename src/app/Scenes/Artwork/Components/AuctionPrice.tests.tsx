@@ -227,7 +227,7 @@ describe("AuctionPrice", () => {
         Artwork: () => OpenAuctionReserveNotMetIncreasingOwnBid,
       })
 
-      expect(getByText("Your max: $400")).toBeTruthy()
+      expect(getByText("Your max: $15,000")).toBeTruthy()
       expect(getByLabelText("My Bid Winning Icon")).toBeTruthy()
     })
   })
