@@ -167,7 +167,7 @@ describe("CommercialButtons", () => {
     expect(getByText("Make an Offer")).toBeTruthy()
   })
 
-  it("commits the Buy Now mutation", async () => {
+  it("commits the Buy Now mutation", () => {
     const artwork = {
       ...ArtworkFixture,
       isForSale: true,
@@ -203,7 +203,7 @@ describe("CommercialButtons", () => {
     })
   })
 
-  it("commits the Make Offer mutation", async () => {
+  it("commits the Make Offer mutation", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: true,
@@ -240,7 +240,7 @@ describe("CommercialButtons", () => {
     })
   })
 
-  it("renders both Buy Now and Bid buttons when isInAuction and isBuyNowable", async () => {
+  it("renders both Buy Now and Bid buttons when isInAuction and isBuyNowable", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: true,
@@ -278,7 +278,7 @@ describe("CommercialButtons", () => {
     expect(getByText("Purchase $8000")).toBeTruthy()
   })
 
-  it("doesn't render the Buy Now or Bid buttons when isInAuction and isBuyNowable but has sold via buy now", async () => {
+  it("doesn't render the Buy Now or Bid buttons when isInAuction and isBuyNowable but has sold via buy now", () => {
     const artwork = {
       ...ArtworkFixture,
       isAcquireable: false,
@@ -339,7 +339,7 @@ describe("CommercialButtons", () => {
   })
 
   describe("tracking", () => {
-    it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", async () => {
+    it("trackEvent called when Contact Gallery pressed given Offerable and Inquireable artwork", () => {
       const artwork = {
         ...ArtworkFixture,
         isOfferable: true,
@@ -370,7 +370,7 @@ describe("CommercialButtons", () => {
       `)
     })
 
-    it("trackEvent called when Contact Gallery pressed given Inquireable artwork", async () => {
+    it("trackEvent called when Contact Gallery pressed given Inquireable artwork", () => {
       const artwork = {
         ...ArtworkFixture,
         isOfferable: true,
