@@ -73,14 +73,6 @@ describe("BidResult component", () => {
   }
 
   describe("high bidder", () => {
-    it("renders winning screen properly", () => {
-      renderWithWrappersTL(<TestWrapper bidderPositionResult={Statuses.winning} />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Sale: () => sale,
-      })
-    })
-
     it("renders a timer", () => {
       const { getByLabelText } = renderWithWrappersTL(
         <TestWrapper bidderPositionResult={Statuses.winning} />
@@ -111,15 +103,7 @@ describe("BidResult component", () => {
   })
 
   describe("low bidder", () => {
-    it("renders without throwing an error", () => {
-      renderWithWrappersTL(<TestWrapper bidderPositionResult={Statuses.outbid} />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Sale: () => sale,
-      })
-    })
-
-    it("renders timer and error message", () => {
+    it("renders a timer", () => {
       const { getByLabelText } = renderWithWrappersTL(
         <TestWrapper bidderPositionResult={Statuses.outbid} />
       )
@@ -149,15 +133,7 @@ describe("BidResult component", () => {
   })
 
   describe("live bidding has started", () => {
-    it("renders without throwing an error", () => {
-      renderWithWrappersTL(<TestWrapper bidderPositionResult={Statuses.live_bidding_started} />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Sale: () => sale,
-      })
-    })
-
-    it("doesn't render timer", () => {
+    it("doesn't render a timer", () => {
       const { queryByLabelText } = renderWithWrappersTL(
         <TestWrapper bidderPositionResult={Statuses.live_bidding_started} />
       )

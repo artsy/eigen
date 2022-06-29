@@ -38,15 +38,7 @@ describe("FullFeaturedArtistList", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("renders without throwing an error", () => {
-    renderWithWrappersTL(<TestWrapper />)
-
-    resolveMostRecentRelayOperation(mockEnvironment, {
-      MarketingCollection: () => FullFeaturedArtistListCollectionFixture,
-    })
-  })
-
-  it("renders an EntityHeader for each featured artist", () => {
+  it("renders featured artist", () => {
     const { getByText } = renderWithWrappersTL(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
