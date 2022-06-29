@@ -1,8 +1,5 @@
 import { Show } from "app/Scenes/Map/types"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { RelayProp } from "react-relay"
 import { Event } from "./index"
 
@@ -25,14 +22,10 @@ const eventData = {
 
 describe("CityEvent", () => {
   it("renders properly", () => {
-    const comp = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <Event event={eventData} relay={{ environment: {} } as RelayProp} />
-        </Theme>
-      </GlobalStoreProvider>
+    const { queryByText } = renderWithWrappersTL(
+      <Event event={eventData} relay={{ environment: {} } as RelayProp} />
     )
 
-    expect(comp.text()).toContain("Pacita Abad Art Estate")
+    expect(queryByText("Pacita Abad Art Estate")).toBeTruthy()
   })
 })

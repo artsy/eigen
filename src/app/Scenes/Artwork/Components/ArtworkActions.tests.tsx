@@ -1,13 +1,12 @@
+import { act, fireEvent } from "@testing-library/react-native"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
-import { ArtworkActionsTestsQuery$data } from "__generated__/ArtworkActionsTestsQuery.graphql"
+import { ArtworkActionsTestsQuery } from "__generated__/ArtworkActionsTestsQuery.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderRelayTree } from "app/tests/renderRelayTree"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { Text } from "palette"
-import { TouchableWithoutFeedback } from "react-native"
-import { graphql } from "react-relay"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from "./ArtworkActions"
 
 jest.unmock("react-relay")
@@ -63,13 +62,12 @@ describe("ArtworkActions", () => {
 
   describe("with AR enabled", () => {
     it("renders buttons correctly", () => {
-      const { queryByText, getByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappersTL(
         <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtwork} />
       )
 
       expect(queryByText("Save")).toBeTruthy()
-      expect(queryByText("Saved")).toBeTruthy()
-      expect(getByText("Saved")).toHaveProp("color", "transparent")
+
       expect(queryByText("View in Room")).toBeTruthy()
       expect(queryByText("Share")).toBeTruthy()
     })
@@ -79,13 +77,12 @@ describe("ArtworkActions", () => {
         ...artworkActionsArtwork,
         is_hangable: false,
       }
-      const { getByText, queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappersTL(
         <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtworkNotHangable} />
       )
 
       expect(queryByText("Save")).toBeTruthy()
       expect(queryByText("Share")).toBeTruthy()
-      expect(getByText("Saved")).toHaveProp("color", "transparent")
       expect(queryByText("View in Room")).toBeFalsy()
     })
   })
@@ -123,20 +120,39 @@ describe("ArtworkActions", () => {
   })
 
   describe("Saving an artwork", () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const getWrapper = async ({ mockArtworkData, mockSaveResults }) => {
-      return await renderRelayTree({
-        Component: ArtworkActionsFragmentContainer,
-        query: graphql`
-          query ArtworkActionsTestsQuery @raw_response_type {
-            artwork(id: "artworkID") {
-              ...ArtworkActions_artwork
+    let env: ReturnType<typeof createMockEnvironment>
+
+    beforeEach(() => {
+      env = createMockEnvironment()
+    })
+
+    const TestRenderer = () => {
+      return (
+        <QueryRenderer<ArtworkActionsTestsQuery>
+          environment={env}
+          variables={{ id: "artworkID" }}
+          render={({ props, error }) => {
+            if (props) {
+              return (
+                <ArtworkActionsFragmentContainer
+                  artwork={props.artwork!}
+                  shareOnPress={jest.fn()}
+                />
+              )
+            } else if (error) {
+              console.log(error)
+              return
             }
-          }
-        `,
-        mockData: { artwork: mockArtworkData } as ArtworkActionsTestsQuery$data,
-        mockMutationResults: { saveArtwork: mockSaveResults },
-      })
+          }}
+          query={graphql`
+            query ArtworkActionsTestsQuery @raw_response_type {
+              artwork(id: "artworkID") {
+                ...ArtworkActions_artwork
+              }
+            }
+          `}
+        />
+      )
     }
 
     it("correctly displays when the work is already saved, and allows unsaving", async () => {
@@ -146,84 +162,82 @@ describe("ArtworkActions", () => {
       }
 
       const unsaveResponse = {
-        artwork: {
-          id: artworkActionsArtwork.id,
-          is_saved: false,
-        },
+        ...artworkActionsArtwork,
+        is_saved: false,
       }
 
-      const artworkActions = await getWrapper({
-        mockArtworkData: artworkActionsArtworkSaved,
-        mockSaveResults: unsaveResponse,
+      const { queryByText, getByText } = await renderWithWrappersTL(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(env, {
+        Artwork: () => artworkActionsArtworkSaved,
       })
 
-      const saveButton = artworkActions.find(Text).at(1)
-      expect(saveButton.text()).toMatchInlineSnapshot(`"Saved"`)
-      expect(saveButton.props().color).toMatchInlineSnapshot(`"#1023D7"`)
+      expect(queryByText("Saved")).toBeTruthy()
+      const saveButton = getByText("Saved")
+      expect(saveButton).toHaveProp("color", "#1023D7")
 
-      await artworkActions.find(TouchableWithoutFeedback).at(0).props().onPress()
+      fireEvent.press(saveButton)
 
-      await flushPromiseQueue()
-      artworkActions.update()
+      const saveMutation = env.mock.getMostRecentOperation()
+      expect(saveMutation.request.node.operation.name).toEqual("ArtworkActionsSaveMutation")
 
-      const updatedSaveButton = artworkActions.find(Text).at(1)
-      expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Saved"`)
-      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#1023D7"`)
+      resolveMostRecentRelayOperation(env, {
+        Artwork: () => unsaveResponse,
+      })
+
+      expect(queryByText("Save")).toBeTruthy()
+      expect(queryByText("Save")).toHaveProp("color", "#000000")
     })
 
     it("correctly displays when the work is not saved, and allows saving", async () => {
-      const saveResponse = { artwork: { id: artworkActionsArtwork.id, is_saved: true } }
+      const saveResponse = {
+        ...artworkActionsArtwork,
+        is_saved: true,
+      }
 
-      const artworkActions = await getWrapper({
-        mockArtworkData: artworkActionsArtwork,
-        mockSaveResults: saveResponse,
+      const { queryByText, getByText } = await renderWithWrappersTL(<TestRenderer />)
+      resolveMostRecentRelayOperation(env, {
+        Artwork: () => artworkActionsArtwork,
       })
 
-      const saveButton = artworkActions.find(Text).at(1)
-      expect(saveButton.text()).toMatchInlineSnapshot(`"Save"`)
-      expect(saveButton.props().color).toMatchInlineSnapshot(`"#000000"`)
+      const saveButton = getByText("Save")
+      expect(queryByText("Save")).toBeTruthy()
+      expect(queryByText("Save")).toHaveProp("color", "#000000")
 
-      await artworkActions.find(TouchableWithoutFeedback).at(0).props().onPress()
+      fireEvent.press(saveButton)
 
-      await flushPromiseQueue()
-      artworkActions.update()
+      const saveMutation = env.mock.getMostRecentOperation()
+      expect(saveMutation.request.node.operation.name).toEqual("ArtworkActionsSaveMutation")
 
-      const updatedSaveButton = artworkActions.find(Text).at(1)
-      expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Save"`)
-      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#000000"`)
+      resolveMostRecentRelayOperation(env, {
+        Artwork: () => saveResponse,
+      })
+
+      expect(queryByText("Saved")).toBeTruthy()
+      expect(saveButton).toHaveProp("color", "#1023D7")
     })
 
-    // TODO: Update once we can use relay's new facilities for testing
     it("handles errors in saving gracefully", async () => {
-      const artworkActions = await renderRelayTree({
-        Component: ArtworkActionsFragmentContainer,
-        query: graphql`
-          query ArtworkActionsTestsErrorQuery @raw_response_type {
-            artwork(id: "artworkID") {
-              ...ArtworkActions_artwork
-            }
-          }
-        `,
-        mockData: { artwork: artworkActionsArtwork }, // Enable/fix this when making large change to these components/fixtures: as ArtworkActionsTestsErrorQuery,
-        mockMutationResults: {
-          saveArtwork: () => {
-            return Promise.reject(new Error("failed to fetch"))
-          },
-        },
+      const { queryByText, getByText } = await renderWithWrappersTL(<TestRenderer />)
+      resolveMostRecentRelayOperation(env, {
+        Artwork: () => artworkActionsArtwork,
       })
 
-      const saveButton = artworkActions.find(Text).at(1)
-      expect(saveButton.text()).toMatchInlineSnapshot(`"Save"`)
-      expect(saveButton.props().color).toMatchInlineSnapshot(`"#000000"`)
+      const saveButton = getByText("Save")
+      expect(queryByText("Save")).toBeTruthy()
+      expect(queryByText("Save")).toHaveProp("color", "#000000")
 
-      await artworkActions.find(TouchableWithoutFeedback).at(0).props().onPress()
+      fireEvent.press(saveButton)
 
-      await flushPromiseQueue()
-      artworkActions.update()
+      const saveMutation = env.mock.getMostRecentOperation()
+      expect(saveMutation.request.node.operation.name).toEqual("ArtworkActionsSaveMutation")
 
-      const updatedSaveButton = artworkActions.find(Text).at(1)
-      expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Save"`)
-      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#000000"`)
+      act(() => {
+        env.mock.rejectMostRecentOperation(new Error("Error saving artwork"))
+      })
+
+      expect(queryByText("Save")).toBeTruthy()
+      expect(queryByText("Save")).toHaveProp("color", "#000000")
     })
   })
 })
