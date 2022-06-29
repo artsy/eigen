@@ -52,10 +52,24 @@ You will need [awscli](https://formulae.brew.sh/formula/awscli) to get our ENV v
 
 <details><summary>Independent Contributor?</summary>
 
+#### Set up your env file and download assets:
+
 ```sh
 yarn setup:oss # this is `yarn setup:artsy` if you're working at Artsy
-yarn install:all
+```
 
+#### Get a mapbox token and set it in .env.shared:
+
+You can create an account on mapbox and get a token with their free tier:
+
+Follow the instructions here: https://docs.mapbox.com/ios/maps/guides/install.
+
+Add the token to .env.shared as MAPBOX_DOWNLOAD_TOKEN
+
+#### Install dependencies:
+
+```sh
+yarn install:all
 ```
 
 </details>
