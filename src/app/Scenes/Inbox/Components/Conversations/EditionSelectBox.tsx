@@ -25,6 +25,7 @@ export const EditionSelectBox: React.FC<Props> = ({ editionSet, selected, onPres
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const available =
     !!editionSet.isOfferableFromInquiry ||
+    !!editionSet.isOfferable ||
     (enableConversationalBuyNow && !!editionSet.isAcquireable)
 
   return (
@@ -61,6 +62,7 @@ export const EditionSelectBoxFragmentContainer = createFragmentContainer(Edition
       editionOf
       isAcquireable
       isOfferableFromInquiry
+      isOfferable
       listPrice {
         ... on Money {
           display
