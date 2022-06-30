@@ -1,17 +1,21 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
+import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import moment from "moment"
+import { Box } from "palette"
 import { StateManager } from "./StateManager"
 
 describe("StateManager", () => {
-  const Countdown = () => null
+  const Countdown = (props: any) => {
+    return <Box accessibilityLabel="Countdown" {...props} />
+  }
+
   beforeEach(() => {
     jest.useFakeTimers()
     Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
   })
 
   it("Manages a DurationProvider", () => {
-    const comp = mount(
+    const onNextTickerStateMock = jest.fn(() => ({ label: "bar", state: "foo" }))
+    const { getByLabelText } = renderWithWrappersTL(
       <StateManager
         CountdownComponent={Countdown}
         onCurrentTickerState={() => ({
@@ -19,19 +23,20 @@ describe("StateManager", () => {
           date: new Date(Date.now() + 1000).toISOString(),
           label: "foo",
         })}
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onNextTickerState={jest.fn(() => ({ label: "bar", date: null, state: "foo" }))}
+        onNextTickerState={onNextTickerStateMock}
       />
     )
 
-    expect(comp.find(Countdown).props().duration.toString()).toEqual(
-      moment.duration(1000).toString()
-    )
+    const comp = getByLabelText("Countdown")
+    const compDuration = comp.props.duration.toString()
+    const duration = moment.duration(1000).toString()
+
+    expect(compDuration).toEqual(duration)
   })
 
   it("Transitions state when duration expires", () => {
-    const onNextTickerState = jest.fn(() => ({ label: "bar", date: null, state: "foo" }))
-    mount(
+    const onNextTickerState = jest.fn(() => ({ label: "bar", state: "foo" }))
+    renderWithWrappersTL(
       <StateManager
         CountdownComponent={Countdown}
         onCurrentTickerState={() => ({
@@ -39,7 +44,6 @@ describe("StateManager", () => {
           date: new Date(Date.now() + 1000).toISOString(),
           label: "foo",
         })}
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         onNextTickerState={onNextTickerState}
       />
     )
