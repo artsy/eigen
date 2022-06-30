@@ -111,6 +111,7 @@ android-secret.json
 # Fonts
 android/app/src/main/assets/fonts/*
 ios/eigen/fonts/*
+ios/Artsy/Resources/Fonts/*
 # old native screen needs these there
 ios/Artsy/View_Controllers/Live_Auctions/Resources/Artsy/fonts/*
 

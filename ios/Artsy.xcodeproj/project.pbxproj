@@ -39,6 +39,10 @@
 		1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */; };
 		50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */; };
 		91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */; };
+		CB289A9D286DE04D006ECC91 /* Unica77LL-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB289A99286DE04D006ECC91 /* Unica77LL-Regular.otf */; };
+		CB289A9E286DE04D006ECC91 /* Unica77LL-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB289A9A286DE04D006ECC91 /* Unica77LL-Medium.otf */; };
+		CB289A9F286DE04D006ECC91 /* Unica77LL-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB289A9B286DE04D006ECC91 /* Unica77LL-Italic.otf */; };
+		CB289AA0286DE04D006ECC91 /* Unica77LL-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB289A9C286DE04D006ECC91 /* Unica77LL-MediumItalic.otf */; };
 		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
 		CB43266A27E8F39B00B29DD6 /* ArtsyStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB43267627E8F6F900B29DD6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43267527E8F6F900B29DD6 /* NotificationService.swift */; };
@@ -626,6 +630,10 @@
 		9B51BBF7C1BD09CD9EA76699 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
 		BE5EFBF10AC43C4ECF725994 /* Pods-Artsy_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Artsy_Tests/Pods-Artsy_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		BE681C4A642B6359D3C2A4AF /* Pods-Artsy-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-Artsy-ArtsyTests/Pods-Artsy-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		CB289A99286DE04D006ECC91 /* Unica77LL-Regular.otf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unica77LL-Regular.otf"; sourceTree = "<group>"; };
+		CB289A9A286DE04D006ECC91 /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unica77LL-Medium.otf"; sourceTree = "<group>"; };
+		CB289A9B286DE04D006ECC91 /* Unica77LL-Italic.otf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unica77LL-Italic.otf"; sourceTree = "<group>"; };
+		CB289A9C286DE04D006ECC91 /* Unica77LL-MediumItalic.otf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unica77LL-MediumItalic.otf"; sourceTree = "<group>"; };
 		CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB43266527E8F39B00B29DD6 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
 		CB43266727E8F39B00B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1682,6 +1690,17 @@
 				CB43271C27E8FE5400B29DD6 /* ArtsyTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CB289A98286DDE25006ECC91 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				CB289A9B286DE04D006ECC91 /* Unica77LL-Italic.otf */,
+				CB289A9A286DE04D006ECC91 /* Unica77LL-Medium.otf */,
+				CB289A9C286DE04D006ECC91 /* Unica77LL-MediumItalic.otf */,
+				CB289A99286DE04D006ECC91 /* Unica77LL-Regular.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		CB43266427E8F39900B29DD6 /* ArtsyStickers */ = {
@@ -3139,6 +3158,7 @@
 		CBE325A327E275A200395A93 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CB289A98286DDE25006ECC91 /* Fonts */,
 				CBE325A427E275A200395A93 /* Map_Annotations */,
 				CBE325A627E275A200395A93 /* Artsy-Bridging-Header.h */,
 				CBE325A727E275A200395A93 /* ViewInRoom */,
@@ -3647,6 +3667,7 @@
 				CBE326F627E275A300395A93 /* ARVIRModalClose@2x.png in Resources */,
 				CBE3272D27E275A400395A93 /* ViewInRoom_Bench@2x.png in Resources */,
 				CBE3275227E275A400395A93 /* RefreshIcon@2x.png in Resources */,
+				CB289A9D286DE04D006ECC91 /* Unica77LL-Regular.otf in Resources */,
 				CBE3274F27E275A400395A93 /* CircleXRed.png in Resources */,
 				CBE3276427E275A400395A93 /* followButtonChecked.png in Resources */,
 				CBE326F427E275A300395A93 /* ARVIRTick@2x.png in Resources */,
@@ -3657,6 +3678,7 @@
 				CBE3275827E275A400395A93 /* paddle@2x.png in Resources */,
 				CBE3272927E275A400395A93 /* ViewInRoom_Wall@2x.png in Resources */,
 				CBE3273F27E275A400395A93 /* Hash@2x.png in Resources */,
+				CB289AA0286DE04D006ECC91 /* Unica77LL-MediumItalic.otf in Resources */,
 				CBE326B527E275A300395A93 /* LiveAuctionsAssets.xcassets in Resources */,
 				CBE3272727E275A400395A93 /* Images.xcassets in Resources */,
 				CBE3276627E275A400395A93 /* full_logo_black_small@2x.png in Resources */,
@@ -3699,6 +3721,7 @@
 				CBE3275F27E275A400395A93 /* BackChevron@2x.png in Resources */,
 				CBE3275627E275A400395A93 /* Thumb@2x.png in Resources */,
 				CBE3274927E275A400395A93 /* CircularCancelButton@2x.png in Resources */,
+				CB289A9E286DE04D006ECC91 /* Unica77LL-Medium.otf in Resources */,
 				CBE3274527E275A400395A93 /* AuctionRefineCheck@2x.png in Resources */,
 				CBE3272827E275A400395A93 /* MapAnnotation_Artsy@2x.png in Resources */,
 				CBE3274427E275A400395A93 /* ARVIRPhone@2x.png in Resources */,
@@ -3712,6 +3735,7 @@
 				CBE3275B27E275A400395A93 /* CircleCheckGreen@3x.png in Resources */,
 				CBE3273527E275A400395A93 /* ARVIRBack@3x.png in Resources */,
 				CBE3274C27E275A400395A93 /* full_logo_white_large@2x.png in Resources */,
+				CB289A9F286DE04D006ECC91 /* Unica77LL-Italic.otf in Resources */,
 				CBE3272A27E275A400395A93 /* ViewInRoom_Man_3@2x.png in Resources */,
 				CBE3275927E275A400395A93 /* CircleCheckGreen.png in Resources */,
 				CBE3276127E275A400395A93 /* CircularCancelButton.png in Resources */,
