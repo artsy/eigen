@@ -8,7 +8,7 @@ import { View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { FairFragmentContainer, FairPlaceholder, FairQueryRenderer } from "../Fair/Fair"
-import { PartnerContainer } from "../Partner"
+import { PartnerContainer } from "../Partner/Partner"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
 interface EntityProps {
