@@ -7,13 +7,10 @@ import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 jest.unmock("react-relay")
 
 describe("Artwork Details", () => {
-  const mountArtworkDetails = (artwork: ArtworkDetails_artwork$data) =>
-    renderWithWrappersTL(<ArtworkDetails artwork={artwork} />)
-
   it("renders the data if available", () => {
     const testArtwork: ArtworkDetails_artwork$data = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      " $refType": null,
+      " $fragmentType": "ArtworkDetails_artwork",
+      mediumType: null,
       category: "Oil on canvas",
       conditionDescription: null,
       signatureInfo: { label: "Signature", details: "Signed by artist" },
@@ -31,7 +28,9 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const { queryByText } = mountArtworkDetails(artworkDetailsInfo.artwork)
+    const { queryByText } = renderWithWrappersTL(
+      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
+    )
 
     expect(queryByText("Artwork details")).toBeTruthy()
     expect(queryByText("Signature")).toBeTruthy()
@@ -46,8 +45,8 @@ describe("Artwork Details", () => {
 
   it("hides certificate of authenticity, framed, and signature fields if null", () => {
     const testArtwork: ArtworkDetails_artwork$data = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      " $refType": null,
+      " $fragmentType": "ArtworkDetails_artwork",
+      mediumType: null,
       category: "Oil on canvas",
       conditionDescription: null,
       signatureInfo: null,
@@ -65,7 +64,9 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const { queryByText } = mountArtworkDetails(artworkDetailsInfo.artwork)
+    const { queryByText } = renderWithWrappersTL(
+      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
+    )
 
     expect(queryByText("Certificate of Authenticity")).toBeNull()
     expect(queryByText("Frame")).toBeNull()
@@ -74,8 +75,8 @@ describe("Artwork Details", () => {
 
   it("shows condition description if present and lot condition report disabled", () => {
     const testArtwork: ArtworkDetails_artwork$data = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      " $refType": null,
+      " $fragmentType": "ArtworkDetails_artwork",
+      mediumType: null,
       category: "Oil on canvas",
       conditionDescription: {
         label: "some label",
@@ -96,7 +97,9 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const { queryByText } = mountArtworkDetails(artworkDetailsInfo.artwork)
+    const { queryByText } = renderWithWrappersTL(
+      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
+    )
     expect(queryByText("Condition")).toBeTruthy()
     expect(queryByText("Amazing condition")).toBeTruthy()
   })
@@ -105,8 +108,8 @@ describe("Artwork Details", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: true })
 
     const testArtwork: ArtworkDetails_artwork$data = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      " $refType": null,
+      " $fragmentType": "ArtworkDetails_artwork",
+      mediumType: null,
       category: "Oil on canvas",
       conditionDescription: {
         label: "some label",
@@ -127,7 +130,9 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const { queryByText, UNSAFE_queryByType } = mountArtworkDetails(artworkDetailsInfo.artwork)
+    const { queryByText, UNSAFE_queryByType } = renderWithWrappersTL(
+      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
+    )
 
     expect(queryByText("Condition")).toBeTruthy()
     expect(queryByText("Amazing condition")).toBeNull()
@@ -140,8 +145,8 @@ describe("Artwork Details", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: false })
 
     const testArtwork: ArtworkDetails_artwork$data = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      " $refType": null,
+      " $fragmentType": "ArtworkDetails_artwork",
+      mediumType: null,
       category: "Oil on canvas",
       conditionDescription: {
         label: "some label",
@@ -162,7 +167,9 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const { queryByText, UNSAFE_queryByType } = mountArtworkDetails(artworkDetailsInfo.artwork)
+    const { queryByText, UNSAFE_queryByType } = renderWithWrappersTL(
+      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
+    )
 
     expect(queryByText("Condition")).toBeTruthy()
     expect(queryByText("Amazing condition")).toBeTruthy()

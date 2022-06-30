@@ -126,6 +126,16 @@ export class ArtworkTombstone extends React.Component<
     )
   }
 
+  getArtworkTitleAndMaybeDate = () => {
+    const { artwork } = this.props
+
+    if (artwork.date) {
+      return `${artwork.title!}${comma} ${artwork.date}`
+    }
+
+    return artwork.title!
+  }
+
   render() {
     const { artwork } = this.props
     const displayAuctionLotLabel =
@@ -157,7 +167,7 @@ export class ArtworkTombstone extends React.Component<
         )}
         <Flex flexDirection="row" flexWrap="wrap">
           <Sans color="black60" size="3">
-            {artwork.title! + (!!artwork.date ? `${comma} ${artwork.date}` : "")}
+            {this.getArtworkTitleAndMaybeDate()}
           </Sans>
         </Flex>
         {!!artwork.medium && (
