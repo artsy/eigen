@@ -131,6 +131,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
         </Button>
         <Flex height={0}>
           <Modal
+            accessibilityLabel="Condition Report Requested Error Modal"
             textAlign="center"
             visible={showErrorModal}
             headerText="An error occurred"
@@ -138,6 +139,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
             closeModal={this.closeModals.bind(this)}
           />
           <Modal
+            accessibilityLabel="Condition Report Requested Modal"
             textAlign="center"
             visible={showConditionReportRequestedModal}
             headerText="Condition Report Requested"

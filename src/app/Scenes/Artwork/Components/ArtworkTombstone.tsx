@@ -2,7 +2,7 @@ import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_ar
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
-import { ArtworkIcon, Box, CertificateIcon, Flex, Sans, Spacer, Text } from "palette"
+import { ArtworkIcon, Box, CertificateIcon, comma, Flex, Sans, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -68,9 +68,9 @@ export class ArtworkTombstone extends React.Component<
           artist.name,
           artist.href
         )}
-        <Sans size="4t" weight="medium">
+        <Text variant="md" weight="medium">
           {"  "}·{"  "}
-        </Sans>
+        </Text>
         <FollowArtistLink artist={artist} contextModule={Schema.ContextModules.ArtworkTombstone} />
       </Text>
     )
@@ -79,14 +79,14 @@ export class ArtworkTombstone extends React.Component<
   renderArtistName(artistName: string, href: string) {
     return href ? (
       <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this, href)}>
-        <Sans size="4t" weight="medium">
+        <Text variant="md" weight="medium">
           {artistName}
-        </Sans>
+        </Text>
       </TouchableWithoutFeedback>
     ) : (
-      <Sans size="4t" weight="medium">
+      <Text variant="md" weight="medium">
         {artistName}
-      </Sans>
+      </Text>
     )
   }
 
@@ -112,23 +112,32 @@ export class ArtworkTombstone extends React.Component<
 
     return (
       <Flex flexDirection="row" flexWrap="wrap">
-        <Sans size="4t">
+        <Text variant="md">
           {artistNames}
           {!this.state.showingMoreArtists && artists! /* STRICTNESS_MIGRATION */.length > 3 && (
             <TouchableWithoutFeedback onPress={this.showMoreArtists}>
-              <Sans size="4t" weight="medium">
+              <Text variant="md" weight="medium">
                 {artists! /* STRICTNESS_MIGRATION */.length - 3} more
-              </Sans>
+              </Text>
             </TouchableWithoutFeedback>
           )}
-        </Sans>
+        </Text>
       </Flex>
     )
   }
 
+  getArtworkTitleAndMaybeDate = () => {
+    const { artwork } = this.props
+
+    if (artwork.date) {
+      return `${artwork.title!}${comma} ${artwork.date}`
+    }
+
+    return artwork.title!
+  }
+
   render() {
     const { artwork } = this.props
-    const addedComma = artwork.date ? ", " : ""
     const displayAuctionLotLabel =
       artwork.isInAuction &&
       artwork.saleArtwork &&
@@ -157,15 +166,8 @@ export class ArtworkTombstone extends React.Component<
           </Sans>
         )}
         <Flex flexDirection="row" flexWrap="wrap">
-          <Sans size="3">
-            <Sans color="black60" size="3">
-              {artwork.title + addedComma}
-            </Sans>
-            {!!artwork.date && (
-              <Sans color="black60" size="3">
-                {artwork.date}
-              </Sans>
-            )}
+          <Sans color="black60" size="3">
+            {this.getArtworkTitleAndMaybeDate()}
           </Sans>
         </Flex>
         {!!artwork.medium && (
