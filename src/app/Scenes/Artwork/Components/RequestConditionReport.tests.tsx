@@ -1,7 +1,8 @@
 import { act, fireEvent, waitFor } from "@testing-library/react-native"
 import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
-import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
+import { RequestConditionReportTestQuery } from "__generated__/RequestConditionReportTestQuery.graphql"
+import { mockPostEventToProviders } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -22,12 +23,19 @@ const me: RequestConditionReport_me$data = {
   internalID: "some-id",
 }
 
+jest.unmock("react-tracking")
 jest.unmock("react-relay")
 
 describe("RequestConditionReport", () => {
+  let env: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    env = createMockEnvironment()
+  })
+
   const TestRenderer = () => {
     return (
-      <QueryRenderer<RequestConditionReportQuery>
+      <QueryRenderer<RequestConditionReportTestQuery>
         environment={env}
         variables={{ artworkID: "some-internal-id" }}
         query={graphql`
@@ -52,79 +60,123 @@ describe("RequestConditionReport", () => {
     )
   }
 
-  let env: ReturnType<typeof createMockEnvironment>
+  describe("component", () => {
+    it("renders correctly", () => {
+      const { queryByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
+      resolveMostRecentRelayOperation(env, {
+        Me: () => me,
+        Artwork: () => artwork,
+      })
 
-  it("renders correctly", () => {
-    const { queryByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(env, {
-      Me: () => me,
-      Artwork: () => artwork,
+      expect(queryByText("Request condition report")).toBeTruthy()
+      expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
+      expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
     })
 
-    expect(queryByText("Request condition report")).toBeTruthy()
-    expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
-    expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
-  })
+    it("shows an error modal on failure", async () => {
+      const { getByText, queryByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
-  it("shows an error modal on failure", async () => {
-    const { getByText, queryByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      resolveMostRecentRelayOperation(env, {
+        Me: () => me,
+        Artwork: () => artwork,
+      })
 
-    resolveMostRecentRelayOperation(env, {
-      Me: () => me,
-      Artwork: () => artwork,
-    })
+      expect(queryByText("Request condition report")).toBeTruthy()
+      fireEvent.press(getByText("Request condition report"))
 
-    expect(queryByText("Request condition report")).toBeTruthy()
-    fireEvent.press(getByText("Request condition report"))
+      // successfully tracks the press of the button
+      expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
+      expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action_name": "requestConditionReport",
+            "action_type": "tap",
+            "context_module": "ArtworkDetails",
+          },
+        ]
+      `)
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
-      "RequestConditionReportMutation"
-    )
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
+        "RequestConditionReportMutation"
+      )
 
-    act(() => env.mock.rejectMostRecentOperation(new Error("Error saving artwork")))
+      act(() => env.mock.rejectMostRecentOperation(new Error("Error saving artwork")))
 
-    expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
+      expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
 
-    await waitFor(() =>
+      await waitFor(() =>
+        expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", true)
+      )
+
+      // tracks the fail event successfully
+      expect(mockPostEventToProviders).toHaveBeenCalledTimes(2)
+      expect(mockPostEventToProviders.mock.calls[1]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action_name": "requestConditionReport",
+            "action_type": "fail",
+            "context_module": "ArtworkDetails",
+          },
+        ]
+      `)
+
       expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", true)
-    )
-
-    expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", true)
-    expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
-  })
-
-  it("shows a success modal on success", async () => {
-    const { getByText, queryByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
-
-    resolveMostRecentRelayOperation(env, {
-      Me: () => me,
-      Artwork: () => artwork,
+      expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
     })
 
-    expect(queryByText("Request condition report")).toBeTruthy()
-    fireEvent.press(getByText("Request condition report"))
+    it("shows a success modal on success", async () => {
+      const { getByText, queryByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
-      "RequestConditionReportMutation"
-    )
+      resolveMostRecentRelayOperation(env, {
+        Me: () => me,
+        Artwork: () => artwork,
+      })
 
-    act(() =>
-      env.mock.resolveMostRecentOperation({ data: { requestConditionReport: { success: true } } })
-    )
+      expect(queryByText("Request condition report")).toBeTruthy()
+      fireEvent.press(getByText("Request condition report"))
 
-    expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
-    expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
+      // successfully tracks the press of the button
+      expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
+      expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action_name": "requestConditionReport",
+            "action_type": "tap",
+            "context_module": "ArtworkDetails",
+          },
+        ]
+      `)
 
-    await waitFor(() =>
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
+        "RequestConditionReportMutation"
+      )
+
+      act(() =>
+        env.mock.resolveMostRecentOperation({ data: { requestConditionReport: { success: true } } })
+      )
+
+      expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
+      expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)
+
+      await waitFor(() =>
+        expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", true)
+      )
+
+      // tracks the success event successfully
+      expect(mockPostEventToProviders).toHaveBeenCalledTimes(2)
+      expect(mockPostEventToProviders.mock.calls[1]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action_name": "requestConditionReport",
+            "action_type": "success",
+            "context_module": "ArtworkDetails",
+          },
+        ]
+      `)
+
       expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", true)
-    )
-
-    expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", true)
-    expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
+      expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
+    })
   })
 })
