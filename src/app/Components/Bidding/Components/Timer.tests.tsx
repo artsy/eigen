@@ -17,7 +17,7 @@ describe("Timer", () => {
     jest.useFakeTimers()
 
     // Thursday, May 10, 2018 8:22:32.000 PM UTC
-    Date.now = () => DATE_NOW
+    Date.now = jest.fn(() => DATE_NOW)
 
     futureTime = moment(DATE_NOW).add(1, "second").toISOString()
     pastTime = moment(DATE_NOW).subtract(1, "second").toISOString()

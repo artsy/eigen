@@ -65,7 +65,7 @@ describe("ImageCarouselEmbedded", () => {
     expect(context.fullScreenState.current).toBe("none")
 
     fireEvent.press(getAllByLabelText("Image with Loading State")[0])
-    expect(context.fullScreenState.current).toBe("none")
+    expect(context.fullScreenState.current).not.toBe("none")
   })
 
   it("does nothing when you tap an image without deepZoom", () => {
