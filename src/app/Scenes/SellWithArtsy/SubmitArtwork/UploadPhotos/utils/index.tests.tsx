@@ -1,8 +1,4 @@
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import "react-native"
-
-jest.mock("@react-native-community/cameraroll", () => jest.fn())
-
 import { SellWithArtsy } from "."
 
 jest.unmock("react-relay")
