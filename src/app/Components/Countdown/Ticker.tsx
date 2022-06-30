@@ -78,7 +78,7 @@ interface SimpleTickerProps extends ExtractProps<typeof Sans> {
 export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator, ...rest }) => {
   const sections = duration ? durationSections(duration, ["d", "h", "m", "s"]) : []
   return (
-    <Sans {...rest}>
+    <Sans accessibilityLabel="Simple Ticker" {...rest}>
       {sections
         .map(({ time, label }, idx) =>
           idx < sections.length - 1 ? time + label + separator : time + label
@@ -106,5 +106,9 @@ export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted
   }
   const timerInfo = getTimerInfo(time, { hasStarted, isExtended })
 
-  return <Text color={timerInfo.color}>{timerInfo.copy}</Text>
+  return (
+    <Text color={timerInfo.color} accessibilityLabel="Modern Ticker">
+      {timerInfo.copy}
+    </Text>
+  )
 }
