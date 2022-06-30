@@ -1,4 +1,8 @@
-import { getCombinedChangeLog, getPlaformSpecificChangeLog, isMergedAfter } from "./generatePlatformChangelog"
+import {
+  getCombinedChangeLog,
+  getPlaformSpecificChangeLog,
+  isMergedAfter,
+} from "./generatePlatformChangelog"
 
 jest.mock("../../app.json", () => ({ version: "6.9.4" }))
 
@@ -30,7 +34,11 @@ describe("getCombinedChangeLog", () => {
   it("gets the combined changelog from all prs", () => {
     expect(getCombinedChangeLog(prs as any)).toEqual({
       androidUserFacingChanges: [],
-      crossPlatformUserFacingChanges: ["Added a new button", "Added an other button", "Fixed modal close button"],
+      crossPlatformUserFacingChanges: [
+        "Added a new button",
+        "Added an other button",
+        "Fixed modal close button",
+      ],
       devChanges: ["Improved changelog tooling", "Upgraded lodash"],
       iOSUserFacingChanges: ["fixed button on iOS"],
     })
@@ -49,7 +57,11 @@ describe("getPlaformSpecificChangeLog", () => {
   it("gets the combined changelog from all prs on app store updates", () => {
     const changelog = {
       androidUserFacingChanges: [],
-      crossPlatformUserFacingChanges: ["Added a new button", "Added an other button", "Fixed modal close button"],
+      crossPlatformUserFacingChanges: [
+        "Added a new button",
+        "Added an other button",
+        "Fixed modal close button",
+      ],
       devChanges: ["Improved changelog tooling", "Upgraded lodash"],
       iOSUserFacingChanges: ["fixed button on iOS"],
     }
@@ -78,7 +90,11 @@ describe("getPlaformSpecificChangeLog", () => {
   it("gets the combined changelog from all prs on beta updates", () => {
     const changelog = {
       androidUserFacingChanges: [],
-      crossPlatformUserFacingChanges: ["Added a new button", "Added an other button", "Fixed modal close button"],
+      crossPlatformUserFacingChanges: [
+        "Added a new button",
+        "Added an other button",
+        "Fixed modal close button",
+      ],
       devChanges: ["Improved changelog tooling", "Upgraded lodash"],
       iOSUserFacingChanges: ["fixed button on iOS"],
     }

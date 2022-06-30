@@ -38,13 +38,13 @@ module.exports = function preheatGraphQLCache(queryParams, filename, freshness, 
     },
   }
 
-  const req = https.request(options, res => {
+  const req = https.request(options, (res) => {
     if (res.statusCode !== 200) {
       throw new Error(`Failed with status code: ${res.statusCode}`)
     }
 
     const responseData = []
-    res.on("data", chunk => responseData.push(chunk))
+    res.on("data", (chunk) => responseData.push(chunk))
 
     res.on("end", () => {
       const graphqlResponse = JSON.parse(Buffer.concat(responseData).toString("utf8"))
@@ -60,17 +60,22 @@ module.exports = function preheatGraphQLCache(queryParams, filename, freshness, 
           freshness: freshness.getTime() / 1000, // Time since UNIX epoc in seconds.
         }),
         "utf8",
-        error => {
+        (error) => {
           if (error) throw error
         }
       )
-      fs.writeFile(path.join(ASSETS_DIR, CREATED_AT_FILENAME), new Date().toISOString(), "utf8", error => {
-        if (error) throw error
-      })
+      fs.writeFile(
+        path.join(ASSETS_DIR, CREATED_AT_FILENAME),
+        new Date().toISOString(),
+        "utf8",
+        (error) => {
+          if (error) throw error
+        }
+      )
     })
   })
 
-  req.on("error", error => {
+  req.on("error", (error) => {
     throw error
   })
 

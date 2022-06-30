@@ -14,7 +14,7 @@ const octokit = new Octokit({ auth: process.env.CHANGELOG_GITHUB_TOKEN_KEY })
  */
 const exec = (command) => {
   const task = spawnSync(command, { shell: true })
-  if (task.status != 0) {
+  if (task.status !== 0) {
     console.log(task.stderr.toString())
   }
   return task.stdout.toString()
@@ -99,7 +99,10 @@ const main = async () => {
   // Make sure we are on a clean branch and checkout to it
   forceCheckout()
   // Run the changelog updater
-  await Promise.all([updatePlatfromChangeLog("android", "beta"), updatePlatfromChangeLog("ios", "beta")])
+  await Promise.all([
+    updatePlatfromChangeLog("android", "beta"),
+    updatePlatfromChangeLog("ios", "beta"),
+  ])
 
   // Check if we have any changes in the changelog
   // If no changes were found, no further action needed, quit

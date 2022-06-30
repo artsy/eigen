@@ -19,7 +19,6 @@ export function get<O, T>(
     } else {
       throw new Error()
     }
-    return
   } catch (error) {
     return valueIfFailOrUndefined
   }

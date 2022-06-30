@@ -15,7 +15,7 @@ const fs = require("fs")
 
 const exec = (command, cwd) => {
   const task = spawnSync(command, { shell: true, cwd })
-  if (task.status != 0) {
+  if (task.status !== 0) {
     throw new Error(task.stderr.toString())
   }
   return task.stdout.toString()

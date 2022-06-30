@@ -81,7 +81,10 @@ async function getPRsBeforeDate(commitDate) {
       direction: "desc",
       per_page: 20,
     },
-    (/** @type {{ data: import('@octokit/rest').PullsGetResponse[]; }} */ response, /** @type {() => void} */ done) => {
+    (
+      /** @type {{ data: import('@octokit/rest').PullsGetResponse[]; }} */ response,
+      /** @type {() => void} */ done
+    ) => {
       // Bail when some of the PRs were merged before the tag
       if (response.data.find((pr) => isMergedAfter(pr.merged_at, commitDate))) {
         return response.data
