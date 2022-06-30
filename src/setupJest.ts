@@ -1,19 +1,12 @@
 import "@testing-library/jest-native/extend-expect"
-import "jest-extended"
-
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
 import { mockNavigate } from "app/tests/navigationMocks"
 import chalk from "chalk"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import Enzyme from "enzyme"
 import expect from "expect"
+import "jest-extended"
 import { format } from "util"
-
-import "app/tests/renderUntil"
 
 // MARK: - General preparation
 
-Enzyme.configure({ adapter: new Adapter() })
 const originalConsoleError = console.error
 // TODO: Remove once we're no longer using JSDOM for enzyme static rendering.
 console.error = (message?: any) => {
