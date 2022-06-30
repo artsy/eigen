@@ -11,6 +11,7 @@ import { useStripeConfig } from "app/utils/useStripeConfig"
 import React, { useEffect } from "react"
 import { NativeModules, Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
+import Config from "react-native-config"
 import RNShake from "react-native-shake"
 import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
@@ -68,6 +69,9 @@ const Main: React.FC = () => {
   useRageShakeAdminMenu()
   useDebugging()
   useEffect(() => {
+    if (Config.OSS === "True") {
+      return
+    }
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
