@@ -1,8 +1,9 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsTestsQuery } from "__generated__/ArtworkActionsTestsQuery.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -232,9 +233,7 @@ describe("ArtworkActions", () => {
       const saveMutation = env.mock.getMostRecentOperation()
       expect(saveMutation.request.node.operation.name).toEqual("ArtworkActionsSaveMutation")
 
-      act(() => {
-        env.mock.rejectMostRecentOperation(new Error("Error saving artwork"))
-      })
+      rejectMostRecentRelayOperation(env, new Error("Error saving artwork"))
 
       expect(queryByText("Save")).toBeTruthy()
       expect(queryByText("Save")).toHaveProp("color", "#000000")

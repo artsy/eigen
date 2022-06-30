@@ -1,6 +1,7 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQuery } from "__generated__/PartnerCardTestsQuery.graphql"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -266,9 +267,7 @@ describe("PartnerCard", () => {
 
       fireEvent.press(getByText("Follow"))
 
-      act(() => {
-        mockEnvironment.mock.rejectMostRecentOperation(new Error())
-      })
+      rejectMostRecentRelayOperation(mockEnvironment, new Error())
 
       expect(getByText("Follow")).toBeTruthy()
       expect(queryByText("Following")).toBeFalsy()
