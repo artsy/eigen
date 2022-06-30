@@ -7,6 +7,7 @@ import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.gra
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import {
   ArtworkInquiryContext,
@@ -181,7 +182,7 @@ describe("<InquiryModal />", () => {
       const wrapper = getWrapper()
       wrapper.root.findByProps({ testID: "checkbox-shipping_quote" }).props.onPress()
       press(wrapper.root, { text: "Send" })
-      env.mock.rejectMostRecentOperation(new Error())
+      rejectMostRecentRelayOperation(env, new Error())
       await flushPromiseQueue()
       expect(extractText(wrapper.root)).toContain("Sorry, we were unable to send this message")
     })

@@ -7,6 +7,7 @@ import { createMockEnvironment } from "relay-test-utils"
 import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { EmailConfirmationBannerFragmentContainer } from "./EmailConfirmationBanner"
@@ -168,7 +169,7 @@ describe("EmailConfirmationBanner", () => {
 
     getSubmitButton(component).props.onPress()
 
-    env.mock.rejectMostRecentOperation(new Error("failed to fetch"))
+    rejectMostRecentRelayOperation(env, new Error("failed to fetch"))
 
     await flushPromiseQueue()
     expect(extractText(component)).toEqual("Something went wrong. Try again?")
