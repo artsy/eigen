@@ -11,6 +11,7 @@ interface ModalProps extends ViewProps {
   visible?: boolean
   textAlign?: SansProps["textAlign"]
   closeModal?: () => void
+  accessibilityLabel?: string
 }
 
 const ModalBackgroundView = styled.View`
@@ -54,7 +55,7 @@ export class Modal extends React.Component<ModalProps, any> {
   }
 
   render() {
-    const { headerText, detailText } = this.props
+    const { headerText, detailText, accessibilityLabel } = this.props
     const markdownRules = {
       ...DEFAULT_MARKDOWN_RULES,
       paragraph: {
@@ -71,7 +72,12 @@ export class Modal extends React.Component<ModalProps, any> {
 
     return (
       <View style={{ marginTop: 22 }}>
-        <RNModal animationType="fade" transparent visible={this.state.modalVisible}>
+        <RNModal
+          accessibilityLabel={accessibilityLabel}
+          animationType="fade"
+          transparent
+          visible={this.state.modalVisible}
+        >
           <TouchableWithoutFeedback onPress={() => this.closeModal()}>
             <ModalBackgroundView>
               <TouchableWithoutFeedback>
