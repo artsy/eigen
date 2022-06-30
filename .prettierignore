@@ -1,5 +1,3 @@
-src/__generated__/*
-data/complete.queryMap.json
-Pod/Assets/PreHeatedGraphQLCache/*.json
 node_modules
-package.json
+__generated__
+data/complete.queryMap.json
