@@ -35,7 +35,6 @@ describe("TimeOffsetProvider", () => {
 
   beforeEach(() => {
     mockEnvironment.mockClear()
-    jest.useFakeTimers()
     Date.now = jest.fn(() => DATE_NOW)
   })
 
