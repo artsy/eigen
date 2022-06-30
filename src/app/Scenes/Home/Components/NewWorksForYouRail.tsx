@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { NewWorksForYouRail_me$key } from "__generated__/NewWorksForYouRail_me.graphql"
+import { NewWorksForYouRail_artworkConnection$key } from "__generated__/NewWorksForYouRail_artworkConnection.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
@@ -14,19 +14,19 @@ import { RailScrollProps } from "./types"
 
 interface NewWorksForYouRailProps {
   title: string
-  me: NewWorksForYouRail_me$key
+  artworkConnection: NewWorksForYouRail_artworkConnection$key
   mb?: number
 }
 
 export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = ({
   title,
-  me,
+  artworkConnection,
   scrollRef,
   mb,
 }) => {
   const { trackEvent } = useTracking()
 
-  const { newWorksByInterestingArtists } = useFragment(artworksFragment, me)
+  const { artworksForUser } = useFragment(artworksFragment, artworkConnection)
 
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -35,7 +35,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  const artworks = extractNodes(newWorksByInterestingArtists)
+  const artworks = extractNodes(artworksForUser)
 
   if (!artworks.length) {
     return null
@@ -73,17 +73,12 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 }
 
 const artworksFragment = graphql`
-  fragment NewWorksForYouRail_me on Me
-  @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
-    newWorksByInterestingArtists(first: $count, after: $cursor)
-      @connection(key: "NewWorksForYouRail_newWorksByInterestingArtists") {
-      pageInfo {
-        hasNextPage
-        startCursor
-        endCursor
-      }
+  fragment NewWorksForYouRail_artworkConnection on Viewer {
+    artworksForUser(includeBackfill: true, first: 20) {
       edges {
         node {
+          title
+          internalID
           ...SmallArtworkRail_artworks
         }
       }
