@@ -142,7 +142,7 @@ export const isALocalImage = (imageUrl?: string | null) => {
   if (!imageUrl) {
     return false
   }
-  const regex = new RegExp("^[.|/|asset://|file:///].*.[/.](gif|jpg|jpeg|bmp|webp|png)$")
+  const regex = /^[.|/|asset://|file:///].*.[/.](gif|jpg|jpeg|bmp|webp|png)$/
   return regex.test(imageUrl)
 }
 

@@ -85,7 +85,7 @@ export function replaceParams(url: string, params: any) {
 }
 
 function isProtocolEncoded(url: string): boolean {
-  const regex = new RegExp("^(http%|https%|%)")
+  const regex = /^(http%|https%|%)/
   return regex.test(url)
 }
 

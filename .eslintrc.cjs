@@ -22,6 +22,8 @@ module.exports = {
     // react, react-hooks, react-native, jest, eslint-comments: these come from the @react-native-community extension
     "relay",
     "promise",
+    "no-loops",
+    "regexp",
   ],
 
 
@@ -60,6 +62,7 @@ module.exports = {
     "jest/no-identical-title": OFF,
     "no-async-promise-executor": OFF,
     "jest/no-disabled-tests": OFF,
+    "no-loops/no-loops": OFF, // should be error
     "jest/valid-expect": OFF,
     "@typescript-eslint/ban-ts-comment": OFF,
     "no-inner-declarations": OFF,
@@ -82,16 +85,25 @@ module.exports = {
     "react-native/no-inline-styles": OFF,
     "react-native-a11y/has-valid-accessibility-ignores-invert-colors": OFF,
     "@typescript-eslint/prefer-ts-expect-error": OFF, // should be an error
+    "regexp/no-useless-flag": OFF,
     "promise/always-return": OFF,
     "promise/catch-or-return": OFF,
     "promise/param-names": OFF,
     "react/no-unstable-nested-components": OFF,
     "react-hooks/rules-of-hooks": OFF, // OMG ENABLE THIS SOON
     "no-empty": OFF,
+    "regexp/match-any": OFF,
     "relay/unused-fields": OFF, // could be a warning
+    "regexp/no-empty-alternative": OFF,
+    "regexp/confusing-quantifier": OFF,
     "relay/generated-flow-types": OFF, // this plugin is being weird and its not seeing the types correctly
     "relay/must-colocate-fragment-spreads": OFF, // should be an error
     "relay/no-future-added-value": OFF, // warning?
-    "react-native-a11y/has-valid-accessibility-descriptors": OFF,
+    "regexp/no-dupe-characters-character-class": OFF,
+    "regexp/strict": OFF,
+    "regexp/optimal-quantifier-concatenation": OFF,
+    "regexp/no-useless-non-capturing-group": OFF,
+    "regexp/no-useless-escape": OFF,
+    "regexp/no-unused-capturing-group": OFF,
   },
 }

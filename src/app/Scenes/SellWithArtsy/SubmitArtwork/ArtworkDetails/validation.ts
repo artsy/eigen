@@ -133,7 +133,7 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
       is: (countryCode) => countryCode?.toUpperCase() === "US",
       then: Yup.string()
         .required(usPostalCodeErrorMessage)
-        .matches(/^[0-9]{5}$/, usPostalCodeErrorMessage)
+        .matches(/^\d{5}$/, usPostalCodeErrorMessage)
         .trim(),
       otherwise: Yup.string().when("countryCode", {
         is: (countryCode) => countriesRequirePostalCode.includes(countryCode?.toUpperCase()),
