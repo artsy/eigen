@@ -65,7 +65,7 @@ describe("collection header", () => {
 
     expect(queryByLabelText("Read more")).toBeTruthy()
     strArr.forEach((str) => {
-      expect(queryByText(str, { exact: false })).toBeTruthy()
+      expect(queryByText(str)).toBeTruthy()
     })
   })
 })
