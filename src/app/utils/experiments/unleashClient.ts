@@ -11,6 +11,10 @@ import { EXPERIMENT_NAME, experiments } from "../experiments"
  * or create a new one in the requested env.
  */
 export function getUnleashClient(env?: "production" | "staging") {
+  if (Config.OSS === "True") {
+    return null
+  }
+
   if (!unleashClient || (env !== undefined && env !== envBeingUsed)) {
     if (env !== undefined) {
       envBeingUsed = env
