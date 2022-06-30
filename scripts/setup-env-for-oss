@@ -5,7 +5,7 @@ touch .env.ci
 cp .env.example .env.shared
 
 # Set the OSS flag to true
-sed 's/OSS=.*/OSS=True/g' .env.shared
+sed -i'old' 's/OSS=.*/OSS=True/g' .env.shared
 
 cp metaflags.example.json metaflags.json
 
