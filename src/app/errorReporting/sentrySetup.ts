@@ -13,13 +13,15 @@ export const eigenSentryReleaseName = () => {
 }
 
 export function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
-  if (!Config.SENTRY_DSN) {
+  const sentryDSN = Config.SENTRY_DSN
+  const ossUser = Config.OSS === "True"
+  if ((!sentryDSN || sentryDSN.length <= 1) && !ossUser) {
     console.error("Sentry DSN not set!!")
     return
   }
 
   Sentry.init({
-    dsn: Config.SENTRY_DSN,
+    dsn: !ossUser ? sentryDSN : undefined,
     release: eigenSentryReleaseName(),
     dist: getBuildNumber(),
     enableAutoSessionTracking: true,

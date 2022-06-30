@@ -18,6 +18,7 @@ import {
   TextTreatment as TextTreatmentWithUnits,
   TextVariant as TextVariantV3,
 } from "@artsy/palette-tokens/dist/typography/v3"
+import Config from "react-native-config"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
@@ -147,25 +148,31 @@ const fixTextTreatments = (
   return textTreatments
 }
 
+const isOSS = Config.OSS === "True"
+const RegularFontFamily = isOSS ? "HelveticaNeue" : "Unica77LL-Regular"
+const MediumFontFamily = isOSS ? "HelveticaNeue-Medium" : "Unica77LL-Medium"
+const ItalicFontFamily = isOSS ? "HelveticaNeue-Italic" : "Unica77LL-Italic"
+const MediumItalicFontFamily = isOSS ? "HelveticaNeue-MediumItalic" : "Unica77LL-MediumItalic"
+
 const THEMES = {
   v2: {
     ...THEME_V2,
     fontFamily: {
       sans: {
-        regular: { normal: "Unica77LL-Regular", italic: "Unica77LL-Italic" },
-        medium: { normal: "Unica77LL-Medium", italic: "Unica77LL-MediumItalic" },
+        regular: { normal: RegularFontFamily, italic: ItalicFontFamily },
+        medium: { normal: MediumFontFamily, italic: MediumItalicFontFamily },
         semibold: { normal: null, italic: null },
       },
       serif: {
         regular: {
-          normal: "Unica77LL-Regular",
-          italic: "Unica77LL-Italic",
+          normal: RegularFontFamily,
+          italic: ItalicFontFamily,
         },
         medium: { normal: null, italic: null },
-        semibold: { normal: "Unica77LL-Medium", italic: null },
+        semibold: { normal: MediumFontFamily, italic: null },
       },
     },
-    fonts: { sans: "Unica77LL-Regular", serif: "Unica77LL-Regular" },
+    fonts: { sans: RegularFontFamily, serif: RegularFontFamily },
     space: fixSpaceUnitsV2(THEME_V2.space),
   },
   v3: {
@@ -174,10 +181,10 @@ const THEMES = {
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: {
       sans: {
-        regular: "Unica77LL-Regular",
-        italic: "Unica77LL-Italic",
-        medium: "Unica77LL-Medium",
-        mediumItalic: "Unica77LL-MediumItalic",
+        regular: RegularFontFamily,
+        italic: ItalicFontFamily,
+        medium: MediumFontFamily,
+        mediumItalic: MediumItalicFontFamily,
       },
     },
     textTreatments: fixTextTreatments(textVariantsWithUnits),
@@ -192,10 +199,10 @@ const THEMES = {
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: {
       sans: {
-        regular: "Unica77LL-Regular",
-        italic: "Unica77LL-Italic",
-        medium: "Unica77LL-Medium",
-        mediumItalic: "Unica77LL-MediumItalic",
+        regular: RegularFontFamily,
+        italic: ItalicFontFamily,
+        medium: MediumFontFamily,
+        mediumItalic: MediumItalicFontFamily,
       },
     },
     textTreatments: fixTextTreatments(textVariantsWithUnits),
@@ -210,10 +217,10 @@ const THEMES = {
     space: fixSpaceUnitsV3(spaceNumbers),
     fonts: {
       sans: {
-        regular: "Unica77LL-Regular",
-        italic: "Unica77LL-Italic",
-        medium: "Unica77LL-Medium",
-        mediumItalic: "Unica77LL-MediumItalic",
+        regular: RegularFontFamily,
+        italic: ItalicFontFamily,
+        medium: MediumFontFamily,
+        mediumItalic: MediumItalicFontFamily,
       },
     },
     textTreatments: fixTextTreatments(textVariantsWithUnits),
