@@ -54,23 +54,6 @@ See [\`Pill.tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c
   }
 }
 
-const preventUsingRenderRelayTree = () => {
-  const newRenderRelayTreeImports = getCreatedFileNames(danger.git.created_files)
-    .filter(testOnlyFilter)
-    .filter((filename) => {
-      const content = fs.readFileSync(filename).toString()
-      return content.includes('from "app/tests/renderRelayTree"')
-    })
-  if (newRenderRelayTreeImports.length > 0) {
-    warn(`We are trying to migrate away from \`renderRelayTree\` towards \`relay-test-utils\`. Check the following test files:
-
-  ${newRenderRelayTreeImports.map((filename) => `- \`${filename}\``).join("\n")}
-
-  See [\`LoggedInUserInfo-tests.tsx\`](https://github.com/artsy/eigen/blob/f33577ebb09800224731365734be411b66ad8126/src/lib/Scenes/MyProfile/__tests__/LoggedInUserInfo-tests.tsx) as an example, or [the docs](https://relay.dev/docs/en/testing-relay-components).
-    `)
-  }
-}
-
 // Validates that we've not accidentally let in a testing
 // shortcut to simplify dev work
 const verifyRemainingDevWork = () => {
@@ -128,7 +111,6 @@ export const useWebPs = (fileNames: string[]) => {
 
   preventUsingMoment()
   preventUsingTestRenderer()
-  preventUsingRenderRelayTree()
   verifyRemainingDevWork()
   useWebPs(newCreatedFileNames)
 })()
