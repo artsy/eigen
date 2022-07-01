@@ -1,11 +1,11 @@
-import { AppModule } from "app/AppRegistry"
-import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { parse } from "url"
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { Platform } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
-import { parse } from "url"
+import { AppModule } from "app/AppRegistry"
+import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { RouteMatcher } from "./RouteMatcher"
 
 export function matchRoute(

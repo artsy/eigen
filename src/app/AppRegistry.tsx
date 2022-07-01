@@ -31,9 +31,9 @@ import {
   AuctionResultsForArtistsYouFollowQueryRenderer,
   AuctionResultsForArtistsYouFollowScreenQuery,
 } from "./Scenes/AuctionResultsForArtistsYouFollow/AuctionResultsForArtistsYouFollow"
-import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
 import { CityView } from "./Scenes/City/City"
+import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { CityBMWListQueryRenderer } from "./Scenes/City/CityBMWList"
 import { CityFairListQueryRenderer } from "./Scenes/City/CityFairList"
 import { CityPicker } from "./Scenes/City/CityPicker"

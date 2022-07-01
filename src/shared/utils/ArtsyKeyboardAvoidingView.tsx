@@ -1,17 +1,17 @@
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import React, { useContext } from "react"
 import {
   Dimensions,
   Keyboard,
   KeyboardEvent,
   LayoutAnimation,
-  LayoutRectangle,
+  StyleSheet,
   Platform,
   StatusBar,
-  StyleSheet,
-  View,
+  LayoutRectangle,
   ViewProps,
+  View,
 } from "react-native"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 
 interface State {
   bottom: number
