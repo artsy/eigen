@@ -5,7 +5,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { cloneDeep } from "lodash"
 import { first, last } from "lodash"
@@ -57,7 +57,7 @@ const salesModule: CleanRelayFragment<SalesRail_salesModule$data> = {
 
 it("doesn't throw when rendered", () => {
   expect(() =>
-    renderWithWrappers(
+    renderWithWrappersLEGACY(
       <SalesRailFragmentContainer
         title="Auctions"
         salesModule={salesModule as any}
@@ -74,7 +74,7 @@ it("looks correct when rendered with sales missing artworks", () => {
     result.saleArtworksConnection.edges = []
   })
   expect(() =>
-    renderWithWrappers(
+    renderWithWrappersLEGACY(
       <SalesRailFragmentContainer
         title="Auctions"
         salesModule={salesCopy as any}
@@ -90,7 +90,7 @@ describe("image handling", () => {
     const sale = results[0]
     // @ts-ignore
     sale!.saleArtworksConnection!.edges = edges
-    return renderWithWrappers(
+    return renderWithWrappersLEGACY(
       <SalesRailFragmentContainer
         title="Auctions"
         salesModule={{ results: [sale] } as any}
@@ -177,7 +177,7 @@ describe("SalesRail Subtitle", () => {
 })
 
 it("routes to live URL if present, otherwise href", () => {
-  const tree = renderWithWrappers(
+  const tree = renderWithWrappersLEGACY(
     <SalesRailFragmentContainer
       title="Auctions"
       salesModule={salesModule as any}
@@ -196,7 +196,7 @@ it("routes to live URL if present, otherwise href", () => {
 
 describe("analytics", () => {
   it("tracks auction header taps", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <SalesRailFragmentContainer
         title="Auctions"
         salesModule={salesModule as any}
@@ -208,7 +208,7 @@ describe("analytics", () => {
   })
 
   it("tracks auction thumbnail taps", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <SalesRailFragmentContainer
         title="Auctions"
         salesModule={salesModule as any}

@@ -2,7 +2,7 @@ import { ConversationTestsQuery } from "__generated__/ConversationTestsQuery.gra
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
 import { navigationEvents } from "app/navigation/navigate"
 import Composer from "app/Scenes/Inbox/Components/Conversations/Composer"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -57,7 +57,7 @@ const TestRenderer = () => (
 )
 
 const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)

@@ -1,7 +1,7 @@
 import { ViewingRoomHeaderTestsQuery } from "__generated__/ViewingRoomHeaderTestsQuery.graphql"
 import { CountdownTimer } from "app/Components/Countdown/CountdownTimer"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -29,7 +29,7 @@ describe("ViewingRoomHeader", () => {
     mockEnvironment = createMockEnvironment()
   })
   it("renders a background image", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ heroImage: { imageURLs: { normalized: "Foo" } } }),
@@ -40,7 +40,7 @@ describe("ViewingRoomHeader", () => {
     expect(tree.root.findByProps({ testID: "background-image" }).props.imageURL).toBe("Foo")
   })
   it("renders a title", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ title: "Foo" }),
@@ -51,7 +51,7 @@ describe("ViewingRoomHeader", () => {
   })
 
   it("renders a countdown timer for scheduled", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ title: "ok", status: "scheduled" }),
@@ -61,7 +61,7 @@ describe("ViewingRoomHeader", () => {
   })
 
   it("renders a countdown timer for live", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ title: "ok", status: "live" }),
@@ -71,7 +71,7 @@ describe("ViewingRoomHeader", () => {
   })
 
   it("doesn't render a countdown timer for closed", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ title: "ok", status: "closed" }),
@@ -81,7 +81,7 @@ describe("ViewingRoomHeader", () => {
   })
 
   it("renders partner name", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({ partner: { name: "Foo" } }),
@@ -91,7 +91,7 @@ describe("ViewingRoomHeader", () => {
     expect(extractText(tree.root.findByProps({ testID: "partner-name" }))).toBe("Foo")
   })
   it("renders partner logo", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({
@@ -108,7 +108,7 @@ describe("ViewingRoomHeader", () => {
   })
 
   it("doesn't render logo (and doesn't crash) if partner profile is null", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({

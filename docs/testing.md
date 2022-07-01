@@ -14,7 +14,7 @@ https://github.com/artsy/relay-workshop/tree/main/src/exercises/03-Testing-Queri
 
 ## Case 1: Testing components using Higher Order Components (eg RelayQueryRenderer, RelayFragmentContainer etc.)
 
-renderWithWrappersTL : renderWithWrappers(TestingLibrary)
+renderWithWrappersTL : renderWithWrappersLEGACY(TestingLibrary)
 All our wrappeprs
 
 setupTestWrapper : abstract some of the boilerplate of Relay

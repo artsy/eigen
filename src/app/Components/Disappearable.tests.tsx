@@ -1,12 +1,12 @@
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Text } from "react-native"
 import { Disappearable } from "./Disappearable"
 
 describe("Disappearable", () => {
   const ref = { current: null as null | Disappearable }
   it(`disappears`, async () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <Disappearable ref={ref}>
         <Text>this is the content</Text>
       </Disappearable>

@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { FakeNavigator } from "../Helpers/FakeNavigator"
 import { BillingAddress } from "./BillingAddress"
 
@@ -10,7 +10,7 @@ describe("BillingAddress component", () => {
   const fakeNavigator = new FakeNavigator()
 
   it("renders without throwing an error", () => {
-    const billingAddressComponent = renderWithWrappers(
+    const billingAddressComponent = renderWithWrappersLEGACY(
       <BillingAddress onSubmit={onSubmitMock} navigator={fakeNavigator as any} />
     )
 

@@ -41,7 +41,7 @@ const componentWithWrappers = (component: ReactElement) => {
  * Renders a React Component with our page wrappers
  * @param component
  */
-export const renderWithWrappers = (component: ReactElement) => {
+export const renderWithWrappersLEGACY = (component: ReactElement) => {
   const wrappedComponent = componentWithWrappers(component)
   try {
     // tslint:disable-next-line:use-wrapped-components

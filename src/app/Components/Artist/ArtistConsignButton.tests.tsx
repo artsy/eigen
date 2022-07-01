@@ -4,7 +4,7 @@ import { navigate } from "app/navigation/navigate"
 
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -77,7 +77,7 @@ describe("ArtistConsignButton", () => {
     }
 
     it("renders microfunnel correctly", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "ArtistConsignButtonTestsQuery"
       )
@@ -92,7 +92,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("renders target supply correctly", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "ArtistConsignButtonTestsQuery"
       )
@@ -110,7 +110,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("guards against missing imageURL", async () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         const responseWithImage = cloneDeep(response)
 
@@ -130,7 +130,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("tracks clicks on outer container", async () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -166,7 +166,7 @@ describe("ArtistConsignButton", () => {
     }
 
     it("renders with data", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -179,7 +179,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("tracks clicks on outer container", async () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -215,7 +215,7 @@ describe("ArtistConsignButton", () => {
     }
 
     it("sends user to sales tab if not already there", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -232,7 +232,7 @@ describe("ArtistConsignButton", () => {
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
       ;(useSelectedTab as any).mockImplementation(() => "sell")
 
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],

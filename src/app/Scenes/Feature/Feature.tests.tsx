@@ -1,6 +1,6 @@
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FeatureQueryRenderer } from "./Feature"
 
@@ -14,7 +14,7 @@ beforeEach(() => {
 
 describe(FeatureQueryRenderer, () => {
   it("renders without failing", () => {
-    const tree = renderWithWrappers(<FeatureQueryRenderer slug="anything" />)
+    const tree = renderWithWrappersLEGACY(<FeatureQueryRenderer slug="anything" />)
 
     mockRelayEnvironment.mock.resolveMostRecentOperation((op) => {
       return MockPayloadGenerator.generate(op, {

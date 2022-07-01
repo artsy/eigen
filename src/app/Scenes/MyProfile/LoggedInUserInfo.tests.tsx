@@ -2,7 +2,7 @@ import Spinner from "app/Components/Spinner"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractText } from "app/tests/extractText"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Serif } from "palette"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -13,12 +13,12 @@ const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment
 
 describe(UserProfileQueryRenderer, () => {
   it("spins until the operation resolves", () => {
-    const tree = renderWithWrappers(<UserProfileQueryRenderer />)
+    const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
   })
 
   it("renders upon sucess", () => {
-    const tree = renderWithWrappers(<UserProfileQueryRenderer />)
+    const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "LoggedInUserInfoQuery"
     )
@@ -41,7 +41,7 @@ describe(UserProfileQueryRenderer, () => {
   })
 
   it("renders null upon failure", () => {
-    const tree = renderWithWrappers(<UserProfileQueryRenderer />)
+    const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
 
     rejectMostRecentRelayOperation(env, new Error())
 

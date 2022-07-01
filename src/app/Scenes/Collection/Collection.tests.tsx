@@ -1,7 +1,7 @@
 import { CollectionTestsQuery } from "__generated__/CollectionTestsQuery.graphql"
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import { FilterArtworkButton } from "app/Components/ArtworkFilter"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CollectionContainer } from "./Collection"
@@ -41,7 +41,7 @@ describe("Collection", () => {
   })
 
   it("does not display a filter artworks button by default", () => {
-    const root = renderWithWrappers(<TestRenderer />).root
+    const root = renderWithWrappersLEGACY(<TestRenderer />).root
 
     expect(root.findAllByType(AnimatedBottomButton)).toHaveLength(0)
     expect(root.findAllByType(FilterArtworkButton)).toHaveLength(0)

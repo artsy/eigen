@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { View } from "react-native"
 import { useSpace } from "../hooks"
 import { SpacingUnit } from "../Theme"
@@ -12,7 +12,7 @@ describe("space", () => {
   it("returns the correct space with a Theme provider", () => {
     const TestComponent = () => <SpaceView name={1} />
 
-    const tree = renderWithWrappers(<TestComponent />).root
+    const tree = renderWithWrappersLEGACY(<TestComponent />).root
     expect(tree.findByType(View).props.style.marginLeft).toBe(10)
   })
 
@@ -24,7 +24,7 @@ describe("space", () => {
         <SpaceView name="2" />
       </>
     )
-    const tree = renderWithWrappers(<TestComponent />).root
+    const tree = renderWithWrappersLEGACY(<TestComponent />).root
     const margins = tree.findAllByType(View).map((view) => view.props.style.marginLeft)
     expect(margins[0]).toBe(5) // for now we keep v2 accessible, even in v3
     expect(margins[1]).toBe(20)
