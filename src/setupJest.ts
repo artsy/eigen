@@ -188,7 +188,7 @@ jest.mock("@invertase/react-native-apple-authentication", () => ({
 }))
 
 // prettier-ignore
-// tslint:disable-next-line:no-empty
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 jest.mock("@sentry/react-native", () => ({ captureMessage() {},  init() {},  setUser() {},  addBreadcrumb() {},  withScope() {} }))
 
 // Needing to mock react-native-scrollable-tab-view due to Flow issue

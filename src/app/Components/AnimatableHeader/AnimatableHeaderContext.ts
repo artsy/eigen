@@ -1,4 +1,4 @@
-import React from "react"
+import { createContext, useContext } from "react"
 import Animated from "react-native-reanimated"
 
 export interface AnimatableHeaderContextType {
@@ -11,17 +11,14 @@ export interface AnimatableHeaderContextType {
   setTitle: (title: string) => void
 }
 
-export const AnimatableHeaderContext = React.createContext<AnimatableHeaderContextType>({
-  scrollOffsetY: new Animated.Value(0),
-  headerHeight: 0,
-  largeTitleVerticalOffset: 0,
-  title: "",
-  largeTitleHeight: new Animated.Value(0),
-  largeTitleEndEdge: new Animated.Value(0),
-  // tslint:disable-next-line:no-empty
-  setTitle: () => {},
-})
+export const AnimatableHeaderContext = createContext<AnimatableHeaderContextType>(null!)
 
 export function useAnimatableHeaderContext() {
-  return React.useContext(AnimatableHeaderContext)
+  const context = useContext(AnimatableHeaderContext)
+  if (!context) {
+    throw new Error(
+      "useAnimatableHeaderContext must be used within a AnimatableHeaderContext.Provider"
+    )
+  }
+  return context
 }

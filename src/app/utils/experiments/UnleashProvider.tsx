@@ -17,10 +17,10 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
   useEffect(() => {
     const client = getUnleashClient(unleashEnv)
 
-    // tslint:disable-next-line: no-empty
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     client.on("initialized", () => {})
 
-    // tslint:disable-next-line: no-empty
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     client.on("ready", () => {})
 
     client.on("update", () => {
@@ -31,7 +31,7 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
       console.error("Unleash error")
     })
 
-    // tslint:disable-next-line: no-empty
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     client.on("impression", () => {})
 
     return () => {

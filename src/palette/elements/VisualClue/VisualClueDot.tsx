@@ -1,5 +1,5 @@
-import { Flex, useColor } from "palette"
 import { StyleProp, ViewStyle } from "react-native"
+import { Flex, useColor } from "palette"
 
 const DOT_DIAMETER = 6
 

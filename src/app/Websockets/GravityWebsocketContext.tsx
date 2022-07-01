@@ -47,7 +47,10 @@ export const GravityWebsocketContextProvider: React.FC = ({ children }) => {
   )
 }
 
-export const useCable = () => {
-  const websocketContext = useContext(WebsocketContext) ?? {}
-  return websocketContext
+export function useCable() {
+  const context = useContext(WebsocketContext)
+  if (!context) {
+    throw new Error("useCable must be used within a WebsocketContext.Provider")
+  }
+  return context
 }

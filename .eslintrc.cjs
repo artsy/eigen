@@ -80,7 +80,6 @@ module.exports = {
     "@typescript-eslint/no-empty-interface": OFF,
     "react/no-children-prop": OFF,
     "react/no-unescaped-entities": OFF,
-    "@typescript-eslint/no-empty-function": OFF,
     "jest/no-identical-title": OFF,
     "no-async-promise-executor": OFF,
     "jest/no-disabled-tests": OFF,
@@ -132,7 +131,5 @@ module.exports = {
     "relay/must-colocate-fragment-spreads": OFF, // should be an error
     "relay/no-future-added-value": OFF, // warning?
     "relay/unused-fields": OFF, // could be a warning
-
   },
 }
-

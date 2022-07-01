@@ -14,7 +14,6 @@ if (__DEV__ || __TEST__) {
     // tslint:disable-next-line:no-var-requires
     const fileContents = require("../../../metaflags.json")
     metaflags = { ...metaflags, ...fileContents }
-    // tslint:disable-next-line:no-empty
   } catch {}
 }
 

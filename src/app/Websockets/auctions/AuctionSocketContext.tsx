@@ -114,7 +114,10 @@ export const AuctionWebsocketContextProvider: React.FC<AuctionWebsocketContextPr
   return <WebsocketContext.Provider value={receivedData}>{children}</WebsocketContext.Provider>
 }
 
-export const useAuctionWebsocketContext = () => {
-  const websocketContext = useContext(WebsocketContext) ?? {}
-  return websocketContext
+export function useAuctionWebsocketContext() {
+  const context = useContext(WebsocketContext)
+  if (!context) {
+    throw new Error("useAuctionWebsocketContext must be used within a WebsocketContext.Provider")
+  }
+  return context
 }

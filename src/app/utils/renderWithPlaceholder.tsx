@@ -51,8 +51,7 @@ export function renderWithPlaceholder<Props>({
         let data = networkError.response._bodyInit || "{}"
         try {
           data = JSON.parse(data)
-          // tslint:disable-next-line:no-empty
-        } catch (e) {}
+        } catch {}
         console.error("Error data", data)
       }
 

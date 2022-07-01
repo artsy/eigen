@@ -6,15 +6,14 @@ import { ToastDetails, ToastPlacement } from "./types"
 
 type ToastContextValue = typeof Toast
 
-const ToastContext = React.createContext<ToastContextValue>({
-  // tslint:disable-next-line:no-empty
-  show: () => {},
-  // tslint:disable-next-line:no-empty
-  hide: () => {},
-  // tslint:disable-next-line:no-empty
-  hideOldest: () => {},
-})
-const useToastContext = () => useContext(ToastContext)
+const ToastContext = React.createContext<ToastContextValue>(null!)
+function useToastContext() {
+  const context = useContext(ToastContext)
+  if (!context) {
+    throw new Error("useToastContext must be used within a ToastContext.Provider")
+  }
+  return context
+}
 
 export const useToast = () => {
   const contextValue = useToastContext()

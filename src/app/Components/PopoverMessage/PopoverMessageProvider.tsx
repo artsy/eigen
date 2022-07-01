@@ -14,12 +14,7 @@ const SHOW_ANIMATION_VELOCITY = 450
 const HIDE_ANIMATION_VELOCITY = 400
 const REPLACE_ANIMATION_VELOCITY = 350
 
-export const PopoverMessageContext = React.createContext<PopoverMessageContextContextValue>({
-  // tslint:disable-next-line:no-empty
-  show: () => {},
-  // tslint:disable-next-line:no-empty
-  hide: () => {},
-})
+export const PopoverMessageContext = React.createContext<PopoverMessageContextContextValue>(null!)
 
 export const PopoverMessageProvider: React.FC = ({ children }) => {
   const [popoverMessage, setPopoverMessage] = useState<PopoverMessageItem | null>(null)
