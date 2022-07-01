@@ -6661,6 +6661,8 @@ input CreateIdentityVerificationOverrideMutationInput {
 
 type CreateIdentityVerificationOverrideMutationPayload {
   clientMutationId: String
+
+  # On success: an identity verification with overrides
   createIdentityVerificationOverrideResponseOrError: CreateIdentityVerificationOverrideResponseOrError
 }
 
@@ -9081,7 +9083,7 @@ type IdentityVerificationOverrideMutationFailure {
 }
 
 type IdentityVerificationOverrideMutationSuccess {
-  identityVerificationOverride: IdentityVerificationOverride
+  identityVerification: IdentityVerification
 }
 
 type IdentityVerificationScanReference {
