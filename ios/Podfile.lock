@@ -499,12 +499,8 @@ PODS:
     - React-Core
   - react-native-shake (5.1.1):
     - React
-  - react-native-slider (4.2.1):
-    - React-Core
   - react-native-view-shot (3.1.2):
     - React
-  - react-native-viewpager (4.2.2):
-    - React-Core
   - react-native-webview (11.3.1):
     - React-Core
   - React-perflogger (0.66.4)
@@ -765,9 +761,7 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-shake (from `../node_modules/react-native-shake`)
-  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-view-shot (from `../node_modules/react-native-view-shot`)
-  - "react-native-viewpager (from `../node_modules/@react-native-community/viewpager`)"
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -974,12 +968,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-shake:
     :path: "../node_modules/react-native-shake"
-  react-native-slider:
-    :path: "../node_modules/@react-native-community/slider"
   react-native-view-shot:
     :path: "../node_modules/react-native-view-shot"
-  react-native-viewpager:
-    :path: "../node_modules/@react-native-community/viewpager"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-perflogger:
@@ -1174,9 +1164,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: 7cb7877ff31ebeb3d03ce0b4fbb616f121ddd859
   react-native-safe-area-context: f4f7cc09d81ae2d39dfd13e764d718969af07080
   react-native-shake: 67d43d6af4abfc299400b17fea7d2ec0754c72ac
-  react-native-slider: 241935e3ea8e47599c317f512f96ee8de607d4cb
   react-native-view-shot: 4475fde003fe8a210053d1f98fb9e06c1d834e1c
-  react-native-viewpager: ea945e2881ce9a4a8bcdc84de4ec65ff23c90f6e
   react-native-webview: 07fca3f4378bd6ea26254bf63119bfd70f4fabeb
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
   React-RCTActionSheet: 7d3041e6761b4f3044a37079ddcb156575fb6d89

@@ -2454,20 +2454,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-6.0.1.tgz#7d0adaf5cd8b7f77561a8e2d534cc61d6c25a0f6"
   integrity sha512-hajGhBGr4QsC6/mclyb2TlBBY8D3wiMxskO4u7zcQoYtX3CHrYjRJjgQFOwOIxLU+HaK1d7Kdk+kSxMlnMs4Kg==
 
-"@react-native-community/slider@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.2.1.tgz#8f1c8cf62de1bd91ce1e32585f7eb666f21e5025"
-  integrity sha512-6HUS5HbB9bvEN4GiwBlxECgPWQIugHE+kfnxqX2jHUl1SE57MRpw00m1qVs4hXtEPQndBl6mAQiGbKCOtLPVbg==
-
 "@react-native-community/viewpager@3.3.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-3.3.0.tgz#e613747a43a31a6f3278f817ba96fdaaa7941f23"
   integrity sha512-tyzh79l4t/hxiyS9QD3LRmWMs8KVkZzjrkQ8U8+8To1wmvVCBtp8BenvNsDLTBO7CpO/YmiThpmIdEZMr1WuVw==
-
-"@react-native-community/viewpager@^4.2.2":
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-4.2.2.tgz#e05d618829c589284326896c806200af90ae0986"
-  integrity sha512-XBAO/9gV0pb6VAqbaobdJp6slTgmf8TOAnIbERO1pKjIXoj2OrKYcma2VPB/02wzEzu7TE8jcbt3u6BT4fpXxA==
 
 "@react-native-cookies/cookies@6.0.11":
   version "6.0.11"
