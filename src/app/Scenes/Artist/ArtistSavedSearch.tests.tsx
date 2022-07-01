@@ -1,5 +1,6 @@
 import { fireEvent, within } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import _ from "lodash"
 import "react-native"
@@ -71,7 +72,7 @@ describe("Saved search banner on artist screen", () => {
   it("should an error message when something went wrong during the search criteria query", async () => {
     const { getByText } = getTree("something")
 
-    environment.mock.rejectMostRecentOperation(new Error())
+    rejectMostRecentRelayOperation(environment, new Error())
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     expect(getByText("Sorry, an error occured")).toBeTruthy()

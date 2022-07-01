@@ -3,6 +3,7 @@ import { RequestConditionReport_artwork$data } from "__generated__/RequestCondit
 import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
 import { RequestConditionReportTestQuery } from "__generated__/RequestConditionReportTestQuery.graphql"
 import { mockPostEventToProviders } from "app/tests/globallyMockedStuff"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -101,7 +102,7 @@ describe("RequestConditionReport", () => {
         "RequestConditionReportMutation"
       )
 
-      act(() => env.mock.rejectMostRecentOperation(new Error("Error saving artwork")))
+      rejectMostRecentRelayOperation(env, new Error("Error saving artwork"))
 
       expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
 

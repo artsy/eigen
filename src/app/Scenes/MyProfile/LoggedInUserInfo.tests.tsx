@@ -1,6 +1,7 @@
 import Spinner from "app/Components/Spinner"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractText } from "app/tests/extractText"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Serif } from "palette"
 import { act } from "react-test-renderer"
@@ -42,9 +43,7 @@ describe(UserProfileQueryRenderer, () => {
   it("renders null upon failure", () => {
     const tree = renderWithWrappers(<UserProfileQueryRenderer />)
 
-    act(() => {
-      env.mock.rejectMostRecentOperation(new Error())
-    })
+    rejectMostRecentRelayOperation(env, new Error())
 
     expect(tree).toMatchInlineSnapshot(`null`)
   })

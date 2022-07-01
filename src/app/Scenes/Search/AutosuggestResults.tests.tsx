@@ -4,6 +4,7 @@ import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractText } from "app/tests/extractText"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { CatchErrors } from "app/utils/CatchErrors"
 import { FlatList } from "react-native"
@@ -315,7 +316,7 @@ describe("AutosuggestResults", () => {
   it("should show the default error message", async () => {
     const { getByText } = renderWithWrappersTL(<TestWrapper query="michael" />)
 
-    act(() => env.mock.rejectMostRecentOperation(new Error("Bad connection")))
+    rejectMostRecentRelayOperation(env, new Error("Bad connection"))
 
     expect(
       getByText("There seems to be a problem with the connection. Please try again shortly.")
@@ -327,7 +328,7 @@ describe("AutosuggestResults", () => {
       <TestWrapper query="michael" showOnRetryErrorMessage />
     )
 
-    act(() => env.mock.rejectMostRecentOperation(new Error("Bad connection")))
+    rejectMostRecentRelayOperation(env, new Error("Bad connection"))
 
     expect(getByText("Unable to load")).toBeTruthy()
   })

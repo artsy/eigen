@@ -1,6 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
@@ -45,7 +46,7 @@ describe("SearchArtworks", () => {
 
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironment.mock.rejectMostRecentOperation(new Error("Bad connection"))
+    rejectMostRecentRelayOperation(mockEnvironment, new Error("Bad connection"))
 
     expect(getByText("Unable to load")).toBeTruthy()
   })
