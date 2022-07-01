@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { ArrowRightIcon } from "palette"
 import { View } from "react-native"
 import { ArrowDetails } from "./ArrowDetails"
@@ -6,7 +6,7 @@ import { ArrowDetails } from "./ArrowDetails"
 describe("ArrowDetails", () => {
   it("renders correct components", () => {
     const Noop: React.FC = () => <View />
-    const wrapper = renderWithWrappers(
+    const wrapper = renderWithWrappersLEGACY(
       <ArrowDetails>
         <Noop />
       </ArrowDetails>

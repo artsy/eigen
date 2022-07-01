@@ -6,7 +6,7 @@ import {
   ImageWrapper,
 } from "app/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -56,7 +56,7 @@ describe("Featured Collections Rail", () => {
   )
 
   const getWrapper = () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -101,18 +101,18 @@ describe("Featured Collections Rail", () => {
     })
 
     it("renders three collections in the Featured Collections Series", () => {
-      const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
+      const tree = renderWithWrappersLEGACY(<FeaturedCollectionsRail {...props} />).root
 
       expect(tree.findAllByType(ImageWrapper).length).toBe(3)
     })
 
     it("renders the collection hub rail title", () => {
-      const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
+      const tree = renderWithWrappersLEGACY(<FeaturedCollectionsRail {...props} />).root
       expect(tree.findByProps({ testID: "group" }).props.children).toBe("Curated Highlights")
     })
 
     it("renders each Featured Collection's title", () => {
-      const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
+      const tree = renderWithWrappersLEGACY(<FeaturedCollectionsRail {...props} />).root
 
       const title1 = tree.findByProps({ testID: "title-0" })
       const title2 = tree.findByProps({ testID: "title-1" })
@@ -124,7 +124,7 @@ describe("Featured Collections Rail", () => {
     })
 
     it("renders each Featured Collection's price guidance metadata", () => {
-      const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
+      const tree = renderWithWrappersLEGACY(<FeaturedCollectionsRail {...props} />).root
 
       const price1 = tree.findByProps({ testID: "price-0" })
       const price2 = tree.findByProps({ testID: "price-1" })
@@ -136,7 +136,7 @@ describe("Featured Collections Rail", () => {
     })
 
     it("navigates to a new collection when tapped", () => {
-      const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
+      const tree = renderWithWrappersLEGACY(<FeaturedCollectionsRail {...props} />).root
 
       const instance = tree.findAllByType(TouchableHighlight)[0]
       act(() => instance.props.onPress())

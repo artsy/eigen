@@ -1,7 +1,7 @@
 import { FairTestsQuery } from "__generated__/FairTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { NavigationalTabs, Tab } from "palette/elements/Tabs"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -47,7 +47,7 @@ describe("Fair", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)

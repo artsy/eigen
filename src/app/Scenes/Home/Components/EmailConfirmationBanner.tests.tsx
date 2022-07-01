@@ -8,7 +8,7 @@ import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmation
 import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { EmailConfirmationBannerFragmentContainer } from "./EmailConfirmationBanner"
 
@@ -40,7 +40,7 @@ describe("EmailConfirmationBanner", () => {
   )
 
   const mount = (data: { me: CleanRelayFragment<EmailConfirmationBanner_me$data> }) => {
-    const component = renderWithWrappers(<TestRenderer />)
+    const component = renderWithWrappersLEGACY(<TestRenderer />)
     env.mock.resolveMostRecentOperation({ data, errors: [] })
     return component
   }

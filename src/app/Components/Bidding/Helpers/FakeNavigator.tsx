@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Route } from "react-native"
 
@@ -34,7 +34,7 @@ export class FakeNavigator {
   nextStep() {
     const currentRoute = this.stack[this.stack.length - 1]
 
-    return renderWithWrappers(
+    return renderWithWrappersLEGACY(
       <>
         {React.createElement(currentRoute.component!, {
           ...currentRoute.passProps,

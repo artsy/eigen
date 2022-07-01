@@ -6,7 +6,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Text, TouchableHighlight, TouchableWithoutFeedback, View } from "react-native"
 import { getEssentialProps } from "./helper"
 import { useMultiSelect } from "./useMultiSelect"
@@ -72,7 +72,7 @@ describe("useMultiSelect", () => {
   }
 
   it("manages the nextParamValues", () => {
-    const tree = renderWithWrappers(<MockComponent initialData={initialState} />)
+    const tree = renderWithWrappersLEGACY(<MockComponent initialData={initialState} />)
 
     expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual("[]")
 
@@ -98,7 +98,7 @@ describe("useMultiSelect", () => {
   })
 
   it("dispatches filter updates", async () => {
-    const tree = renderWithWrappers(<MockComponent initialData={initialState} />)
+    const tree = renderWithWrappersLEGACY(<MockComponent initialData={initialState} />)
     const buttons = tree.root.findAllByType(TouchableWithoutFeedback)
 
     buttons[0].props.onPress()
@@ -124,7 +124,7 @@ describe("useMultiSelect", () => {
   })
 
   it("resets the state when cleared", async () => {
-    const tree = renderWithWrappers(<MockComponent initialData={initialState} />)
+    const tree = renderWithWrappersLEGACY(<MockComponent initialData={initialState} />)
     const buttons = tree.root.findAllByType(TouchableWithoutFeedback)
     const clear = tree.root.findByType(TouchableHighlight)
 

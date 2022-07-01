@@ -160,7 +160,7 @@ But we also use `test-renderer` (in order of preference), that we'd ultimately l
 
 - For setting up a test environment and mocking requests:
 
-  - [`renderWithWrappersTL`](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L88-L103) is our preferred test render helper
+  - [`renderWithWrappers`](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L88-L103) is our preferred test render helper
   - [`resolveMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/tests/resolveMostRecentRelayOperation.ts#L51-L64) is our helper for resolving relay queries.
   - [`rejectMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/tests/rejectMostRecentRelayOperation.ts) is our helper for rejecting relay queries.
   - [`relay-test-utils`](https://relay.dev/docs/guides/testing-relay-components/) is the preferred toolset.

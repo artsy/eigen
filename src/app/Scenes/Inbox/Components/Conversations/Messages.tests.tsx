@@ -1,6 +1,6 @@
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Flex, Text } from "palette"
 import "react-native"
 import { RefreshControl } from "react-native"
@@ -59,7 +59,7 @@ const TestRenderer = () => (
 )
 
 const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)

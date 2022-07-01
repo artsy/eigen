@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
 
 import { BillingAddress } from "../Screens/BillingAddress"
@@ -20,11 +20,11 @@ const mockNavigator = { push: (route) => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<PaymentInfo {...initialProps} />)
+  renderWithWrappersLEGACY(<PaymentInfo {...initialProps} />)
 })
 
 it("shows the billing address that the user typed in the billing address form", () => {
-  const billingAddressRow = renderWithWrappers(
+  const billingAddressRow = renderWithWrappersLEGACY(
     <PaymentInfo {...initialProps} />
   ).root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
@@ -37,9 +37,9 @@ it("shows the billing address that the user typed in the billing address form", 
 })
 
 it("shows the cc info that the user had typed into the form", () => {
-  const creditCardRow = renderWithWrappers(<PaymentInfo {...initialProps} />).root.findAllByType(
-    BidInfoRow
-  )[0]
+  const creditCardRow = renderWithWrappersLEGACY(
+    <PaymentInfo {...initialProps} />
+  ).root.findAllByType(BidInfoRow)[0]
   creditCardRow.instance.props.onPress()
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(nextStep.component).toEqual(CreditCardForm)

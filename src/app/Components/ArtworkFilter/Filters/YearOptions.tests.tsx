@@ -6,7 +6,7 @@ import {
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
 import { getEssentialProps } from "./helper"
 import {
@@ -70,7 +70,7 @@ describe("Year Options Screen", () => {
   )
 
   it("renders propertly", () => {
-    const tree = renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
+    const tree = renderWithWrappersLEGACY(<MockYearOptionsScreen initialData={initialState} />)
 
     expect(extractText(tree.root.findAllByType(YearText)[0])).toEqual("2010 – 2021")
     expect(extractText(tree.root.findAllByType(OptionItem)[0])).toEqual(
@@ -79,7 +79,7 @@ describe("Year Options Screen", () => {
   })
 
   it("selects the right year range and option", () => {
-    const tree = renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
+    const tree = renderWithWrappersLEGACY(<MockYearOptionsScreen initialData={initialState} />)
 
     ;(storeInstance as any).getActions().__injectState?.(initialState)
 

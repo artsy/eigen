@@ -4,7 +4,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { mockTimezone } from "app/tests/mockTimezone"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import { Animated } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -44,7 +44,7 @@ describe("SaleHeader", () => {
   })
 
   it("renders without throwing an error", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -67,7 +67,7 @@ describe("SaleHeader", () => {
   })
 
   it("renders auction is closed when an auction has passed", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -122,7 +122,7 @@ describe("SaleHeader", () => {
   })
 
   it("does not render auction is closed when an auction is still active", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {

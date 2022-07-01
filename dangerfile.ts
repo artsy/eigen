@@ -59,7 +59,8 @@ const preventUsingTestRenderer = () => {
       const content = fs.readFileSync(filename).toString()
       return (
         content.includes('from "app/tests/renderWithWrappers"') &&
-        (content.includes("renderWithWrappers ") || content.includes("renderWithWrappers,"))
+        (content.includes("renderWithWrappersLEGACY ") ||
+          content.includes("renderWithWrappersLEGACY,"))
       )
     })
   if (newTRImports.length > 0) {

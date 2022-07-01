@@ -1,7 +1,7 @@
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import { AlertCircleFillIcon } from "palette"
 import { MoneyFillIcon } from "palette/svgs/MoneyFillIcon"
@@ -26,7 +26,7 @@ describe("ReviewOfferButton", () => {
         ...activeOrder,
       },
     }
-    return renderWithWrappers(<ReviewOfferButton {...props} />)
+    return renderWithWrappersLEGACY(<ReviewOfferButton {...props} />)
   }
 
   it("renders without throwing an error", () => {

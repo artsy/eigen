@@ -1,5 +1,5 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import "react-native"
 
 import { LoadFailureView } from "./LoadFailureView"
@@ -64,7 +64,7 @@ describe("RetryErrorBoundary", () => {
 })
 describe("RetryErrorBoundaryLegacy", () => {
   it("Renders the fallback view when the rendered component crashes", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <RetryErrorBoundaryLegacy render={() => <CrashingComponent shouldCrash />} />
     )
     expect(tree.root.findAllByType(LoadFailureView)).toHaveLength(1)
@@ -72,7 +72,7 @@ describe("RetryErrorBoundaryLegacy", () => {
 
   it("passes false for isRetry to render prop on first pass", () => {
     let receivedIsRetry = true
-    renderWithWrappers(
+    renderWithWrappersLEGACY(
       <RetryErrorBoundaryLegacy
         render={({ isRetry }) => {
           receivedIsRetry = isRetry
@@ -85,7 +85,7 @@ describe("RetryErrorBoundaryLegacy", () => {
 
   it("passes true for isRetry to render prop on retry", () => {
     let receivedIsRetry = false
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <RetryErrorBoundaryLegacy
         render={({ isRetry }) => {
           receivedIsRetry = isRetry

@@ -10,7 +10,7 @@ import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { waitUntil } from "app/tests/waitUntil"
 import { merge } from "lodash"
 import { Button, LinkText, Sans, Serif, Text } from "palette"
@@ -62,7 +62,7 @@ const findPlaceBidButton = (component) => {
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const mountConfirmBidComponent = (props) => {
-  return renderWithWrappers(<ConfirmBid {...props} />)
+  return renderWithWrappersLEGACY(<ConfirmBid {...props} />)
 }
 
 beforeEach(() => {
@@ -100,7 +100,7 @@ it("displays the artwork title correctly with date", () => {
 
 it("displays the artwork title correctly without date", () => {
   const datelessProps = merge({}, initialProps, { sale_artwork: { artwork: { date: null } } })
-  const component = renderWithWrappers(<ConfirmBid {...datelessProps} />)
+  const component = renderWithWrappersLEGACY(<ConfirmBid {...datelessProps} />)
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(serifChildren(component)).not.toContain(`${saleArtwork.artwork.title},`)

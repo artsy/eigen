@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import "react-native"
 
@@ -24,5 +24,5 @@ it("renders without throwing an error", () => {
       payment_url: "https://www.adopt-cats.org/pay-here",
     },
   }
-  renderWithWrappers(<Message conversationId="420" showTimeSince message={props as any} />)
+  renderWithWrappersLEGACY(<Message conversationId="420" showTimeSince message={props as any} />)
 })

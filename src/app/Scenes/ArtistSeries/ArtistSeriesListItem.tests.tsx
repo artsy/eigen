@@ -3,7 +3,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { act } from "react-test-renderer"
 
@@ -11,7 +11,7 @@ jest.unmock("react-relay")
 
 describe("ArtistSeriesListItem", () => {
   it("navigates to the artist series when tapped", () => {
-    const artistSeriesListItem = renderWithWrappers(
+    const artistSeriesListItem = renderWithWrappersLEGACY(
       <ArtistSeriesListItem
         horizontalSlidePosition={2}
         contextScreenOwnerType={OwnerType.artist}
@@ -27,7 +27,7 @@ describe("ArtistSeriesListItem", () => {
   })
 
   it("shows the artist series title, image and for sale artwork counts", () => {
-    const artistSeriesListItem = renderWithWrappers(
+    const artistSeriesListItem = renderWithWrappersLEGACY(
       <ArtistSeriesListItem
         horizontalSlidePosition={2}
         contextScreenOwnerType={OwnerType.artist}

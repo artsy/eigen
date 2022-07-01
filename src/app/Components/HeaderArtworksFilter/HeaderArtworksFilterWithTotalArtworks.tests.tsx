@@ -4,7 +4,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { HeaderArtworksFilterWithTotalArtworks } from "./HeaderArtworksFilterWithTotalArtworks"
 
 describe("HeaderArtworksFilterWithTotalArtworks", () => {
@@ -38,7 +38,7 @@ describe("HeaderArtworksFilterWithTotalArtworks", () => {
   }
 
   const getWrapper = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <TestHeaderArtworksFilterWithTotalArtworks initialData={initialData} />
     )
     return tree
