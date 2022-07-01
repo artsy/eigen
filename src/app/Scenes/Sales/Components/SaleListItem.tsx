@@ -7,7 +7,7 @@ import { navigate } from "app/navigation/navigate"
 import { SaleListItem_sale$data } from "__generated__/SaleListItem_sale.graphql"
 import { formatDisplayTimelyAt } from "app/Scenes/Sale/helpers"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Sans } from "palette"
+import { Text } from "palette"
 
 interface Props {
   sale: SaleListItem_sale$data
@@ -54,12 +54,12 @@ export const SaleListItem: React.FC<Props> = (props) => {
           }}
           imageURL={image && image.url}
         />
-        <Sans size="3t" numberOfLines={2} weight="medium">
+        <Text variant="sm" numberOfLines={2} weight="medium">
           {sale.name}
-        </Sans>
-        <Sans size="3" color="black60">
+        </Text>
+        <Text variant="sm" color="black60">
           {timestamp}
-        </Sans>
+        </Text>
       </View>
     </TouchableOpacity>
   )

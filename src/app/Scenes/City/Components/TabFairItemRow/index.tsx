@@ -1,7 +1,7 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Fair } from "app/Scenes/Map/types"
-import { Box, ClassTheme, Flex, Sans } from "palette"
+import { Box, ClassTheme, Flex, Text } from "palette"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -34,21 +34,21 @@ export class TabFairItemRow extends React.Component<Props> {
                 </RoundedImageWrapper>
                 <Box width={boxWidth} pl={1}>
                   {!!item.name && (
-                    <Sans weight="medium" size="3t" numberOfLines={1} ellipsizeMode="tail">
+                    <Text variant="sm" weight="medium" numberOfLines={1} ellipsizeMode="tail">
                       {item.name}
-                    </Sans>
+                    </Text>
                   )}
                   {!!item.counts && !!item.counts.partners && (
-                    <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                    <Text variant="sm" color="black60" numberOfLines={1} ellipsizeMode="tail">
                       {item.counts.partners > 1
                         ? `${item.counts.partners} Exhibitors`
                         : `${item.counts.partners} Exhibitor`}
-                    </Sans>
+                    </Text>
                   )}
                   {!!item.exhibition_period && (
-                    <Sans size="3t" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                    <Text variant="sm" color="black60" numberOfLines={1} ellipsizeMode="tail">
                       {item.exhibition_period}
-                    </Sans>
+                    </Text>
                   )}
                 </Box>
               </Flex>

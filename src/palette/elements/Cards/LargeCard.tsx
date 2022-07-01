@@ -5,7 +5,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { useTheme } from "palette/Theme"
 import { Spacer } from "../../atoms/Spacer"
 import { Flex } from "../Flex"
-import { Sans } from "../Text"
+import { Text } from "../Text"
 import { CardTag, CardTagProps } from "./CardTag"
 
 export interface LargeCardProps {
@@ -43,13 +43,13 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
           right: space(6),
         }}
       >
-        <Sans size="5t" color={color("white100")}>
+        <Text variant="md" color={color("white100")}>
           {title}
-        </Sans>
+        </Text>
         {!!subtitle && (
-          <Sans size="3t" color={color("white100")}>
+          <Text variant="sm" color={color("white100")}>
             {subtitle}
-          </Sans>
+          </Text>
         )}
         <Spacer mt={2} />
       </Flex>

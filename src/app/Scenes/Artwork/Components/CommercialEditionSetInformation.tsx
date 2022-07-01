@@ -1,6 +1,6 @@
 import { CommercialEditionSetInformation_artwork$data } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { Box, Flex, RadioButton, Sans, Spacer, Text } from "palette"
+import { Box, Flex, RadioButton, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -59,9 +59,9 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
 
     return (
       <Box>
-        <Sans size="3" weight="medium">
+        <Text variant="sm" weight="medium">
           Edition size
-        </Sans>
+        </Text>
         <Flex flexDirection="row" alignContent="center" flexWrap="wrap">
           {editionSets.map((edition) => {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -72,11 +72,11 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
               <TouchableWithoutFeedback key={id} onPress={() => this.selectEdition(internalID)}>
                 <Box height={26} mt={1} mr={2} flexDirection="row">
                   <RadioButton selected={selected} onPress={() => this.selectEdition(internalID)} />
-                  <Sans size="2" weight="medium" color="black100">
+                  <Text variant="xs" weight="medium" color="black100">
                     {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
                       ? dimensions.in
                       : dimensions.cm}
-                  </Sans>
+                  </Text>
                 </Box>
               </TouchableWithoutFeedback>
             )
@@ -85,9 +85,9 @@ export class CommercialEditionSetInformation extends React.Component<Props, Stat
         {!!selectedEdition?.editionOf && (
           <>
             <Spacer mb={1} />
-            <Sans size="3t" color="black30">
+            <Text variant="sm" color="black30">
               {selectedEdition.editionOf}
-            </Sans>
+            </Text>
           </>
         )}
         {!!selectedEdition?.saleMessage && (

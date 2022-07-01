@@ -2,9 +2,8 @@ import { AuctionPrice_artwork$data } from "__generated__/AuctionPrice_artwork.gr
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { get } from "app/utils/get"
-import { CheckCircleIcon, CloseCircleIcon, Flex, Sans, Spacer } from "palette"
+import { CheckCircleIcon, CloseCircleIcon, Flex, Sans, Spacer, Text } from "palette"
 import React from "react"
-import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface AuctionPriceProps {
@@ -115,7 +114,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
         {sale! /* STRICTNESS_MIGRATION */.isWithBuyersPremium && (
           <>
             <Spacer mb={1} />
-            <Sans size="3t" color="black60">
+            <Text variant="sm" color="black60">
               This auction has a{" "}
               <Text
                 style={{ textDecorationLine: "underline" }}
@@ -125,7 +124,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
               </Text>
               .{"\n"}
               Shipping, taxes, and additional fees may apply.
-            </Sans>
+            </Text>
           </>
         )}
       </>
