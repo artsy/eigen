@@ -10,7 +10,6 @@ import {
   EyeOpenedIcon,
   Flex,
   LargeCard,
-  Sans,
   Separator,
   Spacer,
   Text,

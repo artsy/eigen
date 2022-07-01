@@ -16,7 +16,6 @@ import {
   CloseIcon,
   Flex,
   ReloadIcon,
-  Sans,
   Separator,
   Spacer,
   Text,

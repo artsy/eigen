@@ -17,7 +17,6 @@ import {
   Box,
   Flex,
   OpaqueImageView as NewOpaqueImageView,
-  Sans,
   Spacer,
   Text,
   TextProps,
