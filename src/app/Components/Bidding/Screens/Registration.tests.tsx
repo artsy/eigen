@@ -7,7 +7,7 @@ import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { mockTimezone } from "app/tests/mockTimezone"
 import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { Button, Checkbox, LinkText, Sans, Text } from "palette"
+import { Button, Checkbox, LinkText, Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -304,7 +304,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Checkbox).props.onPress()
     await component.root.findAllByType(Button)[1].props.onPress()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
 
@@ -336,7 +336,7 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -366,7 +366,7 @@ describe("when pressing register button", () => {
     await component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -390,7 +390,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Checkbox).props.onPress()
     component.root.findAllByType(Button)[1].props.onPress()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your phone number, please try again.",
     ])
 
@@ -425,7 +425,7 @@ describe("when pressing register button", () => {
     component.root.findAllByType(Button)[1].props.onPress()
 
     jest.runAllTicks()
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "Your card's security code is incorrect.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -464,7 +464,7 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -499,7 +499,7 @@ describe("when pressing register button", () => {
 
     jest.runAllTicks()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -526,7 +526,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Checkbox).props.onPress()
     await component.root.findAllByType(Button)[1].props.onPress()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
 
@@ -552,7 +552,7 @@ describe("when pressing register button", () => {
     component.root.findByType(Checkbox).props.onPress()
     await component.root.findAllByType(Button)[1].props.onPress()
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
 
