@@ -7,25 +7,6 @@ import { format } from "util"
 
 // MARK: - General preparation
 
-const originalConsoleError = console.error
-// TODO: Remove once we're no longer using JSDOM for enzyme static rendering.
-console.error = (message?: any) => {
-  if (
-    typeof message === "string" &&
-    (message.includes("is using uppercase HTML. Always use lowercase HTML tags in React.") ||
-      /Warning: React does not recognize the `\w+` prop on a DOM element\./.test(message) ||
-      /Warning: The tag <\w+> is unrecognized in this browser\./.test(message) ||
-      /Warning: Unknown event handler property `\w+`\./.test(message) ||
-      /Warning: An update to [\w\s]+ inside a test was not wrapped in act/.test(message) ||
-      /Warning: Received `\w+` for a non-boolean attribute `\w+`\./.test(message) ||
-      /Warning: [\w\s]+ has been extracted from react-native core/.test(message))
-  ) {
-    // NOOP
-  } else {
-    originalConsoleError(message)
-  }
-}
-
 // @ts-expect-error
 global.__TEST__ = true
 declare const process: any
