@@ -56,7 +56,7 @@ export async function get(queryID: string, variables: object): Promise<string | 
       return null
     }
     return record.response
-  } catch (_) {
+  } catch {
     return null
   }
 }

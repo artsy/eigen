@@ -49,6 +49,7 @@ module.exports = {
     //     alphabetize: { order: "asc" },
     //   },
     // ],
+    "@typescript-eslint/consistent-type-definitions": [ERR, "interface"],
 
     ////////////////////////////////////////
     //// DONT ADD MORE STUFF BELOW HERE ////
@@ -75,7 +76,6 @@ module.exports = {
     "no-self-compare": OFF,
     "no-sparse-arrays": OFF,
     "no-case-declarations": OFF,
-    "@typescript-eslint/no-shadow": OFF,
     "no-catch-shadow": OFF,
     "@typescript-eslint/no-empty-interface": OFF,
     "react/no-children-prop": OFF,

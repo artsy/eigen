@@ -11,7 +11,6 @@ let metaflags = {
 }
 if (__DEV__ || __TEST__) {
   try {
-    // tslint:disable-next-line:no-var-requires
     const fileContents = require("../../../metaflags.json")
     metaflags = { ...metaflags, ...fileContents }
   } catch {}

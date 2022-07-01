@@ -31,7 +31,6 @@ describe("Sales", () => {
         }
       `}
       variables={{}}
-      // tslint:disable-next-line:no-shadowed-variable
       render={({ props }) => {
         if (props) {
           return <Sales data={props} />

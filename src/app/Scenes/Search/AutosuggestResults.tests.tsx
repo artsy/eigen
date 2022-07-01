@@ -129,7 +129,6 @@ jest.mock("./RecentSearches", () => {
   }
 })
 
-// tslint:disable-next-line:no-var-requires
 const notifyRecentSearchMock = require("./RecentSearches").useRecentSearches().notifyRecentSearch
 
 const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>

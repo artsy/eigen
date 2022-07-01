@@ -174,7 +174,7 @@ export const PhoneInput = React.forwardRef<
                   </Touchable>
                 )
               }}
-              // tslint:disable-next-line:no-shadowed-variable
+              // eslint-disable-next-line @typescript-eslint/no-shadow
               renderItemLabel={({ label, value }) => {
                 return (
                   <Flex flexDirection="row" alignItems="center" flexShrink={1}>

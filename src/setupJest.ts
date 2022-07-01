@@ -84,7 +84,6 @@ jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 
-// tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
 
 import { mockPostEventToProviders, mockTrackEvent } from "app/tests/globallyMockedStuff"

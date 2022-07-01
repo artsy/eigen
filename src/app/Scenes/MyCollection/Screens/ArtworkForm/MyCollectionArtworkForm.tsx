@@ -41,7 +41,7 @@ export type ArtworkFormMode = "add" | "edit"
 // than the equivalent `type` in some situations.
 // https://github.com/microsoft/TypeScript/issues/15300
 // The react-navigation folks have written code that relies on the more permissive `type` behaviour.
-// tslint:disable-next-line:interface-over-type-literal
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type ArtworkFormScreen = {
   ArtworkFormArtist: {
     mode: ArtworkFormMode

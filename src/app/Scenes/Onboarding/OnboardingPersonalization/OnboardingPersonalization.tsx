@@ -19,7 +19,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { OnboardingPersonalizationModalQueryRenderer } from "./OnboardingPersonalizationModal"
 
-// tslint:disable-next-line:interface-over-type-literal
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type OnboardingPersonalizationNavigationStack = {
   OnboardingPersonalizationList: undefined
   OnboardingPersonalizationModal: undefined

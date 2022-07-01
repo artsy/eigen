@@ -106,7 +106,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
-            // tslint:disable-next-line: no-shadowed-variable
+            // eslint-disable-next-line @typescript-eslint/no-shadow
             localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
               localSortAndFilterArtworks(
                 artworks,
@@ -124,7 +124,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
             isLoading={relay.isLoading}
-            // tslint:disable-next-line: no-shadowed-variable
+            // eslint-disable-next-line @typescript-eslint/no-shadow
             localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
               localSortAndFilterArtworks(
                 artworks,
