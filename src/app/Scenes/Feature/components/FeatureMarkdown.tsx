@@ -1,12 +1,11 @@
 import { defaultRules, renderMarkdown } from "app/utils/renderMarkdown"
-import { Sans } from "palette"
-import { Text } from "react-native"
+import { Text } from "palette"
 import SimpleMarkdown from "simple-markdown"
 
 export const FeatureMarkdown: React.FC<{
   content: string
-  sansProps?: Partial<React.ComponentProps<typeof Sans>>
-}> = ({ content, sansProps }) => {
+  textProps?: Partial<React.ComponentProps<typeof Text>>
+}> = ({ content, textProps }) => {
   const rendered = renderMarkdown(content, {
     ...defaultRules({
       modal: false,
@@ -15,7 +14,7 @@ export const FeatureMarkdown: React.FC<{
           match: SimpleMarkdown.blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
           react: (node, output, state) => {
             return (
-              <Text variant="sm" key={state.key} {...sansProps}>
+              <Text variant="sm" key={state.key} {...textProps}>
                 {output(node.content, state)}
               </Text>
             )

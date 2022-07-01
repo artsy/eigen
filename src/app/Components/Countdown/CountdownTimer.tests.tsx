@@ -1,5 +1,5 @@
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { Flex, Sans, Spacer } from "palette"
+import { Flex, Spacer, Text } from "palette"
 import { LabeledTicker } from "."
 import { CountdownTimer, CountdownTimerProps } from "./CountdownTimer"
 
@@ -17,7 +17,7 @@ const CountdownText: React.FC<CountdownTimerProps> = ({ duration, label }) => (
   <Flex justifyContent="center" alignItems="center">
     <LabeledTicker
       renderSeparator={() => <Spacer mr={0.5} />}
-      textProps={{ color: "white", size: "3t" }}
+      textProps={{ color: "white", variant: "sm" }}
       duration={duration}
     />
     <Text variant="xs" color="white">

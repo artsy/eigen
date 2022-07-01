@@ -2,7 +2,7 @@ import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
-import { Button, Flex, Sans, Separator, Spacer, useColor } from "palette"
+import { Button, Flex, Separator, Spacer, Text, useColor } from "palette"
 import { Alert, ScrollView } from "react-native"
 import { Tab } from "../Favorites/Favorites"
 

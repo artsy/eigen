@@ -2,7 +2,7 @@ import { AuctionPrice_artwork$data } from "__generated__/AuctionPrice_artwork.gr
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { get } from "app/utils/get"
-import { CheckCircleIcon, CloseCircleIcon, Flex, Sans, Spacer, Text } from "palette"
+import { CheckCircleIcon, CloseCircleIcon, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

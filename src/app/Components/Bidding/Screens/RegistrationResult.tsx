@@ -1,4 +1,4 @@
-import { Button, Sans, Theme } from "palette"
+import { Button, Text, Theme } from "palette"
 import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { blockRegex } from "simple-markdown"

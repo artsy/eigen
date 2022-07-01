@@ -5,7 +5,7 @@ import { navigate } from "app/navigation/navigate"
 import { get } from "app/utils/get"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { compact, take } from "lodash"
-import { Sans, Spacer } from "palette"
+import { Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 

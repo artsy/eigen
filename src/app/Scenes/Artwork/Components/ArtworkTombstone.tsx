@@ -2,7 +2,7 @@ import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_ar
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
-import { ArtworkIcon, Box, CertificateIcon, comma, Flex, Sans, Spacer, Text } from "palette"
+import { ArtworkIcon, Box, CertificateIcon, comma, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

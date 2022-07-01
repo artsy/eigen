@@ -1,4 +1,4 @@
-import { Flex, Sans, useColor } from "palette"
+import { Flex, Text, useColor } from "palette"
 interface ZeroStateProps {
   title?: string
   subtitle?: string
@@ -13,9 +13,14 @@ export const ZeroState = (props: ZeroStateProps) => {
       <Flex minHeight={30}>
         {!!props.title && (
           <>
-            <Sans size="3" lineHeight="20" maxWidth="80%" color={color("black100")}>
+            <Text
+              variant="sm"
+              lineHeight="20"
+              style={{ maxWidth: "80%" }}
+              color={color("black100")}
+            >
               {props.title}
-            </Sans>
+            </Text>
           </>
         )}
       </Flex>
@@ -23,15 +28,15 @@ export const ZeroState = (props: ZeroStateProps) => {
       <Flex minHeight={80}>
         {!!props.subtitle && (
           <>
-            <Sans
-              size="3"
-              maxWidth={props.title ? "100%" : "80%"}
+            <Text
+              variant="sm"
+              style={{ maxWidth: props.title ? "100%" : "80%" }}
               lineHeight="20"
               textAlign="center"
               color={props.title ? color("black60") : color("black100")}
             >
               {props.subtitle}
-            </Sans>
+            </Text>
           </>
         )}
       </Flex>

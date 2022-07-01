@@ -2,7 +2,7 @@ import { AboutWork_artwork$data } from "__generated__/AboutWork_artwork.graphql"
 import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Flex, Join, Sans, Spacer } from "palette"
+import { Flex, Join, Spacer, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface AboutWorkProps {

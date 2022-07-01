@@ -9,7 +9,7 @@ import { isPad } from "app/utils/hardware"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { chunk, flattenDeep } from "lodash"
-import { Flex, Sans, Separator, Spacer } from "palette"
+import { Flex, Separator, Spacer, Text } from "palette"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
@@ -69,10 +69,10 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
         <Flex alignItems="center">
           <Stack spacing={3} pt="3" px="2" maxWidth={600}>
             {!!feature.description && (
-              <FeatureMarkdown content={feature.description} sansProps={{ size: "4" }} />
+              <FeatureMarkdown content={feature.description} textProps={{ variant: "md" }} />
             )}
             {!!feature.callout && (
-              <FeatureMarkdown content={feature.callout} sansProps={{ size: "6" }} />
+              <FeatureMarkdown content={feature.callout} textProps={{ variant: "lg" }} />
             )}
           </Stack>
         </Flex>

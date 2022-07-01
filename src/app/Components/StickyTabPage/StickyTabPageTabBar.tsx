@@ -1,4 +1,4 @@
-import { Sans } from "palette"
+import { Text } from "palette"
 import { NavigationalTabs } from "palette/elements/Tabs"
 import React, { useEffect, useRef, useState } from "react"
 import {

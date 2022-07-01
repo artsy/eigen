@@ -2,8 +2,7 @@ import { FaqAndSpecialistSection_artwork$data } from "__generated__/FaqAndSpecia
 import { navigate } from "app/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
-import { Sans } from "palette"
-import { Text } from "react-native"
+import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

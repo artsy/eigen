@@ -2,7 +2,7 @@ import { CollectionHeader_collection$data } from "__generated__/CollectionHeader
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { Schema } from "app/utils/track"
-import { Box, Sans } from "palette"
+import { Box, Text } from "palette"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

@@ -1,6 +1,6 @@
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
-import { ArrowRightIcon, Flex, Sans } from "palette"
+import { ArrowRightIcon, Flex, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 
