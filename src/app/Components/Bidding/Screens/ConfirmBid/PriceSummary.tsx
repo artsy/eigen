@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Serif } from "palette"
+import { Box, Flex, Text } from "palette"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { Bid } from "app/Components/Bidding/types"
@@ -15,9 +15,9 @@ interface PriceSummaryViewProps {
 
 const _PriceSummary = ({ bid, calculatedCost }: PriceSummaryViewProps) => (
   <Box mx={4}>
-    <Serif mb={1} size="4" weight="semibold" color="black100">
+    <Text variant="md" mb={1} weight="medium" color="black100">
       Summary
-    </Serif>
+    </Text>
 
     <Flex mb={1} flexDirection="row" justifyContent="space-between">
       <Text variant="sm" color="black100">

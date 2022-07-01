@@ -1,4 +1,4 @@
-import { Box, Flex, Sans, Serif } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
 import { Dimensions, FlatList, Image, View } from "react-native"
 import styled from "styled-components/native"
@@ -44,7 +44,7 @@ export default class ZeroStateInbox extends React.Component {
             <Row>
               <Icon resizeMode="contain" source={item.iconHref} />
               <Flex style={{ flex: 1 }}>
-                <Serif size="4">{item.text}</Serif>
+                <Text variant="md">{item.text}</Text>
               </Flex>
             </Row>
           )

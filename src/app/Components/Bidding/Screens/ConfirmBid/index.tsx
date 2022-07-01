@@ -23,7 +23,7 @@ import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { get, isEmpty } from "lodash"
-import { Box, Button, Checkbox, LinkText, Serif, Text, Theme } from "palette"
+import { Box, Button, Checkbox, LinkText, Text, Theme } from "palette"
 import React from "react"
 import { Image, ScrollView, ViewProps } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -512,19 +512,19 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   />
                 )}
 
-                <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode="tail">
+                <Text variant="md" mt={4} weight="medium" numberOfLines={1} ellipsizeMode="tail">
                   {
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artwork.artist_names
                   }
-                </Serif>
-                <Serif size="2" weight="semibold">
+                </Text>
+                <Text variant="xs" weight="medium">
                   Lot {lot_label}
-                </Serif>
+                </Text>
 
-                <Serif
+                <Text
+                  variant="xs"
                   italic
-                  size="2"
                   color="black60"
                   textAlign="center"
                   numberOfLines={1}
@@ -535,15 +535,15 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                     artwork.title
                   }
                   {!!artwork! /* STRICTNESS_MIGRATION */.date && (
-                    <Serif size="2">
+                    <Text variant="xs">
                       ,{" "}
                       {
                         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                         artwork.date
                       }
-                    </Serif>
+                    </Text>
                   )}
-                </Serif>
+                </Text>
               </Flex>
 
               <Divider />
@@ -605,7 +605,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               </Checkbox>
             ) : (
               <Flex alignItems="center" px={4}>
-                <Serif size="2" mt={2} color="black60">
+                <Text variant="xs" mt={2} color="black60">
                   You agree to{" "}
                   <LinkText
                     onPress={isLoading ? undefined : () => this.onConditionsOfSaleLinkPressed()}
@@ -613,7 +613,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                     {partnerName(sale!)} Conditions of Sale
                   </LinkText>
                   .
-                </Serif>
+                </Text>
               </Flex>
             )}
 
