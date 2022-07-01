@@ -20,9 +20,9 @@ const CountdownText: React.FC<CountdownTimerProps> = ({ duration, label }) => (
       textProps={{ color: "white", size: "3t" }}
       duration={duration}
     />
-    <Sans size="1" color="white">
+    <Text variant="xs" color="white">
       {label}
-    </Sans>
+    </Text>
   </Flex>
 )
 

@@ -134,9 +134,9 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
           borderRadius={2}
           alignSelf="flex-start"
         >
-          <Sans size="2" color={color("black100")} numberOfLines={1}>
+          <Text variant="xs" color={color("black100")} numberOfLines={1}>
             {urgencyTag}
-          </Sans>
+          </Text>
         </Flex>
       )}
     </Flex>

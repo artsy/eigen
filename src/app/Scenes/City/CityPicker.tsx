@@ -52,9 +52,9 @@ export const CityPicker: React.FC<Props> = (props) => {
     >
       <Overlay bounces={false} showsVerticalScrollIndicator={false}>
         <Box ml={2}>
-          <Sans size="3" weight="medium">
+          <Text variant="sm" weight="medium">
             Fairs and Shows by City
-          </Sans>
+          </Text>
         </Box>
         <Box mx={2}>
           {cityList.map((city, i) => (

@@ -368,9 +368,9 @@ export class GlobalMap extends React.Component<Props, State> {
                 coordinate={[clusterLat, clusterLng]}
               >
                 <SelectedCluster width={radius} height={radius}>
-                  <Sans size="3" weight="medium" color={color("white100")}>
+                  <Text variant="sm" weight="medium" color={color("white100")}>
                     {pointCount}
-                  </Sans>
+                  </Text>
                 </SelectedCluster>
               </MapboxGL.PointAnnotation>
             )}

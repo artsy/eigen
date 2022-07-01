@@ -18,9 +18,9 @@ const Biography: React.FC<Props> = ({ gene }) => {
 
   return (
     <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>
-      <Sans size="3" color="black" mb={2}>
+      <Text variant="sm" color="black" mb={2}>
         {removeMarkdown(gene.description)}
-      </Sans>
+      </Text>
     </View>
   )
 }

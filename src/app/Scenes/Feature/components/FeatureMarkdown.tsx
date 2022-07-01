@@ -15,9 +15,9 @@ export const FeatureMarkdown: React.FC<{
           match: SimpleMarkdown.blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
           react: (node, output, state) => {
             return (
-              <Sans size="3" key={state.key} {...sansProps}>
+              <Text variant="sm" key={state.key} {...sansProps}>
                 {output(node.content, state)}
-              </Sans>
+              </Text>
             )
           },
         },

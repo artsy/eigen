@@ -30,9 +30,9 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
     >
       <ScrollView>
         <Box px="2" py="2">
-          <Sans size="4" weight="medium" textAlign="center">
+          <Text variant="md" weight="medium" textAlign="center">
             Artist Series
-          </Sans>
+          </Text>
         </Box>
         {seriesList.map((series, index) => (
           <Flex key={series?.node?.internalID ?? index} flexDirection="row" mb={1} px={2}>

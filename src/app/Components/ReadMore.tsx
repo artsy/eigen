@@ -9,7 +9,6 @@ import {
   LinkText,
   nbsp,
   Sans,
-  SansProps,
   Text as PaletteText,
   TextProps as PaletteTextProps,
 } from "palette"
@@ -46,11 +45,10 @@ export const ReadMore = React.memo(
     const tracking = useTracking()
     const useNewTextStyles = textStyle === "new"
     const basicRules = defaultRules({ modal: presentLinksModally, useNewTextStyles })
-    const TextComponent: React.ComponentType<SansProps | PaletteTextProps> = (
+    const TextComponent: React.ComponentType<PaletteTextProps> = (
       textStyle === "new" ? PaletteText : Sans
     ) as any
-    const textProps: SansProps | PaletteTextProps =
-      textStyle === "new" ? { variant: "xs" } : { size: "3" }
+    const textProps: PaletteTextProps = { variant: "xs" }
     const rules = {
       ...basicRules,
       ...(type === "show" && {

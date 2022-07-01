@@ -48,9 +48,9 @@ export const IndexIndicator: React.FC = () => {
           },
         ]}
       >
-        <Sans size="3">
+        <Text variant="sm">
           {imageIndex.current + 1} of {images.length}
-        </Sans>
+        </Text>
       </Animated.View>
     </View>
   )

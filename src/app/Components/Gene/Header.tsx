@@ -28,9 +28,9 @@ class Header extends React.Component<Props, State> {
     return (
       <>
         <Box marginTop={60} justifyContent="center">
-          <Sans size="8" numberOfLines={2}>
+          <Text variant="lg" numberOfLines={2}>
             {title}
-          </Sans>
+          </Text>
         </Box>
         {this.renderFollowButton()}
       </>

@@ -24,9 +24,9 @@ export class ShowArtworksPreview extends React.Component<Props> {
     return (
       <>
         {!!title && (
-          <Sans size="4t" mb={2}>
+          <Text variant="md" mb={2}>
             {title}
-          </Sans>
+          </Text>
         )}
         <GenericGrid artworks={artworks} />
         {counts! /*STRICTNESS_MIGRATION*/.artworks! /*STRICTNESS_MIGRATION*/ > artworks.length && (

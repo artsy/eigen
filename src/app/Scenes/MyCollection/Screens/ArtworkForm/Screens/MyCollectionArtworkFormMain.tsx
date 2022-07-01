@@ -229,7 +229,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
             <ScreenMargin>
               <Box my={2}>
-                <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
+                <Text variant="sm">Errors: {JSON.stringify(formik.errors)}</Text>
               </Box>
             </ScreenMargin>
           )}

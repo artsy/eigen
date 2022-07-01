@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/co
 import { ArtistSeriesMoreSeries_artist$data } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
 import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
-import { Flex, FlexProps, Sans } from "palette"
+import { Flex, FlexProps, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -53,9 +53,9 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   return (
     <Flex {...rest}>
       <Flex mb="15px" flexDirection="row" justifyContent="space-between">
-        <Sans size="4t" testID="header">
+        <Text variant="md" testID="header">
           {artistSeriesHeader}
-        </Sans>
+        </Text>
         {totalCount > 4 && (
           <TouchableOpacity
             onPress={() => {
@@ -63,7 +63,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
               navigate(`/artist/${artist?.internalID!}/artist-series`)
             }}
           >
-            <Sans testID="viewAll" size="4t">{`View All (${totalCount})`}</Sans>
+            <Text variant="md" testID="viewAll">{`View All (${totalCount})`}</Text>
           </TouchableOpacity>
         )}
       </Flex>

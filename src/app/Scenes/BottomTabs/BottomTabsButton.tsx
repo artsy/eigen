@@ -154,9 +154,9 @@ const Badge: React.FC<{ count: number }> = ({ count }) => {
           backgroundColor: color("red100"),
         }}
       >
-        <Sans size="1" weight="medium" color="white">
+        <Text variant="xs" weight="medium" color="white">
           {count > 99 ? "99+" : count}
-        </Sans>
+        </Text>
       </View>
     </View>
   )

@@ -148,16 +148,16 @@ export class Event extends React.Component<Props, State> {
               )}
               <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
                 <TextContainer mb={2}>
-                  <Sans size="3" weight="medium" numberOfLines={1} ellipsizeMode="tail">
+                  <Text variant="sm" weight="medium" numberOfLines={1} ellipsizeMode="tail">
                     {partnerName}
-                  </Sans>
+                  </Text>
                   <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
                     {name}
                   </Serif>
                   {!!exhibition_period && (
-                    <Sans size="2" color={color("black60")}>
+                    <Text variant="xs" color={color("black60")}>
                       {exhibitionDates(exhibition_period, end_at! /* STRICTNESS_MIGRATION */)}
-                    </Sans>
+                    </Text>
                   )}
                 </TextContainer>
                 <Button

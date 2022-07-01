@@ -5,9 +5,8 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
 import { Schema } from "app/utils/track"
-import { Button, ClassTheme, Sans } from "palette"
+import { Button, ClassTheme, Text } from "palette"
 import React from "react"
-import { Text } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import track from "react-tracking"
 
@@ -31,12 +30,12 @@ const getHasBid = (myLotStanding) => !!(myLotStanding && myLotStanding.mostRecen
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const IdentityVerificationRequiredMessage = ({ onPress, ...remainderProps }) => (
-  <Sans mt="1" size="3" color="black60" pb="1" textAlign="center" {...remainderProps}>
+  <Text variant="sm" mt="1" color="black60" pb="1" textAlign="center" {...remainderProps}>
     Identity verification required to bid.{" "}
     <Text style={{ textDecorationLine: "underline" }} onPress={onPress}>
       FAQ
     </Text>
-  </Sans>
+  </Text>
 )
 
 @track()
@@ -153,9 +152,9 @@ export class BidButton extends React.Component<BidButtonProps> {
         {isWatchOnly && (
           <ClassTheme>
             {({ color }) => (
-              <Sans size="2" color={color("black60")} pb={1} textAlign="center">
+              <Text variant="xs" color={color("black60")} pb={1} textAlign="center">
                 Registration closed
-              </Sans>
+              </Text>
             )}
           </ClassTheme>
         )}

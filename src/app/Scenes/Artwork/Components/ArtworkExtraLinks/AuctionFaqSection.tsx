@@ -38,7 +38,7 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
   if (isInAuction && sale && isForSale && auctionState !== AuctionTimerState.CLOSED) {
     return (
       <>
-        <Sans size="2" color="black60">
+        <Text variant="xs" color="black60">
           By placing a bid you agree to {partnerName(sale)}{" "}
           <Text
             style={{ textDecorationLine: "underline" }}
@@ -47,9 +47,9 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
             Conditions of Sale
           </Text>
           .
-        </Sans>
+        </Text>
         <Spacer mb={1} />
-        <Sans size="2" color="black60">
+        <Text variant="xs" color="black60">
           Have a question?{" "}
           <Text
             style={{ textDecorationLine: "underline" }}
@@ -65,7 +65,7 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
             ask a specialist
           </Text>
           .
-        </Sans>
+        </Text>
       </>
     )
   }

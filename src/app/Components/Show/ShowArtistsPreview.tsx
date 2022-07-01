@@ -45,7 +45,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
 
     return (
       <>
-        <Sans size="4t">Artists</Sans>
+        <Text variant="md">Artists</Text>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
           const { id } = artist

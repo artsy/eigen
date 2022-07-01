@@ -66,7 +66,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
     return (
       <Box pb={1}>
         <Flex justifyContent="space-between" pb={15} flexDirection="row">
-          <Sans size="4">{headlineLabel}</Sans>
+          <Text variant="md">{headlineLabel}</Text>
           {artists.length > artistCount && (
             <TouchableOpacity
               onPress={() => {

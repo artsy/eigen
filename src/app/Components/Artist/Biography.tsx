@@ -27,11 +27,11 @@ class Biography extends React.Component<Props> {
         <SectionTitle title="Biography" />
         <Stack>
           {!!artist.blurb && (
-            <Sans size="3" style={{ maxWidth: 650 }}>
+            <Text variant="sm" style={{ maxWidth: 650 }}>
               {removeMarkdown(artist.blurb)}
-            </Sans>
+            </Text>
           )}
-          {!!bio && <Sans size="3">{bio}</Sans>}
+          {!!bio && <Text variant="sm">{bio}</Text>}
         </Stack>
       </View>
     )

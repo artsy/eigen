@@ -79,9 +79,9 @@ export const StickyTab: React.FC<{
             paddingHorizontal: 15,
           }}
         >
-          <Sans size="3" weight={active ? "medium" : "regular"}>
+          <Text variant="sm" weight={active ? "medium" : "regular"}>
             {label}
-          </Sans>
+          </Text>
         </View>
       </TouchableOpacity>
     </View>

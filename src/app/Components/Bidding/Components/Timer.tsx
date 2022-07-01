@@ -181,9 +181,9 @@ export const Countdown: React.FC<CountdownProps> = ({
             hasBeenExtended={!!hasBeenExtended}
           />
         )}
-      <Sans size="2" weight="medium" color="black60">
+      <Text variant="xs" weight="medium" color="black60">
         {label}
-      </Sans>
+      </Text>
       {!!extendedBiddingPeriodMinutes && !!cascadingEndTimeFeatureEnabled && (
         <>
           <Spacer mt={1} />

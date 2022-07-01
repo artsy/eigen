@@ -20,9 +20,9 @@ export const CollectionArtistSeriesRail: React.FC<CollectionArtistSeriesRailProp
 
   return (
     <Flex ml="-20px">
-      <Sans size="4" mb={2} ml={4}>
+      <Text variant="md" mb={2} ml={4}>
         {collectionGroup.name}
-      </Sans>
+      </Text>
       <GenericArtistSeriesRail
         collections={collections}
         contextScreenOwnerType={Schema.OwnerEntityTypes.Collection}

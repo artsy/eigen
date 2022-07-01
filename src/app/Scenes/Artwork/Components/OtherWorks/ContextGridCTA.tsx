@@ -34,9 +34,9 @@ export class ContextGridCTA extends React.Component<ContextGridCTAProps> {
           accessibilityLabel="Context Grid CTA"
         >
           <Flex flexDirection="row" alignContent="center">
-            <Sans size="3" textAlign="left" weight="medium">
+            <Text variant="sm" textAlign="left" weight="medium">
               {label}
-            </Sans>
+            </Text>
             <Flex alignSelf="center">
               <ArrowRightIcon fill="black30" ml={1} />
             </Flex>

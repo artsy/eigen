@@ -29,9 +29,9 @@ const PartnerMap: React.FC<{
 
   return (
     <Box px={2} mt={2}>
-      <Sans size="3" weight="medium">
+      <Text variant="sm" weight="medium">
         {city}
-      </Sans>
+      </Text>
       <Spacer mb={0.5} />
       <TouchableOpacity
         onPress={() =>

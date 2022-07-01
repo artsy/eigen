@@ -8,7 +8,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import styled from "styled-components/native"
 
 import { ConversationSnippet_conversation$data } from "__generated__/ConversationSnippet_conversation.graphql"
-import { ClassTheme, Flex, Sans, Touchable } from "palette"
+import { ClassTheme, Flex, Text, Touchable } from "palette"
 import React from "react"
 
 const Unread = styled(Flex)`
@@ -105,8 +105,8 @@ export class ConversationSnippet extends React.Component<Props> {
                 <Flex ml={1} style={{ flex: 1 }}>
                   <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>
                     <Flex style={{ flexShrink: 1 }}>
-                      <Sans
-                        size="3t"
+                      <Text
+                        variant="sm"
                         weight="medium"
                         ellipsizeMode="tail"
                         numberOfLines={1}
@@ -114,25 +114,25 @@ export class ConversationSnippet extends React.Component<Props> {
                         color={conversation.unread ? "black" : "black60"}
                       >
                         {partnerName}
-                      </Sans>
+                      </Text>
                     </Flex>
                     <Flex flex={1} />
                     <Flex>
-                      <Sans textAlign="right" size="3t" color="black30">
+                      <Text variant="sm" textAlign="right" color="black30">
                         {date}
-                      </Sans>
+                      </Text>
                     </Flex>
                   </Flex>
                   {!!conversationText && (
-                    <Sans
-                      size="3t"
+                    <Text
+                      variant="sm"
                       mr="15px"
                       ellipsizeMode="tail"
                       numberOfLines={3}
                       color={conversation.unread ? "black" : "black60"}
                     >
                       {conversationText}
-                    </Sans>
+                    </Text>
                   )}
                 </Flex>
               </Flex>

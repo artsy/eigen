@@ -223,9 +223,9 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
                     hasError={!!countryError}
                   />
                   {!!countryError && (
-                    <Sans size="2" mt="1" color="red100">
+                    <Text variant="xs" mt="1" color="red100">
                       {countryError}
-                    </Sans>
+                    </Text>
                   )}
                 </Flex>
               )

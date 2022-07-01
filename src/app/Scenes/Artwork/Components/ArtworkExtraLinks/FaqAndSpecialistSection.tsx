@@ -31,7 +31,7 @@ const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = ({ artwo
 
   if (isAcquireable || isOfferable) {
     return (
-      <Sans size="2" color="black60">
+      <Text variant="xs" color="black60">
         Have a question?{" "}
         <Text style={{ textDecorationLine: "underline" }} onPress={() => handleReadOurFAQTap()}>
           Read our FAQ
@@ -44,7 +44,7 @@ const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = ({ artwo
           ask a specialist
         </Text>
         .
-      </Sans>
+      </Text>
     )
   } else {
     return null

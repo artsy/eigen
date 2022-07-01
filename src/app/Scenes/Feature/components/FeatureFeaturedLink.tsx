@@ -42,9 +42,9 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
             bottom: 20,
           }}
         >
-          <Sans size="6" color="white">
+          <Text variant="lg" color="white">
             {featuredLink.title}
-          </Sans>
+          </Text>
           {!!featuredLink.subtitle && (
             <FeatureMarkdown content={featuredLink.subtitle} sansProps={{ color: "white" }} />
           )}

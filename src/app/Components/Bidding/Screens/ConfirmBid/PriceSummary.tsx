@@ -20,35 +20,35 @@ const _PriceSummary = ({ bid, calculatedCost }: PriceSummaryViewProps) => (
     </Serif>
 
     <Flex mb={1} flexDirection="row" justifyContent="space-between">
-      <Sans size="3" color="black100">
+      <Text variant="sm" color="black100">
         Your max bid
-      </Sans>
-      <Sans size="3" color="black100">
+      </Text>
+      <Text variant="sm" color="black100">
         {`${bid.display}.00`}
-      </Sans>
+      </Text>
     </Flex>
 
     <Flex mb={1} flexDirection="row" justifyContent="space-between">
-      <Sans size="3" color="black100">
+      <Text variant="sm" color="black100">
         Buyer’s premium
-      </Sans>
-      <Sans size="3" color="black100">
+      </Text>
+      <Text variant="sm" color="black100">
         {calculatedCost.buyersPremium! /* STRICTNESS_MIGRATION */.display}
-      </Sans>
+      </Text>
     </Flex>
 
     <Flex mb={1} flexDirection="row" justifyContent="space-between">
-      <Sans size="3" color="black100">
+      <Text variant="sm" color="black100">
         Subtotal
-      </Sans>
-      <Sans size="3" color="black100">
+      </Text>
+      <Text variant="sm" color="black100">
         {calculatedCost.subtotal! /* STRICTNESS_MIGRATION */.display}
-      </Sans>
+      </Text>
     </Flex>
 
-    <Sans size="3" color="black60">
+    <Text variant="sm" color="black60">
       Plus any applicable shipping, taxes, and fees.
-    </Sans>
+    </Text>
   </Box>
 )
 

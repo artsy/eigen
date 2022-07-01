@@ -30,9 +30,9 @@ export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading 
   return (
     <Box>
       <Box>
-        <Sans size="4" px={2}>
+        <Text variant="md" px={2}>
           Artists in-demand on Artsy
-        </Sans>
+        </Text>
 
         <Spacer mb={2} />
 
