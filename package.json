@@ -88,9 +88,6 @@
     "data",
     "app"
   ],
-  "resolutions": {
-    "//": "don't forget to document the resolutions in HACKS.md"
-  },
   "dependencies": {
     "@artsy/cohesion": "4.55.0",
     "@artsy/palette-tokens": "2.6.0",
