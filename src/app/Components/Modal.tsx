@@ -14,6 +14,10 @@ interface ModalProps extends ViewProps {
   accessibilityLabel?: string
 }
 
+interface ModalState {
+  modalVisible: boolean
+}
+
 const ModalBackgroundView = styled.View`
   background-color: #00000099;
   flex: 1;
@@ -32,18 +36,16 @@ const ModalInnerView = styled.View`
 
 const DEFAULT_MARKDOWN_RULES = defaultRules({})
 
-export class Modal extends React.Component<ModalProps, any> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
+export class Modal extends React.Component<ModalProps, ModalState> {
+  constructor(props: ModalProps) {
     super(props)
 
     this.state = { modalVisible: props.visible || false }
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: ModalProps) {
     if (this.props.visible !== prevProps.visible) {
-      this.setState({ modalVisible: this.props.visible })
+      this.setState({ modalVisible: this.props.visible ?? false })
     }
   }
 

@@ -19,4 +19,6 @@ const StyledImage = styled.Image.attrs<IconProps>({})`
   ${width};
 `
 
-export const Image = (props: ExtractProps<typeof StyledImage>) => <StyledImage {...props} />
+export type ImageProps = ExtractProps<typeof StyledImage>
+
+export const Image = (props: ImageProps) => <StyledImage {...props} />

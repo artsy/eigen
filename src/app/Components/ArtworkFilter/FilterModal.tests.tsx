@@ -11,7 +11,6 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { CollectionFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockNavigate } from "app/tests/navigationMocks"
@@ -163,8 +162,6 @@ const MockFilterModalNavigator = ({
     <Theme>
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <ArtworkFilterNavigator
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          collection={CollectionFixture}
           exitModal={exitModalMock}
           closeModal={closeModalMock}
           mode={FilterModalMode.ArtistArtworks}

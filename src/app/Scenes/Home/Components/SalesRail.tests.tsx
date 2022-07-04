@@ -185,12 +185,10 @@ it("routes to live URL if present, otherwise href", () => {
     />
   )
   // Timed sale
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  first(tree.root.findAllByType(CardRailCard)).props.onPress()
+  first(tree.root.findAllByType(CardRailCard))!.props.onPress()
   expect(navigate).toHaveBeenCalledWith("/auction/the-sale")
   // LAI sale
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  last(tree.root.findAllByType(CardRailCard)).props.onPress()
+  last(tree.root.findAllByType(CardRailCard))!.props.onPress()
   expect(navigate).toHaveBeenCalledWith("https://live.artsy.net/the-lai-sale")
 })
 

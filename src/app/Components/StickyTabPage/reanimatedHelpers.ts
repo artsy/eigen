@@ -54,8 +54,7 @@ export function useValueReader<T extends { [k: string]: Animated.Adaptable<numbe
           const cb = readCallback.current
           readCallback.current = undefined
           result.current = undefined
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          cb(
+          cb!(
             keys.reduce((acc, k, i) => {
               acc[k] = vs[i]
               return acc
