@@ -1,6 +1,6 @@
 import { waitFor } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Text } from "palette"
 import PropTypes from "prop-types"
@@ -39,7 +39,7 @@ describe("TimeOffsetProvider", () => {
   })
 
   it("injects timeOffsetInMilliSeconds as a context", async () => {
-    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
 
     // Set up a situation where the phone's clock is ahead of Gravity's clock by 10 minutes.
     resolveMostRecentRelayOperation(mockEnvironment, {

@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { InquiryPurchaseButtonTestsQuery } from "__generated__/InquiryPurchaseButtonTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -45,7 +45,7 @@ const TestRenderer = () => {
 }
 
 const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappersTL(<TestRenderer />)
+  const tree = renderWithWrappers(<TestRenderer />)
   act(() => {
     environment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)

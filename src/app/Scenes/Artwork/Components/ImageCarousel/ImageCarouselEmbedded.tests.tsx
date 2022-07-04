@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Platform } from "react-native"
 import { ImageCarouselContext, useNewImageCarouselContext } from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
@@ -47,20 +47,20 @@ describe("ImageCarouselEmbedded", () => {
   }
 
   it("should render all passed images", () => {
-    const { getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+    const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
     expect(getAllByLabelText("Image with Loading State")).toHaveLength(2)
   })
 
   it("responds to onImagePressed prop", () => {
-    const { getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+    const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
     fireEvent.press(getAllByLabelText("Image with Loading State")[0])
     expect(onImagePressedMock).toHaveBeenCalled()
   })
 
   it("does something when you tap an image with deepZoom", () => {
-    const { getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+    const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
     expect(context.fullScreenState.current).toBe("none")
 
@@ -80,7 +80,7 @@ describe("ImageCarouselEmbedded", () => {
       ],
     }
 
-    const { getAllByLabelText } = renderWithWrappersTL(<TestWrapper contextInit={contextInit} />)
+    const { getAllByLabelText } = renderWithWrappers(<TestWrapper contextInit={contextInit} />)
 
     expect(context.fullScreenState.current).toBe("none")
 
@@ -98,7 +98,7 @@ describe("ImageCarouselEmbedded", () => {
     })
 
     it("suppresses fullScreen when you tap an image with deepZoom because it would fail", () => {
-      const { getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
       expect(context.fullScreenState.current).toBe("none")
 

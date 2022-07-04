@@ -9,7 +9,7 @@ import {
   CollectionArtistSeriesRailContainer,
 } from "app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -103,7 +103,7 @@ describe("Artist Series Rail", () => {
     })
 
     it("renders three artist series in the Trending Artists Series", () => {
-      const { queryByText } = renderWithWrappersTL(<CollectionArtistSeriesRail {...props} />)
+      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(queryByText("Cindy Sherman: Untitled Film Stills")).toBeTruthy()
       expect(queryByText("Damien Hirst: Butterflies")).toBeTruthy()
@@ -111,9 +111,7 @@ describe("Artist Series Rail", () => {
     })
 
     it("renders three images of the correct size in an artist series", () => {
-      const { UNSAFE_getAllByType } = renderWithWrappersTL(
-        <CollectionArtistSeriesRail {...props} />
-      )
+      const { UNSAFE_getAllByType } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(UNSAFE_getAllByType(ImageView)[0]).toHaveProp(
         "imageURL",
@@ -138,13 +136,13 @@ describe("Artist Series Rail", () => {
     })
 
     it("renders the collection hub rail title", () => {
-      const { queryByText } = renderWithWrappersTL(<CollectionArtistSeriesRail {...props} />)
+      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(queryByText("Trending Artist Series")).toBeTruthy()
     })
 
     it("renders each artist series' title", () => {
-      const { queryByText } = renderWithWrappersTL(<CollectionArtistSeriesRail {...props} />)
+      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(queryByText("Cindy Sherman: Untitled Film Stills")).toBeTruthy()
       expect(queryByText("Damien Hirst: Butterflies")).toBeTruthy()
@@ -152,7 +150,7 @@ describe("Artist Series Rail", () => {
     })
 
     it("renders each artist series' metadata", () => {
-      const { queryByText } = renderWithWrappersTL(<CollectionArtistSeriesRail {...props} />)
+      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       expect(queryByText("From $20,000")).toBeTruthy()
       expect(queryByText("From $7,500")).toBeTruthy()
@@ -160,7 +158,7 @@ describe("Artist Series Rail", () => {
     })
 
     it("navigates to a new collection when a series is tapped", () => {
-      const { getByText } = renderWithWrappersTL(<CollectionArtistSeriesRail {...props} />)
+      const { getByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
       fireEvent.press(getByText("Cindy Sherman: Untitled Film Stills"))
       expect(navigate).toHaveBeenCalledWith("/collection/cindy-sherman-untitled-film-stills")

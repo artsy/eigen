@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkFilterBackHeader, ArtworkFilterBackHeaderProps } from "./ArtworkFilterBackHeader"
 
 const defaultProps: ArtworkFilterBackHeaderProps = {
@@ -13,7 +13,7 @@ describe("ArtworkFilterBackHeader", () => {
   }
 
   it("renders without throwing an error", () => {
-    const { getByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
     expect(getByText("Title")).toBeTruthy()
     expect(getByLabelText("Header back button")).toBeTruthy()
@@ -21,7 +21,7 @@ describe("ArtworkFilterBackHeader", () => {
 
   it('should call "onLeftButtonPress" handler when left button is pressed', () => {
     const onLeftButtonPressMock = jest.fn()
-    const { getByLabelText } = renderWithWrappersTL(
+    const { getByLabelText } = renderWithWrappers(
       <TestRenderer onLeftButtonPress={onLeftButtonPressMock} />
     )
 
@@ -31,7 +31,7 @@ describe("ArtworkFilterBackHeader", () => {
   })
 
   it("should render right button if all required props are passed", () => {
-    const { getByLabelText } = renderWithWrappersTL(
+    const { getByLabelText } = renderWithWrappers(
       <TestRenderer rightButtonText="Right button" onRightButtonPress={jest.fn} />
     )
 
@@ -40,7 +40,7 @@ describe("ArtworkFilterBackHeader", () => {
 
   it('should call "onRightButtonPress" handler when right button is pressed', () => {
     const onRightButtonPressMock = jest.fn()
-    const { getByLabelText } = renderWithWrappersTL(
+    const { getByLabelText } = renderWithWrappers(
       <TestRenderer rightButtonText="Right button" onRightButtonPress={onRightButtonPressMock} />
     )
 

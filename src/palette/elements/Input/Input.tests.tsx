@@ -1,24 +1,24 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Input } from "./Input"
 
 describe("Input", () => {
   const testID = "input"
 
   it("renders an instance of native TextInput", () => {
-    const { getByTestId } = renderWithWrappersTL(<Input testID={testID} />)
+    const { getByTestId } = renderWithWrappers(<Input testID={testID} />)
 
     expect(getByTestId(testID).type).toEqual("TextInput")
   })
 
   it("uses correct font family", () => {
-    const { getByTestId } = renderWithWrappersTL(<Input testID={testID} />)
+    const { getByTestId } = renderWithWrappers(<Input testID={testID} />)
 
     expect(getByTestId(testID).props.style[0].fontFamily).toEqual("Unica77LL-Regular")
   })
 
   it("mutates given text as value", () => {
-    const { getByTestId, getByDisplayValue } = renderWithWrappersTL(<Input testID={testID} />)
+    const { getByTestId, getByDisplayValue } = renderWithWrappers(<Input testID={testID} />)
 
     fireEvent.changeText(getByTestId(testID), "mockStr")
 
@@ -26,7 +26,7 @@ describe("Input", () => {
   })
 
   it("Shows an error message when input has an error", () => {
-    const { getByText } = renderWithWrappersTL(<Input value="" error="input has an error" />)
+    const { getByText } = renderWithWrappers(<Input value="" error="input has an error" />)
 
     getByText("input has an error")
   })
@@ -38,7 +38,7 @@ describe("Input", () => {
       getByPlaceholderText,
       getByText,
       getByLabelText,
-    } = renderWithWrappersTL(<Input description="Input" placeholder="USD" enableClearButton />)
+    } = renderWithWrappers(<Input description="Input" placeholder="USD" enableClearButton />)
     // placeholder is rendered
     getByPlaceholderText("USD")
 
@@ -58,7 +58,7 @@ describe("Input", () => {
 
   it("should show the correct show/hide password icon", () => {
     const { getByText, getByPlaceholderText, queryByLabelText, getByLabelText } =
-      renderWithWrappersTL(<Input description="Password" placeholder="password" secureTextEntry />)
+      renderWithWrappers(<Input description="Password" placeholder="password" secureTextEntry />)
 
     getByText("Password")
     getByPlaceholderText("password")

@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { OAuthProvider } from "app/auth/types"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Platform } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -30,7 +30,7 @@ describe("OnboardingSocialLink", () => {
   }
 
   const getWrapper = (routeParams?: OnboardingNavigationStack["OnboardingSocialLink"]) => {
-    return renderWithWrappersTL(
+    return renderWithWrappers(
       <RelayEnvironmentProvider environment={mockEnvironment}>
         <SafeAreaProvider initialSafeAreaInsets={{ top: 1, left: 2, right: 3, bottom: 4 }}>
           <OnboardingSocialLink

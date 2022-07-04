@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import { Text } from "palette"
 import { CountdownProps } from "../Bidding/Components/Timer"
@@ -16,7 +16,7 @@ describe("StateManager", () => {
 
   it("Manages a DurationProvider", () => {
     const onNextTickerStateMock = jest.fn(() => ({ label: "bar", state: "foo" }))
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <StateManager
         CountdownComponent={Countdown}
         onCurrentTickerState={() => ({
@@ -34,7 +34,7 @@ describe("StateManager", () => {
 
   it("Transitions state when duration expires", () => {
     const onNextTickerState = jest.fn(() => ({ label: "bar", state: "foo" }))
-    renderWithWrappersTL(
+    renderWithWrappers(
       <StateManager
         CountdownComponent={Countdown}
         onCurrentTickerState={() => ({

@@ -1,7 +1,7 @@
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import { Spinner } from "palette"
 import { act } from "react-test-renderer"
@@ -36,7 +36,7 @@ describe("VanityURLEntity", () => {
     if (__renderWithPlaceholderTestUtils__) {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
     }
-    const { UNSAFE_getAllByType } = renderWithWrappersTL(
+    const { UNSAFE_getAllByType } = renderWithWrappers(
       <TestRenderer entity="unknown" slug="a-cool-new-url" />
     )
     env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })

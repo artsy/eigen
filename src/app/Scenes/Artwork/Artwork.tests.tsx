@@ -16,7 +16,7 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
 import { Touchable } from "palette"
@@ -482,7 +482,7 @@ describe("Artwork", () => {
     })
 
     it("should render a pressable partner name section when partner is linkable and has a href", () => {
-      const { getByA11yHint, queryByA11yHint } = renderWithWrappersTL(<TestRenderer />)
+      const { getByA11yHint, queryByA11yHint } = renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
@@ -501,7 +501,7 @@ describe("Artwork", () => {
     })
 
     it("should render a non pressable partner name section when partner is not linkable", () => {
-      const { queryByA11yHint, queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByA11yHint, queryByTestId } = renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
@@ -519,7 +519,7 @@ describe("Artwork", () => {
     })
 
     it("should not render the partner section when the partner has no name", () => {
-      const { queryByLabelText, queryByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByLabelText, queryByTestId } = renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
 
@@ -534,7 +534,7 @@ describe("Artwork", () => {
     })
 
     it("should display create artwork alert section by default", () => {
-      const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
@@ -554,7 +554,7 @@ describe("Artwork", () => {
     })
 
     it("should not display create artwork alert button section when artwork doesn't have any artist", () => {
-      const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
@@ -570,7 +570,7 @@ describe("Artwork", () => {
     })
 
     it("should display create artwork alert buttons section when artwork is sold", () => {
-      const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
@@ -585,7 +585,7 @@ describe("Artwork", () => {
     })
 
     it("should display create artwork alert buttons section when artwork is in closed auction", () => {
-      const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({

@@ -4,7 +4,7 @@ import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
 import { Avatar } from "palette"
@@ -54,7 +54,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersTL(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
     return tree
   }

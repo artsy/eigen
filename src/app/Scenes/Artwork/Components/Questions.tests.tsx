@@ -1,5 +1,5 @@
 import { Questions_Test_Query } from "__generated__/Questions_Test_Query.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Suspense } from "react"
 import { Text } from "react-native"
@@ -28,7 +28,7 @@ describe("Questions", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders", async () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <RelayEnvironmentProvider environment={mockEnvironment}>
         <Suspense fallback={<Text>SusLoading</Text>}>
           <TestRenderer />

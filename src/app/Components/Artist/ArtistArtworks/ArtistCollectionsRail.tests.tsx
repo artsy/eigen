@@ -1,11 +1,11 @@
 import { fireEvent } from "@testing-library/react-native"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtistCollectionsRail } from "./ArtistCollectionsRail"
 
 describe("Artist Series Rail", () => {
   it("renders all collections", async () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <ArtistCollectionsRail
         artist={artistMockData as any}
         collections={collectionsMockData as any}
@@ -18,7 +18,7 @@ describe("Artist Series Rail", () => {
   })
 
   it("tracks clicks to a collection", async () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <ArtistCollectionsRail
         artist={artistMockData as any}
         collections={collectionsMockData as any}

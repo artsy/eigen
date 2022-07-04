@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { SavedSearchButtonV2, SavedSearchButtonV2Props } from "./SavedSearchButtonV2"
 
 describe("SavedSearchButtonV2", () => {
@@ -16,12 +16,12 @@ describe("SavedSearchButtonV2", () => {
   }
 
   it("renders without error", () => {
-    renderWithWrappersTL(<TestWrapper />)
+    renderWithWrappers(<TestWrapper />)
   })
 
   it('should call "onPress" handler when it is pressed', () => {
     const onPressMock = jest.fn()
-    const { getByText } = renderWithWrappersTL(<TestWrapper onPress={onPressMock} />)
+    const { getByText } = renderWithWrappers(<TestWrapper onPress={onPressMock} />)
 
     fireEvent.press(getByText("Create Alert"))
 
@@ -29,7 +29,7 @@ describe("SavedSearchButtonV2", () => {
   })
 
   it("should correctly track event", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     fireEvent.press(getByText("Create Alert"))
 

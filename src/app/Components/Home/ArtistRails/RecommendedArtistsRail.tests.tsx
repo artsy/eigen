@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RecommendedArtistsRail } from "./RecommendedArtistsRail"
 
 jest.unmock("react-relay")
@@ -12,7 +12,7 @@ describe("RecommendedArtistsRail", () => {
   })
 
   it("Renders list of recommended artists without throwing an error", async () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <RecommendedArtistsRail
         scrollRef={null}
         title="Recommended Artists"
@@ -26,7 +26,7 @@ describe("RecommendedArtistsRail", () => {
   })
 
   it("returns null if there are no artists", async () => {
-    const { toJSON } = renderWithWrappersTL(
+    const { toJSON } = renderWithWrappers(
       <RecommendedArtistsRail
         scrollRef={null}
         title="Recommended Artists"

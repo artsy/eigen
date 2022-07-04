@@ -9,7 +9,6 @@ jest.mock("@sentry/react-native", () => ({
   captureException: jest.fn(),
 }))
 
-
 describe(errorMiddleware, () => {
   const middleware = errorMiddleware()
 

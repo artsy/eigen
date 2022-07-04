@@ -10,7 +10,7 @@ import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { waitUntil } from "app/tests/waitUntil"
 import { merge } from "lodash"
 import { Button, LinkText, Sans, Serif, Text } from "palette"
@@ -922,15 +922,13 @@ describe("cascading end times", () => {
     })
 
     it("sale endtime defaults to extendedBiddingEndtime", () => {
-      const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
+      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
       const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
 
     it("shows the sale's end time if the sale does not have cascading end times", () => {
-      const { getByText } = renderWithWrappersTL(
-        <ConfirmBid {...initialPropsForNonCascadingSale} />
-      )
+      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForNonCascadingSale} />)
       const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
@@ -941,7 +939,7 @@ describe("cascading end times", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
     })
     it("shows the sale's end time", () => {
-      const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
+      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
       const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })

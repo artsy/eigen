@@ -2,7 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { LocationAutocomplete } from "./LocationAutocomplete"
@@ -29,19 +29,19 @@ describe("ArtworkDetailsForm", () => {
 
   describe("LocationAutocomplete", () => {
     it("renders input correctly with correct placeholder", () => {
-      const { getByTestId, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
       expect(getByTestId("Submission_LocationInput")).toBeTruthy()
       expect(getByPlaceholderText("Enter city where artwork is located")).toBeTruthy()
     })
 
     it("has input's value empty initially", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
       const locationInput = getByTestId("Submission_LocationInput")
       expect(locationInput.props.value).toBe("")
     })
 
     it("mutates the typed value", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
       const locationInput = getByTestId("Submission_LocationInput")
 
       fireEvent.changeText(locationInput, "berlin")
@@ -49,7 +49,7 @@ describe("ArtworkDetailsForm", () => {
     })
 
     it("displays a message when no location is found", async () => {
-      const { getByText, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, getByTestId } = renderWithWrappers(<TestRenderer />)
 
       const locationInput = getByTestId("Submission_LocationInput")
       fireEvent.changeText(locationInput, "there is no such a location")

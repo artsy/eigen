@@ -3,7 +3,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import "react-native"
 import { act } from "react-test-renderer"
@@ -71,7 +71,7 @@ describe("recent searches", () => {
   })
 
   it("is updated when an artwork clicked and updateRecentSearchesOnTap is true", () => {
-    const { container } = renderWithWrappersTL(
+    const { container } = renderWithWrappers(
       <ArtworkWithProviders
         artwork={artworkProps()}
         contextScreenOwnerType={OwnerType.artist}
@@ -100,7 +100,7 @@ describe("recent searches", () => {
   })
 
   it("not updated when updateRecentSearchesOnTap is not passed, falling to false by default", () => {
-    const { container } = renderWithWrappersTL(
+    const { container } = renderWithWrappers(
       <ArtworkWithProviders
         artwork={artworkProps()}
         contextScreenOwnerType={OwnerType.artist}

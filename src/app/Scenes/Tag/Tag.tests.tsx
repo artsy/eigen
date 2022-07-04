@@ -3,7 +3,7 @@ import { TagTestsQuery } from "__generated__/TagTestsQuery.graphql"
 import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
 import About from "app/Components/Tag/About"
 import { TagArtworks } from "app/Components/Tag/TagArtworks"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { TouchableHighlightColor } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
@@ -85,7 +85,7 @@ describe("Tag", () => {
   })
 
   it("renders filter modal", async () => {
-    const { UNSAFE_getByType, UNSAFE_getAllByType } = renderWithWrappersTL(<TestRenderer />)
+    const { UNSAFE_getByType, UNSAFE_getAllByType } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
 
     await waitFor(() => expect(UNSAFE_getByType(TouchableHighlightColor)).toBeTruthy())

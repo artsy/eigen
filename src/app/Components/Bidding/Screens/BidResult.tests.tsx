@@ -2,7 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
 import { BidResultTestsQuery } from "__generated__/BidResultTestsQuery.graphql"
 import { dismissModal, navigate } from "app/navigation/navigate"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -74,7 +74,7 @@ describe("BidResult component", () => {
 
   describe("high bidder", () => {
     it("renders a timer", () => {
-      const { getByLabelText } = renderWithWrappersTL(
+      const { getByLabelText } = renderWithWrappers(
         <TestWrapper bidderPositionResult={Statuses.winning} />
       )
 
@@ -86,7 +86,7 @@ describe("BidResult component", () => {
     })
 
     it("dismisses the controller when the continue button is pressed", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper bidderPositionResult={Statuses.winning} />
       )
 
@@ -104,7 +104,7 @@ describe("BidResult component", () => {
 
   describe("low bidder", () => {
     it("renders a timer", () => {
-      const { getByLabelText } = renderWithWrappersTL(
+      const { getByLabelText } = renderWithWrappers(
         <TestWrapper bidderPositionResult={Statuses.outbid} />
       )
 
@@ -116,7 +116,7 @@ describe("BidResult component", () => {
     })
 
     it("pops to root when bid-again button is pressed", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper bidderPositionResult={Statuses.outbid} />
       )
 
@@ -134,7 +134,7 @@ describe("BidResult component", () => {
 
   describe("live bidding has started", () => {
     it("doesn't render a timer", () => {
-      const { queryByLabelText } = renderWithWrappersTL(
+      const { queryByLabelText } = renderWithWrappers(
         <TestWrapper bidderPositionResult={Statuses.live_bidding_started} />
       )
 
@@ -146,7 +146,7 @@ describe("BidResult component", () => {
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper bidderPositionResult={Statuses.live_bidding_started} />
       )
 

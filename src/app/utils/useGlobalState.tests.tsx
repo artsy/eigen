@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react-hooks"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text } from "react-native"
 import { useGlobalState } from "./useGlobalState"
 
@@ -40,7 +40,7 @@ describe(useGlobalState, () => {
   })
 
   it("does not cause the wrapper to be updated by default", () => {
-    const { container } = renderWithWrappersTL(<TestComponent />)
+    const { container } = renderWithWrappers(<TestComponent />)
 
     expect(extractText(container)).toBe("Hello 0")
 
@@ -54,7 +54,7 @@ describe(useGlobalState, () => {
   })
 
   it("does cause the wrapper to be updated when listening", () => {
-    const { container } = renderWithWrappersTL(<TestComponent listen />)
+    const { container } = renderWithWrappers(<TestComponent listen />)
 
     expect(extractText(container)).toBe("Hello 0")
 

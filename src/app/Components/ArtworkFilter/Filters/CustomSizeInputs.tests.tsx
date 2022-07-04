@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { CustomSizeInputs, CustomSizeInputsProps } from "./CustomSizeInputs"
 
 describe("CustomSizeInputs", () => {
@@ -16,7 +16,7 @@ describe("CustomSizeInputs", () => {
   }
 
   it("renders without throwing an error", () => {
-    const { getByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
     expect(getByText("Label")).toBeTruthy()
     expect(getByLabelText("Minimum Label Input")).toBeTruthy()
@@ -24,7 +24,7 @@ describe("CustomSizeInputs", () => {
   })
 
   it("should correctly render initial values", () => {
-    const { getByDisplayValue } = renderWithWrappersTL(<TestRenderer range={{ min: 5, max: 10 }} />)
+    const { getByDisplayValue } = renderWithWrappers(<TestRenderer range={{ min: 5, max: 10 }} />)
 
     expect(getByDisplayValue("5")).toBeTruthy()
     expect(getByDisplayValue("10")).toBeTruthy()
@@ -32,7 +32,7 @@ describe("CustomSizeInputs", () => {
 
   it("should allow to enter integer values", () => {
     const mockOnChange = jest.fn()
-    const { getByDisplayValue, getByLabelText } = renderWithWrappersTL(
+    const { getByDisplayValue, getByLabelText } = renderWithWrappers(
       <TestRenderer onChange={mockOnChange} />
     )
 
@@ -55,7 +55,7 @@ describe("CustomSizeInputs", () => {
 
   it("should allow to enter floating point values", () => {
     const mockOnChange = jest.fn()
-    const { getByDisplayValue, getByLabelText } = renderWithWrappersTL(
+    const { getByDisplayValue, getByLabelText } = renderWithWrappers(
       <TestRenderer onChange={mockOnChange} />
     )
 
@@ -78,7 +78,7 @@ describe("CustomSizeInputs", () => {
 
   it("should allow to enter only 2 digits after floating point", () => {
     const mockOnChange = jest.fn()
-    const { getByDisplayValue, getByLabelText } = renderWithWrappersTL(
+    const { getByDisplayValue, getByLabelText } = renderWithWrappers(
       <TestRenderer onChange={mockOnChange} range={{ min: 1, max: 2 }} />
     )
 
@@ -95,7 +95,7 @@ describe("CustomSizeInputs", () => {
 
   it("should NOT allow to enter values with special chars", () => {
     const mockOnChange = jest.fn()
-    const { getByDisplayValue, getByLabelText } = renderWithWrappersTL(
+    const { getByDisplayValue, getByLabelText } = renderWithWrappers(
       <TestRenderer onChange={mockOnChange} range={{ min: 1, max: 2 }} />
     )
 
@@ -136,7 +136,7 @@ describe("CustomSizeInputs", () => {
 
   it("should call handler when the minimum value is changed", () => {
     const onChangeMock = jest.fn()
-    const { getByLabelText } = renderWithWrappersTL(<TestRenderer onChange={onChangeMock} />)
+    const { getByLabelText } = renderWithWrappers(<TestRenderer onChange={onChangeMock} />)
 
     fireEvent.changeText(getByLabelText("Minimum Label Input"), "5")
 
@@ -145,7 +145,7 @@ describe("CustomSizeInputs", () => {
 
   it("should call handler when the maximum value is changed", () => {
     const onChangeMock = jest.fn()
-    const { getByLabelText } = renderWithWrappersTL(<TestRenderer onChange={onChangeMock} />)
+    const { getByLabelText } = renderWithWrappers(<TestRenderer onChange={onChangeMock} />)
 
     fireEvent.changeText(getByLabelText("Maximum Label Input"), "10")
 
@@ -154,7 +154,7 @@ describe("CustomSizeInputs", () => {
 
   it("should NOT call `onChange` handler if a non-floating point or non-integer value is entered in the input", () => {
     const onChangeMock = jest.fn()
-    const { getByLabelText } = renderWithWrappersTL(<TestRenderer onChange={onChangeMock} />)
+    const { getByLabelText } = renderWithWrappers(<TestRenderer onChange={onChangeMock} />)
 
     fireEvent.changeText(getByLabelText("Maximum Label Input"), "hello")
 

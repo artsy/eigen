@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { SearchInput, SearchInputProps } from "./SearchInput"
 
 describe("SearchInput", () => {
@@ -9,7 +9,7 @@ describe("SearchInput", () => {
   }
 
   it("renders without throwing an error", () => {
-    const { getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
 
     expect(getByPlaceholderText("Placeholder")).toBeTruthy()
   })
@@ -18,7 +18,7 @@ describe("SearchInput", () => {
     const onChangeTextMock = jest.fn()
     const refineMock = jest.fn()
 
-    const { getByPlaceholderText } = renderWithWrappersTL(
+    const { getByPlaceholderText } = renderWithWrappers(
       <TestRenderer onTextChange={onChangeTextMock} refine={refineMock} />
     )
 
@@ -29,7 +29,7 @@ describe("SearchInput", () => {
   })
 
   it("should have the correct value prop", () => {
-    const { getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
     const searchInput = getByPlaceholderText("Placeholder")
 
     fireEvent.changeText(searchInput, "text")
@@ -38,7 +38,7 @@ describe("SearchInput", () => {
   })
 
   it("track event when the text is changed", () => {
-    const { getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
 
     fireEvent.changeText(getByPlaceholderText("Placeholder"), "text")
 
@@ -53,7 +53,7 @@ describe("SearchInput", () => {
   })
 
   it("track event when the text is cleared", () => {
-    const { getByPlaceholderText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
     fireEvent.changeText(getByPlaceholderText("Placeholder"), "text")
     fireEvent.press(getByLabelText("Clear input button"))

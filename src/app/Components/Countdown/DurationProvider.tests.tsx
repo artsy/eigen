@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import { Text } from "palette"
 import { DurationProvider } from "./DurationProvider"
@@ -15,7 +15,7 @@ describe("DurationProvider", () => {
 
   it("provides a duration", () => {
     const startAt = new Date(Date.now() + 1000).toISOString()
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <DurationProvider startAt={startAt}>
         <DurationConsumer />
       </DurationProvider>
@@ -27,7 +27,7 @@ describe("DurationProvider", () => {
 
   it("updates duration every second", () => {
     const startAt = new Date(Date.now() + 1000).toISOString()
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <DurationProvider startAt={startAt}>
         <DurationConsumer />
       </DurationProvider>

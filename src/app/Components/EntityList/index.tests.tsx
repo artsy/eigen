@@ -1,9 +1,9 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { EntityList } from "./index"
 
 describe("EntityList", () => {
   it("correctly renders one item", () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <EntityList
         prefix="Works by"
         list={[
@@ -24,7 +24,7 @@ describe("EntityList", () => {
   })
 
   it("correctly renders multiple items", () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <EntityList
         prefix="Works by"
         list={[

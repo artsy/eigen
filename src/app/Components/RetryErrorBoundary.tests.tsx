@@ -1,5 +1,5 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import "react-native"
 
 import { LoadFailureView } from "./LoadFailureView"
@@ -22,7 +22,7 @@ describe("RetryErrorBoundary", () => {
     })
 
     it("renders Unable to load", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <RetryErrorBoundary>
           <CrashingComponent shouldCrash />
         </RetryErrorBoundary>
@@ -52,7 +52,7 @@ describe("RetryErrorBoundary", () => {
     }
 
     it("renders NotFoundFailureView", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <RetryErrorBoundary>
           <CrashingComponent shouldCrash error={error} />
         </RetryErrorBoundary>

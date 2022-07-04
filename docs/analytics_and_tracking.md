@@ -118,7 +118,7 @@ To test these, the best way is something like the following:
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 
 it("tracks analytics event when button is tapped", () => {
-  const { getByText } = renderWithWrappersTL(<TestScreen />)
+  const { getByText } = renderWithWrappers(<TestScreen />)
 
   fireEvent.press(getByText("my button"))
 
