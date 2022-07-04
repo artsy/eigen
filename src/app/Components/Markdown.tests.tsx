@@ -5,7 +5,7 @@ import { LinkText } from "palette"
 import { Markdown } from "./Markdown"
 
 import { navigate } from "app/navigation/navigate"
-import { defaultRules } from "app/utils/renderMarkdown"
+import { defaultRules, MarkdownRules } from "app/utils/renderMarkdown"
 
 describe("Markdown", () => {
   it("renders multiple paragraphs as Text elements", () => {
@@ -75,10 +75,9 @@ describe("Markdown", () => {
       ...basicRules,
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => <Text testID="foobar">{output(node.content, state)}</Text>,
       },
-    }
+    } as MarkdownRules
     const markdown = renderWithWrappersLEGACY(
       <Markdown rules={rules}>Paragraph 1 has some text</Markdown>
     )

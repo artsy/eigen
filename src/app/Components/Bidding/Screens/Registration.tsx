@@ -1,7 +1,10 @@
 import { captureException } from "@sentry/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
-import { RegistrationCreateBidderMutation } from "__generated__/RegistrationCreateBidderMutation.graphql"
+import {
+  RegistrationCreateBidderMutation,
+  RegistrationCreateBidderMutation$data,
+} from "__generated__/RegistrationCreateBidderMutation.graphql"
 import { RegistrationCreateCreditCardMutation } from "__generated__/RegistrationCreateCreditCardMutation.graphql"
 import { RegistrationQuery } from "__generated__/RegistrationQuery.graphql"
 import { RegistrationUpdateUserMutation } from "__generated__/RegistrationUpdateUserMutation.graphql"
@@ -27,6 +30,7 @@ import {
   QueryRenderer,
   RelayProp,
 } from "react-relay"
+import { PayloadError } from "relay-runtime"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { PaymentInfo } from "../Components/PaymentInfo"
@@ -64,8 +68,7 @@ const Hint: React.FC = ({ children }) => (
   context_screen_owner_type: null,
 })
 export class Registration extends React.Component<RegistrationProps, RegistrationState> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
+  constructor(props: RegistrationProps) {
     super(props)
 
     const { me } = this.props
@@ -162,7 +165,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         captureException(e)
       }
       if (!this.state.errorModalVisible) {
-        this.presentErrorModal(e, null)
+        this.presentErrorModal(e as Error, null)
       }
     }
   }
@@ -170,9 +173,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   /** Run through the full flow setting up the user account and making a bid  */
   async setupAddressCardAndBidder() {
     try {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const { phoneNumber } = this.state.billingAddress
-      await this.updatePhoneNumber(phoneNumber)
+      await this.updatePhoneNumber(this.state.billingAddress!.phoneNumber)
 
       const token = await this.createTokenFromAddress()
       await this.createCreditCard(token)
@@ -185,7 +186,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
         captureException(e)
       }
       if (!this.state.errorModalVisible) {
-        this.presentErrorModal(e, null)
+        this.presentErrorModal(e as Error, null)
       }
     }
   }
@@ -314,8 +315,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     })
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  presentRegistrationSuccess({ createBidder }) {
+  presentRegistrationSuccess({ createBidder }: RegistrationCreateBidderMutation$data) {
     LegacyNativeModules.ARNotificationsManager.postNotificationName(
       "ARAuctionArtworkRegistrationUpdated",
       {
@@ -323,7 +323,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       }
     )
 
-    const qualifiedForBidding = createBidder.bidder.qualified_for_bidding
+    const qualifiedForBidding = createBidder?.bidder?.qualified_for_bidding
     if (qualifiedForBidding === true) {
       this.presentRegistrationResult(RegistrationStatus.RegistrationStatusComplete)
     } else {
@@ -347,8 +347,10 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     this.setState({ isLoading: false })
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  presentErrorModal(errors, mutationMessage) {
+  presentErrorModal(
+    errors: Error | ReadonlyArray<PayloadError> | null | undefined,
+    mutationMessage: string | null
+  ) {
     console.error("Registration.tsx", errors)
 
     const errorMessage =

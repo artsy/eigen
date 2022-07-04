@@ -58,11 +58,7 @@ export const LabeledTicker: React.FC<LabeledTickerProps> = ({
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {sections.map((section, idx) => (
         <React.Fragment key={section.label}>
-          <LabeledTimeSection
-            {...section}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            textProps={textProps}
-          />
+          <LabeledTimeSection {...section} textProps={textProps!} />
           {!!(idx < sections.length - 1 && renderSeparator) && renderSeparator()}
         </React.Fragment>
       ))}

@@ -16,6 +16,7 @@ describe("EntityList", () => {
         ]}
         count={1}
         displayedItems={2}
+        onItemSelected={jest.fn()}
       />
     )
 
@@ -43,6 +44,7 @@ describe("EntityList", () => {
         ]}
         count={20}
         displayedItems={2}
+        onItemSelected={jest.fn()}
       />
     )
 

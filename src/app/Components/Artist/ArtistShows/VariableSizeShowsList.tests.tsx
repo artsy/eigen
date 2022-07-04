@@ -13,8 +13,7 @@ it("renders without throwing an error", () => {
   renderWithWrappersLEGACY(<ShowsList shows={shows as any} showSize="medium" />)
 })
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const showProps = (n) => {
+const showProps = (n: number) => {
   return {
     id: `show-expansive-exhibition-${n}`,
     href: "artsy.net/show",

@@ -64,11 +64,9 @@ it("allows bidders with a qualified credit card to bid", async () => {
   bidderPositionQueryMock.mockReturnValueOnce(
     Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
   )
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
-    return null
+    onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
+    return { dispose: jest.fn() }
   }) as any
 
   screen.root.findByType(Checkbox).props.onPress()

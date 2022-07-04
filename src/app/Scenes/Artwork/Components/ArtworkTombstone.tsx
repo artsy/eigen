@@ -63,11 +63,7 @@ export class ArtworkTombstone extends React.Component<
   renderSingleArtist(artist: Artist) {
     return (
       <Text>
-        {this.renderArtistName(
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artist.name,
-          artist.href
-        )}
+        {this.renderArtistName(artist.name!, artist.href)}
         <Text variant="md" weight="medium">
           {"  "}·{"  "}
         </Text>
@@ -76,7 +72,7 @@ export class ArtworkTombstone extends React.Component<
     )
   }
 
-  renderArtistName(artistName: string, href: string) {
+  renderArtistName(artistName: string, href: string | null) {
     return href ? (
       <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this, href)}>
         <Text variant="md" weight="medium">
@@ -91,21 +87,13 @@ export class ArtworkTombstone extends React.Component<
   }
 
   renderMultipleArtists = () => {
-    const {
-      artwork: { artists },
-    } = this.props
-
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    const artists = this.props.artwork.artists ?? []
     const truncatedArtists = !this.state.showingMoreArtists ? artists.slice(0, 3) : artists
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artistNames = truncatedArtists.map((artist, index) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const artistNameWithComma = index !== artists.length - 1 ? artist.name + ", " : artist.name
+      const artistNameWithComma = index !== artists.length - 1 ? artist!.name + ", " : artist!.name!
       return (
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        <React.Fragment key={artist.href}>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          {this.renderArtistName(artistNameWithComma, artist.href)}
+        <React.Fragment key={artist!.href}>
+          {this.renderArtistName(artistNameWithComma, artist!.href)}
         </React.Fragment>
       )
     })
@@ -150,13 +138,9 @@ export class ArtworkTombstone extends React.Component<
       <Box textAlign="left">
         <Flex flexDirection="row" flexWrap="wrap">
           {artwork.artists! /* STRICTNESS_MIGRATION */.length === 1
-            ? this.renderSingleArtist(
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                artwork.artists[0]
-              )
+            ? this.renderSingleArtist(artwork!.artists![0]!)
             : this.renderMultipleArtists()}
           {!!(artwork.artists! /* STRICTNESS_MIGRATION */.length === 0 && artwork.cultural_maker) &&
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
         <Spacer mb={1} />
