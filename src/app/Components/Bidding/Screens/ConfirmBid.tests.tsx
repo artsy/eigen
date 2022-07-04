@@ -885,7 +885,6 @@ describe("cascading end times", () => {
 const serifChildren = (comp: ReactTestRenderer) =>
   comp.root
     .findAllByType(Text)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     .map((c) => (c.props.children.join ? c.props.children.join("") : c.props.children))
     .join(" ")
 
