@@ -5,7 +5,7 @@ import Spinner from "app/Components/Spinner"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractText } from "app/tests/extractText"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { CatchErrors } from "app/utils/CatchErrors"
 import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
@@ -300,13 +300,13 @@ describe("AutosuggestResults", () => {
   })
 
   it("should show the loading placeholder ", () => {
-    const { getByLabelText } = renderWithWrappersTL(<TestWrapper query="michael" />)
+    const { getByLabelText } = renderWithWrappers(<TestWrapper query="michael" />)
 
     expect(getByLabelText("Autosuggest results are loading")).toBeTruthy()
   })
 
   it("should hide the loading placeholder when results are received", () => {
-    const { queryByLabelText } = renderWithWrappersTL(<TestWrapper query="michael" />)
+    const { queryByLabelText } = renderWithWrappers(<TestWrapper query="michael" />)
 
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
 
@@ -314,7 +314,7 @@ describe("AutosuggestResults", () => {
   })
 
   it("should show the default error message", async () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper query="michael" />)
+    const { getByText } = renderWithWrappers(<TestWrapper query="michael" />)
 
     rejectMostRecentRelayOperation(env, new Error("Bad connection"))
 
@@ -324,7 +324,7 @@ describe("AutosuggestResults", () => {
   })
 
   it("should show the unable to load error message when showOnRetryErrorMessage prop is true", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <TestWrapper query="michael" showOnRetryErrorMessage />
     )
 

@@ -4,7 +4,7 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { SimpleTicker } from "app/Components/Countdown/Ticker"
 import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import "moment-timezone"
 import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { BidButton } from "./CommercialButtons/BidButton"
@@ -25,7 +25,7 @@ describe("CommercialInformation", () => {
       availability: "for sale",
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={ForSaleArtwork as any}
@@ -47,7 +47,7 @@ describe("CommercialInformation", () => {
       isSold: true,
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={ForSaleArtwork as any}
@@ -73,7 +73,7 @@ describe("CommercialInformation", () => {
       },
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={Artwork as any}
@@ -95,7 +95,7 @@ describe("CommercialInformation", () => {
       saleMessage: null,
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={OnHoldArtwork as any}
@@ -115,7 +115,7 @@ describe("CommercialInformation", () => {
       saleMessage: "Sold",
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={SoldArtwork as any}
@@ -135,7 +135,7 @@ describe("CommercialInformation", () => {
       saleMessage: "Contact for Price",
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={ForSaleArtwork as any}
@@ -162,7 +162,7 @@ describe("CommercialInformation", () => {
       },
     }
 
-    const { queryByText, UNSAFE_queryByType } = renderWithWrappersTL(
+    const { queryByText, UNSAFE_queryByType } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={workInEndedAuction as any}
@@ -189,7 +189,7 @@ describe("CommercialInformation", () => {
       },
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkClosedAuction as any}
@@ -246,7 +246,7 @@ describe("CommercialInformation", () => {
       },
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkNoData as any}
@@ -267,7 +267,7 @@ describe("CommercialInformation", () => {
       isForSale: false,
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtworkNonCommercial as any}
@@ -281,7 +281,7 @@ describe("CommercialInformation", () => {
   })
 
   it("renders consign with Artsy text", () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={CommercialInformationArtwork as any}
@@ -328,7 +328,7 @@ describe("CommercialInformation", () => {
       ],
     }
 
-    const { UNSAFE_getByType, getByText } = renderWithWrappersTL(
+    const { UNSAFE_getByType, getByText } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={artworkWithEditionSets as any}
@@ -368,7 +368,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     afterEach(() => jest.clearAllMocks())
 
     it("renders CountDownTimer and BidButton when Artwork is in an auction", () => {
-      const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappersTL(
+      const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
         <ModalStack>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationArtworkInAuction as any}
@@ -383,7 +383,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     })
 
     it("renders CountDownTimer with the sale artwork's end time when Artwork is in a cascading end time auction", () => {
-      const { queryByText, queryByLabelText, UNSAFE_queryByType } = renderWithWrappersTL(
+      const { queryByText, queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
         <ModalStack>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
@@ -408,7 +408,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
         isForSale: false,
       }
 
-      const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappersTL(
+      const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
         <ModalStack>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationSoldArtworkInAuction as any}
@@ -425,7 +425,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     })
 
     it("doesn't render CountDownTimer or BidButton when not in auction", () => {
-      const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappersTL(
+      const { queryByLabelText, UNSAFE_queryByType } = renderWithWrappers(
         <ModalStack>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationAcquierableArtwork as any}
@@ -441,7 +441,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     })
 
     it("renders CountDownTimer with the sale artwork's end time when Artwork is in a cascading end time auction", () => {
-      const { queryByLabelText, UNSAFE_queryByType, queryByText } = renderWithWrappersTL(
+      const { queryByLabelText, UNSAFE_queryByType, queryByText } = renderWithWrappers(
         <ModalStack>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
@@ -469,7 +469,7 @@ describe("CommercialInformation buttons and coundtown timer", () => {
     afterEach(() => jest.clearAllMocks())
 
     it("renders CountDownTimer with the sale's end time even when Artwork is in a cascading end time auction", () => {
-      const { UNSAFE_queryByType, queryByText, queryByLabelText } = renderWithWrappersTL(
+      const { UNSAFE_queryByType, queryByText, queryByLabelText } = renderWithWrappers(
         <ModalStack>
           <CommercialInformationTimerWrapper
             artwork={CommercialInformationArtworkInCascadingEndTimeAuction as any}
@@ -511,7 +511,7 @@ describe("ArtworkExtraLinks", () => {
       },
     }
 
-    const { UNSAFE_queryByType } = renderWithWrappersTL(
+    const { UNSAFE_queryByType } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={inquireableArtwork as any}
@@ -536,7 +536,7 @@ describe("ArtworkExtraLinks", () => {
       sale: null,
     }
 
-    const { UNSAFE_queryByType } = renderWithWrappersTL(
+    const { UNSAFE_queryByType } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={acquireableArtwork as any}
@@ -561,7 +561,7 @@ describe("ArtworkExtraLinks", () => {
       sale: null,
     }
 
-    const { UNSAFE_queryByType } = renderWithWrappersTL(
+    const { UNSAFE_queryByType } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={offerableArtwork as any}
@@ -580,7 +580,7 @@ describe("ArtworkExtraLinks", () => {
       artists: [{ isConsignable: false, name: "Santa Claus", " $fragmentRefs": null }],
     }
 
-    const { UNSAFE_queryByType } = renderWithWrappersTL(
+    const { UNSAFE_queryByType } = renderWithWrappers(
       <ModalStack>
         <CommercialInformationTimerWrapper
           artwork={nonConsignableBiddableArtwork as any}

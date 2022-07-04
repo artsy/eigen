@@ -1,7 +1,7 @@
 import { act, waitFor } from "@testing-library/react-native"
 import { SalesTestQuery } from "__generated__/SalesTestQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator, RelayMockEnvironment } from "relay-test-utils"
@@ -42,7 +42,7 @@ describe("Sales", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersTL(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       environment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)

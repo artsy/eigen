@@ -4,7 +4,7 @@ import { RequestConditionReport_me$data } from "__generated__/RequestConditionRe
 import { RequestConditionReportTestQuery } from "__generated__/RequestConditionReportTestQuery.graphql"
 import { mockPostEventToProviders } from "app/tests/globallyMockedStuff"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -63,7 +63,7 @@ describe("RequestConditionReport", () => {
 
   describe("component", () => {
     it("renders correctly", () => {
-      const { queryByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         Me: () => me,
@@ -76,7 +76,7 @@ describe("RequestConditionReport", () => {
     })
 
     it("shows an error modal on failure", async () => {
-      const { getByText, queryByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         Me: () => me,
@@ -127,7 +127,7 @@ describe("RequestConditionReport", () => {
     })
 
     it("shows a success modal on success", async () => {
-      const { getByText, queryByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         Me: () => me,

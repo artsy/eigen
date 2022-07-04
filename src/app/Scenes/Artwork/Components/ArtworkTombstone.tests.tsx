@@ -3,13 +3,13 @@ import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_ar
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkTombstone } from "./ArtworkTombstone"
 import { CertificateAuthenticityModal } from "./CertificateAuthenticityModal"
 
 describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ArtworkTombstone artwork={artworkTombstoneArtwork} />
     )
 
@@ -31,7 +31,7 @@ describe("ArtworkTombstone", () => {
   })
 
   it("renders auction fields correctly", () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
     )
 
@@ -41,7 +41,7 @@ describe("ArtworkTombstone", () => {
   })
 
   it("redirects to artist page when artist name is clicked", () => {
-    const { queryByText, getByText } = renderWithWrappersTL(
+    const { queryByText, getByText } = renderWithWrappers(
       <ArtworkTombstone artwork={artworkTombstoneArtwork} />
     )
 
@@ -52,9 +52,7 @@ describe("ArtworkTombstone", () => {
   })
 
   it("redirects to attribution class faq page when attribution class is clicked", () => {
-    const { getByText } = renderWithWrappersTL(
-      <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-    )
+    const { getByText } = renderWithWrappers(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
 
     fireEvent.press(getByText("a limited edition set"))
 
@@ -62,7 +60,7 @@ describe("ArtworkTombstone", () => {
   })
 
   it("shows the authenticity modal when Certificate of Authenticity is tapped", () => {
-    const { getByText, UNSAFE_getByType } = renderWithWrappersTL(
+    const { getByText, UNSAFE_getByType } = renderWithWrappers(
       <ArtworkTombstone artwork={artworkTombstoneArtwork} />
     )
 
@@ -74,7 +72,7 @@ describe("ArtworkTombstone", () => {
   })
 
   it("closes the authenticity modal when Certificate of Authenticity", () => {
-    const { getByText, UNSAFE_getByType, getByTestId } = renderWithWrappersTL(
+    const { getByText, UNSAFE_getByType, getByTestId } = renderWithWrappers(
       <ArtworkTombstone artwork={artworkTombstoneArtwork} />
     )
 
@@ -91,7 +89,7 @@ describe("ArtworkTombstone", () => {
     it("renders dimensions in centimeters", () => {
       LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale = "fr_FR"
 
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       )
 
@@ -102,7 +100,7 @@ describe("ArtworkTombstone", () => {
   describe("for a US based user", () => {
     it("renders dimensions in inches", () => {
       LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale = "en_US"
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       )
 
@@ -112,7 +110,7 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork with more than 3 artists", () => {
     it("truncates artist names", () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       )
 
@@ -125,7 +123,7 @@ describe("ArtworkTombstone", () => {
     })
 
     it("doesn't show follow button", () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       )
 
@@ -133,7 +131,7 @@ describe("ArtworkTombstone", () => {
     })
 
     it("shows truncated artist names when 'x more' is clicked", () => {
-      const { queryByText, getByText } = renderWithWrappersTL(
+      const { queryByText, getByText } = renderWithWrappers(
         <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       )
 
@@ -149,7 +147,7 @@ describe("ArtworkTombstone", () => {
     const cascadingMessage = "Lots will close at 1-minute intervals."
     const popcornMessage = "Closing times may be extended due to last minute competitive bidding. "
     it("renders the notification banner with cascading message", () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork()} />
       )
 
@@ -158,7 +156,7 @@ describe("ArtworkTombstone", () => {
     })
 
     it("renders the notification banner with popcorn message", () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork(true)} />
       )
 
@@ -169,7 +167,7 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork in a sale without cascading end times", () => {
     it("renders the notification banner", () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
       )
 
@@ -179,7 +177,7 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork with less than 4 artists but more than 1", () => {
     it("doesn't show follow button", () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={threeArtistsArtworkData} />
       )
 
@@ -187,7 +185,7 @@ describe("ArtworkTombstone", () => {
     })
 
     it("doesn't truncate artist names", () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={threeArtistsArtworkData} />
       )
 
@@ -202,7 +200,7 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork with one artist", () => {
     it("renders artist name", () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={oneArtistArtworkData} />
       )
 
@@ -212,7 +210,7 @@ describe("ArtworkTombstone", () => {
     })
 
     it("shows follow button", () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkTombstone artwork={oneArtistArtworkData} />
       )
       expect(queryByText("Follow")).toBeTruthy()
@@ -221,16 +219,12 @@ describe("ArtworkTombstone", () => {
 
   describe("for an artwork with no artists but a cultural maker", () => {
     it("renders artist name", () => {
-      const { queryByText } = renderWithWrappersTL(
-        <ArtworkTombstone artwork={noArtistArtworkData} />
-      )
+      const { queryByText } = renderWithWrappers(<ArtworkTombstone artwork={noArtistArtworkData} />)
       expect(queryByText("18th century American")).toBeTruthy()
     })
 
     it("doesn't show follow button", () => {
-      const { queryByText } = renderWithWrappersTL(
-        <ArtworkTombstone artwork={noArtistArtworkData} />
-      )
+      const { queryByText } = renderWithWrappers(<ArtworkTombstone artwork={noArtistArtworkData} />)
 
       expect(queryByText("Follow")).toBeNull()
     })

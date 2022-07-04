@@ -1,5 +1,5 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { CollectionFixture } from "../Components/__fixtures__/CollectionFixture"
 import { CollectionHeader } from "./CollectionHeader"
 
@@ -14,7 +14,7 @@ describe("collection header", () => {
   })
 
   it("passes the collection header image url to collection header", () => {
-    const { UNSAFE_queryByType, UNSAFE_getByType } = renderWithWrappersTL(
+    const { UNSAFE_queryByType, UNSAFE_getByType } = renderWithWrappers(
       <CollectionHeader {...props} />
     )
 
@@ -26,14 +26,14 @@ describe("collection header", () => {
   })
 
   it("passes the collection header title to collection header", () => {
-    const { queryByText } = renderWithWrappersTL(<CollectionHeader {...props} />)
+    const { queryByText } = renderWithWrappers(<CollectionHeader {...props} />)
 
     expect(queryByText("Street Art Now")).toBeTruthy()
   })
 
   it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
     props.collection.headerImage = null
-    const { UNSAFE_queryByType, UNSAFE_getByType } = renderWithWrappersTL(
+    const { UNSAFE_queryByType, UNSAFE_getByType } = renderWithWrappers(
       <CollectionHeader {...props} />
     )
 
@@ -46,13 +46,13 @@ describe("collection header", () => {
 
   it("does not render the Read More component when there is no description", () => {
     props.collection.descriptionMarkdown = null
-    const { queryByLabelText } = renderWithWrappersTL(<CollectionHeader {...props} />)
+    const { queryByLabelText } = renderWithWrappers(<CollectionHeader {...props} />)
 
     expect(queryByLabelText("Read more")).toBeNull()
   })
 
   it("passes the collection header description to collection header", () => {
-    const { queryByText, queryByLabelText } = renderWithWrappersTL(<CollectionHeader {...props} />)
+    const { queryByText, queryByLabelText } = renderWithWrappers(<CollectionHeader {...props} />)
 
     const strArr = [
       /A beach towel by/,

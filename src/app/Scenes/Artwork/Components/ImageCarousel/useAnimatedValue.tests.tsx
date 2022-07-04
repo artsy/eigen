@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
 import { useState } from "react"
 import { Animated, View } from "react-native"
@@ -20,7 +20,7 @@ describe(useAnimatedValue, () => {
   }
 
   it("returns a stable animated value", () => {
-    const { getByLabelText } = renderWithWrappersTL(<Mock />)
+    const { getByLabelText } = renderWithWrappers(<Mock />)
     const prevVal = val
     expect(val).toBeInstanceOf(Animated.Value)
 

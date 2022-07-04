@@ -2,7 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { EntityType, navigate, navigateToEntity, SlugType } from "app/navigation/navigate"
 import { GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { CatchErrors } from "app/utils/CatchErrors"
 import { Touchable } from "palette"
 import { Pressable } from "react-native"
@@ -49,36 +49,36 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`works`, async () => {
-    const { queryAllByText } = renderWithWrappersTL(<TestWrapper result={result} showResultType />)
+    const { queryAllByText } = renderWithWrappers(<TestWrapper result={result} showResultType />)
 
     expect(queryAllByText("Banksy")).toBeTruthy()
     expect(queryAllByText("Artist")).toBeTruthy()
   })
 
   it("does not render result type when showResultType prop is not passed", async () => {
-    const { queryByText } = renderWithWrappersTL(<TestWrapper result={result} />)
+    const { queryByText } = renderWithWrappers(<TestWrapper result={result} />)
     expect(queryByText("Artist")).toBeFalsy()
   })
 
   it("renders result type when showResultType prop is passed", async () => {
-    const { queryByText } = renderWithWrappersTL(<TestWrapper result={result} showResultType />)
+    const { queryByText } = renderWithWrappers(<TestWrapper result={result} showResultType />)
     expect(queryByText("Artist")).toBeTruthy()
   })
 
   it("renders result and highlights the query", async () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper result={result} highlight="Ban" />)
+    const { getByText } = renderWithWrappers(<TestWrapper result={result} highlight="Ban" />)
 
     expect(getByText("Ban")).toHaveProp("color", "blue100")
     expect(getByText("ksy")).toHaveProp("color", "black100")
   })
 
   it("does not render delete button when onDelete callback is not passed", async () => {
-    const { queryByLabelText } = renderWithWrappersTL(<TestWrapper result={result} />)
+    const { queryByLabelText } = renderWithWrappers(<TestWrapper result={result} />)
     expect(queryByLabelText("Remove recent search item")).toBeFalsy()
   })
 
   it("calls onDelete calback when pressing on delete button", async () => {
-    const { getByLabelText } = renderWithWrappersTL(
+    const { getByLabelText } = renderWithWrappers(
       <TestWrapper result={result} onDelete={onDeleteMock} />
     )
 
@@ -96,7 +96,7 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`highlights a part of the string even when the string has diacritics but the highlight doesn't`, async () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <TestWrapper
         result={{
           ...result,
@@ -268,7 +268,7 @@ describe(AutosuggestSearchResult, () => {
 
   it("should call custom event track handler when search result is pressed", () => {
     const trackResultPressMock = jest.fn()
-    const { getAllByText } = renderWithWrappersTL(
+    const { getAllByText } = renderWithWrappers(
       <TestWrapper result={result} itemIndex={1} trackResultPress={trackResultPressMock} />
     )
 

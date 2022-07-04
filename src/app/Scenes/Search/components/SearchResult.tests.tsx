@@ -1,6 +1,6 @@
 import * as navigation from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import * as useSearchInsightsConfig from "app/utils/useSearchInsightsConfig"
 import { Touchable } from "palette"
 import { SearchHighlight } from "./SearchHighlight"
@@ -57,7 +57,7 @@ describe("SearchListItem", () => {
   })
 
   it("renders image with correct props", () => {
-    const { container } = renderWithWrappersTL(<TestPage />)
+    const { container } = renderWithWrappers(<TestPage />)
     const image = container.findByType(SearchResultImage)
 
     expect(image).toBeDefined()
@@ -66,7 +66,7 @@ describe("SearchListItem", () => {
   })
 
   it("renders highlight with correct props", () => {
-    const { container } = renderWithWrappersTL(<TestPage />)
+    const { container } = renderWithWrappers(<TestPage />)
     const highlight = container.findByType(SearchHighlight)
 
     expect(highlight).toBeDefined()
@@ -75,7 +75,7 @@ describe("SearchListItem", () => {
   })
 
   it("calls searchInsights with correct params on press", () => {
-    const { container } = renderWithWrappersTL(<TestPage />)
+    const { container } = renderWithWrappers(<TestPage />)
 
     container.findByType(Touchable).props.onPress()
     expect(searchInsightsSpy).toHaveBeenCalledWith("clickedObjectIDsAfterSearch", {
@@ -88,7 +88,7 @@ describe("SearchListItem", () => {
   })
 
   it("when a result is pressed, correctly adds it to global recent searches", () => {
-    const { container } = renderWithWrappersTL(<TestPage />)
+    const { container } = renderWithWrappers(<TestPage />)
 
     container.findByType(Touchable).props.onPress()
 
@@ -108,7 +108,7 @@ describe("SearchListItem", () => {
   })
 
   it(`calls navigation.navigate with href on press when href does not start with "/partner"`, () => {
-    const { container } = renderWithWrappersTL(<TestPage />)
+    const { container } = renderWithWrappers(<TestPage />)
 
     container.findByType(Touchable).props.onPress()
     expect(navigateSpy).toHaveBeenCalledWith("/test-href")

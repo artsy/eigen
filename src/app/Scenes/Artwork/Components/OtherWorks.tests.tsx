@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { OtherWorksTestsQuery } from "__generated__/OtherWorksTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -40,7 +40,7 @@ describe("OtherWorks", () => {
   })
 
   it("renders no grids if there are none provided", () => {
-    const { toJSON } = renderWithWrappersTL(<TestWrapper />)
+    const { toJSON } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
@@ -52,7 +52,7 @@ describe("OtherWorks", () => {
   })
 
   it("renders no grids if an empty array is provided", () => {
-    const { toJSON } = renderWithWrappersTL(<TestWrapper />)
+    const { toJSON } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
@@ -64,7 +64,7 @@ describe("OtherWorks", () => {
   })
 
   it("renders the grid if one is provided", () => {
-    const { getByText, getByLabelText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText, getByLabelText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
@@ -79,7 +79,7 @@ describe("OtherWorks", () => {
   })
 
   it("renders the grids if multiple are provided", () => {
-    const { getByText, getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText, getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
@@ -116,7 +116,7 @@ describe("OtherWorks", () => {
       },
     ]
 
-    const { getByText, queryByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({

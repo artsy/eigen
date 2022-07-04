@@ -1,5 +1,5 @@
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Input, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import { act } from "react-test-renderer"
@@ -92,7 +92,7 @@ describe("PhoneInput", () => {
   })
 
   it("does not show a validation message when phone number valid", () => {
-    const { queryByTestId } = renderWithWrappersTL(
+    const { queryByTestId } = renderWithWrappers(
       <PhoneInput
         value=""
         onChange={onChange}

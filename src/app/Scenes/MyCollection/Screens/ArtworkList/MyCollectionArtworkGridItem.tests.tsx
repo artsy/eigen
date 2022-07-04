@@ -3,7 +3,7 @@ import { MyCollectionArtworkGridItemTestsQuery } from "__generated__/MyCollectio
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { LocalImage } from "app/utils/LocalImageStore"
 import { Image as RNImage } from "react-native"
@@ -128,7 +128,7 @@ describe("MyCollectionArtworkGridItem", () => {
   })
 
   it("renders the high demand icon if artist is P1 and demand rank is over 9", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
     // mocking isP1 and demandRank
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>

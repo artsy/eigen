@@ -1,7 +1,7 @@
 import { fireEvent, within } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import _ from "lodash"
 import "react-native"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -47,7 +47,7 @@ describe("Saved search banner on artist screen", () => {
   }
 
   const getTree = (searchCriteriaID?: string) => {
-    return renderWithWrappersTL(
+    return renderWithWrappers(
       <ArtistQueryRenderer
         artistID="ignored"
         environment={environment}

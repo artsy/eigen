@@ -5,7 +5,7 @@ import {
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { getEssentialProps } from "./helper"
 import { WaysToBuyOptionsScreen } from "./WaysToBuyOptions"
 
@@ -35,7 +35,7 @@ describe("Ways to Buy Options Screen", () => {
   )
 
   it("renders the correct ways to buy options", () => {
-    const { getByText } = renderWithWrappersTL(<MockWaysToBuyScreen initialData={initialState} />)
+    const { getByText } = renderWithWrappers(<MockWaysToBuyScreen initialData={initialState} />)
 
     expect(getByText("Buy Now")).toBeTruthy()
     expect(getByText("Make Offer")).toBeTruthy()
@@ -58,7 +58,7 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
+    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
     expect(getByText("Ways to Buy")).toBeTruthy()
   })
@@ -94,7 +94,7 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
+    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
     expect(within(getByText("Ways to Buy")).getByText("• 3")).toBeTruthy()
   })
 
@@ -119,7 +119,7 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getAllByA11yState } = renderWithWrappersTL(
+    const { getAllByA11yState } = renderWithWrappers(
       <MockWaysToBuyScreen initialData={injectedState} />
     )
     const options = getAllByA11yState({ checked: true })
@@ -155,7 +155,7 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getAllByA11yState } = renderWithWrappersTL(
+    const { getAllByA11yState } = renderWithWrappers(
       <MockWaysToBuyScreen initialData={injectedState} />
     )
     const options = getAllByA11yState({ checked: true })

@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
@@ -22,7 +22,7 @@ describe("UploadPhotos", () => {
   beforeEach(() => mockEnvironment.mockClear())
 
   it("renders correct explanation for upload photos form", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
     expect(
       getByText(
         "To evaluate your submission faster, please upload high-quality photos of the work's front and back."
@@ -35,7 +35,7 @@ describe("UploadPhotos", () => {
   })
 
   it("renders Save and Continue button", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
     expect(getByTestId("Submission_Save_Photos_Button")).toBeTruthy()
   })
 
@@ -71,7 +71,7 @@ describe("UploadPhotos", () => {
     })
 
     it("tracks uploadPhotosCompleted event on save", async () => {
-      const { UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const { UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_Save_Photos_Button",
       })

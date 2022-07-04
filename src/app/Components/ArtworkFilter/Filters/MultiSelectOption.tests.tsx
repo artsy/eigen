@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { FilterData, FilterParamName } from "../ArtworkFilterHelpers"
 import { getEssentialProps } from "./helper"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
@@ -17,7 +17,7 @@ const EXAMPLE_FILTER_OPTIONS: FilterData[] = [
 
 describe("MultiSelectOption", () => {
   it("renders the options", () => {
-    const { getAllByTestId } = renderWithWrappersTL(
+    const { getAllByTestId } = renderWithWrappers(
       <MultiSelectOptionScreen
         filterOptions={EXAMPLE_FILTER_OPTIONS}
         searchable
@@ -34,7 +34,7 @@ describe("MultiSelectOption", () => {
 
   it("a disabled option cannot be clicked", () => {
     const onSelectMock = jest.fn()
-    const { getAllByTestId } = renderWithWrappersTL(
+    const { getAllByTestId } = renderWithWrappers(
       <MultiSelectOptionScreen
         filterOptions={EXAMPLE_FILTER_OPTIONS}
         onSelect={onSelectMock}
@@ -50,7 +50,7 @@ describe("MultiSelectOption", () => {
 
   describe("searchable", () => {
     it("filters the options with searchable", () => {
-      const { getAllByTestId, getByTestId } = renderWithWrappersTL(
+      const { getAllByTestId, getByTestId } = renderWithWrappers(
         <MultiSelectOptionScreen
           filterOptions={EXAMPLE_FILTER_OPTIONS}
           searchable
@@ -70,7 +70,7 @@ describe("MultiSelectOption", () => {
     })
 
     it("displays a message indicating no results when nothing matches the search input", () => {
-      const { getAllByTestId, getByTestId, getByText } = renderWithWrappersTL(
+      const { getAllByTestId, getByTestId, getByText } = renderWithWrappers(
         <MultiSelectOptionScreen
           filterOptions={EXAMPLE_FILTER_OPTIONS}
           searchable

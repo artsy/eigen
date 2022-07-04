@@ -1,6 +1,6 @@
 import { act, fireEvent } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { Rarity } from "./Rarity"
 
@@ -19,7 +19,7 @@ describe("Rarity", () => {
   })
 
   it("displays the correct rarity", async () => {
-    const { getByText, findByText, getByTestId } = renderWithWrappersTL(<Rarity />)
+    const { getByText, findByText, getByTestId } = renderWithWrappers(<Rarity />)
 
     act(() => fireEvent.press(getByTestId("rarity-select")))
     await flushPromiseQueue()
@@ -30,7 +30,7 @@ describe("Rarity", () => {
   })
 
   it("displays the modal with all classification types", async () => {
-    const { getByText } = renderWithWrappersTL(<Rarity />)
+    const { getByText } = renderWithWrappers(<Rarity />)
 
     act(() => fireEvent.press(getByText("What is this?")))
     await flushPromiseQueue()

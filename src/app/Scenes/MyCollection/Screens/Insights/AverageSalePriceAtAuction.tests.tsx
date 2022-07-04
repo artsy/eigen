@@ -1,5 +1,5 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { AverageSalePriceAtAuction } from "./AverageSalePriceAtAuction"
@@ -20,7 +20,7 @@ describe("AverageSalePriceAtAuction", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders title", async () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <RelayEnvironmentProvider environment={mockEnvironment}>
         <TestRenderer />
       </RelayEnvironmentProvider>

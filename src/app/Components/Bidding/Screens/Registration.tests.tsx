@@ -6,7 +6,7 @@ import {
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { mockTimezone } from "app/tests/mockTimezone"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Button, Checkbox, LinkText, Sans, Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
@@ -56,7 +56,7 @@ describe("User does not have a valid phone number", () => {
   let rendered: RenderAPI
 
   beforeEach(() => {
-    rendered = renderWithWrappersTL(<Registration {...initialPropsForUserWithoutPhone} />)
+    rendered = renderWithWrappers(<Registration {...initialPropsForUserWithoutPhone} />)
   })
 
   it("renders properly for a user without a phone number", () => {
@@ -65,7 +65,7 @@ describe("User does not have a valid phone number", () => {
 })
 
 it("renders properly for a user with a credit card and phone", () => {
-  const rendered = renderWithWrappersTL(
+  const rendered = renderWithWrappers(
     <Registration {...initialPropsForUserWithCreditCardAndPhone} />
   )
 
@@ -75,7 +75,7 @@ it("renders properly for a user with a credit card and phone", () => {
 })
 
 it("renders properly for a verified user with a credit card and phone", () => {
-  const rendered = renderWithWrappersTL(
+  const rendered = renderWithWrappers(
     <Registration
       {...initialProps}
       sale={{ ...sale, requireIdentityVerification: true }}

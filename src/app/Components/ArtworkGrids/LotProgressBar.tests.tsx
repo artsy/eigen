@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import moment from "moment"
 import { ProgressBar } from "palette"
@@ -7,7 +7,7 @@ import { LotProgressBar, LotProgressBarProps } from "./LotProgressBar"
 
 describe("LotProgressBar", () => {
   const getWrapper = (props: LotProgressBarProps) => {
-    return renderWithWrappersTL(
+    return renderWithWrappers(
       <DurationProvider startAt={props.biddingEndAt!}>
         <LotProgressBar {...props} />
       </DurationProvider>

@@ -4,7 +4,7 @@ import { ArtworkActionsTestsQuery } from "__generated__/ArtworkActionsTestsQuery
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -63,7 +63,7 @@ describe("ArtworkActions", () => {
 
   describe("with AR enabled", () => {
     it("renders buttons correctly", () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtwork} />
       )
 
@@ -78,7 +78,7 @@ describe("ArtworkActions", () => {
         ...artworkActionsArtwork,
         is_hangable: false,
       }
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtworkNotHangable} />
       )
 
@@ -96,7 +96,7 @@ describe("ArtworkActions", () => {
         isClosed: false,
       },
     }
-    const { queryByText, queryByLabelText } = renderWithWrappersTL(
+    const { queryByText, queryByLabelText } = renderWithWrappers(
       <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtworkInAuction} />
     )
     expect(queryByText("Watch lot")).toBeTruthy()
@@ -110,7 +110,7 @@ describe("ArtworkActions", () => {
   describe("without AR enabled", () => {
     it("does not show the View in Room option if the phone does not have AREnabled", () => {
       LegacyNativeModules.ARCocoaConstantsModule.AREnabled = false
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtwork} />
       )
 
@@ -167,7 +167,7 @@ describe("ArtworkActions", () => {
         is_saved: false,
       }
 
-      const { queryByText, getByText } = await renderWithWrappersTL(<TestRenderer />)
+      const { queryByText, getByText } = await renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         Artwork: () => artworkActionsArtworkSaved,
@@ -196,7 +196,7 @@ describe("ArtworkActions", () => {
         is_saved: true,
       }
 
-      const { queryByText, getByText } = await renderWithWrappersTL(<TestRenderer />)
+      const { queryByText, getByText } = await renderWithWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation(env, {
         Artwork: () => artworkActionsArtwork,
       })
@@ -219,7 +219,7 @@ describe("ArtworkActions", () => {
     })
 
     it("handles errors in saving gracefully", async () => {
-      const { queryByText, getByText } = await renderWithWrappersTL(<TestRenderer />)
+      const { queryByText, getByText } = await renderWithWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation(env, {
         Artwork: () => artworkActionsArtwork,
       })

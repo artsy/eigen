@@ -2,7 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardTestsQuery } from "__generated__/PartnerCardTestsQuery.graphql"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -41,7 +41,7 @@ describe("PartnerCard", () => {
   })
 
   it("renders partner name correctly", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => PartnerCardArtwork,
@@ -51,7 +51,7 @@ describe("PartnerCard", () => {
   })
 
   it("renders partner image", () => {
-    const { getByLabelText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => PartnerCardArtwork,
@@ -61,7 +61,7 @@ describe("PartnerCard", () => {
   })
 
   it("renders partner type", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => PartnerCardArtwork,
@@ -79,7 +79,7 @@ describe("PartnerCard", () => {
       },
     }
 
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => PartnerCardArtworkInstitutionalSeller,
@@ -96,7 +96,7 @@ describe("PartnerCard", () => {
         type: "Some Other Partner Type",
       },
     }
-    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => PartnerCardArtworkOtherType,
@@ -114,7 +114,7 @@ describe("PartnerCard", () => {
         profile: null,
       },
     }
-    const { getByText, queryByLabelText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText, queryByLabelText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => PartnerCardArtworkWithoutImage,
@@ -125,7 +125,7 @@ describe("PartnerCard", () => {
   })
 
   it("truncates partner locations correctly", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => PartnerCardArtwork,
@@ -135,7 +135,7 @@ describe("PartnerCard", () => {
   })
 
   it("renders button text correctly", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => PartnerCardArtwork,
@@ -152,7 +152,7 @@ describe("PartnerCard", () => {
         type: "Auction House",
       },
     }
-    const { toJSON } = renderWithWrappersTL(<TestWrapper />)
+    const { toJSON } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => PartnerCardArtworkAuctionHouse,
@@ -169,7 +169,7 @@ describe("PartnerCard", () => {
         isGalleryAuction: true,
       },
     }
-    const { toJSON } = renderWithWrappersTL(<TestWrapper />)
+    const { toJSON } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => PartnerCardArtworkAuction,
@@ -186,7 +186,7 @@ describe("PartnerCard", () => {
         profile: null,
       },
     }
-    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => PartnerCardArtworkNoProfile,
@@ -209,7 +209,7 @@ describe("PartnerCard", () => {
         },
       }
 
-      const { getByText, queryByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => PartnerCardArtworkFollowed,
@@ -234,7 +234,7 @@ describe("PartnerCard", () => {
     })
 
     it("correctly displays when the work is not followed, and allows following", () => {
-      const { getByText, queryByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => PartnerCardArtwork,
@@ -259,7 +259,7 @@ describe("PartnerCard", () => {
     })
 
     it("handles errors in saving gracefully", () => {
-      const { getByText, queryByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => PartnerCardArtwork,

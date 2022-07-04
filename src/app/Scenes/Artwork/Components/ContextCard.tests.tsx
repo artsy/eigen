@@ -1,5 +1,5 @@
 import { ContextCardTestsQuery } from "__generated__/ContextCardTestsQuery.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -39,7 +39,7 @@ describe("ContextCard", () => {
 
   describe("Fair context", () => {
     it("renders fair name correctly", () => {
-      const { getByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => fairContextArtwork,
@@ -49,7 +49,7 @@ describe("ContextCard", () => {
     })
 
     it("renders fair image", () => {
-      const { getByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => fairContextArtwork,
@@ -61,7 +61,7 @@ describe("ContextCard", () => {
 
   describe("Show context", () => {
     it("renders show name correctly", () => {
-      const { getByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => showContextArtwork,
@@ -71,7 +71,7 @@ describe("ContextCard", () => {
     })
 
     it("renders show image", () => {
-      const { getByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => showContextArtwork,
@@ -81,7 +81,7 @@ describe("ContextCard", () => {
     })
 
     it("renders show button text correctly", () => {
-      const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+      const { queryByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => showContextArtwork,
@@ -94,7 +94,7 @@ describe("ContextCard", () => {
 
   describe("Sale context", () => {
     it("renders sale name correctly", () => {
-      const { getByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => auctionContextArtwork,
@@ -104,7 +104,7 @@ describe("ContextCard", () => {
     })
 
     it("renders formatted sale start/end date correctly", () => {
-      const { getByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => auctionContextArtwork,
@@ -121,7 +121,7 @@ describe("ContextCard", () => {
           formattedStartDateTime: "In progress",
         },
       }
-      const { getByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => saleContextArtwork,
@@ -131,7 +131,7 @@ describe("ContextCard", () => {
     })
 
     it("renders sale image", () => {
-      const { getByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => auctionContextArtwork,
@@ -141,7 +141,7 @@ describe("ContextCard", () => {
     })
 
     it("renders 'In Auction' if the sale is an auction", () => {
-      const { getByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => auctionContextArtwork,
@@ -158,7 +158,7 @@ describe("ContextCard", () => {
           isAuction: false,
         },
       }
-      const { toJSON } = renderWithWrappersTL(<TestWrapper />)
+      const { toJSON } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => saleContextArtwork,

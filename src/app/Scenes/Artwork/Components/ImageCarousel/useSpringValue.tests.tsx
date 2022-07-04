@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Button, Text } from "palette"
 import { useState } from "react"
 import { Animated } from "react-native"
@@ -24,7 +24,7 @@ describe("useSpringValue", () => {
   })
 
   it("returns a stable animated value", () => {
-    const { getByText } = renderWithWrappersTL(<Mock />)
+    const { getByText } = renderWithWrappers(<Mock />)
     const prevVal = val
 
     expect(getAnimatedValue(val)).toBe(0)

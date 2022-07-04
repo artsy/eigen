@@ -5,7 +5,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { cloneDeep } from "lodash"
 import { first, last } from "lodash"
@@ -142,7 +142,7 @@ describe("SalesRail Subtitle", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerHomeSalesRail: true })
     })
     it("renders formattedStartDateTime as the subtitle", () => {
-      const wrapper = renderWithWrappersTL(
+      const wrapper = renderWithWrappers(
         <SalesRailFragmentContainer
           title="Auctions"
           salesModule={salesModule as any}
@@ -162,7 +162,7 @@ describe("SalesRail Subtitle", () => {
       })
     })
     it("renders the correct subtitle based on auction type", async () => {
-      const wrapper = renderWithWrappersTL(
+      const wrapper = renderWithWrappers(
         <SalesRailFragmentContainer
           title="Auctions"
           salesModule={salesModule as any}

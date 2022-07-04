@@ -5,7 +5,7 @@ jest.mock("app/utils/googleMaps", () => ({
 
 import { fireEvent } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
 import { DetailedLocationAutocomplete } from "./DetailedLocationAutocomplete"
 
@@ -27,7 +27,7 @@ const locationDetails = {
 
 describe("LocationAutocomplete", () => {
   it("pre-fills the input with the initialLocation", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <DetailedLocationAutocomplete initialLocation="Anytown, USA" onChange={mockOnChange} />
     )
 
@@ -41,7 +41,7 @@ describe("LocationAutocomplete", () => {
     })
 
     it("calls onChange with correct location", async () => {
-      const { getByTestId } = renderWithWrappersTL(
+      const { getByTestId } = renderWithWrappers(
         <DetailedLocationAutocomplete initialLocation="Anytown, USA" onChange={mockOnChange} />
       )
 
@@ -73,7 +73,7 @@ describe("LocationAutocomplete", () => {
     })
 
     it("calls onChange with correct location", async () => {
-      const { getByTestId } = renderWithWrappersTL(
+      const { getByTestId } = renderWithWrappers(
         <DetailedLocationAutocomplete initialLocation="Anytown, USA" onChange={mockOnChange} />
       )
 
