@@ -10,6 +10,12 @@ interface ScreenProps {
   navigator: NavigatorIOS
 }
 
+export interface NavigatorIOSPushArgs {
+  component: React.ComponentType<any>
+  title?: string
+  passProps?: object
+}
+
 const ScreenWrapper: React.FC<{ route: { params: ScreenProps } }> = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -25,7 +31,7 @@ class NavigatorIOS extends React.Component<{
   initialRoute: { component: React.ComponentType<any>; passProps?: object }
 }> {
   navigator: NavigationContainerRef | null = null
-  push(args: { component: React.ComponentType<any>; title?: string; passProps?: object }) {
+  push(args: NavigatorIOSPushArgs) {
     const props: ScreenProps = {
       Component: args.component,
       props: args.passProps ?? {},

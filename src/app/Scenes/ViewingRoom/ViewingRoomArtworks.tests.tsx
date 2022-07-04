@@ -1,7 +1,7 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import {
   mockEdges,
   resolveMostRecentRelayOperation,
@@ -35,7 +35,7 @@ describe("ViewingRoom", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders a flatlist with one artwork", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       ViewingRoom: () => ({ artworksConnection: { edges: mockEdges(1) } }),
     })
@@ -45,7 +45,7 @@ describe("ViewingRoom", () => {
   })
 
   it("renders additional information if it exists", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       ViewingRoom: () => ({
         artworksConnection: {
@@ -60,7 +60,7 @@ describe("ViewingRoom", () => {
   })
 
   it("navigates to artwork screen + calls tracking on press", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       ViewingRoom: () => ({
         artworksConnection: { edges: mockEdges(1) },

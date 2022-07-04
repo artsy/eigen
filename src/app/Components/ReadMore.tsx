@@ -137,8 +137,7 @@ function truncate({
   // keep track of how many text nodes deep we are
   let textDepth = 0
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  function traverse(node: React.ReactNode) {
+  function traverse(node: React.ReactNode): React.ReactNode {
     if (offset === maxChars) {
       return null
     }
@@ -146,7 +145,6 @@ function truncate({
     if (Array.isArray(node)) {
       const result = []
       for (const child of node) {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         const truncated = traverse(child)
         if (truncated) {
           result.push(truncated)
@@ -165,8 +163,7 @@ function truncate({
         textDepth += 1
       }
       const children = React.Children.toArray((node.props as any).children)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const truncatedChildren = traverse(children)
+      const truncatedChildren = traverse(children) as React.ReactNode[]
 
       if (node.type === Sans || node.type === PaletteText) {
         if (textDepth === 1 && maxChars === offset) {
@@ -182,8 +179,7 @@ function truncate({
         textDepth -= 1
       }
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return React.cloneElement(node, null, ...truncatedChildren)
+      return React.cloneElement(node, {}, ...truncatedChildren)
     }
 
     if (node === null || typeof node === "boolean" || typeof node === "undefined") {

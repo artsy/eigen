@@ -1,6 +1,6 @@
 import { NewWorksForYouTestsQuery } from "__generated__/NewWorksForYouTestsQuery.graphql"
 import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { NewWorksForYouFragmentContainer } from "./NewWorksForYou"
@@ -32,7 +32,7 @@ describe("NewWorksForYou", () => {
   })
 
   it("renders NewWorksForYou", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {

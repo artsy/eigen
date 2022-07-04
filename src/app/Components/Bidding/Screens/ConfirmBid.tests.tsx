@@ -10,14 +10,18 @@ import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { waitUntil } from "app/tests/waitUntil"
+import NavigatorIOS, {
+  NavigatorIOSPushArgs,
+} from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { merge } from "lodash"
 import { Button, LinkText, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import "react-native"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
+import { ReactTestRenderer } from "react-test-renderer"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { BidInfoRow } from "../Components/BidInfoRow"
@@ -47,22 +51,18 @@ jest.mock("tipsi-stripe", () => ({
   createTokenWithCard: jest.fn(),
 }))
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-let nextStep
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const mockNavigator = { push: (route) => (nextStep = route) }
+let nextStep: NavigatorIOSPushArgs | null
+const mockNavigator: Partial<NavigatorIOS> = { push: (route) => (nextStep = route) }
 jest.useFakeTimers()
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager
   .postNotificationName as jest.Mock
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const findPlaceBidButton = (component) => {
+const findPlaceBidButton = (component: ReactTestRenderer) => {
   return component.root.findAllByType(Button)[1]
 }
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const mountConfirmBidComponent = (props) => {
-  return renderWithWrappers(<ConfirmBid {...props} />)
+const mountConfirmBidComponent = (props: ConfirmBidProps) => {
+  return renderWithWrappersLEGACY(<ConfirmBid {...props} />)
 }
 
 beforeEach(() => {
@@ -100,10 +100,9 @@ it("displays the artwork title correctly with date", () => {
 
 it("displays the artwork title correctly without date", () => {
   const datelessProps = merge({}, initialProps, { sale_artwork: { artwork: { date: null } } })
-  const component = renderWithWrappers(<ConfirmBid {...datelessProps} />)
+  const component = renderWithWrappersLEGACY(<ConfirmBid {...datelessProps} />)
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  expect(serifChildren(component)).not.toContain(`${saleArtwork.artwork.title},`)
+  expect(serifChildren(component)).not.toContain(`${saleArtwork.artwork!.title},`)
 })
 
 it("can load and display price summary", () => {
@@ -268,11 +267,9 @@ describe("when pressing bid button", () => {
 
         component.root.findByType(Checkbox).props.onPress()
         console.error = jest.fn() // Silences component logging.
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         relay.commitMutation = commitMutationMock((_, { onError }) => {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          onError(new Error("An error occurred."))
-          return null
+          onError!(new Error("An error occurred."))
+          return { dispose: jest.fn() }
         }) as any
 
         findPlaceBidButton(component).props.onPress()
@@ -288,19 +285,15 @@ describe("when pressing bid button", () => {
         console.error = jest.fn() // Silences component logging.
 
         // A TypeError is raised when the device has no internet connection.
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         relay.commitMutation = commitMutationMock((_, { onError }) => {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          onError(new TypeError("Network request failed"))
-          return null
+          onError!(new TypeError("Network request failed"))
+          return { dispose: jest.fn() }
         }) as any
 
         findPlaceBidButton(component).props.onPress()
 
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        expect(nextStep.component).toEqual(BidResultScreen)
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        expect(nextStep.passProps).toEqual(
+        expect(nextStep?.component).toEqual(BidResultScreen)
+        expect(nextStep?.passProps).toEqual(
           expect.objectContaining({
             bidderPositionResult: {
               message_header: "An error occurred",
@@ -317,11 +310,9 @@ describe("when pressing bid button", () => {
             'GraphQL Timeout Error: Mutation.createBidderPosition has timed out after waiting for 5000ms"}',
         }
 
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          onCompleted({}, [error])
-          return null
+          onCompleted!({}, [error])
+          return { dispose: jest.fn() }
         }) as any
 
         const component = mountConfirmBidComponent(initialProps)
@@ -329,13 +320,10 @@ describe("when pressing bid button", () => {
         component.root.findByType(Checkbox).props.onPress()
         findPlaceBidButton(component).props.onPress()
 
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        await waitUntil(() => nextStep)
+        await waitUntil(() => !!nextStep)
 
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        expect(nextStep.component).toEqual(BidResultScreen)
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        expect(nextStep.passProps).toEqual(
+        expect(nextStep?.component).toEqual(BidResultScreen)
+        expect(nextStep?.passProps).toEqual(
           expect.objectContaining({
             bidderPositionResult: {
               message_header: "An error occurred",
@@ -393,11 +381,9 @@ describe("polling to verify bid position", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
-        return null
+        onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
+        return { dispose: jest.fn() }
       }) as any
       let requestCounter = 0 // On the fifth attempt, return highestBidder
       bidderPositionQueryMock.mockImplementation(() => {
@@ -410,16 +396,13 @@ describe("polling to verify bid position", () => {
       })
 
       findPlaceBidButton(component).props.onPress()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      await waitUntil(() => nextStep)
+      await waitUntil(() => !!nextStep)
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.component).toEqual(BidResultScreen)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.passProps).toEqual(
+      expect(nextStep?.component).toEqual(BidResultScreen)
+      expect(nextStep?.passProps).toEqual(
         expect.objectContaining({
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          bidderPositionResult: mockRequestResponses.pollingForBid.highestBidder.me.bidder_position,
+          bidderPositionResult:
+            mockRequestResponses.pollingForBid.highestBidder.me!.bidder_position,
         })
       )
     })
@@ -431,24 +414,18 @@ describe("polling to verify bid position", () => {
       bidderPositionQueryMock.mockReturnValue(
         Promise.resolve(mockRequestResponses.pollingForBid.pending)
       )
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
-        return null
+        onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
+        return { dispose: jest.fn() }
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      await waitUntil(() => nextStep)
+      await waitUntil(() => !!nextStep)
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.component).toEqual(BidResultScreen)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.passProps).toEqual(
+      expect(nextStep?.component).toEqual(BidResultScreen)
+      expect(nextStep?.passProps).toEqual(
         expect.objectContaining({
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          bidderPositionResult: mockRequestResponses.pollingForBid.pending.me.bidder_position,
+          bidderPositionResult: mockRequestResponses.pollingForBid.pending.me!.bidder_position,
         })
       )
     })
@@ -460,24 +437,19 @@ describe("polling to verify bid position", () => {
       bidderPositionQueryMock.mockReturnValueOnce(
         Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
       )
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
-        return null
+        onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
+        return { dispose: jest.fn() }
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      await waitUntil(() => nextStep)
+      await waitUntil(() => !!nextStep)
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.component).toEqual(BidResultScreen)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.passProps).toEqual(
+      expect(nextStep?.component).toEqual(BidResultScreen)
+      expect(nextStep?.passProps).toEqual(
         expect.objectContaining({
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          bidderPositionResult: mockRequestResponses.pollingForBid.highestBidder.me.bidder_position,
+          bidderPositionResult:
+            mockRequestResponses.pollingForBid.highestBidder.me!.bidder_position,
         })
       )
     })
@@ -489,24 +461,18 @@ describe("polling to verify bid position", () => {
       bidderPositionQueryMock.mockReturnValueOnce(
         Promise.resolve(mockRequestResponses.pollingForBid.outbid)
       )
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
-        return null
+        onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
+        return { dispose: jest.fn() }
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      await waitUntil(() => nextStep)
+      await waitUntil(() => !!nextStep)
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.component).toEqual(BidResultScreen)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.passProps).toEqual(
+      expect(nextStep?.component).toEqual(BidResultScreen)
+      expect(nextStep?.passProps).toEqual(
         expect.objectContaining({
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          bidderPositionResult: mockRequestResponses.pollingForBid.outbid.me.bidder_position,
+          bidderPositionResult: mockRequestResponses.pollingForBid.outbid.me!.bidder_position,
         })
       )
     })
@@ -518,24 +484,19 @@ describe("polling to verify bid position", () => {
       bidderPositionQueryMock.mockReturnValueOnce(
         Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet)
       )
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
-        return null
+        onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
+        return { dispose: jest.fn() }
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      await waitUntil(() => nextStep)
+      await waitUntil(() => !!nextStep)
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.component).toEqual(BidResultScreen)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.passProps).toEqual(
+      expect(nextStep?.component).toEqual(BidResultScreen)
+      expect(nextStep?.passProps).toEqual(
         expect.objectContaining({
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          bidderPositionResult: mockRequestResponses.pollingForBid.reserveNotMet.me.bidder_position,
+          bidderPositionResult:
+            mockRequestResponses.pollingForBid.reserveNotMet.me!.bidder_position,
         })
       )
     })
@@ -551,11 +512,9 @@ describe("polling to verify bid position", () => {
       bidderPositionQueryMock.mockReturnValueOnce(
         Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet)
       )
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
-        return null
+        onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
+        return { dispose: jest.fn() }
       }) as any
 
       findPlaceBidButton(component).props.onPress()
@@ -586,8 +545,8 @@ describe("polling to verify bid position", () => {
             endAt: null,
             id: "node-id",
             internalID: "internal-id",
-            " $fragmentRefs": null,
-            " $refType": null,
+            " $fragmentSpreads": null,
+            " $fragmentType": null,
             artwork: {
               artist_names: "Makiko Kudo",
               date: "2015",
@@ -598,6 +557,7 @@ describe("polling to verify bid position", () => {
               },
             },
             lot_label: "538",
+            extendedBiddingEndAt: null,
             sale: {
               start_at: "2018-05-08T20:22:42+00:00",
               cascadingEndTimeIntervalMinutes: null,
@@ -622,25 +582,19 @@ describe("polling to verify bid position", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        onCompleted(mockRequestResponses.placingBid.bidRejected, null)
-        return null
+        onCompleted!(mockRequestResponses.placingBid.bidRejected, null)
+        return { dispose: jest.fn() }
       }) as any
 
       findPlaceBidButton(component).props.onPress()
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      await waitUntil(() => nextStep)
+      await waitUntil(() => !!nextStep)
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.component).toEqual(BidResultScreen)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.passProps).toEqual(
+      expect(nextStep?.component).toEqual(BidResultScreen)
+      expect(nextStep?.passProps).toEqual(
         expect.objectContaining({
           bidderPositionResult:
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            mockRequestResponses.placingBid.bidRejected.createBidderPosition.result,
+            mockRequestResponses.placingBid.bidRejected.createBidderPosition!.result,
         })
       )
     })
@@ -648,8 +602,7 @@ describe("polling to verify bid position", () => {
 })
 
 describe("ConfirmBid for unqualified user", () => {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const fillOutFormAndSubmit = (component) => {
+  const fillOutFormAndSubmit = (component: ReactTestRenderer) => {
     // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
     component.root.findByType(ConfirmBid).instance.setState({ billingAddress })
     component.root.findByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
@@ -666,11 +619,12 @@ describe("ConfirmBid for unqualified user", () => {
 
     billingAddressRow.instance.props.onPress()
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.component).toEqual(BillingAddress)
+    const passProps = nextStep?.passProps as {
+      onSubmit: (address: Address) => void
+    }
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    nextStep.passProps.onSubmit(billingAddress)
+    expect(nextStep?.component).toEqual(BillingAddress)
+    passProps.onSubmit(billingAddress)
 
     expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual(
       "401 Broadway 25th floor New York NY"
@@ -684,16 +638,13 @@ describe("ConfirmBid for unqualified user", () => {
 
     creditcardRow.instance.props.onPress()
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.component).toEqual(CreditCardForm)
+    expect(nextStep?.component).toEqual(CreditCardForm)
   })
 
   it("shows the error screen when stripe's API returns an error", () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onCompleted({}, null)
-      return null
+      onCompleted!({}, null)
+      return { dispose: jest.fn() }
     }) as any
     stripe.createTokenWithCard.mockImplementationOnce(() => {
       throw new Error("Error tokenizing card")
@@ -716,11 +667,9 @@ describe("ConfirmBid for unqualified user", () => {
   it("shows the error screen with the correct error message on a createCreditCard mutation failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onCompleted(mockRequestResponses.creatingCreditCardError, null)
-      return null
+      onCompleted!(mockRequestResponses.creatingCreditCardError, null)
+      return { dispose: jest.fn() }
     }) as any
 
     const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
@@ -740,11 +689,9 @@ describe("ConfirmBid for unqualified user", () => {
 
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onCompleted({}, errors)
-      return null
+      onCompleted!({}, errors)
+      return { dispose: jest.fn() }
     }) as any
 
     const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
@@ -763,11 +710,9 @@ describe("ConfirmBid for unqualified user", () => {
   it("shows the error screen with the default error message if the creditCardMutation error message is empty", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onCompleted(mockRequestResponses.creatingCreditCardEmptyError, null)
-      return null
+      onCompleted!(mockRequestResponses.creatingCreditCardEmptyError, null)
+      return { dispose: jest.fn() }
     }) as any
 
     const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
@@ -785,21 +730,17 @@ describe("ConfirmBid for unqualified user", () => {
   it("shows the generic error screen on a createCreditCard mutation network failure", () => {
     console.error = jest.fn() // Silences component logging.
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     relay.commitMutation = commitMutationMock((_, { onError }) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      onError(new TypeError("Network request failed"))
-      return null
+      onError!(new TypeError("Network request failed"))
+      return { dispose: jest.fn() }
     }) as any
 
     const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
     fillOutFormAndSubmit(component)
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.component).toEqual(BidResultScreen)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(nextStep.passProps).toEqual(
+    expect(nextStep?.component).toEqual(BidResultScreen)
+    expect(nextStep?.passProps).toEqual(
       expect.objectContaining({
         bidderPositionResult: {
           message_header: "An error occurred",
@@ -863,10 +804,8 @@ describe("ConfirmBid for unqualified user", () => {
         expect.objectContaining({
           variables: {
             input: {
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              saleID: saleArtwork.sale.slug,
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              artworkID: saleArtwork.artwork.slug,
+              saleID: saleArtwork.sale!.slug,
+              artworkID: saleArtwork.artwork!.slug,
               maxBidAmountCents: 450000,
             },
           },
@@ -892,13 +831,10 @@ describe("ConfirmBid for unqualified user", () => {
       const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
 
       fillOutFormAndSubmit(component)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      await waitUntil(() => nextStep)
+      await waitUntil(() => !!nextStep)
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.component).toEqual(BidResultScreen)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      expect(nextStep.passProps).toEqual(
+      expect(nextStep?.component).toEqual(BidResultScreen)
+      expect(nextStep?.passProps).toEqual(
         expect.objectContaining({
           bidderPositionResult: {
             message_header: "An error occurred",
@@ -922,15 +858,13 @@ describe("cascading end times", () => {
     })
 
     it("sale endtime defaults to extendedBiddingEndtime", () => {
-      const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
+      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
       const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
 
     it("shows the sale's end time if the sale does not have cascading end times", () => {
-      const { getByText } = renderWithWrappersTL(
-        <ConfirmBid {...initialPropsForNonCascadingSale} />
-      )
+      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForNonCascadingSale} />)
       const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
@@ -941,15 +875,14 @@ describe("cascading end times", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
     })
     it("shows the sale's end time", () => {
-      const { getByText } = renderWithWrappersTL(<ConfirmBid {...initialPropsForCascadingSale} />)
+      const { getByText } = renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
       const timerText = getByText("00d 00h 00m 10s")
       expect(timerText).toBeTruthy()
     })
   })
 })
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const serifChildren = (comp) =>
+const serifChildren = (comp: ReactTestRenderer) =>
   comp.root
     .findAllByType(Text)
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -984,30 +917,28 @@ const baseSaleArtwork = {
 const saleArtwork: ConfirmBid_sale_artwork$data = {
   ...baseSaleArtwork,
   endAt: null,
+  extendedBiddingEndAt: null,
   sale: {
     ...baseSaleArtwork.sale,
     live_start_at: "2018-05-09T20:22:42+00:00",
     cascadingEndTimeIntervalMinutes: null,
   },
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  " $fragmentRefs": null, // needs this to keep TS happy
-  " $refType": null, // needs this to keep TS happy
+  " $fragmentSpreads": null as any, // needs this to keep TS happy
+  " $fragmentType": null as any, // needs this to keep TS happy
 }
 
 const nonCascadeSaleArtwork: ConfirmBid_sale_artwork$data = {
   ...baseSaleArtwork,
   endAt: null,
+  extendedBiddingEndAt: null,
   sale: {
     ...baseSaleArtwork.sale,
     end_at: new Date(Date.now() + 10000).toISOString(),
     live_start_at: null,
     cascadingEndTimeIntervalMinutes: null,
   },
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  " $fragmentRefs": null, // needs this to keep TS happy
-  " $refType": null, // needs this to keep TS happy
+  " $fragmentSpreads": null as any, // needs this to keep TS happy
+  " $fragmentType": null as any, // needs this to keep TS happy
 }
 
 const cascadingEndTimeSaleArtwork: ConfirmBid_sale_artwork$data = {
@@ -1019,10 +950,6 @@ const cascadingEndTimeSaleArtwork: ConfirmBid_sale_artwork$data = {
     live_start_at: null,
     cascadingEndTimeIntervalMinutes: 1,
   },
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  " $fragmentRefs": null, // needs this to keep TS happy
-  " $refType": null, // needs this to keep TS happy
 }
 
 const mockRequestResponses = {

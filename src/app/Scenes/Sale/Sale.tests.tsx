@@ -1,7 +1,7 @@
 import { waitFor } from "@testing-library/react-native"
 import { navigate, popParentViewController } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import { Suspense } from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -34,7 +34,7 @@ describe("Sale", () => {
   })
 
   it("switches to live auction view when sale goes live", async () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
@@ -61,7 +61,7 @@ describe("Sale", () => {
   })
 
   it("switches to live auction view when sale goes live with no endAt", async () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Sale: () => ({
@@ -88,7 +88,7 @@ describe("Sale", () => {
   })
 
   it("doesn't switch to live auction view when sale is closed", async () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -112,7 +112,7 @@ describe("Sale", () => {
   })
 
   it("renders a Register button when registrations are open", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -131,7 +131,7 @@ describe("Sale", () => {
   })
 
   it("doesn't render a Register button when registrations ended", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -150,7 +150,7 @@ describe("Sale", () => {
   })
 
   it("doesn't render a Register button when it's closed", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -168,7 +168,7 @@ describe("Sale", () => {
   })
 
   it("renders the banner when the sale has cascading end times", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -188,7 +188,7 @@ describe("Sale", () => {
   })
 
   it("doesn't render the banner when the sale does not have cascading end times", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -208,7 +208,7 @@ describe("Sale", () => {
   })
 
   it("doesn't render the banner when the sale has cascading end times but the sale is closed", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {

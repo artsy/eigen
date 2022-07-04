@@ -14,8 +14,7 @@ const HEADER_IMAGE_HEIGHT = 204
 
 export const CollectionHeader: React.FC<CollectionHeaderProps> = (props) => {
   const { title, image, headerImage, descriptionMarkdown: collectionDescription } = props.collection
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const defaultHeaderUrl = image?.edges[0]?.node?.image?.url || ""
+  const defaultHeaderUrl = image?.edges?.[0]?.node?.image?.url || ""
   const url = headerImage ? headerImage : defaultHeaderUrl
   const { width: screenWidth } = Dimensions.get("window")
   const collectionTitleMargin = (collectionDescription || "").length < 1 ? 2 : 1

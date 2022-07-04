@@ -4,7 +4,8 @@ const Lint = require("tslint")
 const tsutils = require("tsutils")
 const ts = require("typescript")
 
-const FAILURE_STRING = "Please use renderWithWrappers() rather than ReactTestRenderer.create() 🙏\n(Feel free to ping the MX team for questions or feedback about this rule.)"
+const FAILURE_STRING =
+  "Please use renderWithWrappersLEGACY() rather than ReactTestRenderer.create() 🙏\n(Feel free to ping the MX team for questions or feedback about this rule.)"
 
 class Rule extends Lint.Rules.AbstractRule {
   /**
@@ -38,7 +39,8 @@ module.exports.Rule = Rule
  */
 function isIncorrectComponentCreate(node) {
   const trimmedNodeText = node.expression.getFullText().trim()
-  const containsText = (trimmedNodeText === "ReactTestRenderer.create" || trimmedNodeText === "renderer.create")
+  const containsText =
+    trimmedNodeText === "ReactTestRenderer.create" || trimmedNodeText === "renderer.create"
   return containsText
 }
 
@@ -50,16 +52,10 @@ function walk(ctx) {
    * @param {ts.Node} node
    */
   function cb(node) {
-    if (
-      tsutils.isCallExpression(node) && isIncorrectComponentCreate(node)
-    ) {
+    if (tsutils.isCallExpression(node) && isIncorrectComponentCreate(node)) {
       // TODO: Can this be a suggestion rather than an autofix?
-      // const fix = new Lint.Replacement(node.getStart(), node.expression.getFullText().trim().length, "renderWithWrappers");
-      ctx.addFailureAt(
-        node.getStart(),
-        node.getWidth(),
-        FAILURE_STRING,
-      )
+      // const fix = new Lint.Replacement(node.getStart(), node.expression.getFullText().trim().length, "renderWithWrappersLEGACY");
+      ctx.addFailureAt(node.getStart(), node.getWidth(), FAILURE_STRING)
       return
     }
     return ts.forEachChild(node, cb)

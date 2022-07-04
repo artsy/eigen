@@ -2,7 +2,7 @@ import { waitFor } from "@testing-library/react-native"
 import { ComposerTestsQuery } from "__generated__/ComposerTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Button, Flex } from "palette"
 import { TextInput } from "react-native"
 import { TouchableWithoutFeedback } from "react-native"
@@ -50,7 +50,7 @@ const TestRenderer = (nonRelayProps: { disabled: boolean; value?: string }) => (
 
 const defaultProps = { disabled: false }
 const getWrapper = (mockResolvers = {}, nonRelayProps = {}) => {
-  const tree = renderWithWrappers(<TestRenderer {...{ ...defaultProps, ...nonRelayProps }} />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer {...{ ...defaultProps, ...nonRelayProps }} />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)

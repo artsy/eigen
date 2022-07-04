@@ -1,7 +1,7 @@
 import { SaleInfoTestsQuery } from "__generated__/SaleInfoTestsQuery.graphql"
 import { RegisterToBidButtonContainer } from "app/Scenes/Sale/Components/RegisterToBidButton"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SaleInfoContainer, tests } from "./SaleInfo"
@@ -38,7 +38,7 @@ describe("SaleInfo", () => {
   })
 
   it("shows register to bid button", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -50,7 +50,7 @@ describe("SaleInfo", () => {
   })
 
   it("hides register to bid button if auction is over", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -65,7 +65,7 @@ describe("SaleInfo", () => {
   })
 
   it("shows Auction is live View shows up when an auction is live", () => {
-    const { UNSAFE_queryAllByType } = renderWithWrappersTL(<TestRenderer />)
+    const { UNSAFE_queryAllByType } = renderWithWrappers(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -77,7 +77,7 @@ describe("SaleInfo", () => {
   })
 
   it("doesn't show Auction is live view when an auction is not live", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -89,7 +89,7 @@ describe("SaleInfo", () => {
   })
 
   it("shows the buyers premium correctly for a single percentage", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -101,7 +101,7 @@ describe("SaleInfo", () => {
   })
 
   it("shows the buyers premium correctly for range of percentages", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     const sale = {
       ...mockSale,
       isWithBuyersPremium: true,

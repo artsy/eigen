@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { CommercialEditionSetInformation_artwork$data } from "__generated__/CommercialEditionSetInformation_artwork.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 
 const artwork: CommercialEditionSetInformation_artwork$data = {
@@ -32,7 +32,7 @@ const artwork: CommercialEditionSetInformation_artwork$data = {
 
 describe("CommercialEditionSetInformation", () => {
   it("changes displays first edition price", () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <CommercialEditionSetInformation setEditionSetId={() => null} artwork={artwork} />
     )
 
@@ -40,7 +40,7 @@ describe("CommercialEditionSetInformation", () => {
   })
 
   it("changes display price to selected edition set", () => {
-    const { getByText, queryByText } = renderWithWrappersTL(
+    const { getByText, queryByText } = renderWithWrappers(
       <CommercialEditionSetInformation setEditionSetId={() => null} artwork={artwork} />
     )
 

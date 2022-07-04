@@ -1,5 +1,5 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import { Flex, Spacer, Text } from "palette"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { LabeledTicker } from "."
 import { CountdownTimer, CountdownTimerProps } from "./CountdownTimer"
 
@@ -33,7 +33,7 @@ describe("CountdownTimer", () => {
   })
 
   it("renders upcoming properly", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <CountdownTimer
         formattedOpeningHours="Opens May 10 at 8:22pm"
         startAt="2018-05-10T20:22:42+00:00"
@@ -46,7 +46,7 @@ describe("CountdownTimer", () => {
   })
 
   it("renders current properly", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <CountdownTimer
         formattedOpeningHours="Opens Apr 14 at 8:00pm"
         startAt="2018-04-14T20:00:00+00:00"
@@ -59,7 +59,7 @@ describe("CountdownTimer", () => {
   })
 
   it("renders closed properly", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <CountdownTimer
         formattedOpeningHours="Closed"
         startAt={dateString(Date.now() - 2000)}

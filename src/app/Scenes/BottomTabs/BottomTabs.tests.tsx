@@ -3,7 +3,7 @@ import { ModalStack } from "app/navigation/ModalStack"
 import { createEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import useInterval from "react-use/lib/useInterval"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -60,7 +60,7 @@ describe(BottomTabs, () => {
     __globalStoreTestUtils__?.injectState({
       bottomTabs: { sessionState: { unreadConversationCount: 4 } },
     })
-    const tree = renderWithWrappers(<TestWrapper />)
+    const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
     const inboxButton = tree.root
       .findAllByType(BottomTabsButton)
@@ -74,7 +74,7 @@ describe(BottomTabs, () => {
   })
 
   it(`fetches the current unread conversation count on mount`, async () => {
-    const tree = renderWithWrappers(<TestWrapper />)
+    const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
     await act(async () => {
       await flushPromiseQueue()
@@ -96,7 +96,7 @@ describe(BottomTabs, () => {
   })
 
   it(`sets the application icon badge count`, async () => {
-    renderWithWrappers(<TestWrapper />)
+    renderWithWrappersLEGACY(<TestWrapper />)
 
     await act(async () => {
       await flushPromiseQueue()
@@ -117,7 +117,7 @@ describe(BottomTabs, () => {
   it(`fetches the current unread conversation count once in a while`, async () => {
     let tree: ReactTestRenderer | null = null
     act(() => {
-      tree = renderWithWrappers(<TestWrapper />)
+      tree = renderWithWrappersLEGACY(<TestWrapper />)
     })
 
     expect(useInterval).toHaveBeenCalledWith(expect.any(Function), expect.any(Number))

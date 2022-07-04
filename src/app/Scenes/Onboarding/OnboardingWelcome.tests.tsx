@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockNavigate } from "app/tests/navigationMocks"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
 const navigationPropsMock = {
@@ -16,7 +16,7 @@ describe("OnboardingWelcome", () => {
     })
 
     it("navigates to create account screen when the user taps on create account", () => {
-      const { getByTestId } = renderWithWrappersTL(
+      const { getByTestId } = renderWithWrappers(
         <OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />
       )
       fireEvent.press(getByTestId("button-create"))
@@ -24,7 +24,7 @@ describe("OnboardingWelcome", () => {
     })
 
     it("navigates to log in screen when the user taps on log in", () => {
-      const { getByTestId } = renderWithWrappersTL(
+      const { getByTestId } = renderWithWrappers(
         <OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />
       )
       fireEvent.press(getByTestId("button-login"))

@@ -1,6 +1,6 @@
 import { ArtworkDetails_artwork$data } from "__generated__/ArtworkDetails_artwork.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkDetails } from "./ArtworkDetails"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
@@ -28,7 +28,7 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
     )
 
@@ -64,7 +64,7 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
     )
 
@@ -97,7 +97,7 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
     )
     expect(queryByText("Condition")).toBeTruthy()
@@ -130,7 +130,7 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const { queryByText, UNSAFE_queryByType } = renderWithWrappersTL(
+    const { queryByText, UNSAFE_queryByType } = renderWithWrappers(
       <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
     )
 
@@ -167,7 +167,7 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const { queryByText, UNSAFE_queryByType } = renderWithWrappersTL(
+    const { queryByText, UNSAFE_queryByType } = renderWithWrappers(
       <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
     )
 

@@ -1,5 +1,5 @@
 import { PartnerLocationsTestsQuery } from "__generated__/PartnerLocationsTestsQuery.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { graphql, QueryRenderer } from "react-relay"
@@ -44,7 +44,7 @@ describe("PartnerLocations", () => {
   }
 
   it("renders without throwing an error", async () => {
-    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(env, {
       Partner: () => PartnerLocationsFixture,

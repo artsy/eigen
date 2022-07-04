@@ -1,5 +1,5 @@
 import { FullFeaturedArtistListTestsQuery } from "__generated__/FullFeaturedArtistListTestsQuery.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -39,7 +39,7 @@ describe("FullFeaturedArtistList", () => {
   })
 
   it("renders featured artist", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       MarketingCollection: () => FullFeaturedArtistListCollectionFixture,
@@ -53,7 +53,7 @@ describe("FullFeaturedArtistList", () => {
   })
 
   it("does not render an EntityHeader for excluded artists", async () => {
-    const { getByText, queryByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       MarketingCollection: () => ({
@@ -71,7 +71,7 @@ describe("FullFeaturedArtistList", () => {
 
   describe("when artist ids are explicitly requested", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
-      const { getByText, queryByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         MarketingCollection: () => ({

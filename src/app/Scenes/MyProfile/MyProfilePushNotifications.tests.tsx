@@ -2,7 +2,7 @@ import { SwitchMenu } from "app/Components/SwitchMenu"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { Text } from "palette"
 import { Platform, Switch } from "react-native"
@@ -28,7 +28,7 @@ describe(SwitchMenu, () => {
       description: "Switch Menu Description",
       disabled: false,
     }
-    const switchMenuInstance = renderWithWrappers(<SwitchMenu {...props} />)
+    const switchMenuInstance = renderWithWrappersLEGACY(<SwitchMenu {...props} />)
     // default state
     expect(switchMenuInstance.root.findByType(Switch).props.disabled).toBe(false)
     expect(switchMenuInstance.root.findAllByType(Text)[0].props.color).toEqual("black100")
@@ -42,7 +42,7 @@ describe(SwitchMenu, () => {
       description: "Switch Menu Description",
       disabled: true,
     }
-    const switchMenuInstance = renderWithWrappers(<SwitchMenu {...props} />)
+    const switchMenuInstance = renderWithWrappersLEGACY(<SwitchMenu {...props} />)
     // default state
     expect(switchMenuInstance.root.findByType(Switch).props.disabled).toBe(true)
     expect(switchMenuInstance.root.findAllByType(Text)[0].props.color).toEqual("black60")
@@ -51,13 +51,13 @@ describe(SwitchMenu, () => {
 
 describe(MyProfilePushNotificationsQueryRenderer, () => {
   it("Loads until the operation resolves", () => {
-    const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
+    const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
     expect(tree.root.findAllByType(MyProfilePushNotifications)).toHaveLength(1)
     expect(tree.root.findByType(MyProfilePushNotifications).props.isLoading).toEqual(true)
   })
 
   it("renders without throwing an error", () => {
-    const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
+    const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "MyProfilePushNotificationsQuery"
@@ -90,7 +90,7 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
       cb(null, PushAuthorizationStatus.NotDetermined)
     )
     Platform.OS = "ios"
-    const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
+    const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "MyProfilePushNotificationsQuery"
@@ -120,7 +120,7 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
     mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: true }))
     Platform.OS = "android"
 
-    const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
+    const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "MyProfilePushNotificationsQuery"
@@ -151,7 +151,7 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
       cb(null, PushAuthorizationStatus.Denied)
     )
     Platform.OS = "ios"
-    const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
+    const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
 
     await flushPromiseQueue()
     tree.update(<MyProfilePushNotificationsQueryRenderer />)
@@ -162,7 +162,7 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
 it("should show the open settings banner on Android if the user did not allow push notifications", async () => {
   mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: false }))
   Platform.OS = "android"
-  const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
+  const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
   await flushPromiseQueue()
   tree.update(<MyProfilePushNotificationsQueryRenderer />)
   expect(tree.root.findAllByType(OpenSettingsBanner)).toHaveLength(1)

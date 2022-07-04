@@ -1,5 +1,5 @@
 import { ArtworkHistory_artwork$data } from "__generated__/ArtworkHistory_artwork.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkHistory } from "./ArtworkHistory"
 
 jest.unmock("react-relay")
@@ -13,7 +13,7 @@ describe("Artwork History", () => {
       literature: "bibliography",
     }
 
-    const { queryByText } = renderWithWrappersTL(<ArtworkHistory artwork={artworkHistoryInfo} />)
+    const { queryByText } = renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
 
     expect(queryByText("Provenance")).toBeTruthy()
     expect(queryByText("Exhibition History")).toBeTruthy()
@@ -28,7 +28,7 @@ describe("Artwork History", () => {
       literature: "bibliography",
     }
 
-    const { queryByText } = renderWithWrappersTL(<ArtworkHistory artwork={artworkHistoryInfo} />)
+    const { queryByText } = renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
 
     expect(queryByText("Provenance")).toBeTruthy()
     expect(queryByText("Exhibition History")).toBeNull()
@@ -43,7 +43,7 @@ describe("Artwork History", () => {
       literature: null,
     }
 
-    const { toJSON, queryByText } = renderWithWrappersTL(
+    const { toJSON, queryByText } = renderWithWrappers(
       <ArtworkHistory artwork={artworkHistoryInfo} />
     )
 

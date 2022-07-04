@@ -79,7 +79,6 @@ export class ArtistListItem extends React.Component<Props, State> {
     )
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   @track((props: Props) => ({
     action_name: props.artist.is_followed
       ? Schema.ActionNames.ArtistFollow
@@ -88,7 +87,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     owner_id: props.artist.internalID,
     owner_slug: props.artist.slug,
     owner_type: Schema.OwnerEntityTypes.Artist,
-    context_module: props.contextModule ? props.contextModule : null,
+    context_module: props.contextModule,
   }))
   handleShowSuccessfullyUpdated() {
     this.setState({

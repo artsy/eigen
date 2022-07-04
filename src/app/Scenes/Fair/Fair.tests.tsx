@@ -1,7 +1,7 @@
 import { FairTestsQuery } from "__generated__/FairTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { NavigationalTabs, Tab } from "palette/elements/Tabs"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -47,7 +47,7 @@ describe("Fair", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
@@ -243,7 +243,7 @@ describe("Fair", () => {
       })
 
       it("should not be rendered", () => {
-        const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
+        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
         expect(queryByLabelText("Search images")).toBeNull()
       })
     })
@@ -254,7 +254,7 @@ describe("Fair", () => {
       })
 
       it("should not be rendered when fair is not active", () => {
-        const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
+        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
         act(() => {
           env.mock.resolveMostRecentOperation((operation) =>
@@ -272,7 +272,7 @@ describe("Fair", () => {
       })
 
       it("should not be rendered when fair doesn't have any indexed artworks", () => {
-        const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
+        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
         act(() => {
           env.mock.resolveMostRecentOperation((operation) =>
@@ -290,7 +290,7 @@ describe("Fair", () => {
       })
 
       it("should be rendered when fair has indexed artworks, is active and feature flag is enabled", () => {
-        const { queryByLabelText } = renderWithWrappersTL(<TestRenderer />)
+        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
         act(() => {
           env.mock.resolveMostRecentOperation((operation) =>

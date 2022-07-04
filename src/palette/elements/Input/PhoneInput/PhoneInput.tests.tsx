@@ -1,5 +1,5 @@
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Input, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import { act } from "react-test-renderer"
@@ -16,7 +16,7 @@ describe("PhoneInput", () => {
   })
 
   it("provides a Select for the country", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <PhoneInput
         value="+447825577664"
         onChange={onChange}
@@ -37,7 +37,7 @@ describe("PhoneInput", () => {
   })
 
   it("renders an input with the phone number pre-filled", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <PhoneInput
         value="+447825577664"
         onChange={onChange}
@@ -50,7 +50,7 @@ describe("PhoneInput", () => {
   })
 
   it("shows custom error message, when error is controlled and phone number is invalid", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <PhoneInput
         value="447825577664"
         onChange={onChange}
@@ -71,7 +71,7 @@ describe("PhoneInput", () => {
   })
 
   it("shows local error message when parent does not control error and phone number is invalid", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <PhoneInput
         value="447825577664"
         onChange={onChange}
@@ -92,7 +92,7 @@ describe("PhoneInput", () => {
   })
 
   it("does not show a validation message when phone number valid", () => {
-    const { queryByTestId } = renderWithWrappersTL(
+    const { queryByTestId } = renderWithWrappers(
       <PhoneInput
         value=""
         onChange={onChange}
@@ -107,7 +107,7 @@ describe("PhoneInput", () => {
   })
 
   it("calls onChange and onChangeText when the value changes", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <PhoneInput
         value="+447825577664"
         onChange={onChange}

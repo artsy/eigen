@@ -15,8 +15,7 @@ interface Props {
 
 class RelatedArtist extends Component<Props> {
   handleTap() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    navigate(this.props.artist.href)
+    navigate(this.props.artist.href!)
   }
 
   render() {
@@ -47,18 +46,14 @@ class RelatedArtist extends Component<Props> {
   }
 
   artworksString(counts: RelatedArtist_artist$data["counts"]) {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const totalWorks = counts.artworks
-      ? // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        counts.artworks + (counts.artworks > 1 ? " works" : " work")
+    const totalWorks = counts?.artworks
+      ? counts.artworks + (counts.artworks > 1 ? " works" : " work")
       : null
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    if (totalWorks && counts.forSaleArtworks === counts.artworks) {
+    if (totalWorks && counts?.forSaleArtworks === counts?.artworks) {
       return totalWorks + " for sale"
     }
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const forSale = counts.forSaleArtworks ? counts.forSaleArtworks + " for sale" : null
+    const forSale = counts?.forSaleArtworks ? counts.forSaleArtworks + " for sale" : null
     if (forSale && totalWorks) {
       return totalWorks + ", " + forSale
     }

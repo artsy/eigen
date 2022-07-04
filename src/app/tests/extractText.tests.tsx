@@ -1,6 +1,6 @@
 import { Text as RNText, TextInput as RNTextInput } from "react-native"
 import { extractText } from "./extractText"
-import { renderWithWrappersTL } from "./renderWithWrappers"
+import { renderWithWrappers } from "./renderWithWrappers"
 
 describe("extractText", () => {
   it("works for a string", () => {
@@ -8,12 +8,12 @@ describe("extractText", () => {
   })
 
   it("works for the simple case", () => {
-    const { container } = renderWithWrappersTL(<RNText>wow</RNText>)
+    const { container } = renderWithWrappers(<RNText>wow</RNText>)
     expect(extractText(container)).toEqual("wow")
   })
 
   it("works for nested Texts", () => {
-    const { container } = renderWithWrappersTL(
+    const { container } = renderWithWrappers(
       <RNText>
         wow
         <RNText>such</RNText>
@@ -24,7 +24,7 @@ describe("extractText", () => {
   })
 
   it("works for Inputs", () => {
-    const { container } = renderWithWrappersTL(<RNTextInput value="wow" />)
+    const { container } = renderWithWrappers(<RNTextInput value="wow" />)
     expect(extractText(container)).toEqual("wow")
   })
 })

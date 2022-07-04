@@ -7,7 +7,7 @@ interface EntityListProps {
   list: ReadonlyArray<Item>
   displayedItems?: number
   count: number
-  onItemSelected?: EntityItemProps["onPress"]
+  onItemSelected: EntityItemProps["onPress"]
   onViewAllPressed?: () => void
 }
 
@@ -37,7 +37,6 @@ export const EntityList: React.FC<EntityListProps> = ({
           item={item}
           isFirst={i === 0}
           isLast={i === filteredList.length - 1}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           onPress={onItemSelected}
         />
       ))}

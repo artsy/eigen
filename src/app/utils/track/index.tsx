@@ -190,7 +190,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *
  *       ```ts
  *      import { fireEvent } from "@testing-library/react-native"
- *      import { renderWithWrappers } from "app/tests/renderWithWrappers"
+ *      import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
  *      import { mockTrackEvent } from "app/tests/globallyMockedStuff"
  *       *
  *      // Unmock react-tracking so that it will wrap our code
@@ -203,7 +203,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  *      it("calls the draft created event", () => {
  *
  *        // Use rntl to render the component tree
- *        const { getByText } = renderWithWrappersTL(<Overview [...] />)
+ *        const { getByText } = renderWithWrappers(<Overview [...] />)
  *
  *        // Run the function which triggers the tracking call
  *        fireEvent.press(getByText("button"))

@@ -90,8 +90,7 @@ class Header extends React.Component<Props, State> {
             },
           },
           updater: (store) => {
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            store.get(id).setValue(!isFollowed, "isFollowed")
+            store!.get(id)!.setValue(!isFollowed, "isFollowed")
           },
           onError: () => this.failedFollowChange(),
         })

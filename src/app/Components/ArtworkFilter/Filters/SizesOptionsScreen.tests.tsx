@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text } from "react-native"
 import { ReactTestInstance } from "react-test-renderer"
 import { FilterArray, FilterData, FilterParamName } from "../ArtworkFilterHelpers"
@@ -75,7 +75,7 @@ describe("SizesOptionsScreen", () => {
   }
 
   it("renders the options", () => {
-    const { getByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
     expect(getByText("Small (under 16in)")).toBeTruthy()
     expect(getByText("Medium (16in – 40in)")).toBeTruthy()
@@ -89,7 +89,7 @@ describe("SizesOptionsScreen", () => {
   })
 
   it("single option can be selected", () => {
-    const { getByText, getAllByA11yState, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getAllByA11yState, getByTestId } = renderWithWrappers(<TestRenderer />)
 
     fireEvent.press(getByText("Small (under 16in)"))
 
@@ -105,7 +105,7 @@ describe("SizesOptionsScreen", () => {
   })
 
   it("multiple options can be selected", () => {
-    const { getByText, getAllByA11yState, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getAllByA11yState, getByTestId } = renderWithWrappers(<TestRenderer />)
 
     fireEvent.press(getByText("Small (under 16in)"))
     fireEvent.press(getByText("Large (over 40in)"))
@@ -123,7 +123,7 @@ describe("SizesOptionsScreen", () => {
   })
 
   it("correctly select/unselect the same option", () => {
-    const { getByText, queryAllByA11yState, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, queryAllByA11yState, getByTestId } = renderWithWrappers(<TestRenderer />)
 
     fireEvent.press(getByText("Small (under 16in)"))
     // ensures that the checked elements are the selected filter and one radio button
@@ -148,7 +148,7 @@ describe("SizesOptionsScreen", () => {
       __globalStoreTestUtils__?.injectState({
         userPrefs: { metric: "in" },
       })
-      const { queryByText, queryAllByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByText, queryAllByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       expect(getByLabelText("in")).toBeTruthy()
       expect(getByLabelText("in")).toHaveProp("accessibilityState", { checked: true })
@@ -180,7 +180,7 @@ describe("SizesOptionsScreen", () => {
 
   describe("Custom Size", () => {
     it("should select the custom size option when a custom value is specified", () => {
-      const { getByLabelText, getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      const { getByLabelText, getAllByA11yState } = renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
 
@@ -188,7 +188,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("should clear custom values in filters when the custom size option is unselected", () => {
-      const { getByLabelText, getAllByA11yState, getByTestId } = renderWithWrappersTL(
+      const { getByLabelText, getAllByA11yState, getByTestId } = renderWithWrappers(
         <TestRenderer />
       )
 
@@ -202,7 +202,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("should restore the previous custom values when the custom size options is selected again", () => {
-      const { getByLabelText, getByText, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByLabelText, getByText, getByTestId } = renderWithWrappers(<TestRenderer />)
       let filters
       let widthFilter
 
@@ -220,7 +220,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("should unselect the custom size option when custom inputs are empty", () => {
-      const { getByLabelText, queryAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      const { getByLabelText, queryAllByA11yState } = renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
       expect(queryAllByA11yState({ checked: true })[0]).toBeTruthy()
@@ -231,9 +231,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("should keep custom inputs filled in if a predefined value is selected", () => {
-      const { getByLabelText, getByDisplayValue, getByText } = renderWithWrappersTL(
-        <TestRenderer />
-      )
+      const { getByLabelText, getByDisplayValue, getByText } = renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
       fireEvent.changeText(getByLabelText("Maximum Width Input"), "10")
@@ -244,7 +242,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("should clear the previously selected option if a custom value is entered", () => {
-      const { getByText, getByLabelText, getAllByA11yState, getByTestId } = renderWithWrappersTL(
+      const { getByText, getByLabelText, getAllByA11yState, getByTestId } = renderWithWrappers(
         <TestRenderer />
       )
 
@@ -269,7 +267,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns width option with minimum value", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
 
@@ -282,7 +280,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns width option with maximum value", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(getByLabelText("Maximum Width Input"), "10")
 
@@ -295,7 +293,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns width option with minimum and maximum values", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
       fireEvent.changeText(getByLabelText("Maximum Width Input"), "10")
@@ -309,7 +307,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns height option with minimum value", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(getByLabelText("Minimum Height Input"), "5")
 
@@ -322,7 +320,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns height option with maximum value", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(getByLabelText("Maximum Height Input"), "10")
 
@@ -335,7 +333,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns height option with minimum and maximum values", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(getByLabelText("Minimum Height Input"), "5")
       fireEvent.changeText(getByLabelText("Maximum Height Input"), "10")
@@ -349,7 +347,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns width option with minimum value and height option with maximum value", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
       fireEvent.changeText(getByLabelText("Maximum Height Input"), "10")
@@ -365,13 +363,13 @@ describe("SizesOptionsScreen", () => {
 
   describe("Clear button", () => {
     it('should not display "Clear" if nothing is selected', () => {
-      const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
 
       expect(queryByText("Clear")).toBeFalsy()
     })
 
     it('should clear selected predefined values if "Clear" button is pressed', () => {
-      const { getByText, queryAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, queryAllByA11yState } = renderWithWrappers(<TestRenderer />)
 
       fireEvent.press(getByText("Small (under 16in)"))
       fireEvent.press(getByText("Clear"))
@@ -381,7 +379,7 @@ describe("SizesOptionsScreen", () => {
     })
 
     it('should clear selected custom values if "Clear" button is pressed', () => {
-      const { getByText, getByLabelText, queryAllByA11yState } = renderWithWrappersTL(
+      const { getByText, getByLabelText, queryAllByA11yState } = renderWithWrappers(
         <TestRenderer />
       )
 

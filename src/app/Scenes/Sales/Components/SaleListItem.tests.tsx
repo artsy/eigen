@@ -2,12 +2,12 @@ import moment from "moment"
 import "react-native"
 
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import SaleListItem from "./SaleListItem"
 
 describe("SaleListItem", () => {
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(
+    renderWithWrappers(
       <SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />
     )
   })
@@ -20,7 +20,7 @@ describe("SaleListItem", () => {
         })
       })
       it("renders formattedStartDateTime as the subtitle", () => {
-        const wrapper = renderWithWrappersTL(
+        const wrapper = renderWithWrappers(
           <SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />
         )
 
@@ -35,7 +35,7 @@ describe("SaleListItem", () => {
         })
       })
       it("renders the correct subtitle based on auction type", async () => {
-        const wrapper = renderWithWrappersTL(
+        const wrapper = renderWithWrappers(
           <SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />
         )
         expect(wrapper.queryByText(props.formattedStartDateTime)).toBeNull()

@@ -11,7 +11,7 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
@@ -68,7 +68,7 @@ describe("MyCollection", () => {
   })
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
@@ -135,7 +135,7 @@ describe("MyCollection", () => {
 
   describe("sorting and filtering", () => {
     it("filters and sorts without crashing", async () => {
-      const renderApi = renderWithWrappersTL(<TestRenderer />)
+      const renderApi = renderWithWrappers(<TestRenderer />)
 
       act(() => {
         resolveMostRecentRelayOperation(mockEnvironment, {

@@ -2,7 +2,7 @@ import { Route } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { Dimensions } from "../Components/Dimensions"
 import { MediumPicker } from "../Components/MediumPicker"
@@ -86,7 +86,7 @@ describe("AddEditArtwork", () => {
     const artworkForm = (
       <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     )
-    const wrapper = renderWithWrappers(artworkForm)
+    const wrapper = renderWithWrappersLEGACY(artworkForm)
     const expected = [FancyModalHeader, MediumPicker, Dimensions]
     expected.forEach((Component) => {
       expect(wrapper.root.findByType(Component as React.ComponentType)).toBeDefined()
@@ -119,7 +119,7 @@ describe("AddEditArtwork", () => {
     const artworkForm = (
       <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     )
-    const wrapper = renderWithWrappers(artworkForm)
+    const wrapper = renderWithWrappersLEGACY(artworkForm)
     const completeButton = wrapper.root.findByProps({ testID: "CompleteButton" })
     const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })
     expect(completeButton).toBeDefined()
@@ -164,7 +164,7 @@ describe("AddEditArtwork", () => {
         },
       },
     })
-    const wrapper = renderWithWrappers(artworkForm)
+    const wrapper = renderWithWrappersLEGACY(artworkForm)
     wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
     expect(mockClearForm).toHaveBeenCalled()
   })
@@ -201,7 +201,7 @@ describe("AddEditArtwork", () => {
     const artworkForm = (
       <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     )
-    const wrapper = renderWithWrappers(artworkForm)
+    const wrapper = renderWithWrappersLEGACY(artworkForm)
     const completeButton = wrapper.root.findByProps({ testID: "CompleteButton" })
     completeButton.props.onPress()
     expect(spy).toHaveBeenCalled()
@@ -231,7 +231,7 @@ describe("AddEditArtwork", () => {
     const artworkForm = (
       <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     )
-    const wrapper = renderWithWrappers(artworkForm)
+    const wrapper = renderWithWrappersLEGACY(artworkForm)
     const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })
     deleteButton.props.onPress()
     expect(mockShowActionSheetWithOptions).toHaveBeenCalled()

@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 
 describe("MyCollectionInsights banner", () => {
@@ -10,13 +10,13 @@ describe("MyCollectionInsights banner", () => {
   }
 
   it("renders", async () => {
-    const { findByText } = renderWithWrappersTL(<TestRenderer />)
+    const { findByText } = renderWithWrappers(<TestRenderer />)
 
     expect(await findByText("Unlock More Insights")).toBeTruthy()
   })
 
   it("navigates to MyCollectionArtworkForm when Upload Another Artwork is pressed", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
     fireEvent.press(getByTestId("activate-more-market-insights-banner"))
     expect(navigate).toHaveBeenCalledWith(

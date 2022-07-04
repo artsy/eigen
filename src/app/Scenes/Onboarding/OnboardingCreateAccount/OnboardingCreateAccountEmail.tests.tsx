@@ -1,6 +1,6 @@
 import { BackButton } from "app/navigation/BackButton"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { FormikProvider, useFormik } from "formik"
 import { Input } from "palette"
 import { emailSchema, UserSchema } from "./OnboardingCreateAccount"
@@ -33,7 +33,7 @@ describe("OnboardingCreateAccountEmail", () => {
 
   describe("Backbutton", () => {
     it("navigates back to the onboading welcome screen", () => {
-      const tree = renderWithWrappers(<Test />)
+      const tree = renderWithWrappersLEGACY(<Test />)
 
       const backButton = tree.root.findAllByType(BackButton)[0]
       backButton.props.onPress()
@@ -43,24 +43,24 @@ describe("OnboardingCreateAccountEmail", () => {
 
   describe("Form", () => {
     it("renders the right email from the formik context", () => {
-      const tree1 = renderWithWrappers(<Test />)
+      const tree1 = renderWithWrappersLEGACY(<Test />)
       const input1 = tree1.root.findAllByType(Input)[0]
       expect(input1.props.value).toEqual("")
 
-      const tree2 = renderWithWrappers(<Test email="test@email.com" />)
+      const tree2 = renderWithWrappersLEGACY(<Test email="test@email.com" />)
       const input2 = tree2.root.findAllByType(Input)[0]
       expect(input2.props.value).toEqual("test@email.com")
     })
 
     it("does not validate email when the user is still typing", () => {
-      const tree = renderWithWrappers(<Test />)
+      const tree = renderWithWrappersLEGACY(<Test />)
       const input = tree.root.findByProps({ testID: "emailInput" })
       input.props.onChangeText("test")
       expect(input.props.error).toEqual(undefined)
     })
 
     it("does validate the email on submit", async () => {
-      const tree = renderWithWrappers(<Test />)
+      const tree = renderWithWrappersLEGACY(<Test />)
       const input = tree.root.findByProps({ testID: "emailInput" })
       input.props.onChangeText("test")
       input.props.onSubmitEditing()
@@ -69,7 +69,7 @@ describe("OnboardingCreateAccountEmail", () => {
     })
 
     it("hides the error message when the user types", async () => {
-      const tree = renderWithWrappers(<Test />)
+      const tree = renderWithWrappersLEGACY(<Test />)
       const input = tree.root.findByProps({ testID: "emailInput" })
       input.props.onChangeText("test")
       input.props.onSubmitEditing()
