@@ -1,5 +1,5 @@
-import { Button, Text } from "palette"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { Button, Text } from "palette"
 
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { CreditCardForm } from "./CreditCardForm"

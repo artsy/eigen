@@ -1,5 +1,5 @@
-import { Flex, Spacer, Text } from "palette"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { Flex, Spacer, Text } from "palette"
 import { LabeledTicker } from "."
 import { CountdownTimer, CountdownTimerProps } from "./CountdownTimer"
 

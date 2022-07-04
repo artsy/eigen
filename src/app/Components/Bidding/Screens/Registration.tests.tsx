@@ -6,8 +6,8 @@ import {
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { mockTimezone } from "app/tests/mockTimezone"
-import { Button, Checkbox, LinkText, Text } from "palette"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { Button, Checkbox, LinkText, Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
