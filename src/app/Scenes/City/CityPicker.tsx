@@ -2,7 +2,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { CircleWhiteCheckIcon } from "app/Icons/CircleWhiteCheckIcon"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Flex, SansV1Props, Separator, Serif, SerifV1Props, Text } from "palette"
+import { Box, Flex, Separator, Text, TextProps } from "palette"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -60,13 +60,13 @@ export const CityPicker: React.FC<Props> = (props) => {
             <Box key={i}>
               <TouchableOpacity onPress={() => selectCity(city, i)}>
                 <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                  <Serif
+                  <Text
                     mt={1}
-                    size={dimensions(screenHeight)[size].cityFontSize}
+                    variant={dimensions(screenHeight)[size].cityFontSize}
                     lineHeight={dimensions(screenHeight)[size].lineHeight}
                   >
                     {city}
-                  </Serif>
+                  </Text>
                   {selectedCity === city && (
                     <Box mb={2} mt={2}>
                       <CircleWhiteCheckIcon width={26} height={26} />
@@ -103,21 +103,25 @@ const LogoContainer = styled(Flex)`
   margin-top: 25px;
 `
 
-type FontSize = SansV1Props["size"] & SerifV1Props["size"]
-const dimensions = (size: number) => ({
+const dimensions = (
+  size: number
+): Record<
+  string,
+  { cityFontSize: TextProps["variant"]; logoFontSize: TextProps["variant"]; lineHeight: number }
+> => ({
   small: {
-    cityFontSize: "4" as FontSize,
-    logoFontSize: "2" as FontSize,
+    cityFontSize: "md",
+    logoFontSize: "xs",
     lineHeight: size / 14,
   },
   standard: {
-    cityFontSize: "8" as FontSize,
-    logoFontSize: "3" as FontSize,
+    cityFontSize: "lg",
+    logoFontSize: "sm",
     lineHeight: size / 12,
   },
   large: {
-    cityFontSize: "8" as FontSize,
-    logoFontSize: "3" as FontSize,
+    cityFontSize: "lg",
+    logoFontSize: "sm",
     lineHeight: size / 11,
   },
 })

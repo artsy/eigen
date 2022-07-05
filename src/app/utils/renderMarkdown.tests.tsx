@@ -3,7 +3,7 @@ import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { readFileSync } from "fs"
-import { Flex, Serif } from "palette"
+import { Flex, Text } from "palette"
 import { join } from "path"
 import React from "react"
 import { defaultRules, renderMarkdown } from "./renderMarkdown"
@@ -63,9 +63,9 @@ describe("renderMarkdown", () => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
-            <Serif size="3t" color="black60" key={state.key}>
+            <Text variant="sm" color="black60" key={state.key}>
               {output(node.content, state)}
-            </Serif>
+            </Text>
           )
         },
       },
@@ -89,9 +89,9 @@ describe("renderMarkdown", () => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
-            <Serif size="3t" color="black60" key={state.key}>
+            <Text variant="sm" color="black60" key={state.key}>
               {output(node.content, state)}
-            </Serif>
+            </Text>
           )
         },
       },
@@ -118,9 +118,9 @@ describe("renderMarkdown", () => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
-            <Serif size="3t" color="black60" key={state.key}>
+            <Text variant="sm" color="black60" key={state.key}>
               {output(node.content, state)}
-            </Serif>
+            </Text>
           )
         },
       },

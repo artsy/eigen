@@ -124,19 +124,19 @@ export class EventList extends React.Component<Props> {
       case "saved":
         return (
           <Box py={2} mx={2}>
-            <SimpleMessage textSize="3t">{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
+            <SimpleMessage>{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
           </Box>
         )
       case "fairs":
         return (
           <Box py={2} mx={2}>
-            <SimpleMessage textSize="3t">{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
+            <SimpleMessage>{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
           </Box>
         )
       default:
         return (
           <Box py={2} mx={2}>
-            <SimpleMessage textSize="3t">{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
+            <SimpleMessage>{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
           </Box>
         )
     }

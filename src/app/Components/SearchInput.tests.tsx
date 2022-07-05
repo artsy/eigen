@@ -59,9 +59,9 @@ describe("SearchInput", () => {
   })
 
   it(`doesn't render "Cancel" button when "enableCancelButton" is not passed`, () => {
-    const { queryAllByText } = renderWithWrappers(<TestWrapper />)
-    // Cancel text is wrapped by Sans and Animated.Text so we get 2 elements here
-    expect(queryAllByText("Cancel")).toHaveLength(0)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
+
+    expect(queryByText("Cancel")).toBeNull()
   })
 
   it(`renders "Cancel" button when "enableCancelButton" is passed`, () => {

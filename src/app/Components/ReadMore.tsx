@@ -8,7 +8,6 @@ import {
   Flex,
   LinkText,
   nbsp,
-  Sans,
   Text as PaletteText,
   TextProps as PaletteTextProps,
 } from "palette"
@@ -45,9 +44,8 @@ export const ReadMore = React.memo(
     const tracking = useTracking()
     const useNewTextStyles = textStyle === "new"
     const basicRules = defaultRules({ modal: presentLinksModally, useNewTextStyles })
-    const TextComponent: React.ComponentType<PaletteTextProps> = (
-      textStyle === "new" ? PaletteText : Sans
-    ) as any
+    const TextComponent: React.ComponentType<PaletteTextProps> = PaletteText
+
     const textProps: PaletteTextProps = { variant: "xs" }
     const rules = {
       ...basicRules,
@@ -158,14 +156,14 @@ function truncate({
 
     if (React.isValidElement(node)) {
       // TODO: find a way to make the rendering extensible while allowing textDepth to be tracked.
-      // Right now we assume that only these two Text nodes will be used.
-      if (node.type === Sans || node.type === PaletteText) {
+      // Right now we assume that only PaletteText will be used.
+      if (node.type === PaletteText) {
         textDepth += 1
       }
       const children = React.Children.toArray((node.props as any).children)
       const truncatedChildren = traverse(children) as React.ReactNode[]
 
-      if (node.type === Sans || node.type === PaletteText) {
+      if (node.type === PaletteText) {
         if (textDepth === 1 && maxChars === offset) {
           truncatedChildren.push(
             <>
