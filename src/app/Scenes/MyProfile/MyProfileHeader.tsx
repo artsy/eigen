@@ -114,12 +114,12 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
       </Flex>
 
       {!!me?.bio && (
-        <Text variant="xs" color={color("black100")} px={2} py={1}>
+        <Text variant="xs" color={color("black100")} px={2} pt={1}>
           {normalizeMyProfileBio(me?.bio)}
         </Text>
       )}
 
-      <Flex flexDirection="row" flexWrap="wrap" px={2}>
+      <Flex flexDirection="row" flexWrap="wrap" px={2} pt={1}>
         {!!me?.location?.display && (
           <Flex flexDirection="row" alignItems="center" pr={0.5} pb={0.5}>
             <MapPinIcon fill="black60" width={ICON_SIZE} height={ICON_SIZE} />
