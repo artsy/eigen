@@ -1,32 +1,48 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
+import { fireEvent } from "@testing-library/react-native"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { Button, Text } from "palette"
 import { useState } from "react"
-import { View } from "react-native"
+import { Animated } from "react-native"
 import { useSpringValue } from "./useSpringValue"
 
-describe(useSpringValue, () => {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  let val = null
+describe("useSpringValue", () => {
+  let val: Animated.Value
 
-  function Mock() {
+  const Mock = () => {
     const [epoch, setEpoch] = useState(0)
     val = useSpringValue(epoch, { bounciness: 0, speed: 100 })
-    return <View onMagicTap={() => setEpoch((x) => x + 1)} />
+
+    return (
+      <Button onPress={() => setEpoch((x) => x + 1)}>
+        <Text>Button</Text>
+      </Button>
+    )
   }
+
   beforeEach(() => {
     jest.useFakeTimers()
   })
+
   it("returns a stable animated value", () => {
-    const wrapper = mount(<Mock />)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    const { getByText } = renderWithWrappers(<Mock />)
     const prevVal = val
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(val._value).toBe(0)
-    wrapper.find(View).props().onMagicTap()
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(prevVal).toBe(val)
+
+    expect(getAnimatedValue(val)).toBe(0)
+
+    fireEvent.press(getByText("Button"))
     jest.runTimersToTime(500)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(val._value).toBe(1)
+
+    expect(prevVal).toBe(val)
+    expect(getAnimatedValue(val)).toBe(1)
+
+    fireEvent.press(getByText("Button"))
+    jest.runTimersToTime(500)
+
+    expect(prevVal).toBe(val)
+    expect(getAnimatedValue(val)).toBe(2)
   })
 })
+
+const getAnimatedValue = (animatedValue: Animated.Value) => {
+  return (animatedValue as any)._value
+}

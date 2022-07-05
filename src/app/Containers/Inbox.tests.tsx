@@ -1,7 +1,7 @@
 import { InboxTestsQuery } from "__generated__/InboxTestsQuery.graphql"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { OperationDescriptor } from "relay-runtime"
@@ -50,7 +50,7 @@ const getWrapper = (mockResolvers: MockResolvers = {}) => {
     />
   )
 
-  const wrapper = renderWithWrappers(<TestRenderer />)
+  const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
 
   env.mock.resolveMostRecentOperation((operation: OperationDescriptor) => {
     return MockPayloadGenerator.generate(operation, mockResolvers)

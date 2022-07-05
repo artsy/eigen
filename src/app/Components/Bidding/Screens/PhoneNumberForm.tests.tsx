@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { FakeNavigator } from "../Helpers/FakeNavigator"
 
 import { PhoneNumberForm } from "./PhoneNumberForm"
@@ -9,7 +9,7 @@ describe("PhoneNumberForm component", () => {
   const fakeNavigator = new FakeNavigator()
 
   it("renders without throwing an error", () => {
-    const container = renderWithWrappersTL(
+    const container = renderWithWrappers(
       <PhoneNumberForm onSubmit={onSubmitMock} navigator={fakeNavigator as any} />
     )
 
@@ -19,7 +19,7 @@ describe("PhoneNumberForm component", () => {
   it("User can immediately type their phone number and save it after load", async () => {
     const [phoneNumber, formattedPhoneNumber] = ["7738675309", "+1 (773) 867-5309"]
 
-    const container = renderWithWrappersTL(
+    const container = renderWithWrappers(
       <PhoneNumberForm onSubmit={onSubmitMock} navigator={fakeNavigator as any} />
     )
     const { getByTestId } = container
@@ -35,7 +35,7 @@ describe("PhoneNumberForm component", () => {
   it("correctly populates relevant inputs with the passed address fields", () => {
     const [phoneNumber, formattedPhoneNumber] = ["7738675309", "(773) 867-5309"]
 
-    const container = renderWithWrappersTL(
+    const container = renderWithWrappers(
       <PhoneNumberForm
         onSubmit={onSubmitMock}
         navigator={fakeNavigator as any}

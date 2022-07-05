@@ -1,12 +1,12 @@
 import { fireEvent } from "@testing-library/react-native"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 
 describe("MyCollectionInsightsEmptyState", () => {
   it("navigates to add work page when the user presses on add works", () => {
-    const { getAllByText } = renderWithWrappersTL(<MyCollectionInsightsEmptyState />)
+    const { getAllByText } = renderWithWrappers(<MyCollectionInsightsEmptyState />)
     const uploadArtworkButton = getAllByText("Upload Your Artwork")[0]
 
     fireEvent(uploadArtworkButton, "press")

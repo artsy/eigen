@@ -9,7 +9,7 @@ import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedS
 import { SavedSearchAlertMutationResult } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { delay } from "app/utils/delay"
 import {
   CreateSavedSearchModal,
@@ -51,11 +51,11 @@ describe("CreateSavedSearchModal", () => {
   }
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
   })
 
   it("should navigate to the saved search alerts list when popover is pressed", async () => {
-    const { container, getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { container, getByText } = renderWithWrappers(<TestRenderer />)
 
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
     fireEvent.press(getByText("Your alert has been created."))
@@ -67,7 +67,7 @@ describe("CreateSavedSearchModal", () => {
   })
 
   it("should call navigate twice", async () => {
-    const { container, getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { container, getByText } = renderWithWrappers(<TestRenderer />)
 
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
     fireEvent.press(getByText("Your alert has been created."))
@@ -82,7 +82,7 @@ describe("CreateSavedSearchModal", () => {
   })
 
   it("tracks clicks when the create alert button is pressed", async () => {
-    const { container } = renderWithWrappersTL(<TestRenderer />)
+    const { container } = renderWithWrappers(<TestRenderer />)
 
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
 

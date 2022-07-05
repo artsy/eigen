@@ -58,8 +58,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
           }
         `,
         variables: {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          input: { saleArtworkID: artwork.saleArtwork.internalID },
+          input: { saleArtworkID: artwork.saleArtwork!.internalID },
         },
       })
     })
@@ -68,7 +67,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
   @track({
     action_type: Schema.ActionTypes.Fail,
   })
-  presentErrorModal(errors: Error | ReadonlyArray<PayloadError>) {
+  presentErrorModal(errors: Error | ReadonlyArray<PayloadError> | null) {
     console.error("RequestConditionReport.tsx", errors)
     const errorMessage = "There was a problem processing your request. Please try again."
     this.setState({ showErrorModal: true, errorModalText: errorMessage })
@@ -92,7 +91,6 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
         if (data.requestConditionReport) {
           this.presentSuccessModal()
         } else {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           this.presentErrorModal(null)
         }
         this.setState({ requestingConditionReport: false })
@@ -131,6 +129,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
         </Button>
         <Flex height={0}>
           <Modal
+            accessibilityLabel="Condition Report Requested Error Modal"
             textAlign="center"
             visible={showErrorModal}
             headerText="An error occurred"
@@ -138,6 +137,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
             closeModal={this.closeModals.bind(this)}
           />
           <Modal
+            accessibilityLabel="Condition Report Requested Modal"
             textAlign="center"
             visible={showConditionReportRequestedModal}
             headerText="Condition Report Requested"
@@ -170,8 +170,7 @@ export const RequestConditionReportQueryRenderer: React.FC<{
       `}
       render={({ props }) => {
         if (props) {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          return <RequestConditionReportFragmentContainer artwork={props.artwork} me={props.me} />
+          return <RequestConditionReportFragmentContainer artwork={props.artwork!} me={props.me!} />
         } else {
           return null
         }

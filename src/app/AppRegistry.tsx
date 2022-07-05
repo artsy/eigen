@@ -33,7 +33,7 @@ import {
 } from "./Scenes/AuctionResultsForArtistsYouFollow/AuctionResultsForArtistsYouFollow"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
-import { CityView } from "./Scenes/City"
+import { CityView } from "./Scenes/City/City"
 import { CityBMWListQueryRenderer } from "./Scenes/City/CityBMWList"
 import { CityFairListQueryRenderer } from "./Scenes/City/CityFairList"
 import { CityPicker } from "./Scenes/City/CityPicker"
@@ -58,7 +58,7 @@ import {
   LotsByArtistsYouFollowQueryRenderer,
   LotsByArtistsYouFollowScreenQuery,
 } from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
-import { MapContainer } from "./Scenes/Map"
+import { MapContainer } from "./Scenes/Map/MapContainer"
 import { NewMapScreen } from "./Scenes/Map/NewMap"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "./Scenes/MyAccount/MyAccountDeleteAccount"
@@ -66,7 +66,7 @@ import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEdi
 import { MyAccountEditNameQueryRenderer } from "./Scenes/MyAccount/MyAccountEditName"
 import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
-import { MyBidsQueryRenderer } from "./Scenes/MyBids"
+import { MyBidsQueryRenderer } from "./Scenes/MyBids/MyBids"
 import {
   MyCollectionQueryRenderer,
   MyCollectionScreenQuery,
@@ -91,10 +91,10 @@ import {
 } from "./Scenes/NewWorksForYou/NewWorksForYou"
 import { OrderDetailsQueryRender } from "./Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
-import { PartnerQueryRenderer } from "./Scenes/Partner"
+import { PartnerQueryRenderer } from "./Scenes/Partner/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
-import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale"
+import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
 import { SalesQueryRenderer, SalesScreenQuery } from "./Scenes/Sales/Sales"

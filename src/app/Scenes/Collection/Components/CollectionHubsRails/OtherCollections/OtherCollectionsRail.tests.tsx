@@ -1,6 +1,6 @@
 import { navigate } from "app/navigation/navigate"
 import { CollectionHubRailsOtherCollectionsRailFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Sans } from "palette"
 import { TouchableOpacity } from "react-native"
 import { CollectionGroupMemberPill, OtherCollectionsRail } from "./OtherCollectionsRail"
@@ -13,7 +13,7 @@ describe("Other Collections Rail", () => {
   )
 
   it("renders a title", () => {
-    const { root } = renderWithWrappers(<TestRenderer />)
+    const { root } = renderWithWrappersLEGACY(<TestRenderer />)
     const {
       props: { children },
     } = root.findAllByType(Sans)[0]
@@ -22,7 +22,7 @@ describe("Other Collections Rail", () => {
   })
 
   it("renders the other collection pills", () => {
-    const { root } = renderWithWrappers(<TestRenderer />)
+    const { root } = renderWithWrappersLEGACY(<TestRenderer />)
 
     expect(
       root.findAllByType(CollectionGroupMemberPill).map(({ props: { children } }) => children)
@@ -30,7 +30,7 @@ describe("Other Collections Rail", () => {
   })
 
   it("navigates to a new collection when a pill is tapped", () => {
-    const { root } = renderWithWrappers(<TestRenderer />)
+    const { root } = renderWithWrappersLEGACY(<TestRenderer />)
     const [button] = root.findAllByType(TouchableOpacity)
 
     button.props.onPress()

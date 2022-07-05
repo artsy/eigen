@@ -40,6 +40,37 @@ describe("EditionSelectBox", () => {
     onPress.mockReset()
   })
 
+  it("renders edition set with isOfferable", () => {
+    const { getByText } = renderWithRelay({
+      Artwork: () => ({
+        slug: "test-artwork",
+        editionSets: [
+          {
+            internalID: "test-id",
+            isOfferableFromInquiry: false,
+            isOfferable: true,
+            isAcquireable: false,
+            dimensions: {
+              in: "in x in x in",
+              cm: "cm x cm x cm",
+            },
+            listPrice: {
+              __typename: "Money",
+              display: "$100.00",
+            },
+          },
+        ],
+      }),
+    })
+
+    expect(getByText("in x in x in")).toBeTruthy()
+    expect(getByText("cm x cm x cm")).toBeTruthy()
+    expect(getByText("$100.00")).toBeTruthy()
+
+    fireEvent.press(getByText("in x in x in"))
+    expect(onPress).toHaveBeenCalledWith("test-id", true)
+  })
+
   it("renders edition set with isOfferableFromInquiry", () => {
     const { getByText } = renderWithRelay({
       Artwork: () => ({
@@ -48,6 +79,8 @@ describe("EditionSelectBox", () => {
           {
             internalID: "test-id",
             isOfferableFromInquiry: true,
+            isOfferable: false,
+            isAcquireable: false,
             dimensions: {
               in: "in x in x in",
               cm: "cm x cm x cm",
@@ -77,6 +110,8 @@ describe("EditionSelectBox", () => {
         editionSets: [
           {
             internalID: "test-id",
+            isOfferableFromInquiry: false,
+            isOfferable: false,
             isAcquireable: true,
             dimensions: {
               in: "in x in x in",
@@ -104,7 +139,8 @@ describe("EditionSelectBox", () => {
           {
             internalID: "test-id",
             isOfferableFromInquiry: false,
-            isAcquireable: true,
+            isOfferable: false,
+            isAcquireable: false,
             dimensions: {
               in: "in x in x in",
               cm: "cm x cm x cm",

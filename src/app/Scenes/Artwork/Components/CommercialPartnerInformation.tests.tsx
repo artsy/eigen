@@ -1,43 +1,67 @@
-import { CommercialPartnerInformation_artwork$data } from "__generated__/CommercialPartnerInformation_artwork.graphql"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Text, Theme } from "palette"
-import { CommercialPartnerInformation } from "./CommercialPartnerInformation"
+import { CommercialPartnerInformationTestsQuery } from "__generated__/CommercialPartnerInformationTestsQuery.graphql"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
+import { CommercialPartnerInformationFragmentContainer } from "./CommercialPartnerInformation"
+
+jest.unmock("react-relay")
 
 describe("CommercialPartnerInformation", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  const TestWrapper = () => {
+    return (
+      <QueryRenderer<CommercialPartnerInformationTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query CommercialPartnerInformationTestsQuery @relay_test_operation @raw_response_type {
+            artwork(id: "artworkId") {
+              ...CommercialPartnerInformation_artwork
+            }
+          }
+        `}
+        variables={{}}
+        render={({ props }) => {
+          if (props?.artwork) {
+            return <CommercialPartnerInformationFragmentContainer artwork={props.artwork} />
+          }
+
+          return null
+        }}
+      />
+    )
+  }
+
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
+    mockEnvironment = createMockEnvironment()
   })
 
   it("renders all seller information when work is for sale and is not in a closed auction", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialPartnerInformation artwork={CommercialPartnerInformationArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
-    expect(component.find(Text).at(1).render().text()).toMatchInlineSnapshot(
-      `"Ships from Brooklyn"`
-    )
-    expect(component.find(Text).at(2).render().text()).toMatchInlineSnapshot(
-      `"Ships within the continental USA"`
-    )
-    expect(component.find(Text).at(3).render().text()).toMatchInlineSnapshot(
-      `"VAT included in price"`
-    )
+    const { getByText } = renderWithWrappers(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => CommercialPartnerInformationArtwork,
+    })
+
+    expect(getByText("From Bob's Gallery")).toBeTruthy()
+    expect(getByText("Ships from Brooklyn")).toBeTruthy()
+    expect(getByText("Ships within the continental USA")).toBeTruthy()
+    expect(getByText("VAT included in price")).toBeTruthy()
   })
 
   it("it renders 'Taxes may apply at checkout' instead of 'VAT included in price' when Avalara phase 2 flag is enabled", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAvalaraPhase2: true })
-    const { getByText } = renderWithWrappersTL(
-      <CommercialPartnerInformation artwork={CommercialPartnerInformationArtwork} />
-    )
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-    expect(getByText("Taxes may apply at checkout.")).toBeTruthy()
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => CommercialPartnerInformationArtwork,
+    })
+
+    expect(queryByText("Taxes may apply at checkout.")).toBeTruthy()
+    expect(queryByText("VAT included in price")).toBeFalsy()
   })
 
   it("hides shipping info for works from closed auctions", () => {
@@ -48,38 +72,36 @@ describe("CommercialPartnerInformation", () => {
       isOfferable: false,
       isAcquireable: false,
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialPartnerInformation
-            artwork={CommercialPartnerInformationArtworkClosedAuction}
-          />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"At Bob's Gallery"`)
-    expect(component.find(Text).length).toEqual(1)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => CommercialPartnerInformationArtworkClosedAuction,
+    })
+
+    expect(queryByText("At Bob's Gallery")).toBeTruthy()
+    expect(queryByText("Ships from Brooklyn")).toBeFalsy()
+    expect(queryByText("Ships within the continental USA")).toBeFalsy()
+    expect(queryByText("VAT included in price")).toBeFalsy()
   })
 
   it("hides shipping information for sold works", () => {
-    const CommercialPartnerInformationArtworkClosedAuction = {
+    const CommercialPartnerInformationSoldArtwork = {
       ...CommercialPartnerInformationArtwork,
       availability: "sold",
       isForSale: false,
       isOfferable: false,
       isAcquireable: false,
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialPartnerInformation
-            artwork={CommercialPartnerInformationArtworkClosedAuction}
-          />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
-    expect(component.find(Text).length).toEqual(1)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => CommercialPartnerInformationSoldArtwork,
+    })
+
+    expect(queryByText("From Bob's Gallery")).toBeTruthy()
+    expect(queryByText("Ships from Brooklyn")).toBeFalsy()
+    expect(queryByText("Ships within the continental USA")).toBeFalsy()
+    expect(queryByText("VAT included in price")).toBeFalsy()
   })
 
   it("Hides shipping/tax information if the work is not enabled for buy now or make offer", () => {
@@ -88,42 +110,40 @@ describe("CommercialPartnerInformation", () => {
       isAcquireable: false,
       isOfferable: false,
     }
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialPartnerInformation artwork={CommercialPartnerInformationNoEcommerce} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => CommercialPartnerInformationNoEcommerce,
+    })
 
-    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
-    expect(component.find(Text).length).toEqual(1)
+    expect(queryByText("From Bob's Gallery")).toBeTruthy()
+    expect(queryByText("Ships from Brooklyn")).toBeFalsy()
+    expect(queryByText("Ships within the continental USA")).toBeFalsy()
+    expect(queryByText("VAT included in price")).toBeFalsy()
   })
 
   it("Says 'At Gallery Name' instead of 'From Gallery Name' and hides shipping info for non-commercial works", () => {
-    const CommercialPartnerInformationArtworkClosedAuction = {
+    const Artwork = {
       ...CommercialPartnerInformationArtwork,
       availability: null,
       isForSale: false,
       isOfferable: false,
       isAcquireable: false,
     }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialPartnerInformation
-            artwork={CommercialPartnerInformationArtworkClosedAuction}
-          />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Text).at(0).render().text()).toMatchInlineSnapshot(`"At Bob's Gallery"`)
-    expect(component.find(Text).length).toEqual(1)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => Artwork,
+    })
+
+    expect(queryByText("At Bob's Gallery")).toBeTruthy()
+    expect(queryByText("Ships from Brooklyn")).toBeFalsy()
+    expect(queryByText("Ships within the continental USA")).toBeFalsy()
+    expect(queryByText("VAT included in price")).toBeFalsy()
   })
 })
 
-const CommercialPartnerInformationArtwork: CommercialPartnerInformation_artwork$data = {
+const CommercialPartnerInformationArtwork = {
   availability: "for sale",
   isAcquireable: true,
   isForSale: true,
@@ -134,5 +154,4 @@ const CommercialPartnerInformationArtwork: CommercialPartnerInformation_artwork$
     name: "Bob's Gallery",
   },
   priceIncludesTaxDisplay: "VAT included in price",
-  " $fragmentType": "CommercialPartnerInformation_artwork",
 }

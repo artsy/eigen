@@ -1,80 +1,55 @@
 import { ArtworkHistory_artwork$data } from "__generated__/ArtworkHistory_artwork.graphql"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkHistory } from "./ArtworkHistory"
 
 jest.unmock("react-relay")
 
 describe("Artwork History", () => {
-  it("renders everything", () => {
-    const artworkHistoryInfo = {
-      artwork: {
-        provenance: "vegas",
-        exhibitionHistory: "this was in shows",
-        literature: "bibliography",
-      },
+  it("renders everything correctly", () => {
+    const artworkHistoryInfo: ArtworkHistory_artwork$data = {
+      " $fragmentType": "ArtworkHistory_artwork",
+      provenance: "vegas",
+      exhibitionHistory: "this was in shows",
+      literature: "bibliography",
     }
 
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <div>
-            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork$data} />
-          </div>
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    const { queryByText } = renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
 
-    expect(component.text()).toContain("Provenance")
-    expect(component.text()).toContain("Exhibition History")
-    expect(component.text()).toContain("Bibliography")
+    expect(queryByText("Provenance")).toBeTruthy()
+    expect(queryByText("Exhibition History")).toBeTruthy()
+    expect(queryByText("Bibliography")).toBeTruthy()
   })
 
   it("renders only set keys", () => {
-    const artworkHistoryInfo = {
-      artwork: {
-        provenance: "vegas",
-        exhibitionHistory: null,
-        literature: "bibliography",
-      },
+    const artworkHistoryInfo: ArtworkHistory_artwork$data = {
+      " $fragmentType": "ArtworkHistory_artwork",
+      provenance: "vegas",
+      exhibitionHistory: null,
+      literature: "bibliography",
     }
 
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <div>
-            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork$data} />
-          </div>
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.text()).toContain("Provenance")
-    expect(component.text()).not.toContain("Exhibition History")
-    expect(component.text()).toContain("Bibliography")
+    const { queryByText } = renderWithWrappers(<ArtworkHistory artwork={artworkHistoryInfo} />)
+
+    expect(queryByText("Provenance")).toBeTruthy()
+    expect(queryByText("Exhibition History")).toBeNull()
+    expect(queryByText("Bibliography")).toBeTruthy()
   })
 
-  it("doesn't render without data", () => {
-    const artworkHistoryInfo = {
-      artwork: {
-        provenance: null,
-        exhibitionHistory: null,
-        literature: null,
-      },
+  it("doesn't render anything without data", () => {
+    const artworkHistoryInfo: ArtworkHistory_artwork$data = {
+      " $fragmentType": "ArtworkHistory_artwork",
+      provenance: null,
+      exhibitionHistory: null,
+      literature: null,
     }
 
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <div>
-            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork$data} />
-          </div>
-        </Theme>
-      </GlobalStoreProvider>
+    const { toJSON, queryByText } = renderWithWrappers(
+      <ArtworkHistory artwork={artworkHistoryInfo} />
     )
-    expect(component.text()).not.toContain("Provenance")
-    expect(component.text()).not.toContain("Exhibition History")
-    expect(component.text()).not.toContain("Bibliography")
+
+    expect(queryByText("Provenance")).toBeNull()
+    expect(queryByText("Exhibition History")).toBeNull()
+    expect(queryByText("Bibliography")).toBeNull()
+    expect(toJSON()).toBeNull()
   })
 })

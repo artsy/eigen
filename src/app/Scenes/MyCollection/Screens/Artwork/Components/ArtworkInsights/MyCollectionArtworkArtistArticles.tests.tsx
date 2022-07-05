@@ -4,7 +4,7 @@ import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Image, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -49,7 +49,7 @@ describe("MyCollectionArtworkArtistArticles", () => {
   }
 
   it("renders without throwing an error", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         artist: {
@@ -65,14 +65,14 @@ describe("MyCollectionArtworkArtistArticles", () => {
   })
 
   it("navigates to correct article on click", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData()
     wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
     expect(navigate).toHaveBeenCalledWith('/article/<mock-value-for-field-"slug">')
   })
 
   it("navigates to all articles on click", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData({
       Artist: () => ({
         slug: "artist-slug",
@@ -83,7 +83,7 @@ describe("MyCollectionArtworkArtistArticles", () => {
   })
 
   it("tracks taps on all articles button", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         internalID: "some-id",

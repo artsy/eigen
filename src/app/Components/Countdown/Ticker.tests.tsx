@@ -1,5 +1,5 @@
 import { getDefaultNormalizer, render } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import { Theme } from "palette"
 import { Text } from "react-native"
@@ -196,7 +196,7 @@ describe("ModernTicker", () => {
 
     it('prefixes "Extended: " when when sale is extended', () => {
       const momentDuration = moment.duration(1000 * 90) // 1m 30s
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <Theme>
           <ModernTicker duration={momentDuration} hasStarted isExtended />
         </Theme>

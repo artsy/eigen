@@ -1,5 +1,5 @@
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { BackHandler, NativeEventSubscription, View } from "react-native"
+import { BackHandler, ImageRequireSource, NativeEventSubscription, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { dismissModal, navigate } from "app/navigation/navigate"
@@ -39,7 +39,7 @@ const messageForPollingTimeout = {
     "please contact [support@artsy.net](mailto:support@artsy.net).",
 }
 
-const Icons = {
+const Icons: Record<string, ImageRequireSource> = {
   WINNING: require("images/circle-check-green.webp"),
   PENDING: require("images/circle-exclamation.webp"),
 }
@@ -76,8 +76,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   exitBidFlow = async () => {
     if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const saleSlug = this.props.sale_artwork.sale.slug
+      const saleSlug = this.props.sale_artwork.sale?.slug
       const url = `${unsafe__getEnvironment().predictionURL}/${saleSlug}`
       navigate(url, { modal: true })
     } else {
@@ -106,12 +105,7 @@ export class BidResult extends React.Component<BidResultProps> {
         <Container mt={6}>
           <View>
             <Flex alignItems="center">
-              <Icon20
-                source={
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  Icons[status] || require("images/circle-x-red.webp")
-                }
-              />
+              <Icon20 source={Icons[status] || require("images/circle-x-red.webp")} />
               <Title mt={2} mb={5}>
                 {status === "PENDING"
                   ? messageForPollingTimeout.title

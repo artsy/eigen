@@ -1,15 +1,15 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 
 import ActiveBid from "./ActiveBid"
 
 import { extractText } from "app/tests/extractText"
 
 it("renders without throwing a error", () => {
-  renderWithWrappers(<ActiveBid bid={bid()} />)
+  renderWithWrappersLEGACY(<ActiveBid bid={bid()} />)
 })
 
 it("looks right for bids in live open auctions", () => {
-  const tree = renderWithWrappers(<ActiveBid bid={bid(true)} />)
+  const tree = renderWithWrappersLEGACY(<ActiveBid bid={bid(true)} />)
   expect(extractText(tree.root)).toMatch("Live bidding now open")
 })
 

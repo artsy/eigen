@@ -29,7 +29,10 @@ export class ContextGridCTA extends React.Component<ContextGridCTAProps> {
 
     if (href && label) {
       return (
-        <TouchableWithoutFeedback onPress={() => this.openLink()}>
+        <TouchableWithoutFeedback
+          onPress={() => this.openLink()}
+          accessibilityLabel="Context Grid CTA"
+        >
           <Flex flexDirection="row" alignContent="center">
             <Sans size="3" textAlign="left" weight="medium">
               {label}

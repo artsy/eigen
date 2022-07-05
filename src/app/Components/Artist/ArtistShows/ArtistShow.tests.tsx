@@ -1,6 +1,6 @@
 import "react-native"
 
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 
 import { ArtistShowFragmentContainer } from "./ArtistShow"
 
@@ -35,7 +35,9 @@ const showStyles = {
 }
 
 it("renders without throwing an error with all props", () => {
-  renderWithWrappers(<ArtistShowFragmentContainer show={showProps as any} styles={showStyles} />)
+  renderWithWrappersLEGACY(
+    <ArtistShowFragmentContainer show={showProps as any} styles={showStyles} />
+  )
 })
 
 it("renders without throwing an error with null show kind", () => {
@@ -44,7 +46,7 @@ it("renders without throwing an error with null show kind", () => {
     kind: null,
   }
 
-  renderWithWrappers(
+  renderWithWrappersLEGACY(
     <ArtistShowFragmentContainer show={showPropsNullKind as any} styles={showStyles} />
   )
 })

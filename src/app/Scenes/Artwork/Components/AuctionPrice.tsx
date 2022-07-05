@@ -7,7 +7,7 @@ import React from "react"
 import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-interface AuctionPriceProps {
+export interface AuctionPriceProps {
   artwork: AuctionPrice_artwork$data
   auctionState: AuctionTimerState
 }
@@ -82,9 +82,17 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
             {!!myBidPresent && (
               <Text>
                 {myBidWinning ? (
-                  <CheckCircleIcon height="16" fill="green100" />
+                  <CheckCircleIcon
+                    height="16"
+                    fill="green100"
+                    accessibilityLabel="My Bid Winning Icon"
+                  />
                 ) : (
-                  <CloseCircleIcon height="16" fill="red100" />
+                  <CloseCircleIcon
+                    height="16"
+                    fill="red100"
+                    accessibilityLabel="My Bid Losing Icon"
+                  />
                 )}{" "}
               </Text>
             )}

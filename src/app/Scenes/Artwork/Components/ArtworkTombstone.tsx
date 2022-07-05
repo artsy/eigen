@@ -2,7 +2,7 @@ import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_ar
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
-import { ArtworkIcon, Box, CertificateIcon, Flex, Sans, Spacer, Text } from "palette"
+import { ArtworkIcon, Box, CertificateIcon, comma, Flex, Sans, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -63,72 +63,69 @@ export class ArtworkTombstone extends React.Component<
   renderSingleArtist(artist: Artist) {
     return (
       <Text>
-        {this.renderArtistName(
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artist.name,
-          artist.href
-        )}
-        <Sans size="4t" weight="medium">
+        {this.renderArtistName(artist.name!, artist.href)}
+        <Text variant="md" weight="medium">
           {"  "}·{"  "}
-        </Sans>
+        </Text>
         <FollowArtistLink artist={artist} contextModule={Schema.ContextModules.ArtworkTombstone} />
       </Text>
     )
   }
 
-  renderArtistName(artistName: string, href: string) {
+  renderArtistName(artistName: string, href: string | null) {
     return href ? (
       <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this, href)}>
-        <Sans size="4t" weight="medium">
+        <Text variant="md" weight="medium">
           {artistName}
-        </Sans>
+        </Text>
       </TouchableWithoutFeedback>
     ) : (
-      <Sans size="4t" weight="medium">
+      <Text variant="md" weight="medium">
         {artistName}
-      </Sans>
+      </Text>
     )
   }
 
   renderMultipleArtists = () => {
-    const {
-      artwork: { artists },
-    } = this.props
-
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    const artists = this.props.artwork.artists ?? []
     const truncatedArtists = !this.state.showingMoreArtists ? artists.slice(0, 3) : artists
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artistNames = truncatedArtists.map((artist, index) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const artistNameWithComma = index !== artists.length - 1 ? artist.name + ", " : artist.name
+      const artistNameWithComma = index !== artists.length - 1 ? artist!.name + ", " : artist!.name!
       return (
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        <React.Fragment key={artist.href}>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          {this.renderArtistName(artistNameWithComma, artist.href)}
+        <React.Fragment key={artist!.href}>
+          {this.renderArtistName(artistNameWithComma, artist!.href)}
         </React.Fragment>
       )
     })
 
     return (
       <Flex flexDirection="row" flexWrap="wrap">
-        <Sans size="4t">
+        <Text variant="md">
           {artistNames}
           {!this.state.showingMoreArtists && artists! /* STRICTNESS_MIGRATION */.length > 3 && (
             <TouchableWithoutFeedback onPress={this.showMoreArtists}>
-              <Sans size="4t" weight="medium">
+              <Text variant="md" weight="medium">
                 {artists! /* STRICTNESS_MIGRATION */.length - 3} more
-              </Sans>
+              </Text>
             </TouchableWithoutFeedback>
           )}
-        </Sans>
+        </Text>
       </Flex>
     )
   }
 
+  getArtworkTitleAndMaybeDate = () => {
+    const { artwork } = this.props
+
+    if (artwork.date) {
+      return `${artwork.title!}${comma} ${artwork.date}`
+    }
+
+    return artwork.title!
+  }
+
   render() {
     const { artwork } = this.props
-    const addedComma = artwork.date ? ", " : ""
     const displayAuctionLotLabel =
       artwork.isInAuction &&
       artwork.saleArtwork &&
@@ -141,13 +138,9 @@ export class ArtworkTombstone extends React.Component<
       <Box textAlign="left">
         <Flex flexDirection="row" flexWrap="wrap">
           {artwork.artists! /* STRICTNESS_MIGRATION */.length === 1
-            ? this.renderSingleArtist(
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                artwork.artists[0]
-              )
+            ? this.renderSingleArtist(artwork!.artists![0]!)
             : this.renderMultipleArtists()}
           {!!(artwork.artists! /* STRICTNESS_MIGRATION */.length === 0 && artwork.cultural_maker) &&
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             this.renderArtistName(artwork.cultural_maker, null)}
         </Flex>
         <Spacer mb={1} />
@@ -157,15 +150,8 @@ export class ArtworkTombstone extends React.Component<
           </Sans>
         )}
         <Flex flexDirection="row" flexWrap="wrap">
-          <Sans size="3">
-            <Sans color="black60" size="3">
-              {artwork.title + addedComma}
-            </Sans>
-            {!!artwork.date && (
-              <Sans color="black60" size="3">
-                {artwork.date}
-              </Sans>
-            )}
+          <Sans color="black60" size="3">
+            {this.getArtworkTitleAndMaybeDate()}
           </Sans>
         </Flex>
         {!!artwork.medium && (

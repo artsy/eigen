@@ -1,6 +1,6 @@
 import { ArtistAboutShowsTestsQuery } from "__generated__/ArtistAboutShowsTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Button, Flex } from "palette"
 import { FlatList } from "react-native"
@@ -44,7 +44,7 @@ describe("ArtistAboutShows", () => {
   })
 
   it("returns nothing if the user has no past/running/upcoming events", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       ShowConnection: (context) => {
@@ -63,7 +63,7 @@ describe("ArtistAboutShows", () => {
   })
 
   it("returns list of shows if the user has past/running/upcoming events", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       ShowConnection: (context) => {
@@ -84,7 +84,7 @@ describe("ArtistAboutShows", () => {
 
   describe("See all past shows Button", () => {
     it("is visible when the user has past shows", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         ShowConnection: (context) => {
@@ -103,7 +103,7 @@ describe("ArtistAboutShows", () => {
     })
 
     it("is hidden when the user has no past shows", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         ShowConnection: (context) => {

@@ -254,9 +254,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     const sectionRatioSums: number[] = []
     const artworks = extractNodes(this.props.connection)
     const sectionedArtworks: Array<typeof artworks> = []
+    const columnCount = this.props.sectionCount ?? 0
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    for (let i = 0; i < this.props.sectionCount; i++) {
+    for (let i = 0; i < columnCount; i++) {
       sectionedArtworks.push([])
       sectionRatioSums.push(0)
     }

@@ -58,11 +58,7 @@ export const LabeledTicker: React.FC<LabeledTickerProps> = ({
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {sections.map((section, idx) => (
         <React.Fragment key={section.label}>
-          <LabeledTimeSection
-            {...section}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            textProps={textProps}
-          />
+          <LabeledTimeSection {...section} textProps={textProps!} />
           {!!(idx < sections.length - 1 && renderSeparator) && renderSeparator()}
         </React.Fragment>
       ))}
@@ -78,7 +74,7 @@ interface SimpleTickerProps extends ExtractProps<typeof Sans> {
 export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator, ...rest }) => {
   const sections = duration ? durationSections(duration, ["d", "h", "m", "s"]) : []
   return (
-    <Sans {...rest}>
+    <Sans accessibilityLabel="Simple Ticker" {...rest}>
       {sections
         .map(({ time, label }, idx) =>
           idx < sections.length - 1 ? time + label + separator : time + label
@@ -106,5 +102,9 @@ export const ModernTicker: React.FC<ModernTickerProps> = ({ duration, hasStarted
   }
   const timerInfo = getTimerInfo(time, { hasStarted, isExtended })
 
-  return <Text color={timerInfo.color}>{timerInfo.copy}</Text>
+  return (
+    <Text color={timerInfo.color} accessibilityLabel="Modern Ticker">
+      {timerInfo.copy}
+    </Text>
+  )
 }

@@ -1,26 +1,26 @@
 import { act, fireEvent, getDefaultNormalizer, within } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { emdash, LinkText, nbsp } from "palette"
 import { Text as RNText } from "react-native"
 import { ReadMore } from "./ReadMore"
 
 describe("ReadMore", () => {
   it("Doesn't show the 'Read more' link when the length of the text is < the number of characters allowed", () => {
-    const { queryByText } = renderWithWrappersTL(<ReadMore maxChars={20} content="Small text." />)
+    const { queryByText } = renderWithWrappers(<ReadMore maxChars={20} content="Small text." />)
 
     expect(queryByText("Small text.")).toBeTruthy()
   })
 
   it("Doesn't show the 'Read more' link when the length of the text is equal to the number of characters allowed", () => {
-    const { queryByText } = renderWithWrappersTL(<ReadMore maxChars={11} content="Small text." />)
+    const { queryByText } = renderWithWrappers(<ReadMore maxChars={11} content="Small text." />)
 
     expect(queryByText("Small text.")).toBeTruthy()
   })
 
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
-    const { getByText } = renderWithWrappersTL(<ReadMore maxChars={3} content="Small text." />)
+    const { getByText } = renderWithWrappers(<ReadMore maxChars={3} content="Small text." />)
 
     expect(getByText(/Sma/)).toBeTruthy()
     expect(
@@ -31,14 +31,14 @@ describe("ReadMore", () => {
   })
 
   it("Renders markdown", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <ReadMore maxChars={11} content="Small [text](/artist/andy-warhol)." />
     )
     expect(within(getByText(/Small/)).getByText(/text/)).toBeTruthy()
   })
 
   it("Renders an em dash if the text has line breaks when not expanded", () => {
-    const { UNSAFE_queryAllByType } = renderWithWrappersTL(
+    const { UNSAFE_queryAllByType } = renderWithWrappers(
       // tslint:disable-next-line: jsx-curly-brace-presence
       <ReadMore maxChars={30} content={`Line break\n\nWhich should render an emdash`} />
     )
@@ -47,7 +47,7 @@ describe("ReadMore", () => {
   })
 
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
-    const { queryByText, getByText, UNSAFE_queryAllByType } = renderWithWrappersTL(
+    const { queryByText, getByText, UNSAFE_queryAllByType } = renderWithWrappers(
       <ReadMore
         maxChars={7}
         textStyle="new"
@@ -71,7 +71,7 @@ describe("ReadMore", () => {
   })
 
   it("truncates correctly if there are links within the text", () => {
-    const { getByText, UNSAFE_getAllByType } = renderWithWrappersTL(
+    const { getByText, UNSAFE_getAllByType } = renderWithWrappers(
       <ReadMore
         maxChars={7}
         textStyle="new"
@@ -102,7 +102,7 @@ describe("ReadMore", () => {
   })
 
   it("opens links modally when specified", () => {
-    const { UNSAFE_getAllByType } = renderWithWrappersTL(
+    const { UNSAFE_getAllByType } = renderWithWrappers(
       <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." presentLinksModally />
     )
 
@@ -112,7 +112,7 @@ describe("ReadMore", () => {
   })
 
   it("doesn't open links modally when not specified", () => {
-    const { UNSAFE_getAllByType } = renderWithWrappersTL(
+    const { UNSAFE_getAllByType } = renderWithWrappers(
       <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." />
     )
 

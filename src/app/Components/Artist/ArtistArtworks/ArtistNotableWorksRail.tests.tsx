@@ -1,6 +1,6 @@
 import { ArtistNotableWorksRailTestsQuery } from "__generated__/ArtistNotableWorksRailTestsQuery.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -41,7 +41,7 @@ describe("Notable Works Rail", () => {
   })
 
   it("renders without throwing an error when 3 or more notable artworks", async () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => artistMockData,
@@ -54,7 +54,7 @@ describe("Notable Works Rail", () => {
 
   describe("Notable artwork metadata", () => {
     it("renders artwork price", async () => {
-      const { getByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => artistMockData,
@@ -64,7 +64,7 @@ describe("Notable Works Rail", () => {
     })
 
     it("renders 'Bidding closed' when artwork is in closed auction state", async () => {
-      const { getByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => artistMockData,
@@ -74,7 +74,7 @@ describe("Notable Works Rail", () => {
     })
 
     it("renders current bid value and bids count", async () => {
-      const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+      const { queryByText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => artistMockData,

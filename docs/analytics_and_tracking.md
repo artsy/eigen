@@ -118,8 +118,9 @@ To test these, the best way is something like the following:
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 
 it("tracks analytics event when button is tapped", () => {
-  const wrapper = renderWithWrappers(<TestScreen />)
-  wrapper.root.findByType(OurButtonWithTracking).props.onPress()
+  const { getByText } = renderWithWrappers(<TestScreen />)
+
+  fireEvent.press(getByText("my button"))
 
   expect(mockTrackEvent).toHaveBeenCalledTimes(1)
   expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`

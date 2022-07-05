@@ -4,7 +4,7 @@ import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
 import About from "app/Components/Gene/About"
 import { GeneArtworks } from "app/Components/Gene/GeneArtworks"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { TouchableHighlightColor } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
@@ -63,12 +63,12 @@ describe("Gene", () => {
   }
 
   it("renders without throwing an error", () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
   })
 
   it("returns all tabs", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
 
     expect(tree.root.findAllByType(GeneArtworks)).toHaveLength(1)
@@ -76,7 +76,7 @@ describe("Gene", () => {
   })
 
   it("renders filter modal", async () => {
-    const { UNSAFE_getByType, UNSAFE_getAllByType } = renderWithWrappersTL(<TestRenderer />)
+    const { UNSAFE_getByType, UNSAFE_getAllByType } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
 
     await waitFor(() => expect(UNSAFE_getByType(TouchableHighlightColor)).toBeTruthy())

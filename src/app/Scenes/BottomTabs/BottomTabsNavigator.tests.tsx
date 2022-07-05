@@ -2,7 +2,7 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ModalStack } from "app/navigation/ModalStack"
 import { NavStack } from "app/navigation/NavStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -21,7 +21,7 @@ describe(BottomTabsNavigator, () => {
   })
 
   it("shows the current tab content", async () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <RelayEnvironmentProvider environment={mockEnvironment}>
         <ModalStack>
           <BottomTabsNavigator />

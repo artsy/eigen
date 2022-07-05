@@ -3,7 +3,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import "react-native"
 import { act } from "react-test-renderer"
@@ -26,7 +26,7 @@ describe("tracking", () => {
 
   it("sends an event when trackTap is passed", () => {
     const trackTap = jest.fn()
-    const rendered = renderWithWrappers(
+    const rendered = renderWithWrappersLEGACY(
       <Artwork trackTap={trackTap} artwork={artworkProps() as any} itemIndex={1} />
     )
 
@@ -36,7 +36,7 @@ describe("tracking", () => {
   })
 
   it("sends a tracking event when contextScreenOwnerType is included", () => {
-    const rendered = renderWithWrappers(
+    const rendered = renderWithWrappersLEGACY(
       <ArtworkWithProviders
         artwork={artworkProps()}
         contextScreenOwnerType={OwnerType.artist}
@@ -71,7 +71,7 @@ describe("recent searches", () => {
   })
 
   it("is updated when an artwork clicked and updateRecentSearchesOnTap is true", () => {
-    const { container } = renderWithWrappersTL(
+    const { container } = renderWithWrappers(
       <ArtworkWithProviders
         artwork={artworkProps()}
         contextScreenOwnerType={OwnerType.artist}
@@ -100,7 +100,7 @@ describe("recent searches", () => {
   })
 
   it("not updated when updateRecentSearchesOnTap is not passed, falling to false by default", () => {
-    const { container } = renderWithWrappersTL(
+    const { container } = renderWithWrappers(
       <ArtworkWithProviders
         artwork={artworkProps()}
         contextScreenOwnerType={OwnerType.artist}
@@ -124,13 +124,13 @@ describe("in an open sale", () => {
         isClosed: false,
       },
     }
-    renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} />)
+    renderWithWrappersLEGACY(<Artwork artwork={artworkProps(saleArtwork) as any} />)
   })
 
   it("safely handles a missing sale_artwork", () => {
     const props = artworkProps(null) // Passing in empty sale_artwork prop to trigger "sale is live" code in artworkProps()
     props.saleArtwork = null
-    renderWithWrappers(<Artwork artwork={props as any} />)
+    renderWithWrappersLEGACY(<Artwork artwork={props as any} />)
   })
 })
 
@@ -141,7 +141,7 @@ describe("in a closed sale", () => {
         isClosed: true,
       },
     }
-    renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} />)
+    renderWithWrappersLEGACY(<Artwork artwork={artworkProps(saleArtwork) as any} />)
   })
 
   it("renders without throwing an error when an auction is about to open, but not closed or finished", () => {
@@ -152,7 +152,7 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} />)
+    renderWithWrappersLEGACY(<Artwork artwork={artworkProps(saleArtwork) as any} />)
   })
 
   it("does not show the partner name if hidePartner is set to true", () => {
@@ -163,7 +163,7 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <Artwork artwork={artworkProps(saleArtwork) as any} hidePartner />
     )
 
@@ -178,7 +178,7 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <Artwork artwork={artworkProps(saleArtwork) as any} hidePartner={false} />
     )
 
@@ -199,7 +199,7 @@ describe("cascading end times", () => {
         cascadingEndTimeIntervalMinutes: 1,
       },
     }
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <Artwork showLotLabel artwork={artworkProps(saleArtwork) as any} />
     )
 
@@ -213,7 +213,7 @@ describe("cascading end times", () => {
         isClosed: true,
       },
     }
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <Artwork showLotLabel artwork={artworkProps(saleArtwork) as any} />
     )
 
@@ -232,7 +232,7 @@ describe("cascading end times", () => {
           cascadingEndTimeIntervalMinutes: 1,
         },
       }
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <Artwork showLotLabel artwork={artworkProps(saleArtwork) as any} />
       )
 

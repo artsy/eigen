@@ -13,6 +13,7 @@ export interface CommercialButtonProps {
   me: CommercialButtons_me$data
   // EditionSetID is passed down from the edition selected by the user
   editionSetID?: string
+  // FIXME: auctionState can be undefined
   auctionState: AuctionTimerState
 }
 

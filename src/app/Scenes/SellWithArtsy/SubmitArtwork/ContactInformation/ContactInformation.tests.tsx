@@ -3,7 +3,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
 import { updateConsignSubmission } from "../../mutations"
@@ -23,13 +23,13 @@ describe("ContactInformationForm", () => {
   const TestRenderer = () => <ContactInformationQueryRenderer handlePress={handlePressTest} />
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(
+    renderWithWrappers(
       <ContactInformationQueryRenderer handlePress={() => console.log("do nothing")} />
     )
   })
 
   it("renders Form instructions", () => {
-    const { findByText } = renderWithWrappersTL(<TestRenderer />)
+    const { findByText } = renderWithWrappers(<TestRenderer />)
 
     expect(
       findByText("We will only use these details to contact you regarding your submission.")
@@ -37,7 +37,7 @@ describe("ContactInformationForm", () => {
   })
 
   it("Happy path: User can submit information", async () => {
-    const { queryByText, getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText, getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
     updateConsignSubmissionMock.mockResolvedValue("adsfasd")
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -79,7 +79,7 @@ describe("ContactInformationForm", () => {
   })
 
   it("Keeps Submit button deactivated when something is missing/not properly filled out. Gets enabled if everything is filled out.", async () => {
-    const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
     updateConsignSubmissionMock.mockResolvedValue("adsfasd")
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -111,7 +111,7 @@ describe("ContactInformationForm", () => {
 
   describe("validation", () => {
     it("displays error message for name", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Me: () => ({
@@ -136,7 +136,7 @@ describe("ContactInformationForm", () => {
     })
 
     it("displays error message for email address", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Me: () => ({
@@ -161,7 +161,7 @@ describe("ContactInformationForm", () => {
     })
 
     it("displays error message for phone number", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Me: () => ({
@@ -204,7 +204,7 @@ describe("ContactInformationForm", () => {
     })
 
     it("tracks consignmentSubmitted event on save", async () => {
-      const { getByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText } = renderWithWrappers(<TestRenderer />)
       updateConsignSubmissionMock.mockResolvedValue("54321")
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {

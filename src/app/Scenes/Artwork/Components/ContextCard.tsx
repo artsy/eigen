@@ -164,6 +164,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
               meta={meta || undefined}
               imageUrl={imageUrl || undefined}
               FollowButton={followButton || undefined}
+              accessibilityLabel="Context Card Image"
             />
           </TouchableWithoutFeedback>
         </Flex>

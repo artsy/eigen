@@ -5,7 +5,7 @@ import {
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { AttributionClassOptionsScreen } from "./AttributionClassOptions"
 import { getEssentialProps } from "./helper"
 
@@ -23,7 +23,7 @@ describe("AttributionClassOptions Screen", () => {
   }
 
   it("renders the options", () => {
-    const { getByText } = renderWithWrappersTL(<MockAttributionClassOptionsScreen />)
+    const { getByText } = renderWithWrappers(<MockAttributionClassOptionsScreen />)
 
     expect(getByText("Unique")).toBeTruthy()
     expect(getByText("Limited Edition")).toBeTruthy()
@@ -52,7 +52,7 @@ describe("AttributionClassOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
+    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
     expect(within(getByText("Rarity")).getByText("• 2")).toBeTruthy()
   })
@@ -78,7 +78,7 @@ describe("AttributionClassOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getAllByA11yState } = renderWithWrappersTL(
+    const { getAllByA11yState } = renderWithWrappers(
       <MockAttributionClassOptionsScreen initialData={injectedState} />
     )
     const options = getAllByA11yState({ checked: true })

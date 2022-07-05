@@ -1,20 +1,30 @@
 import React from "react"
-import { Animated, StyleProp, ViewProps, ViewStyle } from "react-native"
+import {
+  Animated,
+  Falsy,
+  RecursiveArray,
+  RegisteredStyle,
+  ViewProps,
+  ViewStyle,
+} from "react-native"
+
+type AnimateCssProperty = keyof ViewStyle
+type ArrayStyleProp<T> = RecursiveArray<T | RegisteredStyle<T>> | Falsy
 
 interface CssTransitionProps extends ViewProps {
-  animate: string[]
+  animate: AnimateCssProperty[]
   duration: number
+  style?: ArrayStyleProp<ViewStyle>
 }
 
 interface CssTransitionState {
-  previousStyle: StyleProp<ViewStyle>
+  previousStyle: ArrayStyleProp<ViewStyle>
 }
 
 export class CssTransition extends React.Component<CssTransitionProps, CssTransitionState> {
   private animatedValue: Animated.Value = new Animated.Value(0)
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
+  constructor(props: CssTransitionProps) {
     super(props)
 
     this.state = {
@@ -42,23 +52,32 @@ export class CssTransition extends React.Component<CssTransitionProps, CssTransi
 
     const prevStyle = this.mergeStyles(previousStyle)
     const nextStyle = this.mergeStyles(style)
-    const animateCheckboxStyle = this.props.animate.reduce((acc, cssProperty) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      acc[cssProperty] = this.animatedValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [prevStyle[cssProperty], nextStyle[cssProperty]],
-      })
-      return acc
-    }, {})
+    const animateCheckboxStyle = this.props.animate.reduce<Animated.WithAnimatedObject<ViewStyle>>(
+      (acc, cssProperty) => {
+        // @ts-ignore
+        acc[cssProperty] = this.animatedValue.interpolate({
+          inputRange: [0, 1],
+          outputRange: [prevStyle[cssProperty], nextStyle[cssProperty]] as number[] | string[],
+        })
+        return acc
+      },
+      {}
+    )
 
     return <Animated.View style={[style, animateCheckboxStyle]} {...props} />
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  private mergeStyles(style) {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    return style.reduce((acc, obj) => {
-      Object.keys(obj).forEach((key) => (acc[key] = obj[key]))
+  private mergeStyles(style: ArrayStyleProp<ViewStyle>): ViewStyle {
+    if (!Array.isArray(style)) {
+      return {}
+    }
+
+    return style.reduce<Record<string, any>>((acc, obj) => {
+      Object.entries(obj).forEach((entry) => {
+        const [key, value] = entry
+        acc[key] = value
+      })
+
       return acc
     }, {})
   }

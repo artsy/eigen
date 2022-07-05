@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -23,22 +23,22 @@ describe("PhotoRow", () => {
     beforeEach(() => mockEnvironment.mockClear())
 
     it("renders photo as a thumbnail", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
       expect(getByTestId("Submission_Image")).toBeTruthy()
     })
 
     it("renders photo size", () => {
-      const { getByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText } = renderWithWrappers(<TestRenderer />)
       expect(getByText("3.3 MB")).toBeTruthy()
     })
 
     it("renders Delete button", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
       expect(getByTestId("Submission_Delete_Photo_Button")).toBeTruthy()
     })
 
     it("fires handlePhotoDelete with correct photo when Delete button pressed", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
       const DeleteButton = getByTestId("Submission_Delete_Photo_Button")
 
       act(() => fireEvent.press(DeleteButton))
@@ -58,7 +58,7 @@ describe("PhotoRow", () => {
     beforeEach(() => mockEnvironment.mockClear())
 
     it("renders correct error message", () => {
-      const { getByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText } = renderWithWrappers(<TestRenderer />)
       expect(getByText("some error")).toBeTruthy()
     })
   })

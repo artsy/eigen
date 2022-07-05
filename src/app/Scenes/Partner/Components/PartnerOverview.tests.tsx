@@ -2,7 +2,7 @@ import { PartnerOverviewTestsQuery } from "__generated__/PartnerOverviewTestsQue
 import { ArtistListItem } from "app/Components/ArtistListItem"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -65,7 +65,7 @@ describe("PartnerOverview", () => {
         edges: artists,
       },
     }
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -85,7 +85,7 @@ describe("PartnerOverview", () => {
         bio: "Nullam quis risus eget urna mollis ornare vel eu leo.",
       },
     }
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -105,7 +105,7 @@ describe("PartnerOverview", () => {
       },
     }
 
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -124,7 +124,7 @@ describe("PartnerOverview", () => {
         edges: artists,
       },
     }
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

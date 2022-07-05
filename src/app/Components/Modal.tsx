@@ -11,6 +11,11 @@ interface ModalProps extends ViewProps {
   visible?: boolean
   textAlign?: SansProps["textAlign"]
   closeModal?: () => void
+  accessibilityLabel?: string
+}
+
+interface ModalState {
+  modalVisible: boolean
 }
 
 const ModalBackgroundView = styled.View`
@@ -31,18 +36,16 @@ const ModalInnerView = styled.View`
 
 const DEFAULT_MARKDOWN_RULES = defaultRules({})
 
-export class Modal extends React.Component<ModalProps, any> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
+export class Modal extends React.Component<ModalProps, ModalState> {
+  constructor(props: ModalProps) {
     super(props)
 
     this.state = { modalVisible: props.visible || false }
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: ModalProps) {
     if (this.props.visible !== prevProps.visible) {
-      this.setState({ modalVisible: this.props.visible })
+      this.setState({ modalVisible: this.props.visible ?? false })
     }
   }
 
@@ -54,7 +57,7 @@ export class Modal extends React.Component<ModalProps, any> {
   }
 
   render() {
-    const { headerText, detailText } = this.props
+    const { headerText, detailText, accessibilityLabel } = this.props
     const markdownRules = {
       ...DEFAULT_MARKDOWN_RULES,
       paragraph: {
@@ -71,7 +74,12 @@ export class Modal extends React.Component<ModalProps, any> {
 
     return (
       <View style={{ marginTop: 22 }}>
-        <RNModal animationType="fade" transparent visible={this.state.modalVisible}>
+        <RNModal
+          accessibilityLabel={accessibilityLabel}
+          animationType="fade"
+          transparent
+          visible={this.state.modalVisible}
+        >
           <TouchableWithoutFeedback onPress={() => this.closeModal()}>
             <ModalBackgroundView>
               <TouchableWithoutFeedback>
