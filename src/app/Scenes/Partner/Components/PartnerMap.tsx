@@ -5,7 +5,7 @@ import { PartnerMap_location$data } from "__generated__/PartnerMap_location.grap
 import { cityAndPostalCode, tappedOnMap } from "app/Components/LocationMap/LocationMap"
 import { Pin } from "app/Icons/Pin"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
-import { Box, Flex, Sans, Serif, Spacer } from "palette"
+import { Box, Flex, Spacer, Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -29,9 +29,9 @@ const PartnerMap: React.FC<{
 
   return (
     <Box px={2} mt={2}>
-      <Sans size="3" weight="medium">
+      <Text variant="sm" weight="medium">
         {city}
-      </Sans>
+      </Text>
       <Spacer mb={0.5} />
       <TouchableOpacity
         onPress={() =>
@@ -56,19 +56,19 @@ const PartnerMap: React.FC<{
           </MapboxGL.MapView>
           <Box my={2}>
             {!!address && (
-              <Serif size="3t" color="black60" textAlign="center">
+              <Text variant="sm" color="black60" textAlign="center">
                 {address}
-              </Serif>
+              </Text>
             )}
             {!!address2 && (
-              <Serif size="3t" color="black60" textAlign="center">
+              <Text variant="sm" color="black60" textAlign="center">
                 {address2}
-              </Serif>
+              </Text>
             )}
             {(!!city || !!postalCode) && (
-              <Serif size="3t" color="black60" textAlign="center">
+              <Text variant="sm" color="black60" textAlign="center">
                 {cityAndPostalCode(city, postalCode)}
-              </Serif>
+              </Text>
             )}
           </Box>
         </MapWrapper>

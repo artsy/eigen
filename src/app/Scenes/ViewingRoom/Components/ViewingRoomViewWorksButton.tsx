@@ -3,7 +3,7 @@ import { ViewingRoomViewWorksButton_viewingRoom$data } from "__generated__/Viewi
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import { navigate } from "app/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { Flex, Sans } from "palette"
+import { Flex, Text } from "palette"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -40,9 +40,9 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
         }}
       >
         <ViewWorksButton testID="view-works" px="2">
-          <Sans size="3t" py="1" color="white100" weight="medium">
+          <Text variant="sm" py="1" color="white100" weight="medium">
             View {pluralizedArtworksCount} ({artworksCount})
-          </Sans>
+          </Text>
         </ViewWorksButton>
       </AnimatedBottomButton>
     </View>

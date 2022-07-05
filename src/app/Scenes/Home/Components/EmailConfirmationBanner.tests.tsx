@@ -1,4 +1,4 @@
-import { Sans } from "palette"
+import { Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
@@ -46,7 +46,7 @@ describe("EmailConfirmationBanner", () => {
   }
 
   const extractText = (component: ReactTestRenderer) => {
-    return component.root.findByType(Sans).props.children
+    return component.root.findByType(Text).props.children
   }
 
   const getSubmitButton = (component: ReactTestRenderer) => {

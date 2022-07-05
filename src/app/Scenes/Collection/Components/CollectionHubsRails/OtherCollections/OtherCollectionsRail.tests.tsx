@@ -1,7 +1,7 @@
 import { navigate } from "app/navigation/navigate"
 import { CollectionHubRailsOtherCollectionsRailFixture } from "app/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { Sans } from "palette"
+import { Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { CollectionGroupMemberPill, OtherCollectionsRail } from "./OtherCollectionsRail"
 
@@ -16,7 +16,7 @@ describe("Other Collections Rail", () => {
     const { root } = renderWithWrappersLEGACY(<TestRenderer />)
     const {
       props: { children },
-    } = root.findAllByType(Sans)[0]
+    } = root.findAllByType(Text)[0]
 
     expect(children).toContain("Browse by Movement")
   })

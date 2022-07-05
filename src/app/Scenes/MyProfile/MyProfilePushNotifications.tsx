@@ -11,7 +11,7 @@ import {
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
-import { Box, Button, Flex, Join, Sans, Separator } from "palette"
+import { Box, Button, Flex, Join, Separator, Text } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import {
   ActivityIndicator,
@@ -46,12 +46,12 @@ export type UserPushNotificationSettings =
 export const OpenSettingsBanner = () => (
   <>
     <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
-      <Sans size="4t" weight="medium" color="black">
+      <Text variant="md" weight="medium" color="black">
         Artsy would like to send you notifications
-      </Sans>
-      <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
+      </Text>
+      <Text variant="sm" textAlign="center" color="black60" marginTop="1" marginBottom="2">
         {INSTRUCTIONS}
-      </Sans>
+      </Text>
       <Button
         size="large"
         onPress={Platform.select({
@@ -71,13 +71,13 @@ export const OpenSettingsBanner = () => (
 export const AllowPushNotificationsBanner = () => (
   <>
     <Flex py={3} px={2} backgroundColor="black5" alignItems="center">
-      <Sans size="4t" weight="medium" color="black">
+      <Text variant="md" weight="medium" color="black">
         Artsy would like to send you notifications
-      </Sans>
-      <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
+      </Text>
+      <Text variant="sm" textAlign="center" color="black60" marginTop="1" marginBottom="2">
         We need your permission to send push notifications, which may include alerts, artwork
         reminders or purchase updates.
-      </Sans>
+      </Text>
       <Button
         size="large"
         onPress={() => {
@@ -101,9 +101,9 @@ const NotificationPermissionsBox = ({
   isLoading: boolean
 }) => (
   <Box py={1} px={2}>
-    <Sans size="4t" color={isLoading ? "black60" : "black100"} weight="medium" py={1}>
+    <Text variant="md" color={isLoading ? "black60" : "black100"} weight="medium" py={1}>
       {title}
-    </Sans>
+    </Text>
     {children}
   </Box>
 )

@@ -2,7 +2,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { Animated, View } from "react-native"
 import styled from "styled-components/native"
 
-import { Box, ClassTheme, Sans } from "palette"
+import { Box, ClassTheme, Text } from "palette"
 import React from "react"
 
 /**
@@ -74,15 +74,15 @@ export default class TabBar extends React.Component<TabBarProps> {
         <TabButton spaceEvenly={this.props.spaceEvenly} active={isTabActive}>
           <ClassTheme>
             {({ color }) => (
-              <Sans
+              <Text
+                variant="sm"
                 numberOfLines={1}
                 ellipsizeMode="tail"
                 weight="medium"
-                size="3"
                 color={isTabActive ? "black" : color("black30")}
               >
                 {name}
-              </Sans>
+              </Text>
             )}
           </ClassTheme>
         </TabButton>

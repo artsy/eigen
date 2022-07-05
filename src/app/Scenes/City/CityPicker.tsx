@@ -2,8 +2,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { CircleWhiteCheckIcon } from "app/Icons/CircleWhiteCheckIcon"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { SansV1Props, SerifV1Props } from "palette"
-import { Box, Flex, Sans, Separator, Serif } from "palette"
+import { Box, Flex, SansV1Props, Separator, Serif, SerifV1Props, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -52,9 +51,9 @@ export const CityPicker: React.FC<Props> = (props) => {
     >
       <Overlay bounces={false} showsVerticalScrollIndicator={false}>
         <Box ml={2}>
-          <Sans size="3" weight="medium">
+          <Text variant="sm" weight="medium">
             Fairs and Shows by City
-          </Sans>
+          </Text>
         </Box>
         <Box mx={2}>
           {cityList.map((city, i) => (

@@ -5,7 +5,7 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { Sans, Separator } from "palette"
+import { Separator, Text } from "palette"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps
@@ -54,9 +54,9 @@ export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> 
       filterOptions={options}
       ListHeaderComponent={
         <>
-          <Sans size="3" color="black60" textAlign="center" my={15}>
+          <Text variant="sm" color="black60" textAlign="center" my={15}>
             Based on the estimate for the lot
-          </Sans>
+          </Text>
           <Separator />
         </>
       }

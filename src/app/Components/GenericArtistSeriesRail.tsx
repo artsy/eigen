@@ -12,7 +12,7 @@ import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Sans, Spacer, useColor } from "palette"
+import { Spacer, Text, useColor } from "palette"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore
@@ -113,11 +113,11 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
                 </ArtworkImageContainer>
 
                 <MetadataContainer>
-                  <GenericArtistSeriesTitle weight="medium" size="3t">
+                  <GenericArtistSeriesTitle weight="medium" variant="sm">
                     {result.title}
                   </GenericArtistSeriesTitle>
                   {!!result.priceGuidance && (
-                    <GenericArtistSeriesMeta color={color("black60")} size="3t">
+                    <GenericArtistSeriesMeta color={color("black60")} variant="sm">
                       {"From $" + `${result.priceGuidance.toLocaleString()}`}
                     </GenericArtistSeriesMeta>
                   )}
@@ -131,11 +131,11 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
   )
 }
 
-export const GenericArtistSeriesMeta = styled(Sans)`
+export const GenericArtistSeriesMeta = styled(Text)`
   margin: 0 15px;
 `
 
-export const GenericArtistSeriesTitle = styled(Sans)`
+export const GenericArtistSeriesTitle = styled(Text)`
   margin: 15px 15px 0 15px;
 `
 

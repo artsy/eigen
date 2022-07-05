@@ -1,5 +1,5 @@
-import { Serif } from "palette"
+import { Text } from "palette"
 
 export const Title = (props: any /* STRICTNESS_MIGRATION */) => (
-  <Serif size="5t" weight="semibold" m={4} textAlign="center" {...props} />
+  <Text variant="md" weight="medium" m={4} textAlign="center" {...props} />
 )

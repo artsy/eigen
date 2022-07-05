@@ -1,7 +1,7 @@
 import Spinner from "app/Components/Spinner"
 import ChevronIcon from "app/Icons/ChevronIcon"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { Box, ClassTheme, Flex, Sans } from "palette"
+import { Box, ClassTheme, Flex, Text } from "palette"
 import { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -59,9 +59,9 @@ export class CitySwitcherButton extends Component<Props> {
             >
               {city ? (
                 <>
-                  <Sans size="3t" weight="medium" ml={3}>
+                  <Text variant="sm" weight="medium" ml={3}>
                     {city.name}
-                  </Sans>
+                  </Text>
                   <Box ml={2} mr={3}>
                     <ChevronIcon
                       initialDirection="down"

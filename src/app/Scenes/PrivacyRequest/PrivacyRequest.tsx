@@ -1,6 +1,6 @@
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { navigate } from "app/navigation/navigate"
-import { Box, Button, Flex, Join, LinkText, Sans, Separator, Spacer } from "palette"
+import { Box, Button, Flex, Join, LinkText, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 
@@ -10,31 +10,31 @@ export class PrivacyRequest extends React.Component {
       <View style={{ flex: 1 }}>
         <Box mb={1} mt={2}>
           <Flex alignItems="center">
-            <Sans size="4" weight="medium">
+            <Text variant="md" weight="medium">
               Personal data request
-            </Sans>
+            </Text>
           </Flex>
         </Box>
         <Separator />
         <Spacer my={1} />
         <Box mx={2}>
           <Join separator={<Spacer mb={2} />}>
-            <Sans size="3" textAlign="left">
+            <Text variant="sm" textAlign="left">
               Please see Artsy’s{" "}
               <LinkText onPress={() => navigate("/privacy", { modal: true })}>
                 Privacy Policy
               </LinkText>{" "}
               for more information about the information we collect, how we use it, and why we use
               it.
-            </Sans>
-            <Sans size="3" textAlign="left">
+            </Text>
+            <Text variant="sm" textAlign="left">
               To submit a personal data request tap the button below or email{" "}
               <LinkText
                 onPress={() => presentEmailComposer("privacy@artsy.net", "Personal Data Request")}
               >
                 privacy@artsy.net.
               </LinkText>{" "}
-            </Sans>
+            </Text>
             <Button
               variant="fillGray"
               block

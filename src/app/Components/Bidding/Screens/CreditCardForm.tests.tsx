@@ -1,5 +1,5 @@
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { Button, Sans } from "palette"
+import { Button, Text } from "palette"
 
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { CreditCardForm } from "./CreditCardForm"
@@ -111,7 +111,7 @@ it("shows an error when stripe's API returns an error", () => {
   component.findByType(Button).props.onPress()
 
   jest.runAllTicks()
-  expect(component.findAllByType(Sans)[0].props.children).toEqual(
+  expect(component.findAllByType(Text)[2].props.children).toEqual(
     "There was an error. Please try again."
   )
 })

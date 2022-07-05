@@ -4,7 +4,7 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
-import { Sans } from "palette"
+import { Text } from "palette"
 import { Platform, Switch } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -31,7 +31,7 @@ describe(SwitchMenu, () => {
     const switchMenuInstance = renderWithWrappersLEGACY(<SwitchMenu {...props} />)
     // default state
     expect(switchMenuInstance.root.findByType(Switch).props.disabled).toBe(false)
-    expect(switchMenuInstance.root.findAllByType(Sans)[0].props.color).toEqual("black100")
+    expect(switchMenuInstance.root.findAllByType(Text)[0].props.color).toEqual("black100")
   })
 
   it("title is set to black60 when disabled", () => {
@@ -45,7 +45,7 @@ describe(SwitchMenu, () => {
     const switchMenuInstance = renderWithWrappersLEGACY(<SwitchMenu {...props} />)
     // default state
     expect(switchMenuInstance.root.findByType(Switch).props.disabled).toBe(true)
-    expect(switchMenuInstance.root.findAllByType(Sans)[0].props.color).toEqual("black60")
+    expect(switchMenuInstance.root.findAllByType(Text)[0].props.color).toEqual("black60")
   })
 })
 

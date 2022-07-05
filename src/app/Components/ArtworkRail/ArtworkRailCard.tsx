@@ -4,7 +4,7 @@ import {
   ArtworkRailCard_artwork$key,
 } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
-import { Flex, Sans, Text, useColor } from "palette"
+import { Flex, Text, useColor } from "palette"
 import { GestureResponderEvent } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import styled from "styled-components/native"
@@ -134,9 +134,9 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
           borderRadius={2}
           alignSelf="flex-start"
         >
-          <Sans size="2" color={color("black100")} numberOfLines={1}>
+          <Text variant="xs" color={color("black100")} numberOfLines={1}>
             {urgencyTag}
-          </Sans>
+          </Text>
         </Flex>
       )}
     </Flex>

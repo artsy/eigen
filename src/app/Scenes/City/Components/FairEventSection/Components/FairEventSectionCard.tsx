@@ -2,7 +2,7 @@ import { themeGet } from "@styled-system/theme-get"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Fair } from "app/Scenes/Map/types"
-import { Box, Flex, Sans } from "palette"
+import { Box, Flex, Text } from "palette"
 import { Component } from "react"
 import { Dimensions, Image, TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -32,13 +32,13 @@ export class FairEventSectionCard extends Component<Props> {
           </Flex>
           <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }}>
             <Flex flexDirection="column" flexGrow={1}>
-              <Sans size="3t" weight="medium" color="white">
+              <Text variant="sm" weight="medium" color="white">
                 {name}
-              </Sans>
+              </Text>
               {!!exhibition_period && (
-                <Sans size="3" color="white">
+                <Text variant="sm" color="white">
                   {exhibition_period}
-                </Sans>
+                </Text>
               )}
             </Flex>
           </Box>

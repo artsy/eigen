@@ -4,7 +4,7 @@ import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { DateTime } from "luxon"
 import moment from "moment-timezone"
-import { Flex, Sans, Spacer, Text } from "palette"
+import { Flex, Spacer, Text } from "palette"
 import PropTypes from "prop-types"
 import React from "react"
 import { ArtworkAuctionProgressBar } from "./ArtworkAuctionProgressBar"
@@ -168,7 +168,7 @@ export const Countdown: React.FC<CountdownProps> = ({
       {cascadingEndTimeFeatureEnabled && cascadingEndTimeIntervalMinutes ? (
         <ModernTicker duration={duration} hasStarted={hasStarted} isExtended={hasBeenExtended} />
       ) : (
-        <SimpleTicker duration={duration} separator="  " size="4t" weight="medium" />
+        <SimpleTicker duration={duration} separator="  " variant="md" weight="medium" />
       )}
       {!!extendedBiddingPeriodMinutes &&
         !!extendedBiddingIntervalMinutes &&
@@ -181,9 +181,9 @@ export const Countdown: React.FC<CountdownProps> = ({
             hasBeenExtended={!!hasBeenExtended}
           />
         )}
-      <Sans size="2" weight="medium" color="black60">
+      <Text variant="xs" weight="medium" color="black60">
         {label}
-      </Sans>
+      </Text>
       {!!extendedBiddingPeriodMinutes && !!cascadingEndTimeFeatureEnabled && (
         <>
           <Spacer mt={1} />

@@ -4,7 +4,7 @@ import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { navigate } from "app/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { compact, take } from "lodash"
-import { Sans, Spacer } from "palette"
+import { Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -40,7 +40,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
 
     return (
       <>
-        <Sans size="4t">Artists</Sans>
+        <Text variant="md">Artists</Text>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
           const { id } = artist

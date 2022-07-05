@@ -3,8 +3,8 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag, useSelectedTab } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
-import { Sans } from "palette"
-import { Text, View } from "react-native"
+import { Text } from "palette"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { AuctionFaqSection } from "./AuctionFaqSection"
@@ -41,7 +41,7 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
 
   return (
     <View>
-      <Sans size="2" color="black60">
+      <Text variant="xs" color="black60">
         Want to sell a work by {artistName}?{" "}
         <Text
           style={{ textDecorationLine: "underline" }}
@@ -57,7 +57,7 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
           Consign with Artsy
         </Text>
         .
-      </Sans>
+      </Text>
     </View>
   )
 }

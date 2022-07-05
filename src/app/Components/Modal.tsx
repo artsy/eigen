@@ -1,5 +1,5 @@
 import { defaultRules, MarkdownRules } from "app/utils/renderMarkdown"
-import { Button, Sans, SansProps } from "palette"
+import { Button, Text, TextProps } from "palette"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
@@ -9,7 +9,7 @@ interface ModalProps extends ViewProps {
   headerText: string
   detailText: string
   visible?: boolean
-  textAlign?: SansProps["textAlign"]
+  textAlign?: TextProps["textAlign"]
   closeModal?: () => void
   accessibilityLabel?: string
 }
@@ -64,9 +64,9 @@ export class Modal extends React.Component<ModalProps, ModalState> {
         ...DEFAULT_MARKDOWN_RULES.paragraph,
         react: (node, output, state) => {
           return (
-            <Sans size="3" color="black60" key={state.key} textAlign={this.props.textAlign}>
+            <Text variant="sm" color="black60" key={state.key} textAlign={this.props.textAlign}>
               {output(node.content, state)}
-            </Sans>
+            </Text>
           )
         },
       },
@@ -85,9 +85,9 @@ export class Modal extends React.Component<ModalProps, ModalState> {
               <TouchableWithoutFeedback>
                 <ModalInnerView>
                   <View style={{ paddingBottom: 10 }}>
-                    <Sans size="3" weight="medium" textAlign={this.props.textAlign}>
+                    <Text variant="sm" weight="medium" textAlign={this.props.textAlign}>
                       {headerText}
-                    </Sans>
+                    </Text>
                   </View>
                   <Markdown rules={markdownRules} pb={15}>
                     {detailText}

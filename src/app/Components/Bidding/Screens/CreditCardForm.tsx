@@ -1,5 +1,5 @@
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { Box, Button, Sans, Serif, Theme } from "palette"
+import { Box, Button, Text, Theme } from "palette"
 import React, { Component } from "react"
 import { ScrollView, View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -99,9 +99,9 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
           <Container m={0}>
             <View>
               <Box m="1">
-                <Serif size="3t" mb={2}>
+                <Text variant="sm" mb={2}>
                   Card Information
-                </Serif>
+                </Text>
                 <LiteCreditCardInput
                   ref={this.paymentInfo}
                   onChange={({ valid, values }) => {
@@ -117,15 +117,15 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
                   }}
                 />
                 {!!this.state.isError && (
-                  <Sans size="2" mt={3} color="red100">
+                  <Text variant="xs" mt={3} color="red100">
                     {errorText}
-                  </Sans>
+                  </Text>
                 )}
-                <Sans mt="6" size="3" color="black60" textAlign="center">
+                <Text variant="sm" mt="6" color="black60" textAlign="center">
                   Registration is free.
                   {"\n"}A credit card is required to bid. Artsy will never charge this card without
                   your permission, and you are not required to use this card to pay if you win.
-                </Sans>
+                </Text>
               </Box>
             </View>
           </Container>

@@ -3,7 +3,7 @@ import { ArtistListItemContainer as ArtistListItem } from "app/Components/Artist
 import { navigate } from "app/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { ContextModules } from "app/utils/track/schema"
-import { Box, Flex, Sans } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -66,7 +66,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
     return (
       <Box pb={1}>
         <Flex justifyContent="space-between" pb={15} flexDirection="row">
-          <Sans size="4">{headlineLabel}</Sans>
+          <Text variant="md">{headlineLabel}</Text>
           {artists.length > artistCount && (
             <TouchableOpacity
               onPress={() => {
@@ -81,7 +81,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
                 })
               }}
             >
-              <ViewAll size="4" color="black60">
+              <ViewAll variant="md" color="black60">
                 View all
               </ViewAll>
             </TouchableOpacity>
@@ -111,6 +111,6 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
   `,
 })
 
-export const ViewAll = styled(Sans)`
+export const ViewAll = styled(Text)`
   text-align: center;
 `

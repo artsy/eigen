@@ -3,7 +3,7 @@ import { ScrollableTab } from "app/Components/ScrollableTabBar"
 import TabBar from "app/Components/TabBar"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { Schema, screenTrack, track } from "app/utils/track"
-import { Box, Button, Flex, Sans } from "palette"
+import { Box, Button, Flex, Text } from "palette"
 import React, { Component } from "react"
 import { View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -258,9 +258,9 @@ const ErrorScreen: React.FC<{ relayErrorState: RelayErrorState }> = ({
 }) => {
   return (
     <Box py={2}>
-      <Sans size="3t" textAlign="center" mx={2}>
+      <Text variant="sm" textAlign="center" mx={2}>
         We are having trouble loading content right now, please try again later.
-      </Sans>
+      </Text>
       <Flex justifyContent="center" flexDirection="row">
         <Box mt={2}>
           <Button onPress={retry} loading={isRetrying}>

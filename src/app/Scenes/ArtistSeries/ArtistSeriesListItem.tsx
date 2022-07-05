@@ -8,7 +8,7 @@ import {
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { ArrowRightIcon, Flex, Sans, Touchable, useColor } from "palette"
+import { ArrowRightIcon, Flex, Text, Touchable, useColor } from "palette"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesListItemProps {
@@ -76,13 +76,13 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
               style={{ borderRadius: 2, overflow: "hidden" }}
             />
             <Flex ml={1} justifyContent="center">
-              <Sans size="3t" testID="title">
+              <Text variant="sm" testID="title">
                 {listItem?.node?.title}
-              </Sans>
+              </Text>
               {!!artworksCountMessage && (
-                <Sans size="3" color="black60" testID="count">
+                <Text variant="sm" color="black60" testID="count">
                   {artworksCountMessage}
-                </Sans>
+                </Text>
               )}
             </Flex>
           </Flex>

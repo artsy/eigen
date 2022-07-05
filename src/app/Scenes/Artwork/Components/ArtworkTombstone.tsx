@@ -2,7 +2,7 @@ import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_ar
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
-import { ArtworkIcon, Box, CertificateIcon, comma, Flex, Sans, Spacer, Text } from "palette"
+import { ArtworkIcon, Box, CertificateIcon, comma, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -145,32 +145,32 @@ export class ArtworkTombstone extends React.Component<
         </Flex>
         <Spacer mb={1} />
         {!!displayAuctionLotLabel && (
-          <Sans color="black100" size="3" weight="medium">
+          <Text variant="sm" color="black100" weight="medium">
             Lot {artwork.saleArtwork.lotLabel}
-          </Sans>
+          </Text>
         )}
         <Flex flexDirection="row" flexWrap="wrap">
-          <Sans color="black60" size="3">
+          <Text variant="sm" color="black60">
             {this.getArtworkTitleAndMaybeDate()}
-          </Sans>
+          </Text>
         </Flex>
         {!!artwork.medium && (
-          <Sans color="black60" size="3">
+          <Text variant="sm" color="black60">
             {artwork.medium}
-          </Sans>
+          </Text>
         )}
         {!!artwork.dimensions! /* STRICTNESS_MIGRATION */.in &&
           !!artwork.dimensions! /* STRICTNESS_MIGRATION */.cm && (
-            <Sans color="black60" size="3">
+            <Text variant="sm" color="black60">
               {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
                 ? artwork.dimensions! /* STRICTNESS_MIGRATION */.in
                 : artwork.dimensions! /* STRICTNESS_MIGRATION */.cm}
-            </Sans>
+            </Text>
           )}
         {!!artwork.edition_of && (
-          <Sans color="black60" size="3">
+          <Text variant="sm" color="black60">
             {artwork.edition_of}
-          </Sans>
+          </Text>
         )}
         <Spacer my={1} />
         {!!attributionClass?.shortArrayDescription &&
@@ -225,14 +225,14 @@ export class ArtworkTombstone extends React.Component<
             )}
             <Spacer mb={1} />
             {!!artwork.partner && (
-              <Sans color="black100" size="3" weight="medium">
+              <Text variant="sm" color="black100" weight="medium">
                 {artwork.partner.name}
-              </Sans>
+              </Text>
             )}
             {!!artwork.saleArtwork && !!artwork.saleArtwork.estimate && (
-              <Sans size="3" color="black60">
+              <Text variant="sm" color="black60">
                 Estimated value: {artwork.saleArtwork.estimate}
-              </Sans>
+              </Text>
             )}
           </>
         )}

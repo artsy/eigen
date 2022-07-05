@@ -1,4 +1,4 @@
-import { Sans } from "palette"
+import { Text } from "palette"
 import { useContext, useMemo } from "react"
 import { Animated, View } from "react-native"
 import { ImageCarouselContext } from "../ImageCarouselContext"
@@ -48,9 +48,9 @@ export const IndexIndicator: React.FC = () => {
           },
         ]}
       >
-        <Sans size="3">
+        <Text variant="sm">
           {imageIndex.current + 1} of {images.length}
-        </Sans>
+        </Text>
       </Animated.View>
     </View>
   )

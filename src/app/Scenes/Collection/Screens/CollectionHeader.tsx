@@ -2,7 +2,7 @@ import { CollectionHeader_collection$data } from "__generated__/CollectionHeader
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { Schema } from "app/utils/track"
-import { Box, Sans } from "palette"
+import { Box, Text } from "palette"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -24,9 +24,9 @@ export const CollectionHeader: React.FC<CollectionHeaderProps> = (props) => {
       <Box mb={2}>
         <OpaqueImageView imageURL={url} height={HEADER_IMAGE_HEIGHT} width={screenWidth} />
       </Box>
-      <Sans size="8" mx={2} mb={collectionTitleMargin}>
+      <Text variant="lg" mx={2} mb={collectionTitleMargin}>
         {title}
-      </Sans>
+      </Text>
       {!!collectionDescription && (
         <Box mx="2" mb="2" mt="0.3" accessibilityLabel="Read more">
           <ReadMore

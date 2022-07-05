@@ -16,7 +16,7 @@ import NavigatorIOS, {
   NavigatorIOSPushArgs,
 } from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { merge } from "lodash"
-import { Button, LinkText, Sans, Serif, Text } from "palette"
+import { Button, LinkText, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import "react-native"
 import { TouchableWithoutFeedback } from "react-native"
@@ -127,14 +127,14 @@ it("can load and display price summary", () => {
 
   expect(component.root.findAllByType(Spinner).length).toEqual(0)
 
-  const sansText = component.root
-    .findAllByType(Sans)
-    .map((sansComponent) => sansComponent.props.children as string)
+  const TextText = component.root
+    .findAllByType(Text)
+    .map((TextComponent) => TextComponent.props.children as string)
     .join(" ")
 
-  expect(sansText).toContain("Your max bid $45,000.00")
-  expect(sansText).toContain("Buyer’s premium $9,000.00")
-  expect(sansText).toContain("Subtotal $54,000.00")
+  expect(TextText).toContain("Your max bid $45,000.00")
+  expect(TextText).toContain("Buyer’s premium $9,000.00")
+  expect(TextText).toContain("Subtotal $54,000.00")
 })
 
 it("does not display price summary when the feature flag is off", () => {
@@ -146,14 +146,14 @@ it("does not display price summary when the feature flag is off", () => {
 
   expect(component.root.findAllByType(Spinner).length).toEqual(0)
 
-  const sansText = component.root
-    .findAllByType(Sans)
-    .map((sansComponent) => sansComponent.props.children as string)
+  const TextText = component.root
+    .findAllByType(Text)
+    .map((TextComponent) => TextComponent.props.children as string)
     .join(" ")
 
-  expect(sansText).not.toContain("Your max bid $45,000.00")
-  expect(sansText).not.toContain("Buyer’s premium $9,000.00")
-  expect(sansText).not.toContain("Subtotal $54,000.00")
+  expect(TextText).not.toContain("Your max bid $45,000.00")
+  expect(TextText).not.toContain("Buyer’s premium $9,000.00")
+  expect(TextText).not.toContain("Subtotal $54,000.00")
 })
 
 describe("checkbox and payment info display", () => {
@@ -163,7 +163,7 @@ describe("checkbox and payment info display", () => {
     expect(component.root.findAllByType(Checkbox).length).toEqual(0)
     expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
 
-    const serifs = component.root.findAllByType(Serif)
+    const serifs = component.root.findAllByType(Text)
     expect(
       serifs.find(
         (s) => s.props.children.join && s.props.children.join("").includes("You agree to")
@@ -676,7 +676,7 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "Your card's security code is incorrect.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -698,7 +698,7 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -719,7 +719,7 @@ describe("ConfirmBid for unqualified user", () => {
 
     fillOutFormAndSubmit(component)
 
-    expect(component.root.findByType(Modal).findAllByType(Sans)[1].props.children).toEqual([
+    expect(component.root.findByType(Modal).findAllByType(Text)[1].props.children).toEqual([
       "There was a problem processing your information. Check your payment details and try again.",
     ])
     component.root.findByType(Modal).findByType(Button).props.onPress()
@@ -884,7 +884,7 @@ describe("cascading end times", () => {
 
 const serifChildren = (comp: ReactTestRenderer) =>
   comp.root
-    .findAllByType(Serif)
+    .findAllByType(Text)
     .map((c) => (c.props.children.join ? c.props.children.join("") : c.props.children))
     .join(" ")
 

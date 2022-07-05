@@ -6,7 +6,7 @@ import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeade
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { Button, Sans } from "palette"
+import { Button, Text } from "palette"
 
 jest.unmock("react-relay")
 
@@ -44,7 +44,7 @@ describe("ArtistHeader", () => {
       Artist: () => mockArtist,
     })
 
-    expect(tree.root.findAllByType(Sans)[0].props.children).toMatch("Marcel Duchamp")
+    expect(tree.root.findAllByType(Text)[0].props.children).toMatch("Marcel Duchamp")
   })
 
   it("displays follow button for artist", () => {

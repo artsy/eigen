@@ -3,7 +3,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractText } from "app/tests/extractText"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { Serif } from "palette"
+import { Text } from "palette"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { UserProfileQueryRenderer } from "./LoggedInUserInfo"
@@ -35,7 +35,7 @@ describe(UserProfileQueryRenderer, () => {
       })
     })
 
-    const userInfo = tree.root.findAllByType(Serif)
+    const userInfo = tree.root.findAllByType(Text)
     expect(userInfo).toHaveLength(1)
     expect(extractText(tree.root)).toContain("Unit Test User (example@example.com)")
   })

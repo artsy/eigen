@@ -1,12 +1,12 @@
 import { getTimerInfo } from "app/utils/saleTime"
 import { Time } from "app/utils/useTimer"
 import { Duration } from "moment"
-import { Flex, Sans, Text } from "palette"
+import { Flex, Text } from "palette"
 import React from "react"
 import { CountdownTimerProps } from "./CountdownTimer"
 
 interface TimeSectionProps {
-  textProps: ExtractProps<typeof Sans>
+  textProps: ExtractProps<typeof Text>
   time: string
   label: string
 }
@@ -35,17 +35,17 @@ export const durationSections = (duration: Duration, labels: [string, string, st
 const LabeledTimeSection: React.FC<TimeSectionProps> = ({ time, label, textProps }) => (
   <Flex alignItems="center" justifyContent="center">
     {/* @ts-ignore the size gets overwritten sometimes, that's fine. */}
-    <Sans size="3" weight="medium" {...textProps}>
+    <Text variant="sm" weight="medium" {...textProps}>
       {time}
       {label}
-    </Sans>
+    </Text>
   </Flex>
 )
 
 interface LabeledTickerProps {
   duration: CountdownTimerProps["duration"]
   renderSeparator: () => React.ReactElement<any>
-  textProps?: ExtractProps<typeof Sans>
+  textProps?: ExtractProps<typeof Text>
 }
 
 export const LabeledTicker: React.FC<LabeledTickerProps> = ({
@@ -66,7 +66,7 @@ export const LabeledTicker: React.FC<LabeledTickerProps> = ({
   )
 }
 
-interface SimpleTickerProps extends ExtractProps<typeof Sans> {
+interface SimpleTickerProps extends ExtractProps<typeof Text> {
   duration: CountdownTimerProps["duration"]
   separator: string
 }
@@ -74,13 +74,13 @@ interface SimpleTickerProps extends ExtractProps<typeof Sans> {
 export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator, ...rest }) => {
   const sections = duration ? durationSections(duration, ["d", "h", "m", "s"]) : []
   return (
-    <Sans accessibilityLabel="Simple Ticker" {...rest}>
+    <Text accessibilityLabel="Simple Ticker" {...rest}>
       {sections
         .map(({ time, label }, idx) =>
           idx < sections.length - 1 ? time + label + separator : time + label
         )
         .join("")}
-    </Sans>
+    </Text>
   )
 }
 

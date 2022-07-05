@@ -6,7 +6,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import { Flex, Sans, Separator, useColor } from "palette"
+import { Flex, Separator, Text, useColor } from "palette"
 import { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -96,14 +96,14 @@ export const Conversations: React.FC<Props> = (props) => {
       info={screen({ context_screen_owner_type: OwnerType.inboxInquiries })}
     >
       <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-        <Sans
+        <Text
+          variant="lg"
           mx={2}
           mt={1}
-          size="8"
           style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}
         >
           Inbox {unreadCounter}
-        </Sans>
+        </Text>
       </Flex>
       <FlatList
         data={conversations}

@@ -13,7 +13,7 @@ import {
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEqual, uniq } from "lodash"
-import { Box, ClassTheme, Flex, Sans } from "palette"
+import { Box, ClassTheme, Flex, Text } from "palette"
 import React from "react"
 import { Animated, Dimensions, Image, View } from "react-native"
 import Config from "react-native-config"
@@ -368,9 +368,9 @@ export class GlobalMap extends React.Component<Props, State> {
                 coordinate={[clusterLat, clusterLng]}
               >
                 <SelectedCluster width={radius} height={radius}>
-                  <Sans size="3" weight="medium" color={color("white100")}>
+                  <Text variant="sm" weight="medium" color={color("white100")}>
                     {pointCount}
-                  </Sans>
+                  </Text>
                 </SelectedCluster>
               </MapboxGL.PointAnnotation>
             )}
