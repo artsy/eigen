@@ -32,11 +32,16 @@ const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = ({ artwo
     return (
       <Text variant="xs" color="black60">
         Have a question?{" "}
-        <Text style={{ textDecorationLine: "underline" }} onPress={() => handleReadOurFAQTap()}>
+        <Text
+          variant="xs"
+          style={{ textDecorationLine: "underline" }}
+          onPress={() => handleReadOurFAQTap()}
+        >
           Read our FAQ
         </Text>{" "}
         or{" "}
         <Text
+          variant="xs"
           style={{ textDecorationLine: "underline" }}
           onPress={() => handleAskASpecialistTap("orders@artsy.net")}
         >

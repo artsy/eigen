@@ -1,7 +1,5 @@
-import { themeGet } from "@styled-system/theme-get"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { Button, Flex, Sans } from "palette"
-import styled from "styled-components/native"
+import { Button, Flex, Text } from "palette"
 
 export interface ZeroStateProps {
   id?: string
@@ -18,7 +16,9 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
 
   return (
     <Flex flexDirection="column" px={4}>
-      <ZeroStateMessage size="3">No results found{"\n"}Please try another search.</ZeroStateMessage>
+      <Text textAlign="center" color="black100" variant="sm">
+        No results found{"\n"}Please try another search.
+      </Text>
       <Flex m="0 auto" pt={2}>
         {!hideClearButton && (
           <Button
@@ -38,8 +38,3 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
     </Flex>
   )
 }
-
-const ZeroStateMessage = styled(Sans)`
-  color: ${themeGet("colors.black100")};
-  text-align: center;
-`
