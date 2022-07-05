@@ -4,11 +4,7 @@ import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
-import { Text, TouchableWithoutFeedback } from "react-native"
-import { SafeAreaProvider } from "react-native-safe-area-context"
+import { Text } from "react-native"
 import { ArtworkTombstone } from "./ArtworkTombstone"
 import { CertificateAuthenticityModal } from "./CertificateAuthenticityModal"
 
@@ -64,21 +60,17 @@ describe("ArtworkTombstone", () => {
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
-  it("shows the attribution class modal when limited edition set text is tapped", () => {
-    const component = mount(
-      <SafeAreaProvider>
-        <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-        </Theme>
-      </SafeAreaProvider>
+  it.only("shows the attribution class modal when limited edition set text is tapped", () => {
+    const { getByText, UNSAFE_getByType } = renderWithWrappers(
+      <ArtworkTombstone artwork={artworkTombstoneArtwork} />
     )
-    const attributionClass = component.find(TouchableWithoutFeedback).at(4)
-    expect(attributionClass.text()).toContain("a limited edition set")
 
-    expect(component.find(ArtworkAttributionClassFAQModal).props().visible).toBeFalse()
-    attributionClass.props().onPress()
-    component.update()
-    expect(component.find(ArtworkAttributionClassFAQModal).props().visible).toBeTrue()
+    expect(getByText("a limited edition set")).toBeTruthy()
+    expect(UNSAFE_getByType(ArtworkAttributionClassFAQModal)).toHaveProp("visible", false)
+
+    fireEvent.press(getByText("a limited edition set"))
+
+    expect(UNSAFE_getByType(ArtworkAttributionClassFAQModal)).toHaveProp("visible", true)
   })
 
   it("shows the authenticity modal when Certificate of Authenticity is tapped", () => {

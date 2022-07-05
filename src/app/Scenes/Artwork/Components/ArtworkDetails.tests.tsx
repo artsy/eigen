@@ -14,6 +14,7 @@ describe("Artwork Details", () => {
   it("renders the data if available", () => {
     const testArtwork: ArtworkDetails_artwork$data = {
       " $fragmentType": "ArtworkDetails_artwork",
+      " $fragmentSpreads": null as any,
       mediumType: null,
       category: "Oil on canvas",
       conditionDescription: null,
@@ -50,6 +51,7 @@ describe("Artwork Details", () => {
   it("hides certificate of authenticity, framed, and signature fields if null", () => {
     const testArtwork: ArtworkDetails_artwork$data = {
       " $fragmentType": "ArtworkDetails_artwork",
+      " $fragmentSpreads": null as any,
       mediumType: null,
       category: "Oil on canvas",
       conditionDescription: null,
@@ -80,6 +82,7 @@ describe("Artwork Details", () => {
   it("shows condition description if present and lot condition report disabled", () => {
     const testArtwork: ArtworkDetails_artwork$data = {
       " $fragmentType": "ArtworkDetails_artwork",
+      " $fragmentSpreads": null as any,
       mediumType: null,
       category: "Oil on canvas",
       conditionDescription: {
@@ -113,6 +116,7 @@ describe("Artwork Details", () => {
 
     const testArtwork: ArtworkDetails_artwork$data = {
       " $fragmentType": "ArtworkDetails_artwork",
+      " $fragmentSpreads": null as any,
       mediumType: null,
       category: "Oil on canvas",
       conditionDescription: {
@@ -150,6 +154,7 @@ describe("Artwork Details", () => {
 
     const testArtwork: ArtworkDetails_artwork$data = {
       " $fragmentType": "ArtworkDetails_artwork",
+      " $fragmentSpreads": null as any,
       mediumType: null,
       category: "Oil on canvas",
       conditionDescription: {
