@@ -1578,6 +1578,8 @@ type ArtistHighlights {
 }
 
 type ArtistInsight {
+  artist: Artist
+
   # Number of entities relevant to the insight.
   count: Int!
   description: String
@@ -10737,6 +10739,11 @@ enum MyCollectionArtworkSorts {
 
 # A connection to a list of items.
 type MyCollectionConnection {
+  # Insights for all collected artists
+  artistInsights(
+    # The type of insight.
+    kind: ArtistInsightKind
+  ): [ArtistInsight!]!
   artistsCount: Int!
   artworksCount: Int!
 
@@ -10820,6 +10827,11 @@ type MyCollectionEdge {
 }
 
 type MyCollectionInfo {
+  # Insights for all collected artists
+  artistInsights(
+    # The type of insight.
+    kind: ArtistInsightKind
+  ): [ArtistInsight!]!
   artistsCount: Int!
   artworksCount: Int!
 
