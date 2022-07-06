@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A2C67B72875CEDB003948B6 /* Shared.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1A2C67B42875CEDB003948B6 /* Shared.xcconfig */; };
+		1A2C67B82875CEDB003948B6 /* Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1A2C67B52875CEDB003948B6 /* Debug.xcconfig */; };
+		1A2C67B92875CEDB003948B6 /* Store.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1A2C67B62875CEDB003948B6 /* Store.xcconfig */; };
 		1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */; };
 		50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */; };
 		91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */; };
@@ -531,21 +534,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		02F2C90B06AD6C83572BCE60 /* Pods-eigen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.debug.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Artsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13F369B4E56A4D026D55DC53 /* Pods-eigen-eigenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.release.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.release.xcconfig"; sourceTree = "<group>"; };
-		17C42880D2ACAFFAD6731367 /* Pods-eigen-eigenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.debug.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1A2C67B42875CEDB003948B6 /* Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
+		1A2C67B52875CEDB003948B6 /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		1A2C67B62875CEDB003948B6 /* Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Store.xcconfig; sourceTree = "<group>"; };
 		1A550F0C282AE4D200126D22 /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionWebViewController.h; sourceTree = "<group>"; };
 		1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewController.m; sourceTree = "<group>"; };
-		236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.release.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.release.xcconfig"; sourceTree = "<group>"; };
 		41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		46687F9E977C7CE0F1B12B05 /* Pods-ArtsyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.release.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.release.xcconfig"; sourceTree = "<group>"; };
 		4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		775AB16F96387B70AABE4731 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
-		8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
-		9B51BBF7C1BD09CD9EA76699 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
-		BE5EFBF10AC43C4ECF725994 /* Pods-Artsy_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Artsy_Tests/Pods-Artsy_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		BE681C4A642B6359D3C2A4AF /* Pods-Artsy-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-Artsy-ArtsyTests/Pods-Artsy-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		576A0189F5F95D69C8C24A2B /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
+		881781A17FA1853C2083DEB0 /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
+		898123D550010AD301736580 /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		AEF35384B3F02F72E473DC69 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB43266527E8F39B00B29DD6 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
 		CB43266727E8F39B00B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1344,12 +1344,8 @@
 		CBE3266B27E275A300395A93 /* LiveAuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveAuctionLot.h; sourceTree = "<group>"; };
 		CBE3266D27E275A300395A93 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		CBE3266E27E275A300395A93 /* ARPostAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPostAttachment.h; sourceTree = "<group>"; };
-		DDA9792067E817001B8803BA /* Pods-Artsy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.release.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EF8AF6797C9A1A0E84BB9DDC /* libPods-Artsy-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		EFF09A4B2B02E257AE1E8A7D /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
-		F4DF92ED8DF8B40E1D2D5A4B /* Pods-Artsy_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy_Tests.release.xcconfig"; path = "Target Support Files/Pods-Artsy_Tests/Pods-Artsy_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		FA81742737039A65CB15C5D7 /* Pods-Artsy-ArtsyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy-ArtsyTests.release.xcconfig"; path = "Target Support Files/Pods-Artsy-ArtsyTests/Pods-Artsy-ArtsyTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1399,6 +1395,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A2C67B32875CEDB003948B6 /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				1A2C67B42875CEDB003948B6 /* Shared.xcconfig */,
+				1A2C67B52875CEDB003948B6 /* Debug.xcconfig */,
+				1A2C67B62875CEDB003948B6 /* Store.xcconfig */,
+			);
+			path = Configs;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1423,27 +1429,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		676C72DD1D291306F09E9C48 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				02F2C90B06AD6C83572BCE60 /* Pods-eigen.debug.xcconfig */,
-				236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */,
-				17C42880D2ACAFFAD6731367 /* Pods-eigen-eigenTests.debug.xcconfig */,
-				13F369B4E56A4D026D55DC53 /* Pods-eigen-eigenTests.release.xcconfig */,
-				775AB16F96387B70AABE4731 /* Pods-Artsy.debug.xcconfig */,
-				DDA9792067E817001B8803BA /* Pods-Artsy.release.xcconfig */,
-				BE681C4A642B6359D3C2A4AF /* Pods-Artsy-ArtsyTests.debug.xcconfig */,
-				FA81742737039A65CB15C5D7 /* Pods-Artsy-ArtsyTests.release.xcconfig */,
-				BE5EFBF10AC43C4ECF725994 /* Pods-Artsy_Tests.debug.xcconfig */,
-				F4DF92ED8DF8B40E1D2D5A4B /* Pods-Artsy_Tests.release.xcconfig */,
-				8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */,
-				46687F9E977C7CE0F1B12B05 /* Pods-ArtsyTests.release.xcconfig */,
-				EFF09A4B2B02E257AE1E8A7D /* Pods-Artsy.store.xcconfig */,
-				9B51BBF7C1BD09CD9EA76699 /* Pods-ArtsyTests.store.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -1454,15 +1439,16 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				1A2C67B32875CEDB003948B6 /* Configs */,
 				CBE3210527D9615000395A93 /* Artsy */,
 				CB43271D27E8FE5400B29DD6 /* ArtsyTests */,
-				676C72DD1D291306F09E9C48 /* Pods */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				CB43266427E8F39900B29DD6 /* ArtsyStickers */,
 				CB43267427E8F6F900B29DD6 /* BrazePushServiceExtension */,
 				CB43268727E8FA6900B29DD6 /* ArtsyWidget */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				83CBBA001A601CBA00E9B192 /* Products */,
+				BB4EB71C28B14D61D1E439AA /* Pods */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -1479,6 +1465,17 @@
 				CB43271C27E8FE5400B29DD6 /* ArtsyTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BB4EB71C28B14D61D1E439AA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AEF35384B3F02F72E473DC69 /* Pods-Artsy.debug.xcconfig */,
+				881781A17FA1853C2083DEB0 /* Pods-Artsy.store.xcconfig */,
+				898123D550010AD301736580 /* Pods-ArtsyTests.debug.xcconfig */,
+				576A0189F5F95D69C8C24A2B /* Pods-ArtsyTests.store.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		CB43266427E8F39900B29DD6 /* ArtsyStickers */ = {
@@ -3492,6 +3489,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBE3272F27E275A400395A93 /* followButton@3x.png in Resources */,
+				1A2C67B92875CEDB003948B6 /* Store.xcconfig in Resources */,
 				CBE326B627E275A300395A93 /* LiveAuctions.storyboard in Resources */,
 				CBE326FB27E275A300395A93 /* live_auctions_socket.json in Resources */,
 				CBE3275D27E275A400395A93 /* CloseButtonLargeHighlighted@2x.png in Resources */,
@@ -3499,6 +3497,7 @@
 				CBE3276B27E275A400395A93 /* navigation_more_arrow_horizontal@2x.png in Resources */,
 				CBE326F627E275A300395A93 /* ARVIRModalClose@2x.png in Resources */,
 				CBE3272D27E275A400395A93 /* ViewInRoom_Bench@2x.png in Resources */,
+				1A2C67B82875CEDB003948B6 /* Debug.xcconfig in Resources */,
 				CBE3275227E275A400395A93 /* RefreshIcon@2x.png in Resources */,
 				CBE3274F27E275A400395A93 /* CircleXRed.png in Resources */,
 				CBE3276427E275A400395A93 /* followButtonChecked.png in Resources */,
@@ -3506,6 +3505,7 @@
 				CBE3277F27E275A400395A93 /* static_sale_data.graphql in Resources */,
 				CBE3273D27E275A400395A93 /* FooterBackground@2x.png in Resources */,
 				CBE3275427E275A400395A93 /* Chevron_White_Left@2x.png in Resources */,
+				1A2C67B72875CEDB003948B6 /* Shared.xcconfig in Resources */,
 				CBE3276227E275A400395A93 /* full_logo_black_large@2x.png in Resources */,
 				CBE3275827E275A400395A93 /* paddle@2x.png in Resources */,
 				CBE3272927E275A400395A93 /* ViewInRoom_Wall@2x.png in Resources */,
@@ -4171,7 +4171,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 775AB16F96387B70AABE4731 /* Pods-Artsy.debug.xcconfig */;
+			baseConfigurationReference = 1A2C67B52875CEDB003948B6 /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4199,8 +4199,6 @@
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Δrtsy";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4211,7 +4209,6 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -4230,7 +4227,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EFF09A4B2B02E257AE1E8A7D /* Pods-Artsy.store.xcconfig */;
+			baseConfigurationReference = 1A2C67B62875CEDB003948B6 /* Store.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4257,8 +4254,6 @@
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Artsy;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4269,7 +4264,6 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -4647,7 +4641,7 @@
 		};
 		CB43272327E8FE5400B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8DA7CA3A2D9A05D038AFAB1C /* Pods-ArtsyTests.debug.xcconfig */;
+			baseConfigurationReference = 898123D550010AD301736580 /* Pods-ArtsyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4700,7 +4694,7 @@
 		};
 		CB43272427E8FE5400B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B51BBF7C1BD09CD9EA76699 /* Pods-ArtsyTests.store.xcconfig */;
+			baseConfigurationReference = 576A0189F5F95D69C8C24A2B /* Pods-ArtsyTests.store.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
