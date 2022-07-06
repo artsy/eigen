@@ -40,6 +40,7 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
         <Text variant="xs" color="black60">
           By placing a bid you agree to {partnerName(sale)}{" "}
           <Text
+            variant="xs"
             style={{ textDecorationLine: "underline" }}
             onPress={() => handleConditionsOfSaleTap()}
           >
@@ -51,6 +52,7 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
         <Text variant="xs" color="black60">
           Have a question?{" "}
           <Text
+            variant="xs"
             style={{ textDecorationLine: "underline" }}
             onPress={() => handleReadOurAuctionFAQsTap()}
           >
@@ -58,6 +60,7 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
           </Text>{" "}
           or{" "}
           <Text
+            variant="xs"
             style={{ textDecorationLine: "underline" }}
             onPress={() => handleAskASpecialistTap("specialist@artsy.net")}
           >
