@@ -1,5 +1,5 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { EntityList } from "./index"
+import { EntityList } from "./EntityList"
 
 describe("EntityList", () => {
   it("correctly renders one item", () => {

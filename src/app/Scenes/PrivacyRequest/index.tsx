@@ -1,1 +1,0 @@
-export { PrivacyRequest } from "./PrivacyRequest"
