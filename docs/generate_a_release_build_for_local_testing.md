@@ -9,7 +9,7 @@ Sometimes we need to test a release build on the emulator or our local device, w
 - Start the packager with `yarn start`.
 - In another terminal, run `yarn bundle:ios` to generate the jsbundle.
 - Run `yarn pod-install`, so that the jsbundle is added to your build.
-- Open Eigen workspace project in Xcode `open ios/Artsy.xcworkspace`.
+- Open the project in Xcode using `open ios/Artsy.xcworkspace`.
 - Select the `Artsy (Release build)` scheme from the top bar.
 - Press play, and wait for the app to start on the simulator.
 
