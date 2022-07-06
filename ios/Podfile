@@ -12,7 +12,11 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '12.1'
 
+inhibit_all_warnings! # ignore all warnings from all pods
+
+
 $ReactNativeMapboxGLIOSVersion = '~> 6.4'
+
 
 def check_for_existing_netrc_file
   if !ENV['MAPBOX_DOWNLOAD_TOKEN']
@@ -39,9 +43,6 @@ end
 
 check_for_existing_netrc_file
 add_mapbox_creds
-
-# ignore all warnings from all pods
-inhibit_all_warnings!
 
 pre_install do |installer|
   $RNMBGL.pre_install(installer)

@@ -1283,7 +1283,7 @@
 		CBE3262227E275A200395A93 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CBE3262327E275A200395A93 /* Artsy.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Artsy.entitlements; sourceTree = "<group>"; };
 		CBE3262427E275A200395A93 /* Artsy.Store.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Artsy.Store.entitlements; sourceTree = "<group>"; };
-		CBE3262527E275A200395A93 /* Artsy-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy-Info.plist"; sourceTree = "<group>"; };
+		CBE3262527E275A200395A93 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBE3262627E275A200395A93 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		CBE3262827E275A300395A93 /* ARFollowable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowable.h; sourceTree = "<group>"; };
 		CBE3262927E275A300395A93 /* ARFeedHostItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedHostItem.h; sourceTree = "<group>"; };
@@ -1464,9 +1464,9 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 			);
-			indentWidth = 2;
+			indentWidth = 4;
 			sourceTree = "<group>";
-			tabWidth = 2;
+			tabWidth = 4;
 			usesTabs = 0;
 		};
 		83CBBA001A601CBA00E9B192 /* Products */ = {
@@ -3172,7 +3172,7 @@
 				CBE3262127E275A200395A93 /* InfoPlist.strings */,
 				CBE3262327E275A200395A93 /* Artsy.entitlements */,
 				CBE3262427E275A200395A93 /* Artsy.Store.entitlements */,
-				CBE3262527E275A200395A93 /* Artsy-Info.plist */,
+				CBE3262527E275A200395A93 /* Info.plist */,
 				CBE3262627E275A200395A93 /* Launch Screen.xib */,
 			);
 			path = App_Resources;
@@ -4198,7 +4198,8 @@
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Δrtsy";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4214,7 +4215,6 @@
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SPRINGBOARD_DISPLAY_NAME = "Δrtsy";
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
@@ -4256,7 +4256,8 @@
 				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				INFOPLIST_FILE = "Artsy/App_Resources/Artsy-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Artsy;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4272,7 +4273,6 @@
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SPRINGBOARD_DISPLAY_NAME = Artsy;
 				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;

@@ -6,8 +6,6 @@
 	<string>$(AppIdentifierPrefix)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
-	<key>CFBundleDisplayName</key>
-	<string>Δrtsy</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
