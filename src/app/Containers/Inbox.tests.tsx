@@ -55,11 +55,11 @@ const getWrapper = (mockResolvers: MockResolvers = {}) => {
   return wrapper
 }
 
-it.skip("renders without throwing an error", () => {
+it("renders without throwing an error", () => {
   getWrapper()
 })
 
-it.skip("renders bids tab by default when bids are enabled", () => {
+it("renders bids tab by default when bids are enabled", () => {
   const tree = getWrapper()
   expect(tree.root.findAllByType(MyBidsContainer).length).toEqual(1)
   expect(tree.root.findAllByType(ConversationsContainer).length).toEqual(0)

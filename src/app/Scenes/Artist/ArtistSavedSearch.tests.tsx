@@ -46,17 +46,16 @@ describe("Saved search banner on artist screen", () => {
     })
   }
 
-  const getTree = (searchCriteriaID?: string) => {
-    return renderWithWrappersTL(
+  const getTree = (searchCriteriaID: string) =>
+    renderWithWrappersTL(
       <ArtistQueryRenderer
         artistID="ignored"
         environment={environment}
         searchCriteriaID={searchCriteriaID}
       />
     )
-  }
 
-  it.skip("should convert the criteria attributes to the filter params format", async () => {
+  it("should convert the criteria attributes to the filter params format", async () => {
     const { getByText } = getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
