@@ -59,7 +59,7 @@ export const LotCloseInfo: React.FC<LotCloseInfoProps> = ({
   } else if (saleHasStarted) {
     // Sale has started and lots are <24 hours from closing or are actively closing
     if (duration.asDays() < 1 || lotsAreClosing) {
-      lotCloseCopy = `Closes, ${timerCopy.copy}`
+      lotCloseCopy = `Closes in ${timerCopy.copy}`
       if (duration.hours() < 1 && duration.minutes() < sale.cascadingEndTimeIntervalMinutes!) {
         labelColor = "red100"
       } else {
