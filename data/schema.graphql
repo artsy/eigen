@@ -9701,6 +9701,12 @@ type MarketingCollection {
 
   # Returns collections by the same artist if more than 4 exist, otherwise returns collections from the same category
   relatedCollections(size: Int = 10): [MarketingCollection!]!
+
+  # Show featured artists section in header. Defaults to true
+  showFeaturedArtists: Boolean!
+
+  # Show artworks rail in header. Defaults to true
+  showHeaderArtworksRail: Boolean!
   slug: String!
   thumbnail: String
   title: String!
@@ -13860,6 +13866,7 @@ type SearchCriteria {
   href: String!
   inquireableOnly: Boolean
   internalID: ID!
+  keyword: String
 
   # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
   labels: [SearchCriteriaLabel!]!
@@ -13888,6 +13895,7 @@ input SearchCriteriaAttributes {
   dimensionRange: String = null
   height: String = null
   inquireableOnly: Boolean = null
+  keyword: String = null
   locationCities: [String!] = []
   majorPeriods: [String!] = []
   materialsTerms: [String!] = []
