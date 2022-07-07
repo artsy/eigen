@@ -1,4 +1,8 @@
+import themeGet from "@styled-system/theme-get"
+import { navigate, popToRoot } from "app/navigation/navigate"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
+  Button,
   FairIcon,
   Flex,
   GroupIcon,
@@ -9,9 +13,10 @@ import {
   Text,
   Touchable,
   useColor,
-  useSpace,
 } from "palette"
 import { Fragment, FunctionComponent } from "react"
+import { Image } from "react-native"
+import styled from "styled-components/native"
 
 type CareerHighlightKind =
   | "SOLO_SHOW"
@@ -33,7 +38,6 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
   isNew,
 }) => {
   const color = useColor()
-  const space = useSpace()
 
   let label: string = ""
   let Icon: FunctionComponent<IconProps> = Fragment
@@ -84,46 +88,75 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
   }
 
   return (
-    <Touchable
-      haptic
-      flex={1}
-      style={{
-        backgroundColor: color("white100"),
-        borderColor: color("black10"),
-        borderWidth: 1,
-        height: 135,
-        width: 205,
-        padding: space(1),
-      }}
-    >
-      <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-        <Flex backgroundColor={color("blue100")} px={0.5}>
-          {!!isNew && (
-            // margin top to align the spacing in the box
-            <Text mt="-2px" fontSize={11} lineHeight={16} color="white100">
-              New
-            </Text>
-          )}
+    <Touchable haptic>
+      <CareerHighlightCard p={1}>
+        <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+          <Flex backgroundColor={color("blue100")} px={0.5}>
+            {!!isNew && (
+              // margin top to align the spacing in the box
+              <Text mt="-2px" fontSize={11} lineHeight={16} color="white100">
+                New
+              </Text>
+            )}
+          </Flex>
+          <IconContainer>
+            <Icon fill="black100" width={18} height={18} />
+          </IconContainer>
         </Flex>
-        <Flex
-          alignSelf="flex-end"
-          width={26}
-          height={26}
-          alignItems="center"
-          justifyContent="center"
-          style={{ borderWidth: 1, borderRadius: 24, borderColor: color("black100") }}
-        >
-          <Icon fill="black100" width={18} height={18} />
+        <Flex justifyContent="flex-end" flex={1}>
+          <Text variant="xl" color="blue100">
+            {artistsNum}
+          </Text>
+          <Text variant="xs" color="black100">
+            {label}
+          </Text>
         </Flex>
-      </Flex>
-      <Flex justifyContent="flex-end" flex={1}>
-        <Text variant="xl" color="blue100">
-          {artistsNum}
-        </Text>
-        <Text variant="xs" color="black100">
-          {label}
-        </Text>
-      </Flex>
+      </CareerHighlightCard>
     </Touchable>
   )
 }
+
+export const CareerHighlightPromotionalCard: React.FC = () => {
+  return (
+    <Flex ml={2} width={200} height={135} backgroundColor="white100" flexDirection="row">
+      <Flex p={1} flex={1}>
+        <Flex flex={1} justifyContent="center">
+          <Text variant="xs">Discover career highlights for your artists.</Text>
+        </Flex>
+        <Button
+          size="small"
+          testID="career-highlight-promo-card-button"
+          onPress={() => {
+            navigate("my-collection/artworks/new", {
+              passProps: {
+                mode: "add",
+                source: Tab.insights,
+                onSuccess: popToRoot,
+              },
+            })
+          }}
+        >
+          Upload Artwork
+        </Button>
+      </Flex>
+
+      <Image source={require("images/career-highlights-promo-background-image.webp")} />
+    </Flex>
+  )
+}
+
+const CareerHighlightCard = styled(Flex)`
+  background: ${themeGet("colors.white100")};
+  border: 1px solid ${themeGet("colors.black10")};
+  height: 135;
+  width: 205;
+`
+const IconContainer = styled(Flex)`
+  width: 26;
+  height: 26;
+  align-self: flex-end;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${themeGet("colors.black100")};
+  border-radius: 24px;
+`

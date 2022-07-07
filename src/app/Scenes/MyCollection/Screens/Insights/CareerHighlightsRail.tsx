@@ -1,6 +1,6 @@
-import { Flex, Spacer, Text, useColor } from "palette"
+import { Flex, Spacer, useColor } from "palette"
 import { FlatList } from "react-native"
-import { CareerHighlightsCard } from "./CareerHighlightCard"
+import { CareerHighlightPromotionalCard, CareerHighlightsCard } from "./CareerHighlightCard"
 
 const types = [
   "SOLO_SHOW",
@@ -11,7 +11,7 @@ const types = [
   "ACTIVE_SECONDARY_MARKET",
 ] as const
 
-const data = [...Array(5)].map((x, i) => {
+const data = [...Array(5)].map((_, i) => {
   const num = Math.ceil(Math.random() * 24)
   return {
     artists: num,
@@ -30,14 +30,12 @@ export const CareerHighlightsRail = () => {
         horizontal
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => <Spacer mx={1} />}
-        ListFooterComponent={() => <Text ml={2}>Yee</Text>}
+        ListFooterComponent={() => <CareerHighlightPromotionalCard />}
         style={{ overflow: "visible" }}
         data={data}
-        renderItem={({ item }) => {
-          return (
-            <CareerHighlightsCard artistsNum={item.artists} type={item.type} isNew={item.isNew} />
-          )
-        }}
+        renderItem={({ item }) => (
+          <CareerHighlightsCard artistsNum={item.artists} type={item.type} isNew={item.isNew} />
+        )}
       />
     </Flex>
   )
