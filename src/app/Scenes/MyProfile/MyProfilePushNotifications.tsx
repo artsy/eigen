@@ -42,6 +42,7 @@ export type UserPushNotificationSettings =
   | "receivePurchaseNotification"
   | "receiveSaleOpeningClosingNotification"
   | "receiveOrderNotification"
+  | "receiveViewingRoomNotification"
 
 export const OpenSettingsBanner = () => (
   <>
@@ -247,6 +248,15 @@ export const MyProfilePushNotifications: React.FC<{
             }}
           />
           <SwitchMenu
+            title="New Viewing Rooms for You"
+            description="New viewing rooms added by galleries you follow"
+            value={!!userNotificationSettings.receiveViewingRoomNotification}
+            disabled={isLoading}
+            onChange={(value) => {
+              handleUpdateUserNotificationSettings("receiveViewingRoomNotification", value)
+            }}
+          />
+          <SwitchMenu
             title="Promotions"
             description="Updates on Artsy's latest campaigns and special offers."
             value={!!userNotificationSettings.receivePromotionNotification}
@@ -292,6 +302,7 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
         receivePurchaseNotification
         receiveSaleOpeningClosingNotification
         receiveOrderNotification
+        receiveViewingRoomNotification
       }
     `,
   },
