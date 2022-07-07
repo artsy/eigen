@@ -1,9 +1,13 @@
+import * as loggers from "app/utils/loggers"
 import {
   MiddlewareNextFn,
   RelayNetworkLayerRequest,
   RelayNetworkLayerResponse,
 } from "react-relay-network-modern/node8"
 import { rateLimitMiddleware } from "./rateLimitMiddleware"
+
+// Workaround for read-only property warning
+const mockLoggers = loggers as { logOperation: boolean }
 
 describe("rateLimitMiddleware", () => {
   const relayResponse: RelayNetworkLayerResponse = {
@@ -14,6 +18,10 @@ describe("rateLimitMiddleware", () => {
     processJsonData: () => ({}),
     clone: () => relayResponse,
   }
+
+  beforeEach(() => {
+    mockLoggers.logOperation = true
+  })
 
   const request: RelayNetworkLayerRequest = {
     id: "xxx",
@@ -38,6 +46,16 @@ describe("rateLimitMiddleware", () => {
     expect(logger).toBeCalledTimes(2)
     expect(logger).toBeCalledWith("ExampleQuery: request +1")
     expect(logger).toBeCalledWith("ExampleQuery: request +2")
+  })
+
+  it("ignore logger when logOperation is set to false", async () => {
+    mockLoggers.logOperation = false
+    const logger = jest.fn()
+    const middleware = rateLimitMiddleware({ logger, limit: 2, interval: 1000 })
+
+    await middleware(next)(request)
+
+    expect(logger).toBeCalledTimes(0)
   })
 
   it("throws an error when too many requests are made within the given interval", async () => {

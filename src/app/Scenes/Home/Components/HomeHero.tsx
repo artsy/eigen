@@ -1,12 +1,11 @@
 import { tappedPromoSpace } from "@artsy/cohesion"
-import { HomeHero_homePage } from "__generated__/HomeHero_homePage.graphql"
+import { HomeHero_homePage$data } from "__generated__/HomeHero_homePage.graphql"
 import { HeroUnit } from "app/Components/Home/HeroUnit"
 import { navigate } from "app/navigation/navigate"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
-const HomeHero: React.FC<{ homePage: HomeHero_homePage }> = ({ homePage }) => {
+const HomeHero: React.FC<{ homePage: HomeHero_homePage$data }> = ({ homePage }) => {
   const tracking = useTracking()
   const unit = homePage?.heroUnits?.[0]
   if (!unit || !unit.backgroundImageURL || !unit.href) {

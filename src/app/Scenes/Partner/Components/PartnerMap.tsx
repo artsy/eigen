@@ -1,12 +1,11 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import MapboxGL from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
-import { PartnerMap_location } from "__generated__/PartnerMap_location.graphql"
+import { PartnerMap_location$data } from "__generated__/PartnerMap_location.graphql"
 import { cityAndPostalCode, tappedOnMap } from "app/Components/LocationMap/LocationMap"
 import { Pin } from "app/Icons/Pin"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
-import { Box, Flex, Sans, Serif, Spacer } from "palette"
-import React from "react"
+import { Box, Flex, Spacer, Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -15,7 +14,7 @@ import styled from "styled-components/native"
 MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
 
 const PartnerMap: React.FC<{
-  location: PartnerMap_location
+  location: PartnerMap_location$data
 }> = ({ location }) => {
   const { address, address2, city, postalCode, internalID } = location
   let { lat, lng } = location.coordinates ?? { lat: null, lng: null }
@@ -30,9 +29,9 @@ const PartnerMap: React.FC<{
 
   return (
     <Box px={2} mt={2}>
-      <Sans size="3" weight="medium">
+      <Text variant="sm" weight="medium">
         {city}
-      </Sans>
+      </Text>
       <Spacer mb={0.5} />
       <TouchableOpacity
         onPress={() =>
@@ -57,19 +56,19 @@ const PartnerMap: React.FC<{
           </MapboxGL.MapView>
           <Box my={2}>
             {!!address && (
-              <Serif size="3t" color="black60" textAlign="center">
+              <Text variant="sm" color="black60" textAlign="center">
                 {address}
-              </Serif>
+              </Text>
             )}
             {!!address2 && (
-              <Serif size="3t" color="black60" textAlign="center">
+              <Text variant="sm" color="black60" textAlign="center">
                 {address2}
-              </Serif>
+              </Text>
             )}
             {(!!city || !!postalCode) && (
-              <Serif size="3t" color="black60" textAlign="center">
+              <Text variant="sm" color="black60" textAlign="center">
                 {cityAndPostalCode(city, postalCode)}
-              </Serif>
+              </Text>
             )}
           </Box>
         </MapWrapper>

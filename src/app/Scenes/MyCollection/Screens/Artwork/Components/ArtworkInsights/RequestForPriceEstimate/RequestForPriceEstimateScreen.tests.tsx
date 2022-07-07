@@ -1,6 +1,5 @@
 import { act } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import {
   requestForPriceEstimateMutation,
@@ -10,18 +9,20 @@ import {
 describe("RequestForPriceEstimateScreen", () => {
   const props = {
     artworkID: "artworkId",
+    artworkSlug: "artworkSlug",
     name: "Tester HQ",
     email: "tester@hq.com",
     phone: "+49123456898",
   }
 
   it("renders without errors", () => {
-    renderWithWrappersTL(<RequestForPriceEstimateScreen {...props} />)
+    renderWithWrappers(<RequestForPriceEstimateScreen {...props} />)
   })
 
   describe("requestForPriceEstimateMutation", () => {
     const input = {
       artworkId: "artworkId",
+      artworkSlug: "artworkSlug",
       requesterName: "My Name is",
       requesterEmail: "email@email.com",
       requesterPhoneNumber: "+4912345",

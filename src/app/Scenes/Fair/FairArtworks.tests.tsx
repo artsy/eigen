@@ -4,8 +4,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FairArtworksFragmentContainer } from "app/Scenes/Fair/Components/FairArtworks"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
@@ -15,7 +14,7 @@ describe("FairArtworks", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairArtworksTestsQuery>
         environment={env}
         query={graphql`
@@ -79,7 +78,7 @@ describe("FairArtworks", () => {
     expect(wrapper.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
     expect(wrapper.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
     expect(extractText(wrapper.root)).toContain(
-      "No results found\nPlease try another search.Clear filtersClear filters"
+      "No results found\nPlease try another search.Clear filters"
     )
   })
 })

@@ -93,6 +93,91 @@ type AddUserToSubmissionMutationPayload {
   consignmentSubmission: ConsignmentSubmission
 }
 
+type Admin {
+  # A list of feature flags
+  featureFlags(
+    # The sort order of the results
+    sortBy: FeatureFlagsSortBy
+  ): [FeatureFlag]
+}
+
+input AdminCreateFeatureFlagInput {
+  clientMutationId: String
+  description: String = ""
+  impressionData: Boolean = false
+  name: String
+  strategy: FeatureFlagStrategyInput!
+  type: FeatureFlagToggleType!
+  variants: [FeatureFlagVariantInputName]
+}
+
+type AdminCreateFeatureFlagPayload {
+  clientMutationId: String
+
+  # A list of feature flags
+  featureFlags(
+    # The sort order of the results
+    sortBy: FeatureFlagsSortBy
+  ): [FeatureFlag]
+}
+
+input AdminDeleteFeatureFlagInput {
+  clientMutationId: String
+  name: String
+}
+
+type AdminDeleteFeatureFlagPayload {
+  clientMutationId: String
+
+  # A list of feature flags
+  featureFlags(
+    # The sort order of the results
+    sortBy: FeatureFlagsSortBy
+  ): [FeatureFlag]
+  success: Boolean
+}
+
+enum AdminToggleFeatureFlagEnvironment {
+  DEVELOPMENT
+  PRODUCTION
+}
+
+input AdminToggleFeatureFlagInput {
+  clientMutationId: String
+  enabled: Boolean!
+  environment: AdminToggleFeatureFlagEnvironment!
+  name: String!
+}
+
+type AdminToggleFeatureFlagPayload {
+  clientMutationId: String
+
+  # A list of feature flags
+  featureFlags(
+    # The sort order of the results
+    sortBy: FeatureFlagsSortBy
+  ): [FeatureFlag]
+  success: Boolean
+}
+
+input AdminUpdateFeatureFlagInput {
+  clientMutationId: String
+  description: String
+  impressionData: Boolean = false
+  name: String!
+  type: String = "release"
+}
+
+type AdminUpdateFeatureFlagPayload {
+  clientMutationId: String
+
+  # A list of feature flags
+  featureFlags(
+    # The sort order of the results
+    sortBy: FeatureFlagsSortBy
+  ): [FeatureFlag]
+}
+
 # One item in an aggregation
 type AggregationCount {
   count: Int!
@@ -173,6 +258,12 @@ type AnalyticsArtistAffinityEdge {
   node: AnalyticsArtistAffinity
 }
 
+# Artist ID and Medium Tuple
+input AnalyticsArtistIdMediumTupleType {
+  artistId: String!
+  medium: String!
+}
+
 # Artist Recommendation
 type AnalyticsArtistRecommendation {
   # Artist ID
@@ -204,6 +295,40 @@ type AnalyticsArtistRecommendationEdge {
 
   # The item at the end of the edge.
   node: AnalyticsArtistRecommendation
+}
+
+# Artist Sparkline
+type AnalyticsArtistSparkline {
+  artistId: ID!
+  artistName: String
+  eventDigest: String
+  sparkles: BigInt
+  tier: Float
+  year: String
+}
+
+# The connection type for ArtistSparkline.
+type AnalyticsArtistSparklineConnection {
+  # A list of edges.
+  edges: [AnalyticsArtistSparklineEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsArtistSparkline]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AnalyticsArtistSparklineEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsArtistSparkline
 }
 
 type AnalyticsArtwork {
@@ -335,6 +460,42 @@ type AnalyticsHistogramBin {
   ): String
   minPriceCents: Int!
   numArtworks: Int!
+}
+
+# New For You Recommendation
+type AnalyticsNewForYouRecommendation {
+  # Artwork ID
+  artworkId: ID!
+
+  # Artwork's published_at
+  publishedAt: AnalyticsDateTime!
+
+  # Artist affinity score
+  score: Float!
+}
+
+# The connection type for NewForYouRecommendation.
+type AnalyticsNewForYouRecommendationConnection {
+  # A list of edges.
+  edges: [AnalyticsNewForYouRecommendationEdge]
+
+  # A list of nodes.
+  nodes: [AnalyticsNewForYouRecommendation]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type AnalyticsNewForYouRecommendationEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: AnalyticsNewForYouRecommendation
 }
 
 # Information about pagination in a connection.
@@ -829,6 +990,12 @@ type Article implements Node {
     # Number of articles to return
     size: Int = 3
   ): [Article!]!
+
+  # Description to favor for meta description
+  searchDescription: String
+
+  # Title to favor for document titles
+  searchTitle: String
   sections: [ArticleSections!]!
   series: ArticleSeries
   seriesArticle: Article
@@ -836,6 +1003,8 @@ type Article implements Node {
   sponsor: ArticleSponsor
   thumbnailImage: Image
   thumbnailTeaser: String
+
+  # Title to favor for links to article
   thumbnailTitle: String
   tier: Int
   title: String
@@ -1224,7 +1393,17 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   image: Image
   imageUrl: String
   initials(length: Int = 3): String
-  insights: [ArtistInsight]
+  insights(
+    # The specific insights to return.
+    kind: [ArtistInsightKind] = [
+      SOLO_SHOW
+      GROUP_SHOW
+      COLLECTED
+      REVIEWED
+      BIENNIAL
+      ACTIVE_SECONDARY_MARKET
+    ]
+  ): [ArtistInsight!]!
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -1399,14 +1578,32 @@ type ArtistHighlights {
 }
 
 type ArtistInsight {
-  # List of entities relevant to the insight.
-  entities: [String]
+  artist: Artist
 
-  # Label to use when displaying the insight.
-  label: String
+  # Number of entities relevant to the insight.
+  count: Int!
+  description: String
+
+  # List of entities relevant to the insight.
+  entities: [String!]!
 
   # The type of insight.
-  type: String
+  kind: ArtistInsightKind
+
+  # Label to use when displaying the insight.
+  label: String!
+
+  # The type of insight.
+  type: String! @deprecated(reason: "Use `kind` instead.")
+}
+
+enum ArtistInsightKind {
+  ACTIVE_SECONDARY_MARKET
+  BIENNIAL
+  COLLECTED
+  GROUP_SHOW
+  REVIEWED
+  SOLO_SHOW
 }
 
 type ArtistMeta {
@@ -1668,7 +1865,7 @@ type Artwork implements Node & Searchable & Sellable {
   artsyShippingInternational: Boolean
 
   # Represents the location of the artwork for "My Collection" artworks
-  artworkLocation: String
+  artworkLocation: String @deprecated(reason: "Please use `collectorLocation` instead")
 
   # Represents the "**classification**" of an artwork, such as _limited edition_
   attributionClass: AttributionClass
@@ -1686,6 +1883,9 @@ type Artwork implements Node & Searchable & Sellable {
   # Returns the display label and detail when artwork has a certificate of authenticity
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
+
+  # The location of the artwork in My Collection
+  collectorLocation: MyLocation
 
   # Comparable auction results
   comparableAuctionResults(
@@ -1746,6 +1946,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Returns true when artwork has a certificate of authenticity
   hasCertificateOfAuthenticity: Boolean
+  hasMarketPriceInsights: Boolean
 
   # The height as expressed by the original input metric
   height: String
@@ -2099,8 +2300,15 @@ union ArtworkMutationType = ArtworkMutationDeleteSuccess | ArtworkMutationFailur
 union ArtworkOrEditionSetType = Artwork | EditionSet
 
 type ArtworkPriceInsights {
+  annualLotsSold: Int
+  annualValueSoldCents: FormattedNumber
   artistId: String
+  averageSalePriceDisplayText(
+    # Passes in to numeral, such as `'0.00'`
+    format: String = ""
+  ): String
   demandRank: Float
+  lastAuctionResultDate: String
   medium: String
 }
 
@@ -2186,6 +2394,9 @@ type AttributionClass {
 
   # Shortest form of attribution class display
   name: String
+
+  # Short descriptive phrase for attribution class without punctuation as array of strings
+  shortArrayDescription: [String]
 
   # Short descriptive phrase for attribution class without punctuation
   shortDescription: String
@@ -2722,6 +2933,52 @@ type BackupSecondFactors {
 # A list of backup second factors or errors
 union BackupSecondFactorsOrErrorsUnion = BackupSecondFactors | Errors
 
+type BankAccount {
+  # Name on the bank account
+  accountHolderName: String
+
+  # Bank name
+  bankName: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Last four characters of the account identifier
+  last4: String!
+}
+
+# A connection to a list of items.
+type BankAccountConnection {
+  # A list of edges.
+  edges: [BankAccountEdge]
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+}
+
+# An edge in a connection.
+type BankAccountEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: BankAccount
+}
+
+type BankAccountMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type BankAccountMutationSuccess {
+  bankAccount: BankAccount
+  bankAccountEdge: BankAccountEdge
+}
+
+union BankAccountMutationType = BankAccountMutationFailure | BankAccountMutationSuccess
+
 type Bidder implements Node {
   createdAt(
     format: String
@@ -2879,6 +3136,26 @@ type CalculatedCost {
   bidAmount: Money
   buyersPremium: Money
   subtotal: Money
+}
+
+# Market Price Insights Calendar year
+type CalendarYearMarketPriceInsights {
+  artistId: ID
+  artistName: String
+  averageSalePrice: BigInt
+  createdAt: ISO8601DateTime
+  id: ID!
+  lotsSold: BigInt
+  medium: String
+  updatedAt: ISO8601DateTime
+  valueSold: BigInt
+  year: String!
+}
+
+# Price Insights Calendar year
+type CalendarYearPriceInsights {
+  calendarYearMarketPriceInsights: [CalendarYearMarketPriceInsights!]
+  medium: String!
 }
 
 # Autogenerated input type of CaptureHold
@@ -3108,6 +3385,12 @@ type CommerceApproveOrderPayload {
   orderOrError: CommerceOrderOrFailureUnion!
 }
 
+# Bank account balance
+type CommerceBankAccountBalance {
+  balanceCents: Int
+  currencyCode: String
+}
+
 # Autogenerated input type of BuyerAcceptOffer
 input CommerceBuyerAcceptOfferInput {
   # A unique identifier for the client performing the mutation.
@@ -3194,6 +3477,8 @@ type CommerceBuyOrder implements CommerceOrder {
     thousand: String = ","
   ): String
   artsyTotalCents: Int
+  availablePaymentMethods: [CommercePaymentMethodEnum!]!
+  bankAccountId: String
   buyer: CommerceOrderPartyUnion!
   buyerDetails: OrderParty
   buyerPhoneNumber: String
@@ -3219,6 +3504,7 @@ type CommerceBuyOrder implements CommerceOrder {
   ): String
   commissionFeeCents: Int
   commissionRate: Float
+  conversation: Conversation
   createdAt(
     format: String
 
@@ -3279,6 +3565,9 @@ type CommerceBuyOrder implements CommerceOrder {
   ): CommerceLineItemConnection
   mode: CommerceOrderModeEnum
   orderHistory: [CommerceOrderEventUnion!]!
+  orderUpdateState: String
+  paymentMethod: CommercePaymentMethodEnum
+  paymentMethodDetails: PaymentMethodUnion
   requestedFulfillment: CommerceRequestedFulfillmentUnion
   seller: CommerceOrderPartyUnion!
   sellerDetails: OrderParty
@@ -3908,7 +4197,9 @@ type CommerceOfferOrder implements CommerceOrder {
     thousand: String = ","
   ): String
   artsyTotalCents: Int
+  availablePaymentMethods: [CommercePaymentMethodEnum!]!
   awaitingResponseFrom: CommerceOrderParticipantEnum
+  bankAccountId: String
   buyer: CommerceOrderPartyUnion!
 
   # Type of action buyer needs to perform in response to the offer
@@ -4027,6 +4318,9 @@ type CommerceOfferOrder implements CommerceOrder {
     thousand: String = ","
   ): String
   orderHistory: [CommerceOrderEventUnion!]!
+  orderUpdateState: String
+  paymentMethod: CommercePaymentMethodEnum
+  paymentMethodDetails: PaymentMethodUnion
   requestedFulfillment: CommerceRequestedFulfillmentUnion
   seller: CommerceOrderPartyUnion!
   sellerDetails: OrderParty
@@ -4138,6 +4432,8 @@ interface CommerceOrder {
     thousand: String = ","
   ): String
   artsyTotalCents: Int
+  availablePaymentMethods: [CommercePaymentMethodEnum!]!
+  bankAccountId: String
   buyer: CommerceOrderPartyUnion!
   buyerDetails: OrderParty
   buyerPhoneNumber: String
@@ -4223,6 +4519,9 @@ interface CommerceOrder {
   ): CommerceLineItemConnection
   mode: CommerceOrderModeEnum
   orderHistory: [CommerceOrderEventUnion!]!
+  orderUpdateState: String
+  paymentMethod: CommercePaymentMethodEnum
+  paymentMethodDetails: PaymentMethodUnion
   requestedFulfillment: CommerceRequestedFulfillmentUnion
   seller: CommerceOrderPartyUnion!
   sellerDetails: OrderParty
@@ -4370,6 +4669,9 @@ enum CommerceOrderDisplayStateEnum {
   # order is approved but not yet sent out
   PROCESSING
 
+  # order approval is processing and will be updated when complete
+  PROCESSING_APPROVAL
+
   # order is refunded after being approved or fulfilled
   REFUNDED
 
@@ -4448,6 +4750,7 @@ type CommerceOrderStateChangedEvent implements CommerceEventInterface {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
+  orderUpdateState: String
   state: CommerceOrderStateEnum!
   stateReason: String
 }
@@ -4467,6 +4770,9 @@ enum CommerceOrderStateEnum {
 
   # order is still pending submission by buyer
   PENDING
+
+  # order approval is processing and will be updated when complete
+  PROCESSING_APPROVAL
 
   # order is refunded after being approved or fulfilled
   REFUNDED
@@ -4525,6 +4831,20 @@ type CommercePageInfo {
 type CommercePartner {
   id: String!
   type: String!
+}
+
+enum CommercePaymentMethodEnum {
+  # ACH Transfer
+  ACH_TRANSFER
+
+  # Credit Card
+  CREDIT_CARD
+
+  # US Bank Account
+  US_BANK_ACCOUNT
+
+  # Wire Transfer
+  WIRE_TRANSFER
 }
 
 type CommercePickup {
@@ -4638,12 +4958,30 @@ type CommerceSellerRejectOfferPayload {
   orderOrError: CommerceOrderOrFailureUnion!
 }
 
+# Autogenerated input type of SetPaymentByStripeIntent
+input CommerceSetPaymentByStripeIntentInput {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+  id: ID!
+  setupIntentId: String!
+}
+
+# Autogenerated return type of SetPaymentByStripeIntent
+type CommerceSetPaymentByStripeIntentPayload {
+  # A unique identifier for the client performing the mutation.
+  clientMutationId: String
+
+  # A union of success/failure
+  orderOrError: CommerceOrderOrFailureUnion!
+}
+
 # Autogenerated input type of SetPayment
 input CommerceSetPaymentInput {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-  creditCardId: String!
   id: ID!
+  paymentMethod: CommercePaymentMethodEnum!
+  paymentMethodId: String
 }
 
 # Autogenerated return type of SetPayment
@@ -4794,6 +5132,7 @@ type CommerceShippingQuote {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String!
+  currencyCode: String!
   displayName: String!
   id: ID!
   isSelected: Boolean!
@@ -6199,7 +6538,6 @@ type ConversationOfferSubmitted implements Node {
   id: ID!
   isCounter: Boolean
   offerAmountChanged: Boolean
-  respondsTo: ConversationOfferSubmitted
 }
 
 # A conversation order state change
@@ -6343,6 +6681,30 @@ type CreateGeminiEntryForAssetPayload {
   asset: GeminiEntry
   clientMutationId: String
 }
+
+input CreateIdentityVerificationOverrideMutationInput {
+  clientMutationId: String
+
+  # The identity verification ID
+  identityVerificationID: String!
+
+  # The reason for the identity verification override
+  reason: String!
+
+  # The state of the identity verification override
+  state: String!
+}
+
+type CreateIdentityVerificationOverrideMutationPayload {
+  clientMutationId: String
+
+  # On success: an identity verification with overrides
+  createIdentityVerificationOverrideResponseOrError: CreateIdentityVerificationOverrideResponseOrError
+}
+
+union CreateIdentityVerificationOverrideResponseOrError =
+    IdentityVerificationOverrideMutationFailure
+  | IdentityVerificationOverrideMutationSuccess
 
 # Autogenerated input type of CreateImage
 input CreateImageInput {
@@ -6741,6 +7103,9 @@ input DeleteAccountInput {
   # Reason for deleting the account.
   explanation: String
 
+  # Password.
+  password: String
+
   # Referrer location
   url: String
 }
@@ -6759,6 +7124,17 @@ input DeleteArtworkImageInput {
 type DeleteArtworkImagePayload {
   artworkOrError: ArtworkMutationType
   clientMutationId: String
+}
+
+input DeleteBankAccountInput {
+  clientMutationId: String
+  id: String!
+}
+
+type DeleteBankAccountPayload {
+  bankAccountOrError: BankAccountMutationType
+  clientMutationId: String
+  me: Me
 }
 
 input DeleteCreditCardInput {
@@ -6969,6 +7345,9 @@ input EditableLocation {
 
   # The county the location is based in
   country: String
+
+  # The county code of the location is based in
+  countryCode: String
 
   # Postal code for a string
   postalCode: String
@@ -7369,6 +7748,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   # Are we currently in the fair's active period?
   isActive: Boolean
   isPublished: Boolean
+
+  # Have we indexed this fair's artworks to tineye?
+  isReverseImageSearchEnabled: Boolean!
   links(format: Format): String
   location: Location
   marketingCollections(size: Int): [MarketingCollection]!
@@ -7594,6 +7976,83 @@ type FeaturedLink {
 }
 
 union FeaturedLinkEntity = Artist | Gene | Partner
+
+type FeatureFlag {
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  description: String
+  enabled: Boolean!
+  environments: [FeatureFlagEnvironments]
+
+  # A globally unique ID.
+  id: ID!
+  impressionData: Boolean!
+  lastSeenAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  name: String!
+  project: String!
+  stale: Boolean!
+  type: String!
+  variants: [FeatureFlagVariantType!]!
+}
+
+type FeatureFlagEnvironments {
+  enabled: Boolean!
+  name: String!
+}
+
+enum FeatureFlagsSortBy {
+  CREATED_AT
+  NAME
+}
+
+input FeatureFlagStrategyInput {
+  rollOut: Int = 100
+  strategyType: FeatureFlagStrategyType
+}
+
+enum FeatureFlagStrategyType {
+  # Simple on/off flag
+  DEFAULT
+
+  # For A/B tests, where you can specify a percentage of users to be served a variant
+  FLEXIBLE_ROLLOUT
+}
+
+enum FeatureFlagToggleType {
+  EXPERIMENT
+  RELEASE
+}
+
+input FeatureFlagVariantInputName {
+  name: String!
+  stickiness: String = "sessionId"
+  weight: Int!
+  weightType: FeatureFlagVariantWeightType
+}
+
+type FeatureFlagVariantType {
+  name: String!
+  stickiness: String
+  weight: Int!
+  weightType: String
+}
+
+enum FeatureFlagVariantWeightType {
+  VARIABLE
+}
 
 enum FeatureLayouts {
   DEFAULT
@@ -8516,6 +8975,18 @@ type HomePageSalesModule {
 }
 
 type IdentityVerification {
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # Email of the identity verification's owner
+  email: String
+
   # A globally unique ID.
   id: ID!
 
@@ -8530,25 +9001,77 @@ type IdentityVerification {
     timezone: String
   ): String
 
+  # Name of the identity verification's owner
+  name: String
+
+  # The overrides associated with an identity verification
+  overrides: [IdentityVerificationOverride]
+
+  # The scan references (i.e., results) associated with an identity verification
+  scanReferences: [IdentityVerificationScanReference]
+
   # Where the identity verification is in its lifecycle
   state: String!
 
   # User ID of the identity verification's owner
-  userID: String!
+  userID: String
+}
+
+# A connection to a list of items.
+type IdentityVerificationConnection {
+  # A list of edges.
+  edges: [IdentityVerificationEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type IdentityVerificationEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: IdentityVerification
 }
 
 type IdentityVerificationEmail {
+  created_at(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # Email of the identity verification's owner
+  email: String
+
   # A globally unique ID.
   id: ID!
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
 
+  # Name of the identity verification's owner
+  name: String
+
   # Identity verification lifecycle state
   state: String!
+  updated_at(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
 
   # User ID of the identity verification's owner
-  userID: String!
+  userID: String
 }
 
 type IdentityVerificationEmailMutationFailureType {
@@ -8562,6 +9085,73 @@ type IdentityVerificationEmailMutationSuccessType {
 union IdentityVerificationEmailMutationType =
     IdentityVerificationEmailMutationFailureType
   | IdentityVerificationEmailMutationSuccessType
+
+type IdentityVerificationOverride {
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  creator: User
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # Overridden state
+  newState: String!
+
+  # Un-overridden state
+  oldState: String!
+  reason: String!
+
+  # User ID of the override's creator
+  userID: String
+}
+
+type IdentityVerificationOverrideMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type IdentityVerificationOverrideMutationSuccess {
+  identityVerification: IdentityVerification
+}
+
+type IdentityVerificationScanReference {
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  extractedFirstName: String
+  extractedIdFailReason: String
+  extractedLastName: String
+  extractedSimilarityFailReason: String
+  finishedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  jumioID: String!
+  result: String
+}
 
 type Image {
   aspectRatio: Float!
@@ -9111,6 +9701,12 @@ type MarketingCollection {
 
   # Returns collections by the same artist if more than 4 exist, otherwise returns collections from the same category
   relatedCollections(size: Int = 10): [MarketingCollection!]!
+
+  # Show featured artists section in header. Defaults to true
+  showFeaturedArtists: Boolean!
+
+  # Show artworks rail in header. Defaults to true
+  showHeaderArtworksRail: Boolean!
   slug: String!
   thumbnail: String
   title: String!
@@ -9164,6 +9760,7 @@ type MarketPriceInsights {
   largeHighRangeCents: BigInt
   largeLowRangeCents: BigInt
   largeMidRangeCents: BigInt
+  lastAuctionResultDate: ISO8601DateTime
   liquidityRank: Float
   lowRangeCents: BigInt
   medianSaleOverEstimatePercentage: Int
@@ -9178,6 +9775,30 @@ type MarketPriceInsights {
   smallLowRangeCents: BigInt
   smallMidRangeCents: BigInt
   updatedAt: ISO8601DateTime
+}
+
+# The connection type for MarketPriceInsights.
+type MarketPriceInsightsConnection {
+  # A list of edges.
+  edges: [MarketPriceInsightsEdge]
+
+  # A list of nodes.
+  nodes: [MarketPriceInsights]
+  pageCursors: PageCursors
+
+  # Information to aid in pagination.
+  pageInfo: AnalyticsPageInfo!
+  totalCount: Int
+  totalPages: Int
+}
+
+# An edge in a connection.
+type MarketPriceInsightsEdge {
+  # A cursor for use in pagination.
+  cursor: String!
+
+  # The item at the end of the edge.
+  node: MarketPriceInsights
 }
 
 type Me implements Node {
@@ -9247,6 +9868,9 @@ type Me implements Node {
 
   # A list of authenticated external services
   authentications: [AuthenticationType!]!
+
+  # A list of the current user's bank accounts
+  bankAccounts(after: String, before: String, first: Int, last: Int): BankAccountConnection
 
   # Returns a single bidder position
   bidderPosition(id: String!): BidderPositionResult
@@ -9443,7 +10067,13 @@ type Me implements Node {
     excludePurchasedArtworks: Boolean = false
     first: Int
     last: Int
+    page: Int
+    size: Int
     sort: MyCollectionArtworkSorts
+
+    # Sort by most recent price insight updates, filter out artworks without
+    # insights and return artworks uniq by artist & medium.
+    sortByLastAuctionResultDate: Boolean = false
   ): MyCollectionConnection
 
   # Info about the current user's my-collection
@@ -9584,6 +10214,60 @@ type Me implements Node {
   watchedLotConnection(after: String, before: String, first: Int, last: Int): LotConnection
 }
 
+type MergeArtistsFailure {
+  mutationError: GravityMutationError
+}
+
+# A map describing the field-level overrides that should be part of this merge.
+# - Each **key** is a field name such as `nationality`
+# - Each **value** is a BSON ID that indicates the artist record from which we will _prefer_ the value for the given field
+input MergeArtistsFieldOverrides {
+  # ID of the artist record that contains the `birthday` value that we want to preserve.
+  birthday: ID
+
+  # ID of the artist record that contains the `deathday` value that we want to preserve.
+  deathday: ID
+
+  # ID of the artist record that contains the `gender` value that we want to preserve.
+  gender: ID
+
+  # ID of the artist record that contains the `hometown` value that we want to preserve.
+  hometown: ID
+
+  # ID of the artist record that contains the `location` value that we want to preserve.
+  location: ID
+
+  # ID of the artist record that contains the `nationality` value that we want to preserve.
+  nationality: ID
+}
+
+input MergeArtistsMutationInput {
+  # The database ID of the "bad" artist record(s), which will be **discarded** after the merge
+  badIds: [String!]!
+  clientMutationId: String
+
+  # The database ID of the "good" artist record, which will be **kept** after the
+  # merge. Relevant fields and associations from the bad records will be merged into this one.
+  goodId: String!
+
+  # A map describing the field-level overrides that should be part of this merge.
+  overrides: MergeArtistsFieldOverrides
+}
+
+type MergeArtistsMutationPayload {
+  clientMutationId: String
+
+  # On success: the "good" artist record, which was kept after the merge. Upon a
+  # successful merge this record may have been updated.
+  mergeArtistsResponseOrError: MergeArtistsResponseOrError
+}
+
+union MergeArtistsResponseOrError = MergeArtistsFailure | MergeArtistsSuccess
+
+type MergeArtistsSuccess {
+  artist: Artist
+}
+
 # A message in a conversation.
 type Message implements Node {
   attachments: [Attachment]
@@ -9659,7 +10343,6 @@ type MetaphysicsService {
   stitchingConvection: Boolean!
   stitchingExchange: Boolean!
   stitchingGravity: Boolean!
-  stitchingKaws: Boolean!
 }
 
 type Money {
@@ -9696,6 +10379,18 @@ type Mutation {
     # Parameters for AddUserToSubmissionMutation
     input: AddUserToSubmissionMutationInput!
   ): AddUserToSubmissionMutationPayload
+
+  # Creates a new feature flag
+  adminCreateFeatureFlag(input: AdminCreateFeatureFlagInput!): AdminCreateFeatureFlagPayload
+
+  # Deletes a feature flag
+  adminDeleteFeatureFlag(input: AdminDeleteFeatureFlagInput!): AdminDeleteFeatureFlagPayload
+
+  # Toggles a feature flag on or off for a given environment
+  adminToggleFeatureFlag(input: AdminToggleFeatureFlagInput!): AdminToggleFeatureFlagPayload
+
+  # Updates a feature flag
+  adminUpdateFeatureFlag(input: AdminUpdateFeatureFlagInput!): AdminUpdateFeatureFlagPayload
   captureHold(input: CaptureHoldInput!): CaptureHoldPayload
   commerceAddInitialOfferToOrder(
     # Parameters for AddInitialOfferToOrder
@@ -9783,6 +10478,10 @@ type Mutation {
     # Parameters for SetPayment
     input: CommerceSetPaymentInput!
   ): CommerceSetPaymentPayload
+  commerceSetPaymentByStripeIntent(
+    # Parameters for SetPaymentByStripeIntent
+    input: CommerceSetPaymentByStripeIntentInput!
+  ): CommerceSetPaymentByStripeIntentPayload
   commerceSetShipping(
     # Parameters for SetShipping
     input: CommerceSetShippingInput!
@@ -9842,6 +10541,11 @@ type Mutation {
   createGeminiEntryForAsset(
     input: CreateGeminiEntryForAssetInput!
   ): CreateGeminiEntryForAssetPayload
+
+  # Create an identity verification override
+  createIdentityVerificationOverride(
+    input: CreateIdentityVerificationOverrideMutationInput!
+  ): CreateIdentityVerificationOverrideMutationPayload
   createImage(input: CreateImageInput!): CreateImagePayload
   createInquiryOfferOrder(
     input: CommerceCreateInquiryOfferOrderWithArtworkInput!
@@ -9861,6 +10565,9 @@ type Mutation {
 
   # Deletes an image from an artwork in my collection
   deleteArtworkImage(input: DeleteArtworkImageInput!): DeleteArtworkImagePayload
+
+  # Remove a bank account
+  deleteBankAccount(input: DeleteBankAccountInput!): DeleteBankAccountPayload
 
   # Remove a credit card
   deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
@@ -9898,6 +10605,9 @@ type Mutation {
 
   # Links a 3rd party account
   linkAuthentication(input: LinkAuthenticationMutationInput!): LinkAuthenticationMutationPayload
+
+  # Merge multiple artist records in order to deduplicate artists
+  mergeArtists(input: MergeArtistsMutationInput!): MergeArtistsMutationPayload
 
   # Create an artwork in my collection
   myCollectionCreateArtwork(
@@ -10056,6 +10766,24 @@ enum MyCollectionArtworkSorts {
 
 # A connection to a list of items.
 type MyCollectionConnection {
+  # Insights for all collected artists
+  artistInsights(
+    # The type of insight.
+    kind: ArtistInsightKind
+  ): [ArtistInsight!]!
+  artistsCount: Int!
+  artworksCount: Int!
+
+  # A connection of artists in the users' collection
+  collectedArtistsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+    sort: ArtistSorts
+  ): ArtistConnection
   default: Boolean!
   description: String!
 
@@ -10078,6 +10806,9 @@ input MyCollectionCreateArtworkInput {
   attributionClass: ArtworkAttributionClassType
   category: String
   clientMutationId: String
+
+  # The given location of the user as structured data
+  collectorLocation: EditableLocation
   costCurrencyCode: String
   costMinor: Int
   date: String
@@ -10123,6 +10854,24 @@ type MyCollectionEdge {
 }
 
 type MyCollectionInfo {
+  # Insights for all collected artists
+  artistInsights(
+    # The type of insight.
+    kind: ArtistInsightKind
+  ): [ArtistInsight!]!
+  artistsCount: Int!
+  artworksCount: Int!
+
+  # A connection of artists in the users' collection
+  collectedArtistsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+    sort: ArtistSorts
+  ): ArtistConnection
   default: Boolean!
   description: String!
   includesPurchasedArtworks: Boolean!
@@ -10137,6 +10886,9 @@ input MyCollectionUpdateArtworkInput {
   attributionClass: ArtworkAttributionClassType
   category: String
   clientMutationId: String
+
+  # The given location of the user as structured data
+  collectorLocation: EditableLocation
   costCurrencyCode: String
   costMinor: Int
   date: String
@@ -10167,6 +10919,7 @@ type MyLocation {
   city: String
   coordinates: LatLng!
   country: String
+  countryCode: String
   display: String
   displayCountry: String
 
@@ -10884,6 +11637,8 @@ enum PartnersSortType {
 
 union PartnerTypes = ExternalPartner | Partner
 
+union PaymentMethodUnion = BankAccount | CreditCard | WireTransfer
+
 enum PhoneNumberErrors {
   INVALID_COUNTRY_CODE
   INVALID_NUMBER
@@ -11035,6 +11790,12 @@ enum PriceInsightSort {
 
   # sort by large_mid_range_cents in descending order
   LARGE_MID_RANGE_CENTS_DESC
+
+  # sort by last_auction_result_date in ascending order
+  LAST_AUCTION_RESULT_DATE_ASC
+
+  # sort by last_auction_result_date in descending order
+  LAST_AUCTION_RESULT_DATE_DESC
 
   # sort by liquidity_rank in ascending order
   LIQUIDITY_RANK_ASC
@@ -11281,9 +12042,26 @@ type Query {
     # Returns only viewing rooms with these statuses
     statuses: [ViewingRoomStatusEnum!] = [live]
   ): ViewingRoomsConnection
+  admin: Admin
 
   # Find an agreement by ID
   agreement(id: ID!): Agreement
+
+  # Get the year sparklines for the current artist.
+  analyticsArtistSparklines(
+    # Returns the elements in the list that come after the specified cursor.
+    after: String
+    artistId: String!
+
+    # Returns the elements in the list that come before the specified cursor.
+    before: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int
+
+    # Returns the last _n_ elements from the list.
+    last: Int
+  ): AnalyticsArtistSparklineConnection
 
   # Get all recommended artworks for the current user.
   analyticsArtworkRecommendations(
@@ -11300,6 +12078,21 @@ type Query {
     last: Int
     userId: String
   ): AnalyticsArtworkRecommendationConnection
+
+  # Get price insights for a market for each calendar year sorted by year asc.
+  analyticsCalendarYearMarketPriceInsights(
+    artistId: ID!
+    endYear: String
+    medium: String!
+    startYear: String
+  ): [CalendarYearMarketPriceInsights!]
+
+  # Get list of calendar year price insights for an artist for each market sorted by year asc.
+  analyticsCalendarYearPriceInsights(
+    artistId: ID!
+    endYear: String
+    startYear: String
+  ): [CalendarYearPriceInsights!]
 
   # Last updated timestamp
   analyticsLastUpdatedAt: AnalyticsDateTime
@@ -11522,6 +12315,7 @@ type Query {
     after: String
     before: String
     first: Int
+    includeBackfill: Boolean!
     last: Int
     page: Int
     userId: String
@@ -11553,6 +12347,12 @@ type Query {
   # `LOGGED_IN` because we don't know whether or not the authentication is valid
   # (error could be something else).
   authenticationStatus: AuthenticationStatus!
+
+  # A user's bank account
+  bankAccount(
+    # The ID of the bank account
+    id: String!
+  ): BankAccount
   channel(id: ID!): Channel!
 
   # A list of cities
@@ -11566,6 +12366,9 @@ type Query {
     # A slug for the city, conforming to Gravity's city slug naming conventions
     slug: String
   ): City
+
+  # Find balance of an account associated with a setup intent
+  commerceBankAccountBalance(setupIntentId: ID!): CommerceBankAccountBalance
 
   # Find list of competing orders
   commerceCompetingOrders(
@@ -11792,6 +12595,24 @@ type Query {
 
   # Home screen content
   homePage: HomePage
+
+  # An identity verification that the user has access to
+  identityVerification(
+    # ID of the IdentityVerification
+    id: String!
+  ): IdentityVerification
+
+  # A connection of identity verifications.
+  identityVerificationsConnection(
+    after: String
+    before: String
+    email: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+    userId: String
+  ): IdentityVerificationConnection
   job(id: ID!): Job!
   jobs: [Job!]!
   marketingCategories: [MarketingCollectionCategory!]!
@@ -12280,8 +13101,10 @@ type RequestCredentialsForAssetUploadPayload {
 }
 
 type RequestLocation {
+  cached: Int
   country: String
   countryCode: String
+  id: ID!
 }
 
 type RequestPriceEstimatedMutationFailure {
@@ -12389,10 +13212,14 @@ type Sale implements Node {
     after: String
     before: String
 
+    # When this is true and there is no access token present, allow a loader that caches to be used.
+    cached: Boolean = true
+
     # List of artwork IDs to exclude from the response (irrespective of size)
     exclude: [String]
     first: Int
     last: Int
+    status: SaleArtworkStatus
   ): ArtworkConnection
   associatedSale: Sale
   bidder: Bidder
@@ -12470,6 +13297,9 @@ type Sale implements Node {
   isGalleryAuction: Boolean
   isLiveOpen: Boolean
   isLotConditionsReportEnabled: Boolean
+
+  # True for a cascading-end-time enabled sale where lots have started closing
+  isLotsClosing: Boolean!
   isOpen: Boolean
   isPreliminary: Boolean
   isPreview: Boolean
@@ -12513,6 +13343,7 @@ type Sale implements Node {
     # List of sale artwork internal IDs to fetch
     internalIDs: [ID]
     last: Int
+    status: SaleArtworkStatus
   ): SaleArtworkConnection
   saleType: String
 
@@ -12835,6 +13666,11 @@ type SaleArtworksConnection implements ArtworkConnectionInterface {
   totalCount: Int
 }
 
+enum SaleArtworkStatus {
+  CLOSED
+  OPEN
+}
+
 type SaleCascadingEndTime {
   # A more granular formatted description of when the auction starts or ends if it has ended
   formattedStartDateTime: String
@@ -13030,6 +13866,7 @@ type SearchCriteria {
   href: String!
   inquireableOnly: Boolean
   internalID: ID!
+  keyword: String
 
   # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
   labels: [SearchCriteriaLabel!]!
@@ -13058,6 +13895,7 @@ input SearchCriteriaAttributes {
   dimensionRange: String = null
   height: String = null
   inquireableOnly: Boolean = null
+  keyword: String = null
   locationCities: [String!] = []
   majorPeriods: [String!] = []
   materialsTerms: [String!] = []
@@ -13253,6 +14091,14 @@ union SendFeedbackMutationType = SendFeedbackMutationFailure | SendFeedbackMutat
 
 input SendIdentityVerificationEmailMutationInput {
   clientMutationId: String
+
+  # The email for the user undergoing identity verificaiton
+  email: String
+
+  # The name to be used for the user undergoing identity verification
+  name: String
+
+  # The user Id for the user undergoing identity verificaiton
   userID: String
 }
 
@@ -13452,6 +14298,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 
   # Is it a show provided for historical reference?
   isReference: Boolean
+
+  # Have we indexed this show's artworks to tineye?
+  isReverseImageSearchEnabled: Boolean!
 
   # Is it an outsourced local discovery stub show?
   isStubShow: Boolean
@@ -14682,6 +15531,7 @@ type Viewer {
 
   # Do not use (only used internally for stitching)
   _do_not_use_image: Image
+  admin: Admin
 
   # An Article
   article(
@@ -14868,6 +15718,7 @@ type Viewer {
     after: String
     before: String
     first: Int
+    includeBackfill: Boolean!
     last: Int
     page: Int
     userId: String
@@ -14885,6 +15736,12 @@ type Viewer {
   # `LOGGED_IN` because we don't know whether or not the authentication is valid
   # (error could be something else).
   authenticationStatus: AuthenticationStatus!
+
+  # A user's bank account
+  bankAccount(
+    # The ID of the bank account
+    id: String!
+  ): BankAccount
   channel(id: ID!): Channel!
 
   # A list of cities
@@ -15025,6 +15882,24 @@ type Viewer {
 
   # Home screen content
   homePage: HomePage
+
+  # An identity verification that the user has access to
+  identityVerification(
+    # ID of the IdentityVerification
+    id: String!
+  ): IdentityVerification
+
+  # A connection of identity verifications.
+  identityVerificationsConnection(
+    after: String
+    before: String
+    email: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+    userId: String
+  ): IdentityVerificationConnection
   job(id: ID!): Job!
   jobs: [Job!]!
   marketingCollections(
@@ -15463,6 +16338,10 @@ input ViewingRoomSubsectionInput {
   delete: Boolean = false
   image: ARImageInput
   internalID: ID
+}
+
+type WireTransfer {
+  isManualPayment: Boolean!
 }
 
 type YearRange {

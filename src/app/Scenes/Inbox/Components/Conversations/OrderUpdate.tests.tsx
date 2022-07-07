@@ -1,9 +1,7 @@
-import React from "react"
-
 import { OrderUpdateTestsQuery } from "__generated__/OrderUpdateTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { AlertCircleFillIcon, LinkText, MoneyFillIcon } from "palette"
 import "react-native"
 import { QueryRenderer } from "react-relay"
@@ -79,7 +77,7 @@ const getWrapper = (event = {}) => {
       ],
     },
   }
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer />)
   const finalResolvers = { Conversation: () => mockConversation }
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
@@ -95,7 +93,10 @@ it("renders without throwing an error", () => {
 
 describe("OrderUpdate with order updates", () => {
   it("displays the offer approved event", () => {
-    const tree = getWrapper({ __typename: "CommerceOrderStateChangedEvent", state: "APPROVED" })
+    const tree = getWrapper({
+      __typename: "CommerceOrderStateChangedEvent",
+      orderUpdateState: "offer_approved",
+    })
 
     expect(extractText(tree.root)).toMatch("Offer Accepted")
     expect(extractText(tree.root)).not.toMatch("See details")
@@ -105,8 +106,7 @@ describe("OrderUpdate with order updates", () => {
   it("displays the seller declined event", () => {
     const tree = getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
-      state: "CANCELED",
-      stateReason: "seller_rejected_offer_too_low",
+      orderUpdateState: "offer_rejected",
     })
 
     expect(extractText(tree.root)).toMatch("Offer Declined")
@@ -117,8 +117,7 @@ describe("OrderUpdate with order updates", () => {
   it("displays the buyer declined event", () => {
     const tree = getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
-      state: "CANCELED",
-      stateReason: "buyer_rejected",
+      orderUpdateState: "offer_rejected",
     })
 
     expect(extractText(tree.root)).toMatch("Offer Declined")
@@ -129,8 +128,7 @@ describe("OrderUpdate with order updates", () => {
   it("displays the offer expired event", () => {
     const tree = getWrapper({
       __typename: "CommerceOrderStateChangedEvent",
-      state: "CANCELED",
-      stateReason: "someone_lapsed",
+      orderUpdateState: "offer_lapsed",
     })
 
     expect(extractText(tree.root)).toMatch("Offer Expired")
@@ -177,6 +175,7 @@ describe("OrderUpdate with order updates", () => {
     expect(extractText(tree.root)).not.toMatch("See details")
     tree.root.findByType(AlertCircleFillIcon)
   })
+
   it("shows an accepted offer from the partner with pending action", () => {
     const tree = getWrapper({
       __typename: "CommerceOfferSubmittedEvent",
@@ -190,5 +189,16 @@ describe("OrderUpdate with order updates", () => {
     expect(extractText(tree.root)).toMatch("Offer Accepted - Pending Action")
     expect(extractText(tree.root)).not.toMatch("See details")
     tree.root.findByType(AlertCircleFillIcon)
+  })
+
+  it("shows an approved buy order", () => {
+    const tree = getWrapper({
+      __typename: "CommerceOrderStateChangedEvent",
+      orderUpdateState: "buy_submitted",
+    })
+
+    expect(extractText(tree.root)).toMatch("You purchased this artwork")
+    expect(extractText(tree.root)).toMatch("See details")
+    tree.root.findByType(MoneyFillIcon)
   })
 })

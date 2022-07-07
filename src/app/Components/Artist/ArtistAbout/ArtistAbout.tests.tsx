@@ -1,9 +1,9 @@
 import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import Biography from "../Biography"
@@ -30,14 +30,16 @@ describe("ArtistAbout", () => {
           return null
         }
         return (
-          <StickyTabPage
-            tabs={[
-              {
-                title: "test",
-                content: <ArtistAboutContainer artist={props.artist} />,
-              },
-            ]}
-          />
+          <ModalStack>
+            <StickyTabPage
+              tabs={[
+                {
+                  title: "test",
+                  content: <ArtistAboutContainer artist={props.artist} />,
+                },
+              ]}
+            />
+          </ModalStack>
         )
       }}
     />
@@ -49,9 +51,9 @@ describe("ArtistAbout", () => {
 
   describe("Biography", () => {
     it("is shown when the artist has metadata", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Boolean: (context) => {
           if (context.name === "hasMetadata") {
             return true
@@ -63,9 +65,9 @@ describe("ArtistAbout", () => {
     })
 
     it("is hidden when the artist has metadata", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment, {
+      resolveMostRecentRelayOperation(mockEnvironment, {
         Boolean: (context) => {
           if (context.name === "hasMetadata") {
             return false
@@ -79,9 +81,9 @@ describe("ArtistAbout", () => {
 
   describe("ArtistAboutShows", () => {
     it("is rendered by default", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-      mockEnvironmentPayload(mockEnvironment)
+      resolveMostRecentRelayOperation(mockEnvironment)
 
       expect(tree.root.findAllByType(ArtistAboutShowsFragmentContainer).length).toEqual(1)
     })

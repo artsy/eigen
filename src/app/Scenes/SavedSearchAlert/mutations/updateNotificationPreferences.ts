@@ -1,16 +1,14 @@
 import {
   NotificationPreferenceInput,
   updateNotificationPreferencesMutation,
-  updateNotificationPreferencesMutationResponse,
-  updateNotificationPreferencesMutationVariables,
 } from "__generated__/updateNotificationPreferencesMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
 export const updateNotificationPreferences = (
   subscriptionGroups: NotificationPreferenceInput[]
-): Promise<updateNotificationPreferencesMutationResponse> => {
-  const input: updateNotificationPreferencesMutationVariables["input"] = {
+): Promise<updateNotificationPreferencesMutation["response"]> => {
+  const input: updateNotificationPreferencesMutation["variables"]["input"] = {
     subscriptionGroups,
   }
 

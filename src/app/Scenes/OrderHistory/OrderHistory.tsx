@@ -1,4 +1,4 @@
-import { OrderHistory_me } from "__generated__/OrderHistory_me.graphql"
+import { OrderHistory_me$data } from "__generated__/OrderHistory_me.graphql"
 import { OrderHistoryQuery } from "__generated__/OrderHistoryQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -6,7 +6,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Sans, Separator, useTheme } from "palette"
+import { Box, Flex, Separator, Text, useTheme } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -14,7 +14,7 @@ import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 
 const NUM_ORDERS_TO_FETCH = 10
 
-export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginationProp }> = ({
+export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPaginationProp }> = ({
   relay,
   me,
 }) => {
@@ -55,9 +55,9 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginatio
         )}
         ListEmptyComponent={
           <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px={15}>
-            <Sans size="5t" color={color("black60")}>
+            <Text variant="md" color={color("black60")}>
               No orders
-            </Sans>
+            </Text>
           </Flex>
         }
         onEndReachedThreshold={0.25}

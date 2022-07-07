@@ -1,84 +1,58 @@
-import { ArtistCollectionsRailTestsQueryRawResponse } from "__generated__/ArtistCollectionsRailTestsQuery.graphql"
-import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
-import { CardRailCard } from "app/Components/Home/CardRailCard"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
+import { fireEvent } from "@testing-library/react-native"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderRelayTree } from "app/tests/renderRelayTree"
-import { Theme } from "palette"
-import React from "react"
-import { graphql } from "react-relay"
-import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
-
-jest.unmock("react-relay")
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { ArtistCollectionsRail } from "./ArtistCollectionsRail"
 
 describe("Artist Series Rail", () => {
-  const getWrapper = async () => {
-    return renderRelayTree({
-      Component: (props: any) => {
-        return (
-          <GlobalStoreProvider>
-            <Theme>
-              <ArtistCollectionsRailFragmentContainer
-                collections={props.marketingCollections}
-                {...props}
-              />
-            </Theme>
-          </GlobalStoreProvider>
-        )
-      },
-      query: graphql`
-        query ArtistCollectionsRailTestsQuery @raw_response_type {
-          artist(id: "david-hockney") {
-            ...ArtistCollectionsRail_artist
-          }
-          marketingCollections {
-            ...ArtistCollectionsRail_collections
-          }
-        }
-      `,
-      mockData: {
-        artist: artistMockData,
-        marketingCollections: collectionsMockData,
-      },
-    })
-  }
+  it("renders all collections", async () => {
+    const { getByText } = renderWithWrappers(
+      <ArtistCollectionsRail
+        artist={artistMockData as any}
+        collections={collectionsMockData as any}
+      />
+    )
 
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it("renders without throwing an error with all props", async () => {
-    const wrapper = await getWrapper()
-    expect(wrapper.find(GenericArtistSeriesRail)).toHaveLength(1)
+    expect(getByText("Cindy Sherman: Untitled Film Stills")).toBeTruthy()
+    expect(getByText("Damien Hirst: Butterflies")).toBeTruthy()
+    expect(getByText("Hunt Slonem: Bunnies")).toBeTruthy()
   })
 
   it("tracks clicks to a collection", async () => {
-    const wrapper = await getWrapper()
+    const { getByText } = renderWithWrappers(
+      <ArtistCollectionsRail
+        artist={artistMockData as any}
+        collections={collectionsMockData as any}
+      />
+    )
 
-    wrapper.find(CardRailCard).at(0).simulate("click")
+    fireEvent.press(getByText("Cindy Sherman: Untitled Film Stills"))
 
-    expect(mockTrackEvent).toBeCalledWith({
-      action_type: "tappedCollectionGroup",
-      context_module: "artistSeriesRail",
-      context_screen_owner_id: "artist0",
-      context_screen_owner_slug: "david-hockney",
-      context_screen_owner_type: "Artist",
-      destination_screen_owner_id: "coll0",
-      destination_screen_owner_slug: "cindy-sherman-untitled-film-stills",
-      destination_screen_owner_type: "Collection",
-      horizontal_slide_position: 0,
-      type: "thumbnail",
-    })
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action_type": "tappedCollectionGroup",
+          "context_module": "artistSeriesRail",
+          "context_screen_owner_id": "artist0",
+          "context_screen_owner_slug": "david-hockney",
+          "context_screen_owner_type": "Artist",
+          "destination_screen_owner_id": "coll0",
+          "destination_screen_owner_slug": "cindy-sherman-untitled-film-stills",
+          "destination_screen_owner_type": "Collection",
+          "horizontal_slide_position": 0,
+          "type": "thumbnail",
+        },
+      ]
+    `)
   })
 })
 
-const artistMockData: ArtistCollectionsRailTestsQueryRawResponse["artist"] = {
+const artistMockData = {
   id: "sdfsdfsdfsdf",
   internalID: "artist0",
   slug: "david-hockney",
 }
 
-const collectionsMockData: ArtistCollectionsRailTestsQueryRawResponse["marketingCollections"] = [
+const collectionsMockData = [
   {
     id: "coll0",
     slug: "cindy-sherman-untitled-film-stills",

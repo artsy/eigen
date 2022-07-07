@@ -1,5 +1,4 @@
 import { Box, BoxProps, EnvelopeIcon, FacebookIcon, Touchable, TwitterIcon } from "palette"
-import React from "react"
 import { Linking } from "react-native"
 
 interface FairEditorialShareProps extends BoxProps {

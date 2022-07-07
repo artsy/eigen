@@ -4,7 +4,6 @@ import { MyCollectionArtworkInsights_me$key } from "__generated__/MyCollectionAr
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, Spacer } from "palette"
-import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkArtistAuctionResults } from "./Components/ArtworkInsights/MyCollectionArtworkArtistAuctionResults"
@@ -23,17 +22,14 @@ interface MyCollectionArtworkInsightsProps {
 export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsProps> = ({
   ...restProps
 }) => {
-  const artwork = useFragment<MyCollectionArtworkInsights_artwork$key>(
-    artworkFragment,
-    restProps.artwork
-  )
+  const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const marketPriceInsights = useFragment<MyCollectionArtworkInsights_marketPriceInsights$key>(
+  const marketPriceInsights = useFragment(
     marketPriceInsightsFragment,
     restProps.marketPriceInsights
   )
 
-  const me = useFragment<MyCollectionArtworkInsights_me$key>(meFragment, restProps.me)
+  const me = useFragment(meFragment, restProps.me)
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
 

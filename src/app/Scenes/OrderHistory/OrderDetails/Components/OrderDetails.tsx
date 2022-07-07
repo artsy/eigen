@@ -1,4 +1,4 @@
-import { OrderDetails_order } from "__generated__/OrderDetails_order.graphql"
+import { OrderDetails_order$data } from "__generated__/OrderDetails_order.graphql"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -18,7 +18,7 @@ import { SummarySectionFragmentContainer } from "./SummarySection"
 import { TrackOrderSectionFragmentContainer } from "./TrackOrderSection"
 
 export interface OrderDetailsProps {
-  order: OrderDetails_order
+  order: OrderDetails_order$data
 }
 export interface SectionListItem {
   key: string

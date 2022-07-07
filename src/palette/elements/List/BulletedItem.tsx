@@ -1,6 +1,5 @@
 import { bullet, Flex, FlexProps, Spacer } from "palette"
 import { Text } from "palette"
-import React from "react"
 
 interface BulletedItemProps extends FlexProps {
   children: string | Array<string | Element>

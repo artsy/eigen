@@ -1,9 +1,8 @@
 import { ViewingRoomSubsectionsTestsQuery } from "__generated__/ViewingRoomSubsectionsTestsQuery.graphql"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box } from "palette"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ViewingRoomSubsectionsContainer } from "./ViewingRoomSubsections"
@@ -29,8 +28,8 @@ describe("ViewingRoomSubsections", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders a Box for each subsection", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironmentPayload(mockEnvironment)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    resolveMostRecentRelayOperation(mockEnvironment)
 
     expect(
       tree.root.findAllByType(Box).filter((box) => box.props.testID === "subsection")

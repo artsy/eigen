@@ -3,9 +3,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
-import "react-native"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
 import { updateConsignSubmission } from "../../mutations"
@@ -25,13 +23,13 @@ describe("ContactInformationForm", () => {
   const TestRenderer = () => <ContactInformationQueryRenderer handlePress={handlePressTest} />
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(
+    renderWithWrappers(
       <ContactInformationQueryRenderer handlePress={() => console.log("do nothing")} />
     )
   })
 
   it("renders Form instructions", () => {
-    const { findByText } = renderWithWrappersTL(<TestRenderer />)
+    const { findByText } = renderWithWrappers(<TestRenderer />)
 
     expect(
       findByText("We will only use these details to contact you regarding your submission.")
@@ -39,7 +37,7 @@ describe("ContactInformationForm", () => {
   })
 
   it("Happy path: User can submit information", async () => {
-    const { getAllByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText, getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
     updateConsignSubmissionMock.mockResolvedValue("adsfasd")
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -52,8 +50,8 @@ describe("ContactInformationForm", () => {
     await flushPromiseQueue()
 
     const inputs = {
-      nameInput: getByPlaceholderText("Your Full Name"),
-      emailInput: getByPlaceholderText("Your Email Address"),
+      nameInput: getByPlaceholderText("Your full name"),
+      emailInput: getByPlaceholderText("Your email address"),
       phoneInput: getByPlaceholderText("(000) 000-0000"),
     }
 
@@ -66,9 +64,9 @@ describe("ContactInformationForm", () => {
     expect(inputs.phoneInput).toBeTruthy()
     expect(inputs.phoneInput).toHaveProp("value", "(202) 555-0174")
 
-    expect(getAllByText("Submit Artwork")).toBeTruthy()
+    expect(queryByText("Submit Artwork")).toBeTruthy()
 
-    fireEvent(getAllByText("Submit Artwork")[0], "press")
+    fireEvent.press(getByText("Submit Artwork"))
 
     await flushPromiseQueue()
 
@@ -81,7 +79,7 @@ describe("ContactInformationForm", () => {
   })
 
   it("Keeps Submit button deactivated when something is missing/not properly filled out. Gets enabled if everything is filled out.", async () => {
-    const { getAllByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
     updateConsignSubmissionMock.mockResolvedValue("adsfasd")
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
@@ -91,12 +89,12 @@ describe("ContactInformationForm", () => {
       })
     )
     const inputs = {
-      nameInput: getByPlaceholderText("Your Full Name"),
-      emailInput: getByPlaceholderText("Your Email Address"),
+      nameInput: getByPlaceholderText("Your full name"),
+      emailInput: getByPlaceholderText("Your email address"),
       phoneInput: getByPlaceholderText("(000) 000-0000"),
     }
 
-    const submitButton = getAllByText("Submit Artwork")[0]
+    const submitButton = getByText("Submit Artwork")
 
     await flushPromiseQueue()
 
@@ -113,7 +111,7 @@ describe("ContactInformationForm", () => {
 
   describe("validation", () => {
     it("displays error message for name", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Me: () => ({
@@ -125,8 +123,8 @@ describe("ContactInformationForm", () => {
       await flushPromiseQueue()
 
       const inputs = {
-        nameInput: getByPlaceholderText("Your Full Name"),
-        emailInput: getByPlaceholderText("Your Email Address"),
+        nameInput: getByPlaceholderText("Your full name"),
+        emailInput: getByPlaceholderText("Your email address"),
       }
 
       fireEvent.changeText(inputs.nameInput, "a")
@@ -138,7 +136,7 @@ describe("ContactInformationForm", () => {
     })
 
     it("displays error message for email address", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Me: () => ({
@@ -150,7 +148,7 @@ describe("ContactInformationForm", () => {
       await flushPromiseQueue()
 
       const inputs = {
-        emailInput: getByPlaceholderText("Your Email Address"),
+        emailInput: getByPlaceholderText("Your email address"),
         phoneInput: getByPlaceholderText("(000) 000-0000"),
       }
 
@@ -163,7 +161,7 @@ describe("ContactInformationForm", () => {
     })
 
     it("displays error message for phone number", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Me: () => ({
@@ -175,7 +173,7 @@ describe("ContactInformationForm", () => {
       await flushPromiseQueue()
 
       const inputs = {
-        emailInput: getByPlaceholderText("Your Email Address"),
+        emailInput: getByPlaceholderText("Your email address"),
         phoneInput: getByPlaceholderText("(000) 000-0000"),
       }
 
@@ -206,7 +204,7 @@ describe("ContactInformationForm", () => {
     })
 
     it("tracks consignmentSubmitted event on save", async () => {
-      const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText } = renderWithWrappers(<TestRenderer />)
       updateConsignSubmissionMock.mockResolvedValue("54321")
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
@@ -218,7 +216,7 @@ describe("ContactInformationForm", () => {
 
       await flushPromiseQueue()
 
-      fireEvent(getAllByText("Submit Artwork")[0], "press")
+      fireEvent.press(getByText("Submit Artwork"))
 
       await flushPromiseQueue()
 

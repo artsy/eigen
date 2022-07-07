@@ -1,7 +1,7 @@
 import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
-import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
+import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
+import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -14,7 +14,13 @@ import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabP
 import { useToast } from "app/Components/Toast/toastHook"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { GlobalStore, removeClue, useDevToggle, useSessionVisualClue } from "app/store/GlobalStore"
+import {
+  GlobalStore,
+  setVisualClueAsSeen,
+  useDevToggle,
+  useFeatureFlag,
+  useVisualClue,
+} from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   PlaceholderBox,
@@ -22,19 +28,28 @@ import {
   PlaceholderText,
   RandomWidthPlaceholderText,
 } from "app/utils/placeholders"
-import { MY_COLLECTION_REFRESH_KEY, RefreshEvents } from "app/utils/refreshHelpers"
+import {
+  MY_COLLECTION_REFRESH_KEY,
+  RefreshEvents,
+  refreshMyCollectionInsights,
+} from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { times } from "lodash"
-import { Button, Flex, Message, Separator, Spacer, useSpace } from "palette"
+import { Button, Flex, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
+import { MyCollectionArtworkUploadMessages } from "./Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
+import {
+  PurchasedArtworkAddedMessage,
+  SubmittedArtworkAddedMessage,
+} from "./Screens/Insights/MyCollectionMessages"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
@@ -42,22 +57,28 @@ export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_N
 
 const MyCollection: React.FC<{
   relay: RelayPaginationProp
-  me: MyCollection_me
+  me: MyCollection_me$data
 }> = ({ relay, me }) => {
+  const toast = useToast()
   const { trackEvent } = useTracking()
-  const { showSessionVisualClue } = useSessionVisualClue()
+  const { showVisualClue } = useVisualClue()
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
+  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
+
+  const [showSearchBar, setShowSearchBar] = useState(false)
 
   const filtersCount = useSelectedFiltersCount()
 
   const artworks = extractNodes(me?.myCollectionConnection)
+  const hasMarketSignals = !!me?.auctionResults?.totalCount
 
   const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
+
   useEffect(() => {
     RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
     return () => {
@@ -75,83 +96,87 @@ const MyCollection: React.FC<{
     })
   }
 
+  const notifyMyCollectionInsightsTab = () => {
+    const artworksWithoutInsight = artworks.find((artwork) => !artwork._marketPriceInsights)
+
+    refreshMyCollectionInsights({
+      collectionHasArtworksWithoutInsights: !!(artworks.length && artworksWithoutInsight),
+    })
+  }
+
+  // Load all artworks and then check whether all of them have insights
   useEffect(() => {
+    if (!relay.hasMore()) {
+      notifyMyCollectionInsightsTab()
+      return
+    }
+
     relay.loadMore(100)
-  }, [])
+  }, [me?.myCollectionConnection])
 
   // hack for tests. we should fix that.
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
-  const space = useSpace()
-  const toast = useToast()
+  const showMessages = async () => {
+    const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
+    const showNewWorksMessage =
+      me.myCollectionInfo?.includesPurchasedArtworks &&
+      !(await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER))
 
-  const hasBeenShownBanner = async () => {
-    const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
-    const shouldShowConsignments = showSessionVisualClue("ArtworkSubmissionMessage")
-    return {
-      hasSeenBanner: hasSeen === "true",
-      shouldShowConsignments: shouldShowConsignments === true,
-    }
+    setJSX(
+      <Flex>
+        <ArtworksFilterHeader
+          selectedFiltersCount={filtersCount}
+          onFilterPress={() => setIsFilterModalVisible(true)}
+          showSeparator={!showSearchBar}
+        >
+          <Button
+            data-test-id="add-artwork-button-non-zero-state"
+            size="small"
+            variant="fillDark"
+            onPress={async () => {
+              navigate("my-collection/artworks/new", {
+                passProps: {
+                  mode: "add",
+                  source: Tab.collection,
+                  onSuccess: popToRoot,
+                },
+              })
+              trackEvent(tracks.addCollectedArtwork())
+            }}
+            haptic
+          >
+            Add Works
+          </Button>
+        </ArtworksFilterHeader>
+        {!!showNewWorksMessage && (
+          <PurchasedArtworkAddedMessage
+            onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
+          />
+        )}
+        {!!showSubmissionMessage && (
+          <SubmittedArtworkAddedMessage
+            onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
+          />
+        )}
+        {!!enableMyCollectionInsights && (
+          <MyCollectionArtworkUploadMessages
+            sourceTab={Tab.collection}
+            hasMarketSignals={hasMarketSignals}
+          />
+        )}
+      </Flex>
+    )
   }
 
   useEffect(() => {
     if (artworks.length) {
-      hasBeenShownBanner().then(({ hasSeenBanner, shouldShowConsignments }) => {
-        const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
-        const showConsignmentsBanner = shouldShowConsignments
-
-        setJSX(
-          <Flex>
-            <ArtworksFilterHeader
-              selectedFiltersCount={filtersCount}
-              onFilterPress={() => setIsFilterModalVisible(true)}
-            >
-              <Button
-                data-test-id="add-artwork-button-non-zero-state"
-                size="small"
-                variant="fillDark"
-                onPress={() => {
-                  navigate("my-collection/artworks/new", {
-                    passProps: {
-                      mode: "add",
-                      onSuccess: popToRoot,
-                    },
-                  })
-                  trackEvent(tracks.addCollectedArtwork())
-                }}
-                haptic
-              >
-                Add Works
-              </Button>
-            </ArtworksFilterHeader>
-            {!!showNewWorksBanner && (
-              <Message
-                variant="info"
-                title="Your collection is growing"
-                text="Based on your purchase history, we’ve added the following works."
-                showCloseButton
-                onClose={() =>
-                  AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
-                }
-              />
-            )}
-            {!!showConsignmentsBanner && (
-              <Message
-                variant="info"
-                title="Artwork added to My Collection"
-                text="The artwork you submitted for sale has been automatically added."
-                showCloseButton
-                onClose={() => removeClue("ArtworkSubmissionMessage")}
-              />
-            )}
-          </Flex>
-        )
-      })
+      showMessages()
     } else {
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length, filtersCount])
+  }, [artworks.length, filtersCount, showSearchBar])
 
   useEffect(() => {
     reInitializeLocalArtworkFilter(artworks)
@@ -173,13 +198,23 @@ const MyCollection: React.FC<{
       />
 
       <StickyTabPageScrollView
-        contentContainerStyle={{ paddingBottom: space(2) }}
+        contentContainerStyle={{
+          // Extend the container flex when there are no artworks for accurate vertical centering
+          flexGrow: artworks.length ? undefined : 1,
+          justifyContent: artworks.length ? "flex-start" : "center",
+        }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
         innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
       >
-        <MyCollectionArtworks innerFlatlistRef={innerFlatListRef} me={me} relay={relay} />
+        <MyCollectionArtworks
+          innerFlatlistRef={innerFlatListRef}
+          me={me}
+          relay={relay}
+          showSearchBar={showSearchBar}
+          setShowSearchBar={setShowSearchBar}
+        />
         {!!showDevAddButton && (
           <Button
             onPress={async () => {
@@ -207,6 +242,9 @@ export const MyCollectionContainer = createPaginationContainer(
         myCollectionInfo {
           includesPurchasedArtworks
         }
+        auctionResults: myCollectionAuctionResults(first: 3) {
+          totalCount
+        }
         myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
           @connection(key: "MyCollection_myCollectionConnection", filters: []) {
           edges {
@@ -226,6 +264,9 @@ export const MyCollectionContainer = createPaginationContainer(
               artist {
                 internalID
                 name
+              }
+              _marketPriceInsights: marketPriceInsights {
+                demandRank
               }
               consignmentSubmission {
                 displayText
@@ -276,7 +317,8 @@ export const MyCollectionQueryRenderer: React.FC = () => {
           Container: MyCollectionContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,
           renderFallback: ({ retry }) => (
-            <LoadFailureView onRetry={retry!} justifyContent="flex-end" />
+            // align at the end with bottom margin to prevent the header to overlap the unable to load screen.
+            <LoadFailureView onRetry={retry!} justifyContent="flex-end" mb={100} />
           ),
         })}
       />
@@ -285,8 +327,8 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 }
 
 export const MyCollectionPlaceholder: React.FC = () => {
-  const screenWidth = useScreenDimensions().width
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
+  const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
   return (
     <Flex>
@@ -295,28 +337,39 @@ export const MyCollectionPlaceholder: React.FC = () => {
         <Spacer />
         <PlaceholderText width={70} margin={20} />
       </Flex>
-      {/* collector's insfo */}
+      {/* collector's info */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
-        <Flex>
+        <Flex flex={1}>
           <Spacer mb={20} />
           {/* icon, name, time joined */}
           <Flex flexDirection="row">
-            <PlaceholderBox width={100} height={100} borderRadius={50} />
-            <Flex justifyContent="center" ml={2}>
-              <PlaceholderText width={80} height={35} />
-              <PlaceholderText width={100} height={35} />
-              <PlaceholderText width={100} />
+            <PlaceholderBox width={50} height={50} borderRadius={50} />
+            <Flex flex={1} justifyContent="center" ml={2}>
+              <PlaceholderText width={80} height={25} />
+              <PlaceholderText width={100} height={15} />
+            </Flex>
+            <Flex justifyContent="center">
+              <PlaceholderBox width={20} height={20} />
             </Flex>
           </Flex>
-          <Spacer mb={2} mt={1} />
-          <PlaceholderBox width={screenWidth - 40} height={30} borderRadius={50} />
+          <Spacer my={1} />
         </Flex>
       </Flex>
       <Spacer mb={2} mt={1} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        <PlaceholderText width="40%" height={22} />
-        <PlaceholderText width="40%" height={22} />
+        {!!enableMyCollectionInsights ? (
+          <>
+            <PlaceholderText width="25%" height={22} />
+            <PlaceholderText width="25%" height={22} />
+            <PlaceholderText width="25%" height={22} />
+          </>
+        ) : (
+          <>
+            <PlaceholderText width="40%" height={22} />
+            <PlaceholderText width="40%" height={22} />
+          </>
+        )}
       </Flex>
       <Spacer mb={1} />
       <Separator />
@@ -360,5 +413,5 @@ const tracks = {
 }
 
 export type MyCollectionArtworkEdge = NonNullable<
-  NonNullable<InfiniteScrollArtworksGrid_myCollectionConnection["edges"]>[0]
+  NonNullable<InfiniteScrollArtworksGrid_myCollectionConnection$data["edges"]>[0]
 >["node"]

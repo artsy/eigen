@@ -1,11 +1,13 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
-import { mockEdges, mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import {
+  mockEdges,
+  resolveMostRecentRelayOperation,
+} from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Touchable } from "palette"
-import React from "react"
 import { FlatList, TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -33,8 +35,8 @@ describe("ViewingRoom", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders a flatlist with one artwork", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironmentPayload(mockEnvironment, {
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    resolveMostRecentRelayOperation(mockEnvironment, {
       ViewingRoom: () => ({ artworksConnection: { edges: mockEdges(1) } }),
     })
 
@@ -43,8 +45,8 @@ describe("ViewingRoom", () => {
   })
 
   it("renders additional information if it exists", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironmentPayload(mockEnvironment, {
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    resolveMostRecentRelayOperation(mockEnvironment, {
       ViewingRoom: () => ({
         artworksConnection: {
           edges: mockEdges(1),
@@ -58,8 +60,8 @@ describe("ViewingRoom", () => {
   })
 
   it("navigates to artwork screen + calls tracking on press", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    mockEnvironmentPayload(mockEnvironment, {
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    resolveMostRecentRelayOperation(mockEnvironment, {
       ViewingRoom: () => ({
         artworksConnection: { edges: mockEdges(1) },
       }),

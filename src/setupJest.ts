@@ -1,37 +1,11 @@
 import "@testing-library/jest-native/extend-expect"
-import "jest-extended"
-
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
 import { mockNavigate } from "app/tests/navigationMocks"
 import chalk from "chalk"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import Enzyme from "enzyme"
 import expect from "expect"
+import "jest-extended"
 import { format } from "util"
 
-import "app/tests/renderUntil"
-
 // MARK: - General preparation
-
-Enzyme.configure({ adapter: new Adapter() })
-const originalConsoleError = console.error
-// TODO: Remove once we're no longer using JSDOM for enzyme static rendering.
-console.error = (message?: any) => {
-  if (
-    typeof message === "string" &&
-    (message.includes("is using uppercase HTML. Always use lowercase HTML tags in React.") ||
-      /Warning: React does not recognize the `\w+` prop on a DOM element\./.test(message) ||
-      /Warning: The tag <\w+> is unrecognized in this browser\./.test(message) ||
-      /Warning: Unknown event handler property `\w+`\./.test(message) ||
-      /Warning: An update to [\w\s]+ inside a test was not wrapped in act/.test(message) ||
-      /Warning: Received `\w+` for a non-boolean attribute `\w+`\./.test(message) ||
-      /Warning: [\w\s]+ has been extracted from react-native core/.test(message))
-  ) {
-    // NOOP
-  } else {
-    originalConsoleError(message)
-  }
-}
 
 // @ts-expect-error
 global.__TEST__ = true
@@ -93,8 +67,9 @@ expect.extend({ toMatchDiffSnapshot: (diff as any).toMatchDiffSnapshot })
 
 // MARK: - External deps mocks
 
-jest.mock("react-native-screens/native-stack", () => ({
-  createNativeStackNavigator: require("@react-navigation/stack").createStackNavigator,
+jest.mock("react-native-screens", () => ({
+  ...jest.requireActual("react-native-screens"),
+  enableScreens: jest.fn(),
 }))
 
 // @ts-expect-error typescript doesn't see this for some reason
@@ -353,13 +328,19 @@ jest.mock("react-native-keychain", () => ({
 // Native modules
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { ScreenDimensionsWithSafeAreas } from "app/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
+import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
 
 function getNativeModules(): OurNativeModules {
   return {
+    ARTNativeScreenPresenterModule: {
+      presentAugmentedRealityVIR: jest.fn(),
+      presentEmailComposerWithBody: jest.fn(),
+      presentEmailComposerWithSubject: jest.fn(),
+      presentMediaPreviewController: jest.fn(),
+    },
     ARTakeCameraPhotoModule: {
       errorCodes: {
         cameraNotAvailable: "cameraNotAvailable",
@@ -382,7 +363,6 @@ function getNativeModules(): OurNativeModules {
         userAgent: "Jest Unit Tests",
         authenticationToken: "authenticationToken",
         launchCount: 1,
-        deviceId: "testDevice",
         userID: "userID",
         userEmail: "user@example.com",
       },
@@ -390,7 +370,6 @@ function getNativeModules(): OurNativeModules {
       didFinishBootstrapping: jest.fn(),
       reactStateUpdated: jest.fn(),
     },
-
     ARTemporaryAPIModule: {
       requestPrepromptNotificationPermissions: jest.fn(),
       requestDirectNotificationPermissions: jest.fn(),
@@ -403,14 +382,91 @@ function getNativeModules(): OurNativeModules {
       requestPhotos: jest.fn(),
     },
     ARScreenPresenterModule: {
-      presentMediaPreviewController: jest.fn(),
+      switchTab: jest.fn(),
       dismissModal: jest.fn(),
       pushView: jest.fn(),
       goBack: jest.fn(),
       updateShouldHideBackButton: jest.fn(),
+      popStack: jest.fn(),
+      popToRootAndScrollToTop: jest.fn(),
+      popToRootOrScrollToTop: jest.fn(),
+      presentModal: jest.fn(),
+    },
+    AREventsModule: {
+      requestAppStoreRating: jest.fn(),
+    },
+    ArtsyNativeModule: {
+      launchCount: 3,
+      setAppStyling: jest.fn(),
+      setNavigationBarColor: jest.fn(),
+      setAppLightContrast: jest.fn(),
+      navigationBarHeight: 11,
+      lockActivityScreenOrientation: jest.fn(),
+      gitCommitShortHash: "de4dc0de",
+      isBetaOrDev: true,
+      updateAuthState: jest.fn(),
+      clearUserData: jest.fn(),
+      clearCache: jest.fn(),
+    },
+  }
+}
+
+// ARScreenPresenterModule is no longer a native module on either platform
+// so we must mock differently
+jest.mock("app/NativeModules/LegacyNativeModules", () => ({
+  LegacyNativeModules: {
+    ARTNativeScreenPresenterModule: {
       presentAugmentedRealityVIR: jest.fn(),
       presentEmailComposerWithBody: jest.fn(),
       presentEmailComposerWithSubject: jest.fn(),
+      presentMediaPreviewController: jest.fn(),
+    },
+    ARTakeCameraPhotoModule: {
+      errorCodes: {
+        cameraNotAvailable: "cameraNotAvailable",
+        imageMediaNotAvailable: "imageMediaNotAvailable",
+        cameraAccessDenied: "cameraAccessDenied",
+        saveFailed: "saveFailed",
+      },
+      triggerCameraModal: jest.fn(),
+    },
+
+    ARCocoaConstantsModule: {
+      UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+      AREnabled: true,
+      CurrentLocale: "en_US",
+      LocalTimeZone: "",
+    },
+
+    ARNotificationsManager: {
+      nativeState: {
+        userAgent: "Jest Unit Tests",
+        authenticationToken: "authenticationToken",
+        launchCount: 1,
+        userID: "userID",
+        userEmail: "user@example.com",
+      },
+      postNotificationName: jest.fn(),
+      didFinishBootstrapping: jest.fn(),
+      reactStateUpdated: jest.fn(),
+    },
+    ARTemporaryAPIModule: {
+      requestPrepromptNotificationPermissions: jest.fn(),
+      requestDirectNotificationPermissions: jest.fn(),
+      fetchNotificationPermissions: jest.fn(),
+      markNotificationsRead: jest.fn(),
+      setApplicationIconBadgeNumber: jest.fn(),
+      getUserEmail: jest.fn(),
+    },
+    ARPHPhotoPickerModule: {
+      requestPhotos: jest.fn(),
+    },
+    ARScreenPresenterModule: {
+      switchTab: jest.fn(),
+      dismissModal: jest.fn(),
+      pushView: jest.fn(),
+      goBack: jest.fn(),
+      updateShouldHideBackButton: jest.fn(),
       popStack: jest.fn(),
       popToRootAndScrollToTop: jest.fn(),
       popToRootOrScrollToTop: jest.fn(),
@@ -431,8 +487,8 @@ function getNativeModules(): OurNativeModules {
       updateAuthState: jest.fn(),
       clearUserData: jest.fn(),
     },
-  }
-}
+  },
+}))
 
 Object.assign(NativeModules, getNativeModules())
 
@@ -456,7 +512,6 @@ beforeEach(() => {
 
 const mockedModule = (path: string, mockModuleName: string) => jest.mock(path, () => mockModuleName)
 mockedModule("./app/Components/OpaqueImageView/OpaqueImageView.tsx", "AROpaqueImageView")
-mockedModule("./app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx", "ArtistArtworks")
 mockedModule("./app/Components/Gene/Header.tsx", "Header")
 
 jest.mock("app/utils/track/providers", () => ({
@@ -466,12 +521,13 @@ jest.mock("app/utils/track/providers", () => ({
 
 jest.mock("app/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+  createEnvironment: require("relay-test-utils").createMockEnvironment,
   reset(this: { defaultEnvironment: any }) {
     this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
   },
 }))
 
-jest.mock("app/utils/useScreenDimensions", () => {
+jest.mock("shared/hooks", () => {
   const React = require("react")
   const screenDimensions: ScreenDimensionsWithSafeAreas = {
     width: 380,
@@ -495,6 +551,7 @@ jest.mock("app/utils/useScreenDimensions", () => {
       return React.createElement(React.Fragment, null, children)
     },
     useScreenDimensions: () => screenDimensions,
+    useOffscreenStyle: () => ({}),
   }
 })
 

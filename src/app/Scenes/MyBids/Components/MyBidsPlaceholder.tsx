@@ -1,7 +1,6 @@
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Flex, Join, Separator } from "palette"
-import React from "react"
 import { COVER_IMAGE_HEIGHT } from "./SaleCard"
 
 export const MyBidsPlaceholder: React.FC = () => (

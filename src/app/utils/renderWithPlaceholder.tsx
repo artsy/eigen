@@ -1,4 +1,3 @@
-import React from "react"
 import { QueryRenderer } from "react-relay"
 
 import { LoadFailureView } from "app/Components/LoadFailureView"
@@ -18,6 +17,7 @@ export function renderWithPlaceholder<Props>({
   renderFallback,
   initialProps = {},
   placeholderProps = {},
+  showNotFoundView = true,
 }: {
   Container?: React.ComponentType<Props>
   render?: (props: Props) => React.ReactChild
@@ -25,6 +25,7 @@ export function renderWithPlaceholder<Props>({
   renderFallback?: FallbackRenderer
   initialProps?: object
   placeholderProps?: object
+  showNotFoundView?: boolean
 }): (readyState: ReadyState) => React.ReactElement | null {
   if (!Container && !render) {
     throw new Error("Please supply one of `render` or `Component` to renderWithPlaceholder")
@@ -59,7 +60,7 @@ export function renderWithPlaceholder<Props>({
 
       const isNotFoundError = getErrorHttpStatusCodes(error).includes(404)
 
-      if (isNotFoundError && enableNotFoundFailureView) {
+      if (isNotFoundError && enableNotFoundFailureView && showNotFoundView) {
         return <NotFoundFailureView error={error} />
       }
 
@@ -97,9 +98,7 @@ export function renderWithPlaceholder<Props>({
 
 // tslint:disable-next-line:variable-name
 export const __renderWithPlaceholderTestUtils__ = __TEST__
-  ? {
-      allowFallbacksAtTestTime: false,
-    }
+  ? { allowFallbacksAtTestTime: false }
   : undefined
 
 if (__TEST__) {

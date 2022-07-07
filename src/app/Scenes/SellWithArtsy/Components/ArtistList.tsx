@@ -1,17 +1,16 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { ArtistList_targetSupply } from "__generated__/ArtistList_targetSupply.graphql"
+import { ArtistList_targetSupply$data } from "__generated__/ArtistList_targetSupply.graphql"
 import { navigate } from "app/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { chunk, shuffle } from "lodash"
-import { Box, EntityHeader, Flex, Join, Sans, Spacer } from "palette"
+import { Box, EntityHeader, Flex, Join, Spacer, Text } from "palette"
 import { Touchable } from "palette"
-import React from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtistListProps {
-  targetSupply: ArtistList_targetSupply
+  targetSupply: ArtistList_targetSupply$data
   isLoading?: boolean
 }
 
@@ -31,9 +30,9 @@ export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading 
   return (
     <Box>
       <Box>
-        <Sans size="4" px={2}>
+        <Text variant="md" px={2}>
           Artists in-demand on Artsy
-        </Sans>
+        </Text>
 
         <Spacer mb={2} />
 

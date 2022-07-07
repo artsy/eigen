@@ -1,73 +1,91 @@
-import { ArtistNotableWorksRailTestsQueryRawResponse } from "__generated__/ArtistNotableWorksRailTestsQuery.graphql"
+import { ArtistNotableWorksRailTestsQuery } from "__generated__/ArtistNotableWorksRailTestsQuery.graphql"
 import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
-import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-import { renderRelayTree } from "app/tests/renderRelayTree"
-import { Theme } from "palette"
-import React from "react"
-import { graphql } from "react-relay"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
 
 jest.unmock("react-relay")
 
 describe("Notable Works Rail", () => {
-  const getWrapper = async () => {
-    return renderRelayTree({
-      Component: (props: any) => {
-        return (
-          <GlobalStoreProvider>
-            <Theme>
-              <ArtistNotableWorksRailFragmentContainer artist={props.artist} {...props} />
-            </Theme>
-          </GlobalStoreProvider>
-        )
-      },
-      query: graphql`
-        query ArtistNotableWorksRailTestsQuery @raw_response_type {
-          artist(id: "a-really-talented-artist") {
-            ...ArtistNotableWorksRail_artist
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  const TestWrapper = () => {
+    return (
+      <QueryRenderer<ArtistNotableWorksRailTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query ArtistNotableWorksRailTestsQuery @relay_test_operation @raw_response_type {
+            artist(id: "a-really-talented-artist") {
+              ...ArtistNotableWorksRail_artist
+            }
           }
-        }
-      `,
-      mockData: {
-        artist: artistMockData,
-      },
-    })
+        `}
+        variables={{}}
+        render={({ props }) => {
+          if (props?.artist) {
+            return <ArtistNotableWorksRailFragmentContainer artist={props.artist} />
+          }
+          return null
+        }}
+      />
+    )
   }
 
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
   it("renders without throwing an error when 3 or more notable artworks", async () => {
-    const wrapper = await getWrapper()
-    expect(wrapper.find(PrefetchFlatList)).toHaveLength(1)
-    expect(wrapper.find(ArtworkRailCard)).toHaveLength(3)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artist: () => artistMockData,
+    })
+
+    expect(getByText("My Second Greatest Art, 2020")).toBeTruthy()
+    expect(getByText("My Greatest Art, 2020")).toBeTruthy()
+    expect(getByText("My Third Greatest Art, 2020")).toBeTruthy()
   })
 
   describe("Notable artwork metadata", () => {
-    it("renders artwork price and title metadata when price", async () => {
-      const wrapper = await getWrapper()
+    it("renders artwork price", async () => {
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(wrapper.find(ArtworkRailCard).first().text()).toContain("My Second Greatest Art")
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => artistMockData,
+      })
 
-      expect(wrapper.find(ArtworkRailCard).first().text()).toContain("€2,500 - 5,000")
+      expect(getByText("€2,500 - 5,000")).toBeTruthy()
     })
 
-    it("renders artwork price and title metadata when bidding closed", async () => {
-      const wrapper = await getWrapper()
+    it("renders 'Bidding closed' when artwork is in closed auction state", async () => {
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(wrapper.find(ArtworkRailCard).at(1).text()).toContain("Bidding closed")
-      expect(wrapper.find(ArtworkRailCard).at(1).text()).toContain("My Greatest Art")
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => artistMockData,
+      })
+
+      expect(getByText("Bidding closed")).toBeTruthy()
     })
 
-    it("renders artwork price and title metadata when auction price", async () => {
-      const wrapper = await getWrapper()
+    it("renders current bid value and bids count", async () => {
+      const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(wrapper.find(ArtworkRailCard).at(2).text()).toContain("My Third Greatest Art")
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => artistMockData,
+      })
 
-      expect(wrapper.find(ArtworkRailCard).at(2).text()).toContain("$4,500")
+      expect(queryByText("$4,500 (2 bids)")).toBeTruthy()
     })
   })
 })
 
-const artistMockData: ArtistNotableWorksRailTestsQueryRawResponse["artist"] = {
+const artistMockData: ArtistNotableWorksRailTestsQuery["rawResponse"]["artist"] = {
   id: "an-id",
   internalID: "an-id",
   slug: "a-slug",

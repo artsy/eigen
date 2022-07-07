@@ -1,16 +1,16 @@
+import { OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
 import {
-  ArtworkFiltersState,
-  ArtworkFiltersStoreProvider,
-} from "app/Components/ArtworkFilter/ArtworkFilterStore"
+  SavedSearchEntity,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "app/navigation/navigate"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertMutationResult } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { delay } from "app/utils/delay"
-import React from "react"
 import {
   CreateSavedSearchModal,
   CreateSavedSearchModalProps,
@@ -19,26 +19,26 @@ import {
 
 jest.unmock("react-relay")
 
-const defaultProps: CreateSavedSearchModalProps = {
-  visible: true,
-  artistId: "artistId",
-  artistName: "artistName",
-  artistSlug: "artistSlug",
-  closeModal: jest.fn,
+const savedSearchEntity: SavedSearchEntity = {
+  placeholder: "Placeholder",
+  artists: [{ id: "artistId", name: "artistName" }],
+  owner: {
+    type: OwnerType.artist,
+    id: "ownerId",
+    slug: "ownerSlug",
+  },
 }
 
-const initialData: ArtworkFiltersState = {
-  selectedFilters: [],
-  appliedFilters: [],
-  previouslyAppliedFilters: [],
-  applyFilters: false,
+const attributes: SearchCriteriaAttributes = {
+  artistIDs: ["artistId"],
+}
+
+const defaultProps: CreateSavedSearchModalProps = {
+  visible: true,
+  entity: savedSearchEntity,
+  attributes,
   aggregations: [],
-  filterType: "artwork",
-  counts: {
-    total: null,
-    followedArtists: null,
-  },
-  sizeMetric: "cm",
+  closeModal: jest.fn,
 }
 
 const mockedMutationResult: SavedSearchAlertMutationResult = {
@@ -47,19 +47,15 @@ const mockedMutationResult: SavedSearchAlertMutationResult = {
 
 describe("CreateSavedSearchModal", () => {
   const TestRenderer = (props?: Partial<CreateSavedSearchModalProps>) => {
-    return (
-      <ArtworkFiltersStoreProvider initialData={initialData}>
-        <CreateSavedSearchModal {...defaultProps} {...props} />
-      </ArtworkFiltersStoreProvider>
-    )
+    return <CreateSavedSearchModal {...defaultProps} {...props} />
   }
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
   })
 
   it("should navigate to the saved search alerts list when popover is pressed", async () => {
-    const { container, getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { container, getByText } = renderWithWrappers(<TestRenderer />)
 
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
     fireEvent.press(getByText("Your alert has been created."))
@@ -71,7 +67,7 @@ describe("CreateSavedSearchModal", () => {
   })
 
   it("should call navigate twice", async () => {
-    const { container, getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { container, getByText } = renderWithWrappers(<TestRenderer />)
 
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
     fireEvent.press(getByText("Your alert has been created."))
@@ -86,12 +82,12 @@ describe("CreateSavedSearchModal", () => {
   })
 
   it("tracks clicks when the create alert button is pressed", async () => {
-    const { container } = renderWithWrappersTL(<TestRenderer />)
+    const { container } = renderWithWrappers(<TestRenderer />)
 
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      tracks.toggleSavedSearch(true, "artistId", "artistSlug", "savedSearchAlertId")
+      tracks.toggleSavedSearch(true, OwnerType.artist, "ownerId", "ownerSlug", "savedSearchAlertId")
     )
   })
 })

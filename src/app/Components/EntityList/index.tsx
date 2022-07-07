@@ -1,5 +1,4 @@
-import { Flex, Sans } from "palette"
-import React from "react"
+import { Flex, Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { EntityItem, EntityItemProps, Item } from "./Components/EntityItem"
 
@@ -8,7 +7,7 @@ interface EntityListProps {
   list: ReadonlyArray<Item>
   displayedItems?: number
   count: number
-  onItemSelected?: EntityItemProps["onPress"]
+  onItemSelected: EntityItemProps["onPress"]
   onViewAllPressed?: () => void
 }
 
@@ -29,28 +28,27 @@ export const EntityList: React.FC<EntityListProps> = ({
 
   return (
     <Flex flexDirection="row" flexWrap="wrap">
-      <Sans size="3" lineHeight="19">
+      <Text variant="sm" lineHeight="19">
         {prefix + " "}
-      </Sans>
+      </Text>
       {filteredList.map((item, i) => (
         <EntityItem
           key={item.href}
           item={item}
           isFirst={i === 0}
           isLast={i === filteredList.length - 1}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           onPress={onItemSelected}
         />
       ))}
       {!!shouldShowMore && (
         <>
-          <Sans size="3" lineHeight="19">
+          <Text variant="sm" lineHeight="19">
             {" and "}
-          </Sans>
+          </Text>
           <TouchableOpacity onPress={() => onViewAllPressed && onViewAllPressed()}>
-            <Sans weight="medium" size="3" lineHeight="19">
+            <Text variant="sm" weight="medium" lineHeight="19">
               {count - displayedItems + " others"}
-            </Sans>
+            </Text>
           </TouchableOpacity>
         </>
       )}

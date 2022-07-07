@@ -1,8 +1,7 @@
 import { ViewingRoomViewWorksButtonTestsQuery } from "__generated__/ViewingRoomViewWorksButtonTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import React from "react"
 import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -32,7 +31,7 @@ describe("ViewingRoomViewWorksButton", () => {
   })
 
   it("navigates to artworks page + calls tracking on button press", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ViewingRoom: () => ({

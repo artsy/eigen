@@ -6,23 +6,22 @@ import {
   ImageCarouselFragmentContainer,
 } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { retrieveLocalImages } from "app/utils/LocalImageStore"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Join, NoImageIcon, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { imageIsProcessing, isImage } from "../../ArtworkForm/MyCollectionImageUtil"
 import { MyCollectionArtworkSubmissionStatus } from "./MyCollectionArtworkSubmissionStatus"
+
+const NO_ARTIST_NAMES_TEXT = "-"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork$key
 }
 
 export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
-  const artwork = useFragment<MyCollectionArtworkHeader_artwork$key>(
-    myCollectionArtworkHeaderFragment,
-    props.artwork
-  )
+  const artwork = useFragment(myCollectionArtworkHeaderFragment, props.artwork)
   const {
     artistNames,
     date,
@@ -97,7 +96,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
       {/* Image Meta */}
       <Flex px={2}>
-        <Text variant="lg">{artistNames}</Text>
+        <Text variant="lg">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
         <Text variant="lg" color="black60" italic>
           {formattedTitleAndYear}
         </Text>

@@ -1,6 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
 import { LinkText, Text } from "palette"
-import React from "react"
 import { List } from "storybook/helpers"
 import { Checkbox } from "./Checkbox"
 

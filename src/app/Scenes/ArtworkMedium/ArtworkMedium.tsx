@@ -1,16 +1,15 @@
-import { ArtworkMedium_artwork } from "__generated__/ArtworkMedium_artwork.graphql"
+import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.graphql"
 import { ArtworkMediumQuery } from "__generated__/ArtworkMediumQuery.graphql"
 import { goBack } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box, Button, Join, Separator, Spacer, Text } from "palette"
-import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 
 interface Props {
-  artwork: ArtworkMedium_artwork
+  artwork: ArtworkMedium_artwork$data
 }
 
 export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {

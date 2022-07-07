@@ -3,7 +3,6 @@ import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/Autosug
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Box, Button, Flex, Input, Text } from "palette"
-import React from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 
 interface ArtistAutosuggestProps {
@@ -24,7 +23,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     <SearchContext.Provider value={searchProviderValues}>
       <Box>
         <Input
-          placeholder="Search for Artists on Artsy"
+          placeholder="Search for artists on Artsy"
           icon={<SearchIcon width={18} height={18} />}
           onChangeText={formik.handleChange("artist")}
           onBlur={formik.handleBlur("artist")}

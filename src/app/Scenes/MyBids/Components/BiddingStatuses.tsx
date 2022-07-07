@@ -1,6 +1,5 @@
 import { ArrowDownCircleFillIcon, ArrowUpCircleFillIcon, Text } from "palette"
 import { BookmarkFill, ExclamationMarkCircleFill } from "palette/svgs/sf"
-import React from "react"
 
 export const ReserveNotMet = () => (
   <>

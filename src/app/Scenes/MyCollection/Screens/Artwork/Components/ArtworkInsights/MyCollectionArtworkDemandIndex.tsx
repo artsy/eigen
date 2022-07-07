@@ -3,10 +3,8 @@ import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyColl
 import { MyCollectionArtworkDemandIndex_marketPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
-import { TriangleDown } from "app/Icons/TriangleDown"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { Flex, Spacer, Text } from "palette"
-import React from "react"
+import { Flex, Spacer, Text, TriangleDown } from "palette"
 import LinearGradient from "react-native-linear-gradient"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -21,15 +19,9 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 ) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<MyCollectionArtworkDemandIndex_artwork$key>(
-    artworkFragment,
-    props.artwork
-  )
+  const artwork = useFragment(artworkFragment, props.artwork)
 
-  const marketPriceInsights = useFragment<MyCollectionArtworkDemandIndex_marketPriceInsights$key>(
-    marketPriceInsightsFragment,
-    props.marketPriceInsights
-  )
+  const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
 
   if (!artwork || !marketPriceInsights?.demandRank) {
     return null

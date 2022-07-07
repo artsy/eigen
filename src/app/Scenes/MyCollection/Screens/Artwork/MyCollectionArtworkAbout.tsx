@@ -3,7 +3,6 @@ import { MyCollectionArtworkAbout_marketPriceInsights$key } from "__generated__/
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, useTheme } from "palette"
-import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkAboutWork } from "./Components/ArtworkAbout/MyCollectionArtworkAboutWork"
@@ -19,11 +18,8 @@ interface MyCollectionArtworkAboutProps {
 
 export function MyCollectionArtworkAbout(props: MyCollectionArtworkAboutProps) {
   const { space } = useTheme()
-  const artwork = useFragment<MyCollectionArtworkAbout_artwork$key>(artworkFragment, props.artwork)
-  const marketPriceInsights = useFragment<MyCollectionArtworkAbout_marketPriceInsights$key>(
-    marketPriceInsightsFragment,
-    props.marketPriceInsights
-  )
+  const artwork = useFragment(artworkFragment, props.artwork)
+  const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
 
   const articles = extractNodes(artwork.artist?.articles)
   const Wrapper = props.renderWithoutScrollView ? Flex : StickyTabPageScrollView

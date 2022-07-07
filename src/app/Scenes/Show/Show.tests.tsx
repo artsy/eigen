@@ -1,8 +1,8 @@
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
 import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -40,7 +40,7 @@ describe("Show", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
@@ -99,5 +99,78 @@ describe("Show", () => {
   it("renders artworks filter header", () => {
     const wrapper = getWrapper()
     expect(wrapper.root.findAllByType(HeaderArtworksFilterWithTotalArtworks)).toHaveLength(1)
+  })
+
+  describe("search image button", () => {
+    describe("with AREnableImageSearch feature flag disabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImageSearch: false })
+      })
+
+      it("should not be rendered", () => {
+        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
+        expect(queryByLabelText("Search images")).toBeNull()
+      })
+    })
+
+    describe("with AREnableImageSearch feature flag enabled", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImageSearch: true })
+      })
+
+      it("should not be rendered when show is NOT active", () => {
+        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
+
+        act(() => {
+          env.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              Show: () => ({
+                isActive: false,
+                slug: "a-non-active-show",
+                isReverseImageSearchEnabled: true,
+              }),
+            })
+          )
+        })
+
+        expect(queryByLabelText("Search by image")).toBeNull()
+      })
+
+      it("should not be rendered when show doesn't have any indexed artworks", () => {
+        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
+
+        act(() => {
+          env.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              Show: () => ({
+                isActive: true,
+                slug: "an-active-show-without-indexed-artworks",
+                isReverseImageSearchEnabled: false,
+              }),
+            })
+          )
+        })
+
+        expect(queryByLabelText("Search by image")).toBeNull()
+      })
+
+      it("should be rendered when show has indexed artworks, is active and feature flag is enabled", () => {
+        const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
+
+        act(() => {
+          env.mock.resolveMostRecentOperation((operation) =>
+            MockPayloadGenerator.generate(operation, {
+              Show: () => ({
+                isActive: true,
+                slug: "an-active-show-with-indexed-artworks",
+                isReverseImageSearchEnabled: true,
+              }),
+            })
+          )
+        })
+
+        expect(queryByLabelText("Search by image")).toBeTruthy()
+      })
+    })
   })
 })

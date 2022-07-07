@@ -1,5 +1,7 @@
-# Xcode
+# macos
 .DS_Store
+
+# Xcode
 build/
 *.pbxuser
 !default.pbxuser
@@ -17,78 +19,60 @@ DerivedData
 .idea/
 *.xcscmblueprint
 .pt
+.clang-format
 .build
-tmtags
-tmtagsHistory
-config/releasenotes.txt
-Podfile.local
-chairs/
-Artsy.xcodeproj/project.xcworkspace/xcshareddata/
-Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
-.vendor/
-compiler_commands.json
 .swiftpm
+xcode_test_raw.log
+xcode_build_raw.log
+.recordingSnapshots
 
 # Artsy Development APN certificate
 net.artsy.artsy.dev.pem
 .clang-format
 
 # See note in Podfile
-Artsy/App/Echo.json
-Artsy/App/EchoNew.json
+ios/Artsy/App/Echo.json
+ios/Artsy/App/EchoNew.json
 
 # Fastlane
 Preview.html
 fastlane/report.xml
 fastlane/Preview.html
 
-iOSInjectionProject/
-.vscode/.browse.VC.db
-Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
-
+# bundler
 .vendor
 
-# regular Pods. No longer a submodule
+# Cocoa Pods
 Pods
 
 # build artefacts
 derived_data
-Artsy/Networking/ARReactPackagerHost.m
 
-# COPIED FROM EMISSION
-
-# Xcode
-xcode_build_raw.log
-
-## Build generated
-dist
+## js bundle
+dist/*
 
 # Custom
-
 node_modules
 npm-debug.log
 .vscode/launchReactNative.js
 .vscode/.react/
 .vscode/typings
 .vscode/tasks.json.old
+.vscode/.browse.VC.db
 .apphub
 coverage
 package-lock.json
 yarn-error.log
 .awcache
 
-# Use a custom, cached location for Jest to save transpiling
-# on every PR
+# jest
 .jest/cache
 
 # Danger artifacts
 tslint-errors.json
 
-# TypeScript Logs
+# typescript
 tsc_raw.log
-
-# Emission bundle
-emission/Pod/Assets/*
 
 # query map
 data/complete.queryMap.json
@@ -111,13 +95,7 @@ native-code-checksum.hash
 **/.env*
 !.env.example
 
-# Ignore test artefacts
-xcode_test_raw.log
-
-.recordingSnapshots
-
 # Android/IntelliJ
-#
 build/
 .idea
 .gradle
@@ -125,17 +103,16 @@ local.properties
 *.iml
 google-services.json
 
-# BUCK
-buck-out/
-\.buckd/
+# android
 *.keystore
 !debug.keystore
 android-secret.json
 
-
 # Fonts
 android/app/src/main/assets/fonts/*
-
+ios/eigen/fonts/*
+# old native screen needs these there
+ios/Artsy/View_Controllers/Live_Auctions/Resources/Artsy/fonts/*
 
 # Firebase files
 android/app/google-services.json
@@ -145,11 +122,17 @@ eigen-firebase-app-distribution.json
 metaflags.json
 
 # Relay
-src/__generated__/*
+src/__generated__
 
 # jest circleci reports
 reports
 
+# Homebrew lock file
+Brewfile.lock.json
+
+
+#########################################################
 # Keep this rule last.
 # Keep these, so we can keep the folders these appear in.
 !.gitkeep
+#########################################################

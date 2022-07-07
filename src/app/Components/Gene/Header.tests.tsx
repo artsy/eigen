@@ -1,5 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 
 import Header from "./Header"
 
@@ -11,5 +10,5 @@ it("renders without throwing a error", () => {
     name: "Deep Time",
   }
 
-  renderWithWrappers(<Header gene={gene as any} shortForm={false} />)
+  renderWithWrappersLEGACY(<Header gene={gene as any} shortForm={false} />)
 })

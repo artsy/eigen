@@ -1,16 +1,12 @@
-import {
-  ArtistSeriesMetaTestsQuery,
-  ArtistSeriesMetaTestsQueryRawResponse,
-} from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
+import { ArtistSeriesMetaTestsQuery } from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import {
   ArtistSeriesMeta,
   ArtistSeriesMetaFragmentContainer,
 } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { EntityHeader } from "palette"
-import React from "react"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -51,7 +47,7 @@ describe("Artist Series Meta", () => {
   )
 
   const getWrapper = () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -113,7 +109,7 @@ describe("Artist Series Meta", () => {
   })
 })
 
-const ArtistSeriesFixture: ArtistSeriesMetaTestsQueryRawResponse = {
+const ArtistSeriesFixture: ArtistSeriesMetaTestsQuery["rawResponse"] = {
   artistSeries: {
     internalID: "as1234",
     slug: "cool-artist-series",

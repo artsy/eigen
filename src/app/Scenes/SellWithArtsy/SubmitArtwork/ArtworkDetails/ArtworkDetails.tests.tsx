@@ -3,10 +3,8 @@ import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
-import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { createConsignSubmission, updateConsignSubmission } from "../../mutations"
@@ -37,14 +35,14 @@ describe("ArtworkDetails", () => {
   afterEach(() => jest.clearAllMocks())
 
   it("renders correct explanation for form fields", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
     expect(getByText("Currently, artists can not sell their own work on Artsy.")).toBeTruthy()
     expect(getByText("Learn more.")).toBeTruthy()
     expect(getByText("All fields are required to submit an artwork.")).toBeTruthy()
   })
 
   it("renders numeric-pad for year and decimal-pad for dimension inputs", async () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
     const inputs = {
       year: getByTestId("Submission_YearInput"),
@@ -74,8 +72,22 @@ describe("ArtworkDetails", () => {
   })
 
   describe("Save & Continue button", () => {
+    it("corrently rendered", () => {
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
+      expect(getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
+    })
+
+    it("still corrently rendered when location is set", () => {
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
+
+      const locationInput = getByTestId("Submission_LocationInput")
+      fireEvent.changeText(locationInput, "Berlin, Germany")
+
+      expect(getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
+    })
+
     it("disabled when a required field is missing", async () => {
-      const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
 
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
@@ -94,56 +106,38 @@ describe("ArtworkDetails", () => {
       await flushPromiseQueue()
 
       // title missing
-      act(() => fireEvent.changeText(inputs.title, ""))
+      fireEvent.changeText(inputs.title, "")
       expect(SaveButton.props.disabled).toBe(true)
 
       // year missing
-      act(() => {
-        fireEvent.changeText(inputs.year, "")
-        fireEvent.changeText(inputs.title, "someTitle")
-      })
+      fireEvent.changeText(inputs.year, "")
+      fireEvent.changeText(inputs.title, "someTitle")
       expect(SaveButton.props.disabled).toBe(true)
 
       // material missing
-      act(() => {
-        fireEvent.changeText(inputs.material, "")
-        fireEvent.changeText(inputs.year, "1999")
-      })
+      fireEvent.changeText(inputs.material, "")
+      fireEvent.changeText(inputs.year, "1999")
       expect(SaveButton.props.disabled).toBe(true)
 
       // height missing
-      act(() => {
-        fireEvent.changeText(inputs.height, "")
-        fireEvent.changeText(inputs.material, "oil on c")
-      })
+      fireEvent.changeText(inputs.height, "")
+      fireEvent.changeText(inputs.material, "oil on c")
       expect(SaveButton.props.disabled).toBe(true)
 
       // width missing
-      act(() => {
-        fireEvent.changeText(inputs.width, "")
-        fireEvent.changeText(inputs.height, "123")
-      })
+      fireEvent.changeText(inputs.width, "")
+      fireEvent.changeText(inputs.height, "123")
       expect(SaveButton.props.disabled).toBe(true)
 
       // depth missing
-      act(() => {
-        fireEvent.changeText(inputs.depth, "")
-        fireEvent.changeText(inputs.width, "123")
-      })
-
+      fireEvent.changeText(inputs.depth, "")
+      fireEvent.changeText(inputs.width, "123")
       expect(SaveButton.props.disabled).toBe(true)
 
       // provenance missing
-      act(() => {
-        fireEvent.changeText(inputs.provenance, "")
-        fireEvent.changeText(inputs.depth, "123")
-      })
-
+      fireEvent.changeText(inputs.provenance, "")
+      fireEvent.changeText(inputs.depth, "123")
       expect(SaveButton.props.disabled).toBe(true)
-
-      act(() => {
-        fireEvent.changeText(inputs.provenance, "found it")
-      })
     })
   })
 
@@ -168,7 +162,7 @@ describe("ArtworkDetails", () => {
     })
 
     it("tracks artworkDetailsCompleted event on submission create", async () => {
-      const { UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const { UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
       })
@@ -189,7 +183,7 @@ describe("ArtworkDetails", () => {
 
     it("tracks artworkDetailsCompleted event on submission update", async () => {
       GlobalStore.actions.artworkSubmission.submission.setSubmissionId("54321")
-      const { UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const { UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
       })

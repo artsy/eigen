@@ -14,7 +14,7 @@ https://github.com/artsy/relay-workshop/tree/main/src/exercises/03-Testing-Queri
 
 ## Case 1: Testing components using Higher Order Components (eg RelayQueryRenderer, RelayFragmentContainer etc.)
 
-renderWithWrappersTL : renderWithWrappers(TestingLibrary)
+renderWithWrappers : renderWithWrappersLEGACY(TestingLibrary)
 All our wrappeprs
 
 setupTestWrapper : abstract some of the boilerplate of Relay
@@ -35,7 +35,7 @@ has an act that resolves the first request that's being made.
 ! When we have consecutive requests setupTestWrapperTL doesnot work because it creates the environment inside.
 
 We need to create our own environment in this case:
-So in this case we'd use renderWithWrappersTL and create our own environments.
+So in this case we'd use renderWithWrappers and create our own environments.
 
 Example of using multiple environments: ContactInformation.tests.tsx
 

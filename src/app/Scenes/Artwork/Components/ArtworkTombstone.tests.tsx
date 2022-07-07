@@ -1,272 +1,237 @@
-import { ArtworkTombstone_artwork } from "__generated__/ArtworkTombstone_artwork.graphql"
+import { fireEvent } from "@testing-library/react-native"
+import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
-import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkTombstone } from "./ArtworkTombstone"
+import { CertificateAuthenticityModal } from "./CertificateAuthenticityModal"
 
 describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
+    const { queryByText } = renderWithWrappers(
+      <ArtworkTombstone artwork={artworkTombstoneArtwork} />
     )
-    expect(component.text()).toContain("Hello im a title, 1992")
-    expect(component.text()).toContain("Painting")
-    expect(component.text()).toContain("Edition 100/200")
-    expect(component.text()).toContain("This is an edition of something")
-    expect(component.text()).not.toContain("Lot 8")
-    expect(component.text()).not.toContain("Cool Auction")
-    expect(component.text()).not.toContain("Estimated value: CHF 160,000–CHF 230,000")
+
+    expect(queryByText("Hello im a title, 1992")).toBeTruthy()
+    expect(queryByText("Painting")).toBeTruthy()
+    expect(queryByText("Edition 100/200")).toBeTruthy()
+
+    expect(queryByText(/This work is part of/)).toHaveTextContent(
+      "This work is part of a limited edition set."
+    )
+
+    expect(queryByText(/This work includes a/)).toHaveTextContent(
+      "This work includes a Certificate of Authenticity."
+    )
+
+    expect(queryByText("Lot 8")).toBeNull()
+    expect(queryByText("Cool Auction")).toBeNull()
+    expect(queryByText("Estimated value: CHF 160,000–CHF 230,000")).toBeNull()
   })
 
   it("renders auction fields correctly", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
+    const { queryByText } = renderWithWrappers(
+      <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
     )
-    expect(component.text()).toContain("Lot 8")
-    expect(component.text()).toContain("Cool Auction")
-    expect(component.text()).toContain("Estimated value: CHF 160,000–CHF 230,000")
+
+    expect(queryByText("Lot 8")).toBeTruthy()
+    expect(queryByText("Cool Auction")).toBeTruthy()
+    expect(queryByText("Estimated value: CHF 160,000–CHF 230,000")).toBeTruthy()
   })
 
   it("redirects to artist page when artist name is clicked", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
+    const { queryByText, getByText } = renderWithWrappers(
+      <ArtworkTombstone artwork={artworkTombstoneArtwork} />
     )
-    const artistName = component.find(TouchableWithoutFeedback).at(0)
-    expect(artistName.text()).toContain("Andy Warhol")
-    artistName.props().onPress()
+
+    expect(queryByText(/Andy Warhol/)).toBeTruthy()
+    fireEvent.press(getByText(/Andy Warhol/))
+
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
   it("redirects to attribution class faq page when attribution class is clicked", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    const attributionClass = component.find(TouchableWithoutFeedback).at(4)
-    expect(attributionClass.text()).toContain("This is an edition of something")
-    attributionClass.props().onPress()
+    const { getByText } = renderWithWrappers(<ArtworkTombstone artwork={artworkTombstoneArtwork} />)
+
+    fireEvent.press(getByText("a limited edition set"))
+
     expect(navigate).toHaveBeenCalledWith("/artwork-classifications")
+  })
+
+  it("shows the authenticity modal when Certificate of Authenticity is tapped", () => {
+    const { getByText, UNSAFE_getByType } = renderWithWrappers(
+      <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+    )
+
+    expect(UNSAFE_getByType(CertificateAuthenticityModal)).toHaveProp("visible", false)
+
+    fireEvent.press(getByText("Certificate of Authenticity"))
+
+    expect(UNSAFE_getByType(CertificateAuthenticityModal)).toHaveProp("visible", true)
+  })
+
+  it("closes the authenticity modal when Certificate of Authenticity", () => {
+    const { getByText, UNSAFE_getByType, getByTestId } = renderWithWrappers(
+      <ArtworkTombstone artwork={artworkTombstoneArtwork} />
+    )
+
+    fireEvent.press(getByText("Certificate of Authenticity"))
+
+    expect(UNSAFE_getByType(CertificateAuthenticityModal)).toHaveProp("visible", true)
+
+    fireEvent.press(getByTestId("fancy-modal-header-right-button"))
+
+    expect(UNSAFE_getByType(CertificateAuthenticityModal)).toHaveProp("visible", false)
   })
 
   describe("for a user not in the US", () => {
     it("renders dimensions in centimeters", () => {
       LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale = "fr_FR"
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+
+      const { queryByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       )
-      expect(component.text()).toContain("38.1 × 50.8 cm")
+
+      expect(queryByText("38.1 × 50.8 cm")).toBeTruthy()
     })
   })
 
   describe("for a US based user", () => {
     it("renders dimensions in inches", () => {
       LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale = "en_US"
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { queryByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       )
-      expect(component.text()).toContain("15 × 20 in")
+
+      expect(queryByText("15 × 20 in")).toBeTruthy()
     })
   })
 
   describe("for an artwork with more than 3 artists", () => {
     it("truncates artist names", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { queryByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       )
-      expect(component.text()).toContain("Andy Warhol")
-      expect(component.text()).toContain("Alex Katz")
-      expect(component.text()).toContain("Pablo Picasso")
-      expect(component.text()).toContain("2 more")
-      expect(component.text()).not.toContain("Barbara Kruger")
-      expect(component.text()).not.toContain("Banksy")
+
+      expect(queryByText(/Andy Warhol/)).toBeTruthy()
+      expect(queryByText(/Alex Katz/)).toBeTruthy()
+      expect(queryByText(/Pablo Picasso/)).toBeTruthy()
+      expect(queryByText("2 more")).toBeTruthy()
+      expect(queryByText("Barbara Kruger")).toBeNull()
+      expect(queryByText("Banksy")).toBeNull()
     })
 
     it("doesn't show follow button", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { queryByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       )
-      expect(component.text()).not.toContain("Follow")
+
+      expect(queryByText("Follow")).toBeNull()
     })
 
     it("shows truncated artist names when 'x more' is clicked", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { queryByText, getByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={artworkTombstoneArtwork} />
       )
-      const showMore = component.find(TouchableWithoutFeedback).at(3)
-      expect(showMore.text()).toContain("2 more")
-      showMore.props().onPress()
-      expect(component.text()).not.toContain("2 more")
-      expect(component.text()).toContain("Barbara Kruger")
-      expect(component.text()).toContain("Banksy")
+
+      fireEvent.press(getByText("2 more"))
+
+      expect(queryByText("2 more")).toBeNull()
+      expect(queryByText(/Barbara Kruger/)).toBeTruthy()
+      expect(queryByText(/Banksy/)).toBeTruthy()
     })
   })
 
-  describe("for an artwork in a sale with cascading end times", () => {
-    it("renders the notification banner", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+  describe("for an artwork in a sale with cascading end times or popcorn bidding", () => {
+    const cascadingMessage = "Lots will close at 1-minute intervals."
+    const popcornMessage = "Closing times may be extended due to last minute competitive bidding. "
+    it("renders the notification banner with cascading message", () => {
+      const { queryByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork()} />
       )
 
-      expect(component.text()).toContain("Lots will close at 1-minute intervals.")
+      expect(queryByText(cascadingMessage)).toBeTruthy()
+      expect(queryByText(popcornMessage)).toBeNull()
+    })
+
+    it("renders the notification banner with popcorn message", () => {
+      const { queryByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={artworkTombstoneCascadingEndTimesAuctionArtwork(true)} />
+      )
+
+      expect(queryByText(cascadingMessage)).toBeNull()
+      expect(queryByText(popcornMessage)).toBeTruthy()
     })
   })
 
   describe("for an artwork in a sale without cascading end times", () => {
     it("renders the notification banner", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { queryByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={artworkTombstoneAuctionArtwork} />
       )
 
-      expect(component.text()).not.toContain("Lots will close at 1-minute intervals.")
+      expect(queryByText("Lots will close at 1-minute intervals.")).toBeNull()
     })
   })
 
-  // TODO: THESE TESTS SHOULD NOT MUTATE THE FIXTURE!!!
   describe("for an artwork with less than 4 artists but more than 1", () => {
-    beforeEach(() => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      artworkTombstoneArtwork.artists = artworkTombstoneArtwork.artists.slice(0, 3)
-    })
-
     it("doesn't show follow button", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { queryByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={threeArtistsArtworkData} />
       )
-      expect(component.text()).not.toContain("Follow")
+
+      expect(queryByText("Follow")).toBeNull()
     })
 
     it("doesn't truncate artist names", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { queryByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={threeArtistsArtworkData} />
       )
-      expect(component.text()).toContain("Andy Warhol")
-      expect(component.text()).toContain("Alex Katz")
-      expect(component.text()).toContain("Pablo Picasso")
-      expect(component.text()).not.toContain("2 more")
-      expect(component.text()).not.toContain("Barbara Kruger")
-      expect(component.text()).not.toContain("Banksy")
+
+      expect(queryByText(/Andy Warhol/)).toBeTruthy()
+      expect(queryByText(/Alex Katz/)).toBeTruthy()
+      expect(queryByText(/Pablo Picasso/)).toBeTruthy()
+      expect(queryByText("2 more")).toBeNull()
+      expect(queryByText(/Barbara Kruger/)).toBeNull()
+      expect(queryByText(/Banksy/)).toBeNull()
     })
   })
 
   describe("for an artwork with one artist", () => {
-    beforeEach(() => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      artworkTombstoneArtwork.artists = artworkTombstoneArtwork.artists.slice(0, 1)
-    })
-
     it("renders artist name", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { queryByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={oneArtistArtworkData} />
       )
-      expect(component.text()).toContain("Andy Warhol")
+
+      expect(queryByText(/Andy Warhol/)).toBeTruthy()
+      expect(queryByText(/Alex Katz/)).toBeNull()
+      expect(queryByText(/Pablo Picasso/)).toBeNull()
     })
 
     it("shows follow button", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
+      const { queryByText } = renderWithWrappers(
+        <ArtworkTombstone artwork={oneArtistArtworkData} />
       )
-      expect(component.text()).toContain("Follow")
+      expect(queryByText("Follow")).toBeTruthy()
     })
   })
 
   describe("for an artwork with no artists but a cultural maker", () => {
-    beforeEach(() => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      artworkTombstoneArtwork.artists = []
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      artworkTombstoneArtwork.cultural_maker = "18th century American"
-    })
-
     it("renders artist name", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
-      )
-      expect(component.text()).toContain("18th century American")
+      const { queryByText } = renderWithWrappers(<ArtworkTombstone artwork={noArtistArtworkData} />)
+      expect(queryByText("18th century American")).toBeTruthy()
     })
 
-    it("shows follow button", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ArtworkTombstone artwork={artworkTombstoneArtwork} />
-          </Theme>
-        </GlobalStoreProvider>
-      )
-      expect(component.text()).not.toContain("Follow")
+    it("doesn't show follow button", () => {
+      const { queryByText } = renderWithWrappers(<ArtworkTombstone artwork={noArtistArtworkData} />)
+
+      expect(queryByText("Follow")).toBeNull()
     })
   })
 })
 
-const artworkTombstoneArtwork: ArtworkTombstone_artwork = {
+const artworkTombstoneArtwork: ArtworkTombstone_artwork$data = {
   ...ArtworkFixture,
   title: "Hello im a title",
   medium: "Painting",
@@ -275,27 +240,27 @@ const artworkTombstoneArtwork: ArtworkTombstone_artwork = {
     {
       name: "Andy Warhol",
       href: "/artist/andy-warhol",
-      " $fragmentRefs": null as any,
+      " $fragmentSpreads": null as any,
     },
     {
       name: "Alex Katz",
       href: "/artist/alex-katz",
-      " $fragmentRefs": null as any,
+      " $fragmentSpreads": null as any,
     },
     {
       name: "Pablo Picasso",
       href: "/artist/pablo-picasso",
-      " $fragmentRefs": null as any,
+      " $fragmentSpreads": null as any,
     },
     {
       name: "Banksy",
       href: "/artist/banksy",
-      " $fragmentRefs": null as any,
+      " $fragmentSpreads": null as any,
     },
     {
       name: "Barbara Kruger",
       href: "/artist/barbara-kruger",
-      " $fragmentRefs": null as any,
+      " $fragmentSpreads": null as any,
     },
   ],
   cultural_maker: null,
@@ -304,10 +269,14 @@ const artworkTombstoneArtwork: ArtworkTombstone_artwork = {
     cm: "38.1 × 50.8 cm",
   },
   edition_of: "Edition 100/200",
-  attribution_class: {
-    shortDescription: "This is an edition of something",
+  attributionClass: {
+    shortArrayDescription: ["This work is part of", "a limited edition set"],
   },
-  " $refType": null as any,
+  certificateOfAuthenticity: {
+    label: "A Certificate",
+    __typename: "ArtworkInfoRow",
+  },
+  " $fragmentType": "ArtworkTombstone_artwork",
 }
 
 const artworkTombstoneAuctionArtwork = {
@@ -323,10 +292,11 @@ const artworkTombstoneAuctionArtwork = {
   sale: {
     isClosed: false,
     cascadingEndTimeIntervalMinutes: null,
+    extendedBiddingIntervalMinutes: null,
   },
 }
 
-const artworkTombstoneCascadingEndTimesAuctionArtwork = {
+const artworkTombstoneCascadingEndTimesAuctionArtwork = (withextendedBidding: boolean = false) => ({
   ...artworkTombstoneArtwork,
   isInAuction: true,
   saleArtwork: {
@@ -339,5 +309,22 @@ const artworkTombstoneCascadingEndTimesAuctionArtwork = {
   sale: {
     isClosed: false,
     cascadingEndTimeIntervalMinutes: 1,
+    extendedBiddingIntervalMinutes: withextendedBidding ? 1 : null,
   },
+})
+
+const threeArtistsArtworkData = {
+  ...artworkTombstoneArtwork,
+  artists: artworkTombstoneArtwork.artists!.slice(0, 3),
+}
+
+const oneArtistArtworkData = {
+  ...artworkTombstoneArtwork,
+  artists: artworkTombstoneArtwork.artists!.slice(0, 1),
+}
+
+const noArtistArtworkData = {
+  ...artworkTombstoneArtwork,
+  artists: [],
+  cultural_maker: "18th century American",
 }

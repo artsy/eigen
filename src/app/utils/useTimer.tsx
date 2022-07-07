@@ -22,10 +22,10 @@ const extractTime = (time: number) => {
 }
 
 export const useTimer = (endDate: string, startAt: string = ""): Timer => {
-  const currentTime = DateTime.local().toString()
+  const currentTime = DateTime.now().toISO()
 
   const timeBeforeEnd = Duration.fromISO(
-    DateTime.fromISO(endDate).diff(DateTime.fromISO(currentTime)).toString()
+    DateTime.fromISO(endDate).diff(DateTime.fromISO(currentTime)).toISO()
   )
   const hasEnded = Math.floor(timeBeforeEnd.seconds) <= 0
 

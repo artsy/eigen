@@ -1,4 +1,3 @@
-import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -7,7 +6,7 @@ import { RecentlySoldTestsQuery } from "__generated__/RecentlySoldTestsQuery.gra
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { act } from "react-test-renderer"
 import { RecentlySoldFragmentContainer } from "./RecentlySold"
@@ -37,7 +36,7 @@ describe("RecentlySold", () => {
   )
 
   it("renders sale message if artwork has realized price", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const artwork = {
       realizedPrice: "$1,200",
@@ -55,7 +54,7 @@ describe("RecentlySold", () => {
   })
 
   it("does not render any sale message if artwork has no realized price", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const artwork = {
       realizedPrice: null,
@@ -73,7 +72,7 @@ describe("RecentlySold", () => {
   })
 
   it("renders an artwork for each artist", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const targetSupply = makeTargetSupply([
       {
@@ -109,7 +108,7 @@ describe("RecentlySold", () => {
   })
 
   it("tracks an event for tapping an artwork", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const artwork = {
       internalID: "artwork-id",

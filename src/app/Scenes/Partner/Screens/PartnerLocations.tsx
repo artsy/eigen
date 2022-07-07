@@ -1,10 +1,10 @@
-import { PartnerLocations_partner } from "__generated__/PartnerLocations_partner.graphql"
+import { PartnerLocations_partner$data } from "__generated__/PartnerLocations_partner.graphql"
 import { PartnerLocationsQuery } from "__generated__/PartnerLocationsQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Box, Sans, Serif, Spacer } from "palette"
+import { Box, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -13,7 +13,7 @@ import { PartnerMapContainer as PartnerMap } from "../Components/PartnerMap"
 const PAGE_SIZE = 4
 
 const PartnerLocations: React.FC<{
-  partner: PartnerLocations_partner
+  partner: PartnerLocations_partner$data
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
@@ -41,8 +41,8 @@ const PartnerLocations: React.FC<{
       keyExtractor={(item) => item.id}
       ListHeaderComponent={() => (
         <Box pt={60} px={2}>
-          <Sans size="3t">{locations.length > 1 ? "Locations" : "Location"}</Sans>
-          <Serif size="5">{partner.name}</Serif>
+          <Text variant="sm">{locations.length > 1 ? "Locations" : "Location"}</Text>
+          <Text variant="md">{partner.name}</Text>
         </Box>
       )}
       ListFooterComponent={() => <Spacer mb={2} />}

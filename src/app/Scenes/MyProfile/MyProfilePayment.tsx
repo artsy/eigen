@@ -1,4 +1,4 @@
-import { MyProfilePayment_me } from "__generated__/MyProfilePayment_me.graphql"
+import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { CreditCardDetailsContainer } from "app/Components/CreditCardDetails"
@@ -10,7 +10,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex, Sans, Spacer } from "palette"
+import { Flex, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useReducer, useState } from "react"
 import {
   ActivityIndicator,
@@ -37,7 +37,7 @@ const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 
 // tslint:disable-next-line:variable-name
 export let __triggerRefresh: null | (() => Promise<void>) = null
 
-const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginationProp }> = ({
+const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPaginationProp }> = ({
   relay,
   me,
 }) => {
@@ -150,9 +150,9 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
                 onPress={() => onRemove(item.internalID)}
                 hitSlop={{ top: 10, left: 20, right: 20, bottom: 10 }}
               >
-                <Sans size="4t" color="red100">
+                <Text variant="md" color="red100">
                   Remove
-                </Sans>
+                </Text>
               </TouchableOpacity>
             )}
           </Flex>

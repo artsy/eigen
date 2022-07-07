@@ -1,10 +1,11 @@
 import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { AppModule, modules } from "app/AppRegistry"
-import { ArtsyKeyboardAvoidingViewContext } from "app/Components/ArtsyKeyboardAvoidingView"
-import { ProvideScreenDimensions, useScreenDimensions } from "app/utils/useScreenDimensions"
+import { isPad } from "app/utils/hardware"
 import React, { useState } from "react"
 import { View } from "react-native"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
+import { ProvideScreenDimensions, useScreenDimensions } from "shared/hooks"
+import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import { BackButton } from "./BackButton"
 
 const Stack = createNativeStackNavigator()
@@ -21,10 +22,7 @@ interface ScreenProps {
  */
 const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) => {
   const module = modules[route.params.moduleName]
-  if (module.type !== "react") {
-    console.warn(route.params.moduleName, { module })
-    throw new Error("native modules not yet supported in new nav setup")
-  }
+
   // tslint:disable-next-line:variable-name
   const [legacy_shouldHideBackButton, updateShouldHideBackButton] = useState(false)
 
@@ -83,12 +81,14 @@ export const NavStack: React.FC<{
     props: rootModuleProps,
     stackID: id,
   }
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
         stackAnimation: rootModuleProps?.isPresentedModally ? "slide_from_right" : undefined,
         contentStyle: { backgroundColor: "white" },
+        screenOrientation: isPad() ? "default" : "portrait",
       }}
     >
       <Stack.Screen name={"screen:" + id} component={ScreenWrapper} initialParams={initialParams} />

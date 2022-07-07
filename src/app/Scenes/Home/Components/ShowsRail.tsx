@@ -1,17 +1,16 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
-import { ShowsRail_showsConnection } from "__generated__/ShowsRail_showsConnection.graphql"
+import { ShowsRail_showsConnection$data } from "__generated__/ShowsRail_showsConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ShowCardContainer } from "app/Components/ShowCard"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Spacer } from "palette"
-import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ShowsRailProps {
   title: string
-  showsConnection: ShowsRail_showsConnection
+  showsConnection: ShowsRail_showsConnection$data
   mb?: number
 }
 

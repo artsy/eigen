@@ -2,9 +2,8 @@ import { waitFor } from "@testing-library/react-native"
 import { ComposerTestsQuery } from "__generated__/ComposerTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Button, Flex } from "palette"
-import React from "react"
 import { TextInput } from "react-native"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -51,7 +50,7 @@ const TestRenderer = (nonRelayProps: { disabled: boolean; value?: string }) => (
 
 const defaultProps = { disabled: false }
 const getWrapper = (mockResolvers = {}, nonRelayProps = {}) => {
-  const tree = renderWithWrappers(<TestRenderer {...{ ...defaultProps, ...nonRelayProps }} />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer {...{ ...defaultProps, ...nonRelayProps }} />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)
@@ -163,6 +162,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "SUBMITTED",
                   lastOffer: {
                     fromParticipant: "BUYER",
@@ -197,6 +197,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "SUBMITTED",
                   lastOffer: {
                     fromParticipant: "SELLER",
@@ -237,6 +238,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "APPROVED",
                   lastOffer: {
                     fromParticipant: "BUYER",
@@ -278,6 +280,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "CANCELED",
                   stateReason: "seller_rejected",
                   lastOffer: {
@@ -315,6 +318,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "SUBMITTED",
                   lastTransactionFailed: true,
                   lastOffer: {
@@ -356,6 +360,7 @@ describe("inquiry offer", () => {
             edges: [
               {
                 node: {
+                  mode: "OFFER",
                   state: "CANCELED",
                   stateReason: "buyer_lapsed",
                   lastOffer: {

@@ -3,8 +3,7 @@ import { MyCollectionWhySellTestsQuery } from "__generated__/MyCollectionWhySell
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -56,7 +55,7 @@ describe("MyCollectionWhySell", () => {
     // P1 related tests
     describe("Navigation", () => {
       it("navigates to the sale form when Submit This Artwork to Sell is pressed", () => {
-        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
 
         resolveData({
           Artwork: () => ({
@@ -72,7 +71,7 @@ describe("MyCollectionWhySell", () => {
         expect(navigate).toBeCalledWith("/collections/my-collection/artworks/new/submissions/new")
       })
       it("navigates to the explanatory page when learn more is press", () => {
-        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
 
         resolveData({
           Artwork: () => ({
@@ -91,7 +90,7 @@ describe("MyCollectionWhySell", () => {
 
     describe("Analytics", () => {
       it("tracks events, oldAbout section", async () => {
-        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="oldAbout" />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
         resolveData({
           Artwork: () => ({
             slug: "someSlug",
@@ -115,7 +114,7 @@ describe("MyCollectionWhySell", () => {
         })
       })
       it("tracks events, about tab", async () => {
-        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="about" />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="about" />)
         resolveData({
           Artwork: () => ({
             slug: "someSlug",
@@ -133,6 +132,7 @@ describe("MyCollectionWhySell", () => {
         expect(trackEvent).toHaveBeenCalledWith({
           action: "tappedSellArtwork",
           context_module: "myCollectionArtworkAbout",
+          context_screen: "myCollectionArtworkAbout",
           context_screen_owner_type: "myCollectionArtwork",
           context_screen_owner_id: "someInternalId",
           context_screen_owner_slug: "someSlug",
@@ -141,7 +141,7 @@ describe("MyCollectionWhySell", () => {
       })
 
       it("tracks events, insights tab", async () => {
-        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
         resolveData({
           Artwork: () => ({
             slug: "someSlug",
@@ -159,6 +159,7 @@ describe("MyCollectionWhySell", () => {
         expect(trackEvent).toHaveBeenCalledWith({
           action: "tappedSellArtwork",
           context_module: "myCollectionArtworkInsights",
+          context_screen: "myCollectionArtworkInsights",
           context_screen_owner_type: "myCollectionArtwork",
           context_screen_owner_id: "someInternalId",
           context_screen_owner_slug: "someSlug",
@@ -168,7 +169,7 @@ describe("MyCollectionWhySell", () => {
     })
     describe("Behavior", () => {
       it("initializes the submission form", async () => {
-        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="oldAbout" />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
         resolveData({
           Artwork: () => ({
             slug: "someSlug",
@@ -227,7 +228,7 @@ describe("MyCollectionWhySell", () => {
   describe("NOT P1", () => {
     describe("Navigation", () => {
       it("navigates to the sales page when learn more is press", () => {
-        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
         resolveData({
           Artwork: () => ({
             slug: "someSlug",
@@ -245,7 +246,7 @@ describe("MyCollectionWhySell", () => {
     })
     describe("Analytics", () => {
       it("tracks events, oldAbout section", async () => {
-        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="oldAbout" />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
         resolveData({
           Artwork: () => ({
             slug: "someSlug",
@@ -270,7 +271,7 @@ describe("MyCollectionWhySell", () => {
       })
 
       it("tracks events, about tab", async () => {
-        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="about" />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="about" />)
         resolveData({
           Artwork: () => ({
             slug: "someSlug",
@@ -288,6 +289,7 @@ describe("MyCollectionWhySell", () => {
         expect(trackEvent).toHaveBeenCalledWith({
           action: "tappedLearnMore",
           context_module: "myCollectionArtworkAbout",
+          context_screen: "myCollectionArtworkAbout",
           context_screen_owner_type: "myCollectionArtwork",
           context_screen_owner_id: "someInternalId",
           context_screen_owner_slug: "someSlug",
@@ -296,7 +298,7 @@ describe("MyCollectionWhySell", () => {
       })
 
       it("tracks events, insights tab", async () => {
-        const { getByTestId } = renderWithWrappersTL(<TestRenderer contextModule="insights" />)
+        const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
         resolveData({
           Artwork: () => ({
             slug: "someSlug",
@@ -314,6 +316,7 @@ describe("MyCollectionWhySell", () => {
         expect(trackEvent).toHaveBeenCalledWith({
           action: "tappedLearnMore",
           context_module: "myCollectionArtworkInsights",
+          context_screen: "myCollectionArtworkInsights",
           context_screen_owner_type: "myCollectionArtwork",
           context_screen_owner_id: "someInternalId",
           context_screen_owner_slug: "someSlug",

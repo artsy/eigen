@@ -1,13 +1,13 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Conversations_me } from "__generated__/Conversations_me.graphql"
+import { Conversations_me$data } from "__generated__/Conversations_me.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import { Flex, Sans, Separator, useColor } from "palette"
-import React from "react"
+import { Flex, Separator, Text, useColor } from "palette"
+import { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -15,7 +15,7 @@ import ConversationSnippet from "./ConversationSnippet"
 import { NoMessages } from "./NoMessages"
 
 interface Props {
-  me: Conversations_me
+  me: Conversations_me$data
   relay: RelayPaginationProp
   headerView?: JSX.Element
   onRefresh?: () => any
@@ -23,14 +23,14 @@ interface Props {
 }
 
 type Item = NonNullable<
-  NonNullable<NonNullable<Conversations_me["conversations"]>["edges"]>[0]
+  NonNullable<NonNullable<Conversations_me$data["conversations"]>["edges"]>[0]
 >["node"]
 
 // @track()
 export const Conversations: React.FC<Props> = (props) => {
   const color = useColor()
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [isFetching, setIsFetching] = React.useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isFetching, setIsFetching] = useState<boolean>(false)
   const { trackEvent } = useTracking()
 
   const { relay, isActiveTab } = props
@@ -80,7 +80,7 @@ export const Conversations: React.FC<Props> = (props) => {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isActiveTab) {
       refreshConversations()
     }
@@ -96,14 +96,14 @@ export const Conversations: React.FC<Props> = (props) => {
       info={screen({ context_screen_owner_type: OwnerType.inboxInquiries })}
     >
       <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-        <Sans
+        <Text
+          variant="lg"
           mx={2}
           mt={1}
-          size="8"
           style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}
         >
           Inbox {unreadCounter}
-        </Sans>
+        </Text>
       </Flex>
       <FlatList
         data={conversations}

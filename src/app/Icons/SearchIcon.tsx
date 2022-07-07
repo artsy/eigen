@@ -1,4 +1,3 @@
-import React from "react"
 import Svg, { Path } from "react-native-svg"
 
 const SearchIcon = (props: React.ComponentProps<typeof Svg>) => (

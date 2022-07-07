@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
-import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
+import { OnboardingPersonalization_highlights$data } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
 import {
   ArtistListItemContainer as ArtistListItem,
@@ -13,7 +13,6 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact, times } from "lodash"
 import { Box, Button, Flex, Join, Spacer, Text, Touchable, useColor, useSpace } from "palette"
 import { INPUT_HEIGHT } from "palette/elements/Input/Input"
-import React from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -58,7 +57,7 @@ interface OnboardingPersonalizationListNavigationProps
   > {}
 
 interface OnboardingPersonalizationListProps extends OnboardingPersonalizationListNavigationProps {
-  highlights: OnboardingPersonalization_highlights
+  highlights: OnboardingPersonalization_highlights$data
 }
 
 const OnboardingPersonalizationListHeader = ({

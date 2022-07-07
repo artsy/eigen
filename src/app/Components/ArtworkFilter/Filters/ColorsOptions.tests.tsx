@@ -7,8 +7,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ColorsOptionsScreen } from "./ColorsOptions"
 import { ColorsSwatch } from "./ColorsSwatch"
@@ -40,9 +39,14 @@ describe("Colors options screen", () => {
           value: "yellow",
         },
         {
-          name: "Violet",
+          name: "Purple",
           count: 145,
-          value: "violet",
+          value: "purple",
+        },
+        {
+          name: "Brown",
+          count: 133,
+          value: "brown",
         },
       ],
     },
@@ -83,7 +87,7 @@ describe("Colors options screen", () => {
   const aggregation = aggregationForFilter(FilterParamName.colors, mockAggregations)
 
   it("shows the correct number of color options", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <MockColorScreen
         aggregations={mockAggregations}
         {...getEssentialProps()}
@@ -92,6 +96,36 @@ describe("Colors options screen", () => {
     )
 
     expect(tree.root.findAllByType(ColorsSwatch)).toHaveLength(aggregation!.counts.length)
+  })
+
+  describe("with unrecognized colors", () => {
+    const updatedMockAggregations: Aggregations = [
+      {
+        ...mockAggregations[0],
+        counts: [
+          ...mockAggregations[0].counts,
+          {
+            name: "Stanky Bean",
+            count: 197,
+            value: "stanky-bean",
+          },
+        ],
+      },
+    ]
+    const updatedAggregation = aggregationForFilter(FilterParamName.colors, updatedMockAggregations)
+
+    it("it does not try to render swatches for them", () => {
+      const tree = renderWithWrappersLEGACY(
+        <MockColorScreen
+          aggregations={updatedMockAggregations}
+          {...getEssentialProps()}
+          initialData={initialState}
+        />
+      )
+
+      const expectedSwatchCount = updatedAggregation!.counts.length
+      expect(tree.root.findAllByType(ColorsSwatch)).toHaveLength(expectedSwatchCount - 1)
+    })
   })
 
   describe("selecting a color filter", () => {
@@ -116,7 +150,7 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      const component = renderWithWrappers(
+      const component = renderWithWrappersLEGACY(
         <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
       )
 
@@ -145,7 +179,7 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
       )
 
@@ -181,7 +215,7 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
       )
 

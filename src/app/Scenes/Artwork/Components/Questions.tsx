@@ -1,6 +1,5 @@
 import { Questions_artwork$key } from "__generated__/Questions_artwork.graphql"
 import { Box, Text } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
 

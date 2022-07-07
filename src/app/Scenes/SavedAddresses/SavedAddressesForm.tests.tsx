@@ -1,10 +1,9 @@
 import { SavedAddressesFormTestsQuery } from "__generated__/SavedAddressesFormTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Button, Input } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SavedAddressesFormContainer, SavedAddressesFormQueryRenderer } from "./SavedAddressesForm"
@@ -38,7 +37,7 @@ describe(SavedAddressesFormQueryRenderer, () => {
   })
 
   it("render form screen", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -59,7 +58,7 @@ describe(SavedAddressesFormQueryRenderer, () => {
   })
 
   it("should display correct address data if it is Edit Address modal", () => {
-    const tree = renderWithWrappers(<TestRenderer addressId="5861" />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer addressId="5861" />).root
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({

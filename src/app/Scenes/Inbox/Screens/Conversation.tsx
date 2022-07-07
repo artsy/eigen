@@ -1,5 +1,5 @@
 import NetInfo from "@react-native-community/netinfo"
-import { Conversation_me } from "__generated__/Conversation_me.graphql"
+import { Conversation_me$data } from "__generated__/Conversation_me.graphql"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
 import { navigationEvents } from "app/navigation/navigate"
@@ -42,7 +42,7 @@ const HeaderTextContainer = styled(Flex)`
 `
 
 interface Props {
-  me: Conversation_me
+  me: Conversation_me$data
   relay: RelayRefetchProp
   onMessageSent?: (text: string) => void
   navigator: NavigatorIOS

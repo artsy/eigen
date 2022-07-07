@@ -1,8 +1,7 @@
-import { ShowCard_show } from "__generated__/ShowCard_show.graphql"
+import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Flex, Spacer, Text, Touchable } from "palette"
-import React from "react"
 import { GestureResponderEvent, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -10,7 +9,7 @@ const WIDTH = 295
 const HEIGHT = 230
 
 interface ShowCardProps extends ViewProps {
-  show: ShowCard_show
+  show: ShowCard_show$data
   onPress?(event: GestureResponderEvent): void
 }
 

@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
-import { SaleLotsList_saleArtworksConnection } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
-import { SaleLotsList_unfilteredSaleArtworksConnection } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
+import { SaleLotsList_saleArtworksConnection$data } from "__generated__/SaleLotsList_saleArtworksConnection.graphql"
+import { SaleLotsList_unfilteredSaleArtworksConnection$data } from "__generated__/SaleLotsList_unfilteredSaleArtworksConnection.graphql"
 import {
   filterArtworksParams,
   FilterParamName,
@@ -14,7 +14,7 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "app/utils/track"
-import { Box, Flex, Sans } from "palette"
+import { Box, Flex, Text } from "palette"
 import React, { MutableRefObject, useCallback, useEffect, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -22,8 +22,8 @@ import styled from "styled-components/native"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface Props {
-  saleArtworksConnection: SaleLotsList_saleArtworksConnection
-  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection | null
+  saleArtworksConnection: SaleLotsList_saleArtworksConnection$data
+  unfilteredSaleArtworksConnection: SaleLotsList_unfilteredSaleArtworksConnection$data | null
   relay: RelayPaginationProp
   saleID: string
   saleSlug: string
@@ -51,12 +51,12 @@ export const SaleLotsListSortMode = ({
 
   return (
     <Flex px={2} mb={2}>
-      <FilterTitle size="4" ellipsizeMode="tail">
+      <FilterTitle variant="md" ellipsizeMode="tail">
         Sorted by {getSortDescription()?.toLowerCase()}
       </FilterTitle>
 
       {!!filteredTotal && !!totalCount && (
-        <FilterDescription size="3t">{`Showing ${filteredTotal} of ${totalCount}`}</FilterDescription>
+        <FilterDescription variant="sm">{`Showing ${filteredTotal} of ${totalCount}`}</FilterDescription>
       )}
     </Flex>
   )
@@ -181,8 +181,8 @@ export const SaleLotsList: React.FC<Props> = ({
   )
 }
 
-export const FilterTitle = styled(Sans)``
-export const FilterDescription = styled(Sans)`
+export const FilterTitle = styled(Text)``
+export const FilterDescription = styled(Text)`
   color: ${themeGet("colors.black60")};
 `
 

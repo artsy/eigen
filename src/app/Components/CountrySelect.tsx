@@ -1,4 +1,3 @@
-import React from "react"
 import { Select, SelectOption } from "../../palette/elements/Select"
 
 // This data was copied over from force & the populations (searchImportance) was extracted mostly from this

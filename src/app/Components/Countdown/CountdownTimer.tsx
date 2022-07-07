@@ -1,6 +1,5 @@
 import { StateManager as CountdownStateManager } from "app/Components/Countdown"
 import { Duration } from "moment"
-import React from "react"
 
 interface Props {
   startAt: string
@@ -10,8 +9,9 @@ interface Props {
 }
 
 export interface CountdownTimerProps {
-  duration: Duration
+  duration?: Duration | null
   label?: string
+  timerState?: string
 }
 
 enum TimerState {

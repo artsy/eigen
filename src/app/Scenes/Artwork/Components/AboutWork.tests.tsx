@@ -1,6 +1,5 @@
-import { AboutWork_artwork } from "__generated__/AboutWork_artwork.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { AboutWork_artwork$data } from "__generated__/AboutWork_artwork.graphql"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { AboutWork } from "./AboutWork"
 
 jest.mock("app/utils/hardware", () => ({
@@ -15,7 +14,7 @@ describe("AboutWork", () => {
   })
 
   it("renders the AboutWork correctly if all info is present", () => {
-    const { queryByText } = renderWithWrappersTL(<AboutWork artwork={aboutWorkArtwork} />)
+    const { queryByText } = renderWithWrappers(<AboutWork artwork={aboutWorkArtwork} />)
     expect(queryByText("About the work")).toBeTruthy()
     expect(queryByText("From Artsy Specialist:")).toBeTruthy()
   })
@@ -23,7 +22,7 @@ describe("AboutWork", () => {
   it("renders the AboutWork correctly if only additional information is present", () => {
     const artworkNoDescription = { ...aboutWorkArtwork, description: null }
 
-    const { queryByText } = renderWithWrappersTL(<AboutWork artwork={artworkNoDescription} />)
+    const { queryByText } = renderWithWrappers(<AboutWork artwork={artworkNoDescription} />)
     expect(queryByText("About the work")).toBeTruthy()
     expect(queryByText("From Artsy Specialist:")).toBeFalsy()
   })
@@ -31,7 +30,7 @@ describe("AboutWork", () => {
   it("renders the AboutWork correctly if only description is present", () => {
     const artworkNoAdditionalInfo = { ...aboutWorkArtwork, additionalInformation: null }
 
-    const { queryByText } = renderWithWrappersTL(<AboutWork artwork={artworkNoAdditionalInfo} />)
+    const { queryByText } = renderWithWrappers(<AboutWork artwork={artworkNoAdditionalInfo} />)
     expect(queryByText("About the work")).toBeTruthy()
     expect(queryByText("From Artsy Specialist:")).toBeTruthy()
   })
@@ -39,7 +38,7 @@ describe("AboutWork", () => {
   it("renders nothing if no information is present", () => {
     const artworkNoInfo = { ...aboutWorkArtwork, additionalInformation: null, description: null }
 
-    const { queryByText } = renderWithWrappersTL(<AboutWork artwork={artworkNoInfo} />)
+    const { queryByText } = renderWithWrappers(<AboutWork artwork={artworkNoInfo} />)
     expect(queryByText("About the work")).toBeFalsy()
     expect(queryByText("From Artsy Specialist:")).toBeFalsy()
   })
@@ -47,15 +46,15 @@ describe("AboutWork", () => {
   it("hides 'From Artsy Specialist:' for auction works", () => {
     const artworkInAuction = { ...aboutWorkArtwork, isInAuction: true }
 
-    const { queryByText } = renderWithWrappersTL(<AboutWork artwork={artworkInAuction} />)
+    const { queryByText } = renderWithWrappers(<AboutWork artwork={artworkInAuction} />)
     expect(queryByText("From Artsy Specialist:")).toBeFalsy()
   })
 })
 
-const aboutWorkArtwork: AboutWork_artwork = {
+const aboutWorkArtwork: AboutWork_artwork$data = {
   additionalInformation:
     "This is some information about the artwork by the gallery. It has to be at least 320 characters in order to test that the read more component truncates possibly. So here is soem lorem ipsum: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   description: "This is some information about the artwork by Artsy.",
   isInAuction: false,
-  " $refType": "AboutWork_artwork",
+  " $fragmentType": "AboutWork_artwork",
 }

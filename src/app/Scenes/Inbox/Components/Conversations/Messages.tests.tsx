@@ -1,8 +1,7 @@
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Flex, Text } from "palette"
-import React from "react"
 import "react-native"
 import { RefreshControl } from "react-native"
 import { QueryRenderer } from "react-relay"
@@ -60,7 +59,7 @@ const TestRenderer = () => (
 )
 
 const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)
@@ -234,13 +233,12 @@ describe("messages with order updates", () => {
   it("does not remove 'Offer accepted' events when payment succeeds", () => {
     const day1Time1 = "2020-03-18T02:58:37.699Z"
     const day1Time2 = "2020-03-18T02:59:37.699Z"
-    const day2Time1 = "2020-03-19T02:59:37.699Z"
 
     const tree = withConversationItems(getWrapper, {
       events: [
         {
           __typename: "CommerceOrderStateChangedEvent",
-          state: "SUBMITTED",
+          orderUpdateState: "offer_approved",
           createdAt: day1Time1,
         },
         {
@@ -249,12 +247,6 @@ describe("messages with order updates", () => {
             respondsTo: null,
           },
           createdAt: day1Time2,
-        },
-        // this event should be omitted from the output because it is irrelevant
-        {
-          __typename: "CommerceOrderStateChangedEvent",
-          state: "APPROVED",
-          createdAt: day2Time1,
         },
       ],
     })

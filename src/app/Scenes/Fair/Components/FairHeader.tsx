@@ -1,18 +1,17 @@
-import { FairHeader_fair } from "__generated__/FairHeader_fair.graphql"
+import { FairHeader_fair$data } from "__generated__/FairHeader_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/navigation/navigate"
 import { shouldShowLocationMap } from "app/Scenes/Fair/FairMoreInfo"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Box, ChevronIcon, Flex, Spacer, Text } from "palette"
-import React from "react"
 import { Dimensions, TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { shouldShowFairBMWArtActivationLink } from "../FairBMWArtActivation"
 import { FairTimingFragmentContainer as FairTiming } from "./FairTiming"
 
 interface FairHeaderProps {
-  fair: FairHeader_fair
+  fair: FairHeader_fair$data
 }
 
 export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {

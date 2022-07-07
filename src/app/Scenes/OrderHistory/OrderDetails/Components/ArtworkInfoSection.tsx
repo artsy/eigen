@@ -1,13 +1,12 @@
-import { ArtworkInfoSection_artwork } from "__generated__/ArtworkInfoSection_artwork.graphql"
+import { ArtworkInfoSection_artwork$data } from "__generated__/ArtworkInfoSection_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { extractNodes } from "app/utils/extractNodes"
 import { Box, Flex, Text } from "palette"
-import React from "react"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  artwork: ArtworkInfoSection_artwork
+  artwork: ArtworkInfoSection_artwork$data
 }
 
 export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {

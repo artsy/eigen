@@ -1,9 +1,8 @@
 import { MyCollectionArtworkAboutTestsQuery } from "__generated__/MyCollectionArtworkAboutTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
@@ -58,9 +57,9 @@ describe("MyCollectionArtworkAbout", () => {
       AREnablePriceEstimateRange: true,
     })
 
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         artwork: {
           category: "Oil on Canvas",
@@ -98,9 +97,9 @@ describe("MyCollectionArtworkAbout", () => {
       AREnablePriceEstimateRange: false,
     })
 
-    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         artwork: {
           category: "Oil on Canvas",
@@ -124,9 +123,9 @@ describe("MyCollectionArtworkAbout", () => {
   })
 
   it("renders purchase details section", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         artwork: {
           pricePaid: { display: "€224,000" },
@@ -142,9 +141,9 @@ describe("MyCollectionArtworkAbout", () => {
   })
 
   it("renders articles section", () => {
-    const { getByText, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByTestId } = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Query: () => ({
         artwork: {
           artistNames: "Banksy",

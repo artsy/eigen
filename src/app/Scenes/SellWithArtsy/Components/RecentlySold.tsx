@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
-import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupply.graphql"
+import { RecentlySold_targetSupply$data } from "__generated__/RecentlySold_targetSupply.graphql"
 import {
   SmallArtworkRail,
   SmallArtworkRailPlaceholder,
@@ -9,13 +9,12 @@ import { navigate } from "app/navigation/navigate"
 import { PlaceholderText } from "app/utils/placeholders"
 import { compact, shuffle } from "lodash"
 import { Box, Flex, Spacer } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface RecentlySoldProps {
   isLoading?: boolean
-  targetSupply: RecentlySold_targetSupply
+  targetSupply: RecentlySold_targetSupply$data
 }
 
 const trackingArgs: TappedEntityGroupArgs = {

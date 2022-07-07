@@ -1,12 +1,11 @@
-import { ShowInfo_show } from "__generated__/ShowInfo_show.graphql"
+import { ShowInfo_show$data } from "__generated__/ShowInfo_show.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Box, BoxProps, ChevronIcon, Text } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface ShowInfoProps extends BoxProps {
-  show: ShowInfo_show
+  show: ShowInfo_show$data
 }
 
 export const ShowInfo: React.FC<ShowInfoProps> = ({ show, ...rest }) => {

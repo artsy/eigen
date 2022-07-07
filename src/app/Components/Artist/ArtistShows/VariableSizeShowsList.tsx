@@ -1,16 +1,16 @@
-import React, { Component } from "react"
+import { Component } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { LayoutChangeEvent, StyleSheet, View } from "react-native"
 
-import { VariableSizeShowsList_shows } from "__generated__/VariableSizeShowsList_shows.graphql"
+import { VariableSizeShowsList_shows$data } from "__generated__/VariableSizeShowsList_shows.graphql"
 import { Stack } from "app/Components/Stack"
 import { isPad } from "app/utils/hardware"
 import { chunk } from "lodash"
 import { ArtistShowFragmentContainer } from "./ArtistShow"
 
 interface Props {
-  shows: VariableSizeShowsList_shows
+  shows: VariableSizeShowsList_shows$data
   showSize: "medium" | "large"
 }
 

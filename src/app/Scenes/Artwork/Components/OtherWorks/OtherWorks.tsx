@@ -1,5 +1,5 @@
-import { Artwork_artworkBelowTheFold } from "__generated__/Artwork_artworkBelowTheFold.graphql"
-import { OtherWorks_artwork } from "__generated__/OtherWorks_artwork.graphql"
+import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
+import { OtherWorks_artwork$data } from "__generated__/OtherWorks_artwork.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
@@ -10,8 +10,10 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { ContextGridCTA } from "./ContextGridCTA"
 import { Header } from "./Header"
 
-type OtherWorksGrid = NonNullable<NonNullable<OtherWorks_artwork["contextGrids"]>[number]>
-type ArtworkGrid = NonNullable<NonNullable<Artwork_artworkBelowTheFold["contextGrids"]>[number]>
+type OtherWorksGrid = NonNullable<NonNullable<OtherWorks_artwork$data["contextGrids"]>[number]>
+type ArtworkGrid = NonNullable<
+  NonNullable<Artwork_artworkBelowTheFold$data["contextGrids"]>[number]
+>
 type Grid = OtherWorksGrid | ArtworkGrid
 
 export const populatedGrids = (grids?: ReadonlyArray<Grid | null> | null) => {
@@ -22,7 +24,9 @@ export const populatedGrids = (grids?: ReadonlyArray<Grid | null> | null) => {
   }
 }
 
-export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: OtherWorks_artwork }>(
+export const OtherWorksFragmentContainer = createFragmentContainer<{
+  artwork: OtherWorks_artwork$data
+}>(
   (props) => {
     const grids = props.artwork.contextGrids
     const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>

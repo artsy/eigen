@@ -1,4 +1,3 @@
-import { MeasuredView, ViewMeasurements } from "app/utils/MeasuredView"
 import { Spacer } from "palette"
 import { useColor } from "palette/hooks"
 import { useState } from "react"
@@ -8,6 +7,7 @@ import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { config } from "react-spring"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native"
+import { MeasuredView, ViewMeasurements } from "shared/utils"
 import styled from "styled-components/native"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
@@ -182,11 +182,18 @@ export const Button: React.FC<ButtonProps> = ({
                       <Spacer mr={0.5} />
                     </>
                   ) : null}
-                  <MeasuredView setMeasuredState={setLongestTextMeasurements}>
-                    <Text color="red" style={textStyle}>
-                      {longestText ? longestText : children}
-                    </Text>
-                  </MeasuredView>
+                  {/* This makes sure that in testing environment the button text is
+                      not rendered twice, in normal environment this is not visible.
+                      This will result in us being able to use getByText over
+                      getAllByText()[0] to select the buttons in the test environment.
+                  */}
+                  {!__TEST__ && (
+                    <MeasuredView setMeasuredState={setLongestTextMeasurements}>
+                      <Text color="red" style={textStyle}>
+                        {longestText ? longestText : children}
+                      </Text>
+                    </MeasuredView>
+                  )}
                   <AnimatedText
                     style={[
                       {
@@ -415,8 +422,6 @@ const useStyleForVariantAndState = (
           retval.textColor = color("black30")
           break
         case DisplayState.Pressed:
-          retval.backgroundColor = color("black10")
-          retval.borderColor = color("black10")
           retval.textColor = color("blue100")
           retval.textDecorationLine = "underline"
           break

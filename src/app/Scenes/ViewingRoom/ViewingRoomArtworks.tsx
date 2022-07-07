@@ -1,23 +1,24 @@
-import { ViewingRoomArtworks_viewingRoom } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
+import { ViewingRoomArtworks_viewingRoom$data } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Flex, Sans, Separator, Spinner, Text, useSpace } from "palette"
+import { Box, Flex, OpaqueImageView, Separator, Spinner, Text, useSpace } from "palette"
 import { Touchable } from "palette"
 import React, { useMemo, useState } from "react"
-import { FlatList } from "react-native"
+import { FlatList, useWindowDimensions } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
 const PAGE_SIZE = 5
 interface ViewingRoomArtworksProps {
   relay: RelayPaginationProp
-  viewingRoom: ViewingRoomArtworks_viewingRoom
+  viewingRoom: ViewingRoomArtworks_viewingRoom$data
 }
 
 interface ArtworkSection {
@@ -31,6 +32,8 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const tracking = useTracking()
   const artworks = extractNodes(viewingRoom.artworksConnection)
+  const { width } = useWindowDimensions()
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageView")
 
   const sections: ArtworkSection[] = useMemo(() => {
     return artworks.map((artwork, index) => {
@@ -53,7 +56,18 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
               }}
             >
               <Box>
-                <ImageView imageURL={artwork.image?.url} aspectRatio={artwork.image!.aspectRatio} />
+                {enableNewOpaqueImageView ? (
+                  <OpaqueImageView
+                    imageURL={artwork.image?.url}
+                    width={width}
+                    aspectRatio={artwork.image!.aspectRatio}
+                  />
+                ) : (
+                  <ImageView
+                    imageURL={artwork.image?.url}
+                    aspectRatio={artwork.image!.aspectRatio}
+                  />
+                )}
                 <Box mt="1" mx="2">
                   <Text variant="sm">{artwork.artistNames}</Text>
                   <Text variant="sm" color="black60" key={index}>
@@ -84,9 +98,9 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <Flex style={{ flex: 1 }}>
-        <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
+        <Text variant="md" weight="medium" textAlign="center" mb={1} mt={2}>
           Artworks
-        </Sans>
+        </Text>
         <Separator />
         <FlatList
           data={sections}

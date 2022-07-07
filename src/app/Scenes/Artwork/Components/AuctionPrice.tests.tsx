@@ -1,4 +1,4 @@
-import { AuctionPriceTestsQueryRawResponse } from "__generated__/AuctionPriceTestsQuery.graphql"
+import { AuctionPriceTestsQuery } from "__generated__/AuctionPriceTestsQuery.graphql"
 import {
   AuctionPreview,
   AuctionPreviewNoStartingBid,
@@ -14,170 +14,221 @@ import {
   OpenAuctionReserveNotMetWithBids,
 } from "app/__fixtures__/ArtworkBidInfo"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-import { renderRelayTree } from "app/tests/renderRelayTree"
-import { CheckCircleIcon, CloseCircleIcon, Sans, Theme } from "palette"
-import React from "react"
-import { graphql } from "react-relay"
-import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
+import { AuctionPriceFragmentContainer, AuctionPriceProps } from "./AuctionPrice"
 
 jest.unmock("react-relay")
 
 describe("AuctionPrice", () => {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const getWrapper = async (response, auctionState: AuctionTimerState) => {
-    return await renderRelayTree({
-      Component: (props: any) => (
-        <GlobalStoreProvider>
-          <Theme>
-            <AuctionPrice {...props} auctionState={auctionState} />
-          </Theme>
-        </GlobalStoreProvider>
-      ),
-      query: graphql`
-        query AuctionPriceTestsQuery @raw_response_type {
-          artwork(id: "auction_artwork_estimate_premium") {
-            ...AuctionPrice_artwork
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  const TestWrapper = (props: Omit<AuctionPriceProps, "artwork">) => {
+    return (
+      <QueryRenderer<AuctionPriceTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query AuctionPriceTestsQuery @relay_test_operation @raw_response_type {
+            artwork(id: "auction_artwork_estimate_premium") {
+              ...AuctionPrice_artwork
+            }
           }
-        }
-      `,
-      mockData: {
-        artwork: response,
-      } as AuctionPriceTestsQueryRawResponse,
-    })
+        `}
+        variables={{}}
+        render={({ props: relayProps }) => {
+          if (relayProps?.artwork) {
+            return <AuctionPriceFragmentContainer artwork={relayProps.artwork} {...props} />
+          }
+          return null
+        }}
+      />
+    )
   }
 
-  describe("for closed auction", () => {
-    it("displays Auction Closed", async () => {
-      const wrapper = await getWrapper(ClosedAuctionArtwork, AuctionTimerState.CLOSED)
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
 
-      expect(wrapper.text()).toContain("Bidding closed")
+  describe("for closed auction", () => {
+    it("displays Auction Closed", () => {
+      const { getByText } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.CLOSED} />
+      )
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => ClosedAuctionArtwork,
+      })
+
+      expect(getByText("Bidding closed")).toBeTruthy()
     })
   })
 
   describe("for live sale in progress", () => {
-    it("does not display anything", async () => {
-      const wrapper = await getWrapper(
-        LiveAuctionInProgeress,
-        AuctionTimerState.LIVE_INTEGRATION_ONGOING
+    it("does not display anything", () => {
+      const { toJSON } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
       )
 
-      expect(wrapper.html()).toBe(null)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => LiveAuctionInProgeress,
+      })
+
+      expect(toJSON()).toBeNull()
     })
   })
 
   describe("for auction preview", () => {
-    it("displays proper starting bid info", async () => {
-      const wrapper = await getWrapper(AuctionPreview, AuctionTimerState.PREVIEW)
+    it("displays proper starting bid info", () => {
+      const { getByText } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
+      )
 
-      expect(wrapper.text()).toContain("Starting bid")
-      expect(wrapper.text()).toContain("CHF 4,000")
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => AuctionPreview,
+      })
+
+      expect(getByText("Starting bid")).toBeTruthy()
+      expect(getByText("CHF 4,000")).toBeTruthy()
     })
   })
 
   describe("for auction preview with no start bid set", () => {
-    it("displays nothing if current bid info is unavailable", async () => {
-      const wrapper = await getWrapper(AuctionPreviewNoStartingBid, AuctionTimerState.PREVIEW)
-      expect(wrapper.html()).toBe(null)
+    it("displays nothing if current bid info is unavailable", () => {
+      const { toJSON } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
+      )
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => AuctionPreviewNoStartingBid,
+      })
+
+      expect(toJSON()).toBeNull()
     })
   })
 
   describe("for open auction with no reserve and no bids", () => {
-    it("displays proper starting bid info", async () => {
-      const wrapper = await getWrapper(OpenAuctionNoReserveNoBids, AuctionTimerState.CLOSING)
+    it("displays proper starting bid info", () => {
+      const { getByText } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.CLOSING} />
+      )
 
-      expect(wrapper.text()).toContain("Starting bid")
-      expect(wrapper.text()).toContain("$500")
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => OpenAuctionNoReserveNoBids,
+      })
+
+      expect(getByText("Starting bid")).toBeTruthy()
+      expect(getByText("$500")).toBeTruthy()
     })
   })
 
   describe("open auction with no reserve with bids present", () => {
-    it("displays proper current bid info including bid count", async () => {
-      const wrapper = await getWrapper(OpenAuctionNoReserveWithBids, AuctionTimerState.CLOSING)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const texts = wrapper.find(Sans).map((x) => x.text())
+    it("displays proper current bid info including bid count", () => {
+      const { getByText } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.CLOSING} />
+      )
 
-      expect(texts).toContain("Current bid")
-      expect(texts).toContain("$850")
-      expect(texts).toContain("11 bids")
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => OpenAuctionNoReserveWithBids,
+      })
+
+      expect(getByText("Current bid")).toBeTruthy()
+      expect(getByText("$850")).toBeTruthy()
+      expect(getByText("11 bids")).toBeTruthy()
     })
   })
 
   describe("for open auction with reserve and no bids", () => {
-    it("displays proper starting bid info and resserve message", async () => {
-      const wrapper = await getWrapper(OpenAuctionReserveNoBids, AuctionTimerState.CLOSING)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const texts = wrapper.find(Sans).map((x) => x.text())
+    it("displays proper starting bid info and resserve message", () => {
+      const { getByText } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.CLOSING} />
+      )
 
-      expect(texts).toContain("Starting bid")
-      expect(texts).toContain("This work has a reserve")
-      expect(texts).toContain("$3,000")
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => OpenAuctionReserveNoBids,
+      })
+
+      expect(getByText("Starting bid")).toBeTruthy()
+      expect(getByText("This work has a reserve")).toBeTruthy()
+      expect(getByText("$3,000")).toBeTruthy()
     })
   })
 
   describe("for open auction with some bids and reserve not met", () => {
-    it("displays current bid message inculding reserve warning", async () => {
-      const wrapper = await getWrapper(OpenAuctionReserveNotMetWithBids, AuctionTimerState.CLOSING)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const texts = wrapper.find(Sans).map((x) => x.text())
+    it("displays current bid message inculding reserve warning", () => {
+      const { getByText } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.CLOSING} />
+      )
 
-      expect(texts).toContain("Current bid")
-      expect(texts).toContain("2 bids, reserve not met")
-      expect(texts).toContain("$10,000")
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => OpenAuctionReserveNotMetWithBids,
+      })
+
+      expect(getByText("Current bid")).toBeTruthy()
+      expect(getByText("2 bids, reserve not met")).toBeTruthy()
+      expect(getByText("$10,000")).toBeTruthy()
     })
   })
 
   describe("for open auction with some bids and satisfied reserve", () => {
-    it("displays current bid message inculding reserve met", async () => {
-      const wrapper = await getWrapper(OpenAuctionReserveMetWithBids, AuctionTimerState.CLOSING)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const texts = wrapper.find(Sans).map((x) => x.text())
+    it("displays current bid message inculding reserve met", () => {
+      const { getByText } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.CLOSING} />
+      )
 
-      expect(texts).toContain("Current bid")
-      expect(texts).toContain("2 bids, reserve met")
-      expect(texts).toContain("$500")
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => OpenAuctionReserveMetWithBids,
+      })
+
+      expect(getByText("Current bid")).toBeTruthy()
+      expect(getByText("2 bids, reserve met")).toBeTruthy()
+      expect(getByText("$500")).toBeTruthy()
     })
   })
 
   describe("for open auction with my bid winning", () => {
-    it("displays max bid and winning indicator", async () => {
-      const wrapper = await getWrapper(
-        OpenAuctionReserveMetWithMyWinningBid,
-        AuctionTimerState.CLOSING
+    it("displays max bid and winning indicator", () => {
+      const { getByText, getByLabelText } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const texts = wrapper.find(Sans).map((x) => x.text())
 
-      expect(texts).toContain("Your max: $15,000")
-      expect(wrapper.find(CheckCircleIcon).length).toBe(1)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => OpenAuctionReserveMetWithMyWinningBid,
+      })
+
+      expect(getByText("Your max: $15,000")).toBeTruthy()
+      expect(getByLabelText("My Bid Winning Icon")).toBeTruthy()
     })
   })
 
   describe("for open auction with my bid losing", () => {
-    it("displays max bid and losing indicator", async () => {
-      const wrapper = await getWrapper(
-        OpenAuctionReserveMetWithMyLosingBid,
-        AuctionTimerState.CLOSING
+    it("displays max bid and losing indicator", () => {
+      const { getByText, getByLabelText } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const texts = wrapper.find(Sans).map((x) => x.text())
 
-      expect(texts).toContain("Your max: $400")
-      expect(wrapper.find(CloseCircleIcon).length).toBe(1)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => OpenAuctionReserveMetWithMyLosingBid,
+      })
+
+      expect(getByText("Your max: $400")).toBeTruthy()
+      expect(getByLabelText("My Bid Losing Icon")).toBeTruthy()
     })
   })
 
   describe("for open auction with me increasing my max bid while winning", () => {
-    it("displays max bid and winning indicator", async () => {
-      const wrapper = await getWrapper(
-        OpenAuctionReserveNotMetIncreasingOwnBid,
-        AuctionTimerState.CLOSING
+    it("displays max bid and winning indicator", () => {
+      const { getByText, getByLabelText } = renderWithWrappers(
+        <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const texts = wrapper.find(Sans).map((x) => x.text())
 
-      expect(texts).toContain("Your max: $15,000")
-      expect(wrapper.find(CheckCircleIcon).length).toBe(1)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => OpenAuctionReserveNotMetIncreasingOwnBid,
+      })
+
+      expect(getByText("Your max: $15,000")).toBeTruthy()
+      expect(getByLabelText("My Bid Winning Icon")).toBeTruthy()
     })
   })
 })

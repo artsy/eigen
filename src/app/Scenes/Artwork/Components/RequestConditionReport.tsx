@@ -1,9 +1,6 @@
-import { RequestConditionReport_artwork } from "__generated__/RequestConditionReport_artwork.graphql"
-import { RequestConditionReport_me } from "__generated__/RequestConditionReport_me.graphql"
-import {
-  RequestConditionReportMutation,
-  RequestConditionReportMutationResponse,
-} from "__generated__/RequestConditionReportMutation.graphql"
+import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
+import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
+import { RequestConditionReportMutation } from "__generated__/RequestConditionReportMutation.graphql"
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
 import { Modal } from "app/Components/Modal"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -21,8 +18,8 @@ import {
 import { PayloadError } from "relay-runtime"
 
 interface RequestConditionReportProps {
-  artwork: RequestConditionReport_artwork
-  me: RequestConditionReport_me
+  artwork: RequestConditionReport_artwork$data
+  me: RequestConditionReport_me$data
   relay: RelayProp
 }
 
@@ -47,7 +44,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
 
   requestConditionReport = () => {
     const { artwork, relay } = this.props
-    return new Promise<RequestConditionReportMutationResponse>(async (resolve, reject) => {
+    return new Promise<RequestConditionReportMutation["response"]>(async (resolve, reject) => {
       commitMutation<RequestConditionReportMutation>(relay.environment, {
         onCompleted: resolve,
         onError: reject,
@@ -61,8 +58,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
           }
         `,
         variables: {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          input: { saleArtworkID: artwork.saleArtwork.internalID },
+          input: { saleArtworkID: artwork.saleArtwork!.internalID },
         },
       })
     })
@@ -71,7 +67,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
   @track({
     action_type: Schema.ActionTypes.Fail,
   })
-  presentErrorModal(errors: Error | ReadonlyArray<PayloadError>) {
+  presentErrorModal(errors: Error | ReadonlyArray<PayloadError> | null) {
     console.error("RequestConditionReport.tsx", errors)
     const errorMessage = "There was a problem processing your request. Please try again."
     this.setState({ showErrorModal: true, errorModalText: errorMessage })
@@ -95,7 +91,6 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
         if (data.requestConditionReport) {
           this.presentSuccessModal()
         } else {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           this.presentErrorModal(null)
         }
         this.setState({ requestingConditionReport: false })
@@ -134,6 +129,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
         </Button>
         <Flex height={0}>
           <Modal
+            accessibilityLabel="Condition Report Requested Error Modal"
             textAlign="center"
             visible={showErrorModal}
             headerText="An error occurred"
@@ -141,6 +137,7 @@ export class RequestConditionReport extends Component<RequestConditionReportProp
             closeModal={this.closeModals.bind(this)}
           />
           <Modal
+            accessibilityLabel="Condition Report Requested Modal"
             textAlign="center"
             visible={showConditionReportRequestedModal}
             headerText="Condition Report Requested"
@@ -173,8 +170,7 @@ export const RequestConditionReportQueryRenderer: React.FC<{
       `}
       render={({ props }) => {
         if (props) {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          return <RequestConditionReportFragmentContainer artwork={props.artwork} me={props.me} />
+          return <RequestConditionReportFragmentContainer artwork={props.artwork!} me={props.me!} />
         } else {
           return null
         }

@@ -1,17 +1,16 @@
 import { themeGet } from "@styled-system/theme-get"
-import { ViewingRoomViewWorksButton_viewingRoom } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
+import { ViewingRoomViewWorksButton_viewingRoom$data } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import { navigate } from "app/navigation/navigate"
 import { Schema } from "app/utils/track"
-import { Flex, Sans } from "palette"
-import React from "react"
+import { Flex, Text } from "palette"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface ViewingRoomViewWorksButtonProps {
-  viewingRoom: ViewingRoomViewWorksButton_viewingRoom
+  viewingRoom: ViewingRoomViewWorksButton_viewingRoom$data
   isVisible: boolean
 }
 
@@ -41,9 +40,9 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
         }}
       >
         <ViewWorksButton testID="view-works" px="2">
-          <Sans size="3t" py="1" color="white100" weight="medium">
+          <Text variant="sm" py="1" color="white100" weight="medium">
             View {pluralizedArtworksCount} ({artworksCount})
-          </Sans>
+          </Text>
         </ViewWorksButton>
       </AnimatedBottomButton>
     </View>

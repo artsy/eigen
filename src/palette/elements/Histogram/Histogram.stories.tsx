@@ -1,5 +1,4 @@
 import { storiesOf } from "@storybook/react-native"
-import React from "react"
 import { Histogram, HistogramBarEntity } from "."
 import { Flex } from ".."
 

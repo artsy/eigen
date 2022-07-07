@@ -1,62 +1,56 @@
 import { fireEvent } from "@testing-library/react-native"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { MyCollectionSearchBar, MyCollectionSearchBarProps } from "./MyCollectionSearchBar"
 
 describe("MyCollectionSearchBar", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionSearchBar: true })
+  })
+
   const defaultProps: MyCollectionSearchBarProps = {
     onChangeText: jest.fn(),
     searchString: "",
-    setHasUsedSearchBar: jest.fn(),
-    setSearchBarStillFocused: jest.fn(),
   }
-  const wrapper = (props: MyCollectionSearchBarProps) =>
-    renderWithWrappersTL(
+
+  const renderWithStickyTabPage = (props: Partial<MyCollectionSearchBarProps> = {}) =>
+    renderWithWrappers(
       <StickyTabPage
         tabs={[
           {
             title: "My Collection",
-            content: <MyCollectionSearchBar {...props} />,
+            content: <MyCollectionSearchBar {...defaultProps} {...props} />,
           },
         ]}
       />
     )
 
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionSearchBar: true })
+  it("renders input when clicking on the search bar text", () => {
+    const { queryByTestId } = renderWithStickyTabPage({})
+
+    expect(queryByTestId("MyCollectionSearchBarNoInputTouchable")).toBeDefined()
+
+    fireEvent.press(queryByTestId("MyCollectionSearchBarNoInputTouchable")!)
+
+    expect(queryByTestId("MyCollectionSearchBarInput")).toBeDefined()
+    expect(queryByTestId("MyCollectionSearchBarInputCancelButton")).toBeDefined()
   })
 
-  describe("renders properly", () => {
-    it("When isFocused is true", () => {
-      const { queryByTestId } = wrapper({ ...defaultProps, startAsFocused: true })
-      expect(queryByTestId("MyCollectionSearchBarInput")).toBeDefined()
-      expect(queryByTestId("MyCollectionSearchBarInputCancelButton")).toBeDefined()
+  it("changes view option when clicking on view option icon", () => {
+    const { queryByTestId } = renderWithStickyTabPage()
 
-      expect(queryByTestId("MyCollectionSearchBarNoInputTouchable")).toBe(null)
-      expect(queryByTestId("MyCollectionSearchListIconTouchable")).toBe(null)
-      expect(queryByTestId("MyCollectionSearchGridIconTouchable")).toBe(null)
-    })
+    const listButton = queryByTestId("MyCollectionSearchListIconTouchable")
+    const gridButton = queryByTestId("MyCollectionSearchGridIconTouchable")
 
-    it("When isFocused is false", () => {
-      const { queryByTestId } = wrapper({ ...defaultProps, startAsFocused: false })
-      expect(queryByTestId("MyCollectionSearchBarNoInputTouchable")).toBeDefined()
-      expect(queryByTestId("MyCollectionSearchListIconTouchable")).toBeDefined()
-      expect(queryByTestId("MyCollectionSearchGridIconTouchable")).toBeDefined()
-      expect(queryByTestId("MyCollectionSearchBarInput")).toBe(null)
-      expect(queryByTestId("MyCollectionSearchBarInputCancelButton")).toBe(null)
-    })
-  })
-
-  it("can switch from Grid to List and vice-versa", () => {
-    const { queryByTestId } = wrapper({ ...defaultProps, startAsFocused: false })
     expect(__globalStoreTestUtils__?.getCurrentState().userPrefs.artworkViewOption).toEqual("grid")
-    const listIcon = queryByTestId("MyCollectionSearchListIconTouchable")
-    const gridIcon = queryByTestId("MyCollectionSearchGridIconTouchable")
-    fireEvent(listIcon!, "onPress")
+
+    fireEvent(listButton!, "onPress")
+
     expect(__globalStoreTestUtils__?.getCurrentState().userPrefs.artworkViewOption).toEqual("list")
-    fireEvent(gridIcon!, "onPress")
+
+    fireEvent(gridButton!, "onPress")
+
     expect(__globalStoreTestUtils__?.getCurrentState().userPrefs.artworkViewOption).toEqual("grid")
   })
 })

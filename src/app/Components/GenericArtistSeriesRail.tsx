@@ -1,6 +1,6 @@
-import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
-import { ArtistCollectionsRail_collections } from "__generated__/ArtistCollectionsRail_collections.graphql"
-import { CollectionArtistSeriesRail_collectionGroup } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
+import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
+import { ArtistCollectionsRail_collections$data } from "__generated__/ArtistCollectionsRail_collections.graphql"
+import { CollectionArtistSeriesRail_collectionGroup$data } from "__generated__/CollectionArtistSeriesRail_collectionGroup.graphql"
 import {
   CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
   CardRailArtworkImageContainer as ArtworkImageContainer,
@@ -12,8 +12,7 @@ import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
-import { Sans, Spacer, useColor } from "palette"
-import React from "react"
+import { Spacer, Text, useColor } from "palette"
 import { View } from "react-native"
 import { useTracking } from "react-tracking"
 // @ts-ignore
@@ -21,16 +20,16 @@ import styled from "styled-components/native"
 
 interface GenericArtistSeriesRailProps {
   collections:
-    | CollectionArtistSeriesRail_collectionGroup["members"]
-    | ArtistAbout_artist["iconicCollections"]
+    | CollectionArtistSeriesRail_collectionGroup$data["members"]
+    | ArtistAbout_artist$data["iconicCollections"]
   contextScreenOwnerType: Schema.OwnerEntityTypes.Collection | Schema.OwnerEntityTypes.Artist
   contextScreenOwnerId: string
   contextScreenOwnerSlug: string
 }
 
 type GenericArtistSeriesItem =
-  | CollectionArtistSeriesRail_collectionGroup["members"][0]
-  | ArtistCollectionsRail_collections[0]
+  | CollectionArtistSeriesRail_collectionGroup$data["members"][0]
+  | ArtistCollectionsRail_collections$data[0]
 
 export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (props) => {
   const color = useColor()
@@ -114,11 +113,11 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
                 </ArtworkImageContainer>
 
                 <MetadataContainer>
-                  <GenericArtistSeriesTitle weight="medium" size="3t">
+                  <GenericArtistSeriesTitle weight="medium" variant="sm">
                     {result.title}
                   </GenericArtistSeriesTitle>
                   {!!result.priceGuidance && (
-                    <GenericArtistSeriesMeta color={color("black60")} size="3t">
+                    <GenericArtistSeriesMeta color={color("black60")} variant="sm">
                       {"From $" + `${result.priceGuidance.toLocaleString()}`}
                     </GenericArtistSeriesMeta>
                   )}
@@ -132,11 +131,11 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
   )
 }
 
-export const GenericArtistSeriesMeta = styled(Sans)`
+export const GenericArtistSeriesMeta = styled(Text)`
   margin: 0 15px;
 `
 
-export const GenericArtistSeriesTitle = styled(Sans)`
+export const GenericArtistSeriesTitle = styled(Text)`
   margin: 15px 15px 0 15px;
 `
 

@@ -1,7 +1,7 @@
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { throttle } from "lodash"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Animated } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 import { Rect, Size } from "../../geometry"
 import { EventStream, useEvents } from "../useEventStream"
 import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"

@@ -1,38 +1,46 @@
 import { addCollectedArtwork } from "@artsy/cohesion"
-import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
+import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { navigate, popToRoot } from "app/navigation/navigate"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Button, Flex, Text } from "palette"
+import { Button, Flex, LockIcon, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import { FlatList, Image } from "react-native"
+import { FlatList, LayoutAnimation, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
+import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionArtworkEdge } from "./MyCollection"
 import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
 
 interface MyCollectionArtworksProps {
-  me: MyCollection_me
+  me: MyCollection_me$data
   relay: RelayPaginationProp
   innerFlatlistRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
+  showSearchBar: boolean
+  setShowSearchBar: (show: boolean) => void
 }
 
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
   me,
   relay,
   innerFlatlistRef,
+  showSearchBar,
+  setShowSearchBar,
 }) => {
-  const [keywordFilter, setKeywordFilter] = useState("")
-  const [hasUsedSearchBar, setHasUsedSearchBar] = useState(false)
-  const [searchBarStillFocused, setSearchBarStillFocused] = useState(false)
   const { height: screenHeight } = useScreenDimensions()
+  const enabledSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
+
+  const [minHeight, setMinHeight] = useState<number | undefined>(undefined)
+  const [initialScrollPosition, setInitialScrollPosition] = useState(-1)
+
+  const [keywordFilter, setKeywordFilter] = useState("")
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
@@ -51,47 +59,44 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
     return <MyCollectionZeroState />
   }
 
-  if (filteredArtworks.length === 0) {
-    return (
-      <FlatList
-        style={{ minHeight: screenHeight }}
-        data={[]}
-        renderItem={({ item }) => item}
-        ListEmptyComponent={
-          <Flex py="6" px="2">
-            <FilteredArtworkGridZeroState hideClearButton />
-          </Flex>
-        }
-        ListHeaderComponent={
-          <MyCollectionSearchBar
-            onChangeText={setKeywordFilter}
-            searchString={keywordFilter}
-            setHasUsedSearchBar={setHasUsedSearchBar}
-            startAsFocused={hasUsedSearchBar}
-            setSearchBarStillFocused={setSearchBarStillFocused}
-          />
-        }
-      />
-    )
+  // Make Search Bar visible when user scrolls to top
+  const handleScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (showSearchBar) {
+      return
+    }
+
+    if (initialScrollPosition === -1) {
+      setInitialScrollPosition(nativeEvent.contentOffset.y)
+      return
+    }
+
+    if (nativeEvent.contentOffset.y < initialScrollPosition) {
+      LayoutAnimation.configureNext({
+        ...LayoutAnimation.Presets.easeInEaseOut,
+        duration: 200,
+      })
+
+      setShowSearchBar(true)
+    }
   }
 
   return (
-    <Flex pt={1}>
-      {viewOption === "grid" ? (
-        // Setting a min height to avoid a screen jump when switching to the grid view.
-        <Flex minHeight={screenHeight}>
+    <Flex minHeight={minHeight}>
+      <Flex mb={1}>
+        {!!showSearchBar && (
+          <MyCollectionSearchBar
+            searchString={keywordFilter}
+            onChangeText={setKeywordFilter}
+            innerFlatListRef={innerFlatlistRef}
+            onIsFocused={(isFocused) => {
+              setMinHeight(isFocused ? screenHeight : undefined)
+            }}
+          />
+        )}
+      </Flex>
+      {filteredArtworks.length > 0 ? (
+        viewOption === "grid" ? (
           <InfiniteScrollMyCollectionArtworksGridContainer
-            hideHeaderInitially={!hasUsedSearchBar}
-            HeaderComponent={
-              <MyCollectionSearchBar
-                innerFlatListRef={innerFlatlistRef}
-                onChangeText={setKeywordFilter}
-                searchString={keywordFilter}
-                setHasUsedSearchBar={setHasUsedSearchBar}
-                startAsFocused={searchBarStillFocused}
-                setSearchBarStillFocused={setSearchBarStillFocused}
-              />
-            }
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
@@ -104,31 +109,35 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
                 keywordFilter
               )
             }
+            scrollEventThrottle={100}
+            onScroll={enabledSearchBar ? handleScroll : undefined}
           />
-        </Flex>
+        ) : (
+          <MyCollectionArtworkList
+            myCollectionConnection={me.myCollectionConnection}
+            hasMore={relay.hasMore}
+            loadMore={relay.loadMore}
+            isLoading={relay.isLoading}
+            // tslint:disable-next-line: no-shadowed-variable
+            localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
+              localSortAndFilterArtworks(
+                artworks,
+                appliedFiltersState,
+                filterOptions,
+                keywordFilter
+              )
+            }
+            scrollEventThrottle={100}
+            onScroll={enabledSearchBar ? handleScroll : undefined}
+          />
+        )
       ) : (
-        <MyCollectionArtworkList
-          hideHeaderInitially={!hasUsedSearchBar}
-          HeaderComponent={
-            <MyCollectionSearchBar
-              searchString={keywordFilter}
-              onChangeText={setKeywordFilter}
-              innerFlatListRef={innerFlatlistRef}
-              setHasUsedSearchBar={setHasUsedSearchBar}
-              startAsFocused={searchBarStillFocused}
-              setSearchBarStillFocused={setSearchBarStillFocused}
-            />
-          }
-          myCollectionConnection={me.myCollectionConnection}
-          hasMore={relay.hasMore}
-          loadMore={relay.loadMore}
-          isLoading={relay.isLoading}
-          // tslint:disable-next-line: no-shadowed-variable
-          localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
-            localSortAndFilterArtworks(artworks, appliedFiltersState, filterOptions, keywordFilter)
-          }
-        />
+        <Flex py="6" px="2">
+          <FilteredArtworkGridZeroState hideClearButton />
+        </Flex>
       )}
+
+      {filteredArtworks.length > 0 && <Spacer mb={2} />}
     </Flex>
   )
 }
@@ -149,17 +158,18 @@ const MyCollectionZeroState: React.FC = () => {
               navigate("my-collection/artworks/new", {
                 passProps: {
                   mode: "add",
+                  source: Tab.collection,
                   onSuccess: popToRoot,
                 },
               })
             }}
             block
           >
-            Add artwork
+            Upload Your Artwork
           </Button>
           <Flex flexDirection="row" justifyContent="center" alignItems="center" py={1}>
-            <Image source={require("@images/lock.webp")} />
-            <Text color="black60" pl={1} variant="xs">
+            <LockIcon fill="black60" />
+            <Text color="black60" pl={0.5} variant="xs">
               My Collection is not shared with sellers.
             </Text>
           </Flex>

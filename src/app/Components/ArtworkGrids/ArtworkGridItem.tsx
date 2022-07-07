@@ -1,8 +1,9 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
-import { ArtworkGridItem_artwork } from "__generated__/ArtworkGridItem_artwork.graphql"
+import { ArtworkGridItem_artwork$data } from "__generated__/ArtworkGridItem_artwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { getUrgencyTag } from "app/utils/getUrgencyTag"
@@ -11,16 +12,26 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
+import { useArtworkBidding } from "app/Websockets/auctions/useArtworkBidding"
+import {
+  Box,
+  Flex,
+  OpaqueImageView as NewOpaqueImageView,
+  Spacer,
+  Text,
+  TextProps,
+  Touchable,
+} from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { DurationProvider } from "../Countdown"
 import { LotCloseInfo } from "./LotCloseInfo"
+import { LotProgressBar } from "./LotProgressBar"
 
 export interface ArtworkProps {
-  artwork: ArtworkGridItem_artwork
+  artwork: ArtworkGridItem_artwork$data
   /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
   trackingFlow?: string
@@ -40,6 +51,8 @@ export interface ArtworkProps {
   hidePartner?: boolean
   /** Hide sale info */
   hideSaleInfo?: boolean
+  height?: number
+  width?: number
   /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
   /** styles for each field: allows for customization of each field */
@@ -58,6 +71,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   onPress,
   trackTap,
   itemIndex,
+  height,
+  width,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
@@ -77,6 +92,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
+  const enableNewOpaqueImageView = useFeatureFlag("AREnableNewOpaqueImageView")
 
   let filterParams: any
 
@@ -85,6 +101,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
     const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
     filterParams = filterArtworksParams(appliedFilters)
   }
+
+  const extendedBiddingEndAt = artwork.saleArtwork?.extendedBiddingEndAt
+  const lotEndAt = artwork.saleArtwork?.endAt
+  const biddingEndAt = extendedBiddingEndAt ?? lotEndAt
+  const lotID = artwork.saleArtwork?.lotID
+
+  const { currentBiddingEndAt, lotSaleExtended } = useArtworkBidding({
+    lotID,
+    lotEndAt,
+    biddingEndAt,
+  })
 
   const addArtworkToRecentSearches = () => {
     if (updateRecentSearchesOnTap) {
@@ -135,19 +162,37 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
   const saleInfo = saleMessageOrBidInfo({ artwork })
 
-  const urgencyTag = getUrgencyTag(artwork?.sale?.endAt)
-
   const cascadingEndTimeFeatureEnabled = useFeatureFlag("AREnableCascadingEndTimerSalePageGrid")
+  const endsAt =
+    cascadingEndTimeFeatureEnabled && artwork.sale?.cascadingEndTimeIntervalMinutes
+      ? currentBiddingEndAt
+      : artwork.saleArtwork?.endAt || artwork.sale?.endAt
+
+  const urgencyTag = getUrgencyTag(endsAt)
+
+  const canShowAuctionProgressBar =
+    cascadingEndTimeFeatureEnabled &&
+    !!artwork.sale?.extendedBiddingPeriodMinutes &&
+    !!artwork.sale?.extendedBiddingIntervalMinutes
 
   return (
     <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
       <View ref={itemRef}>
         {!!artwork.image && (
           <View>
-            <OpaqueImageView
-              aspectRatio={artwork.image?.aspectRatio ?? 1}
-              imageURL={artwork.image?.url}
-            />
+            {enableNewOpaqueImageView ? (
+              <NewOpaqueImageView
+                aspectRatio={artwork.image?.aspectRatio ?? 1}
+                imageURL={artwork.image?.url}
+                height={height}
+                width={width}
+              />
+            ) : (
+              <OpaqueImageView
+                aspectRatio={artwork.image?.aspectRatio ?? 1}
+                imageURL={artwork.image?.url}
+              />
+            )}
             {Boolean(
               !hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed
             ) && (
@@ -161,12 +206,26 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 borderRadius={2}
                 alignSelf="flex-start"
               >
-                <Sans size="2" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
+                <Text variant="xs" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
                   {urgencyTag}
-                </Sans>
+                </Text>
               </Flex>
             )}
           </View>
+        )}
+        {!!canShowAuctionProgressBar && (
+          <Box mt={1}>
+            <DurationProvider startAt={endsAt ?? undefined}>
+              <LotProgressBar
+                duration={null}
+                startAt={artwork.sale?.startAt}
+                extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
+                extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
+                biddingEndAt={endsAt}
+                hasBeenExtended={lotSaleExtended}
+              />
+            </DurationProvider>
+          </Box>
         )}
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
@@ -175,11 +234,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 Lot {artwork.saleArtwork.lotLabel}
               </Text>
               {!!artwork.sale?.cascadingEndTimeIntervalMinutes && !!cascadingEndTimeFeatureEnabled && (
-                <DurationProvider startAt={artwork.saleArtwork.endAt!}>
+                <DurationProvider startAt={endsAt ?? undefined}>
                   <LotCloseInfo
                     duration={null}
                     saleArtwork={artwork.saleArtwork}
                     sale={artwork.sale}
+                    lotEndAt={endsAt ?? undefined}
+                    hasBeenExtended={lotSaleExtended}
                   />
                 </DurationProvider>
               )}
@@ -315,6 +376,8 @@ export default createFragmentContainer(Artwork, {
         isClosed
         displayTimelyAt
         cascadingEndTimeIntervalMinutes
+        extendedBiddingPeriodMinutes
+        extendedBiddingIntervalMinutes
         endAt
         startAt
       }
@@ -326,8 +389,10 @@ export default createFragmentContainer(Artwork, {
         currentBid {
           display
         }
+        lotID
         lotLabel
         endAt
+        extendedBiddingEndAt
       }
       partner {
         name

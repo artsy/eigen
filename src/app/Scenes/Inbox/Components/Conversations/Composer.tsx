@@ -1,11 +1,11 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Composer_conversation } from "__generated__/Composer_conversation.graphql"
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
+import { Composer_conversation$data } from "__generated__/Composer_conversation.graphql"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { Button, ClassTheme, Flex, themeProps } from "palette"
 import React from "react"
 import { Keyboard, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import styled from "styled-components/native"
 import { ConversationCTAFragmentContainer } from "./ConversationCTA"
 
@@ -27,7 +27,7 @@ interface Props {
   disabled?: boolean
   onSubmit?: (text: string) => any
   value?: string
-  conversation: Composer_conversation
+  conversation: Composer_conversation$data
 }
 
 interface State {

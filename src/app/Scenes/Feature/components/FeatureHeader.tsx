@@ -1,16 +1,15 @@
-import { FeatureHeader_feature } from "__generated__/FeatureHeader_feature.graphql"
+import { FeatureHeader_feature$data } from "__generated__/FeatureHeader_feature.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Stack } from "app/Components/Stack"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import { Flex, FlexProps, Sans } from "palette"
-import React from "react"
+import { Flex, FlexProps, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { FeatureMarkdown } from "./FeatureMarkdown"
 
 export interface FeatureHeaderProps extends FlexProps {
-  feature: FeatureHeader_feature
+  feature: FeatureHeader_feature$data
 }
 
 export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
@@ -22,12 +21,15 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
     <OpaqueImageView imageURL={feature.image?.url} width={imageWidth} height={imageHeight} />
   )
   const title = (
-    <Sans size="8" style={{ fontSize: 42, lineHeight: 50 }} maxWidth="80%" textAlign="center">
+    <Text variant="lg" style={{ fontSize: 42, lineHeight: 50, maxWidth: "80%" }} textAlign="center">
       {feature.name}
-    </Sans>
+    </Text>
   )
   const subtitle = !!feature.subheadline && (
-    <FeatureMarkdown content={feature.subheadline} sansProps={{ textAlign: "center", size: "4" }} />
+    <FeatureMarkdown
+      content={feature.subheadline}
+      textProps={{ textAlign: "center", variant: "md" }}
+    />
   )
   return isPad() ? (
     <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black">

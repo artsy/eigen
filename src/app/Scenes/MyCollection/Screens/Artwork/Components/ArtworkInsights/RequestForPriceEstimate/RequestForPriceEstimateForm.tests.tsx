@@ -1,5 +1,4 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RequestForPriceEstimateForm } from "./RequestForPriceEstimateForm"
 
 const initialValues = {
@@ -20,7 +19,7 @@ jest.mock("formik", () => ({
 }))
 
 describe("RequestForPriceEstimateForm", () => {
-  const getWrapper = () => renderWithWrappersTL(<RequestForPriceEstimateForm />)
+  const getWrapper = () => renderWithWrappers(<RequestForPriceEstimateForm />)
   it("renders with fields prepopulated", () => {
     const tree = getWrapper()
     const nameInput = tree.getByTestId("request-price-estimate-name-input")

@@ -12,8 +12,7 @@ export const cacheMiddleware = () => {
 
     // If we have valid data in cache return
     if (isQuery && !cacheConfig.force) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const dataFromCache = await cache.get(queryID, variables)
+      const dataFromCache = await cache.get(queryID!, variables)
       if (dataFromCache) {
         return JSON.parse(dataFromCache)
       }

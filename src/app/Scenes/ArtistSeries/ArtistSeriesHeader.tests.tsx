@@ -1,11 +1,7 @@
-import {
-  ArtistSeriesHeaderTestsQuery,
-  ArtistSeriesHeaderTestsQueryRawResponse,
-} from "__generated__/ArtistSeriesHeaderTestsQuery.graphql"
+import { ArtistSeriesHeaderTestsQuery } from "__generated__/ArtistSeriesHeaderTestsQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -42,7 +38,7 @@ describe("Artist Series Header", () => {
 
   it("renders the Artist Series header", () => {
     const wrapper = () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -60,7 +56,7 @@ describe("Artist Series Header", () => {
   })
 })
 
-const ArtistSeriesHeaderFixture: ArtistSeriesHeaderTestsQueryRawResponse = {
+const ArtistSeriesHeaderFixture: ArtistSeriesHeaderTestsQuery["rawResponse"] = {
   artistSeries: {
     image: {
       url: "https://www.imagesofpumpkins.cloudfront.net/primary/square.jpg",

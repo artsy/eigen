@@ -1,11 +1,10 @@
-import { ShowHours_show } from "__generated__/ShowHours_show.graphql"
+import { ShowHours_show$data } from "__generated__/ShowHours_show.graphql"
 import { BoxProps } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ShowLocationHoursFragmentContainer as ShowLocationHours } from "./ShowLocationHours"
 
 export interface ShowHoursProps extends BoxProps {
-  show: ShowHours_show
+  show: ShowHours_show$data
 }
 
 export const ShowHours: React.FC<ShowHoursProps> = ({ show, ...rest }) => {

@@ -1,4 +1,4 @@
-import { TagQuery, TagQueryResponse } from "__generated__/TagQuery.graphql"
+import { TagQuery } from "__generated__/TagQuery.graphql"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
 import About from "app/Components/Tag/About"
 import { TagArtworksPaginationContainer } from "app/Components/Tag/TagArtworks"
@@ -8,7 +8,6 @@ import Header from "app/Scenes/Tag/TagHeader"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Flex, useTheme } from "palette"
-import React from "react"
 import { View } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { graphql, QueryRenderer } from "react-relay"
@@ -23,7 +22,7 @@ const TABS = {
 
 interface TagProps {
   tagID?: string
-  tag: NonNullable<TagQueryResponse["tag"]>
+  tag: NonNullable<TagQuery["response"]["tag"]>
 }
 
 interface TagQueryRendererProps {

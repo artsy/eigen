@@ -11,7 +11,6 @@ import {
   MoneyFillIcon,
   Text,
 } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
 

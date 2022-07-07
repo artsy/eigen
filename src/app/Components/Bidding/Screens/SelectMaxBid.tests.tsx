@@ -2,16 +2,15 @@ jest.mock("app/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
   PriceSummary: () => null,
 }))
 
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import "react-native"
 import { FakeNavigator } from "../Helpers/FakeNavigator"
 
 import Spinner from "app/Components/Spinner"
 import { Button } from "palette"
 
-import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
-import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
+import { SelectMaxBid_me$data } from "__generated__/SelectMaxBid_me.graphql"
+import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 import { ActivityIndicator } from "react-native"
 import { SelectMaxBid } from "./SelectMaxBid"
 
@@ -19,7 +18,7 @@ jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
 const Me = {
   has_qualified_credit_cards: true,
-} as any as SelectMaxBid_me
+} as any as SelectMaxBid_me$data
 
 const SaleArtwork = {
   id: "sale-artwork-id",
@@ -58,7 +57,7 @@ const SaleArtwork = {
       cents: 5500000,
     },
   ],
-} as any as SelectMaxBid_sale_artwork
+} as any as SelectMaxBid_sale_artwork$data
 
 let fakeNavigator: FakeNavigator
 let fakeRelay: {
@@ -75,7 +74,7 @@ beforeEach(() => {
 })
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
+  renderWithWrappersLEGACY(
     <SelectMaxBid
       me={Me}
       sale_artwork={SaleArtwork}
@@ -86,7 +85,7 @@ it("renders without throwing an error", () => {
 })
 
 it("shows a spinner while fetching new bid increments", () => {
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <SelectMaxBid
       me={Me}
       sale_artwork={SaleArtwork}
@@ -102,7 +101,7 @@ it("shows a spinner while fetching new bid increments", () => {
 })
 
 it("refetches in next component's refreshSaleArtwork", () => {
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <SelectMaxBid
       me={Me}
       sale_artwork={SaleArtwork}
@@ -127,7 +126,7 @@ it("refetches in next component's refreshSaleArtwork", () => {
 })
 
 it("removes the spinner once the refetch is complete", () => {
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <SelectMaxBid
       me={Me}
       sale_artwork={SaleArtwork}

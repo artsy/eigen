@@ -1,5 +1,4 @@
 import { themeGet } from "@styled-system/theme-get"
-import React from "react"
 import styled, { css } from "styled-components/native"
 import { CheckIcon } from "../../svgs/CheckIcon"
 import { Box } from "../Box"

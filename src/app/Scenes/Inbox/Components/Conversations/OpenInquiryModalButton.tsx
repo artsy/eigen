@@ -1,9 +1,8 @@
 import { ActionType, OwnerType, TappedBuyNow, TappedMakeOffer } from "@artsy/cohesion"
-import { OpenInquiryModalButton_artwork } from "__generated__/OpenInquiryModalButton_artwork.graphql"
+import { OpenInquiryModalButton_artwork$data } from "__generated__/OpenInquiryModalButton_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Button, Flex, ShieldIcon, Spacer, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ShadowSeparator } from "../ShadowSeparator"
@@ -11,7 +10,7 @@ import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButto
 import { InquiryPurchaseButtonFragmentContainer } from "./InquiryPurchaseButton"
 
 export interface OpenInquiryModalButtonProps {
-  artwork: OpenInquiryModalButton_artwork
+  artwork: OpenInquiryModalButton_artwork$data
   conversationID: string
 }
 
@@ -111,7 +110,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
             {(!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && (
               <Flex flex={1}>
                 <InquiryMakeOfferButtonFragmentContainer
-                  variant="outline"
+                  variant={isAcquireableFromInquiry ? "outline" : "fillDark"}
                   artwork={artwork}
                   editionSetID={editionSets?.[0]?.internalID || null}
                   conversationID={conversationID}
@@ -135,7 +134,10 @@ const tracks = {
     context_owner_type: OwnerType.conversation,
     impulse_conversation_id: id,
   }),
-  trackTappedPurchase: (id: string, artwork: OpenInquiryModalButton_artwork): TappedBuyNow => ({
+  trackTappedPurchase: (
+    id: string,
+    artwork: OpenInquiryModalButton_artwork$data
+  ): TappedBuyNow => ({
     action: ActionType.tappedBuyNow,
     context_owner_type: OwnerType.conversation,
     context_owner_id: artwork.internalID,

@@ -1,10 +1,9 @@
-import { MarketStats_priceInsightsConnection } from "__generated__/MarketStats_priceInsightsConnection.graphql"
+import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { DecreaseIcon, IncreaseIcon } from "palette"
-import React from "react"
 import { ReactTestInstance } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
@@ -23,15 +22,15 @@ describe("MarketStats", () => {
   }
 
   it("renders market stats", () => {
-    const tree = renderWithWrappers(<TestWrapper />).root
-    mockEnvironmentPayload(environment)
+    const tree = renderWithWrappersLEGACY(<TestWrapper />).root
+    resolveMostRecentRelayOperation(environment)
     expect(tree.findAllByType(MarketStatsFragmentContainer).length).toEqual(1)
   })
 
   describe("available mediums", () => {
     let tree: ReactTestInstance
     beforeEach(() => {
-      tree = renderWithWrappers(<TestWrapper />).root
+      tree = renderWithWrappersLEGACY(<TestWrapper />).root
       const priceInsights = {
         edges: [
           { node: { medium: "crayon", annualLotsSold: 123 } },
@@ -39,7 +38,7 @@ describe("MarketStats", () => {
         ],
       }
 
-      mockEnvironmentPayload(environment, {
+      resolveMostRecentRelayOperation(environment, {
         PriceInsightConnection: () => priceInsights,
       })
     })
@@ -58,10 +57,10 @@ describe("MarketStats", () => {
   describe("median sale over estimate icons", () => {
     function renderWithOnePriceInsightNode(
       nodeSpecs: Partial<
-        NonNullable<NonNullable<MarketStats_priceInsightsConnection["edges"]>[0]>["node"]
+        NonNullable<NonNullable<MarketStats_priceInsightsConnection$data["edges"]>[0]>["node"]
       >
     ) {
-      const tree = renderWithWrappers(<TestWrapper />).root
+      const tree = renderWithWrappersLEGACY(<TestWrapper />).root
       const priceInsights = {
         edges: [
           {
@@ -72,7 +71,7 @@ describe("MarketStats", () => {
         ],
       }
 
-      mockEnvironmentPayload(environment, {
+      resolveMostRecentRelayOperation(environment, {
         PriceInsightConnection: () => priceInsights,
       })
 
@@ -107,8 +106,8 @@ describe("MarketStats", () => {
 
   describe("tracking", () => {
     it("tracks the correct event when info bubble is tapped", () => {
-      const tree = renderWithWrappers(<TestWrapper />).root
-      mockEnvironmentPayload(environment)
+      const tree = renderWithWrappersLEGACY(<TestWrapper />).root
+      resolveMostRecentRelayOperation(environment)
 
       const infoBubble = tree.findByType(InfoButton)
       infoBubble.props.trackEvent()

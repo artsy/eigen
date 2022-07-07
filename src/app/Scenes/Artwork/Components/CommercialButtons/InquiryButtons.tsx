@@ -1,5 +1,5 @@
 import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
-import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
+import { InquiryButtons_artwork$data } from "__generated__/InquiryButtons_artwork.graphql"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import {
   ArtworkInquiryContext,
@@ -13,7 +13,7 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
 export type InquiryButtonsProps = Omit<ButtonProps, "children"> & {
-  artwork: InquiryButtons_artwork
+  artwork: InquiryButtons_artwork$data
 }
 
 export interface InquiryButtonsState {

@@ -1,4 +1,4 @@
-import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
+import { GenericGrid_artworks$data } from "__generated__/GenericGrid_artworks.graphql"
 import Spinner from "app/Components/Spinner"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -9,7 +9,7 @@ import { Stack } from "../Stack"
 import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
 interface Props {
-  artworks: GenericGrid_artworks
+  artworks: GenericGrid_artworks$data
   sectionDirection?: "column" // FIXME: We don’t actually support more options atm
   sectionMargin?: number
   itemMargin?: number
@@ -28,7 +28,7 @@ interface State {
 
 type PropsForArtwork = Omit<ArtworkProps, "artwork">
 
-type GenericArtworkType = GenericGrid_artworks extends ReadonlyArray<infer GenericArtwork>
+type GenericArtworkType = GenericGrid_artworks$data extends ReadonlyArray<infer GenericArtwork>
   ? GenericArtwork
   : never
 
@@ -136,10 +136,17 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
       for (let row = 0; row < artworks.length; row++) {
         const artwork = artworks[row]
         const itemIndex = row * this.state.sectionCount + column
+
+        const aspectRatio = artwork.image?.aspectRatio ?? 1
+        const imgWidth = this.state.sectionDimension
+        const imgHeight = imgWidth / aspectRatio
+
         artworkComponents.push(
           <Artwork
             artwork={artwork}
             key={artwork.id + column + row}
+            height={imgHeight}
+            width={imgWidth}
             trackingFlow={trackingFlow}
             contextModule={contextModule}
             itemIndex={itemIndex}

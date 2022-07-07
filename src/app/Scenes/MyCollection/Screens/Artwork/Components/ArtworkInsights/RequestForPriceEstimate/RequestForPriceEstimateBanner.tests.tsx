@@ -1,8 +1,7 @@
 import { act, fireEvent } from "@testing-library/react-native"
 import { RequestForPriceEstimateBannerTestsQuery } from "__generated__/RequestForPriceEstimateBannerTestsQuery.graphql"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { RequestForPriceEstimateBanner } from "./RequestForPriceEstimateBanner"
@@ -58,7 +57,7 @@ describe("RequestForPriceEstimateBanner", () => {
   }
 
   it("renders without throwing an error", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
     resolveData({
       MarketPriceInsights: () => ({
         demandRank: 7.5,
@@ -69,7 +68,7 @@ describe("RequestForPriceEstimateBanner", () => {
   })
 
   it("tracks analytics event when RequestForEstimate button is tapped", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
     resolveData({
       Artwork: () => ({
         internalID: "artwork-id",
@@ -90,7 +89,8 @@ describe("RequestForPriceEstimateBanner", () => {
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedRequestPriceEstimate",
       context_module: "myCollectionArtworkInsights",
-      context_screen: "myCollectionArtwork",
+      context_screen: "MyCollectionArtworkInsights",
+      context_screen_owner_type: "myCollectionArtwork",
       context_screen_owner_id: "artwork-id",
       context_screen_owner_slug: "artwork-slug",
       demand_index: 7.5,

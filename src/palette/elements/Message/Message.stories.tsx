@@ -1,6 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
 import { Message } from "palette"
-import React from "react"
 import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 

@@ -1,9 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedSkip } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
-import {
-  MyCollectionArtworkFormArtworkQuery,
-  MyCollectionArtworkFormArtworkQueryResponse,
-} from "__generated__/MyCollectionArtworkFormArtworkQuery.graphql"
+import { MyCollectionArtworkFormArtworkQuery } from "__generated__/MyCollectionArtworkFormArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -125,7 +122,7 @@ export const MyCollectionArtworkFormArtwork: React.FC<
 
 const fetchArtwork = async (
   artworkID: string
-): Promise<MyCollectionArtworkFormArtworkQueryResponse["artwork"] | undefined> => {
+): Promise<MyCollectionArtworkFormArtworkQuery["response"]["artwork"] | undefined> => {
   const result = await fetchQuery<MyCollectionArtworkFormArtworkQuery>(
     defaultEnvironment,
     graphql`

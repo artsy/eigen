@@ -1,16 +1,12 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import {
-  ArtistSeriesMoreSeriesTestsQuery,
-  ArtistSeriesMoreSeriesTestsQueryRawResponse,
-} from "__generated__/ArtistSeriesMoreSeriesTestsQuery.graphql"
+import { ArtistSeriesMoreSeriesTestsQuery } from "__generated__/ArtistSeriesMoreSeriesTestsQuery.graphql"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import {
   ArtistSeriesMoreSeries,
   ArtistSeriesMoreSeriesFragmentContainer,
 } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -62,7 +58,7 @@ describe("ArtistSeriesMoreSeries", () => {
   )
 
   const getWrapper = (testFixture: any) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -136,7 +132,7 @@ describe("ArtistSeriesMoreSeries", () => {
   })
 })
 
-const ArtistSeriesMoreSeriesNoSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse = {
+const ArtistSeriesMoreSeriesNoSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawResponse"] = {
   artistSeries: {
     artist: [
       {
@@ -152,7 +148,7 @@ const ArtistSeriesMoreSeriesNoSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRaw
   },
 }
 
-const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse = {
+const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQuery["rawResponse"] = {
   artistSeries: {
     artist: [
       {
@@ -229,7 +225,7 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse
   },
 }
 
-const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse =
+const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeriesTestsQuery["rawResponse"] =
   {
     artistSeries: {
       artist: [

@@ -1,3 +1,7 @@
-This update includes a number of improvements, bug fixes, performance optimizations and My Collection filter improvements.
+This update includes a number of bug fixes, and improvements like:
+
+- New insights for artworks uploaded to My Collection
+- Create Alerts now also directly on individual artwork pages or sold works
+- Sign in/up using your Google account
 
 Have feedback? Email us at support@artsy.net

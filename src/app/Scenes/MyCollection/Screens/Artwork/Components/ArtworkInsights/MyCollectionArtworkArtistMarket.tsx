@@ -4,7 +4,6 @@ import { MyCollectionArtworkArtistMarket_marketPriceInsights$key } from "__gener
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
 import { Flex, Spacer, Text } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Field } from "../Field"
@@ -19,15 +18,9 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
 ) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<MyCollectionArtworkArtistMarket_artwork$key>(
-    artworkFragment,
-    props.artwork
-  )
+  const artwork = useFragment(artworkFragment, props.artwork)
 
-  const marketPriceInsights = useFragment<MyCollectionArtworkArtistMarket_marketPriceInsights$key>(
-    marketPriceInsightsFragment,
-    props.marketPriceInsights
-  )
+  const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
 
   if (!artwork || !marketPriceInsights) {
     return null

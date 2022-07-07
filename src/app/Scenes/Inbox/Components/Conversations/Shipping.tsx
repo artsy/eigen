@@ -1,11 +1,10 @@
-import { Shipping_order } from "__generated__/Shipping_order.graphql"
+import { Shipping_order$data } from "__generated__/Shipping_order.graphql"
 import { track as _track } from "app/utils/track"
 import { Flex, Separator, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ShippingProps {
-  order: Shipping_order
+  order: Shipping_order$data
 }
 
 export const Shipping: React.FC<ShippingProps> = ({ order }) => {

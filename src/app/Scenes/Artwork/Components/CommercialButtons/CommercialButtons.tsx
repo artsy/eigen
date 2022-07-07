@@ -1,8 +1,7 @@
-import { CommercialButtons_artwork } from "__generated__/CommercialButtons_artwork.graphql"
-import { CommercialButtons_me } from "__generated__/CommercialButtons_me.graphql"
+import { CommercialButtons_artwork$data } from "__generated__/CommercialButtons_artwork.graphql"
+import { CommercialButtons_me$data } from "__generated__/CommercialButtons_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { Spacer } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { BidButtonFragmentContainer } from "./BidButton"
 import { BuyNowButtonFragmentContainer } from "./BuyNowButton"
@@ -10,10 +9,11 @@ import { InquiryButtonsFragmentContainer } from "./InquiryButtons"
 import { MakeOfferButtonFragmentContainer } from "./MakeOfferButton"
 
 export interface CommercialButtonProps {
-  artwork: CommercialButtons_artwork
-  me: CommercialButtons_me
+  artwork: CommercialButtons_artwork$data
+  me: CommercialButtons_me$data
   // EditionSetID is passed down from the edition selected by the user
   editionSetID?: string
+  // FIXME: auctionState can be undefined
   auctionState: AuctionTimerState
 }
 

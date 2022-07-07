@@ -1,13 +1,12 @@
 import {
   setAsDefaultAddressMutation,
-  setAsDefaultAddressMutationResponse,
   UpdateUserDefaultAddressInput,
 } from "__generated__/setAsDefaultAddressMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
 export const setAsDefaultAddress = (id: UpdateUserDefaultAddressInput["userAddressID"]) => {
-  return new Promise<setAsDefaultAddressMutationResponse>((resolve, reject) => {
+  return new Promise<setAsDefaultAddressMutation["response"]>((resolve, reject) => {
     commitMutation<setAsDefaultAddressMutation>(defaultEnvironment, {
       variables: {
         input: {

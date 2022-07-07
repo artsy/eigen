@@ -1,11 +1,11 @@
 import { ArtistConsignButtonTestsQuery } from "__generated__/ArtistConsignButtonTestsQuery.graphql"
+import { ModalStack } from "app/navigation/ModalStack"
 import { navigate } from "app/navigation/navigate"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -13,6 +13,14 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "./ArtistConsignButton"
 
 jest.unmock("react-relay")
+
+import { GlobalStoreProvider, useSelectedTab } from "app/store/GlobalStore"
+
+jest.mock("app/store/GlobalStore", () => ({
+  GlobalStoreProvider: jest.requireActual("app/store/GlobalStore").GlobalStoreProvider,
+  GlobalStore: jest.requireActual("app/store/GlobalStore").GlobalStore,
+  useSelectedTab: jest.fn(() => "home"),
+}))
 
 describe("ArtistConsignButton", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -32,7 +40,9 @@ describe("ArtistConsignButton", () => {
         if (props) {
           return (
             <GlobalStoreProvider>
-              <ArtistConsignButtonFragmentContainer artist={props.artist as any} />
+              <ModalStack>
+                <ArtistConsignButtonFragmentContainer artist={props.artist as any} />
+              </ModalStack>
             </GlobalStoreProvider>
           )
         } else if (error) {
@@ -67,7 +77,7 @@ describe("ArtistConsignButton", () => {
     }
 
     it("renders microfunnel correctly", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "ArtistConsignButtonTestsQuery"
       )
@@ -82,7 +92,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("renders target supply correctly", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
         "ArtistConsignButtonTestsQuery"
       )
@@ -100,7 +110,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("guards against missing imageURL", async () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         const responseWithImage = cloneDeep(response)
 
@@ -120,7 +130,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("tracks clicks on outer container", async () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -156,7 +166,7 @@ describe("ArtistConsignButton", () => {
     }
 
     it("renders with data", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -169,7 +179,7 @@ describe("ArtistConsignButton", () => {
     })
 
     it("tracks clicks on outer container", async () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -205,11 +215,7 @@ describe("ArtistConsignButton", () => {
     }
 
     it("sends user to sales tab if not already there", () => {
-      __globalStoreTestUtils__?.injectState({
-        bottomTabs: { sessionState: { selectedTab: "home" } },
-      })
-
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -224,11 +230,9 @@ describe("ArtistConsignButton", () => {
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {
-      __globalStoreTestUtils__?.injectState({
-        bottomTabs: { sessionState: { selectedTab: "sell" } },
-      })
+      ;(useSelectedTab as any).mockImplementation(() => "sell")
 
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],

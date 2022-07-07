@@ -14,16 +14,18 @@ Links:
 
 ## I want to write a test.
 
-We use `@testing-library/react-native` and our helper `renderWithWrappersTL`.
-We try to use `testID` to find elements.
+- We use `@testing-library/react-native` and our helper `renderWithWrappers`.
+- We refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/) from `@testing-library/react-native` for querying components
 
-Links:
+Example Links:
 
-- [Dialog.tests.tsx](src/palette/elements/Dialog/Dialog.tests.tsx)
+- [Search.tests.tsx](src/app/Scenes/Search/Search.tests.tsx)
+- [CustomSizeInputs.tests.tsx](src/app/Components/ArtworkFilter/Filters/CustomSizeInputs.tests.tsx)
+- [SizesOptionsScreen.tests.tsx](src/app/Components/ArtworkFilter/Filters/SizesOptionsScreen.tests.tsx)
 
 ## I want to write a test with relay.
 
-Similar to above. For `relay` testing we use `mockEnvironmentPayload` to mock the most recent operation.
+Similar to above. For `relay` testing we use `resolveMostRecentRelayOperation` to mock the most recent operation.
 Look at https://github.com/artsy/relay-workshop for a great tutorial of how we use relay and test with it.
 
 Links:

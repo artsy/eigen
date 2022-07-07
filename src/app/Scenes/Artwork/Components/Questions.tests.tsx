@@ -1,7 +1,6 @@
-import { waitFor } from "@testing-library/react-native"
 import { Questions_Test_Query } from "__generated__/Questions_Test_Query.graphql"
-import { mockEnvironmentPayloadAndEnsureUpdated } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Suspense } from "react"
 import { Text } from "react-native"
 import { graphql, RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay"
@@ -29,17 +28,17 @@ describe("Questions", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders", async () => {
-    const { getByText, getAllByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <RelayEnvironmentProvider environment={mockEnvironment}>
         <Suspense fallback={<Text>SusLoading</Text>}>
           <TestRenderer />
         </Suspense>
       </RelayEnvironmentProvider>
     )
-    mockEnvironmentPayloadAndEnsureUpdated(mockEnvironment, { Artwork: () => ({}) })
-    await waitFor(() => expect(getByText("SusLoading")).toBeDefined())
+    resolveMostRecentRelayOperation(mockEnvironment, { Artwork: () => ({}) })
+    expect(queryByText("SusLoading")).toBeDefined()
 
-    expect(getByText("Questions about this piece?")).toBeDefined()
-    expect(getAllByText("Contact Gallery")).toHaveLength(2)
+    expect(queryByText("Questions about this piece?")).toBeDefined()
+    expect(queryByText("Contact Gallery")).toBeDefined()
   })
 })

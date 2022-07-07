@@ -4,11 +4,10 @@ import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
 import { Avatar } from "palette"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -55,8 +54,8 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(mockEnvironment, mockResolvers)
+    const tree = renderWithWrappers(<TestRenderer />)
+    resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
     return tree
   }
 

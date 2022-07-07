@@ -1,12 +1,11 @@
-import { SoldBySection_soldBy } from "__generated__/SoldBySection_soldBy.graphql"
+import { SoldBySection_soldBy$data } from "__generated__/SoldBySection_soldBy.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { DateTime } from "luxon"
 import { Box, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  soldBy: SoldBySection_soldBy
+  soldBy: SoldBySection_soldBy$data
 }
 
 export const SoldBySection: React.FC<Props> = ({ soldBy }) => {

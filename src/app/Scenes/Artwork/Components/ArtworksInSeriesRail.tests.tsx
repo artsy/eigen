@@ -1,12 +1,8 @@
-import {
-  ArtworksInSeriesRailTestsQuery,
-  ArtworksInSeriesRailTestsQueryRawResponse,
-} from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
+import { ArtworksInSeriesRailTestsQuery } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { navigate } from "app/navigation/navigate"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -48,7 +44,7 @@ describe("ArtworksInSeriesRail", () => {
   )
 
   const getWrapper = () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -111,7 +107,7 @@ describe("ArtworksInSeriesRail", () => {
     })
   })
 
-  const ArtworksInSeriesRailFixture: ArtworksInSeriesRailTestsQueryRawResponse = {
+  const ArtworksInSeriesRailFixture: ArtworksInSeriesRailTestsQuery["rawResponse"] = {
     artwork: {
       id: "asdf123",
       internalID: "artwork124",

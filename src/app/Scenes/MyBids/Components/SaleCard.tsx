@@ -1,12 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { SaleCard_me } from "__generated__/SaleCard_me.graphql"
-import { SaleCard_sale } from "__generated__/SaleCard_sale.graphql"
+import { SaleCard_me$data } from "__generated__/SaleCard_me.graphql"
+import { SaleCard_sale$data } from "__generated__/SaleCard_sale.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { SaleInfo } from "app/Scenes/MyBids/Components/SaleInfo"
 import { ArrowRightIcon, Flex, Separator, Text, Touchable } from "palette"
 import { ClockFill, ExclamationMarkCircleFill } from "palette/svgs/sf"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { CompleteRegistrationCTAWrapper } from "../Components/CompleteRegistrationCTAWrapper"
@@ -35,8 +34,8 @@ export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string 
 )
 
 interface SaleCardProps {
-  sale: SaleCard_sale
-  me: SaleCard_me
+  sale: SaleCard_sale$data
+  me: SaleCard_me$data
   smallScreen?: boolean
   hideChildren?: boolean
 }

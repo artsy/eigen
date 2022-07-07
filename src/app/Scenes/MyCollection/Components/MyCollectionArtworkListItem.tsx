@@ -4,8 +4,8 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import HighDemandIcon from "app/Icons/HighDemandIcon"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
+import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
-import React from "react"
 import { useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { graphql } from "relay-runtime"
@@ -17,10 +17,9 @@ export const MyCollectionArtworkListItem: React.FC<{
 }> = ({ ...restProps }) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<MyCollectionArtworkListItem_artwork$key>(
-    artworkFragment,
-    restProps.artwork
-  )
+  const artwork = useFragment(artworkFragment, restProps.artwork)
+
+  const { artist, date, image, internalID, medium, slug, title } = artwork
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
@@ -29,23 +28,26 @@ export const MyCollectionArtworkListItem: React.FC<{
 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
+  const imageDimensions = getImageSquareDimensions(
+    artwork.image?.height,
+    artwork.image?.width,
+    ARTWORK_LIST_IMAGE_SIZE
+  )
+
   return (
     <Touchable
       testID="list-item-touchable"
       underlayColor="black5"
       onPress={() => {
-        trackEvent(tracks.tappedCollectedArtwork(artwork.internalID, artwork.slug))
+        trackEvent(tracks.tappedCollectedArtwork(internalID, slug))
 
-        navigate(`/my-collection/artwork/${artwork.slug}`, {
-          passProps: {
-            medium: artwork.medium,
-            artistInternalID: artwork.artist?.internalID,
-          },
+        navigate(`/my-collection/artwork/${slug}`, {
+          passProps: { medium, artistInternalID: artist?.internalID },
         })
       }}
     >
       <Flex pb={1} flexDirection="row">
-        {!artwork.image?.url ? (
+        {!image?.url ? (
           <Flex
             testID="no-artwork-icon"
             width={ARTWORK_LIST_IMAGE_SIZE}
@@ -63,33 +65,36 @@ export const MyCollectionArtworkListItem: React.FC<{
             borderRadius={2}
             alignItems="center"
             justifyContent="center"
-            overflow="hidden"
             // To align the image with the text we have to add top margin to compensate the line height.
             style={{ marginTop: 3 }}
           >
             <OpaqueImageView
-              width={ARTWORK_LIST_IMAGE_SIZE}
-              height={ARTWORK_LIST_IMAGE_SIZE}
-              imageURL={artwork.image.url}
-              aspectRatio={artwork.image.aspectRatio}
+              imageURL={image.url}
+              width={imageDimensions.width}
+              height={imageDimensions.height}
+              resizeMode="contain"
+              aspectRatio={image.aspectRatio}
             />
           </Flex>
         )}
 
         <Flex pl={15} flex={1} style={{ marginTop: 3 }}>
-          {!!artwork.artist?.name && (
-            <Text variant="xs" fontWeight="bold" testID="artist-name">
-              {artwork.artist?.name}
+          {!!artist?.name && (
+            <Text variant="xs" testID="artist-name">
+              {artist?.name}
             </Text>
           )}
-          {!!artwork.title && (
-            <Text variant="xs" color="black60" testID="artwork-title">
-              {artwork.title}
+          {!!title && (
+            <Text variant="xs" italic color="black60" testID="artwork-title">
+              {title}
+              <Text variant="xs" color="black60" testID="artwork-date">
+                {date ? `, ${date}` : ""}
+              </Text>
             </Text>
           )}
-          {!!artwork.medium && (
+          {!!medium && (
             <Text variant="xs" color="black60" testID="artwork-medium">
-              {artwork.medium}
+              {medium}
             </Text>
           )}
         </Flex>
@@ -123,6 +128,8 @@ const artworkFragment = graphql`
     image {
       url(version: "small")
       aspectRatio
+      width
+      height
     }
     artistNames
     medium

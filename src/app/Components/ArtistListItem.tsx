@@ -1,4 +1,4 @@
-import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
+import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { navigate } from "app/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
@@ -10,7 +10,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 interface Props {
-  artist: ArtistListItem_artist
+  artist: ArtistListItem_artist$data
   relay: RelayProp
   Component?: any
   contextModule?: string
@@ -79,7 +79,6 @@ export class ArtistListItem extends React.Component<Props, State> {
     )
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   @track((props: Props) => ({
     action_name: props.artist.is_followed
       ? Schema.ActionNames.ArtistFollow
@@ -88,7 +87,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     owner_id: props.artist.internalID,
     owner_slug: props.artist.slug,
     owner_type: Schema.OwnerEntityTypes.Artist,
-    context_module: props.contextModule ? props.contextModule : null,
+    context_module: props.contextModule,
   }))
   handleShowSuccessfullyUpdated() {
     this.setState({

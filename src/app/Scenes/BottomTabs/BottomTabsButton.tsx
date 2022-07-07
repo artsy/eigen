@@ -1,10 +1,9 @@
 import { tappedTabBar } from "@artsy/cohesion"
-import { PopIn } from "app/Components/PopIn"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { switchTab } from "app/navigation/navigate"
 import { VisualClueName } from "app/store/config/visualClues"
 import { unsafe__getSelectedTab, useSelectedTab, useVisualClue } from "app/store/GlobalStore"
-import { Sans, useColor } from "palette"
+import { PopIn, Text, useColor } from "palette"
 import { VisualClueDot } from "palette/elements/VisualClue"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native"
@@ -155,9 +154,9 @@ const Badge: React.FC<{ count: number }> = ({ count }) => {
           backgroundColor: color("red100"),
         }}
       >
-        <Sans size="1" weight="medium" color="white">
+        <Text variant="xs" weight="medium" color="white">
           {count > 99 ? "99+" : count}
-        </Sans>
+        </Text>
       </View>
     </View>
   )

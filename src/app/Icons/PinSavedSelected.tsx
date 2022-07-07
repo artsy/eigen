@@ -1,4 +1,3 @@
-import React from "react"
 import Svg, { G, Path, SvgProps } from "react-native-svg"
 
 interface PinProps extends SvgProps {

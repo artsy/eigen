@@ -163,7 +163,6 @@ describe("artsy app store migrations", () => {
       userAgent: "Jest Unit Tests",
       authenticationToken: null as any,
       launchCount: 1,
-      deviceId: "testDevice",
       userID: null as any,
       userEmail: null as any,
     }
@@ -691,5 +690,25 @@ describe("App version Versions.AddDirtyFormValuesToSubmissionState", () => {
         zipCode: "",
       },
     })
+  })
+})
+
+describe("App version Versions.RemoveDeviceId", () => {
+  const migrationToTest = Versions.RemoveDeviceId
+
+  it("removes deviceId", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    // this test is kinda unnecessary, since `native` is not really possible to test without actually testing the native code.
+    // but i guess good to just make sure of the undefined, in case we ever break this somehow.
+    expect(migratedState.native.deviceId).toBe(undefined)
   })
 })

@@ -9,7 +9,6 @@ import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterS
 import { GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockNavigate } from "app/tests/navigationMocks"
 import { Theme } from "palette"
-import React from "react"
 
 export const closeModalMock = jest.fn()
 

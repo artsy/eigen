@@ -1,15 +1,14 @@
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import RelatedArtists from "../RelatedArtists/RelatedArtists"
 import Biography from "./Biography"
 
-import { About_gene } from "__generated__/About_gene.graphql"
+import { About_gene$data } from "__generated__/About_gene.graphql"
 import { Separator } from "palette"
 import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
 interface Props {
-  gene: About_gene
+  gene: About_gene$data
 }
 
 const About: React.FC<Props> = ({ gene }) => {

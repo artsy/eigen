@@ -1,12 +1,13 @@
-import { FollowArtistLink_artist } from "__generated__/FollowArtistLink_artist.graphql"
+import { captureMessage } from "@sentry/react-native"
+import { FollowArtistLink_artist$data } from "__generated__/FollowArtistLink_artist.graphql"
 import { FollowArtistLinkMutation } from "__generated__/FollowArtistLinkMutation.graphql"
 import { Schema, track } from "app/utils/track"
-import { Sans, Touchable } from "palette"
+import { Text, Touchable } from "palette"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
-  artist: FollowArtistLink_artist
+  artist: FollowArtistLink_artist$data
   relay: RelayProp
   contextModule?: string
 }
@@ -54,6 +55,15 @@ export class FollowArtistLink extends React.Component<Props> {
           },
         },
       },
+      onError: (error) => {
+        if (__TEST__) {
+          return
+        } else if (__DEV__) {
+          console.error(error)
+        } else {
+          captureMessage(error.stack!)
+        }
+      },
     })
   }
 
@@ -61,9 +71,9 @@ export class FollowArtistLink extends React.Component<Props> {
     const followButtonText = this.props.artist.is_followed ? "Following" : "Follow"
     return (
       <Touchable onPress={() => this.handleFollowArtist()} haptic noFeedback>
-        <Sans color="black60" weight="medium" size="3t" py="5px">
+        <Text variant="sm" color="black60" weight="medium" py="5px">
           {followButtonText}
-        </Sans>
+        </Text>
       </Touchable>
     )
   }

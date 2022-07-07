@@ -1,11 +1,10 @@
 import MapboxGL, { MapViewProps, OnPressEvent } from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
-import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
+import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import { Pin } from "app/Icons/Pin"
 import PinFairSelected from "app/Icons/PinFairSelected"
 import PinSavedSelected from "app/Icons/PinSavedSelected"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { SafeAreaInsets } from "app/types/SafeAreaInsets"
 import {
   convertCityToGeoJSON,
   fairToGeoCityFairs,
@@ -14,13 +13,14 @@ import {
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEqual, uniq } from "lodash"
-import { Box, ClassTheme, Flex, Sans } from "palette"
+import { Box, ClassTheme, Flex, Text } from "palette"
 import React from "react"
 import { Animated, Dimensions, Image, View } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
 import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
+import { SafeAreaInsets } from "shared/hooks"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { cityTabs } from "../City/cityTabs"
@@ -70,7 +70,7 @@ interface Props {
   /** Should the map buttons be hidden...  */
   hideMapButtons: boolean
   /** The map API entry-point */
-  viewer?: GlobalMap_viewer
+  viewer?: GlobalMap_viewer$data
   /** API stuff */
   relay?: RelayProp
   /** Tracking */
@@ -368,9 +368,9 @@ export class GlobalMap extends React.Component<Props, State> {
                 coordinate={[clusterLat, clusterLng]}
               >
                 <SelectedCluster width={radius} height={radius}>
-                  <Sans size="3" weight="medium" color={color("white100")}>
+                  <Text variant="sm" weight="medium" color={color("white100")}>
                     {pointCount}
-                  </Sans>
+                  </Text>
                 </SelectedCluster>
               </MapboxGL.PointAnnotation>
             )}
@@ -565,7 +565,7 @@ export class GlobalMap extends React.Component<Props, State> {
         {({ color }) => (
           <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("black5") }}>
             <LoadingScreen
-              source={require("../../../../images/map-bg.webp")}
+              source={require("images/map-bg.webp")}
               resizeMode="cover"
               style={{ ...this.backgroundImageSize }}
             />

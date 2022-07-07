@@ -1,19 +1,19 @@
-import { AuctionResultListItem_auctionResult } from "__generated__/AuctionResultListItem_auctionResult.graphql"
+import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
-import { bullet, Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
-import React from "react"
+import { bullet, Flex, NoArtworkIcon, Spacer, Text, Touchable, useColor } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { AuctionResultsMidEstimate } from "../AuctionResult/AuctionResultMidEstimate"
 
 interface Props {
-  auctionResult: AuctionResultListItem_auctionResult
+  auctionResult: AuctionResultListItem_auctionResult$data
   onPress: () => void
   showArtistName?: boolean
   withHorizontalPadding?: boolean
+  first?: boolean
 }
 
 const AuctionResultListItem: React.FC<Props> = ({
@@ -21,6 +21,7 @@ const AuctionResultListItem: React.FC<Props> = ({
   onPress,
   showArtistName,
   withHorizontalPadding = true,
+  first,
 }) => {
   const color = useColor()
 
@@ -34,7 +35,7 @@ const AuctionResultListItem: React.FC<Props> = ({
 
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
-      <Flex px={withHorizontalPadding ? 2 : 0} py={2} flexDirection="row">
+      <Flex px={withHorizontalPadding ? 2 : 0} pb={1} pt={first ? 0 : 1} flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex
@@ -68,15 +69,24 @@ const AuctionResultListItem: React.FC<Props> = ({
           <Flex flex={3}>
             <Flex>
               {!!showArtistName && !!auctionResult.artist?.name && (
-                <Text variant="xs" ellipsizeMode="middle" numberOfLines={2} fontWeight="bold">
+                <Text variant="xs" ellipsizeMode="middle" numberOfLines={2}>
                   {auctionResult.artist?.name}
                 </Text>
               )}
-              <Text variant="xs" ellipsizeMode="middle" numberOfLines={2} style={{ flexShrink: 1 }}>
+              <Text
+                variant="xs"
+                ellipsizeMode="middle"
+                color="black60"
+                numberOfLines={2}
+                italic
+                style={{ flexShrink: 1 }}
+              >
                 {auctionResult.title}
-                {!!auctionResult.dateText &&
-                  auctionResult.dateText !== "" &&
-                  `, ${auctionResult.dateText}`}
+                <Text variant="xs" color="black60">
+                  {!!auctionResult.dateText &&
+                    auctionResult.dateText !== "" &&
+                    `, ${auctionResult.dateText}`}
+                </Text>
               </Text>
             </Flex>
             {!!auctionResult.mediumText && (
@@ -98,7 +108,7 @@ const AuctionResultListItem: React.FC<Props> = ({
           <Flex alignItems="flex-end" pl={15}>
             {auctionResultHasPrice(auctionResult) ? (
               <Flex alignItems="flex-end">
-                <Text variant="xs" fontWeight="bold" testID="price">
+                <Text variant="xs" fontWeight="500" testID="price">
                   {auctionResult.priceRealized?.display}
                 </Text>
                 {!!showPriceUSD && (
@@ -133,6 +143,8 @@ const AuctionResultListItem: React.FC<Props> = ({
     </Touchable>
   )
 }
+
+export const AuctionResultListSeparator = () => <Spacer px={2} />
 
 export const AuctionResultListItemFragmentContainer = createFragmentContainer(
   AuctionResultListItem,

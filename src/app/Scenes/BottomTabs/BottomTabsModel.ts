@@ -1,6 +1,5 @@
 import { captureException } from "@sentry/react-native"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
-import { saveDevNavigationStateSelectedTab } from "app/navigation/useReloadedDevNavigationState"
 import { createEnvironment } from "app/relay/createEnvironment"
 import {
   metaphysicsURLMiddleware,
@@ -20,8 +19,6 @@ export interface BottomTabsModel {
   }
   unreadConversationCountChanged: Action<BottomTabsModel, number>
   fetchCurrentUnreadConversationCount: Thunk<BottomTabsModel>
-
-  switchTab: Action<BottomTabsModel, BottomTabType>
   setTabProps: Action<BottomTabsModel, { tab: BottomTabType; props: object | undefined }>
 }
 
@@ -72,9 +69,5 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   }),
   setTabProps: action((state, { tab, props }) => {
     state.sessionState.tabProps[tab] = props
-  }),
-  switchTab: action((state, tabType) => {
-    state.sessionState.selectedTab = tabType
-    saveDevNavigationStateSelectedTab(tabType)
   }),
 })

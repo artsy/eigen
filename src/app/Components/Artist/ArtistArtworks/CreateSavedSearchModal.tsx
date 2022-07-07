@@ -1,4 +1,9 @@
-import { ActionType, OwnerType, ToggledSavedSearch } from "@artsy/cohesion"
+import { ActionType, ScreenOwnerType, ToggledSavedSearch } from "@artsy/cohesion"
+import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  SavedSearchEntity,
+  SearchCriteriaAttributes,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { navigate, NavigateOptions } from "app/navigation/navigate"
 import { CreateSavedSearchAlert } from "app/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
@@ -6,25 +11,26 @@ import {
   CreateSavedSearchAlertParams,
   SavedSearchAlertMutationResult,
 } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import React from "react"
 import { useTracking } from "react-tracking"
 
 export interface CreateSavedSearchModalProps {
   visible: boolean
-  artistId: string
-  artistName: string
-  artistSlug: string
+  entity: SavedSearchEntity
+  attributes: SearchCriteriaAttributes
+  aggregations: Aggregations
   closeModal: () => void
   onComplete?: () => void
 }
 
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
-  const { visible, artistId, artistName, artistSlug, closeModal, onComplete } = props
+  const { visible, entity, attributes, aggregations, closeModal, onComplete } = props
   const tracking = useTracking()
   const popover = usePopoverMessage()
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
-    tracking.trackEvent(tracks.toggleSavedSearch(true, artistId, artistSlug, result.id))
+    const { owner } = entity
+
+    tracking.trackEvent(tracks.toggleSavedSearch(true, owner.type, owner.id, owner.slug, result.id))
     closeModal()
     onComplete?.()
 
@@ -46,8 +52,9 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   }
 
   const params: CreateSavedSearchAlertParams = {
-    artistId,
-    artistName,
+    aggregations,
+    attributes,
+    entity,
     onClosePress: closeModal,
     onComplete: handleComplete,
   }
@@ -58,12 +65,13 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
 export const tracks = {
   toggleSavedSearch: (
     enabled: boolean,
+    ownerType: ScreenOwnerType,
     artistId: string,
     artistSlug: string,
     searchCriteriaId: string
   ): ToggledSavedSearch => ({
     action: ActionType.toggledSavedSearch,
-    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_type: ownerType,
     context_screen_owner_id: artistId,
     context_screen_owner_slug: artistSlug,
     modified: enabled,

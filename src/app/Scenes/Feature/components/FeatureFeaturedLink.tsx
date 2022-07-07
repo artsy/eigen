@@ -1,15 +1,14 @@
-import { FeatureFeaturedLink_featuredLink } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
+import { FeatureFeaturedLink_featuredLink$data } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
-import { Flex, Sans } from "palette"
-import React from "react"
+import { Flex, Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
 import { FeatureMarkdown } from "./FeatureMarkdown"
 
 export interface FeatureFeaturedLinkProps {
-  featuredLink: FeatureFeaturedLink_featuredLink
+  featuredLink: FeatureFeaturedLink_featuredLink$data
   width: number
 }
 
@@ -43,17 +42,17 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
             bottom: 20,
           }}
         >
-          <Sans size="6" color="white">
+          <Text variant="lg" color="white">
             {featuredLink.title}
-          </Sans>
+          </Text>
           {!!featuredLink.subtitle && (
-            <FeatureMarkdown content={featuredLink.subtitle} sansProps={{ color: "white" }} />
+            <FeatureMarkdown content={featuredLink.subtitle} textProps={{ color: "white" }} />
           )}
         </Flex>
       </TouchableOpacity>
       {!!featuredLink.description && (
         <Flex pt="2">
-          <FeatureMarkdown content={featuredLink.description} sansProps={{ size: "4" }} />
+          <FeatureMarkdown content={featuredLink.description} textProps={{ variant: "md" }} />
         </Flex>
       )}
     </Flex>

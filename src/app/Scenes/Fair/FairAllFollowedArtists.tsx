@@ -1,5 +1,5 @@
-import { FairAllFollowedArtists_fair } from "__generated__/FairAllFollowedArtists_fair.graphql"
-import { FairAllFollowedArtists_fairForFilters } from "__generated__/FairAllFollowedArtists_fairForFilters.graphql"
+import { FairAllFollowedArtists_fair$data } from "__generated__/FairAllFollowedArtists_fair.graphql"
+import { FairAllFollowedArtists_fairForFilters$data } from "__generated__/FairAllFollowedArtists_fairForFilters.graphql"
 import { FairAllFollowedArtistsQuery } from "__generated__/FairAllFollowedArtistsQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
@@ -22,8 +22,8 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
 
 interface FairAllFollowedArtistsProps {
-  fair: FairAllFollowedArtists_fair
-  fairForFilters: FairAllFollowedArtists_fairForFilters
+  fair: FairAllFollowedArtists_fair$data
+  fairForFilters: FairAllFollowedArtists_fairForFilters$data
 }
 
 export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({

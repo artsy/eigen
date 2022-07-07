@@ -3,14 +3,12 @@ jest.mock("app/utils/googleMaps", () => ({
   getLocationDetails: jest.fn(),
 }))
 
-import {
-  InquiryModalTestsQuery,
-  InquiryModalTestsQueryResponse,
-} from "__generated__/InquiryModalTestsQuery.graphql"
+import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
@@ -32,7 +30,7 @@ const toggleVisibility = jest.fn()
 const onMutationSuccessful = jest.fn()
 
 // An app shell that holds modal visibility properties
-const FakeApp = (props: InquiryModalTestsQueryResponse) => {
+const FakeApp = (props: InquiryModalTestsQuery["response"]) => {
   const [modalIsVisible, setModalIsVisible] = React.useState(true)
   toggleVisibility.mockImplementation(() => setModalIsVisible(!modalIsVisible))
   const modalProps = {
@@ -52,7 +50,7 @@ const FakeApp = (props: InquiryModalTestsQueryResponse) => {
 }
 
 interface RenderComponentProps {
-  props: InquiryModalTestsQueryResponse | null
+  props: InquiryModalTestsQuery["response"] | null
   error: Error | null
 }
 
@@ -121,7 +119,7 @@ const mockResolver = {
 }
 
 const getWrapper = (mockResolvers = mockResolver, renderer = renderComponent) => {
-  const tree = renderWithWrappers(<TestRenderer renderer={renderer} />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer renderer={renderer} />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) => {
       return MockPayloadGenerator.generate(operation, mockResolvers)
@@ -184,7 +182,7 @@ describe("<InquiryModal />", () => {
       const wrapper = getWrapper()
       wrapper.root.findByProps({ testID: "checkbox-shipping_quote" }).props.onPress()
       press(wrapper.root, { text: "Send" })
-      env.mock.rejectMostRecentOperation(new Error())
+      rejectMostRecentRelayOperation(env, new Error())
       await flushPromiseQueue()
       expect(extractText(wrapper.root)).toContain("Sorry, we were unable to send this message")
     })

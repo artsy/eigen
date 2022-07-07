@@ -1,4 +1,4 @@
-<!-- 
+<!--
 
 ➡️ Use a PR title in the form of  `type(PROJECT-XXXX): what changed`
 ➡️ Provide the Jira ticket in square brackets like [PROJECT-XXXX]
@@ -12,6 +12,18 @@ This PR resolves []
 ### Description
 
 <!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
+
+### QA Test Case(s)
+
+<!-- Does this PR need QA testing? (hint: it probably does). If so add details here. See example below. These tests will be run in recent changes QA, they do not have to be extensive, just a high level feature sanity check, you should do your own extensive QA with your team. -->
+
+| Test Case | Feature | Environment | Acceptance Criteria | Setup Instructions/Link |
+| --------- | :-----: | ----------: | ------------------: | ----------------------: |
+|           |         |             |                     |                         |
+
+<!--
+| Save a search | Search | Staging    | The user should be able to .. | Start from ..  |
+-->
 
 ### PR Checklist
 
@@ -56,8 +68,8 @@ This PR resolves []
 
 </details>
 
-Need help with something? Have a look on our [docs], or get in touch with us.
+Need help with something? Have a look at our [docs], or get in touch with us.
 
-[app state migration]: /docs/adding_state_migrations.md
-[feature flag]: /docs/developing_a_feature.md
-[docs]: /docs/README.md
+[app state migration]: ../blob/main/docs/adding_state_migrations.md
+[feature flag]: ../blob/main/docs/developing_a_feature.md
+[docs]: ../blob/main/docs/README.md

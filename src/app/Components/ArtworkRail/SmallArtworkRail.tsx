@@ -7,7 +7,6 @@ import {
 } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Flex, Join, Spacer } from "palette"
-import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkRail, ArtworkRailProps } from "./ArtworkRail"
@@ -23,7 +22,7 @@ type SmallArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & {
 const IMAGE_WIDTH = 155
 
 export const SmallArtworkRail: React.FC<SmallArtworkRailProps> = ({ artworks, ...restProps }) => {
-  const artworksData = useFragment<SmallArtworkRail_artworks$key>(smallArtworksFragment, artworks)
+  const artworksData = useFragment(smallArtworksFragment, artworks)
 
   return <ArtworkRail artworks={artworksData} {...restProps} size="small" />
 }

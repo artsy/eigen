@@ -1,4 +1,3 @@
-import React from "react"
 import { Theme, useTheme } from "./Theme"
 
 export const ClassTheme = ({

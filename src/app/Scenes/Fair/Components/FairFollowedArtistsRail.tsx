@@ -1,16 +1,15 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { FairFollowedArtistsRail_fair } from "__generated__/FairFollowedArtistsRail_fair.graphql"
+import { FairFollowedArtistsRail_fair$data } from "__generated__/FairFollowedArtistsRail_fair.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface FairFollowedArtistsRailProps {
-  fair: FairFollowedArtistsRail_fair
+  fair: FairFollowedArtistsRail_fair$data
 }
 
 export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = ({ fair }) => {
@@ -70,7 +69,7 @@ export const FairFollowedArtistsRailFragmentContainer = createFragmentContainer(
 
 const tracks = {
   tappedArtwork: (
-    fair: FairFollowedArtistsRail_fair,
+    fair: FairFollowedArtistsRail_fair$data,
     artworkID: string,
     artworkSlug: string,
     position: number
@@ -86,7 +85,7 @@ const tracks = {
     horizontal_slide_position: position,
     type: "thumbnail",
   }),
-  tappedViewAll: (fair: FairFollowedArtistsRail_fair) => ({
+  tappedViewAll: (fair: FairFollowedArtistsRail_fair$data) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.worksByArtistsYouFollowRail,
     context_screen_owner_type: OwnerType.fair,

@@ -1,5 +1,4 @@
 import { Flex } from "palette"
-import React from "react"
 import { Text, View } from "react-native"
 import { plainTextFromTree } from "./plainTextFromTree"
 import { renderMarkdown } from "./renderMarkdown"

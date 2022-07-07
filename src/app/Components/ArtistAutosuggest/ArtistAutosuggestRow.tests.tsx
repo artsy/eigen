@@ -1,6 +1,5 @@
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
 
 const onResultPress = jest.fn()
@@ -12,7 +11,7 @@ describe("ArtistAutosuggestRow", () => {
   }
 
   it("renders displayLabel of result artist", () => {
-    const { findByText } = renderWithWrappersTL(
+    const { findByText } = renderWithWrappers(
       <ArtistAutosuggestRow
         highlight="caspar david"
         result={result as AutosuggestResult}

@@ -15,13 +15,10 @@ import {
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
 import { useTracking } from "react-tracking"
 
-import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
-import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
+import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
+import { ArtistRail_rail$data } from "__generated__/ArtistRail_rail.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
-import {
-  ArtistRailNewSuggestionQuery,
-  ArtistRailNewSuggestionQueryResponse,
-} from "__generated__/ArtistRailNewSuggestionQuery.graphql"
+import { ArtistRailNewSuggestionQuery } from "__generated__/ArtistRailNewSuggestionQuery.graphql"
 import { Disappearable } from "app/Components/Disappearable"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -35,7 +32,7 @@ import { CardRailFlatList, INTER_CARD_PADDING } from "../CardRailFlatList"
 import { ArtistCard } from "./ArtistCard"
 
 interface SuggestedArtist
-  extends Pick<ArtistCard_artist, Exclude<keyof ArtistCard_artist, " $refType">> {
+  extends Pick<ArtistCard_artist$data, Exclude<keyof ArtistCard_artist$data, " $refType">> {
   _disappearable: Disappearable | null
 }
 
@@ -43,7 +40,7 @@ interface Props extends ViewProps {
   title: string
   subtitle?: string
   relay: RelayProp
-  rail: ArtistRail_rail
+  rail: ArtistRail_rail$data
   mb?: number
 }
 
@@ -102,7 +99,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
       ).toPromise()
 
       const artist =
-        (result as ArtistRailNewSuggestionQueryResponse).artist?.related?.suggestedConnection
+        (result as ArtistRailNewSuggestionQuery["response"]).artist?.related?.suggestedConnection
           ?.edges?.[0]?.node ?? null
 
       return (
@@ -114,6 +111,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           basedOn:
             artist.basedOn ??
             (basedOnArtist.isFollowed ? { name: basedOnArtist.name } : basedOnArtist.basedOn),
+          " $fragmentType": null as any,
         }
       )
     } catch (e) {

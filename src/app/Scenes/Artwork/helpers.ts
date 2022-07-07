@@ -1,8 +1,8 @@
 import { isPad } from "app/utils/hardware"
 import { findRelayRecord, findRelayRecordByDataID } from "app/utils/relayHelpers"
-import { ScreenDimensionsWithSafeAreas, useScreenDimensions } from "app/utils/useScreenDimensions"
 import { useSpace } from "palette"
 import { Record } from "relay-runtime/lib/store/RelayStoreTypes"
+import { ScreenDimensionsWithSafeAreas, useScreenDimensions } from "shared/hooks"
 import { getMeasurements } from "./Components/ImageCarousel/geometry"
 
 export const getDefaultImageDimensions = (

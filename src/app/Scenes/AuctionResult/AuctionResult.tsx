@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { AuctionResult_artist } from "__generated__/AuctionResult_artist.graphql"
-import { AuctionResult_auctionResult } from "__generated__/AuctionResult_auctionResult.graphql"
+import { AuctionResult_artist$data } from "__generated__/AuctionResult_artist.graphql"
+import { AuctionResult_auctionResult$data } from "__generated__/AuctionResult_auctionResult.graphql"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
@@ -10,6 +10,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { getImageSquareDimensions } from "app/utils/resizeImage"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useStickyScrollHeader } from "app/utils/useStickyScrollHeader"
@@ -20,15 +21,14 @@ import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
 import { ComparableWorksFragmentContainer } from "./ComparableWorks"
 import { auctionResultHasPrice, AuctionResultHelperData, auctionResultText } from "./helpers"
 
 const CONTAINER_HEIGHT = 80
 
 interface Props {
-  artist: AuctionResult_artist
-  auctionResult: AuctionResult_auctionResult
+  artist: AuctionResult_artist$data
+  auctionResult: AuctionResult_auctionResult$data
 }
 
 export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
@@ -47,7 +47,7 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   useEffect(() => {
     if (auctionResult.images?.thumbnail?.url) {
       Image.getSize(auctionResult.images.thumbnail.url, (width, height) => {
-        const imageDimensions = getImageDimensions(height, width, CONTAINER_HEIGHT)
+        const imageDimensions = getImageSquareDimensions(height, width, CONTAINER_HEIGHT)
         setImageHeight(imageDimensions.height)
         setImageWidth(imageDimensions.width)
       })

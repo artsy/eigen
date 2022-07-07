@@ -4,7 +4,6 @@ import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsT
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { capitalize } from "lodash"
 import { Flex, Text } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { Field } from "../Field"
 
@@ -26,14 +25,8 @@ interface MyCollectionArtworkAboutWorkProps {
 export const MyCollectionArtworkAboutWork: React.FC<MyCollectionArtworkAboutWorkProps> = (
   props
 ) => {
-  const artwork = useFragment<MyCollectionArtworkAboutWork_artwork$key>(
-    artworkFragment,
-    props.artwork
-  )
-  const marketPriceInsights = useFragment<MyCollectionArtworkAboutWork_marketPriceInsights$key>(
-    marketPriceInsightsFragment,
-    props.marketPriceInsights
-  )
+  const artwork = useFragment(artworkFragment, props.artwork)
+  const marketPriceInsights = useFragment(marketPriceInsightsFragment, props.marketPriceInsights)
 
   const enablePriceEstimateRange = useFeatureFlag("AREnablePriceEstimateRange")
 

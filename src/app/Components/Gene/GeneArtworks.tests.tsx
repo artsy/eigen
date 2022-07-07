@@ -1,9 +1,8 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { GeneArtworksTestsQuery } from "__generated__/GeneArtworksTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { GeneArtworksPaginationContainer } from "./GeneArtworks"
@@ -58,20 +57,20 @@ describe("GeneArtworks", () => {
   }
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(environment)
+    renderWithWrappers(<TestRenderer />)
+    resolveMostRecentRelayOperation(environment)
   })
 
   it("renders filter header", async () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(environment)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+    resolveMostRecentRelayOperation(environment)
 
     await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
   })
 
   it("renders artworks grid", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(environment, {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+    resolveMostRecentRelayOperation(environment, {
       FilterArtworksConnection() {
         return {
           counts: {
@@ -86,8 +85,8 @@ describe("GeneArtworks", () => {
   })
 
   it("renders empty artworks grid view", async () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(environment, {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+    resolveMostRecentRelayOperation(environment, {
       FilterArtworksConnection() {
         return {
           counts: {
@@ -104,7 +103,7 @@ describe("GeneArtworks", () => {
     fireEvent.press(getByText("Recently Added"))
     fireEvent.press(getByText("Show Results"))
 
-    mockEnvironmentPayload(environment, {
+    resolveMostRecentRelayOperation(environment, {
       FilterArtworksConnection() {
         return {
           counts: {
@@ -118,8 +117,8 @@ describe("GeneArtworks", () => {
   })
 
   it("renders empty message when artworks is empty", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(environment, {
+    const { getByText } = renderWithWrappers(<TestRenderer />)
+    resolveMostRecentRelayOperation(environment, {
       Gene() {
         return {
           artworks: {

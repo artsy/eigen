@@ -1,12 +1,8 @@
-import {
-  PartnerShowsTestsQuery,
-  PartnerShowsTestsQueryRawResponse,
-} from "__generated__/PartnerShowsTestsQuery.graphql"
+import { PartnerShowsTestsQuery } from "__generated__/PartnerShowsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { cloneDeep } from "lodash"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { PartnerShowsFragmentContainer as PartnerShows } from "./PartnerShows"
@@ -52,9 +48,9 @@ describe("PartnerShows", () => {
   }
 
   it("renders the shows correctly", async () => {
-    const { getByText } = await renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = await renderWithWrappers(<TestWrapper />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Partner: () => PartnerShowsFixture,
     })
 
@@ -77,9 +73,9 @@ describe("PartnerShows", () => {
     // @ts-ignore
     fixture.currentAndUpcomingShows.edges[0].node.isDisplayable = false
 
-    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Partner: () => fixture,
     })
 
@@ -96,7 +92,7 @@ describe("PartnerShows", () => {
   })
 })
 
-const PartnerShowsFixture: PartnerShowsTestsQueryRawResponse["partner"] = {
+const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
   id: "gagosian-id",
   slug: "gagosian",
   internalID: "4d8b92c44eb68a1b2c0004cb",

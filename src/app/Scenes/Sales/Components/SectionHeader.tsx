@@ -1,4 +1,3 @@
-import React from "react"
 import { ViewProps } from "react-native"
 import styled from "styled-components/native"
 
@@ -11,7 +10,7 @@ const Header = styled.View`
 `
 
 const Title = styled.Text`
-  font-family: "ReactNativeAGaramondPro-Regular";
+  font-family: "Unica77LL-Regular";
   font-size: 30px;
   text-align: left;
 `

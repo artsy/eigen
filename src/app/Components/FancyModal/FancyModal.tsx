@@ -1,11 +1,8 @@
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { InteractionManager, Modal, Platform } from "react-native"
 import { useSafeAreaFrame } from "react-native-safe-area-context"
-import {
-  ArtsyKeyboardAvoidingView,
-  ArtsyKeyboardAvoidingViewContext,
-} from "../ArtsyKeyboardAvoidingView"
+import { useScreenDimensions } from "shared/hooks"
+import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "shared/utils"
 import {
   CARD_STACK_OVERLAY_HEIGHT,
   CARD_STACK_OVERLAY_Y_OFFSET,
@@ -18,9 +15,11 @@ export const FancyModal: React.FC<{
   maxHeight?: number
   fullScreen?: boolean
   animationPosition?: FancyModalAnimationPosition
+  testID?: string
   onBackgroundPressed?(): void
   onModalFinishedClosing?(): void
 }> = ({
+  testID,
   visible,
   children,
   maxHeight,
@@ -113,6 +112,7 @@ export const FancyModal: React.FC<{
 
   return (
     <Modal
+      testID={testID}
       transparent
       animated={false}
       visible={showingUnderlyingModal}

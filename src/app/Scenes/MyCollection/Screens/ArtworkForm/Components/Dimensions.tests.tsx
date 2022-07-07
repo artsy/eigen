@@ -1,7 +1,6 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { Input } from "palette"
-import React from "react"
 import { Dimensions } from "./Dimensions"
 
 jest.mock("formik")
@@ -22,7 +21,7 @@ describe("Dimensions", () => {
   })
 
   it("displays correct dimensions", () => {
-    const wrapper = renderWithWrappers(<Dimensions />)
+    const wrapper = renderWithWrappersLEGACY(<Dimensions />)
     const inputs = wrapper.root.findAllByType(Input)
     expect(inputs[0].props.value).toBe("20")
     expect(inputs[1].props.value).toBe("30")

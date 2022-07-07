@@ -1,4 +1,4 @@
-import { Button, Sans, Theme } from "palette"
+import { Button, Text, Theme } from "palette"
 import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { blockRegex } from "simple-markdown"
@@ -27,10 +27,10 @@ export enum RegistrationStatus {
 }
 
 const Icons = {
-  RegistrationStatusComplete: require("../../../../../images/circle-check-green.webp"),
-  RegistrationStatusPending: require("../../../../../images/circle-exclamation.webp"),
-  RegistrationStatusNetworkError: require("../../../../../images/circle-x-red.webp"),
-  RegistrationStatusError: require("../../../../../images/circle-x-red.webp"),
+  RegistrationStatusComplete: require("images/circle-check-green.webp"),
+  RegistrationStatusPending: require("images/circle-exclamation.webp"),
+  RegistrationStatusNetworkError: require("images/circle-x-red.webp"),
+  RegistrationStatusError: require("images/circle-x-red.webp"),
 }
 
 const registrationCompleteMessage = {
@@ -74,9 +74,9 @@ const markdownRules = defaultRules({
       match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
       react: (node, output, state) => {
         return (
-          <Sans size="4" key={state.key} textAlign="center">
+          <Text variant="md" key={state.key} textAlign="center">
             {output(node.content, state)}
-          </Sans>
+          </Text>
         )
       },
     },

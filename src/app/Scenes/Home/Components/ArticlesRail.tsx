@@ -1,9 +1,8 @@
-import { ArticlesRail_articlesConnection } from "__generated__/ArticlesRail_articlesConnection.graphql"
+import { ArticlesRail_articlesConnection$data } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Spacer } from "palette"
-import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -12,7 +11,7 @@ import HomeAnalytics from "../homeAnalytics"
 
 interface ArticlesRailProps {
   title: string
-  articlesConnection: ArticlesRail_articlesConnection
+  articlesConnection: ArticlesRail_articlesConnection$data
   mb?: number
 }
 

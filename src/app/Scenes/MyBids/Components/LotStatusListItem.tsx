@@ -1,13 +1,12 @@
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { LotStatusListItem_saleArtwork } from "../../../../__generated__/LotStatusListItem_saleArtwork.graphql"
+import { LotStatusListItem_saleArtwork$data } from "../../../../__generated__/LotStatusListItem_saleArtwork.graphql"
 import { ActiveLotStandingFragmentContainer } from "./ActiveLotStanding"
 import { ClosedLotStandingFragmentContainer } from "./ClosedLotStanding"
 import { WatchedLotFragmentContainer } from "./WatchedLot"
 
 interface Props {
   /** A general lot to display. */
-  saleArtwork: LotStatusListItem_saleArtwork
+  saleArtwork: LotStatusListItem_saleArtwork$data
   saleIsClosed?: boolean
 }
 

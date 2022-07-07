@@ -11,17 +11,19 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionContainer } from "./MyCollection"
 
 jest.unmock("react-relay")
 
 describe("MyCollection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
   const TestRenderer = () => (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionTestsQuery>
@@ -55,6 +57,10 @@ describe("MyCollection", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableMyCollectionInsights: true,
+    })
   })
 
   afterEach(() => {
@@ -62,7 +68,7 @@ describe("MyCollection", () => {
   })
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
@@ -100,7 +106,9 @@ describe("MyCollection", () => {
 
       expect(navigate).toHaveBeenCalledWith(
         "my-collection/artworks/new",
-        expect.objectContaining({ passProps: { mode: "add", onSuccess: expect.anything() } })
+        expect.objectContaining({
+          passProps: { mode: "add", onSuccess: expect.anything(), source: Tab.collection },
+        })
       )
     })
 
@@ -127,16 +135,14 @@ describe("MyCollection", () => {
 
   describe("sorting and filtering", () => {
     it("filters and sorts without crashing", async () => {
-      const renderApi = renderWithWrappersTL(<TestRenderer />)
+      const renderApi = renderWithWrappers(<TestRenderer />)
 
       act(() => {
-        mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-          MockPayloadGenerator.generate(operation, {
-            Me: () => ({
-              myCollectionConnection: mockArtworkConnection,
-            }),
-          })
-        )
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Me: () => ({
+            myCollectionConnection,
+          }),
+        })
       })
 
       await applyFilter(renderApi, "Sort By", "Price Paid (High to Low)")
@@ -157,7 +163,7 @@ const applyFilter = async (renderApi: RenderAPI, filterName: string, filterOptio
   act(() => fireEvent.press(renderApi.getByText("Show Results")))
 }
 
-const mockArtworkConnection = {
+const myCollectionConnection = {
   edges: [
     {
       node: {

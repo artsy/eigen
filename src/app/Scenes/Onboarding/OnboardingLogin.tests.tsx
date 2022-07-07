@@ -1,10 +1,11 @@
-import { mockNavigate } from "app/tests/navigationMocks"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Input } from "palette"
-import { OnboardingLoginWithEmail } from "./OnboardingLogin"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { Input, Touchable } from "palette"
+import { OnboardingLoginWithEmailForm } from "./OnboardingLogin"
+
+const navigateMock = jest.fn()
 
 const navigationPropsMock = {
-  navigate: mockNavigate,
+  navigate: navigateMock,
   goBack: jest.fn(),
 }
 
@@ -12,50 +13,54 @@ const mockHandleSubmit = jest.fn()
 const mockValidateForm = jest.fn()
 
 jest.mock("formik", () => ({
-  useFormik: () => ({
-    handleSubmit: mockHandleSubmit,
-    values: { mail: "", password: "" },
-    handleChange: jest.fn(() => jest.fn()),
-    validateForm: mockValidateForm,
-    errors: {},
-    isValid: true,
-    dirty: false,
-    isSubmitting: false,
-  }),
+  useFormikContext: () => {
+    return {
+      handleSubmit: mockHandleSubmit,
+      values: { mail: "", password: "" },
+      handleChange: jest.fn(() => jest.fn()),
+      validateForm: mockValidateForm,
+      errors: {},
+      isValid: true,
+      dirty: false,
+      isSubmitting: false,
+    }
+  },
 }))
 
 describe("OnboardingLogin", () => {
-  const TestProvider = ({ email = "" }) => (
-    <OnboardingLoginWithEmail
-      navigation={navigationPropsMock as any}
-      route={{ params: { email } } as any}
-    />
-  )
+  const TestProvider = ({ email = "" }) => {
+    return (
+      <OnboardingLoginWithEmailForm
+        navigation={navigationPropsMock as any}
+        route={{ params: { email } } as any}
+      />
+    )
+  }
 
   describe("Forget Button", () => {
     it("navigates to forgot password screen", () => {
-      const tree = renderWithWrappers(<TestProvider />)
-      const forgotPasswordButton = tree.root.findAllByProps({ testID: "forgot-password" })[0]
+      const tree = renderWithWrappersLEGACY(<TestProvider />)
+      const forgotPasswordButton = tree.root.findAllByType(Touchable)[0]
       forgotPasswordButton.props.onPress()
-      expect(mockNavigate).toHaveBeenCalledWith("ForgotPassword")
+      expect(navigateMock).toHaveBeenCalledWith("ForgotPassword")
     })
   })
 
   describe("Log in button", () => {
     it("renders disabled on screen mount", () => {
-      const tree = renderWithWrappers(<TestProvider />)
+      const tree = renderWithWrappersLEGACY(<TestProvider />)
       const loginButton = tree.root.findAllByProps({ testID: "loginButton" })[0]
       expect(loginButton.props.disabled).toEqual(true)
     })
     it("renders disabled when the user set only the email address", () => {
-      const tree = renderWithWrappers(<TestProvider />)
+      const tree = renderWithWrappersLEGACY(<TestProvider />)
       const emailInput = tree.root.findAllByType(Input)[0]
       emailInput.props.onChangeText("test@artsymail.com")
       const loginButton = tree.root.findAllByProps({ testID: "loginButton" })[0]
       expect(loginButton.props.disabled).toEqual(true)
     })
     it("renders disabled when the user sets only the password input", () => {
-      const tree = renderWithWrappers(<TestProvider />)
+      const tree = renderWithWrappersLEGACY(<TestProvider />)
       const passwordInput = tree.root.findAllByType(Input)[1]
       passwordInput.props.onChangeText("password")
       const loginButton = tree.root.findAllByProps({ testID: "loginButton" })[0]
@@ -63,7 +68,7 @@ describe("OnboardingLogin", () => {
     })
 
     it("renders enabled when a valid email and password are there", () => {
-      const tree = renderWithWrappers(<TestProvider />)
+      const tree = renderWithWrappersLEGACY(<TestProvider />)
       const emailInput = tree.root.findAllByType(Input)[0]
       const passwordInput = tree.root.findAllByType(Input)[1]
 
@@ -77,7 +82,7 @@ describe("OnboardingLogin", () => {
 
   describe("Form", () => {
     it("validates email on blur and onSubmitEditing", () => {
-      const tree = renderWithWrappers(<TestProvider />)
+      const tree = renderWithWrappersLEGACY(<TestProvider />)
       const emailInput = tree.root.findAllByType(Input)[0]
 
       emailInput.props.onChangeText("invalidEmail 1")
@@ -90,7 +95,7 @@ describe("OnboardingLogin", () => {
     })
 
     it("validates password on blur and onSubmitEditing", () => {
-      const tree = renderWithWrappers(<TestProvider />)
+      const tree = renderWithWrappersLEGACY(<TestProvider />)
       const passwordInput = tree.root.findAllByType(Input)[1]
 
       passwordInput.props.onChangeText("password 1")
@@ -105,7 +110,7 @@ describe("OnboardingLogin", () => {
 
   describe("autoFocus", () => {
     it("is on the email input by default", () => {
-      const tree = renderWithWrappers(<TestProvider />)
+      const tree = renderWithWrappersLEGACY(<TestProvider />)
       const emailInput = tree.root.findAllByType(Input)[0]
       const passwordInput = tree.root.findAllByType(Input)[1]
 
@@ -114,7 +119,7 @@ describe("OnboardingLogin", () => {
     })
 
     it("is on the password input when the email navigation param is set", () => {
-      const tree = renderWithWrappers(<TestProvider email="test@email.com" />)
+      const tree = renderWithWrappersLEGACY(<TestProvider email="test@email.com" />)
       const emailInput = tree.root.findAllByType(Input)[0]
       const passwordInput = tree.root.findAllByType(Input)[1]
 

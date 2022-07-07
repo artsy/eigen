@@ -14,11 +14,10 @@ import {
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import _ from "lodash"
-import { FilterIcon, Flex, Sans } from "palette"
+import { FilterIcon, Flex, Text } from "palette"
 import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { FilterConfigTypes } from "."
 import { AnimatableHeader } from "../AnimatableHeader/AnimatableHeader"
 import { AnimatableHeaderFlatList } from "../AnimatableHeader/AnimatableHeaderFlatList"
 import { AnimatableHeaderProvider } from "../AnimatableHeader/AnimatableHeaderProvider"
@@ -26,7 +25,7 @@ import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 import { ArtworkFilterOptionCheckboxItem } from "./components/ArtworkFilterOptionCheckboxItem"
 import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
-import { FilterDisplayConfig, FilterScreen } from "./types"
+import { FilterConfigTypes, FilterDisplayConfig, FilterScreen } from "./types"
 
 export enum FilterModalMode {
   ArtistArtworks = "ArtistArtworks",
@@ -333,17 +332,17 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
     <AnimatedBottomButton isVisible={isVisible} onPress={onPress} buttonStyles={roundedButtonStyle}>
       <FilterArtworkButton px="2" style={roundedButtonStyle}>
         <FilterIcon fill="white100" />
-        <Sans size="3t" pl="1" py="1" color="white100" weight="medium">
+        <Text variant="sm" pl="1" py="1" color="white100" weight="medium">
           {text}
-        </Sans>
+        </Text>
         {getFiltersCount() > 0 && (
           <>
-            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+            <Text variant="sm" pl={0.5} py="1" color="white100" weight="medium">
               {"\u2022"}
-            </Sans>
-            <Sans size="3t" pl={0.5} py="1" color="white100" weight="medium">
+            </Text>
+            <Text variant="sm" pl={0.5} py="1" color="white100" weight="medium">
               {getFiltersCount()}
-            </Sans>
+            </Text>
           </>
         )}
       </FilterArtworkButton>

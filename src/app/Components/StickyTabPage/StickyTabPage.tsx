@@ -1,13 +1,14 @@
+import { VisualClueName } from "app/store/config/visualClues"
 import { useUpdateShouldHideBackButton } from "app/utils/hideBackButtonOnScroll"
 import { Schema } from "app/utils/track"
 import { useAutoCollapsingMeasuredView } from "app/utils/useAutoCollapsingMeasuredView"
 import { useGlobalState } from "app/utils/useGlobalState"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Box } from "palette"
 import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { useAnimatedValue } from "./reanimatedHelpers"
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabPageContext, useStickyTabPageContext } from "./StickyTabPageContext"
@@ -18,8 +19,13 @@ export interface TabProps {
   initial?: boolean
   title: string
   content: JSX.Element | ((tabIndex: number) => JSX.Element)
-  superscript?: string
+  visualClues?: TabVisualClues
 }
+
+export type TabVisualClues = Array<{
+  jsx: JSX.Element
+  visualClueName: VisualClueName | string
+}>
 
 interface StickyTabPageProps {
   tabs: TabProps[]
@@ -110,7 +116,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
         stickyHeaderHeight,
         headerOffsetY,
         tabLabels: tabs.map((tab) => tab.title),
-        tabSuperscripts: tabs.map((tab) => tab.superscript),
+        tabVisualClues: tabs.map((tab) => tab.visualClues),
         setActiveTabIndex(index) {
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)

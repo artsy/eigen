@@ -11,19 +11,15 @@ import {
   Pill,
   Spacer,
   Text,
-  Touchable,
 } from "palette"
-import React from "react"
 import { LayoutAnimation } from "react-native"
-import { getNamePlaceholder } from "../helpers"
 import { SavedSearchAlertFormValues, SavedSearchPill } from "../SavedSearchAlertModel"
+import { SavedSearchStore } from "../SavedSearchStore"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
   pills: SavedSearchPill[]
   savedSearchAlertId?: string
-  artistId: string
-  artistName: string
   isLoading?: boolean
   hasChangedFilters?: boolean
   shouldShowEmailWarning?: boolean
@@ -38,8 +34,6 @@ interface FormProps {
 export const Form: React.FC<FormProps> = (props) => {
   const {
     pills,
-    artistId,
-    artistName,
     savedSearchAlertId,
     isLoading,
     hasChangedFilters,
@@ -53,7 +47,7 @@ export const Form: React.FC<FormProps> = (props) => {
   } = props
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
-  const namePlaceholder = getNamePlaceholder(artistName, pills)
+  const entity = SavedSearchStore.useStoreState((state) => state.entity)
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
 
@@ -115,7 +109,7 @@ export const Form: React.FC<FormProps> = (props) => {
       <Box mb={2}>
         <Input
           title="Name"
-          placeholder={namePlaceholder}
+          placeholder={entity.placeholder}
           value={values.name}
           onChangeText={handleChange("name")}
           onBlur={handleBlur("name")}
@@ -124,26 +118,6 @@ export const Form: React.FC<FormProps> = (props) => {
           maxLength={75}
         />
       </Box>
-      {!!isEditMode && (
-        <Box mb={2} height={40} justifyContent="center" alignItems="center">
-          <Touchable
-            haptic
-            testID="view-artworks-button"
-            hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
-            onPress={() =>
-              navigate(`artist/${artistId}`, {
-                passProps: {
-                  searchCriteriaID: savedSearchAlertId,
-                },
-              })
-            }
-          >
-            <Text variant="xs" color="blue100" style={{ textDecorationLine: "underline" }}>
-              View Artworks
-            </Text>
-          </Touchable>
-        </Box>
-      )}
       <Box mb={2}>
         <InputTitle>Filters</InputTitle>
         <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
@@ -179,7 +153,7 @@ export const Form: React.FC<FormProps> = (props) => {
       {!!shouldShowEmailWarning && (
         <Box backgroundColor="orange10" my={1} p={2}>
           <Text variant="xs" color="orange150">
-            Change your email frequency
+            Change your email preferences
           </Text>
           <Text variant="xs" mt={0.5}>
             To receive Email Alerts, please update your email preferences.

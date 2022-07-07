@@ -1,7 +1,6 @@
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { PlaceholderText } from "app/utils/placeholders"
 import { Box, Flex, Spacer } from "palette"
-import React from "react"
 
 export const EditSavedSearchFormPlaceholder = () => {
   return (
@@ -12,10 +11,6 @@ export const EditSavedSearchFormPlaceholder = () => {
           <PlaceholderText width={50} height={18} />
           <Spacer mt={0.5} />
           <PlaceholderText height={40} />
-        </Box>
-
-        <Box mb={2} height={40} justifyContent="center" alignItems="center">
-          <PlaceholderText width={100} height={18} />
         </Box>
 
         {/* Filter pills */}

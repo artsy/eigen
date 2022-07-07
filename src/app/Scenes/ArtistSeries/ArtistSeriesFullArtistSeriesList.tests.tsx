@@ -1,14 +1,10 @@
-import {
-  ArtistSeriesFullArtistSeriesListTestsQuery,
-  ArtistSeriesFullArtistSeriesListTestsQueryRawResponse,
-} from "__generated__/ArtistSeriesFullArtistSeriesListTestsQuery.graphql"
+import { ArtistSeriesFullArtistSeriesListTestsQuery } from "__generated__/ArtistSeriesFullArtistSeriesListTestsQuery.graphql"
 import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -44,7 +40,7 @@ describe("Full Artist Series List", () => {
   )
 
   const getWrapper = () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -90,7 +86,7 @@ describe("Full Artist Series List", () => {
   })
 })
 
-const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListTestsQueryRawResponse =
+const ArtistSeriesFullArtistSeriesListFixture: ArtistSeriesFullArtistSeriesListTestsQuery["rawResponse"] =
   {
     artist: {
       id: "yayoi-kusama",

@@ -1,19 +1,19 @@
-import { ViewingRoom_viewingRoom } from "__generated__/ViewingRoom_viewingRoom.graphql"
+import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { once } from "lodash"
-import { Box, Button, Flex, Sans, ShareIcon, Spacer, Text } from "palette"
+import { Box, Button, Flex, ShareIcon, Spacer, Text } from "palette"
 import { _maxWidth as maxWidth } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, LayoutAnimation, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import RNShare from "react-native-share"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import styled from "styled-components/native"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
@@ -21,7 +21,7 @@ import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsect
 import { ViewingRoomViewWorksButtonContainer } from "./Components/ViewingRoomViewWorksButton"
 
 interface ViewingRoomProps {
-  viewingRoom: ViewingRoom_viewingRoom
+  viewingRoom: ViewingRoom_viewingRoom$data
 }
 
 interface ViewingRoomSection {
@@ -52,9 +52,9 @@ export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = (
 
   return (
     <Flex alignItems="center">
-      <Sans mt="3" size="3t" mx="4" textAlign="center">
+      <Text variant="sm" mt="3" mx="4" textAlign="center">
         {finalText}
-      </Sans>
+      </Text>
       <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>
         Visit gallery
       </Button>

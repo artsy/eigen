@@ -1,5 +1,4 @@
 import { Color, useTheme } from "palette"
-import React from "react"
 import { requireNativeComponent } from "react-native"
 
 interface Props {

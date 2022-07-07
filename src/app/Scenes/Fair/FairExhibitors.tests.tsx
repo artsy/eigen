@@ -1,7 +1,6 @@
 import { FairExhibitorsTestsQuery } from "__generated__/FairExhibitorsTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairExhibitorRailFragmentContainer } from "./Components/FairExhibitorRail"
@@ -13,7 +12,7 @@ describe("FairExhibitors", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairExhibitorsTestsQuery>
         environment={env}
         query={graphql`

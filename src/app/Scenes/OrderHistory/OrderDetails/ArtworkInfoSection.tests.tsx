@@ -1,7 +1,6 @@
 import { ArtworkInfoSectionTestsQuery } from "__generated__/ArtworkInfoSectionTestsQuery.graphql"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkInfoSectionFragmentContainer } from "./Components/ArtworkInfoSection"
@@ -33,8 +32,8 @@ describe("ArtworkInfoSection", () => {
     />
   )
   it("renders auction result when auction results are available", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
-    mockEnvironmentPayload(mockEnvironment, {
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+    resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         internalID: "222",
         lineItems: {

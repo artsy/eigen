@@ -1,8 +1,7 @@
 import { SoldBySectionTestsQuery } from "__generated__/SoldBySectionTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SoldBySectionFragmentContainer } from "./Components/SoldBySection"
@@ -33,8 +32,8 @@ describe("SoldBySection", () => {
     />
   )
   it("renders correctly for shipping fulfillment", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
-    mockEnvironmentPayload(mockEnvironment, {
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+    resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         requestedFulfillment: {
           __typename: "CommerceShip",
@@ -69,8 +68,8 @@ describe("SoldBySection", () => {
   })
 
   it("renders correctly for pick up fulfillment", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
-    mockEnvironmentPayload(mockEnvironment, {
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
+    resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         requestedFulfillment: {
           __typename: "CommercePickup",

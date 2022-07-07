@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import {
-  ArtworksInSeriesRail_artwork,
+  ArtworksInSeriesRail_artwork$data,
   ArtworksInSeriesRail_artwork$key,
 } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
@@ -8,7 +8,6 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -19,7 +18,7 @@ interface ArtworksInSeriesRailProps {
 export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<ArtworksInSeriesRail_artwork$key>(artworkFragment, props.artwork)
+  const artwork = useFragment(artworkFragment, props.artwork)
 
   const firstArtistSeries = extractNodes(artwork?.artistSeriesConnection)[0]
   const artworks = extractNodes(firstArtistSeries?.filterArtworksConnection)
@@ -74,7 +73,7 @@ const artworkFragment = graphql`
 
 const tracks = {
   tappedHeader: (
-    sourceArtwork: ArtworksInSeriesRail_artwork,
+    sourceArtwork: ArtworksInSeriesRail_artwork$data,
     destination: { internalID: string; slug: string }
   ) => ({
     action: ActionType.tappedArtworkGroup,
@@ -88,7 +87,7 @@ const tracks = {
     type: "viewAll",
   }),
   tappedArtwork: (
-    sourceArtwork: ArtworksInSeriesRail_artwork,
+    sourceArtwork: ArtworksInSeriesRail_artwork$data,
     destination: { internalID: string; slug: string }
   ) => ({
     action: ActionType.tappedArtworkGroup,

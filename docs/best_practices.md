@@ -17,7 +17,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
   - [Storybook](#storybook)
   - [Styling](#styling)
 - [TypeScript](#TypeScript)
-- [Relay](#relay)
+- [Fetching Data](#fetching-data)
 - [Testing](#testing)
 - [Navigation](#Navigation)
 - [Analytics and tracking](#analytics-and-tracking)
@@ -94,7 +94,16 @@ However, if we have a `Button` folder which exports only one button component, w
 
 `Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
 
+##### index.ts files
+
+We try to avoid the use of `index.ts` files to prevent noise in the file structure and circular dependencies and make it easier to navigate between files.
+
+Some cases where we still use `index.ts` files for shorter and easier imports are:
+
+- `src/palette`
+
 #### When committing code
+
 - Use the [semantic commit message](https://seesparkbox.com/foundry/semantic_commit_messages) format in the title of your PR (eg. feat, fix, style, test, refactor, docs)
 - When merging a PR, choose "Squash and merge" (unless you have good reason not to)
 - Do not use "Squash and merge" on a new version deployment PR
@@ -127,7 +136,7 @@ The change left comments like this throughout the codebase that we aim to gradua
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 ```
 
-### Relay
+### Fetching data
 
 We use [Relay](https://relay.dev) for network requests.
 
@@ -137,6 +146,8 @@ We prefer using **Relay hooks** over relay containers (Higher Order Components).
 
 Refactoring components using HoCs in favour of hooks is encouraged.
 
+➡️ Read more about how to fetch data [here](https://github.com/artsy/eigen/blob/main/docs/fetching_data.md)
+
 - [Why Artsy uses Relay](http://artsy.github.io/blog/2017/02/05/Front-end-JavaScript-at-Artsy-2017/#Relay)
 - [Artsy's Relay Workshop](https://github.com/artsy/relay-workshop)
 - [Relay Container approach](https://github.com/artsy/eigen/blob/21fbf9e24eaa281f3e16609da5d38a9fb62a5449/src/app/Scenes/MyAccount/MyAccount.tsx#L70)
@@ -145,13 +156,15 @@ Refactoring components using HoCs in favour of hooks is encouraged.
 
 We currently use [`@testing-library/react-native`](https://testing-library.com/docs/react-native-testing-library/intro/#:~:text=The%20React%20Native%20Testing%20Library,that%20encourages%20better%20testing%20practices.) as our preferred way of testing.
 
-But we also use `test-renderer` and `enzyme` (in order of preference), that we'd ultimately like to remove.
+But we also use `test-renderer` (in order of preference), that we'd ultimately like to remove.
 
 - For setting up a test environment and mocking requests:
 
-  - [`relay-test-utils`](https://relay.dev/docs/guides/testing-relay-components/) is the preferred way
-  - [`MockRelayRenderer`](https://github.com/artsy/eigen/blob/39644610eb2a5609d992f434a7b37b46e0953ff4/src/lib/tests/MockRelayRenderer.tsx) and
-  - [`renderRelayTree`](https://github.com/artsy/eigen/blob/164a2aaace3f018cdc472fdf19950163ff2b198d/src/lib/tests/renderRelayTree.tsx) are also being used but should gradually be removed.
+  - [`renderWithWrappers`](https://github.com/artsy/eigen/blob/main/src/app/tests/renderWithWrappers.tsx#L88-L103) is our preferred test render helper
+  - [`resolveMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/tests/resolveMostRecentRelayOperation.ts#L51-L64) is our helper for resolving relay queries.
+  - [`rejectMostRecentRelayOperation`](https://github.com/artsy/eigen/blob/main/src/app/tests/rejectMostRecentRelayOperation.ts) is our helper for rejecting relay queries.
+  - [`relay-test-utils`](https://relay.dev/docs/guides/testing-relay-components/) is the preferred toolset.
+  - [`flushPromiseQueue`](https://github.com/artsy/eigen/blob/476c3a280a8126056b1d093b51db3e4eba5dbeb2/src/app/tests/flushPromiseQueue.ts) may be necessary to force mocked Relay responses to resolve in synchronous test cases.
 
 - We write native unit tests when we work with native code
 - We don’t use snapshot tests; they produce too much churn for too little value. It’s okay to test that a component doesn’t throw when rendered, but use [`extractText`](https://github.com/artsy/eigen/blob/4c7c9be69ab1c2095f4d2fed11a040b1bde6eba8/src/lib/tests/extractText.ts) (or similar) to test the actual component tree.

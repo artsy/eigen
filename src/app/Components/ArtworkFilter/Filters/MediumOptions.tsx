@@ -13,7 +13,6 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import React from "react"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface MediumOptionsScreenProps

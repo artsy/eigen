@@ -2,9 +2,8 @@ import { LotsByFollowedArtistsRailTestsQuery } from "__generated__/LotsByFollowe
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { LotsByFollowedArtistsRailContainer, PAGE_SIZE } from "./LotsByFollowedArtistsRail"
@@ -39,9 +38,9 @@ describe("LotsByFollowedArtistsRail", () => {
   })
 
   it("Renders list of sale artworks without throwing an error", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
     await flushPromiseQueue()
 
     expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Auctions")
@@ -49,7 +48,7 @@ describe("LotsByFollowedArtistsRail", () => {
   })
 
   it("returns null if there are no artworks", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const noArtworksProps = {
       Me: () => ({
@@ -58,7 +57,7 @@ describe("LotsByFollowedArtistsRail", () => {
         },
       }),
     }
-    mockEnvironmentPayload(mockEnvironment, noArtworksProps)
+    resolveMostRecentRelayOperation(mockEnvironment, noArtworksProps)
     await flushPromiseQueue()
     // React-test-renderer has no isEmptyComponent or isNullComponent therefore I am testing for the container
     // expect(tree.root.findAllByType(Flex)).toHaveLength(0)

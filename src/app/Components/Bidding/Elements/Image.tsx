@@ -1,4 +1,3 @@
-import React from "react"
 import { ViewStyle } from "react-native"
 import styled from "styled-components/native"
 import { height, position, space, textAlign, width } from "styled-system"
@@ -20,4 +19,6 @@ const StyledImage = styled.Image.attrs<IconProps>({})`
   ${width};
 `
 
-export const Image = (props: ExtractProps<typeof StyledImage>) => <StyledImage {...props} />
+export type ImageProps = ExtractProps<typeof StyledImage>
+
+export const Image = (props: ImageProps) => <StyledImage {...props} />

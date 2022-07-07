@@ -1,9 +1,9 @@
-import { FeaturedArtists_collection } from "__generated__/FeaturedArtists_collection.graphql"
+import { FeaturedArtists_collection$data } from "__generated__/FeaturedArtists_collection.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { navigate } from "app/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { ContextModules } from "app/utils/track/schema"
-import { Box, Flex, Sans } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -11,7 +11,7 @@ import { TrackingProp } from "react-tracking"
 import styled from "styled-components/native"
 
 interface FeaturedArtistsProps {
-  collection: FeaturedArtists_collection
+  collection: FeaturedArtists_collection$data
   tracking?: TrackingProp
 }
 
@@ -21,7 +21,7 @@ const track: Track<FeaturedArtistsProps, {}> = _track
 export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
   getFeaturedArtistEntityCollection = (
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    artists: FeaturedArtists_collection["artworksConnection"]["merchandisableArtists"]
+    artists: FeaturedArtists_collection$data["artworksConnection"]["merchandisableArtists"]
   ) => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     return artists.map((artist) => {
@@ -66,7 +66,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
     return (
       <Box pb={1}>
         <Flex justifyContent="space-between" pb={15} flexDirection="row">
-          <Sans size="4">{headlineLabel}</Sans>
+          <Text variant="md">{headlineLabel}</Text>
           {artists.length > artistCount && (
             <TouchableOpacity
               onPress={() => {
@@ -81,7 +81,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
                 })
               }}
             >
-              <ViewAll size="4" color="black60">
+              <ViewAll variant="md" color="black60">
                 View all
               </ViewAll>
             </TouchableOpacity>
@@ -111,6 +111,6 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(Featur
   `,
 })
 
-export const ViewAll = styled(Sans)`
+export const ViewAll = styled(Text)`
   text-align: center;
 `

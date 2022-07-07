@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native"
-import { navigate } from "app/navigation/navigate"
 import { AuthPromiseRejectType } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { capitalize } from "lodash"
@@ -142,7 +141,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                   iconPosition="left-start"
                   icon={
                     <Image
-                      source={require("@images/apple.webp")}
+                      source={require("images/apple.webp")}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -163,7 +162,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                   iconPosition="left-start"
                   icon={
                     <Image
-                      source={require("@images/google.webp")}
+                      source={require("images/google.webp")}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -183,7 +182,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 iconPosition="left-start"
                 icon={
                   <Image
-                    source={require("@images/facebook.webp")}
+                    source={require("images/facebook.webp")}
                     resizeMode="contain"
                     style={{ marginRight: 10 }}
                   />
@@ -199,9 +198,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               {!!enableGoogleAuth ? ", Google" : ""}
               {isIOS ? " or Apple" : ""}, you agree to Artsy's{" "}
               <Text
-                onPress={() =>
-                  isIOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms")
-                }
+                onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
                 variant="xs"
                 underline
                 testID="openTerms"
@@ -210,9 +207,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               </Text>{" "}
               and{" "}
               <Text
-                onPress={() =>
-                  isIOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy")
-                }
+                onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
                 variant="xs"
                 underline
                 testID="openPrivacy"

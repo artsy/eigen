@@ -3,10 +3,9 @@ import { MyCollectionArtworkGridItemTestsQuery } from "__generated__/MyCollectio
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { LocalImage } from "app/utils/LocalImageStore"
-import React from "react"
 import { Image as RNImage } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -62,7 +61,7 @@ describe("MyCollectionArtworkGridItem", () => {
   }
 
   it("renders correct fields", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData()
     expect(wrapper.root.findByType(tests.TouchElement)).toBeDefined()
     expect(wrapper.root.findByProps({ testID: "Fallback" })).toBeDefined()
@@ -72,7 +71,7 @@ describe("MyCollectionArtworkGridItem", () => {
   })
 
   it("navigates to artwork detail on tap", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData()
     wrapper.root.findByType(tests.TouchElement).props.onPress()
     expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artwork-slug", {
@@ -84,7 +83,7 @@ describe("MyCollectionArtworkGridItem", () => {
   })
 
   it("tracks analytics event on tap", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
     resolveData()
     wrapper.root.findByType(tests.TouchElement).props.onPress()
 
@@ -110,7 +109,7 @@ describe("MyCollectionArtworkGridItem", () => {
     localImageStoreMock.mockImplementation(() => retrievalPromise)
 
     act(async () => {
-      const wrapper = renderWithWrappers(<TestRenderer />)
+      const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           Artwork: () => ({
@@ -129,7 +128,7 @@ describe("MyCollectionArtworkGridItem", () => {
   })
 
   it("renders the high demand icon if artist is P1 and demand rank is over 9", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
     // mocking isP1 and demandRank
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>

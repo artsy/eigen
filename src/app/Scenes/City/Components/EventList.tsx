@@ -4,7 +4,7 @@ import Spinner from "app/Components/Spinner"
 import { navigate } from "app/navigation/navigate"
 import { MapTab, Show } from "app/Scenes/Map/types"
 import { isEqual } from "lodash"
-import { Box, Separator, Serif, SimpleMessage } from "palette"
+import { Box, Separator, SimpleMessage, Text } from "palette"
 import React from "react"
 import { FlatList, FlatListProps } from "react-native"
 import { RelayProp } from "react-relay"
@@ -98,7 +98,7 @@ export class EventList extends React.Component<Props> {
           if (!!header) {
             return (
               <Box pt={6} mt={3} mb={2}>
-                <Serif size="8">{header}</Serif>
+                <Text variant="lg">{header}</Text>
               </Box>
             )
           } else {
@@ -124,19 +124,19 @@ export class EventList extends React.Component<Props> {
       case "saved":
         return (
           <Box py={2} mx={2}>
-            <SimpleMessage textSize="3t">{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
+            <SimpleMessage>{`You haven’t saved any shows in ${cityName}. When you save shows, they will show up here.`}</SimpleMessage>
           </Box>
         )
       case "fairs":
         return (
           <Box py={2} mx={2}>
-            <SimpleMessage textSize="3t">{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
+            <SimpleMessage>{`There are currently no active fairs. Check back later to view fairs in ${cityName}.`}</SimpleMessage>
           </Box>
         )
       default:
         return (
           <Box py={2} mx={2}>
-            <SimpleMessage textSize="3t">{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
+            <SimpleMessage>{`There are currently no active ${type.toLowerCase()} shows. Check back later to view shows in ${cityName}.`}</SimpleMessage>
           </Box>
         )
     }

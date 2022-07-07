@@ -1,11 +1,10 @@
-import { ShipsToSection_address } from "__generated__/ShipsToSection_address.graphql"
+import { ShipsToSection_address$data } from "__generated__/ShipsToSection_address.graphql"
 import { COUNTRY_SELECT_OPTIONS } from "app/Components/CountrySelect"
 import { Box, Flex, Text } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
-  address: ShipsToSection_address
+  address: ShipsToSection_address$data
 }
 
 export const ShipsToSection: React.FC<Props> = ({ address }) => {

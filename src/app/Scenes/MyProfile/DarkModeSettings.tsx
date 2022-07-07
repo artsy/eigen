@@ -2,7 +2,6 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Flex, Text } from "palette"
-import React from "react"
 
 export function DarkModeSettings() {
   const syncWithSystem = GlobalStore.useAppState(

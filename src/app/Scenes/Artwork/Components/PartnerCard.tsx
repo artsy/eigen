@@ -1,16 +1,16 @@
-import { PartnerCard_artwork } from "__generated__/PartnerCard_artwork.graphql"
+import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { PartnerCardFollowMutation } from "__generated__/PartnerCardFollowMutation.graphql"
 import { navigateToPartner } from "app/navigation/navigate"
 import { get } from "app/utils/get"
 import { limitWithCount } from "app/utils/limitWithCount"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { EntityHeader, Flex, FollowButton, Sans, Spacer } from "palette"
+import { EntityHeader, Flex, FollowButton, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
-  artwork: PartnerCard_artwork
+  artwork: PartnerCard_artwork$data
   relay: RelayProp
 }
 
@@ -106,7 +106,7 @@ export class PartnerCard extends React.Component<Props, State> {
       <Flex>
         {!!showPartnerType && (
           <>
-            <Sans size="4t">At {partnerTypeDisplayText}</Sans>
+            <Text variant="md">At {partnerTypeDisplayText}</Text>
             <Spacer my={1} />
           </>
         )}

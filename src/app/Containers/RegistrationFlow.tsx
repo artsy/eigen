@@ -1,7 +1,6 @@
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
-import React from "react"
 import { View } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 
 import { TimeOffsetProvider } from "../Components/Bidding/Context/TimeOffsetProvider"
 import { RegistrationQueryRenderer } from "../Components/Bidding/Screens/Registration"

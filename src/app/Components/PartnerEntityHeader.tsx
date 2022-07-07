@@ -1,15 +1,14 @@
-import { PartnerEntityHeader_partner } from "__generated__/PartnerEntityHeader_partner.graphql"
+import { PartnerEntityHeader_partner$data } from "__generated__/PartnerEntityHeader_partner.graphql"
 import { navigate } from "app/navigation/navigate"
 import { PartnerFollowButtonFragmentContainer as PartnerFollowButton } from "app/Scenes/Partner/Components/PartnerFollowButton"
 import { limitWithCount } from "app/utils/limitWithCount"
 import { compact } from "lodash"
 import { Box, BoxProps, EntityHeader } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface PartnerEntityHeaderProps extends BoxProps {
-  partner: PartnerEntityHeader_partner
+  partner: PartnerEntityHeader_partner$data
 }
 
 export const PartnerEntityHeader: React.FC<PartnerEntityHeaderProps> = ({ partner, ...rest }) => {

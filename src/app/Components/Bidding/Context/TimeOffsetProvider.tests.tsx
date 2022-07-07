@@ -1,17 +1,16 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
+import { waitFor } from "@testing-library/react-native"
+import { defaultEnvironment } from "app/relay/createEnvironment"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { Text } from "palette"
 import PropTypes from "prop-types"
 import React from "react"
-import { View } from "react-native"
-
+import { createMockEnvironment } from "relay-test-utils"
 import { TimeOffsetProvider } from "./TimeOffsetProvider"
-
-// tslint:disable-next-line:no-var-requires
-const RelayRuntime = require("relay-runtime")
-RelayRuntime.fetchQuery = jest.fn()
 
 const SECONDS = 1000
 const MINUTES = 60 * SECONDS
+const DATE_NOW = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
 class TestConsumer extends React.Component {
   static contextTypes = {
@@ -19,35 +18,38 @@ class TestConsumer extends React.Component {
   }
 
   render() {
-    return <View />
+    return <Text>Time Offset: {this.context.timeOffsetInMilliSeconds}</Text>
   }
 }
 
-const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
+describe("TimeOffsetProvider", () => {
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
-it("injects timeOffsetInMilliSeconds as a context", async () => {
-  jest.useFakeTimers()
-  Date.now = () => dateNow
+  const TestWrapper = () => {
+    return (
+      <TimeOffsetProvider>
+        <TestConsumer />
+      </TimeOffsetProvider>
+    )
+  }
 
-  // Set up a situation where the phone's clock is ahead of Gravity's clock by 10 minutes.
-  RelayRuntime.fetchQuery.mockReturnValueOnce({
-    toPromise: () =>
-      Promise.resolve({
-        system: {
-          time: {
-            unix: (dateNow - 10 * MINUTES) * 1e-3,
-          },
-        },
-      }),
+  beforeEach(() => {
+    mockEnvironment.mockClear()
+    Date.now = jest.fn(() => DATE_NOW)
   })
 
-  // There’s no explicit assertion made here, because this test would fail with a timeout if it wouldn’t find a match.
-  await mount(
-    <TimeOffsetProvider>
-      <TestConsumer />
-    </TimeOffsetProvider>
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  ).renderUntil((wrapper) => {
-    return wrapper.find(TestConsumer).instance().context.timeOffsetInMilliSeconds === 10 * MINUTES
+  it("injects timeOffsetInMilliSeconds as a context", async () => {
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
+
+    // Set up a situation where the phone's clock is ahead of Gravity's clock by 10 minutes.
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      System: () => ({
+        time: {
+          unix: (DATE_NOW - 10 * MINUTES) * 1e-3,
+        },
+      }),
+    })
+
+    await waitFor(() => expect(queryByText(`Time Offset: ${10 * MINUTES}`)).toBeTruthy())
   })
 })

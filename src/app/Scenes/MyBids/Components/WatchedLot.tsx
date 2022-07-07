@@ -1,17 +1,16 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { WatchedLot_saleArtwork } from "__generated__/WatchedLot_saleArtwork.graphql"
+import { WatchedLot_saleArtwork$data } from "__generated__/WatchedLot_saleArtwork.graphql"
 import { navigate } from "app/navigation/navigate"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Text } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { Watching } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
 interface WatchedLotProps {
-  saleArtwork: WatchedLot_saleArtwork
+  saleArtwork: WatchedLot_saleArtwork$data
 }
 
 export const WatchedLot: React.FC<WatchedLotProps> = ({ saleArtwork }) => {

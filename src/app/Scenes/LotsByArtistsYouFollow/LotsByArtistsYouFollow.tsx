@@ -1,4 +1,4 @@
-import { LotsByArtistsYouFollow_me } from "__generated__/LotsByArtistsYouFollow_me.graphql"
+import { LotsByArtistsYouFollow_me$data } from "__generated__/LotsByArtistsYouFollow_me.graphql"
 import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollowQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -6,12 +6,11 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Box, SimpleMessage, Spacer } from "palette"
-import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const SCREEN_TITLE = "Auction Lots for You"
 interface LotsByArtistsYouFollowProps {
-  me: LotsByArtistsYouFollow_me
+  me: LotsByArtistsYouFollow_me$data
   relay: RelayPaginationProp
 }
 

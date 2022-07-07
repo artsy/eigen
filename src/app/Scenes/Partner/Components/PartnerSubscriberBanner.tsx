@@ -1,11 +1,10 @@
-import { PartnerSubscriberBanner_partner } from "__generated__/PartnerSubscriberBanner_partner.graphql"
+import { PartnerSubscriberBanner_partner$data } from "__generated__/PartnerSubscriberBanner_partner.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Box, LinkText, SimpleMessage } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface PartnerSubscriberBannerProps {
-  partner: PartnerSubscriberBanner_partner
+  partner: PartnerSubscriberBanner_partner$data
 }
 
 export const PartnerSubscriberBanner: React.FC<PartnerSubscriberBannerProps> = ({ partner }) => {

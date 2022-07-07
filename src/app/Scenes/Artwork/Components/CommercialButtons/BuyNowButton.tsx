@@ -1,5 +1,5 @@
 import { ActionType, OwnerType, TappedBuyNow } from "@artsy/cohesion"
-import { BuyNowButton_artwork } from "__generated__/BuyNowButton_artwork.graphql"
+import { BuyNowButton_artwork$data } from "__generated__/BuyNowButton_artwork.graphql"
 import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutation.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
@@ -9,7 +9,7 @@ import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export interface BuyNowButtonProps {
-  artwork: BuyNowButton_artwork
+  artwork: BuyNowButton_artwork$data
   relay: RelayProp
   variant?: ButtonProps["variant"]
   // EditionSetID is passed down from the edition selected by the user

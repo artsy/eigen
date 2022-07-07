@@ -1,6 +1,5 @@
 import { useEventTiming } from "app/utils/useEventTiming"
 import { Text, TextProps } from "palette"
-import React from "react"
 
 interface Props extends TextProps {
   startAt: string | null

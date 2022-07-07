@@ -1,12 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ActiveLotStanding_saleArtwork } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
+import { ActiveLotStanding_saleArtwork$data } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
 import { navigate } from "app/navigation/navigate"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Text } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import { useScreenDimensions } from "shared/hooks"
 import { TimelySale } from "../helpers/timely"
 import { HighestBid, Outbid, ReserveNotMet } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
@@ -14,7 +13,7 @@ import { LotFragmentContainer as Lot } from "./Lot"
 export const ActiveLotStanding = ({
   saleArtwork,
 }: {
-  saleArtwork: ActiveLotStanding_saleArtwork
+  saleArtwork: ActiveLotStanding_saleArtwork$data
 }) => {
   const timelySale = TimelySale.create(saleArtwork?.sale!)
 

@@ -1,27 +1,25 @@
-import React from "react"
-
-import { CreditCardDetails_card } from "__generated__/CreditCardDetails_card.graphql"
-import { bullet, CreditCardIcon, Flex, Sans } from "palette"
+import { CreditCardDetails_card$data } from "__generated__/CreditCardDetails_card.graphql"
+import { bullet, CreditCardIcon, Flex, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 const CreditCardDetails = ({
   card: { brand, lastDigits, expirationMonth, expirationYear },
 }: {
-  card: CreditCardDetails_card
+  card: CreditCardDetails_card$data
 }) => (
   <Flex alignItems="center" flexDirection="row">
     <CreditCardIcon type={brand as any} width={30} height={20} />
     <Flex flexDirection="row" alignItems="baseline">
-      <Sans color="black100" size="4t" mx="1">
+      <Text variant="md" color="black100" mx="1">
         {bullet}
         {bullet}
         {bullet}
         {bullet}
         {lastDigits}
-      </Sans>
-      <Sans color="black60" size="3t">
+      </Text>
+      <Text variant="sm" color="black60">
         Exp {expirationMonth.toString().padStart(2, "0")}/{expirationYear.toString().slice(-2)}
-      </Sans>
+      </Text>
     </Flex>
   </Flex>
 )

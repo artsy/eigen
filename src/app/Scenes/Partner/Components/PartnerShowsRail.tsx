@@ -1,7 +1,7 @@
-import { PartnerShowsRail_partner } from "__generated__/PartnerShowsRail_partner.graphql"
+import { PartnerShowsRail_partner$data } from "__generated__/PartnerShowsRail_partner.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
-import { Sans, Spacer } from "palette"
+import { Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -10,7 +10,7 @@ import { PartnerShowRailItemContainer as RailItem } from "./PartnerShowRailItem"
 const PAGE_SIZE = 6
 
 const PartnerShowsRail: React.FC<{
-  partner: PartnerShowsRail_partner
+  partner: PartnerShowsRail_partner$data
   relay: RelayPaginationProp
 }> = ({ partner, relay }) => {
   const [fetchingNextPage, setFetchingNextPage] = useState(false)
@@ -36,7 +36,7 @@ const PartnerShowsRail: React.FC<{
     <>
       {!!currentAndUpcomingShows && !!currentAndUpcomingShows.length && (
         <>
-          <Sans size="4t">Current and upcoming shows</Sans>
+          <Text variant="md">Current and upcoming shows</Text>
           <FlatList
             horizontal
             onScroll={isCloseToEdge(fetchNextPage)}

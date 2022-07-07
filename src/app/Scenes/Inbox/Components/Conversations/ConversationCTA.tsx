@@ -1,7 +1,6 @@
-import { ConversationCTA_conversation } from "__generated__/ConversationCTA_conversation.graphql"
+import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { CTAPopUp } from "./CTAPopUp"
 import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"
@@ -9,7 +8,7 @@ import { ReviewOfferButton, ReviewOfferCTAKind } from "./ReviewOfferButton"
 
 interface Props {
   show: boolean
-  conversation: ConversationCTA_conversation
+  conversation: ConversationCTA_conversation$data
 }
 
 export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
@@ -43,10 +42,12 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
     return null
   }
 
-  const { lastTransactionFailed, state, lastOffer } = activeOrder
+  const { lastTransactionFailed, state, lastOffer, mode } = activeOrder
   let kind: ReviewOfferCTAKind | null = null
 
-  if (lastTransactionFailed) {
+  if (mode === "BUY") {
+    kind = null
+  } else if (lastTransactionFailed) {
     kind = "PAYMENT_FAILED"
   } else if (state === "SUBMITTED" && lastOffer?.fromParticipant === "SELLER") {
     if (lastOffer.definesTotal) {
@@ -109,6 +110,7 @@ export const ConversationCTAFragmentContainer = createFragmentContainer(Conversa
         edges {
           node {
             internalID
+            mode
             state
             stateReason
             stateExpiresAt

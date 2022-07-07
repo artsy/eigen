@@ -1,5 +1,4 @@
 import { Flex, Text, useColor } from "palette"
-import React from "react"
 import { Platform, Switch } from "react-native"
 
 export interface SavedSearchAlertSwitchProps {

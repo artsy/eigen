@@ -3,7 +3,6 @@ import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { CardTagProps, SmallCard, Touchable } from "palette"
-import React from "react"
 import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -69,7 +68,7 @@ export interface ViewingRoomsListItemProps {
 }
 
 export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props) => {
-  const item = useFragment<ViewingRoomsListItem_item$key>(fragmentSpec, props.item)
+  const item = useFragment(fragmentSpec, props.item)
   const { slug, internalID, heroImage, title, status, distanceToClose, distanceToOpen } = item
   const { trackEvent } = useTracking()
 

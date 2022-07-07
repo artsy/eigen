@@ -1,4 +1,4 @@
-import { ConversationDetails_me } from "__generated__/ConversationDetails_me.graphql"
+import { ConversationDetails_me$data } from "__generated__/ConversationDetails_me.graphql"
 import { ConversationDetailsQuery } from "__generated__/ConversationDetailsQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -8,7 +8,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { track as _track } from "app/utils/track"
 import { Flex } from "palette"
-import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { OrderInformationFragmentContainer } from "../Components/Conversations/OrderInformation"
@@ -18,7 +17,7 @@ import { ShippingFragmentContainer } from "../Components/Conversations/Shipping"
 import { Support } from "../Components/Conversations/Support"
 
 interface Props {
-  me: ConversationDetails_me
+  me: ConversationDetails_me$data
   relay: RelayProp
 }
 export const ConversationDetails: React.FC<Props> = ({ me }) => {

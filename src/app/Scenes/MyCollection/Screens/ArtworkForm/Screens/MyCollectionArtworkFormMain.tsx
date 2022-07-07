@@ -1,15 +1,15 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import { Box, Button, Flex, Input, Join, Sans, Separator, Spacer, Text } from "palette"
+import { Box, Button, Flex, Input, Join, Separator, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useEffect } from "react"
 import { Alert, ScrollView, TouchableOpacity } from "react-native"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArrowDetails } from "../Components/ArrowDetails"
 import { ArtistSearchResult } from "../Components/ArtistSearchResult"
@@ -160,19 +160,19 @@ export const MyCollectionArtworkFormMain: React.FC<
               />
               <Input
                 title="Location"
-                placeholder="Enter City Where Artwork is Located"
+                placeholder="Enter city where artwork is located"
                 onChangeText={formik.handleChange("artworkLocation")}
                 onBlur={formik.handleBlur("artworkLocation")}
                 testID="LocationInput"
-                accessibilityLabel="Enter City Where the Artwork is Located"
+                accessibilityLabel="Enter city where the artwork is located"
                 value={formikValues.artworkLocation}
               />
               <Input
                 multiline
                 title="Provenance"
-                placeholder="Describe How You Acquired the Artwork"
+                placeholder="Describe how you acquired the artwork"
                 value={formikValues.provenance}
-                accessibilityLabel="Describe How You Acquired the Artwork"
+                accessibilityLabel="Describe how you acquired the artwork"
                 onChangeText={formik.handleChange("provenance")}
                 testID="ProvenanceInput"
               />
@@ -229,7 +229,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
             <ScreenMargin>
               <Box my={2}>
-                <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
+                <Text variant="sm">Errors: {JSON.stringify(formik.errors)}</Text>
               </Box>
             </ScreenMargin>
           )}

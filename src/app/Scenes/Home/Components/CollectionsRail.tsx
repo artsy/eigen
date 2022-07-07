@@ -1,8 +1,8 @@
-import { CollectionsRail_collectionsModule } from "__generated__/CollectionsRail_collectionsModule.graphql"
+import { CollectionsRail_collectionsModule$data } from "__generated__/CollectionsRail_collectionsModule.graphql"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
-import { Flex, Sans } from "palette"
+import { Flex, Text } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -24,11 +24,11 @@ import { RailScrollProps } from "./types"
 interface Props {
   title: string
   subtitle?: string
-  collectionsModule: CollectionsRail_collectionsModule
+  collectionsModule: CollectionsRail_collectionsModule$data
   mb?: number
 }
 
-type Collection = CollectionsRail_collectionsModule["results"][0]
+type Collection = CollectionsRail_collectionsModule$data["results"][0]
 
 const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
@@ -100,14 +100,14 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
                   </View>
                 </ArtworkImageContainer>
                 <MetadataContainer>
-                  <Sans numberOfLines={1} weight="medium" size="3t">
+                  <Text variant="sm" numberOfLines={1} weight="medium">
                     {result?.title}
-                  </Sans>
-                  <Sans numberOfLines={1} size="3t" color="black60">
+                  </Text>
+                  <Text variant="sm" numberOfLines={1} color="black60">
                     {result?.artworksConnection?.counts?.total
                       ? `${result.artworksConnection.counts.total} works`
                       : ""}
-                  </Sans>
+                  </Text>
                 </MetadataContainer>
               </View>
             </CardRailCard>

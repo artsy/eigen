@@ -1,11 +1,10 @@
 import { navigate } from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { About } from "./About"
 
 describe("About", () => {
   it("renders Terms and conditions", () => {
-    const tree = renderWithWrappers(<About />)
+    const tree = renderWithWrappersLEGACY(<About />)
 
     expect(tree.root.findAllByProps({ title: "Terms of Use" })).toBeTruthy()
     tree.root.findByProps({ title: "Terms of Use" }).props.onPress()
@@ -13,7 +12,7 @@ describe("About", () => {
   })
 
   it("renders Privacy policy", () => {
-    const tree = renderWithWrappers(<About />)
+    const tree = renderWithWrappersLEGACY(<About />)
 
     expect(tree.root.findAllByProps({ title: "Privacy Policy" })).toBeTruthy()
     tree.root.findByProps({ title: "Privacy Policy" }).props.onPress()
@@ -21,7 +20,7 @@ describe("About", () => {
   })
 
   it("renders Conditions of Sale", () => {
-    const tree = renderWithWrappers(<About />)
+    const tree = renderWithWrappersLEGACY(<About />)
 
     expect(tree.root.findAllByProps({ title: "Conditions of Sale" })).toBeTruthy()
     tree.root.findByProps({ title: "Conditions of Sale" }).props.onPress()
@@ -29,7 +28,7 @@ describe("About", () => {
   })
 
   it("renders Version", () => {
-    const tree = renderWithWrappers(<About />)
+    const tree = renderWithWrappersLEGACY(<About />)
 
     expect(tree.root.findAllByProps({ title: "Version" })).toBeTruthy()
   })

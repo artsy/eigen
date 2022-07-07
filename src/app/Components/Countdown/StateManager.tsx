@@ -8,6 +8,8 @@ export interface TickerState {
   date?: string
   hasStarted?: boolean
   state: string
+  biddingEndAt?: string
+  hasBeenExtended?: boolean
 }
 
 interface Props {
@@ -23,8 +25,7 @@ interface State {
 }
 
 export class StateManager extends React.Component<Props, State> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: Props, state: State) {
     // If this component receives a new tickerState as props,
     // update to use the new props.
 
@@ -50,21 +51,21 @@ export class StateManager extends React.Component<Props, State> {
   render() {
     const { CountdownComponent, timeOffsetInMilliseconds, ...props } = this.props
     const {
-      tickerState: { label, date, state, hasStarted },
+      tickerState: { label, date, state, hasStarted, hasBeenExtended, biddingEndAt },
     } = this.state
     return (
       <DurationProvider
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         startAt={date}
         timeOffsetInMilliseconds={timeOffsetInMilliseconds}
         onDurationEnd={this.handleDurationEnd}
       >
         <CountdownComponent
           label={label}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           duration={null}
           hasStarted={hasStarted}
           timerState={state}
+          hasBeenExtended={hasBeenExtended}
+          biddingEndAt={biddingEndAt}
           {...props}
         />
       </DurationProvider>

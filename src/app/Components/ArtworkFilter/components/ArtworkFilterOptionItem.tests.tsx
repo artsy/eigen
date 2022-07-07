@@ -1,7 +1,6 @@
 import { fireEvent, within } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Checkbox } from "palette"
-import React from "react"
 import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
 const defaultProps: ArtworkFilterOptionItemProps = {
@@ -20,20 +19,20 @@ describe("ArtworkFilterOptionItem", () => {
   }
 
   it("should render item label", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     expect(getByText("Rarity"))
   })
 
   it("should render count label if it is passed", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper count={3} />)
+    const { getByText } = renderWithWrappers(<TestWrapper count={3} />)
 
     expect(within(getByText("Rarity")).getByText("• 3")).toBeTruthy()
   })
 
   it('should call "onPress" handler when item is pressed', () => {
     const onPressMock = jest.fn()
-    const { getByText } = renderWithWrappersTL(<TestWrapper onPress={onPressMock} />)
+    const { getByText } = renderWithWrappers(<TestWrapper onPress={onPressMock} />)
 
     fireEvent.press(getByText("Rarity"))
 
@@ -42,11 +41,11 @@ describe("ArtworkFilterOptionItem", () => {
 
   it("renders the right accessory item if passed as props instead of arrow icon", () => {
     const RightAccessoryItem = () => <Checkbox checked testID="checktestid" />
-    const treeWithAccessory = renderWithWrappersTL(
+    const treeWithAccessory = renderWithWrappers(
       <TestWrapper RightAccessoryItem={<RightAccessoryItem />} />
     )
 
-    const treeWithoutAccessory = renderWithWrappersTL(<TestWrapper />)
+    const treeWithoutAccessory = renderWithWrappers(<TestWrapper />)
 
     expect(treeWithAccessory.queryByTestId("checktestid")).toBeDefined()
     expect(treeWithAccessory.queryByTestId("ArtworkFilterOptionItemArrowIcon")).toBe(null)

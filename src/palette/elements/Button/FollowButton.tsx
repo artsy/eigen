@@ -1,5 +1,4 @@
 import { Button, CheckIcon } from "palette"
-import React from "react"
 import { ButtonProps } from "."
 
 type FollowButtonProps = Omit<

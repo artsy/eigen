@@ -1,5 +1,5 @@
 import { ScreenOwnerType, tappedMainArtworkGrid } from "@artsy/cohesion"
-import { SaleArtworkGridItem_saleArtwork } from "__generated__/SaleArtworkGridItem_saleArtwork.graphql"
+import { SaleArtworkGridItem_saleArtwork$data } from "__generated__/SaleArtworkGridItem_saleArtwork.graphql"
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
@@ -8,8 +8,7 @@ import {
   PlaceholderRaggedText,
   RandomNumberGenerator,
 } from "app/utils/placeholders"
-import { Box, Flex, Sans, Spacer, Touchable } from "palette"
-import React from "react"
+import { Box, Flex, Spacer, Text, Touchable } from "palette"
 import { StyleSheet, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -17,7 +16,7 @@ import { navigate } from "../../navigation/navigate"
 import { saleMessageOrBidInfo } from "./ArtworkGridItem"
 
 export interface ArtworkProps {
-  saleArtwork: SaleArtworkGridItem_saleArtwork
+  saleArtwork: SaleArtworkGridItem_saleArtwork$data
   // If it's not provided, then it will push just the one artwork
   // to the switchboard.
   onPress?: (artworkID: string) => void
@@ -93,25 +92,25 @@ export const SaleArtworkGridItem: React.FC<ArtworkProps> = ({
         )}
         <Box mt={1}>
           {!!saleArtwork?.lotLabel && (
-            <Sans size="3t" color="black60" numberOfLines={1}>
+            <Text variant="sm" color="black60" numberOfLines={1}>
               Lot {saleArtwork.lotLabel}
-            </Sans>
+            </Text>
           )}
           {!!artwork.artistNames && (
-            <Sans size="3t" weight="medium" numberOfLines={1}>
+            <Text variant="sm" weight="medium" numberOfLines={1}>
               {artwork.artistNames}
-            </Sans>
+            </Text>
           )}
           {!!artwork.title && (
-            <Sans size="3t" color="black60" numberOfLines={1}>
+            <Text variant="sm" color="black60" numberOfLines={1}>
               {artwork.title}
               {!!artwork.date && `, ${artwork.date}`}
-            </Sans>
+            </Text>
           )}
           {!!saleInfo && (
-            <Sans color="black60" size="3t" numberOfLines={1}>
+            <Text variant="sm" color="black60" numberOfLines={1}>
               {saleInfo}
-            </Sans>
+            </Text>
           )}
         </Box>
       </View>

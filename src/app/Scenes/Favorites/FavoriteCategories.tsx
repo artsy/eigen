@@ -1,4 +1,3 @@
-import React from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
@@ -7,7 +6,7 @@ import { SavedItemRow } from "app/Components/Lists/SavedItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
-import { FavoriteCategories_me } from "__generated__/FavoriteCategories_me.graphql"
+import { FavoriteCategories_me$data } from "__generated__/FavoriteCategories_me.graphql"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
@@ -16,9 +15,10 @@ import { Spacer } from "palette"
 import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import React from "react"
 
 interface Props {
-  me: FavoriteCategories_me
+  me: FavoriteCategories_me$data
   relay: RelayPaginationProp
 }
 
@@ -144,8 +144,7 @@ const FavoriteCategoriesContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return props.me && props.me.followsAndSaves.genes
+      return props?.me?.followsAndSaves?.genes
     },
     getVariables(_props, pageInfo, _fragmentVariables) {
       return pageInfo

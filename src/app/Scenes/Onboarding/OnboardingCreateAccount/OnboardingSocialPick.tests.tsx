@@ -1,9 +1,6 @@
-import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { mockNavigate } from "app/tests/navigationMocks"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
-import { Platform } from "react-native"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { OnboardingSocialPick } from "../OnboardingSocialPick"
 
 jest.mock("@react-navigation/native")
@@ -14,7 +11,7 @@ describe("OnboardingSocialPick", () => {
       jest.clearAllMocks()
     })
     it("navigates to log in with email when the user presses on continue with email", () => {
-      const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
+      const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
       tree.root.findByProps({ testID: "continueWithEmail" }).props.onPress()
       expect(mockNavigate).toHaveBeenCalledWith("OnboardingLoginWithEmail")
     })
@@ -23,7 +20,7 @@ describe("OnboardingSocialPick", () => {
       GlobalStore.actions.auth.authFacebook = jest.fn(() =>
         Promise.resolve({ success: true })
       ) as any
-      const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
+      const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
       tree.root.findByProps({ testID: "continueWithFacebook" }).props.onPress()
       expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalled()
     })
@@ -31,14 +28,14 @@ describe("OnboardingSocialPick", () => {
     it("logs in using google when the user presses on continue with google", async () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
       GlobalStore.actions.auth.authGoogle = jest.fn(() => Promise.resolve({ success: true })) as any
-      const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
+      const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
       tree.root.findByProps({ testID: "continueWithGoogle" }).props.onPress()
       expect(GlobalStore.actions.auth.authGoogle).toHaveBeenCalled()
     })
 
     it("logs in using apple when the user presses on continue with apple", () => {
       GlobalStore.actions.auth.authApple = jest.fn(() => Promise.resolve({ success: true })) as any
-      const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
+      const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
       tree.root.findByProps({ testID: "continueWithApple" }).props.onPress()
       expect(GlobalStore.actions.auth.authApple).toHaveBeenCalled()
     })
@@ -49,7 +46,7 @@ describe("OnboardingSocialPick", () => {
       jest.clearAllMocks()
     })
     it("navigates to sign up with email when the user presses on continue with email", () => {
-      const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
+      const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="signup" />)
       tree.root.findByProps({ testID: "continueWithEmail" }).props.onPress()
       expect(mockNavigate).toHaveBeenCalledWith("OnboardingCreateAccountWithEmail")
     })
@@ -59,7 +56,7 @@ describe("OnboardingSocialPick", () => {
         Promise.resolve({ success: true })
       ) as any
 
-      const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
+      const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="signup" />)
       tree.root.findByProps({ testID: "continueWithFacebook" }).props.onPress()
       expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalled()
     })
@@ -68,14 +65,14 @@ describe("OnboardingSocialPick", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
       GlobalStore.actions.auth.authGoogle = jest.fn(() => Promise.resolve({ success: true })) as any
 
-      const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
+      const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="signup" />)
       tree.root.findByProps({ testID: "continueWithGoogle" }).props.onPress()
       expect(GlobalStore.actions.auth.authGoogle).toHaveBeenCalled()
     })
 
     it("signs up in using apple when the user presses on continue with apple", () => {
       GlobalStore.actions.auth.authApple = jest.fn(() => Promise.resolve({ success: true })) as any
-      const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
+      const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="signup" />)
       tree.root.findByProps({ testID: "continueWithApple" }).props.onPress()
       expect(GlobalStore.actions.auth.authApple).toHaveBeenCalled()
     })
@@ -83,39 +80,15 @@ describe("OnboardingSocialPick", () => {
 })
 
 describe("webView links ", () => {
-  describe("on Android", () => {
-    beforeEach(() => {
-      Platform.OS = "android"
-    })
-
-    it("opens terms webView", () => {
-      const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
-      tree.root.findByProps({ testID: "openTerms" }).props.onPress()
-      expect(mockNavigate).toHaveBeenCalledWith("Terms")
-    })
-
-    it("opens privacy webView", () => {
-      const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
-      tree.root.findByProps({ testID: "openPrivacy" }).props.onPress()
-      expect(mockNavigate).toHaveBeenCalledWith("Privacy")
-    })
-  })
-})
-
-describe("on iOS", () => {
-  beforeEach(() => {
-    Platform.OS = "ios"
-  })
-
-  it("opens terms webView modaly", () => {
-    const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
+  it("opens terms webView", () => {
+    const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
     tree.root.findByProps({ testID: "openTerms" }).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/terms", { modal: true })
+    expect(mockNavigate).toHaveBeenCalledWith("OnboardingWebView", { url: "/terms" })
   })
 
-  it("opens privacy webView modaly", () => {
-    const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
+  it("opens privacy webView", () => {
+    const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
     tree.root.findByProps({ testID: "openPrivacy" }).props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/privacy", { modal: true })
+    expect(mockNavigate).toHaveBeenCalledWith("OnboardingWebView", { url: "/privacy" })
   })
 })

@@ -21,6 +21,9 @@ export type NativeEvent =
       payload: { route: string; props: {} }
     }
   | {
+      type: "REQUEST_MODAL_DISMISS"
+    }
+  | {
       type: "MODAL_DISMISSED"
     }
   | {
@@ -38,7 +41,6 @@ export interface NativeState {
   authenticationToken: string
   launchCount: number
   userAgent: string
-  deviceId: string
 }
 
 export interface NativeModel {
@@ -93,6 +95,9 @@ listenToNativeEvents((event: NativeEvent) => {
       return
     case "MODAL_DISMISSED":
       navigationEvents.emit("modalDismissed")
+      return
+    case "REQUEST_MODAL_DISMISS":
+      navigationEvents.emit("requestModalDismiss")
       return
     default:
       assertNever(event)

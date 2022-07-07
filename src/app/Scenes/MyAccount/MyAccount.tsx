@@ -1,4 +1,4 @@
-import { MyAccount_me } from "__generated__/MyAccount_me.graphql"
+import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MenuItem } from "app/Components/MenuItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -12,12 +12,11 @@ import { useGoogleLink } from "app/utils/LinkedAccounts/google"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Text } from "palette"
-import React from "react"
+import { Box, Button, Flex, Spacer, Text } from "palette"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 
-const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay }) => {
+const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, relay }) => {
   const hasOnlyOneAuth = me.authentications.length + (me.hasPassword ? 1 : 0) < 2
 
   const onlyExistingAuthFor = (provider: "FACEBOOK" | "GOOGLE" | "APPLE") => {
@@ -29,7 +28,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
   const showLinkGoogle = useFeatureFlag("ARGoogleAuth")
   const showLinkApple = Platform.OS === "ios"
 
-  const showLinkedAccounts = useFeatureFlag("ARShowLinkedAccounts") && !me.secondFactors?.length
+  const showLinkedAccounts = !me.secondFactors?.length
 
   const {
     link: linkFB,
@@ -111,7 +110,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
                     <Image
-                      source={require(`@images/facebook.webp`)}
+                      source={require(`images/facebook.webp`)}
                       resizeMode="contain"
                       style={{ marginRight: 10 }}
                     />
@@ -139,7 +138,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
-                        source={require(`@images/google.webp`)}
+                        source={require(`images/google.webp`)}
                         resizeMode="contain"
                         style={{ marginRight: 10 }}
                       />
@@ -167,7 +166,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
-                        source={require(`@images/apple.webp`)}
+                        source={require(`images/apple.webp`)}
                         resizeMode="contain"
                         style={{ marginRight: 10, tintColor: "black" }}
                       />
@@ -186,6 +185,10 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
             )}
           </Flex>
         )}
+        <Spacer mt={2} />
+        <Button variant="text" block onPress={() => navigate("my-account/delete-account")}>
+          <Text color="red100">Delete My Account</Text>
+        </Button>
       </ScrollView>
     </PageWithSimpleHeader>
   )

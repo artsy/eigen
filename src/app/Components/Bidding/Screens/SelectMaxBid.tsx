@@ -9,20 +9,20 @@ import { Button, Flex } from "palette"
 
 import { ConfirmBidScreen } from "./ConfirmBid"
 
-import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
-import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
+import { SelectMaxBid_me$data } from "__generated__/SelectMaxBid_me.graphql"
+import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { ScreenDimensionsContext } from "app/utils/useScreenDimensions"
 import { compact } from "lodash"
 import { Select } from "palette/elements/Select"
+import { ScreenDimensionsContext } from "shared/hooks"
 
 interface SelectMaxBidProps extends ViewProps {
-  sale_artwork: SelectMaxBid_sale_artwork
-  me: SelectMaxBid_me
+  sale_artwork: SelectMaxBid_sale_artwork$data
+  me: SelectMaxBid_me$data
   navigator: NavigatorIOS
   relay: RelayRefetchProp
 }

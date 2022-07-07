@@ -1,6 +1,5 @@
 import { render } from "@testing-library/react-native"
 import { Theme } from "palette"
-import React from "react"
 import { DurationProvider } from "../Countdown"
 import { LotCloseInfo } from "./LotCloseInfo"
 
@@ -12,13 +11,17 @@ const basicSale = {
   isClosed: false,
   displayTimelyAt: null,
   cascadingEndTimeIntervalMinutes: 1,
+  extendedBiddingPeriodMinutes: 1,
+  extendedBiddingIntervalMinutes: 1,
 }
 
 const basicSaleArtwork = {
+  lotID: "lot-1",
   counts: null,
   formattedEndDateTime: "Formatted end date time",
   currentBid: null,
   lotLabel: "Lot 1",
+  extendedBiddingEndAt: null,
 }
 
 describe("LotCloseInfo", () => {
@@ -36,7 +39,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            lotEndAt={saleArtwork.endAt}
+            duration={null}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -58,7 +67,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            lotEndAt={saleArtwork.endAt}
+            duration={null}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -83,7 +98,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            lotEndAt={saleArtwork.endAt}
+            duration={null}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -108,7 +129,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            lotEndAt={saleArtwork.endAt}
+            duration={null}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -133,7 +160,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            duration={null}
+            lotEndAt={saleArtwork.endAt}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -157,7 +190,13 @@ describe("LotCloseInfo", () => {
     const { getByText } = render(
       <Theme>
         <DurationProvider startAt={saleArtwork.endAt}>
-          <LotCloseInfo duration={null} saleArtwork={saleArtwork} sale={sale} />
+          <LotCloseInfo
+            duration={null}
+            lotEndAt={saleArtwork.endAt}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended={false}
+          />
         </DurationProvider>
       </Theme>
     )
@@ -166,5 +205,37 @@ describe("LotCloseInfo", () => {
 
     expect(lotCloseText).toBeTruthy()
     expect(lotCloseText.props.color).toEqual("black60")
+  })
+
+  it("shows Extended when the sale is extended", () => {
+    const sale = {
+      ...basicSale,
+      startAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+      endAt: new Date(Date.now() + 1000 * 60).toISOString(),
+    }
+    const saleArtwork = {
+      ...basicSaleArtwork,
+      endAt: sale.endAt,
+      extendedBiddingEndAt: new Date(Date.now() + 1000 * 60 * 2).toISOString(),
+    }
+
+    const { getByText } = render(
+      <Theme>
+        <DurationProvider startAt={saleArtwork.extendedBiddingEndAt}>
+          <LotCloseInfo
+            lotEndAt={saleArtwork.extendedBiddingEndAt}
+            duration={null}
+            saleArtwork={saleArtwork}
+            sale={sale}
+            hasBeenExtended
+          />
+        </DurationProvider>
+      </Theme>
+    )
+
+    const lotCloseText = getByText("Extended, 2m 0s")
+
+    expect(lotCloseText).toBeTruthy()
+    expect(lotCloseText.props.color).toEqual("red100")
   })
 })

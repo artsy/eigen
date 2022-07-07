@@ -1,12 +1,8 @@
-import {
-  MakeOfferModalTestsQuery,
-  MakeOfferModalTestsQueryResponse,
-} from "__generated__/MakeOfferModalTestsQuery.graphql"
+import { MakeOfferModalTestsQuery } from "__generated__/MakeOfferModalTestsQuery.graphql"
 import { CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -18,7 +14,7 @@ jest.unmock("react-relay")
 
 let env: ReturnType<typeof createMockEnvironment>
 
-const FakeApp = (props: MakeOfferModalTestsQueryResponse) => {
+const FakeApp = (props: MakeOfferModalTestsQuery["response"]) => {
   return (
     <MakeOfferModalFragmentContainer
       artwork={props!.artwork!}
@@ -28,7 +24,7 @@ const FakeApp = (props: MakeOfferModalTestsQueryResponse) => {
 }
 
 interface RenderComponentProps {
-  props: MakeOfferModalTestsQueryResponse | null
+  props: MakeOfferModalTestsQuery["response"] | null
   error: Error | null
 }
 
@@ -114,7 +110,7 @@ const mockSingleEditionResolver = {
 }
 
 const getWrapper = (mockResolvers = mockResolver, renderer = renderComponent) => {
-  const tree = renderWithWrappers(<TestRenderer renderer={renderer} />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer renderer={renderer} />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) => {
       return MockPayloadGenerator.generate(operation, mockResolvers)
@@ -148,8 +144,8 @@ describe("<MakeOfferModal />", () => {
   describe("when artwork is edition set", () => {
     const tapOn = (edition: ReactTestInstance) => {
       edition.props.onPress(
-        edition.props.edition.internalID,
-        edition.props.edition.isOfferableFromInquiry
+        edition.props.editionSet.internalID,
+        edition.props.editionSet.isOfferableFromInquiry
       )
     }
     it("shows edition selection when it's an edition", () => {
@@ -173,7 +169,7 @@ describe("<MakeOfferModal />", () => {
       const wrapper = getWrapper(mockEditionsResolver)
       const selection = wrapper.root
         .findAllByType(EditionSelectBox)
-        .find((edtn) => edtn.props.edition.internalID === "edition-2")!
+        .find((edtn) => edtn.props.editionSet.internalID === "edition-2")!
       const text = extractText(selection)
       expect(text).toContain("Unavailable")
       expect(text).not.toContain("€200")
@@ -186,8 +182,10 @@ describe("<MakeOfferModal />", () => {
     it("allows the user to toggle between available editions and confirm", async () => {
       const wrapper = getWrapper(mockEditionsResolver)
       const editions = wrapper.root.findAllByType(EditionSelectBox)
-      const selection = editions.find((edtn) => edtn.props.edition.internalID === "edition-1")!
-      const selectionAlt = editions.find((edtn) => edtn.props.edition.internalID === "edition-3")!
+      const selection = editions.find((edtn) => edtn.props.editionSet.internalID === "edition-1")!
+      const selectionAlt = editions.find(
+        (edtn) => edtn.props.editionSet.internalID === "edition-3"
+      )!
       tapOn(selection)
       const confirmBtn = wrapper.root.findByType(InquiryMakeOfferButton)
       await flushPromiseQueue()

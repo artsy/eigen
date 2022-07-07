@@ -3,9 +3,8 @@ import { MyProfileEditFormTestsQuery } from "__generated__/MyProfileEditFormTest
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyProfileEditForm } from "../MyProfileEditForm"
@@ -47,16 +46,16 @@ describe("MyProfileEditForm", () => {
 
   describe("collector profile edit form", () => {
     it("shows the profile verification section", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
-      mockEnvironmentPayload(mockEnvironment)
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
+      resolveMostRecentRelayOperation(mockEnvironment)
       expect(getByTestId("profile-verifications")).toBeDefined()
     })
 
     describe("Email Verification", () => {
       describe("When the email is confirmed in Gravity", () => {
         it("is shown as verified when it's verified in gravity", async () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
-          mockEnvironmentPayload(mockEnvironment, {
+          const { getByText } = renderWithWrappers(<TestRenderer />)
+          resolveMostRecentRelayOperation(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: false,
               emailConfirmed: true,
@@ -68,8 +67,8 @@ describe("MyProfileEditForm", () => {
 
       describe("When the email is not verified in Gravity", () => {
         it("is shown as non verified when it's not verified in gravity", () => {
-          const { getByText } = renderWithWrappersTL(<TestRenderer />)
-          mockEnvironmentPayload(mockEnvironment, {
+          const { getByText } = renderWithWrappers(<TestRenderer />)
+          resolveMostRecentRelayOperation(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: true,
               emailConfirmed: false,
@@ -79,8 +78,8 @@ describe("MyProfileEditForm", () => {
         })
 
         it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to true", async () => {
-          const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
-          mockEnvironmentPayload(mockEnvironment, {
+          const { getByTestId } = renderWithWrappers(<TestRenderer />)
+          resolveMostRecentRelayOperation(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: true,
               emailConfirmed: false,
@@ -109,8 +108,8 @@ describe("MyProfileEditForm", () => {
         })
 
         it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to false", async () => {
-          const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
-          mockEnvironmentPayload(mockEnvironment, {
+          const { getByTestId } = renderWithWrappers(<TestRenderer />)
+          resolveMostRecentRelayOperation(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: false,
               emailConfirmed: false,
@@ -130,8 +129,8 @@ describe("MyProfileEditForm", () => {
 
     describe("ID Verification", () => {
       it("is shown as verified when it's verified in gravity", () => {
-        const { getByText } = renderWithWrappersTL(<TestRenderer />)
-        mockEnvironmentPayload(mockEnvironment, {
+        const { getByText } = renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
           Me: () => ({
             identityVerified: true,
           }),
@@ -139,8 +138,8 @@ describe("MyProfileEditForm", () => {
         expect(getByText("ID Verified")).toBeTruthy()
       })
       it("is shown as non verified when it's not verified in gravity", () => {
-        const { getByText } = renderWithWrappersTL(<TestRenderer />)
-        mockEnvironmentPayload(mockEnvironment, {
+        const { getByText } = renderWithWrappers(<TestRenderer />)
+        resolveMostRecentRelayOperation(mockEnvironment, {
           Me: () => ({
             identityVerified: false,
           }),

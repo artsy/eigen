@@ -3,7 +3,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
-import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
+import { MyCollectionArtwork_sharedProps$data } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { goBack } from "app/navigation/navigate"
@@ -12,12 +12,13 @@ import {
   cleanArtworkPayload,
   explicitlyClearedFields,
 } from "app/Scenes/MyCollection/utils/cleanArtworkPayload"
-import { GlobalStore } from "app/store/GlobalStore"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { addClue, GlobalStore, setVisualClueAsSeen, useFeatureFlag } from "app/store/GlobalStore"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
-import { Alert } from "react-native"
+import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { myCollectionCreateArtwork } from "../../mutations/myCollectionCreateArtwork"
@@ -25,6 +26,7 @@ import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArt
 import { myCollectionUpdateArtwork } from "../../mutations/myCollectionUpdateArtwork"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotos } from "../../utils/deletedPhotos"
+import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 import { removeLocalPhotos, storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
@@ -65,11 +67,12 @@ export type ArtworkFormScreen = {
 export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
   | {
       mode: "add"
+      source: Tab
     }
   | {
       mode: "edit"
       onDelete: () => void
-      artwork: Omit<MyCollectionArtwork_sharedProps, " $refType">
+      artwork: Omit<MyCollectionArtwork_sharedProps$data, " $refType">
     }
 )
 
@@ -90,17 +93,43 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   formValuesRef.current = formValues
 
   const [loading, setLoading] = useState<boolean>(false)
+  const [isArtworkSaved, setIsArtworkSaved] = useState<boolean>(false)
+  const [savingArtworkModalDisplayText, setSavingArtworkModalDisplayText] = useState<string>("")
 
   const { showActionSheetWithOptions } = useActionSheet()
 
+  const showMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
+
   const handleSubmit = async (values: ArtworkFormValues) => {
     setLoading(true)
+
     try {
-      await updateMyUserProfile({
-        currencyPreference: preferredCurrency,
-        lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
+      await Promise.all([
+        // This is to satisfy showing the insights modal for 2500 ms
+        __TEST__ || !showMyCollectionInsights
+          ? undefined
+          : new Promise((resolve) => setTimeout(resolve, 2500)),
+        updateMyUserProfile({
+          currencyPreference: preferredCurrency,
+          lengthUnitPreference: preferredMetric.toUpperCase() as LengthUnitPreference,
+        }),
+        updateArtwork(values, dirtyFormCheckValues, props).then((hasMarketPriceInsights) => {
+          setSavingArtworkModalDisplayText(
+            hasMarketPriceInsights ? "Generating market data" : "Saving artwork"
+          )
+        }),
+      ])
+      if (showMyCollectionInsights) {
+        setIsArtworkSaved(true)
+        // simulate requesting market data
+        await new Promise((resolve) => setTimeout(resolve, 2000))
+      }
+      refreshMyCollection()
+      setLoading(false)
+      // Go back to my collection screen after the loading modal is hidden
+      InteractionManager.runAfterInteractions(() => {
+        props.onSuccess?.()
       })
-      await updateArtwork(values, dirtyFormCheckValues, props)
     } catch (e) {
       if (__DEV__) {
         console.error(e)
@@ -108,8 +137,9 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
         captureException(e)
       }
       Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
-    } finally {
       setLoading(false)
+    } finally {
+      setIsArtworkSaved(false)
     }
   }
 
@@ -230,7 +260,15 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           />
           <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
         </Stack.Navigator>
-        <LoadingModal isVisible={loading} />
+        {showMyCollectionInsights && props.mode === "add" ? (
+          <SavingArtworkModal
+            testID="saving-artwork-modal"
+            isVisible={loading}
+            loadingText={isArtworkSaved ? savingArtworkModalDisplayText : "Saving artwork"}
+          />
+        ) : (
+          <LoadingModal testID="loading-modal" isVisible={loading} />
+        )}
       </FormikProvider>
     </NavigationContainer>
   )
@@ -279,6 +317,11 @@ export const updateArtwork = async (
     if (slug) {
       storeLocalPhotos(slug, photos)
     }
+    const hasMarketPriceInsights =
+      response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.hasMarketPriceInsights
+
+    addArtworkMessages({ hasMarketPriceInsights, sourceTab: props.source })
+    return hasMarketPriceInsights
   } else {
     const response = await myCollectionUpdateArtwork({
       artistIds: artistSearchResult?.internalID ? [artistSearchResult?.internalID] : [],
@@ -299,13 +342,40 @@ export const updateArtwork = async (
       removeLocalPhotos(slug)
     }
   }
-
-  refreshMyCollection()
-  props.onSuccess?.()
 }
 
 const tracks = {
   deleteCollectedArtwork: (internalID: string, slug: string) => {
     return deleteCollectedArtwork({ contextOwnerId: internalID, contextOwnerSlug: slug })
   },
+}
+
+const addArtworkMessages = async ({
+  hasMarketPriceInsights,
+  sourceTab,
+}: {
+  hasMarketPriceInsights: boolean | null | undefined
+  sourceTab: Tab
+}) => {
+  setVisualClueAsSeen("AddedArtworkWithInsightsMessage_InsightsTab")
+  setVisualClueAsSeen("AddedArtworkWithInsightsMessage_MyCTab")
+  setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_InsightsTab")
+  setVisualClueAsSeen("AddedArtworkWithoutInsightsMessage_MyCTab")
+
+  if (hasMarketPriceInsights) {
+    if (sourceTab === Tab.collection) {
+      addClue("AddedArtworkWithInsightsMessage_MyCTab")
+      addClue("AddedArtworkWithInsightsVisualClueDot")
+    } else {
+      setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
+      addClue("AddedArtworkWithInsightsMessage_InsightsTab")
+    }
+  } else {
+    if (sourceTab === Tab.collection) {
+      addClue("AddedArtworkWithoutInsightsMessage_MyCTab")
+    } else {
+      setVisualClueAsSeen("MyCollectionInsightsIncompleteMessage")
+      addClue("AddedArtworkWithoutInsightsMessage_InsightsTab")
+    }
+  }
 }

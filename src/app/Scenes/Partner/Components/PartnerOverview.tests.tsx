@@ -1,12 +1,8 @@
-import {
-  PartnerOverviewTestsQuery,
-  PartnerOverviewTestsQueryRawResponse,
-} from "__generated__/PartnerOverviewTestsQuery.graphql"
+import { PartnerOverviewTestsQuery } from "__generated__/PartnerOverviewTestsQuery.graphql"
 import { ArtistListItem } from "app/Components/ArtistListItem"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -14,7 +10,7 @@ import { PartnerOverviewFragmentContainer as PartnerOverview } from "./PartnerOv
 
 jest.unmock("react-relay")
 
-const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQueryRawResponse["partner"]> = {
+const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQuery["rawResponse"]["partner"]> = {
   id: "293032r423",
   slug: "gagosian",
   internalID: "4d8b92c44eb68a1b2c0004cb",
@@ -69,7 +65,7 @@ describe("PartnerOverview", () => {
         edges: artists,
       },
     }
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -89,7 +85,7 @@ describe("PartnerOverview", () => {
         bio: "Nullam quis risus eget urna mollis ornare vel eu leo.",
       },
     }
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -109,7 +105,7 @@ describe("PartnerOverview", () => {
       },
     }
 
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -128,7 +124,7 @@ describe("PartnerOverview", () => {
         edges: artists,
       },
     }
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -144,7 +140,7 @@ describe("PartnerOverview", () => {
 })
 
 const artists: NonNullable<
-  NonNullable<PartnerOverviewTestsQueryRawResponse["partner"]>["artists"]
+  NonNullable<PartnerOverviewTestsQuery["rawResponse"]["partner"]>["artists"]
 >["edges"] = [
   {
     cursor: "a",

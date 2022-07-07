@@ -6,10 +6,8 @@ import { Toast } from "app/Components/Toast/Toast"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Box, Button, CheckIcon, Text } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-
 interface RequestForPriceEstimateProps {
   artwork: RequestForPriceEstimateBanner_artwork$key
   marketPriceInsights: RequestForPriceEstimateBanner_marketPriceInsights$key | null
@@ -20,16 +18,13 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
 }) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<RequestForPriceEstimateBanner_artwork$key>(
-    artworkFragment,
-    otherProps.artwork
-  )
-  const marketPriceInsights = useFragment<RequestForPriceEstimateBanner_marketPriceInsights$key>(
+  const artwork = useFragment(artworkFragment, otherProps.artwork)
+  const marketPriceInsights = useFragment(
     marketPriceInsightsFragment,
     otherProps.marketPriceInsights
   )
 
-  const me = useFragment<RequestForPriceEstimateBanner_me$key>(meFragment, otherProps.me)
+  const me = useFragment(meFragment, otherProps.me)
 
   const requestedPriceEstimates = GlobalStore.useAppState(
     (state) => state.requestedPriceEstimates.requestedPriceEstimates
@@ -64,6 +59,8 @@ export const RequestForPriceEstimateBanner: React.FC<RequestForPriceEstimateProp
               name: me.name,
               email: me.email,
               phone: me.phone,
+              demandRank: marketPriceInsights?.demandRank ?? undefined,
+              artworkSlug: artwork.slug,
             },
           })
         }}
@@ -118,7 +115,8 @@ const tracks = {
   ): TappedRequestPriceEstimate => ({
     action: ActionType.tappedRequestPriceEstimate,
     context_module: ContextModule.myCollectionArtworkInsights,
-    context_screen: OwnerType.myCollectionArtwork,
+    context_screen: OwnerType.myCollectionArtworkInsights,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
     context_screen_owner_id: artworkId,
     context_screen_owner_slug: artworkSlug,
     demand_index: demandRank,

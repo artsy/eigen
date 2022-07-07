@@ -1,5 +1,4 @@
 import { Color, useColor } from "palette"
-import React from "react"
 import Svg, { Circle, G, Path } from "react-native-svg"
 
 const Crosshair: React.FC<{ color?: Color }> = (props) => {

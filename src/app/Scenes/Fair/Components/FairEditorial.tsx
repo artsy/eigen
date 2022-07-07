@@ -1,14 +1,13 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy/cohesion"
-import { FairEditorial_fair } from "__generated__/FairEditorial_fair.graphql"
+import { FairEditorial_fair$data } from "__generated__/FairEditorial_fair.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { Box, BoxProps, Text, Touchable, useColor } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface FairEditorialProps extends BoxProps {
-  fair: FairEditorial_fair
+  fair: FairEditorial_fair$data
 }
 
 export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) => {

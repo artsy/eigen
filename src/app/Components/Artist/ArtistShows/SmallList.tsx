@@ -1,13 +1,12 @@
-import React from "react"
 import { FlatList, StyleSheet, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ArtistShowFragmentContainer } from "./ArtistShow"
 
-import { SmallList_shows } from "__generated__/SmallList_shows.graphql"
+import { SmallList_shows$data } from "__generated__/SmallList_shows.graphql"
 
 interface Props extends ViewProps {
-  shows: SmallList_shows
+  shows: SmallList_shows$data
 }
 
 const SmallList: React.FC<Props> = ({ shows }) => {

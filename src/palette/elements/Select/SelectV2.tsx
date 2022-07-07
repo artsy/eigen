@@ -1,21 +1,21 @@
-import { TriangleDown } from "app/Icons/TriangleDown"
-import { Autocomplete } from "app/utils/Autocomplete"
+import { FancyModal } from "app/Components/FancyModal/FancyModal"
+import { SearchInput } from "app/Components/SearchInput"
 import {
+  Autocomplete,
   CheckIcon,
   CloseIcon,
   Flex,
   InputTitle,
-  Sans,
+  PopIn,
   Separator,
   Spacer,
+  Text,
   Touchable,
+  TriangleDown,
   useColor,
 } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
-import { FancyModal } from "../../../app/Components/FancyModal/FancyModal"
-import { PopIn } from "../../../app/Components/PopIn"
-import { SearchInput } from "../../../app/Components/SearchInput"
 import { INPUT_HEIGHT } from "../Input"
 
 export interface SelectOption<ValueType> {
@@ -132,9 +132,9 @@ const SelectButton: React.FC<{
       {showTitleLabel ? <InputTitle>{title}</InputTitle> : null}
 
       {subTitle ? (
-        <Sans mb={0.5} size="2" color={color("black60")}>
+        <Text variant="xs" mb={0.5} color={color("black60")}>
           {subTitle}
-        </Sans>
+        </Text>
       ) : (
         <Spacer mb={0.5} />
       )}
@@ -149,13 +149,13 @@ const SelectButton: React.FC<{
           alignItems="center"
         >
           {value ? (
-            <Sans size="3t" color="black100">
+            <Text variant="sm" color="black100">
               {value}
-            </Sans>
+            </Text>
           ) : (
-            <Sans size="3t" color="black60">
+            <Text variant="sm" color="black60">
               {placeholder ?? "Pick an option"}
-            </Sans>
+            </Text>
           )}
           <TriangleDown />
         </Flex>
@@ -266,9 +266,9 @@ const SelectModal: React.FC<{
       <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1} />
         <Flex flex={2} alignItems="center">
-          <Sans size="4" weight="medium">
+          <Text variant="md" weight="medium">
             {props.title}
-          </Sans>
+          </Text>
         </Flex>
         <TouchableOpacity
           onPress={props.onDismiss}
@@ -327,9 +327,9 @@ const SelectModal: React.FC<{
               flexGrow={0}
             >
               {props.renderItemLabel?.(item) ?? (
-                <Sans size="4" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>
+                <Text variant="md" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>
                   {item.label}
-                </Sans>
+                </Text>
               )}
               {localValue === item.value ? (
                 <PopIn>

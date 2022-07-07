@@ -1,16 +1,15 @@
-import { ArtworkDetails_artwork } from "__generated__/ArtworkDetails_artwork.graphql"
+import { ArtworkDetails_artwork$data } from "__generated__/ArtworkDetails_artwork.graphql"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { Box, Join, Spacer, Text } from "palette"
-import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkDetailsRow } from "./ArtworkDetailsRow"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 interface ArtworkDetailsProps {
-  artwork: ArtworkDetails_artwork
+  artwork: ArtworkDetails_artwork$data
 }
 
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {

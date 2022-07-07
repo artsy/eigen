@@ -1,7 +1,6 @@
 import { SaleActiveBidsTestsQuery } from "__generated__/SaleActiveBidsTestsQuery.graphql"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -38,27 +37,27 @@ describe("SaleActiveBids", () => {
   })
 
   it("renders no items if the user has no active lots standing", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const mockProps = {
       Me: () => ({
         lotStandings: [],
       }),
     }
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(tree.root.findAllByType(FlatList)).toHaveLength(0)
   })
 
   it("renders list of lots if the user has active lots standing", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const mockProps = {
       Me: () => ({
         lotStandings,
       }),
     }
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(tree.root.findAllByType(FlatList)).toHaveLength(1)
     expect(tree.root.findAllByType(SaleActiveBidItemContainer)).toHaveLength(10)

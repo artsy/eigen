@@ -1,11 +1,11 @@
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import React from "react"
-import { BackHandler, NativeEventSubscription, View } from "react-native"
+import { BackHandler, ImageRequireSource, NativeEventSubscription, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { dismissModal, navigate } from "app/navigation/navigate"
 
 import { Button, Theme } from "palette"
+import React from "react"
 import { Icon20 } from "../Components/Icon"
 import { Flex } from "../Elements/Flex"
 
@@ -13,20 +13,21 @@ import { Markdown } from "../../Markdown"
 import { Container } from "../Components/Containers"
 import { Timer } from "../Components/Timer"
 import { Title } from "../Components/Title"
-import { BidderPositionResult } from "../types"
 
-import { BidResult_sale_artwork } from "__generated__/BidResult_sale_artwork.graphql"
+import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { BidderPositionResult } from "../types"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
 interface BidResultProps {
-  sale_artwork: BidResult_sale_artwork
+  sale_artwork: BidResult_sale_artwork$data
   bidderPositionResult: BidderPositionResult
   navigator: NavigatorIOS
   refreshBidderInfo?: () => void
   refreshSaleArtwork?: () => void
+  biddingEndAt?: string
 }
 
 const messageForPollingTimeout = {
@@ -38,9 +39,9 @@ const messageForPollingTimeout = {
     "please contact [support@artsy.net](mailto:support@artsy.net).",
 }
 
-const Icons = {
-  WINNING: require("../../../../../images/circle-check-green.webp"),
-  PENDING: require("../../../../../images/circle-exclamation.webp"),
+const Icons: Record<string, ImageRequireSource> = {
+  WINNING: require("images/circle-check-green.webp"),
+  PENDING: require("images/circle-exclamation.webp"),
 }
 
 export class BidResult extends React.Component<BidResultProps> {
@@ -75,8 +76,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   exitBidFlow = async () => {
     if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const saleSlug = this.props.sale_artwork.sale.slug
+      const saleSlug = this.props.sale_artwork.sale?.slug
       const url = `${unsafe__getEnvironment().predictionURL}/${saleSlug}`
       navigate(url, { modal: true })
     } else {
@@ -95,12 +95,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
   render() {
     const { sale_artwork, bidderPositionResult } = this.props
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { liveStartAt, endAt: saleEndAt, cascadingEndTimeIntervalMinutes } = sale_artwork.sale
     const { status, message_header, message_description_md } = bidderPositionResult
-
-    const casacadingEndTimeFeatureEnabled =
-      unsafe_getFeatureFlag("AREnableCascadingEndTimerLotPage") && cascadingEndTimeIntervalMinutes
 
     return (
       <View style={{ flex: 1 }}>
@@ -110,12 +105,7 @@ export class BidResult extends React.Component<BidResultProps> {
         <Container mt={6}>
           <View>
             <Flex alignItems="center">
-              <Icon20
-                source={
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  Icons[status] || require("../../../../../images/circle-x-red.webp")
-                }
-              />
+              <Icon20 source={Icons[status] || require("images/circle-x-red.webp")} />
               <Title mt={2} mb={5}>
                 {status === "PENDING"
                   ? messageForPollingTimeout.title
@@ -130,8 +120,9 @@ export class BidResult extends React.Component<BidResultProps> {
               )}
               {!!this.shouldDisplayTimer(status) && (
                 <Timer
-                  liveStartsAt={liveStartAt}
-                  endsAt={casacadingEndTimeFeatureEnabled ? sale_artwork.endAt : saleEndAt}
+                  liveStartsAt={sale_artwork.sale?.liveStartAt ?? undefined}
+                  lotEndAt={sale_artwork.endAt}
+                  biddingEndAt={this.props.biddingEndAt}
                 />
               )}
             </Flex>
@@ -163,6 +154,7 @@ export const BidResultScreen = createFragmentContainer(BidResult, {
   sale_artwork: graphql`
     fragment BidResult_sale_artwork on SaleArtwork {
       endAt
+      extendedBiddingEndAt
       sale {
         liveStartAt
         endAt

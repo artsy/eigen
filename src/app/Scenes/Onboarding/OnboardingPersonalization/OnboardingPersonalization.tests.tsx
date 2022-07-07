@@ -1,13 +1,12 @@
-import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
+import { OnboardingPersonalization_highlights$data } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationTestsQuery } from "__generated__/OnboardingPersonalizationTestsQuery.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { mockNavigate } from "app/tests/navigationMocks"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingPersonalizationList } from "./OnboardingPersonalization"
@@ -36,8 +35,8 @@ describe("OnboardingPersonalizationList", () => {
         if (props?.highlights) {
           return (
             <OnboardingPersonalizationList
-              // no need to redeclare the OnboardingPersonalization_highlights fragment here
-              highlights={props.highlights as OnboardingPersonalization_highlights}
+              // no need to redeclare the OnboardingPersonalization_highlights$data fragment here
+              highlights={props.highlights as OnboardingPersonalization_highlights$data}
               navigation={{ navigate: mockNavigate } as any}
               route={null as any}
             />
@@ -54,8 +53,8 @@ describe("OnboardingPersonalizationList", () => {
 
   describe("SearchInput", () => {
     it("navigates to the OnboardingPersonalizationModal when the user presses on the search input", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironmentPayload(mockEnvironment)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+      resolveMostRecentRelayOperation(mockEnvironment)
 
       const searchInput = tree.root.findByProps({ testID: "searchArtistButton" })
       searchInput.props.onPress()
@@ -71,8 +70,8 @@ describe("OnboardingPersonalizationList", () => {
         cb(null, PushAuthorizationStatus.NotDetermined)
       )
 
-      const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironmentPayload(mockEnvironment)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
+      resolveMostRecentRelayOperation(mockEnvironment)
 
       const doneButton = tree.root.findByProps({ testID: "doneButton" })
       doneButton.props.onPress()

@@ -1,9 +1,8 @@
-import { ArtsyKeyboardAvoidingView } from "app/Components/ArtsyKeyboardAvoidingView"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { useFormikContext } from "formik"
 import { Box, Button, Input, PhoneInput, Spacer, Text } from "palette"
-import React from "react"
 import { Platform, ScrollView } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
+import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { RequestForPriceEstimateFormikSchema } from "./RequestForPriceEstimateScreen"
 
 export const RequestForPriceEstimateForm = () => {
@@ -36,7 +35,7 @@ export const RequestForPriceEstimateForm = () => {
                 handleChange("requesterName")(text)
               }}
               blurOnSubmit={false}
-              placeholder="First and Last Name"
+              placeholder="First and last name"
               returnKeyType="done"
               maxLength={128}
               value={values.requesterName}

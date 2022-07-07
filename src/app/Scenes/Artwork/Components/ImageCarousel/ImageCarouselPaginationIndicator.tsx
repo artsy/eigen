@@ -1,7 +1,7 @@
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Flex, Spacer, useColor } from "palette"
 import React, { useContext } from "react"
 import { Animated, View } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 import { ImageCarouselContext } from "./ImageCarouselContext"
 import { useSpringValue } from "./useSpringValue"
 
@@ -40,6 +40,7 @@ export const PaginationDot: React.FC<{ diameter: number; index: number }> = ({
 
   return (
     <Animated.View
+      accessibilityLabel="Image Pagination Indicator"
       style={{
         marginHorizontal: diameter * 0.8,
         borderRadius: diameter / 2,
@@ -76,6 +77,7 @@ export const ScrollBar: React.FC = () => {
       />
       <Spacer mb={2} />
       <Animated.View
+        accessibilityLabel="Image Pagination Scroll Bar"
         style={{
           height: 1,
           width: barWidth,

@@ -3,7 +3,6 @@ import { navigate } from "app/navigation/navigate"
 import moment from "moment-timezone"
 import { Flex, Text } from "palette"
 import { StarCircleFill } from "palette/svgs/sf"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -11,7 +10,7 @@ import { TimelySale } from "../helpers/timely"
 import { Lost, Passed, Won } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
-import { ClosedLotStanding_saleArtwork } from "../../../../__generated__/ClosedLotStanding_saleArtwork.graphql"
+import { ClosedLotStanding_saleArtwork$data } from "../../../../__generated__/ClosedLotStanding_saleArtwork.graphql"
 
 type BidderResult = "won" | "lost" | "passed"
 
@@ -34,7 +33,7 @@ export const ClosedLotStanding = ({
   inActiveSale = false,
   testID,
 }: {
-  saleArtwork: ClosedLotStanding_saleArtwork
+  saleArtwork: ClosedLotStanding_saleArtwork$data
   withTimelyInfo?: boolean
   inActiveSale?: boolean
   testID?: string

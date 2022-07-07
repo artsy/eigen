@@ -1,16 +1,16 @@
 import Clipboard from "@react-native-community/clipboard"
-import { SaleHeader_sale } from "__generated__/SaleHeader_sale.graphql"
+import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "app/Components/CustomShareSheet"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
-import { getCascadingEndTimeFeatureSaleDetails, saleTime } from "app/utils/saleTime"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
+import { getAbsoluteTimeOfSale, saleTime, useRelativeTimeOfSale } from "app/utils/saleTime"
 import moment from "moment"
 import { Flex, LinkIcon, MoreIcon, ShareIcon, Text, Touchable } from "palette"
 import React, { useState } from "react"
 import { Animated, Dimensions, View } from "react-native"
 import RNShare, { ShareOptions } from "react-native-share"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { CaretButton } from "../../../Components/Buttons/CaretButton"
 import OpaqueImageView from "../../../Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "../../../navigation/navigate"
@@ -20,7 +20,7 @@ export const COVER_IMAGE_HEIGHT = 260
 const SHARE_ICON_SIZE = 23
 
 interface Props {
-  sale: SaleHeader_sale
+  sale: SaleHeader_sale$data
   scrollAnim: Animated.Value
 }
 
@@ -33,7 +33,9 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
 
   const saleTimeDetails = saleTime(sale)
 
-  const cascadingEndTimeFeatureSaleDetails = getCascadingEndTimeFeatureSaleDetails(sale)
+  const absoluteTimeOfSale = getAbsoluteTimeOfSale(sale)
+
+  const relativeTimeOfSale = useRelativeTimeOfSale(sale)
 
   const cascadingEndTimeFeatureEnabled =
     useFeatureFlag("AREnableCascadingEndTimerSalePageDetails") &&
@@ -127,37 +129,39 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
       >
         <Flex mx="2" mt="2">
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-            <Text variant="lg" testID="saleName">
-              {sale.name}
-            </Text>
+            <Flex flex={1}>
+              <Text variant="lg" testID="saleName">
+                {sale.name}
+              </Text>
+            </Flex>
             {!!enableAuctionShare && (
-              <Touchable
-                onPress={() => {
-                  setShareSheetVisible(true)
-                }}
-                style={{
-                  width: 30,
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                }}
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                haptic="impactLight"
-              >
-                <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
-              </Touchable>
+              <Flex flex={0.1}>
+                <Touchable
+                  onPress={() => {
+                    setShareSheetVisible(true)
+                  }}
+                  style={{
+                    width: 30,
+                    justifyContent: "flex-end",
+                    alignItems: "center",
+                  }}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  haptic="impactLight"
+                >
+                  <ShareIcon width={SHARE_ICON_SIZE} height={SHARE_ICON_SIZE} />
+                </Touchable>
+              </Flex>
             )}
           </Flex>
           {cascadingEndTimeFeatureEnabled ? (
             <>
               <Flex mb="1" mt="2">
-                {!!cascadingEndTimeFeatureSaleDetails.relative && (
-                  <Text variant="sm" color={cascadingEndTimeFeatureSaleDetails.relative.color}>
-                    {cascadingEndTimeFeatureSaleDetails.relative.copy}
+                {!!relativeTimeOfSale?.copy && (
+                  <Text variant="sm" color={relativeTimeOfSale.color}>
+                    {relativeTimeOfSale.copy}
                   </Text>
                 )}
-                {!!cascadingEndTimeFeatureSaleDetails.absolute && (
-                  <Text variant="sm">{cascadingEndTimeFeatureSaleDetails.absolute}</Text>
-                )}
+                {!!absoluteTimeOfSale && <Text variant="sm">{absoluteTimeOfSale}</Text>}
               </Flex>
               {!!sale.cascadingEndTimeIntervalMinutes && (
                 <Text

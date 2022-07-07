@@ -1,5 +1,4 @@
 import { useColor } from "palette/hooks"
-import React from "react"
 import { G, Icon, IconProps, Path } from "./Icon"
 
 /** EyeOpenedIcon */

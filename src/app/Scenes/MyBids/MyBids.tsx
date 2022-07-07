@@ -1,9 +1,8 @@
 import { Flex, Join, Separator, Spacer, Text } from "palette"
-import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
-import { MyBids_me } from "__generated__/MyBids_me.graphql"
+import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
 import { OwnerType } from "@artsy/cohesion"
@@ -11,19 +10,20 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
+import { useEffect, useState } from "react"
+import { useScreenDimensions } from "shared/hooks"
 import { MyBidsPlaceholder, SaleCardFragmentContainer } from "./Components"
 import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
 import { NoBids } from "./Components/NoBids"
 
 export interface MyBidsProps {
-  me: MyBids_me
+  me: MyBids_me$data
   isActiveTab: boolean
   relay: RelayRefetchProp
 }
 
 const MyBids: React.FC<MyBidsProps> = (props) => {
-  const [isFetching, setIsFetching] = React.useState<boolean>(false)
+  const [isFetching, setIsFetching] = useState<boolean>(false)
   const { relay, isActiveTab, me } = props
   const { isSmallScreen } = useScreenDimensions()
 
@@ -40,7 +40,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
     })
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isActiveTab) {
       refreshMyBids()
     }

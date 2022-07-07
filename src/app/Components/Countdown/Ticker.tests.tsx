@@ -1,7 +1,7 @@
 import { getDefaultNormalizer, render } from "@testing-library/react-native"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import { Theme } from "palette"
-import React from "react"
 import { Text } from "react-native"
 import { LabeledTicker, ModernTicker, SimpleTicker } from "./Ticker"
 
@@ -12,7 +12,7 @@ describe("SimpleTicker", () => {
   it("renders properly", () => {
     const { getByText } = render(
       <Theme>
-        <SimpleTicker duration={duration} separator="  " size="5" />
+        <SimpleTicker duration={duration} separator="  " variant="md" />
       </Theme>
     )
 
@@ -27,7 +27,7 @@ describe("SimpleTicker", () => {
     const zeroDuration = moment.duration()
     const { getByText } = render(
       <Theme>
-        <SimpleTicker duration={zeroDuration} separator="  " size="5" />
+        <SimpleTicker duration={zeroDuration} separator="  " variant="md" />
       </Theme>
     )
 
@@ -43,7 +43,7 @@ describe("SimpleTicker", () => {
     const farOutDuration = moment.duration(63113904000)
     const { getByText } = render(
       <Theme>
-        <SimpleTicker duration={farOutDuration} separator="  " size="5" />
+        <SimpleTicker duration={farOutDuration} separator="  " variant="md" />
       </Theme>
     )
 
@@ -72,15 +72,31 @@ describe("LabeledTicker", () => {
 
 describe("ModernTicker", () => {
   describe("when the sale has not started", () => {
-    it("renders Bidding Starts Today in blue when start time is < 1 day away", () => {
-      const todayDuration = moment.duration(2000)
+    it("When Bidding in less than 1 day: it shows hours and minutes left", () => {
+      const twentyHrsFiveMins = 1000 * 60 * 60 * 20 + 1000 * 60 * 5
+      const todayDuration = moment.duration(twentyHrsFiveMins)
       const { getByText } = render(
         <Theme>
           <ModernTicker duration={todayDuration} />
         </Theme>
       )
 
-      const timerText = getByText("Bidding Starts Today")
+      const timerText = getByText("20h 5m Until Bidding Starts")
+
+      expect(timerText).toBeTruthy()
+      expect(timerText.props.color).toEqual("blue100")
+    })
+
+    it("When Bidding in less than 1 hour: it shows minutes and seconds left", () => {
+      const twentyMinsTenSecs = 1000 * 60 * 20 + 1000 * 10
+      const todayDuration = moment.duration(twentyMinsTenSecs)
+      const { getByText } = render(
+        <Theme>
+          <ModernTicker duration={todayDuration} />
+        </Theme>
+      )
+
+      const timerText = getByText("20m 10s Until Bidding Starts")
 
       expect(timerText).toBeTruthy()
       expect(timerText.props.color).toEqual("blue100")
@@ -176,6 +192,19 @@ describe("ModernTicker", () => {
 
       expect(timerText).toBeTruthy()
       expect(timerText.props.color).toEqual("red100")
+    })
+
+    it('prefixes "Extended: " when when sale is extended', () => {
+      const momentDuration = moment.duration(1000 * 90) // 1m 30s
+      const { getByText } = renderWithWrappers(
+        <Theme>
+          <ModernTicker duration={momentDuration} hasStarted isExtended />
+        </Theme>
+      )
+      const timerTextBlock = getByText("Extended: 1m 30s")
+
+      expect(timerTextBlock).toBeTruthy()
+      expect(timerTextBlock.props.color).toEqual("red100")
     })
   })
 })

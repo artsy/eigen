@@ -1,16 +1,15 @@
-import { ViewingRoomArtworkRail_viewingRoom } from "__generated__/ViewingRoomArtworkRail_viewingRoom.graphql"
+import { ViewingRoomArtworkRail_viewingRoom$data } from "__generated__/ViewingRoomArtworkRail_viewingRoom.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { Flex } from "palette"
-import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ViewingRoomArtworkRailProps {
-  viewingRoom: ViewingRoomArtworkRail_viewingRoom
+  viewingRoom: ViewingRoomArtworkRail_viewingRoom$data
 }
 
 export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = ({ viewingRoom }) => {

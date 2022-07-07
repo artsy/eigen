@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import { SavedAddressesForm_me } from "__generated__/SavedAddressesForm_me.graphql"
+import { SavedAddressesForm_me$data } from "__generated__/SavedAddressesForm_me.graphql"
 import { SavedAddressesFormQuery } from "__generated__/SavedAddressesFormQuery.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -10,7 +10,6 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { useScreenDimensions } from "app/utils/useScreenDimensions"
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
 import { times } from "lodash"
 import { Flex, Input, Text } from "palette"
@@ -21,6 +20,7 @@ import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { useScreenDimensions } from "shared/hooks"
 import { MyAccountFieldEditScreen } from "../MyAccount/Components/MyAccountFieldEditScreen"
 import { AddAddressButton } from "./Components/AddAddressButton"
 import { createUserAddress } from "./mutations/addNewAddress"
@@ -84,10 +84,10 @@ const useStore = createComponentStore<Store>({
   }),
 })
 
-export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId?: string }> = ({
-  me,
-  addressId,
-}) => {
+export const SavedAddressesForm: React.FC<{
+  me: SavedAddressesForm_me$data
+  addressId?: string
+}> = ({ me, addressId }) => {
   const isEditForm = !!addressId
   const toast = useToast()
   const [isValidNumber, setIsValidNumber] = useState<boolean>(false)
@@ -308,7 +308,7 @@ export const SavedAddressesFormPlaceholder: React.FC<{ addressId?: string }> = (
   return (
     <PageWithSimpleHeader title={!!props?.addressId ? "Edit Address" : "Add New Address"}>
       <Flex px={2} py={15}>
-        {times(5).map((index: number) => (
+        {times(5).map((index) => (
           <Flex key={index} py={1}>
             <PlaceholderText height={15} width={50 + Math.random() * 100} />
             <PlaceholderBox height={45} width="100%" />

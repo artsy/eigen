@@ -1,5 +1,4 @@
 import { Text } from "palette"
-import React from "react"
 import { connectHighlight } from "react-instantsearch-native"
 
 export const SearchHighlight = connectHighlight(

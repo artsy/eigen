@@ -1,11 +1,6 @@
 import { AuctionResultsForArtistsYouFollowTestsQuery } from "__generated__/AuctionResultsForArtistsYouFollowTestsQuery.graphql"
-import { navigate } from "app/navigation/navigate"
-import { Tab } from "app/Scenes/Favorites/Favorites"
-import { mockEnvironmentPayload } from "app/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { first } from "lodash"
-import { LinkText } from "palette"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultsForArtistsYouFollowContainer } from "./AuctionResultsForArtistsYouFollow"
@@ -41,9 +36,9 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
   })
 
   it("Renders list of auction results for artists you follow", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
+    resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => ({
         id: "test-id",
         auctionResultsByFollowedArtists: {
@@ -54,23 +49,6 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
     })
 
     expect(tree.root.findAllByType(AuctionResultsForArtistsYouFollowContainer)).toHaveLength(1)
-  })
-
-  it("routes to favorites URL with passProps", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-
-    mockEnvironmentPayload(mockEnvironment, {
-      Me: () => ({
-        id: "test-id",
-        auctionResultsByFollowedArtists: {
-          totalCount: 3,
-          edges: [auctionResultEdge, auctionResultEdge, auctionResultEdge],
-        },
-      }),
-    })
-    first(tree.root.findAllByType(LinkText))?.props.onPress()
-
-    expect(navigate).toHaveBeenCalledWith("/favorites", { passProps: { initialTab: Tab.artists } })
   })
 })
 

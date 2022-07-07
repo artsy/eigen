@@ -6,9 +6,8 @@ import { ShowArtistsPreviewTestsQuery } from "__generated__/ShowArtistsPreviewTe
 import { ArtistListItem } from "app/Components/ArtistListItem"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Button } from "palette"
-import React from "react"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "./ShowArtistsPreview"
 
 jest.unmock("react-relay")
@@ -42,7 +41,7 @@ describe("ArtistsContainer", () => {
   })
 
   it("Renders the show artists", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -64,7 +63,7 @@ describe("ArtistsContainer", () => {
   })
 
   it("commits a follow mutation", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

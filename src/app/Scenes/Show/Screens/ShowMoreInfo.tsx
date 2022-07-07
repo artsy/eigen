@@ -1,4 +1,4 @@
-import { ShowMoreInfo_show } from "__generated__/ShowMoreInfo_show.graphql"
+import { ShowMoreInfo_show$data } from "__generated__/ShowMoreInfo_show.graphql"
 import { ShowMoreInfoQuery } from "__generated__/ShowMoreInfoQuery.graphql"
 import { PartnerEntityHeaderFragmentContainer as PartnerEntityHeader } from "app/Components/PartnerEntityHeader"
 import { ReadMore } from "app/Components/ReadMore"
@@ -6,7 +6,6 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Box, Spacer, Text } from "palette"
-import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ShowHoursFragmentContainer as ShowHours } from "../Components/ShowHours"
@@ -24,7 +23,7 @@ interface Section {
 }
 
 export interface ShowMoreInfoProps {
-  show: ShowMoreInfo_show
+  show: ShowMoreInfo_show$data
 }
 
 export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {

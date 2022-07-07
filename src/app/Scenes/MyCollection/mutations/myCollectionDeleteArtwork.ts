@@ -1,12 +1,9 @@
-import {
-  myCollectionDeleteArtworkMutation,
-  myCollectionDeleteArtworkMutationResponse,
-} from "__generated__/myCollectionDeleteArtworkMutation.graphql"
+import { myCollectionDeleteArtworkMutation } from "__generated__/myCollectionDeleteArtworkMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
 export function myCollectionDeleteArtwork(artworkId: string) {
-  return new Promise<myCollectionDeleteArtworkMutationResponse>((resolve, reject) => {
+  return new Promise<myCollectionDeleteArtworkMutation["response"]>((resolve, reject) => {
     commitMutation<myCollectionDeleteArtworkMutation>(defaultEnvironment, {
       mutation: graphql`
         mutation myCollectionDeleteArtworkMutation($input: MyCollectionDeleteArtworkInput!) {
