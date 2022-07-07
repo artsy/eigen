@@ -6,7 +6,7 @@ export const MarketSignalsSectionHeader: React.FC<{}> = () => {
   const [isVisible, setIsVisible] = useState(false)
 
   return (
-    <Flex justifyContent="space-between" flexDirection="row" mb={2} alignItems="center" px={2}>
+    <Flex justifyContent="space-between" flexDirection="row" my={2} alignItems="center" px={2}>
       <Text variant="lg">Market Signals</Text>
       <Touchable onPress={() => setIsVisible(true)} haptic>
         <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
