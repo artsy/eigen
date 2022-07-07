@@ -9801,6 +9801,39 @@ type MarketPriceInsightsEdge {
   node: MarketPriceInsights
 }
 
+union Match =
+    Article
+  | Artist
+  | Artwork
+  | Fair
+  | Feature
+  | Gene
+  | Page
+  | Profile
+  | Sale
+  | Show
+  | Tag
+
+# A connection to a list of items.
+type MatchConnection {
+  # A list of edges.
+  edges: [MatchEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type MatchEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Match
+}
+
 type Me implements Node {
   addressConnection(after: String, before: String, first: Int, last: Int): UserAddressConnection
 
@@ -12631,6 +12664,35 @@ type Query {
 
   # Get price insights for a market.
   marketPriceInsights(artistId: ID!, medium: String!): MarketPriceInsights
+  matchConnection(
+    after: String
+    before: String
+
+    # ARTIST_SERIES, CITY, COLLECTION, and VIEWING_ROOM are not yet supported
+    entities: [SearchEntity!] = [
+      ARTICLE
+      ARTIST
+      ARTWORK
+      FAIR
+      FEATURE
+      GALLERY
+      GENE
+      INSTITUTION
+      PAGE
+      PROFILE
+      SALE
+      SHOW
+      TAG
+    ]
+    first: Int
+    last: Int
+
+    # Mode of search to execute
+    mode: SearchMode = SITE
+    page: Int = 1
+    size: Int = 10
+    term: String!
+  ): MatchConnection
   me: Me
 
   # Fetches an object given its globally unique ID.
@@ -15909,6 +15971,35 @@ type Viewer {
     size: Int
     slugs: [String!]
   ): [MarketingCollection]
+  matchConnection(
+    after: String
+    before: String
+
+    # ARTIST_SERIES, CITY, COLLECTION, and VIEWING_ROOM are not yet supported
+    entities: [SearchEntity!] = [
+      ARTICLE
+      ARTIST
+      ARTWORK
+      FAIR
+      FEATURE
+      GALLERY
+      GENE
+      INSTITUTION
+      PAGE
+      PROFILE
+      SALE
+      SHOW
+      TAG
+    ]
+    first: Int
+    last: Int
+
+    # Mode of search to execute
+    mode: SearchMode = SITE
+    page: Int = 1
+    size: Int = 10
+    term: String!
+  ): MatchConnection
   me: Me
 
   # Fetches an object given its globally unique ID.
