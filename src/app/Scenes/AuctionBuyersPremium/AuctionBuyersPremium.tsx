@@ -2,7 +2,7 @@ import { AuctionBuyersPremium_sale$data } from "__generated__/AuctionBuyersPremi
 import { AuctionBuyersPremiumQuery } from "__generated__/AuctionBuyersPremiumQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { PlaceholderRaggedText, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact } from "lodash"

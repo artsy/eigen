@@ -1,7 +1,7 @@
 import { ConversationDetails_me$data } from "__generated__/ConversationDetails_me.graphql"
 import { ConversationDetailsQuery } from "__generated__/ConversationDetailsQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { ItemInfoFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/ItemInfo"
 import { AttachmentListFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/Preview/Attachment/AttachmentList"
 import { extractNodes } from "app/utils/extractNodes"

@@ -2,7 +2,7 @@ import {
   getGeminiCredentialsForEnvironmentMutation,
   RequestCredentialsForAssetUploadInput,
 } from "__generated__/getGeminiCredentialsForEnvironmentMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
 export type AssetCredentials =

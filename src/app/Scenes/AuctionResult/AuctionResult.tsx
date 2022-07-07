@@ -6,7 +6,7 @@ import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionR
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { QAInfoPanel } from "app/utils/QAInfo"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"

@@ -1,5 +1,5 @@
 import { deleteSavedSearchAlertMutation } from "__generated__/deleteSavedSearchAlertMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
 export const deleteSavedSearchMutation = (savedSearchAlertId: string) => {

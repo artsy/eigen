@@ -7,6 +7,7 @@ import {
   ArtistListItemPlaceholder,
 } from "app/Components/ArtistListItem"
 import SearchIcon from "app/Icons/SearchIcon"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { requestPushNotificationsPermission } from "app/utils/PushNotification"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -16,7 +17,6 @@ import { INPUT_HEIGHT } from "palette/elements/Input/Input"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { OnboardingPersonalizationModalQueryRenderer } from "./OnboardingPersonalizationModal"
 
 // tslint:disable-next-line:interface-over-type-literal

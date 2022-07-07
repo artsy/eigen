@@ -1,5 +1,5 @@
 import { myCollectionDeleteArtworkMutation } from "__generated__/myCollectionDeleteArtworkMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
 export function myCollectionDeleteArtwork(artworkId: string) {

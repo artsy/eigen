@@ -3,13 +3,13 @@ import { FairBMWArtActivation_fair$data } from "__generated__/FairBMWArtActivati
 import { FairBMWArtActivationQuery } from "__generated__/FairBMWArtActivationQuery.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { navigate } from "app/navigation/navigate"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { BMWSponsorship } from "app/Scenes/City/CityBMWSponsorship"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { Box, Text } from "palette"
 import React from "react"
 import { FlatList, ViewProps } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { defaultEnvironment } from "../../relay/createEnvironment"
 import renderWithLoadProgress from "../../utils/renderWithLoadProgress"
 
 interface Props extends ViewProps {

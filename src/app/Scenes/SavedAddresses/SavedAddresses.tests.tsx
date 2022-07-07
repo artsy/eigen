@@ -1,7 +1,7 @@
 import { act, fireEvent } from "@testing-library/react-native"
 import { SavedAddressesTestsQuery } from "__generated__/SavedAddressesTestsQuery.graphql"
 import { navigate, navigationEvents } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"

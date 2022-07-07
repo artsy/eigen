@@ -3,7 +3,7 @@ import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabP
 import About from "app/Components/Tag/About"
 import { TagArtworksPaginationContainer } from "app/Components/Tag/TagArtworks"
 import { TagPlaceholder } from "app/Components/Tag/TagPlaceholder"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import Header from "app/Scenes/Tag/TagHeader"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"

@@ -1,6 +1,6 @@
 import { act, waitFor } from "@testing-library/react-native"
 import { SalesTestQuery } from "__generated__/SalesTestQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"

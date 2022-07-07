@@ -8,7 +8,7 @@ import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContex
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
 import { RetryErrorBoundary } from "./Components/RetryErrorBoundary"
 import { ToastProvider } from "./Components/Toast/toastHook"
-import { defaultEnvironment } from "./relay/createEnvironment"
+import { defaultEnvironment } from "./relay/defaultEnvironment"
 import { GlobalStore, GlobalStoreProvider, useFeatureFlag } from "./store/GlobalStore"
 import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"

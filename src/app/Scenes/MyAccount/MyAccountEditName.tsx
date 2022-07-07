@@ -1,5 +1,5 @@
 import { MyAccountEditNameQuery } from "__generated__/MyAccountEditNameQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Input } from "palette"

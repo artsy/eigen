@@ -1,7 +1,7 @@
 import { InquiryPurchaseButton_artwork$data } from "__generated__/InquiryPurchaseButton_artwork.graphql"
 import { InquiryPurchaseButtonOrderMutation } from "__generated__/InquiryPurchaseButtonOrderMutation.graphql"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { Button, ButtonProps } from "palette"
 import React, { useState } from "react"
 import { Alert } from "react-native"

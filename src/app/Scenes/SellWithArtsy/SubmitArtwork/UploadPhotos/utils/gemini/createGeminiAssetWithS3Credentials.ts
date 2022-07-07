@@ -2,7 +2,7 @@ import {
   createGeminiAssetWithS3CredentialsMutation,
   CreateGeminiEntryForAssetInput,
 } from "__generated__/createGeminiAssetWithS3CredentialsMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
 export const createGeminiAssetWithS3Credentials = (input: CreateGeminiEntryForAssetInput) => {

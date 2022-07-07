@@ -1,5 +1,5 @@
 import Spinner from "app/Components/Spinner"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"

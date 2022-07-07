@@ -1,5 +1,5 @@
 import { SwitchMenu } from "app/Components/SwitchMenu"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"

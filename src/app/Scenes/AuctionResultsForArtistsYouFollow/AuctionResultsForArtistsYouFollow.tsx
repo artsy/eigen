@@ -4,7 +4,7 @@ import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/A
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { AuctionResultsList, LoadingSkeleton } from "app/Components/AuctionResultsList"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"

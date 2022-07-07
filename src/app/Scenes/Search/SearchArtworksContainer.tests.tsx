@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"

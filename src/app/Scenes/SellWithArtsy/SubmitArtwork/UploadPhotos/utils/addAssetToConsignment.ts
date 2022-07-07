@@ -2,7 +2,7 @@ import {
   addAssetToConsignmentMutation,
   AddAssetToConsignmentSubmissionInput,
 } from "__generated__/addAssetToConsignmentMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
 export const addAssetToConsignment = (input: AddAssetToConsignmentSubmissionInput) => {

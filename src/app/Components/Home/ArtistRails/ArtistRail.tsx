@@ -21,7 +21,7 @@ import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation
 import { ArtistRailNewSuggestionQuery } from "__generated__/ArtistRailNewSuggestionQuery.graphql"
 import { Disappearable } from "app/Components/Disappearable"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import { Schema } from "app/utils/track"

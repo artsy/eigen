@@ -1,7 +1,7 @@
 import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.graphql"
 import { ArtworkMediumQuery } from "__generated__/ArtworkMediumQuery.graphql"
 import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box, Button, Join, Separator, Spacer, Text } from "palette"
 import { ScrollView } from "react-native"

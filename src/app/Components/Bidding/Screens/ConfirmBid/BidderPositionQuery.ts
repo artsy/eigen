@@ -1,10 +1,10 @@
 import { BidderPositionQuery } from "__generated__/BidderPositionQuery.graphql"
-import { defaultEnvironment as environment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { fetchQuery, graphql } from "relay-runtime"
 
 export const bidderPositionQuery = (bidderPositionID: string) => {
   return fetchQuery<BidderPositionQuery>(
-    environment,
+    defaultEnvironment,
     graphql`
       query BidderPositionQuery($bidderPositionID: String!) {
         me {
@@ -23,11 +23,7 @@ export const bidderPositionQuery = (bidderPositionID: string) => {
         }
       }
     `,
-    {
-      bidderPositionID,
-    },
-    {
-      fetchPolicy: "network-only",
-    }
+    { bidderPositionID },
+    { fetchPolicy: "network-only" }
   ).toPromise()
 }

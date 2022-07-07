@@ -1,6 +1,6 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"

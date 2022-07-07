@@ -1,5 +1,5 @@
 import { getConvectionGeminiKeyQuery } from "__generated__/getConvectionGeminiKeyQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { fetchQuery, graphql } from "relay-runtime"
 
 export const getConvectionGeminiKey = () =>

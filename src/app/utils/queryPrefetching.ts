@@ -1,6 +1,6 @@
 import { modules } from "app/AppRegistry"
 import { matchRoute } from "app/navigation/routes"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"

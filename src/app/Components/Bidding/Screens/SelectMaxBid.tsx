@@ -14,7 +14,7 @@ import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_
 import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { compact } from "lodash"
 import { Select } from "palette/elements/Select"

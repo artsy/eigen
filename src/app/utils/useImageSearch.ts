@@ -1,7 +1,7 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useImageSearchQuery } from "__generated__/useImageSearchQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { ReactNativeFile } from "extract-files"
 import { useState } from "react"
 import { Alert, Platform } from "react-native"

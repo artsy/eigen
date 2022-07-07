@@ -1,7 +1,7 @@
 import { ActionType } from "@artsy/cohesion"
 import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "app/store/NativeModel"
