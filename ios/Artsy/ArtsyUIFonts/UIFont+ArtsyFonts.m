@@ -36,7 +36,7 @@
 
         CFRelease(font);
     } else {
-        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Font failed to load if you are an open source contributor set OSS=true in your ENV file." userInfo:@{}];
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Font failed to load if you are an open source contributor set OSS=True in your ENV file." userInfo:@{}];
     }
 
     if (provider) {
