@@ -247,6 +247,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableCreateArtworkAlert",
   },
+  AREnableNewInfiniteScrollArtworkGrid: {
+    readyForRelease: false,
+    description: "Enable New Infinite Scroll Artwork Grid",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
