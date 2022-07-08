@@ -7,7 +7,6 @@ import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { LocationAutocomplete } from "./LocationAutocomplete"
 
-jest.unmock("react-relay")
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 const mockOnChange = jest.fn()

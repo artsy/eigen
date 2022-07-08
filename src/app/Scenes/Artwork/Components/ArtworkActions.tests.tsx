@@ -10,7 +10,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from "./ArtworkActions"
 
-jest.unmock("react-relay")
 jest.unmock("app/NativeModules/LegacyNativeModules")
 
 describe("ArtworkActions", () => {

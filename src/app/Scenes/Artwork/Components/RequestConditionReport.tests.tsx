@@ -25,7 +25,6 @@ const me: RequestConditionReport_me$data = {
 }
 
 jest.unmock("react-tracking")
-jest.unmock("react-relay")
 
 describe("RequestConditionReport", () => {
   let env: ReturnType<typeof createMockEnvironment>

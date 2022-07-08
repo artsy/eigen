@@ -6,8 +6,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-jest.unmock("react-relay")
-
 describe("ShowArtworks", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()

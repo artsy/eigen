@@ -8,8 +8,6 @@ import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlacehol
 import { createMockEnvironment } from "relay-test-utils"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 
-jest.unmock("react-relay")
-
 describe("SearchArtworks", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 

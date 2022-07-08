@@ -12,8 +12,6 @@ import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.unmock("react-relay")
-
 const trackEvent = useTracking().trackEvent
 
 describe("ArtistSeriesMoreSeries", () => {

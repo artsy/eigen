@@ -6,8 +6,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { FairExhibitorRailFragmentContainer } from "./Components/FairExhibitorRail"
 import { FairExhibitorsFragmentContainer } from "./Components/FairExhibitors"
 
-jest.unmock("react-relay")
-
 describe("FairExhibitors", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()

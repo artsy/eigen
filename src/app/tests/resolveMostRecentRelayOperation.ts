@@ -8,7 +8,7 @@ const reset = () => {
   counters = {}
   paths = {}
 }
-export const generateID = (pathComponents: readonly string[] | undefined) => {
+const generateID = (pathComponents: readonly string[] | undefined) => {
   const path: string = pathComponents?.join(".") ?? "_GLOBAL_"
   const currentCounter = counters[path]
   counters[path] = currentCounter === undefined ? 1 : currentCounter + 1
@@ -43,7 +43,7 @@ const goodMockResolver = (ctx: MockResolverContext) => {
 
   return `${prefix}-${generateID(ctx.path)}`
 }
-export const DefaultMockResolvers: MockResolvers = {
+const DefaultMockResolvers: MockResolvers = {
   ID: (ctx) => goodMockResolver(ctx),
   String: (ctx) => goodMockResolver(ctx),
 }

@@ -3,8 +3,6 @@ import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { ShippingFragmentContainer } from "./Shipping"
 
-jest.unmock("react-relay")
-
 describe("ShippingFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapperTL({
     Component: ({ me }) => {

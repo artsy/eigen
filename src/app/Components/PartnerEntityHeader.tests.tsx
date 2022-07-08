@@ -6,8 +6,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { PartnerEntityHeaderFragmentContainer } from "./PartnerEntityHeader"
 
-jest.unmock("react-relay")
-
 describe("PartnerEntityHeader", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

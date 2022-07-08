@@ -22,8 +22,6 @@ import { press } from "./helpers"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
 import { ShippingModal } from "./ShippingModal"
 
-jest.unmock("react-relay")
-
 let env: ReturnType<typeof createMockEnvironment>
 
 const toggleVisibility = jest.fn()

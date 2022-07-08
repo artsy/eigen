@@ -10,8 +10,6 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { AuctionResultsRailFragmentContainer } from "./AuctionResultsRail"
 
-jest.unmock("react-relay")
-
 describe("AuctionResultsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

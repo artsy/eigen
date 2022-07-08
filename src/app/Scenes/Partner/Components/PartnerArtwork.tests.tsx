@@ -6,8 +6,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { PartnerArtworkFixture } from "./__fixtures__/PartnerArtwork-fixture"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./PartnerArtwork"
 
-jest.unmock("react-relay")
-
 describe("PartnerArtwork", () => {
   it("renders the artworks", async () => {
     const env = createMockEnvironment()

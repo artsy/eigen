@@ -6,8 +6,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { CreditCardSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
 
-jest.unmock("react-relay")
-
 describe("PaymentSection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = ({}) => (

@@ -8,8 +8,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Button, Text } from "palette"
 
-jest.unmock("react-relay")
-
 describe("ArtistHeader", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

@@ -9,8 +9,6 @@ import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimes
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleQueryRenderer } from "./Sale"
 
-jest.unmock("react-relay")
-
 jest.mock("app/navigation/navigate", () => ({
   popParentViewController: jest.fn(),
   navigate: jest.fn(),

@@ -4,8 +4,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
 
-jest.unmock("react-relay")
-
 const mockEnvironment = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
 
 describe("My Collection Artwork", () => {

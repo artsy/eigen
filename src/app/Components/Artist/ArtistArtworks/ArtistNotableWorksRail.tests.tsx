@@ -5,8 +5,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.unmock("react-relay")
-
 describe("Notable Works Rail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

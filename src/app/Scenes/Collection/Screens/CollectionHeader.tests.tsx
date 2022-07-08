@@ -3,8 +3,6 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { CollectionFixture } from "../Components/__fixtures__/CollectionFixture"
 import { CollectionHeader } from "./CollectionHeader"
 
-jest.unmock("react-relay")
-
 describe("collection header", () => {
   let props: any
   beforeEach(() => {

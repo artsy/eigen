@@ -6,8 +6,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ShipsToSectionFragmentContainer } from "./Components/ShipsToSection"
 
-jest.unmock("react-relay")
-
 const order = {
   requestedFulfillment: {
     __typename: "CommerceShip",

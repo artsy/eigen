@@ -3,8 +3,6 @@ import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { PaymentMethodFragmentContainer } from "./PaymentMethod"
 
-jest.unmock("react-relay")
-
 describe("PaymentMethodFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapperTL({
     Component: ({ me }) => {

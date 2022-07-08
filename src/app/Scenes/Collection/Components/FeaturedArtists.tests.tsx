@@ -8,7 +8,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CollectionFeaturedArtistsContainer as FeaturedArtists } from "./FeaturedArtists"
 
-jest.unmock("react-relay")
 jest.unmock("react-tracking")
 
 const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"]["marketingCollection"] =

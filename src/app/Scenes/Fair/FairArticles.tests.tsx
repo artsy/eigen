@@ -2,8 +2,6 @@ import { FAIR2_ARTICLES_QUERY, FairArticlesPaginationContainer } from "app/Scene
 import { extractText } from "app/tests/extractText"
 import { setupTestWrapper } from "app/tests/setupTestWrapper"
 
-jest.unmock("react-relay")
-
 const { getWrapper } = setupTestWrapper({
   Component: FairArticlesPaginationContainer,
   query: FAIR2_ARTICLES_QUERY,

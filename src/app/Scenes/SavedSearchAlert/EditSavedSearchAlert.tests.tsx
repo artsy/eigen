@@ -9,8 +9,6 @@ import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { createMockEnvironment } from "relay-test-utils"
 import { EditSavedSearchAlertQueryRenderer } from "./EditSavedSearchAlert"
 
-jest.unmock("react-relay")
-
 describe("EditSavedSearchAlert", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)

@@ -7,8 +7,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { flushPromiseQueue } from "../../tests/flushPromiseQueue"
 import { MyAccountEditEmailContainer, MyAccountEditEmailQueryRenderer } from "./MyAccountEditEmail"
 
-jest.unmock("react-relay")
-
 const mockShow = jest.fn()
 const mockHide = jest.fn()
 const mockHideOldest = jest.fn()

@@ -20,8 +20,6 @@ import { SoldBySectionFragmentContainer } from "./Components/SoldBySection"
 import { SummarySectionFragmentContainer } from "./Components/SummarySection"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
 
-jest.unmock("react-relay")
-
 const order = {
   requestedFulfillment: { __typename: "CommerceShip", name: "my name" },
   lineItems: { edges: [{ node: { artwork: { partner: { name: "partnerName" } } } }] },

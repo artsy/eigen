@@ -4,8 +4,6 @@ import "react-native"
 import { graphql } from "react-relay"
 import { AttachmentListFragmentContainer } from "./AttachmentList"
 
-jest.unmock("react-relay")
-
 describe("AttachmentListFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapperTL({
     Component: ({ me }) => (

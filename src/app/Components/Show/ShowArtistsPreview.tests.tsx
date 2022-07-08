@@ -10,8 +10,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Button } from "palette"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "./ShowArtistsPreview"
 
-jest.unmock("react-relay")
-
 describe("ArtistsContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

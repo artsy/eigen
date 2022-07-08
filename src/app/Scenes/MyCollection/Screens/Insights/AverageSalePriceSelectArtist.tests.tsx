@@ -10,8 +10,6 @@ import {
   AverageSalePriceAtAuctionScreenQuery,
 } from "./AverageSalePriceAtAuction"
 
-jest.unmock("react-relay")
-
 describe("AverageSalePriceSelectArtist", () => {
   const TestRenderer = () => {
     useLazyLoadQuery<AverageSalePriceAtAuctionQuery>(AverageSalePriceAtAuctionScreenQuery, {

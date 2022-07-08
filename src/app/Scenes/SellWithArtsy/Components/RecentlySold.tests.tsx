@@ -11,8 +11,6 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { act } from "react-test-renderer"
 import { RecentlySoldFragmentContainer } from "./RecentlySold"
 
-jest.unmock("react-relay")
-
 describe("RecentlySold", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

@@ -1,7 +1,6 @@
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RecommendedArtistsRail } from "./RecommendedArtistsRail"
 
-jest.unmock("react-relay")
 let fakeRelay: any
 
 describe("RecommendedArtistsRail", () => {

@@ -9,8 +9,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ArtistListFragmentContainer } from "./ArtistList"
 
-jest.unmock("react-relay")
-
 describe("ArtistList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

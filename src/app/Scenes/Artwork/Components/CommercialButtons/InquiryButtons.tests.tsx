@@ -8,7 +8,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-jest.unmock("react-relay")
 jest.mock("app/Scenes/Artwork/Components/CommercialButtons/InquiryModal", () => {
   return {
     InquiryModalFragmentContainer: ({ onMutationSuccessful }: any) => {

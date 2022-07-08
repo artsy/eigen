@@ -10,8 +10,6 @@ import { PartnerContainer } from "../Partner/Partner"
 import { VanityURLEntityRenderer } from "./VanityURLEntity"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
-jest.unmock("react-relay")
-
 jest.mock("./VanityURLPossibleRedirect", () => ({
   VanityURLPossibleRedirect: () => null,
 }))

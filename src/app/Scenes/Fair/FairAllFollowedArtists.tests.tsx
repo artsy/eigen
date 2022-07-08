@@ -9,8 +9,6 @@ import {
   FairAllFollowedArtistsFragmentContainer,
 } from "./FairAllFollowedArtists"
 
-jest.unmock("react-relay")
-
 describe("FairAllFollowedArtists", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

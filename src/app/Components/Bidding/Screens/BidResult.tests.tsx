@@ -10,8 +10,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { BidderPositionResult } from "../types"
 import { BidResultScreen } from "./BidResult"
 
-jest.unmock("react-relay")
-
 const sale: BidResult_sale_artwork$data["sale"] = {
   cascadingEndTimeIntervalMinutes: null,
   liveStartAt: "2022-01-01T00:03:00+00:00",

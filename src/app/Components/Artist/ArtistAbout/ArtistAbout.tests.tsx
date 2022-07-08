@@ -10,8 +10,6 @@ import Biography from "../Biography"
 import { ArtistAboutContainer } from "./ArtistAbout"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
-jest.unmock("react-relay")
-
 describe("ArtistAbout", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (

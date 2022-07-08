@@ -42,8 +42,6 @@ type ArtworkQueries =
   | "ArtworkMarkAsRecentlyViewedQuery"
   | "ArtworkRefetchQuery"
 
-jest.unmock("react-relay")
-
 jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   class TimeOffsetProvider extends require("react").Component {
     static childContextTypes = {

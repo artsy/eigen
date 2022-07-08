@@ -7,8 +7,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingPersonalizationModalPaginationContainer } from "./OnboardingPersonalizationModal"
 
-jest.unmock("react-relay")
-
 const goBackMock = jest.fn()
 
 describe("OnboardingPersonalizationModal", () => {

@@ -9,8 +9,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowContextCard } from "./Components/ShowContextCard"
 import { Show, ShowFragmentContainer } from "./Show"
 
-jest.unmock("react-relay")
-
 describe("Show", () => {
   let env: ReturnType<typeof createMockEnvironment>
 

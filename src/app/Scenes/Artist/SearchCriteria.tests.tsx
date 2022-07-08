@@ -5,8 +5,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { createMockEnvironment } from "relay-test-utils"
 import { SearchCriteriaQueryRenderer } from "./SearchCriteria"
 
-jest.unmock("react-relay")
-
 describe("SearchCriteria", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

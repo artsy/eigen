@@ -13,8 +13,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import HomeAnalytics from "../homeAnalytics"
 import { CollectionsRailFragmentContainer } from "./CollectionsRail"
 
-jest.unmock("react-relay")
-
 describe("CollectionsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
   const mockScrollRef = jest.fn()

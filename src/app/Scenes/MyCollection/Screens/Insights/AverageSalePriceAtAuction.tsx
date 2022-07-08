@@ -98,11 +98,7 @@ export const AverageSalePriceAtAuction: React.FC<{ artistID: string }> = ({ arti
     }
   }, [])
 
-  return (
-    <Suspense fallback={null}>
-      <AverageSalePriceAtAuctionScreen refetch={refetch} queryArgs={queryArgs} />
-    </Suspense>
-  )
+  return <AverageSalePriceAtAuctionScreen refetch={refetch} queryArgs={queryArgs} />
 }
 
 export const AverageSalePriceAtAuctionScreenQuery = graphql`

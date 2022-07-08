@@ -7,8 +7,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { CONTAINER_HEIGHT, SaleArtworkTileRailCardContainer } from "."
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
-jest.unmock("react-relay")
-
 interface TestRendererProps {
   useCustomSaleMessage?: boolean
   useSquareAspectRatio?: boolean

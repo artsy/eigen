@@ -11,8 +11,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingPersonalizationList } from "./OnboardingPersonalization"
 
-jest.unmock("react-relay")
-
 describe("OnboardingPersonalizationList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

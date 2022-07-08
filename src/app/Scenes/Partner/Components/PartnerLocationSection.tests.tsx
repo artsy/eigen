@@ -4,8 +4,6 @@ import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
 
-jest.unmock("react-relay")
-
 const PartnerLocationSectionFixture = {
   internalID: "4d8b92c44eb68a1b2c0004cb",
   name: "Gagosian",

@@ -8,8 +8,6 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { UploadPhotos } from "./UploadPhotos"
 
-jest.unmock("react-relay")
-
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("UploadPhotos", () => {

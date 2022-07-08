@@ -2,8 +2,6 @@ import { graphql } from "react-relay"
 import { Environment, fetchQuery, GraphQLTaggedNode, RecordSource, Store } from "relay-runtime"
 import { createMockNetworkLayer2 } from "./index"
 
-jest.unmock("react-relay")
-
 describe("createMockNetworkLayer", () => {
   function fetchQueryWithData(
     options: Parameters<typeof createMockNetworkLayer2>[0],

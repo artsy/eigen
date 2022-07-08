@@ -19,8 +19,6 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionContainer } from "./MyCollection"
 
-jest.unmock("react-relay")
-
 describe("MyCollection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 

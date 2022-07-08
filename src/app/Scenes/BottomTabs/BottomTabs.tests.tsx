@@ -11,7 +11,7 @@ import { BottomTabs } from "./BottomTabs"
 import { BottomTabsButton } from "./BottomTabsButton"
 
 jest.mock("react-use/lib/useInterval")
-jest.unmock("react-relay")
+
 jest.mock("app/relay/createEnvironment", () => {
   let env = require("relay-test-utils").createMockEnvironment()
   const mock = {

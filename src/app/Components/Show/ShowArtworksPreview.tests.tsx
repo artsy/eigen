@@ -6,8 +6,6 @@ import { ShowArtworksPreviewTestsQuery } from "__generated__/ShowArtworksPreview
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "./ShowArtworksPreview"
 
-jest.unmock("react-relay")
-
 it("renders without throwing an error", async () => {
   const env = createMockEnvironment()
   const TestRenderer = () => (

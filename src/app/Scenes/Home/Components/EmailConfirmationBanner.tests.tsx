@@ -12,7 +12,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { EmailConfirmationBannerFragmentContainer } from "./EmailConfirmationBanner"
 
-jest.unmock("react-relay")
 const originalError = console.error
 
 describe("EmailConfirmationBanner", () => {

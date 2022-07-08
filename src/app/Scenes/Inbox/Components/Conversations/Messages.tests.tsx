@@ -10,8 +10,6 @@ import { graphql } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import Messages from "./Messages"
 
-jest.unmock("react-relay")
-
 jest.mock("@react-native-community/netinfo", () => {
   return {
     addEventListener: jest.fn(),

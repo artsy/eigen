@@ -9,8 +9,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyProfileEditForm } from "../MyProfileEditForm"
 
-jest.unmock("react-relay")
-
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
   return {

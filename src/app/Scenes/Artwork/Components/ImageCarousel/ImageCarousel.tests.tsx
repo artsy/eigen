@@ -12,8 +12,6 @@ import {
   ImageCarouselProps,
 } from "./ImageCarousel"
 
-jest.unmock("react-relay")
-
 const deepZoomFixture: NonNullable<
   NonNullable<
     NonNullable<NonNullable<ImageCarouselTestsQuery["rawResponse"]["artwork"]>["images"]>[0]

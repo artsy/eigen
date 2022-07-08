@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { defaultEnvironment } from "app/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useExperimentFlag, useExperimentVariant } from "app/utils/experiments/hooks"
 import {
@@ -53,7 +54,6 @@ interface RefreshQueryOptions {
 }
 
 export const Search: React.FC = () => {
-  const environment = useRelayEnvironment()
   const [refreshedQueryOptions, setRefreshedQueryOptions] = useState<RefreshQueryOptions>({})
   const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {}, refreshedQueryOptions)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -68,7 +68,7 @@ export const Search: React.FC = () => {
 
     setIsRefreshing(true)
 
-    fetchQuery(environment, SearchScreenQuery, {}).subscribe({
+    fetchQuery(defaultEnvironment, SearchScreenQuery, {}).subscribe({
       complete: () => {
         setIsRefreshing(false)
 

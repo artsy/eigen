@@ -115,8 +115,6 @@ jest.mock("lodash", () => ({
   throttle: (f: any) => f,
 }))
 
-jest.unmock("react-relay")
-
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ init() {}, captureMessage() {} }))
 

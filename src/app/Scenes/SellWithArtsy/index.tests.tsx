@@ -6,8 +6,6 @@ import { ArtistList } from "./Components/ArtistList"
 import { RecentlySold } from "./Components/RecentlySold"
 import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
 
-jest.unmock("react-relay")
-
 describe("ConsignmentsHome index", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
