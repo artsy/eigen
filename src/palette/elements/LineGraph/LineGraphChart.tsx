@@ -1,5 +1,4 @@
 import { Flex, useColor } from "palette"
-import React from "react"
 import {
   VictoryAxis,
   VictoryChart,

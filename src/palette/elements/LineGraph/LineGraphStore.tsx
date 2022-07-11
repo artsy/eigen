@@ -23,6 +23,7 @@ interface LineGraphStoreState {
 export interface LineGraphStoreModel extends LineGraphStoreState {
   setSelectedMedium: Action<this, string>
   setActiveIndex: Action<this, ActiveIndex>
+  setSelectedDuration: Action<this, Duration>
 }
 
 type StoreInitialState = Pick<
@@ -53,6 +54,9 @@ export const getToastStoreModel = ({
   }),
   setActiveIndex: action((state, payload) => {
     state.activeIndex = payload
+  }),
+  setSelectedDuration: action((state, payload) => {
+    state.selectedDuration = payload
   }),
 })
 
