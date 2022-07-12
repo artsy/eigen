@@ -304,28 +304,26 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
   `,
 })
 
-export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
-  return (
-    <QueryRenderer<FairQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query FairQuery($fairID: String!) {
-          fair(id: $fairID) @principalField {
-            ...Fair_fair
-          }
+export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => (
+  <QueryRenderer<FairQuery>
+    environment={getRelayEnvironment()}
+    query={graphql`
+      query FairQuery($fairID: String!) {
+        fair(id: $fairID) @principalField {
+          ...Fair_fair
         }
-      `}
-      variables={{ fairID }}
-      render={renderWithPlaceholder({
-        Container: FairFragmentContainer,
-        renderPlaceholder: () => <FairPlaceholder />,
-      })}
-    />
-  )
-}
+      }
+    `}
+    variables={{ fairID }}
+    render={renderWithPlaceholder({
+      Container: FairFragmentContainer,
+      renderPlaceholder: () => <FairPlaceholder />,
+    })}
+  />
+)
 
 export const FairPlaceholder: React.FC = () => (
-  <Flex>
+  <Flex testID="fair-placeholder">
     <PlaceholderBox height={400} />
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
       <Flex>

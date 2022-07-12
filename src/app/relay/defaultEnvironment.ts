@@ -50,3 +50,7 @@ let mockEnvironment = createMockEnvironment()
 export const resetMockEnvironment = () => {
   mockEnvironment = createMockEnvironment()
 }
+
+export const getRelayEnvironment = (): RelayMockEnvironment =>
+  __TEST__ ? mockEnvironment : defaultEnvironment
+

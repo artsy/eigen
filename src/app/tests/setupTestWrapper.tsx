@@ -2,7 +2,7 @@ import { render } from "@testing-library/react-native"
 import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { renderWithWrappersLEGACY } from "./renderWithWrappers"
 

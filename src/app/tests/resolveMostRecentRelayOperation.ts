@@ -1,5 +1,5 @@
 import { act } from "@testing-library/react-native"
-import { OperationDescriptor } from "relay-runtime"
+import { GraphQLResponse, OperationDescriptor } from "relay-runtime"
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { takeRight } from "lodash"
 import { MockPayloadGenerator } from "relay-test-utils"
@@ -59,6 +59,16 @@ export function resolveMostRecentRelayOperation(mockResolvers?: MockResolvers) {
     getRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
     )
+  })
+}
+
+export function resolveMostRecentRelayOperationPayload(payload: GraphQLResponse) {
+  reset()
+  act(() => {
+    // Wrapping in act will ensure that components
+    // are fully updated to their final state.
+    // https://relay.dev/docs/guides/testing-relay-components/
+    getRelayEnvironment().mock.resolveMostRecentOperation(payload)
   })
 }
 

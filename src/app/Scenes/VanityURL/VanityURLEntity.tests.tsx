@@ -1,3 +1,4 @@
+import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
@@ -41,10 +42,10 @@ describe("VanityURLEntity", () => {
     const tree = renderWithWrappersLEGACY(
       <TestRenderer entity="fair" slugType="fairID" slug="some-fair" />
     )
-    expect(getRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "FairQuery"
-    )
-    resolveMostRecentRelayOperation()
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("FairQuery")
+    act(() => {
+      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation))
+    })
     const fairComponent = tree.root.findByType(Fair)
     expect(fairComponent).toBeDefined()
   })
