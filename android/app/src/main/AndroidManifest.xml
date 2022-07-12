@@ -12,6 +12,7 @@
 
     <queries>
         <intent>
+            <!-- Required to open mailto: links in SDK 30 and above -->
             <action android:name="android.intent.action.SEND_MULTIPLE" />
             <data android:mimeType="*/*" />
         </intent>
