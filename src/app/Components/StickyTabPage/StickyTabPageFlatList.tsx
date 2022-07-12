@@ -27,14 +27,18 @@ export interface StickyTabFlatListProps
   data: StickyTabSection[]
   paddingHorizontal?: number
   innerRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
-  refresh?: (() => void) | null | undefined
+  refresh?: (() => void) | undefined
   isRefreshing?: boolean
 }
 
 export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) => {
   const space = useSpace()
-  const { staticHeaderHeight, stickyHeaderHeight, headerOffsetY, refreshControllPadding } =
-    useStickyTabPageContext()
+  const {
+    staticHeaderHeight,
+    stickyHeaderHeight,
+    headerOffsetY,
+    refreshControlProgressViewOffset,
+  } = useStickyTabPageContext()
   if (!staticHeaderHeight) {
     throw new Error("invalid state, mounted flat list before staticHeaderHeight was determined")
   }
@@ -103,9 +107,9 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
       <AnimatedFlatList
         refreshControl={
           <RefreshControl
-            progressViewOffset={refreshControllPadding ?? 0}
+            progressViewOffset={refreshControlProgressViewOffset ?? 0}
             refreshing={!!isRefreshing}
-            onRefresh={refresh || null || undefined}
+            onRefresh={refresh}
             style={{ zIndex: 1 }}
           />
         }

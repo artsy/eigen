@@ -35,7 +35,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   return (
     <StickyTabPage
       disableBackButtonUpdate
-      refreshControllPadding={myProfileHeaderHeight}
+      refreshControlProgressViewOffset={myProfileHeaderHeight}
       tabs={compact([
         {
           title: Tab.collection,

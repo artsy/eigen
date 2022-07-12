@@ -9,7 +9,7 @@ export const StickyTabPageContext = React.createContext<{
   headerOffsetY: Animated.Value<number>
   tabLabels: string[]
   tabVisualClues: Array<TabVisualClues | undefined>
-  refreshControllPadding: number | undefined
+  refreshControlProgressViewOffset: number | undefined
   activeTabIndex: GlobalState<number>
   setActiveTabIndex(index: number): void
 }>(null as any)
