@@ -6,12 +6,10 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ContextCardFragmentContainer } from "./ContextCard"
 
 describe("ContextCard", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestWrapper = () => {
     return (
       <QueryRenderer<ContextCardTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query ContextCardTestsQuery @relay_test_operation {
             artwork(id: "artworkId") {
@@ -31,15 +29,11 @@ describe("ContextCard", () => {
     )
   }
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   describe("Fair context", () => {
     it("renders fair name correctly", () => {
       const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => fairContextArtwork,
       })
 
@@ -49,7 +43,7 @@ describe("ContextCard", () => {
     it("renders fair image", () => {
       const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => fairContextArtwork,
       })
 
@@ -61,7 +55,7 @@ describe("ContextCard", () => {
     it("renders show name correctly", () => {
       const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => showContextArtwork,
       })
 
@@ -71,7 +65,7 @@ describe("ContextCard", () => {
     it("renders show image", () => {
       const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => showContextArtwork,
       })
 
@@ -81,7 +75,7 @@ describe("ContextCard", () => {
     it("renders show button text correctly", () => {
       const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => showContextArtwork,
       })
 
@@ -94,7 +88,7 @@ describe("ContextCard", () => {
     it("renders sale name correctly", () => {
       const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => auctionContextArtwork,
       })
 
@@ -104,7 +98,7 @@ describe("ContextCard", () => {
     it("renders formatted sale start/end date correctly", () => {
       const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => auctionContextArtwork,
       })
 
@@ -121,7 +115,7 @@ describe("ContextCard", () => {
       }
       const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => saleContextArtwork,
       })
 
@@ -131,7 +125,7 @@ describe("ContextCard", () => {
     it("renders sale image", () => {
       const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => auctionContextArtwork,
       })
 
@@ -141,7 +135,7 @@ describe("ContextCard", () => {
     it("renders 'In Auction' if the sale is an auction", () => {
       const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => auctionContextArtwork,
       })
 
@@ -158,7 +152,7 @@ describe("ContextCard", () => {
       }
       const { toJSON } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => saleContextArtwork,
       })
 

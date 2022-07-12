@@ -10,11 +10,9 @@ import { OnboardingPersonalizationModalPaginationContainer } from "./OnboardingP
 const goBackMock = jest.fn()
 
 describe("OnboardingPersonalizationModal", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<OnboardingPersonalizationModalTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query OnboardingPersonalizationModalTestsQuery($query: String!, $count: Int!)
         @relay_test_operation {
@@ -37,10 +35,6 @@ describe("OnboardingPersonalizationModal", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("looks for results with the right query", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
@@ -50,7 +44,7 @@ describe("OnboardingPersonalizationModal", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     const searchInput = tree.root.findByProps({ testID: "searchInput" })
 
@@ -74,7 +68,7 @@ describe("OnboardingPersonalizationModal", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     const searchInput = tree.root.findByProps({ testID: "searchInput" })
 
@@ -82,7 +76,7 @@ describe("OnboardingPersonalizationModal", () => {
       searchInput.props.onChangeText("artist with no results")
     })
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     const noResults = tree.root.findByProps({ testID: "noResults" })
 

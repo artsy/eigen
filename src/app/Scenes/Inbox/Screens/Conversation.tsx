@@ -3,7 +3,7 @@ import { Conversation_me$data } from "__generated__/Conversation_me.graphql"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
 import { navigationEvents } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { ComposerFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/Composer"
 import Messages from "app/Scenes/Inbox/Components/Conversations/Messages"
 import { sendConversationMessage } from "app/Scenes/Inbox/Components/Conversations/SendConversationMessage"
@@ -277,7 +277,7 @@ export const ConversationQueryRenderer: React.FC<{
   const { conversationID, navigator } = props
   return (
     <QueryRenderer<ConversationQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ConversationQuery($conversationID: String!) {
           me {

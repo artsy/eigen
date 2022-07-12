@@ -1,5 +1,5 @@
 import { SwitchMenu } from "app/Components/SwitchMenu"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
@@ -14,8 +14,6 @@ import {
   MyProfilePushNotificationsQueryRenderer,
   OpenSettingsBanner,
 } from "./MyProfilePushNotifications"
-
-const env = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe(SwitchMenu, () => {
   it("title is set to black100 when enabled", () => {

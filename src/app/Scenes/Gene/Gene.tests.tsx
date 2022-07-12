@@ -13,11 +13,6 @@ import { Gene } from "./Gene"
 
 describe("Gene", () => {
   const geneID = "gene-id"
-  let environment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
 
   const TestRenderer = () => {
     return (

@@ -519,13 +519,11 @@ jest.mock("app/utils/track/providers", () => ({
   postEventToProviders: jest.fn(),
 }))
 
-jest.mock("app/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-  createEnvironment: require("relay-test-utils").createMockEnvironment,
-  reset(this: { defaultEnvironment: any }) {
-    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
-  },
-}))
+// resetting relay mock env before each test is needed, for a clean env to resolve on.
+const { resetMockEnvironment } = require("app/relay/defaultEnvironment")
+beforeEach(() => {
+  resetMockEnvironment()
+})
 
 jest.mock("shared/hooks", () => {
   const React = require("react")

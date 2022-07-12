@@ -5,12 +5,10 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { EditionSelectBox } from "./EditionSelectBox"
 import { InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
 import { MakeOfferModalFragmentContainer } from "./MakeOfferModal"
-
-let env: ReturnType<typeof createMockEnvironment>
 
 const FakeApp = (props: MakeOfferModalTestsQuery["response"]) => {
   return (
@@ -116,10 +114,6 @@ const getWrapper = (mockResolvers = mockResolver, renderer = renderComponent) =>
   })
   return tree
 }
-
-beforeEach(() => {
-  env = createMockEnvironment()
-})
 
 describe("<MakeOfferModal />", () => {
   it("renders the modal", () => {

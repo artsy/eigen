@@ -1,6 +1,6 @@
 import { SavedSearchAlertsListQuery } from "__generated__/SavedSearchAlertsListQuery.graphql"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { graphql, QueryRenderer } from "react-relay"
 import { SavedSearchAlertsListPlaceholder } from "./Components/SavedSearchAlertsListPlaceholder"
@@ -10,7 +10,7 @@ import { SortButton } from "./Components/SortButton"
 export const SavedSearchAlertsListQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<SavedSearchAlertsListQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SavedSearchAlertsListQuery {
           me {

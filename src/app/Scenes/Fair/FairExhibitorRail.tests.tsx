@@ -6,14 +6,12 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { FairExhibitorRailFragmentContainer } from "./Components/FairExhibitorRail"
 
 describe("FairExhibitors", () => {
   const trackEvent = useTracking().trackEvent
   const getWrapper = (mockResolvers = {}) => {
-    const env = createMockEnvironment()
-
     const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairExhibitorRailTestsQuery>
         environment={env}

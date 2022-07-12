@@ -26,7 +26,6 @@ const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQuery["rawResponse
 }
 
 describe("PartnerOverview", () => {
-  const env = createMockEnvironment()
   const TestRenderer = () => (
     <QueryRenderer<PartnerOverviewTestsQuery>
       environment={env}

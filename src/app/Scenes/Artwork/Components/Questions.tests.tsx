@@ -22,18 +22,15 @@ describe("Questions", () => {
     return <Questions artwork={data.artwork!} />
   }
 
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
   it("renders", async () => {
     const { queryByText } = renderWithWrappers(
-      <RelayEnvironmentProvider environment={mockEnvironment}>
+      <RelayEnvironmentProvider environment={getRelayEnvironment()}>
         <Suspense fallback={<Text>SusLoading</Text>}>
           <TestRenderer />
         </Suspense>
       </RelayEnvironmentProvider>
     )
-    resolveMostRecentRelayOperation(mockEnvironment, { Artwork: () => ({}) })
+    resolveMostRecentRelayOperation({ Artwork: () => ({}) })
     expect(queryByText("SusLoading")).toBeDefined()
 
     expect(queryByText("Questions about this piece?")).toBeDefined()

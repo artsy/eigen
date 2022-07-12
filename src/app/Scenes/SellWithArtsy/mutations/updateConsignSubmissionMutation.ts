@@ -2,12 +2,12 @@ import {
   updateConsignSubmissionMutation,
   UpdateSubmissionMutationInput,
 } from "__generated__/updateConsignSubmissionMutation.graphql"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
 export const updateConsignSubmission = (input: UpdateSubmissionMutationInput) => {
   return new Promise<string>((resolve, reject) => {
-    commitMutation<updateConsignSubmissionMutation>(defaultEnvironment, {
+    commitMutation<updateConsignSubmissionMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation updateConsignSubmissionMutation($input: UpdateSubmissionMutationInput!) {
           updateConsignmentSubmission(input: $input) {

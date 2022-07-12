@@ -20,8 +20,6 @@ import {
 } from "./Components/SaleLotsList"
 
 describe("SaleLotsListContainer", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const initialState: ArtworkFiltersState = {
     selectedFilters: [],
     appliedFilters: [],
@@ -38,7 +36,7 @@ describe("SaleLotsListContainer", () => {
 
   const TestRenderer = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
     <QueryRenderer<SaleLotsListTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SaleLotsListTestsQuery($saleSlug: ID!) @relay_test_operation {
           ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleSlug)
@@ -84,10 +82,6 @@ describe("SaleLotsListContainer", () => {
     sizeMetric: "cm",
   })
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   // Investigate why this test is failing
   // Most likely this has something to do with the unfilteredSaleArtworksConnection
   // Follow-up ticket https://artsyproduct.atlassian.net/browse/CX-1108
@@ -103,7 +97,7 @@ describe("SaleLotsListContainer", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     expect(tree.toJSON()).toBeNull()
   })
@@ -123,7 +117,7 @@ describe("SaleLotsListContainer", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
   })
@@ -140,7 +134,7 @@ describe("SaleLotsListContainer", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     expect(tree.root.findAllByType(SaleArtworkListContainer)).toHaveLength(1)
   })

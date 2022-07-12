@@ -14,7 +14,6 @@ import HomeAnalytics from "../homeAnalytics"
 import { CollectionsRailFragmentContainer } from "./CollectionsRail"
 
 describe("CollectionsRailFragmentContainer", () => {
-  let env: ReturnType<typeof createMockEnvironment>
   const mockScrollRef = jest.fn()
 
   const TestRenderer = () => (
@@ -45,10 +44,6 @@ describe("CollectionsRailFragmentContainer", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   it("doesn't throw when rendered", () => {
     renderWithWrappersLEGACY(<TestRenderer />)

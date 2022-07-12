@@ -9,11 +9,6 @@ import { GeneArtworksPaginationContainer } from "./GeneArtworks"
 
 describe("GeneArtworks", () => {
   const geneID = "gene-id"
-  let environment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
 
   const TestRenderer = () => {
     return (
@@ -68,7 +63,7 @@ describe("GeneArtworks", () => {
 
   it("renders artworks grid", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
+    resolveMostRecentRelayOperation({
       FilterArtworksConnection() {
         return {
           counts: {
@@ -84,7 +79,7 @@ describe("GeneArtworks", () => {
 
   it("renders empty artworks grid view", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
+    resolveMostRecentRelayOperation({
       FilterArtworksConnection() {
         return {
           counts: {
@@ -101,7 +96,7 @@ describe("GeneArtworks", () => {
     fireEvent.press(getByText("Recently Added"))
     fireEvent.press(getByText("Show Results"))
 
-    resolveMostRecentRelayOperation(environment, {
+    resolveMostRecentRelayOperation({
       FilterArtworksConnection() {
         return {
           counts: {
@@ -116,7 +111,7 @@ describe("GeneArtworks", () => {
 
   it("renders empty message when artworks is empty", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
+    resolveMostRecentRelayOperation({
       Gene() {
         return {
           artworks: {

@@ -2,12 +2,12 @@ import {
   RemoveAssetFromConsignmentSubmissionInput,
   removeAssetFromConsignmentSubmissionMutation,
 } from "__generated__/removeAssetFromConsignmentSubmissionMutation.graphql"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
 export const removeAssetFromSubmission = (input: RemoveAssetFromConsignmentSubmissionInput) => {
   return new Promise<string>((resolve, reject) => {
-    commitMutation<removeAssetFromConsignmentSubmissionMutation>(defaultEnvironment, {
+    commitMutation<removeAssetFromConsignmentSubmissionMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation removeAssetFromConsignmentSubmissionMutation(
           $input: RemoveAssetFromConsignmentSubmissionInput!

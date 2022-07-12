@@ -1,7 +1,7 @@
 import { SearchArtworksContainerQuery } from "__generated__/SearchArtworksContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { graphql, QueryRenderer } from "react-relay"
 import { SearchArtworksGridPlaceholder } from "./components/placeholders/SearchArtworksGridPlaceholder"
@@ -11,7 +11,7 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<SearchArtworksContainerQuery>
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query SearchArtworksContainerQuery($count: Int!, $cursor: String, $keyword: String) {
             viewer {

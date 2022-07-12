@@ -6,12 +6,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
 describe("Notable Works Rail", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestWrapper = () => {
     return (
       <QueryRenderer<ArtistNotableWorksRailTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query ArtistNotableWorksRailTestsQuery @relay_test_operation @raw_response_type {
             artist(id: "a-really-talented-artist") {
@@ -30,10 +28,6 @@ describe("Notable Works Rail", () => {
     )
   }
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -41,7 +35,7 @@ describe("Notable Works Rail", () => {
   it("renders without throwing an error when 3 or more notable artworks", async () => {
     const { getByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artist: () => artistMockData,
     })
 
@@ -54,7 +48,7 @@ describe("Notable Works Rail", () => {
     it("renders artwork price", async () => {
       const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artist: () => artistMockData,
       })
 
@@ -64,7 +58,7 @@ describe("Notable Works Rail", () => {
     it("renders 'Bidding closed' when artwork is in closed auction state", async () => {
       const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artist: () => artistMockData,
       })
 
@@ -74,7 +68,7 @@ describe("Notable Works Rail", () => {
     it("renders current bid value and bids count", async () => {
       const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artist: () => artistMockData,
       })
 

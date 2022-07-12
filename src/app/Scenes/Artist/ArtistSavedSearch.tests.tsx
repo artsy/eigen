@@ -4,7 +4,7 @@ import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayO
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import _ from "lodash"
 import "react-native"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
 
@@ -15,16 +15,15 @@ type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery" | "Se
 describe("Saved search banner on artist screen", () => {
   const originalError = console.error
   const originalWarn = console.warn
-  let environment = createMockEnvironment()
 
   beforeEach(() => {
-    environment = createMockEnvironment()
+
     console.error = jest.fn()
     console.warn = jest.fn()
   })
 
   afterEach(() => {
-    environment = createMockEnvironment()
+
     console.error = originalError
     console.warn = originalWarn
   })
@@ -40,9 +39,7 @@ describe("Saved search banner on artist screen", () => {
           }
         },
         ...mockResolvers,
-      })
-      return result
-    })
+     })
   }
 
   const getTree = (searchCriteriaID?: string) => {

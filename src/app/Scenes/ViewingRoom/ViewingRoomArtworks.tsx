@@ -3,7 +3,7 @@ import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoom
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -218,7 +218,7 @@ export const ViewingRoomArtworksQueryRenderer: React.FC<{ viewing_room_id: strin
 }) => {
   return (
     <QueryRenderer<ViewingRoomArtworksQueryRendererQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ViewingRoomArtworksQueryRendererQuery($viewingRoomID: ID!) {
           viewingRoom(id: $viewingRoomID) {

@@ -6,21 +6,19 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { MyCollectionWhySell } from "./MyCollectionWhySell"
 
 const trackEvent = useTracking().trackEvent
 
 describe("MyCollectionWhySell", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = ({
     contextModule = "insights",
   }: {
     contextModule: "insights" | "about" | "oldAbout"
   }) => (
     <QueryRenderer<MyCollectionWhySellTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyCollectionWhySellTestsQuery @relay_test_operation {
           artwork(id: "some-id") {
@@ -39,7 +37,6 @@ describe("MyCollectionWhySell", () => {
   )
 
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
     GlobalStore.actions.artworkSubmission.submission.initializeArtworkDetailsForm = jest.fn() as any
   })
 

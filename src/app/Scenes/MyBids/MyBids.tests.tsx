@@ -4,7 +4,7 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { PlaceholderText } from "app/utils/placeholders"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { ActiveLotStanding } from "./Components/ActiveLotStanding"
 import { ClosedLotStanding } from "./Components/ClosedLotStanding"
 import { WatchedLot } from "./Components/WatchedLot"
@@ -25,12 +25,6 @@ const activeSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
 }
 
 describe("My Bids", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<MyBidsTestsQuery>
       environment={env}

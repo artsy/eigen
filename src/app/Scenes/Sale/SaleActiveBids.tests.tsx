@@ -8,11 +8,9 @@ import { SaleActiveBidItemContainer } from "./Components/SaleActiveBidItem"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 
 describe("SaleActiveBids", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<SaleActiveBidsTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SaleActiveBidsTestsQuery($saleID: String!) @relay_test_operation {
           me {
@@ -30,10 +28,6 @@ describe("SaleActiveBids", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("renders no items if the user has no active lots standing", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
@@ -42,7 +36,7 @@ describe("SaleActiveBids", () => {
         lotStandings: [],
       }),
     }
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     expect(tree.root.findAllByType(FlatList)).toHaveLength(0)
   })
@@ -55,7 +49,7 @@ describe("SaleActiveBids", () => {
         lotStandings,
       }),
     }
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     expect(tree.root.findAllByType(FlatList)).toHaveLength(1)
     expect(tree.root.findAllByType(SaleActiveBidItemContainer)).toHaveLength(10)

@@ -13,13 +13,12 @@ interface TestRendererProps {
 }
 
 describe("SaleArtworkTileRailCard", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = ({
     useCustomSaleMessage = false,
     useSquareAspectRatio = false,
   }: TestRendererProps) => (
     <QueryRenderer<SaleArtworkTileRailCardTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SaleArtworkTileRailCardTestsQuery @relay_test_operation {
           saleArtwork(id: "the-sale") {
@@ -46,14 +45,10 @@ describe("SaleArtworkTileRailCard", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("renders sale artwork without throwing an error", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     // Render the sale artwork fields
     expect(extractText(tree.root)).toContain("Banksy")
@@ -70,14 +65,14 @@ describe("SaleArtworkTileRailCard", () => {
   it("renders custom sale artwork message when useCustomSaleMessage is set to true", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer useCustomSaleMessage />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
     expect(extractText(tree.root)).toContain("Bidding closed")
   })
 
   it("renders square image when useSquareAspectRatio is set to true ", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer useSquareAspectRatio />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     const image = tree.root.findAllByType(OpaqueImageView)
     expect(image.length).toBe(1)

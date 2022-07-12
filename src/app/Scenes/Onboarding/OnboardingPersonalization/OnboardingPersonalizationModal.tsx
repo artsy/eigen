@@ -4,7 +4,7 @@ import { OnboardingPersonalizationModal_artists$data } from "__generated__/Onboa
 import { OnboardingPersonalizationModalQuery } from "__generated__/OnboardingPersonalizationModalQuery.graphql"
 import { SearchInput } from "app/Components/SearchInput"
 import { BackButton } from "app/navigation/BackButton"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { isEqual } from "lodash"
 import { Flex, Spinner, Text, useSpace } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
@@ -245,6 +245,6 @@ export const OnboardingPersonalizationModalQueryRenderer: React.FC<
         ...OnboardingPersonalizationModal_artists @arguments(query: $query, count: $count)
       }
     `}
-    environment={defaultEnvironment}
+    environment={getRelayEnvironment()}
   />
 )

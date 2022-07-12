@@ -3,14 +3,13 @@ import { RequestForPriceEstimateBannerTestsQuery } from "__generated__/RequestFo
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { RequestForPriceEstimateBanner } from "./RequestForPriceEstimateBanner"
 
 describe("RequestForPriceEstimateBanner", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<RequestForPriceEstimateBannerTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query RequestForPriceEstimateBannerTestsQuery @relay_test_operation {
           artwork(id: "foo") {
@@ -39,10 +38,6 @@ describe("RequestForPriceEstimateBanner", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   afterEach(() => {
     jest.clearAllMocks()

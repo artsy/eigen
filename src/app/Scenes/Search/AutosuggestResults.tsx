@@ -4,7 +4,7 @@ import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.g
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Flex, quoteLeft, quoteRight, Spacer, Text, useSpace } from "palette"
@@ -324,7 +324,7 @@ export const AutosuggestResults: React.FC<{
               @arguments(query: $query, count: $count, entities: $entities)
           }
         `}
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
       />
     )
   },

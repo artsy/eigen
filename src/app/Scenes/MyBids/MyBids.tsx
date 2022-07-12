@@ -6,7 +6,7 @@ import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
 import { OwnerType } from "@artsy/cohesion"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -226,7 +226,7 @@ export const MyBidsContainer = createRefetchContainer(
 
 export const MyBidsQueryRenderer: React.FC = () => (
   <QueryRenderer<MyBidsQuery>
-    environment={defaultEnvironment}
+    environment={getRelayEnvironment()}
     query={graphql`
       query MyBidsQuery {
         me {

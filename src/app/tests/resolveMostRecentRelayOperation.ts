@@ -1,6 +1,8 @@
 import { act } from "@testing-library/react-native"
+import { OperationDescriptor } from "relay-runtime"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { takeRight } from "lodash"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
 let counters: { [path: string]: number } = {}
@@ -48,17 +50,22 @@ const DefaultMockResolvers: MockResolvers = {
   String: (ctx) => goodMockResolver(ctx),
 }
 
-export function resolveMostRecentRelayOperation(
-  mockEnvironment: ReturnType<typeof createMockEnvironment>,
-  mockResolvers?: MockResolvers
-) {
+export function resolveMostRecentRelayOperation(mockResolvers?: MockResolvers) {
   reset()
   act(() => {
     // Wrapping in act will ensure that components
     // are fully updated to their final state.
     // https://relay.dev/docs/guides/testing-relay-components/
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+    getRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
     )
+  })
+}
+
+export function rejectMostRecentRelayOperation(
+  error: Error | ((operation: OperationDescriptor) => Error)
+) {
+  act(() => {
+    getRelayEnvironment().mock.rejectMostRecentOperation(error)
   })
 }

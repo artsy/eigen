@@ -10,12 +10,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
 
 describe("SearchArtworksGrid", () => {
-  let environment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
-
   const TestRenderer = () => {
     return (
       <ArtworkFiltersStoreProvider>

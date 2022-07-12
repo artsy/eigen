@@ -8,16 +8,10 @@ import { Spacer } from "palette"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { FairTimingFragmentContainer } from "./Components/FairTiming"
 
 describe("FairHeader", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<FairHeaderTestsQuery>
       environment={env}

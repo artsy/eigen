@@ -8,16 +8,10 @@ import { createMockEnvironment } from "relay-test-utils"
 import { PartnerShowsFragmentContainer as PartnerShows } from "./PartnerShows"
 
 describe("PartnerShows", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   const TestWrapper = () => {
     return (
       <QueryRenderer<PartnerShowsTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query PartnerShowsTestsQuery @raw_response_type {
             partner(id: "gagosian") {
@@ -48,7 +42,7 @@ describe("PartnerShows", () => {
   it("renders the shows correctly", async () => {
     const { getByText } = await renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Partner: () => PartnerShowsFixture,
     })
 
@@ -73,7 +67,7 @@ describe("PartnerShows", () => {
 
     const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Partner: () => fixture,
     })
 

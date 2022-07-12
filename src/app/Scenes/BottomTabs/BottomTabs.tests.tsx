@@ -1,32 +1,15 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ModalStack } from "app/navigation/ModalStack"
-import { createEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import useInterval from "react-use/lib/useInterval"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabsButton } from "./BottomTabsButton"
 
 jest.mock("react-use/lib/useInterval")
-
-jest.mock("app/relay/createEnvironment", () => {
-  let env = require("relay-test-utils").createMockEnvironment()
-  const mock = {
-    createEnvironment: () => env,
-    __reset() {
-      env = require("relay-test-utils").createMockEnvironment()
-    },
-  }
-  return mock
-})
-let mockRelayEnvironment = {} as ReturnType<typeof createMockEnvironment>
-beforeEach(() => {
-  require("app/relay/createEnvironment").__reset()
-  mockRelayEnvironment = createEnvironment() as any
-})
 
 function resolveUnreadConversationCountQuery(unreadConversationCount: number) {
   expect(mockRelayEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(

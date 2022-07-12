@@ -21,8 +21,6 @@ jest.mock("app/store/GlobalStore", () => ({
 }))
 
 describe("ArtistConsignButton", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<ArtistConsignButtonTestsQuery>
       environment={env}
@@ -49,10 +47,6 @@ describe("ArtistConsignButton", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   describe("Top 20 Artist ('Microfunnel') or Target Supply button", () => {
     const response = {

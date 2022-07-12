@@ -1,16 +1,14 @@
-import { act, fireEvent, RenderAPI, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, RenderAPI, screen, waitFor } from "@testing-library/react-native"
 import { RecentSearch } from "app/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { waitForSuspenseToBeRemoved } from "app/tests/waitForSupenseToBeRemoved"
 import { useExperimentFlag } from "app/utils/experiments/hooks"
 import { isPad } from "app/utils/hardware"
 import { Pill } from "palette"
 import { Keyboard } from "react-native"
-import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SearchScreen } from "./Search"
 
 const banksy: RecentSearch = {
@@ -56,27 +54,10 @@ jest.mock("app/utils/experiments/hooks", () => ({
 }))
 
 describe("Search Screen", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    require("app/relay/createEnvironment").reset()
-    mockEnvironment = require("app/relay/createEnvironment").defaultEnvironment
-  })
-
-  const TestRenderer = () => {
-    return (
-      <RelayEnvironmentProvider environment={mockEnvironment}>
-        <SearchScreen />
-      </RelayEnvironmentProvider>
-    )
-  }
-
   it("should render a text input with placeholder", async () => {
-    const { getByPlaceholderText, getByText, queryByText } = await renderWithWrappers(
-      <TestRenderer />
-    )
+    renderWithRelayWrappersTL(<SearchScreen />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Query: () => ({
         system: {
           algolia: {
@@ -87,33 +68,30 @@ describe("Search Screen", () => {
         },
       }),
     })
+    await waitForSuspenseToBeRemoved("search-placeholder")
 
-    await flushPromiseQueue()
-
-    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+    const searchInput = screen.getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     // Pill should not be visible
-    expect(queryByText("Artists")).toBeFalsy()
+    expect(screen.queryByText("Artists")).toBeFalsy()
 
     // should show City Guide
-    expect(getByText("City Guide")).toBeTruthy()
-    expect(getByText("Recent Searches")).toBeTruthy()
+    expect(screen.getByText("City Guide")).toBeTruthy()
+    expect(screen.getByText("Recent Searches")).toBeTruthy()
 
-    act(() => fireEvent.changeText(searchInput, "Ba"))
+    fireEvent.changeText(searchInput, "Ba")
 
     // Pills should be visible
-    await waitFor(() => {
-      getByText("Artworks")
-      getByText("Artists")
-    })
+    screen.getByText("Artworks")
+    screen.getByText("Artists")
   })
 
   it("does not show city guide entrance when on iPad", async () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => true)
-    const { queryByText } = renderWithWrappers(<TestRenderer />)
+    const { queryByText } = renderWithRelayWrappersTL(<SearchScreen />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Query: () => ({
         system: {
           algolia: {
@@ -124,8 +102,8 @@ describe("Search Screen", () => {
         },
       }),
     })
+    await waitForSuspenseToBeRemoved("search-placeholder")
 
-    await flushPromiseQueue()
     expect(queryByText("City Guide")).toBeFalsy()
   })
 
@@ -137,8 +115,8 @@ describe("Search Screen", () => {
     })
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
-    const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByText } = renderWithRelayWrappersTL(<SearchScreen />)
+    resolveMostRecentRelayOperation({
       Query: () => ({
         system: {
           algolia: {
@@ -149,14 +127,14 @@ describe("Search Screen", () => {
         },
       }),
     })
+    await waitForSuspenseToBeRemoved("search-placeholder")
 
-    await flushPromiseQueue()
     expect(getByText("City Guide")).toBeTruthy()
   })
 
   it('the "Top" pill should be selected by default', async () => {
-    const { getByA11yState, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    const { getByA11yState, getByPlaceholderText } = renderWithRelayWrappersTL(<SearchScreen />)
+    resolveMostRecentRelayOperation({
       Query: () => ({
         system: {
           algolia: {
@@ -167,8 +145,8 @@ describe("Search Screen", () => {
         },
       }),
     })
+    await waitForSuspenseToBeRemoved("search-placeholder")
 
-    await flushPromiseQueue()
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     fireEvent.changeText(searchInput, "text")
@@ -177,9 +155,11 @@ describe("Search Screen", () => {
   })
 
   it("should not be able to untoggle the same pill", async () => {
-    const { getByPlaceholderText, getByText, getByA11yState } = renderWithWrappers(<TestRenderer />)
+    const { getByPlaceholderText, getByText, getByA11yState } = renderWithRelayWrappersTL(
+      <SearchScreen />
+    )
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Query: () => ({
         system: {
           algolia: {
@@ -201,8 +181,7 @@ describe("Search Screen", () => {
         },
       }),
     })
-
-    await flushPromiseQueue()
+    await waitForSuspenseToBeRemoved("search-placeholder")
 
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
     fireEvent(searchInput, "changeText", "prev value")
@@ -220,9 +199,9 @@ describe("Search Screen", () => {
       })
 
       it("are displayed when the user has typed the minimum allowed number of characters", async () => {
-        const { getByPlaceholderText, queryByText } = renderWithWrappers(<TestRenderer />)
+        const { getByPlaceholderText, queryByText } = renderWithRelayWrappersTL(<SearchScreen />)
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Query: () => ({
             system: {
               algolia: {
@@ -233,8 +212,7 @@ describe("Search Screen", () => {
             },
           }),
         })
-
-        await flushPromiseQueue()
+        await waitForSuspenseToBeRemoved("search-placeholder")
 
         expect(queryByText("Top")).toBeFalsy()
         expect(queryByText("Artist")).toBeFalsy()
@@ -253,9 +231,9 @@ describe("Search Screen", () => {
       })
 
       it("have top pill selected and disabled at the same time", async () => {
-        const { getByPlaceholderText, getByA11yState } = renderWithWrappers(<TestRenderer />)
+        const { getByPlaceholderText, getByA11yState } = renderWithRelayWrappersTL(<SearchScreen />)
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Query: () => ({
             system: {
               algolia: {
@@ -266,8 +244,7 @@ describe("Search Screen", () => {
             },
           }),
         })
-
-        await flushPromiseQueue()
+        await waitForSuspenseToBeRemoved("search-placeholder")
 
         const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
         fireEvent(searchInput, "changeText", "Ba")
@@ -276,8 +253,10 @@ describe("Search Screen", () => {
       })
 
       it("are enabled when they have results", async () => {
-        const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithWrappers(<TestRenderer />)
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithRelayWrappersTL(
+          <SearchScreen />
+        )
+        resolveMostRecentRelayOperation({
           Query: () => ({
             system: {
               algolia: {
@@ -288,7 +267,7 @@ describe("Search Screen", () => {
             },
           }),
         })
-        await flushPromiseQueue()
+        await waitForSuspenseToBeRemoved("search-placeholder")
 
         const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
         fireEvent(searchInput, "changeText", "Ba")
@@ -303,8 +282,8 @@ describe("Search Screen", () => {
     })
 
     it("are displayed when the user has typed the minimum allowed number of characters", async () => {
-      const { getByPlaceholderText, queryByText } = renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      const { getByPlaceholderText, queryByText } = renderWithRelayWrappersTL(<SearchScreen />)
+      resolveMostRecentRelayOperation({
         Query: () => ({
           system: {
             algolia: {
@@ -315,8 +294,7 @@ describe("Search Screen", () => {
           },
         }),
       })
-
-      await flushPromiseQueue()
+      await waitForSuspenseToBeRemoved("search-placeholder")
 
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
@@ -336,9 +314,9 @@ describe("Search Screen", () => {
     })
 
     it("hide keyboard when selecting other pill", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
+      const { getByText, getByPlaceholderText } = renderWithRelayWrappersTL(<SearchScreen />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Query: () => ({
           system: {
             algolia: {
@@ -349,8 +327,7 @@ describe("Search Screen", () => {
           },
         }),
       })
-
-      await flushPromiseQueue()
+      await waitForSuspenseToBeRemoved("search-placeholder")
 
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
       const keyboardDismissSpy = jest.spyOn(Keyboard, "dismiss")
@@ -360,9 +337,9 @@ describe("Search Screen", () => {
     })
 
     it("should track event when a pill is tapped", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
+      const { getByText, getByPlaceholderText } = renderWithRelayWrappersTL(<SearchScreen />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Query: () => ({
           system: {
             algolia: {
@@ -373,8 +350,7 @@ describe("Search Screen", () => {
           },
         }),
       })
-
-      await flushPromiseQueue()
+      await waitForSuspenseToBeRemoved("search-placeholder")
 
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
       fireEvent(searchInput, "changeText", "text")
@@ -395,9 +371,9 @@ describe("Search Screen", () => {
     })
 
     it("should correctly track the previously applied pill context module", async () => {
-      const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
+      const { getByText, getByPlaceholderText } = renderWithRelayWrappersTL(<SearchScreen />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Query: () => ({
           system: {
             algolia: {
@@ -408,8 +384,7 @@ describe("Search Screen", () => {
           },
         }),
       })
-
-      await flushPromiseQueue()
+      await waitForSuspenseToBeRemoved("search-placeholder")
 
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
       fireEvent(searchInput, "changeText", "text")
@@ -444,9 +419,9 @@ describe("Search Screen", () => {
     })
 
     it("should render all allowed algolia indices", async () => {
-      const { getByPlaceholderText, getByText } = renderWithWrappers(<TestRenderer />)
+      const { getByPlaceholderText, getByText } = renderWithRelayWrappersTL(<SearchScreen />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Query: () => ({
           system: {
             algolia: {
@@ -498,8 +473,7 @@ describe("Search Screen", () => {
           },
         }),
       })
-
-      await flushPromiseQueue()
+      await waitForSuspenseToBeRemoved("search-placeholder")
 
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
       act(() => fireEvent(searchInput, "changeText", "value"))
@@ -515,9 +489,11 @@ describe("Search Screen", () => {
     })
 
     it("should render only allowed algolia indices", async () => {
-      const { getByPlaceholderText, getByText, queryByText } = renderWithWrappers(<TestRenderer />)
+      const { getByPlaceholderText, getByText, queryByText } = renderWithRelayWrappersTL(
+        <SearchScreen />
+      )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Query: () => ({
           system: {
             algolia: {
@@ -544,8 +520,7 @@ describe("Search Screen", () => {
           },
         }),
       })
-
-      await flushPromiseQueue()
+      await waitForSuspenseToBeRemoved("search-placeholder")
 
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
       fireEvent(searchInput, "changeText", "value")
@@ -560,9 +535,9 @@ describe("Search Screen", () => {
     let tree: RenderAPI
 
     beforeEach(async () => {
-      tree = renderWithWrappers(<TestRenderer />)
+      tree = renderWithRelayWrappersTL(<SearchScreen />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Algolia: () => ({
           appID: "",
           apiKey: "",
@@ -575,8 +550,7 @@ describe("Search Screen", () => {
           ],
         }),
       })
-
-      await flushPromiseQueue()
+      await waitForSuspenseToBeRemoved("search-placeholder")
     })
 
     it("when search query is empty", () => {
@@ -629,44 +603,37 @@ describe("Search Screen", () => {
   })
 
   it("should track event when a search result is pressed", async () => {
-    const { getByPlaceholderText, getByText } = renderWithWrappers(<TestRenderer />)
+    const { getByPlaceholderText, getByText } = renderWithRelayWrappersTL(<SearchScreen />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          system: {
-            algolia: {
-              appID: "",
-              apiKey: "",
-              indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
-            },
+    resolveMostRecentRelayOperation({
+      Query: () => ({
+        system: {
+          algolia: {
+            appID: "",
+            apiKey: "",
+            indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
           },
-        }),
-      })
-    )
-
-    await flushPromiseQueue()
+        },
+      }),
+    })
+    await waitForSuspenseToBeRemoved("search-placeholder")
 
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
     act(() => fireEvent(searchInput, "changeText", "text"))
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        SearchableConnection: () => ({
-          edges: [
-            {
-              node: {
-                displayLabel: "Banksy",
-              },
+    resolveMostRecentRelayOperation({
+      SearchableConnection: () => ({
+        edges: [
+          {
+            node: {
+              displayLabel: "Banksy",
             },
-          ],
-        }),
-      })
-    )
-
-    await flushPromiseQueue()
-
+          },
+        ],
+      }),
+    })
     await waitFor(() => getByText("Banksy"))
+
     act(() => fireEvent.press(getByText("Banksy")))
 
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
@@ -678,8 +645,8 @@ describe("Search Screen", () => {
           "context_screen_owner_type": "Search",
           "position": 0,
           "query": "text",
-          "selected_object_slug": "<mock-value-for-field-\\"slug\\">",
-          "selected_object_type": "<mock-value-for-field-\\"displayType\\">",
+          "selected_object_slug": "slug-1",
+          "selected_object_type": "displayType-1",
         },
       ]
     `)

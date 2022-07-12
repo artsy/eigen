@@ -9,14 +9,10 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { Button, Text } from "palette"
 
 describe("ArtistHeader", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
   function TestRenderer() {
     return (
       <QueryRenderer<ArtistHeaderTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query ArtistHeaderTestsQuery($artistID: String!) @relay_test_operation {
             artist(id: $artistID) {
@@ -38,7 +34,7 @@ describe("ArtistHeader", () => {
   it("renders properly", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artist: () => mockArtist,
     })
 
@@ -48,7 +44,7 @@ describe("ArtistHeader", () => {
   it("displays follow button for artist", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artist: () => mockArtist,
     })
 
@@ -60,7 +56,7 @@ describe("ArtistHeader", () => {
 
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artist: () => mockArtist,
     })
 

@@ -8,14 +8,13 @@ import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWi
 import moment from "moment"
 import { Animated } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { SaleHeaderContainer } from "./Components/SaleHeader"
 
 describe("SaleHeader", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<SaleHeaderTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SaleHeaderTestsQuery @relay_test_operation {
           sale(id: "the-sale") {
@@ -34,7 +33,6 @@ describe("SaleHeader", () => {
   )
 
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
     __globalStoreTestUtils__?.injectFeatureFlags({
       AREnableCascadingEndTimerSalePageDetails: false,
     })

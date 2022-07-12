@@ -1,14 +1,12 @@
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { renderWithRelayWrappersTL } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
 
-const mockEnvironment = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
-
 describe("My Collection Artwork", () => {
   it("show new artwork screen ", () => {
-    const { getByTestId } = renderWithHookWrappersTL(
+    const { getByTestId } = renderWithRelayWrappersTL(
       <MyCollectionArtworkScreen
         artworkSlug="random-slug"
         artistInternalID="internal-id"
@@ -17,7 +15,7 @@ describe("My Collection Artwork", () => {
       mockEnvironment
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
     expect(() => getByTestId("my-collection-artwork")).toBeTruthy()
     expect(() => getByTestId("old-my-collection-artwork")).toThrowError(
       "Unable to find an element with testID: old-my-collection-artwork"
@@ -27,7 +25,7 @@ describe("My Collection Artwork", () => {
   describe("edit button", () => {
     describe("when there is no submission", () => {
       it("shows the edit button", async () => {
-        const { findByText } = renderWithHookWrappersTL(
+        const { findByText } = renderWithRelayWrappersTL(
           <MyCollectionArtworkScreen
             artworkSlug="random-slug"
             artistInternalID="internal-id"
@@ -36,7 +34,7 @@ describe("My Collection Artwork", () => {
           mockEnvironment
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             consignmentSubmission: null,
           }),
@@ -48,7 +46,7 @@ describe("My Collection Artwork", () => {
 
     describe("when submission is in progress", () => {
       it("hides the edit button when the artwork is coming from a submission", async () => {
-        const { findByText } = renderWithHookWrappersTL(
+        const { findByText } = renderWithRelayWrappersTL(
           <MyCollectionArtworkScreen
             artworkSlug="random-slug"
             artistInternalID="internal-id"
@@ -57,7 +55,7 @@ describe("My Collection Artwork", () => {
           mockEnvironment
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             consignmentSubmission: "some-consignmentSubmission",
           }),

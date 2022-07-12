@@ -8,14 +8,13 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Image, ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { AuctionResultFragmentContainer } from "./AuctionResult"
 
 describe("AuctionResult", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<AuctionResultTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query AuctionResultTestsQuery($auctionResultInternalID: String!, $artistID: String!)
         @relay_test_operation {
@@ -43,7 +42,6 @@ describe("AuctionResult", () => {
   )
 
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
     const getSizeMock = jest.spyOn(Image, "getSize")
     getSizeMock.mockImplementation(() => {
       /* do nothing */

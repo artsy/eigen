@@ -1,20 +1,14 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { ArtistList } from "./Components/ArtistList"
 import { RecentlySold } from "./Components/RecentlySold"
 import { SellWithArtsyHomeQueryRenderer } from "./SellWithArtsyHome"
 
 describe("ConsignmentsHome index", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   const TestWrapper = () => {
-    return <SellWithArtsyHomeQueryRenderer environment={mockEnvironment} />
+    return <SellWithArtsyHomeQueryRenderer environment={getRelayEnvironment()} />
   }
 
   it("renders dynamic components", () => {

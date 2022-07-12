@@ -2,7 +2,7 @@ import { SaleInfo_me$data } from "__generated__/SaleInfo_me.graphql"
 import { SaleInfo_sale$data } from "__generated__/SaleInfo_sale.graphql"
 import { SaleInfoQueryRendererQuery } from "__generated__/SaleInfoQueryRendererQuery.graphql"
 import { MenuItem } from "app/Components/MenuItem"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import moment from "moment-timezone"
@@ -254,7 +254,7 @@ export const SaleInfoContainer = createFragmentContainer(SaleInfo, {
 export const SaleInfoQueryRenderer: React.FC<{ saleID: string }> = ({ saleID: saleID }) => {
   return (
     <QueryRenderer<SaleInfoQueryRendererQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SaleInfoQueryRendererQuery($saleID: String!) {
           sale(id: $saleID) {

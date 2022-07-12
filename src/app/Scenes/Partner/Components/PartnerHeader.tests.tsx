@@ -8,7 +8,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { PartnerHeaderContainer as PartnerHeader } from "./PartnerHeader"
 
 describe("PartnerHeader", () => {
-  const env = createMockEnvironment()
   const TestRenderer = () => (
     <QueryRenderer<PartnerHeaderTestsQuery>
       environment={env}

@@ -15,8 +15,6 @@ import { EmailConfirmationBannerFragmentContainer } from "./EmailConfirmationBan
 const originalError = console.error
 
 describe("EmailConfirmationBanner", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<EmailConfirmationBannerTestsQuery>
       environment={env}
@@ -55,10 +53,6 @@ describe("EmailConfirmationBanner", () => {
   const getCloseButton = (component: ReactTestRenderer) => {
     return component.root.findAllByType(TouchableWithoutFeedback)[1]
   }
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   afterEach(() => {
     console.error = originalError

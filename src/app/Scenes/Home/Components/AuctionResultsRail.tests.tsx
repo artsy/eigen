@@ -1,7 +1,6 @@
 import { cloneDeep, first } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { navigate } from "app/navigation/navigate"
 
@@ -11,8 +10,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { AuctionResultsRailFragmentContainer } from "./AuctionResultsRail"
 
 describe("AuctionResultsRailFragmentContainer", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<AuctionResultsRailTestsQuery>
       environment={env}
@@ -33,10 +30,6 @@ describe("AuctionResultsRailFragmentContainer", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   it("doesn't throw when rendered", () => {
     renderWithWrappersLEGACY(<TestRenderer />)

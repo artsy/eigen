@@ -3,7 +3,7 @@ import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNoti
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
@@ -318,7 +318,7 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
 export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
   return (
     <QueryRenderer<MyProfilePushNotificationsQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyProfilePushNotificationsQuery {
           me {

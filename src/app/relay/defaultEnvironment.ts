@@ -3,7 +3,7 @@ import {
   RelayNetworkLayer,
 } from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
-import { createMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, RelayMockEnvironment } from "relay-test-utils"
 
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"
 import { checkAuthenticationMiddleware } from "./middlewares/checkAuthenticationMiddleware"
@@ -43,7 +43,10 @@ const network = new RelayNetworkLayer(
 )
 const store = new Store(new RecordSource())
 
-export const defaultEnvironment = new Environment({ network, store })
+const defaultEnvironment = new Environment({ network, store })
 
-/** Used in tests. */
-export const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+// Used for tests
+let mockEnvironment = createMockEnvironment()
+export const resetMockEnvironment = () => {
+  mockEnvironment = createMockEnvironment()
+}

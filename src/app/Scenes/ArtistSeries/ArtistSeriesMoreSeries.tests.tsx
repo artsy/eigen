@@ -15,12 +15,6 @@ import { createMockEnvironment } from "relay-test-utils"
 const trackEvent = useTracking().trackEvent
 
 describe("ArtistSeriesMoreSeries", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<ArtistSeriesMoreSeriesTestsQuery>
       environment={env}

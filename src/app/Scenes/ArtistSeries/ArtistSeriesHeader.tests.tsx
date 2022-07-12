@@ -7,12 +7,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 
 describe("Artist Series Header", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<ArtistSeriesHeaderTestsQuery>
       environment={env}

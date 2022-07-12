@@ -1,14 +1,8 @@
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { FeatureQueryRenderer } from "./Feature"
 
-let mockRelayEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
-beforeEach(() => {
-  mockRelayEnvironment = require("app/relay/createEnvironment").defaultEnvironment =
-    createMockEnvironment()
-})
+import { FeatureQueryRenderer } from "./Feature"
 
 describe(FeatureQueryRenderer, () => {
   it("renders without failing", () => {

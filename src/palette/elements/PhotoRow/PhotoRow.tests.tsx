@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -7,13 +7,12 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { PhotoRow } from "./PhotoRow"
 
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 const mockHandlePhotoDelete = jest.fn()
 
 describe("PhotoRow", () => {
   describe("when passed an uploaded photo", () => {
     const TestRenderer = () => (
-      <RelayEnvironmentProvider environment={mockEnvironment}>
+      <RelayEnvironmentProvider environment={getRelayEnvironment()}>
         <PhotoRow photo={mockUploadedPhoto} onPhotoDelete={mockHandlePhotoDelete} progress={0.4} />
       </RelayEnvironmentProvider>
     )
@@ -48,7 +47,7 @@ describe("PhotoRow", () => {
 
   describe("when passed a photo with error", () => {
     const TestRenderer = () => (
-      <RelayEnvironmentProvider environment={mockEnvironment}>
+      <RelayEnvironmentProvider environment={getRelayEnvironment()}>
         <PhotoRow photo={mockPhotoWithError} onPhotoDelete={mockHandlePhotoDelete} progress={0.4} />
       </RelayEnvironmentProvider>
     )

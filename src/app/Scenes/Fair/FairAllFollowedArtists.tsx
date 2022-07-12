@@ -12,7 +12,7 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Box, Flex, Separator, Spacer, Text } from "palette"
@@ -128,7 +128,7 @@ export const FairAllFollowedArtistsFragmentContainer = createFragmentContainer(
 export const FairAllFollowedArtistsQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => {
   return (
     <QueryRenderer<FairAllFollowedArtistsQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FairAllFollowedArtistsQuery($fairID: String!) {
           fair(id: $fairID) @principalField {

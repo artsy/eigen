@@ -10,7 +10,7 @@ import { Box, Flex, Spacer } from "palette"
 export const SearchPlaceholder: React.FC = () => {
   return (
     <ProvidePlaceholderContext>
-      <Box p={2}>
+      <Box p={2} testID="search-placeholder">
         <PlaceholderBox height={46} />
         <Spacer mt={2} />
         <Spacer mt={1} />

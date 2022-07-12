@@ -5,12 +5,10 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { InquiryPurchaseButtonFragmentContainer } from "./InquiryPurchaseButton"
 
 jest.spyOn(Alert, "alert")
-
-let environment: ReturnType<typeof createMockEnvironment>
 
 const TestRenderer = () => {
   return (
@@ -54,11 +52,6 @@ const getWrapper = (mockResolvers = {}) => {
 }
 
 describe("InquiryPurchaseButton", () => {
-  beforeEach(() => {
-    require("app/relay/createEnvironment").reset()
-    environment = require("app/relay/createEnvironment").defaultEnvironment
-  })
-
   it("navigates to the order webview when button is tapped", () => {
     const { getByText } = getWrapper({
       Artwork: () => ({

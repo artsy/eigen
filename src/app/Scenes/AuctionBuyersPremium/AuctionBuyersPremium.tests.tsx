@@ -1,12 +1,10 @@
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionBuyersPremiumQueryRenderer } from "./AuctionBuyersPremium"
 
 describe("AuctionBuyersPremium", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
-
   beforeEach(() => {
     mockEnvironment.mockClear()
   })
@@ -19,7 +17,7 @@ describe("AuctionBuyersPremium", () => {
     it("renders the schedule correctly", () => {
       const { getByText } = renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Sale: () => ({
           buyersPremium: [{ amount: "$0", cents: 0, percent: 0.2 }],
         }),
@@ -35,7 +33,7 @@ describe("AuctionBuyersPremium", () => {
       const textOne = "On the hammer price up to and including $500,000: 25%"
       const textTwo = "On the portion of the hammer price in excess of $500,000: 20%"
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Sale: () => ({
           buyersPremium: [
             { amount: "$0", cents: 0, percent: 0.25 },
@@ -57,7 +55,7 @@ describe("AuctionBuyersPremium", () => {
         "On the hammer price in excess of $250,000 up to and including $2,500,000: 20%"
       const textThree = "On the portion of the hammer price in excess of $2,500,000: 12%"
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Sale: () => ({
           buyersPremium: [
             { amount: "$0", cents: 0, percent: 0.25 },
@@ -76,7 +74,7 @@ describe("AuctionBuyersPremium", () => {
       it("rounds to a single decimal place", () => {
         const { getByText } = renderWithWrappers(<TestRenderer />)
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Sale: () => ({
             buyersPremium: [{ amount: "$0", cents: 0, percent: 0.225 }],
           }),

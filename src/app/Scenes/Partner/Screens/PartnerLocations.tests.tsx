@@ -8,12 +8,6 @@ import { PartnerLocationsFixture } from "./__fixtures__/PartnerLocations-fixture
 import { PartnerLocationsContainer as PartnerLocations } from "./PartnerLocations"
 
 describe("PartnerLocations", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => {
     return (
       <QueryRenderer<PartnerLocationsTestsQuery>
@@ -44,7 +38,7 @@ describe("PartnerLocations", () => {
   it("renders without throwing an error", async () => {
     const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(env, {
+    resolveMostRecentRelayOperation({
       Partner: () => PartnerLocationsFixture,
     })
 

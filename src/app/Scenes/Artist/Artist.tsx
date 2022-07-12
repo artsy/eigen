@@ -11,7 +11,7 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"

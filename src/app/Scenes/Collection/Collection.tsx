@@ -1,6 +1,6 @@
 import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box, Spacer } from "palette"
 import React, { Component, createRef } from "react"
@@ -128,7 +128,7 @@ export const CollectionQueryRenderer: React.FC<CollectionQueryRendererProps> = (
   collectionID,
 }) => (
   <QueryRenderer<CollectionQuery>
-    environment={defaultEnvironment}
+    environment={getRelayEnvironment()}
     query={graphql`
       query CollectionQuery($collectionID: String!) {
         collection: marketingCollection(slug: $collectionID) {

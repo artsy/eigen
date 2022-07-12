@@ -3,7 +3,7 @@ import { Fair_fair$data } from "__generated__/Fair_fair.graphql"
 import { FairQuery } from "__generated__/FairQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { useHideBackButtonOnScroll } from "app/utils/hideBackButtonOnScroll"
 
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
@@ -307,7 +307,7 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
 export const FairQueryRenderer: React.FC<FairQueryRendererProps> = ({ fairID }) => {
   return (
     <QueryRenderer<FairQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FairQuery($fairID: String!) {
           fair(id: $fairID) @principalField {

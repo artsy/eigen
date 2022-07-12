@@ -9,11 +9,9 @@ import { createMockEnvironment } from "relay-test-utils"
 import { INITIAL_NUMBER_TO_RENDER, SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 
 describe("SaleArtworksRail", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<SaleArtworksRailTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SaleArtworksRailTestsQuery($saleID: ID) @relay_test_operation {
           me {
@@ -31,14 +29,10 @@ describe("SaleArtworksRail", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("Renders list of sale artworks without throwing an error", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual(
       "Lots by artists you follow"
@@ -58,7 +52,7 @@ describe("SaleArtworksRail", () => {
         },
       }),
     }
-    resolveMostRecentRelayOperation(mockEnvironment, noArtworksProps)
+    resolveMostRecentRelayOperation(noArtworksProps)
     // React-test-renderer has no isEmptyComponent or isNullComponent therefore I am testing for the container
     expect(tree.root.findAllByType(Flex)).toHaveLength(0)
   })

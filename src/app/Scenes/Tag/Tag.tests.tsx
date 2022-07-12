@@ -7,25 +7,18 @@ import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWi
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { TouchableHighlightColor } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Tag } from "./Tag"
 
 describe("Tag", () => {
   const tagID = "skull"
-  let environment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
 
   function mockMostRecentOperation(mockResolvers: MockResolvers = {}) {
     environment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ...mockResolvers,
-      })
-      return result
-    })
+     })
   }
 
   const TestRenderer = () => {

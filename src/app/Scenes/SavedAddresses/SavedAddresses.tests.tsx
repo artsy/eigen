@@ -1,18 +1,16 @@
 import { act, fireEvent } from "@testing-library/react-native"
 import { SavedAddressesTestsQuery } from "__generated__/SavedAddressesTestsQuery.graphql"
 import { navigate, navigationEvents } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "./SavedAddresses"
 
 describe(SavedAddressesQueryRenderer, () => {
-  type MockEnvironment = ReturnType<typeof createMockEnvironment>
-  const mockEnvironment = defaultEnvironment as MockEnvironment
   const TestRenderer = () => (
     <QueryRenderer<SavedAddressesTestsQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SavedAddressesTestsQuery {
           me {
@@ -33,16 +31,13 @@ describe(SavedAddressesQueryRenderer, () => {
 
   it("renders no saved addresses screen", () => {
     const { queryByText } = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          name: "saver",
-          addressConnection: {
-            edges: [],
-          },
-        }),
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      Me: () => ({
+        name: "saver",
+        addressConnection: {
+          edges: [],
+        },
+      }),
     })
 
     expect(queryByText("No Saved Addresses")).toBeTruthy()
@@ -50,45 +45,42 @@ describe(SavedAddressesQueryRenderer, () => {
 
   it("should render the saved addresses on the screen", () => {
     const { queryByText, queryAllByText } = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          name: "saver",
-          addressConnection: {
-            edges: [
-              {
-                node: {
-                  id: "VXNlckFkZHJlc3M6NTg0MA==",
-                  internalID: "5840",
-                  name: "George Tester",
-                  addressLine1: "Stallschreiberstr 21",
-                  addressLine2: "apt 61, 1st Floor",
-                  addressLine3: null,
-                  city: "Berlin",
-                  region: "Mitte",
-                  postalCode: "10179",
-                  phoneNumber: "015904832846",
-                },
+    resolveMostRecentRelayOperation({
+      Me: () => ({
+        name: "saver",
+        addressConnection: {
+          edges: [
+            {
+              node: {
+                id: "VXNlckFkZHJlc3M6NTg0MA==",
+                internalID: "5840",
+                name: "George Tester",
+                addressLine1: "Stallschreiberstr 21",
+                addressLine2: "apt 61, 1st Floor",
+                addressLine3: null,
+                city: "Berlin",
+                region: "Mitte",
+                postalCode: "10179",
+                phoneNumber: "015904832846",
               },
-              {
-                node: {
-                  id: "VXNlckFkZHJlc3M6NTg2MQ==",
-                  internalID: "5861",
-                  name: "George Testing",
-                  addressLine1: "401 Brodway",
-                  addressLine2: "24th Floor",
-                  addressLine3: null,
-                  city: "New York",
-                  region: "New York",
-                  postalCode: "NY 10013",
-                  phoneNumber: "1293581028945",
-                },
+            },
+            {
+              node: {
+                id: "VXNlckFkZHJlc3M6NTg2MQ==",
+                internalID: "5861",
+                name: "George Testing",
+                addressLine1: "401 Brodway",
+                addressLine2: "24th Floor",
+                addressLine3: null,
+                city: "New York",
+                region: "New York",
+                postalCode: "NY 10013",
+                phoneNumber: "1293581028945",
               },
-            ],
-          },
-        }),
-      })
-      return result
+            },
+          ],
+        },
+      }),
     })
 
     expect(queryByText("George Tester")).toBeTruthy()
@@ -107,16 +99,13 @@ describe(SavedAddressesQueryRenderer, () => {
 
   it("testing add new address navigation", () => {
     const { getAllByText } = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          name: "saver",
-          addressConnection: {
-            edges: [],
-          },
-        }),
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      Me: () => ({
+        name: "saver",
+        addressConnection: {
+          edges: [],
+        },
+      }),
     })
 
     fireEvent.press(getAllByText("Add New Address")[0])
@@ -127,45 +116,42 @@ describe(SavedAddressesQueryRenderer, () => {
 
   it("should navigate to edit address screen", () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          name: "saver",
-          addressConnection: {
-            edges: [
-              {
-                node: {
-                  id: "VXNlckFkZHJlc3M6NTg0MA==",
-                  internalID: "5840",
-                  name: "George Tester",
-                  addressLine1: "Stallschreiberstr 21",
-                  addressLine2: "apt 61, 1st Floor",
-                  addressLine3: null,
-                  city: "Berlin",
-                  region: "Mitte",
-                  postalCode: "10179",
-                  phoneNumber: "015904832846",
-                },
+    resolveMostRecentRelayOperation({
+      Me: () => ({
+        name: "saver",
+        addressConnection: {
+          edges: [
+            {
+              node: {
+                id: "VXNlckFkZHJlc3M6NTg0MA==",
+                internalID: "5840",
+                name: "George Tester",
+                addressLine1: "Stallschreiberstr 21",
+                addressLine2: "apt 61, 1st Floor",
+                addressLine3: null,
+                city: "Berlin",
+                region: "Mitte",
+                postalCode: "10179",
+                phoneNumber: "015904832846",
               },
-              {
-                node: {
-                  id: "VXNlckFkZHJlc3M6NTg2MQ==",
-                  internalID: "5861",
-                  name: "George Testing",
-                  addressLine1: "401 Brodway",
-                  addressLine2: "24th Floor",
-                  addressLine3: null,
-                  city: "New York",
-                  region: "New York",
-                  postalCode: "NY 10013",
-                  phoneNumber: "1293581028945",
-                },
+            },
+            {
+              node: {
+                id: "VXNlckFkZHJlc3M6NTg2MQ==",
+                internalID: "5861",
+                name: "George Testing",
+                addressLine1: "401 Brodway",
+                addressLine2: "24th Floor",
+                addressLine3: null,
+                city: "New York",
+                region: "New York",
+                postalCode: "NY 10013",
+                phoneNumber: "1293581028945",
               },
-            ],
-          },
-        }),
-      })
-      return result
+            },
+          ],
+        },
+      }),
     })
 
     const EditButton = getByTestId("EditAddress-5861")
@@ -186,45 +172,42 @@ describe(SavedAddressesQueryRenderer, () => {
 
   it("deletes successfully an address from the address list", () => {
     const { getAllByText } = renderWithWrappers(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          name: "saver",
-          addressConnection: {
-            edges: [
-              {
-                node: {
-                  id: "VXNlckFkZHJlc3M6NTg0MA==",
-                  internalID: "5840",
-                  name: "George Tester",
-                  addressLine1: "Stallschreiberstr 21",
-                  addressLine2: "apt 61, 1st Floor",
-                  addressLine3: null,
-                  city: "Berlin",
-                  region: "Mitte",
-                  postalCode: "10179",
-                  phoneNumber: "015904832846",
-                },
+    resolveMostRecentRelayOperation({
+      Me: () => ({
+        name: "saver",
+        addressConnection: {
+          edges: [
+            {
+              node: {
+                id: "VXNlckFkZHJlc3M6NTg0MA==",
+                internalID: "5840",
+                name: "George Tester",
+                addressLine1: "Stallschreiberstr 21",
+                addressLine2: "apt 61, 1st Floor",
+                addressLine3: null,
+                city: "Berlin",
+                region: "Mitte",
+                postalCode: "10179",
+                phoneNumber: "015904832846",
               },
-              {
-                node: {
-                  id: "VXNlckFkZHJlc3M6NTg2MQ==",
-                  internalID: "5861",
-                  name: "George Testing",
-                  addressLine1: "401 Brodway",
-                  addressLine2: "24th Floor",
-                  addressLine3: null,
-                  city: "New York",
-                  region: "New York",
-                  postalCode: "NY 10013",
-                  phoneNumber: "1293581028945",
-                },
+            },
+            {
+              node: {
+                id: "VXNlckFkZHJlc3M6NTg2MQ==",
+                internalID: "5861",
+                name: "George Testing",
+                addressLine1: "401 Brodway",
+                addressLine2: "24th Floor",
+                addressLine3: null,
+                city: "New York",
+                region: "New York",
+                postalCode: "NY 10013",
+                phoneNumber: "1293581028945",
               },
-            ],
-          },
-        }),
-      })
-      return result
+            },
+          ],
+        },
+      }),
     })
 
     act(() => fireEvent.press(getAllByText("Delete")[0]))

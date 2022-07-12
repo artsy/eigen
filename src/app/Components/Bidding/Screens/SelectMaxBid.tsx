@@ -14,7 +14,7 @@ import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_
 import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { compact } from "lodash"
 import { Select } from "palette/elements/Select"
@@ -139,7 +139,7 @@ export const SelectMaxBidQueryRenderer: React.FC<{
         Place a max bid
       </FancyModalHeader>
       <QueryRenderer<SelectMaxBidQuery>
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query SelectMaxBidQuery($artworkID: String!, $saleID: String!) {
             artwork(id: $artworkID) {

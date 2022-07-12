@@ -6,7 +6,7 @@ import {
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
@@ -67,7 +67,6 @@ const defaultParams: CreateSavedSearchAlertParams = {
 }
 
 describe("CreateSavedSearchAlert", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
@@ -98,13 +97,13 @@ describe("CreateSavedSearchAlert", () => {
       }
     })
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
+    resolveMostRecentRelayOperation(mockResolvers)
   }
 
   it("renders without throwing an error", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
 
     expect(getByText("Bid")).toBeTruthy()
     expect(getByText("Open Edition")).toBeTruthy()
@@ -114,7 +113,7 @@ describe("CreateSavedSearchAlert", () => {
     const onClosePressMock = jest.fn()
     const { getByTestId } = renderWithWrappers(<TestRenderer onClosePress={onClosePressMock} />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
     fireEvent.press(getByTestId("fancy-modal-header-left-button"))
 
     expect(onClosePressMock).toBeCalled()
@@ -128,7 +127,7 @@ describe("CreateSavedSearchAlert", () => {
       <TestRenderer onComplete={onCompleteMock} />
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
     fireEvent.press(getByText("Save Alert"))
@@ -159,7 +158,7 @@ describe("CreateSavedSearchAlert", () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Viewer: () => ({
           notificationPreferences: [
             { status: "SUBSCRIBED", name: "custom_alerts", channel: "email" },
@@ -177,7 +176,7 @@ describe("CreateSavedSearchAlert", () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
       const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Viewer: () => ({
           notificationPreferences: [
             { status: "UNSUBSCRIBED", name: "custom_alerts", channel: "email" },
@@ -204,7 +203,7 @@ describe("CreateSavedSearchAlert", () => {
       const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
       const toggles = await findAllByA11yState({ selected: false })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Viewer: () => ({
           notificationPreferences: [{ status: "SUBSCRIBED" }],
         }),
@@ -219,7 +218,7 @@ describe("CreateSavedSearchAlert", () => {
       const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
       const toggles = await findAllByA11yState({ selected: false })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Viewer: () => ({
           notificationPreferences: [{ status: "SUBSCRIBED" }],
         }),

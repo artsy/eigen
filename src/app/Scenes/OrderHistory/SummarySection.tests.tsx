@@ -6,12 +6,9 @@ import { createMockEnvironment } from "relay-test-utils"
 import { SummarySectionFragmentContainer } from "./OrderDetails/Components/SummarySection"
 
 describe("SummarySection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
   const TestRenderer = () => (
     <QueryRenderer<SummarySectionTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SummarySectionTestsQuery @relay_test_operation {
           commerceOrder(id: "some-id") {
@@ -32,7 +29,7 @@ describe("SummarySection", () => {
 
   it("Render Order Summary Section ", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       CommerceOrder: () => ({
         mode: "BUY",
         buyerTotal: "€11,200",
@@ -51,7 +48,7 @@ describe("SummarySection", () => {
 
   it("Render correct shipping name if shipping quote selected", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       CommerceOrder: () => ({
         lineItems: {
           edges: [
@@ -74,7 +71,7 @@ describe("SummarySection", () => {
 
   it("Render correct shipping name if shipping quote not selected", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       CommerceOrder: () => ({
         lineItems: {
           edges: [
@@ -96,7 +93,7 @@ describe("SummarySection", () => {
   describe("if offer order", () => {
     it("Render correct price", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         CommerceOrder: () => ({
           mode: "OFFER",
           buyerTotal: "€10,400",
@@ -116,7 +113,7 @@ describe("SummarySection", () => {
 
     it("Render counteroffer", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         CommerceOrder: () => ({
           mode: "OFFER",
           buyerTotal: "€10,400",

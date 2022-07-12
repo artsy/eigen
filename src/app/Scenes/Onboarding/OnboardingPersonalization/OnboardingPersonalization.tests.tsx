@@ -12,11 +12,9 @@ import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingPersonalizationList } from "./OnboardingPersonalization"
 
 describe("OnboardingPersonalizationList", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<OnboardingPersonalizationTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query OnboardingPersonalizationTestsQuery($excludeArtistIDs: [String])
         @relay_test_operation {
@@ -45,14 +43,10 @@ describe("OnboardingPersonalizationList", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   describe("SearchInput", () => {
     it("navigates to the OnboardingPersonalizationModal when the user presses on the search input", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment)
+      resolveMostRecentRelayOperation()
 
       const searchInput = tree.root.findByProps({ testID: "searchArtistButton" })
       searchInput.props.onPress()
@@ -69,7 +63,7 @@ describe("OnboardingPersonalizationList", () => {
       )
 
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment)
+      resolveMostRecentRelayOperation()
 
       const doneButton = tree.root.findByProps({ testID: "doneButton" })
       doneButton.props.onPress()

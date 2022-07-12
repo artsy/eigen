@@ -2,12 +2,10 @@ import { NewWorksForYouTestsQuery } from "__generated__/NewWorksForYouTestsQuery
 import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { NewWorksForYouFragmentContainer } from "./NewWorksForYou"
 
 describe("NewWorksForYou", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<NewWorksForYouTestsQuery>
       query={graphql`
@@ -21,13 +19,9 @@ describe("NewWorksForYou", () => {
         return props?.viewer && <NewWorksForYouFragmentContainer viewer={props.viewer} />
       }}
       variables={{}}
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
     />
   )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   it("renders NewWorksForYou", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)

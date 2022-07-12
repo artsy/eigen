@@ -3,14 +3,13 @@ import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { CreditCardSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
 
 describe("PaymentSection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = ({}) => (
     <QueryRenderer<OrderDetailsPaymentTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query OrderDetailsPaymentTestsQuery($orderID: ID!) @relay_test_operation {
           order: commerceOrder(id: $orderID) {
@@ -27,10 +26,6 @@ describe("PaymentSection", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   afterEach(() => {
     jest.clearAllMocks()

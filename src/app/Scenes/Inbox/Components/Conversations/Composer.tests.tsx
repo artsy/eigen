@@ -8,19 +8,13 @@ import { TextInput } from "react-native"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { ComposerFragmentContainer } from "./Composer"
 import { CTAPopUp } from "./CTAPopUp"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
 import { ReviewOfferButton } from "./ReviewOfferButton"
 
 jest.unmock("react-tracking")
-
-let env: ReturnType<typeof createMockEnvironment>
-
-beforeEach(() => {
-  env = createMockEnvironment()
-})
 
 const TestRenderer = (nonRelayProps: { disabled: boolean; value?: string }) => (
   <QueryRenderer<ComposerTestsQuery>

@@ -19,8 +19,6 @@ export const setupTestWrapperTL = <T extends OperationType>({
   variables = {},
 }: SetupTestWrapper<T>) => {
   const renderWithRelay = (mockResolvers: MockResolvers = {}) => {
-    const env = createMockEnvironment()
-
     const TestRenderer = () => (
       <QueryRenderer<T>
         environment={env}
@@ -59,8 +57,6 @@ export const setupTestWrapper = <T extends OperationType>({
   variables = {},
 }: SetupTestWrapper<T>) => {
   const getWrapper = (mockResolvers: MockResolvers = {}) => {
-    const env = createMockEnvironment()
-
     const TestRenderer = () => (
       <QueryRenderer<T>
         environment={env}

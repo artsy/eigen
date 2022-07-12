@@ -21,6 +21,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { closeModalMock, getEssentialProps, MockFilterScreen } from "./FilterTestHelper"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()
@@ -493,16 +494,13 @@ describe("Clearing filters", () => {
 })
 
 describe("Applying filters on Artworks", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
   beforeEach(() => {
-    env = createMockEnvironment()
-    resolveMostRecentRelayOperation(env)
+    resolveMostRecentRelayOperation()
   })
 
   const TestRenderer = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
     <QueryRenderer<FilterModalTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FilterModalTestsQuery @raw_response_type @relay_test_operation {
           marketingCollection(slug: "street-art-now") {
@@ -551,16 +549,17 @@ describe("Applying filters on Artworks", () => {
 
     renderWithWrappers(<TestRenderer initialData={injectedState} />)
 
-    resolveMostRecentRelayOperation(env, {
+    resolveMostRecentRelayOperation({
       MarketingCollection: () => ({
         slug: "street-art-now",
       }),
     })
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
+    expect(getRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name).toEqual(
       "CollectionArtworksInfiniteScrollGridQuery"
     )
-    expect(env.mock.getMostRecentOperation().request.variables).toMatchInlineSnapshot(`
+    expect(getRelayEnvironment().mock.getMostRecentOperation().request.variables)
+      .toMatchInlineSnapshot(`
       Object {
         "acquireable": false,
         "additionalGeneIDs": null,
@@ -618,7 +617,7 @@ describe("Applying filters on Artworks", () => {
       <MockFilterModalNavigator initialData={injectedState} />
     )
 
-    resolveMostRecentRelayOperation(env)
+    resolveMostRecentRelayOperation()
 
     fireEvent.press(getByText("Show Results"))
 

@@ -3,7 +3,7 @@ import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { Stack } from "app/Components/Stack"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isPad } from "app/utils/hardware"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
@@ -224,7 +224,7 @@ const FeatureFragmentContainer = createFragmentContainer(FeatureApp, {
 export const FeatureQueryRenderer: React.FC<{ slug: string }> = ({ slug }) => {
   return (
     <QueryRenderer<FeatureQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FeatureQuery($slug: ID!) {
           feature(id: $slug) {

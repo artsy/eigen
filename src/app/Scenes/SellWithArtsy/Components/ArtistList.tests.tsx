@@ -1,6 +1,5 @@
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { ArtistListTestsQuery } from "__generated__/ArtistListTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
@@ -10,15 +9,9 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ArtistListFragmentContainer } from "./ArtistList"
 
 describe("ArtistList", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<ArtistListTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtistListTestsQuery {
           targetSupply {
@@ -41,11 +34,8 @@ describe("ArtistList", () => {
       { name: "artist #4" },
       { name: "artist #5" },
     ])
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        TargetSupply: () => targetSupply,
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      TargetSupply: () => targetSupply,
     })
 
     const text = extractText(tree.root)
@@ -64,11 +54,8 @@ describe("ArtistList", () => {
       slug: "artist-slug",
     }
     const targetSupply = makeTargetSupply([artist])
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        TargetSupply: () => targetSupply,
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      TargetSupply: () => targetSupply,
     })
 
     tree.root.findByProps({ testID: "artist-item" }).props.onPress()

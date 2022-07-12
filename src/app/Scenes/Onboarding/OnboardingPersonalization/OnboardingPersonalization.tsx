@@ -7,7 +7,7 @@ import {
   ArtistListItemPlaceholder,
 } from "app/Components/ArtistListItem"
 import SearchIcon from "app/Icons/SearchIcon"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { requestPushNotificationsPermission } from "app/utils/PushNotification"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -183,7 +183,7 @@ const OnboardingPersonalizationListQueryRenderer: React.FC<
   OnboardingPersonalizationListNavigationProps
 > = (props) => (
   <QueryRenderer<OnboardingPersonalizationListQuery>
-    environment={defaultEnvironment}
+    environment={getRelayEnvironment()}
     query={graphql`
       query OnboardingPersonalizationListQuery {
         highlights {

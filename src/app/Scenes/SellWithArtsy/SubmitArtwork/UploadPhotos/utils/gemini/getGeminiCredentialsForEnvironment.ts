@@ -2,7 +2,7 @@ import {
   getGeminiCredentialsForEnvironmentMutation,
   RequestCredentialsForAssetUploadInput,
 } from "__generated__/getGeminiCredentialsForEnvironmentMutation.graphql"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
 export type AssetCredentials =
@@ -13,7 +13,7 @@ export const getGeminiCredentialsForEnvironment = (
   input: RequestCredentialsForAssetUploadInput
 ) => {
   return new Promise<AssetCredentials>((resolve, reject) => {
-    commitMutation<getGeminiCredentialsForEnvironmentMutation>(defaultEnvironment, {
+    commitMutation<getGeminiCredentialsForEnvironmentMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation getGeminiCredentialsForEnvironmentMutation(
           $input: RequestCredentialsForAssetUploadInput!

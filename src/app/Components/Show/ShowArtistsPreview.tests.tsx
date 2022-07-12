@@ -11,8 +11,6 @@ import { Button } from "palette"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "./ShowArtistsPreview"
 
 describe("ArtistsContainer", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<ShowArtistsPreviewTestsQuery>
       environment={env}
@@ -33,10 +31,6 @@ describe("ArtistsContainer", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   it("Renders the show artists", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)

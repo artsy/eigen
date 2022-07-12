@@ -3,7 +3,7 @@ import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabP
 import About from "app/Components/Tag/About"
 import { TagArtworksPaginationContainer } from "app/Components/Tag/TagArtworks"
 import { TagPlaceholder } from "app/Components/Tag/TagPlaceholder"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import Header from "app/Scenes/Tag/TagHeader"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -88,7 +88,7 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
 
   return (
     <QueryRenderer<TagQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query TagQuery($tagID: String!, $input: FilterArtworksInput) {
           tag(id: $tagID) {

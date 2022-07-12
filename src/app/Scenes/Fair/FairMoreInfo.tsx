@@ -3,7 +3,7 @@ import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
 import { Markdown } from "app/Components/Markdown"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { defaultRules } from "app/utils/renderMarkdown"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -173,7 +173,7 @@ export const FairMoreInfoFragmentContainer = createFragmentContainer(FairMoreInf
 export const FairMoreInfoQueryRenderer: React.FC<FairMoreInfoQueryRendererProps> = ({ fairID }) => {
   return (
     <QueryRenderer<FairMoreInfoQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FairMoreInfoQuery($fairID: String!) {
           fair(id: $fairID) @principalField {

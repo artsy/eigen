@@ -16,12 +16,9 @@ const mockInfo = {
 }
 
 describe("OrderDetailsHeader", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
   const TestRenderer = () => (
     <QueryRenderer<OrderDetailsHeaderTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query OrderDetailsHeaderTestsQuery @relay_test_operation {
           commerceOrder(id: "some-id") {
@@ -41,7 +38,7 @@ describe("OrderDetailsHeader", () => {
 
   it("renders date, code, status, fulfillment fields", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => mockInfo })
+    resolveMostRecentRelayOperation({ CommerceOrder: () => mockInfo })
 
     expect(extractText(tree.findByProps({ testID: "date" }))).toBe("Jun 2, 2021")
     expect(extractText(tree.findByProps({ testID: "code" }))).toBe("075381384")
@@ -54,7 +51,7 @@ describe("OrderDetailsHeader", () => {
       describe("CommerceShip", () => {
         it("SUBMITTED state", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => mockInfo })
+          resolveMostRecentRelayOperation({ CommerceOrder: () => mockInfo })
 
           expect(extractText(tree.findByProps({ testID: "status" }))).toBe("pending")
           expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
@@ -62,7 +59,7 @@ describe("OrderDetailsHeader", () => {
 
         it("APPROVED state", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             CommerceOrder: () => ({ ...mockInfo, state: "APPROVED" }),
           })
 
@@ -72,7 +69,7 @@ describe("OrderDetailsHeader", () => {
 
         it("FULFILLED state", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             CommerceOrder: () => ({ ...mockInfo, state: "FULFILLED" }),
           })
 
@@ -84,7 +81,7 @@ describe("OrderDetailsHeader", () => {
       describe("CommerceShipArtA", () => {
         it("PENDING status", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "pending" } } }] },
@@ -97,7 +94,7 @@ describe("OrderDetailsHeader", () => {
 
         it("CONFIRMED status", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "confirmed" } } }] },
@@ -110,7 +107,7 @@ describe("OrderDetailsHeader", () => {
 
         it("COLLECTED status", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "collected" } } }] },
@@ -123,7 +120,7 @@ describe("OrderDetailsHeader", () => {
 
         it("IN_TRANSIT status", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "in_transit" } } }] },
@@ -136,7 +133,7 @@ describe("OrderDetailsHeader", () => {
 
         it("COMPLETED status", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "completed" } } }] },
@@ -149,7 +146,7 @@ describe("OrderDetailsHeader", () => {
 
         it("CANCELED status", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             CommerceOrder: () => ({
               ...mockInfo,
               lineItems: { edges: [{ node: { shipment: { status: "canceled" } } }] },
@@ -164,7 +161,7 @@ describe("OrderDetailsHeader", () => {
       describe("CommercePickup", () => {
         it("SUBMITTED state", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             CommerceOrder: () => ({
               ...mockInfo,
               requestedFulfillment: { __typename: "CommercePickup" },
@@ -177,7 +174,7 @@ describe("OrderDetailsHeader", () => {
 
         it("APPROVED state", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             CommerceOrder: () => ({
               ...mockInfo,
               state: "APPROVED",
@@ -191,7 +188,7 @@ describe("OrderDetailsHeader", () => {
 
         it("FULFILLED state", () => {
           const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             CommerceOrder: () => ({
               ...mockInfo,
               state: "FULFILLED",

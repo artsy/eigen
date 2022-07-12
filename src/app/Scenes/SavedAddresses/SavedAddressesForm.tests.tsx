@@ -5,14 +5,13 @@ import { Button, Input } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { SavedAddressesFormContainer, SavedAddressesFormQueryRenderer } from "./SavedAddressesForm"
 
 describe(SavedAddressesFormQueryRenderer, () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = ({ addressId }: { addressId?: string }) => (
     <QueryRenderer<SavedAddressesFormTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SavedAddressesFormTestsQuery {
           me {
@@ -30,23 +29,17 @@ describe(SavedAddressesFormQueryRenderer, () => {
       variables={{}}
     />
   )
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   it("render form screen", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          id: "some-id",
-          phone: "9379992",
-          addressConnection: {
-            edges: [],
-          },
-        }),
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      Me: () => ({
+        id: "some-id",
+        phone: "9379992",
+        addressConnection: {
+          edges: [],
+        },
+      }),
     })
 
     expect(tree.findAllByType(Input).length).toEqual(7)
@@ -57,32 +50,29 @@ describe(SavedAddressesFormQueryRenderer, () => {
 
   it("should display correct address data if it is Edit Address modal", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer addressId="5861" />).root
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          id: "some-id",
-          phone: "9379992",
-          addressConnection: {
-            edges: [
-              {
-                node: {
-                  id: "VXNlckFkZHJlc3M6NTg2MQ==",
-                  internalID: "5861",
-                  name: "George Testing",
-                  addressLine1: "401 Broadway",
-                  addressLine2: "24th Floor",
-                  addressLine3: null,
-                  city: "New York",
-                  region: "New York",
-                  postalCode: "NY 10013",
-                  phoneNumber: "1293581028945",
-                },
+    resolveMostRecentRelayOperation({
+      Me: () => ({
+        id: "some-id",
+        phone: "9379992",
+        addressConnection: {
+          edges: [
+            {
+              node: {
+                id: "VXNlckFkZHJlc3M6NTg2MQ==",
+                internalID: "5861",
+                name: "George Testing",
+                addressLine1: "401 Broadway",
+                addressLine2: "24th Floor",
+                addressLine3: null,
+                city: "New York",
+                region: "New York",
+                postalCode: "NY 10013",
+                phoneNumber: "1293581028945",
               },
-            ],
-          },
-        }),
-      })
-      return result
+            },
+          ],
+        },
+      }),
     })
     const text = extractText(tree)
 

@@ -23,7 +23,7 @@ import { Touchable } from "palette"
 import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Artwork, ArtworkQueryRenderer } from "./Artwork"
 import { ArtworkDetails } from "./Components/ArtworkDetails"
@@ -62,8 +62,6 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
 })
 
 describe("Artwork", () => {
-  let environment: ReturnType<typeof createMockEnvironment>
-
   function mockMostRecentOperation(name: ArtworkQueries, mockResolvers: MockResolvers = {}) {
     expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
     environment.mock.resolveMostRecentOperation((operation) => {
@@ -75,9 +73,7 @@ describe("Artwork", () => {
           }
         },
         ...mockResolvers,
-      })
-      return result
-    })
+     })
   }
   const TestRenderer = ({ isVisible = true }) => (
     // not 100% sure why we need a suspense fallback here but I guess new relay (v9) containers
@@ -95,8 +91,6 @@ describe("Artwork", () => {
   )
 
   beforeEach(() => {
-    require("app/relay/createEnvironment").reset()
-    environment = require("app/relay/createEnvironment").defaultEnvironment
     // TODO: Remove it when AREnableCreateArtworkAlert flag is true in Echo
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
   })

@@ -1,6 +1,6 @@
 import { captureException } from "@sentry/react-native"
 import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__generated__/BottomTabsModelFetchCurrentUnreadConversationCountQuery.graphql"
-import { createEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import {
   metaphysicsURLMiddleware,
   persistedQueryMiddleware,
@@ -34,9 +34,10 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   fetchCurrentUnreadConversationCount: thunk(async () => {
     try {
       const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
-        createEnvironment([
-          [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
-        ]),
+        // createEnvironment([
+        //   [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
+        // ]),
+        getRelayEnvironment(),
         graphql`
           query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
             me @principalField {

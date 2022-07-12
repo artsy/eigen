@@ -91,12 +91,10 @@ const localImages: CarouselImageDescriptor[] = [
 ]
 
 describe("ImageCarouselFragmentContainer", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestWrapper = () => {
     return (
       <QueryRenderer<ImageCarouselTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query ImageCarouselTestsQuery @raw_response_type {
             artwork(id: "unused") {
@@ -121,10 +119,6 @@ describe("ImageCarouselFragmentContainer", () => {
     )
   }
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   describe("with five images", () => {
     beforeEach(() => {
       jest.useFakeTimers()
@@ -138,7 +132,7 @@ describe("ImageCarouselFragmentContainer", () => {
     it("renders a flat list with five entries", () => {
       const { getByLabelText, getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artworkFixture,
       })
 
@@ -149,7 +143,7 @@ describe("ImageCarouselFragmentContainer", () => {
     it("shows five pagination dots", () => {
       const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artworkFixture,
       })
 
@@ -159,7 +153,7 @@ describe("ImageCarouselFragmentContainer", () => {
     it("shows the first pagination dot as being selected and the rest as not selected", () => {
       const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artworkFixture,
       })
 
@@ -175,7 +169,7 @@ describe("ImageCarouselFragmentContainer", () => {
     it("'selects' subsequent pagination dots as a result of scrolling", async () => {
       const { getByLabelText, getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artworkFixture,
       })
 
@@ -270,7 +264,7 @@ describe("ImageCarouselFragmentContainer", () => {
         return image
       })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => ({
           ...artworkFixture,
           images,
@@ -287,7 +281,7 @@ describe("ImageCarouselFragmentContainer", () => {
         deepZoom: null,
       }))
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => ({
           ...artworkFixture,
           images,
@@ -308,7 +302,7 @@ describe("ImageCarouselFragmentContainer", () => {
     it("shows no pagination dots", async () => {
       const { queryAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
       })
 
@@ -318,7 +312,7 @@ describe("ImageCarouselFragmentContainer", () => {
     it("disables scrolling", async () => {
       const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
       })
 

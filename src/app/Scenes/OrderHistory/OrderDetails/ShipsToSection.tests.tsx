@@ -20,12 +20,9 @@ const order = {
 }
 
 describe("ShipsToSection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
   const TestRenderer = () => (
     <QueryRenderer<ShipsToSectionTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ShipsToSectionTestsQuery @relay_test_operation {
           commerceOrder(id: "some-id") {
@@ -46,7 +43,7 @@ describe("ShipsToSection", () => {
 
   it("renders section when CommerceShip", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
+    resolveMostRecentRelayOperation({ CommerceOrder: () => order })
 
     expect(extractText(tree.findByProps({ testID: "addressLine1" }))).toBe("myadress")
     expect(extractText(tree.findByProps({ testID: "city" }))).toBe("mycity, ")
@@ -59,7 +56,7 @@ describe("ShipsToSection", () => {
   it("renders section when CommerceShipArta", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     order.requestedFulfillment.__typename = "CommerceShipArta"
-    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
+    resolveMostRecentRelayOperation({ CommerceOrder: () => order })
 
     expect(extractText(tree.findByProps({ testID: "addressLine1" }))).toBe("myadress")
     expect(extractText(tree.findByProps({ testID: "city" }))).toBe("mycity, ")
@@ -72,7 +69,7 @@ describe("ShipsToSection", () => {
   it("not renders section when CommercePickup", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     order.requestedFulfillment.__typename = "CommercePickup"
-    resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
+    resolveMostRecentRelayOperation({ CommerceOrder: () => order })
 
     expect(tree.instance).toBeNull()
   })

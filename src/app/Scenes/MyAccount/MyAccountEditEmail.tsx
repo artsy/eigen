@@ -1,6 +1,6 @@
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
 import { useToast } from "app/Components/Toast/toastHook"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Input } from "palette"
@@ -91,7 +91,7 @@ export const MyAccountEditEmailContainer = createFragmentContainer(MyAccountEdit
 export const MyAccountEditEmailQueryRenderer: React.FC<{}> = () => {
   return (
     <QueryRenderer<MyAccountEditEmailQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyAccountEditEmailQuery {
           me {

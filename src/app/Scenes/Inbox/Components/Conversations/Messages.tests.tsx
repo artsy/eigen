@@ -7,7 +7,7 @@ import { RefreshControl } from "react-native"
 import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import Messages from "./Messages"
 
 jest.mock("@react-native-community/netinfo", () => {
@@ -24,10 +24,7 @@ jest.mock("@react-native-community/netinfo", () => {
   }
 })
 
-let env: ReturnType<typeof createMockEnvironment>
-
 beforeEach(() => {
-  env = createMockEnvironment()
   jest.useFakeTimers()
 })
 

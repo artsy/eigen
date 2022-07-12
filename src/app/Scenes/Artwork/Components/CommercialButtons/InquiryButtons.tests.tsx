@@ -5,8 +5,8 @@ import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/Commer
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 jest.mock("app/Scenes/Artwork/Components/CommercialButtons/InquiryModal", () => {
   return {
@@ -21,7 +21,6 @@ jest.mock("app/Scenes/Artwork/Components/CommercialButtons/InquiryModal", () => 
 
 beforeEach(() => {
   jest.useFakeTimers()
-  env = createMockEnvironment()
 })
 
 afterEach(() => {
@@ -29,12 +28,11 @@ afterEach(() => {
 })
 
 const mockSuccessfulMutation = jest.fn()
-let env: ReturnType<typeof createMockEnvironment>
 
 const TestRenderer = () => {
   return (
     <QueryRenderer<InquiryButtonsTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query InquiryButtonsTestsQuery($id: String!) @relay_test_operation {
           artwork(id: $id) {
@@ -54,13 +52,9 @@ const TestRenderer = () => {
   )
 }
 
-const getWrapper = (mockResolvers = {}) => {
+const getWrapper = () => {
   const tree = renderWithWrappersLEGACY(<TestRenderer />)
-  act(() => {
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-  })
+  resolveMostRecentRelayOperation()
   return tree
 }
 

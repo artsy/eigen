@@ -1,38 +1,41 @@
 import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappersTL } from "app/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import {
   AverageSalePriceAtAuction,
   AverageSalePriceAtAuctionScreenQuery,
 } from "./AverageSalePriceAtAuction"
-
-jest.unmock("react-relay")
+import { mockEnvironment } from "app/relay/defaultEnvironment"
+import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { MockPayloadGenerator } from "relay-test-utils"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { waitForSuspenseToBeRemoved } from "app/tests/waitForSupenseToBeRemoved"
 
 describe("AverageSalePriceAtAuction", () => {
-  const TestRenderer = () => {
-    useLazyLoadQuery<AverageSalePriceAtAuctionQuery>(AverageSalePriceAtAuctionScreenQuery, {
-      artistID: "artist-id",
-    })
+  const TestRenderer = () => <AverageSalePriceAtAuction artistID="artist-id" />
 
-    return <AverageSalePriceAtAuction artistID="artist-id" />
-  }
-
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
+  /// RELAY TEST RULES
+  // 1, always async tests
+  // 2, render, resolve(in act), await waitfor for expectations?
+  // no hooks, xoris wait
+  /// hooks, me  waitForSuspenseToBeRemoved
+  //search, klama
 
   it("renders title", async () => {
-    const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithRelayWrappersTL(<TestRenderer />, mockEnvironment)
 
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
+    resolveMostRecentRelayOperation({
+      Artist: () => ({
+        internalID: "artist-id",
+        name: "Artist Name",
+        imageUrl: "image-url",
+      }),
     })
+    await waitForSuspenseToBeRemoved()
 
-    await flushPromiseQueue()
-
-    expect(getByTestId("Average_Auction_Price_title")).toBeTruthy()
+    expect(screen.getByTestId("Average_Auction_Price_title")).toBeTruthy()
   })
 })
 

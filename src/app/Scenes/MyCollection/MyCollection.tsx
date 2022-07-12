@@ -14,7 +14,7 @@ import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { navigate, popToRoot } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import {
   GlobalStore,
   setVisualClueAsSeen,
@@ -311,7 +311,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionQuery>
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
         query={MyCollectionScreenQuery}
         variables={{}}
         cacheConfig={{ force: true }}

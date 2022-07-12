@@ -7,7 +7,7 @@ import { Touchable } from "palette"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { Conversation, ConversationFragmentContainer } from "./Conversation"
 import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
 
@@ -27,12 +27,6 @@ jest.mock("@react-native-community/netinfo", () => {
       addEventListener: jest.fn(),
     },
   }
-})
-
-let env: ReturnType<typeof createMockEnvironment>
-
-beforeEach(() => {
-  env = createMockEnvironment()
 })
 
 const TestRenderer = () => (

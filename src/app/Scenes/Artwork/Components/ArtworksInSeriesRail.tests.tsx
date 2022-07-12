@@ -10,12 +10,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtworksInSeriesRail } from "./ArtworksInSeriesRail"
 
 describe("ArtworksInSeriesRail", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
   })

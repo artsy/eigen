@@ -8,7 +8,7 @@ import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContex
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
 import { RetryErrorBoundary } from "./Components/RetryErrorBoundary"
 import { ToastProvider } from "./Components/Toast/toastHook"
-import { defaultEnvironment } from "./relay/defaultEnvironment"
+import { getRelayEnvironment } from "./relay/defaultEnvironment"
 import { GlobalStore, GlobalStoreProvider, useFeatureFlag } from "./store/GlobalStore"
 import { combineProviders } from "./utils/combineProviders"
 import { UnleashProvider } from "./utils/experiments/UnleashProvider"
@@ -28,7 +28,7 @@ export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
       RelayDefaultEnvProvider,
       ThemeProvider, // uses: GlobalStoreProvider
       RetryErrorBoundary,
-      SuspenseProvider,
+      SuspenseProvider, // under RelayDefaultEnvProvider
       ActionSheetProvider,
       PopoverMessageProvider,
       _FancyModalPageWrapper,
@@ -42,7 +42,8 @@ export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
 
 // relay needs the default environment
 const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => (
-  <RelayEnvironmentProvider environment={defaultEnvironment} {...props} />
+  // @ts-expect-error
+  <RelayEnvironmentProvider environment={getRelayEnvironment()} {...props} />
 )
 
 const SuspenseProvider = (props: { children?: React.ReactNode }) => (

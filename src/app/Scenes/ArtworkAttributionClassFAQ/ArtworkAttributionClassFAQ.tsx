@@ -1,7 +1,7 @@
 import { ArtworkAttributionClassFAQ_artworkAttributionClasses$data } from "__generated__/ArtworkAttributionClassFAQ_artworkAttributionClasses.graphql"
 import { ArtworkAttributionClassFAQQuery } from "__generated__/ArtworkAttributionClassFAQQuery.graphql"
 import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box, Button, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
@@ -76,7 +76,7 @@ export const ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY = graphql`
 export const ArtworkAttributionClassFAQQueryRenderer: React.FC = (props) => {
   return (
     <QueryRenderer<ArtworkAttributionClassFAQQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY}
       variables={{}}
       render={renderWithLoadProgress(ArtworkAttributionClassFAQContainer, props)}

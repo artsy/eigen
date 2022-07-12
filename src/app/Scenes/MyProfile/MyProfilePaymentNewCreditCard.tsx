@@ -1,7 +1,7 @@
 import { MyProfilePaymentNewCreditCardSaveCardMutation } from "__generated__/MyProfilePaymentNewCreditCardSaveCardMutation.graphql"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { Stack } from "app/Components/Stack"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
 import { Input, InputTitle } from "palette"
 import { Select } from "palette/elements/Select/SelectV2"
@@ -228,7 +228,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
 const saveCreditCard = (token: string) => {
   return new Promise<MyProfilePaymentNewCreditCardSaveCardMutation["response"]>(
     (resolve, reject) => {
-      commitMutation<MyProfilePaymentNewCreditCardSaveCardMutation>(defaultEnvironment, {
+      commitMutation<MyProfilePaymentNewCreditCardSaveCardMutation>(getRelayEnvironment(), {
         mutation: graphql`
           mutation MyProfilePaymentNewCreditCardSaveCardMutation($input: CreditCardInput!) {
             createCreditCard(input: $input) {

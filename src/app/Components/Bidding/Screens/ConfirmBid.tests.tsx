@@ -8,7 +8,7 @@ import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/B
 import { Modal } from "app/Components/Modal"
 import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { waitUntil } from "app/tests/waitUntil"

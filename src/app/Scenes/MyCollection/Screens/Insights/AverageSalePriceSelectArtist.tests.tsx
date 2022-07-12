@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappersTL } from "app/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -20,11 +20,8 @@ describe("AverageSalePriceSelectArtist", () => {
     return <AverageSalePriceAtAuction artistID="artist-id" />
   }
 
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
   const getWrapper = async () => {
-    const tree = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    const tree = renderWithRelayWrappersTL(<TestRenderer />, mockEnvironment)
 
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })

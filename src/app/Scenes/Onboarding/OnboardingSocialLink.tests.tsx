@@ -10,14 +10,10 @@ import { OnboardingNavigationStack } from "./Onboarding"
 import { LinkAccountButton, OnboardingSocialLink } from "./OnboardingSocialLink"
 
 describe("OnboardingSocialLink", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const navigationMock = {
     addListener: jest.fn(),
     navigate: jest.fn(),
   }
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   const defaultParams = {
     email: "email@mail.com",
@@ -29,7 +25,7 @@ describe("OnboardingSocialLink", () => {
 
   const getWrapper = (routeParams?: OnboardingNavigationStack["OnboardingSocialLink"]) => {
     return renderWithWrappers(
-      <RelayEnvironmentProvider environment={mockEnvironment}>
+      <RelayEnvironmentProvider environment={getRelayEnvironment()}>
         <SafeAreaProvider initialSafeAreaInsets={{ top: 1, left: 2, right: 3, bottom: 4 }}>
           <OnboardingSocialLink
             navigation={navigationMock as any}

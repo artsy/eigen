@@ -11,16 +11,9 @@ import { BottomTabsNavigator } from "./BottomTabsNavigator"
 jest.unmock("app/NativeModules/LegacyNativeModules")
 
 describe(BottomTabsNavigator, () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    require("app/relay/createEnvironment").reset()
-    mockEnvironment = require("app/relay/createEnvironment").defaultEnvironment
-  })
-
   it("shows the current tab content", async () => {
     const tree = renderWithWrappersLEGACY(
-      <RelayEnvironmentProvider environment={mockEnvironment}>
+      <RelayEnvironmentProvider environment={getRelayEnvironment()}>
         <ModalStack>
           <BottomTabsNavigator />
         </ModalStack>

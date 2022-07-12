@@ -7,7 +7,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "./ShowArtworksPreview"
 
 it("renders without throwing an error", async () => {
-  const env = createMockEnvironment()
   const TestRenderer = () => (
     <QueryRenderer<ShowArtworksPreviewTestsQuery>
       environment={env}

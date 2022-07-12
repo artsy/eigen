@@ -5,16 +5,14 @@ import { navigate } from "app/navigation/navigate"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 describe("MyCollectionArtworkListItem", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => {
     return (
       <QueryRenderer<MyCollectionArtworkListItemTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query MyCollectionArtworkListItemTestsQuery @relay_test_operation {
             artwork(id: "artwork-id") {
@@ -32,10 +30,6 @@ describe("MyCollectionArtworkListItem", () => {
       />
     )
   }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   afterEach(() => {
     jest.clearAllMocks()

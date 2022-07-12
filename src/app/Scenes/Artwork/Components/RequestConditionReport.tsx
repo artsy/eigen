@@ -3,7 +3,7 @@ import { RequestConditionReport_me$data } from "__generated__/RequestConditionRe
 import { RequestConditionReportMutation } from "__generated__/RequestConditionReportMutation.graphql"
 import { RequestConditionReportQuery } from "__generated__/RequestConditionReportQuery.graphql"
 import { Modal } from "app/Components/Modal"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { Schema, track } from "app/utils/track"
 import { Button, Flex } from "palette"
 import { Component } from "react"
@@ -155,7 +155,7 @@ export const RequestConditionReportQueryRenderer: React.FC<{
 }> = ({ artworkID }) => {
   return (
     <QueryRenderer<RequestConditionReportQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       variables={{ artworkID }}
       query={graphql`
         query RequestConditionReportQuery($artworkID: String!) {

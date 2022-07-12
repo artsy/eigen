@@ -1,6 +1,6 @@
 import { PartnerLocations_partner$data } from "__generated__/PartnerLocations_partner.graphql"
 import { PartnerLocationsQuery } from "__generated__/PartnerLocationsQuery.graphql"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -100,7 +100,7 @@ export const PartnerLocationsContainer = createPaginationContainer(
 export const PartnerLocationsQueryRenderer: React.FC<{ partnerID: string }> = ({ partnerID }) => {
   return (
     <QueryRenderer<PartnerLocationsQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query PartnerLocationsQuery($partnerID: String!) {
           partner(id: $partnerID) {

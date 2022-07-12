@@ -3,7 +3,7 @@ import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { RecommendedArtistsRail_me$data } from "__generated__/RecommendedArtistsRail_me.graphql"
 import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedArtistsRailFollowMutation.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
 import { RailScrollProps } from "app/Scenes/Home/Components/types"
 import HomeAnalytics from "app/Scenes/Home/homeAnalytics"
@@ -181,7 +181,7 @@ export const tracks = {
 
 const followOrUnfollowArtist = (followArtist: ArtistCard_artist$data) => {
   return new Promise<void>((resolve, reject) => {
-    commitMutation<RecommendedArtistsRailFollowMutation>(defaultEnvironment, {
+    commitMutation<RecommendedArtistsRailFollowMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation RecommendedArtistsRailFollowMutation($input: FollowArtistInput!) {
           followArtist(input: $input) {

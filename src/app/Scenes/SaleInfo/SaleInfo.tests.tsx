@@ -3,14 +3,13 @@ import { RegisterToBidButtonContainer } from "app/Scenes/Sale/Components/Registe
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { SaleInfoContainer, tests } from "./SaleInfo"
 
 describe("SaleInfo", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<SaleInfoTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SaleInfoTestsQuery($saleID: String!) @relay_test_operation {
           sale(id: $saleID) {
@@ -30,10 +29,6 @@ describe("SaleInfo", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   it("shows register to bid button", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)

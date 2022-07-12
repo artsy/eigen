@@ -5,19 +5,14 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowViewingRoomFragmentContainer } from "./Components/ShowViewingRoom"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe("ShowViewingRoom", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<ShowViewingRoomTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ShowViewingRoomTestsQuery($showID: String!) @relay_test_operation {
           show(id: $showID) {
@@ -36,13 +31,9 @@ describe("ShowViewingRoom", () => {
     />
   )
 
-  const getWrapper = (mockResolvers = {}) => {
+  const getWrapper = (resolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(resolvers)
     return tree
   }
 

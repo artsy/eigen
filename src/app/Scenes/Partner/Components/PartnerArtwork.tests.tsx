@@ -8,7 +8,6 @@ import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./PartnerArtw
 
 describe("PartnerArtwork", () => {
   it("renders the artworks", async () => {
-    const env = createMockEnvironment()
     const TestRenderer = () => (
       <QueryRenderer<PartnerArtworkTestsQuery>
         environment={env}

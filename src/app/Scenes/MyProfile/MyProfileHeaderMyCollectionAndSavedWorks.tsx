@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { MyProfileHeaderMyCollectionAndSavedWorks_me$data } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
 import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -100,7 +100,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = (
       info={screen({ context_screen_owner_type: OwnerType.profile })}
     >
       <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksQuery>
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
         query={MyProfileHeaderMyCollectionAndSavedWorksScreenQuery}
         render={renderWithPlaceholder({
           Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,

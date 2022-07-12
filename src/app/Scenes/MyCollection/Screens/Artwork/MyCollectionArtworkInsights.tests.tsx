@@ -8,10 +8,9 @@ import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 
 describe("MyCollectionArtworkInsights", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkInsightsTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyCollectionArtworkInsightsTestsQuery @relay_test_operation {
           artwork(id: "some-artwork-id") {
@@ -51,13 +50,9 @@ describe("MyCollectionArtworkInsights", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("renders without throwing an error", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Query: () => ({
         artwork: mockArtwork,
         marketPriceInsights: mockMarketPriceInsights,
@@ -99,7 +94,7 @@ describe("MyCollectionArtworkInsights", () => {
 
     it("does not display RequestForPriceEstimateBanner when Artist is not P1", () => {
       const { queryByTestId } = renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Query: () => ({
           artwork: mockArtwork,
           marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
@@ -111,7 +106,7 @@ describe("MyCollectionArtworkInsights", () => {
 
     it("does not display RequestForPriceEstimateBanner when DemandIndex < 9", () => {
       const { queryByTestId } = renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Query: () => ({
           artwork: mockArtworkForP1Artist,
           marketPriceInsights: mockMarketPriceInsights,
@@ -124,7 +119,7 @@ describe("MyCollectionArtworkInsights", () => {
 
     it("displays RequestForPriceEstimateBanner when Artist is P1 AND DemandIndex >= 9", () => {
       const { queryByTestId } = renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Query: () => ({
           artwork: mockArtworkForP1Artist,
           marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,

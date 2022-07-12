@@ -4,7 +4,7 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import { Suspense } from "react"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleQueryRenderer } from "./Sale"
@@ -15,17 +15,11 @@ jest.mock("app/navigation/navigate", () => ({
 }))
 
 describe("Sale", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <Suspense fallback={() => null}>
-      <SaleQueryRenderer saleID="sale-id" environment={mockEnvironment} />
+      <SaleQueryRenderer saleID="sale-id" environment={getRelayEnvironment()} />
     </Suspense>
   )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   afterEach(() => {
     jest.clearAllMocks()

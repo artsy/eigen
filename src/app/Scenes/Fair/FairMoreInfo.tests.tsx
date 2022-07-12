@@ -4,7 +4,7 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { LinkText, Text } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { FairMoreInfoFragmentContainer } from "./FairMoreInfo"
 
 const getText = (wrapper: ReactTestRenderer) =>
@@ -14,7 +14,6 @@ const getText = (wrapper: ReactTestRenderer) =>
 
 describe("FairMoreInfo", () => {
   const getWrapper = (mockResolvers = {}) => {
-    const env = createMockEnvironment()
     const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairMoreInfoTestsQuery>
         environment={env}

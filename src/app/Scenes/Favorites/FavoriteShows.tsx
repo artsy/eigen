@@ -3,7 +3,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { ShowItemRowContainer as ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Component } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -157,7 +157,7 @@ const FavoriteShowsContainer = createPaginationContainer(
 export const FavoriteShowsQueryRenderer = () => {
   return (
     <QueryRenderer<FavoriteShowsQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FavoriteShowsQuery {
           me {

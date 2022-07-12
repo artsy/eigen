@@ -2,19 +2,13 @@ import { ArtistArticlesTestsQuery } from "__generated__/ArtistArticlesTestsQuery
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { ArtistArticles, ArtistArticlesContainer } from "./ArtistArticles"
 
 describe("Artist Articles", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<ArtistArticlesTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtistArticlesTestsQuery @relay_test_operation {
           artist(id: "some-id") {

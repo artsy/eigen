@@ -3,43 +3,34 @@ import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTest
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchesListPaginationContainer as SavedSearchesList } from "./SavedSearchesList"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 describe("SavedSearches", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
-  const TestRenderer = () => {
-    return (
-      <QueryRenderer<SavedSearchesListTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query SavedSearchesListTestsQuery @relay_test_operation {
-            me {
-              ...SavedSearchesList_me
-            }
+  const TestRenderer = () => (
+    <QueryRenderer<SavedSearchesListTestsQuery>
+      environment={getRelayEnvironment()}
+      query={graphql`
+        query SavedSearchesListTestsQuery @relay_test_operation {
+          me {
+            ...SavedSearchesList_me
           }
-        `}
-        render={({ props }) => {
-          if (props?.me) {
-            return <SavedSearchesList me={props.me} />
-          }
-
-          return null
-        }}
-        variables={{}}
-      />
-    )
-  }
+        }
+      `}
+      render={({ props }) => {
+        if (props?.me) {
+          return <SavedSearchesList me={props.me} />
+        }
+        return null
+      }}
+      variables={{}}
+    />
+  )
 
   it("renders correctly", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       SearchCriteriaConnection: () => ({
         edges: [
           {
@@ -67,7 +58,7 @@ describe("SavedSearches", () => {
   it("renders an empty message if there are no saved search alerts", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       SearchCriteriaConnection: () => ({
         edges: [],
       }),
@@ -79,7 +70,7 @@ describe("SavedSearches", () => {
   it("renders the default name placeholder if there is no name for saved search alert", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       SearchCriteriaConnection: () => ({
         edges: [
           {
@@ -107,7 +98,7 @@ describe("SavedSearches", () => {
   it("should display Sort By button", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
 
     expect(getByText("Sort By")).toBeTruthy()
   })
@@ -115,7 +106,7 @@ describe("SavedSearches", () => {
   it("should display sort options when Sort By button is pressed", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
 
     fireEvent.press(getByText("Sort By"))
 
@@ -126,13 +117,13 @@ describe("SavedSearches", () => {
   it("should pass selected sort option to query variables", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
 
     fireEvent.press(getByText("Sort By"))
     fireEvent.press(getByText("Name (A-Z)"))
 
     await waitFor(() => {
-      const operation = mockEnvironment.mock.getMostRecentOperation()
+      const operation = getRelayEnvironment().mock.getMostRecentOperation()
       expect(operation.fragment.variables.sort).toBe("NAME_ASC")
     })
   })

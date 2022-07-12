@@ -1,15 +1,15 @@
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Button } from "palette"
 import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomArtworkScreen } from "./ViewingRoomArtwork"
 
 describe("ViewingRoomArtwork", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <RelayEnvironmentProvider environment={mockEnvironment}>
+    <RelayEnvironmentProvider environment={getRelayEnvironment()}>
       <ViewingRoomArtworkScreen
         viewing_room_id="zero-dot-dot-dot-alessandro-pessoli"
         artwork_id="alessandro-pessoli-ardente-primavera-number-1"
@@ -17,22 +17,15 @@ describe("ViewingRoomArtwork", () => {
     </RelayEnvironmentProvider>
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("links to the artwork screen", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     await flushPromiseQueue()
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        Artwork: () => ({
-          href: "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",
-          slug: "alessandro-pessoli-ardente-primavera-number-1",
-        }),
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      Artwork: () => ({
+        href: "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",
+        slug: "alessandro-pessoli-ardente-primavera-number-1",
+      }),
     })
     await flushPromiseQueue()
 

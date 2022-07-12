@@ -13,7 +13,7 @@ const trackEvent = useTracking().trackEvent
 describe("ArtistInsights", () => {
   const TestRenderer = ({ tabIndex = 0 }) => (
     <QueryRenderer<ArtistInsightsTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtistInsightsTestsQuery @relay_test_operation {
           artist(id: "some-id") {
@@ -44,14 +44,14 @@ describe("ArtistInsights", () => {
 
   it("renders list auction results", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
     expect(tree.findAllByType(ArtistInsightsAuctionResultsPaginationContainer).length).toEqual(1)
   })
 
   it("tracks an auction page view when artist insights is current tab", (done) => {
     renderWithWrappersLEGACY(<TestRenderer tabIndex={0} />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
 
     setImmediate(() => {
       expect(trackEvent).toHaveBeenCalledWith({

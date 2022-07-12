@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useExperimentFlag, useExperimentVariant } from "app/utils/experiments/hooks"
 import {
@@ -17,13 +17,7 @@ import { Box, Flex, Spacer, Text, Touchable } from "palette"
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Configure, connectSearchBox, InstantSearch } from "react-instantsearch-native"
 import { Keyboard, Platform, ScrollView } from "react-native"
-import {
-  FetchPolicy,
-  fetchQuery,
-  graphql,
-  useLazyLoadQuery,
-  useRelayEnvironment,
-} from "react-relay"
+import { FetchPolicy, fetchQuery, graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import styled from "styled-components"
@@ -68,7 +62,7 @@ export const Search: React.FC = () => {
 
     setIsRefreshing(true)
 
-    fetchQuery(defaultEnvironment, SearchScreenQuery, {}).subscribe({
+    fetchQuery(getRelayEnvironment(), SearchScreenQuery, {}).subscribe({
       complete: () => {
         setIsRefreshing(false)
 

@@ -3,7 +3,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { MyCollectionArtworkFormArtworkQuery } from "__generated__/MyCollectionArtworkFormArtworkQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "app/Components/Modals/LoadingModal"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { omit, pickBy } from "lodash"
 import { Spacer } from "palette"
@@ -124,7 +124,7 @@ const fetchArtwork = async (
   artworkID: string
 ): Promise<MyCollectionArtworkFormArtworkQuery["response"]["artwork"] | undefined> => {
   const result = await fetchQuery<MyCollectionArtworkFormArtworkQuery>(
-    defaultEnvironment,
+    getRelayEnvironment(),
     graphql`
       query MyCollectionArtworkFormArtworkQuery($artworkID: String!) {
         artwork(id: $artworkID) {

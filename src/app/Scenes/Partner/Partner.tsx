@@ -4,7 +4,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "app/utils/track"
 import { Separator } from "palette"
@@ -111,7 +111,7 @@ export const PartnerQueryRenderer: React.FC<{
       render={({ isRetry }) => {
         return (
           <QueryRenderer<PartnerQuery>
-            environment={defaultEnvironment}
+            environment={getRelayEnvironment()}
             query={graphql`
               query PartnerQuery($partnerID: String!) {
                 partner(id: $partnerID) {

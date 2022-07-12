@@ -10,11 +10,9 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtistShows2PaginationContainer } from "./ArtistShows2"
 
 describe("ArtistShows2", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<ArtistShows2TestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtistShows2TestsQuery($artistID: String!) @relay_test_operation {
           artist(id: $artistID) {
@@ -33,14 +31,10 @@ describe("ArtistShows2", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("Renders artist name", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artist: () => ({
         name: "Andy Warhol",
       }),
@@ -53,7 +47,7 @@ describe("ArtistShows2", () => {
   it("Renders list of shows", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       // ShowsConnection is named as ShowConnection
       ShowConnection: () => ({
         edges: [{ node: { id: "show1" } }, { node: { id: "show2" } }, { node: { id: "show3" } }],

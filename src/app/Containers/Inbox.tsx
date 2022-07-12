@@ -1,7 +1,7 @@
 import { ActionType } from "@artsy/cohesion"
 import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "app/store/NativeModel"
@@ -178,7 +178,7 @@ export const InboxScreenQuery = graphql`
 export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   return (
     <QueryRenderer<InboxQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={InboxScreenQuery}
       variables={{}}
       render={(...args) =>

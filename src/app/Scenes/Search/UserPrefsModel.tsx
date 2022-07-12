@@ -1,5 +1,5 @@
 import { UserPrefsModelQuery } from "__generated__/UserPrefsModelQuery.graphql"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { Action, action, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
@@ -84,7 +84,7 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
 
 const fetchMe = async () => {
   const result = await fetchQuery<UserPrefsModelQuery>(
-    defaultEnvironment,
+    getRelayEnvironment(),
     graphql`
       query UserPrefsModelQuery {
         me {

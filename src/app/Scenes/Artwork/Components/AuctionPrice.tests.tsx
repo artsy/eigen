@@ -21,12 +21,10 @@ import { createMockEnvironment } from "relay-test-utils"
 import { AuctionPriceFragmentContainer, AuctionPriceProps } from "./AuctionPrice"
 
 describe("AuctionPrice", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestWrapper = (props: Omit<AuctionPriceProps, "artwork">) => {
     return (
       <QueryRenderer<AuctionPriceTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query AuctionPriceTestsQuery @relay_test_operation @raw_response_type {
             artwork(id: "auction_artwork_estimate_premium") {
@@ -45,17 +43,13 @@ describe("AuctionPrice", () => {
     )
   }
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   describe("for closed auction", () => {
     it("displays Auction Closed", () => {
       const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSED} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => ClosedAuctionArtwork,
       })
 
@@ -69,7 +63,7 @@ describe("AuctionPrice", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => LiveAuctionInProgeress,
       })
 
@@ -83,7 +77,7 @@ describe("AuctionPrice", () => {
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => AuctionPreview,
       })
 
@@ -98,7 +92,7 @@ describe("AuctionPrice", () => {
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => AuctionPreviewNoStartingBid,
       })
 
@@ -112,7 +106,7 @@ describe("AuctionPrice", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => OpenAuctionNoReserveNoBids,
       })
 
@@ -127,7 +121,7 @@ describe("AuctionPrice", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => OpenAuctionNoReserveWithBids,
       })
 
@@ -143,7 +137,7 @@ describe("AuctionPrice", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => OpenAuctionReserveNoBids,
       })
 
@@ -159,7 +153,7 @@ describe("AuctionPrice", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => OpenAuctionReserveNotMetWithBids,
       })
 
@@ -175,7 +169,7 @@ describe("AuctionPrice", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => OpenAuctionReserveMetWithBids,
       })
 
@@ -191,7 +185,7 @@ describe("AuctionPrice", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => OpenAuctionReserveMetWithMyWinningBid,
       })
 
@@ -206,7 +200,7 @@ describe("AuctionPrice", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => OpenAuctionReserveMetWithMyLosingBid,
       })
 
@@ -221,7 +215,7 @@ describe("AuctionPrice", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => OpenAuctionReserveNotMetIncreasingOwnBid,
       })
 

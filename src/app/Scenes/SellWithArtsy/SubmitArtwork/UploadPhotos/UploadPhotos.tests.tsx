@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { defaultEnvironment } from "app/relay/defaultEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -8,11 +8,9 @@ import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { UploadPhotos } from "./UploadPhotos"
 
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
-
 describe("UploadPhotos", () => {
   const TestRenderer = () => (
-    <RelayEnvironmentProvider environment={mockEnvironment}>
+    <RelayEnvironmentProvider environment={getRelayEnvironment()}>
       <UploadPhotos handlePress={jest.fn()} />
     </RelayEnvironmentProvider>
   )
