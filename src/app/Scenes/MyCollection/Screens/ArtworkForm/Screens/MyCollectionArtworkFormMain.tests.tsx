@@ -23,10 +23,6 @@ jest.mock("../Components/CategoryPicker", () => ({
   CategoryPicker: () => null,
 }))
 
-jest.mock("../Components/CategoryPicker", () => ({
-  CategoryPicker: () => null,
-}))
-
 jest.mock("../Components/Dimensions", () => ({
   Dimensions: () => null,
 }))
