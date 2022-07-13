@@ -1,6 +1,5 @@
 import { PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { Flex, Separator, Spacer } from "palette"
-import React from "react"
 
 export const TagPlaceholder: React.FC = () => (
   <Flex>

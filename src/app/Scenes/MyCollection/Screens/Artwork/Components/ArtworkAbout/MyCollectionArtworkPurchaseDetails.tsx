@@ -1,7 +1,6 @@
 import { MyCollectionArtworkPurchaseDetails_artwork$key } from "__generated__/MyCollectionArtworkPurchaseDetails_artwork.graphql"
 import { isEmpty } from "lodash"
 import { Flex, Text } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { Field } from "../Field"
 

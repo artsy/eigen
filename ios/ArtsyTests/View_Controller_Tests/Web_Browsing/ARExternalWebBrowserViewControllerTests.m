@@ -55,23 +55,4 @@ it(@"allows showing pages that a webview says it can show", ^{
     expect([vc shouldLoadNavigationResponse: (id)mock]).to.equal(WKNavigationResponsePolicyAllow);
 });
 
-// TODO: figure out how to test that it calls openURLInExternalService now that it's a local method
-//it(@"handles showing an alert punting a user to safari if we can't show something in a webview", ^{
-//    OCMockObject *mock = [OCMockObject niceMockForClass:WKNavigationResponse.class];
-//
-//    NSURL *urlToRoute = [NSURL URLWithString:@"https://url.com/thing.pdf"];
-//    NSHTTPURLResponse *fakedResponse = [[NSHTTPURLResponse alloc] initWithURL:urlToRoute statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:@{}];
-//    [[[mock stub] andReturn: fakedResponse] response];
-//
-//    [[[mock stub] andReturnValue:@NO] canShowMIMEType];
-//
-//    id switchboardMock = [OCMockObject partialMockForObject:ARSwitchBoard.sharedInstance];
-//    // Validate that we call ARSwitchBoard's load extenal URL
-//    [[switchboardMock expect] openURLInExternalService:[OCMArg checkWithBlock:^BOOL(id obj) {
-//        return [obj isEqual:urlToRoute];
-//    }]];
-//});
-
-
-
 SpecEnd;

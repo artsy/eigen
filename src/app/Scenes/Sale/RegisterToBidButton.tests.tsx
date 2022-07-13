@@ -1,10 +1,9 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { RegisterToBidButtonTestsQuery } from "__generated__/RegisterToBidButtonTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Button, Text } from "palette"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
@@ -46,7 +45,7 @@ describe("RegisterToBidButton", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("shows button when not registered", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Sale: () => ({
@@ -61,7 +60,7 @@ describe("RegisterToBidButton", () => {
   })
 
   it("shows green checkmark when registered", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Sale: () => ({
@@ -81,7 +80,7 @@ describe("RegisterToBidButton", () => {
   })
 
   it("hides the approve to bid hint if the user has active lots standing", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Sale: () => ({

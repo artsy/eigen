@@ -1,5 +1,4 @@
 import { CircularSpinner, Flex, Spacer, Text } from "palette"
-import React from "react"
 import { ImageBackground, Modal, ModalProps, StyleSheet } from "react-native"
 
 interface SavingArtworkModalProps {
@@ -12,7 +11,7 @@ export const SavingArtworkModal: React.FC<SavingArtworkModalProps & ModalProps> 
   loadingText = "",
   ...rest
 }) => (
-  <Modal animationType="fade" visible={isVisible} {...rest} statusBarTranslucent>
+  <Modal animationType="fade" visible={isVisible} {...rest} transparent statusBarTranslucent>
     <ImageBackground
       style={{ height: "100%", width: "100%", ...StyleSheet.absoluteFillObject }}
       source={require("images/InsightsLoadingImage.webp")}

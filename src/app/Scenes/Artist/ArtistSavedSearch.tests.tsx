@@ -1,8 +1,8 @@
 import { fireEvent, within } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import _ from "lodash"
-import React from "react"
 import "react-native"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
@@ -47,7 +47,7 @@ describe("Saved search banner on artist screen", () => {
   }
 
   const getTree = (searchCriteriaID?: string) => {
-    return renderWithWrappersTL(
+    return renderWithWrappers(
       <ArtistQueryRenderer
         artistID="ignored"
         environment={environment}
@@ -72,7 +72,7 @@ describe("Saved search banner on artist screen", () => {
   it("should an error message when something went wrong during the search criteria query", async () => {
     const { getByText } = getTree("something")
 
-    environment.mock.rejectMostRecentOperation(new Error())
+    rejectMostRecentRelayOperation(environment, new Error())
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     expect(getByText("Sorry, an error occured")).toBeTruthy()

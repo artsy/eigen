@@ -1,4 +1,3 @@
-import React from "react"
 import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
 import { useTheme } from "palette"
@@ -135,11 +134,11 @@ const styles = StyleSheet.create<Styles>({
   },
 
   subtitleRequired: {
-    fontFamily: "ReactNativeAGaramondPro-Italic",
+    fontFamily: "Unica77LL-Italic",
   },
 
   fromSignatureDefault: {
-    fontFamily: "ReactNativeAGaramondPro-Regular",
+    fontFamily: "Unica77LL-Regular",
   },
 
   metadataDefault: {
@@ -154,6 +153,6 @@ const styles = StyleSheet.create<Styles>({
   },
 
   bodyRequired: {
-    fontFamily: "ReactNativeAGaramondPro-Regular",
+    fontFamily: "Unica77LL-Regular",
   },
 })

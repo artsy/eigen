@@ -5,9 +5,8 @@ import Spinner from "app/Components/Spinner"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { TabEmptyState } from "app/Components/TabEmptyState"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Flex, Sans, Spacer } from "palette"
+import { Box, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import { Text } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
 
@@ -75,7 +74,7 @@ export const PartnerOverview: React.FC<{
       {!!filteredArtists && filteredArtists.length > 0 && (
         <>
           <Text>
-            <Sans size="4t">Artists ({filteredArtists.length})</Sans>
+            <Text variant="md">Artists ({filteredArtists.length})</Text>
           </Text>
           <Spacer mb={2} />
           {renderArtists()}

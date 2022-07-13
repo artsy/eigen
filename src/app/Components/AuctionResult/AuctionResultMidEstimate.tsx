@@ -1,5 +1,4 @@
 import { DecreaseIcon, Flex, IncreaseIcon, Text, TextProps } from "palette"
-import React from "react"
 
 interface AuctionResultsMidEstimateProps {
   value: string

@@ -1,7 +1,6 @@
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Input, Text, Touchable } from "palette"
-import React from "react"
 import { Modal, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
 import { Select } from "./Select"
@@ -20,7 +19,7 @@ const options = [
 ]
 
 it("shows title and subtitle within the select", () => {
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <Select
       title="Title"
       subTitle="Subtitle"
@@ -37,7 +36,7 @@ it("shows title and subtitle within the select", () => {
 it("selects correct value", async () => {
   const onSelectValue = jest.fn()
 
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <Select
       title="Title"
       subTitle="Subtitle"
@@ -58,7 +57,7 @@ it("selects correct value", async () => {
 it("filters on search", async () => {
   const onSelectValue = jest.fn()
 
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <Select
       title="Title"
       subTitle="Subtitle"

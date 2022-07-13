@@ -40,6 +40,7 @@ export const PaginationDot: React.FC<{ diameter: number; index: number }> = ({
 
   return (
     <Animated.View
+      accessibilityLabel="Image Pagination Indicator"
       style={{
         marginHorizontal: diameter * 0.8,
         borderRadius: diameter / 2,
@@ -76,6 +77,7 @@ export const ScrollBar: React.FC = () => {
       />
       <Spacer mb={2} />
       <Animated.View
+        accessibilityLabel="Image Pagination Scroll Bar"
         style={{
           height: 1,
           width: barWidth,

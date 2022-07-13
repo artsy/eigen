@@ -1,5 +1,4 @@
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import React from "react"
 
 export const IMAGE_SIZE = 40
 

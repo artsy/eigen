@@ -8,7 +8,7 @@ import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { Box, Flex, OpaqueImageView, Sans, Separator, Spinner, Text, useSpace } from "palette"
+import { Box, Flex, OpaqueImageView, Separator, Spinner, Text, useSpace } from "palette"
 import { Touchable } from "palette"
 import React, { useMemo, useState } from "react"
 import { FlatList, useWindowDimensions } from "react-native"
@@ -98,9 +98,9 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <Flex style={{ flex: 1 }}>
-        <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
+        <Text variant="md" weight="medium" textAlign="center" mb={1} mt={2}>
           Artworks
-        </Sans>
+        </Text>
         <Separator />
         <FlatList
           data={sections}

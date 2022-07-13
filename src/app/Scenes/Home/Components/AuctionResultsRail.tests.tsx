@@ -1,5 +1,4 @@
 import { cloneDeep, first } from "lodash"
-import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -8,7 +7,7 @@ import { navigate } from "app/navigation/navigate"
 
 import { AuctionResultsRailTestsQuery } from "__generated__/AuctionResultsRailTestsQuery.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { AuctionResultsRailFragmentContainer } from "./AuctionResultsRail"
 
 jest.unmock("react-relay")
@@ -42,7 +41,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
   })
 
   it("doesn't throw when rendered", () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
@@ -58,7 +57,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
       result.auctionResultsByFollowedArtists.edges = []
     })
 
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
@@ -69,7 +68,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
   })
 
   it("routes to auction-results-for-artists-you-follow URL", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({

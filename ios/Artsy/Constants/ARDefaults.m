@@ -18,8 +18,6 @@ NSString *const ARPushNotificationsSettingsPromptSeen = @"eigen-push-seen-settin
 NSString *const ARPushNotificationFollowArtist = @"eigen-push-followed-artist";
 NSString *const ARPushNotificationsDialogueLastSeenDate = @"eigen-push-seen-dialogue-date";
 
-NSString *const AREmissionHeadVersionDefault = @"emission-head-version";
-
 NSString *const ARAugmentedRealityHasSeenSetup = @"ARAugmentedRealityHasSeenSetup";
 NSString *const ARAugmentedRealityHasTriedToSetup = @"ARAugmentedRealityHasTriedToSetup";
 NSString *const ARAugmentedRealityCameraAccessGiven = @"ARAugmentedRealityCameraAccessGiven";

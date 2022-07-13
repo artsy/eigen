@@ -1,6 +1,5 @@
 import { navigate } from "app/navigation/navigate"
 import { Flex, Text } from "palette"
-import React from "react"
 
 interface CascadingEndTimesBannerProps {
   cascadingEndTimeInterval: number

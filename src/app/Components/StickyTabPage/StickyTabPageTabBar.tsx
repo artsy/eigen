@@ -1,4 +1,4 @@
-import { Sans } from "palette"
+import { Text } from "palette"
 import { NavigationalTabs } from "palette/elements/Tabs"
 import React, { useEffect, useRef, useState } from "react"
 import {
@@ -79,9 +79,9 @@ export const StickyTab: React.FC<{
             paddingHorizontal: 15,
           }}
         >
-          <Sans size="3" weight={active ? "medium" : "regular"}>
+          <Text variant="sm" weight={active ? "medium" : "regular"}>
             {label}
-          </Sans>
+          </Text>
         </View>
       </TouchableOpacity>
     </View>

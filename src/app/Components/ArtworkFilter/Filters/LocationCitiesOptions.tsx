@@ -5,7 +5,6 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
-import React from "react"
 import { useArtworkFiltersAggregation } from "../useArtworkFilters"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"

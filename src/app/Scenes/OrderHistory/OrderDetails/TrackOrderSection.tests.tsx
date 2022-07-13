@@ -1,8 +1,7 @@
 import { TrackOrderSectionTestsQuery } from "__generated__/TrackOrderSectionTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
@@ -83,7 +82,7 @@ describe("TrackOrderSection", () => {
 
   describe("when CommerceShip", () => {
     it("renders section", () => {
-      const tree = renderWithWrappers(<TestRenderer />).root
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
       resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => CommerceShipOrder })
 
       expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("pending")
@@ -101,7 +100,7 @@ describe("TrackOrderSection", () => {
     })
 
     it("not renders fields without data", () => {
-      const tree = renderWithWrappers(<TestRenderer />).root
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
       resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...CommerceShipOrder,
@@ -122,7 +121,7 @@ describe("TrackOrderSection", () => {
 
   describe("when CommerceShipArta", () => {
     it("renders section", () => {
-      const tree = renderWithWrappers(<TestRenderer />).root
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
       resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => CommerceShipArtaOrder,
       })
@@ -140,7 +139,7 @@ describe("TrackOrderSection", () => {
     })
 
     it("not renders fields without data", () => {
-      const tree = renderWithWrappers(<TestRenderer />).root
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
       resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...CommerceShipArtaOrder,
@@ -175,7 +174,7 @@ describe("TrackOrderSection", () => {
     })
 
     it("when delivered", () => {
-      const tree = renderWithWrappers(<TestRenderer />).root
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
       resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...CommerceShipArtaOrder,
@@ -199,7 +198,7 @@ describe("TrackOrderSection", () => {
 
   describe("when CommercePickup", () => {
     it("not renders section", () => {
-      const tree = renderWithWrappers(<TestRenderer />).root
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
       resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           ...CommerceShipOrder,

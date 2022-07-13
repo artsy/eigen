@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { CreateArtworkAlertSectionTestsQuery } from "__generated__/CreateArtworkAlertSectionTestsQuery.graphql"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -44,33 +44,33 @@ describe("CreateArtworkAlertSection", () => {
 
   it("should correctly render placeholder", () => {
     const placeholder = "Artworks like: Some artwork title"
-    const { getAllByText, getAllByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getAllByPlaceholderText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => Artwork,
     })
 
-    fireEvent.press(getAllByText("Create Alert")[0])
+    fireEvent.press(getByText("Create Alert"))
 
     expect(getAllByPlaceholderText(placeholder)).toBeTruthy()
   })
 
   it("should correctly render pills", () => {
-    const { getAllByText, getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => Artwork,
     })
 
-    fireEvent.press(getAllByText("Create Alert")[0])
+    fireEvent.press(getByText("Create Alert"))
 
-    expect(getByText("Banksy")).toBeTruthy()
-    expect(getByText("Limited Edition")).toBeTruthy()
-    expect(getByText("Prints")).toBeTruthy()
+    expect(queryByText("Banksy")).toBeTruthy()
+    expect(queryByText("Limited Edition")).toBeTruthy()
+    expect(queryByText("Prints")).toBeTruthy()
   })
 
   it("should not render `Rarity` pill if needed data is missing", () => {
-    const { getAllByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
@@ -79,13 +79,13 @@ describe("CreateArtworkAlertSection", () => {
       }),
     })
 
-    fireEvent.press(getAllByText("Create Alert")[0])
+    fireEvent.press(getByText("Create Alert"))
 
     expect(queryByText("Limited Edition")).toBeFalsy()
   })
 
   it("should not render `Medium` pill if needed data is missing", () => {
-    const { getAllByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => ({
@@ -94,19 +94,19 @@ describe("CreateArtworkAlertSection", () => {
       }),
     })
 
-    fireEvent.press(getAllByText("Create Alert")[0])
+    fireEvent.press(getByText("Create Alert"))
 
     expect(queryByText("Prints")).toBeFalsy()
   })
 
   it("should correctly track event when `Create Alert` button is pressed", () => {
-    const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => Artwork,
     })
 
-    fireEvent.press(getAllByText("Create Alert")[0])
+    fireEvent.press(getByText("Create Alert"))
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       Array [

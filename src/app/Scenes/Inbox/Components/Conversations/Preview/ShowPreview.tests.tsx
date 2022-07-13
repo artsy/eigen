@@ -1,11 +1,10 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import "react-native"
 
 import ShowPreview from "./ShowPreview"
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<ShowPreview show={show as any} />)
+  renderWithWrappersLEGACY(<ShowPreview show={show as any} />)
 })
 
 const show = {

@@ -8,7 +8,7 @@ import { propsStore } from "app/store/PropsStore"
 import { postEventToProviders } from "app/utils/track/providers"
 import { visualize } from "app/utils/visualizer"
 import { EventEmitter } from "events"
-import { Linking, Platform } from "react-native"
+import { InteractionManager, Linking, Platform } from "react-native"
 import { matchRoute } from "./routes"
 import { saveDevNavigationStateSelectedTab } from "./useReloadedDevNavigationState"
 
@@ -170,10 +170,14 @@ const tracks = {
 }
 
 export function dismissModal() {
-  LegacyNativeModules.ARScreenPresenterModule.dismissModal()
-  if (Platform.OS === "android") {
-    navigationEvents.emit("modalDismissed")
-  }
+  // We wait for interaction to finish before dismissing the modal, otherwise,
+  // we might get a race condition that causes the UI to freeze
+  InteractionManager.runAfterInteractions(() => {
+    LegacyNativeModules.ARScreenPresenterModule.dismissModal()
+    if (Platform.OS === "android") {
+      navigationEvents.emit("modalDismissed")
+    }
+  })
 }
 
 export function goBack(backProps?: GoBackProps) {

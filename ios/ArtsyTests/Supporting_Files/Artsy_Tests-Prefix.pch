@@ -22,9 +22,6 @@
     #import <ORStackView/ORStackScrollView.h>
     #import <ORStackView/ORTagBasedAutoStackView.h>
 
-    // Needed to "see" Swift files in the unit test target.
-//    #import "Artsy-Swift.h"
-
     #import "ArtsyAPI.h"
     #import "ArtsyAPI+CurrentUserFunctions.h"
     #import "ArtsyAPI+DeviceTokens.h"

@@ -2,7 +2,7 @@ import { CountrySelect } from "app/Components/CountrySelect"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Stack } from "app/Components/Stack"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { Button, Flex, Input, Sans } from "palette"
+import { Button, Flex, Input, Text } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ScreenDimensionsContext } from "shared/hooks"
@@ -223,9 +223,9 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
                     hasError={!!countryError}
                   />
                   {!!countryError && (
-                    <Sans size="2" mt="1" color="red100">
+                    <Text variant="xs" mt="1" color="red100">
                       {countryError}
-                    </Sans>
+                    </Text>
                   )}
                 </Flex>
               )

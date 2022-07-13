@@ -1,8 +1,7 @@
 import { OrderDetailsHeaderTestsQuery } from "__generated__/OrderDetailsHeaderTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment } from "relay-test-utils"
@@ -43,7 +42,7 @@ describe("OrderDetailsHeader", () => {
   )
 
   it("renders date, code, status, fulfillment fields", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => mockInfo })
 
     expect(extractText(tree.findByProps({ testID: "date" }))).toBe("Jun 2, 2021")
@@ -56,7 +55,7 @@ describe("OrderDetailsHeader", () => {
     describe("Renders correctly status and fulfillment fields", () => {
       describe("CommerceShip", () => {
         it("SUBMITTED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => mockInfo })
 
           expect(extractText(tree.findByProps({ testID: "status" }))).toBe("pending")
@@ -64,7 +63,7 @@ describe("OrderDetailsHeader", () => {
         })
 
         it("APPROVED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({ ...mockInfo, state: "APPROVED" }),
           })
@@ -74,7 +73,7 @@ describe("OrderDetailsHeader", () => {
         })
 
         it("FULFILLED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({ ...mockInfo, state: "FULFILLED" }),
           })
@@ -86,7 +85,7 @@ describe("OrderDetailsHeader", () => {
 
       describe("CommerceShipArtA", () => {
         it("PENDING status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
@@ -99,7 +98,7 @@ describe("OrderDetailsHeader", () => {
         })
 
         it("CONFIRMED status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
@@ -112,7 +111,7 @@ describe("OrderDetailsHeader", () => {
         })
 
         it("COLLECTED status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
@@ -125,7 +124,7 @@ describe("OrderDetailsHeader", () => {
         })
 
         it("IN_TRANSIT status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
@@ -138,7 +137,7 @@ describe("OrderDetailsHeader", () => {
         })
 
         it("COMPLETED status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
@@ -151,7 +150,7 @@ describe("OrderDetailsHeader", () => {
         })
 
         it("CANCELED status", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
@@ -166,7 +165,7 @@ describe("OrderDetailsHeader", () => {
 
       describe("CommercePickup", () => {
         it("SUBMITTED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
@@ -179,7 +178,7 @@ describe("OrderDetailsHeader", () => {
         })
 
         it("APPROVED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,
@@ -193,7 +192,7 @@ describe("OrderDetailsHeader", () => {
         })
 
         it("FULFILLED state", () => {
-          const tree = renderWithWrappers(<TestRenderer />).root
+          const tree = renderWithWrappersLEGACY(<TestRenderer />).root
           resolveMostRecentRelayOperation(mockEnvironment, {
             CommerceOrder: () => ({
               ...mockInfo,

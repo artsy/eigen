@@ -1,11 +1,10 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Box, CheckIcon } from "palette"
-import React from "react"
 import { ColorsSwatch } from "./ColorsSwatch"
 
 describe("Colors swatch", () => {
   it("adds a check icon when selected", () => {
-    const selectedTree = renderWithWrappers(
+    const selectedTree = renderWithWrappersLEGACY(
       <ColorsSwatch
         width={30}
         backgroundColor="black"
@@ -17,7 +16,7 @@ describe("Colors swatch", () => {
     const selectedCheckIcon = selectedTree.root.findByType(CheckIcon)
     expect(selectedCheckIcon.props.fill).toMatch("#fff")
 
-    const unselectedTree = renderWithWrappers(
+    const unselectedTree = renderWithWrappersLEGACY(
       <ColorsSwatch
         width={30}
         backgroundColor="black"
@@ -31,7 +30,7 @@ describe("Colors swatch", () => {
   })
 
   it("has correct background color for passed in color", () => {
-    const blue = renderWithWrappers(
+    const blue = renderWithWrappersLEGACY(
       <ColorsSwatch
         width={30}
         backgroundColor="#435EA9"
@@ -43,7 +42,7 @@ describe("Colors swatch", () => {
     const darkBlueView = blue.root.findAllByType(Box)[1]
     expect(darkBlueView.props.bg).toMatch("#435EA9")
 
-    const blackAndWhite = renderWithWrappers(
+    const blackAndWhite = renderWithWrappersLEGACY(
       <ColorsSwatch
         width={30}
         backgroundColor="#595A5B"
@@ -56,7 +55,7 @@ describe("Colors swatch", () => {
 
     expect(blackAndWhiteView.props.bg).toMatch("#595A5B")
 
-    const orange = renderWithWrappers(
+    const orange = renderWithWrappersLEGACY(
       <ColorsSwatch
         width={30}
         backgroundColor="#F1572C"

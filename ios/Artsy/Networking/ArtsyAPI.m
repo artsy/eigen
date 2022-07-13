@@ -16,7 +16,7 @@
 #import <UICKeyChainStore/UICKeyChainStore.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 NetworkFailureBlock passOnNetworkError(void (^failure)(NSError *))
 {

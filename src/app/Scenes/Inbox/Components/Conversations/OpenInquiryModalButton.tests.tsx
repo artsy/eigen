@@ -3,9 +3,8 @@ import { OpenInquiryModalButtonTestQuery } from "__generated__/OpenInquiryModalB
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import relay, { QueryRenderer } from "react-relay"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -55,14 +54,14 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const renderer = renderWithWrappersTL(<TestRenderer />)
+    const renderer = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
     return renderer
   }
 
   it("renders Purchase and Make Offer CTAs", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
-    const { getAllByText } = getWrapper({
+    const { getByText } = getWrapper({
       Artwork: () => ({
         internalID: "fancy-art",
         slug: "slug-1",
@@ -71,19 +70,19 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
       }),
     })
 
-    expect(getAllByText("Make an Offer")[0]).toBeTruthy()
-    expect(getAllByText("Purchase")[0]).toBeTruthy()
+    expect(getByText("Make an Offer")).toBeTruthy()
+    expect(getByText("Purchase")).toBeTruthy()
   })
 
   describe("make offer", () => {
     it("clicking the button on unique artworks creates an offer", () => {
       relay.commitMutation = jest.fn()
 
-      const { getAllByText } = getWrapper({
+      const { getByText } = getWrapper({
         Artwork: () => ({ internalID: "fancy-art", isOfferableFromInquiry: true }),
       })
 
-      fireEvent(getAllByText("Make an Offer")[0], "press")
+      fireEvent(getByText("Make an Offer"), "press")
       expect(trackEvent).toHaveBeenCalledWith(tappedMakeOfferEvent)
       expect(relay.commitMutation).toHaveBeenCalledTimes(1)
     })
@@ -91,7 +90,7 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
     it("clicking the button on artworks with one edition set creates an offer", () => {
       relay.commitMutation = jest.fn()
 
-      const { getAllByText } = getWrapper({
+      const { getByText } = getWrapper({
         Artwork: () => ({
           internalID: "fancy-art",
           isEdition: true,
@@ -104,13 +103,13 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
         }),
       })
 
-      fireEvent(getAllByText("Make an Offer")[0], "press")
+      fireEvent.press(getByText("Make an Offer"))
       expect(trackEvent).toHaveBeenCalledWith(tappedMakeOfferEvent)
       expect(relay.commitMutation).toHaveBeenCalledTimes(1)
     })
 
     it("clicking the button on non-unique artworks opens the confirmation modal", () => {
-      const { getAllByText } = getWrapper({
+      const { getByText } = getWrapper({
         Artwork: () => ({
           internalID: "fancy-art",
           isEdition: true,
@@ -126,7 +125,7 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
         }),
       })
 
-      fireEvent(getAllByText("Make an Offer")[0], "press")
+      fireEvent.press(getByText("Make an Offer"))
       expect(trackEvent).toHaveBeenCalledWith(tappedMakeOfferEvent)
       expect(navigate).toHaveBeenCalledWith("make-offer/fancy-art", {
         modal: true,
@@ -140,11 +139,11 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
       relay.commitMutation = jest.fn()
 
-      const { getAllByText } = getWrapper({
+      const { getByText } = getWrapper({
         Artwork: () => ({ internalID: "fancy-art", isAcquireable: true }),
       })
 
-      fireEvent(getAllByText("Purchase")[0], "press")
+      fireEvent(getByText("Purchase"), "press")
       expect(trackEvent).toHaveBeenCalledWith(tappedPurchaseEvent)
       expect(relay.commitMutation).toHaveBeenCalledTimes(1)
     })
@@ -153,7 +152,7 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
       relay.commitMutation = jest.fn()
 
-      const { getAllByText } = getWrapper({
+      const { getByText } = getWrapper({
         Artwork: () => ({
           internalID: "fancy-art",
           isEdition: true,
@@ -166,14 +165,14 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
         }),
       })
 
-      fireEvent(getAllByText("Purchase")[0], "press")
+      fireEvent(getByText("Purchase"), "press")
       expect(trackEvent).toHaveBeenCalledWith(tappedPurchaseEvent)
       expect(relay.commitMutation).toHaveBeenCalledTimes(1)
     })
 
     it("clicking the button on non-unique artworks opens the confirmation modal", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
-      const { getAllByText } = getWrapper({
+      const { getByText } = getWrapper({
         Artwork: () => ({
           internalID: "fancy-art",
           isEdition: true,
@@ -189,7 +188,7 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
         }),
       })
 
-      fireEvent(getAllByText("Purchase")[0], "press")
+      fireEvent.press(getByText("Purchase"))
       expect(trackEvent).toHaveBeenCalledWith(tappedPurchaseEvent)
       expect(navigate).toHaveBeenCalledWith("purchase/fancy-art", {
         modal: true,
@@ -200,12 +199,12 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
 
   describe("Artsy guarantee message ad link", () => {
     it("display the correct message and button", () => {
-      const { getByText, getAllByText } = getWrapper({
+      const { queryByText } = getWrapper({
         Artwork: () => ({ internalID: "fancy-art", isOfferableFromInquiry: true }),
       })
 
-      expect(getByText("The Artsy Guarantee")).toBeDefined()
-      expect(getAllByText("Make an Offer")).toBeDefined()
+      expect(queryByText("The Artsy Guarantee")).toBeDefined()
+      expect(queryByText("Make an Offer")).toBeDefined()
     })
 
     it("navigates to the buyer guarantee page when tapped", () => {

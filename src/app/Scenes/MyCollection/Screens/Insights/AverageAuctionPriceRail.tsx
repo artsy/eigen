@@ -5,7 +5,6 @@ import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { groupBy } from "lodash"
 import { Flex, Spacer } from "palette"
-import React from "react"
 import { FlatList } from "react-native-gesture-handler"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -32,12 +31,9 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
           onPress={
             enableMyCollectionInsightsPhase1Part3
               ? () => {
-                  navigate("/my-collection/average-sale-price-at-auction", {
-                    passProps: {
-                      artistData: artworks[0]?.artist,
-                      collectorArtists: groupedArtworks.length,
-                    },
-                  })
+                  navigate(
+                    `/my-collection/average-sale-price-at-auction/${artworks[0].artist?.internalID}`
+                  )
                 }
               : undefined
           }
@@ -53,12 +49,9 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
             onPress={
               enableMyCollectionInsightsPhase1Part3
                 ? () => {
-                    navigate("/my-collection/average-sale-price-at-auction", {
-                      passProps: {
-                        artistData: item[0].artist,
-                        collectorArtists: groupedArtworks.length,
-                      },
-                    })
+                    navigate(
+                      `/my-collection/average-sale-price-at-auction/${item[0].artist?.internalID}`
+                    )
                   }
                 : undefined
             }
@@ -79,6 +72,7 @@ const fragment = graphql`
           medium
           title
           artist {
+            internalID
             name
             imageUrl
             formattedNationalityAndBirthday

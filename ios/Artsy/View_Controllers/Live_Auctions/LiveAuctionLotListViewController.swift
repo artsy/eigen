@@ -2,7 +2,7 @@ import UIKit
 import Interstellar
 
 
-protocol LiveAuctionLotListViewControllerDelegate: class {
+protocol LiveAuctionLotListViewControllerDelegate: AnyObject {
     func didSelectLotAtIndex(_ index: Int, forLotListViewController lotListViewController: LiveAuctionLotListViewController)
 }
 

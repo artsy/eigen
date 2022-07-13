@@ -1,6 +1,5 @@
 import { TouchableRow, TouchableRowProps } from "app/Components/TouchableRow"
 import { Box, CheckIcon, Text } from "palette"
-import React from "react"
 
 type ColorsSwatchProps = TouchableRowProps & {
   width: number

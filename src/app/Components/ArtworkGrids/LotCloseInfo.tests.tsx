@@ -1,6 +1,5 @@
 import { render } from "@testing-library/react-native"
 import { Theme } from "palette"
-import React from "react"
 import { DurationProvider } from "../Countdown"
 import { LotCloseInfo } from "./LotCloseInfo"
 
@@ -110,7 +109,7 @@ describe("LotCloseInfo", () => {
       </Theme>
     )
 
-    const lotCloseText = getByText("Closes, 18h 28m")
+    const lotCloseText = getByText("Closes in 18h 28m")
 
     expect(lotCloseText).toBeTruthy()
     expect(lotCloseText.props.color).toEqual("black100")
@@ -141,7 +140,7 @@ describe("LotCloseInfo", () => {
       </Theme>
     )
 
-    const lotCloseText = getByText("Closes, 18h 28m")
+    const lotCloseText = getByText("Closes in 18h 28m")
 
     expect(lotCloseText).toBeTruthy()
     expect(lotCloseText.props.color).toEqual("black100")
@@ -172,7 +171,7 @@ describe("LotCloseInfo", () => {
       </Theme>
     )
 
-    const lotCloseText = getByText("Closes, 0m 18s")
+    const lotCloseText = getByText("Closes in 0m 18s")
 
     expect(lotCloseText).toBeTruthy()
     expect(lotCloseText.props.color).toEqual("red100")

@@ -2,9 +2,8 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import Clipboard from "@react-native-community/clipboard"
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
-import React from "react"
 import Share from "react-native-share"
 import * as helpers from "./helpers"
 import { ShareSheet, ShareSheetProps } from "./ShareSheet"
@@ -44,19 +43,19 @@ describe("ShareSheet", () => {
   }
 
   it('should render "Copy link" item', () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     expect(getByText("Copy link")).toBeTruthy()
   })
 
   it('should render "More" item', () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     expect(getByText("More")).toBeTruthy()
   })
 
   it('should correctly handle click on "Copy Link" item', () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     fireEvent.press(getByText("Copy link"))
 
@@ -73,7 +72,7 @@ describe("ShareSheet", () => {
   })
 
   it('should correctly handle click on "More" item', async () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     fireEvent.press(getByText("More"))
 
@@ -101,7 +100,7 @@ describe("ShareSheet", () => {
     })
 
     it("should hide item if showInstagram props is set to false", async () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <TestWrapper
           entry={{ ...defaultProps.entry, imageURL: "imageURL" }}
           showInstagram={false}
@@ -112,13 +111,13 @@ describe("ShareSheet", () => {
     })
 
     it("should hide item if imageUrl is not passed in entry prop", async () => {
-      const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+      const { queryByText } = renderWithWrappers(<TestWrapper />)
 
       expect(queryByText("Instagram Stories")).toBeFalsy()
     })
 
     it("should show item if imageUrl is passed in entry prop", async () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper entry={{ ...defaultProps.entry, imageURL: "imageURL" }} />
       )
 
@@ -128,7 +127,7 @@ describe("ShareSheet", () => {
     it("should correctly handle click on item", async () => {
       jest.spyOn(helpers, "getBase64Data").mockImplementation(() => Promise.resolve("data"))
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper entry={{ ...defaultProps.entry, imageURL: "imageURL" }} />
       )
 
@@ -160,19 +159,19 @@ describe("ShareSheet", () => {
     })
 
     it("should hide item if showWhatsapp props is set to false", async () => {
-      const { queryByText } = renderWithWrappersTL(<TestWrapper showWhatsapp={false} />)
+      const { queryByText } = renderWithWrappers(<TestWrapper showWhatsapp={false} />)
 
       expect(queryByText("WhatsApp")).toBeFalsy()
     })
 
     it("should show item", async () => {
-      const { getByText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
       expect(getByText("WhatsApp")).toBeTruthy()
     })
 
     it("should correctly handle click on item", async () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper entry={{ ...defaultProps.entry, imageURL: "imageURL" }} />
       )
 

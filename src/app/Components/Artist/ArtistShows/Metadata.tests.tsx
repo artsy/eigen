@@ -1,7 +1,6 @@
 import "react-native"
 
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 
 import Metadata from "./Metadata"
 
@@ -19,5 +18,5 @@ it("renders properly", () => {
       city: "Berlin",
     },
   }
-  renderWithWrappers(<Metadata show={show as any} />)
+  renderWithWrappersLEGACY(<Metadata show={show as any} />)
 })

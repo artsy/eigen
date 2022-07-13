@@ -1,5 +1,4 @@
 import { Flex, Text } from "palette"
-import React from "react"
 
 interface Props {
   message?: string

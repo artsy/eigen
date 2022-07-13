@@ -3,7 +3,6 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isNull } from "lodash"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 

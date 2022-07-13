@@ -1,8 +1,7 @@
 import { getDefaultNormalizer, render } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import { Theme } from "palette"
-import React from "react"
 import { Text } from "react-native"
 import { LabeledTicker, ModernTicker, SimpleTicker } from "./Ticker"
 
@@ -13,7 +12,7 @@ describe("SimpleTicker", () => {
   it("renders properly", () => {
     const { getByText } = render(
       <Theme>
-        <SimpleTicker duration={duration} separator="  " size="5" />
+        <SimpleTicker duration={duration} separator="  " variant="md" />
       </Theme>
     )
 
@@ -28,7 +27,7 @@ describe("SimpleTicker", () => {
     const zeroDuration = moment.duration()
     const { getByText } = render(
       <Theme>
-        <SimpleTicker duration={zeroDuration} separator="  " size="5" />
+        <SimpleTicker duration={zeroDuration} separator="  " variant="md" />
       </Theme>
     )
 
@@ -44,7 +43,7 @@ describe("SimpleTicker", () => {
     const farOutDuration = moment.duration(63113904000)
     const { getByText } = render(
       <Theme>
-        <SimpleTicker duration={farOutDuration} separator="  " size="5" />
+        <SimpleTicker duration={farOutDuration} separator="  " variant="md" />
       </Theme>
     )
 
@@ -197,7 +196,7 @@ describe("ModernTicker", () => {
 
     it('prefixes "Extended: " when when sale is extended', () => {
       const momentDuration = moment.duration(1000 * 90) // 1m 30s
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <Theme>
           <ModernTicker duration={momentDuration} hasStarted isExtended />
         </Theme>

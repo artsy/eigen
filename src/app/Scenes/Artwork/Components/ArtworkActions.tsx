@@ -37,18 +37,17 @@ export const shareContent = (
   href: string,
   artists: ArtworkActions_artwork$data["artists"]
 ) => {
-  let computedTitle: string | null
+  let computedTitle: string | null = null
+
   if (artists && artists.length) {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const names = take(artists, 3).map((artist) => artist.name)
+    const names = take(artists, 3).map((artist) => artist?.name)
     computedTitle = `${title} by ${names.join(", ")} on Artsy`
   } else if (title) {
     computedTitle = `${title} on Artsy`
   }
+
   return {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     title: computedTitle,
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     message: computedTitle,
     url: `${unsafe__getEnvironment().webURL}${href}?utm_content=artwork-share`,
   }
@@ -67,8 +66,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   })
   handleArtworkSave() {
     const { artwork, relay } = this.props
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    commitMutation<ArtworkActionsSaveMutation>(relay.environment, {
+    commitMutation<ArtworkActionsSaveMutation>(relay?.environment!, {
       mutation: graphql`
         mutation ArtworkActionsSaveMutation($input: SaveArtworkInput!) {
           saveArtwork(input: $input) {
@@ -93,6 +91,9 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           contextOwnerId: artwork.internalID,
           contextOwnerSlug: artwork.slug,
         })
+      },
+      onError: () => {
+        refreshFavoriteArtworks()
       },
     })
   }
@@ -150,9 +151,12 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
               {is_saved ? <HeartFillIcon mr={0.5} fill="blue100" /> : <HeartIcon mr={0.5} />}
               <Box position="relative">
                 {/* Longest text transparent to prevent changing text pushing elements on the right */}
-                <Text variant="sm" color="transparent">
-                  Saved
-                </Text>
+                {/* Hiding it in the testing environment since it is not visible to the users */}
+                {!__TEST__ && (
+                  <Text variant="sm" color="transparent">
+                    Saved
+                  </Text>
+                )}
 
                 <Box {...StyleSheet.absoluteFillObject}>
                   <ClassTheme>

@@ -1,7 +1,7 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { SearchCriteriaQueryRenderer } from "./SearchCriteria"
 
@@ -17,7 +17,7 @@ describe("SearchCriteria", () => {
   it("should not query the search criteria when searchCriteriaId is not passed", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappersTL(
+    renderWithWrappers(
       <SearchCriteriaQueryRenderer
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
       />
@@ -32,7 +32,7 @@ describe("SearchCriteria", () => {
   it("should query the search criteria", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappersTL(
+    renderWithWrappers(
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
@@ -51,7 +51,7 @@ describe("SearchCriteria", () => {
   it("should call renderPlaceholder when query is loading", () => {
     const mockRenderPlaceholder = jest.fn(() => <></>)
 
-    renderWithWrappersTL(
+    renderWithWrappers(
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: jest.fn(() => <></>), renderPlaceholder: mockRenderPlaceholder }}
@@ -65,7 +65,7 @@ describe("SearchCriteria", () => {
   it("should return error if something went wrong during query", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
-    renderWithWrappersTL(
+    renderWithWrappers(
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
@@ -73,7 +73,7 @@ describe("SearchCriteria", () => {
       />
     )
 
-    mockEnvironment.mock.rejectMostRecentOperation(new Error())
+    rejectMostRecentRelayOperation(mockEnvironment, new Error())
 
     expect(mockRenderComponent).toBeCalledWith({
       fetchCriteriaError: new Error(),

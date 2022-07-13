@@ -9,7 +9,6 @@ import {
   Text,
   useTheme,
 } from "palette"
-import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
@@ -43,10 +42,10 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
 }) => {
   const { space } = useTheme()
   const leftButton = () => {
-    if (!useXButton) {
-      return <ArrowLeftIcon fill="black100" />
-    } else {
+    if (useXButton) {
       return <CloseIcon fill="black100" />
+    } else {
+      return <ArrowLeftIcon fill="black100" />
     }
   }
 
@@ -82,6 +81,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
             <RightButtonContainer
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               onPress={() => !rightButtonDisabled && onRightButtonPress()}
+              testID="fancy-modal-header-right-button"
             >
               {rightButtonText ? (
                 <Text

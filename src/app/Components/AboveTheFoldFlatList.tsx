@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { PrefetchFlatList, PrefetchFlatListProps } from "./PrefetchFlatList"
 
 export type AboveTheFoldFlatListProps<ItemType> = {

@@ -4,7 +4,7 @@
 #import "ARUserManager.h"
 #import "ARNetworkConstants.h"
 #import "ARInternalShareValidator.h"
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 
 static WKNavigationAction *StubNavActionForRequest(NSURLRequest *request, WKNavigationType type)

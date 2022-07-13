@@ -2,9 +2,8 @@ import { MyAccountTestsQuery } from "__generated__/MyAccountTestsQuery.graphql"
 import { MenuItem } from "app/Components/MenuItem"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
-import React from "react"
 import { Platform } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -64,7 +63,7 @@ describe(MyAccountQueryRenderer, () => {
   })
 
   it("truncated long emails", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -86,7 +85,7 @@ describe(MyAccountQueryRenderer, () => {
 
   describe("When ShowLinkedAccounts", () => {
     it("Shows linked accounts section when user does not have 2FA enabled AND has linked accounts", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
         const result = MockPayloadGenerator.generate(operation, {
           Me: () => ({
@@ -112,7 +111,7 @@ describe(MyAccountQueryRenderer, () => {
       it("links when **not** previously linked and unlinks when previously linked", () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
         Platform.OS = "ios"
-        const tree = renderWithWrappers(<TestRenderer />)
+        const tree = renderWithWrappersLEGACY(<TestRenderer />)
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
           const result = MockPayloadGenerator.generate(operation, {
             Me: () => ({
@@ -143,7 +142,7 @@ describe(MyAccountQueryRenderer, () => {
       })
 
       it("user cannot unlink their only authentication method", () => {
-        const tree = renderWithWrappers(<TestRenderer />)
+        const tree = renderWithWrappersLEGACY(<TestRenderer />)
         mockEnvironment.mock.resolveMostRecentOperation((operation) => {
           const result = MockPayloadGenerator.generate(operation, {
             Me: () => ({

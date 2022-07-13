@@ -1,4 +1,3 @@
-import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -6,7 +5,7 @@ import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistListTestsQuery } from "__generated__/ArtistListTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ArtistListFragmentContainer } from "./ArtistList"
 
@@ -35,7 +34,7 @@ describe("ArtistList", () => {
   )
 
   it("renders an item for each artist", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const targetSupply = makeTargetSupply([
       { name: "artist #1" },
@@ -60,7 +59,7 @@ describe("ArtistList", () => {
   })
 
   it("tracks an event for tapping an artist", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const artist = {
       internalID: "artist-id",

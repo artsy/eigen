@@ -9,7 +9,8 @@ import { SaleArtworkListItem_artwork$data } from "__generated__/SaleArtworkListI
 import { saleMessageOrBidInfo } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
-import { Flex, Sans } from "palette"
+import { getImageSquareDimensions } from "app/utils/resizeImage"
+import { Flex, Text } from "palette"
 import { Touchable } from "palette"
 import React, { useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -52,7 +53,7 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
     artwork,
   })
 
-  const imageDimensions = getImageDimensions(
+  const imageDimensions = getImageSquareDimensions(
     artwork.image?.height,
     artwork.image?.width,
     CONTAINER_HEIGHT
@@ -79,54 +80,30 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
 
         <Flex ml={2} height={100} flex={1} justifyContent="center">
           {!!artwork.saleArtwork?.lotLabel && (
-            <Sans size="3t" color="black60" numberOfLines={1}>
+            <Text variant="sm" color="black60" numberOfLines={1}>
               Lot {artwork.saleArtwork.lotLabel}
-            </Sans>
+            </Text>
           )}
           {!!artwork.artistNames && (
-            <Sans size="3t" weight="medium" numberOfLines={1}>
+            <Text variant="sm" weight="medium" numberOfLines={1}>
               {artwork.artistNames}
-            </Sans>
+            </Text>
           )}
           {!!artwork.title && (
-            <Sans size="3t" color="black60" numberOfLines={2}>
+            <Text variant="sm" color="black60" numberOfLines={2}>
               {artwork.title}
               {!!artwork.date && `, ${artwork.date}`}
-            </Sans>
+            </Text>
           )}
           {!!saleInfo && (
-            <Sans color="black60" size="3t" numberOfLines={1}>
+            <Text variant="sm" color="black60" numberOfLines={1}>
               {saleInfo}
-            </Sans>
+            </Text>
           )}
         </Flex>
       </Flex>
     </Touchable>
   )
-}
-
-// Get image accurate square dimensions while keeping the same aspect ratio
-export const getImageDimensions = (
-  height: number | null | undefined,
-  width: number | null | undefined,
-  containerHeight: number
-) => {
-  if (height && width) {
-    if (height > width) {
-      return {
-        height: containerHeight,
-        width: (width * containerHeight) / height,
-      }
-    }
-    return {
-      height: (height * containerHeight) / width,
-      width: containerHeight,
-    }
-  }
-  return {
-    height: containerHeight,
-    width: containerHeight,
-  }
 }
 
 export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkListItem, {

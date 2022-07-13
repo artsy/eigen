@@ -1,8 +1,7 @@
 import { InquiryMakeOfferButtonTestsQuery } from "__generated__/InquiryMakeOfferButtonTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Button } from "palette"
-import React from "react"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -57,7 +56,7 @@ const TestRenderer = () => {
 }
 
 const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)

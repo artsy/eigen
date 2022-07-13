@@ -13,6 +13,18 @@ This PR resolves []
 
 <!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
+### QA Test Case(s)
+
+<!-- Does this PR need QA testing? (hint: it probably does). If so add details here. See example below. These tests will be run in recent changes QA, they do not have to be extensive, just a high level feature sanity check, you should do your own extensive QA with your team. -->
+
+| Test Case | Feature | Environment | Acceptance Criteria | Setup Instructions/Link |
+| --------- | :-----: | ----------: | ------------------: | ----------------------: |
+|           |         |             |                     |                         |
+
+<!--
+| Save a search | Search | Staging    | The user should be able to .. | Start from ..  |
+-->
+
 ### PR Checklist
 
 - [ ] I tested my changes on **iOS** / **Android**.

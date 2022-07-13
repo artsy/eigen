@@ -1,8 +1,7 @@
 import { SoldBySectionTestsQuery } from "__generated__/SoldBySectionTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SoldBySectionFragmentContainer } from "./Components/SoldBySection"
@@ -33,7 +32,7 @@ describe("SoldBySection", () => {
     />
   )
   it("renders correctly for shipping fulfillment", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         requestedFulfillment: {
@@ -69,7 +68,7 @@ describe("SoldBySection", () => {
   })
 
   it("renders correctly for pick up fulfillment", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         requestedFulfillment: {

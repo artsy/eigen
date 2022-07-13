@@ -1,4 +1,3 @@
-import React from "react"
 import {
   Image,
   ImageStyle,
@@ -14,7 +13,8 @@ import GenericGrid from "../ArtworkGrids/GenericGrid"
 import { Notification_notification$data } from "__generated__/Notification_notification.graphql"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { ClassTheme, Sans } from "palette"
+import { ClassTheme, Text } from "palette"
+import React from "react"
 
 interface Props {
   // Special notifications will pass down an artistHref. Otherwise, grab it from the artworks.
@@ -56,10 +56,10 @@ export class Notification extends React.Component<Props> {
                   />
                 )}
                 <View style={styles.metadataContainer}>
-                  <Sans size="3t">{notification.artists}</Sans>
-                  <Sans size="2" color={color("black60")}>
+                  <Text variant="sm">{notification.artists}</Text>
+                  <Text variant="xs" color={color("black60")}>
                     {notification.summary}
-                  </Sans>
+                  </Text>
                 </View>
               </View>
             </TouchableWithoutFeedback>

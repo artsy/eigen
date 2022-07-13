@@ -1,7 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { AnimatableHeader, AnimatableHeaderProps } from "./AnimatableHeader"
 
 const defaultProps: AnimatableHeaderProps = {
@@ -18,13 +17,13 @@ describe("AnimatableHeader", () => {
   }
 
   it("should render title", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper title="Custom Title" />)
+    const { getByText } = renderWithWrappers(<TestWrapper title="Custom Title" />)
 
     expect(getByText("Custom Title")).toBeTruthy()
   })
 
   it("should render passed rightButtonText prop", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <TestWrapper rightButtonText="Custom Right Button Text" />
     )
 
@@ -32,7 +31,7 @@ describe("AnimatableHeader", () => {
   })
 
   it('should hide right button if "onRightButtonPress" is not passed', () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <TestWrapper onRightButtonPress={undefined} rightButtonText="Right Button" />
     )
 
@@ -40,7 +39,7 @@ describe("AnimatableHeader", () => {
   })
 
   it('should hide right button if "rightButtonText" is not passed', () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <TestWrapper onRightButtonPress={jest.fn} rightButtonText={undefined} />
     )
 
@@ -48,25 +47,25 @@ describe("AnimatableHeader", () => {
   })
 
   it("should disable right button when rightButtonDisabled prop is true", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper rightButtonDisabled />)
+    const { getByText } = renderWithWrappers(<TestWrapper rightButtonDisabled />)
 
     expect(getByText("Right button")).toBeDisabled()
   })
 
   it('should call "onLeftButtonPress" handler when back button is pressed', () => {
     const onLeftButtonPressMock = jest.fn()
-    const { getByA11yLabel } = renderWithWrappersTL(
+    const { getByLabelText } = renderWithWrappers(
       <TestWrapper onLeftButtonPress={onLeftButtonPressMock} />
     )
 
-    fireEvent.press(getByA11yLabel("Header back button"))
+    fireEvent.press(getByLabelText("Header back button"))
 
     expect(onLeftButtonPressMock).toBeCalled()
   })
 
   it('should call "onRightButtonPress" handler when right button is pressed', () => {
     const onRightButtonPressMock = jest.fn()
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <TestWrapper onRightButtonPress={onRightButtonPressMock} />
     )
 

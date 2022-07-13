@@ -1,5 +1,4 @@
-import { Flex, Sans, Separator } from "palette"
-import React from "react"
+import { Flex, Separator, Text } from "palette"
 import { View } from "react-native"
 
 export const PageWithSimpleHeader: React.FC<{
@@ -16,9 +15,9 @@ export const PageWithSimpleHeader: React.FC<{
         </Flex>
         {/* TODO: figure out how to make this stretch dynamically */}
         <Flex flex={2.5}>
-          <Sans size="4" weight="medium" textAlign="center">
+          <Text variant="md" weight="medium" textAlign="center">
             {title}
-          </Sans>
+          </Text>
         </Flex>
         <Flex flex={1} alignItems="flex-end">
           {right}

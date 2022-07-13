@@ -5,7 +5,7 @@ import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import { Box, Button, Flex, Input, Join, Sans, Separator, Spacer, Text } from "palette"
+import { Box, Button, Flex, Input, Join, Separator, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useEffect } from "react"
 import { Alert, ScrollView, TouchableOpacity } from "react-native"
@@ -229,7 +229,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
             <ScreenMargin>
               <Box my={2}>
-                <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
+                <Text variant="sm">Errors: {JSON.stringify(formik.errors)}</Text>
               </Box>
             </ScreenMargin>
           )}

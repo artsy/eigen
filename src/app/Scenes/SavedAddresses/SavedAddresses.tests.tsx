@@ -2,8 +2,7 @@ import { act, fireEvent } from "@testing-library/react-native"
 import { SavedAddressesTestsQuery } from "__generated__/SavedAddressesTestsQuery.graphql"
 import { navigate, navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "./SavedAddresses"
@@ -35,7 +34,7 @@ describe(SavedAddressesQueryRenderer, () => {
   )
 
   it("renders no saved addresses screen", () => {
-    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText } = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -52,7 +51,7 @@ describe(SavedAddressesQueryRenderer, () => {
   })
 
   it("should render the saved addresses on the screen", () => {
-    const { queryByText, queryAllByText } = renderWithWrappersTL(<TestRenderer />)
+    const { queryByText, queryAllByText } = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -109,7 +108,7 @@ describe(SavedAddressesQueryRenderer, () => {
   })
 
   it("testing add new address navigation", () => {
-    const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getAllByText } = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -129,7 +128,7 @@ describe(SavedAddressesQueryRenderer, () => {
   })
 
   it("should navigate to edit address screen", () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
@@ -188,7 +187,7 @@ describe(SavedAddressesQueryRenderer, () => {
   })
 
   it("deletes successfully an address from the address list", () => {
-    const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getAllByText } = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({

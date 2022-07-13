@@ -4,10 +4,9 @@ import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { mockNavigate } from "app/tests/navigationMocks"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingPersonalizationList } from "./OnboardingPersonalization"
@@ -54,7 +53,7 @@ describe("OnboardingPersonalizationList", () => {
 
   describe("SearchInput", () => {
     it("navigates to the OnboardingPersonalizationModal when the user presses on the search input", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       resolveMostRecentRelayOperation(mockEnvironment)
 
       const searchInput = tree.root.findByProps({ testID: "searchArtistButton" })
@@ -71,7 +70,7 @@ describe("OnboardingPersonalizationList", () => {
         cb(null, PushAuthorizationStatus.NotDetermined)
       )
 
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       resolveMostRecentRelayOperation(mockEnvironment)
 
       const doneButton = tree.root.findByProps({ testID: "doneButton" })

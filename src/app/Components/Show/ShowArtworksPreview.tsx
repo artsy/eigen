@@ -2,7 +2,7 @@ import { ShowArtworksPreview_show$data } from "__generated__/ShowArtworksPreview
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, Sans } from "palette"
+import { Box, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
@@ -24,18 +24,15 @@ export class ShowArtworksPreview extends React.Component<Props> {
     return (
       <>
         {!!title && (
-          <Sans size="4t" mb={2}>
+          <Text variant="md" mb={2}>
             {title}
-          </Sans>
+          </Text>
         )}
         <GenericGrid artworks={artworks} />
         {counts! /*STRICTNESS_MIGRATION*/.artworks! /*STRICTNESS_MIGRATION*/ > artworks.length && (
           <Box mt={1}>
             <CaretButton
-              text={`View all ${
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                counts.artworks
-              } works`}
+              text={`View all ${counts!.artworks} works`}
               onPress={() => onViewAllArtworksPressed()}
             />
           </Box>

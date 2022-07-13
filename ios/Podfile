@@ -11,8 +11,11 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 
 platform :ios, '12.1'
+inhibit_all_warnings! # ignore all warnings from all pods
+
 
 $ReactNativeMapboxGLIOSVersion = '~> 6.4'
+
 
 def check_for_existing_netrc_file
   if !ENV['MAPBOX_DOWNLOAD_TOKEN']
@@ -40,9 +43,6 @@ end
 check_for_existing_netrc_file
 add_mapbox_creds
 
-# ignore all warnings from all pods
-inhibit_all_warnings!
-
 pre_install do |installer|
   $RNMBGL.pre_install(installer)
 end
@@ -66,6 +66,7 @@ target 'Artsy' do
   pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'
   pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '5.11.1'
+  pod 'INTUAnimationEngine'
 
   # Core
   pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
@@ -73,11 +74,9 @@ target 'Artsy' do
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView', '1.6.4'
   pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
-  pod 'JLRoutes', git: 'https://github.com/artsy/JLRoutes.git'
   pod 'JSDecoupledAppDelegate'
   pod 'Mantle', '1.5.6'
   pod 'MMMarkdown', '0.4'
-  pod 'NPKeyboardLayoutGuide'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
   pod 'EDColor', '1.0.1'
@@ -90,15 +89,6 @@ target 'Artsy' do
   # Language Enhancements
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
-
-  # Artsy Spec repo stuff
-  pod 'Artsy+UIFonts', '3.3.4'
-  pod 'Artsy-UIButtons'
-  pod 'Artsy+UIColors'
-  pod 'Artsy+UILabels'
-  pod 'Extraction'
-
-  pod 'Emission', path: '../emission', :inhibit_warnings => false
 
   # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
@@ -115,10 +105,6 @@ target 'Artsy' do
   # Analytics
   pod 'Segment-Appboy'
   pod 'Segment-Adjust'
-
-  # Developer Pods
-  pod 'DHCShakeNotifier', '0.2.0'
-  pod 'ORKeyboardReactingApplication', '0.5.3'
 
   # Swift pods 🎉
   pod 'Then', '2.3.0'

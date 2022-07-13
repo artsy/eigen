@@ -1,5 +1,4 @@
 import { IconProps, Text } from "palette"
-import React from "react"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"

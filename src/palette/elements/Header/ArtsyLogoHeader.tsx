@@ -1,5 +1,4 @@
 import { ArtsyLogoIcon, Box, Flex, Spacer } from "palette"
-import React from "react"
 import { StyleSheet } from "react-native"
 
 interface Props {

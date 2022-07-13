@@ -3,7 +3,6 @@ import { EditionSelectBox_editionSet$data } from "__generated__/EditionSelectBox
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { BorderBox, Flex, Text, Touchable } from "palette"
 import { RadioButton } from "palette/elements/Radio"
-import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -26,6 +25,7 @@ export const EditionSelectBox: React.FC<Props> = ({ editionSet, selected, onPres
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const available =
     !!editionSet.isOfferableFromInquiry ||
+    !!editionSet.isOfferable ||
     (enableConversationalBuyNow && !!editionSet.isAcquireable)
 
   return (
@@ -62,6 +62,7 @@ export const EditionSelectBoxFragmentContainer = createFragmentContainer(Edition
       editionOf
       isAcquireable
       isOfferableFromInquiry
+      isOfferable
       listPrice {
         ... on Money {
           display

@@ -2,7 +2,6 @@ import { ArtworkInfoSection_artwork$data } from "__generated__/ArtworkInfoSectio
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { extractNodes } from "app/utils/extractNodes"
 import { Box, Flex, Text } from "palette"
-import React from "react"
 import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 

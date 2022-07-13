@@ -4,8 +4,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ArtistSeriesArtworksFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -45,7 +44,7 @@ describe("Artist Series Artworks", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
@@ -73,7 +72,7 @@ describe("Artist Series Artworks", () => {
     expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
     expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
     expect(extractText(tree.root)).toContain(
-      "No results found\nPlease try another search.Clear filtersClear filters"
+      "No results found\nPlease try another search.Clear filters"
     )
   })
 })

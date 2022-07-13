@@ -1,7 +1,6 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import * as LocalImageStore from "app/utils/LocalImageStore"
 import { LocalImage } from "app/utils/LocalImageStore"
-import React from "react"
 import { act } from "react-test-renderer"
 import { MyCollectionImageView, MyCollectionImageViewProps } from "./MyCollectionImageView"
 
@@ -14,7 +13,7 @@ describe("MyCollectionImageView", () => {
       imageURL: "https://some-url/:version.jpg",
       artworkSlug: "some-slug",
     }
-    const { getAllByTestId } = renderWithWrappersTL(<MyCollectionImageView {...props} />)
+    const { getAllByTestId } = renderWithWrappers(<MyCollectionImageView {...props} />)
     expect(getAllByTestId("Image-Remote")).toBeDefined()
   })
 
@@ -38,7 +37,7 @@ describe("MyCollectionImageView", () => {
 
     act(async () => {
       await retrievalPromise
-      const { getByTestId } = renderWithWrappersTL(<MyCollectionImageView {...props} />)
+      const { getByTestId } = renderWithWrappers(<MyCollectionImageView {...props} />)
       const image = getByTestId("Image-Local")
       expect(image).toBeDefined()
       expect(image.props.source).toEqual({ uri: "some-local-path" })
@@ -60,7 +59,7 @@ describe("MyCollectionImageView", () => {
 
     act(async () => {
       await retrievalPromise
-      const { getByTestId } = renderWithWrappersTL(<MyCollectionImageView {...props} />)
+      const { getByTestId } = renderWithWrappers(<MyCollectionImageView {...props} />)
       const fallback = getByTestId("Fallback")
       expect(fallback).toBeDefined()
     })

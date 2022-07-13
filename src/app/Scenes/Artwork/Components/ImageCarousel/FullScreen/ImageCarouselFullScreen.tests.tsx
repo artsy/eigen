@@ -1,11 +1,8 @@
+import { render } from "@testing-library/react-native"
 import { GlobalStoreProvider } from "app/store/GlobalStore"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
 import { Theme } from "palette"
-import React from "react"
 import { ImageCarouselContext, useNewImageCarouselContext } from "../ImageCarouselContext"
 import { ImageCarouselFullScreen } from "./ImageCarouselFullScreen"
-import { ImageZoomView } from "./ImageZoomView"
 
 describe("ImageCarouselFullScreen", () => {
   const Mock = () => {
@@ -36,8 +33,10 @@ describe("ImageCarouselFullScreen", () => {
     )
   }
 
-  it("mounts", () => {
-    const carousel = mount(<Mock />)
-    expect(carousel.find(ImageZoomView)).toHaveLength(2)
+  it("render only the current zoomable image as a perf optimisation", () => {
+    const { getAllByLabelText } = render(<Mock />)
+
+    expect(getAllByLabelText("Full Screen Image")).toHaveLength(1)
+    expect(getAllByLabelText("Full Screen Image Blank Box")).toHaveLength(1)
   })
 })

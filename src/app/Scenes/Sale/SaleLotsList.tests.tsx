@@ -7,9 +7,8 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SaleArtworkListContainer } from "./Components/SaleArtworkList"
@@ -95,7 +94,7 @@ describe("SaleLotsListContainer", () => {
   // Most likely this has something to do with the unfilteredSaleArtworksConnection
   // Follow-up ticket https://artsyproduct.atlassian.net/browse/CX-1108
   it.skip("Renders nothing if not sale artworks are available", () => {
-    const tree = renderWithWrappers(<TestRenderer initialData={getState()} />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer initialData={getState()} />)
     const mockProps = {
       SaleArtworksConnection: () => ({
         aggregations: [],
@@ -112,7 +111,9 @@ describe("SaleLotsListContainer", () => {
   })
 
   it("Renders list of sale artworks as a grid", () => {
-    const tree = renderWithWrappers(<TestRenderer initialData={getState(ViewAsValues.Grid)} />)
+    const tree = renderWithWrappersLEGACY(
+      <TestRenderer initialData={getState(ViewAsValues.Grid)} />
+    )
 
     const mockProps = {
       SaleArtworksConnection: () => ({
@@ -130,7 +131,7 @@ describe("SaleLotsListContainer", () => {
   })
 
   it("Renders list of sale artworks as a list", () => {
-    const tree = renderWithWrappers(<TestRenderer initialData={getState()} />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer initialData={getState()} />)
     const mockProps = {
       SaleArtworksConnection: () => ({
         aggregations: [],
@@ -148,7 +149,7 @@ describe("SaleLotsListContainer", () => {
 
   describe("SaleLotsListSortMode", () => {
     it("renders the right sort mode and count", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <SaleLotsListSortMode
           filterParams={{ sort: "bidder_positions_count" } as FilterParams}
           filteredTotal={20}

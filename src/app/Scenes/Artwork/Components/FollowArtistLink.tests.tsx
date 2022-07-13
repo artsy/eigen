@@ -1,141 +1,122 @@
-import { FollowArtistLinkTestsQuery$data } from "__generated__/FollowArtistLinkTestsQuery.graphql"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderRelayTree } from "app/tests/renderRelayTree"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
-import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
-import { graphql, RelayProp } from "react-relay"
-import { FollowArtistLink, FollowArtistLinkFragmentContainer } from "./FollowArtistLink"
+import { fireEvent } from "@testing-library/react-native"
+import { FollowArtistLinkTestsQuery } from "__generated__/FollowArtistLinkTestsQuery.graphql"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
+import { FollowArtistLinkFragmentContainer } from "./FollowArtistLink"
 
 jest.unmock("react-relay")
 
 describe("FollowArtistLink", () => {
-  it("renders button text correctly", () => {
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <FollowArtistLink
-            relay={{ environment: {} } as RelayProp}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artist={followArtistLinkArtist}
-          />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(TouchableWithoutFeedback).length).toEqual(1)
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-    expect(component.find(TouchableWithoutFeedback).at(0).render().text()).toMatchInlineSnapshot(
-      `"Follow"`
-    )
-  })
-
-  describe("Following an artist", () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const getWrapper = async ({ mockArtistData, mockFollowResults }) => {
-      return await renderRelayTree({
-        Component: (props: any) => (
-          <GlobalStoreProvider>
-            <Theme>
-              <FollowArtistLinkFragmentContainer {...props} />
-            </Theme>
-          </GlobalStoreProvider>
-        ),
-        query: graphql`
-          query FollowArtistLinkTestsQuery @raw_response_type {
+  const TestWrapper = () => {
+    return (
+      <QueryRenderer<FollowArtistLinkTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query FollowArtistLinkTestsQuery @relay_test_operation {
             artist(id: "artistID") {
               ...FollowArtistLink_artist
             }
           }
-        `,
-        mockData: { artist: mockArtistData } as FollowArtistLinkTestsQuery$data,
-        mockMutationResults: { followArtist: mockFollowResults },
-      })
-    }
+        `}
+        variables={{}}
+        render={({ props }) => {
+          if (props?.artist) {
+            return <FollowArtistLinkFragmentContainer artist={props.artist} />
+          }
 
-    it("correctly displays when the artist is already followed, and allows unfollowing", async () => {
+          return null
+        }}
+      />
+    )
+  }
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("renders button text correctly", () => {
+    const { getByText } = renderWithWrappers(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artist: () => followArtistLinkArtist,
+    })
+
+    expect(getByText("Follow")).toBeTruthy()
+  })
+
+  describe("Following an artist", () => {
+    it("correctly displays when the artist is already followed, and allows unfollowing", () => {
       const followArtistLinkArtistFollowed = {
         ...followArtistLinkArtist,
         is_followed: true,
       }
 
-      const unfollowResponse = {
-        artist: {
+      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => followArtistLinkArtistFollowed,
+      })
+
+      expect(queryByText("Follow")).toBeFalsy()
+      expect(getByText("Following")).toBeTruthy()
+
+      fireEvent.press(getByText("Following"))
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => ({
           id: followArtistLinkArtist.id,
           is_followed: false,
-        },
-      }
-
-      const followArtistLink = await getWrapper({
-        mockArtistData: followArtistLinkArtistFollowed,
-        mockFollowResults: unfollowResponse,
+        }),
       })
 
-      const followButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
-      expect(followButton.text()).toMatchInlineSnapshot(`"Following"`)
-
-      await followArtistLink.find(TouchableWithoutFeedback).at(0).props().onPress()
-
-      await flushPromiseQueue()
-      followArtistLink.update()
-
-      const updatedFollowButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
-      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      expect(getByText("Follow")).toBeTruthy()
+      expect(queryByText("Following")).toBeFalsy()
     })
 
-    it("correctly displays when the work is not followed, and allows following", async () => {
-      const followResponse = { artist: { id: followArtistLinkArtist.id, is_followed: true } }
+    it("correctly displays when the artist is not followed, and allows following", () => {
+      const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
 
-      const followArtistLink = await getWrapper({
-        mockArtistData: followArtistLinkArtist,
-        mockFollowResults: followResponse,
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => followArtistLinkArtist,
       })
 
-      const followButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
-      expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      expect(getByText("Follow")).toBeTruthy()
+      expect(queryByText("Following")).toBeFalsy()
 
-      await followArtistLink.find(TouchableWithoutFeedback).at(0).props().onPress()
+      fireEvent.press(getByText("Follow"))
 
-      await flushPromiseQueue()
-      followArtistLink.update()
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => ({
+          id: followArtistLinkArtist.id,
+          is_followed: true,
+        }),
+      })
 
-      const updatedFollowButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
-      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Following"`)
+      expect(getByText("Following")).toBeTruthy()
+      expect(queryByText("Follow")).toBeFalsy()
     })
 
-    // TODO Update once we can use relay's new facilities for testing
-    xit("handles errors in saving gracefully", async () => {
-      const followArtistLink = await renderRelayTree({
-        Component: FollowArtistLinkFragmentContainer,
-        query: graphql`
-          query FollowArtistLinkTestsErrorQuery @raw_response_type {
-            artist(id: "artistID") {
-              ...FollowArtistLink_artist
-            }
-          }
-        `,
-        mockData: {
-          artist: followArtistLinkArtist,
-        } as any,
-        mockMutationResults: {
-          FollowArtistLinkFragmentContainer: () => {
-            return Promise.reject(new Error("failed to fetch"))
-          },
-        },
+    it("handles errors in saving gracefully", async () => {
+      const { getByText } = renderWithWrappers(<TestWrapper />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artist: () => followArtistLinkArtist,
       })
 
-      const followButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
-      expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      fireEvent.press(getByText("Follow"))
 
-      await followArtistLink.find(TouchableWithoutFeedback).at(0).props().onPress()
+      rejectMostRecentRelayOperation(mockEnvironment, new Error())
 
-      await flushPromiseQueue()
-      followArtistLink.update()
-
-      const updatedFollowButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
-      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
+      expect(getByText("Follow")).toBeTruthy()
     })
   })
 })
@@ -146,6 +127,4 @@ const followArtistLinkArtist = {
   internalID: "12345",
   gravityID: "andy-warhol",
   is_followed: false,
-  " $refType": null,
-  " $fragmentRefs": null,
 }

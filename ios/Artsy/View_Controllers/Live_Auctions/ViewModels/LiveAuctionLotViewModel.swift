@@ -20,7 +20,7 @@ func == (lhs: LotState, rhs: LotState) -> Bool {
 
 typealias CurrentBid = (bid: String, reserve: String?)
 
-protocol LiveAuctionLotViewModelType: class {
+protocol LiveAuctionLotViewModelType: AnyObject {
 
     var numberOfDerivedEvents: Int { get }
     func derivedEventAtPresentationIndex(_ index: Int) -> LiveAuctionEventViewModel

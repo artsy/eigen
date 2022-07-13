@@ -1,13 +1,13 @@
+import { fireEvent } from "@testing-library/react-native"
 import { FeaturedArtistsTestsQuery } from "__generated__/FeaturedArtistsTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-import { mockTracking } from "app/tests/mockTracking"
-import { renderRelayTree } from "app/tests/renderRelayTree"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { postEventToProviders } from "app/utils/track/providers"
-import { Theme } from "palette"
-import React from "react"
-import { graphql } from "react-relay"
-import { CollectionFeaturedArtistsContainer as FeaturedArtists, ViewAll } from "./FeaturedArtists"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
+import { CollectionFeaturedArtistsContainer as FeaturedArtists } from "./FeaturedArtists"
+
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
 
@@ -103,97 +103,116 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
   }
 
 describe("FeaturedArtists", () => {
-  const render = (collection: FeaturedArtistsTestsQuery["rawResponse"]["marketingCollection"]) =>
-    renderRelayTree({
-      Component: mockTracking(({ marketingCollection }) => (
-        <GlobalStoreProvider>
-          <Theme>
-            <FeaturedArtists collection={marketingCollection} />
-          </Theme>
-        </GlobalStoreProvider>
-      )),
-      query: graphql`
-        query FeaturedArtistsTestsQuery @raw_response_type {
-          marketingCollection(slug: "emerging-photographers") {
-            ...FeaturedArtists_collection
-          }
-        }
-      `,
-      mockData: {
-        marketingCollection: collection,
-      },
-    })
+  let env: ReturnType<typeof createMockEnvironment>
 
-  it("renders without throwing an error", async () => {
-    await render(FeaturedArtistCollectionFixture)
+  beforeEach(() => {
+    env = createMockEnvironment()
   })
 
+  const TestRenderer = () => {
+    return (
+      <QueryRenderer<FeaturedArtistsTestsQuery>
+        environment={env}
+        variables={{ id: "artworkID" }}
+        render={({ props, error }) => {
+          if (props) {
+            return <FeaturedArtists collection={props.marketingCollection!} />
+          } else if (error) {
+            console.log(error)
+            return
+          }
+        }}
+        query={graphql`
+          query FeaturedArtistsTestsQuery @raw_response_type {
+            marketingCollection(slug: "emerging-photographers") {
+              ...FeaturedArtists_collection
+            }
+          }
+        `}
+      />
+    )
+  }
+
   it("renders an EntityHeader for each featured artist", async () => {
-    const tree = await render(FeaturedArtistCollectionFixture)
+    const { queryByText } = await renderWithWrappers(<TestRenderer />)
 
-    const entityHeaders = tree.find("EntityHeader")
-    expect(entityHeaders.length).toEqual(3)
+    resolveMostRecentRelayOperation(env, {
+      MarketingCollection: () => ({ ...FeaturedArtistCollectionFixture }),
+    })
 
-    const output = tree.html()
-    expect(output).toContain("Pablo Picasso")
-    expect(output).toContain("Andy Warhol")
-    expect(output).toContain("Joan Miro")
-    expect(output).toContain("View all")
+    expect(queryByText("Featured Artists")).toBeTruthy()
+
+    expect(queryByText("Pablo Picasso")).toBeTruthy()
+    expect(queryByText("Andy Warhol")).toBeTruthy()
+    expect(queryByText("Joan Miro")).toBeTruthy()
+    expect(queryByText("View all")).toBeTruthy()
   })
 
   it("does not render an EntityHeader for excluded artists", async () => {
-    const tree = await render({
-      ...FeaturedArtistCollectionFixture,
-      featuredArtistExclusionIds: ["34534-andy-warhols-id", "2342-pablo-picassos-id"],
+    const { queryByText } = await renderWithWrappers(<TestRenderer />)
+
+    resolveMostRecentRelayOperation(env, {
+      MarketingCollection: () => ({
+        ...FeaturedArtistCollectionFixture,
+        featuredArtistExclusionIds: ["34534-andy-warhols-id", "2342-pablo-picassos-id"],
+      }),
     })
 
-    const entityHeaders = tree.find("EntityHeader")
-    expect(entityHeaders.length).toEqual(3)
+    expect(queryByText("Featured Artists")).toBeTruthy()
 
-    const output = tree.html()
-    expect(output).toContain("Joan Miro")
-    expect(output).not.toContain("Andy Warhol")
-    expect(output).not.toContain("Pablo Picasso")
-    expect(output).toContain("Jean-Michel Basquiat")
-    expect(output).toContain("Kenny Scharf")
+    expect(queryByText("Joan Miro")).toBeTruthy()
+    expect(queryByText("Andy Warhol")).toBeNull()
+    expect(queryByText("Pablo Picasso")).toBeNull()
+    expect(queryByText("Jean-Michel Basquiat")).toBeTruthy()
+    expect(queryByText("Kenny Scharf")).toBeTruthy()
   })
 
   describe("when artist ids are explicitly requested", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
-      const tree = await render({
-        ...FeaturedArtistCollectionFixture,
-        query: { id: "some-id", artistIDs: ["34534-andy-warhols-id"] },
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(env, {
+        MarketingCollection: () => ({
+          ...FeaturedArtistCollectionFixture,
+          query: { id: "some-id", artistIDs: ["34534-andy-warhols-id"] },
+        }),
       })
 
-      const entityHeaders = tree.find("EntityHeader")
-      expect(entityHeaders.length).toEqual(1)
-
-      const output = tree.html()
-      expect(output).toContain("Andy Warhol")
-      expect(output).not.toContain("Joan Miro")
-      expect(output).not.toContain("Pablo Picasso")
+      expect(queryByText("Andy Warhol")).toBeTruthy()
+      expect(queryByText("Joan Miro")).toBeNull()
+      expect(queryByText("Pablo Picasso")).toBeNull()
     })
   })
 
   describe("View all", () => {
     it("shows more artists when 'View more' is tapped", async () => {
-      const tree = await render(FeaturedArtistCollectionFixture)
-      const output = tree.html()
-      expect(output).toContain("View all")
-      expect(output).not.toContain("Jean-Michel Basquiat")
-      expect(output).not.toContain("Kenny Scharf")
+      const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
-      const viewAll = tree.find(ViewAll)
-      viewAll.simulate("click")
+      resolveMostRecentRelayOperation(env, {
+        MarketingCollection: () => ({
+          ...FeaturedArtistCollectionFixture,
+        }),
+      })
 
+      expect(queryByText("View all")).toBeTruthy()
+      expect(queryByText("Jean-Michel Basquiat")).toBeNull()
+      expect(queryByText("Kenny Scharf")).toBeNull()
+
+      fireEvent.press(getByText("View all"))
       expect(navigate).toHaveBeenCalledWith("/collection/some-collection/artists")
     })
 
     it("tracks an event when 'View more' is tapped", async () => {
-      const tree = await render(FeaturedArtistCollectionFixture)
-      const viewAll = tree.find(ViewAll)
+      const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
-      viewAll.simulate("click")
+      resolveMostRecentRelayOperation(env, {
+        MarketingCollection: () => ({
+          ...FeaturedArtistCollectionFixture,
+        }),
+      })
+
+      expect(queryByText("View all")).toBeTruthy()
+      fireEvent.press(getByText("View all"))
 
       expect(postEventToProviders).toHaveBeenCalledWith({
         action_type: "tap",

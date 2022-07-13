@@ -14,4 +14,3 @@
 #import <SDWebImage/SDWebImageManager.h>
 #import <Forgeries/ForgeriesGestureRecognizer.h>
 #import <Forgeries/ForgeriesTraitCollections.h>
-#import <Artsy+UIColors/UIColor+DebugColours.h>

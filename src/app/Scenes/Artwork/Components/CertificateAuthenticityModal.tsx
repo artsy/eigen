@@ -3,7 +3,6 @@ import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { navigate } from "app/navigation/navigate"
 import { Box, Join, Spacer, Text } from "palette"
-import React from "react"
 
 interface CertificateAuthenticityModalProps {
   visible: boolean

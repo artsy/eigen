@@ -12,7 +12,6 @@ import {
   Spacer,
   Text,
 } from "palette"
-import React from "react"
 import { LayoutAnimation } from "react-native"
 import { SavedSearchAlertFormValues, SavedSearchPill } from "../SavedSearchAlertModel"
 import { SavedSearchStore } from "../SavedSearchStore"

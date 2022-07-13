@@ -4,7 +4,6 @@ import { MyCollectionArtworkArtistMarket_marketPriceInsights$key } from "__gener
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { formatCentsToDollars } from "app/Scenes/MyCollection/utils/formatCentsToDollars"
 import { Flex, Spacer, Text } from "palette"
-import React from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Field } from "../Field"

@@ -9,15 +9,11 @@ extern NSString *const ARAuthHeader;
 extern NSString *const ARXappHeader;
 
 extern NSString *const ARXappURL;
-extern NSString *const ARForgotPasswordURL;
-
-extern NSString *const ARMyInfoURL;
 
 extern NSString *const ARAddArtworkToFavoritesURLFormat;
 extern NSString *const ARFavoritesURL;
 extern NSString *const ARMyBiddersURL;
 extern NSString *const ARSaleURLFormat;
-extern NSString *const ARLiveSaleStateFormat;
 
 extern NSString *const ARFollowArtistURL;
 extern NSString *const ARFollowArtistsURL;
@@ -26,7 +22,6 @@ extern NSString *const ARUnfollowArtistURLFormat;
 extern NSString *const ARFollowProfileURL;
 extern NSString *const ARUnfollowProfileURLFormat;
 extern NSString *const ARFollowProfilesURL;
-extern NSString *const ARFollowingProfileURLFormat;
 
 extern NSString *const ARRelatedArtistsURL;
 extern NSString *const ARRelatedGeneURLFormat;
@@ -40,13 +35,10 @@ extern NSString *const ARUnfollowGeneURLFormat;
 extern NSString *const ARProfileInformationURLFormat;
 
 extern NSString *const ARNewArtistSearchURL;
-extern NSString *const ARNewGeneSearchURL;
 
 extern NSString *const ARNewDeviceURL;
 extern NSString *const ARDeleteDeviceURL;
 
 extern NSString *const ARSystemTimeURL;
-
-extern NSString *const ARSuggestedHomepageArtworks;
 
 extern NSString *const ARPageURLFormat;

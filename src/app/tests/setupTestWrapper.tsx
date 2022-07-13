@@ -1,11 +1,10 @@
 import { render } from "@testing-library/react-native"
-import React from "react"
 import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { renderWithWrappers } from "./renderWithWrappers"
+import { renderWithWrappersLEGACY } from "./renderWithWrappers"
 
 interface SetupTestWrapper<T extends OperationType> {
   // TODO: Component: React.ComponentType<T['response']> type errors here
@@ -29,10 +28,12 @@ export const setupTestWrapperTL = <T extends OperationType>({
         // tslint:disable-next-line: relay-operation-generics
         query={query}
         render={({ props, error }) => {
-          if (props) {
-            return <Component {...props} />
-          } else if (error) {
+          if (error) {
             console.error(error)
+            return null
+          }
+          if (props) {
+            return <Component {...(props as object)} />
           }
         }}
       />
@@ -66,16 +67,18 @@ export const setupTestWrapper = <T extends OperationType>({
         variables={variables}
         query={query}
         render={({ props, error }) => {
-          if (props !== null) {
-            return <Component {...props} />
-          } else if (error !== null) {
+          if (error) {
             console.error(error)
+            return null
+          }
+          if (props) {
+            return <Component {...(props as object)} />
           }
         }}
       />
     )
 
-    const wrapper = renderWithWrappers(<TestRenderer />)
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
 
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>

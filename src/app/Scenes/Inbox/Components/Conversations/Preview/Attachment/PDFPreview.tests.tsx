@@ -1,11 +1,10 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import "react-native"
 
 import PDFPreview from "./PDFPreview"
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<PDFPreview attachment={attachment as any} />)
+  renderWithWrappersLEGACY(<PDFPreview attachment={attachment as any} />)
 })
 
 const attachment = {

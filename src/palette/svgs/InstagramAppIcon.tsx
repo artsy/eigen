@@ -1,4 +1,3 @@
-import React from "react"
 import { Defs, Path, RadialGradient, Stop } from "react-native-svg"
 import { Icon, IconProps } from "./Icon"
 

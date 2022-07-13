@@ -2,8 +2,7 @@ jest.mock("app/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
   PriceSummary: () => null,
 }))
 
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import "react-native"
 import { FakeNavigator } from "../Helpers/FakeNavigator"
 
@@ -75,7 +74,7 @@ beforeEach(() => {
 })
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
+  renderWithWrappersLEGACY(
     <SelectMaxBid
       me={Me}
       sale_artwork={SaleArtwork}
@@ -86,7 +85,7 @@ it("renders without throwing an error", () => {
 })
 
 it("shows a spinner while fetching new bid increments", () => {
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <SelectMaxBid
       me={Me}
       sale_artwork={SaleArtwork}
@@ -102,7 +101,7 @@ it("shows a spinner while fetching new bid increments", () => {
 })
 
 it("refetches in next component's refreshSaleArtwork", () => {
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <SelectMaxBid
       me={Me}
       sale_artwork={SaleArtwork}
@@ -127,7 +126,7 @@ it("refetches in next component's refreshSaleArtwork", () => {
 })
 
 it("removes the spinner once the refetch is complete", () => {
-  const component = renderWithWrappers(
+  const component = renderWithWrappersLEGACY(
     <SelectMaxBid
       me={Me}
       sale_artwork={SaleArtwork}

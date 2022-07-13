@@ -1,6 +1,6 @@
 import UIKit
 
-protocol LiveAuctionSaleLotsDataSourceScrollableDelgate: class {
+protocol LiveAuctionSaleLotsDataSourceScrollableDelgate: AnyObject {
     func registerForScrollingState(_ viewController: LiveAuctionLotViewController)
 }
 

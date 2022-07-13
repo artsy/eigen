@@ -17,8 +17,8 @@
 #import "AROptions.h"
 #import "ARDispatchManager.h"
 
-#import <Emission/AREmission.h>
-#import <Emission/ARNotificationsManager.h>
+#import "AREmission.h"
+#import "ARNotificationsManager.h"
 #import <UserNotifications/UserNotifications.h>
 #import "Appboy-iOS-SDK/AppboyKit.h"
 

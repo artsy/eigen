@@ -1,7 +1,6 @@
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 import { RecentSearches } from "./RecentSearches"
 import { SearchContext } from "./SearchContext"
@@ -83,7 +82,7 @@ const TestPage = () => {
 
 describe("Recent Searches", () => {
   it("has an empty state", () => {
-    const tree = renderWithWrappers(<TestPage />)
+    const tree = renderWithWrappersLEGACY(<TestPage />)
 
     expect(extractText(tree.root)).toMatchInlineSnapshot(
       `"Recent SearchesWe’ll save your recent searches here"`
@@ -92,7 +91,7 @@ describe("Recent Searches", () => {
   })
 
   it("shows recent searches if there were any", () => {
-    const tree = renderWithWrappers(<TestPage />)
+    const tree = renderWithWrappersLEGACY(<TestPage />)
 
     GlobalStore.actions.search.addRecentSearch(banksy)
 
@@ -106,7 +105,7 @@ describe("Recent Searches", () => {
   })
 
   it("shows a maxiumum of 5 searches", () => {
-    const tree = renderWithWrappers(<TestPage />)
+    const tree = renderWithWrappersLEGACY(<TestPage />)
 
     GlobalStore.actions.search.addRecentSearch(banksy)
     GlobalStore.actions.search.addRecentSearch(andyWarhol)

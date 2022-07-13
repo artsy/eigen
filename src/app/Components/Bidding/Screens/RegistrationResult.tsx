@@ -1,4 +1,4 @@
-import { Button, Sans, Theme } from "palette"
+import { Button, Text, Theme } from "palette"
 import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { blockRegex } from "simple-markdown"
@@ -74,9 +74,9 @@ const markdownRules = defaultRules({
       match: blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
       react: (node, output, state) => {
         return (
-          <Sans size="4" key={state.key} textAlign="center">
+          <Text variant="md" key={state.key} textAlign="center">
             {output(node.content, state)}
-          </Sans>
+          </Text>
         )
       },
     },

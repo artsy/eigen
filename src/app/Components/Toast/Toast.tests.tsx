@@ -1,6 +1,5 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
-import React from "react"
 import { Text } from "react-native"
 import { act } from "react-test-renderer"
 import { TOAST_DURATION_MAP, ToastComponent } from "./ToastComponent"
@@ -30,7 +29,7 @@ describe("Toast", () => {
   })
 
   it("renders a toast when show toast is called", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     expect(tree.root.findAllByType(ToastComponent)).toHaveLength(0)
 
@@ -42,7 +41,7 @@ describe("Toast", () => {
 
   it("Does Not clear Toast before duration is reached", () => {
     const duration = "short"
-    const tree = renderWithWrappers(<TestRenderer toastOptions={{ duration }} />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer toastOptions={{ duration }} />)
 
     const buttonInstance = tree.root.findByType(Touchable)
     act(() => buttonInstance.props.onPress())
@@ -55,7 +54,7 @@ describe("Toast", () => {
 
   it("Clears Toast when the duration is reached", () => {
     const duration = "short"
-    const tree = renderWithWrappers(<TestRenderer toastOptions={{ duration }} />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer toastOptions={{ duration }} />)
 
     const buttonInstance = tree.root.findByType(Touchable)
     act(() => buttonInstance.props.onPress())

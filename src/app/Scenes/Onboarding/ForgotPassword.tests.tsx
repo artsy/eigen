@@ -1,7 +1,6 @@
 import { mockNavigate } from "app/tests/navigationMocks"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Input } from "palette"
-import React from "react"
 import { act } from "react-test-renderer"
 import { ForgotPasswordForm } from "./ForgotPassword"
 
@@ -40,13 +39,13 @@ describe("ForgotPassword", () => {
   }
 
   it("renders reset button disabled initially", () => {
-    const tree = renderWithWrappers(<TestProvider />)
+    const tree = renderWithWrappersLEGACY(<TestProvider />)
     const resetButton = tree.root.findByProps({ testID: "resetButton" })
     expect(resetButton.props.disabled).toEqual(true)
   })
 
   it("validates form on blur", () => {
-    const tree = renderWithWrappers(<TestProvider />)
+    const tree = renderWithWrappersLEGACY(<TestProvider />)
 
     const emailInput = tree.root.findByType(Input)
 

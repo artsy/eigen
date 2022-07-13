@@ -1,5 +1,4 @@
 import { Box, useColor } from "palette"
-import React from "react"
 import Animated, { Extrapolate } from "react-native-reanimated"
 import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 

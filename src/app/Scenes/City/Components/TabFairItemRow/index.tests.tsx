@@ -1,9 +1,5 @@
 import { Fair } from "app/Scenes/Map/types"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { TabFairItemRow } from "./index"
 
 // @TODO: We are already stubbing Fair data for tests in src/app/Scenes/Fair/__fixtures__/index.ts; can we modularize this test by importing that fixture?
@@ -26,14 +22,8 @@ const fairData = {
 
 describe("TabFairItemRow", () => {
   it("renders Fair properly", () => {
-    const comp = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <TabFairItemRow item={fairData} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    const { queryByText } = renderWithWrappers(<TabFairItemRow item={fairData} />)
 
-    expect(comp.text()).toContain("TEFAF New York Spring 2019")
+    expect(queryByText("TEFAF New York Spring 2019")).toBeTruthy()
   })
 })

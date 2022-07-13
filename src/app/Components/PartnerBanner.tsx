@@ -1,6 +1,5 @@
 import { TextVariant } from "@artsy/palette-tokens/dist/typography/v3"
 import { BoxProps, Flex, Text } from "palette"
-import React from "react"
 
 export interface PartnerBannerProps extends BoxProps {
   textVariant?: TextVariant

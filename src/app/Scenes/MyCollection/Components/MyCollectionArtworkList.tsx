@@ -4,6 +4,7 @@ import { PrefetchFlatList, PrefetchFlatListProps } from "app/Components/Prefetch
 import { extractNodes } from "app/utils/extractNodes"
 import { Flex, Spinner } from "palette"
 import React, { useState } from "react"
+import { Platform } from "react-native"
 import { RelayPaginationProp, useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
@@ -49,7 +50,7 @@ export const MyCollectionArtworkList: React.FC<{
   }
 
   return (
-    <Flex>
+    <Flex pb={Platform.OS === "android" ? 5 : 0}>
       <PrefetchFlatList
         data={preprocessedArtworks}
         renderItem={({ item }) => <MyCollectionArtworkListItem artwork={item} />}

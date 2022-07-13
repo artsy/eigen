@@ -10,10 +10,9 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
-import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { CreateSavedSearchAlert } from "./CreateSavedSearchAlert"
@@ -105,7 +104,7 @@ describe("CreateSavedSearchAlert", () => {
   }
 
   it("renders without throwing an error", async () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment)
 
@@ -115,7 +114,7 @@ describe("CreateSavedSearchAlert", () => {
 
   it("should call onClosePress handler when the close button is pressed", () => {
     const onClosePressMock = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer onClosePress={onClosePressMock} />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer onClosePress={onClosePressMock} />)
 
     resolveMostRecentRelayOperation(mockEnvironment)
     fireEvent.press(getByTestId("fancy-modal-header-left-button"))
@@ -127,14 +126,14 @@ describe("CreateSavedSearchAlert", () => {
     const onCompleteMock = jest.fn()
 
     setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-    const { getByTestId, getAllByText } = renderWithWrappersTL(
+    const { getByTestId, getByText } = renderWithWrappers(
       <TestRenderer onComplete={onCompleteMock} />
     )
 
     resolveMostRecentRelayOperation(mockEnvironment)
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
-    fireEvent.press(getAllByText("Save Alert")[1])
+    fireEvent.press(getByText("Save Alert"))
 
     // Check alert duplicate
     await mockOperationByName("getSavedSearchIdByCriteriaQuery", {
@@ -160,7 +159,7 @@ describe("CreateSavedSearchAlert", () => {
   describe("Notification toggles", () => {
     it("email toggle is enabled by default if the user has allowed email notifications", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-      const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Viewer: () => ({
@@ -178,7 +177,7 @@ describe("CreateSavedSearchAlert", () => {
 
     it("email toggle is disabled by default if the user has not allowed email notifications", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-      const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Viewer: () => ({
@@ -196,7 +195,7 @@ describe("CreateSavedSearchAlert", () => {
 
     it("push toggle is enabled by default when push permissions are enabled", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Authorized)
-      const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
 
       const toggles = await findAllByA11yState({ selected: true })
       expect(toggles).toHaveLength(1)
@@ -204,7 +203,7 @@ describe("CreateSavedSearchAlert", () => {
 
     it("push toggle is disabled by default when push permissions are denied", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.Denied)
-      const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
       const toggles = await findAllByA11yState({ selected: false })
 
       resolveMostRecentRelayOperation(mockEnvironment, {
@@ -219,7 +218,7 @@ describe("CreateSavedSearchAlert", () => {
 
     it("push toggle is disabled by default when push permissions are not determined", async () => {
       setStatusForPushNotifications(PushAuthorizationStatus.NotDetermined)
-      const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      const { findAllByA11yState } = renderWithWrappers(<TestRenderer />)
       const toggles = await findAllByA11yState({ selected: false })
 
       resolveMostRecentRelayOperation(mockEnvironment, {

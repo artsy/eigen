@@ -1,7 +1,6 @@
 import { AverageAuctionPriceRail_me$data } from "__generated__/AverageAuctionPriceRail_me.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, NoArtworkIcon, Text, Touchable, useColor } from "palette"
-import React from "react"
 
 export type AverageSalePriceArtwork = NonNullable<
   NonNullable<NonNullable<AverageAuctionPriceRail_me$data["priceInsightUpdates"]>["edges"]>[0]

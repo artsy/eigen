@@ -1,9 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
 import { MyCollectionArtworkHeaderTestQuery } from "__generated__/MyCollectionArtworkHeaderTestQuery.graphql"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkHeader } from "./MyCollectionArtworkHeader"
@@ -34,7 +33,7 @@ describe("MyCollectionArtworkHeader", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const renderer = renderWithWrappersTL(<TestRenderer />)
+    const renderer = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
     return renderer
   }
@@ -60,14 +59,14 @@ describe("MyCollectionArtworkHeader", () => {
   })
 
   it("fires the analytics tracking event when image is pressed", () => {
-    const { getByTestId } = getWrapper({
+    const { getByLabelText } = getWrapper({
       Artwork: () => ({
         internalID: "someInternalId",
         slug: "someSlug",
       }),
     })
 
-    const carouselImage = getByTestId("image-with-loading-state")
+    const carouselImage = getByLabelText("Image with Loading State")
     fireEvent(carouselImage, "Press")
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith({

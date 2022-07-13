@@ -1,5 +1,4 @@
 import { Box, Flex } from "palette"
-import React from "react"
 
 const BAR_WIDTH = 2
 const BAR_ROUNDNESS = 10

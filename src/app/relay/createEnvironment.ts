@@ -22,7 +22,7 @@ import { uploadMiddleware } from "./middlewares/uploadMiddleware"
 export function createEnvironment(
   networkConfig: ConstructorParameters<typeof RelayNetworkLayer> = [
     [
-      // The top middlewares run first, i.e. they are the furtherst from the fetch
+      // The top middlewares run first, i.e. they are the furthest from the fetch
       // @ts-ignore
       cacheMiddleware(),
       persistedQueryMiddleware(),

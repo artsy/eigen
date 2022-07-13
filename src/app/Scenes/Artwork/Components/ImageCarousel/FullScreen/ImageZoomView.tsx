@@ -1,6 +1,6 @@
 import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 
-import {
+import React, {
   useCallback,
   useContext,
   useEffect,
@@ -30,7 +30,6 @@ import { fitInside, Position, Rect } from "../geometry"
 
 import { captureMessage } from "@sentry/react-native"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
-import React from "react"
 import { useScreenDimensions } from "shared/hooks"
 import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
 import { DeepZoomOverlay } from "./DeepZoom/DeepZoomOverlay"
@@ -306,7 +305,12 @@ export const ImageZoomView =
     // as a perf optimisation, when doing the 'zoom in' transition, we only render the
     // current zoomable image in place of the other images we just render a blank box
     if (fullScreenState.current !== "entered" && index !== imageIndex.current) {
-      return <View style={{ width: screenDimensions.width, height: screenDimensions.height }} />
+      return (
+        <View
+          accessibilityLabel="Full Screen Image Blank Box"
+          style={{ width: screenDimensions.width, height: screenDimensions.height }}
+        />
+      )
     }
 
     return (
@@ -337,6 +341,7 @@ export const ImageZoomView =
           centerContent
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
+          accessibilityLabel="Full Screen Image"
           contentContainerStyle={{
             width: imageFittedWithinScreen.width,
             height: imageFittedWithinScreen.height,

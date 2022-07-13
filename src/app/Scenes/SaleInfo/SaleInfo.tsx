@@ -6,7 +6,7 @@ import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import moment from "moment-timezone"
-import { Flex, Join, Sans, Separator, Text } from "palette"
+import { Flex, Join, Separator, Text } from "palette"
 import React, { useEffect, useRef } from "react"
 import { PanResponder, Platform, ScrollView, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -51,9 +51,9 @@ const AuctionSupport = () => {
 
 const AuctionIsLive = () => (
   <Flex px={2} testID="live-auction">
-    <Sans size="5t" mb={2} mt={1}>
+    <Text variant="md" mb={2} mt={1}>
       This is a live auction
-    </Sans>
+    </Text>
     <Text variant="sm" color="black" fontSize={15}>
       Participating in a live auction means you’ll be competing against bidders in real time on an
       auction room floor. You can place max bids which will be represented by Artsy in the auction
@@ -99,10 +99,10 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
         <Join separator={<Separator my={2} />}>
           {/*  About Auction */}
           <Flex px={2} mt={70}>
-            <Sans size="8">About this auction</Sans>
-            <Sans size="5" mt={1} mb={3}>
+            <Text variant="lg">About this auction</Text>
+            <Text variant="md" mt={1} mb={3}>
               {sale.name}
-            </Sans>
+            </Text>
             {saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) === "closed" || (
               <Flex mb={4}>
                 <RegisterToBidButtonContainer
@@ -201,7 +201,7 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale$data }> = (props) => {
 const SaleInfoPlaceholder = () => (
   <Join separator={<Separator my={2} />}>
     <Flex px={2} mt={70}>
-      <Sans size="8">About this auction</Sans>
+      <Text variant="lg">About this auction</Text>
       <Separator my={1} />
       <PlaceholderBox marginBottom={20} height={30} width={200 + Math.random() * 100} />
       <PlaceholderBox marginBottom={10} height={50} />

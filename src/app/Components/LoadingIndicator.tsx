@@ -1,5 +1,4 @@
 import { Box, Flex } from "palette"
-import React from "react"
 import { ActivityIndicator } from "react-native"
 
 export const LoadingIndicator = () => {

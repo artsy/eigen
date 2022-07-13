@@ -1,5 +1,4 @@
 import { useColor } from "palette/hooks"
-import React from "react"
 import { Switch, View } from "react-native"
 
 interface FilterToggleButtonProps {

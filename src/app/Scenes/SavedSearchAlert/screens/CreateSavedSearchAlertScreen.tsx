@@ -1,6 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { Box } from "palette"
-import React from "react"
 import { CreateSavedSearchAlertContentQueryRenderer } from "../containers/CreateSavedSearchContentContainer"
 import { CreateSavedSearchAlertNavigationStack } from "../SavedSearchAlertModel"
 import { SavedSearchStoreProvider } from "../SavedSearchStore"

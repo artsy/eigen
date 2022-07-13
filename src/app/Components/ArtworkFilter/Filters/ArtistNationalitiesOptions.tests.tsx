@@ -4,8 +4,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import React from "react"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtistNationalitiesOptionsScreen } from "./ArtistNationalitiesOptions"
 import { getEssentialProps } from "./helper"
 
@@ -46,7 +45,7 @@ describe("ArtistNationalitiesOptionsScreen", () => {
   }
 
   it("renders the options", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     expect(getByText("American")).toBeTruthy()
     expect(getByText("British")).toBeTruthy()
@@ -67,7 +66,7 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       ],
     }
 
-    const { getAllByA11yState } = renderWithWrappersTL(<TestWrapper initialData={initialData} />)
+    const { getAllByA11yState } = renderWithWrappers(<TestWrapper initialData={initialData} />)
 
     expect(getAllByA11yState({ checked: true })).toHaveLength(2)
     expect(getAllByA11yState({ checked: false })).toHaveLength(3)
@@ -85,7 +84,7 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       ],
     }
 
-    const { getByText, queryAllByA11yState } = renderWithWrappersTL(
+    const { getByText, queryAllByA11yState } = renderWithWrappers(
       <TestWrapper initialData={initialData} />
     )
 

@@ -6,7 +6,6 @@ import { LocationMap_location$data } from "__generated__/LocationMap_location.gr
 import { Pin } from "app/Icons/Pin"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
 import { Box, Flex, Text } from "palette"
-import React from "react"
 import { Linking, TouchableOpacity } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql } from "react-relay"

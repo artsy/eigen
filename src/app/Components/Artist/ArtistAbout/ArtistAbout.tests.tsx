@@ -2,9 +2,8 @@ import { ArtistAboutTestsQuery } from "__generated__/ArtistAboutTestsQuery.graph
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { ModalStack } from "app/navigation/ModalStack"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import Biography from "../Biography"
@@ -52,7 +51,7 @@ describe("ArtistAbout", () => {
 
   describe("Biography", () => {
     it("is shown when the artist has metadata", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Boolean: (context) => {
@@ -66,7 +65,7 @@ describe("ArtistAbout", () => {
     })
 
     it("is hidden when the artist has metadata", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Boolean: (context) => {
@@ -82,7 +81,7 @@ describe("ArtistAbout", () => {
 
   describe("ArtistAboutShows", () => {
     it("is rendered by default", () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
       resolveMostRecentRelayOperation(mockEnvironment)
 

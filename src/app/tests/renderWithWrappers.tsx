@@ -36,12 +36,12 @@ const componentWithWrappers = (component: ReactElement) => {
 
 /**
  * @deprecated
- * Use `renderWithWrappersTL` instead.
+ * Use `renderWithWrappers` instead.
  *
  * Renders a React Component with our page wrappers
  * @param component
  */
-export const renderWithWrappers = (component: ReactElement) => {
+export const renderWithWrappersLEGACY = (component: ReactElement) => {
   const wrappedComponent = componentWithWrappers(component)
   try {
     // tslint:disable-next-line:use-wrapped-components
@@ -85,7 +85,7 @@ class PureWrapper extends Component {
  * by using @testing-library/react-native
  * @param component
  */
-export const renderWithWrappersTL = (component: ReactElement) => {
+export const renderWithWrappers = (component: ReactElement) => {
   try {
     return render(component, { wrapper: Wrappers })
   } catch (error: any) {
@@ -108,5 +108,5 @@ export const renderWithHookWrappersTL = (component: ReactElement, environment: E
       <Suspense fallback="Loading...">{component}</Suspense>
     </RelayEnvironmentProvider>
   )
-  return renderWithWrappersTL(jsx)
+  return renderWithWrappers(jsx)
 }

@@ -14,19 +14,15 @@ Explain why the hack was added.
 
 👀 See comment on top of file for template.
 
-## "cheerio" resolution
+## cleanup-detect-secrets script in postinstall
 
 #### When can we remove this:
 
-Remove after `enzyme` is removed as a dependency.
+We can remove at any point after 20 july 2022.
 
 #### Explanation/Context:
 
-This is an existing resolution at the creation of HACKS.md. For what I gathered, it is required by enzyme. It requires ~1.0.0, but we need 0.22.0.
-
-We use it in `renderToString` which takes something like `<Image />` and gives us `<image />`. Using 0.22.0 that works, but when enzyme uses ~1.0.0 it gives `<img />`, which breaks tests.
-
-Using enzyme we created `renderUntil`. To replace that, we probably need @testing-library/react or something to replace it. Then we can remove enzyme and cheerio resolution as well.
+This is just a cleanup script that removes the artsy detect secrets formula from brew, and the python one, both of which we used at some point, but not anymore. good to make sure other devs have the right tool installed in their PATH, and remove any old deps we had.
 
 ## EchoNew.json
 
@@ -306,17 +302,6 @@ When https://github.com/react-native-async-storage/async-storage/issues/746 is s
 
 The types in this package are not correct, and there is a type error that comes up when we try to use it.
 It's a type error on the mock declaration, so we don't really care for it, so we just add a ts-ignore instruction to that declaration.
-
-## @wojtekmaj/enzyme-adapter-react-17 patch
-
-#### When can we remove this:
-
-When we remove enzyme from eigen.
-
-#### Explanation/Context:
-
-Enzyme is missing types and this package is importing enzyme, so typescript is sad.
-We ignore enzyme types in our tests in eigen too. Once we remove enzyme, we can get rid of this and everything connected to enzyme.
 
 ## rn-async-storage-flipper patch
 

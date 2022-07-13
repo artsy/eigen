@@ -2,7 +2,6 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { Box } from "palette"
-import React from "react"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,

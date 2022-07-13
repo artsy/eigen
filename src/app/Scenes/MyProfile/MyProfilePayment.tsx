@@ -10,7 +10,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex, Sans, Spacer } from "palette"
+import { Flex, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useReducer, useState } from "react"
 import {
   ActivityIndicator,
@@ -150,9 +150,9 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
                 onPress={() => onRemove(item.internalID)}
                 hitSlop={{ top: 10, left: 20, right: 20, bottom: 10 }}
               >
-                <Sans size="4t" color="red100">
+                <Text variant="md" color="red100">
                   Remove
-                </Sans>
+                </Text>
               </TouchableOpacity>
             )}
           </Flex>

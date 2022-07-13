@@ -1,5 +1,3 @@
-import React from "react"
-
 import { DateTime } from "luxon"
 import ordinal from "ordinal"
 import { Box, Flex, IconProps, Text } from "palette"

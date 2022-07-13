@@ -1,5 +1,4 @@
 import { storiesOf } from "@storybook/react-native"
-import React from "react"
 import { StyleSheet, View } from "react-native"
 import { List } from "storybook/helpers"
 import { Text } from "./elements/Text"

@@ -5,7 +5,7 @@ import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import React, { Component } from "react"
+import { Component } from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
@@ -135,8 +135,7 @@ const FavoriteShowsContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return props.me && props.me.followsAndSaves.shows
+      return props?.me?.followsAndSaves?.shows
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {

@@ -2,7 +2,6 @@ import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { Flex, Text, Touchable } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
-import React from "react"
 
 interface TermsOfServiceCheckboxProps {
   checked: boolean

@@ -2,7 +2,6 @@
 #import "ARCustomEigenLabels.h"
 #import "ARTNativeScreenPresenterModule.h"
 
-#import <NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <Sentry/Sentry.h>
 

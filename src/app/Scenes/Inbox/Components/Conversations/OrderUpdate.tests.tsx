@@ -1,9 +1,7 @@
-import React from "react"
-
 import { OrderUpdateTestsQuery } from "__generated__/OrderUpdateTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { AlertCircleFillIcon, LinkText, MoneyFillIcon } from "palette"
 import "react-native"
 import { QueryRenderer } from "react-relay"
@@ -79,7 +77,7 @@ const getWrapper = (event = {}) => {
       ],
     },
   }
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer />)
   const finalResolvers = { Conversation: () => mockConversation }
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>

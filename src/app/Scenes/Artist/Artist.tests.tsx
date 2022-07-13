@@ -1,8 +1,7 @@
 import { ModalStack } from "app/navigation/ModalStack"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { postEventToProviders } from "app/utils/track/providers"
 import { isEqual } from "lodash"
-import React from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
@@ -46,7 +45,7 @@ describe("Artist", () => {
   )
 
   it("returns an empty state if artist has no artworks", async () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
     const emptyTitle = "No works available by the artist at this time"
     const emptyMessage = "Create an Alert to receive notifications when new works are added"
 
@@ -71,7 +70,7 @@ describe("Artist", () => {
   })
 
   it("should render Artworks tab by default", async () => {
-    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -93,7 +92,7 @@ describe("Artist", () => {
   })
 
   it("returns Overview tab if artist has metadata", async () => {
-    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -113,7 +112,7 @@ describe("Artist", () => {
   })
 
   it("returns Overview tab if artist has only articles", async () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -133,7 +132,7 @@ describe("Artist", () => {
   })
 
   it("returns three tabs if artist has metadata, works, and auction results", async () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -154,7 +153,7 @@ describe("Artist", () => {
   })
 
   it("hides Artist insights tab when there are no auction results", async () => {
-    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery", {
       Artist() {
@@ -174,7 +173,7 @@ describe("Artist", () => {
   })
 
   it("tracks a page view", () => {
-    renderWithWrappersTL(<TestWrapper />)
+    renderWithWrappers(<TestWrapper />)
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery")
 

@@ -17,7 +17,6 @@ import {
   Box,
   Flex,
   OpaqueImageView as NewOpaqueImageView,
-  Sans,
   Spacer,
   Text,
   TextProps,
@@ -207,9 +206,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 borderRadius={2}
                 alignSelf="flex-start"
               >
-                <Sans size="2" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
+                <Text variant="xs" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
                   {urgencyTag}
-                </Sans>
+                </Text>
               </Flex>
             )}
           </View>

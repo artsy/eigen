@@ -1,8 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { MyAccountEditEmailTestsQuery } from "__generated__/MyAccountEditEmailTestsQuery.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { flushPromiseQueue } from "../../tests/flushPromiseQueue"
@@ -50,7 +49,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
     />
   )
   it("shows confirm email toast when email is changed", async () => {
-    const { getByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => ({
@@ -89,7 +88,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
   })
 
   it("does not show confirm email toast when email did not change", async () => {
-    const { getByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Me: () => ({

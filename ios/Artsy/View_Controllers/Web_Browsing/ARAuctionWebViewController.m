@@ -1,7 +1,7 @@
 #import "ARLogger.h"
 #import "ARAuctionWebViewController.h"
 #import "ARAppConstants.h"
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 #import <React/RCTRootView.h>
 #import "User.h"
 #import "Artwork.h"
@@ -73,7 +73,7 @@
     return [super shouldLoadNavigationAction:navigationAction];
 }
 
-- (void)bidHasBeenConfirmed;
+- (void)bidHasBeenConfirmed
 {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 
@@ -89,7 +89,7 @@
     [[AREmission sharedInstance] navigate:[NSString stringWithFormat:@"/artwork/%@", self.artworkID]];
 }
 
-- (void)artworkBidUpdated:(NSNotification *)notification;
+- (void)artworkBidUpdated:(NSNotification *)notification
 {
     NSDictionary *info = notification.userInfo;
     if ([info[ARAuctionIDKey] isEqualToString:self.auctionID] && (self.artworkID == nil || [info[ARAuctionArtworkIDKey] isEqualToString:self.artworkID])) {
@@ -99,7 +99,7 @@
     }
 }
 
-- (void)registrationHasBeenConfirmed;
+- (void)registrationHasBeenConfirmed
 {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 

@@ -2,12 +2,11 @@ import { AuctionPrice_artwork$data } from "__generated__/AuctionPrice_artwork.gr
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { get } from "app/utils/get"
-import { CheckCircleIcon, CloseCircleIcon, Flex, Sans, Spacer } from "palette"
+import { CheckCircleIcon, CloseCircleIcon, Flex, Spacer, Text } from "palette"
 import React from "react"
-import { Text } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-interface AuctionPriceProps {
+export interface AuctionPriceProps {
   artwork: AuctionPrice_artwork$data
   auctionState: AuctionTimerState
 }
@@ -49,9 +48,9 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
       return null
     } else if (auctionState === AuctionTimerState.CLOSED) {
       return (
-        <Sans size="4t" weight="medium" color="black100">
+        <Text variant="md" weight="medium" color="black100">
           Bidding closed
-        </Sans>
+        </Text>
       )
     } else if (!saleArtwork || !saleArtwork.currentBid) {
       // Don't display anything if there is no starting bid info
@@ -75,39 +74,47 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     return (
       <>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
-          <Sans size="4t" weight="medium">
+          <Text variant="md" weight="medium">
             {bidsPresent ? "Current bid" : "Starting bid"}
-          </Sans>
-          <Sans size="4t" weight="medium">
+          </Text>
+          <Text variant="md" weight="medium">
             {!!myBidPresent && (
               <Text>
                 {myBidWinning ? (
-                  <CheckCircleIcon height="16" fill="green100" />
+                  <CheckCircleIcon
+                    height="16"
+                    fill="green100"
+                    accessibilityLabel="My Bid Winning Icon"
+                  />
                 ) : (
-                  <CloseCircleIcon height="16" fill="red100" />
+                  <CloseCircleIcon
+                    height="16"
+                    fill="red100"
+                    accessibilityLabel="My Bid Losing Icon"
+                  />
                 )}{" "}
               </Text>
             )}
             {!!saleArtwork.currentBid && saleArtwork.currentBid.display}
-          </Sans>
+          </Text>
         </Flex>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
           {!!bidText && (
-            <Sans size="2" pr={1} color="black60">
+            <Text variant="xs" pr={1} color="black60">
               {bidText}
-            </Sans>
+            </Text>
           )}
 
           {!!myMaxBid && (
-            <Sans size="2" color="black60" pl={1}>
+            <Text variant="xs" color="black60" pl={1}>
               Your max: {myMaxBid}
-            </Sans>
+            </Text>
           )}
         </Flex>
         {sale! /* STRICTNESS_MIGRATION */.isWithBuyersPremium && (
           <>
             <Spacer mb={1} />
-            <Sans size="3t" color="black60">
+            <Text variant="sm" color="black60">
               This auction has a{" "}
               <Text
                 style={{ textDecorationLine: "underline" }}
@@ -117,7 +124,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
               </Text>
               .{"\n"}
               Shipping, taxes, and additional fees may apply.
-            </Sans>
+            </Text>
           </>
         )}
       </>

@@ -1,6 +1,5 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
-import React from "react"
 import "react-native"
 
 import { FairsRail_fairsModule$data } from "__generated__/FairsRail_fairsModule.graphql"
@@ -69,7 +68,7 @@ const fairsModule: CleanRelayFragment<FairsRail_fairsModule$data> = {
 }
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
+  renderWithWrappersLEGACY(
     <FairsRailFragmentContainer
       title="Fairs"
       fairsModule={fairsModule as any}
@@ -79,7 +78,7 @@ it("renders without throwing an error", () => {
 })
 
 it("renders results when there are fairs returned", () => {
-  const tree = renderWithWrappers(
+  const tree = renderWithWrappersLEGACY(
     <FairsRailFragmentContainer
       title="Featured Fairs"
       fairsModule={fairsModule as any}
@@ -90,7 +89,7 @@ it("renders results when there are fairs returned", () => {
 })
 
 it("does not render results when there are no fairs returned", () => {
-  const tree = renderWithWrappers(
+  const tree = renderWithWrappersLEGACY(
     <FairsRailFragmentContainer
       title="Fairs"
       fairsModule={emptyFairsModule as any}
@@ -109,7 +108,7 @@ it("renders without throwing an error when missing artworks", () => {
     result.otherArtworks.edges = []
   })
   expect(() =>
-    renderWithWrappers(
+    renderWithWrappersLEGACY(
       <FairsRailFragmentContainer
         title="Fairs"
         fairsModule={fairsCopy as any}
@@ -124,7 +123,7 @@ describe("location", () => {
     const fairsCopy = cloneDeep(fairsModule)
     // @ts-ignore
     fairsCopy.results[0].location.city = "New Yawk"
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <FairsRailFragmentContainer
         title="Fairs"
         fairsModule={fairsCopy as any}
@@ -140,7 +139,7 @@ describe("location", () => {
     const fairsCopy = cloneDeep(fairsModule)
     // @ts-ignore
     fairsCopy.results[0].location.country = "Canada"
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <FairsRailFragmentContainer
         title="Fairs"
         fairsModule={fairsCopy as any}
@@ -155,7 +154,7 @@ describe("location", () => {
 
 describe("navigation", () => {
   it("navigates to the fair url", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <FairsRailFragmentContainer
         title="Fairs"
         fairsModule={fairsModule as any}
@@ -171,7 +170,7 @@ describe("navigation", () => {
 describe("analytics", () => {
   it("tracks fair thumbnail taps", () => {
     const fairsCopy = cloneDeep(fairsModule)
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <FairsRailFragmentContainer
         title="Fairs"
         fairsModule={fairsCopy as any}

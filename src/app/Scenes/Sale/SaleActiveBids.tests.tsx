@@ -1,7 +1,6 @@
 import { SaleActiveBidsTestsQuery } from "__generated__/SaleActiveBidsTestsQuery.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -38,7 +37,7 @@ describe("SaleActiveBids", () => {
   })
 
   it("renders no items if the user has no active lots standing", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const mockProps = {
       Me: () => ({
@@ -51,7 +50,7 @@ describe("SaleActiveBids", () => {
   })
 
   it("renders list of lots if the user has active lots standing", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const mockProps = {
       Me: () => ({

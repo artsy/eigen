@@ -1,9 +1,8 @@
 import { PartnerShowsTestsQuery } from "__generated__/PartnerShowsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { cloneDeep } from "lodash"
-import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { PartnerShowsFragmentContainer as PartnerShows } from "./PartnerShows"
@@ -49,7 +48,7 @@ describe("PartnerShows", () => {
   }
 
   it("renders the shows correctly", async () => {
-    const { getByText } = await renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = await renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Partner: () => PartnerShowsFixture,
@@ -74,7 +73,7 @@ describe("PartnerShows", () => {
     // @ts-ignore
     fixture.currentAndUpcomingShows.edges[0].node.isDisplayable = false
 
-    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+    const { queryByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Partner: () => fixture,

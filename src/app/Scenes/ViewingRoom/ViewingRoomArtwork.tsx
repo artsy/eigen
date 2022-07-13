@@ -10,7 +10,6 @@ import {
   EyeOpenedIcon,
   Flex,
   LargeCard,
-  Sans,
   Separator,
   Spacer,
   Text,
@@ -90,7 +89,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
                 <Flex flexDirection="row" mx="1" height={24} alignItems="center">
                   <EyeOpenedIcon />
                   <Spacer ml={0.5} />
-                  <Sans size="2">View on wall</Sans>
+                  <Text variant="xs">View on wall</Text>
                 </Flex>
               </TouchableWithoutFeedback>
             </Flex>

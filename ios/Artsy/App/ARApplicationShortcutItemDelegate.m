@@ -3,7 +3,7 @@
 #import "ARAppConstants.h"
 #import "ARNavigationController.h"
 #import "User.h"
-#import <Emission/AREmission.h>
+#import "AREmission.h"
 
 
 @implementation ARApplicationShortcutItemDelegate

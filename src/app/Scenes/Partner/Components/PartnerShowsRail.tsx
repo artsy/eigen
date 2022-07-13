@@ -1,7 +1,7 @@
 import { PartnerShowsRail_partner$data } from "__generated__/PartnerShowsRail_partner.graphql"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToEdge } from "app/utils/isCloseToEdge"
-import { Sans, Spacer } from "palette"
+import { Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -36,7 +36,7 @@ const PartnerShowsRail: React.FC<{
     <>
       {!!currentAndUpcomingShows && !!currentAndUpcomingShows.length && (
         <>
-          <Sans size="4t">Current and upcoming shows</Sans>
+          <Text variant="md">Current and upcoming shows</Text>
           <FlatList
             horizontal
             onScroll={isCloseToEdge(fetchNextPage)}

@@ -35,10 +35,10 @@ export default function useAppState({ onForeground, onBackground }: AppStateProp
       appState.current = nextAppState
     }
 
-    AppState.addEventListener("change", _handleAppStateChange)
+    const sub = AppState.addEventListener("change", _handleAppStateChange)
 
     return () => {
-      AppState.removeEventListener("change", _handleAppStateChange)
+      sub.remove()
     }
   }, [appState.current, onForeground, onBackground])
 

@@ -19,8 +19,8 @@ static NSString *CellIdentifier = @"Cell";
 
 @property (nonatomic, strong) ArtsyEcho *echo;
 @property (nonatomic, strong) NSArrayOf(Message *) *messages; // Cache messages to ensure deterministic ordering
-@property (nonatomic, strong) NSArrayOf(NSString *) * routeKeys;
-@property (nonatomic, strong) NSArrayOf(NSString *) * featureKeys;
+@property (nonatomic, strong) NSArrayOf(NSString *) *routeKeys;
+@property (nonatomic, strong) NSArrayOf(NSString *) *featureKeys;
 
 @end
 

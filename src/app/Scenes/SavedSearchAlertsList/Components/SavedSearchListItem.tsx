@@ -1,5 +1,4 @@
 import { Box, ChevronIcon, Flex, Text, Touchable, useColor } from "palette"
-import React from "react"
 
 interface SavedSearchListItemProps {
   title: string
