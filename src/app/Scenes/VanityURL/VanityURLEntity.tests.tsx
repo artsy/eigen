@@ -1,6 +1,6 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { act } from "@testing-library/react-native"
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { getMockRelayEnvironment, getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { Fair, FairFragmentContainer, FairPlaceholder } from "app/Scenes/Fair/Fair"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
@@ -10,6 +10,7 @@ import {
 } from "app/tests/resolveMostRecentRelayOperation"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import { Spinner } from "palette"
+import { MockPayloadGenerator, RelayMockEnvironment } from "relay-test-utils"
 import { PartnerContainer } from "../Partner/Partner"
 import { VanityURLEntityRenderer } from "./VanityURLEntity"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
@@ -42,9 +43,14 @@ describe("VanityURLEntity", () => {
     const tree = renderWithWrappersLEGACY(
       <TestRenderer entity="fair" slugType="fairID" slug="some-fair" />
     )
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("FairQuery")
+    expect(
+      (getRelayEnvironment as () => RelayMockEnvironment)().mock.getMostRecentOperation().request
+        .node.operation.name
+    ).toBe("FairQuery")
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation))
+      getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation)
+      )
     })
     const fairComponent = tree.root.findByType(Fair)
     expect(fairComponent).toBeDefined()
@@ -79,9 +85,9 @@ describe("VanityURLEntity", () => {
       const tree = renderWithWrappersLEGACY(
         <TestRenderer entity="partner" slugType="profileID" slug="some-gallery" />
       )
-      expect(getRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "VanityURLEntityQuery"
-      )
+      expect(
+        getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+      ).toBe("VanityURLEntityQuery")
       resolveMostRecentRelayOperation({
         Query: () => ({
           vanityURLEntity: {
@@ -101,9 +107,9 @@ describe("VanityURLEntity", () => {
       const tree = renderWithWrappersLEGACY(
         <TestRenderer entity="fair" slugType="profileID" slug="some-fair" />
       )
-      expect(getRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "VanityURLEntityQuery"
-      )
+      expect(
+        getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+      ).toBe("VanityURLEntityQuery")
       resolveMostRecentRelayOperation({
         Query: () => ({
           vanityURLEntity: {
@@ -121,9 +127,9 @@ describe("VanityURLEntity", () => {
       const tree = renderWithWrappersLEGACY(
         <TestRenderer entity="unknown" slugType="profileID" slug="some-unknown-id" />
       )
-      expect(getRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "VanityURLEntityQuery"
-      )
+      expect(
+        getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+      ).toBe("VanityURLEntityQuery")
       resolveMostRecentRelayOperationPayload({
         errors: [],
         data: {

@@ -555,10 +555,10 @@ describe("Applying filters on Artworks", () => {
       }),
     })
 
-    expect(getRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name).toEqual(
-      "CollectionArtworksInfiniteScrollGridQuery"
-    )
-    expect(getRelayEnvironment().mock.getMostRecentOperation().request.variables)
+    expect(
+      getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+    ).toEqual("CollectionArtworksInfiniteScrollGridQuery")
+    expect(getMockRelayEnvironment().mock.getMostRecentOperation().request.variables)
       .toMatchInlineSnapshot(`
       Object {
         "acquireable": false,

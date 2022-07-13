@@ -79,6 +79,8 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
           renderFallback: () => <VanityURLPossibleRedirect slug={slug} />,
           renderPlaceholder: () => {
             switch (entity) {
+              case "fair":
+                return <FairPlaceholder />
               case "partner":
                 return (
                   <View style={{ flex: 1, top: safeAreaInsets.top ?? 0 }}>

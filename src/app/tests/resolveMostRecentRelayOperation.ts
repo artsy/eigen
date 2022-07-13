@@ -1,6 +1,6 @@
 import { act } from "@testing-library/react-native"
 import { GraphQLResponse, OperationDescriptor } from "relay-runtime"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { takeRight } from "lodash"
 import { MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
@@ -56,7 +56,7 @@ export function resolveMostRecentRelayOperation(mockResolvers?: MockResolvers) {
     // Wrapping in act will ensure that components
     // are fully updated to their final state.
     // https://relay.dev/docs/guides/testing-relay-components/
-    getRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
+    getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
     )
   })
@@ -68,7 +68,7 @@ export function resolveMostRecentRelayOperationPayload(payload: GraphQLResponse)
     // Wrapping in act will ensure that components
     // are fully updated to their final state.
     // https://relay.dev/docs/guides/testing-relay-components/
-    getRelayEnvironment().mock.resolveMostRecentOperation(payload)
+    getMockRelayEnvironment().mock.resolveMostRecentOperation(payload)
   })
 }
 
@@ -76,6 +76,6 @@ export function rejectMostRecentRelayOperation(
   error: Error | ((operation: OperationDescriptor) => Error)
 ) {
   act(() => {
-    getRelayEnvironment().mock.rejectMostRecentOperation(error)
+    getMockRelayEnvironment().mock.rejectMostRecentOperation(error)
   })
 }

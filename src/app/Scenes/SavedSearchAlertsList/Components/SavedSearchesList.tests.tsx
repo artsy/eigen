@@ -123,7 +123,7 @@ describe("SavedSearches", () => {
     fireEvent.press(getByText("Name (A-Z)"))
 
     await waitFor(() => {
-      const operation = getRelayEnvironment().mock.getMostRecentOperation()
+      const operation = getMockRelayEnvironment().mock.getMostRecentOperation()
       expect(operation.fragment.variables.sort).toBe("NAME_ASC")
     })
   })
