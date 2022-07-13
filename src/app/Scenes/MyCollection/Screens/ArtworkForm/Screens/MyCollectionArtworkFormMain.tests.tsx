@@ -4,8 +4,8 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
+import { CategoryPicker } from "../Components/CategoryPicker"
 import { Dimensions } from "../Components/Dimensions"
-import { MediumPicker } from "../Components/MediumPicker"
 import { ArtworkFormMode } from "../MyCollectionArtworkForm"
 import { MyCollectionArtworkFormMain } from "./MyCollectionArtworkFormMain"
 
@@ -19,12 +19,12 @@ jest.mock("../Components/ArtistAutosuggest", () => ({
   ArtistAutosuggest: () => null,
 }))
 
-jest.mock("../Components/MediumPicker", () => ({
-  MediumPicker: () => null,
+jest.mock("../Components/CategoryPicker", () => ({
+  CategoryPicker: () => null,
 }))
 
-jest.mock("../Components/MediumPicker", () => ({
-  MediumPicker: () => null,
+jest.mock("../Components/CategoryPicker", () => ({
+  CategoryPicker: () => null,
 }))
 
 jest.mock("../Components/Dimensions", () => ({
@@ -87,7 +87,7 @@ describe("AddEditArtwork", () => {
       <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     )
     const wrapper = renderWithWrappersLEGACY(artworkForm)
-    const expected = [FancyModalHeader, MediumPicker, Dimensions]
+    const expected = [FancyModalHeader, CategoryPicker, Dimensions]
     expected.forEach((Component) => {
       expect(wrapper.root.findByType(Component as React.ComponentType)).toBeDefined()
     })
