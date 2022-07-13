@@ -12353,6 +12353,7 @@ type Query {
     last: Int
     page: Int
     userId: String
+    version: String
   ): ArtworkConnection
 
   # An auction result
@@ -15791,6 +15792,7 @@ type Viewer {
     last: Int
     page: Int
     userId: String
+    version: String
   ): ArtworkConnection
 
   # An auction result
