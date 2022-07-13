@@ -9,6 +9,7 @@ import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtwork
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { PAGE_SIZE } from "app/Components/constants"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { BigHeaderRefreshControl } from "app/Components/StickyTabPage/BigHeaderRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -202,8 +203,7 @@ const MyCollection: React.FC<{
           flexGrow: artworks.length ? undefined : 1,
           justifyContent: artworks.length ? "flex-start" : "center",
         }}
-        refresh={refetch}
-        isRefreshing={isRefreshing}
+        refreshControl={<BigHeaderRefreshControl onRefresh={refetch} refreshing={isRefreshing} />}
         innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"

@@ -4,6 +4,7 @@ import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids
 import { PAGE_SIZE } from "app/Components/constants"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ZeroState } from "app/Components/States/ZeroState"
+import { BigHeaderRefreshControl } from "app/Components/StickyTabPage/BigHeaderRefreshControl"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -80,8 +81,12 @@ export class SavedWorks extends Component<Props, State> {
     if (artworks.length === 0) {
       return (
         <StickyTabPageScrollView
-          refresh={this.handleRefresh}
-          isRefreshing={this.state.refreshingFromPull}
+          refreshControl={
+            <BigHeaderRefreshControl
+              onRefresh={this.handleRefresh}
+              refreshing={this.state.refreshingFromPull}
+            />
+          }
           contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
         >
           <ZeroState
@@ -109,8 +114,12 @@ export class SavedWorks extends Component<Props, State> {
           <StickyTabPageScrollView
             contentContainerStyle={{ paddingVertical: space(2) }}
             onEndReached={this.loadMore}
-            refresh={this.handleRefresh}
-            isRefreshing={this.state.refreshingFromPull}
+            refreshControl={
+              <BigHeaderRefreshControl
+                onRefresh={this.handleRefresh}
+                refreshing={this.state.refreshingFromPull}
+              />
+            }
           >
             <GenericGrid
               artworks={artworks}
