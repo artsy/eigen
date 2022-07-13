@@ -94,7 +94,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
             <Image source={require("images/profile_placeholder_avatar.webp")} />
           )}
         </Box>
-        <Flex flex={1} px={2}>
+        <Flex flex={1} px={1}>
           <Text fontSize={20} lineHeight={24} color={color("black100")}>
             {me?.name}
           </Text>
