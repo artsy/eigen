@@ -11440,6 +11440,39 @@ type PartnerArtistCounts {
   ): FormattedNumber
 }
 
+type PartnerArtistDocument {
+  filename: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  size: Int!
+  title: String!
+  uri: String!
+}
+
+# A connection to a list of items.
+type PartnerArtistDocumentConnection {
+  # A list of edges.
+  edges: [PartnerArtistDocumentEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerArtistDocumentEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: PartnerArtistDocument
+}
+
 # An edge in a connection.
 type PartnerArtistEdge {
   artist: Artist
@@ -12756,6 +12789,22 @@ type Query {
     # The slug or ID of the Partner
     id: String!
   ): Partner
+
+  # Retrieve all partner artist documents for a given partner and artist
+  partnerArtistDocumentsConnection(
+    after: String
+
+    # The slug or ID of the Artist
+    artistID: String!
+    before: String
+    first: Int
+    last: Int
+    page: Int
+
+    # The slug or ID of the Partner
+    partnerID: String!
+    size: Int
+  ): PartnerArtistDocumentConnection
 
   # A list of Artworks for a partner
   partnerArtworks(
@@ -16039,6 +16088,22 @@ type Viewer {
     # The slug or ID of the Partner
     id: String!
   ): Partner
+
+  # Retrieve all partner artist documents for a given partner and artist
+  partnerArtistDocumentsConnection(
+    after: String
+
+    # The slug or ID of the Artist
+    artistID: String!
+    before: String
+    first: Int
+    last: Int
+    page: Int
+
+    # The slug or ID of the Partner
+    partnerID: String!
+    size: Int
+  ): PartnerArtistDocumentConnection
 
   # A list of Artworks for a partner
   partnerArtworks(
