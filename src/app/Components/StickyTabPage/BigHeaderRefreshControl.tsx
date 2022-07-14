@@ -1,7 +1,9 @@
 import { RefreshControl } from "react-native"
 import { useStickyTabPageContext } from "./StickyTabPageContext"
 
-/** RefreshControl for StickyTabPage when the static header is large. Allows for the refreshControl to be visible **/
+/**
+ * RefreshControl for StickyTabPage when the static header is large. Allows for the refreshControl to be visible
+ */
 export const BigHeaderRefreshControl: React.FC<{
   refreshing: boolean
   onRefresh: (() => void) | undefined
