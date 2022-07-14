@@ -1,5 +1,5 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
-import { BigHeaderRefreshControl } from "app/Components/StickyTabPage/BigHeaderRefreshControl"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -117,7 +117,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       style={{
         flex: 1,
       }}
-      refreshControl={<BigHeaderRefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
+      refreshControl={<StickTabPageRefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
       contentContainerStyle={{
         // Extend the container flex when there are no artworks for accurate vertical centering
         flexGrow: myCollectionArtworksCount > 0 ? undefined : 1,
