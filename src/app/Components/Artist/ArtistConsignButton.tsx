@@ -69,7 +69,7 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) =
                 {headline}
               </Text>
               <Box position="relative">
-                <Text variant="sm" color="black60">
+                <Text variant="xs" color="black60">
                   Consign with Artsy
                 </Text>
               </Box>
