@@ -11686,6 +11686,39 @@ type PartnersAggregationResults {
   slice: PartnersAggregation
 }
 
+type PartnerShowDocument {
+  filename: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  size: Int!
+  title: String!
+  uri: String!
+}
+
+# A connection to a list of items.
+type PartnerShowDocumentConnection {
+  # A list of edges.
+  edges: [PartnerShowDocumentEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PartnerShowDocumentEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: PartnerShowDocument
+}
+
 enum PartnerShowPartnerType {
   GALLERY
   MUSEUM
@@ -12858,6 +12891,22 @@ type Query {
     sort: PartnersSortType
     type: [PartnerClassification]
   ): PartnerConnection
+
+  # Retrieve all partner show documents for a given partner and show
+  partnerShowDocumentsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+
+    # The slug or ID of the Partner
+    partnerID: String!
+
+    # The slug or ID of the Show
+    showID: String!
+    size: Int
+  ): PartnerShowDocumentConnection
 
   # Phone number information
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
@@ -16157,6 +16206,22 @@ type Viewer {
     sort: PartnersSortType
     type: [PartnerClassification]
   ): PartnerConnection
+
+  # Retrieve all partner show documents for a given partner and show
+  partnerShowDocumentsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+
+    # The slug or ID of the Partner
+    partnerID: String!
+
+    # The slug or ID of the Show
+    showID: String!
+    size: Int
+  ): PartnerShowDocumentConnection
 
   # Phone number information
   phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
