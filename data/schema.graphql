@@ -9185,6 +9185,8 @@ type Image {
 
   # Value to use when `padding-bottom` for fluid image placeholders
   placeholder: String
+
+  # Order position of the image, within the images array of the artwork. (1-indexed)
   position: Int
   resized(
     height: Int
