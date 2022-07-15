@@ -247,6 +247,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableCreateArtworkAlert",
   },
+  AREnableLeanArtwork: {
+    readyForRelease: false,
+    description: "Leaner Artwork pages",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

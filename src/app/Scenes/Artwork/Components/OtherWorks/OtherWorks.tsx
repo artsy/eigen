@@ -24,12 +24,21 @@ export const populatedGrids = (grids?: ReadonlyArray<Grid | null> | null) => {
   }
 }
 
+const getRelatedArtworks = (gridsToShow: any) => {
+  return gridsToShow.filter((grid: any) => {
+    return grid.__typename === "RelatedArtworkGrid"
+  })
+}
+
 export const OtherWorksFragmentContainer = createFragmentContainer<{
   artwork: OtherWorks_artwork$data
 }>(
   (props) => {
     const grids = props.artwork.contextGrids
     const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>
+    console.warn("gridsToShow", gridsToShow)
+    const related = getRelatedArtworks(gridsToShow)
+    console.warn("related", related)
 
     if (gridsToShow && gridsToShow.length > 0) {
       return (

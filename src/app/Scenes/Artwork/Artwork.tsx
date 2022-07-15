@@ -38,12 +38,14 @@ import { BelowTheFoldPlaceholder } from "./Components/BelowTheFoldPlaceholder"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
 import { CreateArtworkAlertSectionFragmentContainer as CreateArtworkAlertSection } from "./Components/CreateArtworkAlertSection"
+import { LazyGeneRail } from "./Components/LazyGeneRail"
 import {
   OtherWorksFragmentContainer as OtherWorks,
   populatedGrids,
 } from "./Components/OtherWorks/OtherWorks"
-import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
+import { PartnerCard } from "./Components/PartnerCard"
 import { Questions } from "./Components/Questions"
+import { RelatedArtworksRail } from "./Components/RelatedArtworksRail"
 
 interface ArtworkProps {
   artworkAboveTheFold: Artwork_artworkAboveTheFold$data | null
@@ -66,6 +68,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const [fetchingData, setFetchingData] = useState(false)
   const enableConversationalBuyNow = useFeatureFlag("AREnableConversationalBuyNow")
   const enableCreateArtworkAlert = useFeatureFlag("AREnableCreateArtworkAlert")
+  const isFxSummit = useFeatureFlag("AREnableLeanArtwork")
 
   const { internalID, slug, isInAuction, partner: partnerAbove } = artworkAboveTheFold || {}
   const { isPreview, isClosed, liveStartAt } = artworkAboveTheFold?.sale ?? {}
@@ -345,6 +348,33 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
+    if (isFxSummit) {
+      sections.push({
+        key: "relatedWorks",
+        element: <RelatedArtworksRail artwork={artworkBelowTheFold} />,
+      })
+    }
+
+    if (isFxSummit) {
+      sections.push({
+        key: "geneArtworksRail",
+        element: (
+          <LazyGeneRail title="Related category: Dotted" artistID="yayoi-kusama" geneID="dotted" />
+        ),
+      })
+
+      sections.push({
+        key: "geneArtworksRail2",
+        element: (
+          <LazyGeneRail
+            title="Related category: Patterns"
+            artistID="yayoi-kusama"
+            geneID="patterns"
+          />
+        ),
+      })
+    }
+
     if (artist && artist.biographyBlurb) {
       sections.push({
         key: "aboutArtist",
@@ -352,7 +382,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (shouldRenderPartner()) {
+    if (!isFxSummit && shouldRenderPartner()) {
       sections.push({
         key: "partnerCard",
         element: <PartnerCard artwork={artworkBelowTheFold} />,
@@ -373,7 +403,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (artworkAboveTheFold && shouldRenderArtistSeriesMoreSeries()) {
+    if (!isFxSummit && artworkAboveTheFold && shouldRenderArtistSeriesMoreSeries()) {
       sections.push({
         key: "artistSeriesMoreSeries",
         element: (
@@ -388,7 +418,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (shouldRenderOtherWorks()) {
+    if (!isFxSummit && shouldRenderOtherWorks()) {
       sections.push({
         key: "otherWorks",
         element: <OtherWorks artwork={artworkBelowTheFold} />,
@@ -574,6 +604,7 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
+        ...RelatedArtworksRail_artwork
         ...PartnerCard_artwork
         ...AboutWork_artwork
         ...OtherWorks_artwork

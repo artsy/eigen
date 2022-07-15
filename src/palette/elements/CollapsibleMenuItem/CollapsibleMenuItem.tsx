@@ -1,3 +1,4 @@
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { CheckCircleIcon, ChevronIcon, Collapse, Flex, Text, Touchable } from "palette"
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { LayoutAnimation, View } from "react-native"
@@ -63,6 +64,8 @@ export const CollapsibleMenuItem = forwardRef<
       [isOpen]
     )
 
+    const isFxSummit = useFeatureFlag("AREnableLeanArtwork")
+
     return (
       <Flex ref={componentRef} collapsable={false}>
         <Touchable
@@ -79,7 +82,7 @@ export const CollapsibleMenuItem = forwardRef<
           )}
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Text
-              variant="lg"
+              variant={isFxSummit ? "sm" : "lg"}
               color={disabled ? "black30" : "black100"}
               style={{ maxWidth: "90%" }}
             >

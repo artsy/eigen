@@ -2,7 +2,7 @@ import { ArtworkDetails_artwork$data } from "__generated__/ArtworkDetails_artwor
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
-import { Box, Join, Spacer, Text } from "palette"
+import { Box, CollapsibleMenuItem, Join, Spacer, Text } from "palette"
 import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ArtworkDetailsRow } from "./ArtworkDetailsRow"
@@ -14,6 +14,7 @@ interface ArtworkDetailsProps {
 
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
   const enableLotConditionReport = useFeatureFlag("AROptionsLotConditionReport")
+  const isFxSummit = useFeatureFlag("AREnableLeanArtwork")
 
   const listItems = [
     {
@@ -50,26 +51,49 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
   ]
 
   const displayItems = listItems.filter((i) => i.value != null && i.value !== "")
+  if (!isFxSummit) {
+    return (
+      <Box>
+        <Join separator={<Spacer my={1} />}>
+          <Text variant="md">Artwork details</Text>
+          {displayItems.map(({ title, value }, index) => (
+            <ArtworkDetailsRow
+              key={index.toString()}
+              title={title}
+              value={value}
+              tracking={{
+                readMore: {
+                  flow: Schema.Flow.ArtworkDetails,
+                  contextModule: Schema.ContextModules.ArtworkDetails,
+                },
+              }}
+            />
+          ))}
+        </Join>
+      </Box>
+    )
+  }
 
   return (
-    <Box>
-      <Join separator={<Spacer my={1} />}>
-        <Text variant="md">Artwork details</Text>
-        {displayItems.map(({ title, value }, index) => (
-          <ArtworkDetailsRow
-            key={index.toString()}
-            title={title}
-            value={value}
-            tracking={{
-              readMore: {
-                flow: Schema.Flow.ArtworkDetails,
-                contextModule: Schema.ContextModules.ArtworkDetails,
-              },
-            }}
-          />
-        ))}
-      </Join>
-    </Box>
+    <CollapsibleMenuItem title="Artwork details">
+      <Box>
+        <Join separator={<Spacer my={1} />}>
+          {displayItems.map(({ title, value }, index) => (
+            <ArtworkDetailsRow
+              key={index.toString()}
+              title={title}
+              value={value}
+              tracking={{
+                readMore: {
+                  flow: Schema.Flow.ArtworkDetails,
+                  contextModule: Schema.ContextModules.ArtworkDetails,
+                },
+              }}
+            />
+          ))}
+        </Join>
+      </Box>
+    </CollapsibleMenuItem>
   )
 }
 
