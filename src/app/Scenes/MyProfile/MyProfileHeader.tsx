@@ -17,7 +17,7 @@ import {
   useColor,
 } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { Image, LayoutChangeEvent, View } from "react-native"
+import { Image } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyProfileContext } from "./MyProfileProvider"
@@ -25,10 +25,7 @@ import { normalizeMyProfileBio } from "./utils"
 
 const ICON_SIZE = 14
 
-export const MyProfileHeader: React.FC<{
-  me: MyProfileHeader_me$key
-  onLayout: (event: LayoutChangeEvent) => void
-}> = (props) => {
+export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props) => {
   const me = useFragment(myProfileHeaderFragment, props.me)
 
   const color = useColor()
@@ -62,7 +59,7 @@ export const MyProfileHeader: React.FC<{
     showCompleteCollectorProfileMessage
 
   return (
-    <View onLayout={(event: LayoutChangeEvent) => props.onLayout(event)}>
+    <>
       <FancyModalHeader
         rightButtonText="Settings"
         hideBottomDivider
@@ -150,7 +147,7 @@ export const MyProfileHeader: React.FC<{
           </Flex>
         )}
       </Flex>
-    </View>
+    </>
   )
 }
 

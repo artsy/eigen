@@ -9,8 +9,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
 import { VisualClueDot, VisualClueText } from "palette/elements/VisualClue"
-import React, { useState } from "react"
-import { LayoutChangeEvent } from "react-native"
+import React from "react"
 import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
@@ -30,12 +29,10 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   // We are using unsafe_getfeatureflag here because we want to avoid breaking the rule of hooks
   // inside the StickyTabPage
   const showMyCollectionInsights = unsafe_getFeatureFlag("AREnableMyCollectionInsights")
-  const [myProfileHeaderHeight, setMyProfileHeaderHeight] = useState<number>(0)
 
   return (
     <StickyTabPage
       disableBackButtonUpdate
-      refreshControlProgressViewOffset={myProfileHeaderHeight}
       tabs={compact([
         {
           title: Tab.collection,
@@ -63,15 +60,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
           content: <FavoriteArtworksQueryRenderer />,
         },
       ])}
-      staticHeaderContent={
-        <MyProfileHeader
-          me={me}
-          onLayout={(event: LayoutChangeEvent) => {
-            const { height } = event.nativeEvent.layout
-            setMyProfileHeaderHeight(height)
-          }}
-        />
-      }
+      staticHeaderContent={<MyProfileHeader me={me} />}
     />
   )
 }

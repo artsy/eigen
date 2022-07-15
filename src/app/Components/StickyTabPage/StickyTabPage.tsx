@@ -35,7 +35,6 @@ interface StickyTabPageProps {
   // disableBackButtonUpdate allows the original BackButton visibility state. Useful when using StickyTabPage
   // as a root view where you don't want BackButton to ever be visible.
   disableBackButtonUpdate?: boolean
-  refreshControlProgressViewOffset?: number
 }
 
 /**
@@ -53,7 +52,6 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   stickyHeaderContent = <StickyTabPageTabBar />,
   bottomContent,
   disableBackButtonUpdate,
-  refreshControlProgressViewOffset,
 }) => {
   const { width } = useScreenDimensions()
   const initialTabIndex = useMemo(
@@ -119,7 +117,6 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
         headerOffsetY,
         tabLabels: tabs.map((tab) => tab.title),
         tabVisualClues: tabs.map((tab) => tab.visualClues),
-        refreshControlProgressViewOffset,
         setActiveTabIndex(index) {
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)
