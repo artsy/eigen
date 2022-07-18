@@ -1,4 +1,5 @@
 import { RefreshControl } from "react-native"
+import Animated from "react-native-reanimated"
 import { useNativeValue } from "./reanimatedHelpers"
 import { useStickyTabPageContext } from "./StickyTabPageContext"
 
@@ -11,15 +12,11 @@ export const StickTabPageRefreshControl: React.FC<{
 }> = ({ refreshing, onRefresh }) => {
   const { staticHeaderHeight } = useStickyTabPageContext()
 
-  const setprogressViewOffset = () => {
-    if (staticHeaderHeight) {
-      return useNativeValue(staticHeaderHeight, 0)
-    }
-  }
+  const progressViewOffset = useNativeValue(staticHeaderHeight ?? new Animated.Value(0), 0)
 
   return (
     <RefreshControl
-      progressViewOffset={setprogressViewOffset() ?? 0}
+      progressViewOffset={progressViewOffset}
       refreshing={refreshing}
       onRefresh={onRefresh}
       style={{ zIndex: 1 }}
