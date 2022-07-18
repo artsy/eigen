@@ -4,6 +4,7 @@ import { NewSaleLotsList_viewer$data } from "__generated__/NewSaleLotsList_viewe
 import {
   filterArtworksParams,
   FilterParamName,
+  prepareFilterArtworksParamsForInput,
   ViewAsValues,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -76,11 +77,11 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
     }
   }, [])
 
-  const { estimateRange, ...rest } = filterParams
+  const input = prepareFilterArtworksParamsForInput(filterParams)
   const refetchVariables = {
     input: {
-      ...rest,
-      priceRange: estimateRange,
+      priceRange: filterParams.estimateRange,
+      ...input,
     },
   }
 
