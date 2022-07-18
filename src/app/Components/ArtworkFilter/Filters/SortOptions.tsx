@@ -118,6 +118,40 @@ export const ORDERED_SALE_ARTWORK_SORTS: FilterData[] = [
   },
 ]
 
+// TODO: Replace DEFAULT_NEW_SALE_ARTWORKS_PARAMS with DEFAULT_SALE_ARTWORKS_PARAMS when AREnableArtworksConnectionForAuction is released
+export const ORDERED_NEW_SALE_ARTWORK_SORTS: FilterData[] = [
+  {
+    displayText: "Lot Number Ascending",
+    paramName: FilterParamName.sort,
+    paramValue: "sale_position",
+  },
+  {
+    displayText: "Lot Number Descending",
+    paramName: FilterParamName.sort,
+    paramValue: "-sale_position",
+  },
+  {
+    displayText: "Most Bids",
+    paramName: FilterParamName.sort,
+    paramValue: "-bidder_positions_count",
+  },
+  {
+    displayText: "Least Bids",
+    paramName: FilterParamName.sort,
+    paramValue: "bidder_positions_count",
+  },
+  {
+    displayText: "Price Ascending",
+    paramName: FilterParamName.sort,
+    paramValue: "prices",
+  },
+  {
+    displayText: "Price Descending",
+    paramName: FilterParamName.sort,
+    paramValue: "-prices",
+  },
+]
+
 export const ORDERED_AUCTION_RESULTS_SORTS: FilterData[] = [
   {
     displayText: "Most Recent Sale Date",
@@ -151,6 +185,8 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation
   const filterOptions = {
     artwork: [DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
     saleArtwork: ORDERED_SALE_ARTWORK_SORTS,
+    // TODO: Replace newSaleArtwork with saleArtwork when AREnableArtworksConnectionForAuction is released
+    newSaleArtwork: ORDERED_NEW_SALE_ARTWORK_SORTS,
     showArtwork: [GALLERY_CURATED_ARTWORK_SORT, DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
     auctionResult: ORDERED_AUCTION_RESULTS_SORTS,
     geneArtwork: [DEFAULT_GENE_SORT, ...ORDERED_ARTWORK_SORTS],

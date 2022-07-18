@@ -66,7 +66,7 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
   }
 
   useEffect(() => {
-    setFilterTypeAction("saleArtwork")
+    setFilterTypeAction("newSaleArtwork")
 
     if (unfilteredArtworks?.counts) {
       setFiltersCountAction(unfilteredArtworks.counts)
