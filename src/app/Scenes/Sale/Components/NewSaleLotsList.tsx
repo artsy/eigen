@@ -7,16 +7,16 @@ import {
   ViewAsValues,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { ORDERED_NEW_SALE_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "app/utils/track"
-import { Box, Flex } from "palette"
+import { Box, Flex, Text } from "palette"
 import { MutableRefObject, useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SaleArtworkListContainer } from "./SaleArtworkList"
-import { SaleLotsListSortMode } from "./SaleLotsList"
 
 interface NewSaleLotsListProps {
   unfilteredArtworks: NewSaleLotsList_unfilteredArtworks$data | null
@@ -53,6 +53,9 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
   )
   const counts = viewer?.artworksConnection?.counts?.total
   const totalCount = unfilteredArtworks?.counts?.total
+  const sortMode = ORDERED_NEW_SALE_ARTWORK_SORTS.find(
+    (sort) => sort.paramValue === filterParams?.sort
+  )
 
   const trackClear = (id: string, slug: string) => {
     tracking.trackEvent({
@@ -104,11 +107,15 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
 
   return (
     <Flex flex={0} my={4}>
-      <SaleLotsListSortMode
-        filterParams={filterParams}
-        filteredTotal={counts}
-        totalCount={totalCount}
-      />
+      <Flex px={2} mb={2}>
+        <Text variant="md" ellipsizeMode="tail">
+          Sorted by {sortMode?.displayText}
+        </Text>
+
+        <Text color="black60" variant="sm">
+          Showing {counts} of {totalCount}
+        </Text>
+      </Flex>
 
       {viewAsFilter?.paramValue === ViewAsValues.List ? (
         <SaleArtworkListContainer
