@@ -14,7 +14,7 @@ import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import Spinner from "app/Components/Spinner"
 import { navigate, popParentViewController } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { unsafe__getEnvironment, useFeatureFlag } from "app/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -32,6 +32,7 @@ import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironme
 import { SaleBelowTheFoldQuery } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
 import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
+import { NewSaleLotsListContainer } from "./Components/NewSaleLotsList"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
@@ -77,6 +78,7 @@ const NOOP = () => {}
 
 export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const tracking = useTracking()
+  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
 
   const flatListRef = useRef<FlatList<any>>(null)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -163,6 +165,42 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     flatListRef.current?.scrollToIndex({ index: saleLotsListIndex, viewOffset: 50 })
   }
 
+  const renderSaleLotsList = () => {
+    if (below) {
+      if (enableArtworksConnection) {
+        return (
+          <NewSaleLotsListContainer
+            unfilteredArtworks={below.viewer?.unfilteredArtworks!}
+            viewer={below.viewer}
+            saleID={sale.internalID}
+            saleSlug={sale.slug}
+            scrollToTop={scrollToTop}
+            artworksRefetchRef={artworksRefetchRef}
+          />
+        )
+      }
+
+      return (
+        <SaleLotsListContainer
+          saleArtworksConnection={below}
+          unfilteredSaleArtworksConnection={below.unfilteredSaleArtworksConnection}
+          saleID={sale.internalID}
+          saleSlug={sale.slug}
+          scrollToTop={scrollToTop}
+          artworksRefetchRef={artworksRefetchRef}
+        />
+      )
+    }
+
+    // Since most likely this part of the screen will be already loaded when the user
+    // reaches it, there is no need to create the fancy placeholders here
+    return (
+      <Flex justifyContent="center" alignItems="center" height={200}>
+        <Spinner />
+      </Flex>
+    )
+  }
+
   const saleSectionsData: SaleSection[] = _.compact([
     {
       key: SALE_HEADER,
@@ -207,22 +245,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     },
     {
       key: SALE_LOTS_LIST,
-      content: below ? (
-        <SaleLotsListContainer
-          saleArtworksConnection={below}
-          unfilteredSaleArtworksConnection={below.unfilteredSaleArtworksConnection}
-          saleID={sale.internalID}
-          saleSlug={sale.slug}
-          scrollToTop={scrollToTop}
-          artworksRefetchRef={artworksRefetchRef}
-        />
-      ) : (
-        // Since most likely this part of the screen will be already loaded when the user
-        // reaches it, there is no need to create the fancy placeholders here
-        <Flex justifyContent="center" alignItems="center" height={200}>
-          <Spinner />
-        </Flex>
-      ),
+      content: renderSaleLotsList(),
     },
   ])
 
@@ -429,6 +452,17 @@ export const SaleQueryRenderer: React.FC<{
                     counts {
                       total
                     }
+                  }
+
+                  viewer {
+                    unfilteredArtworks: artworksConnection(
+                      saleID: $saleID
+                      aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
+                      first: 0
+                    ) {
+                      ...NewSaleLotsList_unfilteredArtworks
+                    }
+                    ...NewSaleLotsList_viewer @arguments(saleID: $saleID)
                   }
                 }
               `,
