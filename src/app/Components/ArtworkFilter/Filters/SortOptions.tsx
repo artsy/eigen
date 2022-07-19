@@ -52,6 +52,12 @@ const DEFAULT_TAG_SORT = {
   paramValue: "-partner_updated_at",
 }
 
+export const DEFAULT_NEW_SALE_ARTWORK_SORT = {
+  displayText: "Lot Number Ascending",
+  paramName: FilterParamName.sort,
+  paramValue: "sale_position",
+}
+
 export const ORDERED_ARTWORK_SORTS: FilterData[] = [
   {
     displayText: "Price (High to Low)",
@@ -120,11 +126,7 @@ export const ORDERED_SALE_ARTWORK_SORTS: FilterData[] = [
 
 // TODO: Replace DEFAULT_NEW_SALE_ARTWORKS_PARAMS with DEFAULT_SALE_ARTWORKS_PARAMS when AREnableArtworksConnectionForAuction is released
 export const ORDERED_NEW_SALE_ARTWORK_SORTS: FilterData[] = [
-  {
-    displayText: "Lot Number Ascending",
-    paramName: FilterParamName.sort,
-    paramValue: "sale_position",
-  },
+  DEFAULT_NEW_SALE_ARTWORK_SORT,
   {
     displayText: "Lot Number Descending",
     paramName: FilterParamName.sort,

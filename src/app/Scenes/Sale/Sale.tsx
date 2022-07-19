@@ -3,12 +3,14 @@ import { captureMessage } from "@sentry/react-native"
 import { Sale_me$data } from "__generated__/Sale_me.graphql"
 import { Sale_sale$data } from "__generated__/Sale_sale.graphql"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
+import { SaleBelowTheFoldNewQuery$data } from "__generated__/SaleBelowTheFoldNewQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
   FilterModalMode,
 } from "app/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { DEFAULT_NEW_SALE_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import Spinner from "app/Components/Spinner"
@@ -170,8 +172,10 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
       if (enableArtworksConnection) {
         return (
           <NewSaleLotsListContainer
-            unfilteredArtworks={below.viewer?.unfilteredArtworks!}
-            viewer={below.viewer}
+            unfilteredArtworks={
+              (below as unknown as SaleBelowTheFoldNewQuery$data).viewer?.unfilteredArtworks!
+            }
+            viewer={(below as unknown as SaleBelowTheFoldNewQuery$data).viewer}
             saleID={sale.internalID}
             saleSlug={sale.slug}
             scrollToTop={scrollToTop}
@@ -419,11 +423,42 @@ export const SaleScreenQuery = graphql`
   }
 `
 
+const SaleScreenBelowQuery = graphql`
+  query SaleBelowTheFoldQuery($saleID: ID) {
+    ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
+    unfilteredSaleArtworksConnection: saleArtworksConnection(
+      saleID: $saleID
+      aggregations: [TOTAL]
+    ) {
+      ...SaleLotsList_unfilteredSaleArtworksConnection
+      counts {
+        total
+      }
+    }
+  }
+`
+
+const SaleScreenBelowNewQuery = graphql`
+  query SaleBelowTheFoldNewQuery($saleID: ID, $input: FilterArtworksInput) {
+    viewer {
+      unfilteredArtworks: artworksConnection(
+        saleID: $saleID
+        aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
+        first: 0
+      ) {
+        ...NewSaleLotsList_unfilteredArtworks
+      }
+      ...NewSaleLotsList_viewer @arguments(saleID: $saleID, input: $input)
+    }
+  }
+`
+
 export const SaleQueryRenderer: React.FC<{
   saleID: string
   environment?: RelayModernEnvironment
 }> = ({ saleID, environment }) => {
   const { trackEvent } = useTracking()
+  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
 
   useEffect(() => {
     trackEvent(tracks.pageView(saleID))
@@ -439,35 +474,23 @@ export const SaleQueryRenderer: React.FC<{
               query: SaleScreenQuery,
               variables: { saleID, saleSlug: saleID },
             }}
-            below={{
-              query: graphql`
-                # query SaleBelowTheFoldQuery($saleID: String!, $saleSlug: ID!) {
-                query SaleBelowTheFoldQuery($saleID: ID) {
-                  ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
-                  unfilteredSaleArtworksConnection: saleArtworksConnection(
-                    saleID: $saleID
-                    aggregations: [TOTAL]
-                  ) {
-                    ...SaleLotsList_unfilteredSaleArtworksConnection
-                    counts {
-                      total
-                    }
+            below={
+              enableArtworksConnection
+                ? {
+                    query: SaleScreenBelowNewQuery,
+                    variables: {
+                      saleID,
+                      // @ts-ignore
+                      input: {
+                        sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
+                      },
+                    },
                   }
-
-                  viewer {
-                    unfilteredArtworks: artworksConnection(
-                      saleID: $saleID
-                      aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
-                      first: 0
-                    ) {
-                      ...NewSaleLotsList_unfilteredArtworks
-                    }
-                    ...NewSaleLotsList_viewer @arguments(saleID: $saleID)
+                : {
+                    query: SaleScreenBelowQuery,
+                    variables: { saleID },
                   }
-                }
-              `,
-              variables: { saleID },
-            }}
+            }
             render={({ props, error }) => {
               if (error) {
                 if (__DEV__) {
