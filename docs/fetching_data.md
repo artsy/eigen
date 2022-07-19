@@ -26,3 +26,9 @@ You can find **secret** in 1Password if you search for `Metaphysics INTROSPECT_T
 <img width="701" alt="Screen Shot 2022-05-24 at 18 33 10" src="https://user-images.githubusercontent.com/36475005/170086939-86194875-c866-4a71-a508-5fd356a35d32.png">
 
 note that in some of the requests you may need to use something like `(first: $some-number-here)` (or last) but some requests work without it as well.
+
+## Troubleshooting
+
+if you get an anauthorized 401 error visit staging.artsy.net or artsy.net (depending on where you're requesting)
+open the console and get the key that is returned from `sd.CURRENT_USER.accessToken` .
+Update this value on `X-ACCESS-TOKEN` and try again.
