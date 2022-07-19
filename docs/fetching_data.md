@@ -29,6 +29,9 @@ note that in some of the requests you may need to use something like `(first: $s
 
 ## Troubleshooting
 
-if you get an anauthorized 401 error visit staging.artsy.net or artsy.net (depending on where you're requesting)
+If you get an anauthorized 401 error visit staging.artsy.net or artsy.net (depending on where you're requesting)
 open the console and get the key that is returned from `sd.CURRENT_USER.accessToken` .
 Update this value on `X-ACCESS-TOKEN` and try again.
+
+<img width="524" alt="Screen Shot 2022-07-19 at 19 29 43" src="https://user-images.githubusercontent.com/36475005/179812915-92998955-4fe2-4fd8-b1c2-efec900fe325.png">
+
