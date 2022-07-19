@@ -33,5 +33,4 @@ If you get an anauthorized 401 error visit staging.artsy.net or artsy.net (depen
 open the console and get the key that is returned from `sd.CURRENT_USER.accessToken` .
 Update this value on `X-ACCESS-TOKEN` and try again.
 
-<img width="524" alt="Screen Shot 2022-07-19 at 19 29 43" src="https://user-images.githubusercontent.com/36475005/179812915-92998955-4fe2-4fd8-b1c2-efec900fe325.png">
-
+<img width="521" alt="Screen Shot 2022-07-19 at 19 30 29" src="https://user-images.githubusercontent.com/36475005/179813023-c88432ea-cf28-4be0-bd31-99ad6e340eaf.png">
