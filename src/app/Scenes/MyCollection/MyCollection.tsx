@@ -9,6 +9,7 @@ import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtwork
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { PAGE_SIZE } from "app/Components/constants"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -39,7 +40,6 @@ import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { Button, Flex, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -203,7 +203,9 @@ const MyCollection: React.FC<{
           flexGrow: artworks.length ? undefined : 1,
           justifyContent: artworks.length ? "flex-start" : "center",
         }}
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
+        refreshControl={
+          <StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />
+        }
         innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"

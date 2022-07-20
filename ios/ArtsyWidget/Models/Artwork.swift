@@ -14,7 +14,8 @@ struct Artwork: Codable {
     var image: UIImage?
     
     var firstImageToken: String {
-        let firstImage = artworkImages.first ?? ArtworkImage.fallback()
+        let sortedImages = artworkImages.sorted { $0.position < $1.position }
+        let firstImage = sortedImages.first ?? ArtworkImage.fallback()
         
         return firstImage.geminiToken
     }

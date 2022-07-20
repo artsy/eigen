@@ -1,4 +1,5 @@
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -10,9 +11,8 @@ import {
   MY_COLLECTION_REFRESH_KEY,
   RefreshEvents,
 } from "app/utils/refreshHelpers"
-import { Flex, Spinner, useSpace } from "palette"
+import { Flex, Spinner } from "palette"
 import React, { Suspense, useContext, useEffect, useState } from "react"
-import { RefreshControl } from "react-native"
 import { useLazyLoadQuery } from "react-relay"
 import { fetchQuery, graphql } from "relay-runtime"
 import { MyCollectionArtworkUploadMessages } from "../ArtworkForm/MyCollectionArtworkUploadMessages"
@@ -26,7 +26,6 @@ import { MyCollectionInsightsIncompleteMessage } from "./MyCollectionMessages"
 
 export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const { showVisualClue } = useVisualClue()
-  const space = useSpace()
   const enablePhase1Part1 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part1")
   const enablePhase1Part2 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part2")
 
@@ -118,9 +117,8 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       style={{
         flex: 1,
       }}
-      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refresh} />}
+      refreshControl={<StickTabPageRefreshControl onRefresh={refresh} refreshing={isRefreshing} />}
       contentContainerStyle={{
-        paddingTop: space("2"),
         // Extend the container flex when there are no artworks for accurate vertical centering
         flexGrow: myCollectionArtworksCount > 0 ? undefined : 1,
         justifyContent: myCollectionArtworksCount > 0 ? "flex-start" : "center",

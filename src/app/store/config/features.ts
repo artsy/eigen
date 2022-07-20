@@ -247,9 +247,9 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableCreateArtworkAlert",
   },
-  AREnableNewInfiniteScrollArtworkGrid: {
+  AREnableNewOnboarding: {
     readyForRelease: false,
-    description: "Enable New Infinite Scroll Artwork Grid",
+    description: "Enable new Onboarding flow",
     showInAdminMenu: true,
   },
 })

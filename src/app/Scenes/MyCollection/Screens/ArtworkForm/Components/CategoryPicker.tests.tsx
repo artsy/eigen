@@ -1,24 +1,24 @@
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { useFormikContext } from "formik"
 import { Select } from "palette/elements/Select"
-import { MediumPicker } from "./MediumPicker"
+import { CategoryPicker } from "./CategoryPicker"
 
 jest.mock("formik")
 
-describe("MediumPicker", () => {
+describe("CategoryPicker", () => {
   const useFormikContextMock = useFormikContext as jest.Mock
 
   beforeEach(() => {
     useFormikContextMock.mockImplementation(() => ({
       handleChange: jest.fn(),
       values: {
-        medium: "Painting",
+        category: "Painting",
       },
     }))
   })
 
-  it("displays the correct medium", () => {
-    const wrapper = renderWithWrappersLEGACY(<MediumPicker />)
+  it("displays the correct category", () => {
+    const wrapper = renderWithWrappersLEGACY(<CategoryPicker />)
     const select = wrapper.root.findByType(Select)
     expect(select.props.value).toBe("Painting")
   })
