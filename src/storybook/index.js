@@ -9,4 +9,3 @@ if (Platform.OS === "android") {
 
 const appName = Platform.OS === "ios" ? require("../../app.json").appName : "Artsy"
 AppRegistry.registerComponent(appName, () => StorybookUIRoot)
-// this comment can be removed

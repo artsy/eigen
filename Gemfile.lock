@@ -115,7 +115,7 @@ GEM
     escape (0.0.4)
     ethon (0.15.0)
       ffi (>= 1.15.0)
-    excon (0.92.3)
+    excon (0.92.4)
     faraday (1.10.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -352,4 +352,4 @@ DEPENDENCIES
   xcpretty
 
 BUNDLED WITH
-   2.3.5
+   2.3.18
