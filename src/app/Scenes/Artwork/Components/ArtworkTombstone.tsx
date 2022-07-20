@@ -218,10 +218,12 @@ export class ArtworkTombstone extends React.Component<
         {!!artwork.isInAuction && !artwork.sale?.isClosed && (
           <>
             {!!artwork.sale?.cascadingEndTimeIntervalMinutes && (
-              <CascadingEndTimesBanner
-                cascadingEndTimeInterval={artwork.sale.cascadingEndTimeIntervalMinutes}
-                extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
-              />
+              <Flex my={2} ml={-2} mr={-2}>
+                <CascadingEndTimesBanner
+                  cascadingEndTimeInterval={artwork.sale.cascadingEndTimeIntervalMinutes}
+                  extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
+                />
+              </Flex>
             )}
             <Spacer mb={1} />
             {!!artwork.partner && (
