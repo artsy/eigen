@@ -185,10 +185,12 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
       !sale.isClosed && {
         key: SALE_CASCADING_END_TIMES_BANNER,
         content: (
-          <CascadingEndTimesBanner
-            cascadingEndTimeInterval={sale.cascadingEndTimeIntervalMinutes}
-            extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
-          />
+          <Flex my={2}>
+            <CascadingEndTimesBanner
+              cascadingEndTimeInterval={sale.cascadingEndTimeIntervalMinutes}
+              extendedBiddingIntervalMinutes={sale.extendedBiddingIntervalMinutes}
+            />
+          </Flex>
         ),
       },
     {
