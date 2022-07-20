@@ -15,10 +15,6 @@
 /// <br/> (#333333)
 + (UIColor *)artsyGrayBold;
 
-/// <span style='display:block;width:3em;height:2em;border:1px solid black;background:#e2d2ff'></span>
-/// <br/> (#e2d2ff)
-+ (UIColor *)artsyPurpleLight;
-
 + (UIColor *)artsyColorFor:(NSString *)name;
 
 @end

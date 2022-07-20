@@ -150,13 +150,8 @@ NS_ASSUME_NONNULL_BEGIN
 {
     _dateOpenedAR = [NSDate date];
 
-#if TARGET_OS_SIMULATOR
-    self.view.backgroundColor = UIColor.artsyPurpleLight;
-    _sceneView.backgroundColor = UIColor.artsyPurpleLight;
-#else
     self.view.backgroundColor = UIColor.blackColor;
     _sceneView.backgroundColor = UIColor.blackColor;
-#endif
 
     [super viewDidLoad];
 
