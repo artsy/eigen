@@ -1606,6 +1606,15 @@ enum ArtistInsightKind {
   SOLO_SHOW
 }
 
+type ArtistInsightsCount {
+  activeSecondaryMarketCount: Int!
+  biennialCount: Int!
+  collectedCount: Int!
+  groupShowCount: Int!
+  reviewedCount: Int!
+  soloShowCount: Int!
+}
+
 type ArtistMeta {
   description: String
   title: String
@@ -10808,6 +10817,7 @@ type MyCollectionConnection {
     # The type of insight.
     kind: ArtistInsightKind
   ): [ArtistInsight!]!
+  artistInsightsCount: ArtistInsightsCount
   artistsCount: Int!
   artworksCount: Int!
 
@@ -10896,6 +10906,7 @@ type MyCollectionInfo {
     # The type of insight.
     kind: ArtistInsightKind
   ): [ArtistInsight!]!
+  artistInsightsCount: ArtistInsightsCount
   artistsCount: Int!
   artworksCount: Int!
 
