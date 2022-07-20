@@ -279,9 +279,9 @@ class LiveAuctionBidButton: ARFlatButton {
 
 
 private let white = UIColor.white
-private let purple = UIColor.artsyPurpleRegular()!
-private let green = UIColor.artsyGreenRegular()!
-private let red = UIColor.artsyRedRegular()!
-private let grey = UIColor.artsyGrayRegular()!
+private let purple = UIColor.artsyColor(for: "devpurple")!
+private let green = UIColor.artsyColor(for: "green100")!
+private let red = UIColor.artsyColor(for: "red100")!
+private let grey = UIColor.artsyColor(for: "black10")!
 private let greyMedium = UIColor.artsyGrayMedium()!
 private let passedGrey = UIColor(white: 0, alpha: 0.5)

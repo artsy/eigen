@@ -3,6 +3,7 @@
 #import "ARTemporaryAPIModule.h"
 #import "ARNotificationsManager.h"
 #import "ARCocoaConstantsModule.h"
+#import <EDColor/EDColor.h>
 
 
 @implementation AREmission
@@ -121,6 +122,16 @@ static AREmission *_sharedInstance = nil;
 - (BOOL)isStaging
 {
     return [[self reactStateStringForKey:[ARReactStateKey env]] isEqualToString:@"staging"];
+}
+
+- (UIColor *)artsyColorFor:(NSString *)name
+{
+    NSString *hex = _colors[name];
+    if (hex == nil) {
+        NSLog(@"ERROR: color %@ is missing from the native part of the app.", name);
+        return UIColor.purpleColor;
+    }
+    return [UIColor colorWithHexString:hex];
 }
 
 @end

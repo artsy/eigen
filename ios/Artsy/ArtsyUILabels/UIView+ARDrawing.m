@@ -3,11 +3,6 @@
 
 @implementation UIView (ARDrawing)
 
-+ (UIColor *)defaultBorderColor
-{
-    return [UIColor artsyGrayLight];
-}
-
 // Dotted border methods
 
 - (void)drawBottomDottedBorderWithColor:(UIColor *)color

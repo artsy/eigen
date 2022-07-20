@@ -93,7 +93,7 @@ private extension RefinementOptionsViewController {
 
         let tableView = UITableView().then {
             $0.register(RefinementOptionsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-            $0.separatorColor = .artsyGrayRegular()
+            $0.separatorColor = .artsyColor(for: "black10")
             $0.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
             $0.dataSource = tableViewHandler
             $0.delegate = tableViewHandler
@@ -214,8 +214,8 @@ private extension RefinementOptionsViewController {
         let resetButton = ARWhiteFlatButton().then {
             $0.isEnabled = false
             $0.setTitle("Reset", for: .normal)
-            $0.setBorderColor(.artsyGrayRegular(), for: .normal)
-            $0.setBorderColor(UIColor.artsyGrayRegular().withAlphaComponent(0.5), for: .disabled)
+            $0.setBorderColor(.artsyColor(for: "black10"), for: .normal)
+            $0.setBorderColor(UIColor.artsyColor(for: "black10").withAlphaComponent(0.5), for: .disabled)
             $0.layer.borderWidth = 1
             $0.addTarget(self, action: #selector(RefinementOptionsViewController.userDidPressReset), for: .touchUpInside)
         }

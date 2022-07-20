@@ -298,7 +298,7 @@ static CGFloat exitButtonDimension = 40;
 
 - (void)hideNavigationBarShadow:(BOOL)hide
 {
-    UIColor *color = hide ? [UIColor whiteColor] : [UIColor artsyGrayRegular];
+    UIColor *color = hide ? [UIColor whiteColor] : [UIColor artsyColorFor:@"black10"];
     [self setBackgroundImage:[UIImage imageFromColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
     self.shadowImage = [UIImage imageFromColor:color];
 }
@@ -314,7 +314,7 @@ static CGFloat exitButtonDimension = 40;
     button.layer.cornerRadius = exitButtonDimension * .5;
 
     CALayer *buttonLayer = button.layer;
-    buttonLayer.borderColor = [UIColor artsyGrayRegular].CGColor;
+    buttonLayer.borderColor = [UIColor artsyColorFor:@"black10"].CGColor;
     buttonLayer.borderWidth = 1;
     buttonLayer.cornerRadius = exitButtonDimension * .5;
 

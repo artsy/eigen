@@ -320,7 +320,7 @@ extension AuctionInformationViewController {
             self.tapHandler = tapHandler
 
             let topBorder = UIView()
-            topBorder.backgroundColor = .artsyGrayRegular()
+            topBorder.backgroundColor = .artsyColor(for: "black10")
 
             let titleButton = UIButton(type: .custom)
 

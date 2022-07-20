@@ -33,11 +33,11 @@
 
 - (void)startLogging
 {
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyGrayRegular] backgroundColor:nil forFlag:DDLogFlagDebug];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyYellowRegular] backgroundColor:nil forFlag:DDLogFlagInfo];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor artsyRedRegular] backgroundColor:nil forFlag:DDLogFlagError];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor colorWithHex:0x66cc4c] backgroundColor:nil forFlag:DDLogFlagInfo context:ARLogContextRequestOperation];
-    [[DDTTYLogger sharedInstance] setForegroundColor:[UIColor colorWithHex:0xe56633] backgroundColor:nil forFlag:DDLogFlagError context:ARLogContextRequestOperation];
+    [[DDTTYLogger sharedInstance] setForegroundColor:UIColor.grayColor backgroundColor:nil forFlag:DDLogFlagDebug];
+    [[DDTTYLogger sharedInstance] setForegroundColor:UIColor.yellowColor backgroundColor:nil forFlag:DDLogFlagInfo];
+    [[DDTTYLogger sharedInstance] setForegroundColor:UIColor.redColor backgroundColor:nil forFlag:DDLogFlagError];
+    [[DDTTYLogger sharedInstance] setForegroundColor:UIColor.greenColor backgroundColor:nil forFlag:DDLogFlagInfo context:ARLogContextRequestOperation];
+    [[DDTTYLogger sharedInstance] setForegroundColor:UIColor.orangeColor backgroundColor:nil forFlag:DDLogFlagError context:ARLogContextRequestOperation];
 
     //Console.app + Xcode log window// We could reuse the formatter, but then our date formatter would
     // need to be thread-safe

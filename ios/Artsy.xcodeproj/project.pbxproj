@@ -40,6 +40,7 @@
 		1A4E5123283F91BA0008EF35 /* UIFont+ArtsyFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5114283F91B90008EF35 /* UIFont+ArtsyFonts.m */; };
 		1A4E5124283F91BA0008EF35 /* ARButtonSubclasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */; };
 		1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */; };
+		1A8EEAF12887F50500BC86C6 /* ARTThemeColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A8EEAF02887F50500BC86C6 /* ARTThemeColors.m */; };
 		4A9190A1CCE54CE09384C9FC /* Unica77LL-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CC557644CEE44511A73431D7 /* Unica77LL-MediumItalic.otf */; };
 		50E313674D9D51E2749A13E7 /* libPods-ArtsyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */; };
 		91DE2877BFB369D1F40E8172 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */; };
@@ -627,6 +628,8 @@
 		1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARButtonSubclasses.h; sourceTree = "<group>"; };
 		1A550F0C282AE4D200126D22 /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionWebViewController.h; sourceTree = "<group>"; };
 		1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewController.m; sourceTree = "<group>"; };
+		1A8EEAEF2887F50500BC86C6 /* ARTThemeColors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTThemeColors.h; sourceTree = "<group>"; };
+		1A8EEAF02887F50500BC86C6 /* ARTThemeColors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTThemeColors.m; sourceTree = "<group>"; };
 		41B4CDDC19345D9AFB1E708B /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D374CB1A6B008C394CA82D1 /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4E68A5AE2269760F44D9E0B7 /* libPods-ArtsyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArtsyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -967,7 +970,6 @@
 		CBE3211027D9615000395A93 /* ARTNativeScreenPresenterModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTNativeScreenPresenterModule.m; sourceTree = "<group>"; };
 		CBE3211127D9615000395A93 /* CityGuideView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityGuideView.swift; sourceTree = "<group>"; };
 		CBE3211227D9615000395A93 /* ARTLiveAuctionViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTLiveAuctionViewManager.h; sourceTree = "<group>"; };
-		CBE3211427D9615000395A93 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CBE3245B27E275A100395A93 /* ARAppConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppConstants.h; sourceTree = "<group>"; };
 		CBE3245C27E275A100395A93 /* ARDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDefaults.h; sourceTree = "<group>"; };
 		CBE3245D27E275A100395A93 /* ARAppConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppConstants.m; sourceTree = "<group>"; };
@@ -1624,6 +1626,23 @@
 				1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */,
 			);
 			path = ArtsyUIButtons;
+			sourceTree = "<group>";
+		};
+		1A8EEAED2887F4D100BC86C6 /* Native_Modules */ = {
+			isa = PBXGroup;
+			children = (
+				1A8EEAEE2887F4DB00BC86C6 /* ThemeColors */,
+			);
+			path = Native_Modules;
+			sourceTree = "<group>";
+		};
+		1A8EEAEE2887F4DB00BC86C6 /* ThemeColors */ = {
+			isa = PBXGroup;
+			children = (
+				1A8EEAEF2887F50500BC86C6 /* ARTThemeColors.h */,
+				1A8EEAF02887F50500BC86C6 /* ARTThemeColors.m */,
+			);
+			path = ThemeColors;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -2548,7 +2567,7 @@
 				CBE3256F27E275A100395A93 /* Views */,
 				CB61B85327B585F00007922D /* GoogleService-Info.plist */,
 				CBE3210727D9615000395A93 /* NativeModules */,
-				CBE3211427D9615000395A93 /* Images.xcassets */,
+				1A8EEAED2887F4D100BC86C6 /* Native_Modules */,
 			);
 			path = Artsy;
 			sourceTree = "<group>";
@@ -3920,6 +3939,7 @@
 				CBE326CE27E275A300395A93 /* LiveAuctionBidButton.swift in Sources */,
 				CBE326DE27E275A300395A93 /* UIViewController+InnermostTopViewController.m in Sources */,
 				CBE326DD27E275A300395A93 /* ARURLItemProvider.m in Sources */,
+				1A8EEAF12887F50500BC86C6 /* ARTThemeColors.m in Sources */,
 				CBE326E727E275A300395A93 /* ARHTTPRequestOperationLogger.m in Sources */,
 				CBE326E827E275A300395A93 /* ARLogger.m in Sources */,
 				CBE3278D27E275A400395A93 /* Article.m in Sources */,

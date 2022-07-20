@@ -130,7 +130,7 @@ static const CGFloat DistanceToTopOfBenchPortrait = 90;
 
     [super loadView];
 
-    self.view.backgroundColor = [UIColor artsyGrayLight];
+    self.view.backgroundColor = [UIColor artsyColorFor:@"black5"];
 
     [self.view addSubview:galleryBackground];
     [self setupDudeView];

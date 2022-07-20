@@ -59,7 +59,7 @@ static char kARMediaPreviewControllerAssociatedObject;
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-        progressView.tintColor = [UIColor artsyPurpleRegular];
+        progressView.tintColor = [UIColor artsyColorFor:@"devpurple"];
         self.progressView = progressView;
         CGRect frame = progressView.bounds;
         frame.size.width = CGRectGetWidth(self.originatingView.bounds);

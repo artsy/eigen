@@ -8,6 +8,7 @@ import {
 } from "app/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "app/utils/useDeepLinks"
 import { useStripeConfig } from "app/utils/useStripeConfig"
+import { ThemeVersion, useThemeValues } from "palette"
 import React, { useEffect } from "react"
 import { NativeModules, Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
@@ -64,9 +65,17 @@ const useRageShakeAdminMenu = () => {
   }, [userIsDev])
 }
 
+const useSendThemeColorsToNative = (version: ThemeVersion) => {
+  const theme = useThemeValues(version)
+  useEffect(() => {
+    NativeModules.ARTThemeColors.setColors(theme.colors)
+  }, [])
+}
+
 const Main: React.FC = () => {
   useRageShakeAdminMenu()
   useDebugging()
+  useSendThemeColorsToNative("v3")
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",

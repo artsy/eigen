@@ -110,7 +110,7 @@ class LiveAuctionEventViewModel: NSObject, LiveAuctionEventViewModelType {
         case .bid(let isMine, let isTop, let userIsFloorWinningBidder):
             var color: UIColor
             if isMine && isTop && userIsFloorWinningBidder {
-                color = .artsyGreenRegular()
+                color = .artsyColor(for: "green100")
             } else if isMine && isTop {
                 color = UIColor.artsyGrayMedium()
             } else if isMine && !isTop {

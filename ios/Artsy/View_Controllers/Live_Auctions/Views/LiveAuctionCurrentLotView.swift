@@ -15,7 +15,7 @@ class LiveAuctionCurrentLotView: UIButton {
 
         super.init(frame: CGRect.zero)
 
-        backgroundColor = .artsyPurpleRegular()
+        backgroundColor = .artsyColor(for: "devpurple")
         layer.cornerRadius = 10
 
         let liveLotLabel = ARSansSerifLabel()

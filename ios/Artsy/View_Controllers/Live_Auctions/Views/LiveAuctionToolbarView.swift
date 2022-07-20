@@ -111,7 +111,7 @@ class LiveAuctionToolbarView: UIView {
 
             viewStructure = [
                 [.lot: lotNumberString()],
-                [.time: attributify(lotString, color: .artsyPurpleRegular())],
+                [.time: attributify(lotString, color: .artsyColor(for: "devpurple"))],
                 [.bidders: attributify(String(lotViewModel.numberOfBids))]
             ]
         }

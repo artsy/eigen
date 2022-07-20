@@ -12,7 +12,7 @@
     if (!self) {
         return nil;
     }
-    self.backgroundColor = [UIColor artsyGrayRegular];
+    self.backgroundColor = [UIColor artsyColorFor:@"black10"];
     [self constrainHeight:@"1"];
 
     self.accessibilityElementsHidden = YES;

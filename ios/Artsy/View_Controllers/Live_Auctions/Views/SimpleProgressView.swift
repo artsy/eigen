@@ -4,15 +4,15 @@ class SimpleProgressView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .artsyGrayRegular()
+        backgroundColor = .artsyColor(for: "black10")
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        backgroundColor = .artsyGrayRegular()
+        backgroundColor = .artsyColor(for: "black10")
     }
 
-    var highlightColor = UIColor.artsyPurpleRegular() {
+    var highlightColor = UIColor.artsyColor(for: "devpurple") {
         didSet {
             setNeedsDisplay()
         }

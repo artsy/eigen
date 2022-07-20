@@ -15,7 +15,7 @@
                  completed:(SDExternalCompletionBlock)completionBlock
 {
     if (!placeholder) {
-        placeholder = [UIImage imageFromColor:[UIColor artsyGrayRegular]];
+        placeholder = [UIImage imageFromColor:[UIColor artsyColorFor:@"black10"]];
     }
 
     // In testing provide the ability to do a synchronous fast image cache call

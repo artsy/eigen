@@ -259,8 +259,8 @@ const CGFloat ARButtonAnimationDuration = 0.15;
     [self setBorderColor:[UIColor whiteColor] forState:UIControlStateNormal animated:NO];
     [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 
-    [self setBackgroundColor:[UIColor artsyPurpleRegular] forState:UIControlStateHighlighted animated:NO];
-    [self setBorderColor:[UIColor artsyPurpleRegular] forState:UIControlStateHighlighted animated:NO];
+    [self setBackgroundColor:[UIColor artsyColorFor:@"devpurple"] forState:UIControlStateHighlighted animated:NO];
+    [self setBorderColor:[UIColor artsyColorFor:@"devpurple"] forState:UIControlStateHighlighted animated:NO];
 }
 
 - (CGSize)intrinsicContentSize
@@ -307,7 +307,7 @@ const CGFloat ARButtonAnimationDuration = 0.15;
     [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 
     [self setBackgroundColor:[UIColor blackColor] forState:UIControlStateNormal animated:NO];
-    [self setBackgroundColor:[UIColor artsyPurpleRegular] forState:UIControlStateHighlighted animated:NO];
+    [self setBackgroundColor:[UIColor artsyColorFor:@"devpurple"] forState:UIControlStateHighlighted animated:NO];
 }
 
 - (CGSize)intrinsicContentSize

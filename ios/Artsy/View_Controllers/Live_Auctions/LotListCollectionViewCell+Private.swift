@@ -90,10 +90,10 @@ extension PrivateFunctions {
             artistsNamesLabel.numberOfLines = 1
             artistsNamesLabel.lineBreakMode = .byTruncatingTail
 
-            backgroundColor = .artsyPurpleRegular()
+            backgroundColor = .artsyColor(for: "devpurple")
         } else {
             selectedBackgroundView = UIView().then {
-                $0.backgroundColor = .artsyGrayLight()
+                $0.backgroundColor = .artsyColor(for: "black5")
             }
             currentAskingPriceLabel.removeFromSuperview()
             hammerImageView.removeFromSuperview()
@@ -152,7 +152,7 @@ extension ClassFunctions {
         return ARSansSerifLabel().then {
             $0.font = UIFont.sansSerifFont(withSize: 12)
             $0.backgroundColor = .clear
-            $0.textColor = .artsyRedRegular()
+            $0.textColor = .artsyColor(for: "red100")
             $0.text = "CLOSED"
         }
     }

@@ -44,6 +44,9 @@ extern NSString *const AREnvTest;
 
 - (void)reset;
 
+@property (nonatomic, strong) NSDictionary *colors;
+- (UIColor *)artsyColorFor:(NSString *)name;
+
 @end
 
 NS_ASSUME_NONNULL_END

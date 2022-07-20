@@ -12,10 +12,10 @@ class SaleStatusView: UIView {
         constrainHeight("\(height)")
         
         // Set up red background view with a border.
-        backgroundView.backgroundColor = UIColor.artsyRedRegular().withAlphaComponent(0.1)
+        backgroundView.backgroundColor = UIColor.artsyColor(for: "red100").withAlphaComponent(0.1)
         addSubview(backgroundView)
         backgroundView.alignTop("0", leading: "0", bottom: "0", trailing: "0", toView: self)
-        backgroundView.layer.borderColor = UIColor.artsyRedRegular().cgColor
+        backgroundView.layer.borderColor = UIColor.artsyColor(for: "red100").cgColor
         backgroundView.layer.borderWidth = 1
         
         // Set up status label
@@ -24,7 +24,7 @@ class SaleStatusView: UIView {
         statusLabel.alignLeading("20", trailing: "-20", toView: backgroundView)
         // top 2 is to make it visually centred
         statusLabel.alignTop("2", bottom: "0", toView: backgroundView)
-        statusLabel.textColor = .artsyRedRegular()
+        statusLabel.textColor = .artsyColor(for: "red100")
         statusLabel.textAlignment = .center
         statusLabel.text = "Sale on Hold"
 

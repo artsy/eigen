@@ -16,9 +16,9 @@ class LiveBidProgressOverlayView: UIView {
 
     fileprivate func biddingProgressUpdated(_ state: LiveAuctionBiddingProgressState) {
 
-        let purple = UIColor.artsyPurpleRegular()!
-        let green = UIColor.artsyGreenRegular()!
-        let red = UIColor.artsyRedRegular()!
+        let purple = UIColor.artsyColor(for: "devpurple")!
+        let green = UIColor.artsyColor(for: "green100")!
+        let red = UIColor.artsyColor(for: "red100")!
         let black = UIColor.black
 
         switch state {

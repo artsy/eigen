@@ -1,6 +1,6 @@
 #import "UIColor+ArtsyColors.h"
+#import "AREmission.h"
 
-// See: https://github.com/artsy/elan
 
 @implementation UIColor (ArtsyColors)
 
@@ -19,16 +19,6 @@
                            green:g / 255.0f
                             blue:b / 255.0f
                            alpha:alpha];
-}
-
-+ (UIColor *)artsyGrayLight
-{
-    return [UIColor ar_colorWithHex:0xf8f8f8];
-}
-
-+ (UIColor *)artsyGrayRegular
-{
-    return [UIColor ar_colorWithHex:0xe5e5e5];
 }
 
 + (UIColor *)artsyGrayMedium
@@ -51,24 +41,9 @@
     return [UIColor ar_colorWithHex:0xe2d2ff];
 }
 
-+ (UIColor *)artsyPurpleRegular
++ (UIColor *)artsyColorFor:(NSString *)name
 {
-    return [UIColor ar_colorWithHex:0x6e1fff];
-}
-
-+ (UIColor *)artsyRedRegular
-{
-    return [UIColor ar_colorWithHex:0xf7625a];
-}
-
-+ (UIColor *)artsyYellowRegular
-{
-    return [UIColor ar_colorWithHex:0xfdefd1];
-}
-
-+ (UIColor *)artsyGreenRegular
-{
-    return [UIColor ar_colorWithHex:0x0eda83];
+    return [[AREmission sharedInstance] artsyColorFor:name];
 }
 
 @end

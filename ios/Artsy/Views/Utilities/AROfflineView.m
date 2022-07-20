@@ -33,7 +33,7 @@
 
         UIImage *buttonIcon = [UIImage imageNamed:@"RefreshIcon"];
         _refreshButton = [ARMenuButton new];
-        [_refreshButton setBorderColor:[UIColor artsyGrayRegular] forState:UIControlStateNormal animated:NO];
+        [_refreshButton setBorderColor:[UIColor artsyColorFor:@"black10"] forState:UIControlStateNormal animated:NO];
         [_refreshButton setBackgroundColor:[UIColor whiteColor] forState:UIControlStateNormal animated:NO];
         [_refreshButton setImage:buttonIcon forState:UIControlStateNormal];
         [_refreshButton addTarget:self action:@selector(forceRefreshFeedItems:) forControlEvents:UIControlEventTouchUpInside];

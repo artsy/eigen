@@ -222,6 +222,7 @@ const THEMES = {
 
 export type ThemeV3Type = typeof THEMES.v3
 export type ThemeType = ThemeV3Type
+export type ThemeVersion = keyof typeof THEMES
 
 /**
  * Do not use this!! Use any the hooks instead!
@@ -305,6 +306,8 @@ export const useTheme = () => {
     space: space(theme ?? themeIfUnwrapped),
   }
 }
+
+export const useThemeValues = (version: ThemeVersion) => THEMES[version]
 
 export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
 

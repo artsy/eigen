@@ -39,7 +39,7 @@ class TextStack: ORStackView {
     @discardableResult
     func addSmallLineBreak(_ sideMargin: String = "0") -> UIView {
         let line = UIView()
-        line.backgroundColor = .artsyGrayRegular()
+        line.backgroundColor = .artsyColor(for: "black10")
         addSubview(line, withTopMargin: "20", sideMargin: sideMargin)
         line.constrainHeight("1")
         return line

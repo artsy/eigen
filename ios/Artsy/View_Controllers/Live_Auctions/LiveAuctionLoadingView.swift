@@ -30,7 +30,7 @@ class LiveAuctionLoadingView: UIView {
         }
 
         let label = ARSansSerifLabel().then {
-            $0.textColor = UIColor.artsyPurpleRegular()
+            $0.textColor = UIColor.artsyColor(for: "devpurple")
             $0.text = "Entering the auction room"
             $0.font = $0.font.withSize(12)
 
@@ -46,7 +46,7 @@ class LiveAuctionLoadingView: UIView {
 
         let dimension = 40
         let closeButton = ARMenuButton()
-        closeButton.setBorderColor(.artsyGrayRegular(), for: UIControl.State(), animated: false)
+        closeButton.setBorderColor(.artsyColor(for: "black10"), for: UIControl.State(), animated: false)
         closeButton.setBackgroundColor(.white, for: UIControl.State(), animated: false)
         closeButton.setImage(UIImage(named:"serif_modal_close"), for: UIControl.State())
         closeButton.addTarget(self, action: #selector(performOperation), for: .touchUpInside)

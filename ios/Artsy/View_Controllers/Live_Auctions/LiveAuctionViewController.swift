@@ -169,7 +169,7 @@ class LiveAuctionViewController: UIViewController {
 
         let dimension = 40
         let closeButton = ARMenuButton()
-        closeButton.setBorderColor(.artsyGrayRegular(), for: UIControl.State(), animated: false)
+        closeButton.setBorderColor(.artsyColor(for: "black10"), for: UIControl.State(), animated: false)
         closeButton.setBackgroundColor(.white, for: UIControl.State(), animated: false)
         closeButton.setImage(UIImage(named:"serif_modal_close"), for: UIControl.State())
         closeButton.addTarget(self, action: #selector(dismissLiveAuctionsModal), for: .touchUpInside)
