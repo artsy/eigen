@@ -3,9 +3,13 @@ import { OnboardingPersonalizationWelcomeQuery } from "__generated__/OnboardingP
 import { ArtsyLogoIcon, Box, Button, Flex, Screen, Text } from "palette"
 import { StatusBar } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 export const OnboardingPersonalizationWelcome: React.FC = () => {
   const { navigate } = useNavigation()
+  // to be removed, just providing a way to go to the home screen for debugging purposes
+  const { onDone } = useOnboardingContext()
+
   const { me } = useLazyLoadQuery<OnboardingPersonalizationWelcomeQuery>(
     OnboardingPersonalizationWelcomeScreenQuery,
     {}
@@ -26,6 +30,8 @@ export const OnboardingPersonalizationWelcome: React.FC = () => {
           </Text>
           {/* to be removed, just providing a navigation example */}
           <Button onPress={() => navigate("NextScreen")}>go to next screen</Button>
+          {/* to be removed, just providing a way to go to the home screen for debugging purposes */}
+          <Button onPress={onDone}>go to home screen</Button>
         </Flex>
       </Screen.Background>
     </Screen>
