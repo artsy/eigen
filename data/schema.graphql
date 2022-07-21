@@ -4844,9 +4844,6 @@ type CommercePartner {
 }
 
 enum CommercePaymentMethodEnum {
-  # ACH Transfer
-  ACH_TRANSFER
-
   # Credit Card
   CREDIT_CARD
 
