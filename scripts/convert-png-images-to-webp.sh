@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
 # Converts images from pngs to webps for bundle size reduction
 # it will be run for all png images in the `/images` directory
 
