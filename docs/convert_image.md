@@ -27,3 +27,8 @@ sudo ./scripts/convert-png-images-to-webp.sh
 ```
 
 And that's it! 🎉 🎉
+
+### Misc
+
+In order to convert the images we use `cwebp`.
+If you want to learn more about cwebp click [here](https://developers.google.com/speed/webp/docs/cwebp)!
