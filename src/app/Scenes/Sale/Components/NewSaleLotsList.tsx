@@ -88,7 +88,7 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
   useArtworkFilters({
     relay,
     aggregations: unfilteredArtworks?.aggregations,
-    componentPath: "Sale/SaleLotsList",
+    componentPath: "Sale/NewSaleLotsList",
     refetchVariables,
     refetchRef: artworksRefetchRef,
     onApply: () => scrollToTop(),
