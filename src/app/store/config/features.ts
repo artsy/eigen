@@ -252,6 +252,11 @@ export const features = defineFeatures({
     description: "Enable new Onboarding flow",
     showInAdminMenu: true,
   },
+  AREnableArtworksConnectionForAuction: {
+    readyForRelease: false,
+    description: "Use artworksConnection for Auction screen",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
