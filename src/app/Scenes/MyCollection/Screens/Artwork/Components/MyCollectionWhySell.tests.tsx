@@ -7,6 +7,8 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { MyCollectionWhySell } from "./MyCollectionWhySell"
 
 const trackEvent = useTracking().trackEvent
@@ -18,7 +20,7 @@ describe("MyCollectionWhySell", () => {
     contextModule: "insights" | "about" | "oldAbout"
   }) => (
     <QueryRenderer<MyCollectionWhySellTestsQuery>
-      environment={getRelayEnvironment()}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query MyCollectionWhySellTestsQuery @relay_test_operation {
           artwork(id: "some-id") {
@@ -40,19 +42,13 @@ describe("MyCollectionWhySell", () => {
     GlobalStore.actions.artworkSubmission.submission.initializeArtworkDetailsForm = jest.fn() as any
   })
 
-  const resolveData = (resolvers = {}) => {
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, resolvers)
-    )
-  }
-
   describe("P1", () => {
     // P1 related tests
     describe("Navigation", () => {
       it("navigates to the sale form when Submit This Artwork to Sell is pressed", () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
 
-        resolveData({
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             slug: "someSlug",
             internalID: "someInternalId",
@@ -68,7 +64,7 @@ describe("MyCollectionWhySell", () => {
       it("navigates to the explanatory page when learn more is press", () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
 
-        resolveData({
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             slug: "someSlug",
             internalID: "someInternalId",
@@ -86,7 +82,7 @@ describe("MyCollectionWhySell", () => {
     describe("Analytics", () => {
       it("tracks events, oldAbout section", async () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
-        resolveData({
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             slug: "someSlug",
             internalID: "someInternalId",
@@ -110,7 +106,7 @@ describe("MyCollectionWhySell", () => {
       })
       it("tracks events, about tab", async () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="about" />)
-        resolveData({
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             slug: "someSlug",
             internalID: "someInternalId",
@@ -137,7 +133,7 @@ describe("MyCollectionWhySell", () => {
 
       it("tracks events, insights tab", async () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
-        resolveData({
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             slug: "someSlug",
             internalID: "someInternalId",
@@ -165,7 +161,7 @@ describe("MyCollectionWhySell", () => {
     describe("Behavior", () => {
       it("initializes the submission form", async () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
-        resolveData({
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             slug: "someSlug",
             internalID: "someInternalId",
@@ -224,7 +220,7 @@ describe("MyCollectionWhySell", () => {
     describe("Navigation", () => {
       it("navigates to the sales page when learn more is press", () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
-        resolveData({
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             slug: "someSlug",
             internalID: "someInternalId",
@@ -242,7 +238,7 @@ describe("MyCollectionWhySell", () => {
     describe("Analytics", () => {
       it("tracks events, oldAbout section", async () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="oldAbout" />)
-        resolveData({
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             slug: "someSlug",
             internalID: "someInternalId",
@@ -267,7 +263,7 @@ describe("MyCollectionWhySell", () => {
 
       it("tracks events, about tab", async () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="about" />)
-        resolveData({
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             slug: "someSlug",
             internalID: "someInternalId",
@@ -294,7 +290,7 @@ describe("MyCollectionWhySell", () => {
 
       it("tracks events, insights tab", async () => {
         const { getByTestId } = renderWithWrappers(<TestRenderer contextModule="insights" />)
-        resolveData({
+        resolveMostRecentRelayOperation({
           Artwork: () => ({
             slug: "someSlug",
             internalID: "someInternalId",

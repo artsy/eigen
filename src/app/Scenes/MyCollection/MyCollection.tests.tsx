@@ -16,6 +16,7 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionContainer } from "./MyCollection"
 
@@ -23,7 +24,7 @@ describe("MyCollection", () => {
   const TestRenderer = () => (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionTestsQuery>
-        environment={getRelayEnvironment()}
+        environment={getMockRelayEnvironment()}
         query={graphql`
           query MyCollectionTestsQuery @relay_test_operation {
             me {
@@ -63,11 +64,7 @@ describe("MyCollection", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 

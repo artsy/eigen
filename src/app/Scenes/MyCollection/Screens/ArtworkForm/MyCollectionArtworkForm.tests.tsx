@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { getMockRelayEnvironment, getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
   getConvectionGeminiKey,
@@ -11,6 +11,7 @@ import {
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { Image } from "react-native-image-crop-picker"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
@@ -59,7 +60,6 @@ describe("MyCollectionArtworkForm", () => {
 
   describe("Adding a new artwork", () => {
     afterEach(() => {
-      mockEnvironment.mockClear()
       jest.clearAllMocks()
     })
 
@@ -93,34 +93,24 @@ describe("MyCollectionArtworkForm", () => {
         act(() =>
           fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
         )
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockArtistSearchResult,
-          })
-        )
+        resolveMostRecentRelayOperationRawPayload({
+          errors: [],
+          data: mockArtistSearchResult,
+        })
         act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
-
-        await flushPromiseQueue()
 
         // Select Artwork Screen
 
         expect(getByText("Select an Artwork")).toBeTruthy()
 
         act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockArtworkSearchResult,
-          })
-        )
+        resolveMostRecentRelayOperationRawPayload({
+          errors: [],
+          data: mockArtworkSearchResult,
+        })
         act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
 
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
-        )
-
-        await flushPromiseQueue()
+        resolveMostRecentRelayOperationRawPayload({ errors: [], data: mockArtworkResult })
 
         // Edit Details Screen
 
@@ -138,9 +128,7 @@ describe("MyCollectionArtworkForm", () => {
 
         act(() => fireEvent.press(getByTestId("CompleteButton")))
 
-        await flushPromiseQueue()
-
-        const mockOperations = mockEnvironment.mock.getAllOperations()
+        const mockOperations = getMockRelayEnvironment().mock.getAllOperations()
 
         const updatePreferencesOperation = mockOperations[0]
         expect(updatePreferencesOperation.request.variables).toMatchInlineSnapshot(`
@@ -196,22 +184,18 @@ describe("MyCollectionArtworkForm", () => {
         act(() =>
           fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
         )
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockArtistSearchResult,
-          })
-        )
+        resolveMostRecentRelayOperationRawPayload({
+          errors: [],
+          data: mockArtistSearchResult,
+        })
         act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
 
-        await flushPromiseQueue()
         // Select Artwork Screen
 
         expect(getByText("Select an Artwork")).toBeTruthy()
 
         act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artwork-skip-button")))
 
-        await flushPromiseQueue()
         // Edit Details Screen
 
         expect(getByText("Add Details")).toBeTruthy()
@@ -244,8 +228,6 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByText("Select an Artist")).toBeTruthy()
 
         act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artist-skip-button")))
-
-        await flushPromiseQueue()
 
         // Edit Details Screen
 
@@ -430,7 +412,6 @@ describe("MyCollectionArtworkForm", () => {
 
   describe("loading screens", () => {
     afterEach(() => {
-      mockEnvironment.mockClear()
       jest.clearAllMocks()
     })
 
@@ -465,13 +446,10 @@ describe("MyCollectionArtworkForm", () => {
         act(() =>
           fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
         )
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockArtistSearchResult,
-          })
-        )
-        await flushPromiseQueue()
+        resolveMostRecentRelayOperationRawPayload({
+          errors: [],
+          data: mockArtistSearchResult,
+        })
 
         act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
 
@@ -479,24 +457,17 @@ describe("MyCollectionArtworkForm", () => {
 
         // Select Artwork Screen
         act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockArtworkSearchResult,
-          })
-        )
+        resolveMostRecentRelayOperationRawPayload({
+          errors: [],
+          data: mockArtworkSearchResult,
+        })
+
         act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
 
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
-        )
-
-        await flushPromiseQueue()
+        resolveMostRecentRelayOperationRawPayload({ errors: [], data: mockArtworkResult })
 
         // Complete Form
         act(() => fireEvent.press(getByTestId("CompleteButton")))
-
-        await flushPromiseQueue()
 
         expect(getByTestId("saving-artwork-modal").props.visible).toBe(true)
       })
@@ -534,12 +505,11 @@ describe("MyCollectionArtworkForm", () => {
           fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
         )
         act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
+          resolveMostRecentRelayOperationRawPayload({
             errors: [],
             data: mockArtistSearchResult,
           })
         )
-        await flushPromiseQueue()
 
         act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
 
@@ -547,24 +517,17 @@ describe("MyCollectionArtworkForm", () => {
 
         // Select Artwork Screen
         act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockArtworkSearchResult,
-          })
-        )
+        resolveMostRecentRelayOperationRawPayload({
+          errors: [],
+          data: mockArtworkSearchResult,
+        })
+
         act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
 
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
-        )
-
-        await flushPromiseQueue()
+        resolveMostRecentRelayOperationRawPayload({ errors: [], data: mockArtworkResult })
 
         // Complete Form
         act(() => fireEvent.press(getByTestId("CompleteButton")))
-
-        await flushPromiseQueue()
 
         expect(getByTestId("loading-modal").props.visible).toBe(true)
       })

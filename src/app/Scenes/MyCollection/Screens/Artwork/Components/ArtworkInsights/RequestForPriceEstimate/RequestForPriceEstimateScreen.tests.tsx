@@ -1,5 +1,6 @@
-import { act } from "@testing-library/react-native"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 import {
   requestForPriceEstimateMutation,
@@ -31,11 +32,10 @@ describe("RequestForPriceEstimateScreen", () => {
     const onCompleted = jest.fn()
 
     it("sends Request", () => {
-      requestForPriceEstimateMutation(environment, onCompleted, jest.fn(), input)
-      const operation = environment.mock.getMostRecentOperation()
-      act(() => {
-        environment.mock.resolve(operation, MockPayloadGenerator.generate(operation))
-      })
+      requestForPriceEstimateMutation(getMockRelayEnvironment(), onCompleted, jest.fn(), input)
+
+      resolveMostRecentRelayOperation()
+
       expect(onCompleted).toBeCalled()
     })
   })

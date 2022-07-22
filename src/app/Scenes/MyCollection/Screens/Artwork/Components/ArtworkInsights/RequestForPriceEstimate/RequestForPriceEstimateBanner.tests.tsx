@@ -4,12 +4,14 @@ import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { RequestForPriceEstimateBanner } from "./RequestForPriceEstimateBanner"
 
 describe("RequestForPriceEstimateBanner", () => {
   const TestRenderer = () => (
     <QueryRenderer<RequestForPriceEstimateBannerTestsQuery>
-      environment={getRelayEnvironment()}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query RequestForPriceEstimateBannerTestsQuery @relay_test_operation {
           artwork(id: "foo") {
@@ -43,15 +45,9 @@ describe("RequestForPriceEstimateBanner", () => {
     jest.clearAllMocks()
   })
 
-  const resolveData = (passedProps = {}) => {
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, passedProps)
-    )
-  }
-
   it("renders without throwing an error", () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer />)
-    resolveData({
+    resolveMostRecentRelayOperation({
       MarketPriceInsights: () => ({
         demandRank: 7.5,
       }),
@@ -62,7 +58,7 @@ describe("RequestForPriceEstimateBanner", () => {
 
   it("tracks analytics event when RequestForEstimate button is tapped", () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer />)
-    resolveData({
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",

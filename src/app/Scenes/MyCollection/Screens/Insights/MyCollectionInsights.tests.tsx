@@ -16,7 +16,7 @@ describe("MyCollectionInsights", () => {
     })
 
     it("shows market signal when they're available", async () => {
-      const { getByText } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
+      const { getByText } = renderWithRelayWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation({
         Me: () => ({
           myCollectionConnection: myCollectionConnectionMock,
@@ -31,7 +31,7 @@ describe("MyCollectionInsights", () => {
     })
 
     it("shows insights overview", async () => {
-      const { getByText } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
+      const { getByText } = renderWithRelayWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation({
         Me: () => ({
           myCollectionConnection: myCollectionConnectionMock,
@@ -95,7 +95,7 @@ describe("MyCollectionInsights", () => {
     })
 
     it("shows market signal when they're available", async () => {
-      const { getByText } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
+      const { getByText } = renderWithRelayWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation({
         Me: () => ({
           myCollectionConnection: myCollectionConnectionMock,
@@ -111,7 +111,7 @@ describe("MyCollectionInsights", () => {
   })
 
   it("shows empty state when the user has no artworks in their collection", async () => {
-    const { getByTestId } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
+    const { getByTestId } = renderWithRelayWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation({
       Me: () => ({
         myCollectionConnection: { edges: [] },

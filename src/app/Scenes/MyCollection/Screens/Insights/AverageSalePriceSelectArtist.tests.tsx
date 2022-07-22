@@ -1,9 +1,11 @@
 import { fireEvent } from "@testing-library/react-native"
 import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
+import {
+  resolveMostRecentRelayOperation,
+  resolveMostRecentRelayOperationRawPayload,
+} from "app/tests/resolveMostRecentRelayOperation"
 import { useLazyLoadQuery } from "react-relay"
-import { act } from "react-test-renderer"
 import {
   AverageSalePriceAtAuction,
   AverageSalePriceAtAuctionScreenQuery,
@@ -20,13 +22,9 @@ describe("AverageSalePriceSelectArtist", () => {
   }
 
   const getWrapper = async () => {
-    const tree = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
+    const tree = renderWithRelayWrappers(<TestRenderer />)
 
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
-    })
-
-    await flushPromiseQueue()
+    resolveMostRecentRelayOperationRawPayload({ data: mockResult })
 
     return tree
   }
@@ -48,12 +46,13 @@ describe("AverageSalePriceSelectArtist", () => {
       fireEvent.press(getByTestId("artist-section-item-Banksy"))
 
       // fetch Banksy data
-      act(() => {
-        mockEnvironment.mock.resolveMostRecentOperation({
-          data: { artist: { internalID: "artist-id", name: "Banksy", imageUrl: "image-url" } },
-        })
+      resolveMostRecentRelayOperation({
+        Artist: () => ({
+          internalID: "artist-id",
+          name: "Banksy",
+          imageUrl: "image-url",
+        }),
       })
-      await flushPromiseQueue()
 
       // Modal is hidden and the artist is updated
       expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(false)
@@ -88,14 +87,15 @@ describe("AverageSalePriceSelectArtist", () => {
       fireEvent.press(getByTestId("artist-section-item-Amoako Boafo"))
 
       // fetch Amoako Boafo data
-      act(() => {
-        mockEnvironment.mock.resolveMostRecentOperation({
-          data: {
-            artist: { internalID: "artist-id", name: "Amoako Boafo", imageUrl: "image-url" },
+      resolveMostRecentRelayOperation({
+        Artist: () => ({
+          artist: {
+            internalID: "artist-id",
+            name: "Amoako Boafo",
+            imageUrl: "image-url",
           },
-        })
+        }),
       })
-      await flushPromiseQueue()
 
       // Modal is hidden and the artist is updated
       expect(getByTestId("average-sale-price-select-artist-modal").props.visible).toBe(false)

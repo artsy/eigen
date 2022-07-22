@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { MyCollectionArtworkHeaderTestQuery } from "__generated__/MyCollectionArtworkHeaderTestQuery.graphql"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -9,7 +10,7 @@ import { MyCollectionArtworkHeader } from "./MyCollectionArtworkHeader"
 describe("MyCollectionArtworkHeader", () => {
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkHeaderTestQuery>
-      environment={getRelayEnvironment()}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query MyCollectionArtworkHeaderTestQuery @relay_test_operation {
           artwork(id: "artwork-id") {

@@ -6,13 +6,15 @@ import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 describe("MyCollectionArtworkListItem", () => {
   const TestRenderer = () => {
     return (
       <QueryRenderer<MyCollectionArtworkListItemTestsQuery>
-        environment={getRelayEnvironment()}
+        environment={getMockRelayEnvironment()}
         query={graphql`
           query MyCollectionArtworkListItemTestsQuery @relay_test_operation {
             artwork(id: "artwork-id") {
@@ -35,15 +37,9 @@ describe("MyCollectionArtworkListItem", () => {
     jest.clearAllMocks()
   })
 
-  const resolveData = (mockResolver = {}) => {
-    mockEnvironment.mock.resolveMostRecentOperation((opration) =>
-      MockPayloadGenerator.generate(opration, mockResolver)
-    )
-  }
-
   it("renders the fields correctly", () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer />)
-    resolveData({
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
@@ -64,7 +60,7 @@ describe("MyCollectionArtworkListItem", () => {
   it("navigates to artwork details on tap", () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
-    resolveData({
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
@@ -89,7 +85,7 @@ describe("MyCollectionArtworkListItem", () => {
 
   it("tracks analytics event on tap", () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer />)
-    resolveData({
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",
@@ -115,7 +111,7 @@ describe("MyCollectionArtworkListItem", () => {
 
   it("renders the high demand icon if the artists is P1 and demand rank is over 9", () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer />)
-    resolveData({
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         internalID: "artwork-id",
         slug: "artwork-slug",

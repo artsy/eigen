@@ -1,32 +1,25 @@
+import { screen } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
-import { RelayEnvironmentProvider } from "react-relay"
-import { act } from "react-test-renderer"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { AuctionResultsForArtistsYouCollect } from "./AuctionResultsForArtistsYouCollect"
 
 describe("AuctionResultsForArtistsYouCollect", () => {
-  const TestRenderer = () => (
-    <RelayEnvironmentProvider environment={getRelayEnvironment()}>
-      <AuctionResultsForArtistsYouCollect />
-    </RelayEnvironmentProvider>
-  )
+  const TestRenderer = () => <AuctionResultsForArtistsYouCollect />
 
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionInsights: true })
   })
 
   it("renders auction results", async () => {
-    const { getByTestId } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
+    const { getByTestId } = renderWithRelayWrappers(<TestRenderer />)
 
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({
-        errors: [],
-        data: { me: {} },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: { me: {} },
     })
 
-    await flushPromiseQueue()
+    screen.debug()
 
     expect(getByTestId("Results_Section_List")).toBeTruthy()
   })
