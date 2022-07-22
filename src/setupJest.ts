@@ -330,7 +330,6 @@ import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { NativeModules } from "react-native"
 import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
-import { RelayMockEnvironment } from "relay-test-utils"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
 
@@ -520,7 +519,7 @@ jest.mock("app/utils/track/providers", () => ({
   postEventToProviders: jest.fn(),
 }))
 
-const { createMockEnvironment } = require("relay-test-utils")
+import { createMockEnvironment } from "relay-test-utils"
 let mockEnvironment = createMockEnvironment()
 jest.mock("app/relay/defaultEnvironment", () => {
   const mockedFunction = () => mockEnvironment
