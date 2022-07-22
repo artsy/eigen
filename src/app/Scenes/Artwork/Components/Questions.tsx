@@ -20,7 +20,7 @@ export const Questions: React.FC<QuestionsProps> = (props) => {
 
       <InquiryButtonsFragmentContainer
         artwork={artworkData}
-        variant="outlineGray"
+        variant="outline"
         size="small"
         icon={<EnvelopeIcon fill="black100" width="16px" height="16px" />}
       />
