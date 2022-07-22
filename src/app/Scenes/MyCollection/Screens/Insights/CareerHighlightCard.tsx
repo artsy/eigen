@@ -18,7 +18,7 @@ import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
 import styled from "styled-components/native"
 
-type CareerHighlightKind =
+export type CareerHighlightKind =
   | "SOLO_SHOW"
   | "GROUP_SHOW"
   | "COLLECTED"
@@ -27,23 +27,27 @@ type CareerHighlightKind =
   | "ACTIVE_SECONDARY_MARKET"
 
 interface CareerHighlightsCardProps {
-  artistsNum: number
+  count: number
   type: CareerHighlightKind
   isNew?: boolean
 }
 
 export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
-  artistsNum,
+  count,
   type,
   isNew,
 }) => {
+  if (count === 0) {
+    return null
+  }
+
   const color = useColor()
 
   let label: string = ""
   let Icon: FunctionComponent<IconProps> = Fragment
 
   // plural
-  const pl = artistsNum > 1
+  const pl = count > 1
 
   switch (type) {
     case "BIENNIAL":
@@ -105,7 +109,7 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
         </Flex>
         <Flex justifyContent="flex-end" flex={1}>
           <Text variant="xl" color="blue100">
-            {artistsNum}
+            {count}
           </Text>
           <Text variant="xs" color="black100">
             {label}

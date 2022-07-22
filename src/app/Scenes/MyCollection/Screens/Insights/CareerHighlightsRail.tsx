@@ -1,27 +1,39 @@
+import { CareerHighlightsRail_me$key } from "__generated__/CareerHighlightsRail_me.graphql"
 import { Flex, Spacer, useColor } from "palette"
+import React from "react"
 import { FlatList } from "react-native"
-import { CareerHighlightPromotionalCard, CareerHighlightsCard } from "./CareerHighlightCard"
+import { useFragment } from "react-relay"
+import { graphql } from "relay-runtime"
+import {
+  CareerHighlightKind,
+  CareerHighlightPromotionalCard,
+  CareerHighlightsCard,
+} from "./CareerHighlightCard"
+interface CareerHighlightsRailProps {
+  me: CareerHighlightsRail_me$key
+}
 
-const types = [
-  "SOLO_SHOW",
-  "GROUP_SHOW",
-  "COLLECTED",
-  "REVIEWED",
-  "BIENNIAL",
-  "ACTIVE_SECONDARY_MARKET",
-] as const
-
-const data = [...Array(5)].map((_, i) => {
-  const num = Math.ceil(Math.random() * 24)
-  return {
-    artists: num,
-    type: types[i],
-    isNew: !!(num % 2),
-  }
-})
-
-export const CareerHighlightsRail = () => {
+export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props) => {
   const color = useColor()
+  const me = useFragment(fragment, props.me)
+
+  if (!me?.myCollectionInfo?.artistInsightsCount) {
+    return null
+  }
+
+  const careerHighlightData = Object.entries(me.myCollectionInfo.artistInsightsCount).reduce(
+    (arr, [kind, count]) => {
+      if (count) {
+        arr.push({ kind, count })
+      }
+      return arr
+    },
+    [] as Array<Record<string, any>>
+  )
+
+  if (careerHighlightData.length === 0) {
+    return null
+  }
 
   return (
     <Flex px={2} py={1} mb={2} backgroundColor={color("black5")}>
@@ -32,11 +44,25 @@ export const CareerHighlightsRail = () => {
         ItemSeparatorComponent={() => <Spacer mx={1} />}
         ListFooterComponent={() => <CareerHighlightPromotionalCard />}
         style={{ overflow: "visible" }}
-        data={data}
+        data={careerHighlightData}
         renderItem={({ item }) => (
-          <CareerHighlightsCard artistsNum={item.artists} type={item.type} isNew={item.isNew} />
+          <CareerHighlightsCard count={item.count} type={item.kind as CareerHighlightKind} />
         )}
       />
     </Flex>
   )
 }
+
+const fragment = graphql`
+  fragment CareerHighlightsRail_me on Me {
+    myCollectionInfo {
+      artistInsightsCount {
+        BIENNIAL: biennialCount
+        COLLECTED: collectedCount
+        GROUP_SHOW: groupShowCount
+        SOLO_SHOW: soloShowCount
+        REVIEWED: reviewedCount
+      }
+    }
+  }
+`

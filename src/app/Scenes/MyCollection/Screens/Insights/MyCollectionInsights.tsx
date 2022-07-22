@@ -101,7 +101,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       <>
         <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
 
-        <CareerHighlightsRail />
+        <CareerHighlightsRail me={data.me!} />
         {hasMarketSignals /* || average sale price data */ && enablePhase1Part1 && (
           <>
             <MarketSignalsSectionHeader />
@@ -156,6 +156,7 @@ export const MyCollectionInsightsScreenQuery = graphql`
     me {
       ...AuctionResultsForArtistsYouCollectRail_me
       ...AverageAuctionPriceRail_me
+      ...CareerHighlightsRail_me
       auctionResults: myCollectionAuctionResults(first: 3) {
         totalCount
       }
