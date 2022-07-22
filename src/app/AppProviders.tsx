@@ -42,7 +42,6 @@ export const AppProviders = ({ children }: { children?: React.ReactNode }) =>
 
 // relay needs the default environment
 const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => (
-  // @ts-expect-error
   <RelayEnvironmentProvider environment={getRelayEnvironment()} {...props} />
 )
 
