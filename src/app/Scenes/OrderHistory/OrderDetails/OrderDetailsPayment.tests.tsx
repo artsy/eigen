@@ -2,9 +2,10 @@ import { OrderDetailsPaymentTestsQuery } from "__generated__/OrderDetailsPayment
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 import { CreditCardSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe("PaymentSection", () => {
   const TestRenderer = ({}) => (
@@ -27,22 +28,9 @@ describe("PaymentSection", () => {
     />
   )
 
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
-    return tree
-  }
-
   it("renders when credit card exists", () => {
-    const tree = getWrapper({
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    resolveMostRecentRelayOperation({
       CommerceOrder: () => ({
         creditCard: {
           brand: "visa",
@@ -57,7 +45,8 @@ describe("PaymentSection", () => {
   })
 
   it("renders when credit card doesn't exist", () => {
-    const tree = getWrapper({
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    resolveMostRecentRelayOperation({
       CommerceOrder: () => ({
         creditCard: null,
       }),

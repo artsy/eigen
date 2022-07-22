@@ -4,8 +4,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-
 import { ArtworkInfoSectionFragmentContainer } from "./Components/ArtworkInfoSection"
 import {
   OrderDetailsContainer,
@@ -19,6 +17,7 @@ import { ShipsToSectionFragmentContainer } from "./Components/ShipsToSection"
 import { SoldBySectionFragmentContainer } from "./Components/SoldBySection"
 import { SummarySectionFragmentContainer } from "./Components/SummarySection"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const order = {
   requestedFulfillment: { __typename: "CommerceShip", name: "my name" },
@@ -44,16 +43,6 @@ describe(OrderDetailsQueryRender, () => {
       }}
     />
   )
-
-  const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
-    return tree
-  }
 
   it("renders without throwing an error", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
@@ -97,11 +86,13 @@ describe(OrderDetailsQueryRender, () => {
   })
 
   it("renders without throwing an error", () => {
-    getWrapper()
+    renderWithWrappersLEGACY(<TestRenderer />)
+    resolveMostRecentRelayOperation()
   })
 
   it("renders props for OrderDetails if feature flag is on", () => {
-    const tree = getWrapper({
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    resolveMostRecentRelayOperation({
       CommerceOrder: () => ({
         internalID: "222",
         requestedFulfillment: { __typename: "CommerceShip", name: "my name" },
@@ -111,7 +102,8 @@ describe(OrderDetailsQueryRender, () => {
   })
 
   it("doesn't render MyCollections app if feature flag is not on", () => {
-    const tree = getWrapper()
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    resolveMostRecentRelayOperation()
     expect(extractText(tree.root)).not.toContain("my name")
   })
 

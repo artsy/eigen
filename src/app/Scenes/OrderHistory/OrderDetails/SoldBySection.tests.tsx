@@ -4,6 +4,7 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { SoldBySectionFragmentContainer } from "./Components/SoldBySection"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 describe("SoldBySection", () => {
   const TestRenderer = () => (

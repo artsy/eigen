@@ -5,6 +5,7 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { Button } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const mockOrder = {
   internalID: "d1105415-4a55-4c3b-b71d-bfae06ec92df",
