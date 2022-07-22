@@ -1,5 +1,6 @@
 import { MyCollectionArtworkAboutTestsQuery } from "__generated__/MyCollectionArtworkAboutTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -9,7 +10,7 @@ import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
 describe("MyCollectionArtworkAbout", () => {
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkAboutTestsQuery>
-      environment={getRelayEnvironment()}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query MyCollectionArtworkAboutTestsQuery @relay_test_operation {
           artwork(id: "blue-chip-artwork") {

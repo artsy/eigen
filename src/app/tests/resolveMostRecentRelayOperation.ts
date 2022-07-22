@@ -1,7 +1,7 @@
 import { act } from "@testing-library/react-native"
-import { GraphQLResponse, OperationDescriptor } from "relay-runtime"
 import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { takeRight } from "lodash"
+import { GraphQLResponse, OperationDescriptor } from "relay-runtime"
 import { MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 

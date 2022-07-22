@@ -3,28 +3,21 @@ import { TagTestsQuery } from "__generated__/TagTestsQuery.graphql"
 import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
 import About from "app/Components/Tag/About"
 import { TagArtworks } from "app/Components/Tag/TagArtworks"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { TouchableHighlightColor } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Tag } from "./Tag"
 
 describe("Tag", () => {
   const tagID = "skull"
 
-  function mockMostRecentOperation(mockResolvers: MockResolvers = {}) {
-    environment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ...mockResolvers,
-     })
-  }
-
   const TestRenderer = () => {
     return (
       <QueryRenderer<TagTestsQuery>
-        environment={environment}
+        environment={getMockRelayEnvironment()}
         query={graphql`
           query TagTestsQuery($tagID: String!, $input: FilterArtworksInput) @relay_test_operation {
             tag(id: $tagID) {
@@ -50,12 +43,12 @@ describe("Tag", () => {
 
   it("renders without throwing an error", () => {
     renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation()
   })
 
   it("returns all tabs", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation()
 
     expect(tree.root.findAllByType(TagArtworks)).toHaveLength(1)
     expect(tree.root.findAllByType(About)).toHaveLength(1)
@@ -63,12 +56,10 @@ describe("Tag", () => {
 
   it('don\'t render "about" tab without description', async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockMostRecentOperation({
-      Tag() {
-        return {
-          description: null,
-        }
-      },
+    resolveMostRecentRelayOperation({
+      Tag: () => ({
+        description: null,
+      }),
     })
 
     expect(tree.root.findAllByType(TagArtworks)).toHaveLength(1)
@@ -77,7 +68,7 @@ describe("Tag", () => {
 
   it("renders filter modal", async () => {
     const { UNSAFE_getByType, UNSAFE_getAllByType } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation()
 
     await waitFor(() => expect(UNSAFE_getByType(TouchableHighlightColor)).toBeTruthy())
     fireEvent.press(UNSAFE_getByType(TouchableHighlightColor))

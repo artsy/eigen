@@ -8,12 +8,14 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Image, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { MyCollectionArtworkArtistArticlesFragmentContainer } from "./MyCollectionArtworkArtistArticles"
 
 describe("MyCollectionArtworkArtistArticles", () => {
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkArtistArticlesTestsQuery>
-      environment={getRelayEnvironment()}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query MyCollectionArtworkArtistArticlesTestsQuery @relay_test_operation {
           artwork(id: "some-slug") {
@@ -35,15 +37,9 @@ describe("MyCollectionArtworkArtistArticles", () => {
     jest.clearAllMocks()
   })
 
-  const resolveData = (passedProps = {}) => {
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, passedProps)
-    )
-  }
-
   it("renders without throwing an error", () => {
     const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData({
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         artist: {
           name: "Banksy",
@@ -59,14 +55,14 @@ describe("MyCollectionArtworkArtistArticles", () => {
 
   it("navigates to correct article on click", () => {
     const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData()
+    resolveMostRecentRelayOperation()
     wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
-    expect(navigate).toHaveBeenCalledWith('/article/<mock-value-for-field-"slug">')
+    expect(navigate).toHaveBeenCalledWith("/article/articlesConnection.slug-1")
   })
 
   it("navigates to all articles on click", () => {
     const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData({
+    resolveMostRecentRelayOperation({
       Artist: () => ({
         slug: "artist-slug",
       }),
@@ -77,7 +73,7 @@ describe("MyCollectionArtworkArtistArticles", () => {
 
   it("tracks taps on all articles button", () => {
     const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData({
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         internalID: "some-id",
         slug: "some-slug",

@@ -1,6 +1,7 @@
 import { OnboardingPersonalization_highlights$data } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationTestsQuery } from "__generated__/OnboardingPersonalizationTestsQuery.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { mockNavigate } from "app/tests/navigationMocks"

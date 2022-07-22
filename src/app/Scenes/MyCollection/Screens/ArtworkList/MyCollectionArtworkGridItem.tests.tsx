@@ -8,14 +8,15 @@ import * as LocalImageStore from "app/utils/LocalImageStore"
 import { LocalImage } from "app/utils/LocalImageStore"
 import { Image as RNImage } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { MyCollectionArtworkGridItemFragmentContainer, tests } from "./MyCollectionArtworkGridItem"
 
 describe("MyCollectionArtworkGridItem", () => {
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkGridItemTestsQuery>
-      environment={getRelayEnvironment()}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query MyCollectionArtworkGridItemTestsQuery @relay_test_operation {
           artwork(id: "some-slug") {
@@ -38,19 +39,17 @@ describe("MyCollectionArtworkGridItem", () => {
   })
 
   const resolveData = () => {
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Artwork: () => ({
-          internalID: "artwork-id",
-          slug: "artwork-slug",
-          artist: {
-            internalID: "artist-id",
-          },
-          images: null,
-          medium: "artwork medium",
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Artwork: () => ({
+        internalID: "artwork-id",
+        slug: "artwork-slug",
+        artist: {
+          internalID: "artist-id",
+        },
+        images: null,
+        medium: "artwork medium",
+      }),
+    })
   }
 
   it("renders correct fields", () => {
@@ -101,47 +100,41 @@ describe("MyCollectionArtworkGridItem", () => {
     })
     localImageStoreMock.mockImplementation(() => retrievalPromise)
 
-    act(async () => {
-      const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Artwork: () => ({
-            images: [
-              {
-                url: null,
-              },
-            ],
-          }),
-        })
-      )
+    const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
+    resolveMostRecentRelayOperation({
+      Artwork: () => ({
+        images: [
+          {
+            url: null,
+          },
+        ],
+      }),
+    }),
       await retrievalPromise
-      const image = wrapper.root.findByType(RNImage)
-      expect(image.props.source).toEqual({ uri: "some-local-path" })
-    })
+    const image = wrapper.root.findByType(RNImage)
+    expect(image.props.source).toEqual({ uri: "some-local-path" })
   })
 
   it("renders the high demand icon if artist is P1 and demand rank is over 9", () => {
     const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
     // mocking isP1 and demandRank
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Artwork: () => ({
-          internalID: "artwork-id",
-          slug: "artwork-slug",
-          artist: {
-            internalID: "artist-id",
-            targetSupply: {
-              isP1: true,
-            },
+    resolveMostRecentRelayOperation({
+      Artwork: () => ({
+        internalID: "artwork-id",
+        slug: "artwork-slug",
+        artist: {
+          internalID: "artist-id",
+          targetSupply: {
+            isP1: true,
           },
-          medium: "artwork medium",
-          marketPriceInsights: {
-            demandRank: 0.91,
-          },
-        }),
-      })
-    )
+        },
+        medium: "artwork medium",
+        marketPriceInsights: {
+          demandRank: 0.91,
+        },
+      }),
+    })
     expect(getByTestId("test-high-demand-icon")).toBeTruthy()
   })
 })

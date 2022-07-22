@@ -1,5 +1,6 @@
 import { MyCollectionArtworkInsightsTestsQuery } from "__generated__/MyCollectionArtworkInsightsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -9,7 +10,7 @@ import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 describe("MyCollectionArtworkInsights", () => {
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkInsightsTestsQuery>
-      environment={getRelayEnvironment()}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query MyCollectionArtworkInsightsTestsQuery @relay_test_operation {
           artwork(id: "some-artwork-id") {
