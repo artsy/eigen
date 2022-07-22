@@ -1,7 +1,7 @@
 import { withStickyTabPage } from "app/Components/StickyTabPage/testHelpers"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithRelayWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionInsights } from "./MyCollectionInsights"
@@ -17,7 +17,7 @@ describe("MyCollectionInsights", () => {
     })
 
     it("shows market signal when they're available", async () => {
-      const { getByText } = renderWithRelayWrappersTL(<TestRenderer />, mockEnvironment)
+      const { getByText } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
       resolveMostRecentRelayOperation({
         Me: () => ({
           myCollectionConnection: myCollectionConnectionMock,
@@ -32,7 +32,7 @@ describe("MyCollectionInsights", () => {
     })
 
     it("shows insights overview", async () => {
-      const { getByText } = renderWithRelayWrappersTL(<TestRenderer />, mockEnvironment)
+      const { getByText } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
       resolveMostRecentRelayOperation({
         Me: () => ({
           myCollectionConnection: myCollectionConnectionMock,
@@ -52,7 +52,7 @@ describe("MyCollectionInsights", () => {
 
   // describe("no insights message", () => {
   //   it("shows message if there are no market insights", async () => {
-  //     const { getByTestId } = renderWithRelayWrappersTL(<TestRenderer />, mockEnvironment)
+  //     const { getByTestId } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
 
   //     resolveMostRecentRelayOperation( {
   //       Me: () => ({ auctionResults: { totalCount: 0 } }),
@@ -64,7 +64,7 @@ describe("MyCollectionInsights", () => {
   //   })
 
   //   it("doesn't show the message if there are market insights", async () => {
-  //     const { queryByTestId } = renderWithRelayWrappersTL(<TestRenderer />, mockEnvironment)
+  //     const { queryByTestId } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
 
   //     resolveMostRecentRelayOperation( {
   //       Me: () => ({ auctionResults: { totalCount: 1 } }),
@@ -76,7 +76,7 @@ describe("MyCollectionInsights", () => {
   //   })
 
   //   it("doesn't show the message if there are market insights", async () => {
-  //     const { queryByTestId } = renderWithRelayWrappersTL(<TestRenderer />, mockEnvironment)
+  //     const { queryByTestId } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
 
   //     resolveMostRecentRelayOperation( {
   //       Me: () => ({ auctionResults: { totalCount: 1 } }),
@@ -96,7 +96,7 @@ describe("MyCollectionInsights", () => {
     })
 
     it("shows market signal when they're available", async () => {
-      const { getByText } = renderWithRelayWrappersTL(<TestRenderer />, mockEnvironment)
+      const { getByText } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
       resolveMostRecentRelayOperation({
         Me: () => ({
           myCollectionConnection: myCollectionConnectionMock,
@@ -112,7 +112,7 @@ describe("MyCollectionInsights", () => {
   })
 
   it("shows empty state when the user has no artworks in their collection", async () => {
-    const { getByTestId } = renderWithRelayWrappersTL(<TestRenderer />, mockEnvironment)
+    const { getByTestId } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
     resolveMostRecentRelayOperation({
       Me: () => ({
         myCollectionConnection: { edges: [] },

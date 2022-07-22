@@ -1,6 +1,6 @@
 import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithRelayWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
 import { act } from "react-test-renderer"
 import {
@@ -24,7 +24,7 @@ describe("AverageSalePriceAtAuction", () => {
   //search, klama
 
   it("renders title", async () => {
-    renderWithRelayWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation({
       Artist: () => ({

@@ -1,12 +1,12 @@
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
-import { renderWithRelayWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
 
 describe("My Collection Artwork", () => {
   it("show new artwork screen ", () => {
-    const { getByTestId } = renderWithRelayWrappersTL(
+    const { getByTestId } = renderWithRelayWrappers(
       <MyCollectionArtworkScreen
         artworkSlug="random-slug"
         artistInternalID="internal-id"
@@ -25,7 +25,7 @@ describe("My Collection Artwork", () => {
   describe("edit button", () => {
     describe("when there is no submission", () => {
       it("shows the edit button", async () => {
-        const { findByText } = renderWithRelayWrappersTL(
+        const { findByText } = renderWithRelayWrappers(
           <MyCollectionArtworkScreen
             artworkSlug="random-slug"
             artistInternalID="internal-id"
@@ -46,7 +46,7 @@ describe("My Collection Artwork", () => {
 
     describe("when submission is in progress", () => {
       it("hides the edit button when the artwork is coming from a submission", async () => {
-        const { findByText } = renderWithRelayWrappersTL(
+        const { findByText } = renderWithRelayWrappers(
           <MyCollectionArtworkScreen
             artworkSlug="random-slug"
             artistInternalID="internal-id"

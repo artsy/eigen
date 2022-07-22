@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react-native"
-import { renderWithRelayWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { HomeQueryRenderer } from "./Home"
 
@@ -18,7 +18,7 @@ jest.mock("app/Scenes/Home/Components/SalesRail", () => ({
 
 describe("HomeQueryRenderer", () => {
   it("renders home screen module flat list", async () => {
-    renderWithRelayWrappersTL(<HomeQueryRenderer />)
+    renderWithRelayWrappers(<HomeQueryRenderer />)
 
     resolveHomeQueries()
 
@@ -26,7 +26,7 @@ describe("HomeQueryRenderer", () => {
   })
 
   it("renders an email confirmation banner", async () => {
-    renderWithRelayWrappersTL(<HomeQueryRenderer />)
+    renderWithRelayWrappers(<HomeQueryRenderer />)
 
     resolveHomeQueries()
 

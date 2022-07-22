@@ -2,7 +2,7 @@ import { act, fireEvent, RenderAPI, screen, waitFor } from "@testing-library/rea
 import { RecentSearch } from "app/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithRelayWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { waitForSuspenseToBeRemoved } from "app/tests/waitForSupenseToBeRemoved"
 import { useExperimentFlag } from "app/utils/experiments/hooks"
@@ -55,7 +55,7 @@ jest.mock("app/utils/experiments/hooks", () => ({
 
 describe("Search Screen", () => {
   it("should render a text input with placeholder", async () => {
-    renderWithRelayWrappersTL(<SearchScreen />)
+    renderWithRelayWrappers(<SearchScreen />)
 
     resolveMostRecentRelayOperation({
       Query: () => ({
@@ -89,7 +89,7 @@ describe("Search Screen", () => {
   it("does not show city guide entrance when on iPad", async () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => true)
-    const { queryByText } = renderWithRelayWrappersTL(<SearchScreen />)
+    const { queryByText } = renderWithRelayWrappers(<SearchScreen />)
 
     resolveMostRecentRelayOperation({
       Query: () => ({
@@ -115,7 +115,7 @@ describe("Search Screen", () => {
     })
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
-    const { getByText } = renderWithRelayWrappersTL(<SearchScreen />)
+    const { getByText } = renderWithRelayWrappers(<SearchScreen />)
     resolveMostRecentRelayOperation({
       Query: () => ({
         system: {
@@ -133,7 +133,7 @@ describe("Search Screen", () => {
   })
 
   it('the "Top" pill should be selected by default', async () => {
-    const { getByA11yState, getByPlaceholderText } = renderWithRelayWrappersTL(<SearchScreen />)
+    const { getByA11yState, getByPlaceholderText } = renderWithRelayWrappers(<SearchScreen />)
     resolveMostRecentRelayOperation({
       Query: () => ({
         system: {
@@ -155,7 +155,7 @@ describe("Search Screen", () => {
   })
 
   it("should not be able to untoggle the same pill", async () => {
-    const { getByPlaceholderText, getByText, getByA11yState } = renderWithRelayWrappersTL(
+    const { getByPlaceholderText, getByText, getByA11yState } = renderWithRelayWrappers(
       <SearchScreen />
     )
 
@@ -199,7 +199,7 @@ describe("Search Screen", () => {
       })
 
       it("are displayed when the user has typed the minimum allowed number of characters", async () => {
-        const { getByPlaceholderText, queryByText } = renderWithRelayWrappersTL(<SearchScreen />)
+        const { getByPlaceholderText, queryByText } = renderWithRelayWrappers(<SearchScreen />)
 
         resolveMostRecentRelayOperation({
           Query: () => ({
@@ -231,7 +231,7 @@ describe("Search Screen", () => {
       })
 
       it("have top pill selected and disabled at the same time", async () => {
-        const { getByPlaceholderText, getByA11yState } = renderWithRelayWrappersTL(<SearchScreen />)
+        const { getByPlaceholderText, getByA11yState } = renderWithRelayWrappers(<SearchScreen />)
 
         resolveMostRecentRelayOperation({
           Query: () => ({
@@ -253,7 +253,7 @@ describe("Search Screen", () => {
       })
 
       it("are enabled when they have results", async () => {
-        const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithRelayWrappersTL(
+        const { getByPlaceholderText, UNSAFE_getAllByType } = renderWithRelayWrappers(
           <SearchScreen />
         )
         resolveMostRecentRelayOperation({
@@ -282,7 +282,7 @@ describe("Search Screen", () => {
     })
 
     it("are displayed when the user has typed the minimum allowed number of characters", async () => {
-      const { getByPlaceholderText, queryByText } = renderWithRelayWrappersTL(<SearchScreen />)
+      const { getByPlaceholderText, queryByText } = renderWithRelayWrappers(<SearchScreen />)
       resolveMostRecentRelayOperation({
         Query: () => ({
           system: {
@@ -314,7 +314,7 @@ describe("Search Screen", () => {
     })
 
     it("hide keyboard when selecting other pill", async () => {
-      const { getByText, getByPlaceholderText } = renderWithRelayWrappersTL(<SearchScreen />)
+      const { getByText, getByPlaceholderText } = renderWithRelayWrappers(<SearchScreen />)
 
       resolveMostRecentRelayOperation({
         Query: () => ({
@@ -337,7 +337,7 @@ describe("Search Screen", () => {
     })
 
     it("should track event when a pill is tapped", async () => {
-      const { getByText, getByPlaceholderText } = renderWithRelayWrappersTL(<SearchScreen />)
+      const { getByText, getByPlaceholderText } = renderWithRelayWrappers(<SearchScreen />)
 
       resolveMostRecentRelayOperation({
         Query: () => ({
@@ -371,7 +371,7 @@ describe("Search Screen", () => {
     })
 
     it("should correctly track the previously applied pill context module", async () => {
-      const { getByText, getByPlaceholderText } = renderWithRelayWrappersTL(<SearchScreen />)
+      const { getByText, getByPlaceholderText } = renderWithRelayWrappers(<SearchScreen />)
 
       resolveMostRecentRelayOperation({
         Query: () => ({
@@ -419,7 +419,7 @@ describe("Search Screen", () => {
     })
 
     it("should render all allowed algolia indices", async () => {
-      const { getByPlaceholderText, getByText } = renderWithRelayWrappersTL(<SearchScreen />)
+      const { getByPlaceholderText, getByText } = renderWithRelayWrappers(<SearchScreen />)
 
       resolveMostRecentRelayOperation({
         Query: () => ({
@@ -489,7 +489,7 @@ describe("Search Screen", () => {
     })
 
     it("should render only allowed algolia indices", async () => {
-      const { getByPlaceholderText, getByText, queryByText } = renderWithRelayWrappersTL(
+      const { getByPlaceholderText, getByText, queryByText } = renderWithRelayWrappers(
         <SearchScreen />
       )
 
@@ -535,7 +535,7 @@ describe("Search Screen", () => {
     let tree: RenderAPI
 
     beforeEach(async () => {
-      tree = renderWithRelayWrappersTL(<SearchScreen />)
+      tree = renderWithRelayWrappers(<SearchScreen />)
 
       resolveMostRecentRelayOperation({
         Algolia: () => ({
@@ -603,7 +603,7 @@ describe("Search Screen", () => {
   })
 
   it("should track event when a search result is pressed", async () => {
-    const { getByPlaceholderText, getByText } = renderWithRelayWrappersTL(<SearchScreen />)
+    const { getByPlaceholderText, getByText } = renderWithRelayWrappers(<SearchScreen />)
 
     resolveMostRecentRelayOperation({
       Query: () => ({
