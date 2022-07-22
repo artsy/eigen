@@ -164,35 +164,38 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
 export const DEFAULT_SECTION_MARGIN = 20
 export const DEFAULT_ITEM_MARGIN = 20
 
-const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = (props) => {
-  const {
-    sectionCount = Dimensions.get("window").width > 700 ? 3 : 2,
-    sectionMargin = DEFAULT_SECTION_MARGIN,
-    itemMargin = DEFAULT_ITEM_MARGIN,
-    shouldAddPadding = false,
-    autoFetch = true,
-    pageSize = PAGE_SIZE,
-    hidePartner = false,
-    isMyCollection = false,
-    useParentAwareScrollView = Platform.OS === "android",
-    showLoadingSpinner = false,
-    updateRecentSearchesOnTap = false,
-    itemComponentProps,
-    width,
-    hasMore,
-    isLoading,
-    loadMore,
-    connection,
-    localSortAndFilterArtworks,
-    HeaderComponent,
-    FooterComponent,
-    stickyHeaderIndices,
-    onScroll,
-    scrollEventThrottle,
-    showLotLabel,
-    hideUrgencyTags,
-  } = props
-
+const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
+  sectionCount = Dimensions.get("window").width > 700 ? 3 : 2,
+  sectionMargin = DEFAULT_SECTION_MARGIN,
+  itemMargin = DEFAULT_ITEM_MARGIN,
+  shouldAddPadding = false,
+  autoFetch = true,
+  pageSize = PAGE_SIZE,
+  hidePartner = false,
+  isMyCollection = false,
+  useParentAwareScrollView = Platform.OS === "android",
+  showLoadingSpinner = false,
+  updateRecentSearchesOnTap = false,
+  itemComponentProps,
+  width,
+  hasMore,
+  isLoading,
+  loadMore,
+  connection,
+  localSortAndFilterArtworks,
+  HeaderComponent,
+  FooterComponent,
+  stickyHeaderIndices,
+  onScroll,
+  scrollEventThrottle,
+  showLotLabel,
+  hideUrgencyTags,
+  contextScreen,
+  contextScreenQuery,
+  contextScreenOwnerSlug,
+  contextScreenOwnerId,
+  contextScreenOwnerType,
+}) => {
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
     if (__TEST__) {
@@ -303,11 +306,11 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = (props) => {
         const imgHeight = imgWidth / aspectRatio
         artworkComponents.push(
           <ItemComponent
-            contextScreenOwnerType={props.contextScreenOwnerType}
-            contextScreenOwnerId={props.contextScreenOwnerId}
-            contextScreenOwnerSlug={props.contextScreenOwnerSlug}
-            contextScreenQuery={props.contextScreenQuery}
-            contextScreen={props.contextScreen}
+            contextScreenOwnerType={contextScreenOwnerType}
+            contextScreenOwnerId={contextScreenOwnerId}
+            contextScreenOwnerSlug={contextScreenOwnerSlug}
+            contextScreenQuery={contextScreenQuery}
+            contextScreen={contextScreen}
             artwork={artwork as any} // FIXME: Types are messed up here
             key={"artwork-" + itemIndex + "-" + artwork.id}
             hideUrgencyTags={hideUrgencyTags}
