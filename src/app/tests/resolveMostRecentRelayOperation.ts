@@ -50,6 +50,18 @@ const DefaultMockResolvers: MockResolvers = {
   String: (ctx) => goodMockResolver(ctx),
 }
 
+/**
+ * Resolves the most recent relay operation with resolvers.
+ * Gets the resolvers like:
+ * ```
+ * {
+ *   Artist: () => ({
+ *     name: "Banksy",
+ *     slug: "banksy",
+ *   })
+ * }
+ * ```
+ */
 export function resolveMostRecentRelayOperation(mockResolvers?: MockResolvers) {
   reset()
   act(() => {
@@ -62,7 +74,31 @@ export function resolveMostRecentRelayOperation(mockResolvers?: MockResolvers) {
   })
 }
 
-export function resolveMostRecentRelayOperationPayload(payload: GraphQLResponse) {
+/**
+ * Resolves the most recent relay operation with a raw payload.
+ * Gets the payload like:
+ * ```
+ * {
+ *   data: undefined,
+ *   errors: [
+ *     { message: "404" },
+ *   ],
+ * }
+ * ```
+ * or
+ * ```
+ * {
+ *   data: {
+ *     artist: {
+ *       name: "Banksy",
+ *       slug: "banksy",
+ *     },
+ *   },
+ *   errors: [],
+ * }
+ * ```
+ */
+export function resolveMostRecentRelayOperationRawPayload(payload: GraphQLResponse) {
   reset()
   act(() => {
     // Wrapping in act will ensure that components

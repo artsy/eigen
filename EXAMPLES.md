@@ -14,24 +14,60 @@ Links:
 
 ## I want to write a test.
 
-- We use `@testing-library/react-native` and our helper `renderWithWrappers`.
+- We use `@testing-library/react-native` and our helper `renderWithWrappers` (or `renderWithRelayWrappers` if it's a relay test, but look further down for more examples of relay tests).
 - We refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/) from `@testing-library/react-native` for querying components
-
-Example Links:
-
-- [Search.tests.tsx](src/app/Scenes/Search/Search.tests.tsx)
-- [CustomSizeInputs.tests.tsx](src/app/Components/ArtworkFilter/Filters/CustomSizeInputs.tests.tsx)
-- [SizesOptionsScreen.tests.tsx](src/app/Components/ArtworkFilter/Filters/SizesOptionsScreen.tests.tsx)
-
-## I want to write a test with relay.
-
-Similar to above. For `relay` testing we use `resolveMostRecentRelayOperation` to mock the most recent operation.
-Look at https://github.com/artsy/relay-workshop for a great tutorial of how we use relay and test with it.
 
 Links:
 
+- [CustomSizeInputs.tests.tsx](src/app/Components/ArtworkFilter/Filters/CustomSizeInputs.tests.tsx)
+- [SizesOptionsScreen.tests.tsx](src/app/Components/ArtworkFilter/Filters/SizesOptionsScreen.tests.tsx)
 - [Search.tests.tsx](src/app/Scenes/Search/Search.tests.tsx)
-- [ArtistSavedSearch.tests.tsx](src/app/Scenes/Artist/ArtistSavedSearch.tests.tsx)
+
+## I want to write a test with relay.
+
+This is an example of a good relay test with hooks.
+- Notice we use `async`, in preparation to the await calls later.
+- First thing, we use `renderWithRelayWrappers` to render the component.
+- Assuming the component (here `SearchScreen`) fires a relay request, we then use `resolveMostRecentRelayOperation` to mock the resolution of the request.
+- Right after that, we `await` with `waitForSuspenseToBeRemoved` or `waitForElementToBeRemoved` for the Suspense wrapper to unmount, and our component to render our regular screen with the newly resolved relay data.
+Example usages:
+```ts
+  await waitForSuspenseToBeRemoved("search-placeholder") // this is a `testID` on a placeholder component
+// OR
+  await waitForSuspenseToBeRemoved() // this will wait for the global test Suspense to go away. Normally it renders a text with `TEST-SUSPENSE-LOADING`, so we can recognize it.
+// OR
+  await waitForElementToBeRemoved(() => screen.getByText("Loading your data..")) // :warning: Notice the arrow function. Here we wait for any other element we can find using any of the testing-library queries.
+```
+- Finally, we add our `expect`ations! We can query and verify whatever we like after this point.
+```ts
+it("does not show city guide entrance when on iPad", async () => { // Here we use `async`.
+  renderWithRelayWrappers(<SearchScreen />) // Here we render! A request will fire.
+
+  resolveMostRecentRelayOperation({ // resolving the request.
+    Query: () => ({
+      system: {
+        algolia: {
+          appID: "",
+          apiKey: "",
+          indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
+        },
+      },
+    }),
+  })
+  await waitForSuspenseToBeRemoved("search-placeholder") // And now we wait..
+
+  expect(screen.queryByText("City Guide")).toBeFalsy() // Verifing things.
+})
+```
+
+Look at https://github.com/artsy/relay-workshop for a more tutorials of how we use relay and test with it.
+
+> :warning: Note: Code with relay hooks, needs `renderWithRelayWrappers`, code with old relay components (`QueryRenderer` etc) needs `renderWithWrappers`. All new code should be using relay hooks. When converting old relay code to relay hooks, make sure to swap `renderWithWrappers` for `renderWithRelayWrappers`.
+
+Links:
+
+- [Search.tests.tsx](src/app/Scenes/Search/Search.tests.tsx) (with hooks)
+- [ArtistSavedSearch.tests.tsx](src/app/Scenes/Artist/ArtistSavedSearch.tests.tsx) (with relay QueryRenderer)
 
 ## I want to add some global state, doesn't need to be persisted.
 

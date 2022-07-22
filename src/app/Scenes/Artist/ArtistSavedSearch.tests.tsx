@@ -1,87 +1,52 @@
-import { fireEvent, within } from "@testing-library/react-native"
+import { fireEvent, screen, within } from "@testing-library/react-native"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import _ from "lodash"
-import "react-native"
-
-import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
+import {
+  rejectMostRecentRelayOperation,
+  resolveMostRecentRelayOperation,
+} from "app/tests/resolveMostRecentRelayOperation"
 import { ArtistQueryRenderer } from "./Artist"
 
-jest.unmock("react-tracking")
-
-type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery" | "SearchCriteriaQuery"
-
 describe("Saved search banner on artist screen", () => {
-  const originalError = console.error
-  const originalWarn = console.warn
-
-  beforeEach(() => {
-
-    console.error = jest.fn()
-    console.warn = jest.fn()
-  })
-
-  afterEach(() => {
-
-    console.error = originalError
-    console.warn = originalWarn
-  })
-
-  function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
-    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
-    environment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ID({ path }) {
-          // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
-          if (_.isEqual(path, ["artist", "id"])) {
-            return "artist-id"
-          }
-        },
-        ...mockResolvers,
-     })
-  }
-
-  const getTree = (searchCriteriaID?: string) => {
-    return renderWithWrappers(
-      <ArtistQueryRenderer
-        artistID="ignored"
-        environment={environment}
-        searchCriteriaID={searchCriteriaID}
-      />
-    )
-  }
+  const TestRenderer = ({ searchCriteriaID }: { searchCriteriaID?: string }) => (
+    <ArtistQueryRenderer
+      artistID="ignored"
+      environment={getRelayEnvironment()}
+      searchCriteriaID={searchCriteriaID}
+    />
+  )
 
   it("should convert the criteria attributes to the filter params format", async () => {
-    const { getByText } = getTree("search-criteria-id")
+    renderWithWrappers(<TestRenderer searchCriteriaID="search-criteria-id" />)
 
-    mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+    resolveMostRecentRelayOperation(MockSearchCriteriaQuery)
+    resolveMostRecentRelayOperation(MockArtistAboveTheFoldQuery)
 
-    fireEvent.press(getByText("Sort & Filter"))
+    fireEvent.press(screen.getByText("Sort & Filter"))
 
-    expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
-    expect(within(getByText("Rarity")).getByText("• 2")).toBeTruthy()
-    expect(within(getByText("Ways to Buy")).getByText("• 2")).toBeTruthy()
+    expect(within(screen.getByText("Sort By")).getByText("• 1")).toBeTruthy()
+    expect(within(screen.getByText("Rarity")).getByText("• 2")).toBeTruthy()
+    expect(within(screen.getByText("Ways to Buy")).getByText("• 2")).toBeTruthy()
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {
-    const { getByText } = getTree("something")
+    renderWithWrappers(<TestRenderer searchCriteriaID="something" />)
 
-    rejectMostRecentRelayOperation(environment, new Error())
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+    rejectMostRecentRelayOperation(new Error())
+    resolveMostRecentRelayOperation(MockArtistAboveTheFoldQuery)
 
-    expect(getByText("Sorry, an error occured")).toBeTruthy()
-    expect(getByText("Failed to get saved search criteria")).toBeTruthy()
+    expect(screen.getByText("Sorry, an error occured")).toBeTruthy()
+    expect(screen.getByText("Failed to get saved search criteria")).toBeTruthy()
   })
 
   it("should render saved search component", async () => {
-    const { getAllByText } = getTree("search-criteria-id")
+    renderWithWrappers(<TestRenderer searchCriteriaID="search-criteria-id" />)
 
-    mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+    resolveMostRecentRelayOperation(MockSearchCriteriaQuery)
+    resolveMostRecentRelayOperation(MockArtistAboveTheFoldQuery)
 
-    expect(getAllByText("Create Alert")).not.toHaveLength(0)
+    expect(screen.getAllByText("Create Alert")).not.toHaveLength(0)
   })
 })
 

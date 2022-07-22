@@ -6,7 +6,7 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import {
   resolveMostRecentRelayOperation,
-  resolveMostRecentRelayOperationPayload,
+  resolveMostRecentRelayOperationRawPayload,
 } from "app/tests/resolveMostRecentRelayOperation"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
 import { Spinner } from "palette"
@@ -35,7 +35,7 @@ describe("VanityURLEntity", () => {
     const { UNSAFE_getAllByType } = renderWithWrappers(
       <TestRenderer entity="unknown" slug="a-cool-new-url" />
     )
-    resolveMostRecentRelayOperationPayload({ data: undefined, errors: [{ message: "404" }] })
+    resolveMostRecentRelayOperationRawPayload({ data: undefined, errors: [{ message: "404" }] })
     expect(UNSAFE_getAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
   })
 
@@ -130,7 +130,7 @@ describe("VanityURLEntity", () => {
       expect(
         getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
       ).toBe("VanityURLEntityQuery")
-      resolveMostRecentRelayOperationPayload({
+      resolveMostRecentRelayOperationRawPayload({
         errors: [],
         data: {
           vanityURLEntity: {
