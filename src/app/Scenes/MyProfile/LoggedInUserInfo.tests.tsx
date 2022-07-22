@@ -1,10 +1,11 @@
 import Spinner from "app/Components/Spinner"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
-import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import {
+  rejectMostRecentRelayOperation,
+  resolveMostRecentRelayOperationRawPayload,
+} from "app/tests/resolveMostRecentRelayOperation"
 import { Text } from "palette"
-import { act } from "react-test-renderer"
 import { UserProfileQueryRenderer } from "./LoggedInUserInfo"
 
 describe(UserProfileQueryRenderer, () => {
@@ -15,20 +16,14 @@ describe(UserProfileQueryRenderer, () => {
 
   it("renders upon sucess", () => {
     const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "LoggedInUserInfoQuery"
-    )
-
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me: {
-            name: "Unit Test User",
-            email: "example@example.com",
-          },
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        me: {
+          name: "Unit Test User",
+          email: "example@example.com",
         },
-      })
+      },
     })
 
     const userInfo = tree.root.findAllByType(Text)
@@ -39,7 +34,7 @@ describe(UserProfileQueryRenderer, () => {
   it("renders null upon failure", () => {
     const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
 
-    rejectMostRecentRelayOperation(env, new Error())
+    rejectMostRecentRelayOperation(new Error())
 
     expect(tree).toMatchInlineSnapshot(`null`)
   })

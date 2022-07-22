@@ -7,6 +7,8 @@ import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import { graphql, QueryRenderer } from "react-relay"
 
 import { SavedAddressesFormContainer, SavedAddressesFormQueryRenderer } from "./SavedAddressesForm"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe(SavedAddressesFormQueryRenderer, () => {
   const TestRenderer = ({ addressId }: { addressId?: string }) => (

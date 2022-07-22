@@ -1,11 +1,12 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { SavedAddressesTestsQuery } from "__generated__/SavedAddressesTestsQuery.graphql"
 import { navigate, navigationEvents } from "app/navigation/navigate"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { getMockRelayEnvironment, getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 
 import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "./SavedAddresses"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe(SavedAddressesQueryRenderer, () => {
   const TestRenderer = () => (
@@ -210,12 +211,9 @@ describe(SavedAddressesQueryRenderer, () => {
       }),
     })
 
-    act(() => fireEvent.press(getAllByText("Delete")[0]))
+    fireEvent.press(getAllByText("Delete")[0])
 
-    const createOperation = mockEnvironment.mock.getMostRecentOperation()
-    expect(createOperation.request.node.operation.name).toEqual(
-      "deleteSavedAddressDeleteUserAddressMutation"
-    )
+    const createOperation = getMockRelayEnvironment().mock.getMostRecentOperation()
     expect(createOperation.request.variables).toEqual({ input: { userAddressID: "5840" } })
   })
 })
