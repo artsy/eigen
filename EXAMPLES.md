@@ -62,7 +62,7 @@ it("does not show city guide entrance when on iPad", async () => { // Here we us
 
 Look at https://github.com/artsy/relay-workshop for a more tutorials of how we use relay and test with it.
 
-> :warning: Note: Code with relay hooks, needs `renderWithRelayWrappers`, code with old relay components (`QueryRenderer` etc) needs `renderWithWrappers`. All new code should be using relay hooks. When converting old relay code to relay hooks, make sure to swap `renderWithWrappers` for `renderWithRelayWrappers`.
+> :warning: Note: Code with relay hooks needs `renderWithRelayWrappers`; code with old relay components (`QueryRenderer` etc) needs `renderWithWrappers`. All new code should be using relay hooks. When converting old relay code to relay hooks, make sure to swap `renderWithWrappers` for `renderWithRelayWrappers`.
 
 Links:
 
