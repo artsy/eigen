@@ -1,5 +1,6 @@
 import { render } from "@testing-library/react-native"
-import { ALL_COLOR, ColoredDot, getRandomColor, mediumToColor } from "./ColoredDot"
+import { ColoredDot } from "./ColoredDot"
+import { ALL_COLOR, getRandomColor, mediumToColor } from "./helpers"
 
 describe("ColoredDot", () => {
   it("returns the right color when a medium with predefined color is selected", () => {
