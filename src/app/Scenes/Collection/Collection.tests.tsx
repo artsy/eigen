@@ -3,7 +3,6 @@ import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import { FilterArtworkButton } from "app/Components/ArtworkFilter"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { CollectionContainer } from "./Collection"
 
 describe("Collection", () => {

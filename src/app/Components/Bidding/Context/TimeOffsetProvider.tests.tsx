@@ -5,7 +5,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { Text } from "palette"
 import PropTypes from "prop-types"
 import React from "react"
-import { createMockEnvironment } from "relay-test-utils"
 import { TimeOffsetProvider } from "./TimeOffsetProvider"
 
 const SECONDS = 1000

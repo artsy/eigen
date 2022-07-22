@@ -1,7 +1,6 @@
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
 
 describe("My Collection Artwork", () => {

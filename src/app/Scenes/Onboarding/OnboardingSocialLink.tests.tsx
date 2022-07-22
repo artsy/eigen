@@ -5,7 +5,6 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Platform } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingNavigationStack } from "./Onboarding"
 import { LinkAccountButton, OnboardingSocialLink } from "./OnboardingSocialLink"
 

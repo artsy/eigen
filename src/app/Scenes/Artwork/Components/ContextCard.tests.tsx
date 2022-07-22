@@ -2,7 +2,6 @@ import { ContextCardTestsQuery } from "__generated__/ContextCardTestsQuery.graph
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { ContextCardFragmentContainer } from "./ContextCard"
 
 describe("ContextCard", () => {

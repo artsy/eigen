@@ -5,7 +5,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { Button, Flex } from "palette"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
 describe("ArtistAboutShows", () => {

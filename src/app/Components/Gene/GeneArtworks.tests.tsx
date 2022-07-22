@@ -4,7 +4,6 @@ import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { GeneArtworksPaginationContainer } from "./GeneArtworks"
 
 describe("GeneArtworks", () => {

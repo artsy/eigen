@@ -3,7 +3,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { SaleActiveBidItemContainer } from "./Components/SaleActiveBidItem"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 

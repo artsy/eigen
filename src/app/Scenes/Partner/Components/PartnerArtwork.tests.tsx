@@ -2,7 +2,6 @@ import { PartnerArtworkTestsQuery } from "__generated__/PartnerArtworkTestsQuery
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import { PartnerArtworkFixture } from "./__fixtures__/PartnerArtwork-fixture"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./PartnerArtwork"
 

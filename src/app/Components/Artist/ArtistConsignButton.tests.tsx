@@ -9,7 +9,6 @@ import { cloneDeep } from "lodash"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "./ArtistConsignButton"
 
 import { GlobalStoreProvider, useSelectedTab } from "app/store/GlobalStore"

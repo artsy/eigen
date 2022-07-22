@@ -4,7 +4,6 @@ import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayO
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { FollowArtistLinkFragmentContainer } from "./FollowArtistLink"
 
 describe("FollowArtistLink", () => {

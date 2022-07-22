@@ -3,7 +3,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { CommercialPartnerInformationFragmentContainer } from "./CommercialPartnerInformation"
 
 describe("CommercialPartnerInformation", () => {

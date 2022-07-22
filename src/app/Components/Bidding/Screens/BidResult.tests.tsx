@@ -6,7 +6,6 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
-import { createMockEnvironment } from "relay-test-utils"
 import { BidderPositionResult } from "../types"
 import { BidResultScreen } from "./BidResult"
 

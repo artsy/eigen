@@ -7,7 +7,6 @@ import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayO
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { RequestConditionReportFragmentContainer } from "./RequestConditionReport"
 
 const artwork: RequestConditionReport_artwork$data = {

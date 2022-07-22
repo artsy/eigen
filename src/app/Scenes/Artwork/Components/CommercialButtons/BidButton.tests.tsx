@@ -17,7 +17,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { merge as _merge } from "lodash"
 import { Settings } from "luxon"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { BidButtonFragmentContainer as BidButton } from "./BidButton"
 
 const merge: (...args: object[]) => any = _merge

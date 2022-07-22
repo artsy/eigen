@@ -5,7 +5,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { extractNodes } from "app/utils/extractNodes"
 import moment from "moment"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultListItemFragmentContainer } from "./AuctionResultListItem"
 
 describe("AuctionResults", () => {

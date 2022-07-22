@@ -7,7 +7,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { DateTime } from "luxon"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { SaleActiveBidItemContainer } from "./Components/SaleActiveBidItem"
 
 describe("SaleActiveBidItem", () => {

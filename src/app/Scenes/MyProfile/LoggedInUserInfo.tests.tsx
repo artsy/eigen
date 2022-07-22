@@ -5,7 +5,6 @@ import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayO
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import { UserProfileQueryRenderer } from "./LoggedInUserInfo"
 
 describe(UserProfileQueryRenderer, () => {

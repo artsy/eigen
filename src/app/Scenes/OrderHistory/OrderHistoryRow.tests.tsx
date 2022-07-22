@@ -4,7 +4,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Button } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 
 const mockOrder = {

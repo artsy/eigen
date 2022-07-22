@@ -8,7 +8,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import relay, { QueryRenderer } from "react-relay"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
 import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"
 
 const trackEvent = useTracking().trackEvent

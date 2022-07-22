@@ -10,7 +10,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 
 describe("Featured Collections Rail", () => {
   afterEach(() => {

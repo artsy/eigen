@@ -19,7 +19,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { Theme } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
 import { closeModalMock, getEssentialProps, MockFilterScreen } from "./FilterTestHelper"
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 

@@ -5,7 +5,6 @@ import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayO
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlaceholder"
-import { createMockEnvironment } from "relay-test-utils"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 
 describe("SearchArtworks", () => {

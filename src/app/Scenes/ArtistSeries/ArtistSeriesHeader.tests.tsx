@@ -4,7 +4,6 @@ import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/Art
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 
 describe("Artist Series Header", () => {
   const TestRenderer = () => (

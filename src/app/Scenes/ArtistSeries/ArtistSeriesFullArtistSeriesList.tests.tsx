@@ -7,7 +7,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 
 describe("Full Artist Series List", () => {
   const TestRenderer = () => (

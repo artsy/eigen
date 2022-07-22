@@ -2,7 +2,6 @@ import { cloneDeep, first } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 
 import { navigate } from "app/navigation/navigate"
 

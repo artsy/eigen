@@ -2,7 +2,6 @@ import { SummarySectionTestsQuery } from "__generated__/SummarySectionTestsQuery
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { SummarySectionFragmentContainer } from "./OrderDetails/Components/SummarySection"
 
 describe("SummarySection", () => {

@@ -3,7 +3,6 @@ import { ArtistNotableWorksRailFragmentContainer } from "app/Components/Artist/A
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 
 describe("Notable Works Rail", () => {
   const TestWrapper = () => {

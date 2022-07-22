@@ -14,7 +14,6 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Image } from "react-native-image-crop-picker"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import * as artworkMutations from "../../mutations/myCollectionCreateArtwork"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import {

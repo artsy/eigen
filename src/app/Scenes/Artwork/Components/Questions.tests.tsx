@@ -4,7 +4,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { Suspense } from "react"
 import { Text } from "react-native"
 import { graphql, RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { Questions } from "./Questions"
 
 describe("Questions", () => {

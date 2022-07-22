@@ -4,7 +4,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { LocationAutocomplete } from "./LocationAutocomplete"
 
 const mockOnChange = jest.fn()

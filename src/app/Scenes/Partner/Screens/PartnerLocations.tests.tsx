@@ -3,7 +3,6 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { PartnerLocationsFixture } from "./__fixtures__/PartnerLocations-fixture"
 import { PartnerLocationsContainer as PartnerLocations } from "./PartnerLocations"
 

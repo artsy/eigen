@@ -5,7 +5,6 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
 import { UploadPhotos } from "./UploadPhotos"
 
 describe("UploadPhotos", () => {

@@ -1,6 +1,5 @@
 import { ArtistHeaderTestsQuery } from "__generated__/ArtistHeaderTestsQuery.graphql"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
 import { extractText } from "app/tests/extractText"

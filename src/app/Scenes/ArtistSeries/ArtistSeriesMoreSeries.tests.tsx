@@ -10,7 +10,6 @@ import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
 
 const trackEvent = useTracking().trackEvent
 

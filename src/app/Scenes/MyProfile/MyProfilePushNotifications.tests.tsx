@@ -7,7 +7,6 @@ import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { Text } from "palette"
 import { Platform, Switch } from "react-native"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import {
   AllowPushNotificationsBanner,
   MyProfilePushNotifications,

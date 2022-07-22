@@ -3,7 +3,6 @@ import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultsForArtistsYouCollect } from "./AuctionResultsForArtistsYouCollect"
 
 describe("AuctionResultsForArtistsYouCollect", () => {

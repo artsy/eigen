@@ -3,7 +3,6 @@ import { ImageCarouselTestsQuery } from "__generated__/ImageCarouselTestsQuery.g
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { getMeasurements } from "./geometry"
 import {
   CarouselImageDescriptor,

@@ -4,7 +4,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkDetails } from "../../Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/ArtworkDetails"
 
 describe("ArtworkDetailsForm", () => {

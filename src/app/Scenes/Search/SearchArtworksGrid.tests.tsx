@@ -6,7 +6,6 @@ import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
 
 describe("SearchArtworksGrid", () => {

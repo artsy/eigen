@@ -12,7 +12,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { CommercialButtonsFragmentContainer } from "./CommercialButtons"
 
 interface WrapperProps {

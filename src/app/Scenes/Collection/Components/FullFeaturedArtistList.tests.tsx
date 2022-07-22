@@ -2,7 +2,6 @@ import { FullFeaturedArtistListTestsQuery } from "__generated__/FullFeaturedArti
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { FullFeaturedArtistListCollectionFixture } from "./__fixtures__/CollectionFixture"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./FullFeaturedArtistList"
 

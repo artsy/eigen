@@ -4,7 +4,6 @@ import { navigate } from "app/navigation/navigate"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { OtherWorksFragmentContainer } from "./OtherWorks/OtherWorks"
 
 describe("OtherWorks", () => {

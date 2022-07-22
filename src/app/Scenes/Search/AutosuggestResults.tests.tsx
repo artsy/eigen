@@ -9,7 +9,6 @@ import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWi
 import { CatchErrors } from "app/utils/CatchErrors"
 import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "./AutosuggestResults"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 import { SearchContext } from "./SearchContext"

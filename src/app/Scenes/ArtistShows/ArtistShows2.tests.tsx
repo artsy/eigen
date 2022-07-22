@@ -6,7 +6,6 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { Text } from "palette"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { ArtistShows2PaginationContainer } from "./ArtistShows2"
 
 describe("ArtistShows2", () => {
