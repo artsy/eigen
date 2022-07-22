@@ -2,15 +2,11 @@ import { InfiniteScrollArtworksGridTestsQuery } from "__generated__/InfiniteScro
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Button } from "palette"
-import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
-
-jest.unmock("react-relay")
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe("Artist Series Artworks", () => {
-  let env: ReturnType<typeof createMockEnvironment>
   const relayMock = {
     loadMore: jest.fn(),
     hasMore: () => {
@@ -18,13 +14,10 @@ describe("Artist Series Artworks", () => {
     },
     isLoading: jest.fn(),
   }
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   const TestRenderer = () => (
     <QueryRenderer<InfiniteScrollArtworksGridTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query InfiniteScrollArtworksGridTestsQuery @raw_response_type {
           artworksConnection(first: 10) {
@@ -67,14 +60,7 @@ describe("Artist Series Artworks", () => {
   it("renders component with default props", () => {
     const wrapper = () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: {
-            ...artworksConnection,
-          },
-        })
-      })
+      resolveMostRecentRelayOperation(artworksConnection)
       return tree
     }
     expect(wrapper().root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
@@ -82,8 +68,8 @@ describe("Artist Series Artworks", () => {
   })
 })
 
-const artworksConnection: InfiniteScrollArtworksGridTestsQuery["response"] = {
-  artworksConnection: {
+const artworksConnection = {
+  artworksConnection: () => ({
     pageInfo: {
       hasNextPage: true,
       startCursor: "1234567890",
@@ -191,5 +177,5 @@ const artworksConnection: InfiniteScrollArtworksGridTestsQuery["response"] = {
         },
       },
     ],
-  },
+  }),
 }

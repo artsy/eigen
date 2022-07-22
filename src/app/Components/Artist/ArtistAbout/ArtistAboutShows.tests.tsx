@@ -8,13 +8,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
-jest.unmock("react-relay")
-
 describe("ArtistAboutShows", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<ArtistAboutShowsTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtistAboutShowsTestsQuery($artistID: String!) @relay_test_operation {
           artist(id: $artistID) {
@@ -39,14 +36,10 @@ describe("ArtistAboutShows", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("returns nothing if the user has no past/running/upcoming events", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       ShowConnection: (context) => {
         switch (context.alias) {
           case "currentShows":
@@ -65,7 +58,7 @@ describe("ArtistAboutShows", () => {
   it("returns list of shows if the user has past/running/upcoming events", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       ShowConnection: (context) => {
         switch (context.alias) {
           case "currentShows":
@@ -86,7 +79,7 @@ describe("ArtistAboutShows", () => {
     it("is visible when the user has past shows", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         ShowConnection: (context) => {
           switch (context.alias) {
             case "currentShows":
@@ -105,7 +98,7 @@ describe("ArtistAboutShows", () => {
     it("is hidden when the user has no past shows", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         ShowConnection: (context) => {
           switch (context.alias) {
             case "currentShows":

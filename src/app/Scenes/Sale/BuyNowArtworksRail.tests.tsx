@@ -5,13 +5,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 
-jest.unmock("react-relay")
-
 describe("BuyNowArtworksRail", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<BuyNowArtworksRailTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query BuyNowArtworksRailTestsQuery($id: String!) @relay_test_operation {
           sale(id: $id) {
@@ -28,12 +25,10 @@ describe("BuyNowArtworksRail", () => {
       }}
     />
   )
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
+
   it(`renders title "Buy now"`, () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
     expect(getByText("Artworks Available to Buy Now")).toBeDefined()
   })
 
@@ -46,7 +41,7 @@ describe("BuyNowArtworksRail", () => {
         },
       }),
     }
-    resolveMostRecentRelayOperation(mockEnvironment, noArtworksProps)
+    resolveMostRecentRelayOperation(noArtworksProps)
     expect(queryAllByTestId("bnmo-rail-wrapper")).toHaveLength(0)
   })
 })

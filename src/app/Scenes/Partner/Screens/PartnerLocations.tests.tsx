@@ -7,15 +7,7 @@ import { createMockEnvironment } from "relay-test-utils"
 import { PartnerLocationsFixture } from "./__fixtures__/PartnerLocations-fixture"
 import { PartnerLocationsContainer as PartnerLocations } from "./PartnerLocations"
 
-jest.unmock("react-relay")
-
 describe("PartnerLocations", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => {
     return (
       <QueryRenderer<PartnerLocationsTestsQuery>
@@ -46,7 +38,7 @@ describe("PartnerLocations", () => {
   it("renders without throwing an error", async () => {
     const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(env, {
+    resolveMostRecentRelayOperation({
       Partner: () => PartnerLocationsFixture,
     })
 

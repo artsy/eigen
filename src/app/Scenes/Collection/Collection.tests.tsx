@@ -6,10 +6,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CollectionContainer } from "./Collection"
 
-jest.unmock("react-relay")
-
 describe("Collection", () => {
-  let environment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<CollectionTestsQuery>
       environment={environment}
@@ -31,10 +28,6 @@ describe("Collection", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
 
   afterEach(() => {
     jest.clearAllMocks()

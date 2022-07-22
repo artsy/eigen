@@ -10,11 +10,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SaleActiveBidItemContainer } from "./Components/SaleActiveBidItem"
 
-jest.unmock("react-relay")
-
 describe("SaleActiveBidItem", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const futureDate = () => DateTime.now().plus({ year: 1 }).toISO()
 
   const lotStanding = {
@@ -45,7 +41,7 @@ describe("SaleActiveBidItem", () => {
 
   const TestRenderer = () => (
     <QueryRenderer<SaleActiveBidItemTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SaleActiveBidItemTestsQuery @relay_test_operation {
           me {
@@ -69,10 +65,6 @@ describe("SaleActiveBidItem", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("navigates to the sale artwork screen on press", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
@@ -88,7 +80,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     const button = tree.root.findAllByType(TouchableOpacity)[0]
     button.props.onPress()
@@ -110,7 +102,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     expect(tree.root.findAllByType(HighestBid)).toHaveLength(1)
   })
@@ -136,7 +128,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     expect(tree.root.findAllByType(ReserveNotMet)).toHaveLength(1)
   })
@@ -156,7 +148,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     expect(tree.root.findAllByType(Outbid)).toHaveLength(1)
   })
@@ -182,7 +174,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     expect(extractText(tree.root)).toContain("1 bid")
   })
@@ -208,7 +200,7 @@ describe("SaleActiveBidItem", () => {
       }),
     }
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
 
     expect(extractText(tree.root)).toContain("5 bids")
   })

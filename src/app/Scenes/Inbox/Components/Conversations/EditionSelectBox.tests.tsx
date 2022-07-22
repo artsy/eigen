@@ -5,8 +5,6 @@ import { Theme } from "palette"
 import { graphql } from "relay-runtime"
 import { EditionSelectBoxFragmentContainer } from "./EditionSelectBox"
 
-jest.unmock("react-relay")
-
 describe("EditionSelectBox", () => {
   let selected: boolean
   const onPress = jest.fn()

@@ -1,24 +1,19 @@
 import { ArtistInsightsTestsQuery } from "__generated__/ArtistInsightsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { mockEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
 import { ArtistInsightsFragmentContainer } from "./ArtistInsights"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 
 const trackEvent = useTracking().trackEvent
 
-jest.unmock("react-relay")
-
 describe("ArtistInsights", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
   const TestRenderer = ({ tabIndex = 0 }) => (
     <QueryRenderer<ArtistInsightsTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtistInsightsTestsQuery @relay_test_operation {
           artist(id: "some-id") {
@@ -49,14 +44,14 @@ describe("ArtistInsights", () => {
 
   it("renders list auction results", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
     expect(tree.findAllByType(ArtistInsightsAuctionResultsPaginationContainer).length).toEqual(1)
   })
 
   it("tracks an auction page view when artist insights is current tab", (done) => {
     renderWithWrappersLEGACY(<TestRenderer tabIndex={0} />)
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
 
     setImmediate(() => {
       expect(trackEvent).toHaveBeenCalledWith({

@@ -1,6 +1,6 @@
 import { act } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import {
   requestForPriceEstimateMutation,
   RequestForPriceEstimateScreen,
@@ -27,8 +27,6 @@ describe("RequestForPriceEstimateScreen", () => {
       requesterEmail: "email@email.com",
       requesterPhoneNumber: "+4912345",
     }
-
-    const environment = createMockEnvironment()
 
     const onCompleted = jest.fn()
 

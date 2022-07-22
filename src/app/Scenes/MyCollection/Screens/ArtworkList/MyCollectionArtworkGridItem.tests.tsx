@@ -9,16 +9,13 @@ import { LocalImage } from "app/utils/LocalImageStore"
 import { Image as RNImage } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { MyCollectionArtworkGridItemFragmentContainer, tests } from "./MyCollectionArtworkGridItem"
 
-jest.unmock("react-relay")
-
 describe("MyCollectionArtworkGridItem", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkGridItemTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyCollectionArtworkGridItemTestsQuery @relay_test_operation {
           artwork(id: "some-slug") {
@@ -35,10 +32,6 @@ describe("MyCollectionArtworkGridItem", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   afterEach(() => {
     jest.clearAllMocks()

@@ -1,5 +1,5 @@
 import { UpdateConversationMutation } from "__generated__/UpdateConversationMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { commitMutation, graphql } from "react-relay"
 import { MutationConfig } from "relay-runtime"
 
@@ -14,7 +14,7 @@ export function updateConversation(
   onCompleted: MutationConfig<any>["onCompleted"],
   onError: MutationConfig<any>["onError"]
 ) {
-  return commitMutation<UpdateConversationMutation>(defaultEnvironment, {
+  return commitMutation<UpdateConversationMutation>(getRelayEnvironment(), {
     updater: (store) => {
       store!.get(conversation.id)!.setValue(false, "unread")
     },

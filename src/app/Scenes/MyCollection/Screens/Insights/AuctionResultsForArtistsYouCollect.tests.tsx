@@ -1,29 +1,24 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultsForArtistsYouCollect } from "./AuctionResultsForArtistsYouCollect"
 
-jest.unmock("react-relay")
-
 describe("AuctionResultsForArtistsYouCollect", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
-    <RelayEnvironmentProvider environment={mockEnvironment}>
+    <RelayEnvironmentProvider environment={getRelayEnvironment()}>
       <AuctionResultsForArtistsYouCollect />
     </RelayEnvironmentProvider>
   )
 
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionInsights: true })
   })
 
   it("renders auction results", async () => {
-    const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    const { getByTestId } = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
 
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation({

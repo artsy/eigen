@@ -25,15 +25,8 @@ const me: RequestConditionReport_me$data = {
 }
 
 jest.unmock("react-tracking")
-jest.unmock("react-relay")
 
 describe("RequestConditionReport", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => {
     return (
       <QueryRenderer<RequestConditionReportTestQuery>
@@ -65,7 +58,7 @@ describe("RequestConditionReport", () => {
     it("renders correctly", () => {
       const { queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(env, {
+      resolveMostRecentRelayOperation({
         Me: () => me,
         Artwork: () => artwork,
       })
@@ -78,7 +71,7 @@ describe("RequestConditionReport", () => {
     it("shows an error modal on failure", async () => {
       const { getByText, queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(env, {
+      resolveMostRecentRelayOperation({
         Me: () => me,
         Artwork: () => artwork,
       })
@@ -129,7 +122,7 @@ describe("RequestConditionReport", () => {
     it("shows a success modal on success", async () => {
       const { getByText, queryByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(env, {
+      resolveMostRecentRelayOperation({
         Me: () => me,
         Artwork: () => artwork,
       })

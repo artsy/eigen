@@ -3,7 +3,7 @@ import { NewWorksForYou_viewer$data } from "__generated__/NewWorksForYou_viewer.
 import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { PlaceholderGrid, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -103,7 +103,7 @@ export const NewWorksForYouScreenQuery = graphql`
 export const NewWorksForYouQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<NewWorksForYouQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={NewWorksForYouScreenQuery}
       variables={{}}
       render={renderWithPlaceholder({

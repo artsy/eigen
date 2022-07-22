@@ -5,15 +5,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkInfoSectionFragmentContainer } from "./Components/ArtworkInfoSection"
 
-jest.unmock("react-relay")
-
 describe("ArtworkInfoSection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
   const TestRenderer = () => (
     <QueryRenderer<ArtworkInfoSectionTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtworkInfoSectionTestsQuery @relay_test_operation {
           commerceOrder(id: "some-id") {
@@ -33,7 +28,7 @@ describe("ArtworkInfoSection", () => {
   )
   it("renders auction result when auction results are available", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       CommerceOrder: () => ({
         internalID: "222",
         lineItems: {

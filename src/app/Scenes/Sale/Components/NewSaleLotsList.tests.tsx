@@ -6,15 +6,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { NewSaleLotsListContainer } from "./NewSaleLotsList"
 
-jest.unmock("react-relay")
-
 describe("NewSaleLotsList", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   const TestRenderer = () => {
     return (
       <QueryRenderer<NewSaleLotsListTestsQuery>
@@ -58,7 +50,7 @@ describe("NewSaleLotsList", () => {
   it("renders nothing if not sale artworks are available", () => {
     const { toJSON } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       FilterArtworksConnection: () => ({
         counts: {
           followedArtists: 0,
@@ -74,7 +66,7 @@ describe("NewSaleLotsList", () => {
   it("renders content", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       FilterArtworksConnection: () => mockedFilterArtworksConnection,
     })
 
@@ -84,7 +76,7 @@ describe("NewSaleLotsList", () => {
   it("renders header", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       FilterArtworksConnection: () => mockedFilterArtworksConnection,
     })
 

@@ -2,22 +2,14 @@ import { FairAllFollowedArtistsTestsQuery } from "__generated__/FairAllFollowedA
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
 import {
   FairAllFollowedArtists,
   FairAllFollowedArtistsFragmentContainer,
 } from "./FairAllFollowedArtists"
 
-jest.unmock("react-relay")
-
 describe("FairAllFollowedArtists", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<FairAllFollowedArtistsTestsQuery>
       environment={env}

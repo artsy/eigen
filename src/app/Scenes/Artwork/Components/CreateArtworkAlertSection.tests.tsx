@@ -7,15 +7,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CreateArtworkAlertSectionFragmentContainer } from "./CreateArtworkAlertSection"
 
-jest.unmock("react-relay")
-
 describe("CreateArtworkAlertSection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -23,7 +15,7 @@ describe("CreateArtworkAlertSection", () => {
   const TestRenderer = () => {
     return (
       <QueryRenderer<CreateArtworkAlertSectionTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query CreateArtworkAlertSectionTestsQuery @relay_test_operation {
             artwork(id: "artwork-id") {
@@ -46,7 +38,7 @@ describe("CreateArtworkAlertSection", () => {
     const placeholder = "Artworks like: Some artwork title"
     const { getByText, getAllByPlaceholderText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => Artwork,
     })
 
@@ -58,7 +50,7 @@ describe("CreateArtworkAlertSection", () => {
   it("should correctly render pills", () => {
     const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => Artwork,
     })
 
@@ -72,7 +64,7 @@ describe("CreateArtworkAlertSection", () => {
   it("should not render `Rarity` pill if needed data is missing", () => {
     const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         ...Artwork,
         attributionClass: null,
@@ -87,7 +79,7 @@ describe("CreateArtworkAlertSection", () => {
   it("should not render `Medium` pill if needed data is missing", () => {
     const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         ...Artwork,
         mediumType: null,
@@ -102,7 +94,7 @@ describe("CreateArtworkAlertSection", () => {
   it("should correctly track event when `Create Alert` button is pressed", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => Artwork,
     })
 

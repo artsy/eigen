@@ -8,8 +8,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "./PartnerOverview"
 
-jest.unmock("react-relay")
-
 const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQuery["rawResponse"]["partner"]> = {
   id: "293032r423",
   slug: "gagosian",
@@ -28,7 +26,6 @@ const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQuery["rawResponse
 }
 
 describe("PartnerOverview", () => {
-  const env = createMockEnvironment()
   const TestRenderer = () => (
     <QueryRenderer<PartnerOverviewTestsQuery>
       environment={env}

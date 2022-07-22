@@ -1,6 +1,6 @@
 import { SearchCriteriaQuery } from "__generated__/SearchCriteriaQuery.graphql"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isNull } from "lodash"
 import { graphql, QueryRenderer } from "react-relay"
@@ -19,7 +19,7 @@ export interface SearchCriteriaQueryRendererProps {
 }
 
 export const SearchCriteriaQueryRenderer: React.FC<SearchCriteriaQueryRendererProps> = (props) => {
-  const { render, searchCriteriaId, environment = defaultEnvironment } = props
+  const { render, searchCriteriaId, environment = getRelayEnvironment() } = props
   const { renderComponent, renderPlaceholder } = render
 
   if (searchCriteriaId) {

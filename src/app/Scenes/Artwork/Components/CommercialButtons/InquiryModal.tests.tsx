@@ -17,14 +17,10 @@ import React from "react"
 import { TextInput } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { press } from "./helpers"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
 import { ShippingModal } from "./ShippingModal"
-
-jest.unmock("react-relay")
-
-let env: ReturnType<typeof createMockEnvironment>
 
 const toggleVisibility = jest.fn()
 const onMutationSuccessful = jest.fn()
@@ -127,10 +123,6 @@ const getWrapper = (mockResolvers = mockResolver, renderer = renderComponent) =>
   })
   return tree
 }
-
-beforeEach(() => {
-  env = createMockEnvironment()
-})
 
 describe("<InquiryModal />", () => {
   it("renders the modal", () => {

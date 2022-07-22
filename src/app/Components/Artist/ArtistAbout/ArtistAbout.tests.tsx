@@ -10,13 +10,10 @@ import Biography from "../Biography"
 import { ArtistAboutContainer } from "./ArtistAbout"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
-jest.unmock("react-relay")
-
 describe("ArtistAbout", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<ArtistAboutTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtistAboutTestsQuery($artistID: String!) @relay_test_operation {
           artist(id: $artistID) {
@@ -45,15 +42,11 @@ describe("ArtistAbout", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   describe("Biography", () => {
     it("is shown when the artist has metadata", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Boolean: (context) => {
           if (context.name === "hasMetadata") {
             return true
@@ -67,7 +60,7 @@ describe("ArtistAbout", () => {
     it("is hidden when the artist has metadata", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Boolean: (context) => {
           if (context.name === "hasMetadata") {
             return false
@@ -83,7 +76,7 @@ describe("ArtistAbout", () => {
     it("is rendered by default", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(mockEnvironment)
+      resolveMostRecentRelayOperation()
 
       expect(tree.root.findAllByType(ArtistAboutShowsFragmentContainer).length).toEqual(1)
     })

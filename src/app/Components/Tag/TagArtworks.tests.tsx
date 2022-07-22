@@ -7,15 +7,8 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { TagArtworksPaginationContainer } from "./TagArtworks"
 
-jest.unmock("react-relay")
-
 describe("TagArtworks", () => {
   const tagID = "tag-id"
-  let environment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
 
   const TestRenderer = () => {
     return (
@@ -65,7 +58,7 @@ describe("TagArtworks", () => {
 
   it("renders artworks grid", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
+    resolveMostRecentRelayOperation({
       FilterArtworksConnection() {
         return {
           counts: {
@@ -81,7 +74,7 @@ describe("TagArtworks", () => {
 
   it("renders empty artworks grid view", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
+    resolveMostRecentRelayOperation({
       FilterArtworksConnection() {
         return {
           counts: {
@@ -98,7 +91,7 @@ describe("TagArtworks", () => {
     fireEvent.press(getByText("Recently Added"))
     fireEvent.press(getByText("Show Results"))
 
-    resolveMostRecentRelayOperation(environment, {
+    resolveMostRecentRelayOperation({
       FilterArtworksConnection() {
         return {
           counts: {
@@ -113,7 +106,7 @@ describe("TagArtworks", () => {
 
   it("renders empty message when artworks is empty", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment, {
+    resolveMostRecentRelayOperation({
       Tag() {
         return {
           artworks: {

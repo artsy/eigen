@@ -6,24 +6,19 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { DecreaseIcon, IncreaseIcon } from "palette"
 import { ReactTestInstance } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment } from "relay-test-utils"
 import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "./MarketStats"
-
-jest.unmock("react-relay")
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const trackEvent = useTracking().trackEvent
 
 describe("MarketStats", () => {
-  let environment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (environment = createMockEnvironment()))
-
-  const TestWrapper = () => {
-    return <MarketStatsQueryRenderer artistInternalID="some-id" environment={environment} />
-  }
+  const TestWrapper = () => (
+    <MarketStatsQueryRenderer artistInternalID="some-id" environment={getRelayEnvironment()} />
+  )
 
   it("renders market stats", () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper />).root
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation()
     expect(tree.findAllByType(MarketStatsFragmentContainer).length).toEqual(1)
   })
 
@@ -38,7 +33,7 @@ describe("MarketStats", () => {
         ],
       }
 
-      resolveMostRecentRelayOperation(environment, {
+      resolveMostRecentRelayOperation({
         PriceInsightConnection: () => priceInsights,
       })
     })
@@ -71,7 +66,7 @@ describe("MarketStats", () => {
         ],
       }
 
-      resolveMostRecentRelayOperation(environment, {
+      resolveMostRecentRelayOperation({
         PriceInsightConnection: () => priceInsights,
       })
 
@@ -107,7 +102,7 @@ describe("MarketStats", () => {
   describe("tracking", () => {
     it("tracks the correct event when info bubble is tapped", () => {
       const tree = renderWithWrappersLEGACY(<TestWrapper />).root
-      resolveMostRecentRelayOperation(environment)
+      resolveMostRecentRelayOperation()
 
       const infoBubble = tree.findByType(InfoButton)
       infoBubble.props.trackEvent()

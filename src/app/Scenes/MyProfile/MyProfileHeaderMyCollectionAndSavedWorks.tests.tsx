@@ -10,16 +10,16 @@ import { LocalImage, storeLocalImages } from "app/utils/LocalImageStore"
 import { Avatar } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
 import {
   LOCAL_PROFILE_ICON_PATH_KEY,
   MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
 } from "./MyProfileHeaderMyCollectionAndSavedWorks"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 jest.mock("./LoggedInUserInfo")
-jest.unmock("react-relay")
+
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
   return {
@@ -31,10 +31,9 @@ jest.mock("@react-navigation/native", () => {
 })
 
 describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyProfileHeaderMyCollectionAndSavedWorksTestsQuery @relay_test_operation {
           me @optionalField {
@@ -55,13 +54,9 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   afterEach(() => {
     jest.clearAllMocks()

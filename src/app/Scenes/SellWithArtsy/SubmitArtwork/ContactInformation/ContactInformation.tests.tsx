@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -15,10 +15,7 @@ jest.mock("../../mutations/updateConsignSubmissionMutation", () => ({
 
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 
-jest.unmock("react-relay")
-
 describe("ContactInformationForm", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const handlePressTest = jest.fn()
   const TestRenderer = () => <ContactInformationQueryRenderer handlePress={handlePressTest} />
 

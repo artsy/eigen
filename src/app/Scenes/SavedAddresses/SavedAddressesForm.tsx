@@ -6,7 +6,7 @@ import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { Stack } from "app/Components/Stack"
 import { useToast } from "app/Components/Toast/toastHook"
 import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -321,7 +321,7 @@ export const SavedAddressesFormPlaceholder: React.FC<{ addressId?: string }> = (
 
 export const SavedAddressesFormQueryRenderer: React.FC<{}> = (props) => (
   <QueryRenderer<SavedAddressesFormQuery>
-    environment={defaultEnvironment}
+    environment={getRelayEnvironment()}
     query={graphql`
       query SavedAddressesFormQuery {
         me {

@@ -5,18 +5,11 @@ import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
 
-jest.unmock("react-relay")
+import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
 
 describe("FairFollowedArtistsRail", () => {
   const trackEvent = useTracking().trackEvent
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   const TestRenderer = () => (
     <QueryRenderer<FairFollowedArtistsRailTestsQuery>

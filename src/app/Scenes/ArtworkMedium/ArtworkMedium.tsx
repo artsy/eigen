@@ -1,7 +1,7 @@
 import { ArtworkMedium_artwork$data } from "__generated__/ArtworkMedium_artwork.graphql"
 import { ArtworkMediumQuery } from "__generated__/ArtworkMediumQuery.graphql"
 import { goBack } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box, Button, Join, Separator, Spacer, Text } from "palette"
 import { ScrollView } from "react-native"
@@ -69,7 +69,7 @@ export const ArtworkMediumQueryRenderer: React.FC<{
 }> = (props) => {
   return (
     <QueryRenderer<ArtworkMediumQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={ARTWORK_MEDIUM_QUERY}
       variables={{ id: props.artworkID }}
       render={renderWithLoadProgress(ArtworkMediumFragmentContainer, props)}

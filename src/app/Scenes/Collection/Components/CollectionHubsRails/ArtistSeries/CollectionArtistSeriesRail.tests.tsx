@@ -13,11 +13,7 @@ import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWi
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.unmock("react-relay")
-
 describe("Artist Series Rail", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<CollectionArtistSeriesRailTestsQuery>
       environment={env}
@@ -60,10 +56,6 @@ describe("Artist Series Rail", () => {
     })
     return tree
   }
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   afterEach(() => {
     jest.clearAllMocks()

@@ -8,13 +8,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 
-jest.unmock("react-relay")
-
 describe("RegisterToBidButton", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<RegisterToBidButtonTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query RegisterToBidButtonTestsQuery($saleID: String!) @relay_test_operation {
           sale(id: "the-sale") {
@@ -42,12 +39,10 @@ describe("RegisterToBidButton", () => {
     />
   )
 
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
   it("shows button when not registered", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Sale: () => ({
         startAt: null,
         endAt: null,
@@ -62,7 +57,7 @@ describe("RegisterToBidButton", () => {
   it("shows green checkmark when registered", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Sale: () => ({
         startAt: null,
         endAt: null,
@@ -82,7 +77,7 @@ describe("RegisterToBidButton", () => {
   it("hides the approve to bid hint if the user has active lots standing", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Sale: () => ({
         startAt: null,
         endAt: null,

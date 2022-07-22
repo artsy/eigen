@@ -2,7 +2,7 @@ import { Box, Flex, Text } from "palette"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 import { Bid } from "app/Components/Bidding/types"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 
 import { PriceSummary_calculatedCost$data } from "__generated__/PriceSummary_calculatedCost.graphql"
@@ -71,7 +71,7 @@ interface PriceSummaryProps extends Partial<PriceSummaryQuery["variables"]> {
 
 export const PriceSummary = ({ saleArtworkId, bid }: PriceSummaryProps) => (
   <QueryRenderer<PriceSummaryQuery>
-    environment={defaultEnvironment}
+    environment={getRelayEnvironment()}
     query={graphql`
       query PriceSummaryQuery($saleArtworkId: ID!, $bidAmountMinor: Int!) {
         node(id: $saleArtworkId) {

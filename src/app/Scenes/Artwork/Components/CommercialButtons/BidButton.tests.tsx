@@ -20,8 +20,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { BidButtonFragmentContainer as BidButton } from "./BidButton"
 
-jest.unmock("react-relay")
-
 const merge: (...args: object[]) => any = _merge
 
 const realNow = Settings.now
@@ -37,13 +35,9 @@ interface WrapperProps {
 }
 
 describe("BidButton", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   beforeAll(() => {
     Settings.defaultZone = "America/New_York"
     Settings.now = () => new Date("2019-08-15T12:00:00+00:00").valueOf()
-
-    mockEnvironment = createMockEnvironment()
   })
 
   afterAll(() => {
@@ -54,7 +48,7 @@ describe("BidButton", () => {
   const TestWrapper = (props: WrapperProps) => {
     return (
       <QueryRenderer<BidButtonTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query BidButtonTestsQuery @relay_test_operation @raw_response_type {
             artwork(id: "auction_artwork") {
@@ -88,7 +82,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={"hasEnded" as AuctionTimerState} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => ArtworkFromClosedAuction,
         Me: () => meFixture,
       })
@@ -103,7 +97,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => ArtworkFromAuctionPreview,
         Me: () => meFixture,
       })
@@ -123,7 +117,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artworkWithIDVRequired,
         Me: () => me,
       })
@@ -142,7 +136,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artworkWithIDVRequired,
         Me: () => me,
       })
@@ -158,7 +152,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -176,7 +170,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artworkWithIDVRequired,
         Me: () => me,
       })
@@ -195,7 +189,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artworkWithIDVRequired,
         Me: () => me,
       })
@@ -211,7 +205,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -228,7 +222,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -243,7 +237,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -258,7 +252,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -273,7 +267,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -288,7 +282,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -308,7 +302,7 @@ describe("BidButton", () => {
           <TestWrapper auctionState={AuctionTimerState.CLOSING} />
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Artwork: () => lotWithIDVRequired,
           Me: () => me,
         })
@@ -324,7 +318,7 @@ describe("BidButton", () => {
           <TestWrapper auctionState={AuctionTimerState.CLOSING} />
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Artwork: () => lotWithIDVRequired,
           Me: () => me,
         })
@@ -347,7 +341,7 @@ describe("BidButton", () => {
           <TestWrapper auctionState={AuctionTimerState.CLOSING} />
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Artwork: () => artwork,
           Me: () => me,
         })
@@ -366,7 +360,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -381,7 +375,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -396,7 +390,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -411,7 +405,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -426,7 +420,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -446,7 +440,7 @@ describe("BidButton", () => {
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Artwork: () => lotWithIDVRequired,
           Me: () => me,
         })
@@ -462,7 +456,7 @@ describe("BidButton", () => {
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Artwork: () => lotWithIDVRequired,
           Me: () => me,
         })
@@ -485,7 +479,7 @@ describe("BidButton", () => {
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
         )
 
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Artwork: () => artwork,
           Me: () => me,
         })
@@ -503,7 +497,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -518,7 +512,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -534,7 +528,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -549,7 +543,7 @@ describe("BidButton", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })

@@ -2,7 +2,7 @@ import { tappedConsign, TappedConsignArgs } from "@artsy/cohesion"
 import { SellWithArtsyHome_targetSupply$data } from "__generated__/SellWithArtsyHome_targetSupply.graphql"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Join, Separator } from "palette"
@@ -81,7 +81,7 @@ export const SellWithArtsyHomeQueryRenderer: React.FC<SellWithArtsyHomeQueryRend
 }) => {
   return (
     <QueryRenderer<SellWithArtsyHomeQuery>
-      environment={environment || defaultEnvironment}
+      environment={environment || getRelayEnvironment()}
       variables={{}}
       query={SellWithArtsyHomeScreenQuery}
       render={renderWithPlaceholder({

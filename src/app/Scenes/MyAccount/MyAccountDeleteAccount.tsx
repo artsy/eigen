@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { AuctionIcon, Box, Button, Flex, GenomeIcon, Input, Spacer, Text } from "palette"
@@ -152,7 +152,7 @@ export const MyAccountDeleteAccountFragmentContainer = createFragmentContainer(
 export const MyAccountDeleteAccountQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<MyAccountDeleteAccountQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyAccountDeleteAccountQuery {
           me {

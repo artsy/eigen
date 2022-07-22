@@ -1,22 +1,15 @@
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { ArticlesScreen } from "./Articles"
 
-jest.unmock("react-relay")
-
 describe("Articles", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <RelayEnvironmentProvider environment={mockEnvironment}>
+    <RelayEnvironmentProvider environment={getRelayEnvironment()}>
       <ArticlesScreen />
     </RelayEnvironmentProvider>
   )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   it("renders articles", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)

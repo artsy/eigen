@@ -6,10 +6,9 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
 import { Platform } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { MyAccountContainer, MyAccountQueryRenderer } from "./MyAccount"
 
-jest.unmock("react-relay")
 const mockUnlinkFB = jest.fn()
 const mocklinkFB = jest.fn()
 
@@ -37,10 +36,9 @@ jest.mock("app/utils/LinkedAccounts/google", () => ({
 }))
 
 describe(MyAccountQueryRenderer, () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyAccountTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyAccountTestsQuery {
           me {
@@ -58,24 +56,18 @@ describe(MyAccountQueryRenderer, () => {
       variables={{}}
     />
   )
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   it("truncated long emails", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          name: "pavlos",
-          email:
-            "myverylongemailmyverylongemailmyverylongemail@averylongdomainaverylongdomainaverylongdomain.com",
-          phone: "123",
-          paddleNumber: "321",
-          hasPassword: true,
-        }),
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      Me: () => ({
+        name: "pavlos",
+        email:
+          "myverylongemailmyverylongemailmyverylongemail@averylongdomainaverylongdomainaverylongdomain.com",
+        phone: "123",
+        paddleNumber: "321",
+        hasPassword: true,
+      }),
     })
 
     expect(tree.findAllByType(Text)[4].props.children).toBe(

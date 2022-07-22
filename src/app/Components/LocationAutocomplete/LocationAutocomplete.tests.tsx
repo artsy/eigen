@@ -1,14 +1,11 @@
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { LocationAutocomplete } from "./LocationAutocomplete"
-
-jest.unmock("react-relay")
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 const mockOnChange = jest.fn()
 const emptyInitialLocation = {
@@ -20,7 +17,7 @@ const emptyInitialLocation = {
 
 describe("ArtworkDetailsForm", () => {
   const TestRenderer = () => (
-    <RelayEnvironmentProvider environment={mockEnvironment}>
+    <RelayEnvironmentProvider environment={getRelayEnvironment()}>
       <LocationAutocomplete initialLocation={emptyInitialLocation} onChange={mockOnChange} />
     </RelayEnvironmentProvider>
   )

@@ -4,8 +4,6 @@ import { setupTestWrapper } from "app/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { graphql } from "react-relay"
 
-jest.unmock("react-relay")
-
 const { getWrapper } = setupTestWrapper({
   Component: FairEmptyStateFragmentContainer,
   query: graphql`

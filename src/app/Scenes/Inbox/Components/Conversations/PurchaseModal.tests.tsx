@@ -5,8 +5,6 @@ import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { PurchaseModalFragmentContainer } from "./PurchaseModal"
 
-jest.unmock("react-relay")
-
 describe("PurchaseModal", () => {
   const { renderWithRelay } = setupTestWrapperTL({
     Component: (props) => (

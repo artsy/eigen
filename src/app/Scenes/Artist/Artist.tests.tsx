@@ -2,45 +2,35 @@ import { ModalStack } from "app/navigation/ModalStack"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { postEventToProviders } from "app/utils/track/providers"
 import { isEqual } from "lodash"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { ArtistQueryRenderer } from "./Artist"
 
-jest.unmock("react-relay")
 jest.unmock("react-tracking")
 
 type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery"
 
 describe("Artist", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
   })
 
   function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
     expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ID({ path }) {
-          // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
-          if (isEqual(path, ["artist", "id"])) {
-            return "artist-id"
-          }
-        },
-        ...mockResolvers,
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      ID({ path }) {
+        // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
+        if (isEqual(path, ["artist", "id"])) {
+          return "artist-id"
+        }
+      },
+      ...mockResolvers,
     })
   }
 
   const TestWrapper = (props: Record<string, any>) => (
     <ModalStack>
-      <ArtistQueryRenderer artistID="ignored" environment={mockEnvironment} {...props} />
+      <ArtistQueryRenderer artistID="ignored" environment={getRelayEnvironment()} {...props} />
     </ModalStack>
   )
 

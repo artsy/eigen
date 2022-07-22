@@ -6,7 +6,7 @@ import {
   ShowSorts,
 } from "__generated__/CitySectionListQuery.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -251,7 +251,7 @@ export const CitySectionListQueryRenderer: React.FC<CitySectionListProps> = ({
 
   return (
     <QueryRenderer<CitySectionListQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query CitySectionListQuery(
           $citySlug: String!

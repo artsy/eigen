@@ -4,14 +4,9 @@ import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids
 import { ShowArtworksPaginationContainer as ShowArtworks } from "app/Scenes/Show/Components/ShowArtworks"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-
-jest.unmock("react-relay")
 
 describe("ShowArtworks", () => {
   const getWrapper = (mockResolvers = {}) => {
-    const env = createMockEnvironment()
-
     const tree = renderWithWrappersLEGACY(
       <QueryRenderer<ShowArtworksTestsQuery>
         environment={env}

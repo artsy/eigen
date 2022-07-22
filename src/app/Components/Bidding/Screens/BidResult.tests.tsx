@@ -10,8 +10,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { BidderPositionResult } from "../types"
 import { BidResultScreen } from "./BidResult"
 
-jest.unmock("react-relay")
-
 const sale: BidResult_sale_artwork$data["sale"] = {
   cascadingEndTimeIntervalMinutes: null,
   liveStartAt: "2022-01-01T00:03:00+00:00",
@@ -28,14 +26,9 @@ describe("BidResult component", () => {
   const mockNavigator = { popToTop }
   const refreshBidderInfoMock = jest.fn()
   const refreshSaleArtworkInfoMock = jest.fn()
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   Date.now = jest.fn(() => 1525983752116)
   jest.useFakeTimers()
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -44,7 +37,7 @@ describe("BidResult component", () => {
   const TestWrapper = (props: WrapperProps) => {
     return (
       <QueryRenderer<BidResultTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query BidResultTestsQuery @relay_test_operation @raw_response_type {
             saleArtwork(id: "saleArtworkId") {
@@ -78,7 +71,7 @@ describe("BidResult component", () => {
         <TestWrapper bidderPositionResult={Statuses.winning} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Sale: () => sale,
       })
 
@@ -90,7 +83,7 @@ describe("BidResult component", () => {
         <TestWrapper bidderPositionResult={Statuses.winning} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Sale: () => sale,
       })
 
@@ -108,7 +101,7 @@ describe("BidResult component", () => {
         <TestWrapper bidderPositionResult={Statuses.outbid} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Sale: () => sale,
       })
 
@@ -120,7 +113,7 @@ describe("BidResult component", () => {
         <TestWrapper bidderPositionResult={Statuses.outbid} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Sale: () => sale,
       })
 
@@ -138,7 +131,7 @@ describe("BidResult component", () => {
         <TestWrapper bidderPositionResult={Statuses.live_bidding_started} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Sale: () => sale,
       })
 
@@ -150,7 +143,7 @@ describe("BidResult component", () => {
         <TestWrapper bidderPositionResult={Statuses.live_bidding_started} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Sale: () => sale,
       })
 

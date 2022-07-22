@@ -7,10 +7,7 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { PartnerHeaderContainer as PartnerHeader } from "./PartnerHeader"
 
-jest.unmock("react-relay")
-
 describe("PartnerHeader", () => {
-  const env = createMockEnvironment()
   const TestRenderer = () => (
     <QueryRenderer<PartnerHeaderTestsQuery>
       environment={env}

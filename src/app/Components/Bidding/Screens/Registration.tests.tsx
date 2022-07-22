@@ -21,7 +21,6 @@ import { Registration } from "./Registration"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
-jest.unmock("react-relay")
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)

@@ -1,5 +1,5 @@
 import { MyAccountEditNameQuery } from "__generated__/MyAccountEditNameQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Input } from "palette"
@@ -67,7 +67,7 @@ const MyAccountEditNameContainer = createFragmentContainer(MyAccountEditName, {
 export const MyAccountEditNameQueryRenderer: React.FC<{}> = () => {
   return (
     <QueryRenderer<MyAccountEditNameQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyAccountEditNameQuery {
           me {

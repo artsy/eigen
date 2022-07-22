@@ -1,6 +1,6 @@
 import { ArtistShows2_artist$data } from "__generated__/ArtistShows2_artist.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -150,7 +150,7 @@ export const ArtistShows2QueryRenderer: React.FC<{ artistID: string }> = ({ arti
   return (
     <QueryRenderer<ArtistShows2Query>
       cacheConfig={{ force: true }}
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtistShows2Query($artistID: String!) {
           artist(id: $artistID) {

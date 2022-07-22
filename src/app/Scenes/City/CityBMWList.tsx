@@ -1,7 +1,7 @@
 import { CityBMWList_city$data } from "__generated__/CityBMWList_city.graphql"
 import { CityBMWListQuery } from "__generated__/CityBMWListQuery.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -155,7 +155,7 @@ interface CityBMWListProps {
 export const CityBMWListQueryRenderer: React.FC<CityBMWListProps> = ({ citySlug }) => {
   return (
     <QueryRenderer<CityBMWListQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query CityBMWListQuery($citySlug: String!) {
           city(slug: $citySlug) {

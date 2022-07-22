@@ -10,7 +10,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from "./ArtworkActions"
 
-jest.unmock("react-relay")
 jest.unmock("app/NativeModules/LegacyNativeModules")
 
 describe("ArtworkActions", () => {
@@ -121,12 +120,6 @@ describe("ArtworkActions", () => {
   })
 
   describe("Saving an artwork", () => {
-    let env: ReturnType<typeof createMockEnvironment>
-
-    beforeEach(() => {
-      env = createMockEnvironment()
-    })
-
     const TestRenderer = () => {
       return (
         <QueryRenderer<ArtworkActionsTestsQuery>
@@ -169,7 +162,7 @@ describe("ArtworkActions", () => {
 
       const { queryByText, getByText } = await renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(env, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artworkActionsArtworkSaved,
       })
 
@@ -182,7 +175,7 @@ describe("ArtworkActions", () => {
       const saveMutation = env.mock.getMostRecentOperation()
       expect(saveMutation.request.node.operation.name).toEqual("ArtworkActionsSaveMutation")
 
-      resolveMostRecentRelayOperation(env, {
+      resolveMostRecentRelayOperation({
         Artwork: () => unsaveResponse,
       })
 
@@ -197,7 +190,7 @@ describe("ArtworkActions", () => {
       }
 
       const { queryByText, getByText } = await renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(env, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artworkActionsArtwork,
       })
 
@@ -210,7 +203,7 @@ describe("ArtworkActions", () => {
       const saveMutation = env.mock.getMostRecentOperation()
       expect(saveMutation.request.node.operation.name).toEqual("ArtworkActionsSaveMutation")
 
-      resolveMostRecentRelayOperation(env, {
+      resolveMostRecentRelayOperation({
         Artwork: () => saveResponse,
       })
 
@@ -220,7 +213,7 @@ describe("ArtworkActions", () => {
 
     it("handles errors in saving gracefully", async () => {
       const { queryByText, getByText } = await renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(env, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artworkActionsArtwork,
       })
 

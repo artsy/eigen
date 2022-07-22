@@ -6,15 +6,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SoldBySectionFragmentContainer } from "./Components/SoldBySection"
 
-jest.unmock("react-relay")
-
 describe("SoldBySection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
-
   const TestRenderer = () => (
     <QueryRenderer<SoldBySectionTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SoldBySectionTestsQuery @relay_test_operation {
           commerceOrder(id: "some-id") {
@@ -33,7 +28,7 @@ describe("SoldBySection", () => {
   )
   it("renders correctly for shipping fulfillment", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       CommerceOrder: () => ({
         requestedFulfillment: {
           __typename: "CommerceShip",
@@ -69,7 +64,7 @@ describe("SoldBySection", () => {
 
   it("renders correctly for pick up fulfillment", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       CommerceOrder: () => ({
         requestedFulfillment: {
           __typename: "CommercePickup",

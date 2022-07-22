@@ -7,8 +7,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { flushPromiseQueue } from "../../tests/flushPromiseQueue"
 import { MyAccountEditEmailContainer, MyAccountEditEmailQueryRenderer } from "./MyAccountEditEmail"
 
-jest.unmock("react-relay")
-
 const mockShow = jest.fn()
 const mockHide = jest.fn()
 const mockHideOldest = jest.fn()
@@ -23,15 +21,13 @@ jest.mock("app/Components/Toast/toastHook", () => ({
 }))
 
 describe(MyAccountEditEmailQueryRenderer, () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => {
     jest.clearAllMocks()
-    mockEnvironment = createMockEnvironment()
   })
 
   const TestRenderer = () => (
     <QueryRenderer<MyAccountEditEmailTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyAccountEditEmailTestsQuery @relay_test_operation {
           me {
@@ -51,7 +47,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
   it("shows confirm email toast when email is changed", async () => {
     const { getByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Me: () => ({
         email: "old-email@test.com",
       }),
@@ -70,7 +66,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
     const saveButton = getByLabelText("save-button")
     fireEvent.press(saveButton)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Me: () => ({
         email: "new-email@test.com",
       }),
@@ -90,7 +86,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
   it("does not show confirm email toast when email did not change", async () => {
     const { getByText, getByLabelText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Me: () => ({
         email: "old-email@test.com",
       }),
@@ -109,7 +105,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
     const saveButton = getByLabelText("save-button")
     fireEvent.press(saveButton)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Me: () => ({
         email: "old-email@test.com",
       }),

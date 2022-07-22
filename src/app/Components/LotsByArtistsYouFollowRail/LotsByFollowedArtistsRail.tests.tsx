@@ -8,14 +8,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { LotsByFollowedArtistsRailContainer, PAGE_SIZE } from "./LotsByFollowedArtistsRail"
 
-jest.unmock("react-relay")
-
 describe("LotsByFollowedArtistsRail", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<LotsByFollowedArtistsRailTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query LotsByFollowedArtistsRailTestsQuery @relay_test_operation {
           me {
@@ -33,14 +29,10 @@ describe("LotsByFollowedArtistsRail", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("Renders list of sale artworks without throwing an error", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+    resolveMostRecentRelayOperation(mockProps)
     await flushPromiseQueue()
 
     expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Auctions")
@@ -57,7 +49,7 @@ describe("LotsByFollowedArtistsRail", () => {
         },
       }),
     }
-    resolveMostRecentRelayOperation(mockEnvironment, noArtworksProps)
+    resolveMostRecentRelayOperation(noArtworksProps)
     await flushPromiseQueue()
     // React-test-renderer has no isEmptyComponent or isNullComponent therefore I am testing for the container
     // expect(tree.root.findAllByType(Flex)).toHaveLength(0)

@@ -6,15 +6,11 @@ import { createMockEnvironment } from "relay-test-utils"
 import { FullFeaturedArtistListCollectionFixture } from "./__fixtures__/CollectionFixture"
 import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./FullFeaturedArtistList"
 
-jest.unmock("react-relay")
-
 describe("FullFeaturedArtistList", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestWrapper = () => {
     return (
       <QueryRenderer<FullFeaturedArtistListTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query FullFeaturedArtistListTestsQuery @relay_test_operation @raw_response_type {
             marketingCollection(slug: "emerging-photographers") {
@@ -34,14 +30,10 @@ describe("FullFeaturedArtistList", () => {
     )
   }
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("renders featured artist", () => {
     const { getByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       MarketingCollection: () => FullFeaturedArtistListCollectionFixture,
     })
 
@@ -55,7 +47,7 @@ describe("FullFeaturedArtistList", () => {
   it("does not render an EntityHeader for excluded artists", async () => {
     const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       MarketingCollection: () => ({
         ...FullFeaturedArtistListCollectionFixture,
         featuredArtistExclusionIds: ["34534-andy-warhols-id", "2342-pablo-picassos-id"],
@@ -73,7 +65,7 @@ describe("FullFeaturedArtistList", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
       const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         MarketingCollection: () => ({
           ...FullFeaturedArtistListCollectionFixture,
           query: {

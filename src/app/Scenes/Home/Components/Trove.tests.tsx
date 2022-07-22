@@ -5,18 +5,10 @@ import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { TroveFragmentContainer } from "./Trove"
 
-jest.unmock("react-relay")
-
 describe("Trove", () => {
-  let environment = createMockEnvironment()
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<TroveTestsQuery>
       query={graphql`

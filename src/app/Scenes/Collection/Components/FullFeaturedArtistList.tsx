@@ -2,7 +2,7 @@ import { FullFeaturedArtistList_collection$data } from "__generated__/FullFeatur
 import { FullFeaturedArtistListQuery } from "__generated__/FullFeaturedArtistListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box } from "palette"
 import React from "react"
@@ -82,7 +82,7 @@ export const CollectionFullFeaturedArtistListQueryRenderer: React.FC<{ collectio
   collectionID,
 }) => (
   <QueryRenderer<FullFeaturedArtistListQuery>
-    environment={defaultEnvironment}
+    environment={getRelayEnvironment()}
     query={graphql`
       query FullFeaturedArtistListQuery($collectionID: String!) {
         collection: marketingCollection(slug: $collectionID) {

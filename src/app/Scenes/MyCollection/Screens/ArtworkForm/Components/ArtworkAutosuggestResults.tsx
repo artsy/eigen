@@ -4,7 +4,7 @@ import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FadeIn } from "app/Components/FadeIn"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Button, Flex } from "palette"
 import React, { useEffect } from "react"
@@ -129,7 +129,7 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
 }> = ({ keyword, artistSlug, onPress, onSkipPress, setShowSkipAheadToAddArtworkLink }) => {
   return (
     <QueryRenderer<ArtworkAutosuggestResultsContainerQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtworkAutosuggestResultsContainerQuery(
           $count: Int!

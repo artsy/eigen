@@ -9,7 +9,6 @@ jest.mock("lodash", () => ({
   ...jest.requireActual("lodash"),
   debounce: jest.fn(),
 }))
-jest.unmock("react-relay")
 
 describe("KeywordFilter", () => {
   beforeEach(() => {

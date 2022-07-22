@@ -4,6 +4,7 @@ import { OnboardingPersonalizationModal_artists$data } from "__generated__/Onboa
 import { OnboardingPersonalizationModalQuery } from "__generated__/OnboardingPersonalizationModalQuery.graphql"
 import { SearchInput } from "app/Components/SearchInput"
 import { BackButton } from "app/navigation/BackButton"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { isEqual } from "lodash"
 import { Flex, Spinner, Text, useSpace } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
@@ -12,7 +13,6 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import usePrevious from "react-use/lib/usePrevious"
 import { useScreenDimensions } from "shared/hooks"
 import { LoadFailureView } from "../../../Components/LoadFailureView"
-import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { extractNodes } from "../../../utils/extractNodes"
 import { OnboardingPersonalizationNavigationStack } from "./OnboardingPersonalization"
 import { OnboardingPersonalizationArtistListItem } from "./OnboardingPersonalizationArtistListItem"
@@ -245,6 +245,6 @@ export const OnboardingPersonalizationModalQueryRenderer: React.FC<
         ...OnboardingPersonalizationModal_artists @arguments(query: $query, count: $count)
       }
     `}
-    environment={defaultEnvironment}
+    environment={getRelayEnvironment()}
   />
 )

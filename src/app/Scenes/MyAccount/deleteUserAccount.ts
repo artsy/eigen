@@ -2,13 +2,13 @@ import {
   DeleteAccountInput,
   deleteUserAccountMutation,
 } from "__generated__/deleteUserAccountMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { Environment } from "react-relay"
 import { commitMutation, graphql } from "relay-runtime"
 
 export const deleteUserAccount = async (
   input: DeleteAccountInput = {},
-  environment: Environment = defaultEnvironment
+  environment: Environment = getRelayEnvironment()
 ): Promise<deleteUserAccountMutation["response"]> => {
   return new Promise<deleteUserAccountMutation["response"]>((resolve, reject) =>
     commitMutation<deleteUserAccountMutation>(environment, {

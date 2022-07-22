@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { OpenInquiryModalButtonTestQuery } from "__generated__/OpenInquiryModalButtonTestQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -12,8 +12,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { OpenInquiryModalButtonFragmentContainer } from "./OpenInquiryModalButton"
 
 const trackEvent = useTracking().trackEvent
-
-jest.unmock("react-relay")
 
 const tappedMakeOfferEvent = {
   action: "tappedMakeOffer",
@@ -30,10 +28,9 @@ const tappedPurchaseEvent = {
 }
 
 describe("OpenInquiryModalButtonTestQueryRenderer", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<OpenInquiryModalButtonTestQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query OpenInquiryModalButtonTestQuery @relay_test_operation {
           artwork(id: "artwork-id") {
@@ -55,7 +52,7 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const renderer = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
+    resolveMostRecentRelayOperation(mockResolvers)
     return renderer
   }
 

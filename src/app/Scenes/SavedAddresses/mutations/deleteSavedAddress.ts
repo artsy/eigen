@@ -1,5 +1,5 @@
 import { deleteSavedAddressDeleteUserAddressMutation } from "__generated__/deleteSavedAddressDeleteUserAddressMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
 export const deleteSavedAddress = (
@@ -7,7 +7,7 @@ export const deleteSavedAddress = (
   onSuccess: () => void,
   onError: (message: string) => void
 ) => {
-  commitMutation<deleteSavedAddressDeleteUserAddressMutation>(defaultEnvironment, {
+  commitMutation<deleteSavedAddressDeleteUserAddressMutation>(getRelayEnvironment(), {
     variables: {
       input: {
         userAddressID,

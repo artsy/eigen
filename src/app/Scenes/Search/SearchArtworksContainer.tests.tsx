@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -8,11 +8,7 @@ import { __renderWithPlaceholderTestUtils__ } from "app/utils/renderWithPlacehol
 import { createMockEnvironment } from "relay-test-utils"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 
-jest.unmock("react-relay")
-
 describe("SearchArtworks", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => {
     return <SearchArtworksQueryRenderer keyword="keyword" />
   }
@@ -24,7 +20,7 @@ describe("SearchArtworks", () => {
   it("should render without throwing an error", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         artistNames: "Artist Name",
       }),
@@ -54,7 +50,7 @@ describe("SearchArtworks", () => {
   it("should track event when an artwork is tapped", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         internalID: "internalID",
         slug: "artworkSlug",

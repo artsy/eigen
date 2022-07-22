@@ -5,19 +5,11 @@ import { extractText } from "app/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { ShowContextCard } from "./Components/ShowContextCard"
 import { Show, ShowFragmentContainer } from "./Show"
 
-jest.unmock("react-relay")
-
 describe("Show", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<ShowTestsQuery>
       environment={env}

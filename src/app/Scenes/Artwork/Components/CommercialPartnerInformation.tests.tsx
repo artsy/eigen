@@ -6,15 +6,11 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CommercialPartnerInformationFragmentContainer } from "./CommercialPartnerInformation"
 
-jest.unmock("react-relay")
-
 describe("CommercialPartnerInformation", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestWrapper = () => {
     return (
       <QueryRenderer<CommercialPartnerInformationTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query CommercialPartnerInformationTestsQuery @relay_test_operation @raw_response_type {
             artwork(id: "artworkId") {
@@ -36,13 +32,12 @@ describe("CommercialPartnerInformation", () => {
 
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: false })
-    mockEnvironment = createMockEnvironment()
   })
 
   it("renders all seller information when work is for sale and is not in a closed auction", () => {
     const { getByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => CommercialPartnerInformationArtwork,
     })
 
@@ -56,7 +51,7 @@ describe("CommercialPartnerInformation", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAvalaraPhase2: true })
     const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => CommercialPartnerInformationArtwork,
     })
 
@@ -74,7 +69,7 @@ describe("CommercialPartnerInformation", () => {
     }
     const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => CommercialPartnerInformationArtworkClosedAuction,
     })
 
@@ -94,7 +89,7 @@ describe("CommercialPartnerInformation", () => {
     }
     const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => CommercialPartnerInformationSoldArtwork,
     })
 
@@ -112,7 +107,7 @@ describe("CommercialPartnerInformation", () => {
     }
     const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => CommercialPartnerInformationNoEcommerce,
     })
 
@@ -132,7 +127,7 @@ describe("CommercialPartnerInformation", () => {
     }
     const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => Artwork,
     })
 

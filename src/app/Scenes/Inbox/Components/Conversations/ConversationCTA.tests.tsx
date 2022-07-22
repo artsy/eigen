@@ -6,20 +6,13 @@ import { AlertCircleFillIcon, Color, Flex, MoneyFillIcon } from "palette"
 import { ElementType } from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { ConversationCTA, ConversationCTAFragmentContainer } from "./ConversationCTA"
 import { CTAPopUp } from "./CTAPopUp"
 import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
 import { ReviewOfferButton } from "./ReviewOfferButton"
-jest.unmock("react-relay")
 
 describe("ConversationCTA", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = ({ showCTA = true }: { showCTA?: boolean }) => (
     <QueryRenderer<ConversationCTATestsQuery>
       environment={env}

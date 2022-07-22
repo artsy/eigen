@@ -15,19 +15,11 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CommercialButtonsFragmentContainer } from "./CommercialButtons"
 
-jest.unmock("react-relay")
-
 interface WrapperProps {
   auctionState?: AuctionTimerState
 }
 
 describe("CommercialButtons", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   const TestWrapper = (props: WrapperProps) => {
     return (
       <ArtworkInquiryContext.Provider
@@ -37,7 +29,7 @@ describe("CommercialButtons", () => {
         }}
       >
         <QueryRenderer<CommercialButtonsTestsRenderQuery>
-          environment={mockEnvironment}
+          environment={getRelayEnvironment()}
           query={graphql`
             query CommercialButtonsTestsRenderQuery @relay_test_operation @raw_response_type {
               artwork(id: "artworkID") {
@@ -78,7 +70,7 @@ describe("CommercialButtons", () => {
     }
     const { getByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
@@ -97,7 +89,7 @@ describe("CommercialButtons", () => {
     }
     const { getByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
@@ -139,7 +131,7 @@ describe("CommercialButtons", () => {
       <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
@@ -158,7 +150,7 @@ describe("CommercialButtons", () => {
     }
     const { getByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
@@ -179,14 +171,14 @@ describe("CommercialButtons", () => {
 
     const { getByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
 
     fireEvent.press(getByText("Purchase"))
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       CommerceOrderWithMutationSuccess: () => ({
         order: {
           internalID: "buyNowID",
@@ -215,14 +207,14 @@ describe("CommercialButtons", () => {
 
     const { getByText } = renderWithWrappers(<TestWrapper />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
 
     fireEvent.press(getByText("Make an Offer"))
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       CommerceOrderWithMutationSuccess: () => ({
         order: {
           internalID: "makeOfferID",
@@ -269,7 +261,7 @@ describe("CommercialButtons", () => {
       <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
@@ -306,7 +298,7 @@ describe("CommercialButtons", () => {
       <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
@@ -329,7 +321,7 @@ describe("CommercialButtons", () => {
       <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Artwork: () => artwork,
       Me: () => meFixture,
     })
@@ -351,7 +343,7 @@ describe("CommercialButtons", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })
@@ -382,7 +374,7 @@ describe("CommercialButtons", () => {
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      resolveMostRecentRelayOperation({
         Artwork: () => artwork,
         Me: () => meFixture,
       })

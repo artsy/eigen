@@ -9,15 +9,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
 
-jest.unmock("react-relay")
-
 describe("SearchArtworksGrid", () => {
-  let environment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
-
   const TestRenderer = () => {
     return (
       <ArtworkFiltersStoreProvider>

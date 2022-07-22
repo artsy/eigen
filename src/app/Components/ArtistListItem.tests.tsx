@@ -6,14 +6,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtistListItemContainer, formatTombstoneText } from "./ArtistListItem"
 
-jest.unmock("react-relay")
-
 describe("ArtistListItem", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = ({ withFeedback = false }: { withFeedback?: boolean }) => (
     <QueryRenderer<ArtistListItemTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtistListItemTestsQuery @relay_test_operation {
           artist(id: "artist-id") {
@@ -31,19 +27,15 @@ describe("ArtistListItem", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("renders without feedback without throwing an error", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
     expect(tree.findByType(Touchable).props.noFeedback).toBe(true)
   })
 
   it("renders with feedback without throwing an error", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer withFeedback />).root
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
     expect(tree.findByType(Touchable).props.noFeedback).toBe(false)
   })
 })

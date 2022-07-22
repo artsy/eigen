@@ -13,7 +13,7 @@ import { Spacer } from "palette"
 
 import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
 import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React from "react"
 
@@ -162,7 +162,7 @@ const FavoriteCategoriesContainer = createPaginationContainer(
 export const FavoriteCategoriesQueryRenderer = () => {
   return (
     <QueryRenderer<FavoriteCategoriesQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FavoriteCategoriesQuery {
           me {

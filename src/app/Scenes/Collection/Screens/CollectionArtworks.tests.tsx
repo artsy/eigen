@@ -12,13 +12,8 @@ import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-
-jest.unmock("react-relay")
 
 describe("CollectionArtworks", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<CollectionArtworksTestsQuery>
       environment={env}
@@ -53,10 +48,6 @@ describe("CollectionArtworks", () => {
     })
     return tree
   }
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   it("returns zero state component when there are no artworks to display", () => {
     const tree = getWrapper({

@@ -12,8 +12,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtistConsignButtonFragmentContainer, tests } from "./ArtistConsignButton"
 
-jest.unmock("react-relay")
-
 import { GlobalStoreProvider, useSelectedTab } from "app/store/GlobalStore"
 
 jest.mock("app/store/GlobalStore", () => ({
@@ -23,8 +21,6 @@ jest.mock("app/store/GlobalStore", () => ({
 }))
 
 describe("ArtistConsignButton", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<ArtistConsignButtonTestsQuery>
       environment={env}
@@ -51,10 +47,6 @@ describe("ArtistConsignButton", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   describe("Top 20 Artist ('Microfunnel') or Target Supply button", () => {
     const response = {

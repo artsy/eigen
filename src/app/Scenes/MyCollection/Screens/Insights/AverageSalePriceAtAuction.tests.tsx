@@ -1,50 +1,24 @@
-import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
-import { useLazyLoadQuery } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
-import {
-  AverageSalePriceAtAuction,
-  AverageSalePriceAtAuctionScreenQuery,
-} from "./AverageSalePriceAtAuction"
-
-jest.unmock("react-relay")
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
+import { AverageSalePriceAtAuction } from "./AverageSalePriceAtAuction"
+import { screen } from "@testing-library/react-native"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { waitForSuspenseToBeRemoved } from "app/tests/waitForSupenseToBeRemoved"
 
 describe("AverageSalePriceAtAuction", () => {
-  const TestRenderer = () => {
-    useLazyLoadQuery<AverageSalePriceAtAuctionQuery>(AverageSalePriceAtAuctionScreenQuery, {
-      artistID: "artist-id",
-    })
-
-    return <AverageSalePriceAtAuction artistID="artist-id" />
-  }
-
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
+  const TestRenderer = () => <AverageSalePriceAtAuction artistID="artist-id" />
 
   it("renders title", async () => {
-    const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithRelayWrappers(<TestRenderer />)
 
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
+    resolveMostRecentRelayOperation({
+      Artist: () => ({
+        internalID: "artist-id",
+        name: "Artist Name",
+        imageUrl: "image-url",
+      }),
     })
+    await waitForSuspenseToBeRemoved()
 
-    await flushPromiseQueue()
-
-    expect(getByTestId("Average_Auction_Price_title")).toBeTruthy()
+    expect(screen.getByTestId("Average_Auction_Price_title")).toBeTruthy()
   })
 })
-
-const mockResult = {
-  artist: {
-    internalID: "artist-id",
-    name: "Artist Name",
-    imageUrl: "image-url",
-  },
-  me: {
-    myCollectionInfo: {
-      artistsCount: 3,
-    },
-  },
-}

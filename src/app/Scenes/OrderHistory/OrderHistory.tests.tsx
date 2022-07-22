@@ -5,12 +5,11 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { OrderHistoryContainer } from "./OrderHistory"
 import { OrderHistoryQueryRender } from "./OrderHistory"
 import { OrderHistoryPlaceholder } from "./OrderHistory"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
-jest.unmock("react-relay")
 
 describe(OrderHistoryQueryRender, () => {
   it("Loads OrderHistoryQueryRender", () => {
@@ -20,7 +19,6 @@ describe(OrderHistoryQueryRender, () => {
 })
 
 describe("Order history container", () => {
-  let env: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<OrderHistoryTestsQuery>
       environment={env}
@@ -39,9 +37,6 @@ describe("Order history container", () => {
       cacheConfig={{ force: true }}
     />
   )
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   it("Render empty order list", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)

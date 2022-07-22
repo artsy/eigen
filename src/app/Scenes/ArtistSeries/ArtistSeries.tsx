@@ -9,7 +9,7 @@ import {
 import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { StickyHeaderPage } from "app/Components/StickyHeaderPage"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { ArtistSeriesArtworksFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
@@ -180,7 +180,7 @@ export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = (
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<ArtistSeriesQuery>
-        environment={defaultEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query ArtistSeriesQuery($artistSeriesID: ID!) {
             artistSeries(id: $artistSeriesID) {

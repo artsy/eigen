@@ -5,11 +5,10 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { OperationDescriptor } from "relay-runtime"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { InboxContainer } from "./Inbox"
 
-jest.unmock("react-relay")
 jest.unmock("react-native-scrollable-tab-view")
 
 jest.mock("app/Scenes/Inbox/Components/Conversations/Conversations", () => {
@@ -24,11 +23,7 @@ jest.mock("app/Scenes/MyBids/MyBids", () => {
   }
 })
 
-let env: ReturnType<typeof createMockEnvironment>
-
 const getWrapper = (mockResolvers: MockResolvers = {}) => {
-  env = createMockEnvironment()
-
   const TestRenderer = () => (
     <QueryRenderer<InboxTestsQuery>
       environment={env}

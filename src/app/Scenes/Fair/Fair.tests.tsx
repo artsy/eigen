@@ -6,7 +6,7 @@ import { NavigationalTabs, Tab } from "palette/elements/Tabs"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
 import { FairCollectionsFragmentContainer } from "./Components/FairCollections"
 import { FairEditorialFragmentContainer } from "./Components/FairEditorial"
@@ -15,15 +15,8 @@ import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollo
 import { FairHeaderFragmentContainer } from "./Components/FairHeader"
 import { Fair, FairFragmentContainer } from "./Fair"
 
-jest.unmock("react-relay")
-
 describe("Fair", () => {
   const trackEvent = useTracking().trackEvent
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   const TestRenderer = () => (
     <QueryRenderer<FairTestsQuery>

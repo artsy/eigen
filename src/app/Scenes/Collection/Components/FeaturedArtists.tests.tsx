@@ -5,10 +5,9 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { postEventToProviders } from "app/utils/track/providers"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { CollectionFeaturedArtistsContainer as FeaturedArtists } from "./FeaturedArtists"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
-jest.unmock("react-relay")
 jest.unmock("react-tracking")
 
 const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"]["marketingCollection"] =
@@ -103,16 +102,10 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
   }
 
 describe("FeaturedArtists", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => {
     return (
       <QueryRenderer<FeaturedArtistsTestsQuery>
-        environment={env}
+        environment={getRelayEnvironment()}
         variables={{ id: "artworkID" }}
         render={({ props, error }) => {
           if (props) {
@@ -136,7 +129,7 @@ describe("FeaturedArtists", () => {
   it("renders an EntityHeader for each featured artist", async () => {
     const { queryByText } = await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(env, {
+    resolveMostRecentRelayOperation({
       MarketingCollection: () => ({ ...FeaturedArtistCollectionFixture }),
     })
 
@@ -151,7 +144,7 @@ describe("FeaturedArtists", () => {
   it("does not render an EntityHeader for excluded artists", async () => {
     const { queryByText } = await renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(env, {
+    resolveMostRecentRelayOperation({
       MarketingCollection: () => ({
         ...FeaturedArtistCollectionFixture,
         featuredArtistExclusionIds: ["34534-andy-warhols-id", "2342-pablo-picassos-id"],
@@ -171,7 +164,7 @@ describe("FeaturedArtists", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
       const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(env, {
+      resolveMostRecentRelayOperation({
         MarketingCollection: () => ({
           ...FeaturedArtistCollectionFixture,
           query: { id: "some-id", artistIDs: ["34534-andy-warhols-id"] },
@@ -188,7 +181,7 @@ describe("FeaturedArtists", () => {
     it("shows more artists when 'View more' is tapped", async () => {
       const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(env, {
+      resolveMostRecentRelayOperation({
         MarketingCollection: () => ({
           ...FeaturedArtistCollectionFixture,
         }),
@@ -205,7 +198,7 @@ describe("FeaturedArtists", () => {
     it("tracks an event when 'View more' is tapped", async () => {
       const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
 
-      resolveMostRecentRelayOperation(env, {
+      resolveMostRecentRelayOperation({
         MarketingCollection: () => ({
           ...FeaturedArtistCollectionFixture,
         }),

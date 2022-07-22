@@ -7,10 +7,8 @@ import "react-native"
 import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { OrderUpdateFragmentContainer as OrderUpdate } from "./OrderUpdate"
 
-jest.unmock("react-relay")
+import { OrderUpdateFragmentContainer as OrderUpdate } from "./OrderUpdate"
 
 jest.mock("@react-native-community/netinfo", () => {
   return {
@@ -24,12 +22,6 @@ jest.mock("@react-native-community/netinfo", () => {
       addEventListener: jest.fn(),
     },
   }
-})
-
-let env: ReturnType<typeof createMockEnvironment>
-
-beforeEach(() => {
-  env = createMockEnvironment()
 })
 
 const TestRenderer = () => (

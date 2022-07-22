@@ -1,7 +1,7 @@
 import { Route, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { AppModule, modules } from "app/AppRegistry"
 import { isPad } from "app/utils/hardware"
-import React, { useState } from "react"
+import { createContext, useState } from "react"
 import { View } from "react-native"
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { ProvideScreenDimensions, useScreenDimensions } from "shared/hooks"
@@ -96,7 +96,7 @@ export const NavStack: React.FC<{
   )
 }
 
-export const LegacyBackButtonContext = React.createContext<{
+export const LegacyBackButtonContext = createContext<{
   updateShouldHideBackButton(shouldHideBackButton: boolean): void
 }>({
   updateShouldHideBackButton() {

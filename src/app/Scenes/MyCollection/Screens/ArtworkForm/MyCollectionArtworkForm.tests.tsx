@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
   getConvectionGeminiKey,
@@ -30,12 +30,9 @@ jest.mock("app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileT
   uploadFileToS3: jest.fn(),
 }))
 
-jest.unmock("react-relay")
-
 const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
 const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
 const uploadFileToS3Mock = uploadFileToS3 as jest.Mock<any>
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("MyCollectionArtworkForm", () => {
   describe("Editing an artwork", () => {
@@ -188,7 +185,7 @@ describe("MyCollectionArtworkForm", () => {
     describe("when skipping the artwork selection", () => {
       it("leaves the form empty", async () => {
         const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappers(
-          <RelayEnvironmentProvider environment={mockEnvironment}>
+          <RelayEnvironmentProvider environment={getRelayEnvironment()}>
             <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
           </RelayEnvironmentProvider>
         )
@@ -238,7 +235,7 @@ describe("MyCollectionArtworkForm", () => {
 
       it("displays the artist display name input", async () => {
         const { getByText, getByTestId } = renderWithWrappers(
-          <RelayEnvironmentProvider environment={mockEnvironment}>
+          <RelayEnvironmentProvider environment={getRelayEnvironment()}>
             <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
           </RelayEnvironmentProvider>
         )

@@ -5,24 +5,19 @@ import { Button } from "palette"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
 
-jest.unmock("react-relay")
+import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
 
 jest.spyOn(Alert, "alert")
 
 beforeEach(() => {
   jest.useFakeTimers()
-  env = createMockEnvironment()
   ;(Alert.alert as jest.Mock).mockClear()
 })
 
 afterEach(() => {
   jest.clearAllMocks()
 })
-
-let env: ReturnType<typeof createMockEnvironment>
 
 const TestRenderer = () => {
   return (

@@ -1,23 +1,14 @@
 import { screen } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { createMockEnvironment } from "relay-test-utils"
 import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWelcome"
 
-jest.unmock("react-relay")
-
 describe("OnboardingPersonalizationWelcome", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("should display the welcome message", async () => {
-    renderWithHookWrappersTL(<OnboardingPersonalizationWelcome />, mockEnvironment)
+    renderWithRelayWrappers(<OnboardingPersonalizationWelcome />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Me: () => ({
         name: "Stewie",
       }),

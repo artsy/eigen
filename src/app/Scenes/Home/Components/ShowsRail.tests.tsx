@@ -3,10 +3,8 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ShowsRailFragmentContainer } from "./ShowsRail"
 
-jest.unmock("react-relay")
+import { ShowsRailFragmentContainer } from "./ShowsRail"
 
 const showEdge = {
   cursor: "YXJyYXljb25uZWN0aW9uOjA=",
@@ -40,8 +38,6 @@ const meResponseMock = {
 }
 
 describe("ShowsRailFragmentContainer", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<ShowsRailTestsQuery>
       environment={env}
@@ -64,10 +60,6 @@ describe("ShowsRailFragmentContainer", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   it("doesn't throw when rendered", () => {
     renderWithWrappersLEGACY(<TestRenderer />)

@@ -15,19 +15,15 @@ import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWi
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionContainer } from "./MyCollection"
 
-jest.unmock("react-relay")
-
 describe("MyCollection", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query MyCollectionTestsQuery @relay_test_operation {
             me {
@@ -56,8 +52,6 @@ describe("MyCollection", () => {
   )
 
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-
     __globalStoreTestUtils__?.injectFeatureFlags({
       AREnableMyCollectionInsights: true,
     })
@@ -138,7 +132,7 @@ describe("MyCollection", () => {
       const renderApi = renderWithWrappers(<TestRenderer />)
 
       act(() => {
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Me: () => ({
             myCollectionConnection,
           }),

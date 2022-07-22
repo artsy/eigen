@@ -5,15 +5,7 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { createMockEnvironment } from "relay-test-utils"
 import { SearchCriteriaQueryRenderer } from "./SearchCriteria"
 
-jest.unmock("react-relay")
-
 describe("SearchCriteria", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("should not query the search criteria when searchCriteriaId is not passed", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
@@ -36,11 +28,11 @@ describe("SearchCriteria", () => {
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
       />
     )
 
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
 
     expect(mockRenderComponent).toBeCalledWith({
       fetchCriteriaError: null,
@@ -55,7 +47,7 @@ describe("SearchCriteria", () => {
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: jest.fn(() => <></>), renderPlaceholder: mockRenderPlaceholder }}
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
       />
     )
 
@@ -69,7 +61,7 @@ describe("SearchCriteria", () => {
       <SearchCriteriaQueryRenderer
         searchCriteriaId="search-criter-id"
         render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
       />
     )
 

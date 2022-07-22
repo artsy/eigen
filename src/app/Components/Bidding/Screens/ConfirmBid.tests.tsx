@@ -8,7 +8,7 @@ import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/B
 import { Modal } from "app/Components/Modal"
 import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { waitUntil } from "app/tests/waitUntil"
@@ -31,6 +31,7 @@ import { BillingAddress } from "./BillingAddress"
 import { ConfirmBid, ConfirmBidProps } from "./ConfirmBid"
 import { CreditCardForm } from "./CreditCardForm"
 import { SelectMaxBid } from "./SelectMaxBid"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 
 Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
@@ -40,7 +41,6 @@ jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () =>
 const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>
 
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
-jest.unmock("react-relay")
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
@@ -109,7 +109,7 @@ it("can load and display price summary", () => {
   const component = mountConfirmBidComponent(initialProps)
 
   expect(component.root.findAllByType(Spinner).length).toEqual(1)
-  ;(defaultEnvironment as any).mock.resolveMostRecentOperation(() => ({
+  getMockRelayEnvironment().mock.resolveMostRecentOperation(() => ({
     data: {
       node: {
         __typename: "SaleArtwork",

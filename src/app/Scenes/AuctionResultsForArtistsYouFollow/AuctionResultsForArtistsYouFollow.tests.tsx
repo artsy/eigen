@@ -5,14 +5,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { AuctionResultsForArtistsYouFollowContainer } from "./AuctionResultsForArtistsYouFollow"
 
-jest.unmock("react-relay")
-
 describe("AuctionResultsForArtistsYouFollowContainer", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<AuctionResultsForArtistsYouFollowTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query AuctionResultsForArtistsYouFollowTestsQuery($first: Int!, $after: String)
         @relay_test_operation {
@@ -31,14 +27,10 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("Renders list of auction results for artists you follow", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Me: () => ({
         id: "test-id",
         auctionResultsByFollowedArtists: {

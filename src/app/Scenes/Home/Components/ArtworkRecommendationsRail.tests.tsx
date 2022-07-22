@@ -1,20 +1,12 @@
 import { ArtworkRecommendationsRailTestsQuery } from "__generated__/ArtworkRecommendationsRailTestsQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworkRecommendationsRail } from "./ArtworkRecommendationsRail"
 
-jest.unmock("react-relay")
-
 describe("ArtworkRecommendationsRail", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   const TestRenderer: React.FC = () => {
     const queryData = useLazyLoadQuery<ArtworkRecommendationsRailTestsQuery>(
       graphql`
@@ -37,7 +29,7 @@ describe("ArtworkRecommendationsRail", () => {
   }
 
   const getWrapper = async () => {
-    const tree = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    const tree = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
 
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation({

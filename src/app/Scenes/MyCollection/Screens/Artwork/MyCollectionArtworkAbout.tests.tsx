@@ -7,13 +7,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkAbout } from "./MyCollectionArtworkAbout"
 
-jest.unmock("react-relay")
-
 describe("MyCollectionArtworkAbout", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkAboutTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyCollectionArtworkAboutTestsQuery @relay_test_operation {
           artwork(id: "blue-chip-artwork") {
@@ -48,10 +45,6 @@ describe("MyCollectionArtworkAbout", () => {
     />
   )
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   it("renders about the work section", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({
       AREnablePriceEstimateRange: true,
@@ -59,7 +52,7 @@ describe("MyCollectionArtworkAbout", () => {
 
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Query: () => ({
         artwork: {
           category: "Oil on Canvas",
@@ -99,7 +92,7 @@ describe("MyCollectionArtworkAbout", () => {
 
     const { queryByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Query: () => ({
         artwork: {
           category: "Oil on Canvas",
@@ -125,7 +118,7 @@ describe("MyCollectionArtworkAbout", () => {
   it("renders purchase details section", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Query: () => ({
         artwork: {
           pricePaid: { display: "€224,000" },
@@ -143,7 +136,7 @@ describe("MyCollectionArtworkAbout", () => {
   it("renders articles section", () => {
     const { getByText, getByTestId } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    resolveMostRecentRelayOperation({
       Query: () => ({
         artwork: {
           artistNames: "Banksy",

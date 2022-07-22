@@ -12,12 +12,9 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { EmailConfirmationBannerFragmentContainer } from "./EmailConfirmationBanner"
 
-jest.unmock("react-relay")
 const originalError = console.error
 
 describe("EmailConfirmationBanner", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<EmailConfirmationBannerTestsQuery>
       environment={env}
@@ -56,10 +53,6 @@ describe("EmailConfirmationBanner", () => {
   const getCloseButton = (component: ReactTestRenderer) => {
     return component.root.findAllByType(TouchableWithoutFeedback)[1]
   }
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
 
   afterEach(() => {
     console.error = originalError

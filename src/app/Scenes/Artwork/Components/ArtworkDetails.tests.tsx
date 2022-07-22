@@ -4,8 +4,6 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkDetails } from "./ArtworkDetails"
 import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
-jest.unmock("react-relay")
-
 describe("Artwork Details", () => {
   it("renders the data if available", () => {
     const testArtwork: ArtworkDetails_artwork$data = {

@@ -5,8 +5,6 @@ import { Theme } from "palette"
 import { graphql } from "react-relay"
 import { ItemShowFragmentContainer } from "./ItemShow"
 
-jest.unmock("react-relay")
-
 describe("ItemShowFragmentContainer", () => {
   const { renderWithRelay } = setupTestWrapperTL({
     Component: (props) => (

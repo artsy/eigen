@@ -15,8 +15,8 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
 import Spinner from "app/Components/Spinner"
 import { navigate, popParentViewController } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { unsafe__getEnvironment, useFeatureFlag } from "app/store/GlobalStore"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -469,7 +469,7 @@ export const SaleQueryRenderer: React.FC<{
       render={() => {
         return (
           <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
-            environment={environment || defaultEnvironment}
+            environment={environment || getRelayEnvironment()}
             above={{
               query: SaleScreenQuery,
               variables: { saleID, saleSlug: saleID },

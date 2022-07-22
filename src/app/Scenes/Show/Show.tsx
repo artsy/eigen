@@ -3,7 +3,7 @@ import { ShowQuery } from "__generated__/ShowQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderArtworksFilterWithTotalArtworks as HeaderArtworksFilter } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { SearchImageHeaderButton } from "app/Components/SearchImageHeaderButton"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -173,7 +173,7 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
 export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) => {
   return (
     <QueryRenderer<ShowQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ShowQuery($showID: String!) {
           show(id: $showID) @principalField {

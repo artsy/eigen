@@ -7,14 +7,10 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { MyCollectionArtworkHeader } from "./MyCollectionArtworkHeader"
 
-jest.unmock("react-relay")
-
 describe("MyCollectionArtworkHeader", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkHeaderTestQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyCollectionArtworkHeaderTestQuery @relay_test_operation {
           artwork(id: "artwork-id") {
@@ -34,13 +30,9 @@ describe("MyCollectionArtworkHeader", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const renderer = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
+    resolveMostRecentRelayOperation(mockResolvers)
     return renderer
   }
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   it("renders without throwing an error", () => {
     const { getByText } = getWrapper({

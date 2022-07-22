@@ -2,7 +2,7 @@ import { captureMessage } from "@sentry/react-native"
 import { ContactInformation_me$data } from "__generated__/ContactInformation_me.graphql"
 import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { ErrorView } from "app/Components/ErrorView/ErrorView"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { consignmentSubmittedEvent } from "app/Scenes/SellWithArtsy/utils/TrackingEvent"
 import { addClue, GlobalStore } from "app/store/GlobalStore"
 import { Formik } from "formik"
@@ -141,7 +141,7 @@ export const ContactInformationQueryRenderer: React.FC<{
 }> = ({ handlePress }) => {
   return (
     <QueryRenderer<ContactInformationQueryRendererQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ContactInformationQueryRendererQuery {
           me {

@@ -10,20 +10,13 @@ import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtistSeriesListItem } from "./ArtistSeriesListItem"
 
-jest.unmock("react-relay")
+import { ArtistSeriesListItem } from "./ArtistSeriesListItem"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 const trackEvent = useTracking().trackEvent
 
 describe("Artist Series Rail", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<ArtistSeriesTestsQuery>

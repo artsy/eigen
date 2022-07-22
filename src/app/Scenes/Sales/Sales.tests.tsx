@@ -1,6 +1,6 @@
 import { act, waitFor } from "@testing-library/react-native"
 import { SalesTestQuery } from "__generated__/SalesTestQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -9,10 +9,8 @@ import { CurrentlyRunningAuctions } from "./CurrentlyRunningAuctions"
 import { Sales } from "./Sales"
 import { UpcomingAuctions } from "./UpcomingAuctions"
 
-jest.unmock("react-relay")
-
 describe("Sales", () => {
-  let environment: RelayMockEnvironment = defaultEnvironment as RelayMockEnvironment
+  let environment: RelayMockEnvironment = getRelayEnvironment() as RelayMockEnvironment
 
   const TestRenderer = () => (
     <QueryRenderer<SalesTestQuery>
@@ -50,10 +48,6 @@ describe("Sales", () => {
     })
     return tree
   }
-
-  beforeEach(() => {
-    environment = createMockEnvironment()
-  })
 
   const upcomingAuctionsRefreshMock = jest.fn()
   const currentAuctionsRefreshMock = jest.fn()

@@ -1,6 +1,5 @@
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { RecentlySoldTestsQuery } from "__generated__/RecentlySoldTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
@@ -11,18 +10,10 @@ import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { act } from "react-test-renderer"
 import { RecentlySoldFragmentContainer } from "./RecentlySold"
 
-jest.unmock("react-relay")
-
 describe("RecentlySold", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
-
   const TestRenderer = () => (
     <QueryRenderer<RecentlySoldTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query RecentlySoldTestsQuery {
           targetSupply {
@@ -43,11 +34,8 @@ describe("RecentlySold", () => {
     }
     const targetSupply = makeTargetSupply([artwork])
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        TargetSupply: () => targetSupply,
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      TargetSupply: () => targetSupply,
     })
 
     expect(extractText(tree.root)).toContain("Sold for $1,200")
@@ -61,11 +49,8 @@ describe("RecentlySold", () => {
     }
     const targetSupply = makeTargetSupply([artwork])
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        TargetSupply: () => targetSupply,
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      TargetSupply: () => targetSupply,
     })
 
     expect(extractText(tree.root)).not.toContain("Sold for")
@@ -92,11 +77,8 @@ describe("RecentlySold", () => {
       },
     ])
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        TargetSupply: () => targetSupply,
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      TargetSupply: () => targetSupply,
     })
 
     const text = extractText(tree.root)
@@ -115,11 +97,8 @@ describe("RecentlySold", () => {
       slug: "artwork-slug",
     }
     const targetSupply = makeTargetSupply([artwork])
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        TargetSupply: () => targetSupply,
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      TargetSupply: () => targetSupply,
     })
 
     const artworkWrapper = tree.root.findAllByType(ArtworkRailCard)[0]

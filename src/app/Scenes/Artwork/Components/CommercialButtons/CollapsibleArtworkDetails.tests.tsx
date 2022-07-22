@@ -7,16 +7,13 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
 
-jest.unmock("react-relay")
-
 describe("CollapsibleArtworkDetails", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<CollapsibleArtworkDetailsTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query CollapsibleArtworkDetailsTestsQuery @relay_test_operation {
           artwork(id: "some-slug") {
@@ -33,10 +30,6 @@ describe("CollapsibleArtworkDetails", () => {
       }}
     />
   )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
 
   const resolveData = (passedProps = {}) => {
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>

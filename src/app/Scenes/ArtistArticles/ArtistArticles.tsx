@@ -1,6 +1,6 @@
 import { ArtistArticles_artist$data } from "__generated__/ArtistArticles_artist.graphql"
 import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import _ from "lodash"
@@ -100,7 +100,7 @@ export const ArtistArticlesQueryRenderer: React.FC<{
 }> = ({ artistID, environment }) => {
   return (
     <QueryRenderer<ArtistArticlesResultQuery>
-      environment={environment || defaultEnvironment}
+      environment={environment || getRelayEnvironment()}
       query={graphql`
         query ArtistArticlesResultQuery($artistID: String!) {
           artist(id: $artistID) {
