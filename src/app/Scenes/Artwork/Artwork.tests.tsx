@@ -73,7 +73,8 @@ describe("Artwork", () => {
           }
         },
         ...mockResolvers,
-     })
+      })
+    })
   }
   const TestRenderer = ({ isVisible = true }) => (
     // not 100% sure why we need a suspense fallback here but I guess new relay (v9) containers
