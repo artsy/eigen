@@ -4,12 +4,16 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 import { OrderHistoryContainer } from "./OrderHistory"
 import { OrderHistoryQueryRender } from "./OrderHistory"
 import { OrderHistoryPlaceholder } from "./OrderHistory"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import {
+  resolveMostRecentRelayOperation,
+  resolveMostRecentRelayOperationRawPayload,
+} from "app/tests/resolveMostRecentRelayOperation"
 
 describe(OrderHistoryQueryRender, () => {
   it("Loads OrderHistoryQueryRender", () => {
@@ -21,7 +25,7 @@ describe(OrderHistoryQueryRender, () => {
 describe("Order history container", () => {
   const TestRenderer = () => (
     <QueryRenderer<OrderHistoryTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query OrderHistoryTestsQuery($count: Int!) @relay_test_operation {
           me {
@@ -40,47 +44,41 @@ describe("Order history container", () => {
 
   it("Render empty order list", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me: {
-            orders: [],
-          },
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        me: {
+          orders: [],
         },
-      })
+      },
     })
     expect(extractText(tree.root.findByType(FlatList))).toContain("No orders")
   })
 
   it("Render not empty order list", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            orders: {
-              edges: [
-                {
-                  node: {
-                    code: "123456789",
-                  },
-                },
-                {
-                  node: {
-                    code: "987654321",
-                  },
-                },
-                {
-                  node: {
-                    code: "159482637",
-                  },
-                },
-              ],
+    resolveMostRecentRelayOperation({
+      Me: () => ({
+        orders: {
+          edges: [
+            {
+              node: {
+                code: "123456789",
+              },
             },
-          }),
-        })
-      )
+            {
+              node: {
+                code: "987654321",
+              },
+            },
+            {
+              node: {
+                code: "159482637",
+              },
+            },
+          ],
+        },
+      }),
     })
     expect(tree.root.findAllByType(OrderHistoryRowContainer)).toHaveLength(3)
   })

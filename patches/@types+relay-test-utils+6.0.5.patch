@@ -19,7 +19,7 @@ index c14ad95..906b2a0 100755
      findOperation: (findFn: (operation: OperationDescriptor) => boolean) => OperationDescriptor;
      queuePendingOperation: (query: GraphQLTaggedNode, variables: Variables) => void;
      getMostRecentOperation: () => OperationDescriptor;
-+    /** @deprecated Use our `resolveMostRecentRelayOperation` or `resolveMostRecentRelayOperationPayload` helpers instead. */
++    /** @deprecated Use our `resolveMostRecentRelayOperation` or `resolveMostRecentRelayOperationRawPayload` helpers instead. */
      resolveMostRecentOperation: (
          payload: GraphQLResponse | ((operation: OperationDescriptor) => GraphQLResponse | void),
      ) => void;

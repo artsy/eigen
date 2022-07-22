@@ -65,7 +65,7 @@ act(() => {
 ```
 with
 ```
-resolveMostRecentRelayOperationPayload({
+resolveMostRecentRelayOperationRawPayload({
   errors: [],
   data: {
     ...ArtistSeriesFullArtistSeriesListFixture,
