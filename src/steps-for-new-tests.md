@@ -75,9 +75,9 @@ resolveMostRecentRelayOperationRawPayload({
 without the `act`.
 - [x] remove `import { createMockEnvironment } from "relay-test-utils"` if it's still there.
 
-
 ## Manual
 - import `getRelayEnvironment` from `import { getRelayEnvironment } from "app/relay/defaultEnvironment"` if it's missing.
+- remove any tests like `expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyProfilePushNotificationsQuery")` that check the name of the request.
 - if possible, change the tests to the new suggested way in [EXAMPLES.md](/EXAMPLES.md), using async, render, resolve, await wait, expects.
 - some of the above rules couldn't be applied in all files. If you see a thing like that, it will be marked red by the editor anyway, because of missing definitions or bad types, please fix that too.
 

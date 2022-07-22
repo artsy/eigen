@@ -5,6 +5,8 @@ import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWi
 import { graphql, QueryRenderer } from "react-relay"
 
 import { SaleInfoContainer, tests } from "./SaleInfo"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe("SaleInfo", () => {
   const TestRenderer = () => (
@@ -33,11 +35,9 @@ describe("SaleInfo", () => {
   it("shows register to bid button", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => mockSale,
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => mockSale,
+    })
 
     expect(tree.root.findAllByType(RegisterToBidButtonContainer)).toBeTruthy()
   })
@@ -45,14 +45,12 @@ describe("SaleInfo", () => {
   it("hides register to bid button if auction is over", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          ...mockSale,
-          endAt: "2020-08-01T15:00:00",
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => ({
+        ...mockSale,
+        endAt: "2020-08-01T15:00:00",
+      }),
+    })
 
     expect(tree.root.findAllByType(RegisterToBidButtonContainer)).toEqual([])
   })
@@ -60,11 +58,9 @@ describe("SaleInfo", () => {
   it("shows Auction is live View shows up when an auction is live", () => {
     const { UNSAFE_queryAllByType } = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => liveMockSale,
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => liveMockSale,
+    })
 
     expect(UNSAFE_queryAllByType(tests.AuctionIsLive)).toHaveLength(1)
   })
@@ -72,11 +68,9 @@ describe("SaleInfo", () => {
   it("doesn't show Auction is live view when an auction is not live", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => mockSale,
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => mockSale,
+    })
 
     expect(tree.root.findAllByType(tests.AuctionIsLive)).toHaveLength(0)
   })
@@ -84,11 +78,9 @@ describe("SaleInfo", () => {
   it("shows the buyers premium correctly for a single percentage", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => mockSale,
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => mockSale,
+    })
 
     expect(extractText(tree.root)).toContain("20% on the hammer price")
   })
@@ -114,11 +106,9 @@ describe("SaleInfo", () => {
       ],
     }
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => sale,
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => sale,
+    })
 
     expect(extractText(tree.root)).toContain(
       "On the hammer price up to and including $150,000: 25%"

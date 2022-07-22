@@ -3,6 +3,7 @@ import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { merge } from "lodash"
 import { ActiveLotStanding } from "./Components/ActiveLotStanding"
+import { RelayEnvironmentProvider } from "react-relay"
 
 const defaultSaleArtwork = {
   isHighestBidder: true,
@@ -30,16 +31,18 @@ const saleArtworkFixture = (overrides = {}) => {
   return merge({}, defaultSaleArtwork, overrides) as unknown as ActiveLotStanding_saleArtwork$data
 }
 
-describe(ActiveLotStanding, () => {
+describe("ActiveLotStanding", () => {
   describe("User winning status", () => {
-    it("says 'Highest bid' if the user is winning the lot", () => {
+    fit("says 'Highest bid' if the user is winning the lot", () => {
       const tree = renderWithWrappersLEGACY(
-        <ActiveLotStanding
-          saleArtwork={saleArtworkFixture({
-            isHighestBidder: true,
-            lotState: { reserveStatus: "ReserveMet" },
-          })}
-        />
+        <RelayEnvironmentProvider>
+          <ActiveLotStanding
+            saleArtwork={saleArtworkFixture({
+              isHighestBidder: true,
+              lotState: { reserveStatus: "ReserveMet" },
+            })}
+          />
+        </RelayEnvironmentProvider>
       )
       expect(extractText(tree.root)).toContain("Highest bid")
     })

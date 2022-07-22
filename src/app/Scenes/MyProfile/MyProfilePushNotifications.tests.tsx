@@ -1,12 +1,11 @@
 import { SwitchMenu } from "app/Components/SwitchMenu"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { Text } from "palette"
 import { Platform, Switch } from "react-native"
-import { act } from "react-test-renderer"
 import {
   AllowPushNotificationsBanner,
   MyProfilePushNotifications,
@@ -54,27 +53,21 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
   it("renders without throwing an error", () => {
     const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "MyProfilePushNotificationsQuery"
-    )
-
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me: {
-            receiveLotOpeningSoonNotification: true,
-            receiveNewSalesNotification: true,
-            receiveNewWorksNotification: true,
-            receiveOutbidNotification: true,
-            receivePromotionNotification: true,
-            receivePurchaseNotification: true,
-            receiveSaleOpeningClosingNotification: true,
-            receiveOrderNotification: true,
-            receiveViewingRoomNotification: true,
-          },
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        me: {
+          receiveLotOpeningSoonNotification: true,
+          receiveNewSalesNotification: true,
+          receiveNewWorksNotification: true,
+          receiveOutbidNotification: true,
+          receivePromotionNotification: true,
+          receivePurchaseNotification: true,
+          receiveSaleOpeningClosingNotification: true,
+          receiveOrderNotification: true,
+          receiveViewingRoomNotification: true,
         },
-      })
+      },
     })
 
     expect(tree.root.findAllByType(MyProfilePushNotifications)).toHaveLength(1)
@@ -88,27 +81,21 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
     Platform.OS = "ios"
     const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "MyProfilePushNotificationsQuery"
-    )
-
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me: {
-            receiveLotOpeningSoonNotification: true,
-            receiveNewSalesNotification: true,
-            receiveNewWorksNotification: true,
-            receiveOutbidNotification: true,
-            receivePromotionNotification: true,
-            receivePurchaseNotification: true,
-            receiveSaleOpeningClosingNotification: true,
-            receiveOrderNotification: true,
-            receiveViewingRoomNotification: true,
-          },
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        me: {
+          receiveLotOpeningSoonNotification: true,
+          receiveNewSalesNotification: true,
+          receiveNewWorksNotification: true,
+          receiveOutbidNotification: true,
+          receivePromotionNotification: true,
+          receivePurchaseNotification: true,
+          receiveSaleOpeningClosingNotification: true,
+          receiveOrderNotification: true,
+          receiveViewingRoomNotification: true,
         },
-      })
+      },
     })
     expect(tree.root.findAllByType(AllowPushNotificationsBanner)).toHaveLength(1)
   })
@@ -119,27 +106,21 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
 
     const tree = renderWithWrappersLEGACY(<MyProfilePushNotificationsQueryRenderer />)
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "MyProfilePushNotificationsQuery"
-    )
-
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          me: {
-            receiveLotOpeningSoonNotification: true,
-            receiveNewSalesNotification: true,
-            receiveNewWorksNotification: true,
-            receiveOutbidNotification: true,
-            receivePromotionNotification: true,
-            receivePurchaseNotification: true,
-            receiveSaleOpeningClosingNotification: true,
-            receiveOrderNotification: true,
-            receiveViewingRoomNotification: true,
-          },
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        me: {
+          receiveLotOpeningSoonNotification: true,
+          receiveNewSalesNotification: true,
+          receiveNewWorksNotification: true,
+          receiveOutbidNotification: true,
+          receivePromotionNotification: true,
+          receivePurchaseNotification: true,
+          receiveSaleOpeningClosingNotification: true,
+          receiveOrderNotification: true,
+          receiveViewingRoomNotification: true,
         },
-      })
+      },
     })
     expect(tree.root.findAllByType(AllowPushNotificationsBanner)).toHaveLength(0)
   })

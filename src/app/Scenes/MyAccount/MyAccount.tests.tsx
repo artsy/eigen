@@ -6,8 +6,9 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Text } from "palette"
 import { Platform } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-
-import { MyAccountContainer, MyAccountQueryRenderer } from "./MyAccount"
+import { MyAccountContainer } from "./MyAccount"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 const mockUnlinkFB = jest.fn()
 const mocklinkFB = jest.fn()
@@ -35,7 +36,7 @@ jest.mock("app/utils/LinkedAccounts/google", () => ({
   useGoogleLink: jest.fn(() => mockedUseGoogleLinks),
 }))
 
-describe(MyAccountQueryRenderer, () => {
+describe("MyAccountQueryRenderer", () => {
   const TestRenderer = () => (
     <QueryRenderer<MyAccountTestsQuery>
       environment={getRelayEnvironment()}
@@ -78,19 +79,16 @@ describe(MyAccountQueryRenderer, () => {
   describe("When ShowLinkedAccounts", () => {
     it("Shows linked accounts section when user does not have 2FA enabled AND has linked accounts", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-        const result = MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            name: "my name",
-            email: "email@gmail.com",
-            phone: "123",
-            paddleNumber: "321",
-            hasPassword: true,
-            secondFactors: [],
-            authentications: [{ provider: "FACEBOOK" }],
-          }),
-        })
-        return result
+      resolveMostRecentRelayOperation({
+        Me: () => ({
+          name: "my name",
+          email: "email@gmail.com",
+          phone: "123",
+          paddleNumber: "321",
+          hasPassword: true,
+          secondFactors: [],
+          authentications: [{ provider: "FACEBOOK" }],
+        }),
       })
       expect(extractText(tree.root)).toContain("LINKED ACCOUNTS")
     })
@@ -104,20 +102,17 @@ describe(MyAccountQueryRenderer, () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ ARGoogleAuth: true })
         Platform.OS = "ios"
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
-        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-          const result = MockPayloadGenerator.generate(operation, {
-            Me: () => ({
-              name: "my name",
-              email: "email@gmail.com",
-              phone: "123",
-              paddleNumber: "321",
-              secondFactors: [],
-              hasPassword: true,
-              // user has only linked facebook
-              authentications: [{ provider: "FACEBOOK" }],
-            }),
-          })
-          return result
+        resolveMostRecentRelayOperation({
+          Me: () => ({
+            name: "my name",
+            email: "email@gmail.com",
+            phone: "123",
+            paddleNumber: "321",
+            secondFactors: [],
+            hasPassword: true,
+            // user has only linked facebook
+            authentications: [{ provider: "FACEBOOK" }],
+          }),
         })
         const fblinkItem = tree.root.findAllByType(MenuItem)[5]
         const googlelinkItem = tree.root.findAllByType(MenuItem)[6]
@@ -135,20 +130,17 @@ describe(MyAccountQueryRenderer, () => {
 
       it("user cannot unlink their only authentication method", () => {
         const tree = renderWithWrappersLEGACY(<TestRenderer />)
-        mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-          const result = MockPayloadGenerator.generate(operation, {
-            Me: () => ({
-              name: "my name",
-              email: "email@gmail.com",
-              phone: "123",
-              paddleNumber: "321",
-              secondFactors: [],
-              // user does not have email/password, but has only FB as auth method
-              hasPassword: false,
-              authentications: [{ provider: "FACEBOOK" }],
-            }),
-          })
-          return result
+        resolveMostRecentRelayOperation({
+          Me: () => ({
+            name: "my name",
+            email: "email@gmail.com",
+            phone: "123",
+            paddleNumber: "321",
+            secondFactors: [],
+            // user does not have email/password, but has only FB as auth method
+            hasPassword: false,
+            authentications: [{ provider: "FACEBOOK" }],
+          }),
         })
         const fblinkItem = tree.root.findAllByType(MenuItem)[4]
         expect(fblinkItem.props.title).toEqual("Facebook")

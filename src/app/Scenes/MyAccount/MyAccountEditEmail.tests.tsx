@@ -4,7 +4,8 @@ import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { flushPromiseQueue } from "../../tests/flushPromiseQueue"
-import { MyAccountEditEmailContainer, MyAccountEditEmailQueryRenderer } from "./MyAccountEditEmail"
+import { MyAccountEditEmailContainer } from "./MyAccountEditEmail"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const mockShow = jest.fn()
 const mockHide = jest.fn()
@@ -19,7 +20,7 @@ jest.mock("app/Components/Toast/toastHook", () => ({
   }),
 }))
 
-describe(MyAccountEditEmailQueryRenderer, () => {
+describe("MyAccountEditEmailQueryRenderer", () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
