@@ -1,5 +1,4 @@
 import { Flex, Text, Touchable, useColor, useSpace } from "palette"
-import React from "react"
 import { FlatList } from "react-native-gesture-handler"
 // @ts-ignore
 import { ColoredDot } from "./ColoredDot"
