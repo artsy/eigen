@@ -4,16 +4,13 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { ViewingRoomSubsectionsContainer } from "./ViewingRoomSubsections"
-
-jest.unmock("react-relay")
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 describe("ViewingRoomSubsections", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<ViewingRoomSubsectionsTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ViewingRoomSubsectionsTestsQuery {
           viewingRoom(id: "unused") {
@@ -25,11 +22,10 @@ describe("ViewingRoomSubsections", () => {
       variables={{}}
     />
   )
-  beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders a Box for each subsection", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveMostRecentRelayOperation(mockEnvironment)
+    resolveMostRecentRelayOperation()
 
     expect(
       tree.root.findAllByType(Box).filter((box) => box.props.testID === "subsection")

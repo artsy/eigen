@@ -1,21 +1,21 @@
 import { themeGet } from "@styled-system/theme-get"
-import { ViewingRoomViewWorksButton_viewingRoom$data } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
+import { ViewingRoomViewWorksButton_viewingRoom$key } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import { navigate } from "app/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { Flex, Text } from "palette"
 import { View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface ViewingRoomViewWorksButtonProps {
-  viewingRoom: ViewingRoomViewWorksButton_viewingRoom$data
+  viewingRoom: ViewingRoomViewWorksButton_viewingRoom$key
   isVisible: boolean
 }
 
 export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProps> = (props) => {
-  const { viewingRoom } = props
+  const viewingRoom = useFragment(worksButtonFragment, props.viewingRoom)
   const tracking = useTracking()
   const artworksCount = viewingRoom.artworksForCount?.totalCount
 
@@ -58,6 +58,16 @@ const ViewWorksButton = styled(Flex)`
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
 `
 
+const worksButtonFragment = graphql`
+  fragment ViewingRoomViewWorksButton_viewingRoom on ViewingRoom {
+    slug
+    internalID
+    artworksForCount: artworksConnection(first: 1) {
+      totalCount
+    }
+  }
+`
+
 export const tracks = {
   tappedViewWorksButton: (id: string, slug: string) => {
     return {
@@ -71,18 +81,3 @@ export const tracks = {
     }
   },
 }
-
-export const ViewingRoomViewWorksButtonContainer = createFragmentContainer(
-  ViewingRoomViewWorksButton,
-  {
-    viewingRoom: graphql`
-      fragment ViewingRoomViewWorksButton_viewingRoom on ViewingRoom {
-        slug
-        internalID
-        artworksForCount: artworksConnection(first: 1) {
-          totalCount
-        }
-      }
-    `,
-  }
-)

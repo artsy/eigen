@@ -2,7 +2,7 @@ import { render } from "@testing-library/react-native"
 import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { renderWithWrappersLEGACY } from "./renderWithWrappers"
 
@@ -19,8 +19,6 @@ export const setupTestWrapperTL = <T extends OperationType>({
   variables = {},
 }: SetupTestWrapper<T>) => {
   const renderWithRelay = (mockResolvers: MockResolvers = {}) => {
-    const env = createMockEnvironment()
-
     const TestRenderer = () => (
       <QueryRenderer<T>
         environment={env}
@@ -59,8 +57,6 @@ export const setupTestWrapper = <T extends OperationType>({
   variables = {},
 }: SetupTestWrapper<T>) => {
   const getWrapper = (mockResolvers: MockResolvers = {}) => {
-    const env = createMockEnvironment()
-
     const TestRenderer = () => (
       <QueryRenderer<T>
         environment={env}

@@ -489,23 +489,14 @@ const ProfileVerifications = ({
             <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="black30" />
           </Flex>
           <Flex ml={1}>
-            {canRequestEmailConfirmation ? (
-              <Text
-                style={{ textDecorationLine: "underline" }}
-                onPress={handleEmailVerification}
-                testID="verify-your-email"
-              >
-                Verify Your Email
-              </Text>
-            ) : (
-              <Text
-                style={{ textDecorationLine: "none" }}
-                color="black60"
-                testID="verify-your-email"
-              >
-                Verify Your Email
-              </Text>
-            )}
+            <Text
+              style={{ textDecorationLine: "underline" }}
+              onPress={canRequestEmailConfirmation ? handleEmailVerification : undefined}
+              color={canRequestEmailConfirmation ? undefined : "black60"}
+              testID="verify-your-email"
+            >
+              Verify Your Email
+            </Text>
 
             <Text color="black60">
               Secure your account and receive updates about your transactions on Artsy.

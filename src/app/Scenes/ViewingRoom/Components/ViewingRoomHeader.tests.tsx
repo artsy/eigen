@@ -4,16 +4,14 @@ import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { PartnerIconImage, ViewingRoomHeaderContainer } from "./ViewingRoomHeader"
-
-jest.unmock("react-relay")
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe("ViewingRoomHeader", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<ViewingRoomHeaderTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ViewingRoomHeaderTestsQuery {
           viewingRoom(id: "unused") {
@@ -25,82 +23,64 @@ describe("ViewingRoomHeader", () => {
       variables={{}}
     />
   )
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
+
   it("renders a background image", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ heroImage: { imageURLs: { normalized: "Foo" } } }),
-      })
-
-      return result
+    resolveMostRecentRelayOperation({
+      ViewingRoom: () => ({ heroImage: { imageURLs: { normalized: "Foo" } } }),
     })
     expect(tree.root.findByProps({ testID: "background-image" }).props.imageURL).toBe("Foo")
   })
   it("renders a title", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ title: "Foo" }),
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      ViewingRoom: () => ({ title: "Foo" }),
     })
     expect(extractText(tree.root.findByProps({ testID: "title" }))).toBe("Foo")
   })
 
   it("renders a countdown timer for scheduled", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ title: "ok", status: "scheduled" }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      ViewingRoom: () => ({ title: "ok", status: "scheduled" }),
+    })
     expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(1)
   })
 
   it("renders a countdown timer for live", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ title: "ok", status: "live" }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      ViewingRoom: () => ({ title: "ok", status: "live" }),
+    })
+
     expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(1)
   })
 
   it("doesn't render a countdown timer for closed", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ title: "ok", status: "closed" }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      ViewingRoom: () => ({ title: "ok", status: "closed" }),
+    })
+
     expect(tree.root.findAllByType(CountdownTimer)).toHaveLength(0)
   })
 
   it("renders partner name", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({ partner: { name: "Foo" } }),
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      ViewingRoom: () => ({ partner: { name: "Foo" } }),
     })
+
     expect(extractText(tree.root.findByProps({ testID: "partner-name" }))).toBe("Foo")
   })
   it("renders partner logo", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({
-          partner: {
-            profile: { icon: { url: "https://example.com/image.jpg" } },
-          },
-        }),
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      ViewingRoom: () => ({
+        partner: {
+          profile: { icon: { url: "https://example.com/image.jpg" } },
+        },
+      }),
     })
     expect(tree.root.findByProps({ testID: "partner-icon" }).props.source.uri).toBe(
       "https://example.com/image.jpg"
@@ -109,15 +89,12 @@ describe("ViewingRoomHeader", () => {
 
   it("doesn't render logo (and doesn't crash) if partner profile is null", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ViewingRoom: () => ({
-          partner: {
-            profile: null,
-          },
-        }),
-      })
-      return result
+    resolveMostRecentRelayOperation({
+      ViewingRoom: () => ({
+        partner: {
+          profile: null,
+        },
+      }),
     })
     expect(tree.root.findAllByType(PartnerIconImage)).toHaveLength(0)
   })

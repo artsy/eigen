@@ -1,9 +1,6 @@
-import { defaultEnvironment } from "app/relay/createEnvironment"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
-import { GraphQLResponse } from "relay-runtime"
-import { createMockEnvironment } from "relay-test-utils"
+import { screen } from "@testing-library/react-native"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { HomeQueryRenderer } from "./Home"
 
 jest.mock("app/Components/Home/ArtistRails/ArtistRail", () => ({
@@ -19,15 +16,27 @@ jest.mock("app/Scenes/Home/Components/SalesRail", () => ({
   SalesRailFragmentContainer: jest.fn(() => null),
 }))
 
-jest.unmock("react-relay")
+describe("HomeQueryRenderer", () => {
+  it("renders home screen module flat list", async () => {
+    renderWithRelayWrappers(<HomeQueryRenderer />)
 
-const mockEnvironment = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
+    resolveHomeQueries()
 
-describe(HomeQueryRenderer, () => {
-  const getWrapper = async () => {
-    const tree = renderWithHookWrappersTL(<HomeQueryRenderer />, mockEnvironment)
+    expect(screen.getByTestId("home-flat-list")).toBeTruthy()
+  })
 
-    mockMostRecentOperation("HomeAboveTheFoldQuery", {
+  it("renders an email confirmation banner", async () => {
+    renderWithRelayWrappers(<HomeQueryRenderer />)
+
+    resolveHomeQueries()
+
+    expect(screen.getByText("Tap here to verify your email address")).toBeTruthy()
+  })
+})
+
+const resolveHomeQueries = () => {
+  resolveMostRecentRelayOperation({
+    HomeAboveTheFoldQuery: () => ({
       errors: [],
       data: {
         homePage: {
@@ -38,8 +47,10 @@ describe(HomeQueryRenderer, () => {
           canRequestEmailConfirmation: true,
         },
       },
-    })
-    mockMostRecentOperation("HomeBelowTheFoldQuery", {
+    }),
+  })
+  resolveMostRecentRelayOperation({
+    HomeBelowTheFoldQuery: () => ({
       errors: [],
       data: {
         homePage: {
@@ -47,30 +58,6 @@ describe(HomeQueryRenderer, () => {
           fairsModule: [],
         },
       },
-    })
-
-    await flushPromiseQueue()
-
-    return tree
-  }
-
-  it("renders home screen module flat list", async () => {
-    const { getByTestId } = await getWrapper()
-
-    expect(getByTestId("home-flat-list")).toBeTruthy()
-  })
-
-  it("renders an email confirmation banner", async () => {
-    const { getByText } = await getWrapper()
-
-    expect(getByText("Tap here to verify your email address")).toBeTruthy()
-  })
-})
-
-const mockMostRecentOperation = (name: string, result: GraphQLResponse = { errors: [] }) => {
-  expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
-
-  act(() => {
-    mockEnvironment.mock.resolveMostRecentOperation(result)
+    }),
   })
 }

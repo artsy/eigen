@@ -11,7 +11,6 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { HeaderTabsGridPlaceholder } from "app/Components/HeaderTabGridPlaceholder"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { StickyTabPage, TabProps } from "app/Components/StickyTabPage/StickyTabPage"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -20,6 +19,7 @@ import React, { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const INITIAL_TAB = "Artworks"
 export interface NotificationPayload {
@@ -175,7 +175,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
 
           return (
             <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
-              environment={environment || defaultEnvironment}
+              environment={environment || getRelayEnvironment()}
               above={{
                 query: ArtistScreenQuery,
                 variables: { artistID, input: initialArtworksInput },

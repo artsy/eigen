@@ -1,5 +1,5 @@
 import { captureException } from "@sentry/react-native"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { verifyEmail } from "app/utils/verifyEmail"
 import { verifyID } from "app/utils/verifyID"
 import { useCallback, useState } from "react"
@@ -8,13 +8,9 @@ type verificationType = "ID" | "Email"
 
 const IDVerificationBlockingStates = ["passed", "failed", "watchlist_hit"]
 
-export const useHandleEmailVerification = () => {
-  return useHandleVerification("Email")
-}
+export const useHandleEmailVerification = () => useHandleVerification("Email")
 
-export const useHandleIDVerification = () => {
-  return useHandleVerification("ID")
-}
+export const useHandleIDVerification = () => useHandleVerification("ID")
 
 const VERIFICATION_BANNER_TIMEOUT = 6000
 
@@ -47,12 +43,12 @@ const useHandleVerification = (type: verificationType) => {
 
 const verify = async (type: verificationType) => {
   if (type === "Email") {
-    const { sendConfirmationEmail } = await verifyEmail(defaultEnvironment)
+    const { sendConfirmationEmail } = await verifyEmail(getRelayEnvironment())
 
     const confirmationOrError = sendConfirmationEmail?.confirmationOrError
     return confirmationOrError?.unconfirmedEmail
   } else {
-    const { sendIdentityVerificationEmail } = await verifyID(defaultEnvironment)
+    const { sendIdentityVerificationEmail } = await verifyID(getRelayEnvironment())
 
     const confirmationOrError = sendIdentityVerificationEmail?.confirmationOrError
     return confirmationOrError?.identityVerificationEmail?.state

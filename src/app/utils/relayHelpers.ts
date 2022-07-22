@@ -1,4 +1,4 @@
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { Record } from "relay-runtime/lib/store/RelayStoreTypes"
 
 export type CleanRelayFragment<T> = Omit<
@@ -16,7 +16,7 @@ export type ExtractNodeType<T> = T extends { edges: any }
   ? NonNullable<NonNullable<NonNullable<NonNullable<T>["edges"]>[number]>["node"]>
   : never
 
-const getStore = () => defaultEnvironment.getStore()
+const getStore = () => getRelayEnvironment().getStore()
 
 /**
  * Find a relay  from the Relay store by providing a key value pair

@@ -13,7 +13,7 @@ import { SmallArtworkRailPlaceholder } from "app/Components/ArtworkRail/SmallArt
 import { ArtistRailFragmentContainer } from "app/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "app/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "app/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/Home/Components/ArtworkModuleRail"
 import { AuctionResultsRailFragmentContainer } from "app/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "app/Scenes/Home/Components/CollectionsRail"
@@ -527,59 +527,57 @@ const BelowTheFoldPlaceholder: React.FC = () => {
   )
 }
 
-const HomePlaceholder: React.FC = () => {
-  return (
-    <Flex>
-      <Box mb={1} mt={2}>
-        <Flex alignItems="center">
-          <ArtsyLogoIcon scale={0.75} />
-        </Flex>
-      </Box>
-      <Spacer mb={4} />
+const HomePlaceholder = () => (
+  <Flex testID="home-placeholder">
+    <Box mb={1} mt={2}>
+      <Flex alignItems="center">
+        <ArtsyLogoIcon scale={0.75} />
+      </Flex>
+    </Box>
+    <Spacer mb={4} />
 
-      {
-        // Small tiles to mimic the artwork rails
-        <Box ml={2} mr={2}>
-          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-          <Spacer mb={0.3} />
-          <Flex flexDirection="row" mt={1}>
-            <SmallArtworkRailPlaceholder />
-          </Flex>
-        </Box>
-      }
-
-      <ModuleSeparator />
-
-      {/* Larger tiles to mimic the artist rails */}
+    {
+      // Small tiles to mimic the artwork rails
       <Box ml={2} mr={2}>
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
         <Spacer mb={0.3} />
-        <Flex flexDirection="row" mt={0.5}>
-          <Join separator={<Spacer width={15} />}>
-            {times(3 + useMemoizedRandom() * 10).map((index) => (
-              <Flex key={index}>
-                <PlaceholderBox key={index} height={180} width={295} />
-                <Spacer mb={1} mt={0.3} />
-                <PlaceholderText width={120} />
-                <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
-              </Flex>
-            ))}
-          </Join>
-          <ModuleSeparator />
+        <Flex flexDirection="row" mt={1}>
+          <SmallArtworkRailPlaceholder />
         </Flex>
       </Box>
+    }
 
-      <Flex ml="2" mt="3">
-        <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
-        <Flex flexDirection="row">
-          {times(4).map((i) => (
-            <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+    <ModuleSeparator />
+
+    {/* Larger tiles to mimic the artist rails */}
+    <Box ml={2} mr={2}>
+      <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+      <Spacer mb={0.3} />
+      <Flex flexDirection="row" mt={0.5}>
+        <Join separator={<Spacer width={15} />}>
+          {times(3 + useMemoizedRandom() * 10).map((index) => (
+            <Flex key={index}>
+              <PlaceholderBox key={index} height={180} width={295} />
+              <Spacer mb={1} mt={0.3} />
+              <PlaceholderText width={120} />
+              <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+            </Flex>
           ))}
-        </Flex>
+        </Join>
+        <ModuleSeparator />
+      </Flex>
+    </Box>
+
+    <Flex ml="2" mt="3">
+      <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
+      <Flex flexDirection="row">
+        {times(4).map((i) => (
+          <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+        ))}
       </Flex>
     </Flex>
-  )
-}
+  </Flex>
+)
 
 const messages = {
   confirmed: {
@@ -629,7 +627,7 @@ export const HomeQueryRenderer: React.FC = () => {
 
   return (
     <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       above={{
         query: graphql`
           query HomeAboveTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {

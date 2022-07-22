@@ -2,13 +2,12 @@ import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingR
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { once } from "lodash"
 import { Box, Button, Flex, ShareIcon, Spacer, Text } from "palette"
 import { _maxWidth as maxWidth } from "palette"
-import React, { useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 import { FlatList, LayoutAnimation, TouchableWithoutFeedback, View, ViewToken } from "react-native"
 import RNShare from "react-native-share"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -18,7 +17,8 @@ import styled from "styled-components/native"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
 import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
-import { ViewingRoomViewWorksButtonContainer } from "./Components/ViewingRoomViewWorksButton"
+import { ViewingRoomViewWorksButton } from "./Components/ViewingRoomViewWorksButton"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom$data
@@ -198,7 +198,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
             return item.content
           }}
         />
-        <ViewingRoomViewWorksButtonContainer isVisible={displayViewWorksButton} {...props} />
+        <ViewingRoomViewWorksButton isVisible={displayViewWorksButton} {...props} />
       </View>
     </ProvideScreenTracking>
   )
@@ -258,7 +258,7 @@ export const ViewingRoomQueryRenderer: React.FC<{ viewing_room_id: string }> = (
 }) => {
   return (
     <QueryRenderer<ViewingRoomQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ViewingRoomQuery($viewingRoomID: ID!) {
           viewingRoom(id: $viewingRoomID) {

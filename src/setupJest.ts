@@ -330,6 +330,7 @@ import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { NativeModules } from "react-native"
 import { ScreenDimensionsWithSafeAreas } from "shared/hooks"
+import { RelayMockEnvironment } from "relay-test-utils"
 
 type OurNativeModules = typeof LegacyNativeModules & { ArtsyNativeModule: typeof ArtsyNativeModule }
 
@@ -519,13 +520,22 @@ jest.mock("app/utils/track/providers", () => ({
   postEventToProviders: jest.fn(),
 }))
 
-jest.mock("app/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-  createEnvironment: require("relay-test-utils").createMockEnvironment,
-  reset(this: { defaultEnvironment: any }) {
-    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
-  },
-}))
+const { createMockEnvironment } = require("relay-test-utils")
+let mockEnvironment = createMockEnvironment()
+jest.mock("app/relay/defaultEnvironment", () => {
+  const mockedFunction = () => mockEnvironment
+  return {
+    getRelayEnvironment: mockedFunction,
+    getMockRelayEnvironment: mockedFunction,
+  }
+})
+const resetMockEnvironment = () => {
+  mockEnvironment = createMockEnvironment()
+}
+// resetting relay mock env before each test is needed, for a clean env to resolve on.
+beforeEach(() => {
+  resetMockEnvironment()
+})
 
 jest.mock("shared/hooks", () => {
   const React = require("react")

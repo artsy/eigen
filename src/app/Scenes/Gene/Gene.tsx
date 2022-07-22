@@ -5,7 +5,7 @@ import { GeneArtworksPaginationContainer } from "app/Components/Gene/GeneArtwork
 import { GenePlaceholder } from "app/Components/Gene/GenePlaceholder"
 import Header from "app/Components/Gene/Header"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { Dimensions, StyleSheet, View, ViewStyle } from "react-native"
@@ -78,7 +78,7 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
 
   return (
     <QueryRenderer<GeneQuery>
-      environment={defaultEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query GeneQuery($geneID: String!, $input: FilterArtworksInput) {
           gene(id: $geneID) {

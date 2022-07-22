@@ -1,15 +1,13 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { MyProfileEditFormTestsQuery } from "__generated__/MyProfileEditFormTestsQuery.graphql"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
 import { MyProfileEditForm } from "../MyProfileEditForm"
-
-jest.unmock("react-relay")
+import { RelayMockEnvironment } from "relay-test-utils"
 
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
@@ -22,11 +20,9 @@ jest.mock("@react-navigation/native", () => {
 })
 
 describe("MyProfileEditForm", () => {
-  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <QueryRenderer<MyProfileEditFormTestsQuery>
-      environment={mockEnvironment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyProfileEditFormTestsQuery @relay_test_operation {
           me {
@@ -47,7 +43,7 @@ describe("MyProfileEditForm", () => {
   describe("collector profile edit form", () => {
     it("shows the profile verification section", () => {
       const { getByTestId } = renderWithWrappers(<TestRenderer />)
-      resolveMostRecentRelayOperation(mockEnvironment)
+      resolveMostRecentRelayOperation()
       expect(getByTestId("profile-verifications")).toBeDefined()
     })
 
@@ -55,7 +51,7 @@ describe("MyProfileEditForm", () => {
       describe("When the email is confirmed in Gravity", () => {
         it("is shown as verified when it's verified in gravity", async () => {
           const { getByText } = renderWithWrappers(<TestRenderer />)
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             Me: () => ({
               canRequestEmailConfirmation: false,
               emailConfirmed: true,
@@ -68,7 +64,7 @@ describe("MyProfileEditForm", () => {
       describe("When the email is not verified in Gravity", () => {
         it("is shown as non verified when it's not verified in gravity", () => {
           const { getByText } = renderWithWrappers(<TestRenderer />)
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             Me: () => ({
               canRequestEmailConfirmation: true,
               emailConfirmed: false,
@@ -79,27 +75,25 @@ describe("MyProfileEditForm", () => {
 
         it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to true", async () => {
           const { getByTestId } = renderWithWrappers(<TestRenderer />)
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             Me: () => ({
               canRequestEmailConfirmation: true,
               emailConfirmed: false,
             }),
           })
+
           const VerifyYouEmailButton = getByTestId("verify-your-email")
           expect(VerifyYouEmailButton).toBeTruthy()
 
-          fireEvent(VerifyYouEmailButton, "onPress")
+          fireEvent.press(VerifyYouEmailButton)
 
-          mockEnvironment.mock.resolveMostRecentOperation({
-            data: {
-              sendConfirmationEmail: {
-                confirmationOrError: {
-                  __typename: "SendConfirmationEmailMutationSuccess",
-                  unconfirmedEmail: "i.am.unconfirmed@gmail.com",
-                },
+          resolveMostRecentRelayOperation({
+            sendConfirmationEmail: () => ({
+              confirmationOrError: {
+                __typename: "SendConfirmationEmailMutationSuccess",
+                unconfirmedEmail: "i.am.unconfirmed@gmail.com",
               },
-            },
-            errors: [],
+            }),
           })
 
           await flushPromiseQueue()
@@ -109,7 +103,7 @@ describe("MyProfileEditForm", () => {
 
         it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to false", async () => {
           const { getByTestId } = renderWithWrappers(<TestRenderer />)
-          resolveMostRecentRelayOperation(mockEnvironment, {
+          resolveMostRecentRelayOperation({
             Me: () => ({
               canRequestEmailConfirmation: false,
               emailConfirmed: false,
@@ -130,7 +124,7 @@ describe("MyProfileEditForm", () => {
     describe("ID Verification", () => {
       it("is shown as verified when it's verified in gravity", () => {
         const { getByText } = renderWithWrappers(<TestRenderer />)
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Me: () => ({
             identityVerified: true,
           }),
@@ -139,7 +133,7 @@ describe("MyProfileEditForm", () => {
       })
       it("is shown as non verified when it's not verified in gravity", () => {
         const { getByText } = renderWithWrappers(<TestRenderer />)
-        resolveMostRecentRelayOperation(mockEnvironment, {
+        resolveMostRecentRelayOperation({
           Me: () => ({
             identityVerified: false,
           }),

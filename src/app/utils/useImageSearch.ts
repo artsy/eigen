@@ -1,7 +1,7 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useImageSearchQuery } from "__generated__/useImageSearchQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { defaultEnvironment } from "app/relay/createEnvironment"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { ReactNativeFile } from "extract-files"
 import { useState } from "react"
 import { Alert, Platform } from "react-native"
@@ -66,7 +66,7 @@ export const useImageSearch = () => {
       })
 
       const response = await fetchQuery<useImageSearchQuery>(
-        defaultEnvironment,
+        getRelayEnvironment(),
         graphql`
           query useImageSearchQuery($file: Upload!) {
             reverseImageSearch(image: $file) {

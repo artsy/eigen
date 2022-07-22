@@ -1,6 +1,8 @@
 import { act } from "@testing-library/react-native"
+import { GraphQLResponse, OperationDescriptor } from "relay-runtime"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { takeRight } from "lodash"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
 let counters: { [path: string]: number } = {}
@@ -8,7 +10,7 @@ const reset = () => {
   counters = {}
   paths = {}
 }
-export const generateID = (pathComponents: readonly string[] | undefined) => {
+const generateID = (pathComponents: readonly string[] | undefined) => {
   const path: string = pathComponents?.join(".") ?? "_GLOBAL_"
   const currentCounter = counters[path]
   counters[path] = currentCounter === undefined ? 1 : currentCounter + 1
@@ -43,22 +45,73 @@ const goodMockResolver = (ctx: MockResolverContext) => {
 
   return `${prefix}-${generateID(ctx.path)}`
 }
-export const DefaultMockResolvers: MockResolvers = {
+const DefaultMockResolvers: MockResolvers = {
   ID: (ctx) => goodMockResolver(ctx),
   String: (ctx) => goodMockResolver(ctx),
 }
 
-export function resolveMostRecentRelayOperation(
-  mockEnvironment: ReturnType<typeof createMockEnvironment>,
-  mockResolvers?: MockResolvers
-) {
+/**
+ * Resolves the most recent relay operation with resolvers.
+ * Gets the resolvers like:
+ * ```
+ * {
+ *   Artist: () => ({
+ *     name: "Banksy",
+ *     slug: "banksy",
+ *   })
+ * }
+ * ```
+ */
+export function resolveMostRecentRelayOperation(mockResolvers?: MockResolvers) {
   reset()
   act(() => {
     // Wrapping in act will ensure that components
     // are fully updated to their final state.
     // https://relay.dev/docs/guides/testing-relay-components/
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+    getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
     )
+  })
+}
+
+/**
+ * Resolves the most recent relay operation with a raw payload.
+ * Gets the payload like:
+ * ```
+ * {
+ *   data: undefined,
+ *   errors: [
+ *     { message: "404" },
+ *   ],
+ * }
+ * ```
+ * or
+ * ```
+ * {
+ *   data: {
+ *     artist: {
+ *       name: "Banksy",
+ *       slug: "banksy",
+ *     },
+ *   },
+ *   errors: [],
+ * }
+ * ```
+ */
+export function resolveMostRecentRelayOperationRawPayload(payload: GraphQLResponse) {
+  reset()
+  act(() => {
+    // Wrapping in act will ensure that components
+    // are fully updated to their final state.
+    // https://relay.dev/docs/guides/testing-relay-components/
+    getMockRelayEnvironment().mock.resolveMostRecentOperation(payload)
+  })
+}
+
+export function rejectMostRecentRelayOperation(
+  error: Error | ((operation: OperationDescriptor) => Error)
+) {
+  act(() => {
+    getMockRelayEnvironment().mock.rejectMostRecentOperation(error)
   })
 }
