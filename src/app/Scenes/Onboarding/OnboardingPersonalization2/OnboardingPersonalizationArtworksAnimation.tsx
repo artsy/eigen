@@ -1,11 +1,8 @@
-import { useNavigation } from "@react-navigation/native"
 import { Flex, Screen } from "palette"
 import { useEffect } from "react"
 import { Animated, Dimensions, Easing, Image } from "react-native"
 
 export default function OnboardingArtworksAnimation() {
-  // const { navigate } = useNavigation()
-
   const { height: screenHeight, width: screenWidth } = Dimensions.get("screen")
   const animations = new Animated.Value(0)
   const onboardingImages = [
