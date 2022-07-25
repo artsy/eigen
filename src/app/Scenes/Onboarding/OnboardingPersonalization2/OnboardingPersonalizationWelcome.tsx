@@ -29,7 +29,9 @@ export const OnboardingPersonalizationWelcome: React.FC = () => {
             {me?.name}
           </Text>
           {/* to be removed, just providing a navigation example */}
-          <Button onPress={() => navigate("NextScreen")}>go to next screen</Button>
+          <Button onPress={() => navigate("OnboardingPersonalizationArtworksAnimation")}>
+            go to next screen
+          </Button>
           {/* to be removed, just providing a way to go to the home screen for debugging purposes */}
           <Button onPress={onDone}>go to home screen</Button>
         </Flex>

@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
+import OnboardingPersonalizationArtworksAnimation from "./OnboardingPersonalizationArtworksAnimation"
 import { OnboardingPersonalizationStart } from "./OnboardingPersonalizationStart"
 import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWelcome"
 
@@ -36,7 +37,7 @@ export const OnboardingPersonalization2 = () => {
           />
           <StackNavigator.Screen
             name="OnboardingPersonalizationArtworksAnimation"
-            component={OnboardingPersonalizationWelcome}
+            component={OnboardingPersonalizationArtworksAnimation}
           />
           <StackNavigator.Screen
             name="OnboardingPersonalizationStart"
