@@ -345,3 +345,15 @@ When [this](https://github.com/storybookjs/react-native/pull/345) is merged, or 
 #### Explanation/Context
 
 Storybook does not render outside the safe area, so for `Screen` and friends, we can't really use storybook otherwise. With this patch, we can now render outside the safe area, by adding `parameters: { noSafeArea: true }` in the new form of stories.
+
+
+## Podfile postinstall code_signing_required = NO
+
+#### When can we remove this:
+
+Maybe we don't? We can try to remove it at any point, and see if it works. Try with newer cocoapods versions.
+
+#### Explanation/Context:
+
+This is needed because xcode 14 says that React-Core-AccessibilityResources and some other pods require a development team.
+We don't really need a dev team for these. Probably some future version of cocoapods will fix this.

@@ -1602,8 +1602,8 @@
 		1A4E510D283F91B90008EF35 /* ArtsyUIColors */ = {
 			isa = PBXGroup;
 			children = (
-				1A4E510E283F91B90008EF35 /* UIColor+ArtsyColors.m */,
 				1A4E5110283F91B90008EF35 /* UIColor+ArtsyColors.h */,
+				1A4E510E283F91B90008EF35 /* UIColor+ArtsyColors.m */,
 			);
 			path = ArtsyUIColors;
 			sourceTree = "<group>";
