@@ -16,7 +16,7 @@ export const PartnerLink: React.FC<PartnerLinkProps> = ({ artwork }) => {
 
   const { name, href, isLinkable } = artworkData.partner
 
-  if (isLinkable && href) {
+  if (isLinkable && !!href) {
     return (
       <LinkText
         accessibilityRole="link"
