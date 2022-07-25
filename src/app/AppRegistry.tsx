@@ -1,5 +1,6 @@
 import React from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
+import "react-native-gesture-handler"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { SafeAreaInsets, useScreenDimensions } from "shared/hooks"
 import { ArtsyKeyboardAvoidingViewContext } from "shared/utils"
