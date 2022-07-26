@@ -133,6 +133,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
           />
         )}
         keyExtractor={(artist) => artist.internalID}
+        ListHeaderComponentStyle={{ paddingVertical: space(2) }}
         ListHeaderComponent={
           <OnboardingPersonalizationListHeader
             navigateToModal={() => {
