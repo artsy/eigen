@@ -253,9 +253,10 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableArtworksConnectionForAuction: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
 })
 
