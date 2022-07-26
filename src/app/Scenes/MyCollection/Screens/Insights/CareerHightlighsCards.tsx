@@ -2,9 +2,9 @@ import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/navigation/navigate"
 import { Text } from "palette"
 import { View } from "react-native"
-import { CareerHightlightsPromotionalCard } from "./CareerHighlightsPromotionalCard"
+import { CareerHighlightsPromotionalCard } from "./CareerHighlightsPromotionalCard"
 
-export const CareerHightlightsCards = () => {
+export const CareerHighlightsCards = () => {
   return (
     <>
       <FancyModalHeader rightCloseButton onRightButtonPress={() => goBack()} hideBottomDivider>
@@ -12,7 +12,7 @@ export const CareerHightlightsCards = () => {
           <Text>here should be a cool scroll thingy</Text>
         </View>
       </FancyModalHeader>
-      <CareerHightlightsPromotionalCard />
+      <CareerHighlightsPromotionalCard />
     </>
   )
 }

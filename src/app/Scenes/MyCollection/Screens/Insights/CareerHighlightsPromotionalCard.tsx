@@ -1,7 +1,7 @@
 import { Button, Flex, Text } from "palette"
 import { Image } from "react-native"
 
-export const CareerHightlightsPromotionalCard: React.FC = () => {
+export const CareerHighlightsPromotionalCard: React.FC = () => {
   return (
     <Flex flexGrow={1}>
       <Flex mx={2} position="relative">
@@ -19,7 +19,7 @@ export const CareerHightlightsPromotionalCard: React.FC = () => {
       <Flex flex={1} justifyContent="flex-end">
         <Image
           style={{ width: "100%" }}
-          source={require("images/careerHightlightsPromotionalCardImage.webp")}
+          source={require("images/careerHighlightsPromotionalCardImage.webp")}
         />
       </Flex>
     </Flex>
