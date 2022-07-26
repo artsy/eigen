@@ -4,7 +4,7 @@ Do you need to use an image?
 
 At artsy we have several ways of retrieving an image.
 
-Images are stored in metaphysics.
+Image urls are retrieved from metaphysics.
 
 In general, our current preferred practice is to use the normalized image and resize it as necessary using on-the-fly resizing.
 
