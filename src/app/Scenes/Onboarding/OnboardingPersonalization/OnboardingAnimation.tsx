@@ -61,8 +61,8 @@ export const OnboardingAnimation = () => {
   return (
     <Screen>
       <Screen.Background>
-        {/* Welcome to Artsy Screen */}
         <StatusBar barStyle="light-content" backgroundColor="black" />
+        {/* Welcome to Artsy Screen */}
         <AnimatedFlex
           position="absolute"
           px={2}
