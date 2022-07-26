@@ -223,7 +223,8 @@ jest.mock("react-native-localize", () => ({
   },
 }))
 
-jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+// tslint:disable-next-line: no-var-requires
+require("react-native-reanimated/src/reanimated2/jestUtils").setUpTests()
 
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),

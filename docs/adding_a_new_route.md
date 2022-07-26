@@ -119,7 +119,7 @@ export const MyScreenNavigationStack = () => {
       <MyScreenStackNavigator.Navigator
         screenOptions={{
           headerShown: false, // hide or show navigation header
-          headerMode:"screen",
+          headerMode: "screen",
           // Add required screenOptions here. See https://reactnavigation.org/docs/group/#screenoptions
         }}
       >
