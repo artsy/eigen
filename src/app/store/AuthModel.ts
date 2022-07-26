@@ -57,7 +57,7 @@ const handleSignUpError = ({
   oauthProvider: OAuthProvider
 }) => {
   let message = ""
-  let existingProviders: string[] = []
+  let existingProviders: OAuthProvider[] = []
   const providerName = capitalize(oauthProvider)
 
   if (errorObject?.error === "User Already Exists") {
@@ -68,7 +68,10 @@ const handleSignUpError = ({
     if (errorObject?.has_password && oauthProvider !== "email") {
       existingProviders = ["email"]
     }
-    existingProviders = [...existingProviders, ...authentications.map((p) => p.toLowerCase())]
+    existingProviders = [
+      ...existingProviders,
+      ...(authentications.map((p) => p.toLowerCase()) as OAuthProvider[]),
+    ]
   } else if (errorObject?.error === "Another Account Already Linked") {
     message =
       `Your ${providerName} account is already linked to another Artsy account. ` +
@@ -122,9 +125,9 @@ export interface AuthPromiseRejectType {
   message: string
   meta?: {
     email: string
-    provider: string
+    provider: OAuthProvider
     name?: string
-    existingProviders?: string[]
+    existingProviders?: OAuthProvider[]
     oauthToken?: string
     idToken?: string
     appleUid?: string

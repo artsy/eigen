@@ -48,6 +48,13 @@ export type OnboardingNavigationStack = {
   OnboardingWebView: { url: OnboardingWebViewRoute }
 }
 
+declare global {
+  namespace ReactNavigation {
+    // tslint:disable-next-line: no-empty-interface
+    interface RootParamList extends OnboardingNavigationStack {}
+  }
+}
+
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
 
 export const OnboardingWelcomeScreens = () => {
@@ -55,10 +62,10 @@ export const OnboardingWelcomeScreens = () => {
     <NavigationContainer independent>
       <StackNavigator.Navigator
         initialRouteName="OnboardingWelcome"
-        headerMode="screen"
         screenOptions={{
           ...TransitionPresets.SlideFromRightIOS,
           headerShown: false,
+          headerMode: "screen",
         }}
       >
         <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
