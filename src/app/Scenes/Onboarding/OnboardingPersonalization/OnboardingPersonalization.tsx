@@ -121,7 +121,6 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
         contentContainerStyle={{
           paddingTop: space(1),
           paddingBottom: 60,
-          paddingVertical: space(2),
         }}
         data={popularArtists}
         initialNumToRender={8}
