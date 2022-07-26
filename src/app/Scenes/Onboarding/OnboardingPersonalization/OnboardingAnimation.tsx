@@ -1,5 +1,5 @@
 import { OnboardingAnimationQuery } from "__generated__/OnboardingAnimationQuery.graphql"
-import { ArtsyLogoIcon, Box, Flex, Text } from "palette"
+import { ArtsyLogoIcon, Box, Flex, Screen, Text } from "palette"
 import { useEffect } from "react"
 import { Image, StatusBar } from "react-native"
 import Animated, {
@@ -59,57 +59,59 @@ export const OnboardingAnimation = () => {
   }, [])
 
   return (
-    <>
-      <StatusBar barStyle="light-content" />
-      {/* Welcome to Artsy Screen */}
-      <AnimatedFlex
-        position="absolute"
-        px={2}
-        height={screenHeight}
-        width={screenWidth}
-        flex={1}
-        backgroundColor="black100"
-        justifyContent="center"
-      >
-        <ArtsyLogoAbsoluteHeader />
-        <Text variant="xxl" color="white100">
-          Welcome{"\n"}
-          to Artsy,{"\n"}
-          {me?.name}
-        </Text>
-      </AnimatedFlex>
-      {/* Onboarding Images */}
-      {onboardingImages.map((image, index) => (
+    <Screen>
+      <Screen.Background>
+        {/* Welcome to Artsy Screen */}
+        <StatusBar barStyle="light-content" backgroundColor="black" />
         <AnimatedFlex
-          key={`img-${index}`}
           position="absolute"
-          style={[{ height: screenHeight }, fadeOutAnimationsArr[index]]}
+          px={2}
+          height={screenHeight}
+          width={screenWidth}
+          flex={1}
+          backgroundColor="black100"
+          justifyContent="center"
         >
-          <Image
-            source={image}
-            resizeMode="cover"
-            style={{ height: screenHeight, width: screenWidth }}
-          />
+          <ArtsyLogoAbsoluteHeader />
+          <Text variant="xxl" color="white100">
+            Welcome{"\n"}
+            to Artsy,{"\n"}
+            {me?.name}
+          </Text>
         </AnimatedFlex>
-      ))}
-      {/* Start Onboarding Screen */}
-      <AnimatedFlex
-        position="absolute"
-        flex={1}
-        backgroundColor="black100"
-        justifyContent="center"
-        px={2}
-        height={screenHeight}
-        width={screenWidth}
-        style={{ ...fadeOutAnimationsArr[5] }}
-      >
-        <ArtsyLogoAbsoluteHeader />
-        <Text variant="xxl" color="white100">
-          Ready to find{"\n"}
-          art you love?
-        </Text>
-      </AnimatedFlex>
-    </>
+        {/* Onboarding Images */}
+        {onboardingImages.map((image, index) => (
+          <AnimatedFlex
+            key={`img-${index}`}
+            position="absolute"
+            style={[{ height: screenHeight }, fadeOutAnimationsArr[index]]}
+          >
+            <Image
+              source={image}
+              resizeMode="cover"
+              style={{ height: screenHeight, width: screenWidth }}
+            />
+          </AnimatedFlex>
+        ))}
+        {/* Start Onboarding Screen */}
+        <AnimatedFlex
+          position="absolute"
+          flex={1}
+          backgroundColor="black100"
+          justifyContent="center"
+          px={2}
+          height={screenHeight}
+          width={screenWidth}
+          style={{ ...fadeOutAnimationsArr[5] }}
+        >
+          <ArtsyLogoAbsoluteHeader />
+          <Text variant="xxl" color="white100">
+            Ready to find{"\n"}
+            art you love?
+          </Text>
+        </AnimatedFlex>
+      </Screen.Background>
+    </Screen>
   )
 }
 
