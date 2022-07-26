@@ -38,12 +38,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     medium: getVortexMedium(medium, category),
   })
 
-  console.log("MyCollectionArtwork", {
-    medium,
-    category,
-    vortexMedium: getVortexMedium(medium, category),
-  })
-
   const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
   const auctionResultsCount = data?.artwork?.artist?.auctionResultsConnection?.totalCount
 
