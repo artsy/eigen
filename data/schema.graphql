@@ -5267,17 +5267,6 @@ type CommerceUser {
   id: String!
 }
 
-input CompletedOnboardingMutationInput {
-  clientMutationId: String
-  timestamp: String!
-  userID: String!
-}
-
-type CompletedOnboardingMutationPayload {
-  clientMutationId: String
-  user: User!
-}
-
 type ConditionReportRequest {
   internalID: ID!
   saleArtworkID: ID
@@ -10563,9 +10552,6 @@ type Mutation {
     # Parameters for UpdateImpulseConversationId
     input: CommerceUpdateImpulseConversationIdInput!
   ): CommerceUpdateImpulseConversationIdPayload
-
-  # Sends a timestamp to the server that the user has completed onboarding
-  completedOnboarding(input: CompletedOnboardingMutationInput!): CompletedOnboardingMutationPayload
   confirmPassword(input: ConfirmPasswordInput!): ConfirmPasswordPayload
 
   # Create an account request
@@ -15372,10 +15358,11 @@ type UpdateUserDefaultAddressPayload {
 
 input UpdateUserMutationInput {
   clientMutationId: String
+  completedOnboardingAt: String
   dataTransferOptOut: Boolean
-  email: String!
+  email: String
   id: String!
-  name: String!
+  name: String
   phone: String
 }
 
