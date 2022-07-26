@@ -1,7 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Text } from "palette"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWelcome"
 
@@ -9,7 +8,6 @@ import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWel
 export type OnboardingPersonalization2NavigationStack = {
   OnboardingPersonalizationWelcome: undefined
   // This is where we want to add the next screen
-  NextScreen: undefined
 }
 
 const StackNavigator = createStackNavigator<OnboardingPersonalization2NavigationStack>()
@@ -32,11 +30,6 @@ export const OnboardingPersonalization2 = () => {
           <StackNavigator.Screen
             name="OnboardingPersonalizationWelcome"
             component={OnboardingPersonalizationWelcome}
-          />
-          <StackNavigator.Screen
-            // This is where we want to add the next screen
-            name="NextScreen"
-            component={() => <Text>Next Screen</Text>}
           />
         </StackNavigator.Navigator>
       </NavigationContainer>
