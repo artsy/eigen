@@ -5267,6 +5267,17 @@ type CommerceUser {
   id: String!
 }
 
+input CompletedOnboardingMutationInput {
+  clientMutationId: String
+  timestamp: String!
+  userID: String!
+}
+
+type CompletedOnboardingMutationPayload {
+  clientMutationId: String
+  user: User!
+}
+
 type ConditionReportRequest {
   internalID: ID!
   saleArtworkID: ID
@@ -10552,6 +10563,9 @@ type Mutation {
     # Parameters for UpdateImpulseConversationId
     input: CommerceUpdateImpulseConversationIdInput!
   ): CommerceUpdateImpulseConversationIdPayload
+
+  # Sends a timestamp to the server that the user has completed onboarding
+  completedOnboarding(input: CompletedOnboardingMutationInput!): CompletedOnboardingMutationPayload
   confirmPassword(input: ConfirmPasswordInput!): ConfirmPasswordPayload
 
   # Create an account request
@@ -15439,6 +15453,9 @@ scalar Upload
 type User {
   analytics: AnalyticsUserStats
   cached: Int
+
+  # The date and time that the user has completed onboarding.
+  completedOnboardingAt: String
 
   # Has the user opted out of data transfer.
   dataTransferOptOut: Boolean
