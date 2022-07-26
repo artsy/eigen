@@ -2,9 +2,10 @@ import { OnboardingAnimationQuery } from "__generated__/OnboardingAnimationQuery
 import { GlobalStore } from "app/store/GlobalStore"
 import { ArtsyLogoIcon, Box, Button, Flex, Screen, Spacer, Text } from "palette"
 import { useEffect } from "react"
-import { Image, StatusBar } from "react-native"
+import { Image, Platform, StatusBar } from "react-native"
 import Animated, {
   Easing,
+  FadeInRight,
   SlideInRight,
   useAnimatedStyle,
   useSharedValue,
@@ -34,7 +35,13 @@ export const OnboardingAnimation = () => {
 
   const opacity = useSharedValue(1)
 
-  const enteringAnim = SlideInRight.delay(BUTTONS_ENTERING_DELAY_TOTAL)
+  // SlideInRight / SlideInLeft don't work in android,
+  // for this reason added FadeInRight for android devices
+  // https://github.com/software-mansion/react-native-reanimated/issues/3245
+  const enteringAnim =
+    Platform.OS === "ios"
+      ? SlideInRight.delay(BUTTONS_ENTERING_DELAY_TOTAL)
+      : FadeInRight.delay(BUTTONS_ENTERING_DELAY_TOTAL)
 
   const onboardingImages = [
     require("images/OnboardingImage0AdesinaPaintingOfRechel.webp"),
@@ -127,7 +134,7 @@ export const OnboardingAnimation = () => {
                 Start building your profile and tailor Artsy to your tastes.
               </Text>
             </AnimatedFlex>
-            <AnimatedFlex entering={enteringAnim} paddingBottom={2} position="absolute" bottom={0}>
+            <AnimatedFlex entering={enteringAnim} paddingBottom={2} position="absolute" bottom={10}>
               <Button
                 accessible
                 accessibilityLabel="Start Onboarding Quiz"
