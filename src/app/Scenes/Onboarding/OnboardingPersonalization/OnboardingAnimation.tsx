@@ -2,11 +2,10 @@ import { OnboardingAnimationQuery } from "__generated__/OnboardingAnimationQuery
 import { GlobalStore } from "app/store/GlobalStore"
 import { ArtsyLogoIcon, Box, Button, Flex, Screen, Spacer, Text } from "palette"
 import { useEffect } from "react"
-import { Image, Platform, StatusBar } from "react-native"
+import { Image, StatusBar } from "react-native"
 import Animated, {
   Easing,
   FadeInRight,
-  SlideInRight,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -23,6 +22,8 @@ const FIRST_WELCOME_SCREEN_DELAY = 1500
 const IMG_DISPLAY_DURATION = 500
 const LAST_IMG_DISPLAY_DURATION = 600
 
+const BUTTONS_ENTERING_DURATION = 500
+
 const BUTTONS_ENTERING_DELAY = 300
 const BUTTONS_ENTERING_DELAY_TOTAL =
   FIRST_WELCOME_SCREEN_DELAY +
@@ -35,13 +36,9 @@ export const OnboardingAnimation = () => {
 
   const opacity = useSharedValue(1)
 
-  // SlideInRight / SlideInLeft don't work in android,
-  // for this reason added FadeInRight for android devices
-  // https://github.com/software-mansion/react-native-reanimated/issues/3245
-  const enteringAnim =
-    Platform.OS === "ios"
-      ? SlideInRight.delay(BUTTONS_ENTERING_DELAY_TOTAL)
-      : FadeInRight.delay(BUTTONS_ENTERING_DELAY_TOTAL)
+  const enteringAnim = FadeInRight.duration(BUTTONS_ENTERING_DURATION)
+    .delay(BUTTONS_ENTERING_DELAY_TOTAL)
+    .easing(Easing.out(Easing.quad))
 
   const onboardingImages = [
     require("images/OnboardingImage0AdesinaPaintingOfRechel.webp"),
@@ -79,8 +76,8 @@ export const OnboardingAnimation = () => {
   return (
     <Screen>
       <Screen.Background>
-        {/* Welcome to Artsy Screen */}
         <StatusBar barStyle="light-content" backgroundColor="black" />
+        {/* Welcome to Artsy Screen */}
         <AnimatedFlex
           position="absolute"
           px={2}
