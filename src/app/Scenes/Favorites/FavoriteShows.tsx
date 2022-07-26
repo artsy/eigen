@@ -6,10 +6,10 @@ import { ZeroState } from "app/Components/States/ZeroState"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Component } from "react"
-import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 import { FavoriteShows_me$data } from "__generated__/FavoriteShows_me.graphql"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractNodes } from "app/utils/extractNodes"
@@ -69,7 +69,7 @@ export class Shows extends Component<Props, State> {
       return (
         <StickyTabPageScrollView
           refreshControl={
-            <RefreshControl
+            <StickTabPageRefreshControl
               refreshing={this.state.refreshingFromPull}
               onRefresh={this.handleRefresh}
             />
@@ -92,7 +92,7 @@ export class Shows extends Component<Props, State> {
         onEndReachedThreshold={0.2}
         ItemSeparatorComponent={() => <Spacer mb="5px" />}
         refreshControl={
-          <RefreshControl
+          <StickTabPageRefreshControl
             refreshing={this.state.refreshingFromPull}
             onRefresh={this.handleRefresh}
           />

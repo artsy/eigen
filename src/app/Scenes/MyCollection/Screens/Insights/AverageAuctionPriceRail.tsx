@@ -20,6 +20,11 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
   )
   const me = useFragment(fragment, props.me)
   const artworks = extractNodes(me.priceInsightUpdates)
+
+  if (artworks.length === 0) {
+    return <></>
+  }
+
   const groupedArtworks = Object.values(groupBy(artworks, (artwork) => artwork?.artist?.name))
 
   return (

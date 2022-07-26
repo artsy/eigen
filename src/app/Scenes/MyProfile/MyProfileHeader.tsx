@@ -67,7 +67,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeader_me$key }> = (props)
           navigate("/my-profile/settings")
         }}
       />
-      {showCompleteProfileMessage && (
+      {!!showCompleteProfileMessage && (
         <Flex mb={2}>
           <Message
             variant="default"

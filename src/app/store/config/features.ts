@@ -247,6 +247,17 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableCreateArtworkAlert",
   },
+  AREnableNewOnboarding: {
+    readyForRelease: false,
+    description: "Enable new Onboarding flow",
+    showInAdminMenu: true,
+  },
+  AREnableArtworksConnectionForAuction: {
+    readyForRelease: true,
+    description: "Use artworksConnection for Auction screen",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableArtworksConnectionForAuction",
+  },
 })
 
 export interface DevToggleDescriptor {

@@ -1,7 +1,6 @@
-This update includes a number of bug fixes, and improvements like:
+This update includes a number of improvements and bug fixes including:
 
-- New insights for artworks uploaded to My Collection
-- Create Alerts now also directly on individual artwork pages or sold works
-- Sign in/up using your Google account
+- New user profile header design
+- New option to opt out of viewing room notifications
 
 Have feedback? Email us at support@artsy.net

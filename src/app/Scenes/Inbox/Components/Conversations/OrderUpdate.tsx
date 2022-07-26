@@ -92,7 +92,9 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
               {!!action.label && !!action.onPress && (
                 <>
                   {". "}
-                  <LinkText onPress={action.onPress}>{action.label}.</LinkText>
+                  <LinkText variant="xs" onPress={action.onPress}>
+                    {action.label}.
+                  </LinkText>
                 </>
               )}
             </Text>

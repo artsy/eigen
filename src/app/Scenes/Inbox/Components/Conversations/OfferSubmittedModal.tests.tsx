@@ -32,7 +32,7 @@ describe("OfferSubmittedModal", () => {
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
-  it("onClose", () => {
+  it("onGoToInbox", () => {
     const { getAllByText } = renderWithWrappers(<OfferSubmittedModal />)
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
 

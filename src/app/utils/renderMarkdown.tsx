@@ -61,6 +61,7 @@ export function defaultRules({
             key={state.key}
             testID={`linktext-${state.key}`}
             onPress={() => openUrl(node.target)}
+            variant="xs"
           >
             {output(node.content, state)}
           </LinkText>
@@ -101,7 +102,7 @@ export function defaultRules({
     em: {
       react: (node, output, state) => {
         return (
-          <Text variant="sm" italic key={state.key}>
+          <Text variant="xs" italic key={state.key}>
             {output(node.content, state)}
           </Text>
         )

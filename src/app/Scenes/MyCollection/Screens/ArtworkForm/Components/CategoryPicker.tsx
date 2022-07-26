@@ -3,21 +3,21 @@ import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { Select } from "palette/elements/Select"
 
-export const MediumPicker: React.FC = () => {
+export const CategoryPicker: React.FC = () => {
   const { formik } = useArtworkForm()
 
   const handleValueChange = (value: ConsignmentSubmissionCategoryAggregation) => {
-    formik.handleChange("medium")(value)
+    formik.handleChange("category")(value)
   }
 
   return (
     <Select
       onSelectValue={handleValueChange}
-      value={formik.values.medium}
+      value={formik.values.category}
       enableSearch={false}
       title="Medium"
       placeholder="Select"
-      testID="MediumSelect"
+      testID="CategorySelect"
       required
       options={artworkMediumCategories}
     />
