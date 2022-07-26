@@ -117,9 +117,9 @@ export const MyScreenNavigationStack = () => {
   return (
     <NavigationContainer independent>
       <MyScreenStackNavigator.Navigator
-        headerMode="screen"
         screenOptions={{
           headerShown: false, // hide or show navigation header
+          headerMode:"screen",
           // Add required screenOptions here. See https://reactnavigation.org/docs/group/#screenoptions
         }}
       >
