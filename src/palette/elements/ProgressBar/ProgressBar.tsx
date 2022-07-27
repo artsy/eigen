@@ -4,6 +4,7 @@ import { useColor } from "palette/hooks"
 import { Color } from "palette/Theme"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Animated } from "react-native"
+import { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
 export interface ProgressBarProps {
   progress: number
@@ -22,44 +23,27 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   backgroundColor = "black30",
   onCompletion = noop,
 }) => {
-  const progressPercentage = clamp(progress, 0, 100)
-
-  const widthRef = useRef<Animated.Value>(new Animated.Value(0))
+  const color = useColor()
+  const width = useSharedValue("0%")
+  const progressAnim = useAnimatedStyle(() => ({ width: width.value }))
 
   const [onCompletionCalled, setOnCompletionCalled] = useState(false)
 
-  const animate = useCallback(() => {
-    Animated.timing(widthRef.current, {
-      duration: 500,
-      toValue: progressPercentage,
-      useNativeDriver: false,
-    }).start(() => {
-      if (progressPercentage === 100 && !onCompletionCalled) {
-        onCompletion()
-        setOnCompletionCalled(true)
-      }
-    })
-  }, [progressPercentage])
-
   useEffect(() => {
-    animate()
-  }, [progressPercentage])
+    const progressPercentage = clamp(progress, 0, 100)
+    width.value = withTiming(`${progressPercentage}%`, { duration: 500 })
 
-  const inputRange = [...Array(101).keys()]
-  const outputRange = inputRange.map((i) => i + "%")
+    if (progressPercentage === 100 && !onCompletionCalled) {
+      onCompletion()
+      setOnCompletionCalled(true)
+    }
+  }, [progress])
 
   return (
     <Flex testID="progress-bar" width="100%" backgroundColor={backgroundColor} my={1}>
       <Animated.View
         testID="progress-bar-track"
-        style={{
-          height,
-          backgroundColor: useColor()(trackColor),
-          width: widthRef.current.interpolate({
-            inputRange,
-            outputRange,
-          }),
-        }}
+        style={[progressAnim, { height, backgroundColor: color(trackColor) }]}
       />
     </Flex>
   )

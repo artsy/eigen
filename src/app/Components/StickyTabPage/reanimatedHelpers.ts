@@ -6,6 +6,7 @@ import Animated from "react-native-reanimated"
  * given number. Note that the initialization parameter will be ignored
  * on subsequent renders
  * @param init
+ * @deprecated use `useSharedValue` from `react-native-reanimated`
  */
 export function useAnimatedValue(init: number) {
   return useMemo(() => {
