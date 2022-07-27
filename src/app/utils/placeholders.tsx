@@ -1,12 +1,12 @@
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, useColor } from "palette"
-import React, { useContext, useEffect, useMemo, useRef } from "react"
+import { createContext, useContext, useEffect, useMemo, useRef } from "react"
 import { LayoutAnimation, Platform, View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
 import { useScreenDimensions } from "shared/hooks"
 
-const PlaceholderContext = React.createContext<{ clock: Animated.Clock }>(null as any)
+const PlaceholderContext = createContext<{ clock: Animated.Clock }>(null as any)
 
 const useCurrentTime = () => {
   const isMounted = useMemo(() => {
@@ -82,11 +82,6 @@ export const PlaceholderBox: React.FC<ViewStyle> = ({ children, ...styles }) => 
     <Animated.View
       ref={ref}
       style={[{ borderRadius: 2 }, { opacity, backgroundColor: color("black10") }, styles] as any}
-      onLayout={() => {
-        ref.current?.getNode().measureInWindow((_w, h, _x, y) => {
-          verticalOffset.setValue(-y + h / 2)
-        })
-      }}
       children={children}
     />
   )

@@ -45,10 +45,10 @@ export const OnboardingPersonalization2 = () => {
     <OnboardingProvider onDone={handleDone}>
       <NavigationContainer independent>
         <StackNavigator.Navigator
-          headerMode="screen"
           screenOptions={{
             ...TransitionPresets.DefaultTransition,
             headerShown: false,
+            headerMode: "screen",
           }}
         >
           <StackNavigator.Screen
