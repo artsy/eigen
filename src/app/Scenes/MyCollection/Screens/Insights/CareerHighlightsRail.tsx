@@ -1,9 +1,9 @@
+import { CareerHighlightsRail_me$key } from "__generated__/CareerHighlightsRail_me.graphql"
 import { Flex, Spacer, useColor } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
-import { CareerHighlightsRail_me$key } from "__generated__/CareerHighlightsRail_me.graphql"
 import {
   CareerHighlightKind,
   CareerHighlightPromotionalCard,
