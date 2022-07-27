@@ -481,13 +481,36 @@ describe("Artwork", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
     })
 
-    it("should not render the partner section when the partner has no name", () => {
-      const { queryByLabelText, queryByTestId } = renderWithWrappers(<TestRenderer />)
+    it("should not display partner link if CBN flag is on", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+      const { queryByA11yHint } = renderWithWrappers(<TestRenderer />)
 
-      expect(queryByLabelText("Visit Test Partner page")).toBeFalsy()
-      expect(queryByTestId("non linkable partner")).toBeFalsy()
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          partner: {
+            name: "Test Partner",
+          },
+        }),
+      })
+
+      expect(queryByA11yHint("Visit Test Partner page")).toBeFalsy()
+    })
+
+    it("should display partner link if CBN flag is off", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: false })
+
+      const { queryByA11yHint } = renderWithWrappers(<TestRenderer />)
+
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          partner: {
+            name: "Test Partner",
+          },
+        }),
+      })
+
+      expect(queryByA11yHint("Visit Test Partner page")).toBeTruthy()
     })
   })
 
