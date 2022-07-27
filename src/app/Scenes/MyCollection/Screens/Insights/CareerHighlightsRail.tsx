@@ -21,15 +21,10 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
     return null
   }
 
-  const careerHighlightData = Object.entries(me.myCollectionInfo.artistInsightsCount).reduce(
-    (arr, [kind, count]) => {
-      if (count) {
-        arr.push({ kind, count })
-      }
-      return arr
-    },
-    [] as Array<Record<string, any>>
-  )
+  const careerHighlightData = Object.entries(me.myCollectionInfo.artistInsightsCount).map((a) => ({
+    kind: a[0],
+    count: a[1],
+  }))
 
   if (careerHighlightData.length === 0) {
     return null

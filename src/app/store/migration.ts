@@ -39,9 +39,10 @@ export const Versions = {
   AddZipCodeAndCountryCodeInSubmissionArtworkDetails: 27,
   AddDirtyFormValuesToSubmissionState: 28,
   RemoveDeviceId: 29,
+  AddMyCollectionCareerHighlights: 30,
 }
 
-export const CURRENT_APP_VERSION = Versions.RemoveDeviceId
+export const CURRENT_APP_VERSION = Versions.AddMyCollectionCareerHighlights
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -235,6 +236,11 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RemoveDeviceId]: (state) => {
     delete state.native.deviceId
+  },
+  [Versions.AddMyCollectionCareerHighlights]: (state) => {
+    state.myCollectionCareerHighlights = {
+      careerHighlights: {},
+    }
   },
 }
 

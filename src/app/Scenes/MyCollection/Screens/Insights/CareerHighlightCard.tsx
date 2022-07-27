@@ -1,6 +1,7 @@
 import themeGet from "@styled-system/theme-get"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { GlobalStore, setCareerHiglightAsSeen } from "app/store/GlobalStore"
 import {
   Button,
   FairIcon,
@@ -29,82 +30,38 @@ export type CareerHighlightKind =
 interface CareerHighlightsCardProps {
   count: number
   type: CareerHighlightKind
-  isNew?: boolean
 }
 
-export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
-  count,
-  type,
-  isNew,
-}) => {
+export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ count, type }) => {
   if (count === 0) {
     return null
   }
 
   const color = useColor()
 
-  let label: string = ""
-  let Icon: FunctionComponent<IconProps> = Fragment
-
-  // plural
-  const pl = count > 1
-
-  switch (type) {
-    case "BIENNIAL":
-      label = `${pl ? "Artists were" : "Artist was"} included in a major biennial${pl ? "s" : ""}.`
-      Icon = FairIcon
-      break
-    case "COLLECTED":
-      label = `${pl ? "Artists are" : "Artist is"} collected by a major institution${
-        pl ? "s" : ""
-      }.`
-      Icon = MuseumIcon
-      break
-    case "GROUP_SHOW":
-      label = `${pl ? "Artists were" : "Artist was"} in a group show at a major institution${
-        pl ? "s" : ""
-      }.`
-      Icon = GroupIcon
-      break
-    case "REVIEWED":
-      label = `${pl ? "Artists were" : "Artist was"} reviewed by a major art publication${
-        pl ? "s" : ""
-      }.`
-      Icon = PublicationIcon
-      break
-
-    case "SOLO_SHOW":
-      label = `${pl ? "Artists" : "Artist"} had a solo show at a major institution${pl ? "s" : ""}.`
-      Icon = SoloIcon
-      break
-    /*
-    case "": // TODO: Collected by artists
-      label = `${pl ? "Artists are" : "Artist is"} collected by a major private collector${
-        pl ? "s" : ""
-      }.`
-      Icon = ArtworkIcon
-      break
-    case "": // TODO: Major prize - TBD
-      label = `${pl ? "Artists were" : "Artist was"} awarded a major prize${pl ? "s" : ""}.`
-      Icon = CertificateIcon
-      break
-    */
-  }
+  const { label, Icon, isNew } = getCareerHiglight(type, count)
 
   return (
-    <Touchable haptic>
+    <Touchable haptic onPress={() => setCareerHiglightAsSeen({ type, count })}>
       <CareerHighlightCard p={1}>
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-          <Flex backgroundColor={color("blue100")} px={0.5}>
+          <Flex backgroundColor={color("blue100")} px={0.5} mt={0.2}>
             {!!isNew && (
-              // margin top to align the spacing in the box
-              <Text mt="-2px" fontSize={11} lineHeight={16} color="white100">
-                New
-              </Text>
+              <Flex style={{ paddingVertical: 2, paddingHorizontal: 2 }}>
+                <Text
+                  mt="-1px"
+                  fontSize={11}
+                  lineHeight={16}
+                  color="white100"
+                  key={`${isNew}-${type}`}
+                >
+                  New
+                </Text>
+              </Flex>
             )}
           </Flex>
           <IconContainer>
-            <Icon fill="black100" width={18} height={18} />
+            <Icon fill="black100" width={21} height={21} />
           </IconContainer>
         </Flex>
         <Flex justifyContent="flex-end" flex={1}>
@@ -164,3 +121,64 @@ const IconContainer = styled(Flex)`
   border: 1px solid ${themeGet("colors.black100")};
   border-radius: 24px;
 `
+
+const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
+  const careerHighlights = GlobalStore.useAppState(
+    (state) => state.myCollectionCareerHighlights.careerHighlights
+  )
+
+  let label: string = ""
+  let Icon: FunctionComponent<IconProps> = Fragment
+
+  // plural
+  const pl = count > 1
+
+  switch (type) {
+    case "BIENNIAL":
+      label = `${pl ? "Artists were" : "Artist was"} included in a major biennial${pl ? "s" : ""}.`
+      Icon = FairIcon
+      break
+    case "COLLECTED":
+      label = `${pl ? "Artists are" : "Artist is"} collected by a major institution${
+        pl ? "s" : ""
+      }.`
+      Icon = MuseumIcon
+      break
+    case "GROUP_SHOW":
+      label = `${pl ? "Artists were" : "Artist was"} in a group show at a major institution${
+        pl ? "s" : ""
+      }.`
+      Icon = GroupIcon
+      break
+    case "REVIEWED":
+      label = `${pl ? "Artists were" : "Artist was"} reviewed by a major art publication${
+        pl ? "s" : ""
+      }.`
+      Icon = PublicationIcon
+      break
+
+    case "SOLO_SHOW":
+      label = `${pl ? "Artists" : "Artist"} had a solo show at a major institution${pl ? "s" : ""}.`
+      Icon = SoloIcon
+      break
+    /*
+    case "": // TODO: Collected by artists
+      label = `${pl ? "Artists are" : "Artist is"} collected by a major private collector${
+        pl ? "s" : ""
+      }.`
+      Icon = ArtworkIcon
+      break
+    case "": // TODO: Major prize - TBD
+      label = `${pl ? "Artists were" : "Artist was"} awarded a major prize${pl ? "s" : ""}.`
+      Icon = CertificateIcon
+      break
+    */
+  }
+
+  // A career higlight is new if the user hasen't seen it at all or if the number is higher
+  // than the number that has been seen by the user the last time.
+  const isNew = careerHighlights[type] && careerHighlights[type].count < count
+  // const isNew = !careerHighlights[type] || careerHighlights[type].count < count
+
+  return { label, Icon, isNew }
+}
