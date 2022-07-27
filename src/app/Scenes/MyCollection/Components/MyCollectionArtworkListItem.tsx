@@ -19,7 +19,7 @@ export const MyCollectionArtworkListItem: React.FC<{
 
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const { artist, date, image, internalID, medium, slug, title } = artwork
+  const { artist, date, image, internalID, medium, mediumType, slug, title } = artwork
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
@@ -42,7 +42,7 @@ export const MyCollectionArtworkListItem: React.FC<{
         trackEvent(tracks.tappedCollectedArtwork(internalID, slug))
 
         navigate(`/my-collection/artwork/${slug}`, {
-          passProps: { medium, artistInternalID: artist?.internalID },
+          passProps: { medium, category: mediumType?.name, artistInternalID: artist?.internalID },
         })
       }}
     >
@@ -125,6 +125,9 @@ const artworkFragment = graphql`
     slug
     id
     medium
+    mediumType {
+      name
+    }
     image {
       url(version: "small")
       aspectRatio
