@@ -14,7 +14,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import _, { times } from "lodash"
 import { Box, Flex, Join, Spacer } from "palette"
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { NewSaleLotsListContainer } from "./Components/NewSaleLotsList"
@@ -25,12 +25,8 @@ interface Props {
   sale: Sale_sale$data
 }
 
-// tslint:disable-next-line:no-empty
-const NOOP = () => {}
-
 export const Sale: React.FC<Props> = ({ viewer, sale }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const artworksRefetchRef = useRef(NOOP)
 
   const openFilterArtworksModal = () => {
     setFilterArtworkModalVisible(true)
@@ -38,10 +34,6 @@ export const Sale: React.FC<Props> = ({ viewer, sale }) => {
 
   const closeFilterArtworksModal = () => {
     setFilterArtworkModalVisible(false)
-  }
-
-  const scrollToTop = () => {
-    console.log("[debug] scrollToTop")
   }
 
   const websocketEnabled = !!sale.extendedBiddingIntervalMinutes
@@ -61,8 +53,6 @@ export const Sale: React.FC<Props> = ({ viewer, sale }) => {
             viewer={viewer}
             saleID={sale.internalID}
             saleSlug={sale.slug}
-            scrollToTop={scrollToTop}
-            artworksRefetchRef={artworksRefetchRef}
           />
           <ArtworkFilterNavigator
             visible={isFilterArtworksModalVisible}

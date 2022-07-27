@@ -3,21 +3,16 @@ import { NewSaleLotsList_unfilteredArtworks$data } from "__generated__/NewSaleLo
 import { NewSaleLotsList_viewer$data } from "__generated__/NewSaleLotsList_viewer.graphql"
 import {
   filterArtworksParams,
-  FilterParamName,
   prepareFilterArtworksParamsForInput,
-  ViewAsValues,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_NEW_SALE_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
-import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { Schema } from "app/utils/track"
+import { PAGE_SIZE } from "app/Components/constants"
 import { Box, Flex, Text } from "palette"
-import { MutableRefObject, useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import { useTracking } from "react-tracking"
-import { SaleArtworkListContainer } from "./SaleArtworkList"
 
 interface NewSaleLotsListProps {
   unfilteredArtworks: NewSaleLotsList_unfilteredArtworks$data | null
@@ -25,8 +20,6 @@ interface NewSaleLotsListProps {
   saleID: string
   saleSlug: string
   relay: RelayPaginationProp
-  artworksRefetchRef?: MutableRefObject<() => void>
-  scrollToTop: () => void
 }
 
 export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
@@ -35,10 +28,7 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
   saleID,
   saleSlug,
   relay,
-  artworksRefetchRef,
-  scrollToTop,
 }) => {
-  const tracking = useTracking()
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
@@ -47,35 +37,21 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
   const setFilterTypeAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.setFilterTypeAction
   )
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setAggregationsAction
+  )
+  const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
 
   const filterParams = filterArtworksParams(appliedFiltersState, filterTypeState)
-  const viewAsFilter = appliedFiltersState.find(
-    (filter) => filter.paramName === FilterParamName.viewAs
-  )
   const counts = viewer?.artworksConnection?.counts?.total
   const totalCount = unfilteredArtworks?.counts?.total
   const sortMode = ORDERED_NEW_SALE_ARTWORK_SORTS.find(
     (sort) => sort.paramValue === filterParams?.sort
   )
 
-  const trackClear = (id: string, slug: string) => {
-    tracking.trackEvent({
-      action_name: "clearFilters",
-      context_screen: Schema.ContextModules.Auction,
-      context_screen_owner_type: Schema.OwnerEntityTypes.Auction,
-      context_screen_owner_id: id,
-      context_screen_owner_slug: slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
+  const trackClear = () => {
+    console.log("[debug] track clear")
   }
-
-  useEffect(() => {
-    setFilterTypeAction("newSaleArtwork")
-
-    if (unfilteredArtworks?.counts) {
-      setFiltersCountAction(unfilteredArtworks.counts)
-    }
-  }, [])
 
   const input = prepareFilterArtworksParamsForInput(filterParams)
   const refetchVariables = {
@@ -85,14 +61,43 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
     },
   }
 
-  useArtworkFilters({
-    relay,
-    aggregations: unfilteredArtworks?.aggregations,
-    componentPath: "Sale/NewSaleLotsList",
-    refetchVariables,
-    refetchRef: artworksRefetchRef,
-    onApply: () => scrollToTop(),
-  })
+  const refetch = () => {
+    if (relay !== undefined) {
+      relay.refetchConnection(
+        PAGE_SIZE,
+        (error) => {
+          if (error) {
+            throw new Error(error.message)
+          }
+        },
+        refetchVariables
+      )
+    }
+  }
+
+  const refetchRef = useRef(refetch)
+  refetchRef.current = refetch
+
+  useEffect(() => {
+    setFilterTypeAction("newSaleArtwork")
+
+    if (unfilteredArtworks?.counts) {
+      setFiltersCountAction(unfilteredArtworks.counts)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!unfilteredArtworks?.aggregations) {
+      return
+    }
+    setAggregationsAction(unfilteredArtworks.aggregations)
+  }, [])
+
+  useEffect(() => {
+    if (applyFilters) {
+      refetchRef.current()
+    }
+  }, [appliedFiltersState])
 
   if (totalCount === 0) {
     return null
@@ -118,32 +123,20 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
         </Text>
       </Flex>
 
-      {viewAsFilter?.paramValue === ViewAsValues.List ? (
-        <SaleArtworkListContainer
+      <Flex px={2}>
+        <InfiniteScrollArtworksGridContainer
           connection={viewer.artworksConnection}
-          hasMore={relay.hasMore}
-          loadMore={relay.loadMore}
-          isLoading={relay.isLoading}
           contextScreenOwnerType={OwnerType.sale}
           contextScreenOwnerId={saleID}
           contextScreenOwnerSlug={saleSlug}
+          hasMore={relay.hasMore}
+          loadMore={relay.loadMore}
+          isLoading={relay.isLoading}
+          showLotLabel
+          hidePartner
+          hideUrgencyTags
         />
-      ) : (
-        <Flex px={2}>
-          <InfiniteScrollArtworksGridContainer
-            connection={viewer.artworksConnection}
-            contextScreenOwnerType={OwnerType.sale}
-            contextScreenOwnerId={saleID}
-            contextScreenOwnerSlug={saleSlug}
-            hasMore={relay.hasMore}
-            loadMore={relay.loadMore}
-            isLoading={relay.isLoading}
-            showLotLabel
-            hidePartner
-            hideUrgencyTags
-          />
-        </Flex>
-      )}
+      </Flex>
     </Flex>
   )
 }
