@@ -133,6 +133,7 @@ export const Form: React.FC<FormProps> = (props) => {
                 }
               }}
               Icon={isArtistPill(pill) ? undefined : RemoveIcon}
+              block
             >
               {pill.label}
             </Pill>

@@ -38,6 +38,7 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props
             selected={selected}
             disabled={disabled}
             onPress={() => onPillPress(pill)}
+            block
           >
             {displayName}
           </Pill>

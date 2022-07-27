@@ -69,6 +69,7 @@ export const OPTION_A_CURATED_SELECTION_OF_ARTWORKS = "A curated selection of ar
 export const OPTION_ARTISTS_ON_THE_RISE = "Artists on the rise"
 export const OPTION_FOLLOW_ARTISTS_IM_INTERESTED_IN = "Follow artists I’m interested in"
 export const OPTION_FOLLOW_GALLERIES_I_LOVE = "Follow galleries I love"
+export const OPTION_MY_FAVORITE_ARTISTS = "My favorite artists"
 
 export const VIEW_WELCOME = "VIEW_WELCOME"
 export const VIEW_QUESTION_ONE = "VIEW_QUESTION_ONE"

@@ -148,6 +148,7 @@ export const AutosuggestSearchResult: React.FC<{
               Icon={ArtworkIcon}
               rounded
               onPress={() => onPress({ artistTab: "Artworks" })}
+              block
             >
               Artworks
             </Pill>
@@ -157,6 +158,7 @@ export const AutosuggestSearchResult: React.FC<{
               Icon={AuctionIcon}
               rounded
               onPress={() => onPress({ artistTab: "Insights" })}
+              block
             >
               Auction Results
             </Pill>

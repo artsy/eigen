@@ -3,11 +3,16 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWelcome"
+import { OnboardingQuestionOne, OnboardingQuestionThree, OnboardingQuestionTwo } from "./Questions"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingPersonalization2NavigationStack = {
   OnboardingPersonalizationWelcome: undefined
   // This is where we want to add the next screen
+  OnboardingQuestionOne: undefined
+  OnboardingQuestionTwo: undefined
+  OnboardingQuestionThree: undefined
+  NextScreen: undefined
 }
 
 const StackNavigator = createStackNavigator<OnboardingPersonalization2NavigationStack>()
@@ -23,10 +28,16 @@ export const OnboardingPersonalization2 = () => {
         <StackNavigator.Navigator
           headerMode="screen"
           screenOptions={{
-            ...TransitionPresets.ModalTransition,
+            ...TransitionPresets.DefaultTransition,
             headerShown: false,
           }}
         >
+          <StackNavigator.Screen name="OnboardingQuestionOne" component={OnboardingQuestionOne} />
+          <StackNavigator.Screen name="OnboardingQuestionTwo" component={OnboardingQuestionTwo} />
+          <StackNavigator.Screen
+            name="OnboardingQuestionThree"
+            component={OnboardingQuestionThree}
+          />
           <StackNavigator.Screen
             name="OnboardingPersonalizationWelcome"
             component={OnboardingPersonalizationWelcome}

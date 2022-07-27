@@ -16,7 +16,7 @@ export const DEFAULT_STATE: State = {
   followedIds: [],
 }
 
-type Action =
+export type Action =
   | { type: "RESET" }
   | { type: "SET_ANSWER_ONE"; payload: string }
   | { type: "SET_ANSWER_TWO"; payload: string }
