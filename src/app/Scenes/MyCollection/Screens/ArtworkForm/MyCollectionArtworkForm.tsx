@@ -17,7 +17,7 @@ import { addClue, GlobalStore, setVisualClueAsSeen, useFeatureFlag } from "app/s
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { isEqual } from "lodash"
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
@@ -76,7 +76,7 @@ export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
     }
 )
 
-const navContainerRef = { current: null as NavigationContainerRef | null }
+const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
   const { trackEvent } = useTracking()
@@ -230,7 +230,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           detachInactiveScreens={false}
           screenOptions={{
             headerShown: false,
-            safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
             cardStyle: { backgroundColor: "white" },
           }}
         >

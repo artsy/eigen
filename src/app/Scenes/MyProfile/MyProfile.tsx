@@ -16,7 +16,6 @@ export const MyProfile = () => {
           detachInactiveScreens={false}
           screenOptions={{
             headerShown: false,
-            safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
             cardStyle: { backgroundColor: "white" },
           }}
         >

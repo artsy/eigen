@@ -51,7 +51,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     > = {
       email,
       name: name ?? "",
-      providers: providers ?? "",
+      providers: providers ?? [],
       providerToBeLinked,
     }
     let tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
@@ -69,7 +69,6 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       if (!idToken || !appleUid) {
         console.warn(`Error: idToken and appleUid must be provided for ${titleizedProvider}`)
         return
-        OnboardingSocialLink
       }
       tokenForProviderToBeLinked = { idToken, appleUid }
       navigation.navigate("OnboardingSocialLink", {

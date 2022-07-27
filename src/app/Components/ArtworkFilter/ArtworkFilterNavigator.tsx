@@ -29,8 +29,9 @@ import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOpti
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import _ from "lodash"
-import React, { useEffect, useState } from "react"
-import { View, ViewProps } from "react-native"
+import { Flex } from "palette"
+import { useEffect, useState } from "react"
+import { ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
 import { CreateSavedSearchModal } from "../Artist/ArtistArtworks/CreateSavedSearchModal"
 import { FancyModal } from "../FancyModal/FancyModal"
@@ -296,14 +297,13 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
         fullScreen
         animationPosition="right"
       >
-        <View style={{ flex: 1 }}>
+        <Flex flex={1}>
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
             detachInactiveScreens={false}
             screenOptions={{
               ...TransitionPresets.SlideFromRightIOS,
               headerShown: false,
-              safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
               cardStyle: { backgroundColor: "white" },
             }}
           >
@@ -383,7 +383,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             attributes={attributes}
             aggregations={filterState.aggregations}
           />
-        </View>
+        </Flex>
       </FancyModal>
     </NavigationContainer>
   )
