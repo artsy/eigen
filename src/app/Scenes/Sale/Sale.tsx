@@ -13,7 +13,7 @@ import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/Auction
 import React, { useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { NewSaleLotsList } from "./Components/NewSaleLotsList"
+import { NewSaleLotsList, NewSaleLotsListContainer } from "./Components/NewSaleLotsList"
 
 export const tracks = {
   screen: (id: string, slug: string) => {
@@ -70,7 +70,7 @@ export const SaleQueryRenderer: React.FC<{
         enabled={websocketEnabled}
       >
         <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
-          <NewSaleLotsList
+          <NewSaleLotsListContainer
             unfilteredArtworks={viewer.unfilteredArtworks!}
             saleID={sale.internalID}
             saleSlug={sale.slug}

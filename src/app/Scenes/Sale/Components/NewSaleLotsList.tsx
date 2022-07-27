@@ -29,28 +29,18 @@ import {
 } from "react-relay"
 import useInterval from "react-use/lib/useInterval"
 
-interface NewSaleLotsListProps {
+interface NewSaleLotsListContainerProps {
   unfilteredArtworks: NewSaleLotsList_unfilteredArtworks$key
   saleID: string
   saleSlug: string
 }
 
+interface NewSaleLotsListProps extends NewSaleLotsListContainerProps {
+  viewer: NewSaleLotsList_viewer$key | null
+  refetch: (variables: any) => void
+}
+
 export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({ saleID, saleSlug, ...rest }) => {
-  const environment = useRelayEnvironment()
-  const [queryArgs, setQueryArgs] = useState({
-    options: {
-      fetchKey: 0,
-      fetchPolicy: "store-and-network" as FetchPolicy,
-    },
-    variables: {
-      saleID,
-      count: PAGE_SIZE,
-      input: {
-        sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
-      },
-    },
-  })
-  const data = useLazyLoadQuery<NewSaleLotsListQuery>(query, queryArgs.variables, queryArgs.options)
   const unfilteredArtworks = useFragment(unfilteredArtworksFragment, rest.unfilteredArtworks)
   const {
     data: viewer,
@@ -58,10 +48,7 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({ saleID, saleSl
     hasNext,
     loadNext,
     refetch,
-  } = usePaginationFragment<NewSaleLotsListQuery, NewSaleLotsList_viewer$key>(
-    viewerFragment,
-    data.viewer
-  )
+  } = usePaginationFragment(viewerFragment, rest.viewer)
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
@@ -82,11 +69,6 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({ saleID, saleSl
   const sortMode = ORDERED_NEW_SALE_ARTWORK_SORTS.find(
     (sort) => sort.paramValue === filterParams?.sort
   )
-
-  const trackClear = () => {
-    console.log("[debug] track clear")
-  }
-
   const input = prepareFilterArtworksParamsForInput(filterParams)
   const refetchVariables = {
     input: {
@@ -94,9 +76,15 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({ saleID, saleSl
       ...input,
     },
   }
+  const nodes = extractNodes(viewer?.artworksConnection)
 
-  const refetchVariablesRef = useRef(refetchVariables)
-  refetchVariablesRef.current = refetchVariables
+  const autorefetchVariables = {
+    ...refetchVariables,
+    saleID,
+    count: nodes.length,
+  }
+  const autorefetchVariablesRef = useRef(autorefetchVariables)
+  autorefetchVariablesRef.current = autorefetchVariables
 
   const handleRefetch = () => {
     console.log("[debug] refetch")
@@ -111,13 +99,6 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({ saleID, saleSl
     })
   }
 
-  const refetchRef = useRef(handleRefetch)
-  refetchRef.current = handleRefetch
-
-  const nodes = extractNodes(viewer?.artworksConnection)
-  const nodesCountRef = useRef(PAGE_SIZE)
-  nodesCountRef.current = nodes.length
-
   console.log("[debug] nodes", nodes.length)
 
   useEffect(() => {
@@ -126,45 +107,21 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({ saleID, saleSl
     if (unfilteredArtworks?.counts) {
       setFiltersCountAction(unfilteredArtworks.counts)
     }
-  }, [])
 
-  useEffect(() => {
-    if (!unfilteredArtworks?.aggregations) {
-      return
+    if (unfilteredArtworks.aggregations) {
+      setAggregationsAction(unfilteredArtworks.aggregations)
     }
-    setAggregationsAction(unfilteredArtworks.aggregations)
   }, [])
 
   useEffect(() => {
     if (applyFilters) {
-      refetchRef.current()
+      handleRefetch()
     }
   }, [appliedFiltersState])
 
   useInterval(() => {
-    console.log("[debug] refetch by interval", nodesCountRef.current, refetchVariablesRef.current)
-    const variables = {
-      ...refetchVariablesRef.current,
-      saleID,
-      count: nodesCountRef.current,
-    }
-
-    console.log("[debug] variables", variables)
-
-    fetchQuery(environment, query, variables).subscribe({
-      complete: () => {
-        setQueryArgs((prev) => ({
-          options: {
-            fetchPolicy: "store-only",
-            fetchKey: (prev?.options.fetchKey ?? 0) + 1,
-          },
-          variables,
-        }))
-      },
-      error: (error) => {
-        console.log("[debug] error", error)
-      },
-    })
+    console.log("[debug] refetch by interval", autorefetchVariablesRef.current)
+    rest.refetch(autorefetchVariablesRef.current)
   }, 60 * 1000)
 
   if (totalCount === 0) {
@@ -174,7 +131,7 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({ saleID, saleSl
   if (!viewer?.artworksConnection?.edges?.length) {
     return (
       <Box my="80px">
-        <FilteredArtworkGridZeroState id={saleID} slug={saleSlug} trackClear={trackClear} />
+        <FilteredArtworkGridZeroState id={saleID} slug={saleSlug} />
       </Box>
     )
   }
@@ -215,6 +172,44 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({ saleID, saleSl
       </Flex>
     </Flex>
   )
+}
+
+export const NewSaleLotsListContainer: React.FC<NewSaleLotsListContainerProps> = (props) => {
+  const { saleID } = props
+  const environment = useRelayEnvironment()
+  const [queryArgs, setQueryArgs] = useState({
+    options: {
+      fetchKey: 0,
+      fetchPolicy: "store-and-network" as FetchPolicy,
+    },
+    variables: {
+      saleID,
+      count: PAGE_SIZE,
+      input: {
+        sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
+      },
+    },
+  })
+  const data = useLazyLoadQuery<NewSaleLotsListQuery>(query, queryArgs.variables, queryArgs.options)
+
+  const refetch = (variables: any) => {
+    fetchQuery(environment, query, variables).subscribe({
+      complete: () => {
+        setQueryArgs((prev) => ({
+          options: {
+            fetchPolicy: "store-only",
+            fetchKey: (prev?.options.fetchKey ?? 0) + 1,
+          },
+          variables,
+        }))
+      },
+      error: (error) => {
+        console.log("[debug] error", error)
+      },
+    })
+  }
+
+  return <NewSaleLotsList viewer={data.viewer} refetch={refetch} {...props} />
 }
 
 const unfilteredArtworksFragment = graphql`
