@@ -10,9 +10,11 @@ import { ORDERED_NEW_SALE_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Fil
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "app/Components/constants"
+import { extractNodes } from "app/utils/extractNodes"
 import { Box, Flex, Text } from "palette"
 import { useEffect, useRef } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import useInterval from "react-use/lib/useInterval"
 
 interface NewSaleLotsListProps {
   unfilteredArtworks: NewSaleLotsList_unfilteredArtworks$data | null
@@ -49,6 +51,12 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
     (sort) => sort.paramValue === filterParams?.sort
   )
 
+  const nodes = extractNodes(viewer?.artworksConnection)
+  const nodesCountRef = useRef(PAGE_SIZE)
+  nodesCountRef.current = nodes.length
+
+  console.log("[debug] nodes", nodes.length)
+
   const trackClear = () => {
     console.log("[debug] track clear")
   }
@@ -61,7 +69,12 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
     },
   }
 
+  const refetchVariablesRef = useRef(refetchVariables)
+  refetchVariablesRef.current = refetchVariables
+
   const refetch = () => {
+    console.log("[debug] refetch")
+
     if (relay !== undefined) {
       relay.refetchConnection(
         PAGE_SIZE,
@@ -98,6 +111,20 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
       refetchRef.current()
     }
   }, [appliedFiltersState])
+
+  useInterval(() => {
+    console.log("[debug] refetch by interval", nodesCountRef.current, refetchVariablesRef.current)
+
+    relay.refetchConnection(
+      nodesCountRef.current,
+      (error) => {
+        if (error) {
+          throw new Error(error.message)
+        }
+      },
+      refetchVariablesRef.current
+    )
+  }, 60 * 1000)
 
   if (totalCount === 0) {
     return null
