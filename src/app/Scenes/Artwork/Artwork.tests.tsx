@@ -34,6 +34,7 @@ import { CommercialPartnerInformation } from "./Components/CommercialPartnerInfo
 import { ContextCard } from "./Components/ContextCard"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
+import { PartnerLink } from "./Components/PartnerLink"
 import { Questions } from "./Components/Questions"
 
 type ArtworkQueries =
@@ -400,6 +401,7 @@ describe("Artwork", () => {
       Artwork: () => ({
         slug: "test-artwork",
         isAcquireable: true,
+        partner: { name: "XYZ Gallery" },
       }),
     })
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -408,6 +410,7 @@ describe("Artwork", () => {
     await flushPromiseQueue()
 
     expect(tree.root.findAllByType(Questions)).toHaveLength(1)
+    expect(tree.root.findAllByType(PartnerLink)).toHaveLength(1)
   })
 
   describe("Live Auction States", () => {
