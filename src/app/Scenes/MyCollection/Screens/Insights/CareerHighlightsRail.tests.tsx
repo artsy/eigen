@@ -68,7 +68,7 @@ describe("CareerHighlightsRail", () => {
   })
 
   it("does not render when the count is 0 for all kinds", async () => {
-    const { getByText, getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    const { queryByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation({
@@ -90,11 +90,6 @@ describe("CareerHighlightsRail", () => {
 
     await flushPromiseQueue()
 
-    expect(() => getByTestId("career-highlight-cards-flatlist")).toThrow(
-      "Unable to find an element with testID: career-highlight-cards-flatlist"
-    )
-    expect(() => getByText("Discover career highlights for your artists.")).toThrow(
-      "Unable to find an element with text: Discover career highlights for your artists."
-    )
+    expect(queryByTestId("career-highlight-cards-flatlist")).toBeFalsy()
   })
 })

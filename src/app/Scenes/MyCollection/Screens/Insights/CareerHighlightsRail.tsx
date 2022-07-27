@@ -1,9 +1,9 @@
-import { CareerHighlightsRail_me$key } from "__generated__/CareerHighlightsRail_me.graphql"
 import { Flex, Spacer, useColor } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
+import { CareerHighlightsRail_me$key } from "__generated__/CareerHighlightsRail_me.graphql"
 import {
   CareerHighlightKind,
   CareerHighlightPromotionalCard,
@@ -21,10 +21,12 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
     return null
   }
 
-  const careerHighlightData = Object.entries(me.myCollectionInfo.artistInsightsCount).map((a) => ({
-    kind: a[0],
-    count: a[1],
-  }))
+  const careerHighlightData = Object.entries(me.myCollectionInfo.artistInsightsCount)
+    .map((a) => ({
+      kind: a[0],
+      count: a[1],
+    }))
+    .filter((a) => a.count > 0)
 
   if (careerHighlightData.length === 0) {
     return null
