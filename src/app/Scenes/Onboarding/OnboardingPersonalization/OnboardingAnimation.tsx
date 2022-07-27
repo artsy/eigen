@@ -1,9 +1,11 @@
 import { OnboardingAnimationQuery } from "__generated__/OnboardingAnimationQuery.graphql"
-import { ArtsyLogoIcon, Box, Flex, Screen, Text } from "palette"
+import { GlobalStore } from "app/store/GlobalStore"
+import { ArtsyLogoIcon, Box, Button, Flex, Screen, Spacer, Text } from "palette"
 import { useEffect } from "react"
 import { Image, StatusBar } from "react-native"
 import Animated, {
   Easing,
+  FadeInRight,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
@@ -20,10 +22,23 @@ const FIRST_WELCOME_SCREEN_DELAY = 1500
 const IMG_DISPLAY_DURATION = 500
 const LAST_IMG_DISPLAY_DURATION = 600
 
+const BUTTONS_ENTERING_DURATION = 500
+
+const BUTTONS_ENTERING_DELAY = 300
+const BUTTONS_ENTERING_DELAY_TOTAL =
+  FIRST_WELCOME_SCREEN_DELAY +
+  IMG_DISPLAY_DURATION * 5 +
+  LAST_IMG_DISPLAY_DURATION +
+  BUTTONS_ENTERING_DELAY
+
 export const OnboardingAnimation = () => {
   const { me } = useLazyLoadQuery<OnboardingAnimationQuery>(OnboardingAnimationScreenQuery, {})
 
   const opacity = useSharedValue(1)
+
+  const enteringAnim = FadeInRight.duration(BUTTONS_ENTERING_DURATION)
+    .delay(BUTTONS_ENTERING_DELAY_TOTAL)
+    .easing(Easing.out(Easing.quad))
 
   const onboardingImages = [
     require("images/OnboardingImage0AdesinaPaintingOfRechel.webp"),
@@ -105,12 +120,49 @@ export const OnboardingAnimation = () => {
           style={{ ...fadeOutAnimationsArr[5] }}
         >
           <ArtsyLogoAbsoluteHeader />
-          <Text variant="xxl" color="white100">
-            Ready to find{"\n"}
-            art you love?
-          </Text>
+          <Flex flex={1} justifyContent="center">
+            <Text variant="xxl" color="white100">
+              Ready to find{"\n"}
+              art you love?
+            </Text>
+            <Spacer mt={4} />
+            <AnimatedFlex entering={enteringAnim}>
+              <Text variant="lg" color="white100">
+                Start building your profile and tailor Artsy to your tastes.
+              </Text>
+            </AnimatedFlex>
+            <AnimatedFlex entering={enteringAnim} paddingBottom={2} position="absolute" bottom={10}>
+              <Button
+                accessible
+                accessibilityLabel="Start Onboarding Quiz"
+                accessibilityHint="Starts the Onboarding Quiz"
+                variant="fillLight"
+                block
+                haptic="impactMedium"
+                onPress={() => {
+                  // navigates collector to first question
+                  console.warn("First Question Screen")
+                }}
+              >
+                Get Started
+              </Button>
+              <Spacer mt={1} />
+              <Button
+                accessible
+                accessibilityLabel="Skip Onboarding Quiz"
+                accessibilityHint="Navigates to the home screen"
+                variant="fillDark"
+                block
+                haptic="impactMedium"
+                onPress={() => GlobalStore.actions.auth.setState({ onboardingState: "complete" })}
+              >
+                Skip
+              </Button>
+            </AnimatedFlex>
+          </Flex>
         </AnimatedFlex>
       </Screen.Background>
+      <Screen.SafeBottomPadding />
     </Screen>
   )
 }
