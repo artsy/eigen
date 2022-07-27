@@ -11,9 +11,7 @@ module.exports = (api) => {
       "relay",
       [
         "@babel/plugin-proposal-decorators",
-        {
-          legacy: true, // this is only needed for `ProvideScreenTracking` that is deprecated. once we dont have that anymore, we can remove this. probably the whole plugin actually.
-        },
+        { legacy: true }, // this is only needed for `ProvideScreenTracking` that is deprecated. once we dont have that anymore, we can remove this. probably the whole plugin actually.
       ],
       ["module-resolver", { alias: moduleResolverAlias }],
       "react-native-reanimated/plugin", // has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin

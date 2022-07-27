@@ -211,7 +211,6 @@ const MyCollection: React.FC<{
         keyboardShouldPersistTaps="handled"
       >
         <MyCollectionArtworks
-          innerFlatlistRef={innerFlatListRef}
           me={me}
           relay={relay}
           showSearchBar={showSearchBar}
