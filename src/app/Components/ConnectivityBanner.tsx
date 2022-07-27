@@ -11,7 +11,7 @@ const Container = styled.View`
 `
 
 const ConnectivityMessage = styled.Text`
-  color: ${themeGet("colors.yellow100")};
+  color: ${themeGet("colors.copper100")};
   text-align: center;
   font-family: "Unica77LL-Regular";
   font-size: 16;
