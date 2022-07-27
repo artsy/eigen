@@ -1,30 +1,56 @@
 import { OwnerType } from "@artsy/cohesion"
 import { NewSaleLotsList_unfilteredArtworks$key } from "__generated__/NewSaleLotsList_unfilteredArtworks.graphql"
 import { NewSaleLotsList_viewer$key } from "__generated__/NewSaleLotsList_viewer.graphql"
+import { NewSaleLotsListQuery } from "__generated__/NewSaleLotsListQuery.graphql"
 import {
   filterArtworksParams,
   prepareFilterArtworksParamsForInput,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { ORDERED_NEW_SALE_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
+import {
+  DEFAULT_NEW_SALE_ARTWORK_SORT,
+  ORDERED_NEW_SALE_ARTWORK_SORTS,
+} from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { isFunction } from "lodash"
 import { Box, Flex, Text } from "palette"
-import { useEffect, useRef } from "react"
-import { graphql, useFragment, usePaginationFragment } from "react-relay"
+import { useEffect, useRef, useState } from "react"
+import {
+  FetchPolicy,
+  fetchQuery,
+  graphql,
+  useFragment,
+  useLazyLoadQuery,
+  usePaginationFragment,
+  useRelayEnvironment,
+} from "react-relay"
 import useInterval from "react-use/lib/useInterval"
 
 interface NewSaleLotsListProps {
   unfilteredArtworks: NewSaleLotsList_unfilteredArtworks$key
-  viewer: NewSaleLotsList_viewer$key
   saleID: string
   saleSlug: string
 }
 
 export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({ saleID, saleSlug, ...rest }) => {
+  const environment = useRelayEnvironment()
+  const [queryArgs, setQueryArgs] = useState({
+    options: {
+      fetchKey: 0,
+      fetchPolicy: "store-and-network" as FetchPolicy,
+    },
+    variables: {
+      saleID,
+      count: PAGE_SIZE,
+      input: {
+        sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
+      },
+    },
+  })
+  const data = useLazyLoadQuery<NewSaleLotsListQuery>(query, queryArgs.variables, queryArgs.options)
   const unfilteredArtworks = useFragment(unfilteredArtworksFragment, rest.unfilteredArtworks)
   const {
     data: viewer,
@@ -32,7 +58,10 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({ saleID, saleSl
     hasNext,
     loadNext,
     refetch,
-  } = usePaginationFragment(viewerFragment, rest.viewer)
+  } = usePaginationFragment<NewSaleLotsListQuery, NewSaleLotsList_viewer$key>(
+    viewerFragment,
+    data.viewer
+  )
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
@@ -116,15 +145,24 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({ saleID, saleSl
     console.log("[debug] refetch by interval", nodesCountRef.current, refetchVariablesRef.current)
     const variables = {
       ...refetchVariablesRef.current,
+      saleID,
       count: nodesCountRef.current,
     }
 
-    refetch(variables, {
-      fetchPolicy: "store-and-network",
-      onComplete: (error) => {
-        if (error) {
-          throw new Error(error.message)
-        }
+    console.log("[debug] variables", variables)
+
+    fetchQuery(environment, query, variables).subscribe({
+      complete: () => {
+        setQueryArgs((prev) => ({
+          options: {
+            fetchPolicy: "store-only",
+            fetchKey: (prev?.options.fetchKey ?? 0) + 1,
+          },
+          variables,
+        }))
+      },
+      error: (error) => {
+        console.log("[debug] error", error)
       },
     })
   }, 60 * 1000)
@@ -223,6 +261,14 @@ const viewerFragment = graphql`
       }
       ...SaleArtworkList_connection
       ...InfiniteScrollArtworksGrid_connection
+    }
+  }
+`
+
+const query = graphql`
+  query NewSaleLotsListQuery($saleID: ID, $input: FilterArtworksInput, $count: Int) {
+    viewer {
+      ...NewSaleLotsList_viewer @arguments(saleID: $saleID, input: $input, count: $count)
     }
   }
 `

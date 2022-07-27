@@ -35,9 +35,6 @@ export const SaleQueryRenderer: React.FC<{
     {
       saleID,
       saleIDString: saleID,
-      input: {
-        sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
-      },
     },
     {
       fetchPolicy: "store-and-network",
@@ -75,7 +72,6 @@ export const SaleQueryRenderer: React.FC<{
         <ProvideScreenTracking info={tracks.screen(sale.internalID, sale.slug)}>
           <NewSaleLotsList
             unfilteredArtworks={viewer.unfilteredArtworks!}
-            viewer={viewer}
             saleID={sale.internalID}
             saleSlug={sale.slug}
           />
@@ -95,12 +91,12 @@ export const SaleQueryRenderer: React.FC<{
 }
 
 const SaleScreenBelowNewQuery = graphql`
-  query SaleBelowTheFoldNewQuery($saleID: ID, $saleIDString: String!, $input: FilterArtworksInput) {
+  query SaleBelowTheFoldNewQuery($saleID: ID, $saleIDString: String!) {
     sale(id: $saleIDString) {
       ...Sale_sale
     }
     viewer {
-      ...Sale_viewer @arguments(saleID: $saleID, input: $input)
+      ...Sale_viewer @arguments(saleID: $saleID)
     }
   }
 `
@@ -114,8 +110,7 @@ const saleFragment = graphql`
 `
 
 const viewerFragment = graphql`
-  fragment Sale_viewer on Viewer
-  @argumentDefinitions(saleID: { type: "ID" }, input: { type: "FilterArtworksInput" }) {
+  fragment Sale_viewer on Viewer @argumentDefinitions(saleID: { type: "ID" }) {
     unfilteredArtworks: artworksConnection(
       saleID: $saleID
       aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
@@ -123,6 +118,5 @@ const viewerFragment = graphql`
     ) {
       ...NewSaleLotsList_unfilteredArtworks
     }
-    ...NewSaleLotsList_viewer @arguments(saleID: $saleID, input: $input)
   }
 `
