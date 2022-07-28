@@ -2,15 +2,13 @@
 
 Do you need to use an image?
 
-At artsy we have several ways of retrieving an image.
+Images should be retrieved at least 2x of the size we would anticipate to display them. This is because of higher pixel densities as for example the latest iPhones have, high-resolution displays demand images with more pixels. You can read more about it [here](https://developer.apple.com/design/human-interface-guidelines/foundations/images/).
 
-Image urls are retrieved from metaphysics.
+Image urls are retrieved from metaphysics. We have several ways of doing that.
 
 [This doc](https://www.notion.so/artsy/Handling-Images-On-The-Web-In-Force-5c6832bf4b3e431cb4830061ce057399), although web specific, provides some more context on how we handle images.
 
 In general, our current **preferred practice** is to use the normalized image and resize it as necessary using on-the-fly resizing.
-
-Images should always be at least 2x of the size we would anticipate to display them, since because of higher pixel densities as for example the latest iPhones have, high-resolution displays demand images with more pixels. You can read more about it [here](https://developer.apple.com/design/human-interface-guidelines/foundations/images/).
 
 Here is an example query:
 
