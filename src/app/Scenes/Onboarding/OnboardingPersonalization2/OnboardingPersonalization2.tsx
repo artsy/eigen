@@ -32,15 +32,15 @@ export const OnboardingPersonalization2 = () => {
             headerShown: false,
           }}
         >
+          <StackNavigator.Screen
+            name="OnboardingPersonalizationWelcome"
+            component={OnboardingPersonalizationWelcome}
+          />
           <StackNavigator.Screen name="OnboardingQuestionOne" component={OnboardingQuestionOne} />
           <StackNavigator.Screen name="OnboardingQuestionTwo" component={OnboardingQuestionTwo} />
           <StackNavigator.Screen
             name="OnboardingQuestionThree"
             component={OnboardingQuestionThree}
-          />
-          <StackNavigator.Screen
-            name="OnboardingPersonalizationWelcome"
-            component={OnboardingPersonalizationWelcome}
           />
         </StackNavigator.Navigator>
       </NavigationContainer>

@@ -11,7 +11,7 @@ export const OnboardingQuestionThree = () => {
   const { navigate } = useNavigation()
   const handleNext = () => {
     // TODO: navigate to next question
-    navigate("")
+    navigate("OnboardingQuestionOne")
   }
 
   return (

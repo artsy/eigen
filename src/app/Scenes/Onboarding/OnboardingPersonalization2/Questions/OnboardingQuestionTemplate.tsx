@@ -10,7 +10,7 @@ import {
   Spacer,
   Text,
 } from "palette"
-import { FC } from "react"
+import { FC, useState } from "react"
 import { StatusBar } from "react-native"
 import { Action, State, useOnboardingContext } from "../Hooks/useOnboardingContext"
 
@@ -31,6 +31,8 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 }) => {
   const { goBack } = useNavigation()
   const { dispatch, next, onDone, state, progress } = useOnboardingContext()
+  const [loading, setLoading] = useState(false)
+
   const stateKey = STATE_KEYS[action]
   const selected = (answer: string) =>
     typeof state[stateKey] === "object"
@@ -38,8 +40,12 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
       : state[stateKey] === answer
 
   const handleNext = () => {
+    setLoading(true)
     next()
-    onNext()
+    setTimeout(() => {
+      onNext()
+      setLoading(false)
+    }, 225)
   }
 
   return (
@@ -64,7 +70,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
                 key={`${answer}-pill`}
                 rounded
                 size="xs"
-                Icon={selected(answer) ? CheckCircleFillIcon : undefined}
+                Icon={loading && selected(answer) ? CheckCircleFillIcon : undefined}
                 iconPosition="left"
                 onPress={() => dispatch({ type: action, payload: answer })}
                 selected={selected(answer)}

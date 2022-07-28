@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native"
 import { OnboardingPersonalizationWelcomeQuery } from "__generated__/OnboardingPersonalizationWelcomeQuery.graphql"
 import { ArtsyLogoIcon, Box, Button, Flex, Screen, Text } from "palette"
 import { StatusBar } from "react-native"
@@ -10,6 +11,7 @@ export const OnboardingPersonalizationWelcome: React.FC = () => {
     {}
   )
 
+  const { navigate } = useNavigation()
   const { onDone } = useOnboardingContext()
 
   return (
@@ -35,8 +37,7 @@ export const OnboardingPersonalizationWelcome: React.FC = () => {
               block
               haptic="impactMedium"
               onPress={() => {
-                // navigates collector to first question
-                console.warn("First Question Screen")
+                navigate("OnboardingQuestionOne")
               }}
             >
               Get Started
