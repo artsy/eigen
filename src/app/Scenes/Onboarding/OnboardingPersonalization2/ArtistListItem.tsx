@@ -53,7 +53,7 @@ const FollowArtistMutation = graphql`
     followArtist(input: $input) {
       artist {
         id
-        is_followed: isFollowed
+        isFollowed
       }
     }
   }
