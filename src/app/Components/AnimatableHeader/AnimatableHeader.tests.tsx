@@ -14,7 +14,7 @@ describe("AnimatableHeader", () => {
       {children}
       <AnimatableHeaderScrollView>
         {range(0, 30).map((i) => (
-          <Text>wow {i}</Text>
+          <Text key={`${i}`}>wow {i}</Text>
         ))}
       </AnimatableHeaderScrollView>
     </AnimatableHeaderProvider>
