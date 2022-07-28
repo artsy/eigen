@@ -2,7 +2,7 @@ import { noop } from "lodash"
 import { Flex } from "palette"
 import { useColor } from "palette/hooks"
 import { Color } from "palette/Theme"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 

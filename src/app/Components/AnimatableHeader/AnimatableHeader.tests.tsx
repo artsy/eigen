@@ -21,7 +21,7 @@ describe("AnimatableHeader", () => {
   )
 
   it("should render title large title initially", () => {
-    withReanimatedTimer(() => {
+    withReanimatedTimer(async () => {
       renderWithWrappers(
         <HeaderWrapper>
           <AnimatableHeader title="Custom Title" onLeftButtonPress={jest.fn()} />
@@ -32,7 +32,7 @@ describe("AnimatableHeader", () => {
   })
 
   it("should render passed rightButtonText prop", () => {
-    withReanimatedTimer(() => {
+    withReanimatedTimer(async () => {
       renderWithWrappers(
         <HeaderWrapper>
           <AnimatableHeader
@@ -49,7 +49,7 @@ describe("AnimatableHeader", () => {
   })
 
   it('should hide right button if "onRightButtonPress" is not passed', () => {
-    withReanimatedTimer(() => {
+    withReanimatedTimer(async () => {
       renderWithWrappers(
         <HeaderWrapper>
           <AnimatableHeader
@@ -65,7 +65,7 @@ describe("AnimatableHeader", () => {
   })
 
   it('should hide right button if "rightButtonText" is not passed', () => {
-    withReanimatedTimer(() => {
+    withReanimatedTimer(async () => {
       renderWithWrappers(
         <HeaderWrapper>
           <AnimatableHeader title="Title" onLeftButtonPress={jest.fn()} />
@@ -77,7 +77,7 @@ describe("AnimatableHeader", () => {
   })
 
   it("should disable right button when rightButtonDisabled prop is true", () => {
-    withReanimatedTimer(() => {
+    withReanimatedTimer(async () => {
       renderWithWrappers(
         <HeaderWrapper>
           <AnimatableHeader
@@ -95,7 +95,7 @@ describe("AnimatableHeader", () => {
   })
 
   it('should call "onLeftButtonPress" handler when back button is pressed', () => {
-    withReanimatedTimer(() => {
+    withReanimatedTimer(async () => {
       const onLeftButtonPressMock = jest.fn()
       renderWithWrappers(
         <HeaderWrapper>
@@ -110,7 +110,7 @@ describe("AnimatableHeader", () => {
   })
 
   it('should call "onRightButtonPress" handler when right button is pressed', () => {
-    withReanimatedTimer(() => {
+    withReanimatedTimer(async () => {
       const onRightButtonPressMock = jest.fn()
       renderWithWrappers(
         <HeaderWrapper>
