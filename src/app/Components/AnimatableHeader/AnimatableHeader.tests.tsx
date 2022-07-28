@@ -3,10 +3,10 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { range } from "lodash"
 import { Text } from "react-native"
+import { withReanimatedTimer } from "react-native-reanimated/src/reanimated2/jestUtils"
 import { AnimatableHeader } from "./AnimatableHeader"
 import { AnimatableHeaderProvider } from "./AnimatableHeaderProvider"
 import { AnimatableHeaderScrollView } from "./AnimatableHeaderScrollView"
-import { withReanimatedTimer } from "react-native-reanimated/src/reanimated2/jestUtils"
 
 describe("AnimatableHeader", () => {
   const HeaderWrapper = ({ children }: { children: React.ReactNode }) => (

@@ -1,5 +1,4 @@
 import { fireEvent, within } from "@testing-library/react-native"
-import { withReanimatedTimer } from "react-native-reanimated/src/reanimated2/jestUtils"
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
@@ -18,6 +17,7 @@ import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Theme } from "palette"
+import { withReanimatedTimer } from "react-native-reanimated/src/reanimated2/jestUtils"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"

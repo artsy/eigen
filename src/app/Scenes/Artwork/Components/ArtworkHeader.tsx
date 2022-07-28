@@ -17,7 +17,7 @@ import {
   WhatsAppAppIcon,
 } from "palette"
 import React, { useRef, useState } from "react"
-import { Button, ScrollView, Modal } from "react-native"
+import { Button, Modal, ScrollView } from "react-native"
 import Share from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { createFragmentContainer, graphql } from "react-relay"

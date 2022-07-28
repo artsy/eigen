@@ -1,7 +1,7 @@
 import { screen, waitFor } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { ProgressBar } from "./ProgressBar"
 import { withReanimatedTimer } from "react-native-reanimated/src/reanimated2/jestUtils"
+import { ProgressBar } from "./ProgressBar"
 
 describe("ProgressBar", () => {
   it("does not display the track view when progress is zero", () => {

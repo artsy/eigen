@@ -2,8 +2,8 @@ import { fireEvent, waitFor } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import * as input from "palette/elements/Input/Input"
 import { TextInput } from "react-native"
-import { SearchInput, SearchInputProps } from "./SearchInput"
 import { withReanimatedTimer } from "react-native-reanimated/src/reanimated2/jestUtils"
+import { SearchInput, SearchInputProps } from "./SearchInput"
 
 const emitInputClearEventSpy = jest.spyOn(input, "emitInputClearEvent")
 

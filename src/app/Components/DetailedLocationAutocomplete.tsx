@@ -7,7 +7,7 @@ import {
 } from "app/utils/googleMaps"
 import { Flex, Input, InputProps, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { Text, ScrollView } from "react-native"
+import { ScrollView, Text } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
 interface DetailedLocationAutocompleteProps extends Omit<InputProps, "onChange"> {
