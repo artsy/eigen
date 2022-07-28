@@ -2,12 +2,13 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
+import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
 import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWelcome"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingPersonalization2NavigationStack = {
   OnboardingPersonalizationWelcome: undefined
-  // This is where we want to add the next screen
+  OnboardingFollowArtists: undefined
 }
 
 const StackNavigator = createStackNavigator<OnboardingPersonalization2NavigationStack>()
@@ -30,6 +31,10 @@ export const OnboardingPersonalization2 = () => {
           <StackNavigator.Screen
             name="OnboardingPersonalizationWelcome"
             component={OnboardingPersonalizationWelcome}
+          />
+          <StackNavigator.Screen
+            name="OnboardingFollowArtists"
+            component={OnboardingFollowArtists}
           />
         </StackNavigator.Navigator>
       </NavigationContainer>
