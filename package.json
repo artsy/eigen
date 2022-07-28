@@ -213,6 +213,7 @@
     "@testing-library/jest-native": "4.0.5",
     "@testing-library/react-hooks": "8.0.1",
     "@testing-library/react-native": "10.1.1",
+    "@tsconfig/react-native": "2.0.2",
     "@types/argparse": "2.0.10",
     "@types/autosuggest-highlight": "3.1.1",
     "@types/chalk": "2.2.0",
@@ -301,7 +302,6 @@
     "tslint-plugin-relay": "0.0.3",
     "tslint-react": "5.0.0",
     "typescript": "4.7.4",
-    "typescript-styled-plugin": "0.18.2",
     "vscode-apollo-relay": "1.5.2"
   },
   "lint-staged": {
