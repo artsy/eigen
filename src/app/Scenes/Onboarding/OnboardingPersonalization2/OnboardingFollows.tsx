@@ -3,6 +3,7 @@ import { Box, Button, Flex, Spacer, Text } from "palette"
 import { useState } from "react"
 import { useScreenDimensions } from "shared/hooks"
 import { useDebouncedValue } from "shared/hooks/useDebouncedValue"
+import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 import { OnboardingOrderedSetScreen } from "./OnboardingOrderedSet"
 import { OnboardingSearchResultsScreen } from "./OnboardingSearchResults"
 
@@ -27,6 +28,8 @@ export const CONFIGURATION = {
 
 export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) => {
   const [query, setQuery] = useState("")
+  const { next, state } = useOnboardingContext()
+
   const {
     safeAreaInsets: { top },
   } = useScreenDimensions()
@@ -34,9 +37,15 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
 
   const { title, placeholder, entities, setId } = CONFIGURATION[kind]
 
+  const handleNextButtonPress = () => {
+    next()
+    // navigate to the loading screen and then to home after the delay
+  }
+
   return (
     <Flex flex={1} flexGrow={1} backgroundColor="white100" pt={top} px={2}>
       {!debouncedValue && (
+        // this will be animated with fade out when reanimated is merged
         <Box mt={2}>
           <Text variant="lg">{title}</Text>
         </Box>
@@ -50,9 +59,14 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
           <OnboardingOrderedSetScreen id={setId} />
         )}
       </Flex>
-      <Flex p={2} position="absolute" left={0} right={0} bottom={0} backgroundColor="white">
-        <Button variant="fillDark" block onPress={() => console.warn("finished")}>
-          Done
+      <Flex p={2} position="absolute" left={0} right={0} bottom={0} backgroundColor="white100">
+        <Button
+          variant="fillDark"
+          disabled={state.followedIds.length === 0}
+          block
+          onPress={handleNextButtonPress}
+        >
+          Next
         </Button>
       </Flex>
     </Flex>
