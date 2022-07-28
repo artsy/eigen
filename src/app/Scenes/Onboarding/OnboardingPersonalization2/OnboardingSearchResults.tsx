@@ -4,7 +4,7 @@ import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, quoteLeft, quoteRight, Spacer, Text, useSpace } from "palette"
+import { Flex, Message, quoteLeft, quoteRight, Spacer, useSpace } from "palette"
 import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -58,14 +58,14 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
       }}
       ListEmptyComponent={
         <>
-          <Spacer mt={3} />
-          <Text variant="md">
-            Sorry, we couldn’t find anything for {quoteLeft}
-            {term}.{quoteRight}
-          </Text>
-          <Text variant="md" color="black60">
-            Please try searching again with a different spelling.
-          </Text>
+          <Spacer mt={2} />
+          <Message
+            variant="default"
+            title={`Sorry, we couldn’t find anything for ${quoteLeft}${term}.${quoteRight}`}
+            titleStyle={{ variant: "md" }}
+            text="Please try searching again with a different spelling."
+            bodyTextStyle={{ variant: "md" }}
+          />
         </>
       }
     />
