@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingPersonalization2/Hooks/useOnboardingContext"
 import { OnboardingQuestionTemplate } from "app/Scenes/Onboarding/OnboardingPersonalization2/Questions/OnboardingQuestionTemplate"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -54,7 +54,9 @@ describe("onboarding question template", () => {
 
     fireEvent.press(screen.getByText("Next"))
 
-    expect(onNext).toHaveBeenCalledTimes(1)
+    waitFor(() => {
+      expect(onNext).toHaveBeenCalledTimes(1)
+    })
   })
 
   it("does not call onNext if no item is selected", () => {
