@@ -1,0 +1,18 @@
+diff --git a/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts b/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts
+index 4f0c619..8f319ee 100644
+--- a/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts
++++ b/node_modules/react-native-reanimated/lib/reanimated2/globals.d.ts
+@@ -1,3 +1,4 @@
++// @ts-nocheck
+ import { AnimatedStyle, StyleProps } from './commonTypes';
+ import { ReanimatedConsole } from './core';
+ import { MeasuredDimensions } from './NativeMethods';
+diff --git a/node_modules/react-native-reanimated/react-native-reanimated.d.ts b/node_modules/react-native-reanimated/react-native-reanimated.d.ts
+index a681f9f..8f48797 100644
+--- a/node_modules/react-native-reanimated/react-native-reanimated.d.ts
++++ b/node_modules/react-native-reanimated/react-native-reanimated.d.ts
+@@ -1,3 +1,4 @@
++// @ts-nocheck
+ // Project: https://github.com/software-mansion/react-native-reanimated
+ // TypeScript Version: 2.8
+ 

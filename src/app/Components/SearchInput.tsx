@@ -3,19 +3,23 @@ import {
   emitInputClearEvent,
   Flex,
   Input,
-  INPUT_HEIGHT,
   InputProps,
   SpacingUnitV2,
   SpacingUnitV3,
   Text,
   useSpace,
 } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import { forwardRef, useImperativeHandle, useRef, useState } from "react"
 import { TextInput, TouchableOpacity, useWindowDimensions } from "react-native"
-import Animated, { Easing } from "react-native-reanimated"
-import { useAnimatedValue } from "./StickyTabPage/reanimatedHelpers"
+import Animated, {
+  FadeInRight,
+  FadeOutRight,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated"
 
 const MX = 2
+const CANCEL_BUTTON_DURATION = 180
 
 export interface SearchInputProps extends InputProps {
   mx?: SpacingUnitV2 | SpacingUnitV3
@@ -23,40 +27,31 @@ export interface SearchInputProps extends InputProps {
   onCancelPress?: () => void
 }
 
-export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
+export const SearchInput = forwardRef<TextInput, SearchInputProps>(
   (
     { enableCancelButton, onChangeText, onClear, onCancelPress, mx = MX, ...props },
     ref: React.Ref<Partial<TextInput>>
   ) => {
-    const cancelWidth = useAnimatedValue(0)
-    const animationValue = useAnimatedValue(0)
+    const [cancelWidth, setCancelWidth] = useState(0)
     const space = useSpace()
+    const [cancelButtonShown, setCancelButtonShown] = useState(false)
     const width = useWindowDimensions().width - space(mx) * 2
-    const inputWidth = Animated.sub(width, cancelWidth)
+
+    const shrinkAnim = useAnimatedStyle(
+      () => ({
+        width: withTiming(width - (cancelButtonShown ? cancelWidth : 0), {
+          duration: CANCEL_BUTTON_DURATION,
+        }),
+      }),
+      [cancelButtonShown, cancelWidth]
+    )
+
     const inputRef = useRef<TextInput>(null)
-
-    const animateTo = (toValue: 1 | 0) => {
-      Animated.timing(animationValue, {
-        toValue,
-        easing: Easing.inOut(Easing.ease),
-        duration: 180,
-      }).start()
-    }
-
     useImperativeHandle(ref, () => inputRef?.current ?? {})
 
     return (
       <Flex flexDirection="row">
-        <Animated.View
-          style={{
-            width: enableCancelButton
-              ? animationValue.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [width, inputWidth],
-                })
-              : inputWidth,
-          }}
-        >
+        <Animated.View style={[shrinkAnim, { backgroundColor: "green", paddingTop: 2 }]}>
           <Input
             ref={inputRef}
             icon={<SearchIcon width={18} height={18} />}
@@ -71,58 +66,39 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
             onChangeText={onChangeText}
             {...props}
             onFocus={(e) => {
-              animateTo(1)
+              setCancelButtonShown(true)
               props.onFocus?.(e)
             }}
             onBlur={(e) => {
-              animateTo(0)
+              setCancelButtonShown(false)
               props.onBlur?.(e)
             }}
           />
         </Animated.View>
-        {!!enableCancelButton && (
-          <Animated.View
-            style={[
-              {
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "row",
-              },
-              props.error ? { maxHeight: INPUT_HEIGHT } : {},
-            ]}
-            onLayout={Animated.event([{ nativeEvent: { layout: { width: cancelWidth } } }])}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                emitInputClearEvent()
-                inputRef?.current?.blur()
-                onCancelPress?.()
-              }}
-              hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+        <Flex alignItems="center" justifyContent="center">
+          {!!enableCancelButton && !!cancelButtonShown && (
+            <Animated.View
+              entering={FadeInRight.duration(CANCEL_BUTTON_DURATION)}
+              exiting={FadeOutRight.duration(CANCEL_BUTTON_DURATION)}
             >
-              <Animated.Text
-                style={[
-                  {
-                    paddingLeft: space(1),
-                    opacity: animationValue,
-                    transform: [
-                      {
-                        translateX: animationValue.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: [cancelWidth, 0],
-                        }),
-                      },
-                    ],
-                  },
-                ]}
+              <TouchableOpacity
+                onPress={() => {
+                  emitInputClearEvent()
+                  inputRef?.current?.blur()
+                  onCancelPress?.()
+                }}
+                hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+                onLayout={(e) => {
+                  setCancelWidth(e.nativeEvent.layout.width)
+                }}
               >
-                <Text variant="xs" color="black60">
+                <Text pl={1} variant="xs" color="black60">
                   Cancel
                 </Text>
-              </Animated.Text>
-            </TouchableOpacity>
-          </Animated.View>
-        )}
+              </TouchableOpacity>
+            </Animated.View>
+          )}
+        </Flex>
       </Flex>
     )
   }

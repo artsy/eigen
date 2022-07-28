@@ -1,5 +1,4 @@
 import { Text, useSpace } from "palette"
-import { useEffect } from "react"
 import Animated, { Extrapolate, interpolate, useAnimatedStyle } from "react-native-reanimated"
 import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 
