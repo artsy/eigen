@@ -14,20 +14,15 @@ Here is an example query:
 
 ### I want a cropped image url
 
-We have two ways of retrieving an image.
-1x standard density
-2x double density because of iPhone
+Getting a cropped image of dimensions 1000x1000.
 
-iPhone currently has more pixels so we want to opt for 2x .
-The way how we do this is to require
-
-A graphQL query
+This is a graphQL query you can try out at GraphiQL:
 
 ```
 {
 	show(id: "62dbddc6b70486000d2332bb") {
     images {
-      square: cropped(height: 500, width: 500, version: "normalized") {
+      square: cropped(height: 1000, width: 1000, version: "normalized") {
         url
       }
     }
@@ -36,12 +31,21 @@ A graphQL query
 
 ```
 
-The same query in RN
+The same query in RN would be something like this:
 
 ```
 import { Dimensions } from "react-native"
 
 const windowWidth = Number(Dimensions.get("window").width)
+
+const installsData = useLazyLoadQuery<ShowInstallsQuery>
+(
+  showInstallsQuery,
+  {
+    slug,
+    imageSize: 2 * windowWidth,
+  }
+)
 
 const showInstallsQuery = graphql`
   query ShowInstallsQuery($slug: String!, $imageSize: Int!) {
