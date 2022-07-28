@@ -9,7 +9,7 @@ export const AboveTheFoldPlaceholder: React.FC<{ artworkID?: string }> = ({ artw
   const { width, height } = useImagePlaceholderDimensions(artworkID)
 
   return (
-    <Flex py={2}>
+    <Flex pt={5} pb={2}>
       {/* Artwork thumbnail */}
       <Flex mx="auto">
         <PlaceholderBox width={width} height={height} />
