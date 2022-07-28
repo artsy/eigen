@@ -1,4 +1,4 @@
-import { RefreshControl } from "react-native"
+import { RefreshControl, RefreshControlProps } from "react-native"
 import Animated from "react-native-reanimated"
 import { useNativeValue } from "./reanimatedHelpers"
 import { useStickyTabPageContext } from "./StickyTabPageContext"
@@ -6,16 +6,18 @@ import { useStickyTabPageContext } from "./StickyTabPageContext"
 /**
  * RefreshControl for StickyTabPage. Allows for the refreshControl to be visible
  */
-export const StickTabPageRefreshControl: React.FC<{
-  refreshing: boolean
-  onRefresh: (() => void) | undefined
-}> = ({ refreshing, onRefresh }) => {
+export const StickTabPageRefreshControl: React.FC<RefreshControlProps> = ({
+  refreshing,
+  onRefresh,
+  ...restProps
+}) => {
   const { staticHeaderHeight } = useStickyTabPageContext()
 
   const progressViewOffset = useNativeValue(staticHeaderHeight ?? new Animated.Value(0), 0)
 
   return (
     <RefreshControl
+      {...restProps}
       progressViewOffset={progressViewOffset}
       refreshing={refreshing}
       onRefresh={onRefresh}
