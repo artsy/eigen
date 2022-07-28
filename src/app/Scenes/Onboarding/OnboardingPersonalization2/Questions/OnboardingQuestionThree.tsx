@@ -10,7 +10,8 @@ import { OnboardingQuestionTemplate } from "./OnboardingQuestionTemplate"
 export const OnboardingQuestionThree = () => {
   const { navigate } = useNavigation()
   const handleNext = () => {
-    navigate("OnboardingQuestionTwo")
+    // TODO: navigate to next question
+    navigate("")
   }
 
   return (
@@ -18,7 +19,6 @@ export const OnboardingQuestionThree = () => {
       answers={ANSWERS}
       action={ACTION}
       onNext={handleNext}
-      progress={99}
       question={QUESTION}
       subtitle={SUBTITLE}
     />

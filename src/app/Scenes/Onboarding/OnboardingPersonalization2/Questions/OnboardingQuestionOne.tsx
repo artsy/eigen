@@ -16,7 +16,6 @@ export const OnboardingQuestionOne = () => {
       answers={ANSWERS}
       action={ACTION}
       onNext={handleNext}
-      progress={33}
       question={QUESTION}
     />
   )

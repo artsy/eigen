@@ -18,7 +18,6 @@ export const OnboardingQuestionTwo = () => {
       answers={ANSWERS}
       action={ACTION}
       onNext={handleNext}
-      progress={66}
       question={QUESTION}
       subtitle={SUBTITLE}
     />

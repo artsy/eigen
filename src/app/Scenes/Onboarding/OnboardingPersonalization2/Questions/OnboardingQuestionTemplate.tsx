@@ -1,9 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
 import {
-  Action,
-  useOnboardingContext,
-} from "app/Scenes/Onboarding/OnboardingPersonalization2/Hooks/useOnboardingContext"
-import {
   Button,
   CheckCircleFillIcon,
   Flex,
@@ -16,12 +12,12 @@ import {
 } from "palette"
 import { FC } from "react"
 import { StatusBar } from "react-native"
+import { Action, State, useOnboardingContext } from "../Hooks/useOnboardingContext"
 
 interface OnboardingQuestionTemplateProps {
   answers: string[]
   action: Exclude<Action["type"], "RESET">
   onNext: () => void
-  progress: number
   question: string
   subtitle?: string
 }
@@ -30,13 +26,12 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   answers,
   action,
   onNext,
-  progress,
   question,
   subtitle,
 }) => {
   const { goBack } = useNavigation()
-  const { dispatch, next, onDone, state } = useOnboardingContext()
-  const stateKey = KEYS[action] as keyof typeof state
+  const { dispatch, next, onDone, state, progress } = useOnboardingContext()
+  const stateKey = STATE_KEYS[action]
   const selected = (answer: string) =>
     typeof state[stateKey] === "object"
       ? state[stateKey]?.includes(answer)
@@ -80,7 +75,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
           </Join>
         </Flex>
         <Flex>
-          <Button block disabled={!state.questionOne} onPress={handleNext}>
+          <Button block disabled={!state[stateKey]} onPress={handleNext}>
             Next
           </Button>
         </Flex>
@@ -89,7 +84,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   )
 }
 
-const KEYS = {
+const STATE_KEYS: Record<Exclude<Action["type"], "RESET">, keyof State> = {
   SET_ANSWER_ONE: "questionOne",
   SET_ANSWER_TWO: "questionTwo",
   SET_ANSWER_THREE: "questionThree",
