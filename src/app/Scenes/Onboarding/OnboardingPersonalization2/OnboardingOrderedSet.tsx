@@ -5,7 +5,7 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isEmpty, times } from "lodash"
 import { Flex, Join, Spacer, useSpace } from "palette"
 import { Suspense } from "react"
-import { FlatList, SafeAreaView } from "react-native"
+import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistListItemNew } from "./ArtistListItem"
 
