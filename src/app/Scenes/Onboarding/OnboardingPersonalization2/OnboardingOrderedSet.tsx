@@ -8,12 +8,14 @@ import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistListItemNew } from "./ArtistListItem"
+import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 interface OnboardingOrderedSetProps {
   id: string
 }
 
 const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
+  const { dispatch } = useOnboardingContext()
   const { orderedSets } = useLazyLoadQuery<OnboardingOrderedSetQuery>(
     OnboardingOrderedSetScreenQuery,
     {
@@ -41,7 +43,15 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
       renderItem={({ item }) => {
         switch (item.__typename) {
           case "Artist":
-            return <ArtistListItemNew artist={item} py={space(1)} />
+            return (
+              <ArtistListItemNew
+                artist={item}
+                onFollow={() => {
+                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                }}
+                py={space(1)}
+              />
+            )
           default:
             return null
         }

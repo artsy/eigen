@@ -9,6 +9,7 @@ import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { ArtistListItemNew } from "./ArtistListItem"
+import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 interface OnboardingSearchResultsProps {
   entities: "ARTIST" | "PROFILE"
@@ -16,6 +17,7 @@ interface OnboardingSearchResultsProps {
 }
 
 const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entities, term }) => {
+  const { dispatch } = useOnboardingContext()
   const space = useSpace()
 
   const queryData = useLazyLoadQuery<OnboardingSearchResultsQuery>(
@@ -51,7 +53,15 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
       renderItem={({ item }) => {
         switch (item.__typename) {
           case "Artist":
-            return <ArtistListItemNew artist={item} py={space(1)} />
+            return (
+              <ArtistListItemNew
+                onFollow={() => {
+                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                }}
+                artist={item}
+                py={space(1)}
+              />
+            )
           default:
             return null
         }

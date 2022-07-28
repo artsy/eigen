@@ -5,9 +5,10 @@ import { formatTombstoneText } from "../OnboardingPersonalization/OnboardingPers
 
 interface ArtistListItemProps extends FlexProps {
   artist: ArtistListItemNew_artist$key
+  onFollow: () => void
 }
 
-export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, ...rest }) => {
+export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, onFollow, ...rest }) => {
   const { name, nationality, birthday, deathday, initials, image, isFollowed, slug } =
     useFragment<ArtistListItemNew_artist$key>(ArtistListItemFragment, artist)
 
@@ -20,6 +21,9 @@ export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, ...re
           artistID: slug,
           unfollow: isFollowed,
         },
+      },
+      onCompleted() {
+        onFollow()
       },
     })
   }
