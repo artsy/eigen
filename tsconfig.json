@@ -1,41 +1,26 @@
 {
+  "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
-    "esModuleInterop": true,
-    "baseUrl": "src",
-    "experimentalDecorators": true,
-    "incremental": true,
-    "lib": ["es2017"],
-    "jsx": "react-jsx", // This is for vscode not to suggest importing React, after react17.
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "outDir": "build",
-    "plugins": [{ "name": "typescript-styled-plugin" }],
-    "allowSyntheticDefaultImports": true,
-    "pretty": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "strictBindCallApply": true,
-    "noImplicitThis": true,
-    "noFallthroughCasesInSwitch": true,
-    "strictFunctionTypes": true,
-    "target": "esnext",
-    "types": ["jest", "react", "react-native"],
-    "noEmit": true
+    "composite": true, // improved build speeds.
+    "baseUrl": "src", // for imports like `"app/Components"` to resolve correctly.
+    "experimentalDecorators": true, // used for class decorators. it would be cool to remove this if we ever get rid of classes.
+    "noFallthroughCasesInSwitch": true, // avoid accidental fallthrough.
+    "noUnusedLocals": true, // what it says.
+    "noUnusedParameters": true // what it says.
   },
-  "include": ["typings/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "scripts/**/*.ts", "dangerfile.ts"],
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "metro.config.js",
-    "jest.config.js",
-    "dist",
-    "build",
-    "index.ios.js",
-    "index.android.js",
-    "**/__mocks__",
-    "src/palette/**/*.test.*" // TODO: Fix palette tests and remove this exclude rule
+  "include": [
+    // all files must match at least one of these rules. required by `composite`.
+    "src/**/*.tsx",
+    "src/**/*.ts",
+    "typings/*.d.ts",
+    "app.json",
+    "metaflags.json",
+    "ios/Artsy/App/EchoNew.json",
+    "data/*.json",
+    "src/storybook/*.js",
+    "scripts/**/*.ts",
+    "scripts/**/*.js",
+    "dangerfile.ts",
+    "metaphysics-queries-freshness-tests/test-freshness.ts"
   ]
 }

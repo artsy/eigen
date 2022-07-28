@@ -18,12 +18,12 @@ function hash(file) {
 function run() {
   const [_, __, outFileName, ...stringPatterns] = process.argv
 
-  const regexPatterns = stringPatterns.map(s => new RegExp(s))
+  const regexPatterns = stringPatterns.map((s) => new RegExp(s))
 
+  /** @type string[] */
   const matchingFiles = []
 
   /**
-   *
    * @param {string} file
    */
   function step(file) {

@@ -135,3 +135,4 @@ Brewfile.lock.json
 # Keep these, so we can keep the folders these appear in.
 !.gitkeep
 #########################################################
+tsconfig.tsbuildinfo
