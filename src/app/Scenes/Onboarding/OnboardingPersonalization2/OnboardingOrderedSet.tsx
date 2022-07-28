@@ -31,51 +31,43 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
   const nodes = extractNodes(orderedSet)
 
   return (
-    <SafeAreaView style={{ backgroundColor: "white", flex: 1 }}>
-      <FlatList
-        contentContainerStyle={{
-          paddingTop: space(1),
-          paddingBottom: 80,
-        }}
-        data={nodes}
-        renderItem={({ item }) => {
-          switch (item.__typename) {
-            case "Artist":
-              return <ArtistListItemNew artist={item} py={space(1)} />
-            default:
-              return null
-          }
-        }}
-        keyExtractor={(item, index) => {
-          switch (item.__typename) {
-            case "Artist":
-              return item.internalID
-          }
-          return item.__typename + index
-        }}
-      />
-    </SafeAreaView>
+    <FlatList
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{
+        paddingTop: space(1),
+        paddingBottom: 80,
+      }}
+      data={nodes}
+      renderItem={({ item }) => {
+        switch (item.__typename) {
+          case "Artist":
+            return <ArtistListItemNew artist={item} py={space(1)} />
+          default:
+            return null
+        }
+      }}
+      keyExtractor={(item, index) => {
+        switch (item.__typename) {
+          case "Artist":
+            return item.internalID
+        }
+        return item.__typename + index
+      }}
+    />
   )
 }
 
 const OnboardingPersonalizationListPlaceholder = () => (
   <ProvidePlaceholderContext>
-    <SafeAreaView
-      style={{
-        flexGrow: 1,
-      }}
-    >
-      <Spacer height={60} />
-      <Flex px={2} mt={2}>
-        <Join separator={<Spacer height={20} />}>
-          {times(10).map((index: number) => (
-            <Flex key={index}>
-              <ArtistListItemPlaceholder />
-            </Flex>
-          ))}
-        </Join>
-      </Flex>
-    </SafeAreaView>
+    <Flex mt={2}>
+      <Join separator={<Spacer height={20} />}>
+        {times(10).map((index: number) => (
+          <Flex key={index}>
+            <ArtistListItemPlaceholder />
+          </Flex>
+        ))}
+      </Join>
+    </Flex>
   </ProvidePlaceholderContext>
 )
 

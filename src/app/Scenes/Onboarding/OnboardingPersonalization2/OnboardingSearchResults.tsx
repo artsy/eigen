@@ -35,6 +35,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
 
   return (
     <FlatList
+      showsVerticalScrollIndicator={false}
       data={searchResults}
       contentContainerStyle={{
         paddingTop: space(1),
@@ -121,9 +122,11 @@ const OnboardingSearchResultsFragment = graphql`
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
-    <Flex flex={1} backgroundColor="black100">
+    <Flex pt={1}>
       {times(10).map((index: number) => (
-        <ArtistListItemPlaceholder key={index} />
+        <Flex py={1} key={index}>
+          <ArtistListItemPlaceholder />
+        </Flex>
       ))}
     </Flex>
   </ProvidePlaceholderContext>
