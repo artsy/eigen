@@ -1,7 +1,7 @@
 import themeGet from "@styled-system/theme-get"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
-import { GlobalStore, setCareerHiglightAsSeen } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import {
   Button,
   FairIcon,
@@ -42,7 +42,12 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ coun
   const { label, Icon, isNew } = getCareerHiglight(type, count)
 
   return (
-    <Touchable haptic onPress={() => setCareerHiglightAsSeen({ type, count })}>
+    <Touchable
+      haptic
+      onPress={() => {
+        // TODO: Navigate to detail card
+      }}
+    >
       <CareerHighlightCard p={1}>
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
           <Flex backgroundColor={color("blue100")} px={0.5} mt={0.2}>
@@ -177,7 +182,7 @@ const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
 
   // A career higlight is new if the user hasen't seen it at all or if the number is higher
   // than the number that has been seen by the user the last time.
-  const isNew = careerHighlights[type] && careerHighlights[type].count < count
+  const isNew = !careerHighlights[type] || careerHighlights[type].count < count
   // const isNew = !careerHighlights[type] || careerHighlights[type].count < count
 
   return { label, Icon, isNew }
