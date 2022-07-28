@@ -7,7 +7,6 @@ interface UseDebounce {
 }
 
 export const useDebounce = ({ callback, delay = 200 }: UseDebounce) => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   return useCallback(debounce(callback, delay), [callback, delay])
 }
 
