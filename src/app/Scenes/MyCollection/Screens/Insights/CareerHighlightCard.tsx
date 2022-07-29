@@ -1,4 +1,3 @@
-import themeGet from "@styled-system/theme-get"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -17,7 +16,6 @@ import {
 } from "palette"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
-import styled from "styled-components/native"
 
 export type CareerHighlightKind =
   | "SOLO_SHOW"
@@ -48,7 +46,7 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ coun
         // TODO: Navigate to detail card
       }}
     >
-      <CareerHighlightCard p={1}>
+      <Flex p={1} height={135} width={205} background="white" border={1} borderColor="black10">
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
           <Flex backgroundColor={color("blue100")} px={0.5} mt={0.2}>
             {!!isNew && (
@@ -65,9 +63,18 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ coun
               </Flex>
             )}
           </Flex>
-          <IconContainer>
+          <Flex
+            width={26}
+            height={26}
+            alignSelf="flex-end"
+            alignItems="center"
+            justifyContent="center"
+            border={1}
+            borderColor="black100"
+            borderRadius={24}
+          >
             <Icon fill="black100" width={21} height={21} />
-          </IconContainer>
+          </Flex>
         </Flex>
         <Flex justifyContent="flex-end" flex={1}>
           <Text variant="xl" color="blue100">
@@ -77,7 +84,7 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ coun
             {label}
           </Text>
         </Flex>
-      </CareerHighlightCard>
+      </Flex>
     </Touchable>
   )
 }
@@ -110,22 +117,6 @@ export const CareerHighlightPromotionalCard: React.FC = () => {
     </Flex>
   )
 }
-
-const CareerHighlightCard = styled(Flex)`
-  background: ${themeGet("colors.white100")};
-  border: 1px solid ${themeGet("colors.black10")};
-  height: 135;
-  width: 205;
-`
-const IconContainer = styled(Flex)`
-  width: 26;
-  height: 26;
-  align-self: flex-end;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid ${themeGet("colors.black100")};
-  border-radius: 24px;
-`
 
 const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
   const careerHighlights = GlobalStore.useAppState(
