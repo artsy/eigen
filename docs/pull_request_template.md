@@ -1,17 +1,14 @@
 <!--
-
 ➡️ Use a PR title in the form of  `type(PROJECT-XXXX): what changed`
 ➡️ Provide the Jira ticket in square brackets like [PROJECT-XXXX]
 
 ❗️ If this is a work in progress, remember to prefix it with [WIP] and/or open a draft PR instead of normal PR
-
 -->
 
-This PR resolves []
-
 ### Description
-
 <!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
+
+This PR resolves []
 
 ### QA Testing
 
