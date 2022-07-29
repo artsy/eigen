@@ -8,7 +8,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import _ from "lodash"
-import { Flex, Spacer, useSpace } from "palette"
+import { Flex, Spacer, Text, useSpace } from "palette"
 import React, { Suspense, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -35,7 +35,7 @@ const fragmentSpec = graphql`
   }
 `
 
-export const ViewingRoomsListScreenQuery = graphql`
+export const viewingRoomsListScreenQuery = graphql`
   query ViewingRoomsListQuery($count: Int!, $after: String) {
     ...ViewingRoomsList_viewingRooms @arguments(count: $count, after: $after)
 
@@ -56,13 +56,14 @@ const useNumColumns = () => {
   return orientation === "portrait" ? 2 : 3
 }
 
-export const ViewingRoomsList: React.FC = () => {
-  const queryData = useLazyLoadQuery<ViewingRoomsListQuery>(
-    ViewingRoomsListScreenQuery,
-    viewingRoomsDefaultVariables
-  )
-
+export const ViewingRoomsList = () => {
   const space = useSpace()
+
+  const queryData = useLazyLoadQuery<ViewingRoomsListQuery>(viewingRoomsListScreenQuery, {
+    count: PAGE_SIZE,
+    after: null,
+  })
+
   const { data, isLoadingNext, hasNext, loadNext, refetch } = usePaginationFragment<
     ViewingRoomsListQuery,
     ViewingRoomsList_viewingRooms$key
@@ -170,13 +171,11 @@ const tracks = {
   }),
 }
 
-export const viewingRoomsDefaultVariables = { count: PAGE_SIZE, after: null }
-
 const Placeholder = () => (
   <ProvidePlaceholderContext>
     <PageWithSimpleHeader title={SCREEN_TITLE}>
       <Spacer mb="2" />
-      <Flex ml="2">
+      <Flex ml="2" testID="viewing-rooms-list-placeholder">
         <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
         <Flex flexDirection="row">
           {_.times(4).map((i) => (
@@ -213,7 +212,7 @@ const LoadingMorePlaceholder = () => (
   </ProvidePlaceholderContext>
 )
 
-export const ViewingRoomsListScreen: React.FC = () => (
+export const ViewingRoomsListScreen = () => (
   <Suspense fallback={<Placeholder />}>
     <ViewingRoomsList />
   </Suspense>

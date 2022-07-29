@@ -1,17 +1,21 @@
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { screen } from "@testing-library/react-native"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import React from "react"
 import { PlaceholderBox, PlaceholderRaggedText, ProvidePlaceholderContext } from "./placeholders"
 
-describe(PlaceholderBox, () => {
-  it(`requires a placeholder context`, () => {
+jest.unmock("react-relay")
+
+describe("PlaceholderBox", () => {
+  it("requires a placeholder context", () => {
     try {
-      renderWithWrappersLEGACY(<PlaceholderBox width={400} />)
+      renderWithWrappers(<PlaceholderBox width={400} />)
     } catch (error: any) {
       expect(error.message).toContain(
         "Error: You're using a Placeholder outside of a PlaceholderContext"
       )
     }
 
-    renderWithWrappersLEGACY(
+    renderWithWrappers(
       <ProvidePlaceholderContext>
         <PlaceholderBox width={400} />
       </ProvidePlaceholderContext>
@@ -19,14 +23,14 @@ describe(PlaceholderBox, () => {
   })
 })
 
-describe(PlaceholderRaggedText, () => {
-  it(`creates the right number of placeholders matching the given number of lines`, () => {
-    const tree = renderWithWrappersLEGACY(
+describe("PlaceholderRaggedText", () => {
+  it("creates the right number of placeholders matching the given number of lines", () => {
+    renderWithWrappers(
       <ProvidePlaceholderContext>
         <PlaceholderRaggedText numLines={4} />
       </ProvidePlaceholderContext>
     )
 
-    expect(tree.root.findAllByType(PlaceholderBox)).toHaveLength(4)
+    expect(screen.UNSAFE_queryAllByType(PlaceholderBox)).toHaveLength(4)
   })
 })
