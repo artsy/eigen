@@ -1,9 +1,12 @@
 import { Button, Flex, Text } from "palette"
 import { Image } from "react-native"
+import { useScreenDimensions } from "shared/hooks"
 
 export const CareerHighlightsPromotionalCard: React.FC = () => {
+  const { width } = useScreenDimensions()
+
   return (
-    <Flex flexGrow={1}>
+    <Flex flexGrow={1} width={width}>
       <Flex mx={2} position="relative">
         <Text mt={4} variant="xl">
           Discover Career{"\n"}Highlights for Your{"\n"}Artists

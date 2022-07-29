@@ -78,7 +78,7 @@ import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/A
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
 import { AverageSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights/AverageSalePriceAtAuction"
-import { CareerHighlightsCards } from "./Scenes/MyCollection/Screens/Insights/CareerHightlighsCards"
+import { CareerHighlightsCards } from "./Scenes/MyCollection/Screens/Insights/CareerHighlightsCards"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "./Scenes/MyProfile/MyProfile"
 import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
