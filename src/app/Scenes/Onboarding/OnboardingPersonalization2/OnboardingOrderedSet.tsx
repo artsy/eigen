@@ -9,6 +9,7 @@ import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ArtistListItemNew } from "./ArtistListItem"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
+import { PartnerListItem } from "./PartnerListItem"
 
 interface OnboardingOrderedSetProps {
   id: string
@@ -36,10 +37,11 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
     <FlatList
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        paddingTop: space(1),
+        paddingTop: space(2),
         paddingBottom: 80,
       }}
       data={nodes}
+      ItemSeparatorComponent={() => <Spacer mt={2} />}
       renderItem={({ item }) => {
         switch (item.__typename) {
           case "Artist":
@@ -52,6 +54,22 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
                 py={space(1)}
               />
             )
+          case "Profile": {
+            const partner = item.owner
+
+            if (!partner || partner.__typename !== "Partner") {
+              return null
+            }
+
+            return (
+              <PartnerListItem
+                partner={partner}
+                onFollow={() => {
+                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                }}
+              />
+            )
+          }
           default:
             return null
         }
@@ -59,6 +77,10 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
       keyExtractor={(item, index) => {
         switch (item.__typename) {
           case "Artist":
+            return item.internalID
+        }
+        switch (item.__typename) {
+          case "Profile":
             return item.internalID
         }
         return item.__typename + index
@@ -97,6 +119,15 @@ const OnboardingOrderedSetScreenQuery = graphql`
             ... on Artist {
               internalID
               ...ArtistListItemNew_artist
+            }
+            ... on Profile {
+              internalID
+              owner {
+                __typename
+                ... on Partner {
+                  ...PartnerListItem_partner
+                }
+              }
             }
           }
         }
