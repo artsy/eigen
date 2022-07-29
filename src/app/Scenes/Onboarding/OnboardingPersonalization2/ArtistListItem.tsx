@@ -29,25 +29,23 @@ export const ArtistListItemNew: React.FC<ArtistListItemProps> = ({ artist, onFol
   }
 
   return (
-    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" {...rest}>
-      <Flex flex={1}>
-        <EntityHeader
-          mr={1}
-          name={name!}
-          meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
-          imageUrl={image?.url ?? undefined}
-          initials={initials ?? undefined}
-        />
-      </Flex>
-      <Flex>
-        <FollowButton
-          haptic
-          isFollowed={!!isFollowed}
-          onPress={handleFollowArtist}
-          loading={isInFlight}
-          disabled={isInFlight}
-        />
-      </Flex>
+    <Flex {...rest}>
+      <EntityHeader
+        mr={1}
+        name={name!}
+        meta={formatTombstoneText(nationality, birthday, deathday) ?? undefined}
+        imageUrl={image?.url ?? undefined}
+        initials={initials ?? undefined}
+        FollowButton={
+          <FollowButton
+            haptic
+            isFollowed={!!isFollowed}
+            onPress={handleFollowArtist}
+            loading={isInFlight}
+            disabled={isInFlight}
+          />
+        }
+      />
     </Flex>
   )
 }
