@@ -6527,6 +6527,7 @@ type ConversationOfferSubmitted implements Node {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
