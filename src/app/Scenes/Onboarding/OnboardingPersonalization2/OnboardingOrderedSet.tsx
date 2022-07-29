@@ -69,7 +69,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
 
 const OnboardingPersonalizationListPlaceholder = () => (
   <ProvidePlaceholderContext>
-    <Flex mt={2}>
+    <Flex mt={2} testID="OnboardingPersonalizationListPlaceholder">
       <Join separator={<Spacer height={20} />}>
         {times(10).map((index: number) => (
           <Flex key={index}>
