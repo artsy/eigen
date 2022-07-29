@@ -13,8 +13,8 @@ import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArrowDetails } from "../Components/ArrowDetails"
 import { ArtistSearchResult } from "../Components/ArtistSearchResult"
+import { CategoryPicker } from "../Components/CategoryPicker"
 import { Dimensions } from "../Components/Dimensions"
-import { MediumPicker } from "../Components/MediumPicker"
 import { Rarity } from "../Components/Rarity"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
@@ -123,15 +123,15 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Year"
                 value={formikValues.date}
               />
-              <MediumPicker />
+              <CategoryPicker />
               <Input
                 title="Materials"
                 placeholder="Materials"
-                onChangeText={formik.handleChange("category")}
-                onBlur={formik.handleBlur("category")}
+                onChangeText={formik.handleChange("medium")}
+                onBlur={formik.handleBlur("medium")}
                 testID="MaterialsInput"
                 accessibilityLabel="Materials"
-                value={formikValues.category}
+                value={formikValues.medium}
               />
               <Rarity />
               <Dimensions />

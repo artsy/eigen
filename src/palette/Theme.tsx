@@ -107,11 +107,13 @@ const fixColorV3 = (
   const ourColors = colors as any
   ourColors.devpurple = "#6E1EFF"
   ourColors.yellow150 = "#A47A0F"
-  ourColors.yellow100 = "#A85F00"
+  ourColors.yellow100 = "#E2B929"
   ourColors.yellow30 = "#FAE7BA"
   ourColors.yellow10 = "#F6EFE5"
   ourColors.orange10 = "#FCF7F3"
   ourColors.orange150 = "#A8501C"
+  // From our v2 colors
+  ourColors.copper100 = "#A85F00"
   return colors as any
 }
 

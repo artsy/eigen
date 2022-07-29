@@ -50,7 +50,7 @@ const StatusLabel = styled(MetadataText)`
       case "winning":
         return themeGet("colors.green100")
       case "reserve":
-        return themeGet("colors.yellow100")
+        return themeGet("colors.copper100")
       case "losing":
         return themeGet("colors.red100")
       case "live_auction":

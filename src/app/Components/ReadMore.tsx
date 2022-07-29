@@ -168,8 +168,8 @@ function truncate({
           truncatedChildren.push(
             <>
               {"... "}
-              <LinkText onPress={onExpand}>
-                <PaletteText variant="sm">{`Read${nbsp}more`}</PaletteText>
+              <LinkText onPress={onExpand} variant="xs">
+                {`Read${nbsp}more`}
               </LinkText>
             </>
           )

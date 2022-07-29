@@ -1,3 +1,6 @@
-This update includes a small bug fix.
+This update includes a number of improvements and bug fixes including:
+
+- New user profile header design
+- New option to opt out of viewing room notifications
 
 Have feedback? Email us at support@artsy.net

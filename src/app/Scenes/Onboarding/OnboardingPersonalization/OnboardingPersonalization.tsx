@@ -13,7 +13,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { compact, times } from "lodash"
 import { Box, Button, Flex, Join, Spacer, Text, Touchable, useColor, useSpace } from "palette"
 import { INPUT_HEIGHT } from "palette/elements/Input/Input"
-import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
+import { FlatList, TouchableWithoutFeedback } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
@@ -117,34 +117,32 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
 
   return (
     <SafeAreaView style={{ backgroundColor: "white", flexGrow: 1 }}>
-      <ScrollView
+      <FlatList
         contentContainerStyle={{
-          paddingTop: 10,
+          paddingTop: space(1),
           paddingBottom: 60,
-          justifyContent: "flex-start",
         }}
-      >
-        <OnboardingPersonalizationListHeader
-          navigateToModal={() => {
-            props.navigation.navigate("OnboardingPersonalizationModal")
-          }}
-        />
+        data={popularArtists}
+        initialNumToRender={8}
+        renderItem={({ item: artist }) => (
+          <ArtistListItem
+            artist={artist}
+            withFeedback
+            containerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
+            disableNavigation
+          />
+        )}
+        keyExtractor={(artist) => artist.internalID}
+        ListHeaderComponentStyle={{ paddingVertical: space(2) }}
+        ListHeaderComponent={
+          <OnboardingPersonalizationListHeader
+            navigateToModal={() => {
+              props.navigation.navigate("OnboardingPersonalizationModal")
+            }}
+          />
+        }
+      />
 
-        <FlatList
-          data={popularArtists}
-          initialNumToRender={8}
-          renderItem={({ item: artist }) => (
-            <ArtistListItem
-              artist={artist}
-              withFeedback
-              containerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
-              disableNavigation
-            />
-          )}
-          keyExtractor={(artist) => artist.internalID}
-          contentContainerStyle={{ paddingVertical: space(2) }}
-        />
-      </ScrollView>
       <Flex p={2} position="absolute" bottom={0} backgroundColor="white">
         <Button
           variant="fillDark"

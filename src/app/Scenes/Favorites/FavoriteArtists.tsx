@@ -1,4 +1,3 @@
-import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 import Spinner from "app/Components/Spinner"
@@ -9,6 +8,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { FavoriteArtists_me$data } from "__generated__/FavoriteArtists_me.graphql"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatList } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -78,7 +78,7 @@ class Artists extends React.Component<Props, State> {
       return (
         <StickyTabPageScrollView
           refreshControl={
-            <RefreshControl
+            <StickTabPageRefreshControl
               refreshing={this.state.refreshingFromPull}
               onRefresh={this.handleRefresh}
             />
@@ -101,7 +101,7 @@ class Artists extends React.Component<Props, State> {
             contentContainerStyle={{ paddingVertical: space(2) }}
             onEndReachedThreshold={0.2}
             refreshControl={
-              <RefreshControl
+              <StickTabPageRefreshControl
                 refreshing={this.state.refreshingFromPull}
                 onRefresh={this.handleRefresh}
               />

@@ -128,7 +128,7 @@ const fetchArtwork = async (
     graphql`
       query MyCollectionArtworkFormArtworkQuery($artworkID: String!) {
         artwork(id: $artworkID) {
-          medium: category
+          medium
           date
           depth
           editionSize
@@ -141,7 +141,7 @@ const fetchArtwork = async (
             width
           }
           isEdition
-          category: medium
+          category
           metric
           title
           width

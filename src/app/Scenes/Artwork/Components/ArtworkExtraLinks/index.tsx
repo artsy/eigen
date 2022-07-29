@@ -44,6 +44,7 @@ const ConsignmentsLink: React.FC<{ artistName: string }> = ({ artistName }) => {
       <Text variant="xs" color="black60">
         Want to sell a work by {artistName}?{" "}
         <Text
+          variant="xs"
           style={{ textDecorationLine: "underline" }}
           onPress={() => {
             tracking.trackEvent({

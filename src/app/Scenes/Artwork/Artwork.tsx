@@ -7,7 +7,7 @@ import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { RetryErrorBoundaryLegacy } from "app/Components/RetryErrorBoundary"
-import { navigateToPartner, navigationEvents } from "app/navigation/navigate"
+import { navigationEvents } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { useFeatureFlag } from "app/store/GlobalStore"
@@ -17,7 +17,7 @@ import { QAInfoPanel } from "app/utils/QAInfo"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { AuctionWebsocketContextProvider } from "app/Websockets/auctions/AuctionSocketContext"
 import { isEmpty } from "lodash"
-import { Box, LinkText, Separator, Text } from "palette"
+import { Box, Separator } from "palette"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -43,6 +43,7 @@ import {
   populatedGrids,
 } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
+import { PartnerLink } from "./Components/PartnerLink"
 import { Questions } from "./Components/Questions"
 
 interface ArtworkProps {
@@ -256,24 +257,28 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (enableCreateArtworkAlert && !!partnerAbove?.name) {
-      const { isLinkable, name, href } = partnerAbove
+    if (
+      enableCreateArtworkAlert &&
+      !enableConversationalBuyNow &&
+      !!partnerAbove?.name &&
+      artworkAboveTheFold
+    ) {
       sections.push({
         key: "partnerSection",
-        element:
-          !!isLinkable && !!href ? (
-            <LinkText
-              accessibilityRole="link"
-              accessibilityLabel={name}
-              accessibilityHint={`Visit ${name} page`}
-              onPress={() => navigateToPartner(href)}
-            >
-              {name}
-            </LinkText>
-          ) : (
-            <Text testID="non linkable partner">{name}</Text>
-          ),
+        element: <PartnerLink artwork={artworkAboveTheFold} />,
         verticalMargin: 2,
+      })
+    }
+
+    if (
+      enableConversationalBuyNow &&
+      artworkBelowTheFold &&
+      (artworkAboveTheFold?.isAcquireable ||
+        (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
+    ) {
+      sections.push({
+        key: "contactGallery",
+        element: <Questions artwork={artworkBelowTheFold} />,
       })
     }
 
@@ -307,17 +312,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
         element: <BelowTheFoldPlaceholder />,
       })
       return sections
-    }
-
-    if (
-      enableConversationalBuyNow &&
-      (artworkAboveTheFold?.isAcquireable ||
-        (!artworkAboveTheFold?.isInquireable && artworkAboveTheFold?.isOfferable))
-    ) {
-      sections.push({
-        key: "contactGallery",
-        element: <Questions artwork={artworkBelowTheFold} />,
-      })
     }
 
     if (artworkBelowTheFold.description || artworkBelowTheFold.additionalInformation) {
@@ -475,6 +469,7 @@ export const ArtworkContainer = createRefetchContainer(
         ...CommercialInformation_artwork
         ...FaqAndSpecialistSection_artwork
         ...CreateArtworkAlertSection_artwork
+        ...PartnerLink_artwork
         slug
         internalID
         id

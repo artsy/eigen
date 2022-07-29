@@ -21,7 +21,14 @@
 
 @implementation ARTNativeScreenPresenterModule
 
+@synthesize bridge = _bridge;
+
 RCT_EXPORT_MODULE()
+
+- (dispatch_queue_t)methodQueue
+{
+    return dispatch_get_main_queue();
+}
 
 RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)widthIn height:(CGFloat)heightIn artworkSlug:(NSString *)artworkSlug artworkId:(NSString *)artworkId)
 {
@@ -97,14 +104,16 @@ RCT_EXPORT_METHOD(presentAugmentedRealityVIR:(NSString *)imgUrl width:(CGFloat)w
  */
 RCT_EXPORT_METHOD(presentMediaPreviewController:(nonnull NSNumber *)reactTag route:(nonnull NSURL *)route mimeType:(nonnull NSString *)mimeType cacheKey:(nullable NSString *)cacheKey)
 {
-    UIView *originatingView = [self.bridge.uiManager viewForReactTag:reactTag];
-    UIViewController *currentlyPresentedVC = [self.class currentlyPresentedVC];
-    ARMediaPreviewController *previewVC = [ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
-                                                          mimeType:mimeType
-                                                          cacheKey:cacheKey
-                                                hostViewController:currentlyPresentedVC
-                                                   originatingView:originatingView];
-   [previewVC presentPreview];
+    ar_dispatch_main_queue(^{
+        UIView *originatingView = [self.bridge.uiManager viewForReactTag:reactTag];
+        UIViewController *currentlyPresentedVC = [self.class currentlyPresentedVC];
+        ARMediaPreviewController *previewVC = [ARMediaPreviewController mediaPreviewControllerWithRemoteURL:route
+                                                              mimeType:mimeType
+                                                              cacheKey:cacheKey
+                                                    hostViewController:currentlyPresentedVC
+                                                       originatingView:originatingView];
+       [previewVC presentPreview];
+    });
 }
 
 

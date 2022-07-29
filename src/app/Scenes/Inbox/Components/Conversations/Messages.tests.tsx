@@ -196,7 +196,7 @@ describe("messages with order updates", () => {
       .map((element) => extractText(element))
 
     // messages print in reverse order because FlatList is inverted
-    expect(messagesAndUpdates[4]).toContain("Day 1 message")
+    expect(messagesAndUpdates[5]).toContain("Day 1 message")
     expect(messagesAndUpdates[3]).toContain("You sent an offer")
     expect(messagesAndUpdates[2]).toContain("Day 2 message")
     expect(messagesAndUpdates[1]).toContain("You received a counteroffer")
