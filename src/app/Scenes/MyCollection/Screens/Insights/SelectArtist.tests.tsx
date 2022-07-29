@@ -1,5 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
+import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
+import { withReanimatedTimer } from "react-native-reanimated/src/reanimated2/jestUtils"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
@@ -38,101 +40,107 @@ describe("SelectArtist", () => {
   }
 
   describe("when changing an artist from artists list", () => {
-    it("should update the selected artist", async () => {
-      const { getByTestId, getByText } = await getWrapper()
+    it("should update the selected artist", () => {
+      withReanimatedTimer(async () => {
+        const { getByTestId, getByText } = await getWrapper()
 
-      // Check initial artist is selected
-      expect(getByText("Andy Warhol")).toBeTruthy()
+        // Check initial artist is selected
+        expect(getByText("Andy Warhol")).toBeTruthy()
 
-      fireEvent.press(getByTestId("change-artist-touchable"))
+        fireEvent.press(getByTestId("change-artist-touchable"))
 
-      // Modal is visible and the list is populated
-      expect(getByTestId("select-artist-modal").props.visible).toBe(true)
-      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
+        // Modal is visible and the list is populated
+        expect(getByTestId("select-artist-modal").props.visible).toBe(true)
+        expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
-      // Press on Banksy
-      fireEvent.press(getByTestId("artist-section-item-Banksy"))
+        // Press on Banksy
+        fireEvent.press(getByTestId("artist-section-item-Banksy"))
 
-      // fetch Banksy data
-      act(() => {
-        mockEnvironment.mock.resolveMostRecentOperation({
-          data: { artist: { internalID: "artist-id", name: "Banksy", imageUrl: "image-url" } },
+        // fetch Banksy data
+        act(() => {
+          mockEnvironment.mock.resolveMostRecentOperation({
+            data: { artist: { internalID: "artist-id", name: "Banksy", imageUrl: "image-url" } },
+          })
         })
-      })
-      await flushPromiseQueue()
+        await flushPromiseQueue()
 
-      // Modal is hidden and the artist is updated
-      expect(getByTestId("select-artist-modal").props.visible).toBe(false)
-      expect(getByText("Banksy")).toBeTruthy()
+        // Modal is hidden and the artist is updated
+        expect(getByTestId("select-artist-modal").props.visible).toBe(false)
+        expect(getByText("Banksy")).toBeTruthy()
+      })
     })
   })
 
   describe("when searching for an artist in artists list", () => {
-    it("should update the list of artists if the artist name is in the list", async () => {
-      const { getByTestId, getByText } = await getWrapper()
+    it("should update the list of artists if the artist name is in the list", () => {
+      withReanimatedTimer(async () => {
+        const { getByTestId, getByText } = await getWrapper()
 
-      fireEvent.press(getByTestId("change-artist-touchable"))
+        fireEvent.press(getByTestId("change-artist-touchable"))
 
-      // Modal is visible and the section list is populated
-      expect(getByTestId("select-artist-modal").props.visible).toBe(true)
-      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
+        // Modal is visible and the section list is populated
+        expect(getByTestId("select-artist-modal").props.visible).toBe(true)
+        expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
-      // Search for "Boafo"
-      const searchInput = getByTestId("select-artists-search-input")
+        // Search for "Boafo"
+        const searchInput = getByTestId("select-artists-search-input")
 
-      fireEvent(searchInput, "focus")
-      fireEvent(searchInput, "changeText", "Boafo")
+        fireEvent(searchInput, "focus")
+        fireEvent(searchInput, "changeText", "Boafo")
 
-      // Flatlist is showing
-      expect(getByTestId("select-artist-flatlist")).toBeTruthy()
-      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(1)
+        // Flatlist is showing
+        expect(getByTestId("select-artist-flatlist")).toBeTruthy()
+        expect(getByTestId("select-artist-flatlist").props.data.length).toBe(1)
 
-      // Amoako Boafo is in the results list
-      expect(getByTestId("artist-section-item-Amoako Boafo")).toBeTruthy()
+        // Amoako Boafo is in the results list
+        expect(getByTestId("artist-section-item-Amoako Boafo")).toBeTruthy()
 
-      // Press on Amoako Boafo
-      fireEvent.press(getByTestId("artist-section-item-Amoako Boafo"))
+        // Press on Amoako Boafo
+        fireEvent.press(getByTestId("artist-section-item-Amoako Boafo"))
 
-      // fetch Amoako Boafo data
-      act(() => {
-        mockEnvironment.mock.resolveMostRecentOperation({
-          data: {
-            artist: { internalID: "artist-id", name: "Amoako Boafo", imageUrl: "image-url" },
-          },
+        // fetch Amoako Boafo data
+        act(() => {
+          mockEnvironment.mock.resolveMostRecentOperation({
+            data: {
+              artist: { internalID: "artist-id", name: "Amoako Boafo", imageUrl: "image-url" },
+            },
+          })
         })
-      })
-      await flushPromiseQueue()
+        await flushPromiseQueue()
 
-      // Modal is hidden and the artist is updated
-      expect(getByTestId("select-artist-modal").props.visible).toBe(false)
-      expect(getByText("Amoako Boafo")).toBeTruthy()
+        // Modal is hidden and the artist is updated
+        expect(getByTestId("select-artist-modal").props.visible).toBe(false)
+        expect(getByText("Amoako Boafo")).toBeTruthy()
+      })
     })
 
-    it("should display an error message if the artist name is not in the list", async () => {
-      const { getByTestId, getByText } = await getWrapper()
+    it("should display an error message if the artist name is not in the list", () => {
+      withReanimatedTimer(async () => {
+        const { getByTestId, getByText } = await getWrapper()
 
-      fireEvent.press(getByTestId("change-artist-touchable"))
+        fireEvent.press(getByTestId("change-artist-touchable"))
 
-      // Modal is visible and the section list is populated
-      expect(getByTestId("select-artist-modal").props.visible).toBe(true)
-      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
+        // Modal is visible and the section list is populated
+        expect(getByTestId("select-artist-modal").props.visible).toBe(true)
+        expect(getByTestId("select-artist-flatlist").props.data.length).toBe(3)
 
-      // Search for "Artist doesn't exist"
-      const searchInput = getByTestId("select-artists-search-input")
+        // Search for "Artist doesn't exist"
+        const searchInput = getByTestId("select-artists-search-input")
 
-      fireEvent(searchInput, "focus")
-      fireEvent(searchInput, "changeText", "Artist doesn't exist")
+        fireEvent(searchInput, "focus")
+        fireEvent(searchInput, "changeText", "Artist doesn't exist")
 
-      // Flatlist is showing
-      expect(getByTestId("select-artist-flatlist")).toBeTruthy()
-      expect(getByTestId("select-artist-flatlist").props.data.length).toBe(0)
+        // Flatlist is showing
+        expect(getByTestId("select-artist-flatlist")).toBeTruthy()
+        expect(getByTestId("select-artist-flatlist").props.data.length).toBe(0)
 
-      // Error message is displayed
-      expect(
-        getByText(
-          "Please select from the list of artists in your collection with insights available."
-        )
-      ).toBeTruthy()
+        // Error message is displayed
+        expect(
+          getByText(
+            "Please select from the list of artists in your collection with insights available."
+          )
+        ).toBeTruthy()
+      })
     })
   })
 })
