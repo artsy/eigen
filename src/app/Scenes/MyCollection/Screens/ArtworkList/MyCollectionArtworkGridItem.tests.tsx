@@ -55,6 +55,9 @@ describe("MyCollectionArtworkGridItem", () => {
           },
           images: null,
           medium: "artwork medium",
+          mediumType: {
+            name: "artwork category",
+          },
         }),
       })
     )
@@ -78,6 +81,7 @@ describe("MyCollectionArtworkGridItem", () => {
       passProps: {
         artistInternalID: "artist-id",
         medium: "artwork medium",
+        category: "artwork category",
       },
     })
   })
