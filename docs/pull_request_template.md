@@ -13,16 +13,24 @@ This PR resolves []
 
 <!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
-### QA Test Case(s)
+### QA Testing
 
-<!-- Does this PR need QA testing? (hint: it probably does). If so add details here. See example below. These tests will be run in recent changes QA, they do not have to be extensive, just a high level feature sanity check, you should do your own extensive QA with your team. -->
+Please provide information on how to test this PR.
+These tests will be run in recent changes QA, they do not have to be extensive, just a high level feature sanity check, you should do your own extensive QA with your team.
 
-| Test Case | Feature | Environment | Acceptance Criteria | Setup Instructions/Link |
-| --------- | :-----: | ----------: | ------------------: | ----------------------: |
-|           |         |             |                     |                         |
+Feature:
+Test Case:
+Environment:
+Acceptance Criteria:
+Setup Instructions/Link:
 
-<!--
-| Save a search | Search | Staging    | The user should be able to .. | Start from ..  |
+<!-- Example:
+
+Feature: Search
+Test Case: Save a search
+Environment: Staging iOS
+Acceptance Criteria: The user should be able to ..
+Setup Instructions/Link: Start from opening the app and navigating to an artist... 
 -->
 
 ### PR Checklist
@@ -32,6 +40,7 @@ This PR resolves []
 - [ ] I added Tests and Stories for my changes.
 - [ ] I added an [app state migration].
 - [ ] I hid my changes behind a [feature flag].
+- [ ] We want to have this tested by Applause. 
 
 ### To the reviewers 👀
 
@@ -49,21 +58,22 @@ This PR resolves []
 <!-- 🤷‍♂️ Replace this entire block with the hashtag `#nochangelog` to avoid updating the changelog. -->
 
 #### Cross-platform user-facing changes
-
 -
 
 #### iOS user-facing changes
-
 -
 
 #### Android user-facing changes
-
 -
 
 #### Dev changes
-
 -
 
+#### To be tested by Applause
+
+- If your change needs to be tested by Applause please paste here the name of the change as well as how to test it that you already filled up above.
+
+  
 <!-- end_changelog_updates -->
 
 </details>
