@@ -52,7 +52,7 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
       )}
       <Spacer mt={2} />
       <Flex backgroundColor="white" flex={1}>
-        <SearchInput enableCancelButton placeholder={placeholder} onChangeText={setQuery} />
+        <SearchInput placeholder={placeholder} onChangeText={setQuery} />
         {debouncedValue.length >= 2 ? (
           <OnboardingSearchResultsScreen term={debouncedValue} entities={entities} />
         ) : (
