@@ -1,9 +1,8 @@
-import { render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL, renderWithWrappers } from "app/tests/renderWithWrappers"
+import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { createMockEnvironment } from "relay-test-utils"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
 import { ViewingRoomsListScreen } from "./ViewingRoomsList"
 
