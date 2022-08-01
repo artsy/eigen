@@ -5,12 +5,14 @@ import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
 import { OnboardingFollowGalleries } from "./OnboardingFollowGalleries"
 import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWelcome"
+import { OnboardingPostFollowLoadingScreen } from "./OnboardingPostFollowLoadingScreen"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingPersonalization2NavigationStack = {
   OnboardingPersonalizationWelcome: undefined
   OnboardingFollowArtists: undefined
   OnboardingFollowGalleries: undefined
+  OnboardingPostFollowLoadingScreen: undefined
 }
 
 const StackNavigator = createStackNavigator<OnboardingPersonalization2NavigationStack>()
@@ -41,6 +43,10 @@ export const OnboardingPersonalization2 = () => {
           <StackNavigator.Screen
             name="OnboardingFollowGalleries"
             component={OnboardingFollowGalleries}
+          />
+          <StackNavigator.Screen
+            name="OnboardingPostFollowLoadingScreen"
+            component={OnboardingPostFollowLoadingScreen}
           />
         </StackNavigator.Navigator>
       </NavigationContainer>
