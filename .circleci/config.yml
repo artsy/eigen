@@ -1,5 +1,7 @@
 version: 2.1
 
+setup: true
+
 orbs:
   node: circleci/node@5.0.2
   queue: eddiewebb/queue@1.7.0
@@ -520,8 +522,12 @@ jobs:
       - run:
           name: Release app version
           command: ./scripts/release-ios-app-branch
+
 workflows:
-  version: 2
+  setup:
+    jobs:
+      - setup
+
   nightly:
     triggers:
       - schedule:
