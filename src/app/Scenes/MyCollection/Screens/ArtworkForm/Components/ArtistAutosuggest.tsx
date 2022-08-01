@@ -1,9 +1,13 @@
+import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
 import SearchIcon from "app/Icons/SearchIcon"
 import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { Box, Button, Flex, Input, Text } from "palette"
+import { useLazyLoadQuery } from "react-relay"
+import { graphql } from "relay-runtime"
 import { useArtworkForm } from "../Form/useArtworkForm"
+import { CollectedArtistList } from "./CollectedArtistList"
 
 interface ArtistAutosuggestProps {
   onResultPress: (result: AutosuggestResult) => void
@@ -14,6 +18,8 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
   onResultPress,
   onSkipPress,
 }) => {
+  const queryData = useLazyLoadQuery<ArtistAutosuggestQuery>(ArtistAutosuggestScreenQuery, {})
+
   const enableArtworksFromNonArtsyArtists = useFeatureFlag("AREnableArtworksFromNonArtsyArtists")
   const { formik } = useArtworkForm()
   const { artist: artistQuery } = formik.values
@@ -32,9 +38,17 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           autoFocus={typeof jest === "undefined"}
           autoCorrect={false}
         />
-
+        {!!enableArtworksFromNonArtsyArtists && (
+          <Flex mt={2}>
+            <CollectedArtistList
+              myCollectionInfo={queryData.me?.myCollectionInfo!}
+              onResultPress={onResultPress}
+              searchTerm={formik.values.artist}
+            />
+          </Flex>
+        )}
         {artistQuery.length > 2 ? (
-          <Flex height="100%" py={4}>
+          <Box height="200px" py={4}>
             <AutosuggestResults
               query={artistQuery}
               entities={["ARTIST"]}
@@ -60,3 +74,13 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     </SearchContext.Provider>
   )
 }
+
+const ArtistAutosuggestScreenQuery = graphql`
+  query ArtistAutosuggestQuery {
+    me {
+      myCollectionInfo {
+        ...CollectedArtistList_myCollectionInfo
+      }
+    }
+  }
+`
