@@ -20,7 +20,7 @@ These tests will be run in recent changes QA, they do not have to be extensive, 
 
 -
 
-#### Setup Instructions/Link
+#### Setup Instructions
 
 -
 
