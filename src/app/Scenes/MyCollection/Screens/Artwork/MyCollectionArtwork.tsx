@@ -118,7 +118,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   )
 }
 
-const MyCollectionArtworkScreenQuery = graphql`
+export const MyCollectionArtworkScreenQuery = graphql`
   query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
     artwork(id: $artworkSlug) {
       ...MyCollectionArtwork_sharedProps @relay(mask: false)
