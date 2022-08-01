@@ -245,7 +245,7 @@ const DEFAULT_SALE_ARTWORKS_PARAMS = {
 } as FilterParams
 
 // TODO: Replace DEFAULT_NEW_SALE_ARTWORKS_PARAMS with DEFAULT_SALE_ARTWORKS_PARAMS when AREnableArtworksConnectionForAuction is released
-const DEFAULT_NEW_SALE_ARTWORKS_PARAMS = {
+export const DEFAULT_NEW_SALE_ARTWORKS_PARAMS = {
   sort: "sale_position",
   estimateRange: "",
 } as FilterParams
