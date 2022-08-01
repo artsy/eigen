@@ -13,7 +13,7 @@ export const MyCollectionInsightsOverview: React.FC<MyCollectionInsightsOverview
   const myCollectionInfo = useFragment(fragment, props.myCollectionInfo)
 
   return (
-    <Flex pt={2} px={2} pb={3} flexDirection="row">
+    <Flex p={2} flexDirection="row">
       <Flex flex={1} alignSelf="flex-start">
         <Text variant="sm" mb={1}>
           Total Artworks

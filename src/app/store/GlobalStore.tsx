@@ -8,7 +8,7 @@ import { logAction } from "app/utils/loggers"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { Platform } from "react-native"
 // @ts-ignore
-import { getBuildNumber, getModel, getUserAgentSync } from "react-native-device-info"
+import { getBuildNumber, getUserAgentSync } from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
 import { DevToggleName, FeatureName, features } from "./config/features"
@@ -199,6 +199,9 @@ export const useVisualClue = () => {
 export const addClue = GlobalStore.actions.visualClue.addClue
 
 export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
+
+export const setCareerHiglightAsSeen =
+  GlobalStore.actions.myCollectionCareerHighlights.setCareerHiglightAsSeen
 
 export function unsafe_getUserAccessToken() {
   const state = globalStoreInstance().getState() ?? null

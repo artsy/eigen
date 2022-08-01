@@ -78,12 +78,11 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
         switch (item.__typename) {
           case "Artist":
             return item.internalID
-        }
-        switch (item.__typename) {
           case "Profile":
             return item.internalID
+          default:
+            return item.__typename + index
         }
-        return item.__typename + index
       }}
     />
   )
