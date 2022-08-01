@@ -84,6 +84,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
           <Button block disabled={!state[stateKey]} onPress={handleNext}>
             Next
           </Button>
+          <Screen.SafeBottomPadding />
         </Flex>
       </Screen.Body>
     </Screen>
