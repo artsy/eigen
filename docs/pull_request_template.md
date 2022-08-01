@@ -13,20 +13,12 @@ This PR resolves []
 
 ### QA Testing
 
-Please provide information on how to test this PR.
-These tests will be run in recent changes QA, they do not have to be extensive, just a high level feature sanity check, you should do your own extensive QA with your team.
+<!-- Please provide information on how to test this PR.
+These tests will be run in recent changes QA, they do not have to be extensive, just a high level feature sanity check, you should do your own extensive QA with your team. -->
 
 - Acceptance Criteria:
+
 - Setup Instructions/Link:
-
-<!-- Example:
-
-- Feature: Search
-- Test Case: Save a search
-- Environment: Staging iOS
-- Acceptance Criteria: The user should be able to ..
-- Setup Instructions/Link: Start from opening the app and navigating to an artist...
--->
 
 ### PR Checklist
 
