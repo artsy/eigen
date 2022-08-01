@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
 import {
+  Box,
   Button,
   CheckCircleFillIcon,
   Flex,
@@ -53,8 +54,10 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
       <Screen.Header onBack={goBack} onSkip={onDone} />
       <Screen.Body>
         <StatusBar barStyle="dark-content" />
-        <Flex flex={1} flexDirection="column" padding={2}>
+        <Box pt={2}>
           <ProgressBar progress={progress} />
+        </Box>
+        <Flex flex={1} flexDirection="column">
           <Spacer m={2} />
           <Text variant="lg">{question}</Text>
           {!!subtitle && (
