@@ -193,6 +193,9 @@ export const MyCollectionFilterPropsFragment = graphql`
     id
     artistNames
     medium
+    mediumType {
+      name
+    }
     attributionClass {
       name
     }

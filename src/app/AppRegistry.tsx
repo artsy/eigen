@@ -73,7 +73,10 @@ import {
 } from "./Scenes/MyCollection/MyCollection"
 import { ArtworkSubmissionStatusFAQ } from "./Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
 import { RequestForPriceEstimateScreen } from "./Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateScreen"
-import { MyCollectionArtworkScreen } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
+import {
+  MyCollectionArtworkScreen,
+  MyCollectionArtworkScreenQuery,
+} from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
@@ -400,7 +403,9 @@ export const modules = defineModules({
   MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
-  MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }),
+  MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }, [
+    MyCollectionArtworkScreenQuery,
+  ]),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithartsyFAQ),
   MyProfile: reactModule(
     MyProfile,
