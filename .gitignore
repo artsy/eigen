@@ -129,6 +129,9 @@ reports
 # Homebrew lock file
 Brewfile.lock.json
 
+# circleCI dynamic config result
+main.yml
+
 
 #########################################################
 # Keep this rule last.
