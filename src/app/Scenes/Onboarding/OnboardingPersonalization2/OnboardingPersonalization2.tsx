@@ -3,12 +3,14 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
+import { OnboardingFollowGalleries } from "./OnboardingFollowGalleries"
 import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWelcome"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingPersonalization2NavigationStack = {
   OnboardingPersonalizationWelcome: undefined
   OnboardingFollowArtists: undefined
+  OnboardingFollowGalleries: undefined
 }
 
 const StackNavigator = createStackNavigator<OnboardingPersonalization2NavigationStack>()
@@ -35,6 +37,10 @@ export const OnboardingPersonalization2 = () => {
           <StackNavigator.Screen
             name="OnboardingFollowArtists"
             component={OnboardingFollowArtists}
+          />
+          <StackNavigator.Screen
+            name="OnboardingFollowGalleries"
+            component={OnboardingFollowGalleries}
           />
         </StackNavigator.Navigator>
       </NavigationContainer>

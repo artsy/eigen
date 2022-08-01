@@ -4,12 +4,13 @@ import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, Message, quoteLeft, quoteRight, Spacer, useSpace } from "palette"
+import { Flex, Join, Message, quoteLeft, quoteRight, Spacer, useSpace } from "palette"
 import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { ArtistListItemNew } from "./ArtistListItem"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
+import { PartnerListItem } from "./PartnerListItem"
 
 interface OnboardingSearchResultsProps {
   entities: "ARTIST" | "PROFILE"
@@ -40,15 +41,19 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
       showsVerticalScrollIndicator={false}
       data={searchResults}
       contentContainerStyle={{
-        paddingTop: space(1),
+        paddingTop: space(2),
         paddingBottom: 80,
       }}
+      ItemSeparatorComponent={() => <Spacer mt={2} />}
       keyExtractor={(item, index) => {
         switch (item.__typename) {
           case "Artist":
             return item.internalID
+          case "Profile":
+            return item.internalID
+          default:
+            return item.__typename + index
         }
-        return item.__typename + index
       }}
       renderItem={({ item }) => {
         switch (item.__typename) {
@@ -59,9 +64,24 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
                   dispatch({ type: "FOLLOW", payload: item.internalID })
                 }}
                 artist={item}
-                py={space(1)}
               />
             )
+          case "Profile": {
+            const partner = item.owner
+
+            if (!partner || partner.__typename !== "Partner") {
+              return null
+            }
+
+            return (
+              <PartnerListItem
+                partner={partner}
+                onFollow={() => {
+                  dispatch({ type: "FOLLOW", payload: item.internalID })
+                }}
+              />
+            )
+          }
           default:
             return null
         }
@@ -124,6 +144,15 @@ const OnboardingSearchResultsFragment = graphql`
             internalID
             ...ArtistListItemNew_artist
           }
+          ... on Profile {
+            internalID
+            owner {
+              __typename
+              ... on Partner {
+                ...PartnerListItem_partner
+              }
+            }
+          }
         }
       }
     }
@@ -132,12 +161,14 @@ const OnboardingSearchResultsFragment = graphql`
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
-    <Flex pt={1}>
-      {times(10).map((index: number) => (
-        <Flex py={1} key={index}>
-          <ArtistListItemPlaceholder />
-        </Flex>
-      ))}
+    <Flex mt={2} testID="OnboardingSearchResultsPlaceholder">
+      <Join separator={<Spacer height={20} />}>
+        {times(10).map((index: number) => (
+          <Flex key={index}>
+            <ArtistListItemPlaceholder />
+          </Flex>
+        ))}
+      </Join>
     </Flex>
   </ProvidePlaceholderContext>
 )
