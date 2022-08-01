@@ -104,7 +104,6 @@ export const CareerHighlightPromotionalCard: React.FC = () => {
       }}
     >
       <Flex
-        ml={2}
         width={200}
         height={135}
         backgroundColor="white100"
