@@ -27,7 +27,7 @@ These tests will be run in recent changes QA, they do not have to be extensive, 
 - [ ] I added Tests and Stories for my changes.
 - [ ] I added an [app state migration].
 - [ ] I hid my changes behind a [feature flag].
-- [ ] We want to have this tested by Applause.
+- [ ] I have prefixed things that need to be tested during a release QA with **[NEEDS EXTERNAL QA]**
 
 ### To the reviewers 👀
 
@@ -59,10 +59,6 @@ These tests will be run in recent changes QA, they do not have to be extensive, 
 #### Dev changes
 
 -
-
-#### To be tested by Applause
-
-- If your change needs to be tested by Applause please paste here the name of the change as well as how to test it that you already filled up above.
 
 <!-- end_changelog_updates -->
 
