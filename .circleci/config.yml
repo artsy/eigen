@@ -8,7 +8,9 @@ orbs:
 
 jobs:
   setup:
-    executor: node/default
+    executor:
+      name: node/default
+      tag: 14
     steps:
       - checkout
       - node/install-packages:
