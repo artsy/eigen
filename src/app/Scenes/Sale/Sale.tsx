@@ -9,7 +9,6 @@ import {
   ArtworkFilterNavigator,
   FilterModalMode,
 } from "app/Components/ArtworkFilter"
-import { DEFAULT_NEW_SALE_ARTWORKS_PARAMS } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { DEFAULT_NEW_SALE_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { LoadFailureView } from "app/Components/LoadFailureView"
@@ -484,7 +483,7 @@ export const SaleQueryRenderer: React.FC<{
                       // @ts-ignore
                       input: {
                         sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
-                        priceRange: DEFAULT_NEW_SALE_ARTWORKS_PARAMS.priceRange,
+                        priceRange: "",
                       },
                     },
                   }
