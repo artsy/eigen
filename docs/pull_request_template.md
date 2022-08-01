@@ -27,7 +27,7 @@ These tests will be run in recent changes QA, they do not have to be extensive, 
 - [ ] I added Tests and Stories for my changes.
 - [ ] I added an [app state migration].
 - [ ] I hid my changes behind a [feature flag].
-- [ ] I have prefixed things that need to be tested during a release QA with **[NEEDS EXTERNAL QA]**
+- [ ] I have prefixed things that need to be tested during a release QA with **[NEEDS EXTERNAL QA]** on the changelog.
 
 ### To the reviewers 👀
 
