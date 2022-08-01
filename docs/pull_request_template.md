@@ -16,9 +16,13 @@ This PR resolves []
 <!-- Please provide information on how to test this PR.
 These tests will be run in recent changes QA, they do not have to be extensive, just a high level feature sanity check, you should do your own extensive QA with your team. -->
 
-- Acceptance Criteria:
+#### Acceptance Criteria
 
-- Setup Instructions/Link:
+-
+
+#### Setup Instructions/Link
+
+-
 
 ### PR Checklist
 
@@ -27,7 +31,7 @@ These tests will be run in recent changes QA, they do not have to be extensive, 
 - [ ] I added Tests and Stories for my changes.
 - [ ] I added an [app state migration].
 - [ ] I hid my changes behind a [feature flag].
-- [ ] I have prefixed things that need to be tested during a release QA with **[NEEDS EXTERNAL QA]** on the changelog.
+- [ ] I have prefixed changes that need to be tested during a release QA with **[NEEDS EXTERNAL QA]** on the changelog.
 
 ### To the reviewers 👀
 
