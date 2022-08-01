@@ -22,7 +22,7 @@ jobs:
           # command: sudo apt-get update --fix-missing
           command: |
             sudo apt-get sudo apt-get install --fix-missing -yq \
-            curl jq
+            git ssh curl jq
       - run:
           name: Generate config
           command: pwd
