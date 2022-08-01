@@ -4,13 +4,16 @@ setup: true
 
 orbs:
   continuation: circleci/continuation@0.1.2
-  node: circleci/node@5.0
+  # node: circleci/node@5.0
 
 jobs:
   setup:
-    executor:
-      name: node/default
-      tag: "14.17.1"
+    docker:
+      image:
+        - "denoland/deno"
+    # executor:
+    # name: node/default
+    # tag: "14.17.1"
     steps:
       - checkout
       - node/install-packages:
