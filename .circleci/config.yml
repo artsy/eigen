@@ -10,7 +10,7 @@ jobs:
   setup:
     executor:
       name: node/default
-      tag: "14"
+      tag: "14.17.1"
     steps:
       - checkout
       - node/install-packages:
