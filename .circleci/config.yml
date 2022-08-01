@@ -4,12 +4,15 @@ setup: true
 
 orbs:
   continuation: circleci/continuation@0.1.2
+  node: circleci/node@5.0
 
 jobs:
   setup:
-    executor: continuation/default
+    executor: node/default
     steps:
       - checkout
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
           name: Generate config
           command: ./scripts/circleci-config.mjs
