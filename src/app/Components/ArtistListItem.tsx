@@ -228,7 +228,7 @@ export const ArtistListItemPlaceholder = () => (
       <PlaceholderText height={13} width={100 + Math.random() * 100} />
     </Flex>
     <Flex height={45} position="absolute" right={0} justifyContent="center">
-      <PlaceholderBox height={25} width={70} borderRadius={2} />
+      <PlaceholderBox height={25} width={90} borderRadius={50} />
     </Flex>
   </Flex>
 )
