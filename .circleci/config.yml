@@ -19,7 +19,8 @@ jobs:
       # pkg-manager: yarn
       - run:
           name: Generate config
-          command: ./scripts/circleci-config.ts
+          command: pwd
+          # command: ./scripts/circleci-config.ts
       - continuation/continue:
           configuration_path: main.yml
 
