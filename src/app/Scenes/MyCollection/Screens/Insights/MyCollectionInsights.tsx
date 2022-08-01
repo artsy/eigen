@@ -19,6 +19,7 @@ import { MyCollectionArtworkUploadMessages } from "../ArtworkForm/MyCollectionAr
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { AverageAuctionPriceRail } from "./AverageAuctionPriceRail"
+import { CareerHighlightsRail } from "./CareerHighlightsRail"
 import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
@@ -99,6 +100,8 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     return (
       <>
         <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
+
+        <CareerHighlightsRail me={data.me!} />
         {hasMarketSignals /* || average sale price data */ && enablePhase1Part1 && (
           <>
             <MarketSignalsSectionHeader />
@@ -153,6 +156,7 @@ export const MyCollectionInsightsScreenQuery = graphql`
     me {
       ...AuctionResultsForArtistsYouCollectRail_me
       ...AverageAuctionPriceRail_me
+      ...CareerHighlightsRail_me
       auctionResults: myCollectionAuctionResults(first: 3) {
         totalCount
       }
