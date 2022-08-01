@@ -6,10 +6,14 @@ import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
 import { OnboardingFollowGalleries } from "./OnboardingFollowGalleries"
 import { OnboardingPersonalizationWelcome } from "./OnboardingPersonalizationWelcome"
 import { OnboardingPostFollowLoadingScreen } from "./OnboardingPostFollowLoadingScreen"
+import { OnboardingQuestionOne, OnboardingQuestionThree, OnboardingQuestionTwo } from "./Questions"
 
 // tslint:disable-next-line:interface-over-type-literal
 export type OnboardingPersonalization2NavigationStack = {
   OnboardingPersonalizationWelcome: undefined
+  OnboardingQuestionOne: undefined
+  OnboardingQuestionTwo: undefined
+  OnboardingQuestionThree: undefined
   OnboardingFollowArtists: undefined
   OnboardingFollowGalleries: undefined
   OnboardingPostFollowLoadingScreen: undefined
@@ -28,13 +32,19 @@ export const OnboardingPersonalization2 = () => {
         <StackNavigator.Navigator
           headerMode="screen"
           screenOptions={{
-            ...TransitionPresets.ModalTransition,
+            ...TransitionPresets.DefaultTransition,
             headerShown: false,
           }}
         >
           <StackNavigator.Screen
             name="OnboardingPersonalizationWelcome"
             component={OnboardingPersonalizationWelcome}
+          />
+          <StackNavigator.Screen name="OnboardingQuestionOne" component={OnboardingQuestionOne} />
+          <StackNavigator.Screen name="OnboardingQuestionTwo" component={OnboardingQuestionTwo} />
+          <StackNavigator.Screen
+            name="OnboardingQuestionThree"
+            component={OnboardingQuestionThree}
           />
           <StackNavigator.Screen
             name="OnboardingFollowArtists"

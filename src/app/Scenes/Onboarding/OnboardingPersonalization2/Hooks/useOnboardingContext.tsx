@@ -16,14 +16,14 @@ export const DEFAULT_STATE: State = {
   followedIds: [],
 }
 
-type Action =
+export type OnboardingContextAction =
   | { type: "RESET" }
   | { type: "SET_ANSWER_ONE"; payload: string }
   | { type: "SET_ANSWER_TWO"; payload: string }
   | { type: "SET_ANSWER_THREE"; payload: string }
   | { type: "FOLLOW"; payload: string }
 
-const reducer = (onReset: () => void) => (state: State, action: Action) => {
+const reducer = (onReset: () => void) => (state: State, action: OnboardingContextAction) => {
   switch (action.type) {
     case "RESET":
       onReset()
@@ -64,7 +64,7 @@ const reducer = (onReset: () => void) => (state: State, action: Action) => {
 
 const OnboardingContext = createContext<{
   current: string
-  dispatch: React.Dispatch<Action>
+  dispatch: React.Dispatch<OnboardingContextAction>
   progress: number
   state: State
   workflowEngine: WorkflowEngine
