@@ -12,11 +12,11 @@ import {
 } from "palette"
 import { FC, useState } from "react"
 import { StatusBar } from "react-native"
-import { Action, State, useOnboardingContext } from "../Hooks/useOnboardingContext"
+import { OnboardingContextAction, State, useOnboardingContext } from "../Hooks/useOnboardingContext"
 
 interface OnboardingQuestionTemplateProps {
   answers: string[]
-  action: Exclude<Action["type"], "RESET">
+  action: Exclude<OnboardingContextAction["type"], "RESET">
   onNext: () => void
   question: string
   subtitle?: string
@@ -50,9 +50,9 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 
   return (
     <Screen>
+      <Screen.Header onBack={goBack} onSkip={onDone} />
       <Screen.Body>
-        <StatusBar />
-        <Screen.Header onBack={goBack} onSkip={onDone} />
+        <StatusBar barStyle="dark-content" />
         <Flex flex={1} flexDirection="column" padding={2}>
           <ProgressBar progress={progress} />
           <Spacer m={2} />
@@ -90,7 +90,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   )
 }
 
-const STATE_KEYS: Record<Exclude<Action["type"], "RESET">, keyof State> = {
+const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyof State> = {
   SET_ANSWER_ONE: "questionOne",
   SET_ANSWER_TWO: "questionTwo",
   SET_ANSWER_THREE: "questionThree",
