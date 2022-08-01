@@ -12,6 +12,7 @@
 
 ## Documentation about different workflows
 
+- [2 factor authentication - 2FA](2_factor_authentication.md)
 - [Fetching data](fetching_data.md)
 - [Testing](testing.md)
 - [Feature Flags](developing_a_feature.md)
@@ -57,6 +58,8 @@
 - [palette v3 migration guide](palette_v3_migration_guide.md)
 
 #### Thanks to our [contributors](thanks.md) 🎉
+
+Also checkout our [playbooks](https://github.com/artsy/README/tree/main/playbooks#how-to-do-particular-tasks-at-artsy)
 
 ### Can these be removed?
 
