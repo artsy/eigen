@@ -1,24 +1,68 @@
 import { OnboardingGeneQuery } from "__generated__/OnboardingGeneQuery.graphql"
-import { extractNodes } from "app/utils/extractNodes"
-import { Screen, Text } from "palette"
+import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { FollowButton, Screen, Text } from "palette"
 import { Suspense } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { ImageBackground } from "react-native"
+import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
+
+type OnboardingGeneId = "artists-on-the-rise" | "trove" | "our-top-auction-lots"
 
 interface OnboardingGeneProps {
-  id: string
+  id: OnboardingGeneId
   description: string
 }
 
+const images = {
+  "artists-on-the-rise": require("images/CohnMakeAMountain.webp"),
+  trove: require("images/HirstTheWonder.webp"),
+  "our-top-auction-lots": require("images/HirstTheWonder.webp"),
+}
+
 const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
-  const queryData = useLazyLoadQuery<OnboardingGeneQuery>(OnboardingGeneScreenQuery, {
+  const { gene } = useLazyLoadQuery<OnboardingGeneQuery>(OnboardingGeneScreenQuery, {
     id,
   })
 
-  console.warn(extractNodes(queryData.gene?.artworks))
+  const [commit, isInFlight] = useMutation(FollowGeneMutation)
+
+  const handleFollowGene = () => {
+    commit({
+      variables: {
+        input: {
+          id: gene?.id,
+          unfollow: gene?.isFollowed,
+        },
+      },
+    })
+  }
+
   return (
     <Screen>
       <Screen.Body>
-        <Text variant="sm">{description}</Text>
+        <ImageBackground
+          style={{ height: 270, width: "100%" }}
+          resizeMode="center"
+          source={images[id]}
+        >
+          <Text variant="xl" color="white100">
+            {gene?.name}
+          </Text>
+          <Text variant="sm" color="white100">
+            {description}
+          </Text>
+          <FollowButton
+            isFollowed={!!gene?.isFollowed}
+            onPress={handleFollowGene}
+            loading={isInFlight}
+            disabled={isInFlight}
+          />
+        </ImageBackground>
+        <InfiniteScrollArtworksGridContainer
+          connection={gene?.artworks!}
+          hasMore={() => false}
+          loadMore={() => null}
+          pageSize={100}
+        />
       </Screen.Body>
     </Screen>
   )
@@ -40,6 +84,9 @@ const OnboardingGeneScreenQuery = graphql`
   query OnboardingGeneQuery($id: String!) {
     gene(id: $id) {
       name
+      isFollowed
+      id
+      internalID
       artworks: filterArtworksConnection(
         first: 100
         page: 1
@@ -52,14 +99,19 @@ const OnboardingGeneScreenQuery = graphql`
         inquireableOnly: true
         forSale: true
       ) {
-        edges {
-          node {
-            internalID
-            # ...GridItem_artwork
-          }
-        }
+        ...InfiniteScrollArtworksGrid_connection
       }
-      # ...FollowGeneButton_gene
+    }
+  }
+`
+
+const FollowGeneMutation = graphql`
+  mutation OnboardingGeneFollowMutation($input: FollowGeneInput!) {
+    followGene(input: $input) {
+      gene {
+        id
+        isFollowed
+      }
     }
   }
 `
