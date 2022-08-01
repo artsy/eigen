@@ -18,6 +18,12 @@ jobs:
       # - node/install-packages:
       # pkg-manager: yarn
       - run:
+          name: apt-get update
+          # command: sudo apt-get update --fix-missing
+          command: |
+            sudo apt-get sudo apt-get install --fix-missing -yq \
+            curl jq
+      - run:
           name: Generate config
           command: pwd
           # command: ./scripts/circleci-config.ts
