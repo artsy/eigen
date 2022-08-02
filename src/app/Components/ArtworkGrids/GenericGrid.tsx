@@ -53,7 +53,7 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
 
     const sectionCount = isPad ? 3 : 2
     const sectionMargins = this.props.sectionMargin ?? 0 * (sectionCount - 1)
-    const artworkPadding = 20
+    const artworkPadding = space(2)
     const sectionDimension = (width - sectionMargins - artworkPadding) / sectionCount
 
     return {
