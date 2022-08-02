@@ -1,4 +1,5 @@
 import { goBack } from "app/navigation/navigate"
+import { useImageSearchV2 } from "app/utils/useImageSearchV2"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Alert, LayoutChangeEvent, Linking, StyleSheet, TouchableOpacity } from "react-native"
@@ -17,12 +18,13 @@ export const ReverseImage = () => {
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
-  const [isSearching, setIsSearching] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [frameCoords, setFrameCoords] = useState<FrameCoords | null>(null)
   const insets = useSafeAreaInsets()
   const space = useSpace()
   const camera = useRef<Camera>(null)
   const devices = useCameraDevices()
+  const { searchingByImage, handleSeachByImage } = useImageSearchV2()
   const device = devices.back
 
   console.log("[debug] cameraPermission", cameraPermission)
@@ -46,7 +48,7 @@ export const ReverseImage = () => {
         throw new Error("Camera ref is null!")
       }
 
-      setIsSearching(true)
+      setIsLoading(true)
       const photo = await camera.current.takePhoto({
         qualityPrioritization: "speed",
         flash: enableFlash ? "on" : "off",
@@ -58,16 +60,33 @@ export const ReverseImage = () => {
       }
 
       const data = {
-        path: photo.path,
+        path: `file://${photo.path}`,
         width: photo.width,
         height: photo.height,
       }
 
-      Alert.alert("Photo", JSON.stringify(data, null, 2))
+      const results = await handleSeachByImage(data)
+
+      if (results.length === 0) {
+        Alert.alert(
+          "Artwork Not Found",
+          "We couldn’t find an artwork based on your photo. Please try again, or use the fair’s QR code."
+        )
+
+        return
+      }
+
+      if (results.length === 1) {
+        Alert.alert("Artwork Found", "Navigate to artwork screen")
+
+        return
+      }
+
+      Alert.alert("Artwork Found", "Navigate to multiple artworks screen")
     } catch (error) {
       console.error(error)
     } finally {
-      setIsSearching(false)
+      setIsLoading(false)
     }
   }
 
@@ -140,9 +159,10 @@ export const ReverseImage = () => {
         photo
         video={false}
         audio={false}
-        isActive
+        isActive={!searchingByImage || !isLoading}
         onInitialized={onInitialized}
       />
+
       <Flex {...StyleSheet.absoluteFillObject}>
         <Background height={insets.top} />
 
@@ -150,7 +170,7 @@ export const ReverseImage = () => {
           <BackButton color="white100" onPress={goBack} />
           <Flex {...StyleSheet.absoluteFillObject} justifyContent="center" alignItems="center">
             <Text variant="md" color="white100">
-              {isSearching ? "Looking for Results..." : "Position Artwork in this Frame"}
+              {searchingByImage ? "Looking for Results..." : "Position Artwork in this Frame"}
             </Text>
           </Flex>
         </Background>
