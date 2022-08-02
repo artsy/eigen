@@ -5,6 +5,7 @@ import { times } from "lodash"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { space } from "styled-system"
 import { Stack } from "../Stack"
 import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
