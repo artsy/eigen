@@ -74,6 +74,7 @@ export const useImageSearchV2 = () => {
                 matchPercent
                 artwork {
                   href
+                  internalID
                 }
               }
             }

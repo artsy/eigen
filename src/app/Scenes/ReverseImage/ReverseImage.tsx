@@ -3,7 +3,6 @@ import { useImageSearchV2 } from "app/utils/useImageSearchV2"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Alert, LayoutChangeEvent, Linking, StyleSheet, TouchableOpacity } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
 import styled from "styled-components/native"
 import { HeaderContainer } from "./Components/HeaderContainer"
@@ -21,17 +20,11 @@ export const ReverseImage = () => {
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [frameCoords, setFrameCoords] = useState<FrameCoords | null>(null)
-  const insets = useSafeAreaInsets()
   const space = useSpace()
   const camera = useRef<Camera>(null)
   const devices = useCameraDevices()
   const { searchingByImage, handleSeachByImage } = useImageSearchV2()
   const device = devices.back
-
-  console.log("[debug] cameraPermission", cameraPermission)
-  console.log("[debug] devices", devices)
-  console.log("[debug] device", device)
-  console.log("[debug] frameCoords", frameCoords)
 
   const requestMicrophonePermission = async () => {
     const permission = await Camera.requestCameraPermission()
@@ -68,8 +61,6 @@ export const ReverseImage = () => {
 
       const results = await handleSeachByImage(data)
 
-      return navigate("/reverse-image-multiple-results")
-
       if (results.length === 0) {
         Alert.alert(
           "Artwork Not Found",
@@ -85,9 +76,15 @@ export const ReverseImage = () => {
         return
       }
 
-      Alert.alert("Artwork Found", "Navigate to multiple artworks screen")
+      const artworkIDs = results.map((result) => result?.artwork?.internalID)
+      await navigate("/reverse-image-multiple-results", {
+        passProps: {
+          artworkIDs,
+        },
+      })
     } catch (error) {
-      console.error(error)
+      // console.error(error)
+      console.log("[debug] error", error)
     } finally {
       setIsLoading(false)
     }
