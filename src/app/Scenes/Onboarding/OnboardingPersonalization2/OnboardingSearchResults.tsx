@@ -4,7 +4,7 @@ import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
-import { Flex, Join, Message, quoteLeft, quoteRight, Spacer, useSpace } from "palette"
+import { Flex, Join, Message, quoteLeft, quoteRight, Spacer } from "palette"
 import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -19,7 +19,6 @@ interface OnboardingSearchResultsProps {
 
 const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entities, term }) => {
   const { dispatch } = useOnboardingContext()
-  const space = useSpace()
 
   const queryData = useLazyLoadQuery<OnboardingSearchResultsQuery>(
     OnboardingSearchResultsScreenQuery,
@@ -41,7 +40,6 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
       showsVerticalScrollIndicator={false}
       data={searchResults}
       contentContainerStyle={{
-        paddingTop: space(2),
         paddingBottom: 80,
       }}
       ItemSeparatorComponent={() => <Spacer mt={2} />}
@@ -161,7 +159,7 @@ const OnboardingSearchResultsFragment = graphql`
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
-    <Flex mt={2} testID="OnboardingSearchResultsPlaceholder">
+    <Flex testID="OnboardingSearchResultsPlaceholder">
       <Join separator={<Spacer height={20} />}>
         {times(10).map((index: number) => (
           <Flex key={index}>
