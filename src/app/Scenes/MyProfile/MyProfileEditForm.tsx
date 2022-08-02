@@ -76,6 +76,7 @@ export const MyProfileEditForm: React.FC = () => {
   const nameInputRef = useRef<Input>(null)
   const bioInputRef = useRef<TextInput>(null)
   const relevantPositionsInputRef = useRef<Input>(null)
+  const professionInputRef = useRef<Input>(null)
   const locationInputRef = useRef<Input>(null)
 
   const [loading, setLoading] = useState<boolean>(false)
@@ -245,6 +246,9 @@ export const MyProfileEditForm: React.FC = () => {
                 title="Primary location"
                 placeholder="City name"
                 returnKeyType="next"
+                onSubmitEditing={() => {
+                  professionInputRef.current?.focus()
+                }}
                 displayLocation={buildLocationDisplay(values.location)}
                 onChange={({ city, country, postalCode, state, stateCode }) => {
                   setFieldValue("location", {
@@ -258,6 +262,7 @@ export const MyProfileEditForm: React.FC = () => {
               />
 
               <Input
+                ref={professionInputRef}
                 title="Profession"
                 onChangeText={handleChange("profession")}
                 onBlur={() => validateForm()}
