@@ -7,9 +7,9 @@ import { Flex, Join, Spacer, useSpace } from "palette"
 import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { ArtistListItemNew } from "./ArtistListItem"
+import { ArtistListItemNew } from "./Components/ArtistListItem"
+import { PartnerListItem } from "./Components/PartnerListItem"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
-import { PartnerListItem } from "./PartnerListItem"
 
 interface OnboardingOrderedSetProps {
   id: string
