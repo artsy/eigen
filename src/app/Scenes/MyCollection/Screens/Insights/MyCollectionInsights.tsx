@@ -29,6 +29,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const { showVisualClue } = useVisualClue()
   const enablePhase1Part1 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part1")
   const enablePhase1Part2 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part2")
+  const enablePhase1Part3 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part3")
 
   const [areInsightsIncomplete, setAreInsightsIncomplete] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -101,9 +102,9 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
       <>
         <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
 
-        <CareerHighlightsRail me={data.me!} />
         {hasMarketSignals /* || average sale price data */ && enablePhase1Part1 && (
           <>
+            {!!enablePhase1Part3 && <CareerHighlightsRail me={data.me!} />}
             <MarketSignalsSectionHeader />
             <AuctionResultsForArtistsYouCollectRail me={data.me!} />
             {!!enablePhase1Part2 && <AverageAuctionPriceRail me={data.me} />}
