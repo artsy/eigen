@@ -1,8 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
-import { EventEmitter } from "events"
 import _ from "lodash"
 import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
-import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
+import { forwardRef, Ref, useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
   Platform,
@@ -21,12 +20,6 @@ import { InputTitle } from "./InputTitle"
 const DEFAULT_FONT_SIZE = 16
 export const INPUT_HEIGHT = 50
 export const INPUT_HEIGHT_MULTILINE = 100
-
-export const inputEvents = new EventEmitter()
-
-export const emitInputClearEvent = () => {
-  inputEvents.emit("clear")
-}
 
 export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   containerStyle?: React.ComponentProps<typeof Flex>["style"]
@@ -69,16 +62,20 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   enableClearButton?: boolean
   canHidePassword?: boolean
   inputTextStyle?: TextStyle
-  addClearListener?: boolean
   onClear?(): void
   renderLeftHandSection?(): JSX.Element
 }
 
+// wrapping some of the RNTextInput functionality, so we can call our own funcs too.
+export interface InputRef {
+  focus: () => void
+  blur: () => void
+  clear: () => void
+}
+
 export type Input = TextInput
-/**
- * Input component
- */
-export const Input = React.forwardRef<TextInput, InputProps>(
+
+export const Input = forwardRef<InputRef, InputProps>(
   (
     {
       containerStyle,
@@ -102,7 +99,6 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       multiline,
       maxLength,
       showLimit,
-      addClearListener = false,
       fontSize = DEFAULT_FONT_SIZE,
       ...rest
     },
@@ -112,34 +108,30 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
-    const input = useRef<TextInput>()
+    const inputRef = useRef<TextInput>()
 
     const localClear = () => {
-      input.current?.clear()
+      inputRef.current?.clear()
       localOnChangeText("")
       rest.onClear?.()
     }
 
-    useImperativeHandle(ref, () => input.current!)
+    useImperativeHandle(ref, () => ({
+      focus: () => {
+        inputRef.current?.focus()
+      },
+      blur: () => {
+        inputRef.current?.blur()
+      },
+      clear: localClear,
+    }))
 
     const fontFamily = theme.fonts.sans.regular
 
     useEffect(() => {
-      if (!addClearListener) {
-        return
-      }
-
-      inputEvents.addListener("clear", localClear)
-
-      return () => {
-        inputEvents.removeListener("clear", localClear)
-      }
-    }, [])
-
-    useEffect(() => {
       /* to make the font work for secure text inputs,
       see https://github.com/facebook/react-native/issues/30123#issuecomment-711076098 */
-      input.current?.setNativeProps({
+      inputRef.current?.setNativeProps({
         style: { fontFamily },
       })
     }, [fontFamily])
@@ -247,7 +239,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             {description}
           </Text>
         )}
-        <TouchableWithoutFeedback onPressIn={() => input.current?.focus()}>
+        <TouchableWithoutFeedback onPressIn={() => inputRef.current?.focus()}>
           <View
             style={[
               rest.style,
@@ -282,7 +274,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                     setInputWidth(newWidth)
                   }
                 }}
-                ref={input}
+                ref={inputRef}
                 placeholderTextColor={color("black60")}
                 style={{ flex: 1, fontSize, ...inputTextStyle }}
                 numberOfLines={multiline ? undefined : 1}

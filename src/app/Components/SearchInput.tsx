@@ -1,16 +1,16 @@
 import SearchIcon from "app/Icons/SearchIcon"
 import {
-  emitInputClearEvent,
   Flex,
   Input,
   InputProps,
+  InputRef,
   SpacingUnitV2,
   SpacingUnitV3,
   Text,
   useSpace,
 } from "palette"
 import { forwardRef, useImperativeHandle, useRef, useState } from "react"
-import { TextInput, TouchableOpacity, useWindowDimensions } from "react-native"
+import { TouchableOpacity, useWindowDimensions } from "react-native"
 import Animated, {
   FadeInRight,
   FadeOutRight,
@@ -27,11 +27,8 @@ export interface SearchInputProps extends InputProps {
   onCancelPress?: () => void
 }
 
-export const SearchInput = forwardRef<TextInput, SearchInputProps>(
-  (
-    { enableCancelButton, onChangeText, onClear, onCancelPress, mx = MX, ...props },
-    ref: React.Ref<Partial<TextInput>>
-  ) => {
+export const SearchInput = forwardRef<InputRef, SearchInputProps>(
+  ({ enableCancelButton, onChangeText, onClear, onCancelPress, mx = MX, ...props }, ref) => {
     const [cancelWidth, setCancelWidth] = useState(0)
     const space = useSpace()
     const [cancelButtonShown, setCancelButtonShown] = useState(false)
@@ -46,19 +43,18 @@ export const SearchInput = forwardRef<TextInput, SearchInputProps>(
       [cancelButtonShown, cancelWidth]
     )
 
-    const inputRef = useRef<TextInput>(null)
-    useImperativeHandle(ref, () => inputRef?.current ?? {})
+    const inputRef = useRef<InputRef>(null)
+    useImperativeHandle(ref, () => inputRef.current!)
 
     return (
       <Flex flexDirection="row">
-        <Animated.View style={[shrinkAnim, { backgroundColor: "green", paddingTop: 2 }]}>
+        <Animated.View style={[shrinkAnim, { paddingTop: 2 }]}>
           <Input
             ref={inputRef}
             icon={<SearchIcon width={18} height={18} />}
             autoCorrect={false}
             enableClearButton
             returnKeyType="search"
-            addClearListener
             onClear={() => {
               onClear?.()
               inputRef?.current?.focus()
@@ -83,8 +79,9 @@ export const SearchInput = forwardRef<TextInput, SearchInputProps>(
             >
               <TouchableOpacity
                 onPress={() => {
-                  emitInputClearEvent()
+                  inputRef?.current?.clear()
                   inputRef?.current?.blur()
+                  setCancelButtonShown(false)
                   onCancelPress?.()
                 }}
                 hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
