@@ -1,18 +1,13 @@
+import { useNavigation } from "@react-navigation/native"
 import { OnboardingGeneQuery } from "__generated__/OnboardingGeneQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
-import { Button, Flex, FollowButton, Screen, Spacer, Text, useSpace } from "palette"
-import { Suspense, useEffect, useRef, useState } from "react"
-import {
-  Animated,
-  Easing,
-  Image,
-  ImageBackground,
-  ImageSourcePropType,
-  TouchableOpacity,
-} from "react-native"
+import { Button, Flex, FollowButton, Screen, Spacer, Text } from "palette"
+import { Suspense } from "react"
+import { ImageBackground, ImageSourcePropType } from "react-native"
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
-import { useScreenDimensions } from "shared/hooks"
+import { AnimatedTooltip } from "./Components/AnimatedTooltip"
+import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 
 type OnboardingGeneId = "artists-on-the-rise" | "trove" | "our-top-auction-lots"
 
@@ -21,8 +16,6 @@ interface OnboardingGeneProps {
   description: string
 }
 
-const AnimatedFlex = Animated.createAnimatedComponent(Flex)
-
 const images: Record<OnboardingGeneId, ImageSourcePropType> = {
   "artists-on-the-rise": require("images/CohnMakeAMountain.webp"),
   trove: require("images/HirstTheWonder.webp"),
@@ -30,10 +23,8 @@ const images: Record<OnboardingGeneId, ImageSourcePropType> = {
 }
 
 const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
-  const [isTooltipVisible, setIsTooltipVisible] = useState(true)
-  const space = useSpace()
-  const { width } = useScreenDimensions()
-  const leftPosition = useRef(new Animated.Value(0)).current
+  const { navigate } = useNavigation()
+  const { onDone } = useOnboardingContext()
   const { gene } = useLazyLoadQuery<OnboardingGeneQuery>(OnboardingGeneScreenQuery, {
     id,
   })
@@ -51,30 +42,14 @@ const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
     })
   }
 
-  const moveToRightAnimation = () => {
-    Animated.timing(leftPosition, {
-      delay: 500,
-      toValue: 1,
-      duration: 300,
-      easing: Easing.out(Easing.linear),
-      useNativeDriver: true,
-    }).start()
-  }
-
-  useEffect(() => {
-    moveToRightAnimation()
-  }, [])
-
-  const xVal = leftPosition.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-width, 0],
-  })
-
   return (
     <Screen>
       <Screen.Background>
         <InfiniteScrollArtworksGridContainer
           shouldAddPadding
+          itemComponentProps={{
+            onPress: (artworkID) => navigate("ArtworkScreen", { artworkID }),
+          }}
           HeaderComponent={() => (
             <Flex pb={2}>
               <ImageBackground style={{ height: 270 }} resizeMode="cover" source={images[id]}>
@@ -95,39 +70,12 @@ const OnboardingGene: React.FC<OnboardingGeneProps> = ({ id, description }) => {
                   />
                 </Flex>
               </ImageBackground>
-              {!!isTooltipVisible && (
-                <AnimatedFlex
-                  flexDirection="row"
-                  justifyContent="center"
-                  alignItems="center"
-                  py={1}
-                  px={2}
-                  backgroundColor="black100"
-                  style={{
-                    transform: [
-                      {
-                        translateX: xVal,
-                      },
-                    ],
-                  }}
-                >
-                  <Text variant="xs" color="white100">
-                    Find your Saves and Follows in your settings.
-                  </Text>
-                  <TouchableOpacity
-                    style={{ position: "absolute", top: space(1), right: space(2) }}
-                    hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}
-                    onPress={() => setIsTooltipVisible(false)}
-                  >
-                    <Image source={require("images/close-x.webp")} />
-                  </TouchableOpacity>
-                </AnimatedFlex>
-              )}
+              <AnimatedTooltip />
             </Flex>
           )}
           FooterComponent={() => (
             <Flex p={2}>
-              <Button block onPress={() => console.warn("test")}>
+              <Button block onPress={onDone}>
                 Explore More on Artsy
               </Button>
             </Flex>
