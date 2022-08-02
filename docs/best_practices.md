@@ -171,8 +171,8 @@ But we also use `test-renderer` (in order of preference), that we'd ultimately l
 
 #### How to write tests
 
-Based on the [Guiding Principles](https://testing-library.com/docs/guiding-principles/), your test should resemble how users interact with your code (component, page, etc.) as much as possible. Therefore we prefer using `getByText`, `getByDisplayValue`, etc, and as a last resort use a `testID`.
-You can read more about that [here](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/)
+Based on the [Guiding Principles](https://testing-library.com/docs/guiding-principles/), your test should resemble how users interact with your code (component, page, etc.) as much as possible. Therefore we prefer using `screen.getByText`, `screen.getByDisplayValue`, etc, and as a last resort use a `testID` with `screen.getByTestId`.
+You can read more about that [here](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/).
 
 ### Navigation
 
