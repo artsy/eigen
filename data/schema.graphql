@@ -12757,6 +12757,21 @@ type Query {
 
   # Get price insights for a market.
   marketPriceInsights(artistId: ID!, medium: String!): MarketPriceInsights
+
+  # A Search for Artists
+  matchArtist(
+    # Exclude these MongoDB ids from results
+    excludeIDs: [String]
+
+    # Page to retrieve. Default: 1.
+    page: Int
+
+    # Maximum number of items to retrieve. Default: 5.
+    size: Int
+
+    # Your search term
+    term: String!
+  ): [Artist]
   matchConnection(
     after: String
     before: String
@@ -16110,6 +16125,21 @@ type Viewer {
     size: Int
     slugs: [String!]
   ): [MarketingCollection]
+
+  # A Search for Artists
+  matchArtist(
+    # Exclude these MongoDB ids from results
+    excludeIDs: [String]
+
+    # Page to retrieve. Default: 1.
+    page: Int
+
+    # Maximum number of items to retrieve. Default: 5.
+    size: Int
+
+    # Your search term
+    term: String!
+  ): [Artist]
   matchConnection(
     after: String
     before: String
