@@ -98,6 +98,7 @@ import { PartnerQueryRenderer } from "./Scenes/Partner/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest/PrivacyRequest"
 import { ReverseImage } from "./Scenes/ReverseImage/ReverseImage"
+import { ReverseImageMultipleResultsQueryRenderer } from "./Scenes/ReverseImage/Screens/MultipleResults/ReverseImageMultipleResults"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo/SaleInfo"
@@ -430,6 +431,10 @@ export const modules = defineModules({
   PrivacyRequest: reactModule(PrivacyRequest),
   RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
   ReverseImage: reactModule(ReverseImage, {
+    hidesBackButton: true,
+    fullBleed: true,
+  }),
+  ReverseImageMultipleResults: reactModule(ReverseImageMultipleResultsQueryRenderer, {
     hidesBackButton: true,
     fullBleed: true,
   }),

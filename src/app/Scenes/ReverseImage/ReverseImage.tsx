@@ -1,4 +1,4 @@
-import { goBack } from "app/navigation/navigate"
+import { goBack, navigate } from "app/navigation/navigate"
 import { useImageSearchV2 } from "app/utils/useImageSearchV2"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
@@ -6,6 +6,7 @@ import { Alert, LayoutChangeEvent, Linking, StyleSheet, TouchableOpacity } from 
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
 import styled from "styled-components/native"
+import { HeaderContainer } from "./Components/HeaderContainer"
 
 interface FrameCoords {
   width: number
@@ -66,6 +67,8 @@ export const ReverseImage = () => {
       }
 
       const results = await handleSeachByImage(data)
+
+      return navigate("/reverse-image-multiple-results")
 
       if (results.length === 0) {
         Alert.alert(
@@ -164,15 +167,15 @@ export const ReverseImage = () => {
       />
 
       <Flex {...StyleSheet.absoluteFillObject}>
-        <Background height={insets.top} />
-
-        <Background height={44} flexDirection="row" px="2" alignItems="center">
-          <BackButton color="white100" onPress={goBack} />
-          <Flex {...StyleSheet.absoluteFillObject} justifyContent="center" alignItems="center">
-            <Text variant="md" color="white100">
-              {searchingByImage ? "Looking for Results..." : "Position Artwork in this Frame"}
-            </Text>
-          </Flex>
+        <Background>
+          <HeaderContainer>
+            <BackButton color="white100" onPress={goBack} />
+            <Flex {...StyleSheet.absoluteFillObject} justifyContent="center" alignItems="center">
+              <Text variant="md" color="white100">
+                {searchingByImage ? "Looking for Results..." : "Position Artwork in this Frame"}
+              </Text>
+            </Flex>
+          </HeaderContainer>
         </Background>
 
         <Background height={space("2")} />
