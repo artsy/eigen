@@ -1,36 +1,50 @@
-import themeGet from "@styled-system/theme-get"
 import {
   getLocationDetails,
   getLocationPredictions,
   LocationWithDetails,
   SimpleLocation,
 } from "app/utils/googleMaps"
-import { Flex, Input, LocationIcon, Text, Touchable } from "palette"
-import React, { useEffect, useState } from "react"
+import { Flex, Input, InputProps, LocationIcon, Text, Touchable } from "palette"
+import React, { useEffect, useRef, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
-import styled from "styled-components/native"
 
-interface LocationAutocompleteInputProps {
-  title: string
-  placeholder?: string
-  detailed?: boolean
+interface LocationAutocompleteInputProps extends Omit<InputProps, "onChange"> {
   floating?: boolean
-  initialLocation: SimpleLocation | null
-  onChange: (l: SimpleLocation | LocationWithDetails | null) => void
+  initialLocation?: LocationWithDetails | null
+  displayLocation?: string
+  inputRef?: React.RefObject<Input>
+  onChange: (l: LocationWithDetails) => void
+  FooterComponent?: () => JSX.Element
 }
 
+/**
+ * This component is used to autocomplete a location based on the user's input.
+ *
+ * We either use the `initialLocation` or `displayLocation` to set the initial value of the input.
+ *
+ * @param {string} displayLocation The initial location string to display in the input.
+ * @param {LocationWithDetails} initialLocation The initial location object with the type {@link LocationWithDetails} to display in the input.
+ *
+ * @returns The `onChange` returns a location object with the type {@link LocationWithDetails}.
+ */
 export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps> = ({
   title,
   placeholder,
   initialLocation,
   onChange,
-  detailed,
+  displayLocation = "",
   floating,
+  FooterComponent,
+  inputRef,
+  ...restProps
 }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
   const [selectedLocation, setSelectedLocation] = useState(initialLocation)
-  const [query, setQuery] = useState(selectedLocation?.name || "")
+  const [query, setQuery] = useState(selectedLocation?.name || displayLocation)
+  const ref = inputRef || useRef<Input>(null)
+
+  const selectedLocationQuery = selectedLocation?.name || displayLocation
 
   useEffect(() => {
     setPredictions([])
@@ -38,11 +52,11 @@ export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps>
   }, [selectedLocation])
 
   useEffect(() => {
-    if (query !== selectedLocation?.name) {
+    if (query !== selectedLocationQuery) {
       setSelectedLocation(null)
     }
 
-    if (query.length < 3 || selectedLocation?.name === query) {
+    if (query.length < 3 || selectedLocationQuery === query) {
       setPredictions([])
     } else {
       ;(async () => {
@@ -52,23 +66,19 @@ export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps>
     }
   }, [query])
 
-  const handleChange = async (selection: SimpleLocation | null) => {
-    if (!selection) {
+  const handleChange = async (selection?: SimpleLocation | null) => {
+    if (!selection?.id || !selection?.name) {
       return
     }
 
-    if (detailed) {
-      const locationDetails = await getLocationDetails(selection)
+    const locationDetails = await getLocationDetails(selection)
 
-      onChange(locationDetails)
-    }
-
-    onChange(selection)
+    onChange(locationDetails)
   }
 
   const reset = () => {
     if (selectedLocation) {
-      setQuery(selectedLocation.name)
+      setQuery(selectedLocationQuery)
     }
   }
 
@@ -79,8 +89,10 @@ export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps>
   }
 
   return (
-    <>
+    <Flex>
       <Input
+        {...restProps}
+        ref={ref}
         testID="autocomplete-location-input"
         title={title}
         placeholder={placeholder}
@@ -96,7 +108,9 @@ export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps>
         onOutsidePress={touchOut}
         isFloating={floating}
       />
-    </>
+
+      {!!FooterComponent && <FooterComponent />}
+    </Flex>
   )
 }
 
@@ -106,20 +120,16 @@ const LocationPredictions = ({
   onSelect,
   onOutsidePress,
   isFloating,
-}: // strict,
-{
+}: {
   predictions: SimpleLocation[]
   query?: string
   onSelect: (l: SimpleLocation) => void
   onOutsidePress?: () => void
   isFloating?: boolean
-  strict?: boolean
 }) => {
   const [height, setHeight] = useState(0)
 
   const { height: screenHeight } = useScreenDimensions()
-
-  // const { onOutsidePress, query, isFloating, predictions, onSelect, strict } = props
 
   const highlightedQuery = (entry: string) => {
     const re = new RegExp(`(${query?.replace(" ", "|")})`, "gi")
@@ -147,11 +157,31 @@ const LocationPredictions = ({
   return (
     <>
       <TouchableWithoutFeedback onPress={onOutsidePress}>
-        <Backdrop style={{ height }} onLayout={() => setHeight(screenHeight)} />
+        <Flex
+          position="absolute"
+          width="100%"
+          top={0}
+          left={0}
+          style={{ height }}
+          onLayout={() => setHeight(screenHeight)}
+        />
       </TouchableWithoutFeedback>
 
-      <Dropdown
-        style={{ position: isFloating ? "absolute" : undefined, top: isFloating ? 70 : undefined }}
+      <Flex
+        style={[
+          {
+            shadowColor: "rgba(0,0,0)",
+            shadowOffset: { width: 0, height: 3 },
+            shadowOpacity: 0.12,
+            shadowRadius: 3,
+            elevation: 4,
+          },
+          isFloating ? { position: "absolute", top: 72 } : {},
+        ]}
+        backgroundColor="white100"
+        borderWidth={1}
+        borderColor="black10"
+        width="100%"
       >
         {predictions.map((p) => (
           <Touchable haptic key={p.id} onPress={() => onSelect(p)} style={{ padding: 10 }}>
@@ -163,22 +193,16 @@ const LocationPredictions = ({
             </Flex>
           </Touchable>
         ))}
-      </Dropdown>
+      </Flex>
     </>
   )
 }
 
-const Dropdown = styled(Flex)`
-  background-color: ${themeGet("colors.white100")};
-  border: solid 1px ${themeGet("colors.black10")};
-  z-index: 1;
-  width: 100%;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.12);
-`
+export const buildLocationDisplay = (location: LocationDisplay | null): string =>
+  [location?.city, location?.state, location?.country].filter((x) => x).join(", ")
 
-const Backdrop = styled(Flex)`
-  position: absolute;
-  width: 100%;
-  top: 0;
-  left: 0;
-`
+interface LocationDisplay {
+  city?: string | null
+  state?: string | null
+  country?: string | null
+}
