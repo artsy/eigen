@@ -1,5 +1,5 @@
 import { goBack } from "app/navigation/navigate"
-import { BackButton, Button, Flex, Spinner, Text, useSpace } from "palette"
+import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Alert, LayoutChangeEvent, Linking, StyleSheet, TouchableOpacity } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -93,6 +93,10 @@ export const ReverseImage = () => {
     )
   }
 
+  const handleBackPress = () => {
+    goBack()
+  }
+
   useEffect(() => {
     const run = async () => {
       const status = await Camera.getCameraPermissionStatus()
@@ -102,17 +106,9 @@ export const ReverseImage = () => {
     run()
   }, [])
 
-  if (cameraPermission === null) {
+  if (cameraPermission === null || !device) {
     return (
-      <Flex flex={1} bg="red">
-        <Spinner />
-      </Flex>
-    )
-  }
-
-  if (!device) {
-    return (
-      <Flex flex={1} bg="green">
+      <Flex flex={1} justifyContent="center" alignItems="center">
         <Spinner />
       </Flex>
     )
@@ -120,12 +116,18 @@ export const ReverseImage = () => {
 
   if (cameraPermission !== "authorized") {
     return (
-      <Flex flex={1} justifyContent="center" alignItems="center">
-        <Text>Camera permission required</Text>
-        <Button mt={2} onPress={requestMicrophonePermission}>
-          Grant
-        </Button>
-      </Flex>
+      <Screen>
+        <Screen.Header onBack={handleBackPress} />
+
+        <Screen.Body>
+          <Flex flex={1} justifyContent="center" alignItems="center">
+            <Text>Camera permission required</Text>
+            <Button mt={2} onPress={requestMicrophonePermission}>
+              Grant
+            </Button>
+          </Flex>
+        </Screen.Body>
+      </Screen>
     )
   }
 
