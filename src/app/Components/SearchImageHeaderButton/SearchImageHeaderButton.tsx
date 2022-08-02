@@ -1,3 +1,4 @@
+import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { useImageSearch } from "app/utils/useImageSearch"
 import { AddIcon, Box, Spinner } from "palette"
@@ -14,11 +15,20 @@ interface SearchImageHeaderButtonProps {
 export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = ({
   isImageSearchButtonVisible,
 }) => {
-  const isImageSearchEnabled = isImageSearchButtonVisible && useFeatureFlag("AREnableImageSearch")
+  const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")
+  const isImageSearchV2Enabled = useFeatureFlag("AREnableImageSearchV2")
   const { searchingByImage, handleSeachByImage } = useImageSearch()
 
-  if (!isImageSearchEnabled) {
+  if (!isImageSearchButtonVisible || (!isImageSearchV2Enabled && !isImageSearchEnabled)) {
     return null
+  }
+
+  const handleSearchPress = () => {
+    if (isImageSearchV2Enabled) {
+      return navigate("/reverse-image")
+    }
+
+    handleSeachByImage()
   }
 
   return (
@@ -31,7 +41,7 @@ export const SearchImageHeaderButton: React.FC<SearchImageHeaderButtonProps> = (
         top: 13 + useScreenDimensions().safeAreaInsets.top,
         right: 12,
       }}
-      onPress={handleSeachByImage}
+      onPress={handleSearchPress}
       disabled={searchingByImage}
     >
       <Box
