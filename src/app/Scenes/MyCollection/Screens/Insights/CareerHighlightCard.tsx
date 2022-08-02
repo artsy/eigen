@@ -28,9 +28,14 @@ export type CareerHighlightKind =
 interface CareerHighlightsCardProps {
   count: number
   type: CareerHighlightKind
+  careerHighlightsAvailableTypes: CareerHighlightKind[]
 }
 
-export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ count, type }) => {
+export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
+  count,
+  type,
+  careerHighlightsAvailableTypes,
+}) => {
   if (count === 0) {
     return null
   }
@@ -43,7 +48,10 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({ coun
     <Touchable
       haptic
       onPress={() => {
-        // TODO: Navigate to detail card
+        navigate("/my-collection/career-highlights-cards", {
+          modal: true,
+          passProps: { type, careerHighlightsAvailableTypes },
+        })
       }}
     >
       <Flex p={1} height={135} width={205} background="white" border={1} borderColor="black10">
@@ -125,7 +133,7 @@ export const CareerHighlightPromotionalCard: React.FC = () => {
   )
 }
 
-const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
+export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
   const careerHighlights = GlobalStore.useAppState(
     (state) => state.myCollectionCareerHighlights.careerHighlights
   )

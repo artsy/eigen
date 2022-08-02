@@ -1,19 +1,22 @@
 import { CareerHighlightsCardsQuery } from "__generated__/CareerHighlightsCardsQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/navigation/navigate"
+import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { Flex, useColor, useSpace } from "palette"
 import { useState } from "react"
-import { Animated, ScrollView } from "react-native"
+import { Animated } from "react-native"
+import Swiper from "react-native-swiper"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
-import { CareerHighlightsBiennialCard } from "./CareerHighlightsBiennialCard"
-import { CareerHighlightsCollectedCard } from "./CareerHighlightsCollectedCard"
+import { CareerHighlightBigCard } from "./CareerHighlightBigCard"
+import { CareerHighlightKind } from "./CareerHighlightCard"
 import { CareerHighlightsPromotionalCard } from "./CareerHighlightsPromotionalCard"
 
-export const CareerHighlightsCards: React.FC = () => {
-  const { width } = useScreenDimensions()
+export const CareerHighlightsCards: React.FC<{
+  type: any
+  careerHighlightsAvailableTypes: CareerHighlightKind[]
+}> = ({ type, careerHighlightsAvailableTypes }) => {
   const data = useLazyLoadQuery<CareerHighlightsCardsQuery>(CareerHighlightsCardsScreenQuery, {})
-  const [sliderState, setSliderState] = useState({ currentPage: 0 })
 
   const myCollectionInfo = data.me?.myCollectionInfo
 
@@ -21,25 +24,19 @@ export const CareerHighlightsCards: React.FC = () => {
     return null
   }
 
-  const setSliderPage = (event: any) => {
-    const { currentPage } = sliderState
-    const { x } = event.nativeEvent.contentOffset
-    const indexOfNextScreen = Math.floor(x / width)
-    if (indexOfNextScreen !== currentPage) {
-      setSliderState({
-        ...sliderState,
-        currentPage: indexOfNextScreen,
-      })
-    }
-  }
+  const numberOfSlides = careerHighlightsAvailableTypes.length + 1
+  const openedCardIndex = careerHighlightsAvailableTypes.indexOf(type)
 
-  const { currentPage: pageIndex } = sliderState
   const { width: screenWidth } = useScreenDimensions()
   const color = useColor()
   const space = useSpace()
+
   // 18 is the close button size, 20 is screen margin and 10 is the spase between the
   // close button and the bar
-  const barWidth = (screenWidth - 18 - 20 - 20 - 10) / 3
+  const barWidth = (screenWidth - 18 - 20 - 20 - 10) / numberOfSlides
+
+  const [sliderState, setSliderState] = useState({ currentPage: openedCardIndex })
+
   return (
     <>
       <FancyModalHeader
@@ -56,9 +53,9 @@ export const CareerHighlightsCards: React.FC = () => {
             flexDirection: "row",
           }}
         >
-          {Array.from(Array(3).keys()).map((key, index) => (
+          {Array.from(Array(numberOfSlides).keys()).map((key, index) => (
             <Animated.View
-              accessibilityLabel="Image Pagination Scroll Bar"
+              accessibilityLabel="Career Highlights Pagination Scroll Bar"
               key={key}
               style={{
                 height: 2,
@@ -66,27 +63,52 @@ export const CareerHighlightsCards: React.FC = () => {
                 marginRight: space(1),
                 borderRadius: 2,
                 backgroundColor: color("black100"),
-                opacity: pageIndex === index ? 1 : 0.2,
+                opacity: useSpringValue(sliderState.currentPage === index ? 1 : 0.2),
               }}
             />
           ))}
         </Flex>
       </FancyModalHeader>
-      <ScrollView
-        horizontal
-        scrollEventThrottle={16}
-        decelerationRate={0}
-        pagingEnabled
-        snapToAlignment="center"
-        showsHorizontalScrollIndicator={false}
-        onScroll={(event: any) => {
-          setSliderPage(event)
-        }}
+      <Swiper
+        index={openedCardIndex}
+        showsButtons={false}
+        loop={false}
+        removeClippedSubviews={false}
+        showsPagination
+        onIndexChanged={(index) => setSliderState({ currentPage: index })}
       >
-        <CareerHighlightsCollectedCard myCollectionInfo={myCollectionInfo} />
-        <CareerHighlightsBiennialCard myCollectionInfo={myCollectionInfo} />
+        {!!myCollectionInfo.biennialInsights && (
+          <CareerHighlightBigCard
+            type="BIENNIAL"
+            highlightData={myCollectionInfo.biennialInsights}
+          />
+        )}
+        {!!myCollectionInfo.collectedInsights && (
+          <CareerHighlightBigCard
+            type="COLLECTED"
+            highlightData={myCollectionInfo.collectedInsights}
+          />
+        )}
+        {!!myCollectionInfo.groupShowInsights && (
+          <CareerHighlightBigCard
+            type="GROUP_SHOW"
+            highlightData={myCollectionInfo.groupShowInsights}
+          />
+        )}
+        {!!myCollectionInfo.soloShowInsights && (
+          <CareerHighlightBigCard
+            type="SOLO_SHOW"
+            highlightData={myCollectionInfo.soloShowInsights}
+          />
+        )}
+        {!!myCollectionInfo.reviewedInsights && (
+          <CareerHighlightBigCard
+            type="REVIEWED"
+            highlightData={myCollectionInfo.reviewedInsights}
+          />
+        )}
         <CareerHighlightsPromotionalCard />
-      </ScrollView>
+      </Swiper>
     </>
   )
 }
@@ -95,8 +117,91 @@ export const CareerHighlightsCardsScreenQuery = graphql`
   query CareerHighlightsCardsQuery {
     me {
       myCollectionInfo {
-        ...CareerHighlightsCollectedCard_myCollectionInfo
-        ...CareerHighlightsBiennialCard_myCollectionInfo
+        biennialInsights: artistInsights(kind: BIENNIAL) {
+          artist {
+            id
+            slug
+            name
+            image {
+              url
+            }
+            birthday
+            deathday
+            initials
+            nationality
+          }
+          kind
+          label
+          entities
+        }
+        collectedInsights: artistInsights(kind: COLLECTED) {
+          artist {
+            id
+            slug
+            name
+            image {
+              url
+            }
+            birthday
+            deathday
+            initials
+            nationality
+          }
+          kind
+          label
+          entities
+        }
+        groupShowInsights: artistInsights(kind: GROUP_SHOW) {
+          artist {
+            id
+            slug
+            name
+            image {
+              url
+            }
+            birthday
+            deathday
+            initials
+            nationality
+          }
+          kind
+          label
+          entities
+        }
+        reviewedInsights: artistInsights(kind: REVIEWED) {
+          artist {
+            id
+            slug
+            name
+            image {
+              url
+            }
+            birthday
+            deathday
+            initials
+            nationality
+          }
+          kind
+          label
+          entities
+        }
+        soloShowInsights: artistInsights(kind: SOLO_SHOW) {
+          artist {
+            id
+            slug
+            name
+            image {
+              url
+            }
+            birthday
+            deathday
+            initials
+            nationality
+          }
+          kind
+          label
+          entities
+        }
       }
     }
   }

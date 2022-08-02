@@ -1,3 +1,5 @@
+import { navigate, popToRoot } from "app/navigation/navigate"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { Button, Flex, Text } from "palette"
 import { Image } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
@@ -14,7 +16,19 @@ export const CareerHighlightsPromotionalCard: React.FC = () => {
         <Text mt={2} variant="md" color="black60">
           Add artworks to reveal career highlights for your artists.
         </Text>
-        <Button mt={4} block>
+        <Button
+          mt={4}
+          block
+          onPress={() => {
+            navigate("my-collection/artworks/new", {
+              passProps: {
+                mode: "add",
+                source: Tab.insights,
+                onSuccess: popToRoot,
+              },
+            })
+          }}
+        >
           Upload Artwork
         </Button>
       </Flex>
