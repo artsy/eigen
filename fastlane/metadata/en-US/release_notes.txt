@@ -1,6 +1,6 @@
 This update includes a number of improvements and bug fixes including:
 
-- New user profile header design
-- New option to opt out of viewing room notifications
+- Career highlights now included in My Collection insights
+- New Notifications Settings options for viewing rooms 
 
 Have feedback? Email us at support@artsy.net
