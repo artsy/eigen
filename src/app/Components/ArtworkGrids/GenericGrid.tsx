@@ -50,11 +50,10 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
 
   layoutState(width: number): State {
     const isPad = width > 600
-    const isPadHorizontal = width > 900
 
-    const sectionCount = isPad ? (isPadHorizontal ? 4 : 3) : 2
+    const sectionCount = isPad ? 3 : 2
     const sectionMargins = this.props.sectionMargin ?? 0 * (sectionCount - 1)
-    const sectionDimension = (width - sectionMargins) / sectionCount
+    const sectionDimension = (width - sectionMargins - 20) / sectionCount
 
     return {
       sectionCount,
@@ -71,6 +70,7 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
     if (layout.width !== this.width) {
       // this means we've rotated or are on our initial load
       this.width = layout.width
+
       this.setState(this.layoutState(layout.width))
     }
   }
@@ -225,9 +225,8 @@ export default GenericGrid
 
 export const GenericGridPlaceholder: React.FC<{ width: number }> = ({ width }) => {
   const isPad = width > 600
-  const isPadHorizontal = width > 900
 
-  const numColumns = isPad ? (isPadHorizontal ? 4 : 3) : 2
+  const numColumns = isPad ? 3 : 2
   const rng = new RandomNumberGenerator(3432)
 
   return (
