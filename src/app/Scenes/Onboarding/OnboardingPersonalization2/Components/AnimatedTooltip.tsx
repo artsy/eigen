@@ -37,8 +37,6 @@ export const AnimatedTooltip: React.FC = () => {
 
   return (
     <AnimatedFlex
-      flexDirection="row"
-      justifyContent="center"
       alignItems="center"
       py={1}
       px={2}
@@ -54,13 +52,15 @@ export const AnimatedTooltip: React.FC = () => {
       <Text variant="xs" color="white100">
         Find your Saves and Follows in your settings.
       </Text>
-      <TouchableOpacity
-        style={{ position: "absolute", top: space(1), right: space(2) }}
-        hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}
-        onPress={() => setIsTooltipVisible(false)}
-      >
-        <Image source={require("images/close-x.webp")} />
-      </TouchableOpacity>
+      <Flex position="absolute" height="100%" top={space(1)} right={space(2)}>
+        <TouchableOpacity
+          style={{ alignContent: "flex-end" }}
+          hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}
+          onPress={() => setIsTooltipVisible(false)}
+        >
+          <Image source={require("images/close-x.webp")} />
+        </TouchableOpacity>
+      </Flex>
     </AnimatedFlex>
   )
 }
