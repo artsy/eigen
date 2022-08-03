@@ -4,7 +4,7 @@ index dde3aec..aec1f45 100644
 +++ b/node_modules/react-native-credit-card-input/src/CCInput.js
 @@ -33,6 +33,7 @@ export default class CCInput extends Component {
      placeholderColor: PropTypes.string,
- 
+
      onFocus: PropTypes.func,
 +    onBlur: PropTypes.func,
      onChange: PropTypes.func,
@@ -46,9 +46,9 @@ index a5f166b..35e81c4 100644
    TouchableOpacity,
    TextInput,
  } from "react-native";
- 
+
 +// We had to replace LayoutAnimation with react-native-reanimated to fix vanishing card details on android
-+// see https://utest-dl.s3.amazonaws.com/13083/27879/315960/null/bugAttachment/Bug5071486_1.mp4?AWSAccessKeyId=AKIAJ2UIWMJ2OMC3UCQQ&Expires=1937594726&Signature=IpRsV6PNLAlSDFN9J7A6obYajIU%3D (CX-1529)
++// see https://github.com/artsy/eigen/issues/7152#issue-1327051747 (CX-1529)
 +import { Transition, Transitioning } from 'react-native-reanimated';
 +
  import Icons from "./Icons";
@@ -97,9 +97,9 @@ index a5f166b..35e81c4 100644
 +    fontFamily: "Unica77LL-Regular"
    },
  });
- 
+
 @@ -83,13 +91,13 @@ export default class LiteCreditCardInput extends Component {
- 
+
    static defaultProps = {
      placeholders: {
 -      number: "1234 5678 1234 5678",
@@ -113,7 +113,7 @@ index a5f166b..35e81c4 100644
 +    placeholderColor: "#707070", // black60
      additionalInputsProps: {},
    };
- 
+
 @@ -105,7 +113,7 @@ export default class LiteCreditCardInput extends Component {
    _focus = field => {
      if (!field) return;
@@ -121,7 +121,7 @@ index a5f166b..35e81c4 100644
 -    LayoutAnimation.easeInEaseOut();
 +    animate()
    }
- 
+
    _inputProps = field => {
 @@ -113,6 +121,7 @@ export default class LiteCreditCardInput extends Component {
        inputStyle, validColor, invalidColor, placeholderColor,
@@ -130,10 +130,10 @@ index a5f166b..35e81c4 100644
 +      onBlur,
        additionalInputsProps,
      } = this.props;
- 
+
 @@ -126,6 +135,7 @@ export default class LiteCreditCardInput extends Component {
        status: status[field],
- 
+
        onFocus, onChange, onBecomeEmpty, onBecomeValid,
 +      onBlur,
        additionalInputProps: additionalInputsProps[field],
@@ -141,12 +141,12 @@ index a5f166b..35e81c4 100644
    };
 @@ -139,11 +149,22 @@ export default class LiteCreditCardInput extends Component {
    }
- 
+
    render() {
 -    const { focused, values: { number }, inputStyle, status: { number: numberStatus } } = this.props;
 +    const { focused, isInputFocused, valid, values: { number }, inputStyle, status: { number: numberStatus } } = this.props;
      const showRightPart = focused && focused !== "number";
- 
+
 +    const borderColor = "#C2C2C2" // black30
 +    const borderColorFocused = "#707070" // black60
 +    const borderColorError = "#C82400" // red100
@@ -212,7 +212,7 @@ index cda7fc6..d12a1de 100644
 --- a/node_modules/react-native-credit-card-input/src/connectToState.js
 +++ b/node_modules/react-native-credit-card-input/src/connectToState.js
 @@ -6,6 +6,7 @@ import compact from "lodash.compact";
- 
+
  export const InjectedProps = {
    focused: PropTypes.string,
 +  isInputFocused: PropTypes.bool,
@@ -229,12 +229,12 @@ index cda7fc6..d12a1de 100644
        };
 @@ -68,7 +70,7 @@ export default function connectToState(CreditCardInput) {
      };
- 
+
      focus = (field = "number") => {
 -      this.setState({ focused: field });
 +      this.setState({ focused: field, isInputFocused: true });
      };
- 
+
      _displayedFields = () => {
 @@ -115,6 +117,7 @@ export default function connectToState(CreditCardInput) {
            {...this.props}

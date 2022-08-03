@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_artwork.graphql"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -6,6 +6,9 @@ import { navigate } from "app/navigation/navigate"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkTombstone } from "./ArtworkTombstone"
 import { CertificateAuthenticityModal } from "./CertificateAuthenticityModal"
+import { RelayEnvironmentProvider } from "react-relay"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {
@@ -199,20 +202,22 @@ describe("ArtworkTombstone", () => {
   })
 
   describe("for an artwork with one artist", () => {
-    it("renders artist name", () => {
-      const { queryByText } = renderWithWrappers(
+    const TestRenderer = () => (
+      <RelayEnvironmentProvider environment={getMockRelayEnvironment()}>
         <ArtworkTombstone artwork={oneArtistArtworkData} />
-      )
+      </RelayEnvironmentProvider>
+    )
 
-      expect(queryByText(/Andy Warhol/)).toBeTruthy()
-      expect(queryByText(/Alex Katz/)).toBeNull()
-      expect(queryByText(/Pablo Picasso/)).toBeNull()
+    it("renders artist name", () => {
+      renderWithWrappers(<TestRenderer />)
+
+      expect(screen.queryByText(/Andy Warhol/)).toBeTruthy()
+      expect(screen.queryByText(/Alex Katz/)).toBeNull()
+      expect(screen.queryByText(/Pablo Picasso/)).toBeNull()
     })
 
     it("shows follow button", () => {
-      const { queryByText } = renderWithWrappers(
-        <ArtworkTombstone artwork={oneArtistArtworkData} />
-      )
+      const { queryByText } = renderWithWrappers(<TestRenderer />)
       expect(queryByText("Follow")).toBeTruthy()
     })
   })

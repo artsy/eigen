@@ -1,11 +1,11 @@
 import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsListFeaturedTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { MediumCard } from "palette"
 import { graphql, QueryRenderer, RelayEnvironmentProvider } from "react-relay"
 import { FeaturedRail } from "./ViewingRoomsListFeatured"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe(FeaturedRail, () => {
   const TestRenderer = () => (

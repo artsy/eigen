@@ -1,16 +1,17 @@
 import { PartnerOverviewTestsQuery } from "__generated__/PartnerOverviewTestsQuery.graphql"
 import { ArtistListItem } from "app/Components/ArtistListItem"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "./PartnerOverview"
 
 const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQuery["rawResponse"]["partner"]> = {
   id: "293032r423",
   slug: "gagosian",
-  internalID: "4d8b92c44eb68a1b2c0004cb",
+  internalID: "4d8b92c44eb68a1b2c0004cb", // pragma: allowlist secret
   name: "Gagosian",
   cities: [],
   profile: {
@@ -27,7 +28,7 @@ const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQuery["rawResponse
 describe("PartnerOverview", () => {
   const TestRenderer = () => (
     <QueryRenderer<PartnerOverviewTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query PartnerOverviewTestsQuery @raw_response_type {
           partner(id: "gagosian") {
@@ -62,13 +63,11 @@ describe("PartnerOverview", () => {
       },
     }
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          partner: partnerWithArtists,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        partner: partnerWithArtists,
+      },
     })
     const lists = tree.root.findAllByType(ArtistListItem)
     expect(lists.length).toBe(2)
@@ -82,13 +81,11 @@ describe("PartnerOverview", () => {
       },
     }
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          partner: partnerWithBio,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        partner: partnerWithBio,
+      },
     })
     expect(extractText(tree.root)).toContain("Nullam quis risus")
   })
@@ -102,13 +99,11 @@ describe("PartnerOverview", () => {
     }
 
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          partner: partnerWithBio,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        partner: partnerWithBio,
+      },
     })
     expect(extractText(tree.root)).toContain("Nullam quis risus")
   })
@@ -121,13 +116,11 @@ describe("PartnerOverview", () => {
       },
     }
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          partner: partnerWithArtists,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        partner: partnerWithArtists,
+      },
     })
     const lists = tree.root.findAllByType(ArtistListItem)
     expect(lists.length).toBe(2)
@@ -144,7 +137,7 @@ const artists: NonNullable<
     node: {
       __typename: "Artist",
       id: "QXJ0aXN0OjU4NDU4ZDA2NzYyMmRkNjQ1YjAwMTA1OQ==",
-      internalID: "58458d067622dd645b001059",
+      internalID: "58458d067622dd645b001059", // pragma: allowlist secret
       slug: "virgil-abloh",
       name: "Virgil Abloh",
       initials: "VA",
@@ -167,7 +160,7 @@ const artists: NonNullable<
     node: {
       __typename: "Artist",
       id: "QXJ0aXN0OjU4M2UwNGIwYjIwMmEzNjQ2NzAwMDVhYg==",
-      internalID: "583e04b0b202a364670005ab",
+      internalID: "583e04b0b202a364670005ab", // pragma: allowlist secret
       slug: "alex-israel-and-bret-easton-ellis",
       name: "Alex Israel and Bret Easton Ellis",
       initials: "AIB",

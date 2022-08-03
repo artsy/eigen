@@ -4,12 +4,12 @@ import { ArtworkFilterOptionsScreen } from "app/Components/ArtworkFilter"
 import About from "app/Components/Gene/About"
 import { GeneArtworks } from "app/Components/Gene/GeneArtworks"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { TouchableHighlightColor } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { Gene } from "./Gene"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 describe("Gene", () => {
   const geneID = "gene-id"

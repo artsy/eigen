@@ -1,10 +1,10 @@
 import { ShipsToSectionTestsQuery } from "__generated__/ShipsToSectionTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { ShipsToSectionFragmentContainer } from "./Components/ShipsToSection"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const order = {
   requestedFulfillment: {

@@ -1,12 +1,12 @@
 import { InquiryButtonsTestsQuery } from "__generated__/InquiryButtonsTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { InquiryButtonsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 jest.mock("app/Scenes/Artwork/Components/CommercialButtons/InquiryModal", () => {
   return {

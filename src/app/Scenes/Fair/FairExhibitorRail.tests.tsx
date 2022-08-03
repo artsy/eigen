@@ -1,8 +1,10 @@
 import { FairExhibitorRailTestsQuery } from "__generated__/FairExhibitorRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -14,7 +16,7 @@ describe("FairExhibitors", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairExhibitorRailTestsQuery>
-        environment={env}
+        environment={getRelayEnvironment()}
         query={graphql`
           query FairExhibitorRailTestsQuery($showID: String!) @relay_test_operation {
             show(id: $showID) {
@@ -38,9 +40,7 @@ describe("FairExhibitors", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
+    resolveMostRecentRelayOperation(mockResolvers)
 
     return tree
   }

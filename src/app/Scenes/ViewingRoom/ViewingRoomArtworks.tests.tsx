@@ -1,5 +1,6 @@
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import {
@@ -12,7 +13,6 @@ import { FlatList, TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { tracks, ViewingRoomArtworksContainer } from "./ViewingRoomArtworks"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 describe("ViewingRoom", () => {
   const TestRenderer = () => (

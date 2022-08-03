@@ -1,15 +1,16 @@
 import { ConversationsTestsQuery } from "__generated__/ConversationsTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 import { ConversationsContainer } from "./Conversations"
 
 describe("messaging inbox", () => {
   const TestRenderer = () => (
     <QueryRenderer<ConversationsTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ConversationsTestsQuery @relay_test_operation {
           me {
@@ -30,11 +31,7 @@ describe("messaging inbox", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 

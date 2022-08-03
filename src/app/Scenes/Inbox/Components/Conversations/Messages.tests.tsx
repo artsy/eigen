@@ -1,13 +1,14 @@
 import { MessagesTestsQuery } from "__generated__/MessagesTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Flex, Text } from "palette"
 import "react-native"
 import { RefreshControl } from "react-native"
 import { QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
 
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import Messages from "./Messages"
 
 jest.mock("@react-native-community/netinfo", () => {
@@ -32,7 +33,7 @@ const onRefresh = jest.fn()
 
 const TestRenderer = () => (
   <QueryRenderer<MessagesTestsQuery>
-    environment={env}
+    environment={getRelayEnvironment()}
     query={graphql`
       query MessagesTestsQuery($conversationID: String!) @relay_test_operation {
         me {
@@ -55,11 +56,7 @@ const TestRenderer = () => (
 
 const getWrapper = (mockResolvers = {}) => {
   const tree = renderWithWrappersLEGACY(<TestRenderer />)
-  act(() => {
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-  })
+  resolveMostRecentRelayOperation(mockResolvers)
   return tree
 }
 

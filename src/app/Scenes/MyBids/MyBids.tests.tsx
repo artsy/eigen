@@ -3,8 +3,10 @@ import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { PlaceholderText } from "app/utils/placeholders"
 import { graphql, QueryRenderer } from "react-relay"
-import { act, ReactTestInstance } from "react-test-renderer"
+import { ReactTestInstance } from "react-test-renderer"
 
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { ActiveLotStanding } from "./Components/ActiveLotStanding"
 import { ClosedLotStanding } from "./Components/ClosedLotStanding"
 import { WatchedLot } from "./Components/WatchedLot"
@@ -27,7 +29,7 @@ const activeSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
 describe("My Bids", () => {
   const TestRenderer = () => (
     <QueryRenderer<MyBidsTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MyBidsTestsQuery @relay_test_operation {
           me {
@@ -48,11 +50,7 @@ describe("My Bids", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 

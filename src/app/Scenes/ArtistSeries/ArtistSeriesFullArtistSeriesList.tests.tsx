@@ -1,17 +1,18 @@
 import { ArtistSeriesFullArtistSeriesListTestsQuery } from "__generated__/ArtistSeriesFullArtistSeriesListTestsQuery.graphql"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 describe("Full Artist Series List", () => {
   const TestRenderer = () => (
     <QueryRenderer<ArtistSeriesFullArtistSeriesListTestsQuery>
-      environment={env}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query ArtistSeriesFullArtistSeriesListTestsQuery @raw_response_type {
           artist(id: "a-great-artist") {
@@ -32,13 +33,11 @@ describe("Full Artist Series List", () => {
 
   const getWrapper = () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          ...ArtistSeriesFullArtistSeriesListFixture,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        ...ArtistSeriesFullArtistSeriesListFixture,
+      },
     })
     return tree
   }

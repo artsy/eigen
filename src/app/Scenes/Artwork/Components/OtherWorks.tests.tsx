@@ -1,6 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { OtherWorksTestsQuery } from "__generated__/OtherWorksTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"

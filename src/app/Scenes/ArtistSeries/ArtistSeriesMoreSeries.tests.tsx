@@ -1,11 +1,13 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistSeriesMoreSeriesTestsQuery } from "__generated__/ArtistSeriesMoreSeriesTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import {
   ArtistSeriesMoreSeries,
   ArtistSeriesMoreSeriesFragmentContainer,
 } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -16,7 +18,7 @@ const trackEvent = useTracking().trackEvent
 describe("ArtistSeriesMoreSeries", () => {
   const TestRenderer = () => (
     <QueryRenderer<ArtistSeriesMoreSeriesTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ArtistSeriesMoreSeriesTestsQuery @raw_response_type {
           artistSeries(id: "pumpkins") {
@@ -50,13 +52,11 @@ describe("ArtistSeriesMoreSeries", () => {
 
   const getWrapper = (testFixture: any) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          ...testFixture,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        ...testFixture,
+      },
     })
     return tree
   }

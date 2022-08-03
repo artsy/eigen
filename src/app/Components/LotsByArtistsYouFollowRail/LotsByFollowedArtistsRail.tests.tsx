@@ -1,6 +1,7 @@
 import { LotsByFollowedArtistsRailTestsQuery } from "__generated__/LotsByFollowedArtistsRailTestsQuery.graphql"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"

@@ -2,14 +2,15 @@ import { PartnerEntityHeaderTestsQuery } from "__generated__/PartnerEntityHeader
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { PartnerEntityHeaderFragmentContainer } from "./PartnerEntityHeader"
 
 describe("PartnerEntityHeader", () => {
   const TestRenderer = () => (
     <QueryRenderer<PartnerEntityHeaderTestsQuery>
-      environment={env}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query PartnerEntityHeaderTestsQuery($id: String!) @relay_test_operation {
           partner(id: $id) {
@@ -30,11 +31,7 @@ describe("PartnerEntityHeader", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 

@@ -1,7 +1,8 @@
 import { PartnerArtworkTestsQuery } from "__generated__/PartnerArtworkTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { PartnerArtworkFixture } from "./__fixtures__/PartnerArtwork-fixture"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./PartnerArtwork"
 
@@ -9,7 +10,7 @@ describe("PartnerArtwork", () => {
   it("renders the artworks", async () => {
     const TestRenderer = () => (
       <QueryRenderer<PartnerArtworkTestsQuery>
-        environment={env}
+        environment={getRelayEnvironment()}
         query={graphql`
           query PartnerArtworkTestsQuery @raw_response_type {
             partner(id: "anderson-fine-art-gallery-flickinger-collection") {
@@ -29,11 +30,9 @@ describe("PartnerArtwork", () => {
     )
 
     renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: PartnerArtworkFixture,
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: PartnerArtworkFixture,
     })
   })
 })

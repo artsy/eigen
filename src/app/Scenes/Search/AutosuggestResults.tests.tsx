@@ -2,10 +2,10 @@ import { AutosuggestResultsPaginationQuery$rawResponse } from "__generated__/Aut
 import { AutosuggestResultsQuery$rawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
-import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { rejectMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { CatchErrors } from "app/utils/CatchErrors"
 import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
@@ -150,7 +150,6 @@ console.error = (...args: any[]) => {
 
 describe("AutosuggestResults", () => {
   beforeEach(() => {
-    env.mockClear()
     consoleErrorMock.mockClear()
     notifyRecentSearchMock.mockClear()
     inputBlurMock.mockClear()
@@ -169,13 +168,15 @@ describe("AutosuggestResults", () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" />)
     expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "AutosuggestResultsQuery"
+    expect(
+      getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+    ).toBe("AutosuggestResultsQuery")
+    expect(getMockRelayEnvironment().mock.getMostRecentOperation().request.variables.query).toBe(
+      "michael"
     )
-    expect(env.mock.getMostRecentOperation().request.variables.query).toBe("michael")
 
     act(() => {
-      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
 
     expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(1)
@@ -184,29 +185,31 @@ describe("AutosuggestResults", () => {
   it(`doesn't call loadMore until you start scrolling`, () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" />)
     act(() => {
-      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
     expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(1)
 
-    expect(env.mock.getAllOperations()).toHaveLength(0)
+    expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(0)
 
     // even if AboveTheFoldFlatList calls onEndReached, we ignore it until the user explicitly scrolls
     act(() => {
       tree.root.findByType(AboveTheFoldFlatList).props.onEndReached()
     })
-    expect(env.mock.getAllOperations()).toHaveLength(0)
+    expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(0)
 
     act(() => {
       tree.root.findByType(AboveTheFoldFlatList).props.onScrollBeginDrag()
     })
-    expect(env.mock.getAllOperations()).toHaveLength(1)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "AutosuggestResultsPaginationQuery"
+    expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(1)
+    expect(
+      getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+    ).toBe("AutosuggestResultsPaginationQuery")
+    expect(getMockRelayEnvironment().mock.getMostRecentOperation().request.variables.cursor).toBe(
+      "page-2"
     )
-    expect(env.mock.getMostRecentOperation().request.variables.cursor).toBe("page-2")
 
     act(() => {
-      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 })
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 })
     })
 
     expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(2)
@@ -217,14 +220,16 @@ describe("AutosuggestResults", () => {
     act(() => {
       tree.root.findByType(AboveTheFoldFlatList).props.onEndReached()
     })
-    expect(env.mock.getAllOperations()).toHaveLength(1)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-      "AutosuggestResultsPaginationQuery"
+    expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(1)
+    expect(
+      getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+    ).toBe("AutosuggestResultsPaginationQuery")
+    expect(getMockRelayEnvironment().mock.getMostRecentOperation().request.variables.cursor).toBe(
+      "page-3"
     )
-    expect(env.mock.getMostRecentOperation().request.variables.cursor).toBe("page-3")
 
     act(() => {
-      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 })
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 })
     })
 
     expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(3)
@@ -236,7 +241,7 @@ describe("AutosuggestResults", () => {
   it(`scrolls back to the top when the query changes`, async () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" />)
     act(() => {
-      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
     const scrollToOffsetMock = jest.fn()
     tree.root.findByType(AboveTheFoldFlatList).findByType(FlatList).instance.scrollToOffset =
@@ -246,7 +251,7 @@ describe("AutosuggestResults", () => {
       tree.update(<TestWrapper query="michaela" />)
     })
     act(() => {
-      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
 
     expect(scrollToOffsetMock).toHaveBeenCalledWith({ animated: true, offset: 0 })
@@ -254,23 +259,31 @@ describe("AutosuggestResults", () => {
 
   it(`shows the loading spinner until there's no more data`, async () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" />)
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+    act(() =>
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+    )
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
 
     act(() => tree.root.findByType(AboveTheFoldFlatList).props.onScrollBeginDrag())
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 }))
+    act(() =>
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 })
+    )
 
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
 
     act(() => tree.root.findByType(AboveTheFoldFlatList).props.onEndReached())
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 }))
+    act(() =>
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 })
+    )
 
     expect(tree.root.findAllByType(Spinner)).toHaveLength(0)
   })
 
   it(`gives an appropriate message when there's no search results`, () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" />)
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixtureEmpty }))
+    act(() =>
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixtureEmpty })
+    )
 
     expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
     expect(extractText(tree.root)).toContain("Sorry, we couldn’t find anything for “michael.”")
@@ -281,7 +294,9 @@ describe("AutosuggestResults", () => {
 
   it(`optionally hides the result type`, () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" showResultType={false} />)
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+    act(() =>
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+    )
     expect(extractText(tree.root)).not.toContain("Artist")
   })
 
@@ -290,7 +305,9 @@ describe("AutosuggestResults", () => {
     const tree = renderWithWrappersLEGACY(
       <TestWrapper query="michael" showResultType={false} onResultPress={spy} />
     )
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+    act(() =>
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+    )
     tree.root.findByType(AutosuggestSearchResult).props.onResultPress()
     expect(spy).toHaveBeenCalled()
   })
@@ -304,7 +321,9 @@ describe("AutosuggestResults", () => {
   it("should hide the loading placeholder when results are received", () => {
     const { queryByLabelText } = renderWithWrappers(<TestWrapper query="michael" />)
 
-    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+    act(() =>
+      getMockRelayEnvironment().mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
+    )
 
     expect(queryByLabelText("Autosuggest results are loading")).toBeFalsy()
   })
@@ -312,7 +331,7 @@ describe("AutosuggestResults", () => {
   it("should show the default error message", async () => {
     const { getByText } = renderWithWrappers(<TestWrapper query="michael" />)
 
-    rejectMostRecentRelayOperation(env, new Error("Bad connection"))
+    rejectMostRecentRelayOperation(new Error("Bad connection"))
 
     expect(
       getByText("There seems to be a problem with the connection. Please try again shortly.")
@@ -324,7 +343,7 @@ describe("AutosuggestResults", () => {
       <TestWrapper query="michael" showOnRetryErrorMessage />
     )
 
-    rejectMostRecentRelayOperation(env, new Error("Bad connection"))
+    rejectMostRecentRelayOperation(new Error("Bad connection"))
 
     expect(getByText("Unable to load")).toBeTruthy()
   })

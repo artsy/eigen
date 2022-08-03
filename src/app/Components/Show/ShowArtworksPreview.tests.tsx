@@ -1,14 +1,14 @@
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-
 import { ShowArtworksPreviewTestsQuery } from "__generated__/ShowArtworksPreviewTestsQuery.graphql"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, QueryRenderer } from "react-relay"
 import { ShowArtworksPreviewContainer as ShowArtworksPreview } from "./ShowArtworksPreview"
 
 it("renders without throwing an error", async () => {
   const TestRenderer = () => (
     <QueryRenderer<ShowArtworksPreviewTestsQuery>
-      environment={env}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query ShowArtworksPreviewTestsQuery @raw_response_type {
           show(id: "anderson-fine-art-gallery-flickinger-collection") {
@@ -28,23 +28,22 @@ it("renders without throwing an error", async () => {
   )
 
   renderWithWrappersLEGACY(<TestRenderer />)
-  act(() => {
-    env.mock.resolveMostRecentOperation({
-      errors: [],
-      data: {
-        show: {
-          followedArtists: { edges: [] },
-          artists: [],
-          images: [],
-          coverImage: null,
-          partner: { __typename: "Partner", name: "Test Partner" },
-          isStubShow: false,
-          name: "Test Show",
-          slug: "test-show",
-          artworks: { edges: [] },
-          counts: { artworks: 10 },
-        },
+
+  resolveMostRecentRelayOperationRawPayload({
+    errors: [],
+    data: {
+      show: {
+        followedArtists: { edges: [] },
+        artists: [],
+        images: [],
+        coverImage: null,
+        partner: { __typename: "Partner", name: "Test Partner" },
+        isStubShow: false,
+        name: "Test Show",
+        slug: "test-show",
+        artworks: { edges: [] },
+        counts: { artworks: 10 },
       },
-    })
+    },
   })
 })

@@ -1,4 +1,5 @@
 import { OrderDetailsTestsQuery } from "__generated__/OrderDetailsTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -17,7 +18,6 @@ import { ShipsToSectionFragmentContainer } from "./Components/ShipsToSection"
 import { SoldBySectionFragmentContainer } from "./Components/SoldBySection"
 import { SummarySectionFragmentContainer } from "./Components/SummarySection"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const order = {
   requestedFulfillment: { __typename: "CommerceShip", name: "my name" },

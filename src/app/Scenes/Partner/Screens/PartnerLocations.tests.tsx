@@ -1,4 +1,5 @@
 import { PartnerLocationsTestsQuery } from "__generated__/PartnerLocationsTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -11,7 +12,7 @@ describe("PartnerLocations", () => {
     return (
       <QueryRenderer<PartnerLocationsTestsQuery>
         variables={{ partnerID: "gagosian" }}
-        environment={env}
+        environment={getRelayEnvironment()}
         query={graphql`
           query PartnerLocationsTestsQuery @raw_response_type {
             partner(id: "gagosian") {

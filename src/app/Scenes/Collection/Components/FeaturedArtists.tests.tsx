@@ -1,12 +1,12 @@
 import { fireEvent } from "@testing-library/react-native"
 import { FeaturedArtistsTestsQuery } from "__generated__/FeaturedArtistsTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { postEventToProviders } from "app/utils/track/providers"
 import { graphql, QueryRenderer } from "react-relay"
 import { CollectionFeaturedArtistsContainer as FeaturedArtists } from "./FeaturedArtists"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 jest.unmock("react-tracking")
 

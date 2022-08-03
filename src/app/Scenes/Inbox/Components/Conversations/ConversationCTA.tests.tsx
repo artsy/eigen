@@ -1,11 +1,13 @@
 import { ConversationCTATestsQuery } from "__generated__/ConversationCTATestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { AlertCircleFillIcon, Color, Flex, MoneyFillIcon } from "palette"
 import { ElementType } from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { act, ReactTestRenderer } from "react-test-renderer"
+import { ReactTestRenderer } from "react-test-renderer"
 
 import { ConversationCTA, ConversationCTAFragmentContainer } from "./ConversationCTA"
 import { CTAPopUp } from "./CTAPopUp"
@@ -15,7 +17,7 @@ import { ReviewOfferButton } from "./ReviewOfferButton"
 describe("ConversationCTA", () => {
   const TestRenderer = ({ showCTA = true }: { showCTA?: boolean }) => (
     <QueryRenderer<ConversationCTATestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ConversationCTATestsQuery($conversationID: String!) @relay_test_operation {
           me {
@@ -64,11 +66,7 @@ describe("ConversationCTA", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 

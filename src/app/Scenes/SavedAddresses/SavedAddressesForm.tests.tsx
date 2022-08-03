@@ -6,9 +6,9 @@ import { Checkbox } from "palette/elements/Checkbox"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import { graphql, QueryRenderer } from "react-relay"
 
-import { SavedAddressesFormContainer, SavedAddressesFormQueryRenderer } from "./SavedAddressesForm"
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { SavedAddressesFormContainer, SavedAddressesFormQueryRenderer } from "./SavedAddressesForm"
 
 describe(SavedAddressesFormQueryRenderer, () => {
   const TestRenderer = ({ addressId }: { addressId?: string }) => (

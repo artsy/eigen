@@ -2,10 +2,10 @@ import { InboxTestsQuery } from "__generated__/InboxTestsQuery.graphql"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
-import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { OperationDescriptor } from "relay-runtime"
 
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { InboxContainer } from "./Inbox"
 
@@ -26,7 +26,7 @@ jest.mock("app/Scenes/MyBids/MyBids", () => {
 const getWrapper = (mockResolvers: MockResolvers = {}) => {
   const TestRenderer = () => (
     <QueryRenderer<InboxTestsQuery>
-      environment={env}
+      environment={getMockRelayEnvironment()}
       variables={{}}
       query={graphql`
         query InboxTestsQuery @relay_test_operation {
@@ -47,10 +47,7 @@ const getWrapper = (mockResolvers: MockResolvers = {}) => {
 
   const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
 
-  env.mock.resolveMostRecentOperation((operation: OperationDescriptor) => {
-    return MockPayloadGenerator.generate(operation, mockResolvers)
-  })
-
+  resolveMostRecentRelayOperation(mockResolvers)
   return wrapper
 }
 

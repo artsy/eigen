@@ -5,8 +5,8 @@ import { getMockRelayEnvironment, getRelayEnvironment } from "app/relay/defaultE
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 
-import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "./SavedAddresses"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "./SavedAddresses"
 
 describe(SavedAddressesQueryRenderer, () => {
   const TestRenderer = () => (

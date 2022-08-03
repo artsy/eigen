@@ -3,6 +3,8 @@ import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 import { AuctionResultsRailTestsQuery } from "__generated__/AuctionResultsRailTestsQuery.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -12,7 +14,7 @@ import { AuctionResultsRailFragmentContainer } from "./AuctionResultsRail"
 describe("AuctionResultsRailFragmentContainer", () => {
   const TestRenderer = () => (
     <QueryRenderer<AuctionResultsRailTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query AuctionResultsRailTestsQuery @raw_response_type {
           me {
@@ -33,13 +35,11 @@ describe("AuctionResultsRailFragmentContainer", () => {
 
   it("doesn't throw when rendered", () => {
     renderWithWrappersLEGACY(<TestRenderer />)
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          me: meResponseMock,
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Query: () => ({
+        me: meResponseMock,
+      }),
+    })
   })
 
   it("looks correct when rendered with sales missing auctionResultsByFollowedArtists", () => {
@@ -49,24 +49,20 @@ describe("AuctionResultsRailFragmentContainer", () => {
     })
 
     renderWithWrappersLEGACY(<TestRenderer />)
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          me: auctionResultsCopy,
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Query: () => ({
+        me: auctionResultsCopy,
+      }),
+    })
   })
 
   it("routes to auction-results-for-artists-you-follow URL", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          me: meResponseMock,
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Query: () => ({
+        me: meResponseMock,
+      }),
+    })
 
     first(tree.root.findAllByType(SectionTitle))?.props.onPress()
     expect(navigate).toHaveBeenCalledWith("/auction-results-for-artists-you-follow")

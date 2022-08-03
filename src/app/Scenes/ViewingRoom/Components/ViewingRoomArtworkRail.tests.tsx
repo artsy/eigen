@@ -2,13 +2,13 @@ import { ViewingRoomArtworkRailTestsQuery } from "__generated__/ViewingRoomArtwo
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { postEventToProviders } from "app/utils/track/providers"
 import { graphql, QueryRenderer } from "react-relay"
 import { tracks, ViewingRoomArtworkRailContainer } from "./ViewingRoomArtworkRail"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 jest.unmock("react-tracking")
 
@@ -62,7 +62,7 @@ describe("ViewingRoomArtworkRail", () => {
             {
               node: {
                 href: "/artwork/nicolas-party-rocks-ii",
-                internalID: "5deff4b96fz7e7000f36ce37",
+                internalID: "5deff4b96fz7e7000f36ce37", // pragma: allowlist secret
                 slug: "nicolas-party-rocks-ii",
                 artistNames: ["Nicolas Party"],
                 image: {
@@ -74,8 +74,8 @@ describe("ViewingRoomArtworkRail", () => {
             },
             {
               node: {
-                internalID: "5d14c764d2f1db001243a81e",
-                slug: "nicolas-party-still-life-no-011",
+                internalID: "5d14c764d2f1db001243a81e", // pragma: allowlist secret
+                slug: "nicolas-party-still-life-no-011", // pragma: allowlist secret
                 artistNames: "Nicolas Party",
                 href: "/artwork/nicolas-party-still-life-no-011",
                 saleMessage: "$25,000",

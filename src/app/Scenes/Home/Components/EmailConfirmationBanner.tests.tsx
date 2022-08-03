@@ -5,9 +5,13 @@ import { ReactTestRenderer } from "react-test-renderer"
 
 import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import {
+  rejectMostRecentRelayOperation,
+  resolveMostRecentRelayOperationRawPayload,
+} from "app/tests/resolveMostRecentRelayOperation"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { EmailConfirmationBannerFragmentContainer } from "./EmailConfirmationBanner"
 
@@ -16,7 +20,7 @@ const originalError = console.error
 describe("EmailConfirmationBanner", () => {
   const TestRenderer = () => (
     <QueryRenderer<EmailConfirmationBannerTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query EmailConfirmationBannerTestsQuery @raw_response_type {
           me {
@@ -37,7 +41,7 @@ describe("EmailConfirmationBanner", () => {
 
   const mount = (data: { me: CleanRelayFragment<EmailConfirmationBanner_me$data> }) => {
     const component = renderWithWrappersLEGACY(<TestRenderer />)
-    env.mock.resolveMostRecentOperation({ data, errors: [] })
+    resolveMostRecentRelayOperationRawPayload({ data, errors: [] })
     return component
   }
 
@@ -90,7 +94,7 @@ describe("EmailConfirmationBanner", () => {
 
     getSubmitButton(component).props.onPress()
 
-    env.mock.resolveMostRecentOperation({
+    resolveMostRecentRelayOperationRawPayload({
       data: {
         sendConfirmationEmail: {
           confirmationOrError: {
@@ -112,7 +116,7 @@ describe("EmailConfirmationBanner", () => {
 
     getSubmitButton(component).props.onPress()
 
-    env.mock.resolveMostRecentOperation({
+    resolveMostRecentRelayOperationRawPayload({
       data: {
         sendConfirmationEmail: {
           confirmationOrError: {
@@ -134,7 +138,7 @@ describe("EmailConfirmationBanner", () => {
 
     getSubmitButton(component).props.onPress()
 
-    env.mock.resolveMostRecentOperation({
+    resolveMostRecentRelayOperationRawPayload({
       data: {
         sendConfirmationEmail: {
           confirmationOrError: {
@@ -161,7 +165,7 @@ describe("EmailConfirmationBanner", () => {
 
     getSubmitButton(component).props.onPress()
 
-    rejectMostRecentRelayOperation(env, new Error("failed to fetch"))
+    rejectMostRecentRelayOperation(new Error("failed to fetch"))
 
     await flushPromiseQueue()
     expect(extractText(component)).toEqual("Something went wrong. Try again?")

@@ -1,5 +1,6 @@
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -7,7 +8,6 @@ import { DecreaseIcon, IncreaseIcon } from "palette"
 import { ReactTestInstance } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "./MarketStats"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const trackEvent = useTracking().trackEvent
 

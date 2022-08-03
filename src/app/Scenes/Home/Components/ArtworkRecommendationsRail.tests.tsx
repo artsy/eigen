@@ -1,8 +1,8 @@
 import { ArtworkRecommendationsRailTestsQuery } from "__generated__/ArtworkRecommendationsRailTestsQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { act } from "react-test-renderer"
 import { ArtworkRecommendationsRail } from "./ArtworkRecommendationsRail"
 
 describe("ArtworkRecommendationsRail", () => {
@@ -28,13 +28,11 @@ describe("ArtworkRecommendationsRail", () => {
   }
 
   const getWrapper = async () => {
-    const tree = renderWithRelayWrappers(<TestRenderer />, mockEnvironment)
+    const tree = renderWithRelayWrappers(<TestRenderer />)
 
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({
-        errors: [],
-        data: { me: mockMe },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: { me: mockMe },
     })
 
     await flushPromiseQueue()

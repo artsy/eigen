@@ -1,13 +1,8 @@
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { AuctionBuyersPremiumQueryRenderer } from "./AuctionBuyersPremium"
 
 describe("AuctionBuyersPremium", () => {
-  beforeEach(() => {
-    mockEnvironment.mockClear()
-  })
-
   const TestRenderer = () => {
     return <AuctionBuyersPremiumQueryRenderer saleID="saleID" />
   }

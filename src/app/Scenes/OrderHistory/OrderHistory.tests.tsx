@@ -5,15 +5,15 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 
-import { OrderHistoryContainer } from "./OrderHistory"
-import { OrderHistoryQueryRender } from "./OrderHistory"
-import { OrderHistoryPlaceholder } from "./OrderHistory"
-import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import {
   resolveMostRecentRelayOperation,
   resolveMostRecentRelayOperationRawPayload,
 } from "app/tests/resolveMostRecentRelayOperation"
+import { OrderHistoryContainer } from "./OrderHistory"
+import { OrderHistoryQueryRender } from "./OrderHistory"
+import { OrderHistoryPlaceholder } from "./OrderHistory"
+import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 
 describe(OrderHistoryQueryRender, () => {
   it("Loads OrderHistoryQueryRender", () => {

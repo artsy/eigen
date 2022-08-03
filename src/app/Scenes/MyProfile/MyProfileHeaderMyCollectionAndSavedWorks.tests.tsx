@@ -2,6 +2,7 @@ import { MyProfileHeaderMyCollectionAndSavedWorksTestsQuery } from "__generated_
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -16,7 +17,6 @@ import {
   LOCAL_PROFILE_ICON_PATH_KEY,
   MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
 } from "./MyProfileHeaderMyCollectionAndSavedWorks"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 jest.mock("./LoggedInUserInfo")
 

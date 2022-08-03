@@ -1,15 +1,17 @@
 import { ShowArtworksTestsQuery } from "__generated__/ShowArtworksTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { ShowArtworksPaginationContainer as ShowArtworks } from "app/Scenes/Show/Components/ShowArtworks"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 
 describe("ShowArtworks", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(
       <QueryRenderer<ShowArtworksTestsQuery>
-        environment={env}
+        environment={getRelayEnvironment()}
         query={graphql`
           query ShowArtworksTestsQuery($showID: String!) @relay_test_operation {
             show(id: $showID) {
@@ -36,9 +38,7 @@ describe("ShowArtworks", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
+    resolveMostRecentRelayOperation(mockResolvers)
 
     return tree
   }

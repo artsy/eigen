@@ -14,8 +14,6 @@ describe("UploadPhotos", () => {
     </RelayEnvironmentProvider>
   )
 
-  beforeEach(() => mockEnvironment.mockClear())
-
   it("renders correct explanation for upload photos form", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
     expect(

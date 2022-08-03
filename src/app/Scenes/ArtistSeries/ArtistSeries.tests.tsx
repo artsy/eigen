@@ -11,8 +11,9 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 
-import { ArtistSeriesListItem } from "./ArtistSeriesListItem"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { ArtistSeriesListItem } from "./ArtistSeriesListItem"
 
 const trackEvent = useTracking().trackEvent
 
@@ -20,7 +21,7 @@ describe("Artist Series Rail", () => {
   const TestRenderer = () => (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<ArtistSeriesTestsQuery>
-        environment={env}
+        environment={getMockRelayEnvironment()}
         query={graphql`
           query ArtistSeriesTestsQuery @relay_test_operation {
             artistSeries(id: "pumpkins") {
@@ -42,11 +43,7 @@ describe("Artist Series Rail", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 

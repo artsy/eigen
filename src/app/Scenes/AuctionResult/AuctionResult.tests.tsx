@@ -2,12 +2,14 @@ import { AuctionResultTestsQuery } from "__generated__/AuctionResultTestsQuery.g
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Image, ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act, ReactTestRenderer } from "react-test-renderer"
+import { ReactTestRenderer } from "react-test-renderer"
 
 import { AuctionResultFragmentContainer } from "./AuctionResult"
 
@@ -50,11 +52,7 @@ describe("AuctionResult", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 
@@ -76,11 +74,10 @@ describe("AuctionResult", () => {
   describe("Auction Result is not empty", () => {
     it("show the mid-estimate", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          AuctionResult: () => mockAuctionResult,
-        })
-      )
+      resolveMostRecentRelayOperation({
+        AuctionResult: () => mockAuctionResult,
+      })
+
       expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.value).toEqual("262%")
       expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.shortDescription).toEqual(
         "mid-estimate"
@@ -89,21 +86,19 @@ describe("AuctionResult", () => {
 
     it("shows the correct sale date", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          AuctionResult: () => mockAuctionResult,
-        })
-      )
+      resolveMostRecentRelayOperation({
+        AuctionResult: () => mockAuctionResult,
+      })
+
       expect(extractText(tree.root.findByProps({ testID: "saleDate" }))).toContain("Nov 18, 2021")
     })
 
     it("have comparable works", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          AuctionResult: () => mockAuctionResult,
-        })
-      )
+      resolveMostRecentRelayOperation({
+        AuctionResult: () => mockAuctionResult,
+      })
+
       expect(tree.root.findAllByType(AuctionResultListItemFragmentContainer)).toHaveLength(3)
     })
   })

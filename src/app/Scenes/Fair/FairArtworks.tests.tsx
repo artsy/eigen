@@ -2,16 +2,18 @@ import { FairArtworksTestsQuery } from "__generated__/FairArtworksTestsQuery.gra
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { FairArtworksFragmentContainer } from "app/Scenes/Fair/Components/FairArtworks"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 
 describe("FairArtworks", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairArtworksTestsQuery>
-        environment={env}
+        environment={getRelayEnvironment()}
         query={graphql`
           query FairArtworksTestsQuery($fairID: String!) @relay_test_operation {
             fair(id: $fairID) {
@@ -38,9 +40,7 @@ describe("FairArtworks", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
+    resolveMostRecentRelayOperation(mockResolvers)
 
     return tree
   }

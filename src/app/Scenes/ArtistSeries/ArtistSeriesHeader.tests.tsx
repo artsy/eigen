@@ -1,14 +1,15 @@
 import { ArtistSeriesHeaderTestsQuery } from "__generated__/ArtistSeriesHeaderTestsQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 describe("Artist Series Header", () => {
   const TestRenderer = () => (
     <QueryRenderer<ArtistSeriesHeaderTestsQuery>
-      environment={env}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query ArtistSeriesHeaderTestsQuery @raw_response_type {
           artistSeries(id: "pumpkins") {
@@ -30,14 +31,14 @@ describe("Artist Series Header", () => {
   it("renders the Artist Series header", () => {
     const wrapper = () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      act(() => {
-        env.mock.resolveMostRecentOperation({
-          errors: [],
-          data: {
-            ...ArtistSeriesHeaderFixture,
-          },
-        })
+
+      resolveMostRecentRelayOperationRawPayload({
+        errors: [],
+        data: {
+          ...ArtistSeriesHeaderFixture,
+        },
       })
+
       return tree
     }
 

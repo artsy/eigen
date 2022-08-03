@@ -24,6 +24,8 @@ import { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 import { act } from "react-test-renderer"
 
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
+import { MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Artwork, ArtworkQueryRenderer } from "./Artwork"
 import { ArtworkDetails } from "./Components/ArtworkDetails"
@@ -63,8 +65,10 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
 
 describe("Artwork", () => {
   function mockMostRecentOperation(name: ArtworkQueries, mockResolvers: MockResolvers = {}) {
-    expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
-    environment.mock.resolveMostRecentOperation((operation) => {
+    expect(
+      getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+    ).toBe(name)
+    getMockRelayEnvironment().mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         ID({ path }) {
           // need to make sure the artwork has a stable ID between Above and Below queries otherwise bad cache behaviour
@@ -74,6 +78,7 @@ describe("Artwork", () => {
         },
         ...mockResolvers,
       })
+      return result
     })
   }
   const TestRenderer = ({ isVisible = true }) => (
@@ -84,7 +89,7 @@ describe("Artwork", () => {
         <ArtworkQueryRenderer
           isVisible={isVisible}
           artworkID="ignored"
-          environment={environment}
+          environment={getMockRelayEnvironment()}
           tracking={{ trackEvent: jest.fn() } as any}
         />
       </ModalStack>
@@ -258,7 +263,7 @@ describe("Artwork", () => {
       },
     })
 
-    expect(environment.mock.getMostRecentOperation()).toMatchObject({
+    expect(getMockRelayEnvironment().mock.getMostRecentOperation()).toMatchObject({
       request: {
         variables: {
           input: {
@@ -277,7 +282,7 @@ describe("Artwork", () => {
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
     mockMostRecentOperation("ArtworkBelowTheFoldQuery")
 
-    expect(environment.mock.getAllOperations()).toHaveLength(0)
+    expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(0)
 
     navigationEvents.emit("modalDismissed")
     mockMostRecentOperation("ArtworkRefetchQuery")
@@ -297,7 +302,7 @@ describe("Artwork", () => {
     })
     expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe("my-special-artwork")
 
-    expect(environment.mock.getMostRecentOperation()).toMatchObject({
+    expect(getMockRelayEnvironment().mock.getMostRecentOperation()).toMatchObject({
       request: {
         node: {
           operation: {
@@ -328,7 +333,7 @@ describe("Artwork", () => {
     tree.update(<TestRenderer isVisible={false} />)
     tree.update(<TestRenderer isVisible />)
 
-    expect(environment.mock.getMostRecentOperation()).toMatchObject({
+    expect(getMockRelayEnvironment().mock.getMostRecentOperation()).toMatchObject({
       request: {
         node: {
           operation: {

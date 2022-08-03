@@ -1,12 +1,13 @@
 import { ConversationTestsQuery } from "__generated__/ConversationTestsQuery.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
 import { navigationEvents } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import Composer from "app/Scenes/Inbox/Components/Conversations/Composer"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Touchable } from "palette"
-import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act, ReactTestInstance } from "react-test-renderer"
+import { ReactTestInstance } from "react-test-renderer"
 
 import { Conversation, ConversationFragmentContainer } from "./Conversation"
 import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
@@ -31,7 +32,7 @@ jest.mock("@react-native-community/netinfo", () => {
 
 const TestRenderer = () => (
   <QueryRenderer<ConversationTestsQuery>
-    environment={env}
+    environment={getRelayEnvironment()}
     query={graphql`
       query ConversationTestsQuery($conversationID: String!) @relay_test_operation {
         me {
@@ -52,11 +53,7 @@ const TestRenderer = () => (
 
 const getWrapper = (mockResolvers = {}) => {
   const tree = renderWithWrappersLEGACY(<TestRenderer />)
-  act(() => {
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-  })
+  resolveMostRecentRelayOperation(mockResolvers)
   return tree
 }
 

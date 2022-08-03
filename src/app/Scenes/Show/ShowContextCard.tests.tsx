@@ -2,9 +2,11 @@ import { ShowContextCardTestsQuery } from "__generated__/ShowContextCardTestsQue
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -14,7 +16,7 @@ import { ShowContextCard, ShowContextCardFragmentContainer } from "./Components/
 describe("ShowContextCard", () => {
   const TestRenderer = () => (
     <QueryRenderer<ShowContextCardTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ShowContextCardTestsQuery($showID: String!) @relay_test_operation {
           show(id: $showID) {
@@ -35,11 +37,7 @@ describe("ShowContextCard", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 

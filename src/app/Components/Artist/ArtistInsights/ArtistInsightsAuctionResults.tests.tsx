@@ -5,6 +5,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { mockEdges } from "app/tests/resolveMostRecentRelayOperation"
@@ -15,7 +16,6 @@ import {
   ArtistInsightsAuctionResultsPaginationContainer,
   SortMode,
 } from "./ArtistInsightsAuctionResults"
-import { mockEnvironment } from "app/relay/defaultEnvironment"
 
 describe("ArtistInsightsAuctionResults", () => {
   const initialState: ArtworkFiltersState = {

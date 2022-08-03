@@ -1,5 +1,5 @@
 import { fireEvent } from "@testing-library/react-native"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -8,12 +8,10 @@ import { ArtworkDetails } from "../../Scenes/SellWithArtsy/SubmitArtwork/Artwork
 
 describe("ArtworkDetailsForm", () => {
   const TestRenderer = () => (
-    <RelayEnvironmentProvider environment={getRelayEnvironment()}>
+    <RelayEnvironmentProvider environment={getMockRelayEnvironment()}>
       <ArtworkDetails handlePress={jest.fn()} />
     </RelayEnvironmentProvider>
   )
-
-  beforeEach(() => mockEnvironment.mockClear())
 
   describe("ArtistAutoSuggest", () => {
     it("renders input correctly", () => {

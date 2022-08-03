@@ -1,10 +1,12 @@
 import { MakeOfferModalTestsQuery } from "__generated__/MakeOfferModalTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { act, ReactTestInstance } from "react-test-renderer"
+import { ReactTestInstance } from "react-test-renderer"
 
 import { EditionSelectBox } from "./EditionSelectBox"
 import { InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
@@ -39,7 +41,7 @@ interface TestRenderProps {
 const TestRenderer = ({ renderer }: TestRenderProps) => {
   return (
     <QueryRenderer<MakeOfferModalTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query MakeOfferModalTestsQuery @relay_test_operation {
           artwork(id: "pumpkins") {
@@ -107,11 +109,7 @@ const mockSingleEditionResolver = {
 
 const getWrapper = (mockResolvers = mockResolver, renderer = renderComponent) => {
   const tree = renderWithWrappersLEGACY(<TestRenderer renderer={renderer} />)
-  act(() => {
-    env.mock.resolveMostRecentOperation((operation) => {
-      return MockPayloadGenerator.generate(operation, mockResolvers)
-    })
-  })
+  resolveMostRecentRelayOperation(mockResolvers)
   return tree
 }
 

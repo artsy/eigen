@@ -1,5 +1,6 @@
 import { FeaturedCollectionsRailTestsQuery } from "__generated__/FeaturedCollectionsRailTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import {
   FeaturedCollectionsRail,
   FeaturedCollectionsRailContainer,
@@ -7,6 +8,7 @@ import {
 } from "app/Scenes/Collection/Components/CollectionHubsRails/FeaturedCollections/FeaturedCollectionsRail"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -18,7 +20,7 @@ describe("Featured Collections Rail", () => {
 
   const TestRenderer = () => (
     <QueryRenderer<FeaturedCollectionsRailTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FeaturedCollectionsRailTestsQuery @raw_response_type {
           marketingCollection(slug: "post-war") {
@@ -48,13 +50,11 @@ describe("Featured Collections Rail", () => {
 
   const getWrapper = () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          ...FeaturedCollectionsFixture,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        ...FeaturedCollectionsFixture,
+      },
     })
     return tree
   }

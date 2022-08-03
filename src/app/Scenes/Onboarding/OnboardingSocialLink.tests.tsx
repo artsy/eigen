@@ -1,5 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { OAuthProvider } from "app/auth/types"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Platform } from "react-native"

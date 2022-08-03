@@ -1,7 +1,9 @@
 import { FairTestsQuery } from "__generated__/FairTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { NavigationalTabs, Tab } from "palette/elements/Tabs"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -20,7 +22,7 @@ describe("Fair", () => {
 
   const TestRenderer = () => (
     <QueryRenderer<FairTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FairTestsQuery($fairID: String!) @relay_test_operation {
           fair(id: $fairID) {
@@ -41,11 +43,7 @@ describe("Fair", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 
@@ -249,16 +247,12 @@ describe("Fair", () => {
       it("should not be rendered when fair is not active", () => {
         const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
-        act(() => {
-          env.mock.resolveMostRecentOperation((operation) =>
-            MockPayloadGenerator.generate(operation, {
-              Fair: () => ({
-                isActive: false,
-                slug: "a-non-active-fair",
-                isReverseImageSearchEnabled: true,
-              }),
-            })
-          )
+        resolveMostRecentRelayOperation({
+          Fair: () => ({
+            isActive: false,
+            slug: "a-non-active-fair",
+            isReverseImageSearchEnabled: true,
+          }),
         })
 
         expect(queryByLabelText("Search by image")).toBeNull()
@@ -267,16 +261,12 @@ describe("Fair", () => {
       it("should not be rendered when fair doesn't have any indexed artworks", () => {
         const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
-        act(() => {
-          env.mock.resolveMostRecentOperation((operation) =>
-            MockPayloadGenerator.generate(operation, {
-              Fair: () => ({
-                isActive: true,
-                slug: "an-active-fair-without-indexed-artworks",
-                isReverseImageSearchEnabled: false,
-              }),
-            })
-          )
+        resolveMostRecentRelayOperation({
+          Fair: () => ({
+            isActive: true,
+            slug: "an-active-fair-without-indexed-artworks",
+            isReverseImageSearchEnabled: false,
+          }),
         })
 
         expect(queryByLabelText("Search by image")).toBeNull()
@@ -285,16 +275,12 @@ describe("Fair", () => {
       it("should be rendered when fair has indexed artworks, is active and feature flag is enabled", () => {
         const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
-        act(() => {
-          env.mock.resolveMostRecentOperation((operation) =>
-            MockPayloadGenerator.generate(operation, {
-              Fair: () => ({
-                isActive: true,
-                slug: "an-active-fair-with-indexed-artworks",
-                isReverseImageSearchEnabled: true,
-              }),
-            })
-          )
+        resolveMostRecentRelayOperation({
+          Fair: () => ({
+            isActive: true,
+            slug: "an-active-fair-with-indexed-artworks",
+            isReverseImageSearchEnabled: true,
+          }),
         })
 
         expect(queryByLabelText("Search by image")).toBeTruthy()

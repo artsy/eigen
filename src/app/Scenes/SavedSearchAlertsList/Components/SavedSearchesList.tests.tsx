@@ -1,15 +1,15 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { SavedSearchesListPaginationContainer as SavedSearchesList } from "./SavedSearchesList"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 describe("SavedSearches", () => {
   const TestRenderer = () => (
     <QueryRenderer<SavedSearchesListTestsQuery>
-      environment={getRelayEnvironment()}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query SavedSearchesListTestsQuery @relay_test_operation {
           me {

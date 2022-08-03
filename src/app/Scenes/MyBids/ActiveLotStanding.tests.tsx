@@ -1,9 +1,10 @@
 import { ActiveLotStanding_saleArtwork$data } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { merge } from "lodash"
-import { ActiveLotStanding } from "./Components/ActiveLotStanding"
 import { RelayEnvironmentProvider } from "react-relay"
+import { ActiveLotStanding } from "./Components/ActiveLotStanding"
 
 const defaultSaleArtwork = {
   isHighestBidder: true,
@@ -35,7 +36,7 @@ describe("ActiveLotStanding", () => {
   describe("User winning status", () => {
     fit("says 'Highest bid' if the user is winning the lot", () => {
       const tree = renderWithWrappersLEGACY(
-        <RelayEnvironmentProvider>
+        <RelayEnvironmentProvider environment={getRelayEnvironment()}>
           <ActiveLotStanding
             saleArtwork={saleArtworkFixture({
               isHighestBidder: true,
