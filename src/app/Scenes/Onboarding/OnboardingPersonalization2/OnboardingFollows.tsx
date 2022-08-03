@@ -68,7 +68,7 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
               <OnboardingOrderedSetScreen id={setId} />
             )}
           </Flex>
-          <Flex py={2} position="absolute" left={0} right={0} bottom={0} backgroundColor="white100">
+          <Flex pt={2} position="absolute" left={0} right={0} bottom={0} backgroundColor="white100">
             <Button
               variant="fillDark"
               disabled={state.followedIds.length === 0}
@@ -79,6 +79,7 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
             </Button>
           </Flex>
         </Flex>
+        <Screen.SafeBottomPadding />
       </Screen.Body>
     </Screen>
   )
