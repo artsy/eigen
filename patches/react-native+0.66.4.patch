@@ -73,6 +73,25 @@ index b4dab8e..2195f8e 100644
      // Get new, unique touch identifier for the react touch
      const NSUInteger RCTMaxTouches = 11; // This is the maximum supported by iDevices
      NSInteger touchID = ([_reactTouches.lastObject[@"identifier"] integerValue] + 1) % RCTMaxTouches;
+diff --git a/node_modules/react-native/jest/assetFileTransformer.js b/node_modules/react-native/jest/assetFileTransformer.js
+index 03b018f..5d090b2 100644
+--- a/node_modules/react-native/jest/assetFileTransformer.js
++++ b/node_modules/react-native/jest/assetFileTransformer.js
+@@ -20,12 +20,12 @@ module.exports = {
+   // the correct images are loaded for components. Essentially
+   // require('img1.png') becomes `Object { "testUri": 'path/to/img1.png' }` in
+   // the Jest snapshot.
+-  process: (_, filename) =>
++  process: (_, filename) => ({ code:
+     `module.exports = {
+       testUri:
+         ${JSON.stringify(
+           path.relative(__dirname, filename).replace(/\\/g, '/'),
+         )}
+-    };`,
++    };`}),
+   getCacheKey: createCacheKeyFunction([__filename]),
+ };
 diff --git a/node_modules/react-native/scripts/find-node.sh b/node_modules/react-native/scripts/find-node.sh
 index c498ba6..11338d0 100755
 --- a/node_modules/react-native/scripts/find-node.sh

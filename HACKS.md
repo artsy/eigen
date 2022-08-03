@@ -357,3 +357,14 @@ Maybe we don't? We can try to remove it at any point, and see if it works. Try w
 
 This is needed because xcode 14 says that React-Core-AccessibilityResources and some other pods require a development team.
 We don't really need a dev team for these. Probably some future version of cocoapods will fix this.
+
+
+## react-native patch-package (process function part only).
+
+#### When can we remove this:
+
+When we move to RN 0.70.0 or newer.
+
+#### Explanation/Context:
+
+RN 0.69 and earlier have a jest file transformer that is using the jest 27 and older style transformer. We use jest 28 already, so we need to have this patch in order for jest to work.
