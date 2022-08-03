@@ -433,6 +433,7 @@ export const modules = defineModules({
   ReverseImage: reactModule(ReverseImage, {
     hidesBackButton: true,
     fullBleed: true,
+    alwaysPresentModally: true,
   }),
   ReverseImageMultipleResults: reactModule(ReverseImageMultipleResultsQueryRenderer, {
     hidesBackButton: true,
