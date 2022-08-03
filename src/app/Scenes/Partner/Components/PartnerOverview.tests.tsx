@@ -11,7 +11,7 @@ import { PartnerOverviewFragmentContainer as PartnerOverview } from "./PartnerOv
 const PartnerOverviewFixture: NonNullable<PartnerOverviewTestsQuery["rawResponse"]["partner"]> = {
   id: "293032r423",
   slug: "gagosian",
-  internalID: "4d8b92c44eb68a1b2c0004cb",
+  internalID: "4d8b92c44eb68a1b2c0004cb", // pragma: allowlist secret
   name: "Gagosian",
   cities: [],
   profile: {
@@ -137,7 +137,7 @@ const artists: NonNullable<
     node: {
       __typename: "Artist",
       id: "QXJ0aXN0OjU4NDU4ZDA2NzYyMmRkNjQ1YjAwMTA1OQ==",
-      internalID: "58458d067622dd645b001059",
+      internalID: "58458d067622dd645b001059", // pragma: allowlist secret
       slug: "virgil-abloh",
       name: "Virgil Abloh",
       initials: "VA",
@@ -160,7 +160,7 @@ const artists: NonNullable<
     node: {
       __typename: "Artist",
       id: "QXJ0aXN0OjU4M2UwNGIwYjIwMmEzNjQ2NzAwMDVhYg==",
-      internalID: "583e04b0b202a364670005ab",
+      internalID: "583e04b0b202a364670005ab", // pragma: allowlist secret
       slug: "alex-israel-and-bret-easton-ellis",
       name: "Alex Israel and Bret Easton Ellis",
       initials: "AIB",

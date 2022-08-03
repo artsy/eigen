@@ -88,12 +88,12 @@ const PartnerHeaderFixture = {
     counts: {
       follows: 136999,
     },
-    id: "UHJvZmlsZTo1MTU5ZGE2MjlhNjA4MzI0MzkwMDAwMzU=",
-    internalID: "5159da629a60832439000035",
+    id: "UHJvZmlsZTo1MTU5ZGE2MjlhNjA4MzI0MzkwMDAwMzU=", // pragma: allowlist secret
+    internalID: "5159da629a60832439000035", // pragma: allowlist secret
     isFollowed: false,
   },
   categories: [],
-  internalID: "4d8b92c44eb68a1b2c0004cb",
+  internalID: "4d8b92c44eb68a1b2c0004cb", // pragma: allowlist secret
   slug: "gagosian",
 }
 
@@ -107,11 +107,11 @@ const BlackOwnedPartnerHeaderFixture = {
     counts: {
       follows: 136999,
     },
-    id: "UHJvZmlsZTo1MTU5ZGE2MjlhNjA4MzI0MzkwMDAwMzU=",
-    internalID: "5159da629a60832439000035",
+    id: "UHJvZmlsZTo1MTU5ZGE2MjlhNjA4MzI0MzkwMDAwMzU=", // pragma: allowlist secret
+    internalID: "5159da629a60832439000035", // pragma: allowlist secret
     isFollowed: false,
   },
   categories: [{ name: "Black Owned" }],
-  internalID: "4d8b92c44eb68a1b2c0004cb",
+  internalID: "4d8b92c44eb68a1b2c0004cb", // pragma: allowlist secret
   slug: "gagosian",
 }

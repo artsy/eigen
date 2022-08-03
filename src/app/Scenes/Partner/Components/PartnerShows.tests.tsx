@@ -87,7 +87,7 @@ describe("PartnerShows", () => {
 const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
   id: "gagosian-id",
   slug: "gagosian",
-  internalID: "4d8b92c44eb68a1b2c0004cb",
+  internalID: "4d8b92c44eb68a1b2c0004cb", // pragma: allowlist secret
   recentShows: {
     edges: [{ node: { id: "ye", isDisplayable: true } }],
   },
@@ -104,8 +104,8 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
           __typename: "Show",
           isDisplayable: true,
           partner: null,
-          id: "U2hvdzo1ZDY0MjBjZjJhNDFlNDAwMGYxYzAzYTE=",
-          internalID: "5d6420cf2a41e4000f1c03a1",
+          id: "U2hvdzo1ZDY0MjBjZjJhNDFlNDAwMGYxYzAzYTE=", // pragma: allowlist secret
+          internalID: "5d6420cf2a41e4000f1c03a1", // pragma: allowlist secret
           slug: "gagosian-richard-serra-triptychs-and-diptychs",
           name: "Richard Serra: Triptychs and Diptychs",
           exhibitionPeriod: "Sep 16 – Nov 2",
@@ -120,8 +120,8 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
           __typename: "Show",
           isDisplayable: true,
           partner: null,
-          id: "U2hvdzo1ZDY0MWJmMjAzNDliYTAwMTAxMzM4NmQ=",
-          internalID: "5d641bf20349ba001013386d",
+          id: "U2hvdzo1ZDY0MWJmMjAzNDliYTAwMTAxMzM4NmQ=", // pragma: allowlist secret
+          internalID: "5d641bf20349ba001013386d", // pragma: allowlist secret
           slug: "gagosian-giuseppe-penone-foglie-di-bronzo-slash-leaves-of-bronze",
           name: "Giuseppe Penone: Foglie di bronzo / Leaves of Bronze",
           exhibitionPeriod: "Sep 12 – Nov 9",
@@ -142,8 +142,8 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
           __typename: "Show",
           isDisplayable: true,
           partner: null,
-          id: "U2hvdzo1ZDY0MjAwODEyZDI5MDAwMGUxZTVkMzU=",
-          internalID: "5d64200812d290000e1e5d35",
+          id: "U2hvdzo1ZDY0MjAwODEyZDI5MDAwMGUxZTVkMzU=", // pragma: allowlist secret
+          internalID: "5d64200812d290000e1e5d35", // pragma: allowlist secret
           slug: "gagosian-albert-oehlen-new-paintings",
           name: "Albert Oehlen: New Paintings",
           exhibitionPeriod: "Sep 12 – Nov 9",
@@ -188,7 +188,7 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
         node: {
           __typename: "Show",
           isDisplayable: true,
-          id: "U2hvdzo1ZDY0MGRlMjlhZjkwYTAwMTI3YmQzZjU=",
+          id: "U2hvdzo1ZDY0MGRlMjlhZjkwYTAwMTI3YmQzZjU=", // pragma: allowlist secret
           name: "Domestic Horror",
           slug: "gagosian-domestic-horror",
           exhibitionPeriod: "Sep 5 – Oct 19",
@@ -204,7 +204,7 @@ const PartnerShowsFixture: PartnerShowsTestsQuery["rawResponse"]["partner"] = {
         node: {
           __typename: "Show",
           isDisplayable: true,
-          id: "U2hvdzo1ZDY0MTlmYjE5NmUxMDAwMGRmMWRkY2E=",
+          id: "U2hvdzo1ZDY0MTlmYjE5NmUxMDAwMGRmMWRkY2E=", // pragma: allowlist secret
           name: "Nathaniel Mary Quinn: Hollow and Cut",
           slug: "gagosian-nathaniel-mary-quinn-hollow-and-cut",
           exhibitionPeriod: "Sep 11 – Oct 19",
