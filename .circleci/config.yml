@@ -80,7 +80,6 @@ commands:
           name: Compile query map
           command: yarn relay
   test-js:
-    parallelism: 4
     steps:
       - restore_cache:
           keys:
@@ -332,6 +331,7 @@ jobs:
       name: node/default
       tag: "14.17.1"
     resource_class: large
+    parallelism: 4
     steps:
       - checkout
       - generate-checksums
@@ -521,8 +521,8 @@ jobs:
       - run:
           name: Release app version
           command: ./scripts/release-ios-app-branch
+
 workflows:
-  version: 2
   nightly:
     triggers:
       - schedule:
