@@ -435,10 +435,6 @@ export const modules = defineModules({
     fullBleed: true,
     alwaysPresentModally: true,
   }),
-  ReverseImageMultipleResults: reactModule(ReverseImageMultipleResultsQueryRenderer, {
-    hidesBackButton: true,
-    fullBleed: true,
-  }),
   Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell" }, [
     SellWithArtsyHomeScreenQuery,
   ]),

@@ -1,19 +1,19 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import { ReverseImageMultipleResultsQuery } from "__generated__/ReverseImageMultipleResultsQuery.graphql"
-import { goBack } from "app/navigation/navigate"
 import { ArtsyLogoIcon, BackButton, Flex } from "palette"
 import { Suspense } from "react"
 import { StyleSheet } from "react-native"
 import { graphql } from "react-relay"
 import { useLazyLoadQuery } from "react-relay"
 import { HeaderContainer } from "../../Components/HeaderContainer"
+import { ReverseImageNavigationStack } from "../../types"
 import { ReverseImageArtworksRail } from "./ReverseImageArtworksRail"
 
-interface ReverseImageMultipleResultsProps {
-  artworkIDs: string[]
-}
+type Props = StackScreenProps<ReverseImageNavigationStack, "MultipleResults">
 
-export const ReverseImageMultipleResults: React.FC<ReverseImageMultipleResultsProps> = (props) => {
-  const { artworkIDs } = props
+export const ReverseImageMultipleResults: React.FC<Props> = (props) => {
+  const { route, navigation } = props
+  const { artworkIDs } = route.params
   const data = useLazyLoadQuery<ReverseImageMultipleResultsQuery>(
     reverseImageMultipleResultsQuery,
     {
@@ -21,10 +21,14 @@ export const ReverseImageMultipleResults: React.FC<ReverseImageMultipleResultsPr
     }
   )
 
+  const handleGoBack = () => {
+    navigation.goBack()
+  }
+
   return (
     <Flex bg="black100" flex={1}>
       <HeaderContainer>
-        <BackButton color="white100" onPress={() => goBack()} />
+        <BackButton color="white100" onPress={handleGoBack} />
         <Flex
           {...StyleSheet.absoluteFillObject}
           pointerEvents="none"
@@ -45,9 +49,7 @@ export const ReverseImageMultipleResults: React.FC<ReverseImageMultipleResultsPr
   )
 }
 
-export const ReverseImageMultipleResultsQueryRenderer: React.FC<
-  ReverseImageMultipleResultsProps
-> = (props) => {
+export const ReverseImageMultipleResultsScreen: React.FC<Props> = (props) => {
   return (
     <Suspense fallback={null}>
       <ReverseImageMultipleResults {...props} />
