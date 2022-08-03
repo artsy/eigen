@@ -1,10 +1,12 @@
 import { Flex, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Animated, Easing, Image } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler"
+import { Animated, Easing, Image, TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
 const AnimatedFlex = Animated.createAnimatedComponent(Flex)
+
+const ANIMATION_DELAY = 600
+const ANIMATION_DURATION = 300
 
 export const AnimatedTooltip: React.FC = () => {
   const [isTooltipVisible, setIsTooltipVisible] = useState(true)
@@ -14,10 +16,10 @@ export const AnimatedTooltip: React.FC = () => {
 
   const pushRightAnimation = () => {
     Animated.timing(leftPosition, {
-      delay: 500,
+      delay: ANIMATION_DELAY,
       toValue: 1,
-      duration: 300,
-      easing: Easing.out(Easing.linear),
+      duration: ANIMATION_DURATION,
+      easing: Easing.out(Easing.quad),
       useNativeDriver: true,
     }).start()
   }
