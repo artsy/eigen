@@ -2,6 +2,7 @@ import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingR
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { once } from "lodash"
@@ -18,7 +19,6 @@ import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtwork
 import { ViewingRoomHeaderContainer } from "./Components/ViewingRoomHeader"
 import { ViewingRoomSubsectionsContainer } from "./Components/ViewingRoomSubsections"
 import { ViewingRoomViewWorksButton } from "./Components/ViewingRoomViewWorksButton"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 interface ViewingRoomProps {
   viewingRoom: ViewingRoom_viewingRoom$data

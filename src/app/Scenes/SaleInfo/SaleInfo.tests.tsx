@@ -4,9 +4,9 @@ import { extractText } from "app/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 
-import { SaleInfoContainer, tests } from "./SaleInfo"
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { SaleInfoContainer, tests } from "./SaleInfo"
 
 describe("SaleInfo", () => {
   const TestRenderer = () => (
