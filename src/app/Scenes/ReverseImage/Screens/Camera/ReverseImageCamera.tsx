@@ -4,7 +4,7 @@ import { useImageSearchV2 } from "app/utils/useImageSearchV2"
 import { compact } from "lodash"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Alert, Image, Linking, StyleSheet, TouchableOpacity } from "react-native"
+import { Image, Linking, StyleSheet, TouchableOpacity } from "react-native"
 import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
 import styled from "styled-components/native"
 import { HeaderContainer } from "../../Components/HeaderContainer"
@@ -67,9 +67,9 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       }
 
       if (results.length === 1) {
-        Alert.alert("Artwork Found", "Navigate to artwork screen")
-
-        return
+        return navigation.navigate("Artwork", {
+          artworkId: results[0]!.artwork!.internalID,
+        })
       }
 
       const artworkIDs = compact(results.map((result) => result?.artwork?.internalID))
