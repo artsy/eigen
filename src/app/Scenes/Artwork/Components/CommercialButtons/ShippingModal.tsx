@@ -1,6 +1,6 @@
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import { LocationAutocompleteInput } from "app/Components/LocationAutocomplete"
+import { LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { Flex, Text } from "palette"
 import React, { useState } from "react"
@@ -36,7 +36,7 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
       </FancyModalHeader>
       <ScrollView keyboardShouldPersistTaps="always" contentContainerStyle={{ flex: 1 }}>
         <Flex m={2} flex={1}>
-          <LocationAutocompleteInput
+          <LocationAutocomplete
             title="Location"
             placeholder="Add Location"
             onChange={setLocationDetails}

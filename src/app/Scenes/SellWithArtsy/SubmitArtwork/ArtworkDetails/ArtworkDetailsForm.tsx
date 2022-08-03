@@ -1,7 +1,4 @@
-import {
-  buildLocationDisplay,
-  LocationAutocompleteInput,
-} from "app/Components/LocationAutocomplete"
+import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import { GlobalStore } from "app/store/GlobalStore"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import { LocationWithDetails } from "app/utils/googleMaps"
@@ -213,7 +210,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         </Flex>
       </InfoModal>
       <StandardSpace />
-      <LocationAutocompleteInput
+      <LocationAutocomplete
         title="City"
         placeholder="Enter city where artwork is located"
         displayLocation={buildLocationDisplay(values.location)}

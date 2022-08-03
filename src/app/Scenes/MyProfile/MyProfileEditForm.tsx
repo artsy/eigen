@@ -5,10 +5,7 @@ import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.gra
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
 import { Image } from "app/Components/Bidding/Elements/Image"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
-import {
-  buildLocationDisplay,
-  LocationAutocompleteInput,
-} from "app/Components/LocationAutocomplete"
+import { buildLocationDisplay, LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { navigate } from "app/navigation/navigate"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
@@ -241,7 +238,7 @@ export const MyProfileEditForm: React.FC = () => {
                 }}
               />
 
-              <LocationAutocompleteInput
+              <LocationAutocomplete
                 inputRef={locationInputRef}
                 title="Primary location"
                 placeholder="City name"

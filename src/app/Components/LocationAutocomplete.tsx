@@ -9,7 +9,7 @@ import React, { useEffect, useRef, useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 
-interface LocationAutocompleteInputProps extends Omit<InputProps, "onChange"> {
+interface LocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   floating?: boolean
   initialLocation?: LocationWithDetails | null
   displayLocation?: string
@@ -28,7 +28,7 @@ interface LocationAutocompleteInputProps extends Omit<InputProps, "onChange"> {
  *
  * @returns The `onChange` returns a location object with the type {@link LocationWithDetails}.
  */
-export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps> = ({
+export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   title,
   placeholder,
   initialLocation,
