@@ -1,13 +1,13 @@
 import { ViewingRoomViewWorksButtonTestsQuery } from "__generated__/ViewingRoomViewWorksButtonTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { tracks, ViewingRoomViewWorksButton } from "./ViewingRoomViewWorksButton"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe("ViewingRoomViewWorksButton", () => {
   const TestRenderer = () => (

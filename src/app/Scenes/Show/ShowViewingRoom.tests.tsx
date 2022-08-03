@@ -1,13 +1,13 @@
 import { ShowViewingRoomTestsQuery } from "__generated__/ShowViewingRoomTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { ShowViewingRoomFragmentContainer } from "./Components/ShowViewingRoom"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe("ShowViewingRoom", () => {
   const TestRenderer = () => (

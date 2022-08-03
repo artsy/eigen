@@ -1,14 +1,14 @@
 import { MyAccountTestsQuery } from "__generated__/MyAccountTestsQuery.graphql"
 import { MenuItem } from "app/Components/MenuItem"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Text } from "palette"
 import { Platform } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { MyAccountContainer } from "./MyAccount"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 const mockUnlinkFB = jest.fn()
 const mocklinkFB = jest.fn()

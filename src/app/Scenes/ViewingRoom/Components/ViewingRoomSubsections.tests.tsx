@@ -1,11 +1,11 @@
 import { ViewingRoomSubsectionsTestsQuery } from "__generated__/ViewingRoomSubsectionsTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { ViewingRoomSubsectionsContainer } from "./ViewingRoomSubsections"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 describe("ViewingRoomSubsections", () => {
   const TestRenderer = () => (

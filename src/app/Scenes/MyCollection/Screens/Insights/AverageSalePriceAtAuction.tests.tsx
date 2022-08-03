@@ -1,8 +1,8 @@
-import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
-import { AverageSalePriceAtAuction } from "./AverageSalePriceAtAuction"
 import { screen } from "@testing-library/react-native"
+import { renderWithRelayWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { waitForSuspenseToBeRemoved } from "app/tests/waitForSupenseToBeRemoved"
+import { AverageSalePriceAtAuction } from "./AverageSalePriceAtAuction"
 
 describe("AverageSalePriceAtAuction", () => {
   const TestRenderer = () => <AverageSalePriceAtAuction artistID="artist-id" />

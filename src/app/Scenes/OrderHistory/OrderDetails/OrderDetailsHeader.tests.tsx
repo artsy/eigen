@@ -1,11 +1,11 @@
 import { OrderDetailsHeaderTestsQuery } from "__generated__/OrderDetailsHeaderTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { OrderDetailsHeaderFragmentContainer } from "./Components/OrderDetailsHeader"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const mockInfo = {
   createdAt: "2021-06-02T14:51:19+03:00",

@@ -1,10 +1,10 @@
 import { InfiniteScrollArtworksGridTestsQuery } from "__generated__/InfiniteScrollArtworksGridTestsQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Button } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe("Artist Series Artworks", () => {
   const relayMock = {

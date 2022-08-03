@@ -3,9 +3,9 @@ import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 
-import { CreditCardSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { CreditCardSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
 
 describe("PaymentSection", () => {
   const TestRenderer = ({}) => (

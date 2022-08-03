@@ -1,12 +1,12 @@
 import { ViewingRoomHeaderTestsQuery } from "__generated__/ViewingRoomHeaderTestsQuery.graphql"
 import { CountdownTimer } from "app/Components/Countdown/CountdownTimer"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { graphql, QueryRenderer } from "react-relay"
 import { PartnerIconImage, ViewingRoomHeaderContainer } from "./ViewingRoomHeader"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe("ViewingRoomHeader", () => {
   const TestRenderer = () => (

@@ -1,7 +1,10 @@
+import { act } from "@testing-library/react-native"
 import { ViewingRoomTestsQuery } from "__generated__/ViewingRoomTestsQuery.graphql"
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -9,9 +12,6 @@ import { useTracking } from "react-tracking"
 import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
 import { ViewingRoomSubsections } from "./Components/ViewingRoomSubsections"
 import { ClosedNotice, tracks, ViewingRoomFragmentContainer } from "./ViewingRoom"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { act } from "@testing-library/react-native"
 
 describe("ViewingRoom", () => {
   const TestRenderer = () => (
