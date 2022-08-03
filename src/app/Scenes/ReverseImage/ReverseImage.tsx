@@ -1,5 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { ReverseImageArtworkNotFoundScreen } from "./Screens/ArtworkNotFound/ReverseImageArtworkNotFoundScreen"
 import { ReverseImageCameraScreen } from "./Screens/Camera/ReverseImageCamera"
 import { ReverseImageMultipleResultsScreen } from "./Screens/MultipleResults/ReverseImageMultipleResults"
 import { ReverseImageNavigationStack } from "./types"
@@ -19,6 +20,7 @@ export const ReverseImage = () => {
       >
         <Stack.Screen name="Camera" component={ReverseImageCameraScreen} />
         <Stack.Screen name="MultipleResults" component={ReverseImageMultipleResultsScreen} />
+        <Stack.Screen name="ArtworkNotFound" component={ReverseImageArtworkNotFoundScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

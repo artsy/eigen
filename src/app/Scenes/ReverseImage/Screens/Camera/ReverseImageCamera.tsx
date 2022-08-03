@@ -61,12 +61,9 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       const results = await handleSeachByImage(data)
 
       if (results.length === 0) {
-        Alert.alert(
-          "Artwork Not Found",
-          "We couldn’t find an artwork based on your photo. Please try again, or use the fair’s QR code."
-        )
-
-        return
+        return navigation.navigate("ArtworkNotFound", {
+          photoPath: data.path,
+        })
       }
 
       if (results.length === 1) {
