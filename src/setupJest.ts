@@ -4,6 +4,7 @@ import chalk from "chalk"
 import { expect } from "expect"
 import "jest-extended"
 import { format } from "util"
+import "react-native-get-random-values"
 
 // MARK: - General preparation
 

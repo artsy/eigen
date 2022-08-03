@@ -16,7 +16,7 @@ beforeEach(() => {
   fetchMock.resetMocks()
 })
 
-describe(VanityURLPossibleRedirect, () => {
+describe("VanityURLPossibleRedirect", () => {
   it("shows a loading spinner before anything has happened", async () => {
     fetchMockResponseOnce({
       status: 200,

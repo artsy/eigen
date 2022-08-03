@@ -1,5 +1,5 @@
 import { createFragmentContainer, graphql } from "react-relay"
-import { LotStatusListItem_saleArtwork$data } from "../../../../__generated__/LotStatusListItem_saleArtwork.graphql"
+import { LotStatusListItem_saleArtwork$data } from "__generated__/LotStatusListItem_saleArtwork.graphql"
 import { ActiveLotStandingFragmentContainer } from "./ActiveLotStanding"
 import { ClosedLotStandingFragmentContainer } from "./ClosedLotStanding"
 import { WatchedLotFragmentContainer } from "./WatchedLot"

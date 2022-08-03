@@ -10,7 +10,7 @@ import { Flex, Spacer, Spinner, Text } from "palette"
 import React, { useState } from "react"
 import { Animated, StyleSheet, View, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { ArtistShows2Query } from "../../../__generated__/ArtistShows2Query.graphql"
+import { ArtistShows2Query } from "__generated__/ArtistShows2Query.graphql"
 import { ArtistShowFragmentContainer } from "../../Components/Artist/ArtistShows/ArtistShow"
 
 interface Props {

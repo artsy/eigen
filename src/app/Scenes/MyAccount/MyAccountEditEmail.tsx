@@ -7,7 +7,7 @@ import { Input } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"
-import { MyAccountEditEmail_me$data } from "../../../__generated__/MyAccountEditEmail_me.graphql"
+import { MyAccountEditEmail_me$data } from "__generated__/MyAccountEditEmail_me.graphql"
 import {
   MyAccountFieldEditScreen,
   MyAccountFieldEditScreenPlaceholder,

@@ -5,7 +5,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { MyAccountEditPhone_me$data } from "../../../__generated__/MyAccountEditPhone_me.graphql"
+import { MyAccountEditPhone_me$data } from "__generated__/MyAccountEditPhone_me.graphql"
 import {
   MyAccountFieldEditScreen,
   MyAccountFieldEditScreenPlaceholder,
