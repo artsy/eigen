@@ -8,6 +8,7 @@ import { Alert, Linking, StyleSheet, TouchableOpacity } from "react-native"
 import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
 import styled from "styled-components/native"
 import { HeaderContainer } from "../../Components/HeaderContainer"
+import { HeaderTitle } from "../../Components/HeaderTitle"
 import { ReverseImageNavigationStack } from "../../types"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
@@ -148,11 +149,9 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         <Background>
           <HeaderContainer>
             <BackButton color="white100" onPress={goBack} />
-            <Flex {...StyleSheet.absoluteFillObject} justifyContent="center" alignItems="center">
-              <Text variant="md" color="white100">
-                {searchingByImage ? "Looking for Results..." : "Position Artwork in this Frame"}
-              </Text>
-            </Flex>
+            <HeaderTitle
+              title={searchingByImage ? "Looking for Results..." : "Position Artwork in this Frame"}
+            />
           </HeaderContainer>
         </Background>
 
