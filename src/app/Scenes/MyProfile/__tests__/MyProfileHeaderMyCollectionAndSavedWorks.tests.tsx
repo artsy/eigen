@@ -2,6 +2,8 @@ import { MyProfileHeaderMyCollectionAndSavedWorksTestsQuery } from "__generated_
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "app/navigation/navigate"
+import { FavoriteArtworksQueryRenderer } from "app/Scenes/Favorites/FavoriteArtworks"
+import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -11,14 +13,12 @@ import { Avatar } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
-import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
 import {
   LOCAL_PROFILE_ICON_PATH_KEY,
   MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
-} from "./MyProfileHeaderMyCollectionAndSavedWorks"
+} from "../MyProfileHeaderMyCollectionAndSavedWorks"
 
-jest.mock("./LoggedInUserInfo")
+jest.mock("../LoggedInUserInfo")
 jest.unmock("react-relay")
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
