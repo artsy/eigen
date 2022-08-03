@@ -3,12 +3,11 @@ import { ArtworkTombstone_artwork$data } from "__generated__/ArtworkTombstone_ar
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { RelayEnvironmentProvider } from "react-relay"
 import { ArtworkTombstone } from "./ArtworkTombstone"
 import { CertificateAuthenticityModal } from "./CertificateAuthenticityModal"
-import { RelayEnvironmentProvider } from "react-relay"
-import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {
