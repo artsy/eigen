@@ -10,6 +10,7 @@ import styled from "styled-components/native"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
 import { PhotoEntity, ReverseImageNavigationStack } from "../../types"
+import { CAMERA_BUTTONS_HEIGHT, CameraButtons } from "./Components/CameraButtons"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
 
@@ -166,30 +167,25 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
         <Background height={space("2")} />
 
-        <Background py={3} justifyContent="center" alignItems="center">
-          <TouchableOpacity onPress={takePhoto} disabled={!isCameraInitialized}>
-            <Flex width={50} height={50} borderRadius={25} bg="white100" />
-          </TouchableOpacity>
-
-          {!!device.hasFlash && (
-            <TouchableOpacity
-              onPress={toggleFlash}
-              style={{ position: "absolute", right: space("2") }}
-            >
-              <Flex
-                width={30}
-                height={30}
-                borderRadius={15}
-                bg={enableFlash ? "green100" : "white100"}
-              />
-            </TouchableOpacity>
-          )}
-        </Background>
+        {photo ? (
+          <Background height={CAMERA_BUTTONS_HEIGHT} />
+        ) : (
+          <CameraButtons
+            isCameraInitialized={isCameraInitialized}
+            takePhoto={takePhoto}
+            toggleFlash={toggleFlash}
+            deviceHasFlash={device.hasFlash}
+            isFlashEnabled={enableFlash}
+            bg="rgba(0, 0, 0, 0.6)"
+          />
+        )}
       </Flex>
     </Flex>
   )
 }
 
+const CAMERA_BACKGROUND_COLOR = "rgba(0, 0, 0, 0.6)"
+
 const Background = styled(Flex)`
-  background: rgba(0, 0, 0, 0.6);
+  background: ${CAMERA_BACKGROUND_COLOR};
 `
