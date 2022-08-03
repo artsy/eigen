@@ -1,6 +1,6 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { goBack } from "app/navigation/navigate"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
@@ -12,7 +12,6 @@ describe("EditSavedSearchAlert", () => {
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
-    mockEnvironment.mockClear()
     notificationPermissions.mockImplementationOnce((cb) =>
       cb(null, PushAuthorizationStatus.Authorized)
     )
@@ -83,7 +82,7 @@ describe("EditSavedSearchAlert", () => {
     fireEvent.press(getAllByText("Save Alert")[0])
 
     await waitFor(() => {
-      const operation = mockEnvironment.mock.getMostRecentOperation()
+      const operation = getMockRelayEnvironment().mock.getMostRecentOperation()
       expect(operation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
     })
 
@@ -94,7 +93,7 @@ describe("EditSavedSearchAlert", () => {
     })
 
     await waitFor(() => {
-      const operation = mockEnvironment.mock.getMostRecentOperation()
+      const operation = getMockRelayEnvironment().mock.getMostRecentOperation()
       expect(operation.request.variables.input).toEqual({
         searchCriteriaID: "savedSearchAlertId",
         attributes: {

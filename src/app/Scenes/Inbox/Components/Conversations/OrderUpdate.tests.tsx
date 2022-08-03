@@ -1,11 +1,12 @@
 import { OrderUpdateTestsQuery } from "__generated__/OrderUpdateTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { AlertCircleFillIcon, LinkText, MoneyFillIcon } from "palette"
 import "react-native"
 import { QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
 
 import { OrderUpdateFragmentContainer as OrderUpdate } from "./OrderUpdate"
@@ -26,7 +27,7 @@ jest.mock("@react-native-community/netinfo", () => {
 
 const TestRenderer = () => (
   <QueryRenderer<OrderUpdateTestsQuery>
-    environment={env}
+    environment={getRelayEnvironment()}
     query={graphql`
       query OrderUpdateTestsQuery($conversationID: String!) @relay_test_operation {
         me {
@@ -71,11 +72,7 @@ const getWrapper = (event = {}) => {
   }
   const tree = renderWithWrappersLEGACY(<TestRenderer />)
   const finalResolvers = { Conversation: () => mockConversation }
-  act(() => {
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, finalResolvers)
-    )
-  })
+  resolveMostRecentRelayOperation(finalResolvers)
   return tree
 }
 

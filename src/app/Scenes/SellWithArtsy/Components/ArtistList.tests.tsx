@@ -2,9 +2,11 @@ import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 
 import { ArtistListTestsQuery } from "__generated__/ArtistListTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ArtistListFragmentContainer } from "./ArtistList"
 

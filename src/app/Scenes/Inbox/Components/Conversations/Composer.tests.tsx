@@ -1,13 +1,14 @@
 import { waitFor } from "@testing-library/react-native"
 import { ComposerTestsQuery } from "__generated__/ComposerTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Button, Flex } from "palette"
 import { TextInput } from "react-native"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 import { ComposerFragmentContainer } from "./Composer"
 import { CTAPopUp } from "./CTAPopUp"
@@ -18,7 +19,7 @@ jest.unmock("react-tracking")
 
 const TestRenderer = (nonRelayProps: { disabled: boolean; value?: string }) => (
   <QueryRenderer<ComposerTestsQuery>
-    environment={env}
+    environment={getRelayEnvironment()}
     query={graphql`
       query ComposerTestsQuery @relay_test_operation {
         me {
@@ -44,11 +45,7 @@ const TestRenderer = (nonRelayProps: { disabled: boolean; value?: string }) => (
 const defaultProps = { disabled: false }
 const getWrapper = (mockResolvers = {}, nonRelayProps = {}) => {
   const tree = renderWithWrappersLEGACY(<TestRenderer {...{ ...defaultProps, ...nonRelayProps }} />)
-  act(() => {
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-  })
+  resolveMostRecentRelayOperation(mockResolvers)
   return tree
 }
 

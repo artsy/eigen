@@ -5,7 +5,6 @@ import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const CommerceShipOrder = {
   state: "SUBMITTED",

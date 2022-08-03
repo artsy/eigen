@@ -1,4 +1,5 @@
 import { OnboardingPersonalizationModalTestsQuery } from "__generated__/OnboardingPersonalizationModalTestsQuery.graphql"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -11,7 +12,7 @@ const goBackMock = jest.fn()
 describe("OnboardingPersonalizationModal", () => {
   const TestRenderer = () => (
     <QueryRenderer<OnboardingPersonalizationModalTestsQuery>
-      environment={getRelayEnvironment()}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query OnboardingPersonalizationModalTestsQuery($query: String!, $count: Int!)
         @relay_test_operation {
@@ -53,7 +54,7 @@ describe("OnboardingPersonalizationModal", () => {
 
     expect(searchInput.props.value).toEqual("artist")
 
-    const mostRecentOperation = mockEnvironment.mock.getMostRecentOperation()
+    const mostRecentOperation = getMockRelayEnvironment().mock.getMostRecentOperation()
 
     expect(mostRecentOperation.request.variables.query).toEqual("artist")
   })

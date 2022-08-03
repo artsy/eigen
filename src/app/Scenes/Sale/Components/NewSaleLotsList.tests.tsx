@@ -1,5 +1,6 @@
 import { NewSaleLotsListTestsQuery } from "__generated__/NewSaleLotsListTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -9,7 +10,7 @@ describe("NewSaleLotsList", () => {
   const TestRenderer = () => {
     return (
       <QueryRenderer<NewSaleLotsListTestsQuery>
-        environment={mockEnvironment}
+        environment={getRelayEnvironment()}
         query={graphql`
           query NewSaleLotsListTestsQuery($saleID: ID) @relay_test_operation {
             viewer {

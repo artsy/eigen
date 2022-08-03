@@ -2,6 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { SearchArtworksGridTestsQuery } from "__generated__/SearchArtworksGridTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
@@ -13,7 +14,7 @@ describe("SearchArtworksGrid", () => {
     return (
       <ArtworkFiltersStoreProvider>
         <QueryRenderer<SearchArtworksGridTestsQuery>
-          environment={environment}
+          environment={getRelayEnvironment()}
           query={graphql`
             query SearchArtworksGridTestsQuery(
               $input: FilterArtworksInput
@@ -43,7 +44,7 @@ describe("SearchArtworksGrid", () => {
 
   it("tracks filter modal opening", () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation()
     fireEvent.press(getByText("Sort & Filter"))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         Array [
@@ -61,7 +62,7 @@ describe("SearchArtworksGrid", () => {
 
   it("tracks filter modal closing", () => {
     const { container } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation()
     container.findByType(FancyModal).props.onBackgroundPressed()
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         Array [
@@ -80,7 +81,7 @@ describe("SearchArtworksGrid", () => {
   it('should display "Sort & Filter" label by default', () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation()
 
     expect(getByText("Sort & Filter")).toBeTruthy()
   })

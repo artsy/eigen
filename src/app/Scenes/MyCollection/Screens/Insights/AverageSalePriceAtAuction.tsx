@@ -1,7 +1,7 @@
 import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
-import React, { Suspense, useCallback, useState } from "react"
+import React, { useCallback, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { AverageSalePriceSelectArtistModal } from "./AverageSalePriceSelectArtistModal"
 

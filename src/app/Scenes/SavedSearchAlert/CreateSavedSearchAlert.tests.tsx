@@ -6,7 +6,7 @@ import {
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { SavedSearchEntity } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
@@ -69,7 +69,6 @@ describe("CreateSavedSearchAlert", () => {
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
-    mockEnvironment.mockClear()
     notificationPermissions.mockClear()
   })
 
@@ -89,7 +88,7 @@ describe("CreateSavedSearchAlert", () => {
 
   const mockOperationByName = async (operationName: string, mockResolvers: MockResolvers) => {
     await waitFor(() => {
-      const operation = mockEnvironment.mock.getMostRecentOperation()
+      const operation = getMockRelayEnvironment().mock.getMostRecentOperation()
 
       if (operation.fragment.node.name !== operationName) {
         throw new Error("Failed")

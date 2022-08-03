@@ -1,10 +1,11 @@
 import { fireEvent } from "@testing-library/react-native"
 import { InquiryPurchaseButtonTestsQuery } from "__generated__/InquiryPurchaseButtonTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 import { InquiryPurchaseButtonFragmentContainer } from "./InquiryPurchaseButton"
 
@@ -13,7 +14,7 @@ jest.spyOn(Alert, "alert")
 const TestRenderer = () => {
   return (
     <QueryRenderer<InquiryPurchaseButtonTestsQuery>
-      environment={environment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query InquiryPurchaseButtonTestsQuery($id: String!) @relay_test_operation {
           artwork(id: $id) {
@@ -43,11 +44,7 @@ const TestRenderer = () => {
 
 const getWrapper = (mockResolvers = {}) => {
   const tree = renderWithWrappers(<TestRenderer />)
-  act(() => {
-    environment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-  })
+  resolveMostRecentRelayOperation(mockResolvers)
   return tree
 }
 
@@ -60,19 +57,17 @@ describe("InquiryPurchaseButton", () => {
     })
 
     fireEvent.press(getByText("Purchase"))
-    environment.mock.resolveMostRecentOperation((operation) => {
-      return MockPayloadGenerator.generate(operation, {
-        Mutation: () => {
-          return {
-            createInquiryOrder: {
-              orderOrError: {
-                __typename: "CommerceOrderWithMutationSuccess",
-                order: { internalID: "4567" },
-              },
+    resolveMostRecentRelayOperation({
+      Mutation: () => {
+        return {
+          createInquiryOrder: {
+            orderOrError: {
+              __typename: "CommerceOrderWithMutationSuccess",
+              order: { internalID: "4567" },
             },
-          }
-        },
-      })
+          },
+        }
+      },
     })
 
     expect(navigate).toHaveBeenCalledWith("/orders/4567", {
@@ -90,19 +85,17 @@ describe("InquiryPurchaseButton", () => {
     })
 
     fireEvent.press(getByText("Purchase"))
-    environment.mock.resolveMostRecentOperation((operation) => {
-      return MockPayloadGenerator.generate(operation, {
-        Mutation: () => {
-          return {
-            createInquiryOrder: {
-              orderOrError: {
-                __typename: "CommerceOrderWithMutationFailure",
-                error: "Error",
-              },
+    resolveMostRecentRelayOperation({
+      Mutation: () => {
+        return {
+          createInquiryOrder: {
+            orderOrError: {
+              __typename: "CommerceOrderWithMutationFailure",
+              error: "Error",
             },
-          }
-        },
-      })
+          },
+        }
+      },
     })
     expect(Alert.alert).toHaveBeenCalled()
   })

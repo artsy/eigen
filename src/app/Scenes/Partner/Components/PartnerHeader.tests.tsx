@@ -1,15 +1,16 @@
 import { PartnerHeaderTestsQuery } from "__generated__/PartnerHeaderTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { Button } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { PartnerHeaderContainer as PartnerHeader } from "./PartnerHeader"
 
 describe("PartnerHeader", () => {
   const TestRenderer = () => (
     <QueryRenderer<PartnerHeaderTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query PartnerHeaderTestsQuery @raw_response_type {
           partner(id: "gagosian") {
@@ -30,13 +31,11 @@ describe("PartnerHeader", () => {
 
   it("renders artwork counts", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          partner: PartnerHeaderFixture,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        partner: PartnerHeaderFixture,
+      },
     })
 
     expect(extractText(tree.root)).toContain("1.2k works")
@@ -44,13 +43,11 @@ describe("PartnerHeader", () => {
 
   it("renders the partner name", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          partner: PartnerHeaderFixture,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        partner: PartnerHeaderFixture,
+      },
     })
 
     expect(extractText(tree.root)).toContain("Gagosian")
@@ -58,13 +55,11 @@ describe("PartnerHeader", () => {
 
   it("renders the follow button", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          partner: PartnerHeaderFixture,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        partner: PartnerHeaderFixture,
+      },
     })
 
     expect(extractText(tree.root.findByType(Button))).toContain("Follow")
@@ -72,13 +67,11 @@ describe("PartnerHeader", () => {
 
   it("renders the Black Owned marquee if the gallery has the 'Black Owned' category", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          partner: BlackOwnedPartnerHeaderFixture,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        partner: BlackOwnedPartnerHeaderFixture,
+      },
     })
 
     expect(extractText(tree.root)).toContain("Black Owned")

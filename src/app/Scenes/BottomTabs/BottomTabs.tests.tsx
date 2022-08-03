@@ -1,37 +1,22 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ModalStack } from "app/navigation/ModalStack"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import useInterval from "react-use/lib/useInterval"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MockPayloadGenerator } from "relay-test-utils"
 import { BottomTabs } from "./BottomTabs"
 import { BottomTabsButton } from "./BottomTabsButton"
 
 jest.mock("react-use/lib/useInterval")
-jest.unmock("react-relay")
-jest.mock("app/relay/createEnvironment", () => {
-  let env = require("relay-test-utils").createMockEnvironment()
-  const mock = {
-    createEnvironment: () => env,
-    __reset() {
-      env = require("relay-test-utils").createMockEnvironment()
-    },
-  }
-  return mock
-})
-let mockRelayEnvironment = {} as ReturnType<typeof createMockEnvironment>
-beforeEach(() => {
-  require("app/relay/createEnvironment").__reset()
-  mockRelayEnvironment = createEnvironment() as any
-})
 
 function resolveUnreadConversationCountQuery(unreadConversationCount: number) {
-  expect(mockRelayEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
+  expect(getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name).toBe(
     "BottomTabsModelFetchCurrentUnreadConversationCountQuery"
   )
-  mockRelayEnvironment.mock.resolveMostRecentOperation((op) =>
+  getMockRelayEnvironment().mock.resolveMostRecentOperation((op) =>
     MockPayloadGenerator.generate(op, {
       Me() {
         return {
@@ -79,7 +64,7 @@ describe(BottomTabs, () => {
       await flushPromiseQueue()
     })
 
-    expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
+    expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(1)
 
     resolveUnreadConversationCountQuery(5)
 
@@ -101,7 +86,7 @@ describe(BottomTabs, () => {
       await flushPromiseQueue()
     })
 
-    expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
+    expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(1)
     resolveUnreadConversationCountQuery(9)
 
     await act(async () => {
@@ -133,14 +118,14 @@ describe(BottomTabs, () => {
       await flushPromiseQueue()
     })
 
-    expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(0)
+    expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(0)
     act(() => intervalCallback())
 
     await act(async () => {
       await flushPromiseQueue()
     })
 
-    expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
+    expect(getMockRelayEnvironment().mock.getAllOperations()).toHaveLength(1)
 
     resolveUnreadConversationCountQuery(3)
 

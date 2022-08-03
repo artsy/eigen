@@ -1,6 +1,8 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 import { ArtistList } from "./Components/ArtistList"
 import { RecentlySold } from "./Components/RecentlySold"
@@ -14,7 +16,7 @@ describe("ConsignmentsHome index", () => {
   it("renders dynamic components", () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
 
-    mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
+    resolveMostRecentRelayOperation()
 
     expect(tree.root.findAllByType(RecentlySold)).toHaveLength(1)
     expect(tree.root.findAllByType(ArtistList)).toHaveLength(1)
@@ -22,7 +24,7 @@ describe("ConsignmentsHome index", () => {
 
   it("tracks a cta tap in the header", () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
-    mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
+    resolveMostRecentRelayOperation()
 
     tree.root.findByProps({ testID: "header-cta" }).props.onPress()
 
@@ -38,7 +40,7 @@ describe("ConsignmentsHome index", () => {
 
   it("tracks a cta tap in the footer", () => {
     const tree = renderWithWrappersLEGACY(<TestWrapper />)
-    mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
+    resolveMostRecentRelayOperation()
 
     tree.root.findByProps({ testID: "footer-cta" }).props.onPress()
 

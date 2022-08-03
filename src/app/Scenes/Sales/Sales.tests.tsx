@@ -2,19 +2,16 @@ import { act, waitFor } from "@testing-library/react-native"
 import { SalesTestQuery } from "__generated__/SalesTestQuery.graphql"
 import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import "react-native"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator, RelayMockEnvironment } from "relay-test-utils"
 import { CurrentlyRunningAuctions } from "./CurrentlyRunningAuctions"
 import { Sales } from "./Sales"
 import { UpcomingAuctions } from "./UpcomingAuctions"
 
 describe("Sales", () => {
-  let environment: RelayMockEnvironment = getRelayEnvironment() as RelayMockEnvironment
-
   const TestRenderer = () => (
     <QueryRenderer<SalesTestQuery>
-      environment={environment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SalesTestQuery @relay_test_operation {
           currentlyRunningAuctions: viewer {
@@ -41,11 +38,7 @@ describe("Sales", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
-    act(() => {
-      environment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 

@@ -1,10 +1,11 @@
 import { InquiryMakeOfferButtonTestsQuery } from "__generated__/InquiryMakeOfferButtonTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Button } from "palette"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
 
@@ -22,7 +23,7 @@ afterEach(() => {
 const TestRenderer = () => {
   return (
     <QueryRenderer<InquiryMakeOfferButtonTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query InquiryMakeOfferButtonTestsQuery($id: String!) @relay_test_operation {
           artwork(id: $id) {
@@ -52,11 +53,7 @@ const TestRenderer = () => {
 
 const getWrapper = (mockResolvers = {}) => {
   const tree = renderWithWrappersLEGACY(<TestRenderer />)
-  act(() => {
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-  })
+  resolveMostRecentRelayOperation(mockResolvers)
   return tree
 }
 
@@ -64,20 +61,17 @@ describe("Inquiry make offer button", () => {
   it("navigates to the order webview when button is tapped", () => {
     const wrapper = getWrapper()
     wrapper.root.findByType(Button).props.onPress()
-    env.mock.resolveMostRecentOperation((operation) => {
-      const mockResolvers = {
-        Mutation: () => {
-          return {
-            createInquiryOfferOrder: {
-              orderOrError: {
-                __typename: "CommerceOrderWithMutationSuccess",
-                order: { internalID: "4567" },
-              },
+    resolveMostRecentRelayOperation({
+      Mutation: () => {
+        return {
+          createInquiryOfferOrder: {
+            orderOrError: {
+              __typename: "CommerceOrderWithMutationSuccess",
+              order: { internalID: "4567" },
             },
-          }
-        },
-      }
-      return MockPayloadGenerator.generate(operation, mockResolvers)
+          },
+        }
+      },
     })
     expect(navigate).toHaveBeenCalledWith("/orders/4567", {
       modal: true,
@@ -89,20 +83,17 @@ describe("Inquiry make offer button", () => {
   it("presents an error dialogue if mutation returns an error response", () => {
     const wrapper = getWrapper()
     wrapper.root.findByType(Button).props.onPress()
-    env.mock.resolveMostRecentOperation((operation) => {
-      const mockResolvers = {
-        Mutation: () => {
-          return {
-            createInquiryOfferOrder: {
-              orderOrError: {
-                __typename: "CommerceOrderWithMutationFailure",
-                error: "ERRORRRRRR",
-              },
+    resolveMostRecentRelayOperation({
+      Mutation: () => {
+        return {
+          createInquiryOfferOrder: {
+            orderOrError: {
+              __typename: "CommerceOrderWithMutationFailure",
+              error: "ERRORRRRRR",
             },
-          }
-        },
-      }
-      return MockPayloadGenerator.generate(operation, mockResolvers)
+          },
+        }
+      },
     })
     expect(Alert.alert).toHaveBeenCalled()
   })

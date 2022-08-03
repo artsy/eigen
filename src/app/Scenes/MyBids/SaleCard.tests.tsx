@@ -2,15 +2,16 @@ import { SaleCardTestsQuery } from "__generated__/SaleCardTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { CompleteRegistrationCTAWrapper } from "./Components/CompleteRegistrationCTAWrapper"
 import { RegistrationCTAWrapper, SaleCard, SaleCardFragmentContainer } from "./Components/SaleCard"
 
 describe("SaleCard", () => {
   const TestRenderer = () => (
     <QueryRenderer<SaleCardTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query SaleCardTestsQuery($saleID: String!) @relay_test_operation {
           me {
@@ -34,11 +35,7 @@ describe("SaleCard", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 

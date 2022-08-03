@@ -1,6 +1,8 @@
 import { NewWorksForYouTestsQuery } from "__generated__/NewWorksForYouTestsQuery.graphql"
 import { Artwork } from "app/Components/ArtworkGrids/ArtworkGridItem"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 
 import { NewWorksForYouFragmentContainer } from "./NewWorksForYou"
@@ -26,11 +28,9 @@ describe("NewWorksForYou", () => {
   it("renders NewWorksForYou", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => mockResponse,
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Query: () => mockResponse,
+    })
 
     expect(tree.root.findAllByType(Artwork).length).toEqual(2)
   })
