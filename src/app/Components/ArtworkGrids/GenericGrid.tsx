@@ -5,7 +5,6 @@ import { times } from "lodash"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { space } from "styled-system"
 import { Stack } from "../Stack"
 import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
@@ -54,7 +53,7 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
 
     const sectionCount = isPad ? 3 : 2
     const sectionMargins = this.props.sectionMargin ?? 0 * (sectionCount - 1)
-    const artworkPadding = space(2)
+    const artworkPadding = 20
     const sectionDimension = (width - sectionMargins - artworkPadding) / sectionCount
 
     return {
