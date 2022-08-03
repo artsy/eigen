@@ -1,4 +1,5 @@
 import { ArtistListItemTestsQuery } from "__generated__/ArtistListItemTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Touchable } from "palette"

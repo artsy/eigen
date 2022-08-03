@@ -7,7 +7,6 @@ import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.gra
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import {
   ArtworkInquiryContext,
@@ -16,8 +15,12 @@ import {
 import React from "react"
 import { TextInput } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
+import {
+  rejectMostRecentRelayOperation,
+  resolveMostRecentRelayOperation,
+} from "app/tests/resolveMostRecentRelayOperation"
 import { press } from "./helpers"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
 import { ShippingModal } from "./ShippingModal"
@@ -90,7 +93,7 @@ interface TestRenderProps {
 const TestRenderer = ({ renderer }: TestRenderProps) => {
   return (
     <QueryRenderer<InquiryModalTestsQuery>
-      environment={env}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query InquiryModalTestsQuery @relay_test_operation {
           artwork(id: "pumpkins") {
@@ -116,11 +119,7 @@ const mockResolver = {
 
 const getWrapper = (mockResolvers = mockResolver, renderer = renderComponent) => {
   const tree = renderWithWrappersLEGACY(<TestRenderer renderer={renderer} />)
-  act(() => {
-    env.mock.resolveMostRecentOperation((operation) => {
-      return MockPayloadGenerator.generate(operation, mockResolvers)
-    })
-  })
+  resolveMostRecentRelayOperation(mockResolvers)
   return tree
 }
 
@@ -174,7 +173,7 @@ describe("<InquiryModal />", () => {
       const wrapper = getWrapper()
       wrapper.root.findByProps({ testID: "checkbox-shipping_quote" }).props.onPress()
       press(wrapper.root, { text: "Send" })
-      rejectMostRecentRelayOperation(env, new Error())
+      rejectMostRecentRelayOperation(new Error())
       await flushPromiseQueue()
       expect(extractText(wrapper.root)).toContain("Sorry, we were unable to send this message")
     })

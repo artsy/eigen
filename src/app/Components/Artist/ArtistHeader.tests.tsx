@@ -2,6 +2,7 @@ import { ArtistHeaderTestsQuery } from "__generated__/ArtistHeaderTestsQuery.gra
 import { graphql, QueryRenderer } from "react-relay"
 
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"

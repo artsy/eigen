@@ -1,6 +1,7 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { TagArtworksTestsQuery } from "__generated__/TagArtworksTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -12,7 +13,7 @@ describe("TagArtworks", () => {
   const TestRenderer = () => {
     return (
       <QueryRenderer<TagArtworksTestsQuery>
-        environment={environment}
+        environment={getMockRelayEnvironment()}
         query={graphql`
           query TagArtworksTestsQuery($tagID: String!, $input: FilterArtworksInput)
           @relay_test_operation {
@@ -45,12 +46,12 @@ describe("TagArtworks", () => {
 
   it("renders without throwing an error", () => {
     renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation()
   })
 
   it("renders filter header", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
-    resolveMostRecentRelayOperation(environment)
+    resolveMostRecentRelayOperation()
 
     await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
   })

@@ -1,5 +1,7 @@
 import { ModalStack } from "app/navigation/ModalStack"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { postEventToProviders } from "app/utils/track/providers"
 import { isEqual } from "lodash"
 
@@ -16,7 +18,9 @@ describe("Artist", () => {
   })
 
   function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
-    expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
+    expect(
+      getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+    ).toBe(name)
     resolveMostRecentRelayOperation({
       ID({ path }) {
         // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
@@ -30,7 +34,7 @@ describe("Artist", () => {
 
   const TestWrapper = (props: Record<string, any>) => (
     <ModalStack>
-      <ArtistQueryRenderer artistID="ignored" environment={getRelayEnvironment()} {...props} />
+      <ArtistQueryRenderer artistID="ignored" environment={getMockRelayEnvironment()} {...props} />
     </ModalStack>
   )
 

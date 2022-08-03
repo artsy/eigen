@@ -11,6 +11,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { ArtistConsignButtonFragmentContainer, tests } from "./ArtistConsignButton"
 
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { GlobalStoreProvider, useSelectedTab } from "app/store/GlobalStore"
 
 jest.mock("app/store/GlobalStore", () => ({
@@ -22,7 +23,7 @@ jest.mock("app/store/GlobalStore", () => ({
 describe("ArtistConsignButton", () => {
   const TestRenderer = () => (
     <QueryRenderer<ArtistConsignButtonTestsQuery>
-      environment={env}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query ArtistConsignButtonTestsQuery @relay_test_operation {
           artist(id: "alex-katz") {
@@ -69,11 +70,11 @@ describe("ArtistConsignButton", () => {
 
     it("renders microfunnel correctly", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "ArtistConsignButtonTestsQuery"
-      )
+      expect(
+        getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+      ).toBe("ArtistConsignButtonTestsQuery")
       act(() => {
-        env.mock.resolveMostRecentOperation({
+        getMockRelayEnvironment().mock.resolveMostRecentOperation({
           errors: [],
           data: response,
         })
@@ -84,14 +85,14 @@ describe("ArtistConsignButton", () => {
 
     it("renders target supply correctly", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
-      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "ArtistConsignButtonTestsQuery"
-      )
+      expect(
+        getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+      ).toBe("ArtistConsignButtonTestsQuery")
       act(() => {
         const targetSupplyResponse = cloneDeep(response)
         targetSupplyResponse.artist.targetSupply.isInMicrofunnel = false
         targetSupplyResponse.artist.targetSupply.isTargetSupply = true
-        env.mock.resolveMostRecentOperation({
+        getMockRelayEnvironment().mock.resolveMostRecentOperation({
           errors: [],
           data: targetSupplyResponse,
         })
@@ -111,7 +112,7 @@ describe("ArtistConsignButton", () => {
             image: null,
           },
         }
-        env.mock.resolveMostRecentOperation({
+        getMockRelayEnvironment().mock.resolveMostRecentOperation({
           errors: [],
           data: responseWithoutImage,
         })
@@ -123,7 +124,7 @@ describe("ArtistConsignButton", () => {
     it("tracks clicks on outer container", async () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
-        env.mock.resolveMostRecentOperation({
+        getMockRelayEnvironment().mock.resolveMostRecentOperation({
           errors: [],
           data: response,
         })
@@ -159,7 +160,7 @@ describe("ArtistConsignButton", () => {
     it("renders with data", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
-        env.mock.resolveMostRecentOperation({
+        getMockRelayEnvironment().mock.resolveMostRecentOperation({
           errors: [],
           data: response,
         })
@@ -172,7 +173,7 @@ describe("ArtistConsignButton", () => {
     it("tracks clicks on outer container", async () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
-        env.mock.resolveMostRecentOperation({
+        getMockRelayEnvironment().mock.resolveMostRecentOperation({
           errors: [],
           data: response,
         })
@@ -208,7 +209,7 @@ describe("ArtistConsignButton", () => {
     it("sends user to sales tab if not already there", () => {
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
-        env.mock.resolveMostRecentOperation({
+        getMockRelayEnvironment().mock.resolveMostRecentOperation({
           errors: [],
           data: response,
         })
@@ -225,7 +226,7 @@ describe("ArtistConsignButton", () => {
 
       const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
-        env.mock.resolveMostRecentOperation({
+        getMockRelayEnvironment().mock.resolveMostRecentOperation({
           errors: [],
           data: response,
         })

@@ -1,5 +1,6 @@
 import { ArtistShows2TestsQuery } from "__generated__/ArtistShows2TestsQuery.graphql"
 import { ArtistShowFragmentContainer } from "app/Components/Artist/ArtistShows/ArtistShow"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"

@@ -11,6 +11,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { getMockRelayEnvironment, getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
 import { mockNavigate } from "app/tests/navigationMocks"
@@ -20,7 +21,6 @@ import { Theme } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { closeModalMock, getEssentialProps, MockFilterScreen } from "./FilterTestHelper"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()

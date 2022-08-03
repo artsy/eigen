@@ -1,11 +1,12 @@
 import { ArtworksInSeriesRailTestsQuery } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { navigate } from "app/navigation/navigate"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { ArtworksInSeriesRail } from "./ArtworksInSeriesRail"
 
 describe("ArtworksInSeriesRail", () => {
@@ -15,7 +16,7 @@ describe("ArtworksInSeriesRail", () => {
 
   const TestRenderer = () => (
     <QueryRenderer<ArtworksInSeriesRailTestsQuery>
-      environment={env}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query ArtworksInSeriesRailTestsQuery @raw_response_type {
           artwork(id: "some-artwork") {
@@ -36,13 +37,11 @@ describe("ArtworksInSeriesRail", () => {
 
   const getWrapper = () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          ...ArtworksInSeriesRailFixture,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        ...ArtworksInSeriesRailFixture,
+      },
     })
     return tree
   }

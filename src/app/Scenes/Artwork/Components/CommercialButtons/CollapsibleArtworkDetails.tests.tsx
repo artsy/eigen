@@ -8,6 +8,8 @@ import { Text } from "palette"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
 
 describe("CollapsibleArtworkDetails", () => {
@@ -31,15 +33,9 @@ describe("CollapsibleArtworkDetails", () => {
     />
   )
 
-  const resolveData = (passedProps = {}) => {
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, passedProps)
-    )
-  }
-
   it("renders the data if available", () => {
     const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData()
+    resolveMostRecentRelayOperation()
     expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(1)
     // Show artwork details content
     wrapper.root.findByProps({ testID: "toggle-artwork-details-button" }).props.onPress()
@@ -48,7 +44,7 @@ describe("CollapsibleArtworkDetails", () => {
 
   it("renders artist names", () => {
     const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData({
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         artistNames: "Vladimir Petrov, Kristina Kost",
       }),
@@ -58,14 +54,14 @@ describe("CollapsibleArtworkDetails", () => {
 
   it("expands component on press", () => {
     const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData()
+    resolveMostRecentRelayOperation()
     wrapper.root.findByType(TouchableOpacity).props.onPress()
     expect(wrapper.root.findAllByType(ArtworkDetailsRow)).toHaveLength(11)
   })
 
   it("doesn't render what it doesn't have", () => {
     const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
-    resolveData({
+    resolveMostRecentRelayOperation({
       Artwork: () => ({
         signatureInfo: {
           details: null,

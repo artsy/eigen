@@ -1,5 +1,4 @@
 import { waitFor } from "@testing-library/react-native"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Text } from "palette"
@@ -31,7 +30,6 @@ describe("TimeOffsetProvider", () => {
   }
 
   beforeEach(() => {
-    mockEnvironment.mockClear()
     Date.now = jest.fn(() => DATE_NOW)
   })
 

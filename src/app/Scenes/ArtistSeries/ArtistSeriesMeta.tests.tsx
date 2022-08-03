@@ -1,15 +1,16 @@
 import { ArtistSeriesMetaTestsQuery } from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import {
   ArtistSeriesMeta,
   ArtistSeriesMetaFragmentContainer,
 } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { EntityHeader } from "palette"
 import { TouchableOpacity, TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 describe("Artist Series Meta", () => {
   afterEach(() => {
@@ -18,7 +19,7 @@ describe("Artist Series Meta", () => {
 
   const TestRenderer = () => (
     <QueryRenderer<ArtistSeriesMetaTestsQuery>
-      environment={env}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query ArtistSeriesMetaTestsQuery @raw_response_type {
           artistSeries(id: "pumpkins") {
@@ -39,13 +40,11 @@ describe("Artist Series Meta", () => {
 
   const getWrapper = () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          ...ArtistSeriesFixture,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        ...ArtistSeriesFixture,
+      },
     })
     return tree
   }

@@ -14,6 +14,7 @@ import {
   OpenAuctionReserveNotMetWithBids,
 } from "app/__fixtures__/ArtworkBidInfo"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"

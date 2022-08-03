@@ -2,10 +2,13 @@ import { fireEvent } from "@testing-library/react-native"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsTestsQuery } from "__generated__/ArtworkActionsTestsQuery.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import {
+  rejectMostRecentRelayOperation,
+  resolveMostRecentRelayOperation,
+} from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from "./ArtworkActions"
 
@@ -122,7 +125,7 @@ describe("ArtworkActions", () => {
     const TestRenderer = () => {
       return (
         <QueryRenderer<ArtworkActionsTestsQuery>
-          environment={env}
+          environment={getMockRelayEnvironment()}
           variables={{ id: "artworkID" }}
           render={({ props, error }) => {
             if (props) {
@@ -171,7 +174,7 @@ describe("ArtworkActions", () => {
 
       fireEvent.press(saveButton)
 
-      const saveMutation = env.mock.getMostRecentOperation()
+      const saveMutation = getMockRelayEnvironment().mock.getMostRecentOperation()
       expect(saveMutation.request.node.operation.name).toEqual("ArtworkActionsSaveMutation")
 
       resolveMostRecentRelayOperation({
@@ -199,7 +202,7 @@ describe("ArtworkActions", () => {
 
       fireEvent.press(saveButton)
 
-      const saveMutation = env.mock.getMostRecentOperation()
+      const saveMutation = getMockRelayEnvironment().mock.getMostRecentOperation()
       expect(saveMutation.request.node.operation.name).toEqual("ArtworkActionsSaveMutation")
 
       resolveMostRecentRelayOperation({
@@ -222,10 +225,10 @@ describe("ArtworkActions", () => {
 
       fireEvent.press(saveButton)
 
-      const saveMutation = env.mock.getMostRecentOperation()
+      const saveMutation = getMockRelayEnvironment().mock.getMostRecentOperation()
       expect(saveMutation.request.node.operation.name).toEqual("ArtworkActionsSaveMutation")
 
-      rejectMostRecentRelayOperation(env, new Error("Error saving artwork"))
+      rejectMostRecentRelayOperation(new Error("Error saving artwork"))
 
       expect(queryByText("Save")).toBeTruthy()
       expect(queryByText("Save")).toHaveProp("color", "#000000")

@@ -8,7 +8,7 @@ import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/B
 import { Modal } from "app/Components/Modal"
 import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { waitUntil } from "app/tests/waitUntil"
@@ -31,7 +31,6 @@ import { BillingAddress } from "./BillingAddress"
 import { ConfirmBid, ConfirmBidProps } from "./ConfirmBid"
 import { CreditCardForm } from "./CreditCardForm"
 import { SelectMaxBid } from "./SelectMaxBid"
-import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 
 Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 

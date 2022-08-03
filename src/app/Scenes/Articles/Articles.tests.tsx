@@ -1,5 +1,7 @@
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { RelayEnvironmentProvider } from "react-relay"
 
 import { ArticlesScreen } from "./Articles"
@@ -14,13 +16,11 @@ describe("Articles", () => {
   it("renders articles", async () => {
     const { getByText } = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          articlesConnection: mockArticlesConnection,
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Query: () => ({
+        articlesConnection: mockArticlesConnection,
+      }),
+    })
 
     await flushPromiseQueue()
 

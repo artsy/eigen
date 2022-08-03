@@ -21,8 +21,6 @@ describe("ArtworkDetailsForm", () => {
     </RelayEnvironmentProvider>
   )
 
-  beforeEach(() => mockEnvironment.mockClear())
-
   describe("LocationAutocomplete", () => {
     it("renders input correctly with correct placeholder", () => {
       const { getByTestId, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)

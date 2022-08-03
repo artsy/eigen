@@ -3,16 +3,18 @@ import { act } from "react-test-renderer"
 
 import { ShowArtistsPreviewTestsQuery } from "__generated__/ShowArtistsPreviewTestsQuery.graphql"
 import { ArtistListItem } from "app/Components/ArtistListItem"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { Button } from "palette"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "./ShowArtistsPreview"
 
 describe("ArtistsContainer", () => {
   const TestRenderer = () => (
     <QueryRenderer<ShowArtistsPreviewTestsQuery>
-      environment={env}
+      environment={getMockRelayEnvironment()}
       query={graphql`
         query ShowArtistsPreviewTestsQuery @raw_response_type {
           show(id: "anderson-fine-art-gallery-flickinger-collection") {
@@ -34,7 +36,7 @@ describe("ArtistsContainer", () => {
   it("Renders the show artists", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation({
+      resolveMostRecentRelayOperationRawPayload({
         errors: [],
         data: {
           show: {
@@ -55,22 +57,21 @@ describe("ArtistsContainer", () => {
 
   it("commits a follow mutation", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          show: {
-            followedArtists: { edges: [] },
-            images: [],
-            coverImage: null,
-            partner: { __typename: "Partner", name: "Test Partner" },
-            isStubShow: false,
-            name: "Test Show",
-            slug: "test-show",
-            artists: [{ name: "Hans Hofmann", slug: "hans-hofmann", is_followed: false }],
-          },
+
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        show: {
+          followedArtists: { edges: [] },
+          images: [],
+          coverImage: null,
+          partner: { __typename: "Partner", name: "Test Partner" },
+          isStubShow: false,
+          name: "Test Show",
+          slug: "test-show",
+          artists: [{ name: "Hans Hofmann", slug: "hans-hofmann", is_followed: false }],
         },
-      })
+      },
     })
 
     act(() => {
@@ -79,10 +80,11 @@ describe("ArtistsContainer", () => {
 
     await flushPromiseQueue()
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
-      "ArtistListItemFollowArtistMutation"
-    )
-    expect(env.mock.getMostRecentOperation().request.variables).toMatchInlineSnapshot(`
+    expect(
+      getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+    ).toEqual("ArtistListItemFollowArtistMutation")
+    expect(getMockRelayEnvironment().mock.getMostRecentOperation().request.variables)
+      .toMatchInlineSnapshot(`
       Object {
         "input": Object {
           "artistID": "hans-hofmann",
