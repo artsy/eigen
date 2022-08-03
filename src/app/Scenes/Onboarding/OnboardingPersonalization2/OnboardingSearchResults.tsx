@@ -8,9 +8,9 @@ import { Flex, Join, Message, quoteLeft, quoteRight, Spacer } from "palette"
 import { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import { ArtistListItemNew } from "./ArtistListItem"
+import { ArtistListItemNew } from "./Components/ArtistListItem"
+import { PartnerListItem } from "./Components/PartnerListItem"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
-import { PartnerListItem } from "./PartnerListItem"
 
 interface OnboardingSearchResultsProps {
   entities: "ARTIST" | "PROFILE"

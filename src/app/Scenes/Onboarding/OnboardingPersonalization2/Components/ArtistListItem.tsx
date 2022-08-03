@@ -1,7 +1,7 @@
 import { ArtistListItemNew_artist$key } from "__generated__/ArtistListItemNew_artist.graphql"
+import { formatTombstoneText } from "app/Components/ArtistListItem"
 import { EntityHeader, Flex, FlexProps, FollowButton } from "palette"
 import { graphql, useFragment, useMutation } from "react-relay"
-import { formatTombstoneText } from "../OnboardingPersonalization/OnboardingPersonalizationArtistListItem"
 
 interface ArtistListItemProps extends FlexProps {
   artist: ArtistListItemNew_artist$key
