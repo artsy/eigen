@@ -115,7 +115,7 @@ export const MyCollectionArtworkFormArtwork: React.FC<
           <ArtworkAutosuggest onResultPress={updateFormValues} onSkipPress={onSkip} />
         </ScreenMargin>
       </ScrollView>
-      <LoadingModal isVisible={loading} />
+      <LoadingModal testID="loading-spinner-modal" isVisible={loading} />
     </>
   )
 }

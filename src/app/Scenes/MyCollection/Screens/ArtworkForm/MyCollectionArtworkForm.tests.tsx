@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { getMockRelayEnvironment, getRelayEnvironment } from "app/relay/defaultEnvironment"
@@ -90,28 +90,34 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artist")).toBeTruthy()
 
-        act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
-        )
+        fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
+
         resolveMostRecentRelayOperationRawPayload({
           errors: [],
           data: mockArtistSearchResult,
         })
-        act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
+
+        fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
 
         // Select Artwork Screen
 
+        await waitFor(() =>
+          expect(getByTestId("saving-artwork-modal")).toHaveProp("visible", false)
+        )
         expect(getByText("Select an Artwork")).toBeTruthy()
 
-        act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
+        fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy")
         resolveMostRecentRelayOperationRawPayload({
           errors: [],
           data: mockArtworkSearchResult,
         })
-        act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
+
+        fireEvent.press(getByTestId("artworkGridItem-Morons"))
 
         resolveMostRecentRelayOperationRawPayload({ errors: [], data: mockArtworkResult })
-
+        await waitFor(() =>
+          expect(getByTestId("saving-artwork-modal")).toHaveProp("visible", false)
+        )
         // Edit Details Screen
 
         expect(getByText("Add Details")).toBeTruthy()
@@ -125,8 +131,9 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByText("1 photo added")).toBeTruthy()
 
         // Complete Form
+        fireEvent.press(getByTestId("CompleteButton"))
 
-        act(() => fireEvent.press(getByTestId("CompleteButton")))
+        await flushPromiseQueue()
 
         const mockOperations = getMockRelayEnvironment().mock.getAllOperations()
 
@@ -181,20 +188,23 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artist")).toBeTruthy()
 
-        act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
-        )
+        fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
         resolveMostRecentRelayOperationRawPayload({
           errors: [],
           data: mockArtistSearchResult,
         })
-        act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
+        fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
 
+        await waitFor(() =>
+          expect(getByTestId("saving-artwork-modal")).toHaveProp("visible", false)
+        )
         // Select Artwork Screen
 
         expect(getByText("Select an Artwork")).toBeTruthy()
 
-        act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artwork-skip-button")))
+        fireEvent.press(getByTestId("my-collection-artwork-form-artwork-skip-button"))
+
+        await flushPromiseQueue()
 
         // Edit Details Screen
 
@@ -227,8 +237,8 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artist")).toBeTruthy()
 
-        act(() => fireEvent.press(getByTestId("my-collection-artwork-form-artist-skip-button")))
-
+        fireEvent.press(getByTestId("my-collection-artwork-form-artist-skip-button"))
+        await flushPromiseQueue()
         // Edit Details Screen
 
         expect(getByText("Add Details")).toBeTruthy()
@@ -443,33 +453,35 @@ describe("MyCollectionArtworkForm", () => {
         )
 
         // Select Artist Screen
-        act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
-        )
+        fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
         resolveMostRecentRelayOperationRawPayload({
           errors: [],
           data: mockArtistSearchResult,
         })
 
-        act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
+        fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
 
         await flushPromiseQueue()
 
         // Select Artwork Screen
-        act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
+        fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy")
         resolveMostRecentRelayOperationRawPayload({
           errors: [],
           data: mockArtworkSearchResult,
         })
 
-        act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
+        fireEvent.press(getByTestId("artworkGridItem-Morons"))
 
         resolveMostRecentRelayOperationRawPayload({ errors: [], data: mockArtworkResult })
 
-        // Complete Form
-        act(() => fireEvent.press(getByTestId("CompleteButton")))
+        await waitFor(() =>
+          expect(getByTestId("loading-spinner-modal")).toHaveProp("visible", false)
+        )
 
-        expect(getByTestId("saving-artwork-modal").props.visible).toBe(true)
+        // Complete Form
+        fireEvent.press(getByTestId("CompleteButton"))
+
+        await waitFor(() => expect(getByTestId("saving-artwork-modal")).toHaveProp("visible", true))
       })
     })
 
@@ -501,35 +513,37 @@ describe("MyCollectionArtworkForm", () => {
         )
 
         // Select Artist Screen
-        act(() =>
-          fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
-        )
-        act(() =>
-          resolveMostRecentRelayOperationRawPayload({
-            errors: [],
-            data: mockArtistSearchResult,
-          })
-        )
 
-        act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
+        fireEvent.changeText(getByPlaceholderText("Search for artists on Artsy"), "banksy")
+
+        resolveMostRecentRelayOperationRawPayload({
+          errors: [],
+          data: mockArtistSearchResult,
+        })
+
+        fireEvent.press(getByTestId("autosuggest-search-result-Banksy"))
 
         await flushPromiseQueue()
 
         // Select Artwork Screen
-        act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
+        fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy")
         resolveMostRecentRelayOperationRawPayload({
           errors: [],
           data: mockArtworkSearchResult,
         })
 
-        act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
+        fireEvent.press(getByTestId("artworkGridItem-Morons"))
 
         resolveMostRecentRelayOperationRawPayload({ errors: [], data: mockArtworkResult })
 
-        // Complete Form
-        act(() => fireEvent.press(getByTestId("CompleteButton")))
+        await waitFor(() =>
+          expect(getByTestId("loading-spinner-modal")).toHaveProp("visible", false)
+        )
 
-        expect(getByTestId("loading-modal").props.visible).toBe(true)
+        // Complete Form
+        fireEvent.press(getByTestId("CompleteButton"))
+
+        await waitFor(() => expect(getByTestId("loading-modal")).toHaveProp("visible", true))
       })
     })
   })
