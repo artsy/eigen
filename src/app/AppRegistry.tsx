@@ -78,7 +78,7 @@ import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/A
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
 import { AverageSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights/AverageSalePriceAtAuction"
-import { CareerHighlightsCards } from "./Scenes/MyCollection/Screens/Insights/CareerHighlightsCards"
+import { CareerHighlightsBigCardsSwiper } from "./Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "./Scenes/MyProfile/MyProfile"
 import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
@@ -335,7 +335,7 @@ export const modules = defineModules({
   ),
   AuctionResultsForArtistsYouCollect: reactModule(AuctionResultsForArtistsYouCollect),
   AverageSalePriceAtAuction: reactModule(AverageSalePriceAtAuction),
-  CareerHighlightsCards: reactModule(CareerHighlightsCards),
+  CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
