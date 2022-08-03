@@ -75,8 +75,7 @@ export const ReverseImage = () => {
         },
       })
     } catch (error) {
-      // console.error(error)
-      console.log("[debug] error", error)
+      console.error(error)
     } finally {
       setIsLoading(false)
     }
