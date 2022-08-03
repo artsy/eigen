@@ -1,16 +1,14 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { goBack } from "app/navigation/navigate"
-import { useImageSearchV2 } from "app/utils/useImageSearchV2"
-import { compact } from "lodash"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Image, Linking, StyleSheet, TouchableOpacity } from "react-native"
+import { Linking, StyleSheet } from "react-native"
 import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
 import styled from "styled-components/native"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
-import { PhotoEntity, ReverseImageNavigationStack } from "../../types"
-import { CAMERA_BUTTONS_HEIGHT, CameraButtons } from "./Components/CameraButtons"
+import { ReverseImageNavigationStack } from "../../types"
+import { CameraButtons } from "./Components/CameraButtons"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
 
@@ -19,11 +17,9 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
-  const [photo, setPhoto] = useState<PhotoEntity | null>()
   const space = useSpace()
   const camera = useRef<Camera>(null)
   const devices = useCameraDevices()
-  const { searchingByImage, handleSeachByImage } = useImageSearchV2()
   const device = devices.back
 
   const requestMicrophonePermission = async () => {
@@ -52,35 +48,15 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         throw new Error("Something went wrong")
       }
 
-      const data = {
-        path: `file://${capturedPhoto.path}`,
-        width: capturedPhoto.width,
-        height: capturedPhoto.height,
-      }
-      setPhoto(data)
-
-      const results = await handleSeachByImage(data)
-
-      if (results.length === 0) {
-        return navigation.navigate("ArtworkNotFound", {
-          photoPath: data.path,
-        })
-      }
-
-      if (results.length === 1) {
-        return navigation.navigate("Artwork", {
-          artworkId: results[0]!.artwork!.internalID,
-        })
-      }
-
-      const artworkIDs = compact(results.map((result) => result?.artwork?.internalID))
-      navigation.navigate("MultipleResults", {
-        artworkIDs,
+      navigation.navigate("Preview", {
+        photo: {
+          path: `file://${capturedPhoto.path}`,
+          width: capturedPhoto.width,
+          height: capturedPhoto.height,
+        },
       })
     } catch (error) {
       console.error(error)
-    } finally {
-      setPhoto(null)
     }
   }
 
@@ -139,21 +115,15 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         photo
         video={false}
         audio={false}
-        isActive={!photo}
+        isActive
         onInitialized={onInitialized}
       />
-
-      {!!photo && (
-        <Image source={{ uri: photo.path }} style={StyleSheet.absoluteFill} resizeMode="cover" />
-      )}
 
       <Flex {...StyleSheet.absoluteFillObject}>
         <Background>
           <HeaderContainer>
             <BackButton color="white100" onPress={goBack} />
-            <HeaderTitle
-              title={searchingByImage ? "Looking for Results..." : "Position Artwork in this Frame"}
-            />
+            <HeaderTitle title="Position Artwork in this Frame" />
           </HeaderContainer>
         </Background>
 
@@ -167,18 +137,14 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
         <Background height={space("2")} />
 
-        {photo ? (
-          <Background height={CAMERA_BUTTONS_HEIGHT} />
-        ) : (
-          <CameraButtons
-            isCameraInitialized={isCameraInitialized}
-            takePhoto={takePhoto}
-            toggleFlash={toggleFlash}
-            deviceHasFlash={device.hasFlash}
-            isFlashEnabled={enableFlash}
-            bg="rgba(0, 0, 0, 0.6)"
-          />
-        )}
+        <CameraButtons
+          isCameraInitialized={isCameraInitialized}
+          takePhoto={takePhoto}
+          toggleFlash={toggleFlash}
+          deviceHasFlash={device.hasFlash}
+          isFlashEnabled={enableFlash}
+          bg="rgba(0, 0, 0, 0.6)"
+        />
       </Flex>
     </Flex>
   )
