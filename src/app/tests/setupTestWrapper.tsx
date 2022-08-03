@@ -1,10 +1,11 @@
 import { render } from "@testing-library/react-native"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { GraphQLTaggedNode, OperationType } from "relay-runtime"
 
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { renderWithWrappersLEGACY } from "./renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "./resolveMostRecentRelayOperation"
 
 interface SetupTestWrapper<T extends OperationType> {
   // TODO: Component: React.ComponentType<T['response']> type errors here
@@ -21,7 +22,7 @@ export const setupTestWrapperTL = <T extends OperationType>({
   const renderWithRelay = (mockResolvers: MockResolvers = {}) => {
     const TestRenderer = () => (
       <QueryRenderer<T>
-        environment={env}
+        environment={getMockRelayEnvironment()}
         variables={variables}
         // tslint:disable-next-line: relay-operation-generics
         query={query}
@@ -39,11 +40,7 @@ export const setupTestWrapperTL = <T extends OperationType>({
 
     const view = render(<TestRenderer />)
 
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
 
     return view
   }
@@ -59,7 +56,7 @@ export const setupTestWrapper = <T extends OperationType>({
   const getWrapper = (mockResolvers: MockResolvers = {}) => {
     const TestRenderer = () => (
       <QueryRenderer<T>
-        environment={env}
+        environment={getMockRelayEnvironment()}
         variables={variables}
         query={query}
         render={({ props, error }) => {
@@ -76,11 +73,7 @@ export const setupTestWrapper = <T extends OperationType>({
 
     const wrapper = renderWithWrappersLEGACY(<TestRenderer />)
 
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
 
     return wrapper
   }

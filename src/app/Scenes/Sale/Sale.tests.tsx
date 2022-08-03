@@ -1,7 +1,9 @@
 import { waitFor } from "@testing-library/react-native"
 import { navigate, popParentViewController } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { DateTime } from "luxon"
 import { Suspense } from "react"
 
@@ -27,22 +29,20 @@ describe("Sale", () => {
 
   it("switches to live auction view when sale goes live", async () => {
     renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "live-sale-slug",
-          startAt: DateTime.now().minus({ day: 1 }).toISO(),
-          liveStartAt: DateTime.now().minus({ second: 1 }).toISO(),
-          endAt: DateTime.now().plus({ day: 1 }).toISO(),
-          timeZone: "Europe/Berlin",
-          coverImage: {
-            url: "cover image url",
-          },
-          name: "sale name",
-          internalID: "the-sale-internal",
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => ({
+        slug: "live-sale-slug",
+        startAt: DateTime.now().minus({ day: 1 }).toISO(),
+        liveStartAt: DateTime.now().minus({ second: 1 }).toISO(),
+        endAt: DateTime.now().plus({ day: 1 }).toISO(),
+        timeZone: "Europe/Berlin",
+        coverImage: {
+          url: "cover image url",
+        },
+        name: "sale name",
+        internalID: "the-sale-internal",
+      }),
+    })
 
     expect(navigate).toHaveBeenCalledTimes(0)
     await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
@@ -54,22 +54,20 @@ describe("Sale", () => {
 
   it("switches to live auction view when sale goes live with no endAt", async () => {
     renderWithWrappersLEGACY(<TestRenderer />)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "live-sale-slug",
-          startAt: DateTime.now().minus({ day: 1 }).toISO(),
-          liveStartAt: DateTime.now().minus({ second: 1 }).toISO(),
-          endAt: null,
-          timeZone: "Europe/Berlin",
-          coverImage: {
-            url: "cover image url",
-          },
-          name: "sale name",
-          internalID: "the-sale-internal",
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => ({
+        slug: "live-sale-slug",
+        startAt: DateTime.now().minus({ day: 1 }).toISO(),
+        liveStartAt: DateTime.now().minus({ second: 1 }).toISO(),
+        endAt: null,
+        timeZone: "Europe/Berlin",
+        coverImage: {
+          url: "cover image url",
+        },
+        name: "sale name",
+        internalID: "the-sale-internal",
+      }),
+    })
 
     expect(navigate).toHaveBeenCalledTimes(0)
     await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
@@ -82,18 +80,16 @@ describe("Sale", () => {
   it("doesn't switch to live auction view when sale is closed", async () => {
     renderWithWrappersLEGACY(<TestRenderer />)
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "closed-sale-slug",
-          startAt: DateTime.now().minus({ days: 2 }).toISO(),
-          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
-          endAt: DateTime.now().minus({ day: 1 }).toISO(),
-          timeZone: "Europe/Berlin",
-          name: "closed!",
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => ({
+        slug: "closed-sale-slug",
+        startAt: DateTime.now().minus({ days: 2 }).toISO(),
+        liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+        endAt: DateTime.now().minus({ day: 1 }).toISO(),
+        timeZone: "Europe/Berlin",
+        name: "closed!",
+      }),
+    })
 
     expect(navigate).toHaveBeenCalledTimes(0)
 
@@ -106,18 +102,16 @@ describe("Sale", () => {
   it("renders a Register button when registrations are open", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "regular-sale-slug",
-          startAt: DateTime.now().plus({ day: 1 }).toISO(),
-          liveStartAt: DateTime.now().plus({ days: 2 }).toISO(),
-          endAt: DateTime.now().plus({ days: 3 }).toISO(),
-          registrationEndsAt: DateTime.now().plus({ hours: 3 }).toISO(),
-          name: "regular sale!",
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => ({
+        slug: "regular-sale-slug",
+        startAt: DateTime.now().plus({ day: 1 }).toISO(),
+        liveStartAt: DateTime.now().plus({ days: 2 }).toISO(),
+        endAt: DateTime.now().plus({ days: 3 }).toISO(),
+        registrationEndsAt: DateTime.now().plus({ hours: 3 }).toISO(),
+        name: "regular sale!",
+      }),
+    })
 
     expect(tree.findAllByType(RegisterToBidButtonContainer)).toHaveLength(1)
   })
@@ -125,18 +119,16 @@ describe("Sale", () => {
   it("doesn't render a Register button when registrations ended", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "reg-ended-sale-slug",
-          startAt: DateTime.now().minus({ days: 3 }).toISO(),
-          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
-          endAt: DateTime.now().plus({ days: 3 }).toISO(),
-          registrationEndsAt: DateTime.now().minus({ hours: 3 }).toISO(),
-          name: "reg ended sale!",
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => ({
+        slug: "reg-ended-sale-slug",
+        startAt: DateTime.now().minus({ days: 3 }).toISO(),
+        liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+        endAt: DateTime.now().plus({ days: 3 }).toISO(),
+        registrationEndsAt: DateTime.now().minus({ hours: 3 }).toISO(),
+        name: "reg ended sale!",
+      }),
+    })
 
     expect(tree.findAllByType(RegisterToBidButtonContainer)).toHaveLength(0)
   })
@@ -144,17 +136,15 @@ describe("Sale", () => {
   it("doesn't render a Register button when it's closed", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "closed-sale-slug",
-          startAt: DateTime.now().minus({ days: 3 }).toISO(),
-          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
-          endAt: DateTime.now().minus({ day: 1 }).toISO(),
-          name: "closed sale!",
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => ({
+        slug: "closed-sale-slug",
+        startAt: DateTime.now().minus({ days: 3 }).toISO(),
+        liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+        endAt: DateTime.now().minus({ day: 1 }).toISO(),
+        name: "closed sale!",
+      }),
+    })
 
     expect(tree.findAllByType(RegisterToBidButtonContainer)).toHaveLength(0)
   })
@@ -162,19 +152,17 @@ describe("Sale", () => {
   it("renders the banner when the sale has cascading end times", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "cascading-sale-slug",
-          startAt: DateTime.now().minus({ days: 3 }).toISO(),
-          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
-          endAt: DateTime.now().plus({ day: 1 }).toISO(),
-          name: "Cascading Sale",
-          cascadingEndTimeIntervalMinutes: 1,
-          isClosed: false,
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => ({
+        slug: "cascading-sale-slug",
+        startAt: DateTime.now().minus({ days: 3 }).toISO(),
+        liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+        endAt: DateTime.now().plus({ day: 1 }).toISO(),
+        name: "Cascading Sale",
+        cascadingEndTimeIntervalMinutes: 1,
+        isClosed: false,
+      }),
+    })
 
     expect(tree.findAllByType(CascadingEndTimesBanner)).toHaveLength(1)
   })
@@ -182,19 +170,17 @@ describe("Sale", () => {
   it("doesn't render the banner when the sale does not have cascading end times", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "non-cascading-sale-slug",
-          startAt: DateTime.now().minus({ days: 3 }).toISO(),
-          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
-          endAt: DateTime.now().plus({ day: 1 }).toISO(),
-          name: "Non Cascading Sale",
-          cascadingEndTimeIntervalMinutes: null,
-          isClosed: false,
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => ({
+        slug: "non-cascading-sale-slug",
+        startAt: DateTime.now().minus({ days: 3 }).toISO(),
+        liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+        endAt: DateTime.now().plus({ day: 1 }).toISO(),
+        name: "Non Cascading Sale",
+        cascadingEndTimeIntervalMinutes: null,
+        isClosed: false,
+      }),
+    })
 
     expect(tree.findAllByType(CascadingEndTimesBanner)).toHaveLength(0)
   })
@@ -202,19 +188,17 @@ describe("Sale", () => {
   it("doesn't render the banner when the sale has cascading end times but the sale is closed", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          slug: "closed-cascading-sale-slug",
-          startAt: DateTime.now().minus({ days: 3 }).toISO(),
-          liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
-          endAt: DateTime.now().minus({ day: 1 }).toISO(),
-          name: "Closed Cascading Sale",
-          cascadingEndTimeIntervalMinutes: 1,
-          isClosed: true,
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Sale: () => ({
+        slug: "closed-cascading-sale-slug",
+        startAt: DateTime.now().minus({ days: 3 }).toISO(),
+        liveStartAt: DateTime.now().minus({ days: 2 }).toISO(),
+        endAt: DateTime.now().minus({ day: 1 }).toISO(),
+        name: "Closed Cascading Sale",
+        cascadingEndTimeIntervalMinutes: 1,
+        isClosed: true,
+      }),
+    })
 
     expect(tree.findAllByType(CascadingEndTimesBanner)).toHaveLength(0)
   })

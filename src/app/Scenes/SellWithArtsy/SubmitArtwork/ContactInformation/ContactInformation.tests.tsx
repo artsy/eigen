@@ -1,11 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { fireEvent } from "@testing-library/react-native"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
 import { updateConsignSubmission } from "../../mutations"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
 
@@ -36,13 +35,11 @@ describe("ContactInformationForm", () => {
   it("Happy path: User can submit information", async () => {
     const { queryByText, getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
     updateConsignSubmissionMock.mockResolvedValue("adsfasd")
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          ...mockQueryData,
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Me: () => ({
+        ...mockQueryData,
+      }),
+    })
 
     await flushPromiseQueue()
 
@@ -78,13 +75,12 @@ describe("ContactInformationForm", () => {
   it("Keeps Submit button deactivated when something is missing/not properly filled out. Gets enabled if everything is filled out.", async () => {
     const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
     updateConsignSubmissionMock.mockResolvedValue("adsfasd")
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Me: () => ({
-          ...mockQueryDataInfoMissing,
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Me: () => ({
+        ...mockQueryDataInfoMissing,
+      }),
+    })
+
     const inputs = {
       nameInput: getByPlaceholderText("Your full name"),
       emailInput: getByPlaceholderText("Your email address"),
@@ -109,13 +105,11 @@ describe("ContactInformationForm", () => {
   describe("validation", () => {
     it("displays error message for name", async () => {
       const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            ...mockQueryData,
-          }),
-        })
-      )
+      resolveMostRecentRelayOperation({
+        Me: () => ({
+          ...mockQueryData,
+        }),
+      })
 
       await flushPromiseQueue()
 
@@ -134,13 +128,11 @@ describe("ContactInformationForm", () => {
 
     it("displays error message for email address", async () => {
       const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            ...mockQueryData,
-          }),
-        })
-      )
+      resolveMostRecentRelayOperation({
+        Me: () => ({
+          ...mockQueryData,
+        }),
+      })
 
       await flushPromiseQueue()
 
@@ -159,13 +151,11 @@ describe("ContactInformationForm", () => {
 
     it("displays error message for phone number", async () => {
       const { getByText, getByPlaceholderText } = renderWithWrappers(<TestRenderer />)
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            ...mockQueryData,
-          }),
-        })
-      )
+      resolveMostRecentRelayOperation({
+        Me: () => ({
+          ...mockQueryData,
+        }),
+      })
 
       await flushPromiseQueue()
 
@@ -203,13 +193,11 @@ describe("ContactInformationForm", () => {
     it("tracks consignmentSubmitted event on save", async () => {
       const { getByText } = renderWithWrappers(<TestRenderer />)
       updateConsignSubmissionMock.mockResolvedValue("54321")
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Me: () => ({
-            ...mockQueryData,
-          }),
-        })
-      )
+      resolveMostRecentRelayOperation({
+        Me: () => ({
+          ...mockQueryData,
+        }),
+      })
 
       await flushPromiseQueue()
 

@@ -6,7 +6,7 @@ import {
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "app/navigation/navigate"
-import { getRelayEnvironment } from "app/relay/defaultEnvironment"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { mockFetchNotificationPermissions } from "app/tests/mockFetchNotificationPermissions"
@@ -23,7 +23,7 @@ const notificationPermissions = mockFetchNotificationPermissions(false)
 
 const withoutDuplicateAlert = async () => {
   await waitFor(() => {
-    const mutation = mockEnvironment.mock.getMostRecentOperation()
+    const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
     expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
   })
 
@@ -46,7 +46,6 @@ const TestRenderer = (props: Partial<SavedSearchAlertFormProps>) => {
 describe("Saved search alert form", () => {
   beforeEach(() => {
     spyAlert.mockClear()
-    mockEnvironment.mockClear()
     notificationPermissions.mockImplementationOnce((cb) =>
       cb(null, PushAuthorizationStatus.Authorized)
     )
@@ -87,7 +86,7 @@ describe("Saved search alert form", () => {
 
       await withoutDuplicateAlert()
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
 
         expect(mutation.request.node.operation.name).toBe("createSavedSearchAlertMutation")
         expect(mutation.request.variables).toEqual({
@@ -112,7 +111,9 @@ describe("Saved search alert form", () => {
 
       await withoutDuplicateAlert()
       await waitFor(() => {
-        expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
+        expect(
+          getMockRelayEnvironment().mock.getMostRecentOperation().request.variables
+        ).toMatchObject({
           input: {
             attributes,
             userAlertSettings: {
@@ -148,7 +149,9 @@ describe("Saved search alert form", () => {
       fireEvent.press(getByTestId("save-alert-button"))
 
       await waitFor(() => {
-        expect(mockEnvironment.mock.getMostRecentOperation().request.variables).toMatchObject({
+        expect(
+          getMockRelayEnvironment().mock.getMostRecentOperation().request.variables
+        ).toMatchObject({
           input: {
             userAlertSettings: {
               name: `Placeholder`,
@@ -167,7 +170,7 @@ describe("Saved search alert form", () => {
       fireEvent.press(getByTestId("save-alert-button"))
 
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
 
         expect(mutation.request.node.operation.name).toBe("updateSavedSearchAlertMutation")
         expect(mutation.request.variables).toEqual({
@@ -240,9 +243,9 @@ describe("Saved search alert form", () => {
       fireEvent.press(getByTestId("delete-alert-button"))
       fireEvent.press(getByTestId("dialog-primary-action-button"))
 
-      expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(
-        "deleteSavedSearchAlertMutation"
-      )
+      expect(
+        getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+      ).toBe("deleteSavedSearchAlertMutation")
 
       await waitFor(() => {
         resolveMostRecentRelayOperation()
@@ -275,7 +278,7 @@ describe("Notification toggles", () => {
 
     await withoutDuplicateAlert()
     await waitFor(() => {
-      const mutation = mockEnvironment.mock.getMostRecentOperation()
+      const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
       expect(mutation.request.variables).toEqual({
         input: {
           attributes: createMutationAttributes,
@@ -297,7 +300,7 @@ describe("Notification toggles", () => {
 
     await withoutDuplicateAlert()
     await waitFor(() => {
-      const mutation = mockEnvironment.mock.getMostRecentOperation()
+      const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
       expect(mutation.request.variables).toEqual({
         input: {
           attributes: createMutationAttributes,
@@ -319,7 +322,7 @@ describe("Notification toggles", () => {
 
     await withoutDuplicateAlert()
     await waitFor(() => {
-      const mutation = mockEnvironment.mock.getMostRecentOperation()
+      const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
       expect(mutation.request.variables).toEqual({
         input: {
           attributes: createMutationAttributes,
@@ -436,7 +439,7 @@ describe("Allow to send emails modal", () => {
     await fireEvent.press(getByTestId("save-alert-button"))
 
     await waitFor(() => {
-      const mutation = mockEnvironment.mock.getMostRecentOperation()
+      const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
       expect(mutation.request.node.operation.name).toEqual("updateNotificationPreferencesMutation")
       expect(mutation.request.variables).toEqual({
         input: { subscriptionGroups: [{ name: "custom_alerts", status: "SUBSCRIBED" }] },
@@ -457,7 +460,7 @@ describe("Allow to send emails modal", () => {
     await fireEvent.press(getByTestId("save-alert-button"))
 
     await waitFor(() => {
-      const mutation = mockEnvironment.mock.getMostRecentOperation()
+      const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
       expect(mutation.request.node.operation.name).toEqual("updateSavedSearchAlertMutation")
     })
   })
@@ -637,7 +640,7 @@ describe("Email preferences", () => {
 describe("Checking for a duplicate alert", () => {
   beforeEach(() => {
     spyAlert.mockClear()
-    mockEnvironment.mockClear()
+    getMockRelayEnvironment().mockClear()
   })
 
   describe("Create flow", () => {
@@ -647,7 +650,7 @@ describe("Checking for a duplicate alert", () => {
       fireEvent.press(getAllByText("Save Alert")[0])
 
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
         expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
       })
 
@@ -659,7 +662,7 @@ describe("Checking for a duplicate alert", () => {
       })
 
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
         expect(mutation.fragment.node.name).toBe("createSavedSearchAlertMutation")
       })
     })
@@ -670,7 +673,7 @@ describe("Checking for a duplicate alert", () => {
       fireEvent.press(getAllByText("Save Alert")[0])
 
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
         expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
       })
 
@@ -688,14 +691,14 @@ describe("Checking for a duplicate alert", () => {
       fireEvent.press(getAllByText("Save Alert")[0])
 
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
         expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
       })
 
       resolveMostRecentRelayOperation()
 
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
         expect(mutation.fragment.node.name).toBe("createSavedSearchAlertMutation")
       })
     })
@@ -711,7 +714,7 @@ describe("Checking for a duplicate alert", () => {
       fireEvent.press(getAllByText("Save Alert")[0])
 
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
         expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
       })
 
@@ -723,7 +726,7 @@ describe("Checking for a duplicate alert", () => {
       })
 
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
         expect(mutation.fragment.node.name).toBe("updateSavedSearchAlertMutation")
       })
     })
@@ -740,7 +743,7 @@ describe("Checking for a duplicate alert", () => {
       fireEvent.press(getAllByText("Save Alert")[0])
 
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
         expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
       })
 
@@ -763,14 +766,14 @@ describe("Checking for a duplicate alert", () => {
       fireEvent.press(getAllByText("Save Alert")[0])
 
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
         expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
       })
 
       resolveMostRecentRelayOperation()
 
       await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        const mutation = getMockRelayEnvironment().mock.getMostRecentOperation()
         expect(mutation.fragment.node.name).toBe("updateSavedSearchAlertMutation")
       })
     })
