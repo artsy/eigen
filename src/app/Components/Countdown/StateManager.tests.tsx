@@ -10,7 +10,7 @@ describe("StateManager", () => {
   }
 
   beforeEach(() => {
-    jest.useFakeTimers()
+    jest.useFakeTimers({ legacyFakeTimers: true })
     Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
   })
 

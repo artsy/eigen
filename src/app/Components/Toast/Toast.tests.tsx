@@ -21,7 +21,7 @@ const TestRenderer: React.FC<{ toastOptions?: ToastOptions }> = ({ toastOptions 
 describe("Toast", () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    jest.useFakeTimers()
+    jest.useFakeTimers({ legacyFakeTimers: true })
   })
 
   afterEach(() => {

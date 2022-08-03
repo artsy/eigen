@@ -1,7 +1,7 @@
 import "@testing-library/jest-native/extend-expect"
 import { mockNavigate } from "app/tests/navigationMocks"
 import chalk from "chalk"
-import expect from "expect"
+import { expect } from "expect"
 import "jest-extended"
 import { format } from "util"
 

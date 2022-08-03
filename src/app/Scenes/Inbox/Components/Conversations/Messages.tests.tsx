@@ -30,7 +30,7 @@ let env: ReturnType<typeof createMockEnvironment>
 
 beforeEach(() => {
   env = createMockEnvironment()
-  jest.useFakeTimers()
+  jest.useFakeTimers({ legacyFakeTimers: true })
 })
 
 const onRefresh = jest.fn()

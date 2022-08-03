@@ -2,7 +2,7 @@ import { DeepZoomPyramid } from "./DeepZoomPyramid"
 import { DeepZoomTileID } from "./DeepZoomTile"
 
 describe(DeepZoomPyramid, () => {
-  jest.useFakeTimers()
+  jest.useFakeTimers({ legacyFakeTimers: true })
 
   it("keeps track of tiles", () => {
     const pyramid = new DeepZoomPyramid()

@@ -31,7 +31,7 @@ describe("BidResult component", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   Date.now = jest.fn(() => 1525983752116)
-  jest.useFakeTimers()
+  jest.useFakeTimers({ legacyFakeTimers: true })
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()

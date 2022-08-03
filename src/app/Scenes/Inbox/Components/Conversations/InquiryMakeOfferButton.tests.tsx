@@ -13,7 +13,7 @@ jest.unmock("react-relay")
 jest.spyOn(Alert, "alert")
 
 beforeEach(() => {
-  jest.useFakeTimers()
+  jest.useFakeTimers({ legacyFakeTimers: true })
   env = createMockEnvironment()
   ;(Alert.alert as jest.Mock).mockClear()
 })

@@ -129,7 +129,7 @@ describe("ImageCarouselFragmentContainer", () => {
 
   describe("with five images", () => {
     beforeEach(() => {
-      jest.useFakeTimers()
+      jest.useFakeTimers({ legacyFakeTimers: true })
     })
 
     afterEach(() => {

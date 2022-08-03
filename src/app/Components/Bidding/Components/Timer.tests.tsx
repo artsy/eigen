@@ -14,7 +14,7 @@ describe("Timer", () => {
   let futureTime: string
 
   beforeEach(() => {
-    jest.useFakeTimers()
+    jest.useFakeTimers({ legacyFakeTimers: true })
 
     // Thursday, May 10, 2018 8:22:32.000 PM UTC
     Date.now = jest.fn(() => DATE_NOW)

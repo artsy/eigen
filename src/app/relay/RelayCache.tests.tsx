@@ -39,7 +39,7 @@ describe("the cache", () => {
   const properNow = Date.now
   beforeAll(() => {
     Date.now = nowMock
-    jest.useFakeTimers()
+    jest.useFakeTimers({ legacyFakeTimers: true })
   })
   afterAll(() => {
     Date.now = properNow

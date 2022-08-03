@@ -8,7 +8,7 @@ describe("LocalImageStore", () => {
   const mockNow = 1525983752000
 
   beforeEach(() => {
-    jest.useFakeTimers()
+    jest.useFakeTimers({ legacyFakeTimers: true })
     Date.now = () => mockNow
   })
 

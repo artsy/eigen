@@ -53,7 +53,7 @@ jest.mock("tipsi-stripe", () => ({
 
 let nextStep: NavigatorIOSPushArgs | null
 const mockNavigator: Partial<NavigatorIOS> = { push: (route) => (nextStep = route) }
-jest.useFakeTimers()
+jest.useFakeTimers({ legacyFakeTimers: true })
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager
   .postNotificationName as jest.Mock
 
@@ -650,7 +650,7 @@ describe("ConfirmBid for unqualified user", () => {
       throw new Error("Error tokenizing card")
     })
 
-    jest.useFakeTimers()
+    jest.useFakeTimers({ legacyFakeTimers: true })
     const component = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
     fillOutFormAndSubmit(component)
 

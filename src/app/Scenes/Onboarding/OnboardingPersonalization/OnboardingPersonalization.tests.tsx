@@ -64,7 +64,7 @@ describe("OnboardingPersonalizationList", () => {
 
   describe("Button", () => {
     it("Sets the onboarding state to complete and requests for push notifications permission when it's not yet determined", async () => {
-      jest.useFakeTimers()
+      jest.useFakeTimers({ legacyFakeTimers: true })
 
       mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
         cb(null, PushAuthorizationStatus.NotDetermined)

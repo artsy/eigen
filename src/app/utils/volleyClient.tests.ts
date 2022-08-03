@@ -16,7 +16,7 @@ jest.mock("@sentry/react-native", () => ({
   captureMessage: jest.fn(),
 }))
 
-jest.useFakeTimers()
+jest.useFakeTimers({ legacyFakeTimers: true })
 
 describe("volleyClient", () => {
   const fetch = jest.fn((_url, _init) => Promise.resolve({ status: 200 }))

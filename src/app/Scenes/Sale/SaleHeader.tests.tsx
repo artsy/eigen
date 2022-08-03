@@ -164,7 +164,7 @@ describe("SaleHeader", () => {
           AREnableCascadingEndTimerSalePageDetails: true,
         })
 
-        jest.useFakeTimers()
+        jest.useFakeTimers({ legacyFakeTimers: true })
       })
 
       it("shows the cascading end time label", () => {
@@ -229,7 +229,7 @@ describe("SaleHeader", () => {
       describe("relative date label", () => {
         it("shows minutes and seconds left until bidding starts", () => {
           const { getByText } = renderWithWrappers(<TestRenderer />)
-          jest.useFakeTimers()
+          jest.useFakeTimers({ legacyFakeTimers: true })
           mockEnvironment.mock.resolveMostRecentOperation((operation) =>
             MockPayloadGenerator.generate(operation, {
               Sale: () => ({

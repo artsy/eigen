@@ -20,7 +20,7 @@ describe("useSpringValue", () => {
   }
 
   beforeEach(() => {
-    jest.useFakeTimers()
+    jest.useFakeTimers({ legacyFakeTimers: true })
   })
 
   it("returns a stable animated value", () => {
@@ -30,13 +30,13 @@ describe("useSpringValue", () => {
     expect(getAnimatedValue(val)).toBe(0)
 
     fireEvent.press(getByText("Button"))
-    jest.runTimersToTime(500)
+    jest.advanceTimersByTime(500)
 
     expect(prevVal).toBe(val)
     expect(getAnimatedValue(val)).toBe(1)
 
     fireEvent.press(getByText("Button"))
-    jest.runTimersToTime(500)
+    jest.advanceTimersByTime(500)
 
     expect(prevVal).toBe(val)
     expect(getAnimatedValue(val)).toBe(2)

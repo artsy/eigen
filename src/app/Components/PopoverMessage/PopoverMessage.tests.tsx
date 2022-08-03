@@ -114,7 +114,7 @@ describe("PopoverMessage", () => {
   })
 
   it("does not hide after timeout if autoHide is set to false", async () => {
-    jest.useFakeTimers()
+    jest.useFakeTimers({ legacyFakeTimers: true })
     const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{
@@ -136,7 +136,7 @@ describe("PopoverMessage", () => {
   })
 
   it("should hide after `hideTimeout` time", async () => {
-    jest.useFakeTimers()
+    jest.useFakeTimers({ legacyFakeTimers: true })
     const tree = renderWithWrappersLEGACY(
       <TestRenderer
         options={{

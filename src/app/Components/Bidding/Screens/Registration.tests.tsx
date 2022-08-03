@@ -34,7 +34,7 @@ jest.mock("tipsi-stripe", () => ({
 
 let nextStep: any
 const mockNavigator = { push: (route: any) => (nextStep = route), pop: () => null }
-jest.useFakeTimers()
+jest.useFakeTimers({ legacyFakeTimers: true })
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 
 beforeEach(() => {

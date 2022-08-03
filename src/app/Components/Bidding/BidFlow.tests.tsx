@@ -36,7 +36,7 @@ const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>
 let fakeNavigator: FakeNavigator
 let fakeRelay: any
 
-jest.useFakeTimers()
+jest.useFakeTimers({ legacyFakeTimers: true })
 
 beforeEach(() => {
   fakeNavigator = new FakeNavigator()
