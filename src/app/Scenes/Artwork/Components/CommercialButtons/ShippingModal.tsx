@@ -26,7 +26,7 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
           toggleVisibility()
         }}
         rightButtonText="Apply"
-        onRightButtonPress={async () => {
+        onRightButtonPress={() => {
           setLocation(locationDetails as LocationWithDetails)
           toggleVisibility()
         }}
