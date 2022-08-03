@@ -1,15 +1,16 @@
 import { ShowArtworksEmptyStateTestsQuery } from "__generated__/ShowArtworksEmptyStateTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 import { ShowArtworksEmptyStateFragmentContainer } from "./Components/ShowArtworksEmptyState"
 
 describe("ShowArtworksEmptyState", () => {
   const TestRenderer = () => (
     <QueryRenderer<ShowArtworksEmptyStateTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ShowArtworksEmptyStateTestsQuery @relay_test_operation {
           show(id: "example-show-id") {
@@ -30,11 +31,7 @@ describe("ShowArtworksEmptyState", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 

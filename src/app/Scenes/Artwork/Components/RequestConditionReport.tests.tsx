@@ -1,11 +1,15 @@
-import { act, fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { RequestConditionReport_artwork$data } from "__generated__/RequestConditionReport_artwork.graphql"
 import { RequestConditionReport_me$data } from "__generated__/RequestConditionReport_me.graphql"
 import { RequestConditionReportTestQuery } from "__generated__/RequestConditionReportTestQuery.graphql"
+import { getMockRelayEnvironment } from "app/relay/defaultEnvironment"
 import { mockPostEventToProviders } from "app/tests/globallyMockedStuff"
-import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import {
+  rejectMostRecentRelayOperation,
+  resolveMostRecentRelayOperation,
+  resolveMostRecentRelayOperationRawPayload,
+} from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { RequestConditionReportFragmentContainer } from "./RequestConditionReport"
 
@@ -29,7 +33,7 @@ describe("RequestConditionReport", () => {
   const TestRenderer = () => {
     return (
       <QueryRenderer<RequestConditionReportTestQuery>
-        environment={env}
+        environment={getMockRelayEnvironment()}
         variables={{ artworkID: "some-internal-id" }}
         query={graphql`
           query RequestConditionReportTestQuery($artworkID: String!) {
@@ -90,11 +94,11 @@ describe("RequestConditionReport", () => {
         ]
       `)
 
-      expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
-        "RequestConditionReportMutation"
-      )
+      expect(
+        getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+      ).toEqual("RequestConditionReportMutation")
 
-      rejectMostRecentRelayOperation(env, new Error("Error saving artwork"))
+      rejectMostRecentRelayOperation(new Error("Error saving artwork"))
 
       expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
 
@@ -141,13 +145,13 @@ describe("RequestConditionReport", () => {
         ]
       `)
 
-      expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
-        "RequestConditionReportMutation"
-      )
+      expect(
+        getMockRelayEnvironment().mock.getMostRecentOperation().request.node.operation.name
+      ).toEqual("RequestConditionReportMutation")
 
-      act(() =>
-        env.mock.resolveMostRecentOperation({ data: { requestConditionReport: { success: true } } })
-      )
+      resolveMostRecentRelayOperationRawPayload({
+        data: { requestConditionReport: { success: true } },
+      })
 
       expect(getByLabelText("Condition Report Requested Error Modal")).toHaveProp("visible", false)
       expect(getByLabelText("Condition Report Requested Modal")).toHaveProp("visible", false)

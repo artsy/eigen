@@ -1,10 +1,11 @@
 import { ShowTestsQuery } from "__generated__/ShowTestsQuery.graphql"
 import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 import { ShowContextCard } from "./Components/ShowContextCard"
 import { Show, ShowFragmentContainer } from "./Show"
@@ -12,7 +13,7 @@ import { Show, ShowFragmentContainer } from "./Show"
 describe("Show", () => {
   const TestRenderer = () => (
     <QueryRenderer<ShowTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ShowTestsQuery($showID: String!) @relay_test_operation {
           show(id: $showID) {
@@ -33,11 +34,7 @@ describe("Show", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 
@@ -113,16 +110,12 @@ describe("Show", () => {
       it("should not be rendered when show is NOT active", () => {
         const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
-        act(() => {
-          env.mock.resolveMostRecentOperation((operation) =>
-            MockPayloadGenerator.generate(operation, {
-              Show: () => ({
-                isActive: false,
-                slug: "a-non-active-show",
-                isReverseImageSearchEnabled: true,
-              }),
-            })
-          )
+        resolveMostRecentRelayOperation({
+          Show: () => ({
+            isActive: false,
+            slug: "a-non-active-show",
+            isReverseImageSearchEnabled: true,
+          }),
         })
 
         expect(queryByLabelText("Search by image")).toBeNull()
@@ -131,16 +124,12 @@ describe("Show", () => {
       it("should not be rendered when show doesn't have any indexed artworks", () => {
         const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
-        act(() => {
-          env.mock.resolveMostRecentOperation((operation) =>
-            MockPayloadGenerator.generate(operation, {
-              Show: () => ({
-                isActive: true,
-                slug: "an-active-show-without-indexed-artworks",
-                isReverseImageSearchEnabled: false,
-              }),
-            })
-          )
+        resolveMostRecentRelayOperation({
+          Show: () => ({
+            isActive: true,
+            slug: "an-active-show-without-indexed-artworks",
+            isReverseImageSearchEnabled: false,
+          }),
         })
 
         expect(queryByLabelText("Search by image")).toBeNull()
@@ -149,16 +138,12 @@ describe("Show", () => {
       it("should be rendered when show has indexed artworks, is active and feature flag is enabled", () => {
         const { queryByLabelText } = renderWithWrappers(<TestRenderer />)
 
-        act(() => {
-          env.mock.resolveMostRecentOperation((operation) =>
-            MockPayloadGenerator.generate(operation, {
-              Show: () => ({
-                isActive: true,
-                slug: "an-active-show-with-indexed-artworks",
-                isReverseImageSearchEnabled: true,
-              }),
-            })
-          )
+        resolveMostRecentRelayOperation({
+          Show: () => ({
+            isActive: true,
+            slug: "an-active-show-with-indexed-artworks",
+            isReverseImageSearchEnabled: true,
+          }),
         })
 
         expect(queryByLabelText("Search by image")).toBeTruthy()

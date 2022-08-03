@@ -1,21 +1,23 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { CollectionArtistSeriesRailTestsQuery } from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { CardRailCard } from "app/Components/Home/CardRailCard"
 import ImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import {
   CollectionArtistSeriesRail,
   CollectionArtistSeriesRailContainer,
 } from "app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 
 describe("Artist Series Rail", () => {
   const TestRenderer = () => (
     <QueryRenderer<CollectionArtistSeriesRailTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query CollectionArtistSeriesRailTestsQuery @raw_response_type {
           marketingCollection(slug: "photography") {
@@ -45,13 +47,11 @@ describe("Artist Series Rail", () => {
 
   const getWrapper = () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          ...CollectionHubRailsArtistSeriesFixture,
-        },
-      })
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        ...CollectionHubRailsArtistSeriesFixture,
+      },
     })
     return tree
   }

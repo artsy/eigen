@@ -1,8 +1,11 @@
 import { fireEvent } from "@testing-library/react-native"
 import { FollowArtistLinkTestsQuery } from "__generated__/FollowArtistLinkTestsQuery.graphql"
-import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import {
+  rejectMostRecentRelayOperation,
+  resolveMostRecentRelayOperation,
+} from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { FollowArtistLinkFragmentContainer } from "./FollowArtistLink"
 
@@ -105,7 +108,7 @@ describe("FollowArtistLink", () => {
 
       fireEvent.press(getByText("Follow"))
 
-      rejectMostRecentRelayOperation(mockEnvironment, new Error())
+      rejectMostRecentRelayOperation(new Error())
 
       expect(getByText("Follow")).toBeTruthy()
     })

@@ -1,4 +1,5 @@
 import { Questions_Test_Query } from "__generated__/Questions_Test_Query.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Suspense } from "react"

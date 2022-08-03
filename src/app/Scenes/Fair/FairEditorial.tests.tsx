@@ -1,6 +1,8 @@
 import { FairEditorialTestsQuery } from "__generated__/FairEditorialTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { FairEditorialFragmentContainer } from "app/Scenes/Fair/Components/FairEditorial"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Text, Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -11,7 +13,7 @@ describe("FairEditorial", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairEditorialTestsQuery>
-        environment={env}
+        environment={getRelayEnvironment()}
         query={graphql`
           query FairEditorialTestsQuery($fairID: String!) @relay_test_operation {
             fair(id: $fairID) {
@@ -35,9 +37,7 @@ describe("FairEditorial", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
+    resolveMostRecentRelayOperation(mockResolvers)
 
     return tree
   }

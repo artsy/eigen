@@ -1,5 +1,7 @@
 import { ShowsRailTestsQuery } from "__generated__/ShowsRailTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { cloneDeep } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -40,7 +42,7 @@ const meResponseMock = {
 describe("ShowsRailFragmentContainer", () => {
   const TestRenderer = () => (
     <QueryRenderer<ShowsRailTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query ShowsRailTestsQuery @raw_response_type {
           showsConnection {
@@ -63,13 +65,11 @@ describe("ShowsRailFragmentContainer", () => {
 
   it("doesn't throw when rendered", () => {
     renderWithWrappersLEGACY(<TestRenderer />)
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          me: meResponseMock,
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Query: () => ({
+        me: meResponseMock,
+      }),
+    })
   })
 
   it("renders without throwing an error when missing shows", () => {
@@ -79,12 +79,10 @@ describe("ShowsRailFragmentContainer", () => {
     })
 
     renderWithWrappersLEGACY(<TestRenderer />)
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          me: showsCopy,
-        }),
-      })
-    )
+    resolveMostRecentRelayOperation({
+      Query: () => ({
+        me: showsCopy,
+      }),
+    })
   })
 })

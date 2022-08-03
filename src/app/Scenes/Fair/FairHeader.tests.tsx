@@ -1,20 +1,21 @@
 import { FairHeaderTestsQuery } from "__generated__/FairHeaderTestsQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { FairHeader, FairHeaderFragmentContainer } from "app/Scenes/Fair/Components/FairHeader"
 import { extractText } from "app/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Spacer } from "palette"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 import { FairTimingFragmentContainer } from "./Components/FairTiming"
 
 describe("FairHeader", () => {
   const TestRenderer = () => (
     <QueryRenderer<FairHeaderTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query FairHeaderTestsQuery($fairID: String!) @relay_test_operation {
           fair(id: $fairID) {
@@ -35,11 +36,7 @@ describe("FairHeader", () => {
 
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, mockResolvers)
-      )
-    })
+    resolveMostRecentRelayOperation(mockResolvers)
     return tree
   }
 

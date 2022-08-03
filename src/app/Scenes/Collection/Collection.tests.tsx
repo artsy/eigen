@@ -1,6 +1,7 @@
 import { CollectionTestsQuery } from "__generated__/CollectionTestsQuery.graphql"
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import { FilterArtworkButton } from "app/Components/ArtworkFilter"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { CollectionContainer } from "./Collection"
@@ -8,7 +9,7 @@ import { CollectionContainer } from "./Collection"
 describe("Collection", () => {
   const TestRenderer = () => (
     <QueryRenderer<CollectionTestsQuery>
-      environment={environment}
+      environment={getRelayEnvironment()}
       query={graphql`
         query CollectionTestsQuery @relay_test_operation {
           marketingCollection(slug: "doesn't matter") {

@@ -1,14 +1,15 @@
 import { cloneDeep, first } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 
 import { navigate } from "app/navigation/navigate"
 
 import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
 import { CardRailCard } from "app/Components/Home/CardRailCard"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperationRawPayload } from "app/tests/resolveMostRecentRelayOperation"
 import HomeAnalytics from "../homeAnalytics"
 import { CollectionsRailFragmentContainer } from "./CollectionsRail"
 
@@ -17,7 +18,7 @@ describe("CollectionsRailFragmentContainer", () => {
 
   const TestRenderer = () => (
     <QueryRenderer<CollectionsRailTestsQuery>
-      environment={env}
+      environment={getRelayEnvironment()}
       query={graphql`
         query CollectionsRailTestsQuery @raw_response_type {
           homePage {
@@ -46,15 +47,13 @@ describe("CollectionsRailFragmentContainer", () => {
 
   it("doesn't throw when rendered", () => {
     renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          homePage: {
-            marketingCollectionsModule: collectionsModuleMock,
-          },
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        homePage: {
+          marketingCollectionsModule: collectionsModuleMock,
         },
-      })
+      },
     })
   })
 
@@ -65,29 +64,25 @@ describe("CollectionsRailFragmentContainer", () => {
       result.artworksConnection.edges = []
     })
     renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          homePage: {
-            marketingCollectionsModule: collectionsCopy,
-          },
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        homePage: {
+          marketingCollectionsModule: collectionsCopy,
         },
-      })
+      },
     })
   })
 
   it("routes to collection URL", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          homePage: {
-            marketingCollectionsModule: collectionsModuleMock,
-          },
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        homePage: {
+          marketingCollectionsModule: collectionsModuleMock,
         },
-      })
+      },
     })
     // @ts-ignore
     first(tree.root.findAllByType(CardRailCard)).props.onPress()
@@ -96,15 +91,13 @@ describe("CollectionsRailFragmentContainer", () => {
 
   it("tracks collection thumbnail taps", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          homePage: {
-            marketingCollectionsModule: collectionsModuleMock,
-          },
+    resolveMostRecentRelayOperationRawPayload({
+      errors: [],
+      data: {
+        homePage: {
+          marketingCollectionsModule: collectionsModuleMock,
         },
-      })
+      },
     })
     // @ts-ignore
     first(tree.root.findAllByType(CardRailCard)).props.onPress()

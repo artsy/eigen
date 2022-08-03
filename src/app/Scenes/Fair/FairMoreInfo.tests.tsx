@@ -1,6 +1,8 @@
 import { FairMoreInfoTestsQuery } from "__generated__/FairMoreInfoTestsQuery.graphql"
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { LinkText, Text } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
@@ -16,7 +18,7 @@ describe("FairMoreInfo", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairMoreInfoTestsQuery>
-        environment={env}
+        environment={getRelayEnvironment()}
         query={graphql`
           query FairMoreInfoTestsQuery($fairID: String!) @relay_test_operation {
             fair(id: $fairID) {
@@ -40,9 +42,7 @@ describe("FairMoreInfo", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
+    resolveMostRecentRelayOperation(mockResolvers)
 
     return tree
   }

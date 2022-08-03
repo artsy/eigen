@@ -1,6 +1,8 @@
 import { FairCollectionsTestsQuery } from "__generated__/FairCollectionsTestsQuery.graphql"
+import { getRelayEnvironment } from "app/relay/defaultEnvironment"
 import { FairCollectionsFragmentContainer } from "app/Scenes/Fair/Components/FairCollections"
 import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Text, TouchableWithScale } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -11,7 +13,7 @@ describe("FairCollections", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairCollectionsTestsQuery>
-        environment={env}
+        environment={getRelayEnvironment()}
         query={graphql`
           query FairCollectionsTestsQuery($fairID: String!) @relay_test_operation {
             fair(id: $fairID) {
@@ -35,9 +37,7 @@ describe("FairCollections", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
+    resolveMostRecentRelayOperation(mockResolvers)
 
     return tree
   }
