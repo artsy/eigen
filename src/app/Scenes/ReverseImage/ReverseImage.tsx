@@ -2,24 +2,16 @@ import { goBack, navigate } from "app/navigation/navigate"
 import { useImageSearchV2 } from "app/utils/useImageSearchV2"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Alert, LayoutChangeEvent, Linking, StyleSheet, TouchableOpacity } from "react-native"
+import { Alert, Linking, StyleSheet, TouchableOpacity } from "react-native"
 import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
 import styled from "styled-components/native"
 import { HeaderContainer } from "./Components/HeaderContainer"
-
-interface FrameCoords {
-  width: number
-  height: number
-  x: number
-  y: number
-}
 
 export const ReverseImage = () => {
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [frameCoords, setFrameCoords] = useState<FrameCoords | null>(null)
   const space = useSpace()
   const camera = useRef<Camera>(null)
   const devices = useCameraDevices()
@@ -98,20 +90,6 @@ export const ReverseImage = () => {
     setIsCameraInitialized(true)
   }
 
-  const handleLayout = (event: LayoutChangeEvent) => {
-    // @ts-ignore
-    event.target.measure(
-      (_x: number, _y: number, width: number, height: number, pageX: number, pageY: number) => {
-        setFrameCoords({
-          width,
-          height,
-          x: pageX,
-          y: pageY,
-        })
-      }
-    )
-  }
-
   const handleBackPress = () => {
     goBack()
   }
@@ -179,7 +157,7 @@ export const ReverseImage = () => {
 
         <Flex flex={1} flexDirection="row">
           <Background width={space("2")} />
-          <Flex flex={1} onLayout={handleLayout} />
+          <Flex flex={1} />
           <Background width={space("2")} />
         </Flex>
 
@@ -205,18 +183,6 @@ export const ReverseImage = () => {
           )}
         </Background>
       </Flex>
-
-      {frameCoords !== null && (
-        <Flex
-          position="absolute"
-          left={frameCoords.x}
-          top={frameCoords.y}
-          width={frameCoords.width}
-          height={frameCoords.height}
-          bg="red"
-          opacity={0.2}
-        />
-      )}
     </Flex>
   )
 }
