@@ -2,8 +2,9 @@ import { CareerHighlightsBigCardsSwiperQuery } from "__generated__/CareerHighlig
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack } from "app/navigation/navigate"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
+import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { Flex, useColor, useSpace } from "palette"
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { Animated } from "react-native"
 import Swiper from "react-native-swiper"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -82,32 +83,48 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
           ))}
         </Flex>
       </FancyModalHeader>
-      <Swiper
-        index={openedCardIndex}
-        showsButtons={false}
-        loop={false}
-        removeClippedSubviews={false}
-        showsPagination={false}
-        onIndexChanged={(index) => setSliderState({ currentPage: index })}
-      >
-        {!!shouldShowSlide("BIENNIAL") && (
-          <CareerHighlightBigCardBiennial type="BIENNIAL" highlightData={myCollectionInfo} />
-        )}
-        {!!shouldShowSlide("COLLECTED") && (
-          <CareerHighlightBigCardCollected type="COLLECTED" highlightData={myCollectionInfo} />
-        )}
-        {!!shouldShowSlide("GROUP_SHOW") && (
-          <CareerHighlightBigCardGroupShow type="GROUP_SHOW" highlightData={myCollectionInfo} />
-        )}
-        {!!shouldShowSlide("SOLO_SHOW") && (
-          <CareerHighlightBigCardSoloShow type="SOLO_SHOW" highlightData={myCollectionInfo} />
-        )}
-        {!!shouldShowSlide("REVIEWED") && (
-          <CareerHighlightBigCardReviewed type="REVIEWED" highlightData={myCollectionInfo} />
-        )}
-        <CareerHighlightsPromotionalCard />
-      </Swiper>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <Swiper
+          index={openedCardIndex}
+          showsButtons={false}
+          loop={false}
+          removeClippedSubviews={false}
+          showsPagination={false}
+          onIndexChanged={(index) => setSliderState({ currentPage: index })}
+        >
+          {!!shouldShowSlide("BIENNIAL") && (
+            <CareerHighlightBigCardBiennial type="BIENNIAL" highlightData={myCollectionInfo} />
+          )}
+          {!!shouldShowSlide("COLLECTED") && (
+            <CareerHighlightBigCardCollected type="COLLECTED" highlightData={myCollectionInfo} />
+          )}
+          {!!shouldShowSlide("GROUP_SHOW") && (
+            <CareerHighlightBigCardGroupShow type="GROUP_SHOW" highlightData={myCollectionInfo} />
+          )}
+          {!!shouldShowSlide("SOLO_SHOW") && (
+            <CareerHighlightBigCardSoloShow type="SOLO_SHOW" highlightData={myCollectionInfo} />
+          )}
+          {!!shouldShowSlide("REVIEWED") && (
+            <CareerHighlightBigCardReviewed type="REVIEWED" highlightData={myCollectionInfo} />
+          )}
+          <CareerHighlightsPromotionalCard />
+        </Swiper>
+      </Suspense>
     </>
+  )
+}
+
+const LoadingSkeleton = () => {
+  return (
+    <ProvidePlaceholderContext>
+      <Flex px={2}>
+        <Flex justifyContent="space-between" flexDirection="row" alignItems="center" pb={1}>
+          <PlaceholderBox height={60} width={50} />
+          <PlaceholderBox width={50} height={50} borderRadius={25} />
+        </Flex>
+        <PlaceholderBox height={60} width={180} />
+      </Flex>
+    </ProvidePlaceholderContext>
   )
 }
 
