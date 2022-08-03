@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { LineGraphDurationPicker } from "./LineGraphDurationPikcer"
+import { LineGraphDurationPicker } from "./LineGraphBands"
 import { LineGraphStoreProvider } from "./LineGraphStore"
 import { _AVAILABLE_MEDIUMS } from "./testHelpers"
 

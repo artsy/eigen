@@ -37,3 +37,39 @@ export const getRandomColor = () => {
   }
   return color
 }
+
+export enum TickFormatType {
+  OnlyShowMinAndMaxDomain = "OnlyShowMinAndMaxDomain",
+  ShowAllValues = "ShowAllValues",
+}
+
+const defaultFormatter = (val: any) => {
+  if (isNaN(Number(val))) {
+    return val
+  }
+  const inThousand = Number(val) / 1000
+  if (inThousand > 0.99) {
+    return Math.ceil(inThousand) + "k"
+  }
+  return val
+}
+
+export const tickFormat = (
+  tick: any,
+  maxDomain: number,
+  formatter: (val: any) => string = defaultFormatter,
+  tickFormatType: TickFormatType = TickFormatType.ShowAllValues
+): string => {
+  let res = ""
+  switch (tickFormatType) {
+    case TickFormatType.OnlyShowMinAndMaxDomain:
+      if (tick === maxDomain) {
+        res = formatter(tick)
+      }
+      break
+    case TickFormatType.ShowAllValues:
+      res = formatter(tick)
+      break
+  }
+  return res
+}
