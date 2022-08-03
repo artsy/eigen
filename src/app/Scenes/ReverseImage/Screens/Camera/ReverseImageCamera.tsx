@@ -4,12 +4,12 @@ import { useImageSearchV2 } from "app/utils/useImageSearchV2"
 import { compact } from "lodash"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Alert, Linking, StyleSheet, TouchableOpacity } from "react-native"
+import { Alert, Image, Linking, StyleSheet, TouchableOpacity } from "react-native"
 import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
 import styled from "styled-components/native"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
-import { ReverseImageNavigationStack } from "../../types"
+import { PhotoEntity, ReverseImageNavigationStack } from "../../types"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
 
@@ -18,7 +18,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [photo, setPhoto] = useState<PhotoEntity | null>()
   const space = useSpace()
   const camera = useRef<Camera>(null)
   const devices = useCameraDevices()
@@ -41,22 +41,22 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         throw new Error("Camera ref is null!")
       }
 
-      setIsLoading(true)
-      const photo = await camera.current.takePhoto({
+      const capturedPhoto = await camera.current.takePhoto({
         qualityPrioritization: "speed",
         flash: enableFlash ? "on" : "off",
         skipMetadata: true,
       })
 
-      if (!photo) {
+      if (!capturedPhoto) {
         throw new Error("Something went wrong")
       }
 
       const data = {
-        path: `file://${photo.path}`,
-        width: photo.width,
-        height: photo.height,
+        path: `file://${capturedPhoto.path}`,
+        width: capturedPhoto.width,
+        height: capturedPhoto.height,
       }
+      setPhoto(data)
 
       const results = await handleSeachByImage(data)
 
@@ -79,7 +79,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     } catch (error) {
       console.error(error)
     } finally {
-      setIsLoading(false)
+      setPhoto(null)
     }
   }
 
@@ -138,9 +138,13 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         photo
         video={false}
         audio={false}
-        isActive={!searchingByImage || !isLoading}
+        isActive={!photo}
         onInitialized={onInitialized}
       />
+
+      {!!photo && (
+        <Image source={{ uri: photo.path }} style={StyleSheet.absoluteFill} resizeMode="cover" />
+      )}
 
       <Flex {...StyleSheet.absoluteFillObject}>
         <Background>
