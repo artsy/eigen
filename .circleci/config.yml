@@ -80,6 +80,7 @@ commands:
           name: Compile query map
           command: yarn relay
   test-js:
+    parallelism: 4
     steps:
       - restore_cache:
           keys:
@@ -92,7 +93,7 @@ commands:
           command: yarn lint
       - run:
           name: Run jest tests
-          command: yarn jest --ci --forceExit --runInBand --reporters=default --reporters=jest-junit
+          command: yarn test --ci --forceExit --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
       - save_cache:
