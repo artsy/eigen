@@ -8,7 +8,7 @@ export const CareerHighlightsPromotionalCard: React.FC = () => {
   const { width } = useScreenDimensions()
 
   return (
-    <Flex flexGrow={1} width={width}>
+    <Flex flexGrow={1} width={width} testID="promo-card">
       <Flex mx={2} position="relative">
         <Text mt={4} variant="xl">
           Discover Career{"\n"}Highlights for Your{"\n"}Artists

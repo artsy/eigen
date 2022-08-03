@@ -55,7 +55,7 @@ export const CareerHighlightBigCardBiennial: React.FC<CareerHighlightBigCardBien
   const { label, Icon } = getCareerHiglight(type, count)
 
   return (
-    <Flex px={2} width={width} onMoveShouldSetResponderCapture={() => true}>
+    <Flex px={2} width={width} onMoveShouldSetResponderCapture={() => true} testID="biennial-card">
       <CardHeader
         count={count}
         label={label}
@@ -119,7 +119,7 @@ export const CareerHighlightBigCardCollected: React.FC<CareerHighlightBigCardCol
   const { label, Icon } = getCareerHiglight(type, count)
 
   return (
-    <Flex px={2} width={width} onMoveShouldSetResponderCapture={() => true}>
+    <Flex px={2} width={width} onMoveShouldSetResponderCapture={() => true} testID="collected-card">
       <CardHeader
         count={count}
         label={label}
@@ -182,7 +182,12 @@ export const CareerHighlightBigCardGroupShow: React.FC<CareerHighlightBigCardGro
   const { label, Icon } = getCareerHiglight(type, count)
 
   return (
-    <Flex px={2} width={width} onMoveShouldSetResponderCapture={() => true}>
+    <Flex
+      px={2}
+      width={width}
+      onMoveShouldSetResponderCapture={() => true}
+      testID="group-show-card"
+    >
       <CardHeader
         count={count}
         label={label}
@@ -245,7 +250,7 @@ export const CareerHighlightBigCardSoloShow: React.FC<CareerHighlightBigCardSolo
   const { label, Icon } = getCareerHiglight(type, count)
 
   return (
-    <Flex px={2} width={width} onMoveShouldSetResponderCapture={() => true}>
+    <Flex px={2} width={width} onMoveShouldSetResponderCapture={() => true} testID="solo-show-card">
       <CardHeader
         count={count}
         label={label}
@@ -309,7 +314,7 @@ export const CareerHighlightBigCardReviewed: React.FC<CareerHighlightBigCardRevi
   const { label, Icon } = getCareerHiglight(type, count)
 
   return (
-    <Flex px={2} width={width} onMoveShouldSetResponderCapture={() => true}>
+    <Flex px={2} width={width} onMoveShouldSetResponderCapture={() => true} testID="reviewed-card">
       <CardHeader
         count={count}
         label={label}

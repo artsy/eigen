@@ -53,6 +53,7 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
           passProps: { type, careerHighlightsAvailableTypes },
         })
       }}
+      testID="career-highlight-card-item"
     >
       <Flex p={1} height={135} width={205} background="white" border={1} borderColor="black10">
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between">

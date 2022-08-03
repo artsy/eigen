@@ -19,7 +19,7 @@ import { CareerHighlightKind } from "./CareerHighlightCard"
 import { CareerHighlightsPromotionalCard } from "./CareerHighlightsPromotionalCard"
 
 export const CareerHighlightsBigCardsSwiper: React.FC<{
-  type: any
+  type: CareerHighlightKind
   careerHighlightsAvailableTypes: CareerHighlightKind[]
 }> = ({ type, careerHighlightsAvailableTypes }) => {
   const data = useLazyLoadQuery<CareerHighlightsBigCardsSwiperQuery>(
@@ -49,7 +49,6 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
   const shouldShowSlide = (slide: CareerHighlightKind) => {
     return careerHighlightsAvailableTypes.includes(slide)
   }
-
   return (
     <>
       <FancyModalHeader
@@ -65,6 +64,7 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
             justifyContent: "flex-start",
             flexDirection: "row",
           }}
+          testID="career-highlighs-big-cards-swiper"
         >
           {Array.from(Array(numberOfSlides).keys()).map((key, index) => (
             <Animated.View
@@ -110,8 +110,7 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
     </>
   )
 }
-// CareerHighlightsCards
-// CareerHighlightsBigCardsSwiper
+
 export const CareerHighlightsBigCardsSwiperScreenQuery = graphql`
   query CareerHighlightsBigCardsSwiperQuery {
     me {
