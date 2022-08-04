@@ -16,7 +16,7 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
   const { navigation, route } = props
   const { photo } = route.params
   const space = useSpace()
-  const { handleSeachByImage } = useImageSearch()
+  const { handleSearchByImage } = useImageSearch()
 
   const handleGoBack = () => {
     navigation.goBack()
@@ -24,7 +24,7 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
 
   const handleSearch = async () => {
     try {
-      const results = await handleSeachByImage(photo)
+      const results = await handleSearchByImage(photo)
 
       if (results.length === 0) {
         return navigation.replace("ArtworkNotFound", {

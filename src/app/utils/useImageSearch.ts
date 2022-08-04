@@ -16,7 +16,7 @@ interface SearchImage {
 export const useImageSearch = () => {
   const [searchingByImage, setSearchingByImage] = useState(false)
 
-  const handleSeachByImage = async (image: SearchImage) => {
+  const handleSearchByImage = async (image: SearchImage) => {
     try {
       let resizedWidth = image.width
       let resizedHeight = image.height
@@ -100,7 +100,7 @@ export const useImageSearch = () => {
 
   return {
     searchingByImage,
-    handleSeachByImage,
+    handleSearchByImage,
   }
 }
 
