@@ -224,14 +224,13 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
             style={{
               data: { stroke: tintColor, fill: tintColor },
               parent: { border: "transparent" },
-              // labels: { fontFamily: bodyFont, stroke: 'transparent' }
             }}
             data={xHighlights}
             size={5}
             dataComponent={
               <HighlightIconContainer
                 // @ts-ignore
-                icon={xHighlightIcon ?? <StarCircleIcon fill={tintColor} />}
+                icon={xHighlightIcon ?? <StarCircleIcon fill={tintColor} height={20} width={20} />}
                 onHighlightPressed={onXHighlightPressed}
                 lastPressedEvent={lastPressedEvent}
                 clearLastPressedEvent={() => setLastPressedEvent(null)}
@@ -251,14 +250,13 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
             style={{
               data: { stroke: tintColor, fill: tintColor },
               parent: { border: "transparent" },
-              // labels: { fontFamily: bodyFont, stroke: 'transparent' }
             }}
             data={yHighlights}
             size={5}
             dataComponent={
               <HighlightIconContainer
                 // @ts-ignore
-                icon={yHighlightIcon ?? <StarCircleIcon fill={tintColor} />}
+                icon={yHighlightIcon ?? <StarCircleIcon fill={tintColor} height={20} width={20} />}
                 onHighlightPressed={onYHighlightPressed}
                 lastPressedEvent={lastPressedEvent}
                 clearLastPressedEvent={() => setLastPressedEvent(null)}
@@ -281,11 +279,10 @@ const Background = (props: any) => (
   />
 )
 
-/*
-HighlightIconContainer helps format the custom highlights icon so they display properly on the chart
-VictoryChart will injects its props into this Component including whatever extra props we provide.
-It will also trigger the onHighlightPressed callback with the datum if pressed.
-*/
+/** HighlightIconContainer helps format the custom highlights icon so they display properly on the chart
+ * VictoryChart will injects its props into this Component including whatever extra props we provide.
+ * It will also trigger the onHighlightPressed callback with the datum if pressed.
+ */
 const HighlightIconContainer = (props: any) => {
   const { x, y, datum, icon, lastPressedEvent, clearLastPressedEvent, onHighlightPressed } = props
 
