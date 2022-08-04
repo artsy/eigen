@@ -4847,6 +4847,9 @@ enum CommercePaymentMethodEnum {
   # Credit Card
   CREDIT_CARD
 
+  # SEPA
+  SEPA_DEBIT
+
   # US Bank Account
   US_BANK_ACCOUNT
 
