@@ -23,6 +23,8 @@ interface OnboardingQuestionTemplateProps {
   subtitle?: string
 }
 
+const NAVIGATE_TO_NEXT_SCREEN_DELAY = 500
+
 export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = ({
   answers,
   action,
@@ -46,7 +48,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
     setTimeout(() => {
       onNext()
       setLoading(false)
-    }, 225)
+    }, NAVIGATE_TO_NEXT_SCREEN_DELAY)
   }
 
   return (
