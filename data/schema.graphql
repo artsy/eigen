@@ -12504,7 +12504,7 @@ type Query {
   ): City
 
   # Find balance of an account associated with a setup intent
-  commerceBankAccountBalance(setupIntentId: ID!): CommerceBankAccountBalance
+  commerceBankAccountBalance(bankAccountId: ID, setupIntentId: ID): CommerceBankAccountBalance
 
   # Find list of competing orders
   commerceCompetingOrders(
