@@ -6,11 +6,11 @@ import { Box, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
-interface UserProfileProps {
+interface MyProfileProps {
   me: LoggedInUserInfo_me$data
 }
 
-class UserProfile extends React.Component<UserProfileProps> {
+class MyProfile extends React.Component<MyProfileProps> {
   render() {
     const { me } = this.props
     const loginInfo = !!me.name ? `${me.name} (${me.email})` : me.email
@@ -18,7 +18,7 @@ class UserProfile extends React.Component<UserProfileProps> {
   }
 }
 
-const UserProfileFragmentContainer = createFragmentContainer(UserProfile, {
+const MyProfileFragmentContainer = createFragmentContainer(MyProfile, {
   me: graphql`
     fragment LoggedInUserInfo_me on Me {
       name
@@ -27,7 +27,7 @@ const UserProfileFragmentContainer = createFragmentContainer(UserProfile, {
   `,
 })
 
-export const UserProfileQueryRenderer: React.FC = () => (
+export const MyProfileQueryRenderer: React.FC = () => (
   <QueryRenderer<LoggedInUserInfoQuery>
     environment={defaultEnvironment}
     query={graphql`
@@ -43,7 +43,7 @@ export const UserProfileQueryRenderer: React.FC = () => (
         return null
       } else if (props) {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        return <UserProfileFragmentContainer {...props} />
+        return <MyProfileFragmentContainer {...props} />
       } else {
         return (
           <Box mb={1}>

@@ -1,4 +1,4 @@
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyProfile/MyProfile"
 import { setVisualClueAsSeen, useVisualClue } from "app/store/GlobalStore"
 import { Flex } from "palette"
 import {

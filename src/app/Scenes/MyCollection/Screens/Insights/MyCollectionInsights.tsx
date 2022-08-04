@@ -3,7 +3,7 @@ import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTa
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyProfile/MyProfile"
 import { setVisualClueAsSeen, useFeatureFlag, useVisualClue } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import {

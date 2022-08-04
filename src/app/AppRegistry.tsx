@@ -82,11 +82,11 @@ import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkFo
 import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
 import { AverageSalePriceAtAuction } from "./Scenes/MyCollection/Screens/Insights/AverageSalePriceAtAuction"
 import { DarkModeSettings } from "./Scenes/MyProfile/DarkModeSettings"
-import { MyProfile } from "./Scenes/MyProfile/MyProfile"
-import { MyProfileHeaderMyCollectionAndSavedWorksScreenQuery } from "./Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { MyProfileScreenQuery } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
+import { MyProfileScreen } from "./Scenes/MyProfile/MyProfileScreen"
 import { MyProfileSettings } from "./Scenes/MyProfile/MyProfileSettings"
 import {
   NewWorksForYouQueryRenderer,
@@ -408,11 +408,11 @@ export const modules = defineModules({
   ]),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithartsyFAQ),
   MyProfile: reactModule(
-    MyProfile,
+    MyProfileScreen,
     {
       isRootViewForTabName: "profile",
     },
-    [MyProfileHeaderMyCollectionAndSavedWorksScreenQuery, MyCollectionScreenQuery]
+    [MyProfileScreenQuery, MyCollectionScreenQuery]
   ),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),

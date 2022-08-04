@@ -1,4 +1,4 @@
-import { MyProfileHeaderMyCollectionAndSavedWorksTestsQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksTestsQuery.graphql"
+import { MyProfileTestsQuery } from "__generated__/MyProfileTestsQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "app/navigation/navigate"
@@ -13,10 +13,7 @@ import { Avatar } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import {
-  LOCAL_PROFILE_ICON_PATH_KEY,
-  MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
-} from "../MyProfileHeaderMyCollectionAndSavedWorks"
+import { LOCAL_PROFILE_ICON_PATH_KEY, MyProfileFragmentContainer } from "../MyProfile"
 
 jest.mock("../LoggedInUserInfo")
 jest.unmock("react-relay")
@@ -30,21 +27,21 @@ jest.mock("@react-navigation/native", () => {
   }
 })
 
-describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
+describe("MyProfile", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksTestsQuery>
+    <QueryRenderer<MyProfileTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query MyProfileHeaderMyCollectionAndSavedWorksTestsQuery @relay_test_operation {
+        query MyProfileTestsQuery @relay_test_operation {
           me @optionalField {
-            ...MyProfileHeaderMyCollectionAndSavedWorks_me
+            ...MyProfile_me
           }
         }
       `}
       render={({ props, error }) => {
         if (props?.me) {
-          return <MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer me={props?.me} />
+          return <MyProfileFragmentContainer me={props?.me} />
         } else if (error) {
           console.log(error)
         }
@@ -67,7 +64,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
     jest.clearAllMocks()
   })
 
-  describe("Components of MyProfileHeaderMyCollectionAndSavedWorks ", () => {
+  describe("Components of MyProfile ", () => {
     it("renders the right tabs", () => {
       const { container } = getWrapper()
       expect(container.findByType(StickyTabPage)).toBeDefined()

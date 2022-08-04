@@ -16,7 +16,7 @@ import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRela
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "../MyProfile/MyProfile"
 import { MyCollectionContainer } from "./MyCollection"
 
 jest.unmock("react-relay")

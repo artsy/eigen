@@ -2,7 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyProfile/MyProfile"
 import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,

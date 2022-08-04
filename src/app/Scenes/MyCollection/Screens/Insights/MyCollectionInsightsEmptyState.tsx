@@ -1,5 +1,5 @@
 import { navigate, popToRoot } from "app/navigation/navigate"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyProfile/MyProfile"
 import { Button, Flex, Text, useSpace } from "palette"
 import { Image } from "react-native"
 

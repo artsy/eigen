@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyProfile/MyProfile"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 

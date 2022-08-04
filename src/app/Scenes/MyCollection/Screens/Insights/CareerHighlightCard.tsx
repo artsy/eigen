@@ -1,5 +1,5 @@
 import { navigate, popToRoot } from "app/navigation/navigate"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyProfile/MyProfile"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   Button,
