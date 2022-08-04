@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { goBack } from "app/navigation/navigate"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Linking, StyleSheet } from "react-native"
+import { Linking, StatusBar, StyleSheet } from "react-native"
 import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
 import styled from "styled-components/native"
 import { HeaderContainer } from "../../Components/HeaderContainer"
@@ -79,6 +79,15 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     }
 
     run()
+  }, [])
+
+  useEffect(() => {
+    StatusBar.setBarStyle("light-content")
+
+    return () => {
+      // return the previous color for the status bar, as on all other screens
+      StatusBar.setBarStyle("dark-content")
+    }
   }, [])
 
   if (cameraPermission === null || !device) {
