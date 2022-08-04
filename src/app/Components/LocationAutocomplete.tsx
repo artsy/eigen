@@ -168,6 +168,7 @@ const LocationPredictions = ({
       </TouchableWithoutFeedback>
 
       <Flex
+        testID="autocomplete-location-predictions"
         style={[
           {
             shadowColor: "rgba(0,0,0)",
@@ -184,7 +185,13 @@ const LocationPredictions = ({
         width="100%"
       >
         {predictions.map((p) => (
-          <Touchable haptic key={p.id} onPress={() => onSelect(p)} style={{ padding: 10 }}>
+          <Touchable
+            haptic
+            key={p.id}
+            onPress={() => onSelect(p)}
+            style={{ padding: 10 }}
+            testID={`autocomplete-location-prediction-${p.id}`}
+          >
             <Flex flexDirection="row" alignItems="center">
               <LocationIcon mr={1} />
               <Text style={{ flex: 1 }} ellipsizeMode="tail" numberOfLines={1}>
