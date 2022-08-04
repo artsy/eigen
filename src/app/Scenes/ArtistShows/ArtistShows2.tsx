@@ -1,4 +1,5 @@
 import { ArtistShows2_artist$data } from "__generated__/ArtistShows2_artist.graphql"
+import { ArtistShows2Query } from "__generated__/ArtistShows2Query.graphql"
 import { PAGE_SIZE } from "app/Components/constants"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
@@ -10,7 +11,6 @@ import { Flex, Spacer, Spinner, Text } from "palette"
 import React, { useState } from "react"
 import { Animated, StyleSheet, View, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { ArtistShows2Query } from "__generated__/ArtistShows2Query.graphql"
 import { ArtistShowFragmentContainer } from "../../Components/Artist/ArtistShows/ArtistShow"
 
 interface Props {

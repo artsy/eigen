@@ -1,3 +1,4 @@
+import { MyAccountEditName_me$data } from "__generated__/MyAccountEditName_me.graphql"
 import { MyAccountEditNameQuery } from "__generated__/MyAccountEditNameQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
@@ -5,7 +6,6 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Input } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
-import { MyAccountEditName_me$data } from "__generated__/MyAccountEditName_me.graphql"
 import {
   MyAccountFieldEditScreen,
   MyAccountFieldEditScreenPlaceholder,

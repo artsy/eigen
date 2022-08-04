@@ -1,3 +1,4 @@
+import { MyAccountEditEmail_me$data } from "__generated__/MyAccountEditEmail_me.graphql"
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
 import { useToast } from "app/Components/Toast/toastHook"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -7,7 +8,6 @@ import { Input } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"
-import { MyAccountEditEmail_me$data } from "__generated__/MyAccountEditEmail_me.graphql"
 import {
   MyAccountFieldEditScreen,
   MyAccountFieldEditScreenPlaceholder,

@@ -1,3 +1,4 @@
+import { MyAccountEditPhone_me$data } from "__generated__/MyAccountEditPhone_me.graphql"
 import { MyAccountEditPhoneQuery } from "__generated__/MyAccountEditPhoneQuery.graphql"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { PlaceholderBox } from "app/utils/placeholders"
@@ -5,7 +6,6 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { PhoneInput } from "palette/elements/Input/PhoneInput/PhoneInput"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { MyAccountEditPhone_me$data } from "__generated__/MyAccountEditPhone_me.graphql"
 import {
   MyAccountFieldEditScreen,
   MyAccountFieldEditScreenPlaceholder,

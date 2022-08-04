@@ -4,6 +4,7 @@ import { Sale_me$data } from "__generated__/Sale_me.graphql"
 import { Sale_sale$data } from "__generated__/Sale_sale.graphql"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
 import { SaleBelowTheFoldNewQuery$data } from "__generated__/SaleBelowTheFoldNewQuery.graphql"
+import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
   ArtworkFilterNavigator,
@@ -31,7 +32,6 @@ import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
 import { CascadingEndTimesBanner } from "../Artwork/Components/CascadingEndTimesBanner"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { NewBuyNowArtworksRailContainer } from "./Components/NewBuyNowArtworksRail"
