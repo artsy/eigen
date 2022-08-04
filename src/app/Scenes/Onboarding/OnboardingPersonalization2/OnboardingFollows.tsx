@@ -29,7 +29,7 @@ export const CONFIGURATION = {
 
 export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) => {
   const [query, setQuery] = useState("")
-  const { goBack } = useNavigation()
+  const { goBack, navigate } = useNavigation()
   const { next, state, onDone, progress } = useOnboardingContext()
 
   const { debouncedValue } = useDebouncedValue({ value: query, delay: 200 })
@@ -38,7 +38,7 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
 
   const handleNextButtonPress = () => {
     next()
-    // navigate to the loading screen and then to home after the delay
+    navigate("OnboardingPostFollowLoadingScreen")
   }
 
   return (
