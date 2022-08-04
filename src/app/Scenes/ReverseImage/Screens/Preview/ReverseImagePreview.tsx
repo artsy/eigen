@@ -33,13 +33,13 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
       }
 
       if (results.length === 1) {
-        return navigation.navigate("Artwork", {
+        return navigation.replace("Artwork", {
           artworkId: results[0]!.artwork!.internalID,
         })
       }
 
       const artworkIDs = compact(results.map((result) => result?.artwork?.internalID))
-      navigation.navigate("MultipleResults", {
+      navigation.replace("MultipleResults", {
         artworkIDs,
       })
     } catch (error) {
