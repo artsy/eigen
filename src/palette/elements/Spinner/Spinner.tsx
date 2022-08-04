@@ -48,9 +48,6 @@ export const getSize = (props: SpinnerProps | BarProps) => {
   }
 }
 
-/**
- * Spinner component for React Native
- */
 export const Spinner: React.FC<SpinnerProps> = ({
   size = "medium",
   color: theColor = "black100",
@@ -60,6 +57,10 @@ export const Spinner: React.FC<SpinnerProps> = ({
   const rotation = useMemo(() => new Animated.Value(0), [])
 
   const startRotation = () => {
+    if (__TEST__) {
+      return
+    }
+
     Animated.loop(
       Animated.timing(rotation, {
         toValue: 1,
