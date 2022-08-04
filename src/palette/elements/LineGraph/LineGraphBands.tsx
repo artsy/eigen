@@ -48,9 +48,8 @@ export const LineGraphBands: React.FC<LineGraphBandProps> = ({
   return (
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {bands.map((band, index) => (
-        <>
+        <Flex key={band.name + index}>
           <Touchable
-            key={band.name + index}
             haptic="impactMedium"
             onPress={() => onBandSelected(band.name)}
             testID="band"
@@ -64,8 +63,8 @@ export const LineGraphBands: React.FC<LineGraphBandProps> = ({
               {band.name}
             </Text>
           </Touchable>
-          <Spacer p={2} />
-        </>
+          <Spacer mx={2} my={1} />
+        </Flex>
       ))}
     </Flex>
   )

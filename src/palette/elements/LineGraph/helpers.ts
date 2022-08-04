@@ -75,7 +75,7 @@ export const tickFormat = (
 }
 
 // Adapted from https://github.com/PimpTrizkit/PJs/wiki/12.-Shade,-Blend-and-Convert-a-Web-Color-(pSBC.js)
-function shadeHexColor(color: string, percent: number) {
+const shadeHexColor = (color: string, percent: number) => {
   const parsedColor = parseInt(color.slice(1), 16)
   const t = percent < 0 ? 0 : 255
   const p = percent < 0 ? percent * -1 : percent
@@ -98,7 +98,7 @@ function shadeHexColor(color: string, percent: number) {
   )
 }
 
-function shadeRGBColor(color: string, percent: number) {
+const shadeRGBColor = (color: string, percent: number) => {
   const parsedColor = color.split(",")
   const t = percent < 0 ? 0 : 255
   const p = percent < 0 ? percent * -1 : percent
