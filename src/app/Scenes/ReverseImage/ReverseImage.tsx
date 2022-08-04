@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native"
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { createStackNavigator } from "@react-navigation/stack"
 import { ReverseImageArtworkScreen } from "./Screens/Artwork/ReverseImageArtwork"
 import { ReverseImageArtworkNotFoundScreen } from "./Screens/ArtworkNotFound/ReverseImageArtworkNotFoundScreen"
 import { ReverseImageCameraScreen } from "./Screens/Camera/ReverseImageCamera"
