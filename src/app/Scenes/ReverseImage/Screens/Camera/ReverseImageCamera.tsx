@@ -22,7 +22,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const devices = useCameraDevices()
   const device = devices.back
 
-  const requestMicrophonePermission = async () => {
+  const requestCameraPermission = async () => {
     const permission = await Camera.requestCameraPermission()
 
     if (permission === "denied") {
@@ -97,7 +97,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         <Screen.Body>
           <Flex flex={1} justifyContent="center" alignItems="center">
             <Text>Camera permission required</Text>
-            <Button mt={2} onPress={requestMicrophonePermission}>
+            <Button mt={2} onPress={requestCameraPermission}>
               Grant
             </Button>
           </Flex>

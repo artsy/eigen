@@ -1,6 +1,6 @@
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
-import { AddIcon, Box, Spinner } from "palette"
+import { AddIcon, Box } from "palette"
 import { TouchableOpacity } from "react-native"
 import { useScreenDimensions } from "shared/hooks"
 

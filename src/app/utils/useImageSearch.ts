@@ -86,7 +86,7 @@ export const useImageSearch = () => {
       ).toPromise()
       const imageResults = response?.reverseImageSearch?.results ?? []
       const sortedImageResults = [...imageResults].sort(
-        (asc, desc) => desc!.matchPercent - asc!.matchPercent
+        (first, second) => second!.matchPercent - first!.matchPercent
       )
 
       return sortedImageResults
