@@ -4,7 +4,7 @@ import { compact } from "lodash"
 import { BackButton, Flex, useSpace } from "palette"
 import { useEffect } from "react"
 import { Image, StyleSheet } from "react-native"
-import styled from "styled-components/native"
+import { Background } from "../../Components/Background"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
 import { ReverseImageNavigationStack } from "../../types"
@@ -78,9 +78,3 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
     </Flex>
   )
 }
-
-const CAMERA_BACKGROUND_COLOR = "rgba(0, 0, 0, 0.6)"
-
-const Background = styled(Flex)`
-  background: ${CAMERA_BACKGROUND_COLOR};
-`

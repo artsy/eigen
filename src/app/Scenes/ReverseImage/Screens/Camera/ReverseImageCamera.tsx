@@ -6,7 +6,7 @@ import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palet
 import { useEffect, useRef, useState } from "react"
 import { Linking, StatusBar, StyleSheet } from "react-native"
 import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
-import styled from "styled-components/native"
+import { Background, BACKGROUND_COLOR } from "../../Components/Background"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
 import { ReverseImageNavigationStack } from "../../types"
@@ -158,15 +158,9 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
           toggleFlash={toggleFlash}
           deviceHasFlash={device.hasFlash}
           isFlashEnabled={enableFlash}
-          bg="rgba(0, 0, 0, 0.6)"
+          bg={BACKGROUND_COLOR}
         />
       </Flex>
     </Flex>
   )
 }
-
-const CAMERA_BACKGROUND_COLOR = "rgba(0, 0, 0, 0.6)"
-
-const Background = styled(Flex)`
-  background: ${CAMERA_BACKGROUND_COLOR};
-`
