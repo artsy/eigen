@@ -11,7 +11,7 @@ export const CareerHighlightsPromotionalCard: React.FC = () => {
     <Flex flexGrow={1} width={width} testID="promo-card">
       <Flex mx={2} position="relative">
         <Text mt={4} variant="xl">
-          Discover Career{"\n"}Highlights for Your{"\n"}Artists
+          Discover Career Highlights for Your Artists
         </Text>
         <Text mt={2} variant="md" color="black60">
           Add artworks to reveal career highlights for your artists.
@@ -33,9 +33,9 @@ export const CareerHighlightsPromotionalCard: React.FC = () => {
         </Button>
       </Flex>
 
-      <Flex flex={1} justifyContent="flex-end">
+      <Flex mt={4} flex={1} justifyContent="flex-end">
         <Image
-          style={{ width: "100%" }}
+          style={{ width: "100%", height: "100%" }}
           source={require("images/careerHighlightsPromotionalCardImage.webp")}
         />
       </Flex>

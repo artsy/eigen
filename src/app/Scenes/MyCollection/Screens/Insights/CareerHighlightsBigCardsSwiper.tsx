@@ -53,17 +53,17 @@ export const CareerHighlightsBigCardsSwiper: React.FC<{
   return (
     <>
       <FancyModalHeader
-        alignStart
+        alignItems="flex-start"
         rightCloseButton
         onRightButtonPress={() => goBack()}
         hideBottomDivider
       >
         <Flex
           px={2}
+          justifyContent="flex-start"
+          flexDirection="row"
           style={{
             paddingTop: 4,
-            justifyContent: "flex-start",
-            flexDirection: "row",
           }}
           testID="career-highlighs-big-cards-swiper"
         >

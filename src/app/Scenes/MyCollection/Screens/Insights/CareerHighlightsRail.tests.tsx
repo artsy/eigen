@@ -113,7 +113,7 @@ describe("CareerHighlightsRail", () => {
     await flushPromiseQueue()
 
     fireEvent(getByTestId("career-highlight-card-item"), "press")
-    expect(navigate).toHaveBeenCalledWith("/my-collection/career-highlights-big-cards-swiper", {
+    expect(navigate).toHaveBeenCalledWith("/my-collection/career-highlights", {
       modal: true,
       passProps: { careerHighlightsAvailableTypes: ["BIENNIAL"], type: "BIENNIAL" },
     })
