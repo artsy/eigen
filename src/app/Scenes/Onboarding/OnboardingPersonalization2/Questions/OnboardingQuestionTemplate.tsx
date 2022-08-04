@@ -51,6 +51,8 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
     }, NAVIGATE_TO_NEXT_SCREEN_DELAY)
   }
 
+  const isNextBtnDisabled = !state[stateKey] || state[stateKey]?.length === 0
+
   return (
     <Screen>
       <Screen.Header onBack={goBack} onSkip={onDone} />
@@ -86,7 +88,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
           </Join>
         </Flex>
         <Flex>
-          <Button block disabled={!state[stateKey]} onPress={handleNext}>
+          <Button block disabled={isNextBtnDisabled} onPress={handleNext}>
             Next
           </Button>
           <Screen.SafeBottomPadding />
