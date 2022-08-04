@@ -100,8 +100,8 @@ describe("ConversationCTA", () => {
         },
       ],
     }
-    const getWrapperWithOrders = (...orders: any[]) => {
-      return getWrapper({
+    const getWrapperWithOrders = (...orders: any[]) =>
+      getWrapper({
         Conversation: () => ({
           ...artworkItem,
           activeOrders: {
@@ -109,7 +109,6 @@ describe("ConversationCTA", () => {
           },
         }),
       })
-    }
 
     it("renders the make offer button if there is no active order", () => {
       const wrapper = getWrapperWithOrders()

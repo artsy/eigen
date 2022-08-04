@@ -12,12 +12,14 @@ export const CTAPopUp = ({ show, children }: { show: boolean; children: React.Re
     } else {
       setTimeout(() => setHidden(true), 250)
     }
-    Animated.timing(animationProgress, {
-      toValue: doShow ? 0 : 1,
-      useNativeDriver: true,
-      duration: 333,
-      easing: Easing.in(Easing.linear),
-    }).start()
+    if (!__TEST__) {
+      Animated.timing(animationProgress, {
+        toValue: doShow ? 0 : 1,
+        useNativeDriver: true,
+        duration: 333,
+        easing: Easing.in(Easing.linear),
+      }).start()
+    }
   }
   useEffect(() => {
     showOrHide(show)

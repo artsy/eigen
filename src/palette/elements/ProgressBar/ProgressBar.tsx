@@ -29,16 +29,21 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   const [onCompletionCalled, setOnCompletionCalled] = useState(false)
 
   const animate = useCallback(() => {
-    Animated.timing(widthRef.current, {
-      duration: 500,
-      toValue: progressPercentage,
-      useNativeDriver: false,
-    }).start(() => {
-      if (progressPercentage === 100 && !onCompletionCalled) {
-        onCompletion()
-        setOnCompletionCalled(true)
-      }
-    })
+    if (!__TEST__) {
+      Animated.timing(widthRef.current, {
+        duration: 500,
+        toValue: progressPercentage,
+        useNativeDriver: false,
+      }).start(() => {
+        if (progressPercentage === 100 && !onCompletionCalled) {
+          onCompletion()
+          setOnCompletionCalled(true)
+        }
+      })
+    } else {
+      onCompletion()
+      setOnCompletionCalled(true)
+    }
   }, [progressPercentage])
 
   useEffect(() => {
