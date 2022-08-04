@@ -1,5 +1,7 @@
+import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { goBack } from "app/navigation/navigate"
+import { useIsForeground } from "app/utils/useIfForeground"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Linking, StatusBar, StyleSheet } from "react-native"
@@ -21,6 +23,10 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const camera = useRef<Camera>(null)
   const devices = useCameraDevices()
   const device = devices.back
+
+  const isFocussed = useIsFocused()
+  const isForeground = useIsForeground()
+  const isActive = isFocussed && isForeground
 
   const requestCameraPermission = async () => {
     const permission = await Camera.requestCameraPermission()
@@ -124,7 +130,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         photo
         video={false}
         audio={false}
-        isActive
+        isActive={isActive}
         onInitialized={onInitialized}
       />
 
