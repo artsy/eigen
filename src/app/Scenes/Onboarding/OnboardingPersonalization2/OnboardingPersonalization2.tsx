@@ -3,6 +3,7 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import { GlobalStore } from "app/store/GlobalStore"
 import { ArtworkScreen } from "./ArtworkScreen"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
+import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
 import { OnboardingArtistsOnTheRise } from "./OnboardingArtistsOnTheRise"
 import { OnboardingCuratedArtworks } from "./OnboardingCuratedArtworks"
 import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
@@ -30,9 +31,15 @@ export type OnboardingPersonalization2NavigationStack = {
 const StackNavigator = createStackNavigator<OnboardingPersonalization2NavigationStack>()
 
 export const OnboardingPersonalization2 = () => {
-  // this function marks onBoardingState as complete when the flow is done will be changed
-  // when onboarding is fully out to just navigate to home screen
-  const handleDone = () => GlobalStore.actions.auth.setState({ onboardingState: "complete" })
+  const onDone = () => GlobalStore.actions.auth.setState({ onboardingState: "complete" })
+
+  const { commitMutation } = useUpdateUserProfile(onDone)
+
+  const handleDone = () => {
+    commitMutation({
+      completedOnboarding: true,
+    })
+  }
 
   return (
     <OnboardingProvider onDone={handleDone}>
