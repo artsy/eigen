@@ -1,23 +1,23 @@
-import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useImageSearchQuery } from "__generated__/useImageSearchQuery.graphql"
-import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { ReactNativeFile } from "extract-files"
 import { useState } from "react"
-import { Alert, Platform } from "react-native"
+import { Platform } from "react-native"
 import { fetchQuery, graphql } from "react-relay"
 import RNFetchBlob from "rn-fetch-blob"
-import { showPhotoActionSheet } from "./requestPhotos"
 import { resizeImage } from "./resizeImage"
+
+interface SearchImage {
+  path: string
+  width: number
+  height: number
+}
 
 export const useImageSearch = () => {
   const [searchingByImage, setSearchingByImage] = useState(false)
-  const { showActionSheetWithOptions } = useActionSheet()
 
-  const handleSeachByImage = async () => {
+  const handleSeachByImage = async (image: SearchImage) => {
     try {
-      const images = await showPhotoActionSheet(showActionSheetWithOptions, true, false)
-      const image = images[0]
       let resizedWidth = image.width
       let resizedHeight = image.height
 
@@ -74,6 +74,7 @@ export const useImageSearch = () => {
                 matchPercent
                 artwork {
                   href
+                  internalID
                 }
               }
             }
@@ -84,23 +85,14 @@ export const useImageSearch = () => {
         }
       ).toPromise()
       const imageResults = response?.reverseImageSearch?.results ?? []
-
-      if (imageResults.length === 0) {
-        Alert.alert(
-          "Artwork Not Found",
-          "We couldn’t find an artwork based on your photo. Please try again"
-        )
-        return
-      }
-
       const sortedImageResults = [...imageResults].sort(
         (asc, desc) => desc!.matchPercent - asc!.matchPercent
       )
 
-      navigate(sortedImageResults[0]!.artwork!.href!)
+      return sortedImageResults
     } catch (error) {
       console.error(error)
-      Alert.alert("Something went wrong", (error as Error).message)
+      throw error
     } finally {
       setSearchingByImage(false)
     }

@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { useImageSearchV2 } from "app/utils/useImageSearchV2"
+import { useImageSearch } from "app/utils/useImageSearch"
 import { compact } from "lodash"
 import { BackButton, Flex, useSpace } from "palette"
 import { useEffect } from "react"
@@ -16,7 +16,7 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
   const { navigation, route } = props
   const { photo } = route.params
   const space = useSpace()
-  const { handleSeachByImage } = useImageSearchV2()
+  const { handleSeachByImage } = useImageSearch()
 
   const handleGoBack = () => {
     navigation.goBack()
