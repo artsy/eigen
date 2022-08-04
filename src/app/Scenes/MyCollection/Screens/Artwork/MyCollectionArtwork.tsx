@@ -5,6 +5,7 @@ import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { goBack, navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore } from "app/store/GlobalStore"
+import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { compact } from "lodash"
 import { Flex, Text } from "palette/elements"
@@ -21,42 +22,11 @@ export enum Tab {
   about = "About",
 }
 
-const MyCollectionArtworkScreenQuery = graphql`
-  query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
-    artwork(id: $artworkSlug) {
-      ...MyCollectionArtwork_sharedProps @relay(mask: false)
-      ...MyCollectionArtworkHeader_artwork
-      ...MyCollectionArtworkInsights_artwork
-      ...MyCollectionArtworkAbout_artwork
-      comparableAuctionResults(first: 6) @optionalField {
-        totalCount
-      }
-      artist {
-        internalID
-        formattedNationalityAndBirthday
-        auctionResultsConnection(first: 3, sort: DATE_DESC) {
-          totalCount
-        }
-      }
-    }
-    marketPriceInsights(artistId: $artistInternalID, medium: $medium) @optionalField {
-      ...MyCollectionArtworkInsights_marketPriceInsights
-      ...MyCollectionArtworkAbout_marketPriceInsights
-    }
-    _marketPriceInsights: marketPriceInsights(artistId: $artistInternalID, medium: $medium)
-      @optionalField {
-      annualLotsSold
-    }
-    me {
-      ...MyCollectionArtworkInsights_me
-    }
-  }
-`
-
 const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   artworkSlug,
   artistInternalID,
   medium,
+  category,
 }) => {
   const { trackEvent } = useTracking()
 
@@ -64,7 +34,8 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     artworkSlug,
     // To not let the whole query fail if the artwork doesn't has an artist
     artistInternalID: artistInternalID || "",
-    medium,
+    // TODO: Fix this logic once we only need category to fetch insights
+    medium: getVortexMedium(medium, category),
   })
 
   const comparableWorksCount = data?.artwork?.comparableAuctionResults?.totalCount
@@ -147,6 +118,38 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   )
 }
 
+export const MyCollectionArtworkScreenQuery = graphql`
+  query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
+    artwork(id: $artworkSlug) {
+      ...MyCollectionArtwork_sharedProps @relay(mask: false)
+      ...MyCollectionArtworkHeader_artwork
+      ...MyCollectionArtworkInsights_artwork
+      ...MyCollectionArtworkAbout_artwork
+      comparableAuctionResults(first: 6) @optionalField {
+        totalCount
+      }
+      artist {
+        internalID
+        formattedNationalityAndBirthday
+        auctionResultsConnection(first: 3, sort: DATE_DESC) {
+          totalCount
+        }
+      }
+    }
+    marketPriceInsights(artistId: $artistInternalID, medium: $medium) @optionalField {
+      ...MyCollectionArtworkInsights_marketPriceInsights
+      ...MyCollectionArtworkAbout_marketPriceInsights
+    }
+    _marketPriceInsights: marketPriceInsights(artistId: $artistInternalID, medium: $medium)
+      @optionalField {
+      annualLotsSold
+    }
+    me {
+      ...MyCollectionArtworkInsights_me
+    }
+  }
+`
+
 const MyCollectionArtworkPlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
@@ -158,6 +161,7 @@ export interface MyCollectionArtworkScreenProps {
   artworkSlug: string
   artistInternalID: string
   medium: string
+  category: string
 }
 
 export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {

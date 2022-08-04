@@ -191,6 +191,26 @@ describe("OrderUpdate with order updates", () => {
     tree.root.findByType(AlertCircleFillIcon)
   })
 
+  it("shows buy order processing approval", () => {
+    const tree = getWrapper({
+      __typename: "CommerceOrderStateChangedEvent",
+      orderUpdateState: "buy_processing_approval",
+    })
+
+    expect(extractText(tree.root)).toMatch("Order approved. Payment Processing")
+    tree.root.findByType(AlertCircleFillIcon)
+  })
+
+  it("shows offer order processing approval", () => {
+    const tree = getWrapper({
+      __typename: "CommerceOrderStateChangedEvent",
+      orderUpdateState: "offer_processing_approval",
+    })
+
+    expect(extractText(tree.root)).toMatch("Offer accepted. Payment Processing")
+    tree.root.findByType(AlertCircleFillIcon)
+  })
+
   it("shows an approved buy order", () => {
     const tree = getWrapper({
       __typename: "CommerceOrderStateChangedEvent",

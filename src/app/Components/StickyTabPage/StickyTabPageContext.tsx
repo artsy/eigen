@@ -11,6 +11,7 @@ export const StickyTabPageContext = React.createContext<{
   tabVisualClues: Array<TabVisualClues | undefined>
   activeTabIndex: GlobalState<number>
   setActiveTabIndex(index: number): void
+  adjustCurrentOffset(): void
 }>(null as any)
 
 export function useStickyTabPageContext() {

@@ -1,4 +1,3 @@
-import { fireEvent } from "@testing-library/react-native"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
   ArtworkFromLiveAuctionRegistrationOpen,
@@ -9,7 +8,6 @@ import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { Countdown } from "app/Components/Bidding/Components/Timer"
 import { ModalStack } from "app/navigation/ModalStack"
 import { navigationEvents } from "app/navigation/navigate"
-import { navigateToPartner } from "app/navigation/navigate"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -34,6 +32,7 @@ import { CommercialPartnerInformation } from "./Components/CommercialPartnerInfo
 import { ContextCard } from "./Components/ContextCard"
 import { ImageCarousel } from "./Components/ImageCarousel/ImageCarousel"
 import { OtherWorksFragmentContainer } from "./Components/OtherWorks/OtherWorks"
+import { PartnerLink } from "./Components/PartnerLink"
 import { Questions } from "./Components/Questions"
 
 type ArtworkQueries =
@@ -400,6 +399,7 @@ describe("Artwork", () => {
       Artwork: () => ({
         slug: "test-artwork",
         isAcquireable: true,
+        partner: { name: "XYZ Gallery" },
       }),
     })
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -408,6 +408,7 @@ describe("Artwork", () => {
     await flushPromiseQueue()
 
     expect(tree.root.findAllByType(Questions)).toHaveLength(1)
+    expect(tree.root.findAllByType(PartnerLink)).toHaveLength(1)
   })
 
   describe("Live Auction States", () => {
@@ -481,50 +482,36 @@ describe("Artwork", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCreateArtworkAlert: true })
     })
 
-    it("should render a pressable partner name section when partner is linkable and has a href", () => {
-      const { getByA11yHint, queryByA11yHint } = renderWithWrappers(<TestRenderer />)
+    it("should not display partner link if CBN flag is on", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: true })
+
+      const { queryByA11yHint } = renderWithWrappers(<TestRenderer />)
 
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork: () => ({
           partner: {
             name: "Test Partner",
-            href: "/partner/test-partner",
-            isLinkable: true,
-          },
-        }),
-      })
-
-      expect(queryByA11yHint("Visit Test Partner page")).toBeTruthy()
-      fireEvent.press(getByA11yHint("Visit Test Partner page"))
-
-      expect(navigateToPartner).toHaveBeenCalledWith("/partner/test-partner")
-    })
-
-    it("should render a non pressable partner name section when partner is not linkable", () => {
-      const { queryByA11yHint, queryByTestId } = renderWithWrappers(<TestRenderer />)
-
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
-        Artwork: () => ({
-          partner: {
-            name: "Test Partner",
-            href: "/whateva",
-            isLinkable: false,
           },
         }),
       })
 
       expect(queryByA11yHint("Visit Test Partner page")).toBeFalsy()
-      expect(queryByTestId("non linkable partner")).toBeTruthy()
-      expect(queryByTestId("non linkable partner")).toHaveTextContent("Test Partner")
     })
 
-    it("should not render the partner section when the partner has no name", () => {
-      const { queryByLabelText, queryByTestId } = renderWithWrappers(<TestRenderer />)
+    it("should display partner link if CBN flag is off", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableConversationalBuyNow: false })
 
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
+      const { queryByA11yHint } = renderWithWrappers(<TestRenderer />)
 
-      expect(queryByLabelText("Visit Test Partner page")).toBeFalsy()
-      expect(queryByTestId("non linkable partner")).toBeFalsy()
+      mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
+        Artwork: () => ({
+          partner: {
+            name: "Test Partner",
+          },
+        }),
+      })
+
+      expect(queryByA11yHint("Visit Test Partner page")).toBeTruthy()
     })
   })
 

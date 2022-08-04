@@ -63,7 +63,7 @@ const InquiryTextInput = styled.TextInput`
   font-family: "Unica77LL-Regular";
 `
 const ResponseRate = styled(SmallHeadline)`
-  color: ${themeGet("colors.yellow100")};
+  color: ${themeGet("colors.copper100")};
   margin-top: 5;
 `
 // TODO: Uncomment when use is uncommented in code below

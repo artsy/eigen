@@ -15,11 +15,12 @@ import { SalesRailFragmentContainer } from "./SalesRail"
 
 const mockScrollRef = jest.fn()
 
+const artwork = {
+  image: { url: "https://example.com/image.jpg" },
+}
 const artworkNode = {
   node: {
-    artwork: {
-      image: { url: "https://example.com/image.jpg" },
-    },
+    artwork,
   },
 }
 const salesModule: CleanRelayFragment<SalesRail_salesModule$data> = {
@@ -37,6 +38,19 @@ const salesModule: CleanRelayFragment<SalesRail_salesModule$data> = {
       saleArtworksConnection: {
         edges: [artworkNode, artworkNode, artworkNode],
       },
+      artworksConnection: {
+        edges: [
+          {
+            node: artwork,
+          },
+          {
+            node: artwork,
+          },
+          {
+            node: artwork,
+          },
+        ],
+      },
     },
     {
       id: "the-lai-sale",
@@ -50,6 +64,19 @@ const salesModule: CleanRelayFragment<SalesRail_salesModule$data> = {
       formattedStartDateTime: "Live May 19 at 3:00pm CEST",
       saleArtworksConnection: {
         edges: [artworkNode, artworkNode, artworkNode],
+      },
+      artworksConnection: {
+        edges: [
+          {
+            node: artwork,
+          },
+          {
+            node: artwork,
+          },
+          {
+            node: artwork,
+          },
+        ],
       },
     },
   ],
@@ -67,24 +94,45 @@ it("doesn't throw when rendered", () => {
   ).not.toThrow()
 })
 
-it("looks correct when rendered with sales missing artworks", () => {
-  const salesCopy = cloneDeep(salesModule)
-  salesCopy.results.forEach((result) => {
-    // @ts-ignore
-    result.saleArtworksConnection.edges = []
+describe("looks correct when rendered with sales missing artworks", () => {
+  it("when AREnableArtworksConnectionForAuction is disabled", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksConnectionForAuction: false })
+    const salesCopy = cloneDeep(salesModule)
+    salesCopy.results.forEach((result) => {
+      // @ts-ignore
+      result.saleArtworksConnection.edges = []
+    })
+    expect(() =>
+      renderWithWrappersLEGACY(
+        <SalesRailFragmentContainer
+          title="Auctions"
+          salesModule={salesCopy as any}
+          scrollRef={mockScrollRef}
+        />
+      )
+    ).not.toThrow()
   })
-  expect(() =>
-    renderWithWrappersLEGACY(
-      <SalesRailFragmentContainer
-        title="Auctions"
-        salesModule={salesCopy as any}
-        scrollRef={mockScrollRef}
-      />
-    )
-  ).not.toThrow()
+
+  it("when AREnableArtworksConnectionForAuction is enabled", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksConnectionForAuction: true })
+    const salesCopy = cloneDeep(salesModule)
+    salesCopy.results.forEach((result) => {
+      // @ts-ignore
+      result.artworksConnection.edges = []
+    })
+    expect(() =>
+      renderWithWrappersLEGACY(
+        <SalesRailFragmentContainer
+          title="Auctions"
+          salesModule={salesCopy as any}
+          scrollRef={mockScrollRef}
+        />
+      )
+    ).not.toThrow()
+  })
 })
 
-describe("image handling", () => {
+describe("image handling when AREnableArtworksConnectionForAuction is disabled", () => {
   const render = (edges: any[]) => {
     const { results } = cloneDeep(salesModule)
     const sale = results[0]
@@ -98,6 +146,10 @@ describe("image handling", () => {
       />
     )
   }
+
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksConnectionForAuction: false })
+  })
 
   it("renders all 3 images", () => {
     const tree = render([
@@ -128,6 +180,60 @@ describe("image handling", () => {
     const tree = render([
       { node: { artwork: { image: { url: "https://example.com/image-1.jpg" } } } },
     ])
+    expect(tree.root.findAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
+      "https://example.com/image-1.jpg",
+      "https://example.com/image-1.jpg",
+      "https://example.com/image-1.jpg",
+    ])
+  })
+})
+
+describe("image handling when AREnableArtworksConnectionForAuction is enabled", () => {
+  const render = (edges: any[]) => {
+    const { results } = cloneDeep(salesModule)
+    const sale = results[0]
+    // @ts-ignore
+    sale!.artworksConnection!.edges = edges
+    return renderWithWrappersLEGACY(
+      <SalesRailFragmentContainer
+        title="Auctions"
+        salesModule={{ results: [sale] } as any}
+        scrollRef={mockScrollRef}
+      />
+    )
+  }
+
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworksConnectionForAuction: true })
+  })
+
+  it("renders all 3 images", () => {
+    const tree = render([
+      { node: { image: { url: "https://example.com/image-1.jpg" } } },
+      { node: { image: { url: "https://example.com/image-2.jpg" } } },
+      { node: { image: { url: "https://example.com/image-3.jpg" } } },
+    ])
+    expect(tree.root.findAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
+      "https://example.com/image-1.jpg",
+      "https://example.com/image-2.jpg",
+      "https://example.com/image-3.jpg",
+    ])
+  })
+
+  it("renders the 2nd image as a fallback if the 3rd is missing", () => {
+    const tree = render([
+      { node: { image: { url: "https://example.com/image-1.jpg" } } },
+      { node: { image: { url: "https://example.com/image-2.jpg" } } },
+    ])
+    expect(tree.root.findAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
+      "https://example.com/image-1.jpg",
+      "https://example.com/image-2.jpg",
+      "https://example.com/image-2.jpg",
+    ])
+  })
+
+  it("renders the 1st as a fallback if the 2nd and 3rd are missing", () => {
+    const tree = render([{ node: { image: { url: "https://example.com/image-1.jpg" } } }])
     expect(tree.root.findAllByType(ImageView).map(({ props }) => props.imageURL)).toEqual([
       "https://example.com/image-1.jpg",
       "https://example.com/image-1.jpg",

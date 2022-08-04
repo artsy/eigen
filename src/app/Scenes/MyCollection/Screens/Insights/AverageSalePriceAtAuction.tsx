@@ -24,7 +24,8 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
     queryArgs.options
   )
 
-  const enableChangeArtist = !!data.me?.myCollectionInfo?.artistsCount
+  const enableChangeArtist =
+    !!data.me?.myCollectionInfo?.artistsCount && data.me.myCollectionInfo.artistsCount > 1
 
   return (
     <Flex mx={2} pt={6}>

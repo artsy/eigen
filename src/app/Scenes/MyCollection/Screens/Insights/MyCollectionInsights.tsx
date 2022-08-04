@@ -19,6 +19,7 @@ import { MyCollectionArtworkUploadMessages } from "../ArtworkForm/MyCollectionAr
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { AverageAuctionPriceRail } from "./AverageAuctionPriceRail"
+import { CareerHighlightsRail } from "./CareerHighlightsRail"
 import { MarketSignalsSectionHeader } from "./MarketSignalsSectionHeader"
 import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState"
 import { MyCollectionInsightsOverview } from "./MyCollectionInsightsOverview"
@@ -28,6 +29,7 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   const { showVisualClue } = useVisualClue()
   const enablePhase1Part1 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part1")
   const enablePhase1Part2 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part2")
+  const enablePhase1Part3 = useFeatureFlag("AREnableMyCollectionInsightsPhase1Part3")
 
   const [areInsightsIncomplete, setAreInsightsIncomplete] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -99,8 +101,10 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
     return (
       <>
         <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
+
         {hasMarketSignals /* || average sale price data */ && enablePhase1Part1 && (
           <>
+            {!!enablePhase1Part3 && <CareerHighlightsRail me={data.me!} />}
             <MarketSignalsSectionHeader />
             <AuctionResultsForArtistsYouCollectRail me={data.me!} />
             {!!enablePhase1Part2 && <AverageAuctionPriceRail me={data.me} />}
@@ -153,6 +157,7 @@ export const MyCollectionInsightsScreenQuery = graphql`
     me {
       ...AuctionResultsForArtistsYouCollectRail_me
       ...AverageAuctionPriceRail_me
+      ...CareerHighlightsRail_me
       auctionResults: myCollectionAuctionResults(first: 3) {
         totalCount
       }

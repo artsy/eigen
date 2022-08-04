@@ -77,7 +77,7 @@ describe(SaleInfo, () => {
 
         const lines = tree.root.findAllByType(Text)
         expect(lines.length).toEqual(2)
-        expect(lines[1].props.color).toEqual("yellow100")
+        expect(lines[1].props.color).toEqual("copper100")
 
         expect(text).toContain("Live bidding begins today at 2:00 a.m. (EDT)")
         expect(text).toContain("Opens in 38 minutes")
@@ -161,7 +161,7 @@ describe(SaleInfo, () => {
 
         const lines = tree.root.findAllByType(Text)
         expect(lines.length).toEqual(2)
-        expect(lines[1].props.color).toEqual("yellow100")
+        expect(lines[1].props.color).toEqual("copper100")
         expect(text).toContain("Closes today at 2:00 a.m.")
         expect(text).toContain("Ends in 38 minutes")
       })

@@ -197,9 +197,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableNewOpaqueImageView",
   },
   AREnableConversationalBuyNow: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Conversational Buy Now",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableConversationalBuyNow",
   },
   AREnableCompleteProfileMessage: {
     readyForRelease: true,
@@ -253,9 +254,10 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableArtworksConnectionForAuction: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableArtworksConnectionForAuction",
   },
 })
 

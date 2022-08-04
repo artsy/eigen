@@ -41,6 +41,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
   const isCascadingEnabled = useFeatureFlag("AREnableCascadingEndTimerHomeSalesRail")
+  const isArtworksConnectionEnabled = useFeatureFlag("AREnableArtworksConnectionForAuction")
 
   const getSaleSubtitle = (
     liveStartAt: string | undefined | null,
@@ -83,11 +84,20 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({
         listRef={listRef}
         data={salesModule.results}
         renderItem={({ item: result, index }) => {
+          let imageURLs
+
+          if (isArtworksConnectionEnabled) {
+            imageURLs = extractNodes(result?.artworksConnection, (artwork) => artwork.image?.url)
+          } else {
+            imageURLs = extractNodes(
+              result?.saleArtworksConnection,
+              (artwork) => artwork.artwork?.image?.url
+            )
+          }
+
           // Sales are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
-          const availableArtworkImageURLs = compact(
-            extractNodes(result?.saleArtworksConnection, (artwork) => artwork.artwork?.image?.url)
-          )
+          const availableArtworkImageURLs = compact(imageURLs)
 
           // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3
           const artworkImageURLs = [null, null, null].reduce((acc: string[], _, i) => {
@@ -175,6 +185,15 @@ export const SalesRailFragmentContainer = createFragmentContainer(SalesRail, {
                 image {
                   url(version: "large")
                 }
+              }
+            }
+          }
+        }
+        artworksConnection(first: 3) {
+          edges {
+            node {
+              image {
+                url(version: "large")
               }
             }
           }

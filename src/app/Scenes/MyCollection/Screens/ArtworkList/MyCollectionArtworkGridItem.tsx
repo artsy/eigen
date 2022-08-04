@@ -25,12 +25,11 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
     (artwork.images && artwork.images[0]?.url)
   const { width } = useScreenDimensions()
 
-  const { artist, artistNames, internalID, medium, slug, title, image, date } = artwork
+  const { artist, artistNames, internalID, medium, mediumType, slug, title, image, date } = artwork
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
   const screen = useScreenDimensions()
-  const isPadHorizontal = isPad() && screen.width > screen.height
-  const sectionCount = isPad() ? (isPadHorizontal ? 4 : 3) : 2
+  const sectionCount = isPad() ? 3 : 2
   const imageWidth = (screen.width - DEFAULT_SECTION_MARGIN * (sectionCount + 1)) / sectionCount
 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
@@ -48,6 +47,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           navigate("/my-collection/artwork/" + slug, {
             passProps: {
               medium,
+              category: mediumType?.name,
               artistInternalID: artist.internalID,
             },
           })
@@ -97,6 +97,9 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
           targetSupply {
             isP1
           }
+        }
+        mediumType {
+          name
         }
         images {
           url

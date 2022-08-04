@@ -106,7 +106,10 @@ export const ConversationCTAFragmentContainer = createFragmentContainer(Conversa
           }
         }
       }
-      activeOrders: orderConnection(first: 10, states: [APPROVED, FULFILLED, SUBMITTED, REFUNDED]) {
+      activeOrders: orderConnection(
+        first: 10
+        states: [APPROVED, FULFILLED, SUBMITTED, REFUNDED, PROCESSING_APPROVAL]
+      ) {
         edges {
           node {
             internalID
