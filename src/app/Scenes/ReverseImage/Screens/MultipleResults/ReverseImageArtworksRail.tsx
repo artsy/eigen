@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native"
 import { ReverseImageArtworksRail$key } from "__generated__/ReverseImageArtworksRail.graphql"
 import { SmallArtworkRail } from "app/Components/ArtworkRail/SmallArtworkRail"
 import { extractNodes } from "app/utils/extractNodes"
@@ -11,6 +12,7 @@ interface ReverseImageArtworksRailProps {
 export const ReverseImageArtworksRail: React.FC<ReverseImageArtworksRailProps> = (props) => {
   const data = useFragment(reverseImageArtworksRailFragment, props.artworks)
   const artworks = extractNodes(data)
+  const navigation = useNavigation()
 
   return (
     <Flex>
@@ -21,7 +23,9 @@ export const ReverseImageArtworksRail: React.FC<ReverseImageArtworksRailProps> =
       <SmallArtworkRail
         artworks={artworks}
         onPress={(artwork) => {
-          console.log("[debug] artwork", artwork)
+          navigation.navigate("Artwork", {
+            artworkId: artwork.internalID,
+          })
         }}
       />
     </Flex>
