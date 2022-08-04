@@ -6,13 +6,11 @@ interface Props extends ViewProps {
   size?: "small" | "medium" | "large"
 }
 
-const Spinner: React.FC<Props> = ({ spinnerColor = "black100", size = "large", ...props }) => {
-  return (
-    <View style={[props.style, styles.container]} testID={props.testID}>
-      <PaletteSpinner color={spinnerColor} size={size} />
-    </View>
-  )
-}
+const Spinner: React.FC<Props> = ({ spinnerColor = "black100", size = "large", ...props }) => (
+  <View style={[props.style, styles.container]} testID={props.testID}>
+    <PaletteSpinner color={spinnerColor} size={size} />
+  </View>
+)
 
 const styles = StyleSheet.create({
   container: {
