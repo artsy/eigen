@@ -1,4 +1,5 @@
-import { Flex, Text, Touchable } from "palette"
+import { Flex, Spacer, Text, Touchable } from "palette"
+import { useColor } from "palette/hooks"
 
 // export const LineGraphDurationPicker = () => {
 //   const { selectedDuration } = LineGraphStore.useStoreState((state) => state)
@@ -43,20 +44,28 @@ export const LineGraphBands: React.FC<LineGraphBandProps> = ({
   onBandSelected,
   selectedBand = bands.length ? bands[0] : undefined,
 }) => {
+  const color = useColor()
   return (
-    <Flex flexDirection="row" justifyContent="center">
+    <Flex flexDirection="row" justifyContent="center" alignItems="center">
       {bands.map((band, index) => (
-        <Touchable
-          key={band.name + index}
-          haptic="impactMedium"
-          onPress={() => onBandSelected(band.name)}
-          testID="band"
-          accessibilityLabel={band.accessibilityLabel}
-        >
-          <Text variant="md" fontWeight={selectedBand === band ? "500" : "400"}>
-            {band.name}
-          </Text>
-        </Touchable>
+        <>
+          <Touchable
+            key={band.name + index}
+            haptic="impactMedium"
+            onPress={() => onBandSelected(band.name)}
+            testID="band"
+            accessibilityLabel={band.accessibilityLabel}
+          >
+            <Text
+              variant="xs"
+              color={!(selectedBand === band) ? color("black60") : undefined}
+              fontWeight={selectedBand === band ? "500" : undefined}
+            >
+              {band.name}
+            </Text>
+          </Touchable>
+          <Spacer p={2} />
+        </>
       ))}
     </Flex>
   )

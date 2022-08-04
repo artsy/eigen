@@ -2,13 +2,13 @@ import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
 import { flushPromiseQueue } from "../../../app/tests/flushPromiseQueue"
-import { LineGraphMediumPicker, MediumPill } from "./LineGraphMediumPicker"
+import { CategoryPill, LineGraphCategoryPicker } from "./LineGraphCategoryPicker"
 import { LineGraphStoreProvider } from "./LineGraphStore"
 import { _AVAILABLE_MEDIUMS } from "./testHelpers"
 
 jest.unmock("react-relay")
 
-describe(LineGraphMediumPicker, () => {
+describe(LineGraphCategoryPicker, () => {
   const getWrapper = () => {
     return (
       <LineGraphStoreProvider
@@ -18,7 +18,7 @@ describe(LineGraphMediumPicker, () => {
           availableMediums: _AVAILABLE_MEDIUMS,
         }}
       >
-        <LineGraphMediumPicker />
+        <LineGraphCategoryPicker />
       </LineGraphStoreProvider>
     )
   }

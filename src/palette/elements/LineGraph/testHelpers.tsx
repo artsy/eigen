@@ -19,12 +19,12 @@ export const testChartData: LineChartData = {
     { x: 4, y: 4 },
     { x: 5, y: 7 },
     { x: 6, y: 4 },
-    { x: 7, y: 5 },
+    { x: 7, y: 7 },
   ],
   dataMeta: {
-    title: "Sculpture",
+    title: "$25,000",
     description: "A description",
-    text: "Some random texts that we can use to do stuffs",
+    text: "Some random texts that we can use to talk more about what this graph represents",
     tintColor: "#441bb4",
   },
 }

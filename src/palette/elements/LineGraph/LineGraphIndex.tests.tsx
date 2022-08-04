@@ -1,7 +1,7 @@
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
 import React from "react"
-import { LineGraphIndex } from "./LineGraphIndex"
+import { LineGraphHeader } from "./LineGraphHeader"
 import { LineGraphStore, LineGraphStoreProvider } from "./LineGraphStore"
 import { _AVAILABLE_MEDIUMS } from "./testHelpers"
 
@@ -24,7 +24,7 @@ describe("LineGraphIndex", () => {
           availableMediums: _AVAILABLE_MEDIUMS,
         }}
       >
-        <LineGraphIndex />
+        <LineGraphHeader />
         {/* Since we can't use hooks inside the tests because they need to be inside
         a functional component, we are using this trick to get an instance of the store */}
         <LineGraphStoreConsumer />

@@ -1,18 +1,18 @@
 import React from "react"
 import { Flex } from "../Flex"
-import { getColorByMedium } from "./helpers"
 
 const DOT_DIAMETER = 8
 
 interface Props {
-  selectedMedium: string | null
+  color: string
   disabled?: boolean
 }
 
-export const ColoredDot: React.FC<Props> = ({ selectedMedium, disabled = false }) => {
+export const DEFAULT_DOT_COLOR = "#707070"
+export const ColoredDot: React.FC<Props> = ({ color, disabled = false }) => {
   return (
     <Flex
-      backgroundColor={!disabled ? getColorByMedium(selectedMedium) : "#707070"}
+      backgroundColor={!disabled ? color : DEFAULT_DOT_COLOR}
       width={DOT_DIAMETER}
       height={DOT_DIAMETER}
       borderRadius={DOT_DIAMETER / 2}
