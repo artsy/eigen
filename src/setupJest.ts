@@ -3,8 +3,8 @@ import { mockNavigate } from "app/tests/navigationMocks"
 import chalk from "chalk"
 import { expect } from "expect"
 import "jest-extended"
-import { format } from "util"
 import "react-native-get-random-values"
+import { format } from "util"
 
 // MARK: - General preparation
 
