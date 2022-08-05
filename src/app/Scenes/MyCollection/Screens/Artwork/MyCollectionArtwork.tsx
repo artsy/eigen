@@ -31,7 +31,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   const { trackEvent } = useTracking()
 
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(MyCollectionArtworkScreenQuery, {
-    artworkSlug,
+    artworkSlug: artworkSlug || "",
     // To not let the whole query fail if the artwork doesn't has an artist
     artistInternalID: artistInternalID || "",
     // TODO: Fix this logic once we only need category to fetch insights
@@ -158,10 +158,10 @@ const MyCollectionArtworkPlaceholder = () => (
   </ProvidePlaceholderContext>
 )
 export interface MyCollectionArtworkScreenProps {
-  artworkSlug: string
-  artistInternalID: string
-  medium: string
-  category: string
+  artworkSlug: string | null
+  artistInternalID: string | null
+  medium: string | null
+  category: string | null
 }
 
 export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {
