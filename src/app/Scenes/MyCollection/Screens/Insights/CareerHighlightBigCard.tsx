@@ -72,7 +72,7 @@ export const CareerHighlightBigCardBiennial: React.FC<CareerHighlightBigCardBien
       />
       <FlatList
         key={type}
-        scrollEnabled={count > 2}
+        scrollEnabled={count > 5}
         showsVerticalScrollIndicator={false}
         data={highlightDataBiennial}
         keyExtractor={(_item, index) => `${type}_${index}`}
