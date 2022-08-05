@@ -4,7 +4,13 @@ import { goBack } from "app/navigation/navigate"
 import { useIsForeground } from "app/utils/useIfForeground"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
 import { useEffect, useRef, useState } from "react"
-import { Linking, StatusBar, StyleSheet } from "react-native"
+import {
+  GestureResponderEvent,
+  Linking,
+  StatusBar,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from "react-native"
 import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
 import { Background, BACKGROUND_COLOR } from "../../Components/Background"
 import { HeaderContainer } from "../../Components/HeaderContainer"
@@ -78,6 +84,23 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     goBack()
   }
 
+  const handleFocus = async (event: GestureResponderEvent) => {
+    if (camera.current) {
+      try {
+        await camera.current.focus({
+          x: event.nativeEvent.pageX,
+          y: event.nativeEvent.pageY,
+        })
+      } catch (error) {
+        if ((error as Error).message.includes("Cancelled by another startFocusAndMetering")) {
+          return
+        }
+
+        console.error(error)
+      }
+    }
+  }
+
   useEffect(() => {
     const run = async () => {
       const status = await Camera.getCameraPermissionStatus()
@@ -146,7 +169,9 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
         <Flex flex={1} flexDirection="row">
           <Background width={space("2")} />
-          <Flex flex={1} />
+          <TouchableWithoutFeedback onPress={handleFocus} disabled={!device.supportsFocus}>
+            <Flex flex={1} />
+          </TouchableWithoutFeedback>
           <Background width={space("2")} />
         </Flex>
 
