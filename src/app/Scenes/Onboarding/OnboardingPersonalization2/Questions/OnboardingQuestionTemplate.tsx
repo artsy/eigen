@@ -23,6 +23,8 @@ interface OnboardingQuestionTemplateProps {
   subtitle?: string
 }
 
+const NAVIGATE_TO_NEXT_SCREEN_DELAY = 500
+
 export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = ({
   answers,
   action,
@@ -46,8 +48,10 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
     setTimeout(() => {
       onNext()
       setLoading(false)
-    }, 225)
+    }, NAVIGATE_TO_NEXT_SCREEN_DELAY)
   }
+
+  const isNextBtnDisabled = !state[stateKey] || state[stateKey]?.length === 0
 
   return (
     <Screen>
@@ -84,7 +88,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
           </Join>
         </Flex>
         <Flex>
-          <Button block disabled={!state[stateKey]} onPress={handleNext}>
+          <Button block disabled={isNextBtnDisabled} onPress={handleNext}>
             Next
           </Button>
           <Screen.SafeBottomPadding />

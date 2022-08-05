@@ -69,17 +69,8 @@ describe("OnboardingGene", () => {
     fireEvent.press(screen.getByText("Follow"))
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
-      "OnboardingGeneFollowMutation"
+      "GeneHeaderFollowButtonMutation"
     )
-
-    resolveMostRecentRelayOperation(env, {
-      Gene: () => ({
-        isFollowed: true,
-      }),
-    })
-
-    expect(screen.queryByText("Following")).toBeTruthy()
-    expect(screen.queryByText("Follow")).toBeNull()
   })
 
   it("should navigate to artwork page after pressing an artwork", async () => {
