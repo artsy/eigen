@@ -1,5 +1,6 @@
 import { useIsFocused } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
+import { captureMessage } from "@sentry/react-native"
 import { goBack } from "app/navigation/navigate"
 import { useIsForeground } from "app/utils/useIfForeground"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
@@ -11,7 +12,12 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
 } from "react-native"
-import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
+import {
+  Camera,
+  CameraPermissionStatus,
+  CameraRuntimeError,
+  useCameraDevices,
+} from "react-native-vision-camera"
 import { Background, BACKGROUND_COLOR } from "../../Components/Background"
 import { FocusIndicator } from "../../Components/FocusIndicator"
 import { HeaderContainer } from "../../Components/HeaderContainer"
@@ -27,6 +33,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
   const [focusCoords, setFocusCoords] = useState<FocusCoords | null>(null)
+  const [hasError, setHasError] = useState(false)
   const space = useSpace()
   const camera = useRef<Camera>(null)
   const devices = useCameraDevices()
@@ -80,6 +87,16 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
   const onInitialized = () => {
     setIsCameraInitialized(true)
+  }
+
+  const onCameraError = (error: CameraRuntimeError) => {
+    setHasError(true)
+
+    if (__DEV__) {
+      console.error(error)
+    } else {
+      captureMessage(error.message)
+    }
   }
 
   const handleBackPress = () => {
@@ -150,6 +167,20 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     )
   }
 
+  if (hasError) {
+    return (
+      <Screen>
+        <Screen.Header onBack={handleBackPress} />
+
+        <Screen.Body>
+          <Flex flex={1} justifyContent="center" alignItems="center">
+            <Text>Failed to open the camera device</Text>
+          </Flex>
+        </Screen.Body>
+      </Screen>
+    )
+  }
+
   return (
     <Flex flex={1}>
       <Camera
@@ -161,6 +192,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         audio={false}
         isActive={isActive}
         onInitialized={onInitialized}
+        onError={onCameraError}
       />
 
       <Flex {...StyleSheet.absoluteFillObject}>
