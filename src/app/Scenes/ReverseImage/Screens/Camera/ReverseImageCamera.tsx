@@ -3,15 +3,9 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { goBack } from "app/navigation/navigate"
 import { useIsForeground } from "app/utils/useIfForeground"
-import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
+import { BackButton, Button, Flex, Screen, Spinner, Text } from "palette"
 import { useEffect, useRef, useState } from "react"
-import {
-  GestureResponderEvent,
-  Linking,
-  StatusBar,
-  StyleSheet,
-  TouchableWithoutFeedback,
-} from "react-native"
+import { Linking, StatusBar, StyleSheet } from "react-native"
 import {
   Camera,
   CameraPermissionStatus,
@@ -19,12 +13,12 @@ import {
   useCameraDevices,
 } from "react-native-vision-camera"
 import { Background, BACKGROUND_COLOR } from "../../Components/Background"
+import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
 import { FocusCoords, ReverseImageNavigationStack } from "../../types"
 import { CameraButtons } from "./Components/CameraButtons"
 import { FocusIndicator } from "./Components/FocusIndicator"
-import { FrameIndicators } from "./Components/FrameIndicators"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
 
@@ -37,7 +31,6 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
   const [focusCoords, setFocusCoords] = useState<FocusCoords | null>(null)
   const [hasError, setHasError] = useState(false)
-  const space = useSpace()
   const camera = useRef<Camera>(null)
   const timer = useRef<NodeJS.Timeout | null>(null)
   const devices = useCameraDevices()
@@ -107,7 +100,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     goBack()
   }
 
-  const handleFocus = async (event: GestureResponderEvent) => {
+  const handleFocus = async (x: number, y: number) => {
     if (camera.current) {
       if (timer.current) {
         clearTimeout(timer.current)
@@ -115,8 +108,6 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
       }
 
       try {
-        const { pageX: x, pageY: y } = event.nativeEvent
-
         setFocusCoords({ x, y })
         await camera.current.focus({ x, y })
       } catch (error) {
@@ -213,21 +204,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
           </HeaderContainer>
         </Background>
 
-        <Flex flex={1}>
-          <Background height={space("2")} />
-
-          <Flex flex={1} flexDirection="row">
-            <Background width={space("2")} />
-            <TouchableWithoutFeedback onPress={handleFocus} disabled={!device.supportsFocus}>
-              <Flex flex={1} />
-            </TouchableWithoutFeedback>
-            <Background width={space("2")} />
-          </Flex>
-
-          <Background height={space("2")} />
-
-          <FrameIndicators />
-        </Flex>
+        <CameraFramesContainer onFocusPress={handleFocus} focusEnabled={device.supportsFocus} />
 
         <CameraButtons
           isCameraInitialized={isCameraInitialized}

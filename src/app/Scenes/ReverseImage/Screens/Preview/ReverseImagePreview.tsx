@@ -1,12 +1,12 @@
-import { StackActions } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { navigate } from "app/navigation/navigate"
 import { useImageSearch } from "app/utils/useImageSearch"
 import { compact } from "lodash"
-import { BackButton, Flex, useSpace } from "palette"
+import { BackButton, Flex } from "palette"
 import { useEffect } from "react"
 import { Image, StyleSheet } from "react-native"
 import { Background } from "../../Components/Background"
+import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
 import { ReverseImageNavigationStack } from "../../types"
@@ -17,7 +17,6 @@ type Props = StackScreenProps<ReverseImageNavigationStack, "Preview">
 export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
   const { navigation, route } = props
   const { photo } = route.params
-  const space = useSpace()
   const { handleSearchByImage } = useImageSearch()
 
   const handleGoBack = () => {
@@ -68,15 +67,7 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
           </HeaderContainer>
         </Background>
 
-        <Background height={space("2")} />
-
-        <Flex flex={1} flexDirection="row">
-          <Background width={space("2")} />
-          <Flex flex={1} />
-          <Background width={space("2")} />
-        </Flex>
-
-        <Background height={space("2")} />
+        <CameraFramesContainer />
 
         <Background height={CAMERA_BUTTONS_HEIGHT} />
       </Flex>
