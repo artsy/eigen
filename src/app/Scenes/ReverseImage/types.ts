@@ -4,6 +4,11 @@ export interface PhotoEntity {
   height: number
 }
 
+export interface FocusCoords {
+  x: number
+  y: number
+}
+
 // tslint:disable-next-line:interface-over-type-literal
 export type ReverseImageNavigationStack = {
   Camera: undefined

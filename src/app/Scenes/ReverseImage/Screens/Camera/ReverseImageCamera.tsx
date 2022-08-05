@@ -3,7 +3,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { goBack } from "app/navigation/navigate"
 import { useIsForeground } from "app/utils/useIfForeground"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import {
   GestureResponderEvent,
   Linking,
@@ -13,9 +13,10 @@ import {
 } from "react-native"
 import { Camera, CameraPermissionStatus, useCameraDevices } from "react-native-vision-camera"
 import { Background, BACKGROUND_COLOR } from "../../Components/Background"
+import { FocusIndicator } from "../../Components/FocusIndicator"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
-import { ReverseImageNavigationStack } from "../../types"
+import { FocusCoords, ReverseImageNavigationStack } from "../../types"
 import { CameraButtons } from "./Components/CameraButtons"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
@@ -25,6 +26,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
   const [enableFlash, setEnableFlash] = useState(false)
   const [isCameraInitialized, setIsCameraInitialized] = useState(false)
+  const [focusCoords, setFocusCoords] = useState<FocusCoords | null>(null)
   const space = useSpace()
   const camera = useRef<Camera>(null)
   const devices = useCameraDevices()
@@ -84,13 +86,17 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     goBack()
   }
 
+  const hideFocusIndicator = useCallback(() => {
+    setFocusCoords(null)
+  }, [])
+
   const handleFocus = async (event: GestureResponderEvent) => {
     if (camera.current) {
       try {
-        await camera.current.focus({
-          x: event.nativeEvent.pageX,
-          y: event.nativeEvent.pageY,
-        })
+        const { pageX: x, pageY: y } = event.nativeEvent
+
+        setFocusCoords({ x, y })
+        await camera.current.focus({ x, y })
       } catch (error) {
         if ((error as Error).message.includes("Cancelled by another startFocusAndMetering")) {
           return
@@ -185,6 +191,8 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
           isFlashEnabled={enableFlash}
           bg={BACKGROUND_COLOR}
         />
+
+        {!!focusCoords && <FocusIndicator coords={focusCoords} onHide={hideFocusIndicator} />}
       </Flex>
     </Flex>
   )
