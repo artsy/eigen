@@ -30,6 +30,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
           value={formik.values.artist}
           enableClearButton
           autoFocus={typeof jest === "undefined"}
+          autoCorrect={false}
         />
 
         {artistQuery.length > 2 ? (
