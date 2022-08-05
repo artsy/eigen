@@ -4,7 +4,7 @@ import { captureMessage } from "@sentry/react-native"
 import { goBack } from "app/navigation/navigate"
 import { useIsForeground } from "app/utils/useIfForeground"
 import { BackButton, Button, Flex, Screen, Spinner, Text, useSpace } from "palette"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {
   GestureResponderEvent,
   Linking,
@@ -28,6 +28,8 @@ import { FrameIndicators } from "./Components/FrameIndicators"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
 
+const HIDE_FOCUS_TIMEOUT = 400
+
 export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const { navigation } = props
   const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus | null>(null)
@@ -37,6 +39,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   const [hasError, setHasError] = useState(false)
   const space = useSpace()
   const camera = useRef<Camera>(null)
+  const timer = useRef<NodeJS.Timeout | null>(null)
   const devices = useCameraDevices()
   const device = devices.back
 
@@ -104,12 +107,13 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
     goBack()
   }
 
-  const hideFocusIndicator = useCallback(() => {
-    setFocusCoords(null)
-  }, [])
-
   const handleFocus = async (event: GestureResponderEvent) => {
     if (camera.current) {
+      if (timer.current) {
+        clearTimeout(timer.current)
+        timer.current = null
+      }
+
       try {
         const { pageX: x, pageY: y } = event.nativeEvent
 
@@ -121,6 +125,11 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
         }
 
         console.error(error)
+      } finally {
+        // TODO: Use react-native-reanimated 2 when it will be used
+        timer.current = setTimeout(() => {
+          setFocusCoords(null)
+        }, HIDE_FOCUS_TIMEOUT)
       }
     }
   }
@@ -229,7 +238,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
           bg={BACKGROUND_COLOR}
         />
 
-        {!!focusCoords && <FocusIndicator coords={focusCoords} onHide={hideFocusIndicator} />}
+        {!!focusCoords && <FocusIndicator coords={focusCoords} />}
       </Flex>
     </Flex>
   )
