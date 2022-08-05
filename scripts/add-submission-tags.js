@@ -3,8 +3,8 @@ const ora = require("ora")
 const { exec } = require("./helpers/exec")
 
 // Read the android and iOS candidate tags
-var androidTag = prompt("What's the android release tag? ")
-var iOSTag = prompt("What's the iOS release tag? ")
+var androidTag = prompt("What's the android release tag? (e.g. android-8.0.4-516): ").trim()
+var iOSTag = prompt("What's the iOS release tag? (e.g. ios-8.0.4-2022.08.04.12): ").trim()
 
 /**
  * @param {string} tag
