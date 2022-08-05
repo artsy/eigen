@@ -99,7 +99,13 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
             </RightButtonContainer>
           )}
         </Flex>
-        <Flex position="absolute" left={0} right={0} alignItems={alignItems} pointerEvents="none">
+        <Flex
+          position="absolute"
+          left={0}
+          right={0}
+          alignItems={alignItems || "center"}
+          pointerEvents="none"
+        >
           <Text variant="sm" color="black100">
             {children}
           </Text>
