@@ -22,5 +22,5 @@ const VALID_VORTEX_MEDIUMS = [
 ]
 
 export const getVortexMedium = (medium: string, category: string) => {
-  return VALID_VORTEX_MEDIUMS.includes(medium) ? medium : category
+  return (VALID_VORTEX_MEDIUMS.includes(medium) ? medium : category) || ""
 }
