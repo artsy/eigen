@@ -98,14 +98,26 @@ describe("CareerHighlightsBigCardsSwiper", () => {
   })
 })
 
+const dataStructure = {
+  artist: {
+    id: "id",
+    name: "name",
+    initials: "initials",
+    nationality: "nationality",
+    birthday: "birthday",
+    deathday: "deathday",
+    image: { url: "url" },
+  },
+}
+
 const mockResultAllInsights = {
   me: {
     myCollectionInfo: {
-      biennialInsights: [{}],
-      collectedInsights: [{}],
-      groupShowInsights: [{}],
-      soloShowInsights: [{}],
-      reviewedInsights: [{}],
+      biennialInsights: [dataStructure],
+      collectedInsights: [dataStructure],
+      groupShowInsights: [dataStructure],
+      soloShowInsights: [dataStructure],
+      reviewedInsights: [dataStructure],
     },
   },
 }
@@ -113,8 +125,8 @@ const mockResultAllInsights = {
 const mockResultSomeInsights = {
   me: {
     myCollectionInfo: {
-      biennialInsights: [{}],
-      collectedInsights: [{}],
+      biennialInsights: [dataStructure],
+      collectedInsights: [dataStructure],
     },
   },
 }

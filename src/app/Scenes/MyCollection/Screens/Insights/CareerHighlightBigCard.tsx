@@ -106,7 +106,6 @@ const fragmentBiennial = graphql`
     biennialInsights: artistInsights(kind: BIENNIAL) {
       artist {
         id
-        slug
         name
         image {
           url
@@ -185,7 +184,6 @@ const fragmentCollected = graphql`
     collectedInsights: artistInsights(kind: COLLECTED) {
       artist {
         id
-        slug
         name
         image {
           url
@@ -264,7 +262,6 @@ const fragmentGroupShow = graphql`
     groupShowInsights: artistInsights(kind: GROUP_SHOW) {
       artist {
         id
-        slug
         name
         image {
           url
@@ -344,7 +341,6 @@ const fragmentSoloShow = graphql`
     soloShowInsights: artistInsights(kind: SOLO_SHOW) {
       artist {
         id
-        slug
         name
         image {
           url
@@ -424,7 +420,6 @@ const fragmentReviewed = graphql`
     reviewedInsights: artistInsights(kind: REVIEWED) {
       artist {
         id
-        slug
         name
         image {
           url
