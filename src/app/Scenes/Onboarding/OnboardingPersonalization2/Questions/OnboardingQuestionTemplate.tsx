@@ -1,18 +1,11 @@
 import { useNavigation } from "@react-navigation/native"
-import {
-  Box,
-  Button,
-  CheckCircleFillIcon,
-  Flex,
-  Join,
-  Pill,
-  ProgressBar,
-  Screen,
-  Spacer,
-  Text,
-} from "palette"
-import { FC, useState } from "react"
+import { Box, Button, CheckCircleFillIcon, Flex, ProgressBar, Screen, Spacer, Text } from "palette"
+import { useState } from "react"
 import { StatusBar } from "react-native"
+import {
+  AnimatedFadingPill,
+  FADE_OUT_PILL_ANIMATION_DURATION,
+} from "../Components/AnimatedFadingPill"
 import { OnboardingContextAction, State, useOnboardingContext } from "../Hooks/useOnboardingContext"
 
 interface OnboardingQuestionTemplateProps {
@@ -24,8 +17,9 @@ interface OnboardingQuestionTemplateProps {
 }
 
 const NAVIGATE_TO_NEXT_SCREEN_DELAY = 500
+const ADD_TICK_AND_ANIMATE_PROGRESS_BAR_DELAY = FADE_OUT_PILL_ANIMATION_DURATION + 200
 
-export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = ({
+export const OnboardingQuestionTemplate: React.FC<OnboardingQuestionTemplateProps> = ({
   answers,
   action,
   onNext,
@@ -34,7 +28,9 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 }) => {
   const { goBack } = useNavigation()
   const { dispatch, next, onDone, state, progress } = useOnboardingContext()
-  const [loading, setLoading] = useState(false)
+  const [showPillTick, setShowPillTick] = useState(false)
+  const [hideUnselectedPills, setHideUnselectedPills] = useState(false)
+  const [isNextBtnDisabled, setIsNextBtnDisabled] = useState(false)
 
   const stateKey = STATE_KEYS[action]
   const selected = (answer: string) =>
@@ -42,16 +38,26 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
       ? state[stateKey]?.includes(answer)
       : state[stateKey] === answer
 
-  const handleNext = () => {
-    setLoading(true)
-    next()
+  const navigateToNextScreen = () =>
     setTimeout(() => {
       onNext()
-      setLoading(false)
     }, NAVIGATE_TO_NEXT_SCREEN_DELAY)
+
+  const handleNext = () => {
+    // force disable next button
+    setIsNextBtnDisabled(true)
+    // trigger the fade out animation in the unselected pill components
+    setHideUnselectedPills(true)
+
+    setTimeout(() => {
+      setShowPillTick(true)
+      next()
+
+      navigateToNextScreen()
+    }, ADD_TICK_AND_ANIMATE_PROGRESS_BAR_DELAY)
   }
 
-  const isNextBtnDisabled = !state[stateKey] || state[stateKey]?.length === 0
+  const isDisabled = isNextBtnDisabled || !state[stateKey] || state[stateKey]?.length === 0
 
   return (
     <Screen>
@@ -71,24 +77,24 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
             </>
           )}
           <Spacer m={2} />
-          <Join separator={<Spacer mt={2} />}>
-            {answers.map((answer) => (
-              <Pill
-                key={`${answer}-pill`}
-                rounded
-                size="xs"
-                Icon={loading && selected(answer) ? CheckCircleFillIcon : undefined}
-                iconPosition="left"
-                onPress={() => dispatch({ type: action, payload: answer })}
-                selected={selected(answer)}
-              >
-                {answer}
-              </Pill>
-            ))}
-          </Join>
+          {answers.map((answer) => (
+            <AnimatedFadingPill
+              mb={2}
+              isVisible={!hideUnselectedPills || !!selected(answer)}
+              key={`${answer}-pill`}
+              rounded
+              size="xs"
+              Icon={showPillTick && selected(answer) ? CheckCircleFillIcon : undefined}
+              iconPosition="left"
+              onPress={() => dispatch({ type: action, payload: answer })}
+              selected={selected(answer)}
+            >
+              {answer}
+            </AnimatedFadingPill>
+          ))}
         </Flex>
         <Flex>
-          <Button block disabled={isNextBtnDisabled} onPress={handleNext}>
+          <Button block disabled={isDisabled} onPress={handleNext}>
             Next
           </Button>
           <Screen.SafeBottomPadding />
