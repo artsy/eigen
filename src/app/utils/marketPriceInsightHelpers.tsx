@@ -21,6 +21,6 @@ const VALID_VORTEX_MEDIUMS: Array<string | null> = [
   "NFT",
 ]
 
-export const getVortexMedium = (medium: string | null, category: string | null) => {
+export const getVortexMedium = (medium: string | null, category: string | null): string => {
   return (VALID_VORTEX_MEDIUMS.includes(medium) ? medium : category) || ""
 }
