@@ -19,11 +19,11 @@ import {
   useCameraDevices,
 } from "react-native-vision-camera"
 import { Background, BACKGROUND_COLOR } from "../../Components/Background"
-import { FocusIndicator } from "../../Components/FocusIndicator"
 import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
 import { FocusCoords, ReverseImageNavigationStack } from "../../types"
 import { CameraButtons } from "./Components/CameraButtons"
+import { FocusIndicator } from "./Components/FocusIndicator"
 import { FrameIndicators } from "./Components/FrameIndicators"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">

@@ -1,6 +1,6 @@
+import { FocusCoords } from "app/Scenes/ReverseImage/types"
 import { Flex } from "palette"
 import { useEffect, useRef } from "react"
-import { FocusCoords } from "../types"
 
 interface FocusIndicatorProps {
   coords: FocusCoords
