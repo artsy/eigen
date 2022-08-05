@@ -36,10 +36,6 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
       if (results.length === 1) {
         await navigate(`/artwork/${results[0]!.artwork!.internalID}`)
         return navigation.popToTop()
-
-        // return navigation.replace("Artwork", {
-        //   artworkId: results[0]!.artwork!.internalID,
-        // })
       }
 
       const artworkIDs = compact(results.map((result) => result?.artwork?.internalID))
