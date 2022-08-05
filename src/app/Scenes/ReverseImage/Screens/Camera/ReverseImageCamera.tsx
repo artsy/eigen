@@ -24,6 +24,7 @@ import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
 import { FocusCoords, ReverseImageNavigationStack } from "../../types"
 import { CameraButtons } from "./Components/CameraButtons"
+import { FrameIndicators } from "./Components/FrameIndicators"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
 
@@ -203,17 +204,21 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
           </HeaderContainer>
         </Background>
 
-        <Background height={space("2")} />
+        <Flex flex={1}>
+          <Background height={space("2")} />
 
-        <Flex flex={1} flexDirection="row">
-          <Background width={space("2")} />
-          <TouchableWithoutFeedback onPress={handleFocus} disabled={!device.supportsFocus}>
-            <Flex flex={1} />
-          </TouchableWithoutFeedback>
-          <Background width={space("2")} />
+          <Flex flex={1} flexDirection="row">
+            <Background width={space("2")} />
+            <TouchableWithoutFeedback onPress={handleFocus} disabled={!device.supportsFocus}>
+              <Flex flex={1} />
+            </TouchableWithoutFeedback>
+            <Background width={space("2")} />
+          </Flex>
+
+          <Background height={space("2")} />
+
+          <FrameIndicators />
         </Flex>
-
-        <Background height={space("2")} />
 
         <CameraButtons
           isCameraInitialized={isCameraInitialized}
