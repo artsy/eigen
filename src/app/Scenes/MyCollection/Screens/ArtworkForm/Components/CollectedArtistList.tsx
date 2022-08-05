@@ -1,16 +1,15 @@
+import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { CollectedArtistList_myCollectionInfo$key } from "__generated__/CollectedArtistList_myCollectionInfo.graphql"
-import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
-import { ResultWithHighlight } from "app/Scenes/Search/components/ResultWithHighlight"
-import { SearchResultImage } from "app/Scenes/Search/components/SearchResultImage"
+import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { extractNodes } from "app/utils/extractNodes"
-import { Flex, Spacer, Touchable } from "palette"
+import { Spacer } from "palette"
 import { FlatList } from "react-native-gesture-handler"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { normalizeText } from "shared/utils"
 
 interface ArtistAutosuggestProps {
-  onResultPress: (result: AutosuggestResult) => void
+  onResultPress: (result: ArtistListItem_artist$data) => void
   myCollectionInfo: CollectedArtistList_myCollectionInfo$key
   searchTerm: string | null
 }
@@ -24,20 +23,23 @@ export const CollectedArtistList: React.FC<ArtistAutosuggestProps> = ({
 
   const artists = extractNodes(myCollectionInfo.collectedArtistsConnection)
 
-  const filteredArtists = searchTerm ? filterArtistsByKeyword(artists, searchTerm) : artists
+  // const filteredArtists = searchTerm ? filterArtistsByKeyword(artists, searchTerm) : artists
 
   return (
     <>
-      {/* <Text variant="lg" my={2}>
-        - or select one of your collected artists. -
-      </Text> */}
       <FlatList
-        data={filteredArtists}
-        renderItem={({ item }) => (
-          <Flex pb={4}>
-            <ArtistListItem key={item.id} result={item} />
-          </Flex>
+        data={artists}
+        renderItem={({ item: artist }) => (
+          <ArtistListItemContainer
+            artist={artist}
+            containerStyle={{ paddingHorizontal: 20, paddingVertical: 20 }}
+            disableNavigation
+            hideFollowButton
+            onPress={(artistResult) => onResultPress(artistResult)}
+          />
         )}
+        ItemSeparatorComponent={() => <Spacer mb={2} />}
+        keyExtractor={(artist) => artist.internalID}
       />
     </>
   )
@@ -48,37 +50,13 @@ const artworkFragment = graphql`
     collectedArtistsConnection(first: 10) {
       edges {
         node {
-          id
-          name
           internalID
-          insights(kind: [SOLO_SHOW, GROUP_SHOW, COLLECTED, REVIEWED, BIENNIAL]) {
-            kind
-            count
-          }
-          imageUrl
+          ...ArtistListItem_artist
         }
       }
     }
   }
 `
-
-const ArtistListItem = ({ result, onPress }: any) => {
-  return (
-    <>
-      <Touchable onPress={() => onPress()}>
-        <Flex height={10} flexDirection="row" alignItems="center">
-          <SearchResultImage imageURL={result.imageUrl} resultType="artist" />
-
-          <Spacer ml={1} />
-
-          <Flex flex={1}>
-            <ResultWithHighlight displayLabel={result.name!} />
-          </Flex>
-        </Flex>
-      </Touchable>
-    </>
-  )
-}
 
 export const filterArtistsByKeyword = (artists: any, keywordFilter: string) => {
   const normalizedKeywordFilter = normalizeText(keywordFilter)

@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { MyCollectionArtworkFormArtistQuery } from "__generated__/MyCollectionArtworkFormArtistQuery.graphql"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { AutosuggestResult } from "app/Scenes/Search/AutosuggestResults"
@@ -25,7 +26,7 @@ export const MyCollectionArtworkFormArtist: React.FC<
   const preferredCurrency = GlobalStore.useAppState((state) => state.userPrefs.currency)
   const preferredMetric = GlobalStore.useAppState((state) => state.userPrefs.metric)
 
-  const handleResultPress = async (result: AutosuggestResult) => {
+  const handleResultPress = async (result: AutosuggestResult | ArtistListItem_artist$data) => {
     tracking.trackEvent(tracks.tappedArtist({ artistSlug: result.slug, artistId: result.slug }))
     await GlobalStore.actions.myCollection.artwork.setArtistSearchResult(result)
     navigation.navigate("ArtworkFormArtwork", { ...route.params })

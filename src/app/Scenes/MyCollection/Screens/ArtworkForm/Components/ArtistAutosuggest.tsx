@@ -1,4 +1,5 @@
 import { ArtistAutosuggestQuery } from "__generated__/ArtistAutosuggestQuery.graphql"
+import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import SearchIcon from "app/Icons/SearchIcon"
 import { AutosuggestResult, AutosuggestResults } from "app/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
@@ -10,7 +11,7 @@ import { useArtworkForm } from "../Form/useArtworkForm"
 import { CollectedArtistList } from "./CollectedArtistList"
 
 interface ArtistAutosuggestProps {
-  onResultPress: (result: AutosuggestResult) => void
+  onResultPress: (result: AutosuggestResult | ArtistListItem_artist$data) => void
   onSkipPress?: () => void
 }
 
@@ -68,7 +69,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                 </Flex>
               )}
             />
-          </Flex>
+          </Box>
         ) : null}
       </Box>
     </SearchContext.Provider>

@@ -1,5 +1,3 @@
-import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
-import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { navigate } from "app/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { Schema, track } from "app/utils/track"
@@ -8,6 +6,8 @@ import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
+import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 
 interface Props {
   artist: ArtistListItem_artist$data
@@ -17,7 +17,9 @@ interface Props {
   withFeedback?: boolean
   containerStyle?: StyleProp<ViewStyle>
   disableNavigation?: boolean
+  hideFollowButton?: boolean
   onFollowFinish?: () => void
+  onPress?: (artist: ArtistListItem_artist$data) => void
 }
 
 interface State {
@@ -109,7 +111,8 @@ export class ArtistListItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { artist, withFeedback, containerStyle, disableNavigation } = this.props
+    const { artist, hideFollowButton, withFeedback, containerStyle, onPress, disableNavigation } =
+      this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
 
@@ -123,6 +126,7 @@ export class ArtistListItem extends React.Component<Props, State> {
           <Touchable
             noFeedback={!withFeedback}
             onPress={() => {
+              onPress?.(artist)
               if (href && !disableNavigation) {
                 this.handleTap(href)
               }
@@ -140,12 +144,15 @@ export class ArtistListItem extends React.Component<Props, State> {
                   initials={initials ?? undefined}
                 />
               </Flex>
+
               <Flex>
-                <FollowButton
-                  haptic
-                  isFollowed={!!is_followed}
-                  onPress={this.handleFollowArtist.bind(this)}
-                />
+                {!hideFollowButton && (
+                  <FollowButton
+                    haptic
+                    isFollowed={!!is_followed}
+                    onPress={this.handleFollowArtist.bind(this)}
+                  />
+                )}
               </Flex>
             </Flex>
           </Touchable>
@@ -216,6 +223,8 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       image {
         url
       }
+      displayLabel
+      formattedNationalityAndBirthday
     }
   `,
 })
