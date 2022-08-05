@@ -1,4 +1,6 @@
+import { StackActions } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
+import { navigate } from "app/navigation/navigate"
 import { useImageSearch } from "app/utils/useImageSearch"
 import { compact } from "lodash"
 import { BackButton, Flex, useSpace } from "palette"
@@ -33,9 +35,12 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
       }
 
       if (results.length === 1) {
-        return navigation.replace("Artwork", {
-          artworkId: results[0]!.artwork!.internalID,
-        })
+        await navigate(`/artwork/${results[0]!.artwork!.internalID}`)
+        return navigation.popToTop()
+
+        // return navigation.replace("Artwork", {
+        //   artworkId: results[0]!.artwork!.internalID,
+        // })
       }
 
       const artworkIDs = compact(results.map((result) => result?.artwork?.internalID))
