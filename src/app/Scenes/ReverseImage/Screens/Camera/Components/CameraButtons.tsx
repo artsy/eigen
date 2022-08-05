@@ -1,5 +1,6 @@
 import { Flex, FlexProps, useSpace } from "palette"
 import { TouchableOpacity } from "react-native"
+import { CapturePhotoButton } from "./CapturePhotoButton"
 
 export const CAMERA_BUTTONS_HEIGHT = 120
 
@@ -18,9 +19,7 @@ export const CameraButtons: React.FC<CameraButtonsProps> = (props) => {
 
   return (
     <Flex height={CAMERA_BUTTONS_HEIGHT} justifyContent="center" alignItems="center" {...rest}>
-      <TouchableOpacity onPress={takePhoto} disabled={!isCameraInitialized}>
-        <Flex width={50} height={50} borderRadius={25} bg="white100" />
-      </TouchableOpacity>
+      <CapturePhotoButton onPress={takePhoto} disabled={!isCameraInitialized} />
 
       {!!deviceHasFlash && (
         <TouchableOpacity
