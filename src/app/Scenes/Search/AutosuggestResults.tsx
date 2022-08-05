@@ -136,35 +136,33 @@ const AutosuggestResultsFlatList: React.FC<{
   }
 
   return (
-    <Flex>
-      <AboveTheFoldFlatList<AutosuggestResult>
-        listRef={flatListRef}
-        initialNumToRender={isPad() ? 24 : 12}
-        data={nodes}
-        showsVerticalScrollIndicator={false}
-        ListFooterComponent={ListFooterComponent}
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-        ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
-        renderItem={({ item, index }) => {
-          return (
-            <Flex mb={2}>
-              <AutosuggestSearchResult
-                highlight={query}
-                result={item}
-                showResultType={showResultType}
-                onResultPress={onResultPress}
-                showQuickNavigationButtons={showQuickNavigationButtons}
-                trackResultPress={trackResultPress}
-                itemIndex={index}
-              />
-            </Flex>
-          )
-        }}
-        onScrollBeginDrag={onScrollBeginDrag}
-        onEndReached={onEndReached}
-      />
-    </Flex>
+    <AboveTheFoldFlatList<AutosuggestResult>
+      listRef={flatListRef}
+      initialNumToRender={isPad() ? 24 : 12}
+      data={nodes}
+      showsVerticalScrollIndicator={false}
+      ListFooterComponent={ListFooterComponent}
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="handled"
+      ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
+      renderItem={({ item, index }) => {
+        return (
+          <Flex mb={2}>
+            <AutosuggestSearchResult
+              highlight={query}
+              result={item}
+              showResultType={showResultType}
+              onResultPress={onResultPress}
+              showQuickNavigationButtons={showQuickNavigationButtons}
+              trackResultPress={trackResultPress}
+              itemIndex={index}
+            />
+          </Flex>
+        )
+      }}
+      onScrollBeginDrag={onScrollBeginDrag}
+      onEndReached={onEndReached}
+    />
   )
 }
 
