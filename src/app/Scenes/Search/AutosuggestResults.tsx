@@ -7,7 +7,7 @@ import Spinner from "app/Components/Spinner"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { isPad } from "app/utils/hardware"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
-import { Flex, quoteLeft, quoteRight, Spacer, Text, useSpace } from "palette"
+import { Flex, quoteLeft, quoteRight, Spacer, Text } from "palette"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -48,7 +48,6 @@ const AutosuggestResultsFlatList: React.FC<{
   trackResultPress,
   ListEmptyComponent = EmptyList,
 }) => {
-  const space = useSpace()
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
 
@@ -137,34 +136,35 @@ const AutosuggestResultsFlatList: React.FC<{
   }
 
   return (
-    <AboveTheFoldFlatList<AutosuggestResult>
-      listRef={flatListRef}
-      initialNumToRender={isPad() ? 24 : 12}
-      style={{ flex: 1, padding: space(2) }}
-      data={nodes}
-      showsVerticalScrollIndicator={false}
-      ListFooterComponent={ListFooterComponent}
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
-      renderItem={({ item, index }) => {
-        return (
-          <Flex mb={2}>
-            <AutosuggestSearchResult
-              highlight={query}
-              result={item}
-              showResultType={showResultType}
-              onResultPress={onResultPress}
-              showQuickNavigationButtons={showQuickNavigationButtons}
-              trackResultPress={trackResultPress}
-              itemIndex={index}
-            />
-          </Flex>
-        )
-      }}
-      onScrollBeginDrag={onScrollBeginDrag}
-      onEndReached={onEndReached}
-    />
+    <Flex>
+      <AboveTheFoldFlatList<AutosuggestResult>
+        listRef={flatListRef}
+        initialNumToRender={isPad() ? 24 : 12}
+        data={nodes}
+        showsVerticalScrollIndicator={false}
+        ListFooterComponent={ListFooterComponent}
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={noResults ? () => <ListEmptyComponent query={query} /> : null}
+        renderItem={({ item, index }) => {
+          return (
+            <Flex mb={2}>
+              <AutosuggestSearchResult
+                highlight={query}
+                result={item}
+                showResultType={showResultType}
+                onResultPress={onResultPress}
+                showQuickNavigationButtons={showQuickNavigationButtons}
+                trackResultPress={trackResultPress}
+                itemIndex={index}
+              />
+            </Flex>
+          )
+        }}
+        onScrollBeginDrag={onScrollBeginDrag}
+        onEndReached={onEndReached}
+      />
+    </Flex>
   )
 }
 
