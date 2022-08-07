@@ -335,7 +335,9 @@ export const modules = defineModules({
   ),
   AuctionResultsForArtistsYouCollect: reactModule(AuctionResultsForArtistsYouCollect),
   AverageSalePriceAtAuction: reactModule(AverageSalePriceAtAuction),
-  CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper),
+  CareerHighlightsBigCardsSwiper: reactModule(CareerHighlightsBigCardsSwiper, {
+    alwaysPresentModally: true,
+  }),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,

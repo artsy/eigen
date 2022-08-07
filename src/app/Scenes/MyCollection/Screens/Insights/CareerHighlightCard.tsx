@@ -49,7 +49,6 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
       haptic
       onPress={() => {
         navigate("/my-collection/career-highlights", {
-          modal: true,
           passProps: { type, careerHighlightsAvailableTypes },
         })
       }}
