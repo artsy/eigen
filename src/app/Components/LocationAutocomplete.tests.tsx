@@ -110,6 +110,29 @@ describe("LocationAutocomplete", () => {
       expect(mockOnChange).toHaveBeenCalledWith({ city: "A custom location" })
     })
   })
+
+  describe("when there are no results", async () => {
+    beforeEach(() => {
+      ;(getLocationPredictions as jest.Mock).mockResolvedValue([])
+    })
+
+    it("shows a message", async () => {
+      const { getByText, getByTestId } = renderWithWrappersTL(
+        <LocationAutocomplete showError onChange={mockOnChange} />
+      )
+
+      expect(() => getByText("Please try searching again with a different spelling.")).toThrow(
+        "Unable to find an element with text: Please try searching again with a different spelling."
+      )
+
+      const input = getByTestId("autocomplete-location-input")
+      fireEvent.changeText(input, "there is no such a location")
+
+      await flushPromiseQueue()
+
+      expect(getByText("Please try searching again with a different spelling.")).toBeTruthy()
+    })
+  })
 })
 
 const locationPredictions = [

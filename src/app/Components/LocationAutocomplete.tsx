@@ -15,6 +15,7 @@ interface LocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   displayLocation?: string
   allowCustomLocation?: boolean
   inputRef?: React.RefObject<Input>
+  showError?: boolean
   onChange: (l: LocationWithDetails) => void
   FooterComponent?: () => JSX.Element
 }
@@ -39,6 +40,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   FooterComponent,
   inputRef,
   allowCustomLocation = false,
+  showError,
   ...restProps
 }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
@@ -126,6 +128,10 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
         onSelect={setSelectedLocation}
         onOutsidePress={touchOut}
         isFloating={floating}
+        showError={showError}
+        locationSelected={
+          initialLocation ? initialLocation?.name !== query : displayLocation !== query
+        }
       />
 
       {!!FooterComponent && <FooterComponent />}
@@ -137,12 +143,16 @@ const LocationPredictions = ({
   predictions,
   query,
   isFloating,
+  showError,
   onSelect,
   onOutsidePress,
+  locationSelected,
 }: {
   predictions: SimpleLocation[]
   query?: string
   isFloating?: boolean
+  showError?: boolean
+  locationSelected?: boolean
   onSelect: (l: SimpleLocation) => void
   onOutsidePress?: () => void
 }) => {
@@ -169,9 +179,11 @@ const LocationPredictions = ({
     return formatted
   }
 
-  if (predictions.length === 0) {
+  if ((predictions.length === 0 && !showError) || !locationSelected || !query || query.length < 3) {
     return null
   }
+
+  const emptyResults = showError && predictions.length === 0 && locationSelected
 
   return (
     <>
@@ -220,6 +232,11 @@ const LocationPredictions = ({
             </Flex>
           </Touchable>
         ))}
+        {!!emptyResults && (
+          <Text m={1} variant="md" color="black60" textAlign="center">
+            Please try searching again with a different spelling.
+          </Text>
+        )}
       </Flex>
     </>
   )
