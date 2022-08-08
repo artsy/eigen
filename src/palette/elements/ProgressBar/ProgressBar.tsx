@@ -16,13 +16,13 @@ export interface ProgressBarProps {
 
 const clamp = (num: number, min: number, max: number) => Math.max(min, Math.min(num, max))
 
-export const ProgressBar: React.FC<ProgressBarProps> = ({
+export const ProgressBar = ({
   progress,
   height = 2,
   trackColor = "blue100",
   backgroundColor = "black30",
   onCompletion = noop,
-}) => {
+}: ProgressBarProps) => {
   const color = useColor()
   const width = useSharedValue("0%")
   const progressAnim = useAnimatedStyle(() => ({ width: width.value }))
@@ -40,7 +40,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   }, [progress])
 
   return (
-    <Flex testID="progress-bar" width="100%" backgroundColor={backgroundColor} my={1}>
+    <Flex width="100%" backgroundColor={backgroundColor} my={1}>
       <Animated.View
         testID="progress-bar-track"
         style={[progressAnim, { height, backgroundColor: color(trackColor) }]}

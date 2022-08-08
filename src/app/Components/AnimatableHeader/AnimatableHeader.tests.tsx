@@ -3,7 +3,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { range } from "lodash"
 import { Text } from "react-native"
-import { withReanimatedTimer } from "react-native-reanimated/src/reanimated2/jestUtils"
 import { AnimatableHeader } from "./AnimatableHeader"
 import { AnimatableHeaderProvider } from "./AnimatableHeaderProvider"
 import { AnimatableHeaderScrollView } from "./AnimatableHeaderScrollView"
@@ -21,111 +20,97 @@ describe("AnimatableHeader", () => {
   )
 
   it("should render title large title initially", () => {
-    withReanimatedTimer(async () => {
-      renderWithWrappers(
-        <HeaderWrapper>
-          <AnimatableHeader title="Custom Title" onLeftButtonPress={jest.fn()} />
-        </HeaderWrapper>
-      )
-      expect(screen.getByTestId("animated-header-large-title")).toBeTruthy()
-    })
+    renderWithWrappers(
+      <HeaderWrapper>
+        <AnimatableHeader title="Custom Title" onLeftButtonPress={jest.fn()} />
+      </HeaderWrapper>
+    )
+    expect(screen.getByTestId("animated-header-large-title")).toBeTruthy()
   })
 
   it("should render passed rightButtonText prop", () => {
-    withReanimatedTimer(async () => {
-      renderWithWrappers(
-        <HeaderWrapper>
-          <AnimatableHeader
-            title="Title"
-            onLeftButtonPress={jest.fn()}
-            rightButtonText="Custom Right Button Text"
-            onRightButtonPress={jest.fn()}
-          />
-        </HeaderWrapper>
-      )
+    renderWithWrappers(
+      <HeaderWrapper>
+        <AnimatableHeader
+          title="Title"
+          onLeftButtonPress={jest.fn()}
+          rightButtonText="Custom Right Button Text"
+          onRightButtonPress={jest.fn()}
+        />
+      </HeaderWrapper>
+    )
 
-      expect(screen.getByText("Custom Right Button Text")).toBeTruthy()
-    })
+    expect(screen.getByText("Custom Right Button Text")).toBeTruthy()
   })
 
   it('should hide right button if "onRightButtonPress" is not passed', () => {
-    withReanimatedTimer(async () => {
-      renderWithWrappers(
-        <HeaderWrapper>
-          <AnimatableHeader
-            title="Title"
-            onLeftButtonPress={jest.fn()}
-            rightButtonText="Custom Right Button Text"
-          />
-        </HeaderWrapper>
-      )
+    renderWithWrappers(
+      <HeaderWrapper>
+        <AnimatableHeader
+          title="Title"
+          onLeftButtonPress={jest.fn()}
+          rightButtonText="Custom Right Button Text"
+        />
+      </HeaderWrapper>
+    )
 
-      expect(screen.queryByText("Right Button")).toBeFalsy()
-    })
+    expect(screen.queryByText("Right Button")).toBeFalsy()
   })
 
   it('should hide right button if "rightButtonText" is not passed', () => {
-    withReanimatedTimer(async () => {
-      renderWithWrappers(
-        <HeaderWrapper>
-          <AnimatableHeader title="Title" onLeftButtonPress={jest.fn()} />
-        </HeaderWrapper>
-      )
+    renderWithWrappers(
+      <HeaderWrapper>
+        <AnimatableHeader title="Title" onLeftButtonPress={jest.fn()} />
+      </HeaderWrapper>
+    )
 
-      expect(screen.queryByText("Right Button")).toBeFalsy()
-    })
+    expect(screen.queryByText("Right Button")).toBeFalsy()
   })
 
   it("should disable right button when rightButtonDisabled prop is true", () => {
-    withReanimatedTimer(async () => {
-      renderWithWrappers(
-        <HeaderWrapper>
-          <AnimatableHeader
-            title="Title"
-            onLeftButtonPress={jest.fn()}
-            onRightButtonPress={jest.fn()}
-            rightButtonText="Custom Right Button Text"
-            rightButtonDisabled
-          />
-        </HeaderWrapper>
-      )
+    renderWithWrappers(
+      <HeaderWrapper>
+        <AnimatableHeader
+          title="Title"
+          onLeftButtonPress={jest.fn()}
+          onRightButtonPress={jest.fn()}
+          rightButtonText="Custom Right Button Text"
+          rightButtonDisabled
+        />
+      </HeaderWrapper>
+    )
 
-      expect(screen.queryByText(/Right Button/)).toBeDisabled()
-    })
+    expect(screen.queryByText(/Right Button/)).toBeDisabled()
   })
 
   it('should call "onLeftButtonPress" handler when back button is pressed', () => {
-    withReanimatedTimer(async () => {
-      const onLeftButtonPressMock = jest.fn()
-      renderWithWrappers(
-        <HeaderWrapper>
-          <AnimatableHeader title="Title" onLeftButtonPress={onLeftButtonPressMock} />
-        </HeaderWrapper>
-      )
+    const onLeftButtonPressMock = jest.fn()
+    renderWithWrappers(
+      <HeaderWrapper>
+        <AnimatableHeader title="Title" onLeftButtonPress={onLeftButtonPressMock} />
+      </HeaderWrapper>
+    )
 
-      fireEvent.press(screen.getByLabelText("Header back button"))
+    fireEvent.press(screen.getByLabelText("Header back button"))
 
-      expect(onLeftButtonPressMock).toBeCalled()
-    })
+    expect(onLeftButtonPressMock).toBeCalled()
   })
 
   it('should call "onRightButtonPress" handler when right button is pressed', () => {
-    withReanimatedTimer(async () => {
-      const onRightButtonPressMock = jest.fn()
-      renderWithWrappers(
-        <HeaderWrapper>
-          <AnimatableHeader
-            title="Title"
-            onLeftButtonPress={jest.fn()}
-            rightButtonText="Custom Right Button Text"
-            onRightButtonPress={onRightButtonPressMock}
-          />
-        </HeaderWrapper>
-      )
+    const onRightButtonPressMock = jest.fn()
+    renderWithWrappers(
+      <HeaderWrapper>
+        <AnimatableHeader
+          title="Title"
+          onLeftButtonPress={jest.fn()}
+          rightButtonText="Custom Right Button Text"
+          onRightButtonPress={onRightButtonPressMock}
+        />
+      </HeaderWrapper>
+    )
 
-      fireEvent.press(screen.getByText(/Right Button/))
+    fireEvent.press(screen.getByText(/Right Button/))
 
-      expect(onRightButtonPressMock).toBeCalled()
-    })
+    expect(onRightButtonPressMock).toBeCalled()
   })
 })
