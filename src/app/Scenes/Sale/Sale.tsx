@@ -489,6 +489,7 @@ export const SaleQueryRenderer: React.FC<{
                       // @ts-ignore
                       input: {
                         sort: DEFAULT_NEW_SALE_ARTWORK_SORT.paramValue,
+                        priceRange: "",
                       },
                     },
                   }
