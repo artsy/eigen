@@ -1,8 +1,7 @@
-import { noop } from "lodash"
 import { Flex } from "palette"
 import { useColor } from "palette/hooks"
 import { Color } from "palette/Theme"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Animated } from "react-native"
 import { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
@@ -17,24 +16,24 @@ export interface ProgressBarProps {
 const clamp = (num: number, min: number, max: number) => Math.max(min, Math.min(num, max))
 
 export const ProgressBar = ({
-  progress,
+  progress: unclampedProgress,
   height = 2,
   trackColor = "blue100",
   backgroundColor = "black30",
-  onCompletion = noop,
+  onCompletion,
 }: ProgressBarProps) => {
   const color = useColor()
   const width = useSharedValue("0%")
+  const progress = clamp(unclampedProgress, 0, 100)
   const progressAnim = useAnimatedStyle(() => ({ width: width.value }))
 
   const [onCompletionCalled, setOnCompletionCalled] = useState(false)
 
   useEffect(() => {
-    const progressPercentage = clamp(progress, 0, 100)
-    width.value = withTiming(`${progressPercentage}%`, { duration: 500 })
+    width.value = withTiming(`${progress}%`, { duration: 500 })
 
-    if (progressPercentage === 100 && !onCompletionCalled) {
-      onCompletion()
+    if (progress === 100 && !onCompletionCalled) {
+      onCompletion?.()
       setOnCompletionCalled(true)
     }
   }, [progress])
