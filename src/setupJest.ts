@@ -227,6 +227,7 @@ jest.mock("react-native-localize", () => ({
 require("react-native-reanimated/src/reanimated2/jestUtils").setUpTests()
 
 // @ts-expect-error
+// tslint:disable-next-line:no-empty
 global.__reanimatedWorkletInit = () => {}
 jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
 
