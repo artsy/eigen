@@ -17,7 +17,7 @@ describe("AverageSalePriceAtAuction", () => {
       artistID: "artist-id",
     })
 
-    return <AverageSalePriceAtAuction artistID="artist-id" />
+    return <AverageSalePriceAtAuction artistID="artist-id" initialCategory="Painting" />
   }
 
   let mockEnvironment: ReturnType<typeof createMockEnvironment>

@@ -1,24 +1,18 @@
 import { render } from "@testing-library/react-native"
-import { ColoredDot } from "./ColoredDot"
-import { ALL_COLOR, getRandomColor, mediumToColor } from "./helpers"
+import { ColoredDot, DEFAULT_DOT_COLOR } from "./ColoredDot"
+import { getRandomColor } from "./helpers"
 
 describe("ColoredDot", () => {
-  it("returns the right color when a medium with predefined color is selected", () => {
-    const { getByTestId } = render(<ColoredDot selectedMedium="Painting" />)
+  it("returns the right color", () => {
+    const { getByTestId } = render(<ColoredDot color="#44BBDD" />)
     const dot = getByTestId("colored-dot")
-    expect(dot.props.backgroundColor).toEqual(mediumToColor.Painting)
+    expect(dot.props.backgroundColor).toEqual("#44BBDD")
   })
 
-  it("returns a random color when a medium with no predefined color is selected", () => {
-    const { getByTestId } = render(<ColoredDot selectedMedium="Installation" />)
+  it("falls back to default color when disabled", () => {
+    const { getByTestId } = render(<ColoredDot color="#44BBDD" disabled />)
     const dot = getByTestId("colored-dot")
-    expect(dot.props.backgroundColor).toBeDefined()
-  })
-
-  it("returns the right color when no medium is selected", () => {
-    const { getByTestId } = render(<ColoredDot selectedMedium={null} />)
-    const dot = getByTestId("colored-dot")
-    expect(dot.props.backgroundColor).toEqual(ALL_COLOR)
+    expect(dot.props.backgroundColor).toEqual(DEFAULT_DOT_COLOR)
   })
 })
 

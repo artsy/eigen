@@ -136,12 +136,12 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           animate={ANIMATION_CONFIG}
           interpolation={chartInterpolation}
           // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
-          y={(datum) => datum.y / maxima}
+          y={(datum: any) => datum.y / maxima}
         />
 
         {/** Draws the Line Above the Area */}
         <VictoryLine
-          animate={ANIMATION_CONFIG}
+          animate
           style={{
             data: { stroke: tintColor },
             border: { stroke: "transparent" },
@@ -154,7 +154,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           groupComponent={<G />}
           interpolation={chartInterpolation}
           // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
-          y={(datum) => datum.y / maxima}
+          y={(datum: any) => datum.y / maxima}
         />
 
         {/** If only a single data is given, plot a point */}
@@ -166,7 +166,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
             data={data}
             domain={{ y: [0, 1] }}
             size={7}
-            y={(datum) => datum.y / maxima}
+            y={(datum: any) => datum.y / maxima}
           />
         )}
 
@@ -177,7 +177,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
             axis: { stroke: color("black30"), strokeDasharray: 2 },
             ticks: { size: 0 },
             grid: {
-              stroke: ({ tick }) =>
+              stroke: ({ tick }: { tick: number }) =>
                 Number(tick * maxima) === minMaxDomainY.max ? color("black30") : "transparent",
               strokeDasharray: 3,
             },
@@ -185,7 +185,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           axisLabelComponent={<Text />}
           maxDomain={minMaxDomainY.max}
           minDomain={minMaxDomainY.min}
-          tickFormat={(tick) =>
+          tickFormat={(tick: number) =>
             tickFormat(
               tick * maxima, // Because we did y={(datum) => datum.y / maxima} in VictoryArea to normalise Y values
               minMaxDomainY.max,
@@ -206,7 +206,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           axisLabelComponent={<Text />}
           maxDomain={minMaxDomainX.max}
           minDomain={minMaxDomainX.min}
-          tickFormat={(tick) =>
+          tickFormat={(tick: number) =>
             tickFormat(
               tick,
               minMaxDomainX.max,
