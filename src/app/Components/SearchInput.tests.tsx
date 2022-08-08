@@ -2,7 +2,6 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { InputRef } from "palette/elements/Input/Input"
 import { useRef } from "react"
-import { beforeTest, afterTest } from "react-native-reanimated/src/reanimated2/jestUtils"
 import { SearchInput, SearchInputProps } from "./SearchInput"
 
 describe("SearchInput", () => {
@@ -19,16 +18,6 @@ describe("SearchInput", () => {
       />
     )
   }
-
-  // beforeEach(() => {
-  // jest.clearAllMocks()
-  //   beforeTest()
-  // jest.useRealTimers()
-  // })
-
-  // afterEach(() => {
-  //   afterTest()
-  // })
 
   it("renders input", async () => {
     renderWithWrappers(<TestWrapper />)
