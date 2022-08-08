@@ -97,6 +97,7 @@ import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest/PrivacyRequest"
+import { ReverseImage } from "./Scenes/ReverseImage/ReverseImage"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo/SaleInfo"
@@ -428,6 +429,11 @@ export const modules = defineModules({
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
   RequestForPriceEstimateScreen: reactModule(RequestForPriceEstimateScreen),
+  ReverseImage: reactModule(ReverseImage, {
+    hidesBackButton: true,
+    fullBleed: true,
+    alwaysPresentModally: true,
+  }),
   Sales: reactModule(SellWithArtsy, { isRootViewForTabName: "sell" }, [
     SellWithArtsyHomeScreenQuery,
   ]),

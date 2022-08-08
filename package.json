@@ -176,6 +176,7 @@
     "react-native-share": "7.3.6",
     "react-native-svg": "9.13.3",
     "react-native-view-shot": "3.1.2",
+    "react-native-vision-camera": "2.14.0",
     "react-native-webview": "11.3.1",
     "react-relay": "14.0.0",
     "react-spring": "8.0.23",
