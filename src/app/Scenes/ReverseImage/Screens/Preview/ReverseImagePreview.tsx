@@ -41,6 +41,7 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
 
       const artworkIDs = compact(results.map((result) => result?.artwork?.internalID))
       navigation.replace("MultipleResults", {
+        photoPath: photo.path,
         artworkIDs,
       })
     } catch (error) {

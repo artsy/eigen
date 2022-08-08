@@ -13,6 +13,7 @@ export interface FocusCoords {
 export type ReverseImageNavigationStack = {
   Camera: undefined
   MultipleResults: {
+    photoPath: string
     artworkIDs: string[]
   }
   ArtworkNotFound: {
