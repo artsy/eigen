@@ -13,9 +13,9 @@ export const ReverseImage = () => {
     <NavigationContainer independent>
       <Stack.Navigator
         initialRouteName="Camera"
-        headerMode="screen"
         screenOptions={{
           headerShown: false,
+          headerMode: "screen",
           animationTypeForReplace: "push",
         }}
       >

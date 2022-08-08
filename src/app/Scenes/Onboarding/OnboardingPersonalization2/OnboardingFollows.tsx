@@ -38,6 +38,7 @@ export const OnboardingFollows: React.FC<OnboardingFollowsProps> = ({ kind }) =>
 
   const handleNextButtonPress = () => {
     next()
+    // @ts-expect-error
     navigate("OnboardingPostFollowLoadingScreen")
   }
 
