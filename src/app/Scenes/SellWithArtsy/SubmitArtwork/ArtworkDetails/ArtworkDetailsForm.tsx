@@ -211,6 +211,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       </InfoModal>
       <StandardSpace />
       <LocationAutocomplete
+        showError
         title="City"
         placeholder="Enter city where artwork is located"
         displayLocation={buildLocationDisplay(values.location)}
