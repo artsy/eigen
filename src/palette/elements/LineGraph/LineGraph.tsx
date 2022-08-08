@@ -1,5 +1,7 @@
 import { Flex, Spacer } from "palette"
 import React from "react"
+import { InterpolationPropType } from "victory-core"
+import { AxisDisplayType } from "./helpers"
 import { LineGraphBandProps, LineGraphBands } from "./LineGraphBands"
 import { LineGraphCategoryPicker } from "./LineGraphCategoryPicker"
 import { LineGraphChart } from "./LineGraphChart"
@@ -13,11 +15,17 @@ interface Props {
   showHighlights?: boolean
   chartHeight?: number
   chartWidth?: number
+  /** By default we use natural for chartInterpolation. Consider monotoneX for lines
+   * that are more faithful to your data, but less curvy than natural.
+   */
+  chartInterpolation?: InterpolationPropType
   onXHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   onYHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   tintColorShadeFactor?: number
   xAxisTickFormatter?: (val: any) => string
   yAxisTickFormatter?: (val: any) => string
+  xAxisDisplayType?: AxisDisplayType
+  yAxisDisplayType?: AxisDisplayType
 
   // bands
   bands: LineGraphBandProps["bands"]
@@ -35,6 +43,7 @@ export const LineGraph: React.FC<Props> = ({
   categories,
   chartHeight,
   chartWidth,
+  chartInterpolation,
   data,
   onBandSelected,
   onCategorySelected,
@@ -46,9 +55,11 @@ export const LineGraph: React.FC<Props> = ({
   tintColorShadeFactor,
   xAxisTickFormatter,
   yAxisTickFormatter,
+  xAxisDisplayType,
+  yAxisDisplayType,
 }) => {
   return (
-    <Flex mt={5}>
+    <Flex>
       <LineGraphHeader {...data.dataMeta} />
 
       <LineGraphChart
@@ -57,11 +68,14 @@ export const LineGraph: React.FC<Props> = ({
         showHighlights={showHighlights}
         chartHeight={chartHeight}
         chartWidth={chartWidth}
+        chartInterpolation={chartInterpolation}
         onXHighlightPressed={onXHighlightPressed}
         onYHighlightPressed={onYHighlightPressed}
         tintColorShadeFactor={tintColorShadeFactor}
         xAxisTickFormatter={xAxisTickFormatter}
         yAxisTickFormatter={yAxisTickFormatter}
+        xAxisDisplayType={xAxisDisplayType}
+        yAxisDisplayType={yAxisDisplayType}
       />
 
       <LineGraphBands bands={bands} selectedBand={selectedBand} onBandSelected={onBandSelected} />

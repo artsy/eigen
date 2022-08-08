@@ -3,6 +3,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/navigation/navigate"
 import { useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
+import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { groupBy } from "lodash"
 import { Flex, Spacer } from "palette"
 import { FlatList } from "react-native-gesture-handler"
@@ -37,7 +38,15 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
             enableMyCollectionInsightsPhase1Part3
               ? () => {
                   navigate(
-                    `/my-collection/average-sale-price-at-auction/${artworks[0].artist?.internalID}`
+                    `/my-collection/average-sale-price-at-auction/${artworks[0].artist?.internalID}`,
+                    {
+                      passProps: {
+                        initialCategory: getVortexMedium(
+                          artworks[0].medium ?? "",
+                          artworks[0].mediumType?.name ?? ""
+                        ),
+                      },
+                    }
                   )
                 }
               : undefined
@@ -55,7 +64,15 @@ export const AverageAuctionPriceRail: React.FC<AverageAuctionPriceRailProps> = (
               enableMyCollectionInsightsPhase1Part3
                 ? () => {
                     navigate(
-                      `/my-collection/average-sale-price-at-auction/${item[0].artist?.internalID}`
+                      `/my-collection/average-sale-price-at-auction/${item[0].artist?.internalID}`,
+                      {
+                        passProps: {
+                          initialCategory: getVortexMedium(
+                            item[0].medium ?? "",
+                            item[0].mediumType?.name ?? ""
+                          ),
+                        },
+                      }
                     )
                   }
                 : undefined
@@ -75,6 +92,9 @@ const fragment = graphql`
         node {
           internalID
           medium
+          mediumType {
+            name
+          }
           title
           artist {
             internalID

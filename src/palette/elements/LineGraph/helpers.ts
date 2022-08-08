@@ -38,7 +38,7 @@ export const getRandomColor = () => {
   return color
 }
 
-export enum TickFormatType {
+export enum AxisDisplayType {
   OnlyShowMinAndMaxDomain = "OnlyShowMinAndMaxDomain",
   ShowAllValues = "ShowAllValues",
 }
@@ -58,16 +58,16 @@ export const tickFormat = (
   tick: any,
   maxDomain: number,
   formatter: (val: any) => string = defaultFormatter,
-  tickFormatType: TickFormatType = TickFormatType.ShowAllValues
+  tickFormatType: AxisDisplayType = AxisDisplayType.ShowAllValues
 ): string => {
   let res = ""
   switch (tickFormatType) {
-    case TickFormatType.OnlyShowMinAndMaxDomain:
+    case AxisDisplayType.OnlyShowMinAndMaxDomain:
       if (tick === maxDomain) {
         res = formatter(tick)
       }
       break
-    case TickFormatType.ShowAllValues:
+    case AxisDisplayType.ShowAllValues:
       res = formatter(tick)
       break
   }

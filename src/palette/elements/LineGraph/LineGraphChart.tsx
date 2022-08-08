@@ -4,7 +4,8 @@ import { useColor, useSpace } from "palette/hooks"
 import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
 import { useCallback, useEffect, useState } from "react"
 import { Dimensions, NativeTouchEvent, TouchableOpacity, View } from "react-native"
-import Svg, { Defs, LinearGradient, Stop } from "react-native-svg"
+import Svg, { Defs, G, LinearGradient, Stop } from "react-native-svg"
+import { InterpolationPropType } from "victory-core"
 import {
   VictoryArea,
   VictoryAxis,
@@ -14,7 +15,7 @@ import {
   VictoryTheme,
 } from "victory-native"
 import { Text } from "../Text"
-import { shadeColor, tickFormat, TickFormatType } from "./helpers"
+import { AxisDisplayType, shadeColor, tickFormat } from "./helpers"
 import { LineChartData } from "./types"
 
 const ANIMATION_CONFIG = {
@@ -26,12 +27,15 @@ interface LineGraphChartProps extends LineChartData {
   showHighlights?: boolean
   chartHeight?: number
   chartWidth?: number
+  chartInterpolation?: InterpolationPropType
   onXHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   onYHighlightPressed?: (datum: { _x: number; _y: number; x: number; y: number }) => void
   /** Specifies by what factor between -0 to +1 to shade the graph area. Positive values lightens, negative darkens */
   tintColorShadeFactor?: number
   xAxisTickFormatter?: (val: any) => string
   yAxisTickFormatter?: (val: any) => string
+  xAxisDisplayType?: AxisDisplayType
+  yAxisDisplayType?: AxisDisplayType
 }
 
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get("window")
@@ -41,22 +45,25 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   dataMeta: { tintColor = "#707070", xHighlightIcon, yHighlightIcon },
   chartHeight,
   chartWidth,
+  chartInterpolation = "natural",
   onXHighlightPressed = noop,
   onYHighlightPressed = noop,
   showHighlights = false,
   tintColorShadeFactor = 0.8,
   xAxisTickFormatter,
   yAxisTickFormatter,
+  xAxisDisplayType,
+  yAxisDisplayType,
 }) => {
   const color = useColor()
 
   const shadedTintColor = shadeColor(tintColor, tintColorShadeFactor)
 
   const xHighlights = compact(
-    data.map((datum) => (datum.xHighlight ? { y: 0, x: datum.xHighlight } : null))
+    data.map((datum) => (datum.highlight?.x ? { y: 0, x: datum.x } : null))
   )
   const yHighlights = compact(
-    data.map((datum) => (datum.yHighlight ? { x: 0, y: datum.yHighlight } : null))
+    data.map((datum) => (datum.highlight?.y ? { x: 0, y: datum.y } : null))
   )
 
   const yValues = data.map((datum) => datum.y)
@@ -67,32 +74,11 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
 
   const maxima = minMaxDomainY.max // because the y axis is the dependent axis
 
-  useEffect(() => {
-    validateHighlights()
-  }, [xHighlights, yHighlights])
-
-  const validateHighlights = () => {
-    if (__DEV__) {
-      const maxYHighlight = Math.max(...yHighlights.map((d) => d.y))
-      const maxXHighlight = Math.max(...xHighlights.map((d) => d.x))
-
-      const minYHighlight = Math.min(...yHighlights.map((d) => d.y))
-      const minXHighlight = Math.min(...xHighlights.map((d) => d.x))
-
-      const areValidHighlights =
-        maxXHighlight <= minMaxDomainX.max &&
-        maxYHighlight <= minMaxDomainY.max &&
-        minXHighlight >= minMaxDomainX.min &&
-        minYHighlight >= minMaxDomainY.min
-
-      if (areValidHighlights) {
-        return
-      }
-      console.error(
-        "Error: Invalid Highlights passed to the Graph data. xHighlight must be within the range of the minimum and maximum values provided for the x axis. Likewise yHighlight for y-axis. Invalid highlights may not show on the chart."
-      )
-    }
-  }
+  // If you using the chart interpolation to natural, you need
+  // the right domainPadding so that the parabolic curve at the
+  // top is not cut off
+  const yDomainPadding =
+    chartInterpolation === "natural" ? calculateDomainPadding(yValues, maxima) : 0
 
   const renderDefs = useCallback(
     () => (
@@ -127,12 +113,14 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
         theme={VictoryTheme.material}
         // mapping domain from 0 to 1 because data is normalized by the factor of max Y value.
         domain={{ y: [0, 1] }}
+        domainPadding={{ y: [40, yDomainPadding] }}
+        // singleQuadrantDomainPadding={false}
         backgroundComponent={<Background />}
         containerComponent={<Svg />}
         style={{
           background: { fill: "white" },
         }}
-        padding={{ left: space(2), right: space(2), bottom: 30, top: 30 }}
+        padding={{ left: space(3), right: space(2), bottom: space(3), top: space(3) }}
         // space(2) * 2 for both sides of the screen
         width={chartWidth ?? deviceWidth - space(2) * 2}
         height={chartHeight ?? deviceHeight / 3}
@@ -146,7 +134,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           }}
           data={data}
           animate={ANIMATION_CONFIG}
-          interpolation="natural"
+          interpolation={chartInterpolation}
           // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
           y={(datum) => datum.y / maxima}
         />
@@ -156,16 +144,31 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           animate={ANIMATION_CONFIG}
           style={{
             data: { stroke: tintColor },
-            // parent: { border: "transparent" },
-            // labels: { fontFamily: bodyFont, stroke: 'transparent' },
             border: { stroke: "transparent" },
           }}
           data={data}
           domain={{ y: [0, 1] }}
-          interpolation="natural"
+          // groupComponent={<G />} ensures the line is not cut off below when using
+          // chartInterpolation = natural. Without this, lines will dip off
+          // the chart.
+          groupComponent={<G />}
+          interpolation={chartInterpolation}
           // Normalise the dependent axis Y. Else it is not possible to represent data with extreme variance.
           y={(datum) => datum.y / maxima}
         />
+
+        {/** If only a single data is given, plot a point */}
+        {data.length === 1 && (
+          <VictoryScatter
+            style={{
+              data: { stroke: tintColor, fill: tintColor },
+            }}
+            data={data}
+            domain={{ y: [0, 1] }}
+            size={7}
+            y={(datum) => datum.y / maxima}
+          />
+        )}
 
         {/** Y-Axis */}
         <VictoryAxis
@@ -187,7 +190,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
               tick * maxima, // Because we did y={(datum) => datum.y / maxima} in VictoryArea to normalise Y values
               minMaxDomainY.max,
               yAxisTickFormatter, // falls back to use the defaultFormatter
-              TickFormatType.OnlyShowMinAndMaxDomain
+              yAxisDisplayType ?? AxisDisplayType.OnlyShowMinAndMaxDomain
             )
           }
         />
@@ -208,7 +211,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
               tick,
               minMaxDomainX.max,
               xAxisTickFormatter ?? ((val) => val), // don't format x ticks by default
-              TickFormatType.OnlyShowMinAndMaxDomain
+              xAxisDisplayType ?? AxisDisplayType.OnlyShowMinAndMaxDomain
             )
           }
         />
@@ -324,4 +327,30 @@ const HighlightIconContainer = (props: any) => {
       {icon}
     </View>
   )
+}
+
+/** Calculates the appropriate domain padding to apply to the top bound of the y axis.
+ * Because we set interpolation natural, the Area or LineChart will have a parabolic curve
+ * at the highest point as it connects to the next point if the next point falls within the
+ * same plane as the highest point. Without domain padding to the top,the parabolic curve
+ * will be cut off from the chart.
+ */
+const calculateDomainPadding = (values: number[], maxima: number): number => {
+  const gridBoxHeight = maxima / 5
+  let padding = 0
+  const l = values.length
+  for (let i = 0; i < l; i++) {
+    if (i <= l - 2) {
+      const currValue = values[i]
+      const nextValue = values[i + 1]
+      if (currValue === maxima && currValue - nextValue <= gridBoxHeight) {
+        // needs padding
+        const f = gridBoxHeight / 5 // because each micro box in a gridbox is 5
+        const factor = (maxima + "").length
+        padding = (f / Math.pow(10, factor)) * Math.pow(10, 3)
+        break
+      }
+    }
+  }
+  return padding
 }

@@ -3,6 +3,7 @@ import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React, { Suspense, useCallback, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { AverageSalePriceChart } from "./AverageSalePriceChart/AverageSalePriceChart"
 import { AverageSalePriceSelectArtistModal } from "./AverageSalePriceSelectArtistModal"
 
 const PAGE_SIZE = 50
@@ -10,11 +11,13 @@ const PAGE_SIZE = 50
 interface AverageSalePriceAtAuctionProps {
   refetch: (newArtistID: string) => void
   queryArgs: Record<string, any>
+  initialCategory: string
 }
 
 const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> = ({
   refetch,
   queryArgs,
+  initialCategory,
 }) => {
   const [isVisible, setVisible] = useState<boolean>(false)
 
@@ -71,6 +74,11 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
         )}
       </Flex>
 
+      <AverageSalePriceChart
+        artistId={queryArgs.variables.artistID}
+        initialCategory={initialCategory}
+      />
+
       <AverageSalePriceSelectArtistModal
         queryData={data}
         visible={isVisible}
@@ -84,7 +92,10 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
   )
 }
 
-export const AverageSalePriceAtAuction: React.FC<{ artistID: string }> = ({ artistID }) => {
+export const AverageSalePriceAtAuction: React.FC<{ artistID: string; initialCategory: string }> = ({
+  artistID,
+  initialCategory,
+}) => {
   const [queryArgs, setQueryArgs] = useState({
     options: { fetchKey: 0 },
     variables: { ...artistsQueryVariables, artistID },
@@ -101,7 +112,11 @@ export const AverageSalePriceAtAuction: React.FC<{ artistID: string }> = ({ arti
 
   return (
     <Suspense fallback={null}>
-      <AverageSalePriceAtAuctionScreen refetch={refetch} queryArgs={queryArgs} />
+      <AverageSalePriceAtAuctionScreen
+        refetch={refetch}
+        queryArgs={queryArgs}
+        initialCategory={initialCategory}
+      />
     </Suspense>
   )
 }

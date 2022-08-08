@@ -12,14 +12,14 @@ export const _AVAILABLE_MEDIUMS = [
 
 export const testChartData: LineChartData = {
   data: [
-    { x: 0, y: 2, xHighlight: 4, yHighlight: 0 },
-    { x: 1, y: 2, xHighlight: 5, yHighlight: 0 },
-    { x: 2, y: 3, xHighlight: 7, yHighlight: 0 },
-    { x: 3, y: 5 },
-    { x: 4, y: 4 },
-    { x: 5, y: 7 },
-    { x: 6, y: 4 },
-    { x: 7, y: 7 },
+    { x: 1998, y: 2, highlight: { x: false, y: false } },
+    { x: 1999, y: 2, highlight: { x: false, y: false } },
+    { x: 2000, y: 3, highlight: { x: true, y: false } },
+    { x: 2001, y: 5, highlight: { x: false, y: false } },
+    { x: 2002, y: 4, highlight: { x: true, y: false } },
+    { x: 2003, y: 7, highlight: { x: false, y: false } },
+    { x: 2004, y: 4, highlight: { x: true, y: false } },
+    { x: 2006, y: 7, highlight: { x: false, y: false } },
   ],
   dataMeta: {
     title: "$25,000",
@@ -28,32 +28,3 @@ export const testChartData: LineChartData = {
     tintColor: "#441bb4",
   },
 }
-
-// [
-//   {
-//     label: "Prints",
-//     values: [
-//       { x: 0, y: 2 },
-//       { x: 1, y: 2 },
-//       { x: 2, y: 3 },
-//       { x: 3, y: 5 },
-//       { x: 4, y: 4 },
-//       { x: 5, y: 7 },
-//       { x: 6, y: 4 },
-//       { x: 7, y: 5 },
-//     ],
-//   },
-//   {
-//     label: "Works on Paper",
-//     values: [
-//       { x: 0, y: 1 },
-//       { x: 1, y: 3 },
-//       { x: 2, y: 5 },
-//       { x: 3, y: 8 },
-//       { x: 4, y: 4 },
-//       { x: 5, y: 1 },
-//       { x: 6, y: 2 },
-//       { x: 7, y: 5 },
-//     ],
-//   },
-// ]

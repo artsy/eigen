@@ -42,7 +42,7 @@ export interface LineGraphBandProps {
 export const LineGraphBands: React.FC<LineGraphBandProps> = ({
   bands,
   onBandSelected,
-  selectedBand = bands.length ? bands[0] : undefined,
+  selectedBand,
 }) => {
   const color = useColor()
   return (
@@ -57,8 +57,8 @@ export const LineGraphBands: React.FC<LineGraphBandProps> = ({
           >
             <Text
               variant="xs"
-              color={!(selectedBand === band) ? color("black60") : undefined}
-              fontWeight={selectedBand === band ? "500" : undefined}
+              color={!(selectedBand === band.name) ? color("black60") : undefined}
+              fontWeight={selectedBand === band.name ? "500" : undefined}
             >
               {band.name}
             </Text>
