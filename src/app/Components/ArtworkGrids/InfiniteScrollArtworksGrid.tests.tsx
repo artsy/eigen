@@ -1,6 +1,6 @@
 import { InfiniteScrollArtworksGridTestsQuery } from "__generated__/InfiniteScrollArtworksGridTestsQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Button } from "palette"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -66,7 +66,7 @@ describe("Artist Series Artworks", () => {
 
   it("renders component with default props", () => {
     const wrapper = () => {
-      const tree = renderWithWrappers(<TestRenderer />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer />)
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],

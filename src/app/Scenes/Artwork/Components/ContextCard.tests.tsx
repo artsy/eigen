@@ -1,127 +1,116 @@
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-// @ts-ignore
-import { mount } from "enzyme"
-import { Box, Button, EntityHeader, Sans, Theme } from "palette"
-import { Image } from "react-native"
-import { RelayProp } from "react-relay"
-import { ContextCard } from "./ContextCard"
+import { ContextCardTestsQuery } from "__generated__/ContextCardTestsQuery.graphql"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
+import { ContextCardFragmentContainer } from "./ContextCard"
 
 jest.unmock("react-relay")
 
 describe("ContextCard", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  const TestWrapper = () => {
+    return (
+      <QueryRenderer<ContextCardTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query ContextCardTestsQuery @relay_test_operation {
+            artwork(id: "artworkId") {
+              ...ContextCard_artwork
+            }
+          }
+        `}
+        variables={{}}
+        render={({ props }) => {
+          if (props?.artwork) {
+            return <ContextCardFragmentContainer artwork={props.artwork} />
+          }
+
+          return null
+        }}
+      />
+    )
+  }
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
   describe("Fair context", () => {
     it("renders fair name correctly", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard
-              relay={{ environment: {} } as RelayProp}
-              artwork={fairContextArtwork as any}
-            />
-          </Theme>
-        </GlobalStoreProvider>
-      )
-      expect(component.find(EntityHeader).length).toEqual(1)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(component.find(EntityHeader).text()).toContain(`Market Art + Design 2019`)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => fairContextArtwork,
+      })
+
+      expect(getByText("Market Art + Design 2019")).toBeTruthy()
     })
 
     it("renders fair image", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard
-              relay={{ environment: {} } as RelayProp}
-              artwork={fairContextArtwork as any}
-            />
-          </Theme>
-        </GlobalStoreProvider>
-      )
+      const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      expect(component.find(Image)).toHaveLength(1)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => fairContextArtwork,
+      })
+
+      expect(getByLabelText("Context Card Image")).toBeTruthy()
     })
   })
 
   describe("Show context", () => {
     it("renders show name correctly", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard
-              relay={{ environment: {} } as RelayProp}
-              artwork={showContextArtwork as any}
-            />
-          </Theme>
-        </GlobalStoreProvider>
-      )
-      expect(component.find(EntityHeader).length).toEqual(1)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(component.find(EntityHeader).text()).toContain(`Time Lapse`)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => showContextArtwork,
+      })
+
+      expect(getByText("Time Lapse")).toBeTruthy()
     })
 
     it("renders show image", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard
-              relay={{ environment: {} } as RelayProp}
-              artwork={showContextArtwork as any}
-            />
-          </Theme>
-        </GlobalStoreProvider>
-      )
+      const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      expect(component.find(Image)).toHaveLength(1)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => showContextArtwork,
+      })
+
+      expect(getByLabelText("Context Card Image")).toBeTruthy()
     })
 
     it("renders show button text correctly", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard
-              relay={{ environment: {} } as RelayProp}
-              artwork={showContextArtwork as any}
-            />
-          </Theme>
-        </GlobalStoreProvider>
-      )
-      expect(component.find(Button)).toHaveLength(1)
+      const { queryByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(component.find(Button).at(0).render().text()).toMatchInlineSnapshot(`"Follow"`)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => showContextArtwork,
+      })
+
+      expect(queryByText("Follow")).toBeTruthy()
+      expect(queryByText("Following")).toBeFalsy()
     })
   })
 
   describe("Sale context", () => {
     it("renders sale name correctly", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard
-              relay={{ environment: {} } as RelayProp}
-              artwork={auctionContextArtwork as any}
-            />
-          </Theme>
-        </GlobalStoreProvider>
-      )
-      expect(component.find(EntityHeader).length).toEqual(1)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(component.find(EntityHeader).text()).toContain(`Christie’s: Prints & Multiples`)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => auctionContextArtwork,
+      })
+
+      expect(getByText("Christie’s: Prints & Multiples")).toBeTruthy()
     })
 
     it("renders formatted sale start/end date correctly", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard
-              relay={{ environment: {} } as RelayProp}
-              artwork={auctionContextArtwork as any}
-            />
-          </Theme>
-        </GlobalStoreProvider>
-      )
-      expect(component.find(EntityHeader).length).toEqual(1)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(component.find(EntityHeader).text()).toContain(`Ended Oct 25, 2018`)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => auctionContextArtwork,
+      })
+
+      expect(getByText("Ended Oct 25, 2018")).toBeTruthy()
     })
 
     it("if auction is live display in progress", () => {
@@ -132,49 +121,33 @@ describe("ContextCard", () => {
           formattedStartDateTime: "In progress",
         },
       }
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard
-              relay={{ environment: {} } as RelayProp}
-              artwork={saleContextArtwork as any}
-            />
-          </Theme>
-        </GlobalStoreProvider>
-      )
-      expect(component.find(EntityHeader).length).toEqual(1)
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(component.find(EntityHeader).text()).toContain("In progress")
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => saleContextArtwork,
+      })
+
+      expect(getByText("In progress")).toBeTruthy()
     })
 
     it("renders sale image", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard
-              relay={{ environment: {} } as RelayProp}
-              artwork={auctionContextArtwork as any}
-            />
-          </Theme>
-        </GlobalStoreProvider>
-      )
+      const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
-      expect(component.find(Image)).toHaveLength(1)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => auctionContextArtwork,
+      })
+
+      expect(getByLabelText("Context Card Image")).toBeTruthy()
     })
 
     it("renders 'In Auction' if the sale is an auction", () => {
-      const component = mount(
-        <GlobalStoreProvider>
-          <Theme>
-            <ContextCard
-              relay={{ environment: {} } as RelayProp}
-              artwork={auctionContextArtwork as any}
-            />
-          </Theme>
-        </GlobalStoreProvider>
-      )
+      const { getByText } = renderWithWrappers(<TestWrapper />)
 
-      expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"In auction"`)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => auctionContextArtwork,
+      })
+
+      expect(getByText("In auction")).toBeTruthy()
     })
 
     it("renders nothing if the sale is not an auction", () => {
@@ -185,11 +158,13 @@ describe("ContextCard", () => {
           isAuction: false,
         },
       }
-      const component = mount(
-        <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
-      )
+      const { toJSON } = renderWithWrappers(<TestWrapper />)
 
-      expect(component.find(Box).length).toBe(0)
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Artwork: () => saleContextArtwork,
+      })
+
+      expect(toJSON()).toBeNull()
     })
   })
 })
@@ -208,8 +183,6 @@ const fairContextArtwork = {
       url: "https://d32dm0rphc51dk.cloudfront.net/R5z4lkyH6DyGhEwAg44NSA/wide.jpg",
     },
   },
-  " $refType": null,
-  " $fragmentRefs": null,
 }
 
 const auctionContextArtwork = {
@@ -230,8 +203,6 @@ const auctionContextArtwork = {
   },
   shows: [],
   fair: null,
-  " $refType": null,
-  " $fragmentRefs": null,
 }
 
 const showContextArtwork = {
@@ -252,6 +223,4 @@ const showContextArtwork = {
     },
   },
   fair: null,
-  " $refType": null,
-  " $fragmentRefs": null,
 }

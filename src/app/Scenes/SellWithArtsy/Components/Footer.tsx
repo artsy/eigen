@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
-import { Box, Button, Flex, Sans, Spacer } from "palette"
+import { Box, Button, Flex, Spacer, Text } from "palette"
 import styled from "styled-components/native"
 import { TextContainer } from "./TextContainer"
 
@@ -20,21 +20,21 @@ export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
 
   return (
     <Box px={2} pb={6}>
-      <Sans size="8">Why sell with Artsy?</Sans>
+      <Text variant="lg">Why sell with Artsy?</Text>
 
       <Spacer mb={2} />
 
       <Flex flexDirection="row">
         <NumberBox pl={0.5} pr={1}>
-          <Sans size="4">1</Sans>
+          <Text variant="md">1</Text>
         </NumberBox>
 
         <TextContainer>
-          <Sans size="4">Simple Steps</Sans>
+          <Text variant="md">Simple Steps</Text>
           <Spacer mb={0.3} />
-          <Sans color="black60" size="3t">
+          <Text variant="sm" color="black60">
             Submit your work once, pick the best offer, and ship the work when it sells.
-          </Sans>
+          </Text>
         </TextContainer>
       </Flex>
 
@@ -42,15 +42,15 @@ export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
 
       <Flex flexDirection="row">
         <NumberBox pl={0.5} pr={1}>
-          <Sans size="4">2</Sans>
+          <Text variant="md">2</Text>
         </NumberBox>
 
         <TextContainer>
-          <Sans size="4">Industry Expertise</Sans>
+          <Text variant="md">Industry Expertise</Text>
           <Spacer mb={0.3} />
-          <Sans color="black60" size="3t">
+          <Text variant="sm" color="black60">
             Receive virtual valuation and expert guidance on the best sales strategies.
-          </Sans>
+          </Text>
         </TextContainer>
       </Flex>
 
@@ -58,22 +58,22 @@ export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
 
       <Flex flexDirection="row">
         <NumberBox pl={0.5} pr={1}>
-          <Sans size="4">3</Sans>
+          <Text variant="md">3</Text>
         </NumberBox>
 
         <TextContainer>
-          <Sans size="4">Global Reach</Sans>
+          <Text variant="md">Global Reach</Text>
           <Spacer mb={0.3} />
-          <Sans color="black60" size="3t">
+          <Text variant="sm" color="black60">
             Your work will reach the world's collectors, galleries, and auction houses.
-          </Sans>
+          </Text>
         </TextContainer>
       </Flex>
 
       <Spacer mb={3} />
 
       <Button testID="footer-cta" variant="fillDark" block onPress={handlePress} haptic>
-        <Sans size="3">Submit a work</Sans>
+        <Text variant="sm">Submit a work</Text>
       </Button>
     </Box>
   )

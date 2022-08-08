@@ -23,8 +23,8 @@ import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
 import { ArtworkQueryRenderer, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
-import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
-import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium"
+import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
+import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium/ArtworkMedium"
 import { AuctionBuyersPremiumQueryRenderer } from "./Scenes/AuctionBuyersPremium/AuctionBuyersPremium"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import {
@@ -73,7 +73,10 @@ import {
 } from "./Scenes/MyCollection/MyCollection"
 import { ArtworkSubmissionStatusFAQ } from "./Scenes/MyCollection/Screens/Artwork/ArtworkSubmissionStatusFAQ"
 import { RequestForPriceEstimateScreen } from "./Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateScreen"
-import { MyCollectionArtworkScreen } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
+import {
+  MyCollectionArtworkScreen,
+  MyCollectionArtworkScreenQuery,
+} from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionSellingWithartsyFAQ } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { AuctionResultsForArtistsYouCollect } from "./Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
@@ -93,10 +96,10 @@ import { OrderDetailsQueryRender } from "./Scenes/OrderHistory/OrderDetails/Comp
 import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
-import { PrivacyRequest } from "./Scenes/PrivacyRequest"
+import { PrivacyRequest } from "./Scenes/PrivacyRequest/PrivacyRequest"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
-import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
+import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo/SaleInfo"
 import { SalesQueryRenderer, SalesScreenQuery } from "./Scenes/Sales/Sales"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
@@ -400,7 +403,9 @@ export const modules = defineModules({
   MyAccountDeleteAccount: reactModule(MyAccountDeleteAccountQueryRenderer),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
-  MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }),
+  MyCollectionArtwork: reactModule(MyCollectionArtworkScreen, { hidesBackButton: true }, [
+    MyCollectionArtworkScreenQuery,
+  ]),
   MyCollectionSellingWithartsyFAQ: reactModule(MyCollectionSellingWithartsyFAQ),
   MyProfile: reactModule(
     MyProfile,

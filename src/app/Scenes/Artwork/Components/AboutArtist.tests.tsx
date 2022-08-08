@@ -1,10 +1,10 @@
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { AboutArtist } from "./AboutArtist"
 
 describe("AboutArtist", () => {
   it("renders about artist correctly for one artist", () => {
-    const { queryByText } = renderWithWrappersTL(<AboutArtist artwork={ArtworkFixture as any} />)
+    const { queryByText } = renderWithWrappers(<AboutArtist artwork={ArtworkFixture as any} />)
 
     expect(queryByText("About the artist")).toBeTruthy()
     expect(queryByText("Abbas Kiarostami")).toBeTruthy()
@@ -15,7 +15,7 @@ describe("AboutArtist", () => {
       ...ArtworkFixture,
       artists: ArtworkFixture.artists.concat(ArtworkFixture.artists),
     }
-    const { queryAllByText, queryByText } = renderWithWrappersTL(
+    const { queryAllByText, queryByText } = renderWithWrappers(
       <AboutArtist artwork={artworkMultipleArtists as any} />
     )
 

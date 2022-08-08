@@ -4,7 +4,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { FairArtworksFragmentContainer } from "app/Scenes/Fair/Components/FairArtworks"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
@@ -14,7 +14,7 @@ describe("FairArtworks", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairArtworksTestsQuery>
         environment={env}
         query={graphql`

@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { CertificateAuthenticityModal } from "./CertificateAuthenticityModal"
 
 jest.mock("app/navigation/navigate", () => ({
@@ -13,7 +13,7 @@ describe("CertificateAuthenticityModal", () => {
   })
 
   it("renders", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <CertificateAuthenticityModal visible onClose={() => null} />
     )
 
@@ -26,7 +26,7 @@ describe("CertificateAuthenticityModal", () => {
   })
 
   it("navigates to support page", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <CertificateAuthenticityModal visible onClose={() => null} />
     )
 

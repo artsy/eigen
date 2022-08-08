@@ -3,7 +3,7 @@ import { navigate } from "app/navigation/navigate"
 import { Event } from "app/Scenes/City/Components/Event"
 import { Show } from "app/Scenes/Map/types"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Box, ClassTheme, Sans, Serif } from "palette"
+import { Box, ClassTheme, Text } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
 
@@ -76,16 +76,16 @@ export class BMWEventSection extends React.Component<Props> {
         {({ color }) => (
           <>
             <Box my={2} px={2}>
-              <Serif size="8">{title}</Serif>
+              <Text variant="lg">{title}</Text>
             </Box>
             <Box mb={2} px={2}>
-              <Sans weight="medium" size="3">
+              <Text variant="sm" weight="medium">
                 Presented by BMW
-              </Sans>
+              </Text>
               <Box mt={1}>
-                <Serif size="3" color={color("black60")}>
+                <Text variant="sm" color={color("black60")}>
                   {introText}
-                </Serif>
+                </Text>
               </Box>
             </Box>
             <Box mb={3} px={2}>

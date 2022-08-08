@@ -79,7 +79,6 @@ export class ArtistListItem extends React.Component<Props, State> {
     )
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   @track((props: Props) => ({
     action_name: props.artist.is_followed
       ? Schema.ActionNames.ArtistFollow
@@ -88,7 +87,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     owner_id: props.artist.internalID,
     owner_slug: props.artist.slug,
     owner_type: Schema.OwnerEntityTypes.Artist,
-    context_module: props.contextModule ? props.contextModule : null,
+    context_module: props.contextModule,
   }))
   handleShowSuccessfullyUpdated() {
     this.setState({
@@ -229,7 +228,7 @@ export const ArtistListItemPlaceholder = () => (
       <PlaceholderText height={13} width={100 + Math.random() * 100} />
     </Flex>
     <Flex height={45} position="absolute" right={0} justifyContent="center">
-      <PlaceholderBox height={25} width={70} borderRadius={2} />
+      <PlaceholderBox height={25} width={90} borderRadius={50} />
     </Flex>
   </Flex>
 )

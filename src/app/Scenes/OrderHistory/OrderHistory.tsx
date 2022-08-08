@@ -6,7 +6,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Sans, Separator, useTheme } from "palette"
+import { Box, Flex, Separator, Text, useTheme } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -55,9 +55,9 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPagi
         )}
         ListEmptyComponent={
           <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px={15}>
-            <Sans size="5t" color={color("black60")}>
+            <Text variant="md" color={color("black60")}>
               No orders
-            </Sans>
+            </Text>
           </Flex>
         }
         onEndReachedThreshold={0.25}

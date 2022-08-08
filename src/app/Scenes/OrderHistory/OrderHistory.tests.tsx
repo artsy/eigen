@@ -1,6 +1,6 @@
 import { OrderHistoryTestsQuery } from "__generated__/OrderHistoryTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -14,7 +14,7 @@ jest.unmock("react-relay")
 
 describe(OrderHistoryQueryRender, () => {
   it("Loads OrderHistoryQueryRender", () => {
-    const tree = renderWithWrappers(<OrderHistoryQueryRender />)
+    const tree = renderWithWrappersLEGACY(<OrderHistoryQueryRender />)
     expect(tree.root.findAllByType(OrderHistoryPlaceholder)).toHaveLength(1)
   })
 })
@@ -44,7 +44,7 @@ describe("Order history container", () => {
   })
 
   it("Render empty order list", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -59,7 +59,7 @@ describe("Order history container", () => {
   })
 
   it("Render not empty order list", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {

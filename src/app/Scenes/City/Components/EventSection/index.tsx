@@ -1,7 +1,7 @@
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { navigate } from "app/navigation/navigate"
 import { Event } from "app/Scenes/City/Components/Event"
-import { Box, Serif } from "palette"
+import { Box, Text } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
 
@@ -45,7 +45,7 @@ export class EventSection extends React.Component<Props> {
     return (
       <>
         <Box my={2} px={2}>
-          <Serif size="8">{title}</Serif>
+          <Text variant="lg">{title}</Text>
         </Box>
         {this.renderEvents()}
         {data.length > 2 && (

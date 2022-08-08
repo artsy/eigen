@@ -1,6 +1,6 @@
 import { OnboardingPersonalizationModalTestsQuery } from "__generated__/OnboardingPersonalizationModalTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -44,7 +44,7 @@ describe("OnboardingPersonalizationModal", () => {
   })
 
   it("looks for results with the right query", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const mockProps = {
       SearchableConnection: () => ({
@@ -68,7 +68,7 @@ describe("OnboardingPersonalizationModal", () => {
   })
 
   it("renders no results are available when no results are available", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const mockProps = {
       SearchableConnection: () => ({

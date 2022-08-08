@@ -2,7 +2,7 @@ import { TroveTestsQuery } from "__generated__/TroveTestsQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -35,7 +35,7 @@ describe("Trove", () => {
   )
 
   it("renders the trove", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     environment.mock.resolveMostRecentOperation((op) =>
       MockPayloadGenerator.generate(op, {
         HomePageHeroUnit() {
@@ -55,7 +55,7 @@ describe("Trove", () => {
   })
 
   it("is tappable", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     environment.mock.resolveMostRecentOperation((op) =>
       MockPayloadGenerator.generate(op, {
         HomePageHeroUnit() {

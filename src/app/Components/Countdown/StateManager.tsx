@@ -25,8 +25,7 @@ interface State {
 }
 
 export class StateManager extends React.Component<Props, State> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: Props, state: State) {
     // If this component receives a new tickerState as props,
     // update to use the new props.
 

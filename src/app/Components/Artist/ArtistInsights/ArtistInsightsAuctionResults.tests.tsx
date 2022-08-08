@@ -6,7 +6,7 @@ import {
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { mockEdges } from "app/tests/resolveMostRecentRelayOperation"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { FlatList } from "react-native"
@@ -70,7 +70,7 @@ describe("ArtistInsightsAuctionResults", () => {
   )
 
   it("renders list auction results when auction results are available", () => {
-    const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -85,7 +85,7 @@ describe("ArtistInsightsAuctionResults", () => {
   })
 
   it("renders FilteredArtworkGridZeroState when no auction results are available", () => {
-    const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -100,7 +100,7 @@ describe("ArtistInsightsAuctionResults", () => {
 
   describe("ListHeaderComponent", () => {
     it("renders the results string when totalCount is equal to 1", () => {
-      const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           auctionResultsConnection: {
@@ -116,7 +116,7 @@ describe("ArtistInsightsAuctionResults", () => {
     })
 
     it("renders the results string when totalCount is greater than 1", () => {
-      const tree = renderWithWrappers(<TestRenderer initialData={initialState} />)
+      const tree = renderWithWrappersLEGACY(<TestRenderer initialData={initialState} />)
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artist: () => ({
           auctionResultsConnection: {

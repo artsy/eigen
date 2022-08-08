@@ -1,6 +1,6 @@
 import { ShipsToSectionTestsQuery } from "__generated__/ShipsToSectionTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -47,7 +47,7 @@ describe("ShipsToSection", () => {
   )
 
   it("renders section when CommerceShip", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
 
     expect(extractText(tree.findByProps({ testID: "addressLine1" }))).toBe("myadress")
@@ -59,7 +59,7 @@ describe("ShipsToSection", () => {
   })
 
   it("renders section when CommerceShipArta", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     order.requestedFulfillment.__typename = "CommerceShipArta"
     resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
 
@@ -72,7 +72,7 @@ describe("ShipsToSection", () => {
   })
 
   it("not renders section when CommercePickup", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     order.requestedFulfillment.__typename = "CommercePickup"
     resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
 

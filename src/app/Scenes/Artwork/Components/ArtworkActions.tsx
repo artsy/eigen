@@ -37,18 +37,17 @@ export const shareContent = (
   href: string,
   artists: ArtworkActions_artwork$data["artists"]
 ) => {
-  let computedTitle: string | null
+  let computedTitle: string | null = null
+
   if (artists && artists.length) {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const names = take(artists, 3).map((artist) => artist.name)
+    const names = take(artists, 3).map((artist) => artist?.name)
     computedTitle = `${title} by ${names.join(", ")} on Artsy`
   } else if (title) {
     computedTitle = `${title} on Artsy`
   }
+
   return {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     title: computedTitle,
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     message: computedTitle,
     url: `${unsafe__getEnvironment().webURL}${href}?utm_content=artwork-share`,
   }
@@ -67,8 +66,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   })
   handleArtworkSave() {
     const { artwork, relay } = this.props
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    commitMutation<ArtworkActionsSaveMutation>(relay.environment, {
+    commitMutation<ArtworkActionsSaveMutation>(relay?.environment!, {
       mutation: graphql`
         mutation ArtworkActionsSaveMutation($input: SaveArtworkInput!) {
           saveArtwork(input: $input) {

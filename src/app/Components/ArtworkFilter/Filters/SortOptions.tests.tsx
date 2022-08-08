@@ -2,7 +2,7 @@ import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpe
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFiltersState } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { RadioDot } from "palette"
 import { ReactTestRenderer } from "react-test-renderer"
 import { getEssentialProps } from "./helper"
@@ -43,13 +43,13 @@ describe("Sort Options Screen", () => {
   }
 
   it("renders the correct number of sort options", () => {
-    const tree = renderWithWrappers(<MockSortScreen initialData={initialState} />)
+    const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={initialState} />)
     expect(tree.root.findAllByType(OptionListItem)).toHaveLength(7)
   })
 
   describe("selectedSortOption", () => {
     it("returns the default option if there are no selected or applied filters", () => {
-      const tree = renderWithWrappers(<MockSortScreen initialData={initialState} />)
+      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={initialState} />)
       const selectedOption = selectedSortOption(tree)
       expect(extractText(selectedOption)).toContain("Default")
     })
@@ -83,7 +83,7 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
 
       const selectedOption = selectedSortOption(tree)
       expect(extractText(selectedOption)).toContain("Recently Added")
@@ -111,7 +111,7 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
 
       const selectedOption = selectedSortOption(tree)
       expect(extractText(selectedOption)).toContain("Recently Added")
@@ -153,7 +153,7 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
 
       const selectedOption = selectedSortOption(tree)
       expect(extractText(selectedOption)).toContain("Recently Added")
@@ -188,7 +188,7 @@ describe("Sort Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+    const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
 
     const selectedRow = selectedSortOption(tree)
     expect(extractText(selectedRow)).toEqual("Price (High to Low)")
@@ -211,7 +211,7 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
 
       const selectedRow = selectedSortOption(tree)
 
@@ -236,7 +236,7 @@ describe("Sort Options Screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappers(<MockSortScreen initialData={injectedState} />)
+      const tree = renderWithWrappersLEGACY(<MockSortScreen initialData={injectedState} />)
 
       const selectedRow = selectedSortOption(tree)
 

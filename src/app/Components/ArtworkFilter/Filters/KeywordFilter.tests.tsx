@@ -1,5 +1,5 @@
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { debounce } from "lodash"
 import { Input } from "palette"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
@@ -23,7 +23,7 @@ describe("KeywordFilter", () => {
   })
 
   it("renders and filters when input changes", () => {
-    const selectedTree = renderWithWrappers(
+    const selectedTree = renderWithWrappersLEGACY(
       <ArtworkFiltersStoreProvider initialData={initialFilterData}>
         <KeywordFilter artistId="artist-id" artistSlug="artist-slug" />
       </ArtworkFiltersStoreProvider>

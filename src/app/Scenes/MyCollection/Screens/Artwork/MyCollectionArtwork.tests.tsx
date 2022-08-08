@@ -15,6 +15,7 @@ describe("My Collection Artwork", () => {
         artworkSlug="random-slug"
         artistInternalID="internal-id"
         medium="medium"
+        category="medium"
       />,
       mockEnvironment
     )
@@ -34,6 +35,7 @@ describe("My Collection Artwork", () => {
             artworkSlug="random-slug"
             artistInternalID="internal-id"
             medium="medium"
+            category="medium"
           />,
           mockEnvironment
         )
@@ -55,6 +57,7 @@ describe("My Collection Artwork", () => {
             artworkSlug="random-slug"
             artistInternalID="internal-id"
             medium="medium"
+            category="medium"
           />,
           mockEnvironment
         )

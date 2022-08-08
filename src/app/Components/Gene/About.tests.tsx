@@ -1,7 +1,7 @@
 import "react-native"
 
 // Note: test renderer must be required after react-native.
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 
 import { StickyTabPage } from "../StickyTabPage/StickyTabPage"
 import About from "./About"
@@ -42,7 +42,7 @@ it("renders without throwing a error", () => {
     ],
   }
 
-  renderWithWrappers(
+  renderWithWrappersLEGACY(
     <StickyTabPage
       tabs={[
         {

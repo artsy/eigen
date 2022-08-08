@@ -3,8 +3,7 @@ import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
-import { Sans, Spacer } from "palette"
-import { Text } from "react-native"
+import { Spacer, Text } from "palette"
 import { useTracking } from "react-tracking"
 import { partnerName } from "./partnerName"
 
@@ -38,20 +37,22 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
   if (isInAuction && sale && isForSale && auctionState !== AuctionTimerState.CLOSED) {
     return (
       <>
-        <Sans size="2" color="black60">
+        <Text variant="xs" color="black60">
           By placing a bid you agree to {partnerName(sale)}{" "}
           <Text
+            variant="xs"
             style={{ textDecorationLine: "underline" }}
             onPress={() => handleConditionsOfSaleTap()}
           >
             Conditions of Sale
           </Text>
           .
-        </Sans>
+        </Text>
         <Spacer mb={1} />
-        <Sans size="2" color="black60">
+        <Text variant="xs" color="black60">
           Have a question?{" "}
           <Text
+            variant="xs"
             style={{ textDecorationLine: "underline" }}
             onPress={() => handleReadOurAuctionFAQsTap()}
           >
@@ -59,13 +60,14 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
           </Text>{" "}
           or{" "}
           <Text
+            variant="xs"
             style={{ textDecorationLine: "underline" }}
             onPress={() => handleAskASpecialistTap("specialist@artsy.net")}
           >
             ask a specialist
           </Text>
           .
-        </Sans>
+        </Text>
       </>
     )
   }

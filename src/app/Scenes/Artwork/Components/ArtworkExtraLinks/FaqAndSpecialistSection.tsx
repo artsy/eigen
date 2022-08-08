@@ -2,8 +2,7 @@ import { FaqAndSpecialistSection_artwork$data } from "__generated__/FaqAndSpecia
 import { navigate } from "app/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
-import { Sans } from "palette"
-import { Text } from "react-native"
+import { Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -31,20 +30,25 @@ const FaqAndSpecialistSection: React.FC<FaqAndSpecialistSectionProps> = ({ artwo
 
   if (isAcquireable || isOfferable) {
     return (
-      <Sans size="2" color="black60">
+      <Text variant="xs" color="black60">
         Have a question?{" "}
-        <Text style={{ textDecorationLine: "underline" }} onPress={() => handleReadOurFAQTap()}>
+        <Text
+          variant="xs"
+          style={{ textDecorationLine: "underline" }}
+          onPress={() => handleReadOurFAQTap()}
+        >
           Read our FAQ
         </Text>{" "}
         or{" "}
         <Text
+          variant="xs"
           style={{ textDecorationLine: "underline" }}
           onPress={() => handleAskASpecialistTap("orders@artsy.net")}
         >
           ask a specialist
         </Text>
         .
-      </Sans>
+      </Text>
     )
   } else {
     return null

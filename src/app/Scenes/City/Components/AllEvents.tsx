@@ -2,7 +2,7 @@ import { EventSection } from "app/Scenes/City/Components/EventSection"
 import { BucketResults } from "app/Scenes/Map/bucketCityResults"
 import { Show } from "app/Scenes/Map/types"
 import { isEqual } from "lodash"
-import { Box, Separator, Serif, Spacer } from "palette"
+import { Box, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { FlatList, ViewProps } from "react-native"
 import { RelayProp } from "react-relay"
@@ -216,7 +216,7 @@ export class AllEvents extends React.Component<Props, State> {
       case "header":
         return (
           <Box px={2} pt={4}>
-            {!!data && <Serif size="8">{data}</Serif>}
+            {!!data && <Text variant="lg">{data}</Text>}
           </Box>
         )
       default:

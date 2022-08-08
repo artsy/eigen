@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { NewWorksForYou_me$data } from "__generated__/NewWorksForYou_me.graphql"
+import { NewWorksForYou_viewer$data } from "__generated__/NewWorksForYou_viewer.graphql"
 import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
@@ -12,27 +12,25 @@ import { Box, SimpleMessage, Spacer } from "palette"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 const SCREEN_TITLE = "New Works for You"
-const PAGE_SIZE = 10
+const PAGE_SIZE = 20
 
 interface NewWorksForYouProps {
   relay: RelayPaginationProp
-  me: NewWorksForYou_me$data
+  viewer: NewWorksForYou_viewer$data
 }
 
-const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
-  const { hasMore, loadMore } = relay
-
+const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ viewer }) => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
     >
       <PageWithSimpleHeader title={SCREEN_TITLE}>
         <Box>
-          {!!me.artworks?.edges?.length ? (
+          {!!viewer.artworks?.edges?.length ? (
             <InfiniteScrollArtworksGridContainer
-              connection={me.artworks!}
-              loadMore={loadMore}
-              hasMore={hasMore}
+              connection={viewer.artworks!}
+              loadMore={() => null}
+              hasMore={() => false}
               pageSize={PAGE_SIZE}
               contextScreenOwnerType={OwnerType.newWorksForYou}
               HeaderComponent={<Spacer mt={2} />}
@@ -52,10 +50,10 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
 export const NewWorksForYouFragmentContainer = createPaginationContainer(
   NewWorksForYou,
   {
-    me: graphql`
-      fragment NewWorksForYou_me on Me
+    viewer: graphql`
+      fragment NewWorksForYou_viewer on Viewer
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        artworks: newWorksByInterestingArtists(first: $count, after: $cursor)
+        artworks: artworksForUser(after: $cursor, first: $count, includeBackfill: true)
           @connection(key: "NewWorksForYou_artworks") {
           edges {
             node {
@@ -69,7 +67,7 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      return props?.me?.artworks
+      return props?.viewer?.artworks
     },
     getFragmentVariables(prevVars, totalCount) {
       return {
@@ -86,8 +84,8 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
     },
     query: graphql`
       query NewWorksForYouRefetchQuery($cursor: String, $count: Int!) {
-        me {
-          ...NewWorksForYou_me @arguments(cursor: $cursor, count: $count)
+        viewer {
+          ...NewWorksForYou_viewer @arguments(cursor: $cursor, count: $count)
         }
       }
     `,
@@ -96,8 +94,8 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
 
 export const NewWorksForYouScreenQuery = graphql`
   query NewWorksForYouQuery {
-    me {
-      ...NewWorksForYou_me
+    viewer {
+      ...NewWorksForYou_viewer
     }
   }
 `

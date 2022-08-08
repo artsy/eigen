@@ -1,26 +1,16 @@
 import { ArtworkDetails_artwork$data } from "__generated__/ArtworkDetails_artwork.graphql"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Theme } from "palette"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkDetails } from "./ArtworkDetails"
+import { RequestConditionReportQueryRenderer } from "./RequestConditionReport"
 
 jest.unmock("react-relay")
 
 describe("Artwork Details", () => {
-  const mountArtworkDetails = (artwork: ArtworkDetails_artwork$data) =>
-    mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <ArtworkDetails artwork={artwork} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-
   it("renders the data if available", () => {
     const testArtwork: ArtworkDetails_artwork$data = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      " $refType": null,
+      " $fragmentType": "ArtworkDetails_artwork",
+      mediumType: null,
       category: "Oil on canvas",
       conditionDescription: null,
       signatureInfo: { label: "Signature", details: "Signed by artist" },
@@ -38,18 +28,25 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const component = mountArtworkDetails(artworkDetailsInfo.artwork)
-    expect(component.text()).toContain("Artwork details")
-    expect(component.text()).toContain("SignatureSigned by artist")
-    expect(component.text()).toContain("MediumOil")
-    expect(component.text()).toContain("Certificate of AuthenticityNot included")
-    expect(component.text()).toContain("FrameIncluded")
+    const { queryByText } = renderWithWrappers(
+      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
+    )
+
+    expect(queryByText("Artwork details")).toBeTruthy()
+    expect(queryByText("Signature")).toBeTruthy()
+    expect(queryByText("Signed by artist")).toBeTruthy()
+    expect(queryByText("Medium")).toBeTruthy()
+    expect(queryByText("Oil on canvas")).toBeTruthy()
+    expect(queryByText("Certificate of Authenticity")).toBeTruthy()
+    expect(queryByText("Not included")).toBeTruthy()
+    expect(queryByText("Frame")).toBeTruthy()
+    expect(queryByText("Included")).toBeTruthy()
   })
 
   it("hides certificate of authenticity, framed, and signature fields if null", () => {
     const testArtwork: ArtworkDetails_artwork$data = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      " $refType": null,
+      " $fragmentType": "ArtworkDetails_artwork",
+      mediumType: null,
       category: "Oil on canvas",
       conditionDescription: null,
       signatureInfo: null,
@@ -67,16 +64,19 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const component = mountArtworkDetails(artworkDetailsInfo.artwork)
-    expect(component.text()).not.toContain("Certificate of Authenticity")
-    expect(component.text()).not.toContain("Frame")
-    expect(component.text()).not.toContain("Signature")
+    const { queryByText } = renderWithWrappers(
+      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
+    )
+
+    expect(queryByText("Certificate of Authenticity")).toBeNull()
+    expect(queryByText("Frame")).toBeNull()
+    expect(queryByText("Signature")).toBeNull()
   })
 
   it("shows condition description if present and lot condition report disabled", () => {
     const testArtwork: ArtworkDetails_artwork$data = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      " $refType": null,
+      " $fragmentType": "ArtworkDetails_artwork",
+      mediumType: null,
       category: "Oil on canvas",
       conditionDescription: {
         label: "some label",
@@ -97,17 +97,19 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const component = mountArtworkDetails(artworkDetailsInfo.artwork)
-    expect(component.text()).toContain("Condition")
-    expect(component.text()).toContain("Amazing condition")
+    const { queryByText } = renderWithWrappers(
+      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
+    )
+    expect(queryByText("Condition")).toBeTruthy()
+    expect(queryByText("Amazing condition")).toBeTruthy()
   })
 
   it("shows request condition report if lot condition report enabled and feature flag is enabled", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: true })
 
     const testArtwork: ArtworkDetails_artwork$data = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      " $refType": null,
+      " $fragmentType": "ArtworkDetails_artwork",
+      mediumType: null,
       category: "Oil on canvas",
       conditionDescription: {
         label: "some label",
@@ -128,19 +130,23 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const component = mountArtworkDetails(artworkDetailsInfo.artwork)
-    expect(component.text()).toContain("Condition")
-    expect(component.text()).not.toContain("Amazing condition")
-    const requestReportQueryRenderer = component.find("RequestConditionReportQueryRenderer")
-    expect(requestReportQueryRenderer.length).toEqual(1)
+    const { queryByText, UNSAFE_queryByType } = renderWithWrappers(
+      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
+    )
+
+    expect(queryByText("Condition")).toBeTruthy()
+    expect(queryByText("Amazing condition")).toBeNull()
+
+    const requestReportQueryRenderer = UNSAFE_queryByType(RequestConditionReportQueryRenderer)
+    expect(requestReportQueryRenderer).toBeTruthy()
   })
 
   it("does not show request condition report if lot condition report enabled and feature flag is disabled", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsLotConditionReport: false })
 
     const testArtwork: ArtworkDetails_artwork$data = {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      " $refType": null,
+      " $fragmentType": "ArtworkDetails_artwork",
+      mediumType: null,
       category: "Oil on canvas",
       conditionDescription: {
         label: "some label",
@@ -161,9 +167,14 @@ describe("Artwork Details", () => {
       artwork: testArtwork,
     }
 
-    const component = mountArtworkDetails(artworkDetailsInfo.artwork)
-    expect(component.text()).toContain("Amazing condition")
-    const requestReportQueryRenderer = component.find("RequestConditionReportQueryRenderer")
-    expect(requestReportQueryRenderer.length).toEqual(0)
+    const { queryByText, UNSAFE_queryByType } = renderWithWrappers(
+      <ArtworkDetails artwork={artworkDetailsInfo.artwork} />
+    )
+
+    expect(queryByText("Condition")).toBeTruthy()
+    expect(queryByText("Amazing condition")).toBeTruthy()
+
+    const requestReportQueryRenderer = UNSAFE_queryByType(RequestConditionReportQueryRenderer)
+    expect(requestReportQueryRenderer).toBeNull()
   })
 })

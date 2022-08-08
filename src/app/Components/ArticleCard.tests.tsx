@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import "react-native"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import { ArticleCard } from "./ArticleCard"
@@ -16,7 +16,7 @@ it("renders without throwing an error", () => {
     },
   }
 
-  const tree = renderWithWrappers(<ArticleCard article={article as any} onPress={onPress} />)
+  const tree = renderWithWrappersLEGACY(<ArticleCard article={article as any} onPress={onPress} />)
   tree.root.findAllByType(TouchableWithoutFeedback)[0].props.onPress()
   expect(onPress).toHaveBeenCalled()
 })

@@ -1,6 +1,6 @@
 import { navigate } from "app/navigation/navigate"
 import { Schema, track } from "app/utils/track"
-import { ArrowRightIcon, Flex, Sans } from "palette"
+import { ArrowRightIcon, Flex, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 
@@ -29,11 +29,14 @@ export class ContextGridCTA extends React.Component<ContextGridCTAProps> {
 
     if (href && label) {
       return (
-        <TouchableWithoutFeedback onPress={() => this.openLink()}>
+        <TouchableWithoutFeedback
+          onPress={() => this.openLink()}
+          accessibilityLabel="Context Grid CTA"
+        >
           <Flex flexDirection="row" alignContent="center">
-            <Sans size="3" textAlign="left" weight="medium">
+            <Text variant="sm" textAlign="left" weight="medium">
               {label}
-            </Sans>
+            </Text>
             <Flex alignSelf="center">
               <ArrowRightIcon fill="black30" ml={1} />
             </Flex>

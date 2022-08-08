@@ -3,9 +3,8 @@ import { ArtistHeader_artist$data } from "__generated__/ArtistHeader_artist.grap
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
 import { userHadMeaningfulInteraction } from "app/utils/userHadMeaningfulInteraction"
-import { Box, bullet, Flex, FollowButton, Sans, Spacer } from "palette"
+import { Box, bullet, Flex, FollowButton, Spacer, Text } from "palette"
 import { useState } from "react"
-import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -129,17 +128,17 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
 
   return (
     <Box px={2} pt={6} pb={1}>
-      <Sans size="8">{artist.name}</Sans>
+      <Text variant="lg">{artist.name}</Text>
       <Spacer mb={1} />
 
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Flex flex={1}>
           {!!bylineRequired && (
-            <Sans mr={1} size="3t">
+            <Text variant="sm" mr={1}>
               {descriptiveString}
-            </Sans>
+            </Text>
           )}
-          <Sans size="3t">
+          <Text variant="sm">
             {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
             {!!artist?.counts?.follows && artist.counts.follows > 1 && (
               <>
@@ -147,7 +146,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
                 {formatLargeNumberOfItems(artist.counts.follows, "follower")}
               </>
             )}
-          </Sans>
+          </Text>
         </Flex>
 
         <Flex>

@@ -2,10 +2,9 @@ import { ShowArtistsPreview_show$data } from "__generated__/ShowArtistsPreview_s
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { navigate } from "app/navigation/navigate"
-import { get } from "app/utils/get"
 import { Schema, Track, track as _track } from "app/utils/track"
 import { compact, take } from "lodash"
-import { Sans, Spacer } from "palette"
+import { Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -36,16 +35,12 @@ export class ShowArtistsPreview extends React.Component<Props> {
   render() {
     const { show, onViewAllArtistsPressed, Component } = this.props
     const artistsShown = 5
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const artists = get(show, (s) => s.artists, []).concat(
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      get(show, (s) => s.artists_without_artworks, [])
-    )
+    const artists = [...(show.artists ?? []), ...(show.artists_without_artworks ?? [])]
     const items = compact(take(artists, artistsShown))
 
     return (
       <>
-        <Sans size="4t">Artists</Sans>
+        <Text variant="md">Artists</Text>
         <Spacer m={1} />
         {items.map((artist, idx, arr) => {
           const { id } = artist

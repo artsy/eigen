@@ -1,9 +1,9 @@
 import { act, fireEvent, within } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { readFileSync } from "fs"
-import { Flex, Serif } from "palette"
+import { Flex, Text } from "palette"
 import { join } from "path"
 import React from "react"
 import { defaultRules, renderMarkdown } from "./renderMarkdown"
@@ -23,7 +23,7 @@ describe("renderMarkdown", () => {
     ) as any
     expect(componentList.length).toEqual(4)
 
-    const { queryByText } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+    const { queryByText } = renderWithWrappers(<Flex>{componentList}</Flex>)
     expect(queryByText("This is a first paragraph")).toBeTruthy()
     expect(queryByText("This is a second paragraph")).toBeTruthy()
   })
@@ -34,7 +34,7 @@ describe("renderMarkdown", () => {
     ) as any
     expect(componentList.length).toEqual(4)
 
-    const { getByText, queryAllByTestId } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+    const { getByText, queryAllByTestId } = renderWithWrappers(<Flex>{componentList}</Flex>)
 
     expect(queryAllByTestId(/linktext-/)).toHaveLength(2)
 
@@ -63,9 +63,9 @@ describe("renderMarkdown", () => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
-            <Serif size="3t" color="black60" key={state.key}>
+            <Text variant="sm" color="black60" key={state.key}>
               {output(node.content, state)}
-            </Serif>
+            </Text>
           )
         },
       },
@@ -75,7 +75,7 @@ describe("renderMarkdown", () => {
       customRules
     ) as any
     expect(componentList.length).toEqual(4)
-    const { queryByText } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+    const { queryByText } = renderWithWrappers(<Flex>{componentList}</Flex>)
     expect(queryByText("This is a first paragraph")).toBeTruthy()
     expect(queryByText("This is a second paragraph")).toBeTruthy()
   })
@@ -89,9 +89,9 @@ describe("renderMarkdown", () => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
-            <Serif size="3t" color="black60" key={state.key}>
+            <Text variant="sm" color="black60" key={state.key}>
               {output(node.content, state)}
-            </Serif>
+            </Text>
           )
         },
       },
@@ -101,7 +101,7 @@ describe("renderMarkdown", () => {
       customRules
     ) as any
 
-    const { queryAllByTestId } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+    const { queryAllByTestId } = renderWithWrappers(<Flex>{componentList}</Flex>)
     expect(queryAllByTestId(/linktext-/)).toHaveLength(2)
 
     act(() => fireEvent.press(queryAllByTestId(/linktext-/)[0]))
@@ -118,9 +118,9 @@ describe("renderMarkdown", () => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
-            <Serif size="3t" color="black60" key={state.key}>
+            <Text variant="sm" color="black60" key={state.key}>
               {output(node.content, state)}
-            </Serif>
+            </Text>
           )
         },
       },
@@ -130,7 +130,7 @@ describe("renderMarkdown", () => {
       customRules
     ) as any
 
-    const { queryAllByTestId } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+    const { queryAllByTestId } = renderWithWrappers(<Flex>{componentList}</Flex>)
     expect(queryAllByTestId(/linktext-/)).toHaveLength(2)
 
     act(() => fireEvent.press(queryAllByTestId(/linktext-/)[0]))

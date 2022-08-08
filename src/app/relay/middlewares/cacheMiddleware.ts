@@ -3,17 +3,25 @@ import { MiddlewareNextFn } from "react-relay-network-modern/node8"
 import { GraphQLRequest } from "./types"
 
 const IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST = ["ArtworkMarkAsRecentlyViewedQuery"]
+/**
+ * TODO:
+ * Replace NewSaleLotsListRefetchQuery with SaleLotsListQuery when AREnableArtworksConnectionForAuction is released
+ * or remove it when relay hooks will be used for Sale screen and cache problem for loadMore will be fixed
+ *
+ * Jira ticket: https://artsyproduct.atlassian.net/browse/FX-4133
+ */
+const IGNORE_CACHE_QUERY_ALLOWLIST = ["NewSaleLotsListRefetchQuery"]
 
 export const cacheMiddleware = () => {
   return (next: MiddlewareNextFn) => async (req: GraphQLRequest) => {
     const { cacheConfig, operation, variables } = req
     const isQuery = operation.operationKind === "query"
+    const isCacheIgnoredQuery = IGNORE_CACHE_QUERY_ALLOWLIST.includes(operation.name)
     const queryID = operation.id
 
     // If we have valid data in cache return
-    if (isQuery && !cacheConfig.force) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const dataFromCache = await cache.get(queryID, variables)
+    if (isQuery && !cacheConfig.force && !isCacheIgnoredQuery) {
+      const dataFromCache = await cache.get(queryID!, variables)
       if (dataFromCache) {
         return JSON.parse(dataFromCache)
       }

@@ -1,17 +1,17 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { PlaceholderBox, PlaceholderRaggedText, ProvidePlaceholderContext } from "./placeholders"
 
 describe(PlaceholderBox, () => {
   it(`requires a placeholder context`, () => {
     try {
-      renderWithWrappers(<PlaceholderBox width={400} />)
+      renderWithWrappersLEGACY(<PlaceholderBox width={400} />)
     } catch (error: any) {
       expect(error.message).toContain(
         "Error: You're using a Placeholder outside of a PlaceholderContext"
       )
     }
 
-    renderWithWrappers(
+    renderWithWrappersLEGACY(
       <ProvidePlaceholderContext>
         <PlaceholderBox width={400} />
       </ProvidePlaceholderContext>
@@ -21,7 +21,7 @@ describe(PlaceholderBox, () => {
 
 describe(PlaceholderRaggedText, () => {
   it(`creates the right number of placeholders matching the given number of lines`, () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <ProvidePlaceholderContext>
         <PlaceholderRaggedText numLines={4} />
       </ProvidePlaceholderContext>

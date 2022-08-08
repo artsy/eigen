@@ -1,7 +1,7 @@
 import { ShowViewingRoomTestsQuery } from "__generated__/ShowViewingRoomTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -39,7 +39,7 @@ describe("ShowViewingRoom", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)

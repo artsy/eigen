@@ -1,7 +1,8 @@
 import { Questions_artwork$key } from "__generated__/Questions_artwork.graphql"
-import { Box, Text } from "palette"
+import { EnvelopeIcon, Flex, Text } from "palette"
 import { graphql, useFragment } from "react-relay"
 import { InquiryButtonsFragmentContainer } from "./CommercialButtons/InquiryButtons"
+import { PartnerLink } from "./PartnerLink"
 
 interface QuestionsProps {
   artwork: Questions_artwork$key
@@ -11,20 +12,25 @@ export const Questions: React.FC<QuestionsProps> = (props) => {
   const artworkData = useFragment(artworkFragment, props.artwork)
 
   return (
-    <Box>
-      <Text>Questions about this piece?</Text>
+    <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+      <Flex>
+        <Text variant="xs">Questions about this piece?</Text>
+        <PartnerLink artwork={artworkData} />
+      </Flex>
+
       <InquiryButtonsFragmentContainer
         artwork={artworkData}
-        variant="outlineGray"
+        variant="outline"
         size="small"
-        mt={1}
+        icon={<EnvelopeIcon fill="black100" width="16px" height="16px" />}
       />
-    </Box>
+    </Flex>
   )
 }
 
 const artworkFragment = graphql`
   fragment Questions_artwork on Artwork {
     ...InquiryButtons_artwork
+    ...PartnerLink_artwork
   }
 `

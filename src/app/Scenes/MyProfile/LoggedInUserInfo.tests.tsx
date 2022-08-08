@@ -1,8 +1,9 @@
 import Spinner from "app/Components/Spinner"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
-import { Serif } from "palette"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { Text } from "palette"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { UserProfileQueryRenderer } from "./LoggedInUserInfo"
@@ -12,12 +13,12 @@ const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment
 
 describe(UserProfileQueryRenderer, () => {
   it("spins until the operation resolves", () => {
-    const tree = renderWithWrappers(<UserProfileQueryRenderer />)
+    const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
     expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
   })
 
   it("renders upon sucess", () => {
-    const tree = renderWithWrappers(<UserProfileQueryRenderer />)
+    const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "LoggedInUserInfoQuery"
     )
@@ -34,17 +35,15 @@ describe(UserProfileQueryRenderer, () => {
       })
     })
 
-    const userInfo = tree.root.findAllByType(Serif)
+    const userInfo = tree.root.findAllByType(Text)
     expect(userInfo).toHaveLength(1)
     expect(extractText(tree.root)).toContain("Unit Test User (example@example.com)")
   })
 
   it("renders null upon failure", () => {
-    const tree = renderWithWrappers(<UserProfileQueryRenderer />)
+    const tree = renderWithWrappersLEGACY(<UserProfileQueryRenderer />)
 
-    act(() => {
-      env.mock.rejectMostRecentOperation(new Error())
-    })
+    rejectMostRecentRelayOperation(env, new Error())
 
     expect(tree).toMatchInlineSnapshot(`null`)
   })

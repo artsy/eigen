@@ -21,7 +21,10 @@
 - [State Migrations](adding_state_migrations.md)
 - [Analytics and Tracking](analytics_and_tracking.md)
 
+- [Images handling](images.md)
 - [Storybook](storybook.md)
+- [Converting an image to webp](convert_image.md)
+
 - [Metaflags](metaflags.md)
 - [Hide loggers](metaflags.md/#hide-loggers)
 - [Visual Clues](add_a_visual_clue.md)

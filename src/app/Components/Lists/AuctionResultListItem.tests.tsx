@@ -1,6 +1,6 @@
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
 import { AuctionResultsMidEstimate } from "app/Components/AuctionResult/AuctionResultMidEstimate"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { extractNodes } from "app/utils/extractNodes"
 import moment from "moment"
@@ -48,7 +48,7 @@ describe("AuctionResults", () => {
   )
 
   it("renders auction result when auction results are available", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -77,7 +77,7 @@ describe("AuctionResults", () => {
   })
 
   it("renders price in USD when currency is not USD", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -106,7 +106,7 @@ describe("AuctionResults", () => {
   })
 
   it("renders auction result when auction results are not available yet", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -131,7 +131,7 @@ describe("AuctionResults", () => {
   })
 
   it("renders auction result when auction result is `bought in`", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -157,7 +157,7 @@ describe("AuctionResults", () => {
   })
 
   it("renders sale date correctly", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {

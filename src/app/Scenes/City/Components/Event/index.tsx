@@ -4,7 +4,7 @@ import { navigate } from "app/navigation/navigate"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { Show } from "app/Scenes/Map/types"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Box, Button, ClassTheme, Flex, Sans, Serif } from "palette"
+import { Box, Button, ClassTheme, Flex, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, graphql, RelayProp } from "react-relay"
@@ -148,16 +148,16 @@ export class Event extends React.Component<Props, State> {
               )}
               <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
                 <TextContainer mb={2}>
-                  <Sans size="3" weight="medium" numberOfLines={1} ellipsizeMode="tail">
+                  <Text variant="sm" weight="medium" numberOfLines={1} ellipsizeMode="tail">
                     {partnerName}
-                  </Sans>
-                  <Serif size="3t" numberOfLines={1} ellipsizeMode="tail">
+                  </Text>
+                  <Text variant="sm" numberOfLines={1} ellipsizeMode="tail">
                     {name}
-                  </Serif>
+                  </Text>
                   {!!exhibition_period && (
-                    <Sans size="2" color={color("black60")}>
+                    <Text variant="xs" color={color("black60")}>
                       {exhibitionDates(exhibition_period, end_at! /* STRICTNESS_MIGRATION */)}
-                    </Sans>
+                    </Text>
                   )}
                 </TextContainer>
                 <Button

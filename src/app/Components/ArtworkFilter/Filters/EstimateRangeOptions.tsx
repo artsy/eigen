@@ -5,7 +5,8 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { Sans, Separator } from "palette"
+import { useFeatureFlag } from "app/store/GlobalStore"
+import { Separator, Text } from "palette"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 interface PriceRangeOptionsScreenProps
@@ -20,16 +21,28 @@ const EstimateRanges = [
   { paramValue: "5000000-*", paramDisplay: "$50,000+" },
 ]
 
+// TODO: Replace NewEstimateRanges with EstimateRanges when AREnableArtworksConnectionForAuction is released
+const NewEstimateRanges = [
+  { paramValue: "", paramDisplay: "All" },
+  { paramValue: "*-1000", paramDisplay: "$0-1,000" },
+  { paramValue: "1000-5000", paramDisplay: "$1000-5,000" },
+  { paramValue: "5000-10000", paramDisplay: "$5,000-10,000" },
+  { paramValue: "10000-50000", paramDisplay: "$10,000-50,000" },
+  { paramValue: "50000-*", paramDisplay: "$50,000+" },
+]
+
 export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({
   navigation,
 }) => {
+  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
   const paramName = FilterParamName.estimateRange
+  const ranges = enableArtworksConnection ? NewEstimateRanges : EstimateRanges
 
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
   )
 
-  const options = EstimateRanges.map((estimateRange) => {
+  const options = ranges.map((estimateRange) => {
     return {
       displayText: estimateRange.paramDisplay,
       paramName,
@@ -54,9 +67,9 @@ export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> 
       filterOptions={options}
       ListHeaderComponent={
         <>
-          <Sans size="3" color="black60" textAlign="center" my={15}>
+          <Text variant="sm" color="black60" textAlign="center" my={15}>
             Based on the estimate for the lot
-          </Sans>
+          </Text>
           <Separator />
         </>
       }

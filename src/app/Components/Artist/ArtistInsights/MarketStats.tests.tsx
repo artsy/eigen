@@ -1,7 +1,7 @@
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { DecreaseIcon, IncreaseIcon } from "palette"
 import { ReactTestInstance } from "react-test-renderer"
@@ -22,7 +22,7 @@ describe("MarketStats", () => {
   }
 
   it("renders market stats", () => {
-    const tree = renderWithWrappers(<TestWrapper />).root
+    const tree = renderWithWrappersLEGACY(<TestWrapper />).root
     resolveMostRecentRelayOperation(environment)
     expect(tree.findAllByType(MarketStatsFragmentContainer).length).toEqual(1)
   })
@@ -30,7 +30,7 @@ describe("MarketStats", () => {
   describe("available mediums", () => {
     let tree: ReactTestInstance
     beforeEach(() => {
-      tree = renderWithWrappers(<TestWrapper />).root
+      tree = renderWithWrappersLEGACY(<TestWrapper />).root
       const priceInsights = {
         edges: [
           { node: { medium: "crayon", annualLotsSold: 123 } },
@@ -60,7 +60,7 @@ describe("MarketStats", () => {
         NonNullable<NonNullable<MarketStats_priceInsightsConnection$data["edges"]>[0]>["node"]
       >
     ) {
-      const tree = renderWithWrappers(<TestWrapper />).root
+      const tree = renderWithWrappersLEGACY(<TestWrapper />).root
       const priceInsights = {
         edges: [
           {
@@ -106,7 +106,7 @@ describe("MarketStats", () => {
 
   describe("tracking", () => {
     it("tracks the correct event when info bubble is tapped", () => {
-      const tree = renderWithWrappers(<TestWrapper />).root
+      const tree = renderWithWrappersLEGACY(<TestWrapper />).root
       resolveMostRecentRelayOperation(environment)
 
       const infoBubble = tree.findByType(InfoButton)

@@ -9,7 +9,7 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "app/Components/TouchableRow"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { RadioDot } from "palette"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
@@ -64,20 +64,20 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
     const aggregation = aggregationForFilter(params.filterKey, params.aggregations!)
 
     it("renders the correct number of " + params.name + " options", () => {
-      const tree = renderWithWrappers(<MockScreenWrapper />)
+      const tree = renderWithWrappersLEGACY(<MockScreenWrapper />)
       // Counts returned + all option
       expect(tree.root.findAllByType(OptionListItem)).toHaveLength(aggregation!.counts.length + 1)
     })
 
     it("adds an all option", () => {
-      const tree = renderWithWrappers(<MockScreenWrapper />)
+      const tree = renderWithWrappersLEGACY(<MockScreenWrapper />)
       const firstRow = tree.root.findAllByType(TouchableRow)[0]
       expect(extractText(firstRow)).toContain("All")
     })
 
     describe("selecting a " + params.name + " filter", () => {
       it("displays the default " + params.name + " if no selected filters", () => {
-        const component = renderWithWrappers(<MockScreenWrapper />)
+        const component = renderWithWrappersLEGACY(<MockScreenWrapper />)
         const selectedOption = selectedFilterOption(component)
         expect(extractText(selectedOption)).toContain("All")
       })
@@ -103,7 +103,9 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           sizeMetric: "cm",
         }
 
-        const component = renderWithWrappers(<MockScreenWrapper initialData={injectedState} />)
+        const component = renderWithWrappersLEGACY(
+          <MockScreenWrapper initialData={injectedState} />
+        )
 
         const selectedOption = selectedFilterOption(component)
         expect(extractText(selectedOption)).toContain(aggregation!.counts[0].name)
@@ -116,7 +118,7 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           params.name +
           " options are tapped",
         () => {
-          const tree = renderWithWrappers(<MockScreenWrapper />)
+          const tree = renderWithWrappersLEGACY(<MockScreenWrapper />)
 
           const [firstOptionInstance, secondOptionInstance, thirdOptionInstance] =
             tree.root.findAllByType(TouchableRow)

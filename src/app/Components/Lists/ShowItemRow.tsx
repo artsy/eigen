@@ -66,8 +66,7 @@ export class ShowItemRow extends React.Component<Props, State> {
           isFollowedSaving: true,
         },
         () => {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          return commitMutation<ShowItemRowMutation>(this.props.relay.environment, {
+          return commitMutation<ShowItemRowMutation>(this.props.relay?.environment!, {
             onCompleted: () => this.handleShowSuccessfullyUpdated(),
             mutation: graphql`
               mutation ShowItemRowMutation($input: FollowShowInput!) {
@@ -97,8 +96,7 @@ export class ShowItemRow extends React.Component<Props, State> {
               },
             },
             updater: (store) => {
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              store.get(nodeID).setValue(!isShowFollowed, "is_followed")
+              store!.get(nodeID)!.setValue(!isShowFollowed, "is_followed")
             },
           })
         }
@@ -170,11 +168,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                 >
                   {show.status.includes("closed")
                     ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
-                    : exhibitionDates(
-                        show.exhibition_period,
-                        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                        show.end_at
-                      )}
+                    : exhibitionDates(show.exhibition_period, show.end_at!)}
                 </Text>
               )}
             </Flex>

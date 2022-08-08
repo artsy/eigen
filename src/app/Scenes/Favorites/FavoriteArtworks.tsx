@@ -4,6 +4,7 @@ import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids
 import { PAGE_SIZE } from "app/Components/constants"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ZeroState } from "app/Components/States/ZeroState"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
@@ -12,7 +13,6 @@ import { FAVORITE_ARTWORKS_REFRESH_KEY, RefreshEvents } from "app/utils/refreshH
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Button, ClassTheme } from "palette"
 import { Component } from "react"
-import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useScreenDimensions } from "shared/hooks"
 
@@ -82,7 +82,7 @@ export class SavedWorks extends Component<Props, State> {
       return (
         <StickyTabPageScrollView
           refreshControl={
-            <RefreshControl
+            <StickTabPageRefreshControl
               refreshing={this.state.refreshingFromPull}
               onRefresh={this.handleRefresh}
             />
@@ -115,7 +115,7 @@ export class SavedWorks extends Component<Props, State> {
             contentContainerStyle={{ paddingVertical: space(2) }}
             onEndReached={this.loadMore}
             refreshControl={
-              <RefreshControl
+              <StickTabPageRefreshControl
                 refreshing={this.state.refreshingFromPull}
                 onRefresh={this.handleRefresh}
               />
@@ -169,8 +169,7 @@ const FavoriteArtworksContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return props.me && props.me.followsAndSaves.artworks
+      return props?.me?.followsAndSaves?.artworks
     },
     getVariables(_props, { count, cursor }, fragmentVariables) {
       return {

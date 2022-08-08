@@ -1,5 +1,5 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Linking } from "react-native"
 
 import { Modal } from "./Modal"
@@ -10,7 +10,7 @@ describe("Modal", () => {
   })
 
   it("renders without throwing an error", () => {
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <Modal visible headerText="An error occurred" detailText="This is an error moop." />
     )
 
@@ -20,7 +20,7 @@ describe("Modal", () => {
 
   it("should call `closeModal` when `Ok` button is pressed", () => {
     const closeModalMock = jest.fn()
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <Modal visible headerText="Header" detailText="Detail" closeModal={closeModalMock} />
     )
 
@@ -33,7 +33,7 @@ describe("Modal", () => {
     Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
     Linking.openURL = jest.fn()
 
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <Modal
         visible
         headerText="Header"

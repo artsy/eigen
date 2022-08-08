@@ -1,246 +1,192 @@
-import { renderWithWrappers, renderWithWrappersTL } from "app/tests/renderWithWrappers"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import moment from "moment"
-import { Sans, Theme } from "palette"
-import "react-native"
-
-import { ModernTicker, SimpleTicker } from "app/Components/Countdown/Ticker"
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "app/store/GlobalStore"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { mockTimezone } from "app/tests/mockTimezone"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import moment from "moment"
 import { Countdown, Timer } from "./Timer"
 
-const Wrapper: React.FC<{}> = ({ children }) => {
-  return (
-    <GlobalStoreProvider>
-      <Theme>
-        <GlobalStoreProvider>{children}</GlobalStoreProvider>
-      </Theme>
-    </GlobalStoreProvider>
-  )
-}
+describe("Timer", () => {
+  const SECONDS = 1000
+  const MINUTES = 60 * SECONDS
+  const DATE_NOW = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
+  const orgDateTimeFormat = Intl.DateTimeFormat
 
-const SECONDS = 1000
-const MINUTES = 60 * SECONDS
+  let pastTime: string
+  let futureTime: string
 
-const dateNow = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
+  beforeEach(() => {
+    jest.useFakeTimers()
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const getTimerLabel = (timerComponent) => timerComponent.root.findAllByType(Sans)[1].props.children
+    // Thursday, May 10, 2018 8:22:32.000 PM UTC
+    Date.now = jest.fn(() => DATE_NOW)
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const getTimerText = (timerComponent) => timerComponent.root.findAllByType(Sans)[0].props.children
+    futureTime = moment(DATE_NOW).add(1, "second").toISOString()
+    pastTime = moment(DATE_NOW).subtract(1, "second").toISOString()
+  })
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const getMountedTimerLabel = (timerComponent) => timerComponent.find(Sans).at(1).text()
+  afterEach(() => {
+    Intl.DateTimeFormat = orgDateTimeFormat
+  })
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const getMountedTimerText = (timerComponent) => timerComponent.find(Sans).at(0).text()
+  describe("formats the remaining time", () => {
+    it("when there are a few days left", () => {
+      // Thursday, May 14, 2018 10:24:31.000 AM UTC
+      const { getByText } = renderWithWrappers(<Timer lotEndAt="2018-05-14T10:24:31+00:00" />)
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-let pastTime
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-let futureTime
+      expect(getByText("03d  14h  01m  59s")).toBeTruthy()
+    })
 
-beforeEach(() => {
-  jest.useFakeTimers()
+    it("when there are a few hours left", () => {
+      // Thursday, May 10, 2018 10:42:32.000 PM UTC
+      const { getByText } = renderWithWrappers(<Timer lotEndAt="2018-05-10T22:42:32+00:00" />)
 
-  // Thursday, May 10, 2018 8:22:32.000 PM UTC
-  Date.now = () => dateNow
-  futureTime = moment(dateNow).add(1, "second").toISOString()
+      expect(getByText("00d  02h  20m  00s")).toBeTruthy()
+    })
 
-  pastTime = moment(dateNow).subtract(1, "second").toISOString()
-})
+    it("when there are a few minutes left", () => {
+      // Thursday, May 10, 2018 8:42:32.000 PM UTC
+      const { getByText } = renderWithWrappers(<Timer lotEndAt="2018-05-10T20:42:32+00:00" />)
 
-const orgDateTimeFormat: any = Intl.DateTimeFormat
+      expect(getByText("00d  00h  20m  00s")).toBeTruthy()
+    })
 
-afterEach(() => {
-  Intl.DateTimeFormat = orgDateTimeFormat
-})
+    it("when a few seconds are left", () => {
+      // Thursday, May 10, 2018 8:22:42.000 PM UTC
+      const { getByText } = renderWithWrappers(<Timer lotEndAt="2018-05-10T20:22:42+00:00" />)
 
-it("formats the remaining time in '00d  00h  00m  00s'", () => {
-  let timer
+      expect(getByText("00d  00h  00m  10s")).toBeTruthy()
+    })
+  })
 
-  // Thursday, May 14, 2018 10:24:31.000 AM UTC
-  timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T10:24:31+00:00" />)
+  it("shows 'Closes' when it's an online-only sale with an ending time", () => {
+    const { getByText } = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
 
-  expect(getTimerText(timer)).toEqual("03d  14h  01m  59s")
+    expect(getByText(/Closes/)).toBeTruthy()
+  })
 
-  // Thursday, May 10, 2018 8:42:32.000 PM UTC
-  timer = renderWithWrappers(<Timer lotEndAt="2018-05-10T20:42:32+00:00" />)
+  it("shows 'Live' when the liveStartsAt prop is given", () => {
+    const { getByText } = renderWithWrappers(<Timer liveStartsAt="2018-05-14T20:00:00+00:00" />)
 
-  expect(getTimerText(timer)).toEqual("00d  00h  20m  00s")
+    expect(getByText(/Live/)).toBeTruthy()
+  })
 
-  // Thursday, May 10, 2018 8:22:42.000 PM UTC
-  timer = renderWithWrappers(<Timer lotEndAt="2018-05-10T20:22:42+00:00" />)
+  it("shows 'Starts' the sale has not started yet", () => {
+    const { getByText } = renderWithWrappers(
+      <Timer
+        startsAt="2018-04-14T20:00:00+00:00"
+        isPreview
+        liveStartsAt="2018-05-14T20:00:00+00:00"
+      />
+    )
 
-  expect(getTimerText(timer)).toEqual("00d  00h  00m  10s")
-})
+    expect(getByText(/Starts/)).toBeTruthy()
+  })
 
-it("shows 'Closes' when it's an online-only sale with an ending time", () => {
-  const timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
+  it("shows 'Bidding closed' when the auction is closed", () => {
+    const { getByText } = renderWithWrappers(
+      <Timer
+        startsAt="2018-04-14T20:00:00+00:00"
+        isPreview={false}
+        liveStartsAt="2018-05-14T20:00:00+00:00"
+        isClosed
+      />
+    )
 
-  expect(getTimerLabel(timer)).toContain("Closes")
-})
+    expect(getByText("Bidding closed")).toBeTruthy()
+  })
 
-it("shows 'Live' when the liveStartsAt prop is given", () => {
-  const timer = renderWithWrappers(<Timer liveStartsAt="2018-05-14T20:00:00+00:00" />)
+  it("shows 'In progress' when the auction is in live auction integration mode", () => {
+    const { getByText } = renderWithWrappers(
+      <Timer
+        startsAt="2018-04-14T20:00:00+00:00"
+        isPreview={false}
+        liveStartsAt={pastTime}
+        isClosed={false}
+      />
+    )
 
-  expect(getTimerLabel(timer)).toContain("Live")
-})
+    expect(getByText("In progress")).toBeTruthy()
+  })
 
-it("shows 'Starts' the sale has not started yet", () => {
-  const timer = renderWithWrappers(
-    <Timer
-      startsAt="2018-04-14T20:00:00+00:00"
-      isPreview
-      liveStartsAt="2018-05-14T20:00:00+00:00"
-    />
-  )
+  it("counts down to zero", () => {
+    const { getByText } = renderWithWrappers(<Timer lotEndAt="2018-05-14T10:23:10+00:00" />)
 
-  expect(getTimerLabel(timer)).toContain("Starts")
-})
+    expect(getByText("03d  14h  00m  38s")).toBeTruthy()
 
-it("shows 'Bidding closed' when the auction is closed", () => {
-  const timer = renderWithWrappers(
-    <Timer
-      startsAt="2018-04-14T20:00:00+00:00"
-      isPreview={false}
-      liveStartsAt="2018-05-14T20:00:00+00:00"
-      isClosed
-    />
-  )
+    jest.advanceTimersByTime(2 * SECONDS)
+    expect(getByText("03d  14h  00m  36s")).toBeTruthy()
 
-  expect(getTimerLabel(timer)).toContain("Bidding closed")
-})
+    jest.advanceTimersByTime(1 * MINUTES)
+    expect(getByText("03d  13h  59m  36s")).toBeTruthy()
+  })
 
-it("shows 'In progress' when the auction is in live auction integration mode", () => {
-  const timer = renderWithWrappers(
-    <Timer
-      startsAt="2018-04-14T20:00:00+00:00"
-      isPreview={false}
-      liveStartsAt={
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        pastTime
-      }
-      isClosed={false}
-    />
-  )
+  it("shows month, date, and hour adjusted for the timezone where the user is", () => {
+    mockTimezone("America/Los_Angeles")
 
-  expect(getTimerLabel(timer)).toContain("In progress")
-})
+    // Thursday, May 14, 2018 8:00:00.000 PM UTC
+    // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
+    const { getByText } = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
 
-it("counts down to zero", () => {
-  const timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T10:23:10+00:00" />)
+    expect(getByText("Closes May 14, 1 PM PDT")).toBeTruthy()
+  })
 
-  expect(getTimerText(timer)).toEqual("03d  14h  00m  38s")
+  describe("displays the minutes when the sale does not end on the hour", () => {
+    mockTimezone("America/New_York")
+    const { getByText } = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:01:00+00:00" />)
 
-  jest.advanceTimersByTime(2 * SECONDS)
+    expect(getByText("Closes May 14, 4:01 PM EDT")).toBeTruthy()
+  })
 
-  expect(getTimerText(timer)).toEqual("03d  14h  00m  36s")
+  it("omits the minutes when the sale ends on the hour", () => {
+    mockTimezone("America/New_York")
+    const { getByText } = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
 
-  jest.advanceTimersByTime(1 * MINUTES)
+    expect(getByText("Closes May 14, 4 PM EDT")).toBeTruthy()
+  })
 
-  expect(getTimerText(timer)).toEqual("03d  13h  59m  36s")
-})
-
-it("shows month, date, and hour adjusted for the timezone where the user is", () => {
-  mockTimezone("America/Los_Angeles")
-
-  // Thursday, May 14, 2018 8:00:00.000 PM UTC
-  // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
-  const timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
-
-  expect(getTimerLabel(timer)).toEqual("Closes May 14, 1 PM PDT")
-})
-
-it("displays the minutes when the sale does not end on the hour", () => {
-  mockTimezone("America/New_York")
-
-  let timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:01:00+00:00" />)
-
-  expect(getTimerLabel(timer)).toEqual("Closes May 14, 4:01 PM EDT")
-
-  timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:30:00+00:00" />)
-
-  expect(getTimerLabel(timer)).toEqual("Closes May 14, 4:30 PM EDT")
-})
-
-it("omits the minutes when the sale ends on the hour", () => {
-  mockTimezone("America/New_York")
-
-  const timer = renderWithWrappers(<Timer lotEndAt="2018-05-14T20:00:00+00:00" />)
-
-  expect(getTimerLabel(timer)).toEqual("Closes May 14, 4 PM EDT")
-})
-
-describe("timer transitions", () => {
-  it("transitions state from preview --> closing when the timer ends", () => {
-    const timer = mount(
-      <Wrapper>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+  describe("timer transitions", () => {
+    it("transitions state from preview --> closing when the timer ends", () => {
+      const { getByText } = renderWithWrappers(
         <Timer isPreview startsAt={futureTime} lotEndAt={futureTime} />
-      </Wrapper>
-    )
+      )
 
-    expect(getMountedTimerLabel(timer)).toContain("Starts")
-    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
+      expect(getByText(/Starts/)).toBeTruthy()
 
-    jest.advanceTimersByTime(1 * SECONDS)
+      jest.advanceTimersByTime(1 * SECONDS)
+      expect(getByText(/Closes/)).toBeTruthy()
+    })
 
-    expect(getMountedTimerLabel(timer)).toContain("Closes")
-    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
-  })
-
-  it("transitions state from preview --> live upcoming when the timer ends", () => {
-    const timer = mount(
-      <Wrapper>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+    it("transitions state from preview --> live upcoming when the timer ends", () => {
+      const { getByText } = renderWithWrappers(
         <Timer isPreview startsAt={futureTime} liveStartsAt={futureTime} />
-      </Wrapper>
-    )
+      )
 
-    expect(getMountedTimerLabel(timer)).toContain("Starts")
-    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
+      expect(getByText(/Starts/)).toBeTruthy()
 
-    jest.advanceTimersByTime(1 * SECONDS)
+      jest.advanceTimersByTime(1 * SECONDS)
+      expect(getByText(/Live/)).toBeTruthy()
+    })
 
-    expect(getMountedTimerLabel(timer)).toContain("Live")
-    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
-  })
-
-  it("transitions state from live upcoming --> live ongoing when the timer ends", () => {
-    const timer = mount(
-      <Wrapper>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+    it("transitions state from live upcoming --> live ongoing when the timer ends", () => {
+      const { getByText } = renderWithWrappers(
         <Timer isPreview={false} startsAt={pastTime} liveStartsAt={futureTime} />
-      </Wrapper>
-    )
+      )
 
-    expect(getMountedTimerLabel(timer)).toContain("Live")
-    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
+      expect(getByText(/Live/)).toBeTruthy()
 
-    jest.advanceTimersByTime(1 * SECONDS)
+      jest.advanceTimersByTime(1 * SECONDS)
+      expect(getByText(/In progress/)).toBeTruthy()
+    })
 
-    expect(getMountedTimerLabel(timer)).toContain("In progress")
-    expect(getMountedTimerText(timer)).toContain("00d  00h  00m")
-  })
-
-  it("transitions state from closing --> closed when the timer ends", () => {
-    const timer = mount(
-      <Wrapper>
-        {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+    it("transitions state from closing --> closed when the timer ends", () => {
+      const { getByText } = renderWithWrappers(
         <Timer isPreview={false} startsAt={pastTime} lotEndAt={futureTime} />
-      </Wrapper>
-    )
+      )
 
-    expect(getMountedTimerLabel(timer)).toContain("Closes")
-    expect(getMountedTimerText(timer)).toEqual("00d  00h  00m  01s")
+      expect(getByText(/Closes/)).toBeTruthy()
 
-    jest.advanceTimersByTime(1 * SECONDS)
-
-    expect(getMountedTimerLabel(timer)).toContain("Bidding closed")
-    expect(getMountedTimerText(timer)).toContain("00d  00h  00m")
+      jest.advanceTimersByTime(1 * SECONDS)
+      expect(getByText(/Bidding closed/)).toBeTruthy()
+    })
   })
 })
 
@@ -253,48 +199,45 @@ describe("Countdown", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: true })
     })
 
-    afterEach(() => jest.clearAllMocks())
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
 
     it("shows extended bidding info when extendedBiddingPeriodMinutes is present", () => {
-      const { getByText } = renderWithWrappersTL(
-        <Wrapper>
-          <Countdown
-            duration={duration}
-            label="A label"
-            cascadingEndTimeIntervalMinutes={1}
-            extendedBiddingPeriodMinutes={2}
-          />
-        </Wrapper>
+      const { getByText } = renderWithWrappers(
+        <Countdown
+          duration={duration}
+          label="A label"
+          cascadingEndTimeIntervalMinutes={1}
+          extendedBiddingPeriodMinutes={2}
+        />
       )
+
       const textBlock = getByText("*Closure times may be extended to accommodate last minute bids")
       expect(textBlock).toBeDefined()
     })
 
     it("shows the new ticker if the sale has cascading end times", () => {
-      const component = mount(
-        <Wrapper>
-          <Countdown
-            duration={duration}
-            label="This is the label"
-            hasStarted
-            cascadingEndTimeIntervalMinutes={1}
-          />
-        </Wrapper>
+      const { queryByLabelText } = renderWithWrappers(
+        <Countdown
+          duration={duration}
+          label="This is the label"
+          hasStarted
+          cascadingEndTimeIntervalMinutes={1}
+        />
       )
 
-      expect(component.find(ModernTicker).length).toEqual(1)
-      expect(component.find(SimpleTicker).length).toEqual(0)
+      expect(queryByLabelText("Modern Ticker")).toBeTruthy()
+      expect(queryByLabelText("Simple Ticker")).toBeFalsy()
     })
 
     it("does not shows the new ticker if the sale does not have cascading end times", () => {
-      const component = mount(
-        <Wrapper>
-          <Countdown duration={duration} label="This is the label" />
-        </Wrapper>
+      const { queryByLabelText } = renderWithWrappers(
+        <Countdown duration={duration} label="This is the label" />
       )
 
-      expect(component.find(ModernTicker).length).toEqual(0)
-      expect(component.find(SimpleTicker).length).toEqual(1)
+      expect(queryByLabelText("Simple Ticker")).toBeTruthy()
+      expect(queryByLabelText("Modern Ticker")).toBeFalsy()
     })
   })
 
@@ -303,22 +246,22 @@ describe("Countdown", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCascadingEndTimerLotPage: false })
     })
 
-    afterEach(() => jest.clearAllMocks())
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
 
     it("does not shows the new ticker even if the sale has cascading end times", () => {
-      const component = mount(
-        <Wrapper>
-          <Countdown
-            duration={duration}
-            label="This is the label"
-            hasStarted
-            cascadingEndTimeIntervalMinutes={1}
-          />
-        </Wrapper>
+      const { queryByLabelText } = renderWithWrappers(
+        <Countdown
+          duration={duration}
+          label="This is the label"
+          hasStarted
+          cascadingEndTimeIntervalMinutes={1}
+        />
       )
 
-      expect(component.find(ModernTicker).length).toEqual(0)
-      expect(component.find(SimpleTicker).length).toEqual(1)
+      expect(queryByLabelText("Simple Ticker")).toBeTruthy()
+      expect(queryByLabelText("Modern Ticker")).toBeFalsy()
     })
   })
 })

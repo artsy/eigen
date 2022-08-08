@@ -3,7 +3,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
@@ -35,14 +35,14 @@ describe("ArtworkDetails", () => {
   afterEach(() => jest.clearAllMocks())
 
   it("renders correct explanation for form fields", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
     expect(getByText("Currently, artists can not sell their own work on Artsy.")).toBeTruthy()
     expect(getByText("Learn more.")).toBeTruthy()
     expect(getByText("All fields are required to submit an artwork.")).toBeTruthy()
   })
 
   it("renders numeric-pad for year and decimal-pad for dimension inputs", async () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
     const inputs = {
       year: getByTestId("Submission_YearInput"),
@@ -73,12 +73,12 @@ describe("ArtworkDetails", () => {
 
   describe("Save & Continue button", () => {
     it("corrently rendered", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
       expect(getByTestId("Submission_ArtworkDetails_Button")).toBeTruthy()
     })
 
     it("still corrently rendered when location is set", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId } = renderWithWrappers(<TestRenderer />)
 
       const locationInput = getByTestId("Submission_LocationInput")
       fireEvent.changeText(locationInput, "Berlin, Germany")
@@ -87,7 +87,7 @@ describe("ArtworkDetails", () => {
     })
 
     it("disabled when a required field is missing", async () => {
-      const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const { getByTestId, UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
 
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
@@ -162,7 +162,7 @@ describe("ArtworkDetails", () => {
     })
 
     it("tracks artworkDetailsCompleted event on submission create", async () => {
-      const { UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const { UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
       })
@@ -183,7 +183,7 @@ describe("ArtworkDetails", () => {
 
     it("tracks artworkDetailsCompleted event on submission update", async () => {
       GlobalStore.actions.artworkSubmission.submission.setSubmissionId("54321")
-      const { UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
+      const { UNSAFE_getByProps } = renderWithWrappers(<TestRenderer />)
       const SaveButton = UNSAFE_getByProps({
         testID: "Submission_ArtworkDetails_Button",
       })

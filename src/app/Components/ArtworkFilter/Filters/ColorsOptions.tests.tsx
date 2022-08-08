@@ -7,7 +7,7 @@ import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ColorsOptionsScreen } from "./ColorsOptions"
 import { ColorsSwatch } from "./ColorsSwatch"
@@ -87,7 +87,7 @@ describe("Colors options screen", () => {
   const aggregation = aggregationForFilter(FilterParamName.colors, mockAggregations)
 
   it("shows the correct number of color options", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <MockColorScreen
         aggregations={mockAggregations}
         {...getEssentialProps()}
@@ -115,7 +115,7 @@ describe("Colors options screen", () => {
     const updatedAggregation = aggregationForFilter(FilterParamName.colors, updatedMockAggregations)
 
     it("it does not try to render swatches for them", () => {
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <MockColorScreen
           aggregations={updatedMockAggregations}
           {...getEssentialProps()}
@@ -150,7 +150,7 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      const component = renderWithWrappers(
+      const component = renderWithWrappersLEGACY(
         <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
       )
 
@@ -179,7 +179,7 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
       )
 
@@ -215,7 +215,7 @@ describe("Colors options screen", () => {
         sizeMetric: "cm",
       }
 
-      const tree = renderWithWrappers(
+      const tree = renderWithWrappersLEGACY(
         <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
       )
 

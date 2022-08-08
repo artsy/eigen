@@ -1,5 +1,5 @@
 import { ShowsRailTestsQuery } from "__generated__/ShowsRailTestsQuery.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -70,7 +70,7 @@ describe("ShowsRailFragmentContainer", () => {
   })
 
   it("doesn't throw when rendered", () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
@@ -86,7 +86,7 @@ describe("ShowsRailFragmentContainer", () => {
       me.showsByFollowedArtists.edges = []
     })
 
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({

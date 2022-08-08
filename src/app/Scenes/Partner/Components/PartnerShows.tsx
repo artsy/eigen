@@ -9,7 +9,7 @@ import {
 import { TabEmptyState } from "app/Components/TabEmptyState"
 import { navigate } from "app/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
+import { Box, ClassTheme, Flex, Spacer, Text } from "palette"
 import React, { useContext, useState } from "react"
 import { ActivityIndicator, ImageBackground, TouchableWithoutFeedback, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -56,10 +56,10 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
                     <EmptyImage />
                   )}
                   <Spacer mb={0.5} />
-                  <Sans size="3t">{show.name}</Sans>
-                  <Sans size="3t" color="black60">
+                  <Text variant="sm">{show.name}</Text>
+                  <Text variant="sm" color="black60">
                     {show.exhibitionPeriod}
-                  </Sans>
+                  </Text>
                 </Box>
               </TouchableWithoutFeedback>
               <Spacer mb={2} />
@@ -95,7 +95,7 @@ export const PartnerShows: React.FC<{
       key: "past_shows_header",
       content: (
         <Flex mb={2}>
-          <Sans size="4t">Past shows</Sans>
+          <Text variant="md">Past shows</Text>
         </Flex>
       ),
     })

@@ -3,7 +3,7 @@ import { ArtistList_targetSupply$data } from "__generated__/ArtistList_targetSup
 import { navigate } from "app/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { chunk, shuffle } from "lodash"
-import { Box, EntityHeader, Flex, Join, Sans, Spacer } from "palette"
+import { Box, EntityHeader, Flex, Join, Spacer, Text } from "palette"
 import { Touchable } from "palette"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -30,9 +30,9 @@ export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading 
   return (
     <Box>
       <Box>
-        <Sans size="4" px={2}>
+        <Text variant="md" px={2}>
           Artists in-demand on Artsy
-        </Sans>
+        </Text>
 
         <Spacer mb={2} />
 

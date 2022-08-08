@@ -2,7 +2,7 @@ import { ContextCard_artwork$data } from "__generated__/ContextCard_artwork.grap
 import { ContextCardFollowMutation } from "__generated__/ContextCardFollowMutation.graphql"
 import { navigate } from "app/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
-import { Box, EntityHeader, Flex, FollowButton, Sans } from "palette"
+import { Box, EntityHeader, Flex, FollowButton, Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -152,9 +152,9 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
     return (
       <>
         <Box mb={2}>
-          <Sans size="3t" weight="medium" color="black100">
+          <Text variant="sm" weight="medium" color="black100">
             {header}
-          </Sans>
+          </Text>
         </Box>
         <Flex>
           <TouchableWithoutFeedback onPress={() => navigate(context.href!)}>
@@ -164,6 +164,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
               meta={meta || undefined}
               imageUrl={imageUrl || undefined}
               FollowButton={followButton || undefined}
+              accessibilityLabel="Context Card Image"
             />
           </TouchableWithoutFeedback>
         </Flex>

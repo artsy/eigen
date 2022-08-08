@@ -16,8 +16,7 @@ export function updateConversation(
 ) {
   return commitMutation<UpdateConversationMutation>(defaultEnvironment, {
     updater: (store) => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      store.get(conversation.id).setValue(false, "unread")
+      store!.get(conversation.id)!.setValue(false, "unread")
     },
     onCompleted,
     onError,

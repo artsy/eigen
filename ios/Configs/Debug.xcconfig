@@ -1,0 +1,4 @@
+#include "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"
+#include "Shared.xcconfig"
+
+DISPLAY_NAME = Δrtsy

@@ -1,5 +1,5 @@
 import { BuyNowArtworksRailTestsQuery } from "__generated__/BuyNowArtworksRailTestsQuery.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -32,13 +32,13 @@ describe("BuyNowArtworksRail", () => {
     mockEnvironment = createMockEnvironment()
   })
   it(`renders title "Buy now"`, () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
     expect(getByText("Artworks Available to Buy Now")).toBeDefined()
   })
 
   it("renders nothing if there are no artworks", () => {
-    const { queryAllByTestId } = renderWithWrappersTL(<TestRenderer />)
+    const { queryAllByTestId } = renderWithWrappers(<TestRenderer />)
     const noArtworksProps = {
       Sale: () => ({
         saleArtworksConnection: {

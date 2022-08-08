@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import "react-native"
 
 import ArtworkPreview from "./ArtworkPreview"
@@ -7,14 +7,14 @@ import { Touchable } from "palette"
 
 describe("concerning selection handling", () => {
   it("passes a onPress handler to the touchable component if an onSelected handler is given", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <ArtworkPreview artwork={artwork as any} onSelected={() => null} />
     )
     expect(tree.root.findByType(Touchable).props.onPress).toBeTruthy()
   })
 
   it("does not pass a onPress handler to the touchable component if no onSelected handler is given", () => {
-    const tree = renderWithWrappers(<ArtworkPreview artwork={artwork as any} />)
+    const tree = renderWithWrappersLEGACY(<ArtworkPreview artwork={artwork as any} />)
     expect(tree.root.findByType(Touchable).props.onPress).toBeFalsy()
   })
 })

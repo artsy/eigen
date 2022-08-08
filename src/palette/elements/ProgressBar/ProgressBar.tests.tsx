@@ -1,10 +1,10 @@
 import { waitFor } from "@testing-library/react-native"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ProgressBar, ProgressBarProps } from "./ProgressBar"
 
 describe("ProgressBar", () => {
   const getWrapper = (props: ProgressBarProps) => {
-    return renderWithWrappersTL(<ProgressBar {...props} />)
+    return renderWithWrappers(<ProgressBar {...props} />)
   }
 
   it("does not display the track view when progress is zero", async () => {

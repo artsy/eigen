@@ -2,7 +2,7 @@ import { ArtworkHistory_artwork$data } from "__generated__/ArtworkHistory_artwor
 import { ReadMore } from "app/Components/ReadMore"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { Schema } from "app/utils/track"
-import { Box, Join, Sans, Spacer } from "palette"
+import { Box, Join, Spacer, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkHistoryProps {
@@ -29,9 +29,9 @@ export const ArtworkHistory: React.FC<ArtworkHistoryProps> = ({ artwork }) => {
     <Join separator={<Spacer pb={3} />}>
       {displaySections.map(({ title, value, contextModule }, index) => (
         <Box key={index}>
-          <Sans size="4t" pb={2}>
+          <Text variant="md" pb={2}>
             {title}
-          </Sans>
+          </Text>
           <ReadMore
             content={value || ""}
             contextModule={contextModule}

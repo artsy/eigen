@@ -1,5 +1,15 @@
 import styled from "styled-components/native"
-import { borderColor, borders, color, flex, fontSize, height, space, width } from "styled-system"
+import {
+  borderColor,
+  borders,
+  BorderWidthProps,
+  color,
+  flex,
+  fontSize,
+  height,
+  space,
+  width,
+} from "styled-system"
 import {
   BorderColorProps,
   BorderProps,
@@ -14,6 +24,7 @@ import {
 export interface FlexProps
   extends BorderColorProps,
     BorderProps,
+    BorderWidthProps,
     ColorProps,
     FlexboxProps,
     FontSizeProps,

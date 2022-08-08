@@ -4,7 +4,7 @@ import PinSavedOff from "app/Icons/PinSavedOff"
 import PinSavedOn from "app/Icons/PinSavedOn"
 import { navigate } from "app/navigation/navigate"
 import { Track, track as _track } from "app/utils/track"
-import { Box, Flex, Sans } from "palette"
+import { Box, Flex, Text } from "palette"
 import { Component } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
@@ -33,9 +33,9 @@ export class SavedEventSection extends Component<any> {
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
           <Flex flexDirection="row" alignItems="center">
             <PinSavedOn pinWidth={30} pinHeight={30} />
-            <Sans size="3t" weight="medium" ml={24}>
+            <Text variant="sm" weight="medium" ml={24}>
               {data.length > 1 ? data.length + " saved events" : data.length + " saved event"}
-            </Sans>
+            </Text>
           </Flex>
           <ChevronIcon color="black100" />
         </Flex>
@@ -47,12 +47,12 @@ export class SavedEventSection extends Component<any> {
         <Flex flexDirection="row" alignItems="center">
           <PinSavedOff width={30} height={30} />
           <Flex ml={24}>
-            <Sans size="3t" color="black60" weight="medium">
+            <Text variant="sm" color="black60" weight="medium">
               No saved events
-            </Sans>
-            <Sans size="3t" color="black60">
+            </Text>
+            <Text variant="sm" color="black60">
               Save a show to find it later
-            </Sans>
+            </Text>
           </Flex>
         </Flex>
       </>

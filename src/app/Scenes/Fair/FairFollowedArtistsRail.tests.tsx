@@ -1,6 +1,6 @@
 import { FairFollowedArtistsRailTestsQuery } from "__generated__/FairFollowedArtistsRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -47,7 +47,7 @@ describe("FairFollowedArtistsRail", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)

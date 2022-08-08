@@ -229,6 +229,12 @@ export const selectedOptionsUnion = ({
       paramValue: "position",
       displayText: "Lot Number Ascending",
     },
+    // TODO: Replace newSaleArtwork with saleArtwork when AREnableArtworksConnectionForAuction is released
+    newSaleArtwork: {
+      paramName: FilterParamName.sort,
+      paramValue: "sale_position",
+      displayText: "Lot Number Ascending",
+    },
     showArtwork: {
       paramName: FilterParamName.sort,
       paramValue: "partner_show_position",

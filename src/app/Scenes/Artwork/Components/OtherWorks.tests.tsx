@@ -1,147 +1,159 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount, shallow } from "enzyme"
-import { Sans, Text, Theme } from "palette"
-import { Header } from "./OtherWorks/Header"
-import { OtherWorksFragmentContainer as OtherWorks } from "./OtherWorks/OtherWorks"
-
+import { fireEvent } from "@testing-library/react-native"
+import { OtherWorksTestsQuery } from "__generated__/OtherWorksTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
-import { GlobalStoreProvider } from "app/store/GlobalStore"
-import { TouchableWithoutFeedback } from "react-native"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
+import { OtherWorksFragmentContainer } from "./OtherWorks/OtherWorks"
+
+jest.unmock("react-relay")
 
 describe("OtherWorks", () => {
-  it("renders no grids if there are none provided", () => {
-    const noGridsArtworkProps = {
-      contextGrids: null,
-      " $fragmentRefs": null,
-    }
-    const component = shallow(
-      <GlobalStoreProvider>
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <OtherWorks artwork={noGridsArtworkProps} />
-        </Theme>
-      </GlobalStoreProvider>
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  const TestWrapper = () => {
+    return (
+      <QueryRenderer<OtherWorksTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query OtherWorksTestsQuery @relay_test_operation {
+            artwork(id: "artworkId") {
+              ...OtherWorks_artwork
+            }
+          }
+        `}
+        variables={{}}
+        render={({ props }) => {
+          if (props?.artwork) {
+            return <OtherWorksFragmentContainer artwork={props.artwork} />
+          }
+
+          return null
+        }}
+      />
     )
-    expect(component.find(Header).length).toEqual(0)
+  }
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
+  it("renders no grids if there are none provided", () => {
+    const { toJSON } = renderWithWrappers(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        contextGrids: null,
+      }),
+    })
+
+    expect(toJSON()).toBeNull()
   })
 
   it("renders no grids if an empty array is provided", () => {
-    const noGridsArtworkProps = { contextGrids: [], " $fragmentRefs": null }
-    const component = shallow(
-      <GlobalStoreProvider>
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <OtherWorks artwork={noGridsArtworkProps} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Header).length).toEqual(0)
+    const { toJSON } = renderWithWrappers(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        contextGrids: [],
+      }),
+    })
+
+    expect(toJSON()).toBeNull()
   })
 
   it("renders the grid if one is provided", () => {
-    const oneGridArtworkProps = {
-      contextGrids: [
-        {
-          title: "Other works by Andy Warhol",
-          ctaTitle: "View all works by Andy Warhol",
-          ctaHref: "/artist/andy-warhol",
-          artworks: {
-            edges: [
-              {
-                node: {
-                  id: "artwork1",
-                },
-              },
-            ],
-          },
-        },
-      ],
-      " $fragmentRefs": null,
-    }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <OtherWorks artwork={oneGridArtworkProps} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Header).length).toEqual(1)
-    expect(component.find(Text).first().text()).toEqual("Other works by Andy Warhol")
-    component.find(TouchableWithoutFeedback).props().onPress()
+    const { getByText, getByLabelText } = renderWithWrappers(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        contextGrids: [firstArtworkGridItem],
+      }),
+    })
+
+    expect(getByText("Other works by Andy Warhol")).toBeTruthy()
+
+    fireEvent.press(getByLabelText("Context Grid CTA"))
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
 
   it("renders the grids if multiple are provided", () => {
-    const oneGridArtworkProps = {
-      contextGrids: [
-        {
-          title: "Other works by Andy Warhol",
-          ctaTitle: "View all works by Andy Warhol",
-          ctaHref: "/artist/andy-warhol",
-          artworks: { edges: [{ node: { id: "artwork1" } }] },
-        },
-        {
-          title: "Other works from Gagosian Gallery",
-          ctaTitle: "View all works from Gagosian Gallery",
-          ctaHref: "/gagosian-gallery",
-          artworks: { edges: [{ node: { id: "artwork1" } }] },
-        },
-      ],
-      " $fragmentRefs": null,
-    }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <OtherWorks artwork={oneGridArtworkProps} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Header).length).toEqual(2)
-    expect(component.find(Text).first().text()).toEqual("Other works by Andy Warhol")
-    expect(component.find(Sans).last().text()).toEqual("View all works from Gagosian Gallery")
+    const { getByText, getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
-    component.find(TouchableWithoutFeedback).first().props().onPress()
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        contextGrids: [firstArtworkGridItem, secondArtworkGridItem],
+      }),
+    })
+
+    expect(getByText("Other works by Andy Warhol")).toBeTruthy()
+    expect(getByText("View all works from Gagosian Gallery")).toBeTruthy()
+
+    const buttons = getAllByLabelText("Context Grid CTA")
+
+    fireEvent.press(buttons[0])
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
 
-    component.find(TouchableWithoutFeedback).last().props().onPress()
+    fireEvent.press(buttons[1])
     expect(navigate).toHaveBeenCalledWith("/gagosian-gallery")
   })
 
   it("renders only grids with artworks", () => {
-    const oneGridArtworkProps = {
-      contextGrids: [
-        {
-          title: "Other works by Andy Warhol",
-          ctaTitle: "View all works by Andy Warhol",
-          ctaHref: "/artist/andy-warhol",
-          artworks: { edges: [{ node: { id: "artwork1" } }] },
-        },
-        {
-          title: "Other works from Gagosian Gallery",
-          ctaTitle: "View all works from Gagosian Gallery",
-          ctaHref: "/gagosian-gallery",
-          artworks: null,
-        },
-        {
-          title: "Other works from Gagosian Gallery at Art Basel 2019",
-          ctaTitle: "View all works from the booth",
-          ctaHref: "/show/gagosian-gallery-at-art-basel-2019",
-          artworks: { edges: [] },
-        },
-      ],
-      " $fragmentRefs": null,
-    }
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-          <OtherWorks artwork={oneGridArtworkProps} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
-    expect(component.find(Header).length).toEqual(1)
-    expect(component.find(Text).first().text()).toEqual("Other works by Andy Warhol")
+    const contextGrids = [
+      firstArtworkGridItem,
+      {
+        title: "Other works from Gagosian Gallery",
+        ctaTitle: "View all works from Gagosian Gallery",
+        ctaHref: "/gagosian-gallery",
+        artworks: null,
+      },
+      {
+        title: "Other works from Gagosian Gallery at Art Basel 2019",
+        ctaTitle: "View all works from the booth",
+        ctaHref: "/show/gagosian-gallery-at-art-basel-2019",
+        artworks: { edges: [] },
+      },
+    ]
+
+    const { getByText, queryByText } = renderWithWrappers(<TestWrapper />)
+
+    resolveMostRecentRelayOperation(mockEnvironment, {
+      Artwork: () => ({
+        contextGrids,
+      }),
+    })
+
+    expect(getByText("Other works by Andy Warhol")).toBeTruthy()
+    expect(queryByText("Other works from Gagosian Gallery")).toBeFalsy()
+    expect(queryByText("View all works from the booth")).toBeFalsy()
   })
 })
+
+const firstArtworkGridItem = {
+  title: "Other works by Andy Warhol",
+  ctaTitle: "View all works by Andy Warhol",
+  ctaHref: "/artist/andy-warhol",
+  artworks: {
+    edges: [
+      {
+        node: {
+          id: "artwork1",
+        },
+      },
+    ],
+  },
+}
+
+const secondArtworkGridItem = {
+  title: "Other works from Gagosian Gallery",
+  ctaTitle: "View all works from Gagosian Gallery",
+  ctaHref: "/gagosian-gallery",
+  artworks: {
+    edges: [
+      {
+        node: { id: "artwork1" },
+      },
+    ],
+  },
+}

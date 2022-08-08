@@ -10,7 +10,7 @@ import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFo
 import { ReadMore } from "app/Components/ReadMore"
 import { navigate } from "app/navigation/navigate"
 import { truncatedTextLimit } from "app/utils/hardware"
-import { EntityHeader, Sans, Spacer, Touchable } from "palette"
+import { EntityHeader, Spacer, Text, Touchable } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -79,9 +79,9 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
 
   return (
     <View ref={metaRef}>
-      <Sans size="8" testID="title">
+      <Text variant="lg" testID="title">
         {artistSeries.title}
-      </Sans>
+      </Text>
       {!!artist && (
         <TouchableOpacity
           key={artist.id!}
@@ -101,9 +101,9 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
                 haptic
                 noFeedback
               >
-                <Sans style={{ textDecorationLine: "underline" }} size="3">
+                <Text variant="sm" style={{ textDecorationLine: "underline" }}>
                   {artist.isFollowed ? "Following" : "Follow"}
-                </Sans>
+                </Text>
               </Touchable>
             }
           />

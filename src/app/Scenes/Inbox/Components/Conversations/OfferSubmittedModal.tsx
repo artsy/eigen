@@ -19,8 +19,12 @@ export const OfferSubmittedModal: React.FC = (props) => {
     }
   )
 
-  const onClose = () => {
+  const onGoToInbox = () => {
     navigate("inbox")
+    setVisible(false)
+  }
+
+  const onClose = () => {
     setVisible(false)
   }
 
@@ -42,7 +46,7 @@ export const OfferSubmittedModal: React.FC = (props) => {
 
           <Text mt={2}>Negotiation with the gallery will continue in the Inbox.</Text>
 
-          <Button variant="fillDark" block my={2} onPress={onClose}>
+          <Button variant="fillDark" block my={2} onPress={onGoToInbox}>
             Go to inbox
           </Button>
         </Box>

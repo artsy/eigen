@@ -1,11 +1,9 @@
 import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { verifyEmail } from "app/utils/verifyEmail"
-import { Flex, Sans, SansProps, Spinner, useColor } from "palette"
+import { Flex, Spinner, Text, useColor } from "palette"
 import React, { useState } from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
-
-const Text: React.FC<Partial<SansProps>> = (props) => <Sans color="white100" size="3t" {...props} />
 
 export interface Props {
   me: EmailConfirmationBanner_me$data
@@ -63,7 +61,9 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
       >
         {isLoading ? (
           <>
-            <Text>Sending a confirmation email...</Text>
+            <Text variant="sm" color="white100">
+              Sending a confirmation email...
+            </Text>
 
             <Flex pr="1">
               <Spinner size="small" color="white100" />
@@ -77,7 +77,9 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Text>{message}</Text>
+              <Text variant="sm" color="white100">
+                {message}
+              </Text>
 
               <TouchableWithoutFeedback onPress={() => toggleVisible(false)}>
                 <Image source={require("images/close-x.webp")} />

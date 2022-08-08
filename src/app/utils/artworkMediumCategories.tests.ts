@@ -5,21 +5,26 @@ describe("artworkMediumCategories", () => {
     expect(
       artworkMediumCategories.reduce((acc, cur) => ({ ...acc, [cur.value]: cur.label }), {})
     ).toEqual({
-      Architecture: "Architecture",
-      "Design/Decorative Art": "Design/Decorative Art",
-      "Drawing, Collage or other Work on Paper": "Drawing, Collage or other Work on Paper",
-      "Fashion Design and Wearable Art": "Fashion Design and Wearable Art",
-      Installation: "Installation",
-      Jewelry: "Jewelry",
-      "Mixed Media": "Mixed Media",
-      Other: "Other",
       Painting: "Painting",
-      "Performance Art": "Performance Art",
+      Sculpture: "Sculpture",
       Photography: "Photography",
       Print: "Print",
-      Sculpture: "Sculpture",
-      "Textile Arts": "Textile Arts",
+      "Drawing, Collage or other Work on Paper": "Drawing, Collage or other Work on Paper",
+      "Mixed Media": "Mixed Media",
+      "Performance Art": "Performance Art",
+      Installation: "Installation",
       "Video/Film/Animation": "Video/Film/Animation",
+      Architecture: "Architecture",
+      "Fashion Design and Wearable Art": "Fashion Design and Wearable Art",
+      Jewelry: "Jewelry",
+      "Design/Decorative Art": "Design/Decorative Art",
+      "Textile Arts": "Textile Arts",
+      Posters: "Posters",
+      "Books and Portfolios": "Books and Portfolios",
+      Other: "Other",
+      "Ephemera or Merchandise": "Ephemera or Merchandise",
+      Reproduction: "Reproduction",
+      NFT: "NFT",
     })
   })
 })

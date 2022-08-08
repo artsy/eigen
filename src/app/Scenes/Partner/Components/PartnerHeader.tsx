@@ -2,7 +2,7 @@ import { PartnerHeader_partner$data } from "__generated__/PartnerHeader_partner.
 import { PartnerBanner } from "app/Components/PartnerBanner"
 import { Stack } from "app/Components/Stack"
 import { formatLargeNumberOfItems } from "app/utils/formatLargeNumberOfItems"
-import { Box, Flex, Sans } from "palette"
+import { Box, Flex, Text } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { PartnerFollowButtonFragmentContainer as FollowButton } from "./PartnerFollowButton"
 
@@ -23,15 +23,15 @@ const PartnerHeader: React.FC<{
   return (
     <>
       <Box px={2} pb={1} pt={6}>
-        <Sans mb={1} size="8">
+        <Text variant="lg" mb={1}>
           {partner.name}
-        </Sans>
+        </Text>
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Stack spacing={0.5}>
             {!!eligibleArtworks && (
-              <Sans size="3t">
+              <Text variant="sm">
                 {!!eligibleArtworks && formatLargeNumberOfItems(eligibleArtworks, "work", "works")}
-              </Sans>
+              </Text>
             )}
           </Stack>
           {!!partner.profile && (

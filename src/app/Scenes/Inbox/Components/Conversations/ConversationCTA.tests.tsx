@@ -1,7 +1,7 @@
 import { ConversationCTATestsQuery } from "__generated__/ConversationCTATestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { AlertCircleFillIcon, Color, Flex, MoneyFillIcon } from "palette"
 import { ElementType } from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -70,7 +70,7 @@ describe("ConversationCTA", () => {
   }
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)

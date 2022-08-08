@@ -1,7 +1,7 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { fetchMockResponseOnce } from "app/tests/fetchMockHelpers"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Checkbox } from "palette/elements/Checkbox"
 import { OnboardingCreateAccountWithEmail } from "./OnboardingCreateAccount"
 
@@ -15,7 +15,7 @@ const navigationMock = {
 
 describe("OnboardingCreateAccount", () => {
   it("form validation works properly", async () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <OnboardingCreateAccountWithEmail navigation={navigationMock as any} route={null as any} />
     )
 
@@ -111,7 +111,7 @@ describe("OnboardingCreateAccount", () => {
   })
 
   it("shows go to login button when the email is already used", async () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <OnboardingCreateAccountWithEmail navigation={navigationMock as any} route={null as any} />
     )
 

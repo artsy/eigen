@@ -1,5 +1,5 @@
 import { FileDownload_attachment$data } from "__generated__/FileDownload_attachment.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import "react-native"
 import { Linking } from "react-native"
 
@@ -9,7 +9,7 @@ import { FileDownloadFragmentContainer as FileDownload } from "./FileDownload"
 
 Linking.openURL = jest.fn()
 it("opens file url when it is selected", async () => {
-  const component = renderWithWrappers(<FileDownload attachment={attachment as any} />)
+  const component = renderWithWrappersLEGACY(<FileDownload attachment={attachment as any} />)
   component.root.findByType(AttachmentPreview).props.onSelected()
   expect(Linking.openURL).toBeCalledWith(attachment.downloadURL)
 })

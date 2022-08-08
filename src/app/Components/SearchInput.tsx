@@ -5,9 +5,9 @@ import {
   Input,
   INPUT_HEIGHT,
   InputProps,
-  Sans,
   SpacingUnitV2,
   SpacingUnitV3,
+  Text,
   useSpace,
 } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
@@ -116,9 +116,9 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
                   },
                 ]}
               >
-                <Sans size="2" color="black60">
+                <Text variant="xs" color="black60">
                   Cancel
-                </Sans>
+                </Text>
               </Animated.Text>
             </TouchableOpacity>
           </Animated.View>

@@ -1,6 +1,6 @@
 import { FairCollectionsTestsQuery } from "__generated__/FairCollectionsTestsQuery.graphql"
 import { FairCollectionsFragmentContainer } from "app/Scenes/Fair/Components/FairCollections"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Text, TouchableWithScale } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -14,7 +14,7 @@ describe("FairCollections", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairCollectionsTestsQuery>
         environment={env}
         query={graphql`

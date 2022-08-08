@@ -1,4 +1,3 @@
-import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 import { PAGE_SIZE } from "app/Components/constants"
@@ -13,6 +12,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { Spacer } from "palette"
 
 import { FavoriteCategoriesQuery } from "__generated__/FavoriteCategoriesQuery.graphql"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React from "react"
@@ -74,7 +74,7 @@ export class Categories extends React.Component<Props, State> {
       return (
         <StickyTabPageScrollView
           refreshControl={
-            <RefreshControl
+            <StickTabPageRefreshControl
               refreshing={this.state.refreshingFromPull}
               onRefresh={this.handleRefresh}
             />
@@ -97,7 +97,7 @@ export class Categories extends React.Component<Props, State> {
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={
-          <RefreshControl
+          <StickTabPageRefreshControl
             refreshing={this.state.refreshingFromPull}
             onRefresh={this.handleRefresh}
           />
@@ -144,8 +144,7 @@ const FavoriteCategoriesContainer = createPaginationContainer(
   },
   {
     getConnectionFromProps(props) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return props.me && props.me.followsAndSaves.genes
+      return props?.me?.followsAndSaves?.genes
     },
     getVariables(_props, pageInfo, _fragmentVariables) {
       return pageInfo

@@ -1,5 +1,5 @@
 import { SummarySectionTestsQuery } from "__generated__/SummarySectionTestsQuery.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -33,7 +33,7 @@ describe("SummarySection", () => {
   )
 
   it("Render Order Summary Section ", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         mode: "BUY",
@@ -52,7 +52,7 @@ describe("SummarySection", () => {
   })
 
   it("Render correct shipping name if shipping quote selected", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         lineItems: {
@@ -75,7 +75,7 @@ describe("SummarySection", () => {
   })
 
   it("Render correct shipping name if shipping quote not selected", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         lineItems: {
@@ -97,7 +97,7 @@ describe("SummarySection", () => {
 
   describe("if offer order", () => {
     it("Render correct price", () => {
-      const tree = renderWithWrappers(<TestRenderer />).root
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
       resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           mode: "OFFER",
@@ -117,7 +117,7 @@ describe("SummarySection", () => {
     })
 
     it("Render counteroffer", () => {
-      const tree = renderWithWrappers(<TestRenderer />).root
+      const tree = renderWithWrappersLEGACY(<TestRenderer />).root
       resolveMostRecentRelayOperation(mockEnvironment, {
         CommerceOrder: () => ({
           mode: "OFFER",

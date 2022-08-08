@@ -40,12 +40,12 @@ export class Collection extends Component<CollectionProps> {
     const { collection } = this.props
     const { linkedCollections, isDepartment } = collection
 
-    const sections = [
-      "collectionFeaturedArtists",
-      "collectionHubsRails",
-      "collectionArtworksFilter",
-      "collectionArtworks",
-    ]
+    let sections = ["collectionHubsRails", "collectionArtworksFilter", "collectionArtworks"]
+
+    // Show the Featured artists section only when showFeaturedArtists is true
+    if (collection.showFeaturedArtists) {
+      sections = ["collectionFeaturedArtists", ...sections]
+    }
 
     return (
       <ArtworkFiltersStoreProvider>
@@ -107,6 +107,7 @@ export const CollectionContainer = createFragmentContainer(Collection, {
       id
       slug
       isDepartment
+      showFeaturedArtists
       ...CollectionHeader_collection
       ...CollectionArtworks_collection @arguments(input: { sort: "-decayed_merch" })
       ...CollectionArtworksFilter_collection

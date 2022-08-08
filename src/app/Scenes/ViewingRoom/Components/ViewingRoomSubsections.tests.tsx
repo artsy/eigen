@@ -1,5 +1,5 @@
 import { ViewingRoomSubsectionsTestsQuery } from "__generated__/ViewingRoomSubsectionsTestsQuery.graphql"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Box } from "palette"
@@ -28,7 +28,7 @@ describe("ViewingRoomSubsections", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders a Box for each subsection", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment)
 
     expect(

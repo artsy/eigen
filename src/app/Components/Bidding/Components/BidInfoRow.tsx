@@ -7,7 +7,7 @@ import { Col, Row } from "../Elements/Grid"
 
 interface BidInfoRowProps extends FlexProps {
   label: string
-  value: string
+  value?: string
   onPress?: () => void
 }
 

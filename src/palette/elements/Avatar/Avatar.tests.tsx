@@ -1,10 +1,10 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Image } from "react-native"
 import { Avatar, InitialsHolder } from ".."
 
 describe("Avatar", () => {
   it("renders initials if no image url and initials provided", () => {
-    const { container, getByText } = renderWithWrappersTL(<Avatar initials="AB" />)
+    const { container, getByText } = renderWithWrappers(<Avatar initials="AB" />)
     expect(container.findAllByType(Image).length).toBe(0)
     expect(container.findAllByType(InitialsHolder).length).toBe(1)
 
@@ -12,7 +12,7 @@ describe("Avatar", () => {
   })
 
   it("returns empty holder if no image url or initials", () => {
-    const { container } = renderWithWrappersTL(<Avatar />)
+    const { container } = renderWithWrappers(<Avatar />)
 
     expect(container.findAllByType(Image).length).toBe(0)
     expect(container.findAllByType(InitialsHolder).length).toBe(1)
@@ -20,9 +20,7 @@ describe("Avatar", () => {
 
   it("returns correct sizes with initials", () => {
     const getInitialHolder = (size: any) =>
-      renderWithWrappersTL(<Avatar size={size} initials="AB" />).container.findByType(
-        InitialsHolder
-      )
+      renderWithWrappers(<Avatar size={size} initials="AB" />).container.findByType(InitialsHolder)
 
     expect(getInitialHolder("xxs").props.width).toEqual(30)
     expect(getInitialHolder("xs").props.height).toEqual(45)
@@ -32,7 +30,7 @@ describe("Avatar", () => {
 
   it("returns correct sizes with images", () => {
     const getImage = (size: any) =>
-      renderWithWrappersTL(<Avatar size={size} src="/a/b/c.png" />).container.findByType(Image)
+      renderWithWrappers(<Avatar size={size} src="/a/b/c.png" />).container.findByType(Image)
 
     expect(getImage("xxs").props.style.width).toEqual(30)
     expect(getImage("xs").props.style.height).toEqual(45)

@@ -54,13 +54,13 @@ export const MyCollectionArtworkList: React.FC<{
       <PrefetchFlatList
         data={preprocessedArtworks}
         renderItem={({ item }) => <MyCollectionArtworkListItem artwork={item} />}
-        // TODO: Add prefetching for this list when the new artwork detail screen is ready
-        // prefetchUrlExtractor={(artwork) => `/my-collection/artwork/${artwork.slug}`}
-        // prefetchVariablesExtractor={(artwork) => ({
-        //   artworkSlug: artwork.slug,
-        //   medium: artwork.medium,
-        //   artistInternalID: artwork.artist?.internalID,
-        // })}
+        prefetchUrlExtractor={(artwork) => `/my-collection/artwork/${artwork.slug}`}
+        prefetchVariablesExtractor={(artwork) => ({
+          artworkSlug: artwork.slug,
+          medium: artwork.medium,
+          category: artwork.mediumType?.name,
+          artistInternalID: artwork.artist?.internalID,
+        })}
         onEndReached={loadMoreArtworks}
         keyExtractor={(item, index) => String(item.slug || index)}
         ListFooterComponent={

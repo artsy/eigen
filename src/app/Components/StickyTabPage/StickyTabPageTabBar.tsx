@@ -1,4 +1,4 @@
-import { Sans } from "palette"
+import { Text } from "palette"
 import { NavigationalTabs } from "palette/elements/Tabs"
 import React, { useEffect, useRef, useState } from "react"
 import {
@@ -18,7 +18,8 @@ export const StickyTabPageTabBar: React.FC<{
   onTabPress?(tab: { label: string; index: number }): void
 }> = ({ onTabPress }) => {
   const screen = useScreenDimensions()
-  const { tabLabels, activeTabIndex, setActiveTabIndex, tabVisualClues } = useStickyTabPageContext()
+  const { activeTabIndex, adjustCurrentOffset, setActiveTabIndex, tabLabels, tabVisualClues } =
+    useStickyTabPageContext()
   activeTabIndex.useUpdates()
 
   const [tabLayouts] = useState<Array<LayoutRectangle | null>>(tabLabels.map(() => null))
@@ -50,6 +51,10 @@ export const StickyTabPageTabBar: React.FC<{
     visualClues: tabVisualClues[index],
   }))
 
+  useEffect(() => {
+    adjustCurrentOffset()
+  }, [screen.width])
+
   return (
     <NavigationalTabs
       tabs={tabs}
@@ -79,9 +84,9 @@ export const StickyTab: React.FC<{
             paddingHorizontal: 15,
           }}
         >
-          <Sans size="3" weight={active ? "medium" : "regular"}>
+          <Text variant="sm" weight={active ? "medium" : "regular"}>
             {label}
-          </Sans>
+          </Text>
         </View>
       </TouchableOpacity>
     </View>

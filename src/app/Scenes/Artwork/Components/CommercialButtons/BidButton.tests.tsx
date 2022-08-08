@@ -12,7 +12,7 @@ import {
   RegisteredBidder,
 } from "app/__fixtures__/ArtworkBidAction"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { merge as _merge } from "lodash"
 import { Settings } from "luxon"
@@ -84,7 +84,7 @@ describe("BidButton", () => {
 
   describe("for closed auction", () => {
     it("does not display anything", () => {
-      const { toJSON } = renderWithWrappersTL(
+      const { toJSON } = renderWithWrappers(
         <TestWrapper auctionState={"hasEnded" as AuctionTimerState} />
       )
 
@@ -99,7 +99,7 @@ describe("BidButton", () => {
 
   describe("for auction preview", () => {
     it("and not registered bidder", () => {
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
@@ -119,7 +119,7 @@ describe("BidButton", () => {
         identityVerified: false,
       }
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
@@ -138,7 +138,7 @@ describe("BidButton", () => {
       })
       const me = { identityVerified: true }
 
-      const { getByText, queryByText } = renderWithWrappersTL(
+      const { getByText, queryByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
@@ -154,7 +154,7 @@ describe("BidButton", () => {
     it("with bidder registration pending approval", () => {
       const artwork = merge({}, ArtworkFromAuctionPreview, BidderPendingApproval)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
@@ -172,7 +172,7 @@ describe("BidButton", () => {
       })
       const me = { identityVerified: false }
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
@@ -191,7 +191,7 @@ describe("BidButton", () => {
       })
       const me = { identityVerified: true }
 
-      const { getByText, queryByText } = renderWithWrappersTL(
+      const { getByText, queryByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
@@ -207,7 +207,7 @@ describe("BidButton", () => {
     it("with registered bidder", () => {
       const artwork = merge({}, ArtworkFromAuctionPreview, RegisteredBidder)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.PREVIEW} />
       )
 
@@ -224,7 +224,7 @@ describe("BidButton", () => {
     it("with open registration and not registered bidder ", () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, NotRegisteredToBid)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -239,7 +239,7 @@ describe("BidButton", () => {
     it("with closed registration and not registered bidder ", () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationClosed, NotRegisteredToBid)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -254,7 +254,7 @@ describe("BidButton", () => {
     it("with bidder registration pending approval", () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, BidderPendingApproval)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -269,7 +269,7 @@ describe("BidButton", () => {
     it("with registered bidder", () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegisteredBidder)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -284,7 +284,7 @@ describe("BidButton", () => {
     it("with registered bidder with bids", () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegistedBidderWithBids)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.CLOSING} />
       )
 
@@ -304,7 +304,7 @@ describe("BidButton", () => {
       it("displays 'Register to bid' if the user is not verified", () => {
         const me = { identityVerified: false }
 
-        const { getByText } = renderWithWrappersTL(
+        const { getByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.CLOSING} />
         )
 
@@ -320,7 +320,7 @@ describe("BidButton", () => {
       it("displays 'Bid' if the user is verified", () => {
         const me = { identityVerified: true }
 
-        const { getByText, queryByText } = renderWithWrappersTL(
+        const { getByText, queryByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.CLOSING} />
         )
 
@@ -343,7 +343,7 @@ describe("BidButton", () => {
         })
         const me = { identityVerified: false }
 
-        const { getByText, queryByText } = renderWithWrappersTL(
+        const { getByText, queryByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.CLOSING} />
         )
 
@@ -362,7 +362,7 @@ describe("BidButton", () => {
     it("with open registration and not registered bidder ", () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, NotRegisteredToBid)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
@@ -377,7 +377,7 @@ describe("BidButton", () => {
     it("with closed registration and not registered bidder ", () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationClosed, NotRegisteredToBid)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
@@ -392,7 +392,7 @@ describe("BidButton", () => {
     it("with bidder registration pending approval", () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, BidderPendingApproval)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
@@ -407,7 +407,7 @@ describe("BidButton", () => {
     it("with registered bidder", () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegisteredBidder)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
@@ -422,7 +422,7 @@ describe("BidButton", () => {
     it("with registered bidder with bids", () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegistedBidderWithBids)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
@@ -442,7 +442,7 @@ describe("BidButton", () => {
       it("displays 'Register to bid' if the user is not verified", () => {
         const me = { identityVerified: false }
 
-        const { getByText } = renderWithWrappersTL(
+        const { getByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
         )
 
@@ -458,7 +458,7 @@ describe("BidButton", () => {
       it("displays 'Bid' if the user is verified", () => {
         const me = { identityVerified: true }
 
-        const { getByText, queryByText } = renderWithWrappersTL(
+        const { getByText, queryByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
         )
 
@@ -481,7 +481,7 @@ describe("BidButton", () => {
         })
         const me = { identityVerified: false }
 
-        const { getByText, queryByText } = renderWithWrappersTL(
+        const { getByText, queryByText } = renderWithWrappers(
           <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
         )
 
@@ -499,7 +499,7 @@ describe("BidButton", () => {
   describe("for live auction", () => {
     it("with open registration and not registered bidder ", () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, NotRegisteredToBid)
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
       )
 
@@ -514,7 +514,7 @@ describe("BidButton", () => {
     it("with closed registration and not registered bidder ", () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationClosed, NotRegisteredToBid)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
       )
 
@@ -530,7 +530,7 @@ describe("BidButton", () => {
     it("with bidder registration pending approval", () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, BidderPendingApproval)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
       )
 
@@ -545,7 +545,7 @@ describe("BidButton", () => {
     it("with registered bidder", () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, RegisteredBidder)
 
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_ONGOING} />
       )
 

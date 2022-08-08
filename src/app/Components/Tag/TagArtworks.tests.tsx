@@ -1,7 +1,7 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { TagArtworksTestsQuery } from "__generated__/TagArtworksTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -52,19 +52,19 @@ describe("TagArtworks", () => {
   }
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
   })
 
   it("renders filter header", async () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
 
     await waitFor(() => expect(getByText("Sort & Filter")).toBeTruthy())
   })
 
   it("renders artworks grid", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment, {
       FilterArtworksConnection() {
         return {
@@ -80,7 +80,7 @@ describe("TagArtworks", () => {
   })
 
   it("renders empty artworks grid view", async () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment, {
       FilterArtworksConnection() {
         return {
@@ -112,7 +112,7 @@ describe("TagArtworks", () => {
   })
 
   it("renders empty message when artworks is empty", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment, {
       Tag() {
         return {

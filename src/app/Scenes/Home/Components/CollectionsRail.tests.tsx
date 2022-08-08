@@ -9,7 +9,7 @@ import { navigate } from "app/navigation/navigate"
 import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
 import { CardRailCard } from "app/Components/Home/CardRailCard"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import HomeAnalytics from "../homeAnalytics"
 import { CollectionsRailFragmentContainer } from "./CollectionsRail"
 
@@ -53,7 +53,7 @@ describe("CollectionsRailFragmentContainer", () => {
   })
 
   it("doesn't throw when rendered", () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -72,7 +72,7 @@ describe("CollectionsRailFragmentContainer", () => {
       // @ts-ignore
       result.artworksConnection.edges = []
     })
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -86,7 +86,7 @@ describe("CollectionsRailFragmentContainer", () => {
   })
 
   it("routes to collection URL", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -103,7 +103,7 @@ describe("CollectionsRailFragmentContainer", () => {
   })
 
   it("tracks collection thumbnail taps", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

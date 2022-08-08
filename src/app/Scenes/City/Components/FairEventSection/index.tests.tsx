@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { FairEventSection } from "./index"
 
 const data = [
@@ -17,7 +17,7 @@ const data = [
 
 describe("FairEventSection", () => {
   it("renders properly", () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <FairEventSection data={data} citySlug="tefaf-new-york-fall-2019" />
     )
 

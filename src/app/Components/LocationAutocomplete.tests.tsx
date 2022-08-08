@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { getLocationDetails, getLocationPredictions } from "app/utils/googleMaps"
 import { buildLocationDisplay, LocationAutocomplete } from "./LocationAutocomplete"
 
@@ -13,7 +13,7 @@ const mockOnChange = jest.fn()
 
 describe("LocationAutocomplete", () => {
   it("pre-fills the input with the initialLocation", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <LocationAutocomplete initialLocation={initialLocation} onChange={mockOnChange} />
     )
 
@@ -21,7 +21,7 @@ describe("LocationAutocomplete", () => {
   })
 
   it("pre-fills the input with the displayLocation", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <LocationAutocomplete
         displayLocation={buildLocationDisplay(initialLocation)}
         onChange={mockOnChange}
@@ -38,7 +38,7 @@ describe("LocationAutocomplete", () => {
     })
 
     it("queries google when the user types 3 or more characters", async () => {
-      const { getByTestId, getByText } = renderWithWrappersTL(
+      const { getByTestId, getByText } = renderWithWrappers(
         <LocationAutocomplete onChange={mockOnChange} />
       )
 
@@ -64,7 +64,7 @@ describe("LocationAutocomplete", () => {
     })
 
     it("calls the onChange with the correct location and clears the predictions when the user selects a location", async () => {
-      const { getByTestId } = renderWithWrappersTL(<LocationAutocomplete onChange={mockOnChange} />)
+      const { getByTestId } = renderWithWrappers(<LocationAutocomplete onChange={mockOnChange} />)
 
       const input = getByTestId("autocomplete-location-input")
 
@@ -94,7 +94,7 @@ describe("LocationAutocomplete", () => {
     })
 
     it("calls onChange with a custom location", async () => {
-      const { getByTestId } = renderWithWrappersTL(
+      const { getByTestId } = renderWithWrappers(
         <LocationAutocomplete allowCustomLocation onChange={mockOnChange} />
       )
 
@@ -111,13 +111,13 @@ describe("LocationAutocomplete", () => {
     })
   })
 
-  describe("when there are no results", async () => {
+  describe("when there are no results", () => {
     beforeEach(() => {
       ;(getLocationPredictions as jest.Mock).mockResolvedValue([])
     })
 
     it("shows a message", async () => {
-      const { getByText, getByTestId } = renderWithWrappersTL(
+      const { getByText, getByTestId } = renderWithWrappers(
         <LocationAutocomplete showError onChange={mockOnChange} />
       )
 

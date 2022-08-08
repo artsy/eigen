@@ -71,6 +71,8 @@ export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
   return {
     artwork: "-decayed_merch",
     saleArtwork: "position",
+    // TODO: Replace newSaleArtwork with saleArtwork when AREnableArtworksConnectionForAuction is released
+    newSaleArtwork: "sale_position",
     showArtwork: "partner_show_position",
     auctionResult: "DATE_DESC",
     geneArtwork: "-partner_updated_at",
@@ -187,6 +189,8 @@ export type FilterArray = ReadonlyArray<FilterData>
 export type FilterType =
   | "artwork"
   | "saleArtwork"
+  // TODO: Replace newSaleArtwork with saleArtwork when AREnableArtworksConnectionForAuction is released
+  | "newSaleArtwork"
   | "showArtwork"
   | "auctionResult"
   | "geneArtwork"
@@ -240,6 +244,12 @@ const DEFAULT_SALE_ARTWORKS_PARAMS = {
   estimateRange: "",
 } as FilterParams
 
+// TODO: Replace DEFAULT_NEW_SALE_ARTWORKS_PARAMS with DEFAULT_SALE_ARTWORKS_PARAMS when AREnableArtworksConnectionForAuction is released
+const DEFAULT_NEW_SALE_ARTWORKS_PARAMS = {
+  sort: "sale_position",
+  estimateRange: "",
+} as FilterParams
+
 const DEFAULT_SHOW_ARTWORKS_PARAMS = {
   ...DEFAULT_ARTWORKS_PARAMS,
   sort: "partner_show_position",
@@ -278,6 +288,8 @@ const getDefaultParamsByType = (filterType: FilterType) => {
   return {
     artwork: DEFAULT_ARTWORKS_PARAMS,
     saleArtwork: DEFAULT_SALE_ARTWORKS_PARAMS,
+    // TODO: Replace newSaleArtwork with saleArtwork when AREnableArtworksConnectionForAuction is released
+    newSaleArtwork: DEFAULT_NEW_SALE_ARTWORKS_PARAMS,
     showArtwork: DEFAULT_SHOW_ARTWORKS_PARAMS,
     auctionResult: DEFAULT_AUCTION_RESULT_PARAMS,
     geneArtwork: DEFAULT_GENE_ARTWORK_PARAMS,

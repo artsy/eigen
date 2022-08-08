@@ -1,6 +1,6 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Platform } from "react-native"
 import { MyProfileSettings } from "./MyProfileSettings"
 
@@ -9,7 +9,7 @@ jest.unmock("react-relay")
 
 describe(MyProfileSettings, () => {
   const getWrapper = () => {
-    const tree = renderWithWrappers(<MyProfileSettings />)
+    const tree = renderWithWrappersLEGACY(<MyProfileSettings />)
     return tree
   }
 

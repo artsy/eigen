@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ArtworkFilterApplyButton, ArtworkFilterApplyButtonProps } from "./ArtworkFilterApplyButton"
 
 const defaultProps: ArtworkFilterApplyButtonProps = {
@@ -16,7 +16,7 @@ describe("ArtworkFilterApplyButton", () => {
 
   it("cannot press if disabled prop is passed", () => {
     const onPressMock = jest.fn()
-    const { getByText } = renderWithWrappersTL(<TestWrapper disabled />)
+    const { getByText } = renderWithWrappers(<TestWrapper disabled />)
     const button = getByText("Show Results")
 
     fireEvent.press(button)
@@ -27,7 +27,7 @@ describe("ArtworkFilterApplyButton", () => {
 
   it('should call "onPress" handler when it is pressed', () => {
     const onPressMock = jest.fn()
-    const { getByText } = renderWithWrappersTL(<TestWrapper onPress={onPressMock} />)
+    const { getByText } = renderWithWrappers(<TestWrapper onPress={onPressMock} />)
 
     fireEvent.press(getByText("Show Results"))
 
@@ -35,14 +35,14 @@ describe("ArtworkFilterApplyButton", () => {
   })
 
   it('should show "Create Alert" button only when shouldShowCreateAlertButton prop is specified', () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper shouldShowCreateAlertButton />)
+    const { getByText } = renderWithWrappers(<TestWrapper shouldShowCreateAlertButton />)
 
     expect(getByText("Create Alert")).toBeTruthy()
   })
 
   it('should call "onCreateAlertPress" handler when "Create Alert" is pressed', () => {
     const onCreateAlertPressMock = jest.fn()
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <TestWrapper shouldShowCreateAlertButton onCreateAlertPress={onCreateAlertPressMock} />
     )
 

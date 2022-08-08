@@ -7,12 +7,12 @@
  *  const { text }  = getTestSnapshot(<MyComponent title='Hi!' />)
  *  expect(text).toContain('Hi!')
  */
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import "react-native"
 
 export function getTestWrapper(TestComponent: any /* STRICTNESS_MIGRATION */) {
   try {
-    const snapshot = renderWithWrappers(TestComponent)
+    const snapshot = renderWithWrappersLEGACY(TestComponent)
     const text = JSON.stringify(snapshot.toJSON())
     const json = snapshot.toTree()
 
@@ -38,6 +38,6 @@ export function getTestWrapper(TestComponent: any /* STRICTNESS_MIGRATION */) {
  */
 
 export function getTextTree(TestComponent: any /* STRICTNESS_MIGRATION */) {
-  const snapshot = renderWithWrappers(TestComponent)
+  const snapshot = renderWithWrappersLEGACY(TestComponent)
   return JSON.stringify(snapshot.toJSON())
 }

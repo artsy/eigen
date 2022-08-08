@@ -1,12 +1,12 @@
 import { fireEvent } from "@testing-library/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/navigation/navigate"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { PrivacyRequest } from "./PrivacyRequest"
 
 describe(PrivacyRequest, () => {
   it("handles privacy policy link taps", () => {
-    const { getByText } = renderWithWrappersTL(<PrivacyRequest />)
+    const { getByText } = renderWithWrappers(<PrivacyRequest />)
 
     fireEvent.press(getByText("Privacy Policy"))
 
@@ -14,7 +14,7 @@ describe(PrivacyRequest, () => {
   })
 
   it("handles email link taps", () => {
-    const { getByText } = renderWithWrappersTL(<PrivacyRequest />)
+    const { getByText } = renderWithWrappers(<PrivacyRequest />)
     fireEvent.press(getByText("privacy@artsy.net."))
 
     expect(
@@ -23,7 +23,7 @@ describe(PrivacyRequest, () => {
   })
 
   it("handles CCPA button presses", () => {
-    const { getByText } = renderWithWrappersTL(<PrivacyRequest />)
+    const { getByText } = renderWithWrappers(<PrivacyRequest />)
 
     fireEvent.press(getByText("Do not sell my personal information"))
 

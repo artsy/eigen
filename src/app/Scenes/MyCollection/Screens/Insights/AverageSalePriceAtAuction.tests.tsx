@@ -1,31 +1,50 @@
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
-import { RelayEnvironmentProvider } from "react-relay"
+import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
+import { useLazyLoadQuery } from "react-relay"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { AverageSalePriceAtAuction } from "./AverageSalePriceAtAuction"
+import {
+  AverageSalePriceAtAuction,
+  AverageSalePriceAtAuctionScreenQuery,
+} from "./AverageSalePriceAtAuction"
 
 jest.unmock("react-relay")
 
 describe("AverageSalePriceAtAuction", () => {
-  const mockArtist = {
-    name: "Andy Warhol",
-    formattedNationalityAndBirthday: "American, 1928–1987",
-    imageUrl: "https://d32dm0rphc51dk.cloudfront.net/E-k-uLoQADM8AjadsSKHrA/square.jpg",
-    initials: "AW",
-  }
+  const TestRenderer = () => {
+    useLazyLoadQuery<AverageSalePriceAtAuctionQuery>(AverageSalePriceAtAuctionScreenQuery, {
+      artistID: "artist-id",
+    })
 
-  const TestRenderer = () => <AverageSalePriceAtAuction artistData={mockArtist} />
+    return <AverageSalePriceAtAuction artistID="artist-id" />
+  }
 
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   it("renders title", async () => {
-    const { getByTestId } = renderWithWrappersTL(
-      <RelayEnvironmentProvider environment={mockEnvironment}>
-        <TestRenderer />
-      </RelayEnvironmentProvider>
-    )
+    const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+
+    act(() => {
+      mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
+    })
+
+    await flushPromiseQueue()
 
     expect(getByTestId("Average_Auction_Price_title")).toBeTruthy()
   })
 })
+
+const mockResult = {
+  artist: {
+    internalID: "artist-id",
+    name: "Artist Name",
+    imageUrl: "image-url",
+  },
+  me: {
+    myCollectionInfo: {
+      artistsCount: 3,
+    },
+  },
+}

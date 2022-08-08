@@ -1,5 +1,5 @@
 import ChevronIcon from "app/Icons/ChevronIcon"
-import { Box, Flex, Sans } from "palette"
+import { Box, Flex, Text } from "palette"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
 
 interface Props {
@@ -13,9 +13,9 @@ export const CaretButton: React.FC<Props> = ({ text, onPress, textColor, testID 
   return (
     <TouchableOpacity onPress={onPress} testID={testID}>
       <Flex flexDirection="row" align-items="base-line">
-        <Sans size="3t" weight="medium" color={textColor}>
+        <Text variant="sm" weight="medium" color={textColor}>
           {text}
-        </Sans>
+        </Text>
         <Box ml={0.5} style={{ marginTop: 1.5 }} justifyContent="center">
           <ChevronIcon />
         </Box>

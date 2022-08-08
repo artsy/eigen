@@ -1,10 +1,10 @@
-import { AuctionIcon, Box, EditIcon, Flex, PaymentIcon, Sans, Spacer } from "palette"
+import { AuctionIcon, Box, EditIcon, Flex, PaymentIcon, Spacer, Text } from "palette"
 import { TextContainer } from "./TextContainer"
 
 export const HowItWorks: React.FC = () => {
   return (
     <Box px={2}>
-      <Sans size="8">How it works</Sans>
+      <Text variant="lg">How it works</Text>
 
       <Spacer mb={2} />
       <Flex flexDirection="row">
@@ -13,11 +13,11 @@ export const HowItWorks: React.FC = () => {
         </Box>
 
         <TextContainer>
-          <Sans size="4">Submit Once</Sans>
+          <Text variant="md">Submit Once</Text>
           <Spacer mb={0.3} />
-          <Sans color="black60" size="3t">
+          <Text variant="sm" color="black60">
             With a single submission, you'll access art buyers around the world.
-          </Sans>
+          </Text>
         </TextContainer>
       </Flex>
       <Spacer mb={2} />
@@ -27,11 +27,11 @@ export const HowItWorks: React.FC = () => {
         </Box>
 
         <TextContainer>
-          <Sans size="4">Make Your Sale</Sans>
+          <Text variant="md">Make Your Sale</Text>
           <Spacer mb={0.3} />
-          <Sans color="black60" size="3t">
+          <Text variant="sm" color="black60">
             Choose from several Artsy marketplace resale options.
-          </Sans>
+          </Text>
         </TextContainer>
       </Flex>
       <Spacer mb={2} />
@@ -41,11 +41,11 @@ export const HowItWorks: React.FC = () => {
         </Box>
 
         <TextContainer>
-          <Sans size="4">Receive Payment</Sans>
+          <Text variant="md">Receive Payment</Text>
           <Spacer mb={0.3} />
-          <Sans color="black60" size="3t">
+          <Text variant="sm" color="black60">
             We'll help you ship the work, and ensure you receive payment quickly.
-          </Sans>
+          </Text>
         </TextContainer>
       </Flex>
     </Box>

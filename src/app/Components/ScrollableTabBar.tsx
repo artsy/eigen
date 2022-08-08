@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Sans } from "palette"
+import { Text } from "palette"
 import React from "react"
 import { Animated, Dimensions, LayoutRectangle, ScrollView, View } from "react-native"
 import styled from "styled-components/native"
@@ -45,10 +45,6 @@ const TabButton = styled(View)<{ active: boolean }>`
 interface ScrollableTabProps {
   tabLabel: string
 }
-
-const TabLabel = styled(Sans)<{ isActive: boolean }>`
-  color: ${(p) => (p.isActive ? themeGet("colors.black100") : themeGet("colors.black30"))};
-`
 
 export const ScrollableTab: React.FC<ScrollableTabProps> = ({ children }) => (
   <View style={{ flex: 1, overflow: "hidden" }}>{children}</View>
@@ -101,9 +97,9 @@ export default class ScrollableTabBar extends React.Component<
         }}
       >
         <TabButton active={isTabActive}>
-          <TabLabel size="3" isActive={isTabActive}>
+          <Text variant="sm" color={isTabActive ? "black100" : "black30"}>
             {name}
-          </TabLabel>
+          </Text>
         </TabButton>
       </Button>
     )

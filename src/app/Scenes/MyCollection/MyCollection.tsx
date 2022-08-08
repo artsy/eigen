@@ -9,6 +9,7 @@ import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtwork
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { PAGE_SIZE } from "app/Components/constants"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { StickTabPageRefreshControl } from "app/Components/StickyTabPage/StickTabPageRefreshControl"
 import { StickyTabPageFlatListContext } from "app/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -39,10 +40,8 @@ import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { Button, Flex, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "shared/hooks"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
@@ -204,7 +203,9 @@ const MyCollection: React.FC<{
           flexGrow: artworks.length ? undefined : 1,
           justifyContent: artworks.length ? "flex-start" : "center",
         }}
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
+        refreshControl={
+          <StickTabPageRefreshControl onRefresh={refetch} refreshing={isRefreshing} />
+        }
         innerRef={innerFlatListRef}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
@@ -328,7 +329,6 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 }
 
 export const MyCollectionPlaceholder: React.FC = () => {
-  const screenWidth = useScreenDimensions().width
   const viewOption = GlobalStore.useAppState((state) => state.userPrefs.artworkViewOption)
   const enableMyCollectionInsights = useFeatureFlag("AREnableMyCollectionInsights")
 
@@ -339,21 +339,22 @@ export const MyCollectionPlaceholder: React.FC = () => {
         <Spacer />
         <PlaceholderText width={70} margin={20} />
       </Flex>
-      {/* collector's insfo */}
+      {/* collector's info */}
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
-        <Flex>
+        <Flex flex={1}>
           <Spacer mb={20} />
           {/* icon, name, time joined */}
           <Flex flexDirection="row">
-            <PlaceholderBox width={100} height={100} borderRadius={50} />
-            <Flex justifyContent="center" ml={2}>
-              <PlaceholderText width={80} height={35} />
-              <PlaceholderText width={100} height={35} />
-              <PlaceholderText width={100} />
+            <PlaceholderBox width={50} height={50} borderRadius={50} />
+            <Flex flex={1} justifyContent="center" ml={2}>
+              <PlaceholderText width={80} height={25} />
+              <PlaceholderText width={100} height={15} />
+            </Flex>
+            <Flex justifyContent="center">
+              <PlaceholderBox width={20} height={20} />
             </Flex>
           </Flex>
-          <Spacer mb={2} mt={1} />
-          <PlaceholderBox width={screenWidth - 40} height={30} borderRadius={50} />
+          <Spacer my={1} />
         </Flex>
       </Flex>
       <Spacer mb={2} mt={1} />

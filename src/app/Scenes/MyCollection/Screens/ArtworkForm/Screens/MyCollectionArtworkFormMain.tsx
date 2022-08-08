@@ -5,7 +5,7 @@ import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import { Box, Button, Flex, Input, Join, Sans, Separator, Spacer, Text } from "palette"
+import { Box, Button, Flex, Input, Join, Separator, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useEffect } from "react"
 import { Alert, ScrollView, TouchableOpacity } from "react-native"
@@ -13,8 +13,8 @@ import { ArtsyKeyboardAvoidingView } from "shared/utils"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArrowDetails } from "../Components/ArrowDetails"
 import { ArtistSearchResult } from "../Components/ArtistSearchResult"
+import { CategoryPicker } from "../Components/CategoryPicker"
 import { Dimensions } from "../Components/Dimensions"
-import { MediumPicker } from "../Components/MediumPicker"
 import { Rarity } from "../Components/Rarity"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
@@ -123,15 +123,15 @@ export const MyCollectionArtworkFormMain: React.FC<
                 accessibilityLabel="Year"
                 value={formikValues.date}
               />
-              <MediumPicker />
+              <CategoryPicker />
               <Input
                 title="Materials"
                 placeholder="Materials"
-                onChangeText={formik.handleChange("category")}
-                onBlur={formik.handleBlur("category")}
+                onChangeText={formik.handleChange("medium")}
+                onBlur={formik.handleBlur("medium")}
                 testID="MaterialsInput"
                 accessibilityLabel="Materials"
-                value={formikValues.category}
+                value={formikValues.medium}
               />
               <Rarity />
               <Dimensions />
@@ -229,7 +229,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           {!!(SHOW_FORM_VALIDATION_ERRORS_IN_DEV && __DEV__ && formik.errors) && (
             <ScreenMargin>
               <Box my={2}>
-                <Sans size="3">Errors: {JSON.stringify(formik.errors)}</Sans>
+                <Text variant="sm">Errors: {JSON.stringify(formik.errors)}</Text>
               </Box>
             </ScreenMargin>
           )}

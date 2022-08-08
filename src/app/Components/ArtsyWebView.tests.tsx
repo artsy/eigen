@@ -2,7 +2,7 @@ import { waitFor } from "@testing-library/react-native"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { goBack, navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { appJson } from "app/utils/jsonFiles"
 import mockFetch from "jest-fetch-mock"
 import { stringify } from "query-string"
@@ -34,7 +34,7 @@ jest.mock("app/utils/useWebViewEvent", () => ({
 
 describe("ArtsyWebView", () => {
   it("shows react-native-webview", () => {
-    const tree = renderWithWrappers(<ArtsyWebView url="random-url" />)
+    const tree = renderWithWrappersLEGACY(<ArtsyWebView url="random-url" />)
     expect(tree.root.findAllByType(WebView).length).toEqual(1)
   })
 })
@@ -45,7 +45,7 @@ describe("ArtsyWebViewPage", () => {
   })
 
   const render = (props: Partial<React.ComponentProps<typeof ArtsyWebViewPage>> = {}) =>
-    renderWithWrappers(<ArtsyWebViewPage url="https://staging.artsy.net/hello" {...props} />)
+    renderWithWrappersLEGACY(<ArtsyWebViewPage url="https://staging.artsy.net/hello" {...props} />)
   const webViewProps = (tree: ReturnType<typeof render>) =>
     tree.root.findByType(WebView).props as WebViewProps
   it(`renders a WebView`, () => {
@@ -236,7 +236,7 @@ describe(useWebViewCookies, () => {
       native: { sessionState: { authenticationToken: "userAccessToken" } },
     })
     act(() => {
-      renderWithWrappers(<Wrapper />)
+      renderWithWrappersLEGACY(<Wrapper />)
     })
     waitFor(() => {
       expect(mockFetch).toHaveBeenCalledWith("https://staging.artsy.net", {
@@ -254,7 +254,7 @@ describe(useWebViewCookies, () => {
       native: { sessionState: { authenticationToken: "userAccessToken" } },
     })
     mockFetch.mockReturnValue(Promise.resolve({ ok: false, status: 500 } as any))
-    const tree = renderWithWrappers(<Wrapper />)
+    const tree = renderWithWrappersLEGACY(<Wrapper />)
     await act(() => undefined)
     waitFor(() => expect(mockFetch).toHaveBeenCalledTimes(2))
 

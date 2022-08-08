@@ -13,6 +13,10 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '12.1'
 inhibit_all_warnings! # ignore all warnings from all pods
 
+
+$ReactNativeMapboxGLIOSVersion = '~> 6.4'
+
+
 def check_for_existing_netrc_file
   if !ENV['MAPBOX_DOWNLOAD_TOKEN']
     raise "You need a MAPBOX_DOWNLOAD_TOKEN in your .env.shared file.\nIf you work at artsy, check 1password.\nOtherwise create your own in the mapbox dashboard. https://docs.mapbox.com/ios/maps/guides/install"
@@ -38,9 +42,6 @@ end
 
 check_for_existing_netrc_file
 add_mapbox_creds
-
-
-$ReactNativeMapboxGLIOSVersion = '~> 6.4'
 
 pre_install do |installer|
   $RNMBGL.pre_install(installer)
@@ -154,6 +155,14 @@ target 'Artsy' do
       target.build_configurations.each do |config|
         config.build_settings['SWIFT_VERSION'] = '4.0' if swift4.include?(target.name)
       end
+    end
+
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = ""
+            config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
+            config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
+        end
     end
 
     # TODO:

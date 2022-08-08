@@ -2,7 +2,7 @@ import { InquiryButtonsTestsQuery } from "__generated__/InquiryButtonsTestsQuery
 import { navigate } from "app/navigation/navigate"
 import { InquiryButtonsFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryButtons"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -56,7 +56,7 @@ const TestRenderer = () => {
 }
 
 const getWrapper = (mockResolvers = {}) => {
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer />)
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, mockResolvers)

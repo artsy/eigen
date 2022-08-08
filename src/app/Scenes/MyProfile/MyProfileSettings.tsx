@@ -2,7 +2,7 @@ import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { navigate } from "app/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
-import { Button, Flex, Sans, Separator, Spacer, useColor } from "palette"
+import { Button, Flex, Separator, Spacer, Text, useColor } from "palette"
 import { Alert, ScrollView } from "react-native"
 import { Tab } from "../Favorites/Favorites"
 
@@ -16,9 +16,9 @@ export const MyProfileSettings: React.FC<{}> = () => {
 
   return (
     <ScrollView>
-      <Sans size="8" mx="2" mt="6">
+      <Text variant="lg" mx="2" mt="6">
         {"Settings"}
-      </Sans>
+      </Text>
       <Spacer mt={3} mb={2} />
       <SectionHeading title="FAVORITES" />
       <Spacer my={1} />
@@ -102,9 +102,9 @@ export const MyProfileSettings: React.FC<{}> = () => {
 }
 
 export const SectionHeading: React.FC<{ title: string }> = ({ title }) => (
-  <Sans size="3" color="black100" mb="1" mx="2">
+  <Text variant="sm" color="black100" mb="1" mx="2">
     {title}
-  </Sans>
+  </Text>
 )
 
 export function confirmLogout() {

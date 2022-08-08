@@ -2,7 +2,7 @@ import { LotsByFollowedArtistsRailTestsQuery } from "__generated__/LotsByFollowe
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -38,7 +38,7 @@ describe("LotsByFollowedArtistsRail", () => {
   })
 
   it("Renders list of sale artworks without throwing an error", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
     await flushPromiseQueue()
@@ -48,7 +48,7 @@ describe("LotsByFollowedArtistsRail", () => {
   })
 
   it("returns null if there are no artworks", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const noArtworksProps = {
       Me: () => ({

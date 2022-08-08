@@ -1,4 +1,4 @@
-import { ArrowRightIcon, BorderBox, Box, Flex, Sans } from "palette"
+import { ArrowRightIcon, BorderBox, Box, Flex, Text } from "palette"
 import React, { useRef } from "react"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -65,13 +65,13 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) =
               p={showImage ? 0 : 1}
               pl={showImage ? 0 : 2}
             >
-              <Sans size="3t" weight="medium" style={{ flexWrap: "wrap" }}>
+              <Text variant="sm" weight="medium" style={{ flexWrap: "wrap" }}>
                 {headline}
-              </Sans>
+              </Text>
               <Box position="relative">
-                <Sans size="3t" color="black60">
+                <Text variant="sm" color="black60">
                   Consign with Artsy
-                </Sans>
+                </Text>
               </Box>
             </Flex>
           </Flex>

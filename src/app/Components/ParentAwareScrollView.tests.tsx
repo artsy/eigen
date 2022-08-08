@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { FlatList } from "react-native"
 import ParentAwareScrollView from "./ParentAwareScrollView"
 
@@ -26,7 +26,7 @@ describe("<ParentAwareScrollView>", () => {
         renderItem={({ item }) => item}
       />
     )
-    const tree = renderWithWrappers(<AFlatList />)
+    const tree = renderWithWrappersLEGACY(<AFlatList />)
     const flatList = tree.root.findByType(FlatList)
     flatList.instance._listRef._onScroll(scrollEvent)
 

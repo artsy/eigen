@@ -1,7 +1,7 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text } from "react-native"
 import { ReactTestInstance } from "react-test-renderer"
 import { FilterArray, FilterData, FilterParamName } from "../ArtworkFilterHelpers"
@@ -75,28 +75,28 @@ describe("SizesOptionsScreen", () => {
   }
 
   it("renders the options", () => {
-    const { getByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    expect(getByText("Small (under 16in)")).toBeTruthy()
-    expect(getByText("Medium (16in – 40in)")).toBeTruthy()
-    expect(getByText("Large (over 40in)")).toBeTruthy()
+    expect(screen.getByText("Small (under 16in)")).toBeTruthy()
+    expect(screen.getByText("Medium (16in – 40in)")).toBeTruthy()
+    expect(screen.getByText("Large (over 40in)")).toBeTruthy()
 
     // Custom inputs
-    expect(getByLabelText("Minimum Width Input")).toBeTruthy()
-    expect(getByLabelText("Maximum Width Input")).toBeTruthy()
-    expect(getByLabelText("Minimum Height Input")).toBeTruthy()
-    expect(getByLabelText("Maximum Height Input")).toBeTruthy()
+    expect(screen.getByLabelText("Minimum Width Input")).toBeTruthy()
+    expect(screen.getByLabelText("Maximum Width Input")).toBeTruthy()
+    expect(screen.getByLabelText("Minimum Height Input")).toBeTruthy()
+    expect(screen.getByLabelText("Maximum Height Input")).toBeTruthy()
   })
 
   it("single option can be selected", () => {
-    const { getByText, getAllByA11yState, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    fireEvent.press(getByText("Small (under 16in)"))
+    fireEvent.press(screen.getByText("Small (under 16in)"))
 
-    const filters = getFilters(getByTestId("debug"))
+    const filters = getFilters(screen.getByTestId("debug"))
     const sizesFilter = getSizesFilterOption(filters)
 
-    expect(getAllByA11yState({ checked: true })[0]).toHaveTextContent("Small (under 16in)")
+    expect(screen.getAllByA11yState({ checked: true })[0]).toHaveTextContent("Small (under 16in)")
     expect(sizesFilter).toEqual({
       paramName: "sizes",
       displayText: "Small (under 16in)",
@@ -105,16 +105,16 @@ describe("SizesOptionsScreen", () => {
   })
 
   it("multiple options can be selected", () => {
-    const { getByText, getAllByA11yState, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    fireEvent.press(getByText("Small (under 16in)"))
-    fireEvent.press(getByText("Large (over 40in)"))
+    fireEvent.press(screen.getByText("Small (under 16in)"))
+    fireEvent.press(screen.getByText("Large (over 40in)"))
 
-    const filters = getFilters(getByTestId("debug"))
+    const filters = getFilters(screen.getByTestId("debug"))
     const sizesFilter = getSizesFilterOption(filters)
 
-    expect(getAllByA11yState({ checked: true })[0]).toHaveTextContent("Small (under 16in)")
-    expect(getAllByA11yState({ checked: true })[1]).toHaveTextContent("Large (over 40in)")
+    expect(screen.getAllByA11yState({ checked: true })[0]).toHaveTextContent("Small (under 16in)")
+    expect(screen.getAllByA11yState({ checked: true })[1]).toHaveTextContent("Large (over 40in)")
     expect(sizesFilter).toEqual({
       paramName: "sizes",
       displayText: "Small (under 16in), Large (over 40in)",
@@ -123,19 +123,19 @@ describe("SizesOptionsScreen", () => {
   })
 
   it("correctly select/unselect the same option", () => {
-    const { getByText, queryAllByA11yState, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    fireEvent.press(getByText("Small (under 16in)"))
+    fireEvent.press(screen.getByText("Small (under 16in)"))
     // ensures that the checked elements are the selected filter and one radio button
-    expect(queryAllByA11yState({ checked: true })).toHaveLength(2)
+    expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(2)
 
-    fireEvent.press(getByText("Small (under 16in)"))
+    fireEvent.press(screen.getByText("Small (under 16in)"))
 
-    const filters = getFilters(getByTestId("debug"))
+    const filters = getFilters(screen.getByTestId("debug"))
     const sizesFilter = getSizesFilterOption(filters)
 
     // ensures that the checked element is one radio button
-    expect(queryAllByA11yState({ checked: true })).toHaveLength(1)
+    expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(1)
     expect(sizesFilter).toEqual({
       paramName: "sizes",
       displayText: "All",
@@ -148,114 +148,108 @@ describe("SizesOptionsScreen", () => {
       __globalStoreTestUtils__?.injectState({
         userPrefs: { metric: "in" },
       })
-      const { queryByText, queryAllByText, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      expect(getByLabelText("in")).toBeTruthy()
-      expect(getByLabelText("in")).toHaveProp("accessibilityState", { checked: true })
+      expect(screen.getByLabelText("in")).toBeTruthy()
+      expect(screen.getByLabelText("in")).toHaveProp("accessibilityState", { checked: true })
 
-      expect(queryByText("Small (under 16in)")).toBeTruthy()
-      expect(queryByText("Medium (16in – 40in)")).toBeTruthy()
-      expect(queryByText("Large (over 40in)")).toBeTruthy()
+      expect(screen.queryByText("Small (under 16in)")).toBeTruthy()
+      expect(screen.queryByText("Medium (16in – 40in)")).toBeTruthy()
+      expect(screen.queryByText("Large (over 40in)")).toBeTruthy()
 
       // makes sure that "cm" appears in the screen only once for the radio button
-      expect(queryAllByText("cm")).toHaveLength(1)
+      expect(screen.queryAllByText("cm")).toHaveLength(1)
 
-      fireEvent.press(getByLabelText("cm"))
+      fireEvent.press(screen.getByLabelText("cm"))
 
-      expect(getByLabelText("in")).toHaveProp("accessibilityState", { checked: false })
-      expect(getByLabelText("cm")).toHaveProp("accessibilityState", { checked: true })
+      expect(screen.getByLabelText("in")).toHaveProp("accessibilityState", { checked: false })
+      expect(screen.getByLabelText("cm")).toHaveProp("accessibilityState", { checked: true })
 
-      expect(queryByText("Small (under 16in)")).toBeFalsy()
-      expect(queryByText("Medium (16in – 40in)")).toBeFalsy()
-      expect(queryByText("Large (over 40in)")).toBeFalsy()
+      expect(screen.queryByText("Small (under 16in)")).toBeFalsy()
+      expect(screen.queryByText("Medium (16in – 40in)")).toBeFalsy()
+      expect(screen.queryByText("Large (over 40in)")).toBeFalsy()
 
-      expect(queryByText("Small (under 40cm)")).toBeTruthy()
-      expect(queryByText("Medium (40cm – 100cm)")).toBeTruthy()
-      expect(queryByText("Large (over 100cm)")).toBeTruthy()
+      expect(screen.queryByText("Small (under 40cm)")).toBeTruthy()
+      expect(screen.queryByText("Medium (40cm – 100cm)")).toBeTruthy()
+      expect(screen.queryByText("Large (over 100cm)")).toBeTruthy()
 
       // makes sure that "in" appears in the screen only once for the radio button
-      expect(queryAllByText("in")).toHaveLength(1)
+      expect(screen.queryAllByText("in")).toHaveLength(1)
     })
   })
 
   describe("Custom Size", () => {
     it("should select the custom size option when a custom value is specified", () => {
-      const { getByLabelText, getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
+      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
-      expect(getAllByA11yState({ checked: true })[0]).toHaveTextContent("Custom Size")
+      expect(screen.getAllByA11yState({ checked: true })[0]).toHaveTextContent("Custom Size")
     })
 
     it("should clear custom values in filters when the custom size option is unselected", () => {
-      const { getByLabelText, getAllByA11yState, getByTestId } = renderWithWrappersTL(
-        <TestRenderer />
-      )
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
-      fireEvent.press(getAllByA11yState({ checked: true })[0])
+      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      fireEvent.press(screen.getAllByA11yState({ checked: true })[0])
 
-      const filters = getFilters(getByTestId("debug"))
+      const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
 
       expect(widthFilter?.paramValue).toBeUndefined()
     })
 
     it("should restore the previous custom values when the custom size options is selected again", () => {
-      const { getByLabelText, getByText, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
       let filters
       let widthFilter
 
-      fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
+      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
-      fireEvent.press(getByText("Custom Size"))
-      filters = getFilters(getByTestId("debug"))
+      fireEvent.press(screen.getByText("Custom Size"))
+      filters = getFilters(screen.getByTestId("debug"))
       widthFilter = getWidthFilterOption(filters)
       expect(widthFilter?.paramValue).toBeUndefined()
 
-      fireEvent.press(getByText("Custom Size"))
-      filters = getFilters(getByTestId("debug"))
+      fireEvent.press(screen.getByText("Custom Size"))
+      filters = getFilters(screen.getByTestId("debug"))
       widthFilter = getWidthFilterOption(filters)
       expect(widthFilter?.paramValue).toBe("5-*")
     })
 
     it("should unselect the custom size option when custom inputs are empty", () => {
-      const { getByLabelText, queryAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
-      expect(queryAllByA11yState({ checked: true })[0]).toBeTruthy()
+      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      expect(screen.queryAllByA11yState({ checked: true })[0]).toBeTruthy()
 
-      fireEvent.changeText(getByLabelText("Minimum Width Input"), "")
+      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "")
       // ensures that the checked element is one radio button
-      expect(queryAllByA11yState({ checked: true })).toHaveLength(1)
+      expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(1)
     })
 
     it("should keep custom inputs filled in if a predefined value is selected", () => {
-      const { getByLabelText, getByDisplayValue, getByText } = renderWithWrappersTL(
-        <TestRenderer />
-      )
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
-      fireEvent.changeText(getByLabelText("Maximum Width Input"), "10")
-      fireEvent.press(getByText("Small (under 16in)"))
+      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      fireEvent.changeText(screen.getByLabelText("Maximum Width Input"), "10")
+      fireEvent.press(screen.getByText("Small (under 16in)"))
 
-      expect(getByDisplayValue("5")).toBeTruthy()
-      expect(getByDisplayValue("10")).toBeTruthy()
+      expect(screen.getByDisplayValue("5")).toBeTruthy()
+      expect(screen.getByDisplayValue("10")).toBeTruthy()
     })
 
     it("should clear the previously selected option if a custom value is entered", () => {
-      const { getByText, getByLabelText, getAllByA11yState, getByTestId } = renderWithWrappersTL(
-        <TestRenderer />
-      )
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.press(getByText("Small (under 16in)"))
-      fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
+      fireEvent.press(screen.getByText("Small (under 16in)"))
+      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
-      const filters = getFilters(getByTestId("debug"))
+      const filters = getFilters(screen.getByTestId("debug"))
       const sizesFilter = getSizesFilterOption(filters)
       const widthFilter = getWidthFilterOption(filters)
 
-      expect(getAllByA11yState({ checked: true })).toHaveLength(2)
+      expect(screen.getAllByA11yState({ checked: true })).toHaveLength(2)
       expect(sizesFilter).toEqual({
         paramName: "sizes",
         displayText: "All",
@@ -269,11 +263,11 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns width option with minimum value", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
+      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
-      const filters = getFilters(getByTestId("debug"))
+      const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
       const heightFilter = getHeightFilterOption(filters)
 
@@ -282,11 +276,11 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns width option with maximum value", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Maximum Width Input"), "10")
+      fireEvent.changeText(screen.getByLabelText("Maximum Width Input"), "10")
 
-      const filters = getFilters(getByTestId("debug"))
+      const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
       const heightFilter = getHeightFilterOption(filters)
 
@@ -295,12 +289,12 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns width option with minimum and maximum values", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
-      fireEvent.changeText(getByLabelText("Maximum Width Input"), "10")
+      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      fireEvent.changeText(screen.getByLabelText("Maximum Width Input"), "10")
 
-      const filters = getFilters(getByTestId("debug"))
+      const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
       const heightFilter = getHeightFilterOption(filters)
 
@@ -309,11 +303,11 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns height option with minimum value", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Minimum Height Input"), "5")
+      fireEvent.changeText(screen.getByLabelText("Minimum Height Input"), "5")
 
-      const filters = getFilters(getByTestId("debug"))
+      const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
       const heightFilter = getHeightFilterOption(filters)
 
@@ -322,11 +316,11 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns height option with maximum value", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Maximum Height Input"), "10")
+      fireEvent.changeText(screen.getByLabelText("Maximum Height Input"), "10")
 
-      const filters = getFilters(getByTestId("debug"))
+      const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
       const heightFilter = getHeightFilterOption(filters)
 
@@ -335,12 +329,12 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns height option with minimum and maximum values", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Minimum Height Input"), "5")
-      fireEvent.changeText(getByLabelText("Maximum Height Input"), "10")
+      fireEvent.changeText(screen.getByLabelText("Minimum Height Input"), "5")
+      fireEvent.changeText(screen.getByLabelText("Maximum Height Input"), "10")
 
-      const filters = getFilters(getByTestId("debug"))
+      const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
       const heightFilter = getHeightFilterOption(filters)
 
@@ -349,12 +343,12 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("returns width option with minimum value and height option with maximum value", () => {
-      const { getByTestId, getByLabelText } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
-      fireEvent.changeText(getByLabelText("Maximum Height Input"), "10")
+      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      fireEvent.changeText(screen.getByLabelText("Maximum Height Input"), "10")
 
-      const filters = getFilters(getByTestId("debug"))
+      const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)
       const heightFilter = getHeightFilterOption(filters)
 
@@ -365,31 +359,29 @@ describe("SizesOptionsScreen", () => {
 
   describe("Clear button", () => {
     it('should not display "Clear" if nothing is selected', () => {
-      const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      expect(queryByText("Clear")).toBeFalsy()
+      expect(screen.queryByText("Clear")).toBeFalsy()
     })
 
     it('should clear selected predefined values if "Clear" button is pressed', () => {
-      const { getByText, queryAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.press(getByText("Small (under 16in)"))
-      fireEvent.press(getByText("Clear"))
+      fireEvent.press(screen.getByText("Small (under 16in)"))
+      fireEvent.press(screen.getByText("Clear"))
 
       // only one of unit radio buttons is selected
-      expect(queryAllByA11yState({ checked: true })).toHaveLength(1)
+      expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(1)
     })
 
     it('should clear selected custom values if "Clear" button is pressed', () => {
-      const { getByText, getByLabelText, queryAllByA11yState } = renderWithWrappersTL(
-        <TestRenderer />
-      )
+      renderWithWrappers(<TestRenderer />)
 
-      fireEvent.changeText(getByLabelText("Minimum Width Input"), "5")
-      fireEvent.press(getByText("Clear"))
+      fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+      fireEvent.press(screen.getByText("Clear"))
 
       // only one of unit radio buttons is selected
-      expect(queryAllByA11yState({ checked: true })).toHaveLength(1)
+      expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(1)
     })
   })
 })

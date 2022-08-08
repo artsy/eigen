@@ -1,11 +1,11 @@
 import { fireEvent } from "@testing-library/react-native"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Dialog } from "./Dialog"
 
 describe("Dialog", () => {
   it("renders without error", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Dialog
         title="title"
         isVisible
@@ -20,7 +20,7 @@ describe("Dialog", () => {
   })
 
   it("should render details if it is passed", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Dialog
         title="title"
         detail="Some unique detail"
@@ -38,7 +38,7 @@ describe("Dialog", () => {
   it("should render the primary action button", () => {
     const primaryActionMock = jest.fn()
 
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Dialog
         title="title"
         isVisible
@@ -59,7 +59,7 @@ describe("Dialog", () => {
   it("should render the secondary action button if it is passed", () => {
     const secondaryActionMock = jest.fn()
 
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Dialog
         title="title"
         isVisible
@@ -83,7 +83,7 @@ describe("Dialog", () => {
 
   it("should call onBackgroundPress when backdrop is pressed", () => {
     const onBackgroundPressMock = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Dialog
         title="title"
         isVisible

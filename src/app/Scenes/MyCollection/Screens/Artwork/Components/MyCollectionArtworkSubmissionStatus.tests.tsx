@@ -1,9 +1,9 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { MyCollectionArtworkSubmissionStatus } from "./MyCollectionArtworkSubmissionStatus"
 
 describe("MyCollectionArtworkSubmissionStatus", () => {
   const getWrapper = (displayText?: string) => {
-    return renderWithWrappersTL(<MyCollectionArtworkSubmissionStatus displayText={displayText} />)
+    return renderWithWrappers(<MyCollectionArtworkSubmissionStatus displayText={displayText} />)
   }
 
   it("Displays nothing when displayText is not passed", () => {

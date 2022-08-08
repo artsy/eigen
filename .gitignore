@@ -101,7 +101,6 @@ build/
 .gradle
 local.properties
 *.iml
-google-services.json
 
 # android
 *.keystore
@@ -115,7 +114,7 @@ ios/eigen/fonts/*
 ios/Artsy/View_Controllers/Live_Auctions/Resources/Artsy/fonts/*
 
 # Firebase files
-android/app/google-services.json
+google-services.json
 GoogleService-Info.plist
 eigen-firebase-app-distribution.json
 

@@ -10,7 +10,7 @@ import {
 } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Image } from "react-native-image-crop-picker"
 import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
@@ -40,7 +40,7 @@ const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnviro
 describe("MyCollectionArtworkForm", () => {
   describe("Editing an artwork", () => {
     it("renders the main form", async () => {
-      const { getByText, getByTestId } = renderWithWrappersTL(
+      const { getByText, getByTestId } = renderWithWrappers(
         <MyCollectionArtworkForm
           artwork={mockArtwork as any}
           mode="edit"
@@ -86,7 +86,7 @@ describe("MyCollectionArtworkForm", () => {
         getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
-        const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappersTL(
+        const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappers(
           <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
         )
 
@@ -164,7 +164,7 @@ describe("MyCollectionArtworkForm", () => {
                 "internal-id",
               ],
               "artists": undefined,
-              "category": "Screen print",
+              "category": "Print",
               "date": "2007",
               "depth": 40,
               "externalImageUrls": Array [
@@ -173,7 +173,7 @@ describe("MyCollectionArtworkForm", () => {
               "height": 20,
               "importSource": "MY_COLLECTION",
               "isEdition": true,
-              "medium": "Print",
+              "medium": "Screen print",
               "metric": "in",
               "pricePaidCents": undefined,
               "pricePaidCurrency": "USD",
@@ -187,7 +187,7 @@ describe("MyCollectionArtworkForm", () => {
 
     describe("when skipping the artwork selection", () => {
       it("leaves the form empty", async () => {
-        const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappersTL(
+        const { getByText, getByTestId, getByPlaceholderText } = renderWithWrappers(
           <RelayEnvironmentProvider environment={mockEnvironment}>
             <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
           </RelayEnvironmentProvider>
@@ -237,7 +237,7 @@ describe("MyCollectionArtworkForm", () => {
       })
 
       it("displays the artist display name input", async () => {
-        const { getByText, getByTestId } = renderWithWrappersTL(
+        const { getByText, getByTestId } = renderWithWrappers(
           <RelayEnvironmentProvider environment={mockEnvironment}>
             <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
           </RelayEnvironmentProvider>
@@ -461,7 +461,7 @@ describe("MyCollectionArtworkForm", () => {
         getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
-        const { getByTestId, getByPlaceholderText } = renderWithWrappersTL(
+        const { getByTestId, getByPlaceholderText } = renderWithWrappers(
           <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
         )
 
@@ -529,7 +529,7 @@ describe("MyCollectionArtworkForm", () => {
         getGeminiCredentialsForEnvironmentMock.mockReturnValue(Promise.resolve(assetCredentials))
         uploadFileToS3Mock.mockReturnValue(Promise.resolve("some-s3-url"))
 
-        const { getByTestId, getByPlaceholderText } = renderWithWrappersTL(
+        const { getByTestId, getByPlaceholderText } = renderWithWrappers(
           <MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} source={Tab.collection} />
         )
 
@@ -643,7 +643,7 @@ const mockArtworkResult = {
       formattedNationalityAndBirthday: "British",
     },
     artistNames: "Banksy",
-    category: "Screen print",
+    category: "Print",
     pricePaid: null,
     date: "2007",
     depth: 40,
@@ -662,7 +662,7 @@ const mockArtworkResult = {
     ],
     internalID: "61c0998ee4b6c3000b76bfb1",
     isEdition: true,
-    medium: "Print",
+    medium: "Screen print",
     metric: "in",
     provenance: null,
     slug: "61c0998ee4b6c3000b76bfb1",
@@ -677,7 +677,7 @@ const mockArtwork = {
     formattedNationalityAndBirthday: "British",
   },
   artistNames: "Banksy",
-  category: "Screen print",
+  category: "Print",
   pricePaid: null,
   date: "2007",
   depth: "40",
@@ -696,7 +696,7 @@ const mockArtwork = {
   ],
   internalID: "61c0998ee4b6c3000b76bfb1",
   isEdition: true,
-  medium: "Print",
+  medium: "Screen print",
   metric: "in",
   provenance: null,
   slug: "61c0998ee4b6c3000b76bfb1",

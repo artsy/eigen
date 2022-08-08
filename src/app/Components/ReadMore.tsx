@@ -8,8 +8,6 @@ import {
   Flex,
   LinkText,
   nbsp,
-  Sans,
-  SansProps,
   Text as PaletteText,
   TextProps as PaletteTextProps,
 } from "palette"
@@ -46,11 +44,9 @@ export const ReadMore = React.memo(
     const tracking = useTracking()
     const useNewTextStyles = textStyle === "new"
     const basicRules = defaultRules({ modal: presentLinksModally, useNewTextStyles })
-    const TextComponent: React.ComponentType<SansProps | PaletteTextProps> = (
-      textStyle === "new" ? PaletteText : Sans
-    ) as any
-    const textProps: SansProps | PaletteTextProps =
-      textStyle === "new" ? { variant: "xs" } : { size: "3" }
+    const TextComponent: React.ComponentType<PaletteTextProps> = PaletteText
+
+    const textProps: PaletteTextProps = { variant: "xs" }
     const rules = {
       ...basicRules,
       ...(type === "show" && {
@@ -139,8 +135,7 @@ function truncate({
   // keep track of how many text nodes deep we are
   let textDepth = 0
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  function traverse(node: React.ReactNode) {
+  function traverse(node: React.ReactNode): React.ReactNode {
     if (offset === maxChars) {
       return null
     }
@@ -148,7 +143,6 @@ function truncate({
     if (Array.isArray(node)) {
       const result = []
       for (const child of node) {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         const truncated = traverse(child)
         if (truncated) {
           result.push(truncated)
@@ -162,21 +156,20 @@ function truncate({
 
     if (React.isValidElement(node)) {
       // TODO: find a way to make the rendering extensible while allowing textDepth to be tracked.
-      // Right now we assume that only these two Text nodes will be used.
-      if (node.type === Sans || node.type === PaletteText) {
+      // Right now we assume that only PaletteText will be used.
+      if (node.type === PaletteText) {
         textDepth += 1
       }
       const children = React.Children.toArray((node.props as any).children)
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const truncatedChildren = traverse(children)
+      const truncatedChildren = traverse(children) as React.ReactNode[]
 
-      if (node.type === Sans || node.type === PaletteText) {
+      if (node.type === PaletteText) {
         if (textDepth === 1 && maxChars === offset) {
           truncatedChildren.push(
             <>
               {"... "}
-              <LinkText onPress={onExpand}>
-                <PaletteText variant="sm">{`Read${nbsp}more`}</PaletteText>
+              <LinkText onPress={onExpand} variant="xs">
+                {`Read${nbsp}more`}
               </LinkText>
             </>
           )
@@ -184,8 +177,7 @@ function truncate({
         textDepth -= 1
       }
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return React.cloneElement(node, null, ...truncatedChildren)
+      return React.cloneElement(node, {}, ...truncatedChildren)
     }
 
     if (node === null || typeof node === "boolean" || typeof node === "undefined") {

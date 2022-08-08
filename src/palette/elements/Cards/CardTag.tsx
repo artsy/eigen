@@ -3,7 +3,7 @@ import { StyleProp, ViewStyle } from "react-native"
 import { PositionProps } from "styled-system"
 import { useColor } from "../../hooks"
 import { Color } from "../../Theme"
-import { Sans } from "../Text"
+import { Text } from "../Text"
 
 export interface CardTagProps extends PositionProps {
   text: string
@@ -35,9 +35,9 @@ export const CardTag: React.FC<CardTagProps> = ({
         },
       ]}
     >
-      <Sans size="2" px={0.5} py={0.3} color={textColor}>
+      <Text variant="xs" px={0.5} py={0.3} color={textColor}>
         {text}
-      </Sans>
+      </Text>
     </View>
   )
 }

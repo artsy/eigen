@@ -1,6 +1,6 @@
 import * as glibphone from "google-libphonenumber"
 import replace from "lodash/replace"
-import { Flex, Input, InputProps, Sans, Spacer, Touchable, TriangleDown, useColor } from "palette"
+import { Flex, Input, InputProps, Spacer, Text, Touchable, TriangleDown, useColor } from "palette"
 import React from "react"
 import { useEffect, useRef, useState } from "react"
 import { Platform } from "react-native"
@@ -161,14 +161,14 @@ export const PhoneInput = React.forwardRef<
                         backgroundColor="black10"
                       >
                         {/* selectedValue should always be present */}
-                        <Sans size="4">{countryIndex[selectedValue ?? countryCode].flag}</Sans>
+                        <Text variant="md">{countryIndex[selectedValue ?? countryCode].flag}</Text>
                         <Spacer mr={0.5} />
                         <TriangleDown width="8" />
                       </Flex>
                       <Flex justifyContent="center" pl="1">
-                        <Sans color="black60" size="3">
+                        <Text variant="sm" color="black60">
                           +{dialCode}
-                        </Sans>
+                        </Text>
                       </Flex>
                     </Flex>
                   </Touchable>
@@ -178,15 +178,20 @@ export const PhoneInput = React.forwardRef<
               renderItemLabel={({ label, value }) => {
                 return (
                   <Flex flexDirection="row" alignItems="center" flexShrink={1}>
-                    <Sans size="4">{countryIndex[value].flag}</Sans>
+                    <Text variant="md">{countryIndex[value].flag}</Text>
                     <Spacer mr="1" />
-                    <Sans size="4" style={{ width: 45 }}>
+                    <Text variant="md" style={{ width: 45 }}>
                       +{countryIndex[value].dialCode}
-                    </Sans>
+                    </Text>
                     <Spacer mr="1" />
-                    <Sans size="4" numberOfLines={1} ellipsizeMode="tail" style={{ flexShrink: 1 }}>
+                    <Text
+                      variant="md"
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      style={{ flexShrink: 1 }}
+                    >
                       {label}
-                    </Sans>
+                    </Text>
                   </Flex>
                 )
               }}

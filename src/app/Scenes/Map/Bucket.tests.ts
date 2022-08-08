@@ -12,12 +12,10 @@ describe.skip(bucketCityResults, () => {
   })
 
   it("calculates galleries correctly", () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(uniq(results.galleries.map((s) => s.partner.type))).toEqual(["Gallery"])
+    expect(uniq(results.galleries.map((s) => s!.partner!.type))).toEqual(["Gallery"])
   })
 
   it("calculates museums correctly", () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(uniq(results.museums.map((s) => s.partner.type))).toEqual(["Institution"])
+    expect(uniq(results.museums.map((s) => s!.partner!.type))).toEqual(["Institution"])
   })
 })

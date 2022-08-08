@@ -1,6 +1,6 @@
 import { act, fireEvent } from "@testing-library/react-native"
 import { goBack, navigate } from "app/navigation/navigate"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { OfferSubmittedModal } from "./OfferSubmittedModal"
 
 jest.mock("app/navigation/navigate", () => ({
@@ -22,7 +22,7 @@ describe("OfferSubmittedModal", () => {
   })
 
   it("renders", () => {
-    const { getByText } = renderWithWrappersTL(<OfferSubmittedModal />)
+    const { getByText } = renderWithWrappers(<OfferSubmittedModal />)
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
 
     expect(getByText("Your offer has been submitted")).toBeTruthy()
@@ -32,8 +32,8 @@ describe("OfferSubmittedModal", () => {
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
-  it("onClose", () => {
-    const { getAllByText } = renderWithWrappersTL(<OfferSubmittedModal />)
+  it("onGoToInbox", () => {
+    const { getAllByText } = renderWithWrappers(<OfferSubmittedModal />)
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
 
     act(() => fireEvent.press(getAllByText("Go to inbox")[0]))

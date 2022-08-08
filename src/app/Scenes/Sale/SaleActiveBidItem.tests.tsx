@@ -2,7 +2,7 @@ import { SaleActiveBidItemTestsQuery } from "__generated__/SaleActiveBidItemTest
 import { navigate } from "app/navigation/navigate"
 import { HighestBid, Outbid, ReserveNotMet } from "app/Scenes/MyBids/Components/BiddingStatuses"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { DateTime } from "luxon"
 import { TouchableOpacity } from "react-native"
@@ -74,7 +74,7 @@ describe("SaleActiveBidItem", () => {
   })
 
   it("navigates to the sale artwork screen on press", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const highestBidLot = {
       ...lotStanding,
@@ -96,7 +96,7 @@ describe("SaleActiveBidItem", () => {
   })
 
   it("renders highest bid if a lot is the highest bid", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const highestBidLot = {
       ...lotStanding,
@@ -116,7 +116,7 @@ describe("SaleActiveBidItem", () => {
   })
 
   it("renders ReserveNotMet if the reserve has not been met", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const reserveNotMetBidLot = {
       ...lotStanding,
@@ -142,7 +142,7 @@ describe("SaleActiveBidItem", () => {
   })
 
   it("renders Outbid if the user has been outbid", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const outbidBidLot = {
       ...lotStanding,
@@ -162,7 +162,7 @@ describe("SaleActiveBidItem", () => {
   })
 
   it("renders the right bid count if the user has only 1 bid", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const oneBidLot = {
       ...lotStanding,
@@ -188,7 +188,7 @@ describe("SaleActiveBidItem", () => {
   })
 
   it("renders the right bid count if the user has more than 1 bid", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const fiveBidsLot = {
       ...lotStanding,

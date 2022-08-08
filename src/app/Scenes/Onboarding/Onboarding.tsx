@@ -19,6 +19,7 @@ import {
 import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
 import { OnboardingLoginWithOTP, OTPMode } from "./OnboardingLoginWithOTP"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
+import { OnboardingPersonalization2 } from "./OnboardingPersonalization2/OnboardingPersonalization2"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingWebView, OnboardingWebViewRoute } from "./OnboardingWebView"
 import { OnboardingWelcome } from "./OnboardingWelcome"
@@ -103,6 +104,7 @@ export const OnboardingWelcomeScreens = () => {
 export const Onboarding = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const showNetworkUnavailableModal = useFeatureFlag("ARShowNetworkUnavailableModal")
+  const isNewOnboardingEnabled = useFeatureFlag("AREnableNewOnboarding")
   const fpsCounter = useDevToggle("DTFPSCounter")
 
   return (
@@ -111,7 +113,11 @@ export const Onboarding = () => {
         value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
       >
         {onboardingState === "incomplete" ? (
-          <OnboardingPersonalization />
+          isNewOnboardingEnabled ? (
+            <OnboardingPersonalization2 />
+          ) : (
+            <OnboardingPersonalization />
+          )
         ) : (
           <OnboardingWelcomeScreens />
         )}

@@ -7,7 +7,7 @@ import { navigate } from "app/navigation/navigate"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { renderMarkdown } from "app/utils/renderMarkdown"
 import { Schema } from "app/utils/track"
-import { Flex, Sans, Spacer, Touchable, useColor } from "palette"
+import { Flex, Spacer, Text, Touchable, useColor } from "palette"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -31,14 +31,14 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
       ruleOverrides: {
         paragraph: {
           react: (node, output, state) => (
-            <Sans
-              size="3t"
+            <Text
+              variant="sm"
               color="black100"
               key={state.key}
               numberOfLines={titleLength > 32 ? 3 : 4}
             >
               {output(node.content, state)}
-            </Sans>
+            </Text>
           ),
         },
       },
@@ -54,9 +54,9 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
   return collections.length > 0 ? (
     <>
       <Flex ml="-20px">
-        <Sans size="4" my={2} ml={4} testID="group">
+        <Text variant="md" my={2} ml={4} testID="group">
           {collectionGroup.name}
-        </Sans>
+        </Text>
       </Flex>
       <AboveTheFoldFlatList<FeaturedCollection>
         horizontal
@@ -94,13 +94,13 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
                   height={190}
                   imageURL={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
                 />
-                <Sans size="3t" weight="medium" mt="15px" testID={"title-" + index}>
+                <Text variant="sm" weight="medium" mt="15px" testID={"title-" + index}>
                   {result.title}
-                </Sans>
+                </Text>
                 {!!result.priceGuidance && (
-                  <Sans color={color("black60")} size="3t" mb={1} testID={"price-" + index}>
+                  <Text variant="sm" color={color("black60")} mb={1} testID={"price-" + index}>
                     {"From $" + `${result.priceGuidance!.toLocaleString()}`}
-                  </Sans>
+                  </Text>
                 )}
                 {handleMarkdown(result.descriptionMarkdown || "", result.title.length)}
               </ImageWrapper>

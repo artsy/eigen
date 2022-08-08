@@ -3,7 +3,7 @@ import { OpenInquiryModalButtonTestQuery } from "__generated__/OpenInquiryModalB
 import { navigate } from "app/navigation/navigate"
 import { defaultEnvironment } from "app/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import relay, { QueryRenderer } from "react-relay"
 import { graphql } from "react-relay"
@@ -54,7 +54,7 @@ describe("OpenInquiryModalButtonTestQueryRenderer", () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const renderer = renderWithWrappersTL(<TestRenderer />)
+    const renderer = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, mockResolvers)
     return renderer
   }

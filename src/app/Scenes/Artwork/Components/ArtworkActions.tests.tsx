@@ -1,9 +1,10 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsTestsQuery } from "__generated__/ArtworkActionsTestsQuery.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { rejectMostRecentRelayOperation } from "app/tests/rejectMostRecentRelayOperation"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -51,18 +52,18 @@ describe("ArtworkActions", () => {
     })
 
     it("displays only the URL if no artists or title", async () => {
-      const content = shareContent(null as any /* STRICTNESS_MIGRATION */, "/artwork/title-1", null)
+      const content = shareContent(null as any, "/artwork/title-1", null)
       expect(content).toMatchObject({
         url: "https://www.artsy.net/artwork/title-1?utm_content=artwork-share",
       })
-      expect(content.message).not.toBeDefined()
-      expect(content.title).not.toBeDefined()
+      expect(content.message).toBeNull()
+      expect(content.title).toBeNull()
     })
   })
 
   describe("with AR enabled", () => {
     it("renders buttons correctly", () => {
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtwork} />
       )
 
@@ -77,7 +78,7 @@ describe("ArtworkActions", () => {
         ...artworkActionsArtwork,
         is_hangable: false,
       }
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkActions shareOnPress={jest.fn} artwork={artworkActionsArtworkNotHangable} />
       )
 
@@ -95,7 +96,7 @@ describe("ArtworkActions", () => {
         isClosed: false,
       },
     }
-    const { queryByText, queryByLabelText } = renderWithWrappersTL(
+    const { queryByText, queryByLabelText } = renderWithWrappers(
       <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtworkInAuction} />
     )
     expect(queryByText("Watch lot")).toBeTruthy()
@@ -109,7 +110,7 @@ describe("ArtworkActions", () => {
   describe("without AR enabled", () => {
     it("does not show the View in Room option if the phone does not have AREnabled", () => {
       LegacyNativeModules.ARCocoaConstantsModule.AREnabled = false
-      const { queryByText } = renderWithWrappersTL(
+      const { queryByText } = renderWithWrappers(
         <ArtworkActions shareOnPress={jest.fn()} artwork={artworkActionsArtwork} />
       )
 
@@ -166,7 +167,7 @@ describe("ArtworkActions", () => {
         is_saved: false,
       }
 
-      const { queryByText, getByText } = await renderWithWrappersTL(<TestRenderer />)
+      const { queryByText, getByText } = await renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         Artwork: () => artworkActionsArtworkSaved,
@@ -195,7 +196,7 @@ describe("ArtworkActions", () => {
         is_saved: true,
       }
 
-      const { queryByText, getByText } = await renderWithWrappersTL(<TestRenderer />)
+      const { queryByText, getByText } = await renderWithWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation(env, {
         Artwork: () => artworkActionsArtwork,
       })
@@ -218,7 +219,7 @@ describe("ArtworkActions", () => {
     })
 
     it("handles errors in saving gracefully", async () => {
-      const { queryByText, getByText } = await renderWithWrappersTL(<TestRenderer />)
+      const { queryByText, getByText } = await renderWithWrappers(<TestRenderer />)
       resolveMostRecentRelayOperation(env, {
         Artwork: () => artworkActionsArtwork,
       })
@@ -232,9 +233,7 @@ describe("ArtworkActions", () => {
       const saveMutation = env.mock.getMostRecentOperation()
       expect(saveMutation.request.node.operation.name).toEqual("ArtworkActionsSaveMutation")
 
-      act(() => {
-        env.mock.rejectMostRecentOperation(new Error("Error saving artwork"))
-      })
+      rejectMostRecentRelayOperation(env, new Error("Error saving artwork"))
 
       expect(queryByText("Save")).toBeTruthy()
       expect(queryByText("Save")).toHaveProp("color", "#000000")

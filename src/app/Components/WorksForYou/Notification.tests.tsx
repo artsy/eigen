@@ -16,9 +16,17 @@ it("renders without throwing an error for read notification", () => {
 
 it("renders without throwing an error if no avatar image exists", () => {
   const props = notification()
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  props.image.resized.url = null
-  renderWithLayout(<Notification width={300} notification={props as any} />, { width: 300 })
+  const convertedProps = {
+    ...props,
+    image: {
+      resized: {
+        url: null,
+      },
+    },
+  }
+  renderWithLayout(<Notification width={300} notification={convertedProps as any} />, {
+    width: 300,
+  })
 })
 
 const notification = () => {

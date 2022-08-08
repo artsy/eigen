@@ -1,33 +1,27 @@
 import { fireEvent } from "@testing-library/react-native"
-import { AverageSalePriceSelectArtistModalQuery } from "__generated__/AverageSalePriceSelectArtistModalQuery.graphql"
+import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { AverageSalePriceAtAuction } from "./AverageSalePriceAtAuction"
-import { AverageSalePriceSelectArtistScreenQuery } from "./AverageSalePriceSelectArtistModal"
+import {
+  AverageSalePriceAtAuction,
+  AverageSalePriceAtAuctionScreenQuery,
+} from "./AverageSalePriceAtAuction"
 
 jest.unmock("react-relay")
 
 describe("AverageSalePriceSelectArtist", () => {
   const TestRenderer = () => {
-    useLazyLoadQuery<AverageSalePriceSelectArtistModalQuery>(
-      AverageSalePriceSelectArtistScreenQuery,
-      {
-        count: 10,
-      }
-    )
+    useLazyLoadQuery<AverageSalePriceAtAuctionQuery>(AverageSalePriceAtAuctionScreenQuery, {
+      artistID: "artist-id",
+      count: 10,
+    })
 
-    return (
-      <AverageSalePriceAtAuction
-        collectorArtists={
-          mockArtistsResult.me.myCollectionInfo.collectedArtistsConnection.edges.length
-        }
-        artistData={initialArtist}
-      />
-    )
+    return <AverageSalePriceAtAuction artistID="artist-id" />
   }
+
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
@@ -35,8 +29,10 @@ describe("AverageSalePriceSelectArtist", () => {
     const tree = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({ data: mockArtistsResult })
+      mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
     })
+
+    await flushPromiseQueue()
 
     return tree
   }
@@ -57,6 +53,12 @@ describe("AverageSalePriceSelectArtist", () => {
       // Press on Banksy
       fireEvent.press(getByTestId("artist-section-item-Banksy"))
 
+      // fetch Banksy data
+      act(() => {
+        mockEnvironment.mock.resolveMostRecentOperation({
+          data: { artist: { internalID: "artist-id", name: "Banksy", imageUrl: "image-url" } },
+        })
+      })
       await flushPromiseQueue()
 
       // Modal is hidden and the artist is updated
@@ -91,6 +93,14 @@ describe("AverageSalePriceSelectArtist", () => {
       // Press on Amoako Boafo
       fireEvent.press(getByTestId("artist-section-item-Amoako Boafo"))
 
+      // fetch Amoako Boafo data
+      act(() => {
+        mockEnvironment.mock.resolveMostRecentOperation({
+          data: {
+            artist: { internalID: "artist-id", name: "Amoako Boafo", imageUrl: "image-url" },
+          },
+        })
+      })
       await flushPromiseQueue()
 
       // Modal is hidden and the artist is updated
@@ -127,16 +137,15 @@ describe("AverageSalePriceSelectArtist", () => {
   })
 })
 
-const initialArtist = {
-  name: "Andy Warhol",
-  initials: "AW",
-  formattedNationalityAndBirthday: "American, 1928–1987",
-  imageUrl: "https://d32dm0rphc51dk.cloudfront.net/E-k-uLoQADM8AjadsSKHrA/square.jpg",
-}
-
-const mockArtistsResult = {
+const mockResult = {
+  artist: {
+    internalID: "artist-id",
+    name: "Andy Warhol",
+    imageUrl: "image-url",
+  },
   me: {
     myCollectionInfo: {
+      artistsCount: 3,
       collectedArtistsConnection: {
         edges: [
           {

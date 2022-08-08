@@ -1,5 +1,5 @@
 import { Show } from "app/Scenes/Map/types"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { RelayProp } from "react-relay"
 import { Event } from "./index"
 
@@ -22,7 +22,7 @@ const eventData = {
 
 describe("CityEvent", () => {
   it("renders properly", () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <Event event={eventData} relay={{ environment: {} } as RelayProp} />
     )
 

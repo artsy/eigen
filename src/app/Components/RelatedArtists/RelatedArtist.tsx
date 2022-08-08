@@ -1,6 +1,6 @@
 import { RelatedArtist_artist$data } from "__generated__/RelatedArtist_artist.graphql"
 import { navigate } from "app/navigation/navigate"
-import { ClassTheme, Sans, Spacer } from "palette"
+import { ClassTheme, Spacer, Text } from "palette"
 import { Component } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -15,8 +15,7 @@ interface Props {
 
 class RelatedArtist extends Component<Props> {
   handleTap() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    navigate(this.props.artist.href)
+    navigate(this.props.artist.href!)
   }
 
   render() {
@@ -31,14 +30,14 @@ class RelatedArtist extends Component<Props> {
             imageURL={imageURL}
           />
           <Spacer mb={1} />
-          <Sans size="3t" weight="medium">
+          <Text variant="sm" weight="medium">
             {artist.name}
-          </Sans>
+          </Text>
           <ClassTheme>
             {({ color }) => (
-              <Sans size="3t" color={color("black60")}>
+              <Text variant="sm" color={color("black60")}>
                 {this.artworksString(artist.counts)}
-              </Sans>
+              </Text>
             )}
           </ClassTheme>
         </View>
@@ -47,18 +46,14 @@ class RelatedArtist extends Component<Props> {
   }
 
   artworksString(counts: RelatedArtist_artist$data["counts"]) {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const totalWorks = counts.artworks
-      ? // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        counts.artworks + (counts.artworks > 1 ? " works" : " work")
+    const totalWorks = counts?.artworks
+      ? counts.artworks + (counts.artworks > 1 ? " works" : " work")
       : null
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    if (totalWorks && counts.forSaleArtworks === counts.artworks) {
+    if (totalWorks && counts?.forSaleArtworks === counts?.artworks) {
       return totalWorks + " for sale"
     }
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const forSale = counts.forSaleArtworks ? counts.forSaleArtworks + " for sale" : null
+    const forSale = counts?.forSaleArtworks ? counts.forSaleArtworks + " for sale" : null
     if (forSale && totalWorks) {
       return totalWorks + ", " + forSale
     }

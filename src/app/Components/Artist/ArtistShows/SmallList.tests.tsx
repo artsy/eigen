@@ -1,6 +1,6 @@
 import "react-native"
 
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 
 import SmallList from "./SmallList"
 
@@ -12,7 +12,7 @@ it("renders without throwing an error", () => {
 
   const shows = [show1, show2]
 
-  renderWithWrappers(<SmallList shows={shows as any} />)
+  renderWithWrappersLEGACY(<SmallList shows={shows as any} />)
 })
 
 const showProps = () => {

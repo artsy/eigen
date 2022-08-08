@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ImageCarouselTestsQuery } from "__generated__/ImageCarouselTestsQuery.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -138,7 +138,7 @@ describe("ImageCarouselFragmentContainer", () => {
     })
 
     it("renders a flat list with five entries", () => {
-      const { getByLabelText, getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByLabelText, getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artworkFixture,
@@ -149,7 +149,7 @@ describe("ImageCarouselFragmentContainer", () => {
     })
 
     it("shows five pagination dots", () => {
-      const { getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artworkFixture,
@@ -159,7 +159,7 @@ describe("ImageCarouselFragmentContainer", () => {
     })
 
     it("shows the first pagination dot as being selected and the rest as not selected", () => {
-      const { getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artworkFixture,
@@ -175,7 +175,7 @@ describe("ImageCarouselFragmentContainer", () => {
     })
 
     it("'selects' subsequent pagination dots as a result of scrolling", async () => {
-      const { getByLabelText, getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByLabelText, getAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artworkFixture,
@@ -259,7 +259,7 @@ describe("ImageCarouselFragmentContainer", () => {
     })
 
     it(`does not show images that have no deep zoom`, () => {
-      const { getAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { getAllByLabelText } = renderWithWrappers(<TestWrapper />)
       const images = artworkFixture.images!.map((image, index) => {
         // delete two of the images' deepZoom
         if (index < 2) {
@@ -283,7 +283,7 @@ describe("ImageCarouselFragmentContainer", () => {
     })
 
     it("only shows one image when none of the images have deep zoom", () => {
-      const { getByLabelText, queryAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByLabelText, queryAllByLabelText } = renderWithWrappers(<TestWrapper />)
       const images = artworkFixture.images!.map((image) => ({
         ...image,
         deepZoom: null,
@@ -308,7 +308,7 @@ describe("ImageCarouselFragmentContainer", () => {
     }
 
     it("shows no pagination dots", async () => {
-      const { queryAllByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { queryAllByLabelText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
@@ -318,7 +318,7 @@ describe("ImageCarouselFragmentContainer", () => {
     })
 
     it("disables scrolling", async () => {
-      const { getByLabelText } = renderWithWrappersTL(<TestWrapper />)
+      const { getByLabelText } = renderWithWrappers(<TestWrapper />)
 
       resolveMostRecentRelayOperation(mockEnvironment, {
         Artwork: () => artwork,
@@ -335,7 +335,7 @@ describe("Local Images and PaginationIndicator", () => {
   }
 
   it("can display local images", () => {
-    const { getAllByLabelText } = renderWithWrappersTL(
+    const { getAllByLabelText } = renderWithWrappers(
       <TestWrapper images={localImages} cardHeight={275} />
     )
 
@@ -343,7 +343,7 @@ describe("Local Images and PaginationIndicator", () => {
   })
 
   it("defaults to paginationDots", () => {
-    const { getAllByLabelText, queryByLabelText } = renderWithWrappersTL(
+    const { getAllByLabelText, queryByLabelText } = renderWithWrappers(
       <TestWrapper images={localImages} cardHeight={275} />
     )
 
@@ -353,7 +353,7 @@ describe("Local Images and PaginationIndicator", () => {
   })
 
   it("Indicator can be a scrollbar", () => {
-    const { queryAllByLabelText, queryByLabelText } = renderWithWrappersTL(
+    const { queryAllByLabelText, queryByLabelText } = renderWithWrappers(
       <TestWrapper images={localImages} cardHeight={275} paginationIndicatorType="scrollBar" />
     )
 

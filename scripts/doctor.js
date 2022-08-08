@@ -123,27 +123,6 @@ const checkPodDependenciesAreUpToDate = () => {
   }
 }
 
-const checkPythonExists = () => {
-  try {
-    exec("python --version")
-    YES(`Your ${g`python`} is ready to go.`)
-  } catch (e) {
-    NO(`You don't have ${r`python`}.`, `Install ${g`python`} first.`)
-  }
-}
-
-const checkPythonDependenciesAreUpToDate = () => {
-  const output = exec("pip freeze -r requirements.txt 2>&1") // the `2>&1` part is so that we bring stderr output to stdout. pip sends errors to stderr, and we need to read them.
-  if (output.includes("is not installed")) {
-    NO(
-      `Your ${r`python dependencies`} are out of sync.`,
-      `Run ${g`yarn install:all`} or ${g`pip install -r requirements.txt`} first.`
-    )
-  } else {
-    YES(`Your ${g`python dependencies`} are ready to go.`)
-  }
-}
-
 const checkDetectSecretsExists = () => {
   try {
     exec("detect-secrets-hook --version")
@@ -168,8 +147,6 @@ const main = async () => {
   await checkNodeDependenciesAreUpToDate()
   // checkPodDependenciesAreUpToDate() // this is broken right now.. pod check is always reporting an error.
 
-  checkPythonExists()
-  checkPythonDependenciesAreUpToDate()
   checkDetectSecretsExists()
 }
 

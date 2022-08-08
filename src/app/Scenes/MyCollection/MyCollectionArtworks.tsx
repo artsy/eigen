@@ -7,15 +7,9 @@ import { ZeroState } from "app/Components/States/ZeroState"
 import { navigate, popToRoot } from "app/navigation/navigate"
 import { GlobalStore, useFeatureFlag } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
-import { Button, Flex, Spacer, Text } from "palette"
+import { Button, Flex, LockIcon, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import {
-  FlatList,
-  Image,
-  LayoutAnimation,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-} from "react-native"
+import { FlatList, LayoutAnimation, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { useScreenDimensions } from "shared/hooks"
@@ -174,8 +168,8 @@ const MyCollectionZeroState: React.FC = () => {
             Upload Your Artwork
           </Button>
           <Flex flexDirection="row" justifyContent="center" alignItems="center" py={1}>
-            <Image source={require("images/lock.webp")} />
-            <Text color="black60" pl={1} variant="xs">
+            <LockIcon fill="black60" />
+            <Text color="black60" pl={0.5} variant="xs">
               My Collection is not shared with sellers.
             </Text>
           </Flex>
@@ -199,6 +193,9 @@ export const MyCollectionFilterPropsFragment = graphql`
     id
     artistNames
     medium
+    mediumType {
+      name
+    }
     attributionClass {
       name
     }

@@ -14,10 +14,11 @@ Links:
 
 ## I want to write a test.
 
-- We use `@testing-library/react-native` and our helper `renderWithWrappersTL`.
+- We use `@testing-library/react-native` and our helper `renderWithWrappers`.
 - We refer to this guide 👉 [How should I query?](https://callstack.github.io/react-native-testing-library/docs/how-should-i-query/) from `@testing-library/react-native` for querying components
 
 Example Links:
+
 - [Search.tests.tsx](src/app/Scenes/Search/Search.tests.tsx)
 - [CustomSizeInputs.tests.tsx](src/app/Components/ArtworkFilter/Filters/CustomSizeInputs.tests.tsx)
 - [SizesOptionsScreen.tests.tsx](src/app/Components/ArtworkFilter/Filters/SizesOptionsScreen.tests.tsx)

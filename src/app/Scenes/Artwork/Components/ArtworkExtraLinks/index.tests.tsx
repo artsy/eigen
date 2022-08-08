@@ -4,18 +4,10 @@ import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ModalStack } from "app/navigation/ModalStack"
 import { navigate } from "app/navigation/navigate"
-import {
-  __globalStoreTestUtils__,
-  GlobalStoreProvider,
-  useSelectedTab,
-} from "app/store/GlobalStore"
+import { __globalStoreTestUtils__, useSelectedTab } from "app/store/GlobalStore"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { mount } from "enzyme"
-import { Sans, Theme } from "palette"
-import { Text } from "react-native"
 import { ArtworkExtraLinks } from "./index"
 
 jest.mock("app/store/GlobalStore", () => ({
@@ -26,23 +18,18 @@ jest.mock("app/store/GlobalStore", () => ({
   GlobalStore: jest.requireActual("app/store/GlobalStore").GlobalStore,
 }))
 
-function getWrapper({
+const getWrapper = ({
   artwork,
   auctionState,
 }: {
   artwork: CleanRelayFragment<ArtworkExtraLinks_artwork$data>
   auctionState?: AuctionTimerState
-}) {
-  return mount(
-    <GlobalStoreProvider>
-      <ModalStack>
-        <Theme>
-          <ArtworkExtraLinks artwork={artwork as any} auctionState={auctionState!} />
-        </Theme>
-      </ModalStack>
-    </GlobalStoreProvider>
+}) =>
+  renderWithWrappers(
+    <ModalStack>
+      <ArtworkExtraLinks artwork={artwork as any} auctionState={auctionState!} />
+    </ModalStack>
   )
-}
 
 describe("ArtworkExtraLinks", () => {
   beforeEach(() => {
@@ -61,13 +48,11 @@ describe("ArtworkExtraLinks", () => {
       ],
     }
 
-    const component = getWrapper({ artwork })
-    const consignmentsLink = component.find(Text).at(1)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const texts = component.find(Sans).map((x) => x.text())
+    const { queryByText, getByText } = getWrapper({ artwork })
 
-    expect(texts[0]).toContain("Consign with Artsy.")
-    consignmentsLink.props().onPress()
+    expect(queryByText(/Want to sell a work by Santa?/)).toBeTruthy()
+    expect(queryByText(/Consign with Artsy/)).toBeTruthy()
+    fireEvent.press(getByText(/Consign with Artsy/))
     expect(navigate).toHaveBeenCalledWith("/sales")
   })
 
@@ -85,10 +70,9 @@ describe("ArtworkExtraLinks", () => {
 
     ;(useSelectedTab as any).mockImplementation(() => "sell")
 
-    const component = getWrapper({ artwork })
-    const consignmentsLink = component.find(Text).at(1)
+    const { getByText } = getWrapper({ artwork })
 
-    consignmentsLink.props().onPress()
+    fireEvent.press(getByText(/Consign with Artsy/))
     expect(navigate).toHaveBeenCalledWith("/collections/my-collection/marketing-landing")
   })
 
@@ -108,8 +92,8 @@ describe("ArtworkExtraLinks", () => {
           },
         ],
       }
-      const component = getWrapper({ artwork })
-      expect(component.text()).toContain("Want to sell a work by these artists?")
+      const { queryByText } = getWrapper({ artwork })
+      expect(queryByText(/Want to sell a work by these artists?/)).toBeTruthy()
     })
 
     it("shows consign link if at least 1 artist is consignable", () => {
@@ -124,8 +108,8 @@ describe("ArtworkExtraLinks", () => {
         ],
       }
 
-      const component = getWrapper({ artwork })
-      expect(component.text()).toContain("Consign with Artsy.")
+      const { queryByText } = getWrapper({ artwork })
+      expect(queryByText(/Consign with Artsy/)).toBeTruthy()
     })
 
     it("doesn't render component if no artists are consignable", () => {
@@ -135,17 +119,18 @@ describe("ArtworkExtraLinks", () => {
         artists: [
           {
             name: "Santa",
-            isConsignable: true,
+            isConsignable: false,
           },
         ],
       }
-      const component = getWrapper({ artwork })
-      expect(component).toEqual({})
+      const { queryByText } = getWrapper({ artwork })
+
+      expect(queryByText(/Consign with Artsy/)).toBeNull()
     })
   })
 
   describe("for an artwork with one artist", () => {
-    it("shows singular link text", () => {
+    it("shows correct link text and consign text", () => {
       const artwork = {
         ...ArtworkFixture,
         isForSale: true,
@@ -156,23 +141,9 @@ describe("ArtworkExtraLinks", () => {
           },
         ],
       }
-      const component = getWrapper({ artwork })
-      expect(component.text()).toContain("Want to sell a work by Santa?")
-    })
-
-    it("shows consign link", () => {
-      const artwork = {
-        ...ArtworkFixture,
-        isForSale: true,
-        artists: [
-          {
-            name: "Santa",
-            isConsignable: true,
-          },
-        ],
-      }
-      const component = getWrapper({ artwork })
-      expect(component.text()).toContain("Consign with Artsy.")
+      const { queryByText } = getWrapper({ artwork })
+      expect(queryByText(/Want to sell a work by Santa?/)).toBeTruthy()
+      expect(queryByText(/Consign with Artsy/)).toBeTruthy()
     })
   })
 
@@ -191,9 +162,9 @@ describe("ArtworkExtraLinks", () => {
         ],
       }
 
-      const component = getWrapper({ artwork })
-      expect(component.text()).not.toContain("Read our FAQ")
-      expect(component.text()).not.toContain("ask a specialist")
+      const { queryByText } = getWrapper({ artwork })
+      expect(queryByText("Read our FAQ")).toBeNull()
+      expect(queryByText("ask a specialist")).toBeNull()
     })
 
     it("renders ask a specialist link when isAcquireable", () => {
@@ -210,9 +181,9 @@ describe("ArtworkExtraLinks", () => {
         ],
       }
 
-      const component = getWrapper({ artwork })
-      expect(component.text()).toContain("Read our FAQ")
-      expect(component.text()).toContain("ask a specialist")
+      const { queryByText } = getWrapper({ artwork })
+      expect(queryByText("Read our FAQ")).toBeTruthy()
+      expect(queryByText("ask a specialist")).toBeTruthy()
     })
 
     it("renders ask a specialist link when isOfferable", () => {
@@ -224,9 +195,9 @@ describe("ArtworkExtraLinks", () => {
         artists: [{ name: "Santa", isConsignable: true }],
       }
 
-      const component = getWrapper({ artwork })
-      expect(component.text()).toContain("Read our FAQ")
-      expect(component.text()).toContain("ask a specialist")
+      const { queryByText } = getWrapper({ artwork })
+      expect(queryByText("Read our FAQ")).toBeTruthy()
+      expect(queryByText("ask a specialist")).toBeTruthy()
     })
   })
 
@@ -250,14 +221,13 @@ describe("ArtworkExtraLinks", () => {
       ],
     }
 
-    const component = getWrapper({ artwork, auctionState: AuctionTimerState.CLOSING })
-
     it("renders Auction specific text", () => {
-      expect(component.find(Sans).at(0).text()).toContain(
-        "By placing a bid you agree to Artsy's and Christie's Conditions of Sale."
-      )
-      expect(component.find(Sans).at(1).text()).toContain("Read our auction FAQs")
-      expect(component.find(Sans).at(1).text()).toContain("ask a specialist")
+      const { queryByText } = getWrapper({ artwork, auctionState: AuctionTimerState.CLOSING })
+
+      expect(queryByText(/By placing a bid you agree to Artsy's and Christie's/)).toBeTruthy()
+      expect(queryByText(/Conditions of Sale/)).toBeTruthy()
+      expect(queryByText("Read our auction FAQs")).toBeTruthy()
+      expect(queryByText("ask a specialist")).toBeTruthy()
     })
 
     it("hides auction links when auction work has sold via buy now", () => {
@@ -281,59 +251,65 @@ describe("ArtworkExtraLinks", () => {
         ],
       }
 
-      const componentWithNoLink = getWrapper({ artwork: notForSaleArtwork })
-      expect(componentWithNoLink.find(Sans).length).toEqual(0)
+      const { queryByText } = getWrapper({ artwork: notForSaleArtwork })
+
+      expect(queryByText(/By placing a bid you agree to Artsy's and Christie's/)).toBeNull()
+      expect(queryByText(/Conditions of Sale/)).toBeNull()
+      expect(queryByText("Read our auction FAQs")).toBeNull()
+      expect(queryByText("ask a specialist")).toBeNull()
     })
 
     it("hides auction links when auctionState is closed", () => {
-      const componentWithEndedAuctionState = getWrapper({
+      const { queryByText } = getWrapper({
         artwork,
         auctionState: AuctionTimerState.CLOSED,
       })
-      expect(componentWithEndedAuctionState.text()).not.toContain("By placing a bid you agree to")
+
+      expect(queryByText(/By placing a bid you agree to Artsy's and Christie's/)).toBeNull()
+      expect(queryByText(/Conditions of Sale/)).toBeNull()
+      expect(queryByText("Read our auction FAQs")).toBeNull()
+      expect(queryByText("ask a specialist")).toBeNull()
     })
 
     it("displays auction links when auctionState is closing", () => {
-      const componentWithEndedAuctionState = getWrapper({
+      const { queryByText } = getWrapper({
         artwork,
         auctionState: AuctionTimerState.CLOSING,
       })
-      expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
+
+      expect(queryByText(/By placing a bid you agree to Artsy's and Christie's/)).toBeTruthy()
+      expect(queryByText(/Conditions of Sale/)).toBeTruthy()
+      expect(queryByText("Read our auction FAQs")).toBeTruthy()
+      expect(queryByText("ask a specialist")).toBeTruthy()
     })
 
     it("displays auction links when auctionState is live_integration_upcoming", () => {
-      const componentWithEndedAuctionState = getWrapper({
+      const { queryByText } = getWrapper({
         artwork,
         auctionState: AuctionTimerState.LIVE_INTEGRATION_UPCOMING,
       })
-      expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
+
+      expect(queryByText(/By placing a bid you agree to Artsy's and Christie's/)).toBeTruthy()
+      expect(queryByText(/Conditions of Sale/)).toBeTruthy()
+      expect(queryByText("Read our auction FAQs")).toBeTruthy()
+      expect(queryByText("ask a specialist")).toBeTruthy()
     })
 
     it("displays auction links when auctionState is inProgress", () => {
-      const componentWithEndedAuctionState = getWrapper({
+      const { queryByText } = getWrapper({
         artwork,
         auctionState: AuctionTimerState.CLOSING,
       })
-      expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
+
+      expect(queryByText(/By placing a bid you agree to Artsy's and Christie's/)).toBeTruthy()
+      expect(queryByText(/Conditions of Sale/)).toBeTruthy()
+      expect(queryByText("Read our auction FAQs")).toBeTruthy()
+      expect(queryByText("ask a specialist")).toBeTruthy()
     })
 
     describe("Analytics", () => {
-      const TestRenderer = () =>
-        renderWithWrappersTL(
-          <GlobalStoreProvider>
-            <ModalStack>
-              <Theme>
-                <ArtworkExtraLinks
-                  artwork={artwork as any}
-                  auctionState={AuctionTimerState.CLOSING}
-                />
-              </Theme>
-            </ModalStack>
-          </GlobalStoreProvider>
-        )
-
       it("posts proper event in when clicking Ask A Specialist", () => {
-        const { getByText, queryByText } = TestRenderer()
+        const { getByText, queryByText } = getWrapper({ artwork })
 
         expect(queryByText("ask a specialist")).toBeTruthy()
         fireEvent.press(getByText("ask a specialist"))
@@ -351,7 +327,7 @@ describe("ArtworkExtraLinks", () => {
       })
 
       it("posts proper event in when clicking Read our auction FAQs", () => {
-        const { getByText, queryByText } = TestRenderer()
+        const { getByText, queryByText } = getWrapper({ artwork })
 
         expect(queryByText("Read our auction FAQs")).toBeTruthy()
         fireEvent.press(getByText("Read our auction FAQs"))
@@ -369,7 +345,7 @@ describe("ArtworkExtraLinks", () => {
       })
 
       it("posts proper event in when clicking Conditions of Sale", () => {
-        const { getByText, queryByText } = TestRenderer()
+        const { getByText, queryByText } = getWrapper({ artwork })
 
         expect(queryByText("Conditions of Sale")).toBeTruthy()
         fireEvent.press(getByText("Conditions of Sale"))
@@ -393,17 +369,10 @@ describe("ArtworkExtraLinks", () => {
       })
 
       const TestRenderer = () =>
-        renderWithWrappersTL(
-          <GlobalStoreProvider>
-            <ModalStack>
-              <Theme>
-                <ArtworkExtraLinks
-                  artwork={artwork as any}
-                  auctionState={AuctionTimerState.CLOSING}
-                />
-              </Theme>
-            </ModalStack>
-          </GlobalStoreProvider>
+        renderWithWrappers(
+          <ModalStack>
+            <ArtworkExtraLinks artwork={artwork as any} auctionState={AuctionTimerState.CLOSING} />
+          </ModalStack>
         )
 
       it("should not show the FaqAndSpecialistSection component", () => {

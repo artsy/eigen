@@ -1,7 +1,7 @@
 import { OrderUpdateTestsQuery } from "__generated__/OrderUpdateTestsQuery.graphql"
 import { navigate } from "app/navigation/navigate"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { AlertCircleFillIcon, LinkText, MoneyFillIcon } from "palette"
 import "react-native"
 import { QueryRenderer } from "react-relay"
@@ -77,7 +77,7 @@ const getWrapper = (event = {}) => {
       ],
     },
   }
-  const tree = renderWithWrappers(<TestRenderer />)
+  const tree = renderWithWrappersLEGACY(<TestRenderer />)
   const finalResolvers = { Conversation: () => mockConversation }
   act(() => {
     env.mock.resolveMostRecentOperation((operation) =>
@@ -188,6 +188,26 @@ describe("OrderUpdate with order updates", () => {
 
     expect(extractText(tree.root)).toMatch("Offer Accepted - Pending Action")
     expect(extractText(tree.root)).not.toMatch("See details")
+    tree.root.findByType(AlertCircleFillIcon)
+  })
+
+  it("shows buy order processing approval", () => {
+    const tree = getWrapper({
+      __typename: "CommerceOrderStateChangedEvent",
+      orderUpdateState: "buy_processing_approval",
+    })
+
+    expect(extractText(tree.root)).toMatch("Order approved. Payment Processing")
+    tree.root.findByType(AlertCircleFillIcon)
+  })
+
+  it("shows offer order processing approval", () => {
+    const tree = getWrapper({
+      __typename: "CommerceOrderStateChangedEvent",
+      orderUpdateState: "offer_processing_approval",
+    })
+
+    expect(extractText(tree.root)).toMatch("Offer accepted. Payment Processing")
     tree.root.findByType(AlertCircleFillIcon)
   })
 

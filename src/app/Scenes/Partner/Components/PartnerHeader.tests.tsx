@@ -1,6 +1,6 @@
 import { PartnerHeaderTestsQuery } from "__generated__/PartnerHeaderTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { Button } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -33,7 +33,7 @@ describe("PartnerHeader", () => {
   )
 
   it("renders artwork counts", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -47,7 +47,7 @@ describe("PartnerHeader", () => {
   })
 
   it("renders the partner name", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -61,7 +61,7 @@ describe("PartnerHeader", () => {
   })
 
   it("renders the follow button", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -75,7 +75,7 @@ describe("PartnerHeader", () => {
   })
 
   it("renders the Black Owned marquee if the gallery has the 'Black Owned' category", async () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],

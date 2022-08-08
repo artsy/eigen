@@ -19,7 +19,7 @@ end
 app_json_path = "../app.json"
 app_json = JSON.parse(File.read(app_json_path))
 
-app_plist = '../ios/Artsy/App_Resources/Artsy-Info.plist'
+app_plist = '../ios/Artsy/App_Resources/Info.plist'
 
 ios_targets = {
   'net.artsy.artsy' => { :name => 'Artsy', :plist_path => app_plist },
@@ -58,7 +58,7 @@ lane :ship_beta_ios do
   end
 
   root = File.expand_path('..', __dir__)
-  bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'ios/Artsy/App_Resources/Artsy-Info.plist')}`.strip
+  bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'ios/Artsy/App_Resources/Info.plist')}`.strip
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
   # important! this much match the release version specified

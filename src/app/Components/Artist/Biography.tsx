@@ -1,3 +1,4 @@
+import { Text } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -5,7 +6,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 import removeMarkdown from "remove-markdown"
 
 import { Biography_artist$data } from "__generated__/Biography_artist.graphql"
-import { Sans } from "palette"
 import { SectionTitle } from "../SectionTitle"
 import { Stack } from "../Stack"
 
@@ -27,11 +27,11 @@ class Biography extends React.Component<Props> {
         <SectionTitle title="Biography" />
         <Stack>
           {!!artist.blurb && (
-            <Sans size="3" style={{ maxWidth: 650 }}>
+            <Text variant="sm" style={{ maxWidth: 650 }}>
               {removeMarkdown(artist.blurb)}
-            </Sans>
+            </Text>
           )}
-          {!!bio && <Sans size="3">{bio}</Sans>}
+          {!!bio && <Text variant="sm">{bio}</Text>}
         </Stack>
       </View>
     )

@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
-import { Box, Button, Sans, Spacer } from "palette"
+import { Box, Button, Spacer, Text } from "palette"
 
 const consignArgs: TappedConsignArgs = {
   contextModule: ContextModule.sellHeader,
@@ -19,23 +19,23 @@ export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
   return (
     <Box px={2} mt={3}>
       <Box>
-        <Sans size="8" textAlign="center" px={2}>
+        <Text variant="lg" textAlign="center" px={2}>
           Sell Art From Your Collection
-        </Sans>
+        </Text>
 
         <Spacer my={0.5} />
 
-        <Sans size="4" textAlign="center">
+        <Text variant="md" textAlign="center">
           Reach art buyers all over the world.
-        </Sans>
+        </Text>
       </Box>
 
       <Spacer mb={2} />
 
       <Button testID="header-cta" variant="fillDark" block onPress={handlePress} haptic>
-        <Sans size="3" weight="medium">
+        <Text variant="sm" weight="medium">
           Submit a work
-        </Sans>
+        </Text>
       </Button>
     </Box>
   )

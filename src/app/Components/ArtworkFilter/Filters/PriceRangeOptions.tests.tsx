@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { Text } from "react-native"
 import {
   ArtworkFiltersState,
@@ -26,13 +26,13 @@ jest.mock("lodash", () => ({
 
 describe("CustomPriceInput", () => {
   it("renders without error", () => {
-    renderWithWrappersTL(
+    renderWithWrappers(
       <Input value={DEFAULT_RANGE} onChange={jest.fn()} {...getEssentialProps()} />
     )
   })
 
   it("renders the min value", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Input
         testID="price-min-input"
         value={{ min: 444, max: 99999 }}
@@ -45,7 +45,7 @@ describe("CustomPriceInput", () => {
   })
 
   it("renders the max value", () => {
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Input
         testID="price-max-input"
         value={{ min: 444, max: 99999 }}
@@ -59,7 +59,7 @@ describe("CustomPriceInput", () => {
 
   it("calls onChange with the min when it is updated", () => {
     const handleChange = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Input
         testID="price-min-input"
         value={DEFAULT_RANGE}
@@ -75,7 +75,7 @@ describe("CustomPriceInput", () => {
 
   it("calls onChange with the max when it is updated", () => {
     const handleChange = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(
+    const { getByTestId } = renderWithWrappers(
       <Input
         testID="price-max-input"
         value={DEFAULT_RANGE}
@@ -116,7 +116,7 @@ describe("PriceRangeOptions", () => {
   }
 
   const getTree = () => {
-    return renderWithWrappersTL(
+    return renderWithWrappers(
       <ArtworkFiltersStoreProvider initialData={INITIAL_DATA}>
         <MockPriceRangeOptionsScreen />
       </ArtworkFiltersStoreProvider>

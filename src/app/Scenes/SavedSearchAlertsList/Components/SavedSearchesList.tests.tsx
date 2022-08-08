@@ -1,6 +1,6 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -39,7 +39,7 @@ describe("SavedSearches", () => {
   }
 
   it("renders correctly", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteriaConnection: () => ({
@@ -67,7 +67,7 @@ describe("SavedSearches", () => {
   })
 
   it("renders an empty message if there are no saved search alerts", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteriaConnection: () => ({
@@ -79,7 +79,7 @@ describe("SavedSearches", () => {
   })
 
   it("renders the default name placeholder if there is no name for saved search alert", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       SearchCriteriaConnection: () => ({
@@ -107,7 +107,7 @@ describe("SavedSearches", () => {
   })
 
   it("should display Sort By button", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment)
 
@@ -115,7 +115,7 @@ describe("SavedSearches", () => {
   })
 
   it("should display sort options when Sort By button is pressed", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment)
 
@@ -126,7 +126,7 @@ describe("SavedSearches", () => {
   })
 
   it("should pass selected sort option to query variables", async () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment)
 

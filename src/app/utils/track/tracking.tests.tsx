@@ -1,4 +1,4 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import React from "react"
 import { Button, View } from "react-native"
 import { useTracking } from "react-tracking"
@@ -29,7 +29,7 @@ describe("Tracking", () => {
   it.skip("works for tracking events with hooks", () => {
     expect(postEventToProviders).toHaveBeenCalledTimes(0)
 
-    const component = renderWithWrappers(<TestComponentHooks />).root
+    const component = renderWithWrappersLEGACY(<TestComponentHooks />).root
 
     expect(postEventToProviders).toHaveBeenCalledTimes(1)
     expect(postEventToProviders).toHaveBeenNthCalledWith(1, { aScreen: "a test screen" })
@@ -62,7 +62,7 @@ describe("Tracking", () => {
   it.skip("works for tracking events with decorators", () => {
     expect(postEventToProviders).toHaveBeenCalledTimes(0)
 
-    const component = renderWithWrappers(<TestComponentDecorators />).root
+    const component = renderWithWrappersLEGACY(<TestComponentDecorators />).root
 
     expect(postEventToProviders).toHaveBeenCalledTimes(1)
     expect(postEventToProviders).toHaveBeenNthCalledWith(1, { aScreen: "a class screen" })

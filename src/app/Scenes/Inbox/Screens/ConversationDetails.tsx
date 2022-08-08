@@ -70,7 +70,10 @@ export const ConversationDetailsFragmentContainer = createFragmentContainer(Conv
             ...OrderInformation_artwork
           }
         }
-        orderConnection(first: 30, states: [APPROVED, PENDING, SUBMITTED, FULFILLED]) {
+        orderConnection(
+          first: 30
+          states: [APPROVED, PENDING, SUBMITTED, FULFILLED, PROCESSING_APPROVAL]
+        ) {
           edges {
             node {
               ...SellerReplyEstimate_order

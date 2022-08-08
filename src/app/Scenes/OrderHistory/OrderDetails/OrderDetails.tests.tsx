@@ -1,6 +1,6 @@
 import { OrderDetailsTestsQuery } from "__generated__/OrderDetailsTestsQuery.graphql"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -51,7 +51,7 @@ describe(OrderDetailsQueryRender, () => {
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
@@ -61,7 +61,7 @@ describe(OrderDetailsQueryRender, () => {
   }
 
   it("renders without throwing an error", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
     expect(tree.findByType(SectionList)).toBeTruthy()
     expect(tree.findByType(OrderDetailsHeaderFragmentContainer)).toBeTruthy()
@@ -74,7 +74,7 @@ describe(OrderDetailsQueryRender, () => {
   })
 
   it("not render ShipsToSection when CommercePickup", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     order.requestedFulfillment.__typename = "CommercePickup"
     resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
     const sections: SectionListItem[] = tree.findByType(SectionList).props.sections
@@ -82,7 +82,7 @@ describe(OrderDetailsQueryRender, () => {
   })
 
   it("not render TrackOrderSection when CommercePickup", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     order.requestedFulfillment.__typename = "CommercePickup"
     resolveMostRecentRelayOperation(mockEnvironment, { CommerceOrder: () => order })
     const sections: SectionListItem[] = tree.findByType(SectionList).props.sections
@@ -90,7 +90,7 @@ describe(OrderDetailsQueryRender, () => {
   })
 
   it("not render SoldBySection when partnerName null", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment, {
       CommerceOrder: () => ({
         ...order,
@@ -121,7 +121,7 @@ describe(OrderDetailsQueryRender, () => {
   })
 
   it("Loads OrderHistoryQueryRender with OrderDetailsPlaceholder", () => {
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <OrderDetailsQueryRender orderID="21856921-fa90-4a36-a17e-dd52870952d2" />
     ).root
     expect(tree.findAllByType(OrderDetailsPlaceholder)).toHaveLength(1)

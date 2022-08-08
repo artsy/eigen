@@ -1,17 +1,17 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import moment from "moment"
 import "react-native"
 
 import ConversationSnippet from "./ConversationSnippet"
 
 it("renders with an artwork without throwing an error", () => {
-  renderWithWrappers(
+  renderWithWrappersLEGACY(
     <ConversationSnippet conversation={artworkConversation as any} onSelected={undefined} />
   )
 })
 
 it("renders with a show without throwing an error", () => {
-  renderWithWrappers(
+  renderWithWrappersLEGACY(
     <ConversationSnippet conversation={showConversation as any} onSelected={undefined} />
   )
 })

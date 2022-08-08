@@ -7,7 +7,7 @@ import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/navigation/navigate"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { ArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { ArtworkInquiryContextState } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
@@ -76,7 +76,7 @@ describe("CommercialButtons", () => {
       isForSale: true,
       isPriceHidden: false,
     }
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => artwork,
@@ -95,7 +95,7 @@ describe("CommercialButtons", () => {
       isForSale: true,
       isPriceHidden: false,
     }
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => artwork,
@@ -135,7 +135,7 @@ describe("CommercialButtons", () => {
         ],
       },
     }
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
     )
 
@@ -156,7 +156,7 @@ describe("CommercialButtons", () => {
       isForSale: true,
       isPriceHidden: false,
     }
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => artwork,
@@ -177,7 +177,7 @@ describe("CommercialButtons", () => {
       isPriceHidden: false,
     }
 
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => artwork,
@@ -198,7 +198,7 @@ describe("CommercialButtons", () => {
     expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", {
       modal: true,
       passProps: {
-        title: "Buy Now",
+        title: "Purchase",
       },
     })
   })
@@ -213,7 +213,7 @@ describe("CommercialButtons", () => {
       isPriceHidden: false,
     }
 
-    const { getByText } = renderWithWrappersTL(<TestWrapper />)
+    const { getByText } = renderWithWrappers(<TestWrapper />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artwork: () => artwork,
@@ -265,7 +265,7 @@ describe("CommercialButtons", () => {
         increments: [{ cents: 320000, display: "€3,200" }],
       },
     }
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
     )
 
@@ -302,7 +302,7 @@ describe("CommercialButtons", () => {
         increments: [{ cents: 320000, display: "€3,200" }],
       },
     }
-    const { queryByText } = renderWithWrappersTL(
+    const { queryByText } = renderWithWrappers(
       <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
     )
 
@@ -325,7 +325,7 @@ describe("CommercialButtons", () => {
       isPriceHidden: false,
     }
 
-    const { getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappers(
       <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
     )
 
@@ -347,7 +347,7 @@ describe("CommercialButtons", () => {
         isInquireable: true,
         isPriceHidden: false,
       }
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 
@@ -378,7 +378,7 @@ describe("CommercialButtons", () => {
         isInquireable: true,
         isPriceHidden: false,
       }
-      const { getByText } = renderWithWrappersTL(
+      const { getByText } = renderWithWrappers(
         <TestWrapper auctionState={AuctionTimerState.LIVE_INTEGRATION_UPCOMING} />
       )
 

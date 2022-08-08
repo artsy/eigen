@@ -3,7 +3,7 @@ import { SearchArtworksGridTestsQuery } from "__generated__/SearchArtworksGridTe
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -51,7 +51,7 @@ describe("SearchArtworksGrid", () => {
   }
 
   it("tracks filter modal opening", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
     fireEvent.press(getByText("Sort & Filter"))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -69,7 +69,7 @@ describe("SearchArtworksGrid", () => {
   })
 
   it("tracks filter modal closing", () => {
-    const { container } = renderWithWrappersTL(<TestRenderer />)
+    const { container } = renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(environment)
     container.findByType(FancyModal).props.onBackgroundPressed()
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -87,7 +87,7 @@ describe("SearchArtworksGrid", () => {
   })
 
   it('should display "Sort & Filter" label by default', () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(environment)
 

@@ -1,1 +1,0 @@
-export { ArtworkAttributionClassFAQQueryRenderer } from "./ArtworkAttributionClassFAQ"

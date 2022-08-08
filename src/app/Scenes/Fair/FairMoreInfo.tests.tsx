@@ -1,6 +1,6 @@
 import { FairMoreInfoTestsQuery } from "__generated__/FairMoreInfoTestsQuery.graphql"
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { LinkText, Text } from "palette"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
@@ -17,7 +17,7 @@ const getText = (wrapper: ReactTestRenderer) =>
 describe("FairMoreInfo", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <QueryRenderer<FairMoreInfoTestsQuery>
         environment={env}
         query={graphql`

@@ -16,7 +16,7 @@ export const CascadingEndTimesBanner: React.FC<CascadingEndTimesBannerProps> = (
   const canBeExtended = !!extendedBiddingIntervalMinutes
 
   return (
-    <Flex backgroundColor="blue100" p={2} my={2} ml={-2} mr={-2}>
+    <Flex backgroundColor="blue100" p={2}>
       <Text color="white" style={{ textAlign: "center" }}>
         {canBeExtended
           ? "Closing times may be extended due to last minute competitive bidding. "

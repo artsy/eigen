@@ -102,13 +102,13 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
         case "OnboardingCreateAccountEmail":
           const userExists = await GlobalStore.actions.auth.userExists({ email })
 
-          // When the user exists already we want to take them to the login screen
           if (userExists) {
+            // When the user exists already we want to take them to the login screen
             setErrors({
               email: EMAIL_EXISTS_ERROR_MESSAGE,
             })
-            // If the email is new continue with the signup
           } else {
+            // If the email is new continue with the sign up
             __unsafe__createAccountNavigationRef.current?.navigate(
               "OnboardingCreateAccountPassword"
             )
@@ -159,7 +159,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
             onStateChange={(state) => {
               const routes = state?.routes
               const index = state?.index
-              if (index && routes) {
+              if (index !== undefined && routes) {
                 setCurrentRoute(routes[index].name as any)
               }
             }}

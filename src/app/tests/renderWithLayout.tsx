@@ -1,9 +1,9 @@
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 
 /** Renders a React Component with specified layout using onLayout callback */
 export const renderWithLayout = (component: any, layout: { width?: number; height?: number }) => {
   // create the component with renderer
-  component = renderWithWrappers(component)
+  component = renderWithWrappersLEGACY(component)
 
   // create a nativeEvent with desired dimensions
   const mockNativeEvent = {

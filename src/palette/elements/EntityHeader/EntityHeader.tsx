@@ -1,10 +1,10 @@
 import { bullet } from "palette/helpers"
 import { SpacerProps } from "../../atoms/Spacer"
 import { Avatar } from "../Avatar"
-import { Flex } from "../Flex"
-import { Sans } from "../Text"
+import { Flex, FlexProps } from "../Flex"
+import { Text } from "../Text"
 
-interface EntityHeaderProps extends SpacerProps {
+interface EntityHeaderProps extends SpacerProps, FlexProps {
   smallVariant?: boolean
   href?: string
   imageUrl?: string
@@ -36,15 +36,21 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   )
 
   const headerName = (
-    <Sans ellipsizeMode="tail" numberOfLines={1} size="3" style={{ flexShrink: 1 }}>
+    <Text variant="sm" ellipsizeMode="tail" numberOfLines={1} style={{ flexShrink: 1 }}>
       {name}
-    </Sans>
+    </Text>
   )
 
   const headerMeta = !!meta && (
-    <Sans ellipsizeMode="tail" numberOfLines={1} size="2" color="black60" style={{ flexShrink: 1 }}>
+    <Text
+      variant="xs"
+      ellipsizeMode="tail"
+      numberOfLines={1}
+      color="black60"
+      style={{ flexShrink: 1 }}
+    >
       {meta}
-    </Sans>
+    </Text>
   )
 
   return (
@@ -59,9 +65,9 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
         <Flex flexDirection="row" justifyContent="flex-start" flexGrow={1} alignItems="center">
           {headerName}
 
-          <Sans size="3" ml={0.3}>
+          <Text variant="sm" ml={0.3}>
             {bullet}
-          </Sans>
+          </Text>
 
           {followButton}
         </Flex>

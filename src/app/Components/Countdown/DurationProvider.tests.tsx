@@ -1,10 +1,12 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { shallow } from "enzyme"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import moment from "moment"
+import { Text } from "palette"
 import { DurationProvider } from "./DurationProvider"
 
 describe("DurationProvider", () => {
-  const DurationConsumer: React.FC<any> = jest.fn()
+  const DurationConsumer = (props: any) => {
+    return <Text>{props.duration.toString()}</Text>
+  }
 
   beforeEach(() => {
     jest.useFakeTimers()
@@ -13,27 +15,26 @@ describe("DurationProvider", () => {
 
   it("provides a duration", () => {
     const startAt = new Date(Date.now() + 1000).toISOString()
-    const comp = shallow(
+    const { getByText } = renderWithWrappers(
       <DurationProvider startAt={startAt}>
         <DurationConsumer />
       </DurationProvider>
     )
 
-    expect(comp.find(DurationConsumer).props().duration.toString()).toEqual(
-      moment.duration(1000).toString()
-    )
+    const duration = moment.duration(1000).toString()
+    expect(getByText(duration)).toBeTruthy()
   })
 
   it("updates duration every second", () => {
     const startAt = new Date(Date.now() + 1000).toISOString()
-    const comp = shallow(
+    const { getByText } = renderWithWrappers(
       <DurationProvider startAt={startAt}>
         <DurationConsumer />
       </DurationProvider>
     )
     jest.advanceTimersByTime(1000)
-    expect(comp.find(DurationConsumer).props().duration.toString()).toEqual(
-      moment.duration(0).toString()
-    )
+
+    const duration = moment.duration(0).toString()
+    expect(getByText(duration)).toBeTruthy()
   })
 })

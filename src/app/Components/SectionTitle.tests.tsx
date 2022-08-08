@@ -1,11 +1,11 @@
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { ArrowRightIcon } from "palette"
 import { SectionTitle } from "./SectionTitle"
 
 describe("SectionTitle", () => {
   it(`renders a title alone`, async () => {
-    const tree = renderWithWrappers(<SectionTitle title="Hello" />)
+    const tree = renderWithWrappersLEGACY(<SectionTitle title="Hello" />)
 
     expect(extractText(tree.root)).toContain("Hello")
     expect(tree.root.findAllByType(ArrowRightIcon)).toHaveLength(0)
@@ -13,7 +13,7 @@ describe("SectionTitle", () => {
   })
 
   it(`renders a subtitle when specified`, async () => {
-    const tree = renderWithWrappers(<SectionTitle title="Hello" subtitle="welcome to test" />)
+    const tree = renderWithWrappersLEGACY(<SectionTitle title="Hello" subtitle="welcome to test" />)
 
     expect(extractText(tree.root.findByProps({ testID: "title" }))).toContain("Hello")
     expect(extractText(tree.root.findByProps({ testID: "subtitle" }))).toBe("welcome to test")
@@ -22,7 +22,7 @@ describe("SectionTitle", () => {
 
   it(`renders a right arrow when given an 'onPress' prop`, async () => {
     const onPress = jest.fn()
-    const tree = renderWithWrappers(
+    const tree = renderWithWrappersLEGACY(
       <SectionTitle title="Hello" subtitle="welcome to test" onPress={onPress} />
     )
 

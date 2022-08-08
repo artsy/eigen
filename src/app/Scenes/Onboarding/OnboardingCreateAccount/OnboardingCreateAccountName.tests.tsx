@@ -1,6 +1,6 @@
 import { BackButton } from "app/navigation/BackButton"
 import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { FormikProvider, useFormik } from "formik"
 import { EmailSubscriptionCheckbox } from "./EmailSubscriptionCheckbox"
 import { FormikSchema, nameSchema } from "./OnboardingCreateAccount"
@@ -45,7 +45,7 @@ describe("OnboardingCreateAccountName", () => {
 
   describe("Backbutton", () => {
     it("navigates back to the password screen", () => {
-      const tree = renderWithWrappers(<Test />)
+      const tree = renderWithWrappersLEGACY(<Test />)
 
       const backButton = tree.root.findAllByType(BackButton)[0]
       backButton.props.onPress()
@@ -55,13 +55,13 @@ describe("OnboardingCreateAccountName", () => {
 
   describe("Form", () => {
     it("renders the right name from the formik context", () => {
-      const tree = renderWithWrappers(<Test name="Andy warhol" />)
+      const tree = renderWithWrappersLEGACY(<Test name="Andy warhol" />)
       const input = tree.root.findByProps({ testID: "nameInput" })
       expect(input.props.value).toEqual("Andy warhol")
     })
 
     it("does not submit when the user did not accept the terms and conditions", async () => {
-      const tree = renderWithWrappers(<Test name="Andy warhol" />)
+      const tree = renderWithWrappersLEGACY(<Test name="Andy warhol" />)
       const input = tree.root.findByProps({ testID: "nameInput" })
       input.props.onSubmitEditing()
       await flushPromiseQueue()
@@ -69,7 +69,7 @@ describe("OnboardingCreateAccountName", () => {
     })
 
     it("submits when the user did accepts the terms and conditions", async () => {
-      const tree = renderWithWrappers(<Test name="Andy warhol" acceptedTerms />)
+      const tree = renderWithWrappersLEGACY(<Test name="Andy warhol" acceptedTerms />)
       const input = tree.root.findByProps({ testID: "nameInput" })
       input.props.onSubmitEditing()
       await flushPromiseQueue()
@@ -79,14 +79,14 @@ describe("OnboardingCreateAccountName", () => {
 
   describe("Checkboxes", () => {
     it("sets acceptedTerms to true when the user presses on the checkbox", async () => {
-      const tree = renderWithWrappers(<Test name="Andy warhol" />)
+      const tree = renderWithWrappersLEGACY(<Test name="Andy warhol" />)
       const termsCheckbox = tree.root.findByType(TermsOfServiceCheckbox)
       termsCheckbox.props.setChecked()
       await flushPromiseQueue()
       expect(termsCheckbox.props.checked).toEqual(true)
     })
     it("sets agreedToReceiveEmails to true when the user presses on the checkbox", async () => {
-      const tree = renderWithWrappers(<Test name="Andy warhol" />)
+      const tree = renderWithWrappersLEGACY(<Test name="Andy warhol" />)
       const emailsSubscriptionCheckbox = tree.root.findByType(EmailSubscriptionCheckbox)
       emailsSubscriptionCheckbox.props.setChecked()
       await flushPromiseQueue()

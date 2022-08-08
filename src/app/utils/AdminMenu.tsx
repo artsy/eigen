@@ -16,7 +16,6 @@ import {
   CloseIcon,
   Flex,
   ReloadIcon,
-  Sans,
   Separator,
   Spacer,
   Text,
@@ -498,14 +497,14 @@ export const FeatureFlagMenuItem: React.FC<{
         pr="15px"
       >
         <Flex flexDirection="row" mr="2" flex={5}>
-          <Sans size="5">{title}</Sans>
+          <Text variant="md">{title}</Text>
         </Flex>
         {!!value && (
           <Flex flex={2} flexDirection="row" alignItems="center">
             <Flex flex={3}>
-              <Sans size="5" color="black60" numberOfLines={1} textAlign="right">
+              <Text variant="md" color="black60" numberOfLines={1} textAlign="right">
                 {value}
-              </Sans>
+              </Text>
             </Flex>
             <Flex ml="1" flex={1}>
               <ChevronIcon direction="right" fill="black60" />

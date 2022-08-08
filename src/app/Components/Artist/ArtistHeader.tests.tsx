@@ -4,9 +4,9 @@ import { createMockEnvironment } from "relay-test-utils"
 
 import { ArtistHeaderFragmentContainer } from "app/Components/Artist/ArtistHeader"
 import { extractText } from "app/tests/extractText"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
-import { Button, Sans } from "palette"
+import { Button, Text } from "palette"
 
 jest.unmock("react-relay")
 
@@ -38,17 +38,17 @@ describe("ArtistHeader", () => {
   }
 
   it("renders properly", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => mockArtist,
     })
 
-    expect(tree.root.findAllByType(Sans)[0].props.children).toMatch("Marcel Duchamp")
+    expect(tree.root.findAllByType(Text)[0].props.children).toMatch("Marcel Duchamp")
   })
 
   it("displays follow button for artist", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => mockArtist,
@@ -60,7 +60,7 @@ describe("ArtistHeader", () => {
   it("does not show followers count when it is < 2", () => {
     mockArtist.counts.follows = 1
 
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => mockArtist,

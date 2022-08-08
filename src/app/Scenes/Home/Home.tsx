@@ -4,6 +4,7 @@ import { Home_homePageAbove$data } from "__generated__/Home_homePageAbove.graphq
 import { Home_homePageBelow$data } from "__generated__/Home_homePageBelow.graphql"
 import { Home_meAbove$data } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow$data } from "__generated__/Home_meBelow.graphql"
+import { Home_newWorksForYou$data } from "__generated__/Home_newWorksForYou.graphql"
 import { Home_showsByFollowedArtists$data } from "__generated__/Home_showsByFollowedArtists.graphql"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
@@ -65,6 +66,7 @@ interface Props extends ViewProps {
   featured: Home_featured$data | null
   homePageAbove: Home_homePageAbove$data | null
   homePageBelow: Home_homePageBelow$data | null
+  newWorksForYou: Home_newWorksForYou$data | null
   loading: boolean
   meAbove: Home_meAbove$data | null
   meBelow: Home_meBelow$data | null
@@ -86,6 +88,7 @@ const Home = (props: Props) => {
     homePageBelow,
     meAbove,
     meBelow,
+    newWorksForYou,
     articlesConnection,
     showsByFollowedArtists,
     featured,
@@ -101,7 +104,7 @@ const Home = (props: Props) => {
     {
       title: "New Works for You",
       type: "newWorksForYou",
-      data: meAbove,
+      data: newWorksForYou,
       prefetchUrl: "/new-works-for-you",
     },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
@@ -281,7 +284,7 @@ const Home = (props: Props) => {
                 return (
                   <NewWorksForYouRail
                     title={item.title}
-                    me={item.data}
+                    artworkConnection={item.data}
                     scrollRef={scrollRefs.current[index]}
                     mb={MODULE_SEPARATOR_HEIGHT}
                   />
@@ -426,7 +429,6 @@ export const HomeFragmentContainer = createRefetchContainer(
       fragment Home_meAbove on Me {
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
-        ...NewWorksForYouRail_me
       }
     `,
     meBelow: graphql`
@@ -451,6 +453,11 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...ViewingRoomsListFeatured_featured
       }
     `,
+    newWorksForYou: graphql`
+      fragment Home_newWorksForYou on Viewer {
+        ...NewWorksForYouRail_artworkConnection
+      }
+    `,
   },
   graphql`
     query HomeRefetchQuery($heroImageVersion: HomePageHeroUnitImageVersion!) {
@@ -464,7 +471,6 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...Home_meAbove
         ...AuctionResultsRail_me
         ...RecommendedArtistsRail_me
-        ...NewWorksForYouRail_me
         showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
           ...Home_showsByFollowedArtists
         }
@@ -477,6 +483,9 @@ export const HomeFragmentContainer = createRefetchContainer(
       }
       articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
         ...Home_articlesConnection
+      }
+      newWorksForYou: viewer {
+        ...Home_newWorksForYou
       }
     }
   `
@@ -629,11 +638,13 @@ export const HomeQueryRenderer: React.FC = () => {
             }
             me @optionalField {
               ...Home_meAbove
-              ...NewWorksForYouRail_me
             }
             articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
               @optionalField {
               ...Home_articlesConnection
+            }
+            newWorksForYou: viewer @optionalField {
+              ...Home_newWorksForYou
             }
           }
         `,
@@ -642,6 +653,9 @@ export const HomeQueryRenderer: React.FC = () => {
       below={{
         query: graphql`
           query HomeBelowTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+            newWorksForYou: viewer @optionalField {
+              ...Home_newWorksForYou
+            }
             homePage @optionalField {
               ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
             }
@@ -673,6 +687,7 @@ export const HomeQueryRenderer: React.FC = () => {
               featured={below ? below.featured : null}
               homePageAbove={above.homePage}
               homePageBelow={below ? below.homePage : null}
+              newWorksForYou={above.newWorksForYou}
               meAbove={above.me}
               meBelow={below ? below.me : null}
               loading={!below}

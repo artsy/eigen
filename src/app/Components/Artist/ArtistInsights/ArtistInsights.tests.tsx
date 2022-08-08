@@ -1,6 +1,6 @@
 import { ArtistInsightsTestsQuery } from "__generated__/ArtistInsightsTestsQuery.graphql"
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
-import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -48,13 +48,13 @@ describe("ArtistInsights", () => {
   )
 
   it("renders list auction results", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
+    const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment)
     expect(tree.findAllByType(ArtistInsightsAuctionResultsPaginationContainer).length).toEqual(1)
   })
 
   it("tracks an auction page view when artist insights is current tab", (done) => {
-    renderWithWrappers(<TestRenderer tabIndex={0} />)
+    renderWithWrappersLEGACY(<TestRenderer tabIndex={0} />)
 
     resolveMostRecentRelayOperation(mockEnvironment)
 

@@ -1,4 +1,4 @@
-import { renderWithWrappersTL } from "app/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { ProgressBar } from "palette"
 
 import {
@@ -17,7 +17,7 @@ describe("ArtworkAuctionProgressBar", () => {
         hasBeenExtended: false,
       }
 
-      const wrapper = renderWithWrappersTL(<ArtworkAuctionProgressBar {...props} />)
+      const wrapper = renderWithWrappers(<ArtworkAuctionProgressBar {...props} />)
 
       expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(0)
     })
@@ -33,7 +33,7 @@ describe("ArtworkAuctionProgressBar", () => {
         hasBeenExtended: true,
       }
 
-      const wrapper = renderWithWrappersTL(<ArtworkAuctionProgressBar {...props} />)
+      const wrapper = renderWithWrappers(<ArtworkAuctionProgressBar {...props} />)
 
       expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(1)
     })
@@ -49,7 +49,7 @@ describe("ArtworkAuctionProgressBar", () => {
         hasBeenExtended: false,
       }
 
-      const wrapper = renderWithWrappersTL(<ArtworkAuctionProgressBar {...props} />)
+      const wrapper = renderWithWrappers(<ArtworkAuctionProgressBar {...props} />)
 
       expect(wrapper.UNSAFE_queryAllByType(ProgressBar).length).toBe(1)
     })

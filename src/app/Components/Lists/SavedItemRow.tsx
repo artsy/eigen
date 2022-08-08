@@ -1,5 +1,5 @@
 import { navigate } from "app/navigation/navigate"
-import { Flex, Sans, Spacer, Touchable, useColor } from "palette"
+import { Flex, Spacer, Text, Touchable, useColor } from "palette"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 interface SavedItemRowProps {
@@ -38,9 +38,9 @@ export const SavedItemRow: React.FC<SavedItemRowProps> = ({
             style={{ borderRadius: square_image ? 2 : size / 2, overflow: "hidden" }}
           />
           <Spacer mr="2" />
-          <Sans size="3" weight="medium">
+          <Text variant="sm" weight="medium">
             {name}
-          </Sans>
+          </Text>
         </Flex>
       </Touchable>
     </Flex>

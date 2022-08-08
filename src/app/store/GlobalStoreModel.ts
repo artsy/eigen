@@ -16,6 +16,10 @@ import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
+import {
+  getMyCollectionCareerHighlightsModel,
+  MyCollectionCareerHighlightsModel,
+} from "./MyCollectionCareerHighlightsModel"
 import { getNativeModel, NativeModel } from "./NativeModel"
 import {
   getPendingPushNotificationModel,
@@ -45,6 +49,7 @@ interface GlobalStoreStateModel {
   artsyPrefs: ArtsyPrefsModel
   userPrefs: UserPrefsModel
   devicePrefs: DevicePrefsModel
+  myCollectionCareerHighlights: MyCollectionCareerHighlightsModel
   visualClue: VisualClueModel
   artworkSubmission: SubmissionModel
   requestedPriceEstimates: RequestedPriceEstimatesModel
@@ -120,6 +125,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   pendingPushNotification: getPendingPushNotificationModel(),
   userPrefs: getUserPrefsModel(),
   visualClue: getVisualClueModel(),
+  myCollectionCareerHighlights: getMyCollectionCareerHighlightsModel(),
   artworkSubmission: getSubmissionModel(),
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
 
