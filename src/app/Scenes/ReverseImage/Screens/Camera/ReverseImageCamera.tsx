@@ -18,6 +18,7 @@ import { HeaderContainer } from "../../Components/HeaderContainer"
 import { HeaderTitle } from "../../Components/HeaderTitle"
 import { FocusCoords, ReverseImageNavigationStack } from "../../types"
 import { CameraButtons } from "./Components/CameraButtons"
+import { CameraErrorState } from "./Components/CameraErrorState"
 import { FocusIndicator } from "./Components/FocusIndicator"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
@@ -169,17 +170,7 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
   }
 
   if (hasError) {
-    return (
-      <Screen>
-        <Screen.Header onBack={handleBackPress} />
-
-        <Screen.Body>
-          <Flex flex={1} justifyContent="center" alignItems="center">
-            <Text>Failed to open the camera device</Text>
-          </Flex>
-        </Screen.Body>
-      </Screen>
-    )
+    return <CameraErrorState onBackPress={handleBackPress} />
   }
 
   return (
