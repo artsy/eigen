@@ -3,7 +3,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { goBack } from "app/navigation/navigate"
 import { useIsForeground } from "app/utils/useIsForeground"
-import { BackButton, Button, Flex, Screen, Spinner, Text } from "palette"
+import { BackButton, Flex, Spinner } from "palette"
 import { useEffect, useRef, useState } from "react"
 import { Linking, StatusBar, StyleSheet } from "react-native"
 import {
@@ -19,6 +19,7 @@ import { HeaderTitle } from "../../Components/HeaderTitle"
 import { FocusCoords, ReverseImageNavigationStack } from "../../types"
 import { CameraButtons } from "./Components/CameraButtons"
 import { CameraErrorState } from "./Components/CameraErrorState"
+import { CameraGrantPermissions } from "./Components/CameraGrantPermissions"
 import { FocusIndicator } from "./Components/FocusIndicator"
 
 type Props = StackScreenProps<ReverseImageNavigationStack, "Camera">
@@ -154,18 +155,10 @@ export const ReverseImageCameraScreen: React.FC<Props> = (props) => {
 
   if (cameraPermission !== "authorized") {
     return (
-      <Screen>
-        <Screen.Header onBack={handleBackPress} />
-
-        <Screen.Body>
-          <Flex flex={1} justifyContent="center" alignItems="center">
-            <Text>Camera permission required</Text>
-            <Button mt={2} onPress={requestCameraPermission}>
-              Grant
-            </Button>
-          </Flex>
-        </Screen.Body>
-      </Screen>
+      <CameraGrantPermissions
+        onBackPress={handleBackPress}
+        onRequestCameraPermission={requestCameraPermission}
+      />
     )
   }
 
