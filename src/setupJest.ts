@@ -226,11 +226,6 @@ jest.mock("react-native-localize", () => ({
 // tslint:disable-next-line: no-var-requires
 require("react-native-reanimated/src/reanimated2/jestUtils").setUpTests()
 
-// @ts-expect-error
-// tslint:disable-next-line:no-empty
-global.__reanimatedWorkletInit = () => {}
-jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
-
 jest.mock("react-native/Libraries/LayoutAnimation/LayoutAnimation", () => ({
   ...jest.requireActual("react-native/Libraries/LayoutAnimation/LayoutAnimation"),
   configureNext: jest.fn((_config, callback) => callback?.()),
