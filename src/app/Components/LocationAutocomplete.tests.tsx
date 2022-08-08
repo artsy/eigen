@@ -86,4 +86,52 @@ describe("LocationAutocomplete", () => {
       expect(mockOnChange).toHaveBeenCalledWith(locationDetails)
     })
   })
+
+  describe("when typing a custom location", () => {
+    beforeEach(() => {
+      ;(getLocationPredictions as jest.Mock).mockResolvedValue(locationPredictions)
+      ;(getLocationDetails as jest.Mock).mockResolvedValue(locationDetails)
+    })
+
+    it("calls onChange with a custom location", async () => {
+      const { getByTestId } = renderWithWrappersTL(
+        <LocationAutocomplete allowCustomLocation onChange={mockOnChange} />
+      )
+
+      const input = getByTestId("autocomplete-location-input")
+
+      fireEvent(input, "focus")
+      fireEvent(input, "changeText", "A custom location")
+
+      fireEvent(input, "blur")
+
+      await flushPromiseQueue()
+
+      expect(mockOnChange).toHaveBeenCalledWith({ city: "A custom location" })
+    })
+  })
 })
+
+const locationPredictions = [
+  { id: "a", name: "Busytown, USA" },
+  { id: "b", name: "Hello, USA" },
+]
+
+const locationDetails = {
+  city: "Busytown",
+  coordinates: [1, 2],
+  country: "USA",
+  postalCode: "12345",
+  state: "CA",
+  stateCode: "CA",
+}
+
+const initialLocation = {
+  id: "x",
+  name: "Berlin, Germany",
+  city: "Berlin",
+  country: "Germany",
+  postalCode: "12345",
+  state: "Berlin",
+  stateCode: "BE",
+}

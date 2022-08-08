@@ -13,7 +13,7 @@ interface LocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   floating?: boolean
   initialLocation?: LocationWithDetails | null
   displayLocation?: string
-  allowCustomInput?: boolean
+  allowCustomLocation?: boolean
   inputRef?: React.RefObject<Input>
   onChange: (l: LocationWithDetails) => void
   FooterComponent?: () => JSX.Element
@@ -38,7 +38,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   floating,
   FooterComponent,
   inputRef,
-  allowCustomInput = false,
+  allowCustomLocation = false,
   ...restProps
 }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
@@ -79,7 +79,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   }
 
   const handleBlur = () => {
-    if (allowCustomInput) {
+    if (allowCustomLocation) {
       if (
         query === initialLocation?.name ||
         query === displayLocation ||

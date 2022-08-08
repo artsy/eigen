@@ -239,6 +239,7 @@ export const MyProfileEditForm: React.FC = () => {
               />
 
               <LocationAutocomplete
+                allowCustomLocation
                 inputRef={locationInputRef}
                 title="Primary location"
                 placeholder="City name"
@@ -256,7 +257,6 @@ export const MyProfileEditForm: React.FC = () => {
                     stateCode: stateCode ?? "",
                   })
                 }}
-                allowCustomInput
               />
 
               <Input
