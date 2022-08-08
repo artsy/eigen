@@ -1,4 +1,4 @@
-import { fireEvent, within } from "@testing-library/react-native"
+import { fireEvent, screen, within } from "@testing-library/react-native"
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
@@ -17,7 +17,6 @@ import { mockNavigate } from "app/tests/navigationMocks"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { Theme } from "palette"
-import { withReanimatedTimer } from "react-native-reanimated/src/reanimated2/jestUtils"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
@@ -106,322 +105,294 @@ const MockFilterModalNavigator = ({
 
 describe("Filter modal", () => {
   it("should display filter when aggregation counts are NOT empty", () => {
-    withReanimatedTimer(async () => {
-      const injectedState: ArtworkFiltersState = {
-        selectedFilters: [],
-        appliedFilters: [],
-        previouslyAppliedFilters: [],
-        applyFilters: false,
-        aggregations: [
-          {
-            slice: "MEDIUM",
-            counts: [{ name: "Sculpture", count: 277, value: "sculpture" }],
-          },
-          {
-            slice: "MAJOR_PERIOD",
-            counts: [{ name: "Late 19th Century", count: 6, value: "Late 19th Century" }],
-          },
-        ],
-        filterType: "artwork",
-        counts: { total: null, followedArtists: null },
-        sizeMetric: "cm",
-      }
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [
+        {
+          slice: "MEDIUM",
+          counts: [{ name: "Sculpture", count: 277, value: "sculpture" }],
+        },
+        {
+          slice: "MAJOR_PERIOD",
+          counts: [{ name: "Late 19th Century", count: 6, value: "Late 19th Century" }],
+        },
+      ],
+      filterType: "artwork",
+      counts: { total: null, followedArtists: null },
+      sizeMetric: "cm",
+    }
 
-      const { getByText } = renderWithWrappers(
-        <MockFilterModalNavigator initialData={injectedState} />
-      )
+    renderWithWrappers(<MockFilterModalNavigator initialData={injectedState} />)
 
-      expect(getByText("Medium")).toBeTruthy()
-      expect(getByText("Time Period")).toBeTruthy()
-    })
+    expect(screen.getByText("Medium")).toBeTruthy()
+    expect(screen.getByText("Time Period")).toBeTruthy()
   })
 
   it("should hide filter when aggregation counts are empty", () => {
-    withReanimatedTimer(async () => {
-      const injectedState: ArtworkFiltersState = {
-        selectedFilters: [],
-        appliedFilters: [],
-        previouslyAppliedFilters: [],
-        applyFilters: false,
-        aggregations: [
-          {
-            slice: "MEDIUM",
-            counts: [],
-          },
-          {
-            slice: "MAJOR_PERIOD",
-            counts: [{ name: "Late 19th Century", count: 6, value: "Late 19th Century" }],
-          },
-        ],
-        filterType: "artwork",
-        counts: { total: null, followedArtists: null },
-        sizeMetric: "cm",
-      }
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: [
+        {
+          slice: "MEDIUM",
+          counts: [],
+        },
+        {
+          slice: "MAJOR_PERIOD",
+          counts: [{ name: "Late 19th Century", count: 6, value: "Late 19th Century" }],
+        },
+      ],
+      filterType: "artwork",
+      counts: { total: null, followedArtists: null },
+      sizeMetric: "cm",
+    }
 
-      const { getByText, queryByText } = renderWithWrappers(
-        <MockFilterModalNavigator initialData={injectedState} />
-      )
+    const { getByText, queryByText } = renderWithWrappers(
+      <MockFilterModalNavigator initialData={injectedState} />
+    )
 
-      expect(queryByText("Medium")).toBeFalsy()
-      expect(getByText("Time Period")).toBeTruthy()
-    })
+    expect(queryByText("Medium")).toBeFalsy()
+    expect(getByText("Time Period")).toBeTruthy()
   })
 })
 
 describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to sort screen from filter screen", () => {
-    withReanimatedTimer(async () => {
-      const { getByText } = renderWithWrappers(
-        <ArtworkFiltersStoreProvider>
-          <ArtworkFilterOptionsScreen
-            {...getEssentialProps({
-              mode: FilterModalMode.Collection,
-            })}
-          />
-        </ArtworkFiltersStoreProvider>
-      )
+    const { getByText } = renderWithWrappers(
+      <ArtworkFiltersStoreProvider>
+        <ArtworkFilterOptionsScreen
+          {...getEssentialProps({
+            mode: FilterModalMode.Collection,
+          })}
+        />
+      </ArtworkFiltersStoreProvider>
+    )
 
-      // the first row item takes users to the Sort navigation route
-      fireEvent.press(getByText("Sort By"))
+    // the first row item takes users to the Sort navigation route
+    fireEvent.press(getByText("Sort By"))
 
-      expect(mockNavigate).toBeCalledWith("SortOptionsScreen")
-    })
+    expect(mockNavigate).toBeCalledWith("SortOptionsScreen")
   })
 
   it("allows users to navigate forward to medium screen from filter screen", () => {
-    withReanimatedTimer(async () => {
-      const { getByText } = renderWithWrappers(
-        <ArtworkFiltersStoreProvider initialData={initialState}>
-          <ArtworkFilterOptionsScreen
-            {...getEssentialProps({
-              mode: FilterModalMode.Collection,
-            })}
-          />
-        </ArtworkFiltersStoreProvider>
-      )
-      // the second row item takes users to the Medium navigation route
-      fireEvent.press(getByText("Medium"))
+    const { getByText } = renderWithWrappers(
+      <ArtworkFiltersStoreProvider initialData={initialState}>
+        <ArtworkFilterOptionsScreen
+          {...getEssentialProps({
+            mode: FilterModalMode.Collection,
+          })}
+        />
+      </ArtworkFiltersStoreProvider>
+    )
+    // the second row item takes users to the Medium navigation route
+    fireEvent.press(getByText("Medium"))
 
-      expect(mockNavigate).toBeCalledWith("AdditionalGeneIDsOptionsScreen")
-    })
+    expect(mockNavigate).toBeCalledWith("AdditionalGeneIDsOptionsScreen")
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
-    withReanimatedTimer(async () => {
-      const { getByLabelText } = renderWithWrappers(<MockFilterModalNavigator />)
+    const { getByLabelText } = renderWithWrappers(<MockFilterModalNavigator />)
 
-      fireEvent.press(getByLabelText("Header back button"))
+    fireEvent.press(getByLabelText("Header back button"))
 
-      expect(closeModalMock).toHaveBeenCalled()
-    })
+    expect(closeModalMock).toHaveBeenCalled()
   })
 })
 
 describe("Filter modal states", () => {
   it("displays the currently selected sort option number on the filter screen", () => {
-    withReanimatedTimer(async () => {
-      const injectedState: ArtworkFiltersState = {
-        selectedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
-        appliedFilters: [],
-        previouslyAppliedFilters: [],
-        applyFilters: false,
-        aggregations: mockAggregations,
-        filterType: "artwork",
-        counts: {
-          total: null,
-          followedArtists: null,
-        },
-        sizeMetric: "cm",
-      }
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      sizeMetric: "cm",
+    }
 
-      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-      expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
-    })
+    expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
   })
 
   it("displays the currently selected medium option number on the filter screen", () => {
-    withReanimatedTimer(async () => {
-      const injectedState: ArtworkFiltersState = {
-        selectedFilters: [
-          {
-            displayText: "Performance Art",
-            paramValue: ["performance-art"],
-            paramName: FilterParamName.additionalGeneIDs,
-          },
-        ],
-        appliedFilters: [],
-        previouslyAppliedFilters: [],
-        applyFilters: false,
-        aggregations: mockAggregations,
-        filterType: "artwork",
-        counts: {
-          total: null,
-          followedArtists: null,
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [
+        {
+          displayText: "Performance Art",
+          paramValue: ["performance-art"],
+          paramName: FilterParamName.additionalGeneIDs,
         },
-        sizeMetric: "cm",
-      }
+      ],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      sizeMetric: "cm",
+    }
 
-      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-      expect(within(getByText("Medium")).getByText("• 1")).toBeTruthy()
-    })
+    expect(within(getByText("Medium")).getByText("• 1")).toBeTruthy()
   })
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
-    withReanimatedTimer(async () => {
-      const { getByText } = renderWithWrappers(<MockFilterModalNavigator />)
+    const { getByText } = renderWithWrappers(<MockFilterModalNavigator />)
 
-      expect(getByText("Show Results")).toBeDisabled()
-    })
+    expect(getByText("Show Results")).toBeDisabled()
   })
 
   it("displays the filter screen apply button correctly when filters are selected", () => {
-    withReanimatedTimer(async () => {
-      const injectedState: ArtworkFiltersState = {
-        selectedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
-        appliedFilters: [],
-        previouslyAppliedFilters: [],
-        applyFilters: false,
-        aggregations: mockAggregations,
-        filterType: "artwork",
-        counts: {
-          total: null,
-          followedArtists: null,
-        },
-        sizeMetric: "cm",
-      }
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      sizeMetric: "cm",
+    }
 
-      const { getByText } = renderWithWrappers(
-        <MockFilterModalNavigator initialData={injectedState} />
-      )
+    const { getByText } = renderWithWrappers(
+      <MockFilterModalNavigator initialData={injectedState} />
+    )
 
-      expect(getByText("Show Results")).not.toBeDisabled()
-    })
+    expect(getByText("Show Results")).not.toBeDisabled()
   })
 
   it("does not display default filters numbers on the Filter modal", () => {
-    withReanimatedTimer(async () => {
-      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
+    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
 
-      expect(getByText("Sort By")).toBeTruthy()
-      expect(getByText("Rarity")).toBeTruthy()
-      expect(getByText("Medium")).toBeTruthy()
-    })
+    expect(getByText("Sort By")).toBeTruthy()
+    expect(getByText("Rarity")).toBeTruthy()
+    expect(getByText("Medium")).toBeTruthy()
   })
 
   it("displays selected filters on the Filter modal", () => {
-    withReanimatedTimer(async () => {
-      const injectedState: ArtworkFiltersState = {
-        selectedFilters: [
-          {
-            displayText: "Drawing",
-            paramValue: ["drawing"],
-            paramName: FilterParamName.additionalGeneIDs,
-          },
-          { displayText: "Price (Low to High)", paramName: FilterParamName.sort },
-          { displayText: "$10,000-20,000", paramName: FilterParamName.priceRange },
-          {
-            displayText: "Bid",
-            paramValue: true,
-            paramName: FilterParamName.waysToBuyBid,
-          },
-          {
-            displayText: "All",
-            paramValue: ["2020-Today", "1970-1979"],
-            paramName: FilterParamName.timePeriod,
-          },
-        ],
-        appliedFilters: [],
-        previouslyAppliedFilters: [],
-        applyFilters: false,
-        aggregations: mockAggregations,
-        filterType: "artwork",
-        counts: {
-          total: null,
-          followedArtists: null,
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [
+        {
+          displayText: "Drawing",
+          paramValue: ["drawing"],
+          paramName: FilterParamName.additionalGeneIDs,
         },
-        sizeMetric: "cm",
-      }
+        { displayText: "Price (Low to High)", paramName: FilterParamName.sort },
+        { displayText: "$10,000-20,000", paramName: FilterParamName.priceRange },
+        {
+          displayText: "Bid",
+          paramValue: true,
+          paramName: FilterParamName.waysToBuyBid,
+        },
+        {
+          displayText: "All",
+          paramValue: ["2020-Today", "1970-1979"],
+          paramName: FilterParamName.timePeriod,
+        },
+      ],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      sizeMetric: "cm",
+    }
 
-      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-      expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
-      expect(getByText("Rarity")).toBeTruthy()
-      expect(within(getByText("Medium")).getByText("• 1")).toBeTruthy()
-      expect(within(getByText("Price")).getByText("• 1")).toBeTruthy()
-      expect(within(getByText("Ways to Buy")).getByText("• 1")).toBeTruthy()
-      expect(within(getByText("Time Period")).getByText("• 2")).toBeTruthy()
-    })
+    expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
+    expect(getByText("Rarity")).toBeTruthy()
+    expect(within(getByText("Medium")).getByText("• 1")).toBeTruthy()
+    expect(within(getByText("Price")).getByText("• 1")).toBeTruthy()
+    expect(within(getByText("Ways to Buy")).getByText("• 1")).toBeTruthy()
+    expect(within(getByText("Time Period")).getByText("• 2")).toBeTruthy()
   })
 })
 
 describe("Clearing filters", () => {
   it("allows users to clear all filters when selecting clear all", () => {
-    withReanimatedTimer(async () => {
-      const injectedState: ArtworkFiltersState = {
-        selectedFilters: [
-          {
-            displayText: "Price (Low to High)",
-            paramValue: "Price (Low to High)",
-            paramName: FilterParamName.sort,
-          },
-        ],
-        appliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
-        previouslyAppliedFilters: [
-          { displayText: "Recently Added", paramName: FilterParamName.sort },
-        ],
-        applyFilters: false,
-        aggregations: mockAggregations,
-        filterType: "artwork",
-        counts: {
-          total: null,
-          followedArtists: null,
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [
+        {
+          displayText: "Price (Low to High)",
+          paramValue: "Price (Low to High)",
+          paramName: FilterParamName.sort,
         },
-        sizeMetric: "cm",
-      }
+      ],
+      appliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Recently Added", paramName: FilterParamName.sort },
+      ],
+      applyFilters: false,
+      aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      sizeMetric: "cm",
+    }
 
-      const { getByText, queryByText } = renderWithWrappers(
-        <MockFilterScreen initialState={injectedState} />
-      )
+    const { getByText, queryByText } = renderWithWrappers(
+      <MockFilterScreen initialState={injectedState} />
+    )
 
-      expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
-      fireEvent.press(getByText("Clear All"))
+    expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
+    fireEvent.press(getByText("Clear All"))
 
-      expect(getByText("Sort By")).toBeTruthy()
-      expect(queryByText("• 1")).toBeFalsy()
-    })
+    expect(getByText("Sort By")).toBeTruthy()
+    expect(queryByText("• 1")).toBeFalsy()
   })
 
   it("exits the modal when clear all button is pressed", () => {
-    withReanimatedTimer(async () => {
-      const injectedState: ArtworkFiltersState = {
-        selectedFilters: [],
-        appliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
-        previouslyAppliedFilters: [
-          { displayText: "Recently Added", paramName: FilterParamName.sort },
-        ],
-        applyFilters: false,
-        aggregations: mockAggregations,
-        filterType: "artwork",
-        counts: {
-          total: null,
-          followedArtists: null,
-        },
-        sizeMetric: "cm",
-      }
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [],
+      appliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Recently Added", paramName: FilterParamName.sort },
+      ],
+      applyFilters: false,
+      aggregations: mockAggregations,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      sizeMetric: "cm",
+    }
 
-      const { getByText } = renderWithWrappers(
-        <MockFilterModalNavigator initialData={injectedState} />
-      )
+    const { getByText } = renderWithWrappers(
+      <MockFilterModalNavigator initialData={injectedState} />
+    )
 
-      expect(getByText("Show Results")).toBeDisabled()
+    expect(getByText("Show Results")).toBeDisabled()
 
-      fireEvent.press(getByText("Clear All"))
+    fireEvent.press(getByText("Clear All"))
 
-      expect(getByText("Sort By")).toBeTruthy()
-      expect(getByText("Rarity")).toBeTruthy()
-    })
+    expect(getByText("Sort By")).toBeTruthy()
+    expect(getByText("Rarity")).toBeTruthy()
   })
 })
 
@@ -581,33 +552,27 @@ describe("Applying filters on Artworks", () => {
 
 describe("AnimatedArtworkFilterButton", () => {
   it("Shows Sort & Filter when no text prop is available", () => {
-    withReanimatedTimer(async () => {
-      const { getByText } = renderWithWrappers(
-        <ArtworkFiltersStoreProvider>
-          <AnimatedArtworkFilterButton isVisible onPress={jest.fn()} />
-        </ArtworkFiltersStoreProvider>
-      )
+    const { getByText } = renderWithWrappers(
+      <ArtworkFiltersStoreProvider>
+        <AnimatedArtworkFilterButton isVisible onPress={jest.fn()} />
+      </ArtworkFiltersStoreProvider>
+    )
 
-      expect(getByText("Sort & Filter")).toBeTruthy()
-    })
+    expect(getByText("Sort & Filter")).toBeTruthy()
   })
 
   it("Shows text when text prop is available", () => {
-    withReanimatedTimer(async () => {
-      const { getByText } = renderWithWrappers(
-        <ArtworkFiltersStoreProvider>
-          <AnimatedArtworkFilterButton text="Filter Text" isVisible onPress={jest.fn()} />
-        </ArtworkFiltersStoreProvider>
-      )
+    const { getByText } = renderWithWrappers(
+      <ArtworkFiltersStoreProvider>
+        <AnimatedArtworkFilterButton text="Filter Text" isVisible onPress={jest.fn()} />
+      </ArtworkFiltersStoreProvider>
+    )
 
-      expect(getByText("Filter Text")).toBeTruthy()
-    })
+    expect(getByText("Filter Text")).toBeTruthy()
   })
-})
 
-describe("Saved Search Flow", () => {
-  it('should hide "Create Alert" button by default', () => {
-    withReanimatedTimer(async () => {
+  describe("Saved Search Flow", () => {
+    it('should hide "Create Alert" button by default', () => {
       const { queryByText } = renderWithWrappers(<MockFilterModalNavigator />)
 
       expect(queryByText("Create Alert")).toBeFalsy()
@@ -615,12 +580,10 @@ describe("Saved Search Flow", () => {
   })
 
   it('should show "Create Alert" button when shouldShowCreateAlertButton prop is passed', () => {
-    withReanimatedTimer(async () => {
-      const { getByText } = renderWithWrappers(
-        <MockFilterModalNavigator shouldShowCreateAlertButton />
-      )
+    const { getByText } = renderWithWrappers(
+      <MockFilterModalNavigator shouldShowCreateAlertButton />
+    )
 
-      expect(getByText("Create Alert")).toBeTruthy()
-    })
+    expect(getByText("Create Alert")).toBeTruthy()
   })
 })
