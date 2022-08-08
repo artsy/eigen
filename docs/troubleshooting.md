@@ -109,6 +109,4 @@ If you are still having some tests failing, try commenting out the failing line,
 Your test includes/renders components that are using react-native-reanimated, and probably your tests are affected by this.
 Maybe the button you are trying to press in your test is not there yet, or some other animation is messing with your expectations.
 
-Wrap your test code with `withReanimatedTimer(async () =>{` and `})` at the end. Search in the repo for `withReanimatedTimer(` to see where and how this is used. You might also need to utilize one of the `waitFor*` functions, like `await waitForElementToBeRemoved(() => screen.getByTestId("some-id"))` or `await waitFor(() => screen.getByTestId("some-id"))`
-
-That should make your tests pass. If you are still having issues, come to #practice-mobile for help.
+Consult with @pvinis/pavlos, but maybe what you need to do is import `beforeTest` and `afterTest` from `"react-native-reanimated/src/reanimated2/jestUtils"` and use them in the `beforeEach` and `afterEach` of your test file.
