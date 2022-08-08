@@ -3,7 +3,7 @@ import { Flex } from "palette"
 import { useColor, useSpace } from "palette/hooks"
 import { StarCircleIcon } from "palette/svgs/StarCircleIcon"
 import { useCallback, useEffect, useState } from "react"
-import { Dimensions, NativeTouchEvent, TouchableOpacity, View } from "react-native"
+import { Dimensions, NativeTouchEvent, Platform, TouchableOpacity, View } from "react-native"
 import Svg, { Defs, G, LinearGradient, Stop } from "react-native-svg"
 import { InterpolationPropType } from "victory-core"
 import {
@@ -229,15 +229,20 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
               parent: { border: "transparent" },
             }}
             data={xHighlights}
-            size={5}
+            size={Platform.OS === "android" ? 7 : 5}
             dataComponent={
-              <HighlightIconContainer
-                // @ts-ignore
-                icon={xHighlightIcon ?? <StarCircleIcon fill={tintColor} height={20} width={20} />}
-                onHighlightPressed={onXHighlightPressed}
-                lastPressedEvent={lastPressedEvent}
-                clearLastPressedEvent={() => setLastPressedEvent(null)}
-              />
+              // TODO:- Investigate and fix positioning of custom dataComponent on android
+              Platform.OS === "android" ? undefined : (
+                <HighlightIconContainer
+                  icon={
+                    // @ts-ignore
+                    xHighlightIcon ?? <StarCircleIcon fill={tintColor} height={20} width={20} />
+                  }
+                  onHighlightPressed={onXHighlightPressed}
+                  lastPressedEvent={lastPressedEvent}
+                  clearLastPressedEvent={() => setLastPressedEvent(null)}
+                />
+              )
             }
           />
         )}
@@ -255,15 +260,20 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
               parent: { border: "transparent" },
             }}
             data={yHighlights}
-            size={5}
+            size={Platform.OS === "android" ? 7 : 5}
             dataComponent={
-              <HighlightIconContainer
-                // @ts-ignore
-                icon={yHighlightIcon ?? <StarCircleIcon fill={tintColor} height={20} width={20} />}
-                onHighlightPressed={onYHighlightPressed}
-                lastPressedEvent={lastPressedEvent}
-                clearLastPressedEvent={() => setLastPressedEvent(null)}
-              />
+              // TODO:- Investigate and fix positioning of custom dataComponent on android
+              Platform.OS === "android" ? undefined : (
+                <HighlightIconContainer
+                  icon={
+                    // @ts-ignore
+                    yHighlightIcon ?? <StarCircleIcon fill={tintColor} height={20} width={20} />
+                  }
+                  onHighlightPressed={onYHighlightPressed}
+                  lastPressedEvent={lastPressedEvent}
+                  clearLastPressedEvent={() => setLastPressedEvent(null)}
+                />
+              )
             }
           />
         )}
