@@ -1,10 +1,11 @@
 import { StackScreenProps } from "@react-navigation/stack"
+import { captureMessage } from "@sentry/react-native"
 import { navigate } from "app/navigation/navigate"
 import { useImageSearch } from "app/utils/useImageSearch"
 import { compact } from "lodash"
 import { BackButton, Flex } from "palette"
 import { useEffect } from "react"
-import { Image, StyleSheet } from "react-native"
+import { Alert, Image, StyleSheet } from "react-native"
 import { Background } from "../../Components/Background"
 import { CameraFramesContainer } from "../../Components/CameraFramesContainer"
 import { HeaderContainer } from "../../Components/HeaderContainer"
@@ -44,6 +45,24 @@ export const ReverseImagePreviewScreen: React.FC<Props> = (props) => {
       })
     } catch (error) {
       console.error(error)
+      if (__DEV__) {
+        console.error(error)
+      } else {
+        captureMessage((error as Error).stack!)
+      }
+
+      Alert.alert(
+        "Something went wrong.",
+        "Sorry, we couldn't process the request. Please try again or contact support@artsy.net for help.",
+        [
+          {
+            text: "Retry",
+            onPress: () => {
+              navigation.goBack()
+            },
+          },
+        ]
+      )
     }
   }
 
