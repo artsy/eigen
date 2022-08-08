@@ -13,6 +13,7 @@ interface LocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   floating?: boolean
   initialLocation?: LocationWithDetails | null
   displayLocation?: string
+  allowCustomInput?: boolean
   inputRef?: React.RefObject<Input>
   onChange: (l: LocationWithDetails) => void
   FooterComponent?: () => JSX.Element
@@ -37,6 +38,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   floating,
   FooterComponent,
   inputRef,
+  allowCustomInput = false,
   ...restProps
 }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
@@ -76,6 +78,22 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
     onChange(locationDetails)
   }
 
+  const handleBlur = () => {
+    if (allowCustomInput) {
+      if (
+        query === initialLocation?.name ||
+        query === displayLocation ||
+        query === selectedLocation?.name
+      ) {
+        return
+      }
+
+      setPredictions([])
+      // @ts-expect-error No need to set ID and name here
+      onChange({ city: query })
+    }
+  }
+
   const reset = () => {
     if (selectedLocation) {
       setQuery(selectedLocationQuery)
@@ -98,6 +116,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
         placeholder={placeholder}
         onChangeText={setQuery}
         onFocus={reset}
+        onBlur={handleBlur}
         value={selectedLocation ? selectedLocation.name : query}
       />
 
@@ -117,15 +136,15 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
 const LocationPredictions = ({
   predictions,
   query,
+  isFloating,
   onSelect,
   onOutsidePress,
-  isFloating,
 }: {
   predictions: SimpleLocation[]
   query?: string
+  isFloating?: boolean
   onSelect: (l: SimpleLocation) => void
   onOutsidePress?: () => void
-  isFloating?: boolean
 }) => {
   const [height, setHeight] = useState(0)
 
@@ -176,6 +195,7 @@ const LocationPredictions = ({
             shadowOpacity: 0.12,
             shadowRadius: 3,
             elevation: 4,
+            zIndex: 100,
           },
           isFloating ? { position: "absolute", top: 72 } : {},
         ]}

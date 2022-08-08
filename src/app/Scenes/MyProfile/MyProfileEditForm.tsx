@@ -256,6 +256,7 @@ export const MyProfileEditForm: React.FC = () => {
                     stateCode: stateCode ?? "",
                   })
                 }}
+                allowCustomInput
               />
 
               <Input
