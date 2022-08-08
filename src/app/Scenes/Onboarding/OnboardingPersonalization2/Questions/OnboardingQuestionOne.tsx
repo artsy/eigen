@@ -15,6 +15,7 @@ export const OnboardingQuestionOne = () => {
   const { state } = useOnboardingContext()
   const { navigate } = useNavigation()
 
+  // @ts-expect-error
   const navigateToNextScreen = () => navigate("OnboardingQuestionTwo")
 
   const { commitMutation } = useUpdateUserProfile(navigateToNextScreen)
