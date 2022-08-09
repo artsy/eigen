@@ -1,10 +1,12 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, within } from "@testing-library/react-native"
 import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappers } from "app/tests/renderWithWrappers"
+import React from "react"
+import { MockFilterScreen } from "../FilterTestHelper"
 import { AdditionalGeneIDsOptionsScreen } from "./AdditionalGeneIDsOptions"
 import { getEssentialProps } from "./helper"
 
@@ -64,6 +66,32 @@ describe("AdditionalGeneIDsOptions Screen", () => {
     expect(getByText("Drawing")).toBeTruthy()
     expect(getByText("Jewelry")).toBeTruthy()
     expect(getByText("Photography")).toBeTruthy()
+  })
+
+  it.skip("displays the number of the selected filters on the filter modal screen", () => {
+    const injectedState: ArtworkFiltersState = {
+      selectedFilters: [
+        {
+          displayText: "Prints, Sculpture",
+          paramName: FilterParamName.additionalGeneIDs,
+          paramValue: ["prints", "sculpture"],
+        },
+      ],
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      applyFilters: false,
+      aggregations: MOCK_AGGREGATIONS,
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+      sizeMetric: "cm",
+    }
+
+    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+
+    expect(within(getByText("Medium")).getByText("• 2")).toBeTruthy()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {

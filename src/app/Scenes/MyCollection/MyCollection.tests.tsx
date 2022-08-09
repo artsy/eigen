@@ -9,12 +9,15 @@ import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionContainer } from "./MyCollection"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 jest.unmock("react-relay")
 
@@ -127,4 +130,56 @@ describe("MyCollection", () => {
       expect(tree.root.findByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
     })
   })
+
+  describe("sorting and filtering", () => {
+    it.skip("filters and sorts without crashing", async () => {
+      renderWithWrappers(<TestRenderer />)
+
+      resolveMostRecentRelayOperation(mockEnvironment, {
+        Me: () => ({
+          myCollectionConnection,
+        }),
+      })
+
+      await applyFilter("Sort By", "Price Paid (High to Low)")
+      await applyFilter("Artists", "Banksy")
+      // await applyFilter("Rarity", "Unique")
+      // await applyFilter("Medium", "Print")
+      // await applyFilter("Price", "$0-1,000")
+      // await applyFilter("Size", "Small (under 40cm)")
+    })
+  })
 })
+
+const applyFilter = async (filterName: string, filterOption: string) => {
+  await flushPromiseQueue()
+  fireEvent.press(screen.getByTestId("sort-and-filter-button"))
+  fireEvent.press(screen.getByText(filterName))
+  fireEvent.press(screen.getByText(filterOption))
+  fireEvent.press(screen.getByText("Show Results"))
+}
+
+const myCollectionConnection = {
+  edges: [
+    {
+      node: {
+        id: "QXJ0d29yazo2MWMwOTk4ZWU0YjZjMzAwMGI3NmJmYjE=",
+        medium: "Print",
+        pricePaid: {
+          minor: "2000",
+        },
+        attributionClass: {
+          name: "Unique",
+        },
+        sizeBucket: null,
+        width: 30,
+        height: 20,
+        artist: {
+          name: "Banksy",
+          internalID: "4dd1584de0091e000100207c",
+          formattedNationalityAndBirthday: "British",
+        },
+      },
+    },
+  ],
+}
