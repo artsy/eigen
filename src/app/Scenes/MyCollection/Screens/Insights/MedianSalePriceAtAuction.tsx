@@ -1,25 +1,30 @@
-import { AverageSalePriceAtAuctionQuery } from "__generated__/AverageSalePriceAtAuctionQuery.graphql"
+import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import OpaqueImageView from "app/Components/OpaqueImageView/OpaqueImageView"
+import { useFeatureFlag } from "app/store/GlobalStore"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
 import React, { Suspense, useCallback, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { AverageSalePriceSelectArtistModal } from "./AverageSalePriceSelectArtistModal"
+import { SelectArtistModal } from "./SelectArtistModal"
 
 const PAGE_SIZE = 50
 
-interface AverageSalePriceAtAuctionProps {
+interface MedianSalePriceAtAuctionProps {
   refetch: (newArtistID: string) => void
   queryArgs: Record<string, any>
 }
 
-const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> = ({
+const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = ({
   refetch,
   queryArgs,
 }) => {
+  const enableMyCollectionInsightsMedianPrice = useFeatureFlag(
+    "AREnableMyCollectionInsightsMedianPrice"
+  )
+
   const [isVisible, setVisible] = useState<boolean>(false)
 
-  const data = useLazyLoadQuery<AverageSalePriceAtAuctionQuery>(
-    AverageSalePriceAtAuctionScreenQuery,
+  const data = useLazyLoadQuery<MedianSalePriceAtAuctionQuery>(
+    MedianSalePriceAtAuctionScreenQuery,
     queryArgs.variables,
     queryArgs.options
   )
@@ -29,8 +34,8 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
 
   return (
     <Flex mx={2} pt={6}>
-      <Text variant="lg" mb={0.5} testID="Average_Auction_Price_title">
-        Average Auction Price
+      <Text variant="lg" mb={0.5} testID="Median_Auction_Price_title">
+        {enableMyCollectionInsightsMedianPrice ? "Median Auction Price" : "Average Auction Price"}
       </Text>
       <Text variant="xs">Track price stability or growth for your artists.</Text>
 
@@ -71,7 +76,7 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
         )}
       </Flex>
 
-      <AverageSalePriceSelectArtistModal
+      <SelectArtistModal
         queryData={data}
         visible={isVisible}
         closeModal={() => setVisible(false)}
@@ -84,7 +89,7 @@ const AverageSalePriceAtAuctionScreen: React.FC<AverageSalePriceAtAuctionProps> 
   )
 }
 
-export const AverageSalePriceAtAuction: React.FC<{ artistID: string }> = ({ artistID }) => {
+export const MedianSalePriceAtAuction: React.FC<{ artistID: string }> = ({ artistID }) => {
   const [queryArgs, setQueryArgs] = useState({
     options: { fetchKey: 0 },
     variables: { ...artistsQueryVariables, artistID },
@@ -101,14 +106,14 @@ export const AverageSalePriceAtAuction: React.FC<{ artistID: string }> = ({ arti
 
   return (
     <Suspense fallback={null}>
-      <AverageSalePriceAtAuctionScreen refetch={refetch} queryArgs={queryArgs} />
+      <MedianSalePriceAtAuctionScreen refetch={refetch} queryArgs={queryArgs} />
     </Suspense>
   )
 }
 
-export const AverageSalePriceAtAuctionScreenQuery = graphql`
-  query AverageSalePriceAtAuctionQuery($artistID: String!, $count: Int, $after: String) {
-    ...AverageSalePriceSelectArtistModal_myCollectionInfo @arguments(count: $count, after: $after)
+export const MedianSalePriceAtAuctionScreenQuery = graphql`
+  query MedianSalePriceAtAuctionQuery($artistID: String!, $count: Int, $after: String) {
+    ...SelectArtistModal_myCollectionInfo @arguments(count: $count, after: $after)
     artist(id: $artistID) {
       internalID
       name
