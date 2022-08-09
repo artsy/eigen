@@ -24,7 +24,7 @@ export const MarketSignalsSectionHeader: React.FC<{}> = () => {
             where do insights come from?
           </Text>
           <Text>
-            Our market data comes from the Artsy price database, which includes millions of results
+            Our market data comes from the Artsy Price Database, which includes millions of results
             from leading auction houses across the globe.
           </Text>
           <Text caps mt={2}>
