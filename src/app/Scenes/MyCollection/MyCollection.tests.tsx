@@ -5,19 +5,19 @@ import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/
 import { StickyTabPage } from "app/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "app/Components/StickyTabPage/StickyTabPageScrollView"
 
+import { fireEvent, screen } from "@testing-library/react-native"
 import { navigate } from "app/navigation/navigate"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractText } from "app/tests/extractText"
+import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/tests/renderWithWrappers"
+import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { Tab } from "../MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyCollectionContainer } from "./MyCollection"
-import { fireEvent, screen } from "@testing-library/react-native"
-import { flushPromiseQueue } from "app/tests/flushPromiseQueue"
-import { resolveMostRecentRelayOperation } from "app/tests/resolveMostRecentRelayOperation"
 
 jest.unmock("react-relay")
 
