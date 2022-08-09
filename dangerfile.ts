@@ -14,28 +14,6 @@ const getCreatedFileNames = (createdFiles: string[]) => createdFiles.filter(file
 
 const testOnlyFilter = (filename: string) => filename.includes(".tests") && typescriptOnly(filename)
 
-// We are trying to migrate away from test-renderer towards @testing-library/react-native
-const preventUsingTestRenderer = () => {
-  const newTRImports = getCreatedFileNames(danger.git.created_files)
-    .filter(testOnlyFilter)
-    .filter((filename) => {
-      const content = fs.readFileSync(filename).toString()
-      return (
-        content.includes('from "app/tests/renderWithWrappers"') &&
-        (content.includes("renderWithWrappersLEGACY ") ||
-          content.includes("renderWithWrappersLEGACY,"))
-      )
-    })
-  if (newTRImports.length > 0) {
-    warn(`We are trying to migrate away from \`react-test-renderer\` towards \`@testing-library/react-native\`, but found Test-Renderer imports in the following new unit test files:
-
-${newTRImports.map((filename) => `- \`${filename}\``).join("\n")}
-
-See [\`Pill.tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c8a14e3ed09b42523de8bd/src/palette/elements/Pill/__tests__/Pill-tests.tsx) as an example, or [the docs](https://callstack.github.io/react-native-testing-library/docs/api-queries).
-  `)
-  }
-}
-
 // Validates that we've not accidentally let in a testing
 // shortcut to simplify dev work
 const verifyRemainingDevWork = () => {

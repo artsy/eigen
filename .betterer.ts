@@ -5,6 +5,7 @@ import { bigger, smaller } from "@betterer/constraints"
 
 
 const typescriptFiles = ["./src/**/*.ts", "./src/**/*.tsx"]
+const typescriptTestFiles = ["./src/**/*.tests.ts", "./src/**/*.tests.tsx"]
 const imageExtensionsToAvoid = ["png", "jpg", "jpeg"]
 
 export default {
@@ -19,6 +20,9 @@ export default {
 
   "Avoid non-webp images!": () =>
     countNonWebpImages().include([`./images/**/*.{${imageExtensionsToAvoid.join(",")}}`]),
+
+  "Avoid using test-renderer": () =>
+    regexp(/renderWithWrappersLEGACY.* from ".*renderWithWrappers"/).include(typescriptTestFiles),
 }
 
 const countNonWebpImages = () =>
